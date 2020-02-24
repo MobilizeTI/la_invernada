@@ -156,7 +156,7 @@
 
                                         <td colspan="3">
                                             <t t-if="d.type_of_dispatch == 'exp'">
-                                                <table style="width:90%;border:1px solid;">
+                                                <table style="width:80%;border:1px solid;">
                                                     <tr>
                                                         <td>
                                                             KILOS NETOS
@@ -223,7 +223,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td>Nota</td>
-                                                        <td colspan="3" style="font-size:13px;text-align:center;">
+                                                        <td colspan="3" style="font-size:15px;text-align:center;">
                                                             <t t-esc="d.note_dispatched.get_full_note()"></t>
                                                         </td>
                                                         <td></td>
