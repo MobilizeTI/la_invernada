@@ -156,7 +156,7 @@
 
                                         <td colspan="3">
                                             <t t-if="d.type_of_dispatch == 'exp'">
-                                                <table style="width:80%;border:1px solid;">
+                                                <table style="height:80%;border:1px solid;">
                                                     <tr>
                                                         <td>
                                                             KILOS NETOS
