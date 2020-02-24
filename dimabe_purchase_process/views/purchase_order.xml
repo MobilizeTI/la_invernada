@@ -34,7 +34,6 @@
                 </xpath>
                 <xpath expr="//button[@name='action_view_invoice'][1]" position="attributes">
                     <attribute name="groups">dimabe_purchase_process.group_purchase_approval_user</attribute>
-
                 </xpath>
                 <xpath expr="//button[@name='action_view_invoice'][2]" position="attributes">
                     <attribute name="groups">dimabe_purchase_process.group_purchase_approval_user</attribute>
