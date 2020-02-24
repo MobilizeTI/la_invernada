@@ -164,14 +164,18 @@ class MrpProduction(models.Model):
         # if not res.client_search_id and not res.potential_lot_ids:
         res.onchange_client_search_id()
 
-        stock_picking = self.env['stock.picking'].search([
-            ('name', '=', res.origin)
-        ])
+        self.stock_picking_id.update({
+            'has_mrp_production': True
+        })
 
-        if stock_picking:
-            stock_picking.update({
-                'has_mrp_production': True
-            })
+        # stock_picking = self.env['stock.picking'].search([
+        #     ('name', '=', res.origin)
+        # ])
+        #
+        # if stock_picking:
+        #     stock_picking.update({
+        #         'has_mrp_production': True
+        #     })
 
         return res
 
