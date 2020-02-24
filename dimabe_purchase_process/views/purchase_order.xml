@@ -40,7 +40,7 @@
                 </xpath>
                 <button name="action_view_picking" position="attributes">
                     <attribute name="groups">dimabe_purchase_process.group_purchase_budget_user</attribute>
-                    <attribute name="attrs">{'invisible':[('state','not in',['purchase sent'])]}</attribute>
+                    <attribute name="attrs">{'invisible':}</attribute>
                 </button>
                 <button name="button_cancel" position="attributes">
                     <attribute name="string">Rechazar</attribute>
