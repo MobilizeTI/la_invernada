@@ -5,9 +5,8 @@
       <field name="model">mrp.production</field>
       <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
       <field name="arch" type="xml">
-        <button name="action_view_mo_delivery" position="replace">
-          <field name="delivery_count" widget="statinfo" string="Picking"/>
-          <field name="stock_picking_id" />
+        <button name="date_planned_start" position="before">
+          <field name="stock_picking_id" readonly="1" />
         </button>
         <xpath expr="//header" postition="after">
           <button name="calculate_done" type="object"
