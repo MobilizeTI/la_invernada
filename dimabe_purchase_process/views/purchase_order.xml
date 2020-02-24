@@ -37,7 +37,7 @@
                 </xpath>
                 <xpath expr="//button[@name='action_view_invoice'][2]" position="attributes">
                     <attribute name="groups">dimabe_purchase_process.group_purchase_approval_user</attribute>
-                    <attribute name="attrs">{'invisible':['|',['state',''not in',['purchase','done','purchase sent']],['invoice_status','in',['no','invoiced']]]}</attribute>
+                    <attribute name="attrs">{'invisible':['|',['state','not in',['purchase','done','purchase sent']],['invoice_status','in',['no','invoiced']]]}</attribute>
                 </xpath>
                 <button name="action_view_picking" position="attributes">
                     <attribute name="groups">dimabe_purchase_process.group_purchase_budget_user</attribute>
