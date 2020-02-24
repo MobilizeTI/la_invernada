@@ -5,6 +5,11 @@
       <field name="model">mrp.production</field>
       <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
       <field name="arch" type="xml">
+        <button name="action_view_mo_delivery" position="replace">
+          <button type="object" name="action_view_mo_delivery" class="oe_stat_button" icon="fa-truck"
+                  attrs="{'invisible': [('stock_picking_id', '=', False)]}" groups="base.group_user">
+          </button>
+        </button>
         <xpath expr="//header" postition="after">
           <button name="calculate_done" type="object"
                   string="Calcular Realizado"
