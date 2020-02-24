@@ -164,7 +164,7 @@ class MrpProduction(models.Model):
         # if not res.client_search_id and not res.potential_lot_ids:
         res.onchange_client_search_id()
 
-        self.stock_picking_id.update({
+        res.stock_picking_id.update({
             'has_mrp_production': True
         })
 
