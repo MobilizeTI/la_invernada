@@ -39,9 +39,8 @@
                     <attribute name="groups">dimabe_purchase_process.group_purchase_approval_user</attribute>
                 </xpath>
                 <button name="action_view_picking" position="attributes">
-                    <attribute name="groups">dimabe_purchase_process.group_purchase_budget_user</attribute>}
-                    <attribute name="attrs">{"invisible":["is_shipped","=",true],["state","not in",["purchase","purchase sent","done"]],["picking_count","=",0]}
-                    </attribute>
+                    <attribute name="groups">dimabe_purchase_process.group_purchase_budget_user</attribute>
+                    <attribute name="attrs">{'invisible':[('state','not in',['purchase sent'])]}</attribute>
                 </button>
                 <button name="button_cancel" position="attributes">
                     <attribute name="string">Rechazar</attribute>
