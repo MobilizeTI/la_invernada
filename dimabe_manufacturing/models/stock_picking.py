@@ -22,20 +22,18 @@ class StockPicking(models.Model):
 
     quantity_requested = fields.Float(related='move_ids_without_package.product_uom_qty')
 
+    packing_list_ids = fields.One2many(
+        'stock.production.lot.serial',
+        compute='_compute_packing_list_ids'
+    )
+
     @api.multi
     def return_action(self):
-        # procurement_group = self.env['procurement.group'].search([
-        #     ('name', '=', self.origin)
-        # ])
-
-        # if procurement_group:
-        #     procurement_group = procurement_group[0]
 
         context = {
             'default_product_id': self.product_id.id,
             'default_product_uom_qty': self.quantity_requested,
             'default_origin': self.name,
-            # 'default_procurement_group_id': procurement_group.id,
             'default_stock_picking_id': self.id,
             'default_client_search_id': self.partner_id.id,
             'default_requested_qty': self.quantity_requested

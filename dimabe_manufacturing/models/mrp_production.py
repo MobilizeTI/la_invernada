@@ -168,15 +168,6 @@ class MrpProduction(models.Model):
             'has_mrp_production': True
         })
 
-        # stock_picking = self.env['stock.picking'].search([
-        #     ('name', '=', res.origin)
-        # ])
-        #
-        # if stock_picking:
-        #     stock_picking.update({
-        #         'has_mrp_production': True
-        #     })
-
         return res
 
     @api.multi
