@@ -40,8 +40,7 @@
                 </xpath>
                 <button name="action_view_picking" position="attributes">
                     <attribute name="groups">dimabe_purchase_process.group_purchase_budget_user</attribute>}
-                    <attribute name="attrs">{"invisible":"|","|",["is_shipped","=",true],["state","not
-                        in",["purchase","purchase sent","done"]],["picking_count","=",0]}
+                    <attribute name="attrs">{"invisible":"|","|",["is_shipped","=",true],["state","not in",["purchase","purchase sent","done"]],["picking_count","=",0]}
                     </attribute>
                 </button>
                 <button name="button_cancel" position="attributes">
