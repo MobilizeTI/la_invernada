@@ -165,7 +165,7 @@ class MrpProduction(models.Model):
         for serial in serial_to_reserve_ids:
             serial.with_context(stock_picking_id=self.stock_picking_id.id).reserve_picking()
             models._logger.error('{} {}'.format(serial.reserved_to_stock_picking_id, serial.serial_number))
-        raise models.ValidationError(res)
+        # raise models.ValidationError(res)
         return res
 
     @api.model
