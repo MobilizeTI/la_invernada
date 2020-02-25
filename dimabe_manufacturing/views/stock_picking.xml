@@ -8,7 +8,14 @@
         <page name="packing_list" string="Packing List"
               attrs="{'invisible':[('picking_type_code','!=','outgoing')]}"
         >
-          <field name="packing_list_ids" />
+          <field name="packing_list_ids">
+            <tree>
+              <field name="stock_production_lot_id" />
+              <field name="product_id" />
+              <field name="serial_number" />
+              <field name="display_weight" />
+            </tree>
+          </field>
         </page>
       </page>
     </field>
