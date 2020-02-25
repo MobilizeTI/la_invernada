@@ -18,8 +18,6 @@
                 <button string="Hecho" type="object"/>
               </tree>
             </field>
-
-            <label></label>
             <field name="product_search_id" />
 
             <field name="potential_lot_serial_ids"/>
