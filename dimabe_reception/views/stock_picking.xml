@@ -69,6 +69,7 @@
     <record id="stock_picking_list" model="ir.ui.view">
       <field name="name">stock picking list</field>
       <field name="model">stock.picking</field>
+      <field name="view_mode">kanban,form,tree</field>
       <field name="arch" type="xml">
 
         <tree>
