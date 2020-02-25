@@ -2,27 +2,28 @@
   <record id="view_picking_form_inherit" model="ir.ui.view">
     <field name="name">Formulario Despacho</field>
     <field name="model">stock.picking</field>
-    <field name="inherit_id" ref="stock.view_picking_form" />
+    <field name="inherit_id" ref="stock.view_picking_form"/>
     <field name="arch" type="xml">
       <page name="note" position="after">
         <page name="packing_list" string="Packing List"
               attrs="{'invisible':[('picking_type_code','!=','outgoing')]}"
         >
-          <field name="packing_list_ids">
-            <tree>
-              <field name="stock_production_lot_id" />
-              <field name="stock_product_id" />
-              <field name="serial_number" />
-              <field name="display_weight" />
-              <button string="Hecho" type="object" />
-            </tree>
-          </field>
+          <group>
+            <field name="packing_list_ids">
+              <tree>
+                <field name="stock_production_lot_id"/>
+                <field name="stock_product_id"/>
+                <field name="serial_number"/>
+                <field name="display_weight"/>
+                <button string="Hecho" type="object"/>
+              </tree>
+            </field>
 
-          <field name="product_search_id"
-                 string="Buscar Producto"
-          />
+            <label></label>
+            <field name="product_search_id" />
 
-          <field name="potential_lot_serial_ids" />
+            <field name="potential_lot_serial_ids"/>
+          </group>
         </page>
       </page>
     </field>
