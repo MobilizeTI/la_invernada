@@ -35,7 +35,7 @@ class StockPicking(models.Model):
                 lot_ids = production.mapped('workorder_ids').mapped('production_finished_move_line_ids').mapped('lot_id')
                 item.packing_list_ids = lot_ids.filtered(
                     lambda a: a.product_id in item.move_ids_without_package.mapped('product_id')
-                ).mapped('stock_production_lot_ids')
+                ).mapped('stock_production_lot_serial_ids')
 
     @api.multi
     def return_action(self):
