@@ -210,7 +210,7 @@ class StockPicking(models.Model):
         compute='_compute_elapsed_time'
     )
 
-    sale_order = fields.Many2many('sale.order')
+    sale_order = fields.Many2many(rel='sale.order')
 
 
 
