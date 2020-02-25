@@ -253,14 +253,13 @@ class StockPicking(models.Model):
     @api.depends('freight_value', 'safe_value')
     def _compute_total_value(self):
         result = self.env['sale.order'].search([])
+        list_price = []
         for item in result:
             if item.name == self.origin:
-                list_price = []
                 for i in item.order_line:
                     list_price.append(int(i.price_unit))
-
             models._logger.error(sum(list_price))
-            self.total_value = (i.price_unit * i.product_uom_qty) + self.freight_value + self.safe_value
+
 
     @api.model
     @api.depends('total_value')
