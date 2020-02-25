@@ -23,7 +23,6 @@
 
             <field name="potential_lot_serial_ids" context="{'a': id}">
               <tree>
-                <field name="a" />
                 <field name="stock_production_lot_id"/>
                 <field name="stock_product_id"/>
                 <field name="serial_number"/>
@@ -31,7 +30,7 @@
                 <button string="Agregar a Packing List"
                         type="object"
                         name="reserve_picking"
-                        context="{'stock_picking_id':a}"
+                        context="{'stock_picking_id':parent.id}"
 
                 />
               </tree>
