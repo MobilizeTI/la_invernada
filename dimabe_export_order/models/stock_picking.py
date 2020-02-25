@@ -212,6 +212,7 @@ class StockPicking(models.Model):
 
     sale_order = fields.Many2one('sale_order')
 
+
     @api.multi
     def generate_report(self):
         for item in self.sale_order:
