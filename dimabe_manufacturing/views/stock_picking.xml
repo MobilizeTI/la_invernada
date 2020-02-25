@@ -23,9 +23,11 @@
                 />
               </tree>
             </field>
-            <field name="product_search_id"/>
+            <field name="product_search_id"
+                   groups="mrp.group_mrp_manager"
+            />
 
-            <field name="potential_lot_serial_ids">
+            <field name="potential_lot_serial_ids" groups="mrp.group_mrp_manager">
               <tree>
                 <field name="stock_production_lot_id"/>
                 <field name="stock_product_id"/>
@@ -35,8 +37,6 @@
                         type="object"
                         name="reserve_picking"
                         context="{'stock_picking_id':parent.id}"
-                        groups="mrp.group_mrp_manager"
-
                 />
               </tree>
             </field>
