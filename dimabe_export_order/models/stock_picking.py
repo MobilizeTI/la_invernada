@@ -256,6 +256,7 @@ class StockPicking(models.Model):
         for item in result:
             if item.name == self.origin:
                 for i in item.order_line:
+                    models._logger.error(i.price_unit * i.product_uom_qty)
                     self.total_value = (i.price_unit * i.product_uom_qty) + self.freight_value + self.safe_value
 
     @api.model
