@@ -255,7 +255,7 @@ class StockPicking(models.Model):
         result = self.env['sale.order'].search([])
         for item in result:
             if item.name == self.origin:
-                for i in item.stock_line:
+                for i in item.order_line:
                     models._logger.error(i.name)
 
     @api.model
