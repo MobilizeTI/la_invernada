@@ -259,7 +259,8 @@ class StockPicking(models.Model):
             if item.name == self.origin:
                 for i in item.order_line:
                     list_price.append(int(i.price_unit))
-                    list_qty.append(int(i.product_uom_qty))
+                for a in item.move_ids_without_package:
+                    list_qty.append(int(i.quantity_done))
             prices = sum(list_price)
             qtys = sum(list_qty)
         self.total_value = (prices * qtys) + self.freight_value + self.safe_value
