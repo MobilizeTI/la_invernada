@@ -156,13 +156,14 @@ class MrpProduction(models.Model):
         self.calculate_done()
         self.potential_lot_ids.filtered(lambda a: not a.qty_to_reserve > 0).unlink()
         res = super(MrpProduction, self).button_mark_done()
-        models._logger.error(self.workorder_ids.mapped('production_finished_move_line_ids').mapped(
+        serial_to_reserve_ids = self.workorder_ids.mapped('production_finished_move_line_ids').mapped(
                 'lot_id'
-        ).mapped('stock_production_lot_serial_ids'))
-        for serial in self.workorder_ids.mapped('production_finished_move_line_ids').mapped(
-                'lot_id'
-        ).mapped('stock_production_lot_serial_ids').filtered(lambda a: a.reserved_to_stock_picking_id):
-            serial.with_context(stock_picking_id=serial.reserved_stock_picking_id.id).reserve_picking()
+        ).filtered(
+            lambda a: a.product_id in self.stock_picking_id.move_ids_without_package.mapped('product_id')
+        ).mapped('stock_production_lot_serial_ids')
+        models._logger.error(serial_to_reserve_ids)
+        for serial in serial_to_reserve_ids:
+            serial.with_context(stock_picking_id=self.stock_picking_id.id).reserve_picking()
             models._logger.error('{} {}'.format(serial.reserved_stock_picking_id, serial.serial_number))
         raise models.ValidationError(res)
         return res
