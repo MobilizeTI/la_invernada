@@ -212,9 +212,9 @@ class StockPicking(models.Model):
 
     @api.multi
     def generate_report(self):
-        result = self.env['sale.order'].search(['name', '==', 'self.origin'])
+        result = self.env['sale.order'].search([])
         for item in result:
-            models._logger.error(item.id)
+            models._logger.error(item.name)
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
             .report_action(self.picture)
 
