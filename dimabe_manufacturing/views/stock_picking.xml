@@ -15,7 +15,7 @@
                 <field name="stock_product_id"/>
                 <field name="serial_number"/>
                 <field name="display_weight"/>
-                <button string="Hecho" type="object"/>
+                <button string="Quitar de Packing List" type="object"/>
               </tree>
             </field>
             <field name="product_search_id"/>
@@ -26,7 +26,7 @@
                 <field name="stock_product_id"/>
                 <field name="serial_number"/>
                 <field name="display_weight"/>
-                <button string="Hecho" type="object"/>
+                <button string="Agregar a Packing List" type="object"/>
               </tree>
             </field>
           </group>
