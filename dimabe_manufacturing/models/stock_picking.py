@@ -52,12 +52,10 @@ class StockPicking(models.Model):
     @api.multi
     def _compute_packing_list_ids(self):
         for item in self:
-            production = self.env['mrp.production'].search([('stock_picking_id', '=', item.id)])
-            if production:
-                lot_ids = production.mapped('workorder_ids').mapped('production_finished_move_line_ids').mapped('lot_id')
-                item.packing_list_ids = lot_ids.filtered(
-                    lambda a: a.product_id in item.move_ids_without_package.mapped('product_id')
-                ).mapped('stock_production_lot_serial_ids')
+            reserved_serial_ids = self.env['stock.production.lot.serial'].search([
+                ('reserved_stock_picking_id', '=', item.id)
+            ])
+            item.packing_list_ids = reserved_serial_ids
 
     @api.multi
     def return_action(self):
