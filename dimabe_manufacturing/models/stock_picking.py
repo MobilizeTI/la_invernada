@@ -27,7 +27,11 @@ class StockPicking(models.Model):
         compute='_compute_packing_list_ids'
     )
 
-    product_search_id = fields.Many2one('product.product')
+    product_search_id = fields.Many2one(
+        'product.product',
+        string='Buscar Producto',
+        domain=[('id', 'in', 'move_ids_without_package.mapped("product_id.id")')]
+    )
 
     potential_lot_serial_ids = fields.One2many(
         'stock.production.lot.serial',
