@@ -31,9 +31,16 @@ class StockPicking(models.Model):
 
     potential_lot_serial_ids = fields.One2many(
         'stock.production.lot.serial',
-        'potential_picking_id',
-        'Stock Disponibles'
+        compute='_compute_potential_lot_serial_ids',
+        string='Stock Disponibles'
     )
+
+    @api.multi
+    def _compute_potential_lot_serial_ids(self):
+        for item in self:
+            domain = [
+                ('', '', '')
+            ]
 
     @api.multi
     def _compute_packing_list_ids(self):
