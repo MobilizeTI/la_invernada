@@ -260,7 +260,7 @@ class StockPicking(models.Model):
                 for i in item.order_line:
                     list_price.append(int(i.price_unit))
                 for a in item.move_ids_without_package:
-                    list_qty.append(int(i.quantity_done))
+                    list_qty.append(int(a.quantity_done))
             prices = sum(list_price)
             qtys = sum(list_qty)
         self.total_value = (prices * qtys) + self.freight_value + self.safe_value
