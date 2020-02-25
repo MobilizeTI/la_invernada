@@ -183,4 +183,4 @@ class StockProductionLotSerial(models.Model):
                     ]
                 })
         else:
-            raise models.ValidationError('no se pudo identificar producción')
+            raise models.ValidationError('no se pudo identificar picknig')

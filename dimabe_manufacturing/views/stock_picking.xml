@@ -9,6 +9,7 @@
               attrs="{'invisible':[('picking_type_code','!=','outgoing')]}"
         >
           <group>
+            <field name="id" invisible="1" />
             <field name="packing_list_ids">
               <tree>
                 <field name="stock_production_lot_id"/>
@@ -20,7 +21,7 @@
             </field>
             <field name="product_search_id"/>
 
-            <field name="potential_lot_serial_ids">
+            <field name="potential_lot_serial_ids" context="{'stock_picking_id': id}">
               <tree>
                 <field name="stock_production_lot_id"/>
                 <field name="stock_product_id"/>
@@ -29,6 +30,7 @@
                 <button string="Agregar a Packing List"
                         type="object"
                         name="reserve_picking"
+                        context="{'stock_picking_id': parent.stock_picking_id}"
                 />
               </tree>
             </field>
