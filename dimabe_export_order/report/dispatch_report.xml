@@ -221,7 +221,7 @@
                                                         </td>
                                                     </tr>
                                                     <tr style="height:50%;">
-                                                        <td>Nota</td>
+                                                        <td>NOTA:</td>
                                                         <td colspan="3" style="font-size:15px;text-align:center;">
                                                             <t t-esc="d.note_dispatched.get_full_note()"></t>
                                                         </td>
@@ -230,7 +230,7 @@
                                                     </tr>
                                                     <tr>
 
-                                                        <td>Nave:</td>
+                                                        <td>NAVE:</td>
                                                         <td>
                                                             <t t-if="d.shipping_id.type_transport == 'terrestre'">
                                                                 <span t-field="d.type_transport"></span>
@@ -251,17 +251,17 @@
                                                         <td>
                                                             <span t-field="d.shipping_id.departure_port"></span>
                                                         </td>
-                                                        <td>SELLO INVERNADA</td>
+                                                        <td>SELLO INVERNADA:</td>
                                                         <td>
                                                             <span t-field="d.sell_truck"></span>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td>PTO DESCARGA</td>
+                                                        <td>PTO DESCARGA:</td>
                                                         <td>
                                                             <span t-field="d.shipping_id.arrival_port"></span>
                                                         </td>
-                                                        <td>N° RESERVA</td>
+                                                        <td>N° RESERVA:</td>
                                                         <td>
                                                             <span t-field="d.booking_number"></span>
                                                         </td>
@@ -309,7 +309,7 @@
                                                     <tr>
                                                         <td><![CDATA[&nbsp;]]></td>
                                                         <td><![CDATA[&nbsp;]]></td>
-                                                        <td>N° Pedido:</td>
+                                                        <td>N° PEDIDO:</td>
                                                         <td>
                                                             <span t-field="d.name"></span>
                                                         </td>
@@ -318,21 +318,21 @@
                                                         <![CDATA[&nbsp;]]>
                                                     </tr>
                                                     <tr>
-                                                        <td>Pte Camion:</td>
+                                                        <td>PTE CAMIÓN:</td>
                                                         <td>
                                                             <span t-field="d.carrier_truck_patent"></span>
                                                         </td>
-                                                        <td>Hora Llegada:</td>
+                                                        <td>HORA LLEGADA:</td>
                                                         <td>
                                                             <t t-esc="'%02d:%02d' % (int(d.hour_arrival),d.hour_arrival % 1 * 60)"/>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Pte Rampla:</td>
+                                                        <td>PTE RAMPLA:</td>
                                                         <td>
                                                             <span t-field="d.carrier_cart_patent"></span>
                                                         </td>
-                                                        <td>Hora Salida</td>
+                                                        <td>HORA SALIDA:</td>
                                                         <td>
                                                             <t t-esc="'%02d:%02d' % (int(d.hour_departure),d.hour_departure % 1 * 60)"/>
                                                         </td>
