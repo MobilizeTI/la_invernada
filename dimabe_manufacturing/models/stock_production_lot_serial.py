@@ -180,7 +180,7 @@ class StockProductionLotSerial(models.Model):
                             'product_uom_qty': item.display_weight,
                             'product_uom_id': stock_move.product_uom.id,
                             'location_id': stock_quant.location_id.id,
-                            'location_dest_id': item.partner_id.property_stock_customer.id
+                            'location_dest_id': stock_picking.partner_id.property_stock_customer.id
                         })
                     ]
                 })
