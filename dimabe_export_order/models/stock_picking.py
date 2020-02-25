@@ -116,7 +116,7 @@ class StockPicking(models.Model):
 
     vgm_weight_dispatch = fields.Integer(
         string="Peso VGM",
-        compute="get_vgm_weight",
+        compute="compute_vgm_weight",
         store=True
     )
 
@@ -223,7 +223,7 @@ class StockPicking(models.Model):
 
     @api.one
     @api.depends('tare_container_weight_dispatch', 'container_weight')
-    def get_vgm_weight(self):
+    def compute_vgm_weight(self):
         self.vgm_weight_dispatch = \
             self.tare_container_weight_dispatch + self.container_weight
 

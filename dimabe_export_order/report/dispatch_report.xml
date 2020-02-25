@@ -381,7 +381,7 @@
                                 </t>
                             </t>
                         </table>
-
+                        <t t-esc="len(docs)"></t>
                     </div>
                     <div style="width:100%;height:140px;"></div>
                     <div style="width:100%;height:10%;border:1px solid;">
