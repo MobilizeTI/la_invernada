@@ -216,6 +216,7 @@ class StockPicking(models.Model):
 
     @api.multi
     def generate_report(self):
+        models._logger.error(self.sale_order.id)
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
             .report_action(self.picture)
 
@@ -234,7 +235,7 @@ class StockPicking(models.Model):
     @api.one
     @api.depends('tare_container_weight_dispatch', 'container_weight')
     def compute_vgm_weight(self):
-        models._logger.error(self.sale_order.id)
+
         self.vgm_weight_dispatch = \
             self.tare_container_weight_dispatch + self.container_weight
 
