@@ -164,7 +164,7 @@ class MrpProduction(models.Model):
         models._logger.error(serial_to_reserve_ids)
         for serial in serial_to_reserve_ids:
             serial.with_context(stock_picking_id=self.stock_picking_id.id).reserve_picking()
-            models._logger.error('{} {}'.format(serial.reserved_stock_picking_id, serial.serial_number))
+            models._logger.error('{} {}'.format(serial.reserved_to_stock_picking_id, serial.serial_number))
         raise models.ValidationError(res)
         return res
 
