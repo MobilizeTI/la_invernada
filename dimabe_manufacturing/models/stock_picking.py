@@ -43,7 +43,8 @@ class StockPicking(models.Model):
         for item in self:
             domain = [
                 ('stock_product_id', 'in', item.move_ids_without_package.mapped('product_id.id')),
-                ('consumed', '=', True)
+                ('consumed', '=', False),
+                ('reserved_to_stock_picking_id', '=', False)
             ]
             if item.product_search_id:
                 domain += [('stock_product_id', '=', item.product_search_id.id)]
