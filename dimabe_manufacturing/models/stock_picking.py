@@ -30,7 +30,6 @@ class StockPicking(models.Model):
     product_search_id = fields.Many2one(
         'product.product',
         string='Buscar Producto',
-        domain=[('id', 'in', 'move_ids_without_package.mapped("product_id.id")')]
     )
 
     potential_lot_serial_ids = fields.One2many(
