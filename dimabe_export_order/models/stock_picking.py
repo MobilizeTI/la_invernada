@@ -125,7 +125,7 @@ class StockPicking(models.Model):
     )
 
     sell_truck = fields.Char(
-        string="Sello de Camión"
+        string="Sello Invernada"
     )
 
     guide_number = fields.Char(
