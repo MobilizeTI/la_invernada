@@ -215,7 +215,7 @@ class StockPicking(models.Model):
         result = self.env['sale.order'].search([])
         for item in result:
             if item.name == self.name:
-            models._logger.error(item.name)
+                models._logger.error(item.name)
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
             .report_action(self.picture)
 
