@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
+    _order = 'scheduled_date desc'
 
     guide_number = fields.Integer('Número de Guía')
 
