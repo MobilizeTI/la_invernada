@@ -229,6 +229,7 @@
                                                         <td></td>
                                                     </tr>
                                                     <tr>
+                                                    
                                                         <td>Nave:</td>
                                                         <td>
                                                             <t t-if="d.shipping_id.type_transport == 'terrestre'">
