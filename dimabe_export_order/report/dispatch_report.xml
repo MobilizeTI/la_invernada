@@ -523,9 +523,24 @@
                         </strong>
                     </div>
                     <br/>
-                    <div style="border:1px solid;width:45%">
+                    <div style="border:1px solid;width:45%;">
                         <table style="border:1px solid;">
-
+                            <tr>
+                                <td>SHIPPER / PROVEEDOR</td>
+                                <td><span t-field="res_company.name"></span></td>
+                            </tr>
+                            <tr rowspan="2">
+                                <td>ADDRESS / DIRECCION</td>
+                                <td><span t-field="res_company.street"></span></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><span t-field="res_company.city"></span><span t-field="res_company.country_id"></span></td>
+                            </tr>
+                            <tr>
+                                <td>PHONE / TELEFONO</td>
+                                <td><span t-field="res_company.phone"></span></td>
+                            </tr>
                         </table>
                     </div>
                 </div>
