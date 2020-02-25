@@ -16,7 +16,10 @@
                 <field name="stock_product_id"/>
                 <field name="serial_number"/>
                 <field name="display_weight"/>
-                <button string="Quitar de Packing List" type="object"/>
+                <button string="Quitar de Packing List"
+                        type="object"
+                        name="unreserved_picking"
+                />
               </tree>
             </field>
             <field name="product_search_id"/>
