@@ -210,6 +210,10 @@ class StockPicking(models.Model):
         compute='_compute_elapsed_time'
     )
 
+    sale_order = fields.Many2many('sale.order')
+
+
+
     @api.multi
     def generate_report(self):
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
@@ -230,6 +234,7 @@ class StockPicking(models.Model):
     @api.one
     @api.depends('tare_container_weight_dispatch', 'container_weight')
     def compute_vgm_weight(self):
+        models._logger.error(self.sale_order.id)
         self.vgm_weight_dispatch = \
             self.tare_container_weight_dispatch + self.container_weight
 
