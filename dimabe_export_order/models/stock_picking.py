@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from datetime import datetime, timedelta
 
 
 class StockPicking(models.Model):
@@ -32,7 +33,7 @@ class StockPicking(models.Model):
         compute='_get_correlative_text'
     )
 
- #   elapsed_time_dispatch = fields.Float(string="Hora de Camión en Planta")
+    #   elapsed_time_dispatch = fields.Float(string="Hora de Camión en Planta")
 
     consignee_id = fields.Many2one(
         'res.partner',
@@ -116,7 +117,7 @@ class StockPicking(models.Model):
 
     vgm_weight_dispatch = fields.Integer(
         string="Peso VGM",
-        compute="get_vgm_weight",
+        compute="compute_vgm_weight",
         store=True
     )
 
@@ -144,7 +145,7 @@ class StockPicking(models.Model):
         string="Botón GPS"
     )
 
-    dus_number = fields.Integer(
+    dus_number = fields.Char(
         string="Numero DUS"
     )
 
@@ -204,8 +205,14 @@ class StockPicking(models.Model):
         readonly=False
     )
 
+    elapsed_time = fields.Char(
+        'Horas Camión en planta',
+        compute='_compute_elapsed_time'
+    )
+
     @api.multi
     def generate_report(self):
+
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
             .report_action(self.picture)
 
@@ -223,27 +230,52 @@ class StockPicking(models.Model):
 
     @api.one
     @api.depends('tare_container_weight_dispatch', 'container_weight')
-    def get_vgm_weight(self):
+    def compute_vgm_weight(self):
+
         self.vgm_weight_dispatch = \
             self.tare_container_weight_dispatch + self.container_weight
+
+    @api.one
+    def compute_elapsed_time(self):
+        if self.truck_in_date:
+            if self.date_done:
+                self.elapsed_time = self._get_hours(self.truck_in_date, self.date_done)
+            else:
+                self.elapsed_time = self._get_hours(self.truck_in_date, datetime.now())
+        else:
+            self.elapsed_time = '00:00:00'
+
+    def _get_hours(self, init_date, finish_date):
+        diff = str((finish_date - init_date))
+        return diff.split('.')[0]
 
     @api.model
     @api.depends('freight_value', 'safe_value')
     def _compute_total_value(self):
-        print('')
-        # cambiar amount_total
-        # data = self.amount_total - self.freight_value - self.safe_value
-        # self.total_value = data
+        result = self.env['sale.order'].search([])
+        list_price = []
+        list_qty = []
+        for item in result:
+            if item.name == self.origin:
+                for i in item.order_line:
+                    list_price.append(int(i.price_unit))
+                for a in self.move_ids_without_package:
+                    list_qty.append(int(a.quantity_done))
+            prices = sum(list_price)
+            qtys = sum(list_qty)
+        self.total_value = (prices * qtys) + self.freight_value + self.safe_value
+
+
 
     @api.model
     @api.depends('total_value')
     def _compute_value_per_kilogram(self):
         print('')
-        # qty_total = 0
-        # for line in self.order_line:
-        # qty_total = qty_total + line.product_uom_qty
-        # if qty_total > 0:
-        # self.value_per_kilogram = self.total_value / qty_total
+        qty_total = 0
+        for line in self.move_ids_without_package:
+            qty_total = qty_total + line.quantity_done
+        if qty_total > 0:
+            self.value_per_kilogram = self.total_value / qty_total
 
     @api.model
     @api.depends('agent_id')
