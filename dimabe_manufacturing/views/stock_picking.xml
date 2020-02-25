@@ -30,7 +30,7 @@
                 <button string="Agregar a Packing List"
                         type="object"
                         name="reserve_picking"
-                        context="{'stock_picking_id': parent.stock_picking_id, 'lala':2}"
+                        context="{'stock_picking_id': 1, 'lala':2}"
 
                 />
               </tree>
