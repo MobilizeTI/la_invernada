@@ -25,6 +25,12 @@ class StockProductionLotSerial(models.Model):
         related='stock_production_lot_id.product_id'
     )
 
+    reserved_to_stock_picking_id = fields.Many2one(
+        'stock.picking',
+        'Para Picking',
+        nullable=True
+    )
+
     consumed = fields.Boolean('Consumido')
 
     @api.model
@@ -34,14 +40,19 @@ class StockProductionLotSerial(models.Model):
             ('lot_id', '=', res.stock_production_lot_id.id),
             ('lot_id.is_prd_lot', '=', True)
         ])
+        production = None
         if stock_move_line.move_id.production_id:
-            res.production_id = stock_move_line.move_id.production_id[0].id
+            production = stock_move_line.move_id.production_id[0]
         else:
             work_order = self.env['mrp.workorder'].search([
                 ('final_lot_id', '=', res.stock_production_lot_id.id)
             ])
             if work_order.production_id:
-                res.production_id = work_order.production_id[0].id
+                production = work_order.production_id[0]
+
+        if production:
+            res.production_id = production.id
+            res.reserve_to_stock_picking_id = production.stock_picking_id.id
         return res
 
     @api.model
