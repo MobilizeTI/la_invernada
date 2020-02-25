@@ -256,7 +256,7 @@ class StockPicking(models.Model):
         for item in result:
             if item.name == self.origin:
                 for i in item.order_line:
-                    models._logger.error(i.name)
+                    models._logger.error(i.price_unit)
 
     @api.model
     @api.depends('total_value')
