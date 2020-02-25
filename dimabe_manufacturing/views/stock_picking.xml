@@ -19,7 +19,7 @@
           </field>
 
           <field name="product_search_id"
-                 domain="[('id', 'in', move_ids_without_package.mapped('product_id.id'))]"
+                 domain="[('id', 'in', move_ids_without_package.product_id.id)]"
           />
 
           <field name="potential_lot_serial_ids" />
