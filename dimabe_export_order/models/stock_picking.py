@@ -258,7 +258,7 @@ class StockPicking(models.Model):
                 list_price = []
                 for i in item.order_line:
                     list_price.append(int(i.price_unit))
-                    models._logger.error(list_price)
+                    models._logger.error(sum(list_price))
                     self.total_value = (i.price_unit * i.product_uom_qty) + self.freight_value + self.safe_value
 
     @api.model
