@@ -151,6 +151,7 @@ class StockProductionLotSerial(models.Model):
 
     @api.multi
     def reserve_picking(self):
+        models._logger.error(self.env.context)
         if 'stock_picking_id' in self.env.context:
             stock_picking_id = self.env.context['stock_picking_id']
             stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
