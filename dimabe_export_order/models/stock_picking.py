@@ -212,10 +212,7 @@ class StockPicking(models.Model):
 
     @api.multi
     def generate_report(self):
-        result = self.env['sale.order'].search([])
-        for item in result:
-            if item.name == self.origin:
-                models._logger.error(item.name)
+
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
             .report_action(self.picture)
 
@@ -255,10 +252,11 @@ class StockPicking(models.Model):
     @api.model
     @api.depends('freight_value', 'safe_value')
     def _compute_total_value(self):
-        print('')
-        # cambiar amount_total
-        # data = self.amount_total - self.freight_value - self.safe_value
-        # self.total_value = data
+        result = self.env['sale.order'].search([])
+        for item in result:
+            if item.name == self.origin:
+                for i in item.stock_line:
+                    models._logger.error(i.name)
 
     @api.model
     @api.depends('total_value')
