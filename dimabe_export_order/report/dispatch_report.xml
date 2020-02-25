@@ -589,6 +589,7 @@
             report_type="qweb-pdf"
             name="dimabe_export_order.report_weight_dispatch" menu="True" paperformat="paper_format_letter_horizontal"/>
 
+
 <!-- 
     <report id="action_dispatch_packing_list" string="Packing List" model="stock.picking" report_type="qweb-pdf"
             name="dimabe_export_order.report_packing_list" menu="True" paperformat="paper_format_letter_custom"/> -->
