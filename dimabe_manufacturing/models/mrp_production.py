@@ -158,7 +158,7 @@ class MrpProduction(models.Model):
         res = super(MrpProduction, self).button_mark_done()
         for serial in self.workorder_ids.mapped('production_finished_move_line_ids').mapped(
                 'lot_id'
-        ).mapped('stock_production_lot_serial_ids').filtered(lambda a: a.reserved_stock_picking_id):
+        ).mapped('stock_production_lot_serial_ids').filtered(lambda a: a.reserved_to_stock_picking_id):
             serial.with_context(stock_picking_id=serial.reserved_stock_picking_id.id).reserve_picking()
 
         return res
