@@ -210,6 +210,7 @@ class StockPicking(models.Model):
         compute='_compute_elapsed_time'
     )
 
+    sale_order = fields.Many2one('sale_order')
 
     @api.multi
     def generate_report(self):
