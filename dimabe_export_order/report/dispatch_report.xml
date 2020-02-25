@@ -66,7 +66,7 @@
                         </div>
                     </div>
                     <br/>
-                    <div style="width:50%;height:9%;"></div>
+                    <div style="width:50%;height:5%;"></div>
                     <br/>
                     <span style="text-align:left;" t-esc="d.create_date.date()"></span>
                     <div style="width:100%;height:15%;border:1px solid;">
@@ -134,7 +134,7 @@
                             </t>
                         </table>
                     </div>
-                    <div style="width:100%;height:50%;border:1px solid;">
+                    <div style="width:100%;height:55%;border:1px solid;">
                         <table style="width:100%;">
                             <th>CANTIDAD</th>
                             <th>DETALLES</th>
@@ -152,11 +152,10 @@
                                     </td>
                                 </tr>
                                 <t t-if="m.id == d.move_ids_without_package[-1].id">
-                                    <tr>
-
+                                    <tr style="width:100%;height:100%;">
                                         <td colspan="3">
                                             <t t-if="d.type_of_dispatch == 'exp'">
-                                                <table style="border:1px solid;">
+                                                <table style="height:70%;border:1px solid;">
                                                     <tr>
                                                         <td>
                                                             KILOS NETOS
@@ -221,9 +220,9 @@
                                                             </t>
                                                         </td>
                                                     </tr>
-                                                    <tr>
+                                                    <tr style="height:50%;">
                                                         <td>Nota</td>
-                                                        <td colspan="3">
+                                                        <td colspan="3" style="font-size:15px;text-align:center;">
                                                             <t t-esc="d.note_dispatched.get_full_note()"></t>
                                                         </td>
                                                         <td></td>
@@ -411,115 +410,33 @@
         </t>
     </template>
 
-    <!--    <template id="report_weight_dispatch">
-            <t t-call="web.html_container">
-                <t t-foreach="docs" t-as="dis">
-                    <div class="page">
-                        <table style="width:100% !important; border:1px solid; text-align:center;">
-                            <tr style="padding:10px;">
-                                <th>REGISTRO ORDEN DE DESPACHO</th>
-                                <th>
-                                    <img
-                                            t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
-                                            style="width:200px !important;"
-                                    />
-                                </th>
-                            </tr>
-                        </table>
-                        <br/>
-                        <div style="position:relative;width:100%;overflow:hidden">
-                            <div style="width:50%;float:left;">
-                                <table style="text-align:left;border:1px solid;width:100%;">
-                                    <tr>
-                                        <th style="border-right:1px solid;">NUMERO EMBARQUE</th>
-                                        <td>
-                                            <span t-field="dis.shipping_number"></span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th style="border-right:1px solid;">GUIA DESPACHO</th>
-                                        <td>
-                                            <span t-field="dis.guide_number"></span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th style="border-right:1px solid;">NUMERO CONTENEDOR</th>
-                                        <td>
-                                            <span t-field="dis.container_number"></span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th style="border-right:1px solid;">NOMBRE CHOFER</th>
-                                        <td>
-                                            <span t-field="dis.carrier_id"></span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div style="width:50%;float:left" cellspacing="0">
-                                <table style="text-align:left;border:1px solid;width:85%;margin-left:15%;">
-                                    <tr>
-                                        <th style="border-right:1px solid;">PATENTE CAMION</th>
-                                        <td style="text-right !important">
-                                            <span t-field="dis.carrier_truck_patent"></span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th style="border-right:1px solid;">PATENTE CARRO</th>
-                                        <td style="text-right !important">
-                                            <span t-field="dis.carrier_cart_patent"></span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th style="border-right:1px solid;">RUN CHOFER</th>
-                                        <td style="text-right !important">
-                                            <span t-field="dis.carrier_rut"></span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                        <br/>
-                        <div style="width:100%;position:relative;">
-                            <table style="width:100% !important; border:1px solid;">
-                                <tr>
-                                    <td style="text-align=center;">PESAJES</td>
-                                </tr>
-                                <tr>
-                                    <th>PESO CON CARGA</th>
-                                    <td>
-                                        <span t-field="dis.vgm_weight_dispatch"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>PESO SIN CARGA</th>
-                                    <td>
-                                        <span t-field="dis.tare_container_weight_dispatch"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>PESO NETO</th>
-                                    <td>
-                                        <span t-field="dis.net_weight_dispatch"></span>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+    <template id="report_packing_list">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="d">
+                <div class="page">
+                    <div style="width:400px;border:1px solid;float:left;">
+                        <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                             style="height:100px;"/>
                     </div>
-                </t>
+                    <br/>
+                    <div style="margin: auto;border:1px solid;padding: 10px;">
+                        <span style="font-size:30px;">
+                            <strong>PACKING LIST N°</strong>
+                        </span>
+                    </div>
+                </div>
             </t>
-        </template>-->
+        </t>
+    </template>
 
     <template id="report_truck_dispatch">
         <t t-call="web.html_container">
-            <t t-foreach="docs.sorted(key=lambda x: x.id)" t-as="o">
+            <t t-foreach="docs.sorted(key=lambda x: x.create_date)" t-as="o">
                 <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)" width="210px" height="272px" HSPACE="40"
                      VSPACE="5"/>
             </t>
         </t>
     </template>
-
-
 
     <record id="paper_format_letter_custom" model="report.paperformat">
         <field name="name">Carta Custom</field>
@@ -554,6 +471,8 @@
     <!--            name="dimabe_export_order.report_weight_dispatch" menu="True" paperformat="paper_format_letter_horizontal"/>-->
 
 
+    <report id="action_dispatch_packing_list" string="Packing List" model="stock.picking" report_type="qweb-pdf"
+            name="dimabe_export_order.report_packing_list" menu="True" paperformat="paper_format_letter_custom"/>
 
     <report id="action_dispatch_guide_report" string="Guia de despacho" model="stock.picking" report_type="qweb-pdf"
             name="dimabe_export_order.report_dispatch_guide" menu="True" paperformat="paper_format_letter_custom"
