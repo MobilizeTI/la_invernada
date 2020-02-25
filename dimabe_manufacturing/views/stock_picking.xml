@@ -23,7 +23,6 @@
 
             <field name="potential_lot_serial_ids" context="{'a': id}">
               <tree>
-                <field name="parent" />
                 <field name="stock_production_lot_id"/>
                 <field name="stock_product_id"/>
                 <field name="serial_number"/>
