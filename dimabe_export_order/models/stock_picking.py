@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from datetime import datetime, timedelta
 
 
 class StockPicking(models.Model):
@@ -32,7 +33,7 @@ class StockPicking(models.Model):
         compute='_get_correlative_text'
     )
 
- #   elapsed_time_dispatch = fields.Float(string="Hora de Camión en Planta")
+    #   elapsed_time_dispatch = fields.Float(string="Hora de Camión en Planta")
 
     consignee_id = fields.Many2one(
         'res.partner',
@@ -204,6 +205,11 @@ class StockPicking(models.Model):
         readonly=False
     )
 
+    elapsed_time = fields.Char(
+        'Horas Camión en planta',
+        compute='_compute_elapsed_time'
+    )
+
     @api.multi
     def generate_report(self):
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
@@ -226,6 +232,20 @@ class StockPicking(models.Model):
     def compute_vgm_weight(self):
         self.vgm_weight_dispatch = \
             self.tare_container_weight_dispatch + self.container_weight
+
+    @api.one
+    def compute_elapsed_time(self):
+        if self.truck_in_date:
+            if self.date_done:
+                self.elapsed_time = self._get_hours(self.truck_in_date, self.date_done)
+            else:
+                self.elapsed_time = self._get_hours(self.truck_in_date, datetime.now())
+        else:
+            self.elapsed_time = '00:00:00'
+
+    def _get_hours(self, init_date, finish_date):
+        diff = str((finish_date - init_date))
+        return diff.split('.')[0]
 
     @api.model
     @api.depends('freight_value', 'safe_value')
