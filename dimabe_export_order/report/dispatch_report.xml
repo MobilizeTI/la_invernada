@@ -29,9 +29,9 @@
                                 </tr>
                             </table>
                         </div>
-                        <div style="width:260px;border:3px solid;position:absolute;top:0px;right:10px;">
+                        <div style="width:260px;position:absolute;top:0px;right:10px;">
                             <div>
-                                <table>
+                                <table style="border:3px solid;">
                                     <tr>
                                         <td style="text-align:center;">
                                             R.U.T:
