@@ -18,9 +18,17 @@
                 <button string="Hecho" type="object"/>
               </tree>
             </field>
-            <field name="product_search_id" />
+            <field name="product_search_id"/>
 
-            <field name="potential_lot_serial_ids"/>
+            <field name="potential_lot_serial_ids">
+              <tree>
+                <field name="stock_production_lot_id"/>
+                <field name="stock_product_id"/>
+                <field name="serial_number"/>
+                <field name="display_weight"/>
+                <button string="Hecho" type="object"/>
+              </tree>
+            </field>
           </group>
         </page>
       </page>
