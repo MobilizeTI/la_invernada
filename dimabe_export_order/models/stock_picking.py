@@ -145,7 +145,7 @@ class StockPicking(models.Model):
         string="Botón GPS"
     )
 
-    dus_number = fields.Integer(
+    dus_number = fields.Char(
         string="Numero DUS"
     )
 
