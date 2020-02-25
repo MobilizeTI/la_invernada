@@ -27,6 +27,10 @@ class StockPicking(models.Model):
         compute='_compute_packing_list_ids'
     )
 
+    product_search_id = fields.Many2one('product.product')
+
+    potential_lot_serial_ids = fields.One2many('stock.production.lot.serial', 'Stock Disponibles')
+
     @api.multi
     def _compute_packing_list_ids(self):
         for item in self:
