@@ -210,13 +210,13 @@ class StockPicking(models.Model):
         compute='_compute_elapsed_time'
     )
 
-    sale_order = fields.Many2many(rel='sale.order')
+    sale_order = fields.Many2one(rel='sale.order')
 
 
 
     @api.multi
     def generate_report(self):
-        models._logger.error(self.sale_order)
+        models._logger.error(self.sale_order.id)
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
             .report_action(self.picture)
 
