@@ -70,3 +70,9 @@ class StockProductionLot(models.Model):
             ).mapped('id'))
 
             item.stock_production_lot_serial_ids = [(6, 0, serial_ids)]
+
+    @api.model
+    def get_stock_quant(self):
+        return self.quant_ids.filtered(
+            lambda a: a.location_id.name == 'Stock'
+        )

@@ -95,9 +95,7 @@ class StockProductionLotSerial(models.Model):
                     lambda a: a.product_id == item.stock_production_lot_id.product_id
                 )
 
-                stock_quant = item.stock_production_lot_id.quant_ids.filtered(
-                    lambda a: a.location_id.name == 'Stock'
-                )
+                stock_quant = item.stock_production_lot_id.get_stock_quant()
 
                 virtual_location_production_id = item.env['stock.location'].search([
                     ('usage', '=', 'production'),
@@ -150,3 +148,39 @@ class StockProductionLotSerial(models.Model):
                 if ml.qty_done > 0:
                     raise models.ValidationError('este producto ya ha sido consumido')
                 ml.write({'move_id': None, 'product_uom_qty': 0})
+
+    @api.multi
+    def reserve_picking(self):
+        if 'stock_picking_id' in self.env.context:
+            stock_picking_id = self.env.context['stock_picking_id']
+            stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
+            if not stock_picking:
+                raise models.ValidationError('No se encontró el picking al que reservar el stock')
+            for item in self:
+                item.update({
+                    'reserved_to_stock_picking_id': stock_picking.id
+                })
+                stock_move = stock_picking.move_ids_without_package.filtered(
+                    lambda a: a.product_id == item.stock_production_lot_id.product_id
+                )
+
+                stock_quant = item.stock_production_lot_id.get_stock_quant()
+
+                stock_quant.sudo().update({
+                    'reserved_quantity': stock_quant.reserved_quantity + item.display_weight
+                })
+
+                stock_move.sudo().update({
+                    'active_move_line_ids': [
+                        (0, 0, {
+                            'product_id': item.stock_production_lot_id.product_id.id,
+                            'lot_id': item.stock_production_lot_id.id,
+                            'product_uom_qty': item.display_weight,
+                            'product_uom_id': stock_move.product_uom.id,
+                            'location_id': stock_quant.location_id.id,
+                            'location_dest_id': item.partner_id.property_stock_customer.id
+                        })
+                    ]
+                })
+        else:
+            raise models.ValidationError('no se pudo identificar producción')

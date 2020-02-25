@@ -159,7 +159,7 @@ class MrpProduction(models.Model):
         for serial in self.workorder_ids.mapped('production_finished_move_line_ids').mapped(
                 'lot_id'
         ).mapped('stock_production_lot_serial_ids').filtered(lambda a: a.reserved_stock_picking_id):
-            serial.reserve_stock()
+            serial.reserve_picking()
 
         return res
 
