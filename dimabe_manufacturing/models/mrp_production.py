@@ -161,7 +161,6 @@ class MrpProduction(models.Model):
     def create(self, values_list):
         res = super(MrpProduction, self).create(values_list)
 
-        # if not res.client_search_id and not res.potential_lot_ids:
         res.onchange_client_search_id()
 
         res.stock_picking_id.update({
