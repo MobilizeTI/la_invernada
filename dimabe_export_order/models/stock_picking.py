@@ -271,11 +271,11 @@ class StockPicking(models.Model):
     @api.depends('total_value')
     def _compute_value_per_kilogram(self):
         print('')
-        # qty_total = 0
-        # for line in self.order_line:
-        # qty_total = qty_total + line.product_uom_qty
-        # if qty_total > 0:
-        # self.value_per_kilogram = self.total_value / qty_total
+        qty_total = 0
+        for line in self.move_ids_without_package:
+            qty_total = qty_total + line.quantity_done
+        if qty_total > 0:
+            self.value_per_kilogram = self.total_value / qty_total
 
     @api.model
     @api.depends('agent_id')
