@@ -55,7 +55,7 @@ class StockPicking(models.Model):
     def _compute_packing_list_ids(self):
         for item in self:
             reserved_serial_ids = self.env['stock.production.lot.serial'].search([
-                ('reserved_to_stock_picking_id.id', '=', item.id)
+                ('reserved_to_stock_picking_id.id', '=', item._origin.id)
             ])
             item.packing_list_ids = reserved_serial_ids
 
