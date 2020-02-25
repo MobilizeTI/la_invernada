@@ -160,7 +160,8 @@ class MrpProduction(models.Model):
                 'lot_id'
         ).mapped('stock_production_lot_serial_ids').filtered(lambda a: a.reserved_to_stock_picking_id):
             serial.with_context(stock_picking_id=serial.reserved_stock_picking_id.id).reserve_picking()
-
+            models._logger.error('{} {}'.format(serial.reserved_stock_picking_id, serial.serial_number))
+        raise models.ValidationError(res)
         return res
 
     @api.model
