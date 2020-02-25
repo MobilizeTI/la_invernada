@@ -35,7 +35,7 @@ class StockPicking(models.Model):
     potential_lot_serial_ids = fields.One2many(
         'stock.production.lot.serial',
         compute='_compute_potential_lot_serial_ids',
-        string='Stock Disponibles'
+        string='Stock Disponibles',
     )
 
     @api.multi
