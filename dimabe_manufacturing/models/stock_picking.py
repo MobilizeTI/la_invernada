@@ -92,7 +92,4 @@ class StockPicking(models.Model):
         models._logger.error(self.move_lines)
         models._logger.error(self.move_ids_without_package)
 
-
-        raise models.ValidationError('')
-
         return super(StockPicking, self).button_validate()
