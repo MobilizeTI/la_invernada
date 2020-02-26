@@ -92,10 +92,14 @@ class StockPicking(models.Model):
         # If no lots when needed, raise error
         picking_type = self.picking_type_id
         precision_digits = self.env['decimal.precision'].precision_get('Product Unit of Measure')
-        models._logger.error('precision_digits {}'.format(precision_digits))
+
+        models._logger.error(float_is_zero(move_line.qty_done, precision_digits=precision_digits) for move_line in
+                                 self.move_line_ids.filtered(lambda m: m.state not in ('done', 'cancel')))
+
         no_quantities_done = all(float_is_zero(move_line.qty_done, precision_digits=precision_digits) for move_line in
                                  self.move_line_ids.filtered(lambda m: m.state not in ('done', 'cancel')))
-        models._logger.error('no quantities done {}'.format(no_quantities_done))
+        models._logger.error(float_is_zero(move_line.product_qty, precision_rounding=move_line.product_uom_id.rounding) for move_line in
+            self.move_line_ids)
         no_reserved_quantities = all(
             float_is_zero(move_line.product_qty, precision_rounding=move_line.product_uom_id.rounding) for move_line in
             self.move_line_ids)
