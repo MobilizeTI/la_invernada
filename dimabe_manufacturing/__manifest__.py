@@ -42,7 +42,8 @@
         'views/quality_analysis.xml',
         'views/product_category.xml',
         'views/potential_lot.xml',
-        'views/templates.xml'
+        'views/templates.xml',
+        'views/stock_picking.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

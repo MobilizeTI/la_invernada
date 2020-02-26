@@ -5,6 +5,13 @@ from datetime import datetime
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
 
+    stock_picking_id = fields.Many2one('stock.picking', 'Despacho')
+
+    sale_order_id = fields.Many2one(
+        'sale.order',
+        related='stock_picking_id.sale_id'
+    )
+
     stock_lots = fields.Many2one("stock.production.lot")
 
     client_search_id = fields.Many2one(
@@ -13,10 +20,10 @@ class MrpProduction(models.Model):
         nullable=True
     )
 
-    # show_finished_move_line_ids = fields.One2many(
-    #     'stock.move.line',
-    #     compute='_compute_show_finished_move_line_ids'
-    # )
+    show_finished_move_line_ids = fields.One2many(
+        'stock.move.line',
+        compute='_compute_show_finished_move_line_ids'
+    )
 
     consumed_material_ids = fields.One2many(
         'stock.production.lot.serial',
@@ -52,23 +59,22 @@ class MrpProduction(models.Model):
         'Posibles Lotes'
     )
 
-    # @api.multi
-    # def _compute_show_finished_move_line_ids(self):
-    #     for item in self:
-    #         to_show = []
-    #         for move_line in item.finished_move_line_ids:
-    #             models._logger.error('{} {}'.format(move_line, to_show))
-    #             if not filter(
-    #                 lambda a: a.lot_id == move_line.lot_id,
-    #                 to_show
-    #             ):
-    #
-    #                 move_line.qty_done = sum(item.finished_move_line_ids.filtered(
-    #                     lambda a: a.lot_id == move_line.lot_id
-    #                 ).mapped('qty_done'))
-    #                 to_show.append(move_line)
-    #         item.show_finished_move_line_ids = to_show
-    #         raise models.ValidationError(to_show)
+    @api.multi
+    def _compute_show_finished_move_line_ids(self):
+        for item in self:
+            for move_line in item.finished_move_line_ids:
+                existing_move = item.show_finished_move_line_ids.filtered(
+                    lambda a: a.lot_id == move_line.lot_id
+                )
+                if not existing_move:
+                    move_line.write({
+                        'tmp_qty_done': move_line.qty_done
+                    })
+                    item.show_finished_move_line_ids += move_line
+                else:
+                    existing_move.write({
+                        'tmp_qty_done': existing_move.tmp_qty_done + move_line.qty_done
+                    })
 
     @api.onchange('client_search_id', 'product_search_id')
     def onchange_client_search_id(self):
@@ -149,23 +155,26 @@ class MrpProduction(models.Model):
     def button_mark_done(self):
         self.calculate_done()
         self.potential_lot_ids.filtered(lambda a: not a.qty_to_reserve > 0).unlink()
-        return super(MrpProduction, self).button_mark_done()
+        res = super(MrpProduction, self).button_mark_done()
+        serial_to_reserve_ids = self.workorder_ids.mapped('production_finished_move_line_ids').mapped(
+            'lot_id').filtered(
+            lambda a: a.product_id in self.stock_picking_id.move_ids_without_package.mapped('product_id')
+        ).mapped('stock_production_lot_serial_ids')
+
+        for serial in serial_to_reserve_ids:
+            serial.with_context(stock_picking_id=self.stock_picking_id.id).reserve_picking()
+
+        return res
 
     @api.model
     def create(self, values_list):
         res = super(MrpProduction, self).create(values_list)
 
-        # if not res.client_search_id and not res.potential_lot_ids:
         res.onchange_client_search_id()
 
-        stock_picking = self.env['stock.picking'].search([
-            ('name', '=', res.origin)
-        ])
-
-        if stock_picking:
-            stock_picking.update({
-                'has_mrp_production': True
-            })
+        res.stock_picking_id.update({
+            'has_mrp_production': True
+        })
 
         return res
 
@@ -190,7 +199,7 @@ class MrpProduction(models.Model):
                     stock_move.product_uom_qty = stock_move.product_uom_qty + 1 - stock_move.product_uom_qty % 1
 
                 stock_move.unit_factor = stock_move.product_uom_qty / order.product_qty
-                if stock_move.product_uom_qty == 0 and not stock_move.product_id.categ_id.reserve_ignore and\
+                if stock_move.product_uom_qty == 0 and not stock_move.product_id.categ_id.reserve_ignore and \
                         stock_move.scrapped is False:
                     models._logger.error(stock_move.product_id.name)
                     stock_move.update({

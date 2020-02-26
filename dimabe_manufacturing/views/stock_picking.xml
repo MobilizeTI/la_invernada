@@ -1,0 +1,82 @@
+<odoo>
+  <record id="view_picking_form_inherit" model="ir.ui.view">
+    <field name="name">Formulario Despacho</field>
+    <field name="model">stock.picking</field>
+    <field name="inherit_id" ref="stock.view_picking_form"/>
+    <field name="arch" type="xml">
+
+      <button name="action_assign" position="replace"/>
+      <button name="do_unreserve" position="replace"/>
+
+      <page name="note" position="after">
+        <page name="packing_list" string="Packing List"
+              attrs="{'invisible':[('picking_type_code','!=','outgoing')]}"
+        >
+          <group>
+            <field name="state" invisible="1" />
+            <field name="packing_list_ids">
+              <tree>
+                <field name="stock_production_lot_id"/>
+                <field name="stock_product_id"/>
+                <field name="serial_number"/>
+                <field name="display_weight"/>
+                <button string="Quitar de Packing List"
+                        type="object"
+                        name="unreserved_picking"
+                        groups="mrp.group_mrp_manager"
+                        attrs="{'invisible':[('parent.state','=','done')]}"
+                />
+              </tree>
+            </field>
+            <field name="product_search_id"
+                   groups="mrp.group_mrp_manager"
+            />
+
+            <field name="potential_lot_serial_ids"
+                   groups="mrp.group_mrp_manager"
+                   attrs="{'invisible':[('state','=','done')]}"
+            >
+              <tree>
+                <field name="stock_production_lot_id"/>
+                <field name="stock_product_id"/>
+                <field name="serial_number"/>
+                <field name="display_weight"/>
+                <button string="Agregar a Packing List"
+                        type="object"
+                        name="reserve_picking"
+                        context="{'stock_picking_id':parent.id}"
+                />
+              </tree>
+            </field>
+          </group>
+        </page>
+      </page>
+    </field>
+  </record>
+  <record id="view_plan_stock_tree" model="ir.ui.view">
+    <field name="name">listado de pedidos pendientes</field>
+    <field name="model">stock.picking</field>
+    <field name="priority">21</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="name"/>
+        <field name="origin"/>
+        <field name="state"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="plan_stock_action" model="ir.actions.act_window">
+    <field name="name">Planificación de Pedidos</field>
+    <field name="res_model">stock.picking</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref="view_plan_stock_tree"/>
+    <field name="domain">[('state','not in',['done','cancel'])]</field>
+  </record>
+
+  <menuitem name="Planificar Pedidos"
+            id="order_plan_menu"
+            parent="mrp.mrp_planning_menu_root"
+            action="plan_stock_action"
+  />
+</odoo>
