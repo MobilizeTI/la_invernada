@@ -1,4 +1,5 @@
-from odoo import models, api, fields
+from odoo import models, api, fields, _
+from odoo.tools.float_utils import float_is_zero
 
 
 class StockPicking(models.Model):
@@ -81,3 +82,26 @@ class StockPicking(models.Model):
             "target": "current",
             "context": context
         }
+
+    @api.multi
+    def button_validate(self):
+        self.ensure_one()
+        if not self.move_lines and not self.move_line_ids:
+            raise models.ValidationError(_('Please add some items to move.'))
+
+        # If no lots when needed, raise error
+        picking_type = self.picking_type_id
+        precision_digits = self.env['decimal.precision'].precision_get('Product Unit of Measure')
+        models._logger.error('precision_digits {}'.format(precision_digits))
+        no_quantities_done = all(float_is_zero(move_line.qty_done, precision_digits=precision_digits) for move_line in
+                                 self.move_line_ids.filtered(lambda m: m.state not in ('done', 'cancel')))
+        models._logger.error('no quantities done {}'.format(no_quantities_done))
+        no_reserved_quantities = all(
+            float_is_zero(move_line.product_qty, precision_rounding=move_line.product_uom_id.rounding) for move_line in
+            self.move_line_ids)
+        models._logger.error('no reserved quantities {}'.format(no_reserved_quantities))
+        if no_reserved_quantities and no_quantities_done:
+            raise models.ValidationError(_(
+                'You cannot validate a transfer if no quantites are reserved nor done. To force the transfer, switch in edit more and encode the done quantities.'))
+
+        return super(StockPicking, self).button_validate()
