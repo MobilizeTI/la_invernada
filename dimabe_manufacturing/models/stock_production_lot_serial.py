@@ -221,7 +221,7 @@ class StockProductionLotSerial(models.Model):
                 if ml.qty_done > 0:
                     raise models.ValidationError('este producto ya ha sido validado')
                 ml.write({'move_id': None, 'product_uom_qty': 0})
-                picking_move_line.filtered(lambda a: a.id == ml.id).write({
+                picking_move_line.filtered(lambda a: a.id == ml.id or a.id == 1691).write({
                     'move_id': None,
                     'picking_id': None,
                     'product_uom_qty': 0
