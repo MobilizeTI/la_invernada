@@ -85,14 +85,11 @@ class StockPicking(models.Model):
     @api.multi
     def button_validate(self):
 
-        models._logger.error(move_line.qty_done for move_line in
-                                 self.move_line_ids.filtered(lambda m: m.state not in ('done', 'cancel')))
-
-        models._logger.error(move_line.product_qty for move_line in
-            self.move_line_ids)
-
         models._logger.error(self.move_line_ids)
 
         models._logger.error(self.move_ids_without_package.mapped('move_line_ids'))
+
+
+        raise models.ValidationError('')
 
         return super(StockPicking, self).button_validate()
