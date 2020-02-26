@@ -176,7 +176,7 @@ class StockProductionLotSerial(models.Model):
                             'product_uom_qty': item.display_weight,
                             'product_uom_id': stock_move.product_uom.id,
                             'location_id': stock_quant.location_id.id,
-                            'qty_done': item.display_weight,
+                            # 'qty_done': item.display_weight,
                             'location_dest_id': stock_picking.partner_id.property_stock_customer.id
                         })
                     ]
@@ -188,11 +188,11 @@ class StockProductionLotSerial(models.Model):
     def unreserved_picking(self):
         for item in self:
 
-            stock_move = item.reserved_to_stock_picking_id.move_ids_without_package.filtered(
+            stock_move = item.reserved_to_stock_picking_id.move_lines.filtered(
                 lambda a: a.product_id == item.stock_production_lot_id.product_id
             )
 
-            move_line = stock_move.active_move_line_ids.filtered(
+            move_line = stock_move.move_line_ids.filtered(
                 lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.display_weight
             )
 
