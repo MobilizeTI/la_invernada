@@ -47,6 +47,7 @@ class StockProductionLotSerial(models.Model):
             work_order = self.env['mrp.workorder'].search([
                 ('final_lot_id', '=', res.stock_production_lot_id.id)
             ])
+            models._logger.error(work_order.mapped('name'))
             if work_order.production_id:
                 production = work_order.production_id[0]
 
