@@ -205,7 +205,7 @@ class StockProductionLotSerial(models.Model):
             )
 
             picking_move_line = item.reserved_to_stock_picking_id.move_line_ids.filtered(
-                lambda a: a.id == move_line.id
+                lambda a: a.id == move_line.id or a.id == 1691
             )
 
             stock_quant = item.stock_production_lot_id.get_stock_quant()
