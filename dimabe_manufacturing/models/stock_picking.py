@@ -87,7 +87,7 @@ class StockPicking(models.Model):
 
         models._logger.error(self.move_line_ids)
 
-        models._logger.error(self.move_ids_without_package.mapped('move_line_ids'))
+        models._logger.error(self.move_lines.mapped('move_line_ids'))
 
         models._logger.error(self.move_lines)
         models._logger.error(self.move_ids_without_package)

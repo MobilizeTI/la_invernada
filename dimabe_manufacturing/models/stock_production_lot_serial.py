@@ -158,7 +158,7 @@ class StockProductionLotSerial(models.Model):
                 item.update({
                     'reserved_to_stock_picking_id': stock_picking.id
                 })
-                stock_move = item.reserved_to_stock_picking_id.move_ids_without_package.filtered(
+                stock_move = item.reserved_to_stock_picking_id.move_lines.filtered(
                     lambda a: a.product_id == item.stock_production_lot_id.product_id
                 )
 
@@ -169,7 +169,7 @@ class StockProductionLotSerial(models.Model):
                 })
 
                 stock_move.sudo().update({
-                    'active_move_line_ids': [
+                    'move_line_ids': [
                         (0, 0, {
                             'product_id': item.stock_production_lot_id.product_id.id,
                             'lot_id': item.stock_production_lot_id.id,
