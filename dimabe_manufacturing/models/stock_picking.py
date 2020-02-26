@@ -85,11 +85,9 @@ class StockPicking(models.Model):
     @api.multi
     def button_validate(self):
 
-        models._logger.error(self.move_line_ids)
-
-        models._logger.error(self.move_lines.mapped('move_line_ids'))
-
-        models._logger.error(self.move_lines)
-        models._logger.error(self.move_ids_without_package)
+        for serial in self.packing_list_ids:
+            serial.update({
+                'consumed': True
+            })
 
         return super(StockPicking, self).button_validate()

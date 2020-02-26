@@ -23,6 +23,7 @@
                         type="object"
                         name="unreserved_picking"
                         groups="mrp.group_mrp_manager"
+                        attrs="{'invisible':[('state','=','done')]}"
                 />
               </tree>
             </field>
@@ -30,7 +31,10 @@
                    groups="mrp.group_mrp_manager"
             />
 
-            <field name="potential_lot_serial_ids" groups="mrp.group_mrp_manager">
+            <field name="potential_lot_serial_ids"
+                   groups="mrp.group_mrp_manager"
+                   attrs="{'invisible':[('state','=','done')]}"
+            >
               <tree>
                 <field name="stock_production_lot_id"/>
                 <field name="stock_product_id"/>
