@@ -91,4 +91,8 @@ class StockPicking(models.Model):
         models._logger.error(move_line.product_qty for move_line in
             self.move_line_ids)
 
+        models._logger.error(self.move_line_ids)
+
+        models._logger.error(self.move_ids_without_package.mapped('move_line_ids'))
+
         return super(StockPicking, self).button_validate()
