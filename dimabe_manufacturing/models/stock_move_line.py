@@ -9,6 +9,8 @@ class StockMoveLine(models.Model):
         compute='_compute_count_stock_production_lot_serial'
     )
 
+    is_raw = fields.Boolean('Es Subproducto')
+
     @api.multi
     def _compute_count_stock_production_lot_serial(self):
         for item in self:

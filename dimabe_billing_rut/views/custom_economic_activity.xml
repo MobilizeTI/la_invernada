@@ -1,0 +1,64 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_custom_economic_activity_tree">
+            <field name="name">view.custom.economic.activity.tree</field>
+            <field name="model">custom.economic.activity</field>
+            <field name="arch" type="xml">
+                <tree>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="tax_affect"/>
+                <field name="tax_category" />
+                </tree>
+            </field>
+        </record>
+
+
+            <record id="view_custom_economic_activity_form" model="ir.ui.view">
+            <field name="name">view.custom.economic_activity.form</field>
+            <field name="model">custom.economic.activity</field>
+            <field name="arch" type="xml">
+                <form name="Custom Economic Activity">
+                <sheet>
+                    <div class="oe_title">
+                    <label for="name" class="oe_edit_only" />
+                    <h1>
+                        <field name="code" placeholder="Código de la actividad" />
+                    </h1>
+                    </div>
+                    <group>
+                        <field name="name" placeholder="Nombre" />
+                        <field name="tax_affect" placeholder="Afecto de IVA"/>
+                        <field name="tax_category" placeholder="Categoría Tributaria" />
+                        <field name="is_active" placeholder="es activo"/>
+                    </group>
+                </sheet>
+                </form>
+            </field>
+            </record>
+
+
+            <record id="action_custom_economic_activity_views" model="ir.actions.act_window">
+            <field name="name">Activades Ecónomicas</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">custom.economic.activity</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                Actividades Ecónomicas
+                </p>
+                <p>
+                Click aquí para agregar actividad
+                </p>
+            </field>
+            </record>
+            
+            <menuitem id="menu_account_dte" name="DTE" parent="account_accountant.menu_accounting"  />
+
+            <menuitem id="menu_custom_economic_activity"
+                    name="Actividades Ecónomicas"
+                    parent="menu_account_dte"
+                    action="action_custom_economic_activity_views"
+            />
+    </data>
+</odoo>

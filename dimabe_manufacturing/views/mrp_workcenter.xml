@@ -1,0 +1,23 @@
+<odoo>
+  <record id="mrp_workcenter_tree_view_inherit" model="ir.ui.view">
+    <field name="name">Listado Centros de Producción</field>
+    <field name="model">mrp.workcenter</field>
+    <field name="inherit_id" ref="mrp.mrp_workcenter_tree_view"/>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="show_in_quality_report" widget="boolean_toggle" />
+      </tree>
+    </field>
+  </record>
+
+  <record id="mrp_workcenter_view_inherit" model="ir.ui.view">
+    <field name="name">Formulario Centro de Trabajo</field>
+    <field name="model">mrp.workcenter</field>
+    <field name="inherit_id" ref="mrp.mrp_workcenter_view" />
+    <field name="arch" type="xml">
+      <field name="name" position="after">
+        <field name="show_in_quality_report" widget="boolean_toggle" />
+      </field>
+    </field>
+  </record>
+</odoo>

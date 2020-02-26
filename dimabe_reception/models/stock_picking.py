@@ -109,6 +109,9 @@ class StockPicking(models.Model):
   #       related='transport_id.is_truck'
   #       )
 
+    #transport_is_truck = fields.Boolean(string='Es camión?', related="carrier")
+    
+
     hr_alert_notification_count = fields.Integer('Conteo de notificación de retraso de camión')
 
     kg_diff_alert_notification_count = fields.Integer('Conteo de notificación de diferencia de kg')

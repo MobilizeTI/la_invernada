@@ -5,6 +5,9 @@
       <field name="model">purchase.order</field>
       <field name="inherit_id" ref="purchase.purchase_order_form"/>
       <field name="arch" type="xml">
+        <field name="state" position="attributes">
+            <attribute name="statusbar_visible">draft,sent,purchase,purchase sent</attribute>
+        </field>
         <xpath expr="//field[@name='partner_id']" position="attributes">
           <attribute name="string">Proveedor</attribute>
         </xpath>
@@ -44,6 +47,13 @@
         <xpath expr="//field[@name='incoterm_id']" position="after">
           <field name="provider_po_document" />
         </xpath>
+        <xpath expr="//field[@name='order_line']/tree/field[@name='account_analytic_id']" position="attributes">
+          <attribute name="required">True</attribute>
+          <attribute name="string">Centro de Costo</attribute>
+        </xpath>
+        <field name="amount_untaxed" position="attributes">
+          <attribute name="string">Valor Neto</attribute>
+        </field>
       </field>
     </record>
   </data>

@@ -1,0 +1,52 @@
+<odoo>
+  <data>
+    <record id="view_mrp_dispatched_tree" model="ir.ui.view">
+      <field name="name">Despachos</field>
+      <field name="model">stock.picking</field>
+      <field name="priority">20</field>
+      <field name="arch" type="xml">
+        <tree string="Dispatched">
+          <field name="sale_id"/>
+          <field name="has_mrp_production" invisible="1"/>
+          <field name="required_loading_date" string="Fecha de Carga"/>
+          <field name="partner_id" string="Cliente"/>
+          <field name="country_id" string="Pais"/>
+          <field name="product_id" string="Producto"/>
+          <field name="variety" widget="many2many_tags" string="Atributos"/>
+          <field name="quantity_requested" string="kg a envasar"/>
+          <field name="charging_mode" string="Modo de Carga"/>
+          <field name="client_label" string="Etiqueta Cliente"/>
+          <field name="state" string="Estado"/>
+          <button string="Crear PO" class="btn btn-success" name="return_action" type="object"/>
+        </tree>
+      </field>
+    </record>
+    <record id="action_mrp_production" model="ir.actions.act_window">
+      <field name="name">Order de Produccion</field>
+      <field name="res_model">mrp.production</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="mrp.mrp_production_form_view"/>
+      <field name="target">new</field>
+    </record>
+    <record id="action_mrp_dispatched" model="ir.actions.act_window">
+      <field name="name">Pedidos</field>
+      <field name="res_model">stock.picking</field>
+      <field name="view_id" ref="view_mrp_dispatched_tree"/>
+      <field name="view_mode">tree,form</field>
+      <field name="domain">
+        [('state','!=','cancel'),('state','!=','done'),('origin','!=',None),('picking_type_code','=','outgoing'),('has_mrp_production','!=',True)]
+      </field>
+    </record>
+    <menuitem id="menu_mrp_dispatched_root"
+              name="Despachos"
+              parent="mrp.menu_mrp_root"
+              groups="base.group_user"
+    />
+    <menuitem id="mrp_dispatched_child"
+              name="Despachos"
+              parent="menu_mrp_dispatched_root"
+              action="action_mrp_dispatched"
+    />
+  </data>
+</odoo>

@@ -1,0 +1,22 @@
+<odoo>
+    <data>
+
+        <record id="humidity_analysis_form_view" model="ir.ui.view">
+            <field name="name">Formulario de Analisis de Humedad</field>
+            <field name="model">humidity.analysis</field>
+            <field name="arch" type="xml">
+                <form create="false" edit="false" delete="false">
+                    <group>
+                        <group>
+                            <field name="percent" />
+                        </group>
+                        <group>
+                            <field name="tolerance" />
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

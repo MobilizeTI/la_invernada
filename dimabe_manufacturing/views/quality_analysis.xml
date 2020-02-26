@@ -1,0 +1,17 @@
+<odoo>
+  <record id="quality_analysis_tree_view_inherit" model="ir.ui.view">
+    <field name="name">Listado de Calidad</field>
+    <field name="model">quality.analysis</field>
+    <field name="inherit_id" ref="dimabe_quality_integration.quality_analysis_tree_view" />
+    <field name="arch" type="xml">
+      <tree>
+        <field name="potential_client_id"
+               domain="[('customer', '=', True)]"
+        />
+        <field name="potential_workcenter_id"
+               domain="[('show_in_quality_report','=',True)]"
+        />
+      </tree>
+    </field>
+  </record>
+</odoo>

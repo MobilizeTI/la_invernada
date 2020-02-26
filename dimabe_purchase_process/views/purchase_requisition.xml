@@ -23,6 +23,23 @@
         <button name="action_cancel" position="attributes">
           <attribute name="groups">dimabe_purchase_process.group_purchase_requisition_user</attribute>
         </button>
+        <xpath expr="//field[@name='line_ids']/tree/field[@name='account_analytic_id']" position="attributes">
+          <attribute name="string">Centro de Costo</attribute>
+        </xpath>
+      </field>
+    </record>
+
+    <record id="purchase_requisition_tree_inherit" model="ir.ui.view">
+      <field name="name">Acuerdos de Compra</field>
+      <field name="model">purchase.requisition</field>
+      <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_tree" />
+      <field name="arch" type="xml">
+        <field name="name" position="attributes">
+          <attribute name="string">N° Solicitud de Compra</attribute>
+        </field>
+        <field name="user_id" position="attributes">
+          <attribute name="string">Solicitante</attribute>
+        </field>
       </field>
     </record>
   </data>

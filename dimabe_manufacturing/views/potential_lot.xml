@@ -1,0 +1,49 @@
+<odoo>
+  <record id="potential_lot_form_view" model="ir.ui.view">
+    <field name="name">Formulario Lotes Potenciales</field>
+    <field name="model">potential.lot</field>
+    <field name="arch" type="xml">
+      <form>
+        <div>
+          <group>
+            <group>
+              <field name="stock_production_lot_id" readonly="1"/>
+              <field name="lot_balance"/>
+            </group>
+            <group>
+              <field name="mrp_production_id" invisible="1"/>
+              <field name="lot_product_id"/>
+              <button name="confirm_reserve"
+                      class="oe_highlight"
+                      string="Confirmar Reserva" type="object"/>
+            </group>
+          </group>
+        </div>
+        <div>
+          <group>
+            <field name="potential_serial_ids" context="{'mrp_production_id': mrp_production_id}">
+              <tree>
+                <field name="reserved_to_production_id"/>
+                <field name="consumed" invisible="1"/>
+                <button string="reservar"
+                        name="reserve_serial"
+                        attrs="{'invisible':['|',('reserved_to_production_id', '>', 0),('consumed','=',True)]}"
+                        type="object"
+                        context="{'mrp_production_id':parent.mrp_production_id}"
+                />
+
+                <button string="quitar reservar"
+                        name="unreserved_serial"
+                        attrs="{'invisible':['|',('reserved_to_production_id', '=', False),('consumed','=',True)]}"
+                        type="object"
+                />
+                <field name="serial_number"/>
+                <field name="display_weight"/>
+              </tree>
+            </field>
+          </group>
+        </div>
+      </form>
+    </field>
+  </record>
+</odoo>

@@ -10,7 +10,8 @@ class PurchaseOrder(models.Model):
         ('to approve', 'To Approve'),
         ('purchase', 'Purchase Order'),
         ('done', 'Locked'),
-        ('cancel', 'Rechazado')
+        ('cancel', 'Rechazado'),
+        ('purchase sent', 'Orden de Compra Enviada')
     ], string='Status', readonly=True, index=True, copy=False, default='draft', track_visibility='onchange')
 
     boss_approval_id = fields.Many2one(
@@ -49,7 +50,6 @@ class PurchaseOrder(models.Model):
                     'boss_approval_date': fields.datetime.now()
                 })
         res = super(PurchaseOrder, self).action_rfq_send()
-
         return res
 
     @api.multi
@@ -81,4 +81,25 @@ class PurchaseOrder(models.Model):
         email_list = [
             usr.partner_id.email for usr in user_group.users if usr.partner_id.email
         ]
+        models._logger.error(user_group)
+        models._logger.error(email_list)
         return ','.join(email_list)
+
+    @api.model
+    def create(self, values_list):
+        res = super(PurchaseOrder, self).create(values_list)
+        if res.order_line and len(res.order_line) > 0:
+            for line in res.order_line:
+                if not line.price_unit or line.price_unit == 0:
+                    raise models.ValidationError('debe agregar precio unitario')
+        return res
+
+    @api.multi
+    def write(self, values):
+        res = super(PurchaseOrder, self).write(values)
+        for item in self:
+            if item.order_line and len(item.order_line) > 0:
+                for line in item.order_line:
+                    if not line.price_unit or line.price_unit == 0:
+                        raise models.ValidationError('debe agregar precio unitario')
+        return res

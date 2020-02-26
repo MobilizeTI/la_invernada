@@ -9,6 +9,10 @@ class ResPartner(models.Model):
         'Rut Facturación'
     )
 
+    giro = fields.Char(
+        'Giro'
+    )
+
     @api.model
     def create(self, values_list):
         prepare_rut(values_list)

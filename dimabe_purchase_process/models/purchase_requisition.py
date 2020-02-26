@@ -26,6 +26,7 @@ class PurchaseRequisition(models.Model):
         self.message_post_with_template(template_id.id)
         return res
 
+
     @api.model
     def get_email_to(self, ref_id):
         user_group = self.env.ref(ref_id)

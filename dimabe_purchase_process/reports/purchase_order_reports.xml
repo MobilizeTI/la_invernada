@@ -271,9 +271,10 @@
                   </td>
                   <td style="text-align:right;border-bottom:1px solid;border-right:1px solid;">
                     <span t-field="line.product_qty"/>
+                    <span t-field="line.product_uom" groups="uom.group_uom"/>
                   </td>
                   <td style="text-align:left;border-bottom:1px solid;border-right:1px solid;">
-                    <span t-field="line.product_id.name"/>
+                    <span t-field="line.name"/>
                   </td>
                   <td style="text-align:left;border-bottom:1px solid;border-right:1px solid;">
                     <span t-field="o.currency_id.name"/>
@@ -369,5 +370,150 @@
           model="purchase.order"
           report_type="qweb-pdf"
           name="dimabe_purchase_process.report_purchase_order_document"
+  />
+
+
+  <template id="report_request_purchase_order_document">
+    <t t-call="web.html_container">
+      <t t-foreach="docs" t-as="o">
+        <div class="header">
+          <div style="position:relative; width:100%; overflow:hidden">
+            <img
+              t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+              style="width:200px !important;"
+
+            />
+            <span style="float:right;border:1px solid;padding:5px;text-align:center;width:25%;">
+              <div>
+                RUT:
+                <span t-field="res_company.invoice_rut"/>
+              </div>
+              <div>
+                SOLICITUD DE PRESUPUESTO
+              </div>
+              <div>
+                N°:
+                <span t-field="o.name"/>
+              </div>
+            </span>
+            <span style="float:right;text-align:right;padding-right:10px;width:25%;">
+              <div>
+                <span t-esc="res_company.street"/>
+              </div>
+              <div><span t-esc="res_company.city"/>,
+                <span t-esc="res_company.country_id.name"/>
+              </div>
+              <t t-if="res_company.zip">
+                <div>
+                  Zip code
+                  <span t-esc="res_company.zip"/>
+                </div>
+              </t>
+              <div>
+                <span t-esc="res_company.website"/>
+              </div>
+            </span>
+          </div>
+        </div>
+        <div class="page">
+          <div style="position:relative; width:100%; overflow:hidden;">
+            <p style="width:100%;text-align:right !important;">
+              <strong>
+                Santiago,
+                <t t-if="o.boss_approval_date">
+                  <span t-esc="context_timestamp(o.boss_approval_date).strftime('%d de %B de %Y')"/>
+                </t>
+              </strong>
+            </p>
+          </div>
+          <div style="width:100%;border:1px solid;">
+            <table style="width:100%;">
+              <tr>
+                <th style="text-align:right;width:15%;">Señores:</th>
+                <td style="width:65%;">
+                  <span t-field="o.partner_id.name"/>
+                </td>
+                <td style="solid;width:20%;">
+                  <strong style="text-align:right !important;">Solicitud de presupuesto:
+                    <span t-field="o.id"/>
+                  </strong>
+                </td>
+              </tr>
+              <tr>
+                <th style="text-align:right;">Rut:</th>
+                <td colspan="2">
+                  <span t-field="o.partner_id.invoice_rut" />
+                </td>
+              </tr>
+              <tr>
+                <th style="text-align:right;">Dirección:</th>
+                <td colspan="2">
+                  <span t-field="o.partner_id.street"/>,
+                  <span t-field="o.partner_id.city"/>
+                </td>
+              </tr>
+              <tr>
+                <th style="text-align:right;">Fono-fax:</th>
+                <td colspan="2">
+                  <span t-field="o.partner_id.phone"/>
+                  <span t-field="o.partner_id.mobile"/>
+                </td>
+              </tr>
+              <tr>
+                <th style="text-align:right;">Atención:</th>
+                <td colspan="2">
+                  <span t-field="o.user_id.name"/>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <p style="padding:15px;width:100%;">Por lo siguiente:</p>
+          <div style="width:100%;">
+            <table style="width:100%;">
+              <tr style="text-align:left;">
+                <th style="border:1px solid;">Código</th>
+                <th
+                  style="text-align:right !important;border-bottom:1px solid;border-right:1px solid;border-top:1px solid;">
+                  Unidad
+                </th>
+                <th style="border-bottom:1px solid;border-right:1px solid;border-top:1px solid;">Detalle</th>
+              </tr>
+              <t t-foreach="o.order_line" t-as="line">
+                <tr>
+                  <td style="text-align:left;border-left:1px solid;border-bottom:1px solid;border-right:1px solid;">
+                    <span t-field="line.product_id.code"/>
+                  </td>
+                  <td style="text-align:right;border-bottom:1px solid;border-right:1px solid;">
+                    <span t-field="line.product_qty"/>
+                    <span t-field="line.product_uom" groups="uom.group_uom"/>
+                  </td>
+                  <td style="text-align:left;border-bottom:1px solid;border-right:1px solid;">
+                    <span t-field="line.name"/>
+                  </td>
+                </tr>
+              </t>
+            </table>
+          </div>
+          <div class="footer">
+            <div style="width:100%;text-align:center;">
+              <table style="width:50%;margin-left:25%;">
+                <tr>
+                  <th style="border-top:1px solid;">
+                    <span t-field="res_company.name"/>
+                  </th>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </t>
+    </t>
+  </template>
+
+   <report id="purchase.report_purchasequotation_document"
+          string="Solicitud de presupuesto"
+          model="purchase.order"
+          report_type="qweb-pdf"
+          name="dimabe_purchase_process.report_request_purchase_order_document"
   />
 </odoo>
