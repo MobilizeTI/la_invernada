@@ -15,10 +15,21 @@
                     <page string="Contrato" id="order_contract_page">
                         <group name="order_contract_page" position="inside">
                             <group>
-                                <field name="contract_number" />
+                                <field name="contract_number"/>
                             </group>
                         </group>
                     </page>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree//field[@name='name']"
+                       position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree//field[@name='product_id']"
+                       position="after">
+                    <field name="variety" attrs="{'invisible':[('variety','=','None')]}"/>
+                    <field name="brand" attrs="{'invisible':[('brand','=','None')]}"/>
+                    <field name="type_of_package" attrs="{'invisible':[('type_of_package','==','None')]}"/>
+                    <field name="specie" attrs="{'invisible':[('specie','==','None')]}"/>
                 </xpath>
             </field>
         </record>

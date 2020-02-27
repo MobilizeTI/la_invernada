@@ -1,9 +1,9 @@
 <odoo>
     <data>
         <template id="assets_backend" name="mrp assets" inherit_id="web.assets_backend">
-        <xpath expr="." position="inside">
-            <script type="text/javascript" src="/mrp/static/src/js/mrp.js"></script>
-        </xpath>
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/mrp/static/src/js/mrp.js"></script>
+            </xpath>
         </template>
         <record id="stock_picking_form_inherit" model="ir.ui.view">
             <field name="name">Export Page</field>
@@ -34,11 +34,11 @@
                                     <field name="reserved_amount"/>
                                     -->
                                     <field name="is_dispatcher" invisible="1"/>
-                                    <field name="shipping_number"  />
-                                    <field name="contract_correlative_view" />
+                                    <field name="shipping_number"/>
+                                    <field name="contract_correlative_view"/>
                                     <field name="contract_correlative" invisible="1"/>
                                     <field name="shipping_id" attrs="{'readonly':[('is_dispatcher', '=', 1)]}"/>
-                                    <field name="agent_id" />
+                                    <field name="agent_id"/>
                                     <field name="total_commission"/>
                                     <field name="charging_mode"/>
                                     <field name="booking_number"/>
@@ -105,7 +105,18 @@
                         </group>
                     </page>
                 </xpath>
-
+                <xpath expr="//field[@name='move_ids_without_package']/tree//field[@name='product_id']"
+                       position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='move_ids_without_package']/tree//field[@name='product_id']"
+                       position="after">
+                    <field name="product_name"></field>
+                    <field name="variety"></field>
+                    <field name="brand"></field>
+                    <field name="type_of_package"></field>
+                    <field name="specie"></field>
+                </xpath>
             </field>
         </record>
     </data>
