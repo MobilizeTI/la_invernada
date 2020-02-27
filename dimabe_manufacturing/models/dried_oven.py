@@ -1,5 +1,4 @@
 from odoo import fields, models, api
-from datetime import datetime
 
 
 class DriedOven(models.Model):

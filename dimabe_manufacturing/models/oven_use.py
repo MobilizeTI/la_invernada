@@ -27,6 +27,7 @@ class OvenUse(models.Model):
 
     @api.model
     def init_process(self):
+        raise models.ValidationError('init')
         if self.init_date:
             raise models.ValidationError('este proceso ya ha sido iniciado')
         if not self.dried_oven_id:
