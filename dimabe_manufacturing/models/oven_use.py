@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from datetime import datetime
 
 
 class OvenUse(models.Model):
@@ -23,3 +24,9 @@ class OvenUse(models.Model):
     dried_oven_id = fields.Many2one('dried.oven', 'horno')
 
     unpelled_dried_id = fields.Many2one('unpelled.dried', 'Proceso de secado')
+
+    @api.model
+    def init_process(self):
+        if self.init_date:
+            raise models.ValidationError('este proceso ya ha sido iniciado')
+        self.init_date = datetime.utcnow()

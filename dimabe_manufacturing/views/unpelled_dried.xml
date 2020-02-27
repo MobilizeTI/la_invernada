@@ -18,13 +18,21 @@
             />
             <field name="oven_use_ids">
               <tree editable="bottom">
+                <field name="init_active_date" invisible="1" />
+                <field name="finish_active_date" invisible="1" />
                 <field name="dried_oven_id"/>
                 <field name="init_date" readonly="1"/>
                 <field name="finish_date" readonly="1"/>
-                <button string="iniciar horno" />
-                <button string="pausar horno" />
-                <button string="reanudar horno" />
-                <button string="detener horno" />
+                <button string="iniciar horno"
+                        attrs="{'invisible':[('init_date','!=',False)]}"/>
+                <button string="pausar horno"
+                        attrs="{'invisible':[('finish_active_date','=',False )]}"
+                />
+                <button string="reanudar horno"
+                      attrs="{'invisible':[('finish_active_date','!=',False )]}"
+                />
+                <button string="detener horno"
+                        attrs="{'invisible':[('finish_date','!=',False)]}"/>
               </tree>
             </field>
           </group>
