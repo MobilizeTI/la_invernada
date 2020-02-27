@@ -7,5 +7,9 @@ class DriedOven(models.Model):
 
     name = fields.Char('Horno')
 
+    @api.onchange('name')
+    def onchange_name(self):
+        self.name = str.upper(self.name)
+
 
 
