@@ -26,6 +26,11 @@ class UnpelledDried(models.Model):
         'Lote Producción'
     )
 
+    out_serial_ids = fields.One2many(
+        'stock.production.lot.serial',
+        related='out_lot_id.stock_production_lot_serial_ids'
+    )
+
     out_product_id = fields.Many2one(
         'product.product',
         'Producto de Salida',
@@ -51,7 +56,8 @@ class UnpelledDried(models.Model):
 
         out_lot = self.env['stock.production.lot'].create({
             'name': name,
-            'product_id': res.out_product_id.id
+            'product_id': res.out_product_id.id,
+            'is_prd_lot': True
         })
 
         res.out_lot_id = out_lot.id

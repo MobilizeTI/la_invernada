@@ -54,6 +54,7 @@
                    readonly="1"
                    attrs="{'invisible':[('out_lot_id','=',False)]}"
             />
+            <field name="out_serial_ids" />
           </group>
         </group>
 
