@@ -17,7 +17,7 @@ class OvenUse(models.Model):
 
     active_seconds = fields.Integer('Segundos de Actividad')
 
-    init_active_date = fields.Integer('Inicio de tiempo activo')
+    init_active_time = fields.Integer('Inicio de tiempo activo')
 
     finish_active_time = fields.Integer('Fin de tiempo activo')
 
