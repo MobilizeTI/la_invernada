@@ -255,7 +255,7 @@ class StockPicking(models.Model):
         list_price = []
         list_qty = []
         for item in self:
-            models._logger.error(self.keys())
+            models._logger.error(self.__dict__.keys())
             # for i in item.sale_id.order_line:
             #     list_price.append(int(i.price_unit))
             # for a in self.move_ids_without_package:
