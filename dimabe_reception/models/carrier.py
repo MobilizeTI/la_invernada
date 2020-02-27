@@ -15,29 +15,6 @@ class Carrier(models.Model):
 
     cell_number = fields.Char('Celular')
 
-    truck_patent = fields.Char(
-        'Patente Camión',
-        related='truck_id.name'
-    )
-
-    cart_patent = fields.Char(
-        'Patente Carro',
-        related='cart_id.name'
-    )
-
-    truck_id = fields.Many2one(
-        'transport',
-        'Patente Camión',
-        context={'default_is_truck': True}
-    )
-
-    cart_id = fields.Many2one(
-        'transport',
-        'Patente Carro',
-        context={'default_is_truck': False}
-
-    )
-
     @api.model
     def create(self, values_list):
         values_list = self._prepare_data(values_list)
