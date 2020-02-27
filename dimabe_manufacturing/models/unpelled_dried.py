@@ -26,6 +26,12 @@ class UnpelledDried(models.Model):
         'Lote Producción'
     )
 
+    out_product_id = fields.Many2one(
+        'product.product',
+        'Producto de Salida',
+        required=True
+    )
+
     oven_use_ids = fields.One2many(
         'oven.use',
         'unpelled_dried_id',
@@ -39,4 +45,16 @@ class UnpelledDried(models.Model):
 
     @api.model
     def create(self, values_list):
-        print()
+        res = super(UnpelledDried, self).create(values_list)
+
+        name = self.env['ir.sequence'].next_by_code('unpelled.dried')
+        out_lot = self.env['stock.production.lot'].create({
+            'name': name,
+            'product_id': res.out_product_id.id
+        })
+
+        res.out_lot_id = out_lot.id
+
+        return res
+
+
