@@ -20,7 +20,8 @@ class StockPicking(models.Model):
 
     product_id = fields.Many2one(related="move_ids_without_package.product_id")
 
-    quantity_requested = fields.Float(related='move_ids_without_package.product_uom_qty')
+    quantity_requested = fields.Float(
+        related='move_ids_without_package.product_uom_qty')
 
     packing_list_ids = fields.One2many(
         'stock.production.lot.serial',
@@ -38,18 +39,42 @@ class StockPicking(models.Model):
         string='Stock Disponibles',
     )
 
+    potential_lot_ids = fields.One2many(
+        'stock.production.lot',
+        compute='_compute_potential_lot'
+    )
+
+    have_series = fields.Boolean('Tiene Serie', default=True, compute='_compute_potential_lot_serial_ids')
+
     @api.multi
     @api.depends('product_search_id')
     def _compute_potential_lot_serial_ids(self):
         for item in self:
             domain = [
-                ('stock_product_id', 'in', item.move_ids_without_package.mapped('product_id.id')),
+                ('stock_product_id', 'in',
+                 item.move_ids_without_package.mapped('product_id.id')),
                 ('consumed', '=', False),
                 ('reserved_to_stock_picking_id', '=', False)
             ]
+            for id_pr in item.move_ids_without_package.mapped('product_id.id'):
+                data = self.env['stock.production.lot.serial'].search([('stock_product_id', '=', id_pr)])
+                if not data:
+                    item.have_series = False
             if item.product_search_id:
-                domain += [('stock_product_id', '=', item.product_search_id.id)]
-            item.potential_lot_serial_ids = self.env['stock.production.lot.serial'].search(domain)
+                domain += [('stock_product_id', '=',
+                            item.product_search_id.id)]
+            item.potential_lot_serial_ids = self.env['stock.production.lot.serial'].search(
+                domain)
+
+    @api.multi
+    def _compute_potential_lot(self):
+        for item in self:
+            if not item.have_series:
+                for product in item.move_ids_without_package.mapped('product_id.id'):
+                    data = self.env['stock.production.lot.serial'].search([('stock_product_id', '=', product)])
+                    if not data:
+                        lot = self.env['stock.production.lot'].search([('product_id', '=', product)])
+                        models._logger.error(lot)
 
     @api.multi
     def _compute_packing_list_ids(self):
@@ -61,7 +86,6 @@ class StockPicking(models.Model):
 
     @api.multi
     def return_action(self):
-
         context = {
             'default_product_id': self.product_id.id,
             'default_product_uom_qty': self.quantity_requested,

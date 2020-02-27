@@ -48,6 +48,9 @@
                 />
               </tree>
             </field>
+            <field name="potential_lot_ids">
+
+            </field>
 
           </group>
         </page>
