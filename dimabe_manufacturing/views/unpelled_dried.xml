@@ -50,6 +50,7 @@
                 <button string="detener horno"
                         attrs="{'invisible':['|',('finish_date','!=',False),('init_date','=',False)]}"
                         name="finish_process"
+                        type="object"
                 />
               </tree>
             </field>
