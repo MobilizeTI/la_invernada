@@ -41,7 +41,8 @@ class StockPicking(models.Model):
 
     potential_lot_ids = fields.One2many(
         'stock.production.lot',
-        compute='_compute_potential_lot'
+        compute='_compute_potential_lot',
+        string='Lotes Disponibles'
     )
 
     have_series = fields.Boolean('Tiene Serie', default=True, compute='_compute_potential_lot_serial_ids')
