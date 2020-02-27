@@ -19,8 +19,12 @@
             <field name="oven_use_ids">
               <tree editable="bottom">
                 <field name="dried_oven_id"/>
-                <field name="init_date"/>
-                <field name="finish_date"/>
+                <field name="init_date" readonly="1"/>
+                <field name="finish_date" readonly="1"/>
+                <button string="iniciar horno" />
+                <button string="pausar horno" />
+                <button string="reanudar horno" />
+                <button string="detener horno" />
               </tree>
             </field>
           </group>
