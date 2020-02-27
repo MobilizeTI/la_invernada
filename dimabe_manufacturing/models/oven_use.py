@@ -33,3 +33,4 @@ class OvenUse(models.Model):
             if not item.dried_oven_id:
                 raise models.ValidationError('Debe seleccionar el horno a iniciar')
             item.init_date = datetime.utcnow()
+            item.init_active_time = item.init_date.timestamp()
