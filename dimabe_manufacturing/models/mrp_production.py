@@ -7,10 +7,10 @@ class MrpProduction(models.Model):
 
     stock_picking_id = fields.Many2one('stock.picking', 'Despacho')
 
-    sale_order_id = fields.Many2one(
-        'sale.order',
-        related='stock_picking_id.sale_id'
-    )
+    # sale_order_id = fields.Many2one(
+    #     'sale.order',
+    #     related='stock_picking_id.sale_id'
+    # )
 
     stock_lots = fields.Many2one("stock.production.lot")
 
