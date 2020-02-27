@@ -25,7 +25,7 @@ class StockMove(models.Model):
     def _compute_reserved_amount(self):
         self.reserved_amount = 100
 
-    @api.model
+    @api.onchange('product_id')
     def _get_variant(self):
         for item in self:
             result = self.env['product.product'].search([('id', '=', item.product_id.id)])
