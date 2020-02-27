@@ -39,6 +39,8 @@
                 />
                 <button string="pausar horno"
                         attrs="{'invisible':['|',('finish_active_time','=',False ),('init_date','=',False)]}"
+                        name="pause_process"
+                        type="object"
                 />
                 <button string="reanudar horno"
                         attrs="{'invisible':['|',('finish_active_time','!=',False ),('init_date','=',False)]}"
