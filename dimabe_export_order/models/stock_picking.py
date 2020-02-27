@@ -273,7 +273,7 @@ class StockPicking(models.Model):
             for line in item.move_ids_without_package:
                 qty_total = qty_total + line.quantity_done
             if qty_total > 0:
-                item.value_per_kilogram = self.total_value / qty_total
+                item.value_per_kilogram = item.total_value / qty_total
 
     @api.model
     @api.depends('agent_id')
