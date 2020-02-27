@@ -1,0 +1,20 @@
+<odoo>
+  <record id="transport_form_view" model="ir.ui.view">
+    <field name="name">Formulario Tansporte</field>
+    <field name="model">transport</field>
+    <field name="arch" type="xml">
+      <form>
+        <group>
+          <group>
+            <field name="is_truck"
+                   readonly="1"
+            />
+          </group>
+          <group>
+            <field name="name" />
+          </group>
+        </group>
+      </form>
+    </field>
+  </record>
+</odoo>
