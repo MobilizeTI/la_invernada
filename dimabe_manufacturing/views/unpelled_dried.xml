@@ -43,7 +43,7 @@
                         type="object"
                 />
                 <button string="reanudar horno"
-                        attrs="{'invisible':['|',('finish_active_time','!=',False ),('init_date','=',False)]}"
+                        attrs="{'invisible':['|',('finish_active_time','=',0 ),('init_date','=',False)]}"
                 />
                 <button string="detener horno"
                         attrs="{'invisible':['|',('finish_date','!=',False),('init_date','=',False)]}"/>
