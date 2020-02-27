@@ -49,7 +49,10 @@
               </tree>
             </field>
             <field name="potential_lot_ids">
-
+              <tree>
+                <field name="name"  />
+                <field name="total_serial"/>
+              </tree>
             </field>
 
           </group>
