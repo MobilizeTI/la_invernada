@@ -58,8 +58,8 @@
               <field name="carrier_id"/>
               <field name="carrier_rut"/>
               <field name="carrier_cell_phone"/>
-              <field name="carrier_truck_patent"/>
-              <field name="carrier_cart_patent"/>
+              <field name="truck_id"/>
+              <field name="cart_id"/>
             </group>
           </page>
         </xpath>
