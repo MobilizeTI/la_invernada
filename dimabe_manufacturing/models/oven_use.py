@@ -27,9 +27,9 @@ class OvenUse(models.Model):
 
     @api.multi
     def init_process(self):
-        raise models.ValidationError('init')
-        if self.init_date:
-            raise models.ValidationError('este proceso ya ha sido iniciado')
-        if not self.dried_oven_id:
-            raise models.ValidationError('Debe seleccionar el horno a iniciar')
-        self.init_date = datetime.utcnow()
+        for item in self:
+            if item.init_date:
+                raise models.ValidationError('este proceso ya ha sido iniciado')
+            if not item.dried_oven_id:
+                raise models.ValidationError('Debe seleccionar el horno a iniciar')
+            item.init_date = datetime.utcnow()
