@@ -90,13 +90,15 @@ class StockPicking(models.Model):
     truck_id = fields.Many2one(
         'transport',
         'Patente Camión',
-        context={'default_is_truck': True}
+        context={'default_is_truck': True},
+        domain=[('is_truck', '=', True)]
     )
 
     cart_id = fields.Many2one(
         'transport',
         'Patente Carro',
-        context={'default_is_truck': False}
+        context={'default_is_truck': False},
+        domain=[('is_truck', '=', False)]
 
     )
 
