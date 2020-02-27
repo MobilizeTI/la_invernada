@@ -1,5 +1,5 @@
 <odoo>
-  <record id="seq_stock_production_lot" model="ir.sequence">
+  <record id="seq_unpelled_dried_lot" model="ir.sequence">
     <field name="name">unpelled.dried</field>
     <field name="code">unpelled.dried</field>
     <field name="prefix">900</field>
