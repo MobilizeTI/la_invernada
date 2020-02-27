@@ -1,0 +1,58 @@
+<odoo>
+  <record id="unpelled_dried_form_view" model="ir.ui.view">
+    <field name="name">Formulario Secado Despelonado</field>
+    <field name="model">unpelled.dried</field>
+    <field name="arch" type="xml">
+      <form>
+        <group>
+          <group>
+            <h1 class="d-none d-md-block">
+              <field name="name" readonly="1" attrs="{'invisible':[('name','=',False)]}"/>
+            </h1>
+
+            <field name="producer_id"/>
+
+            <field name="in_lot_ids"
+                   domain="[('producer_id','=',producer_id)]"
+                   attrs="{'invisible':[('producer_id','=',False)]}"
+            />
+            <field name="dried_oven_ids"/>
+          </group>
+          <group>
+            <field name="out_lot_id"
+                   readonly="1"
+                   attrs="{'invisible':[('out_lot_id','=',False)]}"
+            />
+          </group>
+        </group>
+
+      </form>
+    </field>
+  </record>
+
+  <record id="unpelled_dried_tree_view" model="ir.ui.view">
+    <field name="name">Listado de Procesos de Secado</field>
+    <field name="model">unpelled.dried</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="name"/>
+        <field name="producer_id"/>
+        <field name="in_lot_ids" widget="many2many_tax"/>
+        <field name="out_lot_id"/>
+        <field name="dried_oven_ids" widget="many2many_tax"/>
+      </tree>
+    </field>
+  </record>
+
+  <record model="ir.actions.act_window" id="unpelled_dried_action">
+    <field name="name">Proceso de Secado</field>
+    <field name="res_model">unpelled.dried</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem name="Proceso Secado"
+            id="unpelled_dried_menu"
+            parent="mrp.mrp_planning_menu_root"
+            action="unpelled_dried_action"
+  />
+</odoo>

@@ -43,7 +43,8 @@
         'views/product_category.xml',
         'views/potential_lot.xml',
         'views/templates.xml',
-        'views/stock_picking.xml'
+        'views/stock_picking.xml',
+        'views/unpelled_dried.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
