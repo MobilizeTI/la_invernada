@@ -17,6 +17,11 @@ class OvenUse(models.Model):
 
     active_seconds = fields.Integer('Segundos de Actividad')
 
+    active_time = fields.Datetime(
+        'Tiempo Transcurrido',
+        compute='_compute_active_time'
+    )
+
     init_active_time = fields.Integer('Inicio de tiempo activo')
 
     finish_active_time = fields.Integer('Fin de tiempo activo')
@@ -24,6 +29,11 @@ class OvenUse(models.Model):
     dried_oven_id = fields.Many2one('dried.oven', 'horno')
 
     unpelled_dried_id = fields.Many2one('unpelled.dried', 'Proceso de secado')
+
+    @api.multi
+    def active_time(self):
+        for item in self:
+            item.active_time = datetime.fromtimestamp(item.active_seconds)
 
     @api.multi
     def init_process(self):
@@ -34,3 +44,9 @@ class OvenUse(models.Model):
                 raise models.ValidationError('Debe seleccionar el horno a iniciar')
             item.init_date = datetime.utcnow()
             item.init_active_time = item.init_date.timestamp()
+
+    @api.multi
+    def pause_process(self):
+        for item in self:
+            item.finish_active_time = datetime.utcnow().timestamp()
+            item.active_seconds += item.finish_active_time - item.init_active_time
