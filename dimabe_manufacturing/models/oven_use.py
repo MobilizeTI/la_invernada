@@ -29,4 +29,6 @@ class OvenUse(models.Model):
     def init_process(self):
         if self.init_date:
             raise models.ValidationError('este proceso ya ha sido iniciado')
+        if not self.dried_oven_id:
+            raise models.ValidationError('Debe seleccionar el horno a iniciar')
         self.init_date = datetime.utcnow()

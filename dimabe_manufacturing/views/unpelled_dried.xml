@@ -20,7 +20,9 @@
               <tree editable="bottom">
                 <field name="init_active_time" invisible="1" />
                 <field name="finish_active_time" invisible="1" />
-                <field name="dried_oven_id"/>
+                <field name="dried_oven_id"
+                       attrs="{'readonly':[('init_date','!=',False)]}"
+                />
                 <field name="init_date" readonly="1"/>
                 <field name="finish_date" readonly="1"/>
                 <button string="iniciar horno"
