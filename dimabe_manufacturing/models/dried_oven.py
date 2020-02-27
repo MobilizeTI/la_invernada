@@ -10,4 +10,5 @@ class DriedOven(models.Model):
 
     @api.onchange('name')
     def onchange_name(self):
-        self.name = str.upper(self.name)
+        if self.name:
+            self.name = str.upper(self.name)
