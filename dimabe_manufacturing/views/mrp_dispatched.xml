@@ -6,7 +6,7 @@
       <field name="priority">20</field>
       <field name="arch" type="xml">
         <tree string="Dispatched">
-          <!-- <field name="sale_id"/> -->
+          <field name="sale_id"/>
           <field name="has_mrp_production" invisible="1"/>
           <field name="required_loading_date" string="Fecha de Carga"/>
           <field name="partner_id" string="Cliente"/>

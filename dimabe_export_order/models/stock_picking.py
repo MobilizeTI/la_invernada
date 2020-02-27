@@ -264,7 +264,7 @@ class StockPicking(models.Model):
                 prices = sum(list_price)
                 qtys = sum(list_qty)
             item.total_value = (prices * qtys) + item.freight_value + item.safe_value
-
+            
     @api.multi
     @api.depends('total_value')
     def _compute_value_per_kilogram(self):
