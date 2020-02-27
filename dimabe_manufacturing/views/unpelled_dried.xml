@@ -1,4 +1,11 @@
 <odoo>
+  <record id="seq_stock_production_lot" model="ir.sequence">
+    <field name="name">unpelled.dried</field>
+    <field name="code">unpelled.dried</field>
+    <field name="prefix">900</field>
+    <field name="padding">5</field>
+    <field name="company_id" eval="False"/>
+  </record>
   <record id="unpelled_dried_form_view" model="ir.ui.view">
     <field name="name">Formulario Secado Despelonado</field>
     <field name="model">unpelled.dried</field>
@@ -18,8 +25,8 @@
             />
             <field name="oven_use_ids">
               <tree editable="bottom">
-                <field name="init_active_time" invisible="1" />
-                <field name="finish_active_time" invisible="1" />
+                <field name="init_active_time" invisible="1"/>
+                <field name="finish_active_time" invisible="1"/>
                 <field name="dried_oven_id"
                        attrs="{'readonly':[('init_date','!=',False)]}"
                 />
@@ -34,7 +41,7 @@
                         attrs="{'invisible':['|',('finish_active_time','=',False ),('init_date','=',False)]}"
                 />
                 <button string="reanudar horno"
-                      attrs="{'invisible':['|',('finish_active_time','!=',False ),('init_date','=',False)]}"
+                        attrs="{'invisible':['|',('finish_active_time','!=',False ),('init_date','=',False)]}"
                 />
                 <button string="detener horno"
                         attrs="{'invisible':['|',('finish_date','!=',False),('init_date','=',False)]}"/>
@@ -42,7 +49,7 @@
             </field>
           </group>
           <group>
-            <field name="out_product_id" />
+            <field name="out_product_id"/>
             <field name="out_lot_id"
                    readonly="1"
                    attrs="{'invisible':[('out_lot_id','=',False)]}"

@@ -48,6 +48,7 @@ class UnpelledDried(models.Model):
         res = super(UnpelledDried, self).create(values_list)
 
         name = self.env['ir.sequence'].next_by_code('unpelled.dried')
+
         out_lot = self.env['stock.production.lot'].create({
             'name': name,
             'product_id': res.out_product_id.id
