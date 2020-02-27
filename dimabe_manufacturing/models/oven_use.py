@@ -5,6 +5,11 @@ class OvenUse(models.Model):
     _name = 'oven.use'
     _description = 'datos de uso de los hornos'
 
+    name = fields.Char(
+        'Horno en uso',
+        related='dried_oven_id.name'
+    )
+
     init_date = fields.Datetime('Inicio de Proceso')
 
     finish_date = fields.Datetime('Termino de Proceso')

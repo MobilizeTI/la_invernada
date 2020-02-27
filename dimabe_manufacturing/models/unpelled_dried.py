@@ -26,8 +26,10 @@ class UnpelledDried(models.Model):
         'Lote Producción'
     )
 
-    dried_oven_ids = fields.Many2many(
-        'oven.use'
+    oven_use_ids = fields.One2many(
+        'oven.use',
+        'unpelled_dried_id',
+        'Hornos'
     )
 
     @api.multi
