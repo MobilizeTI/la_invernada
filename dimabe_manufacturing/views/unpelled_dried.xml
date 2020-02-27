@@ -24,8 +24,8 @@
             />
             <field name="oven_use_ids">
               <tree editable="bottom">
-                <field name="init_active_time" invisible="1"/>
-                <field name="finish_active_time" invisible="1"/>
+                <field name="init_active_time" invisible="0"/>
+                <field name="finish_active_time" invisible="0"/>
                 <field name="dried_oven_id"
                        attrs="{'readonly':[('init_date','!=',False)]}"
                 />
