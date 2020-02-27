@@ -26,7 +26,7 @@
                 <field name="init_date" readonly="1"/>
                 <field name="finish_date" readonly="1"/>
                 <button string="iniciar horno"
-                        attrs="{'invisible':[('init_date','!=',False)]}"
+                        attrs="{'invisible':['|',('init_date','!=',False),('dried_oven_id','=',False)]}"
                         name="init_process"
                         type="object"
                 />
