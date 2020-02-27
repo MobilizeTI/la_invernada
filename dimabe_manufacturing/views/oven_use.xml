@@ -9,7 +9,7 @@
             <field name="init_date"
                    readonly="1"
             />
-            <field name="dried_ove_id"
+            <field name="dried_oven_id"
                    readonly="1"
             />
           </group>
