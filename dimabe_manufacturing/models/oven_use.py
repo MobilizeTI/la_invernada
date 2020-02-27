@@ -17,7 +17,7 @@ class OvenUse(models.Model):
 
     active_seconds = fields.Integer('Segundos de Actividad')
 
-    active_time = fields.Datetime(
+    active_time = fields.Char(
         'Tiempo Transcurrido',
         compute='_compute_active_time',
         store=True
@@ -35,7 +35,18 @@ class OvenUse(models.Model):
     @api.depends('active_seconds')
     def _compute_active_time(self):
         for item in self:
-            item.active_time = datetime.fromtimestamp(item.active_seconds)
+            days = item.active_seconds / 86400
+            hours = 0
+            minutes = 0
+            sec = 0
+            if item.active_seconds % 86400 > 0:
+                hours = (item.active_seconds % 86400) / 3600
+                if (item.active_seconds % 86400) % 3600 > 0:
+                    minutes = ((item.active_seconds % 86400) % 3600) / 60
+                    if ((item.active_seconds % 86400) % 3600) % 60 > 0:
+                        sec = ((item.active_seconds % 86400) % 3600) % 60
+
+            item.active_time = '{} {}:{}:{}'.format(days, hours, minutes, sec)
 
     @api.multi
     def init_process(self):
