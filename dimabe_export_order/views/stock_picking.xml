@@ -106,12 +106,7 @@
                     </page>
                 </xpath>
                 <xpath expr="//field[@name='move_ids_without_package']/tree//field[@name='product_id']"
-                       position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-                <xpath expr="//field[@name='move_ids_without_package']/tree//field[@name='product_id']"
                        position="after">
-                    <field name="product_name"></field>
                     <field name="variety"></field>
                     <field name="brand"></field>
                     <field name="type_of_package"></field>
