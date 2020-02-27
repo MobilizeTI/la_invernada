@@ -36,3 +36,7 @@ class UnpelledDried(models.Model):
     def _compute_name(self):
         for item in self:
             item.name = item.out_lot_id.name
+
+    @api.model
+    def create(self, values_list):
+        print()

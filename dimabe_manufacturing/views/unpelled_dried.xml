@@ -16,7 +16,7 @@
                    domain="[('producer_id','=',producer_id)]"
                    attrs="{'invisible':[('producer_id','=',False)]}"
             />
-            <field name="dried_oven_ids"/>
+            <field name="oven_use_ids"/>
           </group>
           <group>
             <field name="out_lot_id"
