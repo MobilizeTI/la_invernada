@@ -18,8 +18,8 @@
             />
             <field name="oven_use_ids">
               <tree editable="bottom">
-                <field name="init_active_date" invisible="1" />
-                <field name="finish_active_date" invisible="1" />
+                <field name="init_active_time" invisible="1" />
+                <field name="finish_active_time" invisible="1" />
                 <field name="dried_oven_id"/>
                 <field name="init_date" readonly="1"/>
                 <field name="finish_date" readonly="1"/>
