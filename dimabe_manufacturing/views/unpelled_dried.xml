@@ -11,12 +11,11 @@
     <field name="model">unpelled.dried</field>
     <field name="arch" type="xml">
       <form>
+        <h1 class="d-none d-md-block">
+          <field name="name" readonly="1" attrs="{'invisible':[('name','=',False)]}"/>
+        </h1>
         <group>
           <group>
-            <h1 class="d-none d-md-block">
-              <field name="name" readonly="1" attrs="{'invisible':[('name','=',False)]}"/>
-            </h1>
-
             <field name="producer_id"/>
 
             <field name="in_lot_ids"
@@ -54,7 +53,7 @@
                    readonly="1"
                    attrs="{'invisible':[('out_lot_id','=',False)]}"
             />
-            <field name="out_serial_ids" />
+            <field name="out_serial_ids"/>
           </group>
         </group>
 

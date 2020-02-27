@@ -25,7 +25,7 @@ class OvenUse(models.Model):
 
     unpelled_dried_id = fields.Many2one('unpelled.dried', 'Proceso de secado')
 
-    @api.model
+    @api.multi
     def init_process(self):
         raise models.ValidationError('init')
         if self.init_date:
