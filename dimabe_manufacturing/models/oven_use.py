@@ -35,7 +35,7 @@ class OvenUse(models.Model):
     @api.depends('active_seconds')
     def _compute_active_time(self):
         for item in self:
-            days = item.active_seconds / 86400
+            days = int(item.active_seconds / 86400)
             hours = 0
             minutes = 0
             sec = 0
