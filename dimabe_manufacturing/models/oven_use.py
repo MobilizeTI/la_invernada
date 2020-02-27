@@ -19,7 +19,8 @@ class OvenUse(models.Model):
 
     active_time = fields.Datetime(
         'Tiempo Transcurrido',
-        compute='_compute_active_time'
+        compute='_compute_active_time',
+        store=True
     )
 
     init_active_time = fields.Integer('Inicio de tiempo activo')
@@ -31,7 +32,8 @@ class OvenUse(models.Model):
     unpelled_dried_id = fields.Many2one('unpelled.dried', 'Proceso de secado')
 
     @api.multi
-    def active_time(self):
+    @api.depends('active_seconds')
+    def _compute_active_time(self):
         for item in self:
             item.active_time = datetime.fromtimestamp(item.active_seconds)
 
