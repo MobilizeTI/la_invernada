@@ -56,7 +56,9 @@
             </field>
           </group>
           <group>
-            <field name="out_product_id"/>
+            <field name="out_product_id"
+                   attrs="{'readonly':[('out_serial_ids','!=',False)]}"
+            />
             <field name="out_lot_id"
                    readonly="1"
                    attrs="{'invisible':[('out_lot_id','=',False)]}"
