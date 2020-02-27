@@ -127,11 +127,12 @@ class MrpProduction(models.Model):
                 ('potential_client_id', '=', self.client_search_id.id),
                 ('potential_workcenter_id.id', 'in', list(self.routing_id.operation_ids.mapped('workcenter_id.id')))
             ]).mapped('stock_production_lot_ids.name')
+            restest = self.env['stock.production.lot'].search([])
+
+            models._logger.error(restest)
 
             domain += [('name', 'in', list(client_lot_ids) if client_lot_ids else [])]
-
-        models._logger.error(domain)
-
+            models._logger.error(domain)
         res = self.env['stock.production.lot'].search(domain)
 
         return [{
