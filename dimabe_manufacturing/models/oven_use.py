@@ -40,11 +40,11 @@ class OvenUse(models.Model):
             minutes = 0
             sec = 0
             if item.active_seconds % 86400 > 0:
-                hours = (item.active_seconds % 86400) / 3600
+                hours = int((item.active_seconds % 86400) / 3600)
                 if (item.active_seconds % 86400) % 3600 > 0:
-                    minutes = ((item.active_seconds % 86400) % 3600) / 60
+                    minutes = int(((item.active_seconds % 86400) % 3600) / 60)
                     if ((item.active_seconds % 86400) % 3600) % 60 > 0:
-                        sec = ((item.active_seconds % 86400) % 3600) % 60
+                        sec = int(((item.active_seconds % 86400) % 3600) % 60)
 
             item.active_time = '{} {}:{}:{}'.format(days, hours, minutes, sec)
 
