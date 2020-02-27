@@ -74,7 +74,7 @@ class StockPicking(models.Model):
                     data = self.env['stock.production.lot.serial'].search([('stock_product_id', '=', product)])
                     if not data:
                         lot = self.env['stock.production.lot'].search([('product_id', '=', product)])
-                        models._logger.error(lot)
+                        item.potential_lot_ids = lot
 
     @api.multi
     def _compute_packing_list_ids(self):
