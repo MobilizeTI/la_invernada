@@ -60,9 +60,17 @@
                    attrs="{'readonly':[('out_serial_ids','!=',False)]}"
             />
             <field name="out_lot_id"
+                   readonly="1"
                    attrs="{'invisible':[('out_lot_id','=',False)]}"
             />
-            <field name="out_serial_ids"/>
+            <field name="out_serial_ids">
+              <tree>
+                <field name="stock_production_lot_id" />
+                <field name="consumed" />
+                <field name="display_weight" />
+                <field name="serial_number" />
+              </tree>
+            </field>
           </group>
         </group>
 
