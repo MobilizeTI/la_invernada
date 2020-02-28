@@ -75,7 +75,7 @@ class StockProductionLot(models.Model):
                 stock_move = self.env['stock.move'].search([('product_id','=', item.product_id.id)])
                 for s in stock_move:
                     for l in s.active_move_line_ids:
-                        models._logger.error(l.name)
+                        models._logger.error(l)
 
     @api.multi
     def write(self, values):
