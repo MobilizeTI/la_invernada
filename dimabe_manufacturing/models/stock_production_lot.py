@@ -51,7 +51,7 @@ class StockProductionLot(models.Model):
                         move_line = self.env['stock.move.line'].create({
                             'product_id': item.product_id.id,
                             'lot_id': item.id,
-                            'product_uom_qty': stock_move.product_uom_qty,
+                            'product_uom_qty': item.qty_to_reserve,
                             'product_uom_id': stock_move.product_uom.id,
                             'location_id': stock_quant.location_id.id,
                             'location_dest_id': stock_picking.partner_id.property_stock_customer.id
