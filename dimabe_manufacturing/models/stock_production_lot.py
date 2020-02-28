@@ -42,7 +42,7 @@ class StockProductionLot(models.Model):
         recs = self.search([]).filtered(lambda a: a.producer_id)
         models._logger.error(recs)
         if recs:
-            return ['id', 'in', [a.id for a in recs]]
+            return [('id', 'in', [a.id for a in recs])]
         models._logger.error('no entró')
 
     @api.multi
