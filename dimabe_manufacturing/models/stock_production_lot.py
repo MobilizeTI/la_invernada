@@ -51,7 +51,7 @@ class StockProductionLot(models.Model):
                         })
                         item.is_reserved = True
                         item.update({
-                            'qty_to_reseved': reserve
+                            'qty_to_reserved': reserve
                         })
                         move_line = self.env['stock.move.line'].create({
                             'product_id': item.product_id.id,
