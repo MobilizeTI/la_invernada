@@ -69,6 +69,34 @@ class StockProductionLot(models.Model):
                         models._logger.error(stock_quant.reserved_quantity)
 
     @api.multi
+    def unreserved(self):
+        for item in self:
+            stock_move = item.reserved_to_stock_picking_id.move_lines.filtered(
+                lambda a: a.product_id == item.stock_production_lot_id.product_id
+            )
+            move_line = stock_move.move_line_ids.filtered(
+                lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == stock_move.product_uom_qty
+            )
+
+            picking_move_line = item.reserved_to_stock_picking_id.move_lines.filtered(
+                lambda a: a.id == move_line.id
+            )
+
+            stock_quant = item.get_stock_quant()
+
+            stock_quant.sudo().update({
+                'reserved_quantity': stock_quant.reserved_quantity - stock_move.product_uom_qty
+            })
+
+            for ml in move_line:
+                ml.write({'move_id': None, 'product_uom_qty': 0})
+                picking_move_line.filtered(lambda a: a.id == ml.id).write({
+                    'move_id': None,
+                    'picking_id': None,
+                    'product_uom_qty': 0
+                })
+
+    @api.multi
     def write(self, values):
         for item in self:
             res = super(StockProductionLot, self).write(values)
