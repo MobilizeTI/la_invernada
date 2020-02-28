@@ -40,8 +40,10 @@ class StockProductionLot(models.Model):
 
     def _search_producer_id(self, operator, value):
         recs = self.search([]).filtered(lambda a: a.producer_id is True)
+        models._logger.error(recs)
         if recs:
             return ['id', 'in', [a.id for a in recs]]
+        models._logger.error('no entró')
 
     @api.multi
     def _compute_total_serial(self):
