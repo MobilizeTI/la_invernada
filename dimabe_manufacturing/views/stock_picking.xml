@@ -35,6 +35,7 @@
                         <field name="potential_lot_serial_ids"
                                groups="mrp.group_mrp_manager"
                                attrs="{'invisible':[('state','=','done')]}"
+                               readonly="0"
                         >
                             <tree edit="true" delete="false" create="false">
                                 <field name="stock_production_lot_id"/>
