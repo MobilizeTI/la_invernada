@@ -16,89 +16,87 @@
                  widget="statusbar"
                  statusbar_visible="draft,progress,done"/>
         </header>
-        <sheet>
-          <h1 class="d-none d-md-block">
-            <field name="name" readonly="1" attrs="{'invisible':[('name','=',False)]}"/>
-          </h1>
+        <h1 class="d-none d-md-block">
+          <field name="name" readonly="1" attrs="{'invisible':[('name','=',False)]}"/>
+        </h1>
+        <group>
           <group>
-            <group>
-              <field name="producer_id"/>
+            <field name="producer_id"/>
 
-              <field name="in_lot_ids"
-                     domain="[('producer_id','=',producer_id),('balance','>',0)]"
-                     attrs="{'invisible':[('producer_id','=',False)]}"
-              />
-              <field name="oven_use_ids">
-                <tree editable="bottom">
-                  <field name="init_active_time" invisible="1"/>
-                  <field name="finish_active_time" invisible="1"/>
-                  <field name="dried_oven_id"
-                         attrs="{'readonly':[('init_date','!=',False)]}"
-                  />
-                  <field name="init_date" readonly="1"/>
-                  <field name="finish_date" readonly="1"/>
-                  <field name="active_time"/>
-                  <button string="iniciar horno"
-                          attrs="{'invisible':['|',('init_date','!=',False),('dried_oven_id','=',False)]}"
-                          name="init_process"
-                          type="object"
-                  />
-                  <button string="pausar horno"
-                          attrs="{'invisible':['|',('finish_active_time','>', 0),('init_date','=',False)]}"
-                          name="pause_process"
-                          type="object"
-                  />
-                  <button string="reanudar horno"
-                          attrs="{'invisible':['|','|',('finish_active_time','=',0 ),('init_date','=',False),('finish_date','!=',False)]}"
-                          name="resume_process"
-                          type="object"
-                  />
-                  <button string="detener horno"
-                          attrs="{'invisible':['|',('finish_date','!=',False),('init_date','=',False)]}"
-                          name="finish_process"
-                          type="object"
-                  />
-                </tree>
-              </field>
-            </group>
-            <group>
-              <field name="out_product_id"
-                     attrs="{'readonly':[('out_serial_ids','!=',False)]}"
-              />
-              <field name="out_lot_id"
-                     readonly="1"
-                     attrs="{'invisible':[('out_lot_id','=',False)]}"
-              />
-              <field name="out_serial_ids">
-                <tree editable="bottom">
-                  <field name="stock_production_lot_id"
-                         readonly="1"
-                  />
-                  <field name="consumed"/>
-                  <field name="display_weight"/>
-                  <field name="serial_number"
-                         readonly="1"
-                  />
-                </tree>
-              </field>
-              <div class="oe_inline">
-                <button string="Finalizar Proceso"
-                        class="oe_highlight"
-                        name="finish_unpelled_dried"
-                        type="object"
-                        attrs="{'invisible':[('state','!=','progress')]}"
+            <field name="in_lot_ids"
+                   domain="[('producer_id','=',producer_id),('balance','>',0)]"
+                   attrs="{'invisible':[('producer_id','=',False)]}"
+            />
+            <field name="oven_use_ids">
+              <tree editable="bottom">
+                <field name="init_active_time" invisible="1"/>
+                <field name="finish_active_time" invisible="1"/>
+                <field name="dried_oven_id"
+                       attrs="{'readonly':[('init_date','!=',False)]}"
                 />
-                <button string="Cancelar"
-                        class="btn-danger"
-                        name="cancel_unpelled_dried"
+                <field name="init_date" readonly="1"/>
+                <field name="finish_date" readonly="1"/>
+                <field name="active_time"/>
+                <button string="iniciar horno"
+                        attrs="{'invisible':['|',('init_date','!=',False),('dried_oven_id','=',False)]}"
+                        name="init_process"
                         type="object"
-                        attrs="{'invisible':[('state','not in',['progress'])]}"
                 />
-              </div>
-
-            </group>
+                <button string="pausar horno"
+                        attrs="{'invisible':['|',('finish_active_time','>', 0),('init_date','=',False)]}"
+                        name="pause_process"
+                        type="object"
+                />
+                <button string="reanudar horno"
+                        attrs="{'invisible':['|','|',('finish_active_time','=',0 ),('init_date','=',False),('finish_date','!=',False)]}"
+                        name="resume_process"
+                        type="object"
+                />
+                <button string="detener horno"
+                        attrs="{'invisible':['|',('finish_date','!=',False),('init_date','=',False)]}"
+                        name="finish_process"
+                        type="object"
+                />
+              </tree>
+            </field>
           </group>
-        </sheet>
+          <group>
+            <field name="out_product_id"
+                   attrs="{'readonly':[('out_serial_ids','!=',False)]}"
+            />
+            <field name="out_lot_id"
+                   readonly="1"
+                   attrs="{'invisible':[('out_lot_id','=',False)]}"
+            />
+            <field name="out_serial_ids">
+              <tree editable="bottom">
+                <field name="stock_production_lot_id"
+                       readonly="1"
+                />
+                <field name="consumed"/>
+                <field name="display_weight"/>
+                <field name="serial_number"
+                       readonly="1"
+                />
+              </tree>
+            </field>
+            <div class="oe_inline">
+              <button string="Finalizar Proceso"
+                      class="oe_highlight"
+                      name="finish_unpelled_dried"
+                      type="object"
+                      attrs="{'invisible':[('state','!=','progress')]}"
+              />
+              <button string="Cancelar"
+                      class="btn-danger"
+                      name="cancel_unpelled_dried"
+                      type="object"
+                      attrs="{'invisible':[('state','not in',['progress'])]}"
+              />
+            </div>
+
+          </group>
+        </group>
       </form>
     </field>
   </record>
