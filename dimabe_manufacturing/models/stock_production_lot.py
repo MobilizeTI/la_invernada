@@ -34,7 +34,9 @@ class StockProductionLot(models.Model):
     def reserved(self):
         for item in self:
             if item.qty_standard_serial == 0:
-                models._logger.error(item.move_ids_without_package)
+                if 'stock_picking_id' in self.env.context:
+                    stock_picking_id = self.env.context['stock_picking_id']
+                    models._logger.error(stock_picking_id.name)
 
 
     @api.multi
