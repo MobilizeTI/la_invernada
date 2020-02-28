@@ -33,7 +33,9 @@ class StockProductionLot(models.Model):
     @api.multi
     def reserved(self):
         for item in self:
-            models._logger.error(item.qty_standard_serial)
+            if item.qty_standard_serial == 0:
+                models._logger.error(item.move_ids_without_package)
+
 
     @api.multi
     def write(self, values):
