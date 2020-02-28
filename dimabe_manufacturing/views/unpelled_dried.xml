@@ -65,10 +65,14 @@
             />
             <field name="out_serial_ids">
               <tree editable="bottom">
-                <field name="stock_production_lot_id" />
+                <field name="stock_production_lot_id"
+                       readonly="1"
+                />
                 <field name="consumed" />
                 <field name="display_weight" />
-                <field name="serial_number" />
+                <field name="serial_number"
+                       readonly="1"
+                />
               </tree>
             </field>
           </group>
