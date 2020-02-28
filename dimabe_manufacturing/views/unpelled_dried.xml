@@ -19,7 +19,7 @@
             <field name="producer_id"/>
 
             <field name="in_lot_ids"
-                   domain="[('producer_id','=',producer_id)]"
+                   domain="[('producer_id','=',producer_id),('balance','>',0)]"
                    attrs="{'invisible':[('producer_id','=',False)]}"
             />
             <field name="oven_use_ids">
