@@ -71,30 +71,9 @@ class StockProductionLot(models.Model):
     @api.multi
     def unreserved(self):
         for item in self:
-            stock_move = item.move_lines.filtered(
-                lambda a: a.product_id == item.stock_production_lot_id.product_id
-            )
-            move_line = stock_move.move_line_ids.filtered(
-                lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == stock_move.product_uom_qty
-            )
-
-            picking_move_line = item.reserved_to_stock_picking_id.move_lines.filtered(
-                lambda a: a.id == move_line.id
-            )
-
-            stock_quant = item.get_stock_quant()
-
-            stock_quant.sudo().update({
-                'reserved_quantity': stock_quant.reserved_quantity - stock_move.product_uom_qty
-            })
-
-            for ml in move_line:
-                ml.write({'move_id': None, 'product_uom_qty': 0})
-                picking_move_line.filtered(lambda a: a.id == ml.id).write({
-                    'move_id': None,
-                    'picking_id': None,
-                    'product_uom_qty': 0
-                })
+            if item.qty_standard_serial == 0:
+                stock_move = self.env['stock.move'].search([('product_id','=', item.product_id)])
+                models._logger.error(stock_move.name)
 
     @api.multi
     def write(self, values):
