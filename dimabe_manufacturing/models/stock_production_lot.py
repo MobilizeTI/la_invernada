@@ -88,7 +88,7 @@ class StockProductionLot(models.Model):
 
                 for ml in move_line:
                     ml.write({'move_id': None, 'product_uom_qty': 0})
-                    models._logger.error(ml.prodcut_uom.qty)
+                    models._logger.error(ml.prodcut_uom_qty)
 
     @api.multi
     def write(self, values):
