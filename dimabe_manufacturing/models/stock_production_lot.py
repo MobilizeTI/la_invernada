@@ -76,6 +76,7 @@ class StockProductionLot(models.Model):
                 stock_picking_id = self.env.context['stock_picking_id']
                 stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
                 models._logger.error(stock_picking_id)
+                models._logger.error(stock_picking)
                 if stock_picking:
                     stock_move = stock_picking.move_ids_without_package.filtered(
                         lambda x: x.product_id == item.product_id
