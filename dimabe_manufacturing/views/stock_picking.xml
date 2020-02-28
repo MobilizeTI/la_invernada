@@ -59,6 +59,7 @@
                                 <field name="product_id" readonly="1"/>
                                 <field name="product_qty" readonly="1"/>
                                   <field name="qty_to_reserved"/>
+                                  <button string="Reservar" type="object" name="_get_qty_to_reserved"></button>
                               </tree>
                         </field>
                     </group>
