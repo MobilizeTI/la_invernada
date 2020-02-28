@@ -39,6 +39,7 @@ class StockProductionLot(models.Model):
                 item.producer_id = stock_picking[0].partner_id
 
     def _search_producer_id(self, operator, value):
+        models._logger.error('{} {} {}'.format(self, operator, value))
         return [('id', operator, value)]
 
     @api.multi

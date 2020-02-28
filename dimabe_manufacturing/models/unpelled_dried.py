@@ -18,6 +18,7 @@ class UnpelledDried(models.Model):
 
     in_lot_ids = fields.Many2many(
         'stock.production.lot',
+
         string='Lotes de Entrada'
     )
 
