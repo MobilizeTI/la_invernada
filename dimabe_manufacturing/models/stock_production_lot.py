@@ -40,7 +40,7 @@ class StockProductionLot(models.Model):
                     if stock_picking:
                         for stock in stock_picking.move_ids_without_package:
                             models._logger.error(
-                                "stock.sudo().update({'reserved_availability': " + str(item.product_qty) + " - " + str(stock.reserved_availability) + "})")
+                                "stock.sudo().update({'reserved_availability': " + str(item.product_qty) + " - " + str(stock.product_uom_qty) + "})")
 
     @api.multi
     def write(self, values):
