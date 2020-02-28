@@ -72,7 +72,7 @@ class StockProductionLot(models.Model):
     def unreserved(self):
         for item in self:
             if item.qty_standard_serial == 0:
-                stock_move = self.env['stock.move'].search([('product_id','=', item.product_id)])
+                stock_move = self.env['stock.move'].search([('product_id','=', item.product_id.id)])
                 models._logger.error(stock_move.name)
 
     @api.multi
