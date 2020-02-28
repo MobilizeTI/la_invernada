@@ -91,11 +91,10 @@ class StockProductionLot(models.Model):
                     item.update({
                         'is_reserve': False
                     })
-            stock_quant = item.get_stock_quant()
-            stock_quant.sudo().update({
-                'reserved_quantity': stock_quant.reserved_quantity - stock_move.product_uom_qty
-            })
-
+                stock_quant = item.get_stock_quant()
+                stock_quant.sudo().update({
+                    'reserved_quantity': stock_quant.reserved_quantity - stock_move.product_uom_qty
+                })
             for ml in move_line:
                 ml.write({'move_id': None, 'reserved_availability': 0})
 
