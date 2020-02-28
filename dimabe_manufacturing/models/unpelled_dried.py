@@ -47,7 +47,7 @@ class UnpelledDried(models.Model):
     @api.multi
     def _compute_out_serial_ids(self):
         for item in self:
-            item.out.serial_ids = item.out_lot_id.stock_production_lot_serial_ids
+            item.out_serial_ids = item.out_lot_id.stock_production_lot_serial_ids
 
     @api.multi
     def _inverse_out_serial_ids(self):
