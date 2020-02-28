@@ -11,6 +11,11 @@
     <field name="model">unpelled.dried</field>
     <field name="arch" type="xml">
       <form>
+        <header>
+           <field name="state"
+                  widget="statusbar"
+                  statusbar_visible="draft,progress,paused,done,cancel"/>
+        </header>
         <h1 class="d-none d-md-block">
           <field name="name" readonly="1" attrs="{'invisible':[('name','=',False)]}"/>
         </h1>
