@@ -41,7 +41,7 @@ class StockProductionLot(models.Model):
                         stock_move = stock_picking.move_ids_without_package.filtered(
                             lambda x: x.product_id == item.product_id
                         )
-                        stock_move.update({
+                        stock_move.sudo().update({
                             'reserved_availability': 2
                         })
                         models._logger.error(stock_move.reserved_availability)
