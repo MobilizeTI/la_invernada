@@ -44,7 +44,7 @@ class StockProductionLot(models.Model):
         if recs:
             return [('id', 'in', [a.id for a in recs])]
         models._logger.error('no entró')
-        return ['id', '<', 1]
+        return [('id', '=', 0)]
 
     @api.multi
     def _compute_total_serial(self):
