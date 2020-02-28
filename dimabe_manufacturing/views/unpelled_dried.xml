@@ -10,7 +10,7 @@
     <field name="name">Formulario Secado Despelonado</field>
     <field name="model">unpelled.dried</field>
     <field name="arch" type="xml">
-      <form>
+      <form readonly="1">
         <header>
           <button string="Finalizar Proceso"
                       class="oe_highlight"
@@ -109,6 +109,7 @@
         <field name="in_lot_ids" widget="many2many_tax"/>
         <field name="out_lot_id" string="Lote Salida"/>
         <field name="oven_use_ids" widget="many2many_tax"/>
+        <field name="state" />
       </tree>
     </field>
   </record>
