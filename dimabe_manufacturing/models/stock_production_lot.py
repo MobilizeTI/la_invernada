@@ -75,8 +75,9 @@ class StockProductionLot(models.Model):
                 stock_move = self.env['stock.move'].search([('product_id','=', item.product_id.id)])
                 for s in stock_move:
                     move_line = s.move_line_ids.filtered(
-                        lambda a : a.lot_id.id == item.id
-                    )
+                        lambda a : a.lot_id.id == item.id and a.product_qty == stock_move.product_uom_qty
+                     )
+
                     models._logger.error(len(move_line))
 
     @api.multi
