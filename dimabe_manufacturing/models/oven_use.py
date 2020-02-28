@@ -1,5 +1,6 @@
 from odoo import fields, models, api
 from datetime import datetime
+from ..helpers import date_helper
 
 
 class OvenUse(models.Model):
@@ -35,23 +36,7 @@ class OvenUse(models.Model):
     @api.depends('active_seconds')
     def _compute_active_time(self):
         for item in self:
-            days = int(item.active_seconds / 86400)
-            hours = 0
-            minutes = 0
-            sec = 0
-            if item.active_seconds % 86400 > 0:
-                hours = int((item.active_seconds % 86400) / 3600)
-                if (item.active_seconds % 86400) % 3600 > 0:
-                    minutes = int(((item.active_seconds % 86400) % 3600) / 60)
-                    if ((item.active_seconds % 86400) % 3600) % 60 > 0:
-                        sec = int(((item.active_seconds % 86400) % 3600) % 60)
-
-            item.active_time = '{} {}:{}:{}'.format(
-                '0{}'.format(days)[-2:],
-                '0{}'.format(hours)[-2:],
-                '0{}'.format(minutes)[-2:],
-                '0{}'.format(sec)[-2:]
-            )
+            item.active_time = date_helper.int_to_time(item.active_seconds)
 
     @api.multi
     def init_process(self):
