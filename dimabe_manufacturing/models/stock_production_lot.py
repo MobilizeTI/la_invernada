@@ -39,9 +39,7 @@ class StockProductionLot(models.Model):
                     stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
                     if stock_picking:
                         for stock in stock_picking.move_ids_without_package:
-                            stock.sudo().update({
-                                'reserved_availability': 2
-                            })
+                            models._logger(stock.reserved_availability)
 
     @api.multi
     def write(self, values):
