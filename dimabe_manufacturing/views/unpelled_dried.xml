@@ -85,7 +85,7 @@
                       class="oe_highlight"
                       name="finish_unpelled_dried"
                       type="object"
-                      attrs="{'invisible':[('state','!=','progress'))]}"
+                      attrs="{'invisible':[('state','!=','progress')]}"
               />
               <button string="Cancelar"
                       class="btn-danger"
