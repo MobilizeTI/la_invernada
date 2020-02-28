@@ -36,7 +36,7 @@
                                groups="mrp.group_mrp_manager"
                                attrs="{'invisible':[('state','=','done')]}"
                         >
-                            <tree>
+                            <tree edit="true" delete="false" create="false">
                                 <field name="stock_production_lot_id"/>
                                 <field name="stock_product_id"/>
                                 <field name="serial_number"/>
