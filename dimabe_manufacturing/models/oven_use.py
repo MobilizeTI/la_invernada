@@ -28,7 +28,11 @@ class OvenUse(models.Model):
 
     finish_active_time = fields.Integer('Fin de tiempo activo')
 
-    dried_oven_id = fields.Many2one('dried.oven', 'horno')
+    dried_oven_id = fields.Many2one(
+        'dried.oven',
+        'horno',
+        requied=True
+    )
 
     unpelled_dried_id = fields.Many2one('unpelled.dried', 'Proceso de secado')
 
