@@ -93,3 +93,10 @@ class UnpelledDried(models.Model):
     def cancel_unpelled_dried(self):
         for item in self:
             item.state = 'cancel'
+            item.oven_use_ids.mapped('dried_oven_id').set_is_in_use(False)
+
+    @api.multi
+    def finish_unpelled_dried(self):
+        for item in self:
+            item.state = 'done'
+            item.oven_use_ids.mapped('dried_ove_id').set_is_in_use(False)

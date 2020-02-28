@@ -21,3 +21,8 @@ class DriedOven(models.Model):
 
         return super(DriedOven, self).create(vals_list)
 
+    @api.multi
+    def set_is_in_use(self, is_in_use):
+        for item in self:
+            item.is_in_use = is_in_use
+
