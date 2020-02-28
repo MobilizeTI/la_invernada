@@ -148,6 +148,7 @@ class StockPicking(models.Model):
             self.gross_weight = 0
         if message:
             raise models.ValidationError(message)
+
     @api.one
     @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package', )
     def _compute_production_net_weight(self):

@@ -49,7 +49,7 @@ class OvenUse(models.Model):
             item.active_time = '{} {}:{}:{}'.format(
                 days,
                 hours,
-                '0{}'.format(minutes)[:-2],
+                '0{}'.format(minutes)[-2:],
                 sec
             )
 
