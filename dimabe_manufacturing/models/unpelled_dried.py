@@ -89,8 +89,7 @@ class UnpelledDried(models.Model):
 
         return res
 
-    @api.model
+    @api.multi
     def cancel_unpelled_dried(self):
-        self.state = 'cancel'
-
-
+        for item in self:
+            item.state = 'cancel'
