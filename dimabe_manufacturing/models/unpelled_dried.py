@@ -9,8 +9,7 @@ class UnpelledDried(models.Model):
         ('draft', 'Borrador'),
         ('progress', 'En Proceso'),
         ('done', 'Terminado'),
-        ('cancel', 'Cancelado'),
-        ('paused', 'En Pausa')
+        ('cancel', 'Cancelado')
     ])
 
     name = fields.Char(
