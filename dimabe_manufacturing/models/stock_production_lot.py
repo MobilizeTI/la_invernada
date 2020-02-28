@@ -82,6 +82,7 @@ class StockProductionLot(models.Model):
                     lambda a: a.lot_id.id == item.id and a.product_uom_qty == stock_move.reserved_availability
                 )
                 item.update({
+                    'qty_to_reserve': 0,
                     'is_reserved' : False
                 })
                 stock_quant = item.get_stock_quant()
