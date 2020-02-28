@@ -37,19 +37,23 @@ class StockProductionLot(models.Model):
         for item in self:
             if item.qty_standard_serial == 0:
                 if 'stock_picking_id' in self.env.context:
+                    models._logger.error('1{}'.format(item.reserve))
                     stock_picking_id = self.env.context['stock_picking_id']
+                    models._logger.error('2{}'.format(item.reserve))
                     stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
+                    models._logger.error('3{}'.format(item.reserve))
                     if stock_picking:
+                        models._logger.error('4{}'.format(item.reserve))
                         stock_move = stock_picking.move_ids_without_package.filtered(
                             lambda x: x.product_id == item.product_id
                         )
-
+                        models._logger.error('5{}'.format(item.reserve))
                         stock_quant = item.get_stock_quant()
-
+                        models._logger.error('6{}'.format(item.reserve))
                         stock_quant.sudo().update({
                             'reserved_quantity': stock_quant.reserved_quantity + item.qty_to_reserve
                         })
-
+                        models._logger.error('7{}'.format(item.reserve))
                         move_line = self.env['stock.move.line'].create({
                             'product_id': item.product_id.id,
                             'lot_id': item.id,
@@ -58,7 +62,7 @@ class StockProductionLot(models.Model):
                             'location_id': stock_quant.location_id.id,
                             'location_dest_id': stock_picking.partner_id.property_stock_customer.id
                         })
-
+                        models._logger.error('8{}'.format(item.reserve))
                         stock_move.sudo().update({
                             'move_line_ids': [
                                 (4, move_line.id)
