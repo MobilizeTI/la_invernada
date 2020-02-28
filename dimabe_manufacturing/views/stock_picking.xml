@@ -37,7 +37,7 @@
                                attrs="{'invisible':[('state','=','done')]}"
 
                         >
-                            <tree >
+                            <tree>
                                 <field name="stock_production_lot_id"/>
                                 <field name="stock_product_id"/>
                                 <field name="serial_number"/>
@@ -54,13 +54,13 @@
                                attrs="{'invisible':[('state','=','done')]}"
                                readonly="0"
                         >
-                              <tree editable="bottom" delete="false" create="false">
+                            <tree editable="bottom" delete="false" create="false">
                                 <field name="name" readonly="1"/>
                                 <field name="product_id" readonly="1"/>
                                 <field name="product_qty" readonly="1"/>
-                                  <field name="qty_to_reserve"/>
-                                  <button string="Reservar" type="object" name="get_qty_to_reserved"></button>
-                              </tree>
+                                <field name="qty_to_reserve"/>
+                                <button string="Reservar" type="object" name="reserved"></button>
+                            </tree>
                         </field>
                     </group>
                 </page>
