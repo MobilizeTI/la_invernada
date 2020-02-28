@@ -43,7 +43,7 @@ class StockProductionLot(models.Model):
                         )
                         stock_quant = item.get_stock_quant()
 
-                        models._logger.error(stock_quant)
+                        models._logger.error(stock_quant.quantity)
 
     @api.multi
     def write(self, values):
