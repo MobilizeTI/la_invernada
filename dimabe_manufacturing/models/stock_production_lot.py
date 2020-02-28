@@ -40,7 +40,7 @@ class StockProductionLot(models.Model):
                     if stock_picking:
                         for stock in stock_picking.move_ids_without_package:
                             stock.update({
-                                'product_qty': 0
+                                'reserved_availability': 2
                             })
 
     @api.multi
