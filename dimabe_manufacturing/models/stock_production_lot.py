@@ -85,6 +85,7 @@ class StockProductionLot(models.Model):
                     'qty_to_reserve': 0,
                     'is_reserved': False
                 })
+                models._logger.error(item.is_reserved)
                 stock_quant = item.get_stock_quant()
                 stock_quant.sudo().update({
                     'reserved_quantity': stock_quant.reserved_quantity - stock_move.product_uom_qty

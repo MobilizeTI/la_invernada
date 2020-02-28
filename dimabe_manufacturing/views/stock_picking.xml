@@ -62,7 +62,7 @@
                                 <field name="is_reserved" invisible="1"/>
                                 <button string="Reservar" type="object" name="reserved"
                                         context="{'stock_picking_id':parent.id,'reserved':qty_to_reserve}"
-                                        attrs="{'invisible':[('is_reserved','=',False)]}"/>
+                                        attrs="{'invisible':[('is_reserved','!=',None)]}"/>
                                 <button string="Quitar Reservar" type="object" name="unreserved"
                                         context="{'stock_picking_id':parent.id}"
                                         attrs = "{'invisible':[('is_reserved','=',True)]}"
