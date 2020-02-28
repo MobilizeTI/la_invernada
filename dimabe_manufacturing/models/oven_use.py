@@ -47,18 +47,21 @@ class OvenUse(models.Model):
                 raise models.ValidationError('Debe seleccionar el horno a iniciar')
             item.init_date = datetime.utcnow()
             item.init_active_time = item.init_date.timestamp()
+            item.unpelled_dried_id.state = 'progress'
 
     @api.multi
     def pause_process(self):
         for item in self:
             item.finish_active_time = datetime.utcnow().timestamp()
             item.active_seconds += item.finish_active_time - item.init_active_time
+            item.unpelled_dried_id.state = 'paused'
 
     @api.multi
     def resume_process(self):
         for item in self:
             item.init_active_time = datetime.utcnow().timestamp()
             item.finish_active_time = 0
+            item.unpelled_dried_id.state = 'progress'
 
     @api.multi
     def finish_process(self):
@@ -67,3 +70,4 @@ class OvenUse(models.Model):
             if item.finish_active_time == 0:
                 item.finish_active_time = item.finish_date.timestamp()
                 item.active_seconds += item.finish_active_time - item.init_active_time
+            item.unpelled_dried_id.state = 'done'
