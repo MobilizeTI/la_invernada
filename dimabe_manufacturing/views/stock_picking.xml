@@ -60,7 +60,7 @@
                                 <field name="product_qty" readonly="1"/>
                                 <field name="reserve" />
                                 <button string="Reservar" type="object" name="reserved"
-                                        context="{'stock_picking_id':parent.id}"/>
+                                        context="{'stock_picking_id':parent.id,'reserved':reserved}"/>
                                 <button string="Quitar Reservar" type="object" name="unreserved"
                                         context="{'stock_picking_id':parent.id}"/>
                             </tree>
