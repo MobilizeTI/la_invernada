@@ -76,7 +76,7 @@ class StockProductionLot(models.Model):
                     lambda x: x.product_id == item.product_id
                 )
                 move_line = stock_move.move_line_ids.filtered(
-                    lambda a: a.lot_id.id == item.id and a.product_qty == stock_move.product_uom_qty
+                    lambda a: a.lot_id.id == item.id and a.product_uom_qty == stock_move.product_uom_qty
                 )
                 models._logger.error(item.id)
                 models._logger.error(stock_move.product_uom_qty)
