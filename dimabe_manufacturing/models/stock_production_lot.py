@@ -40,15 +40,10 @@ class StockProductionLot(models.Model):
 
     def _search_producer_id(self, operator, value):
         stock_picking_ids = self.env['stock.picking'].search([
-            ('partner_id', operator, value)
+            ('partner_id', operator, value),
+            ('picking_type_code', '=', 'outgoing')
         ])
-
-        # recs = self.search([]).filtered(lambda a: a.producer_id and a.producer_id.id == value)
-        # models._logger.error(self)
-        # if recs:
         return [('name', 'in', stock_picking_ids.mapped('name'))]
-
-        # return [('id', '=', 0)]
 
     @api.multi
     def _compute_total_serial(self):
