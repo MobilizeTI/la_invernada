@@ -38,12 +38,10 @@ class StockProductionLot(models.Model):
                     stock_picking_id = self.env.context['stock_picking_id']
                     stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
                     if stock_picking:
-                        for stock in stock_picking.move_ids_without_package:
-                            models._logger.error(stock.reserved_availability)
-                            stock.update({
-                                'reserved_availability': 2
-                            })
-                            models._logger.error(stock.reserved_availability)
+                        stock_move = stock_picking.move_ids_without_package.filtered(
+                            lambda x: x.product_id == item.product_id
+                        )
+                        models._logger.error(stock_move)
 
     @api.multi
     def write(self, values):
