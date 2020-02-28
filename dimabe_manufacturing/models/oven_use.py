@@ -76,4 +76,4 @@ class OvenUse(models.Model):
             item.finish_date = datetime.utcnow()
             if item.finish_active_time == 0:
                 item.finish_active_time = item.finish_date.timestamp()
-            item.active_seconds += item.finish_active_time - item.init_active_time
+                item.active_seconds += item.finish_active_time - item.init_active_time
