@@ -67,7 +67,7 @@ class StockProductionLot(models.Model):
     def unreserved(self):
         for item in self:
             stock_picking_id = self.env.context['stock_picking_id_undo']
-            stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
+            stock_picking = self.env['stock_picking_id_undo'].search([('id', '=', stock_picking_id)])
 
             models._logger.error(stock_picking_id)
             models._logger.error(stock_picking)
