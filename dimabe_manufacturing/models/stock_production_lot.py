@@ -39,11 +39,9 @@ class StockProductionLot(models.Model):
                 item.producer_id = stock_picking[0].partner_id
 
     def _search_producer_id(self, operator, value):
-        models._logger.error('{} {} {}'.format(self.producer_id.id, operator, value))
-        if self.producer_id:
-            return [(self.producer_id.id, operator, value)]
-        else:
-            return [(self.producer_id.id, '=', True)]
+        recs = self.search([]).filtered(lambda a: a.producer_id is True)
+        if recs:
+            return ['id', 'in', [a.id for a in recs]]
 
     @api.multi
     def _compute_total_serial(self):
