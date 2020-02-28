@@ -46,7 +46,8 @@ class UnpelledDried(models.Model):
 
     @api.onchange('producer_id')
     def onchange_producer_id(self):
-        self.in_lot_ids = [(5,)]
+        if self.producer_id not in self.in_lot_ids.mapped('producer_id'):
+            self.in_lot_ids = [(5,)]
 
     @api.multi
     def _compute_out_serial_ids(self):
