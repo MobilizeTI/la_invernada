@@ -78,8 +78,6 @@ class StockProductionLot(models.Model):
                         lambda a : a.lot_id.id == item.id and a.product_qty == stock_move.product_uom_qty
                      )
 
-                    models._logger.error(len(move_line))
-
     @api.multi
     def write(self, values):
         for item in self:
