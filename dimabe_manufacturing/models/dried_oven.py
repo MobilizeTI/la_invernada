@@ -11,3 +11,11 @@ class DriedOven(models.Model):
     def onchange_name(self):
         if self.name:
             self.name = str.upper(self.name)
+
+    @api.model
+    def create(self, vals_list):
+        if 'name' in vals_list and not vals_list['name'] is False:
+            vals_list['name'] = str.upper(vals_list['name'])
+
+        return super(DriedOven, self).create(vals_list)
+
