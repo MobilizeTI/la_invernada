@@ -77,7 +77,7 @@ class StockProductionLot(models.Model):
                     move_line = s.move_line_ids.filtered(
                         lambda a : a.lot_id.id == item.id
                     )
-                    models._logger.error(move_line)
+                    models._logger.error(len(move_line))
 
     @api.multi
     def write(self, values):
