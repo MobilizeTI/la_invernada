@@ -44,12 +44,12 @@ class StockProductionLot(models.Model):
                         stock_quant = item.get_stock_quant()
 
                         stock_quant.sudo().update({
-                            'reserved_quantity':stock_quant.reserved_quantity - 2
+                            'reserved_quantity': stock_quant.reserved_quantity - 2
                         })
 
 
 
-                        models._logger.error(stock_quant.quantity)
+                        models._logger.error(stock_quant.reserved_quantity)
 
     @api.multi
     def write(self, values):
