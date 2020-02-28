@@ -33,7 +33,7 @@ class StockProductionLot(models.Model):
     @api.multi
     def reserved(self):
         for item in self:
-            models._logger.error(item)
+            models._logger.error(item.product_id)
 
     @api.multi
     def write(self, values):
