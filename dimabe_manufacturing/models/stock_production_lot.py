@@ -39,11 +39,11 @@ class StockProductionLot(models.Model):
                 item.producer_id = stock_picking[0].partner_id
 
     def _search_producer_id(self, operator, value):
-        recs = self.search([]).filtered(lambda a: a.producer_id == value)
+        recs = self.search([]).filtered(lambda a: a.producer_id and a.producer_id.id == value)
         models._logger.error(recs)
         if recs:
             return [('id', 'in', [a.id for a in recs])]
-        models._logger.error('no entró')
+
         return [('id', '=', 0)]
 
     @api.multi
