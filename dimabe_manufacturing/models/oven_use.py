@@ -31,7 +31,7 @@ class OvenUse(models.Model):
     dried_oven_id = fields.Many2one(
         'dried.oven',
         'horno',
-        requied=True
+        required=True
     )
 
     unpelled_dried_id = fields.Many2one('unpelled.dried', 'Proceso de secado')
