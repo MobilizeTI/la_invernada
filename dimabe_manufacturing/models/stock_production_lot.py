@@ -56,6 +56,10 @@ class StockProductionLot(models.Model):
                             'location_dest_id': stock_picking.partner_id.property_stock_customer.id
                         })
 
+                        models._logger.error('product_id:{} lot_id:{} product_uom_qty : {} product_uom_id: {} '.format(
+                            move_line.product_id, move_line.lot_id, move_line.product_uom_qty,
+                            move_line.product_uom_id))
+
                         stock_move.sudo().update({
                             'move_line_ids': [
                                 (4, move_line.id)
