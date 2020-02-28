@@ -41,7 +41,7 @@ class StockProductionLot(models.Model):
     def _search_producer_id(self, operator, value):
         stock_picking_ids = self.env['stock.picking'].search([
             ('partner_id', operator, value),
-            ('picking_type_code', '=', 'outgoing')
+            ('picking_type_code', '=', 'incoming')
         ])
         return [('name', 'in', stock_picking_ids.mapped('name'))]
 
