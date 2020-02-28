@@ -40,7 +40,10 @@ class StockProductionLot(models.Model):
 
     def _search_producer_id(self, operator, value):
         models._logger.error('{} {} {}'.format(self, operator, value))
-        return [('producer_id', operator, value)]
+        if self.producer_id:
+            return [(self.producer_id.id, operator, value)]
+        else:
+            return [(self.producer_id.id, '=', True)]
 
     @api.multi
     def _compute_total_serial(self):
