@@ -87,7 +87,7 @@ class StockProductionLot(models.Model):
                 })
 
                 for ml in move_line:
-                    ml.write({'move_id': None, 'product_uom_qty': 0})
+                    ml.write({'move_id': None, 'reserved_availability': 0})
 
 
     @api.multi
