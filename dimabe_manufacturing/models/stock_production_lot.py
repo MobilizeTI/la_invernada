@@ -39,7 +39,7 @@ class StockProductionLot(models.Model):
                     stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
                     if stock_picking:
                         for stock in stock_picking.move_ids_without_package:
-                            models._logger.error(stock.reserved_availability)
+                            models._logger.error(item.product_uom_qty)
 
 
 
