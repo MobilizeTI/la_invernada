@@ -36,7 +36,8 @@ class StockProductionLot(models.Model):
             if item.qty_standard_serial == 0:
                 if 'stock_picking_id' in self.env.context:
                     stock_picking_id = self.env.context['stock_picking_id']
-                    models._logger.error(stock_picking_id)
+                    stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
+                    models._logger.error(stock_picking)
 
 
     @api.multi
