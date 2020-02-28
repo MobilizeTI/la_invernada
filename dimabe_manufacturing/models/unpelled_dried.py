@@ -73,7 +73,7 @@ class UnpelledDried(models.Model):
         out_lot = self.env['stock.production.lot'].create({
             'name': name,
             'product_id': res.out_product_id.id,
-            'is_prd_lot': True
+            'is_prd_lot': True  # probar si funciona bien, de lo contrario dejar en False
         })
 
         res.out_lot_id = out_lot.id
