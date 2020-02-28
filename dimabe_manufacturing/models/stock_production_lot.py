@@ -54,7 +54,7 @@ class StockProductionLot(models.Model):
                         })
                         if reserve >= 0:
                             item.update({
-                                'is_reserve': True
+                                'is_reserved': True
                             })
                         move_line = self.env['stock.move.line'].create({
                             'product_id': item.product_id.id,
@@ -89,7 +89,7 @@ class StockProductionLot(models.Model):
                 })
                 if item.qty_to_reserve <= 0:
                     item.update({
-                        'is_reserve': False
+                        'is_reserved': False
                     })
                 stock_quant = item.get_stock_quant()
                 stock_quant.sudo().update({
