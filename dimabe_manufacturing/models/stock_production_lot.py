@@ -79,7 +79,7 @@ class StockProductionLot(models.Model):
                     lambda a: a.lot_id.id == item.id and a.product_uom_qty == stock_move.reserved_availability
                 )
                 models._logger.error(item.id)
-                models._logger.error(stock_move.product_uom_qty)
+                models._logger.error(stock_move.reserved_availability)
                 models._logger.error(move_line.id)
                 stock_quant = item.get_stock_quant()
                 stock_quant.sudo().update({
