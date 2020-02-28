@@ -38,7 +38,9 @@
                    domain="[('producer_id','=',producer_id),('balance','>',0)]"
                    attrs="{'invisible':[('producer_id','=',False)]}"
             />
-            <field name="oven_use_ids">
+            <field name="oven_use_ids"
+                   domain="[('is_in_use','=',False)]"
+            >
               <tree editable="bottom">
                 <field name="init_active_time" invisible="1"/>
                 <field name="finish_active_time" invisible="1"/>

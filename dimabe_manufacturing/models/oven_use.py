@@ -48,6 +48,7 @@ class OvenUse(models.Model):
             item.init_date = datetime.utcnow()
             item.init_active_time = item.init_date.timestamp()
             item.unpelled_dried_id.state = 'progress'
+            item.dried_oven_id.is_in_use = True
 
     @api.multi
     def pause_process(self):
@@ -68,3 +69,4 @@ class OvenUse(models.Model):
             if item.finish_active_time == 0:
                 item.finish_active_time = item.finish_date.timestamp()
                 item.active_seconds += item.finish_active_time - item.init_active_time
+            item.dried_oven_id.is_in_use = False
