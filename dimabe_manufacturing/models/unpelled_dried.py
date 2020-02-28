@@ -28,7 +28,8 @@ class UnpelledDried(models.Model):
 
     out_serial_ids = fields.One2many(
         'stock.production.lot.serial',
-        related='out_lot_id.stock_production_lot_serial_ids'
+        related='out_lot_id.stock_production_lot_serial_ids',
+        inverse='_inverse_out_serial_ids'
     )
 
     out_product_id = fields.Many2one(
@@ -42,6 +43,11 @@ class UnpelledDried(models.Model):
         'unpelled_dried_id',
         'Hornos'
     )
+
+    @api.multi
+    def _inverse_out_serial_ids(self):
+        for item in self:
+            print()
 
     @api.multi
     def _compute_name(self):
