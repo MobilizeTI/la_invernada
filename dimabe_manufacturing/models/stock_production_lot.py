@@ -64,7 +64,6 @@ class StockProductionLot(models.Model):
                             ]
                         })
 
-
     @api.multi
     def unreserved(self):
         for item in self:
@@ -88,7 +87,6 @@ class StockProductionLot(models.Model):
 
                 for ml in move_line:
                     ml.write({'move_id': None, 'reserved_availability': 0})
-
 
     @api.multi
     def write(self, values):
