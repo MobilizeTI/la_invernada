@@ -9,8 +9,9 @@ class StockPicking(models.Model):
         string='Detalle',
         compute='_compute_stock_move_line_lot_ids'
     )
+
     @api.multi
     def _compute_stock_move_line_lot_ids(self):
         for item in self:
             if item.get_mp_move():
-                item.stock_move_line_lot_ids = item.get_mp_move().move_line_ids
+                item.stock_move_line_lot_ids = item.get_mp_move().mapped('move_line_ids')
