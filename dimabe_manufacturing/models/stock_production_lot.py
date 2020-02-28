@@ -57,23 +57,17 @@ class StockProductionLot(models.Model):
                             'location_dest_id': stock_picking.partner_id.property_stock_customer.id
                         })
 
-                        models._logger.error('product_id:{} lot_id:{} product_uom_qty : {} product_uom_id: {} '.format(
-                            move_line.product_id, move_line.lot_id, move_line.product_uom_qty,
-                            move_line.product_uom_id))
-
                         stock_move.sudo().update({
                             'move_line_ids': [
                                 (4, move_line.id)
                             ]
                         })
 
-                        models._logger.error(stock_quant.reserved_quantity)
-
     @api.multi
     def unreserved(self):
         for item in self:
-            if 'stock_picking_id' in self.env.context:
-                stock_picking_id = self.env.context['stock_picking_id']
+            if 'stock_picking_id_undo' in self.env.context:
+                stock_picking_id = self.env.context['stock_picking_id_undo']
                 stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
 
                 models._logger.error(stock_picking_id)

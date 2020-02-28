@@ -62,7 +62,7 @@
                                 <button string="Reservar" type="object" name="reserved"
                                         context="{'stock_picking_id':parent.id}"/>
                                 <button string="Quitar Reservar" type="object" name="unreserved"
-                                        context="{'stock_picking_id':parent.id}"/>
+                                        context="{'stock_picking_id_undo':parent.id}"/>
                             </tree>
                         </field>
                     </group>
