@@ -41,6 +41,7 @@ class StockProductionLot(models.Model):
                         stock_move = stock_picking.move_ids_without_package.filtered(
                             lambda x: x.product_id == item.product_id
                         )
+
                         stock_quant = item.get_stock_quant()
 
                         stock_quant.sudo().update({
@@ -72,11 +73,25 @@ class StockProductionLot(models.Model):
     def unreserved(self):
         for item in self:
             if item.qty_standard_serial == 0:
-                stock_move = self.env['stock.move'].search([('product_id','=', item.product_id.id)])
-                for s in stock_move:
-                    move_line = s.move_line_ids.filtered(
-                        lambda a : a.lot_id.id == item.id and a.product_qty == stock_move.product_uom_qty
-                     )
+                if 'stock_picking_id' in self.env.context:
+                    stock_picking_id = self.env.context['stock_picking_id']
+                    stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
+                    if stock_picking:
+                        stock_move = stock_picking.move_ids_without_package.filtered(
+                            lambda x: x.product_id == item.product_id
+                        )
+                        models._logger.error(stock_move)
+                        move_line = stock_move.move_line_ids.filtered(
+                            lambda a: a.lot_id.id == item.id and a.product_qty == stock_move.product_uom_qty
+                        )
+                        models._logger.error(move_line)
+                        stock_quant = item.get_stock_quant()
+                        stock_quant.sudo().update({
+                            'reserved_quantity' : stock_quant.reserved_quantity - stock_move.product_uom_qty
+                        })
+
+                        for ml in move_line:
+                            ml.write({'move_id':None,'product_uom_qty':0})
 
     @api.multi
     def write(self, values):
