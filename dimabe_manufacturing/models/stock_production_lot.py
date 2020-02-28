@@ -45,7 +45,7 @@ class StockProductionLot(models.Model):
                         stock_quant = item.get_stock_quant()
 
                         stock_quant.sudo().update({
-                            'reserved_quantity': stock_quant.reserved_quantity + item.product_qty
+                            'reserved_quantity': stock_quant.reserved_quantity + item.qty_to_reserve
                         })
 
                         move_line = self.env['stock.move.line'].create({
