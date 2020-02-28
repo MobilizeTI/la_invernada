@@ -60,7 +60,6 @@
                    attrs="{'readonly':[('out_serial_ids','!=',False)]}"
             />
             <field name="out_lot_id"
-                   readonly="1"
                    attrs="{'invisible':[('out_lot_id','=',False)]}"
             />
             <field name="out_serial_ids"/>
