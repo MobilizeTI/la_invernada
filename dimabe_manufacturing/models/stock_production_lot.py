@@ -89,7 +89,7 @@ class StockProductionLot(models.Model):
                 for ml in move_line:
                     item.is_reserved = True
                     ml.write({'move_id': None, 'reserved_availability': 0})
-            item.is_reserved = False
+
 
 
 
