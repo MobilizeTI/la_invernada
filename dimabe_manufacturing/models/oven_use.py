@@ -47,10 +47,10 @@ class OvenUse(models.Model):
                         sec = int(((item.active_seconds % 86400) % 3600) % 60)
 
             item.active_time = '{} {}:{}:{}'.format(
-                days,
-                hours,
+                '0{}'.format(days)[-2:],
+                '0{}'.format(hours)[-2:],
                 '0{}'.format(minutes)[-2:],
-                sec
+                '0{}'.format(sec)[-2:]
             )
 
     @api.multi
