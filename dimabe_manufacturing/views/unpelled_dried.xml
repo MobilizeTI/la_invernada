@@ -79,7 +79,7 @@
         <field name="name"/>
         <field name="producer_id"/>
         <field name="in_lot_ids" widget="many2many_tax"/>
-        <field name="out_lot_id"/>
+        <field name="out_lot_id" string="Lote Salida"/>
         <field name="oven_use_ids" widget="many2many_tax"/>
       </tree>
     </field>
