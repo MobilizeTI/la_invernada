@@ -32,51 +32,49 @@
         </h1>
         <group>
           <group>
-            <sheet>
-              <field name="producer_id"
-                     attrs="{'readonly':[('state','in',['done','cancel'])]}"
-              />
+            <field name="producer_id"
+                   attrs="{'readonly':[('state','in',['done','cancel'])]}"
+            />
 
-              <field name="in_lot_ids"
-                     domain="[('producer_id','=',producer_id),('balance','>',0)]"
-                     attrs="{'invisible':[('producer_id','=',False)],'readonly':[('state','in',['done','cancel'])]}"
-              />
-              <field name="oven_use_ids"
-                     attrs="{'readonly':[('state','in',['done','cancel'])]}"
-              >
-                <tree editable="bottom">
-                  <field name="init_active_time" invisible="1"/>
-                  <field name="finish_active_time" invisible="1"/>
-                  <field name="dried_oven_id"
-                         attrs="{'readonly':[('init_date','!=',False)]}"
-                         domain="[('is_in_use','=',False)]"
-                  />
-                  <field name="init_date" readonly="1"/>
-                  <field name="finish_date" readonly="1"/>
-                  <field name="active_time"/>
-                  <button string="iniciar horno"
-                          attrs="{'invisible':['|',('init_date','!=',False),('dried_oven_id','=',False)]}"
-                          name="init_process"
-                          type="object"
-                  />
-                  <button string="pausar horno"
-                          attrs="{'invisible':['|',('finish_active_time','>', 0),('init_date','=',False)]}"
-                          name="pause_process"
-                          type="object"
-                  />
-                  <button string="reanudar horno"
-                          attrs="{'invisible':['|','|',('finish_active_time','=',0 ),('init_date','=',False),('finish_date','!=',False)]}"
-                          name="resume_process"
-                          type="object"
-                  />
-                  <button string="detener horno"
-                          attrs="{'invisible':['|',('finish_date','!=',False),('init_date','=',False)]}"
-                          name="finish_process"
-                          type="object"
-                  />
-                </tree>
-              </field>
-            </sheet>
+            <field name="in_lot_ids"
+                   domain="[('producer_id','=',producer_id),('balance','>',0)]"
+                   attrs="{'invisible':[('producer_id','=',False)],'readonly':[('state','in',['done','cancel'])]}"
+            />
+            <field name="oven_use_ids"
+                   attrs="{'readonly':[('state','in',['done','cancel'])]}"
+            >
+              <tree editable="bottom">
+                <field name="init_active_time" invisible="1"/>
+                <field name="finish_active_time" invisible="1"/>
+                <field name="dried_oven_id"
+                       attrs="{'readonly':[('init_date','!=',False)]}"
+                       domain="[('is_in_use','=',False)]"
+                />
+                <field name="init_date" readonly="1"/>
+                <field name="finish_date" readonly="1"/>
+                <field name="active_time"/>
+                <button string="iniciar horno"
+                        attrs="{'invisible':['|',('init_date','!=',False),('dried_oven_id','=',False)]}"
+                        name="init_process"
+                        type="object"
+                />
+                <button string="pausar horno"
+                        attrs="{'invisible':['|',('finish_active_time','>', 0),('init_date','=',False)]}"
+                        name="pause_process"
+                        type="object"
+                />
+                <button string="reanudar horno"
+                        attrs="{'invisible':['|','|',('finish_active_time','=',0 ),('init_date','=',False),('finish_date','!=',False)]}"
+                        name="resume_process"
+                        type="object"
+                />
+                <button string="detener horno"
+                        attrs="{'invisible':['|',('finish_date','!=',False),('init_date','=',False)]}"
+                        name="finish_process"
+                        type="object"
+                />
+              </tree>
+            </field>
           </group>
           <group>
             <field name="out_product_id"
