@@ -41,7 +41,7 @@ class StockProductionLot(models.Model):
                         stock_move = stock_picking.move_ids_without_package.filtered(
                             lambda x: x.product_id == item.product_id
                         )
-                        stock_quant = item.stock_production_lot_id.get_stock_quant()
+                        stock_quant = item.get_stock_quant()
 
                         models._logger.error(stock_quant)
 
