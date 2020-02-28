@@ -41,7 +41,9 @@ class StockProductionLot(models.Model):
                         stock_move = stock_picking.move_ids_without_package.filtered(
                             lambda x: x.product_id == item.product_id
                         )
-                        models._logger.error(stock_move.name)
+                        stock_move.update({
+                            'reserved_availability': 2
+                        })
 
     @api.multi
     def write(self, values):
