@@ -47,6 +47,21 @@ class StockProductionLot(models.Model):
                             'reserved_quantity': stock_quant.reserved_quantity + item.product_qty
                         })
 
+                        move_line = self.env['stock.move.line'].create({
+                            'product_id': item.product_id.id,
+                            'lot_id': item.id,
+                            'product_uom_qty':item.product_qty,
+                            'product_uom_qty':stock_move.product_uom.id,
+                            'location_id':stock_quant.location_id.id,
+                            'location_dest_id':stock_picking.partner_id.property_stock_customer.id
+                        })
+
+                        stock_move.sudo().update({
+                            'move_line_ids':[
+                                (4,move_line.id)
+                            ]
+                        })
+
                         models._logger.error(stock_quant.reserved_quantity)
 
     @api.multi
