@@ -46,6 +46,7 @@ class UnpelledDried(models.Model):
 
     @api.onchange('producer_id')
     def onchange_producer_id(self):
+        raise models.ValidationError('')
         self.in_lot_ids = []
 
     @api.multi
