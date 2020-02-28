@@ -44,10 +44,8 @@ class StockProductionLot(models.Model):
                         stock_quant = item.get_stock_quant()
 
                         stock_quant.sudo().update({
-                            'reserved_quantity': stock_quant.reserved_quantity + 4
+                            'reserved_quantity': stock_quant.reserved_quantity + item.product_qty
                         })
-
-
 
                         models._logger.error(stock_quant.reserved_quantity)
 
