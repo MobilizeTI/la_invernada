@@ -84,8 +84,9 @@ class StockProductionLot(models.Model):
                 stock_quant.sudo().update({
                     'reserved_quantity': stock_quant.reserved_quantity - stock_move.product_uom_qty
                 })
-
+                item.is_reserved = False
                 for ml in move_line:
+                    item.is_reserved = True
                     ml.write({'move_id': None, 'reserved_availability': 0})
 
     @api.multi
