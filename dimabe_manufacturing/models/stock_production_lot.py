@@ -83,7 +83,7 @@ class StockProductionLot(models.Model):
                 )
                 item.update({
                     'qty_to_reserve': 0,
-                    'is_reserved' : False
+                    'is_reserved': False
                 })
                 stock_quant = item.get_stock_quant()
                 stock_quant.sudo().update({
