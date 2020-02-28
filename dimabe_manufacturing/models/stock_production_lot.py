@@ -25,7 +25,7 @@ class StockProductionLot(models.Model):
 
     qty_to_reserve = fields.Float('Cantidad a Reservar')
 
-    is_reserved = fields.Boolean('Esta reservado?')
+    is_reserved = fields.Boolean('Esta reservado?',compute='reserved',default=False)
 
     @api.multi
     def _compute_total_serial(self):
@@ -62,6 +62,7 @@ class StockProductionLot(models.Model):
                                 (4, move_line.id)
                             ]
                         })
+                        item.is_reserved = True
 
     @api.multi
     def unreserved(self):
