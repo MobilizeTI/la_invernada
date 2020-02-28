@@ -4,14 +4,15 @@ from odoo import fields, models, api
 class UnpelledDried(models.Model):
     _name = 'unpelled.dried'
     _description = 'clase que para producción de secado y despelonado'
-    _order = 'name desc'
 
     state = fields.Selection([
         ('draft', 'Borrador'),
         ('progress', 'En Proceso'),
         ('done', 'Terminado'),
         ('cancel', 'Cancelado')
-    ])
+    ],
+        'Estado'
+    )
 
     name = fields.Char(
         'Proceso',
