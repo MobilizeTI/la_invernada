@@ -41,7 +41,7 @@ class StockProductionLot(models.Model):
                         stock_move = stock_picking.move_ids_without_package.filtered(
                             lambda x: x.product_id == item.product_id
                         )
-                        models._logger.error(stock_move)
+                        models._logger.error(stock_move.name)
 
     @api.multi
     def write(self, values):
