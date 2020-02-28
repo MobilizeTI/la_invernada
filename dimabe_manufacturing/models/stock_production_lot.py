@@ -73,7 +73,8 @@ class StockProductionLot(models.Model):
         for item in self:
             if item.qty_standard_serial == 0:
                 stock_move = self.env['stock.move'].search([('product_id','=', item.product_id.id)])
-                models._logger.error(stock_move.name)
+                for s in stock_move:
+                    models._logger.error(s.name)
 
     @api.multi
     def write(self, values):
