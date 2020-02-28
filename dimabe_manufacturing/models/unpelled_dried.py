@@ -18,7 +18,6 @@ class UnpelledDried(models.Model):
 
     in_lot_ids = fields.Many2many(
         'stock.production.lot',
-
         string='Lotes de Entrada'
     )
 
@@ -44,6 +43,10 @@ class UnpelledDried(models.Model):
         'unpelled_dried_id',
         'Hornos'
     )
+
+    @api.onchange('producer_id')
+    def onchange_producer_id(self):
+        self.in_lot_ids = []
 
     @api.multi
     def _compute_out_serial_ids(self):
