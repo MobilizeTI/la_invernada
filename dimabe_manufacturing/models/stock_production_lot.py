@@ -49,9 +49,9 @@ class StockProductionLot(models.Model):
                         stock_quant.sudo().update({
                             'reserved_quantity': stock_quant.reserved_quantity + item.qty_to_reserve
                         })
-                        item.is_reserved = True
                         item.update({
-                            'qty_to_reserve': reserve
+                            'qty_to_reserve': reserve,
+                            'is_reserved': True
                         })
                         move_line = self.env['stock.move.line'].create({
                             'product_id': item.product_id.id,
@@ -81,16 +81,15 @@ class StockProductionLot(models.Model):
                 move_line = stock_move.move_line_ids.filtered(
                     lambda a: a.lot_id.id == item.id and a.product_uom_qty == stock_move.reserved_availability
                 )
-                models._logger.error(item.id)
-                models._logger.error(stock_move.reserved_availability)
-                models._logger.error(move_line.id)
+                item.update({
+                    'is_reserved' : False
+                })
                 stock_quant = item.get_stock_quant()
                 stock_quant.sudo().update({
                     'reserved_quantity': stock_quant.reserved_quantity - stock_move.product_uom_qty
                 })
 
                 for ml in move_line:
-                    item.is_reserved = True
                     ml.write({'move_id': None, 'reserved_availability': 0})
 
     @api.multi
