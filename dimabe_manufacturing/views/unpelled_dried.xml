@@ -31,7 +31,7 @@
                 />
                 <field name="init_date" readonly="1"/>
                 <field name="finish_date" readonly="1"/>
-                <field name="active_time" />
+                <field name="active_time"/>
                 <button string="iniciar horno"
                         attrs="{'invisible':['|',('init_date','!=',False),('dried_oven_id','=',False)]}"
                         name="init_process"
@@ -68,16 +68,28 @@
                 <field name="stock_production_lot_id"
                        readonly="1"
                 />
-                <field name="consumed" />
-                <field name="display_weight" />
+                <field name="consumed"/>
+                <field name="display_weight"/>
                 <field name="serial_number"
                        readonly="1"
                 />
               </tree>
             </field>
-            <button >
+            <div class="oe_inline">
+              <button string="Finalizar Proceso"
+                      class="oe_highlight"
+                      name="finish_unpelled_dried"
+                      type="object"
+                      attrs="{'invisible':[('state','!=','progress'))]}"
+              />
+              <button string="Cancelar"
+                      class="btn-danger"
+                      name="cancel_unpelled_dried"
+                      type="object"
+                      attrs="{'invisible':[('state','in',['draft','cancel'])]}"
+              />
+            </div>
 
-            </button>
           </group>
         </group>
 

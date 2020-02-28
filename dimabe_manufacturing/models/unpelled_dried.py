@@ -5,6 +5,13 @@ class UnpelledDried(models.Model):
     _name = 'unpelled.dried'
     _description = 'clase que para producción de secado y despelonado'
 
+    state = fields.Selection([
+        ('draft', 'Borrador'),
+        ('progress', 'En Proceso'),
+        ('done', 'Terminado'),
+        ('cancel', 'Cancelado')
+    ])
+
     name = fields.Char(
         'Proceso',
         compute='_compute_name'
