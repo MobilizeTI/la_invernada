@@ -50,6 +50,9 @@ class StockProductionLot(models.Model):
                             'reserved_quantity': stock_quant.reserved_quantity + item.qty_to_reserve
                         })
                         item.is_reserved = True
+                        item.update({
+                            'qty_to_reseved': reserve
+                        })
                         move_line = self.env['stock.move.line'].create({
                             'product_id': item.product_id.id,
                             'lot_id': item.id,
@@ -89,9 +92,6 @@ class StockProductionLot(models.Model):
                 for ml in move_line:
                     item.is_reserved = True
                     ml.write({'move_id': None, 'reserved_availability': 0})
-
-
-
 
     @api.multi
     def write(self, values):
