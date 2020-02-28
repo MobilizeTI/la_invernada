@@ -43,6 +43,7 @@ class StockProductionLot(models.Model):
                             stock.update({
                                 'reserved_availability': 2
                             })
+                            models._logger.error(stock.reserved_availability)
 
     @api.multi
     def write(self, values):
