@@ -37,7 +37,9 @@ class StockProductionLot(models.Model):
                 if 'stock_picking_id' in self.env.context:
                     stock_picking_id = self.env.context['stock_picking_id']
                     stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
-                    models._logger.error(stock_picking)
+                    if not stock_picking:
+                        for stock in stock_picking.move_ids_without_package:
+                            models._logger.error(stock)
 
 
     @api.multi
