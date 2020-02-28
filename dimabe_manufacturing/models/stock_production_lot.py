@@ -69,17 +69,17 @@ class StockProductionLot(models.Model):
     def unreserved(self):
         for item in self:
             if item.qty_standard_serial == 0:
-                models._logger.error(self.env.context['stock_picking_id'])
                 stock_picking_id = self.env.context['stock_picking_id']
                 stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
             if stock_picking:
                 stock_move = stock_picking.move_ids_without_package.filtered(
                     lambda x: x.product_id == item.product_id
                 )
-                models._logger.error(stock_move)
                 move_line = stock_move.move_line_ids.filtered(
                     lambda a: a.lot_id.id == item.id and a.product_qty == stock_move.product_uom_qty
                 )
+                models._logger.error(item.id)
+                models._logger.error(stock_move.product_uom_qty)
                 models._logger.error(move_line)
                 stock_quant = item.get_stock_quant()
                 stock_quant.sudo().update({
