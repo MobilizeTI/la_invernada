@@ -41,7 +41,6 @@
                    attrs="{'invisible':[('producer_id','=',False)],'readonly':[('state','in',['done','cancel'])]}"
             />
             <field name="oven_use_ids"
-                   domain="[('is_in_use','=',False)]"
                    attrs="{'readonly':[('state','in',['done','cancel'])]}"
             >
               <tree editable="bottom">
@@ -49,6 +48,7 @@
                 <field name="finish_active_time" invisible="1"/>
                 <field name="dried_oven_id"
                        attrs="{'readonly':[('init_date','!=',False)]}"
+                       domain="[('is_in_use','=',False)]"
                 />
                 <field name="init_date" readonly="1"/>
                 <field name="finish_date" readonly="1"/>
