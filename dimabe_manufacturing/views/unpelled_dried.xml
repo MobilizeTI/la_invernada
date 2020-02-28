@@ -19,7 +19,6 @@
                       attrs="{'invisible':[('state','!=','progress')]}"
               />
               <button string="Cancelar"
-                      class="btn-danger"
                       name="cancel_unpelled_dried"
                       type="object"
                       attrs="{'invisible':[('state','not in',['progress'])]}"
