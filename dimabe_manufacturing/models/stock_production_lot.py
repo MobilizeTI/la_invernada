@@ -98,12 +98,11 @@ class StockProductionLot(models.Model):
             for ml in move_line:
                 ml.write({'move_id': None, 'reserved_availability': 0})
 
-
-@api.multi
-def write(self, values):
-    for item in self:
-        res = super(StockProductionLot, self).write(values)
-        counter = 0
+    @api.multi
+    def write(self, values):
+        for item in self:
+            res = super(StockProductionLot, self).write(values)
+            counter = 0
         if not item.is_standard_weight:
             for serial in item.stock_production_lot_serial_ids:
                 counter += 1
@@ -111,11 +110,10 @@ def write(self, values):
                 serial.serial_number = item.name + tmp[-3:]
         return res
 
-
-@api.multi
-def generate_standard_serial(self):
-    for item in self:
-        serial_ids = []
+    @api.multi
+    def generate_standard_serial(self):
+        for item in self:
+            serial_ids = []
         for counter in range(item.qty_standard_serial):
             tmp = '00{}'.format(counter + 1)
             serial = item.stock_production_lot_serial_ids.filtered(
@@ -141,9 +139,8 @@ def generate_standard_serial(self):
 
         item.stock_production_lot_serial_ids = [(6, 0, serial_ids)]
 
-
-@api.model
-def get_stock_quant(self):
-    return self.quant_ids.filtered(
-        lambda a: a.location_id.name == 'Stock'
-    )
+    @api.model
+    def get_stock_quant(self):
+        return self.quant_ids.filtered(
+            lambda a: a.location_id.name == 'Stock'
+        )
