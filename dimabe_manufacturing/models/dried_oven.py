@@ -7,6 +7,8 @@ class DriedOven(models.Model):
 
     name = fields.Char('Horno')
 
+    is_in_use = fields.Boolean('en uso')
+
     @api.onchange('name')
     def onchange_name(self):
         if self.name:

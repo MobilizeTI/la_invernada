@@ -4,6 +4,12 @@ from odoo import fields, models, api
 class StockProductionLot(models.Model):
     _inherit = 'stock.production.lot'
 
+    producer_id = fields.Many2one(
+        'res.partner',
+        compute='_compute_producer_id',
+        search='_search_producer_id'
+    )
+
     is_prd_lot = fields.Boolean('Es Lote de salida de Proceso')
 
     is_standard_weight = fields.Boolean('Series Peso Estandar')
@@ -24,6 +30,16 @@ class StockProductionLot(models.Model):
     )
 
     qty_to_reserve = fields.Float('Cantidad a Reservar')
+
+    @api.multi
+    def _compute_producer_id(self):
+        for item in self:
+            stock_picking = self.env['stock.picking'].search([('name', '=', item.name)])
+            if stock_picking:
+                item.producer_id = stock_picking[0].partner_id
+
+    def _search_producer_id(self, operator, value):
+        return [('id', operator, value)]
 
     @api.multi
     def _compute_total_serial(self):
