@@ -25,7 +25,7 @@ class StockProductionLot(models.Model):
 
     qty_to_reserve = fields.Float('Cantidad a Reservar')
 
-    is_reserved = fields.Boolean('Esta reservado?',compute='reserved',default=False)
+    is_reserved = fields.Boolean('Esta reservado?', compute='reserved', default=False)
 
     @api.multi
     def _compute_total_serial(self):
@@ -49,6 +49,7 @@ class StockProductionLot(models.Model):
                         stock_quant.sudo().update({
                             'reserved_quantity': stock_quant.reserved_quantity + item.qty_to_reserve
                         })
+                        item.is_reserved = True
                         move_line = self.env['stock.move.line'].create({
                             'product_id': item.product_id.id,
                             'lot_id': item.id,
@@ -62,7 +63,7 @@ class StockProductionLot(models.Model):
                                 (4, move_line.id)
                             ]
                         })
-                        item.is_reserved = True
+
 
     @api.multi
     def unreserved(self):
@@ -70,7 +71,7 @@ class StockProductionLot(models.Model):
             if item.qty_standard_serial == 0:
                 models._logger.error(self.env.context['stock_picking_id'])
                 stock_picking_id = self.env.context['stock_picking_id']
-                stock_picking = self.env['stock.picking'].search([('id','=',stock_picking_id)])
+                stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
             if stock_picking:
                 stock_move = stock_picking.move_ids_without_package.filtered(
                     lambda x: x.product_id == item.product_id
