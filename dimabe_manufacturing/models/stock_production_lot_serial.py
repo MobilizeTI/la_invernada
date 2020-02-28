@@ -203,7 +203,7 @@ class StockProductionLotSerial(models.Model):
                 lambda a: a.product_id == item.stock_production_lot_id.product_id
             )
 
-            models._logger.error(stock_move)
+            models._logger.error(stock_move.name)
 
             move_line = stock_move.move_line_ids.filtered(
                 lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.display_weight
