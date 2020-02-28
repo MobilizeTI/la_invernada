@@ -46,7 +46,12 @@ class OvenUse(models.Model):
                     if ((item.active_seconds % 86400) % 3600) % 60 > 0:
                         sec = int(((item.active_seconds % 86400) % 3600) % 60)
 
-            item.active_time = '{} {}:{}:{}'.format(days, hours, minutes, sec)
+            item.active_time = '{} {}:{}:{}'.format(
+                days,
+                hours,
+                '0{}'.format(minutes)[:-2],
+                sec
+            )
 
     @api.multi
     def init_process(self):
