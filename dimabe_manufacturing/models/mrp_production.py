@@ -83,8 +83,7 @@ class MrpProduction(models.Model):
     def onchange_client_search_id(self):
         for production in self:
             filtered_lot_ids = production.get_potential_lot_ids()
-            for i in self.bom_id.bom_line_ids:
-                models._logger.error(i.product_id.name)
+            models._logger.error(self.product_bom_id)
             production.update({
                 'potential_lot_ids': [
                     (2, to_unlink_id.id) for to_unlink_id in production.potential_lot_ids.filtered(
