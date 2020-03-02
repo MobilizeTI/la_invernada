@@ -45,7 +45,7 @@
             <field name="oven_use_ids"
                    attrs="{'readonly':[('state','in',['done','cancel'])]}"
             >
-              <tree editable="bottom">
+              <tree >
                 <field name="init_active_time" invisible="1"/>
                 <field name="finish_active_time" invisible="1"/>
                 <field name="dried_oven_id"
@@ -98,7 +98,9 @@
                 <field name="stock_production_lot_id"
                        readonly="1"
                 />
-                <field name="consumed"/>
+                <field name="consumed"
+                       readonly="1"
+                />
                 <field name="display_weight"/>
                 <field name="serial_number"
                        readonly="1"
