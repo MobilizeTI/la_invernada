@@ -14,6 +14,9 @@
                   attrs="{'invisible':[('state', '!=', 'progress')]}"
           />
         </xpath>
+        <xpath expr="//field[@name='bom_id']" position="attributes">
+          <attribute name="domain">{'bom_id.product_id','=','product_id'}</attribute>
+        </xpath>
         <button name="action_assign" position="replace">
         </button>
         <button name="button_unreserve" position="replace">
