@@ -53,7 +53,7 @@
                        domain="[('is_in_use','=',False)]"
                 />
                 <field name="used_lot_ids"
-                       domain="[('parent.producer_id','=',producer_id),('balance','>',0)]"
+                       domain="[('producer_id','=',parent.producer_id),('balance','>',0)]"
                 />
                 <field name="init_date" readonly="1"/>
                 <field name="finish_date" readonly="1"/>
