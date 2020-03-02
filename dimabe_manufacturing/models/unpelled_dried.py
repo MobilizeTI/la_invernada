@@ -28,7 +28,7 @@ class UnpelledDried(models.Model):
     product_in_id = fields.Many2one(
         'product.product',
         'Producto a ingresar',
-        domain=[('categ_id.name', 'ilike', 'materia prima')]
+        domain=[('categ_id.name', 'ilike', 'verde')]
     )
 
     in_lot_ids = fields.Many2many(

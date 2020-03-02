@@ -80,7 +80,8 @@
           </group>
           <group>
             <field name="out_product_id"
-                   attrs="{'readonly':[('out_serial_ids','!=',False)],'readonly':[('state','in',['done','cancel'])]}"
+                   attrs="{'readonly':[('out_serial_ids','!=',False),('state','in',['done','cancel'])]}"
+                   domain="[('get_variety()','=',product_in_id)]"
             />
             <field name="out_lot_id"
                    readonly="1"
