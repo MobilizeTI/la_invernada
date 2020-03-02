@@ -69,6 +69,11 @@ class UnpelledDried(models.Model):
         if self.producer_id not in self.in_lot_ids.mapped('producer_id'):
             self.in_lot_ids = [(5,)]
 
+    @api.onchange('product_in_id')
+    def onchange_product_in_id(self):
+        if self.in_variety != self.out_product_id.get_variety():
+            self.out_product_id = [(5,)]
+
     @api.multi
     def _compute_out_serial_ids(self):
         for item in self:

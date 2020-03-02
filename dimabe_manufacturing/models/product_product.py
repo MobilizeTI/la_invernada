@@ -26,6 +26,4 @@ class ProductProduct(models.Model):
                 ('attribute_value_ids', '=', attribute_value_ids.id)
             ]).mapped('id')
 
-            models._logger.error(product_ids)
-
         return [('id', 'in', product_ids)]
