@@ -8,15 +8,16 @@
         <field name="date_planned_start" position="before">
           <field name="stock_picking_id" readonly="1" attrs="{'invisible':[('stock_picking_id','=',False)]}" />
         </field>
+        <xpath expr="//field[@name='bom_id']" position="attributes">
+          <attribute name="domain">[('bom_id.id','=','product_id')]</attribute>
+        </xpath>
         <xpath expr="//header" postition="after">
           <button name="calculate_done" type="object"
                   string="Calcular Realizado"
                   attrs="{'invisible':[('state', '!=', 'progress')]}"
           />
         </xpath>
-        <xpath expr="//field[@name='bom_id']" position="attributes">
-          <attribute name="domain">{['bom_id.product_id','=','product_id']}</attribute>
-        </xpath>
+
         <button name="action_assign" position="replace">
         </button>
         <button name="button_unreserve" position="replace">
