@@ -95,7 +95,7 @@ class UnpelledDried(models.Model):
     @api.multi
     def _compute_name(self):
         for item in self:
-            item.name = item.out_lot_id.name
+            item.name = '{} {}'.format(item.producer_id.name, item.out_lot_id.product_id.name)
 
     @api.model
     def create(self, values_list):
@@ -125,7 +125,7 @@ class UnpelledDried(models.Model):
     def finish_unpelled_dried(self):
         for item in self:
             if not item.out_serial_ids:
-                raise models.ValidationError('Debe agregar al menos una seria de salida al proceso')
+                raise models.ValidationError('Debe agregar al menos una serie de salida al proceso')
 
             item.state = 'done'
 
