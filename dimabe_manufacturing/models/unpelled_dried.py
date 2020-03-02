@@ -90,6 +90,9 @@ class UnpelledDried(models.Model):
     @api.multi
     def _compute_total_out_weight(self):
         for item in self:
+            raise models.ValidationError(item.oven_use_ids.filtered(
+                lambda a: a.finish_date
+            ).mapped('used_lot_ids'))
             item.total_out_weight = sum(item.oven_use_ids.filtered(
                 lambda a: a.finish_date
             ).mapped('used_lot_ids').mapped('display_weight'))
