@@ -14,7 +14,7 @@
                             attrs="{'invisible':[('state', '!=', 'progress')]}"
                     />
                 </xpath>
-                <xpath expr="//field[@name='bom_id']" position="attributes">
+                <xpath expr="//group[1]" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
                 <button name="action_assign" position="replace">

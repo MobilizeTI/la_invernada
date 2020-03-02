@@ -521,6 +521,15 @@
                             <strong>PACKING LIST</strong>
                         </span>
                     </div>
+                    <div>
+                        <div style="width:45%;">
+                            <table></table>
+                        </div>
+                        <div style="width:5%;"></div>
+                        <div style="width:45%;">
+                            <table></table>
+                        </div>
+                    </div>
                 </div>
             </t>
         </t>
