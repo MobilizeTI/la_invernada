@@ -59,6 +59,8 @@ class MrpProduction(models.Model):
         'Posibles Lotes'
     )
 
+    product_bom_id = fields.Char(rel='bom_id.product_id')
+
     @api.multi
     def _compute_show_finished_move_line_ids(self):
         for item in self:
@@ -130,7 +132,7 @@ class MrpProduction(models.Model):
             restest = self.env['stock.production.lot'].search([])
 
             models._logger.error(restest)
-
+            models._logger.error(self.product_bom_id)
             domain += [('name', 'in', list(client_lot_ids) if client_lot_ids else [])]
             models._logger.error(domain)
         res = self.env['stock.production.lot'].search(domain)
