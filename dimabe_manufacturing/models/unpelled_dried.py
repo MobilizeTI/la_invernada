@@ -14,6 +14,16 @@ class UnpelledDried(models.Model):
         'Estado'
     )
 
+    origin_location_id = fields.Many2one(
+        'stock.location',
+        'Origen del Movimiento'
+    )
+
+    dest_location_id = fields.Many2one(
+        'stock.location',
+        'Destino de Procesados'
+    )
+
     name = fields.Char(
         'Proceso',
         compute='_compute_name'
@@ -160,6 +170,25 @@ class UnpelledDried(models.Model):
             if not item.out_serial_ids:
                 raise models.ValidationError('Debe agregar al menos una serie de salida al proceso')
 
-            item.state = 'done'
+            # item.state = 'done'
 
-            item.oven_use_ids.mapped('dried_ove_id').set_is_in_use(False)
+            oven_use_to_close_ids = item.oven_use_ids.filtered(
+                lambda a: a.finish_date
+            )
+
+            if not oven_use_to_close_ids:
+                raise models.ValidationError('no hay hornos terminados que procesar')
+
+            prd_move_line = self.env['stock.move.line'].create({
+                'reference': item.out_lot_id.name,
+                'product_id': item.out_product_id.id,
+                'location_id': item.origin_location_id.id,
+                'location_dest_id': item.dest_location_id.id,
+                'qty_done': item.total_out_weight,
+                'product_uom_qty': item.out_product_id.product_uom_id.id,
+                'product_uom_id': item.out_product_id.product_uom_id.id,
+                'lot_id': item.out_lot_id,
+                'state': 'done',
+            })
+
+            oven_use_to_close_ids.mapped('dried_ove_id').set_is_in_use(False)
