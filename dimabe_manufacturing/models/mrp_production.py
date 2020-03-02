@@ -68,7 +68,7 @@ class MrpProduction(models.Model):
             for i in item.bom_id.bom_line_ids:
                 list_product.append(i.product_id)
             result = self.env['product.product'].search([('product_id', 'in', list_product)])
-            models._logger.error(result)
+            item.materials = result
 
     @api.multi
     def _compute_show_finished_move_line_ids(self):
@@ -91,13 +91,7 @@ class MrpProduction(models.Model):
     def onchange_client_search_id(self):
         for production in self:
             filtered_lot_ids = production.get_potential_lot_ids()
-            list_product = []
-            for item in self:
-                for i in item.bom_id.bom_line_ids:
-                    list_product.append(i.product_id.id)
-                    models._logger.error(list_product)
-                result = self.env['product.product'].search([('id', 'in', list_product)])
-                models._logger.error(result)
+
             production.update({
                 'potential_lot_ids': [
                     (2, to_unlink_id.id) for to_unlink_id in production.potential_lot_ids.filtered(
