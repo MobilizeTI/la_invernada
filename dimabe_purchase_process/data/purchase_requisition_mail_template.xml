@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-
+    <data noupdate="1">
         <record id="new_requisition_mail_template" model="mail.template">
             <field name="name">Nueva solicitud de compra</field>
             <field name="model_id" ref="dimabe_purchase_process.model_purchase_requisition"/>
@@ -9,9 +9,7 @@
                 ${object.get_email_to('dimabe_purchase_process.group_purchase_budget_user')}
             </field>
             <field name="subject">Nueva solicitud de compra</field>
-            <field name="arch" type="xml">
-                <xpath expr="//t[@t-set='access_action']" position="replace"></xpath>
-            </field>
+
             <field name="body_html">
                 <![CDATA[
           <p>Estimados,<br/><br/>
@@ -47,9 +45,6 @@
             <field name="email_from">${object.sudo().create_uid.email_formatted | safe}</field>
             <field name="email_to">${object.partner_id.id}</field>
             <field name="subject">Nueva solicitud de presupuesto - La Invernada</field>
-            <field name="arch" type="xml">
-                <xpath expr="//t[@t-set='access_action']" position="replace"></xpath>
-            </field>
             <field name="body_html">
                 <![CDATA[
           <p>Estimados,<br/><br/>
@@ -62,4 +57,6 @@
       ]]>
             </field>
         </record>
+
+    </data>
 </odoo>
