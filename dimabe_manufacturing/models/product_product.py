@@ -17,4 +17,6 @@ class ProductProduct(models.Model):
 
     @api.multi
     def _search_variety(self, operator, value):
-        product_ids = self.env['product.product'].search([('', '', )])
+        attribute_value_ids = self.env['product.attribute.value'].search([('name', operator, value)])
+        product_ids = self.env['product.product'].search([('attribute_value_ids', 'in', attribute_value_ids)])
+        return ['id', 'in', product_ids.mapped('id')]
