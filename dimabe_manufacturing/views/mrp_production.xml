@@ -51,7 +51,7 @@
                             <field name="client_search_id" attrs="{'invisible':[('state','=','done')]}"
                                    domain="[('is_company','=',True),('customer','=',True)]"/>
                             <field name="product_search_id" attrs="{'invisible':[('state','=','done')]}"
-                                   domain="[('product_bom_id','=','product_id')]"
+                                   domain="[('bom_id.product_id','=','product_id')]"
                             />
                             <field name="stock_lots" invisible="1"/>
                             <field name="potential_lot_ids" readonly="0" string="">
