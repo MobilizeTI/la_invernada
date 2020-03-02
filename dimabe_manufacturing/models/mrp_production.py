@@ -61,10 +61,10 @@ class MrpProduction(models.Model):
 
     @api.onchange('bom_id')
     def onchange_bom(self):
-        result = self.env['mrp.bom'].search([('product_id.id', '=', self.product_id.id)]).ids
+        result = self.env['mrp.bom'].search([('product_id.id', '=', self.product_id.id)]).
         return {
             'domain': {
-                    'product_id', 'in',result
+                    'product_id', '=',result.id
             }
         }
 
