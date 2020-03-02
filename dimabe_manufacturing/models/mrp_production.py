@@ -59,14 +59,6 @@ class MrpProduction(models.Model):
         'Posibles Lotes'
     )
 
-    @api.onchange('bom_id')
-    def onchange_bom(self):
-        return {
-            'domain': {
-                'product_id', '=', self.product_id
-            }
-        }
-
     @api.multi
     def _compute_show_finished_move_line_ids(self):
         for item in self:
