@@ -24,6 +24,10 @@ class OvenUse(models.Model):
         store=True
     )
 
+    used_lot_ids = fields.Many2many(
+        'stock.production.lot'
+    )
+
     init_active_time = fields.Integer('Inicio de tiempo activo')
 
     finish_active_time = fields.Integer('Fin de tiempo activo')

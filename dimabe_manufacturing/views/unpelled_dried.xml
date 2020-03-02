@@ -52,6 +52,9 @@
                        attrs="{'readonly':[('init_date','!=',False)]}"
                        domain="[('is_in_use','=',False)]"
                 />
+                <field name="used_lot_ids"
+                       domain="[('producer_id','=',producer_id),('balance','>',0)]"
+                />
                 <field name="init_date" readonly="1"/>
                 <field name="finish_date" readonly="1"/>
                 <field name="active_time"/>
