@@ -191,7 +191,7 @@ class UnpelledDried(models.Model):
                 'state': 'done',
             })
 
-            oven_use_to_close_ids.mapped('dried_ove_id').set_is_in_use(False)
+            oven_use_to_close_ids.mapped('dried_oven_id').set_is_in_use(False)
 
             if not item.oven_use_ids.filtered(
                 lambda a: not a.finish_date
