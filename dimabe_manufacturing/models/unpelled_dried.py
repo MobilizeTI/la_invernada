@@ -182,13 +182,15 @@ class UnpelledDried(models.Model):
             # if item.out_lot_id.quan_ids:
             #     raise models.ValidationError('este lote ya fue procesado')
 
-            stock_quant = self.env['stock.quant'].create({
-                'location_id': item.dest_location_id.id,
+            stock_move = self.env['stock.move'].create({
+                'company_id': self.env.user.company_id.id,
+                'location_id': item.origin_location_id.id,
+                'location_dest_id': item.dest_location_id.id,
                 'product_id': item.out_product_id.id,
-                'quantity': item.total_out_weight,
-                'reserved_quantity': 0,
-                'lot_id': item.out_lot_id.id,
-                'product_uom_id': item.out_product_id.uom_id.id
+                'product_uom': item.out_product_id.uom_id.id,
+                'product_uom_qty': item.total_out_weight,
+                'quantity_done': item.total_out_weight,
+                'state': 'done',
             })
 
             prd_move_line = self.env['stock.move.line'].sudo().create({
@@ -201,6 +203,7 @@ class UnpelledDried(models.Model):
                 'product_uom_id': item.out_product_id.uom_id.id,
                 'lot_id': item.out_lot_id.id,
                 'state': 'done',
+                'move_id': stock_move.id
             })
 
             oven_use_to_close_ids.mapped('dried_oven_id').set_is_in_use(False)
