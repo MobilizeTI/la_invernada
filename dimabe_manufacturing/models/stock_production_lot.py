@@ -50,7 +50,8 @@ class StockProductionLot(models.Model):
                             'reserved_quantity': stock_quant.reserved_quantity + item.qty_to_reserve
                         })
                         item.update({
-                            'qty_to_reserve': reserve
+                            'qty_to_reserve': reserve,
+                            'is_reserved': True
                         })
                         item.is_reserved = True
                         move_line = self.env['stock.move.line'].create({
@@ -82,7 +83,8 @@ class StockProductionLot(models.Model):
                     lambda a: a.lot_id.id == item.id and a.product_uom_qty == stock_move.reserved_availability
                 )
                 item.update({
-                    'qty_to_reserve': 0
+                    'qty_to_reserve': 0,
+                    'is_reserved': False
                 })
                 item.is_reserved = False
                 stock_quant = item.get_stock_quant()
