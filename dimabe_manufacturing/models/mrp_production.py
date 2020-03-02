@@ -38,7 +38,6 @@ class MrpProduction(models.Model):
     product_search_id = fields.Many2one(
         'product.product',
         'Buscar Producto',
-        domain=[('product_id', 'in', 'bom_id.bom_line_ids.product_id')],
         nullable=True,
     )
 
@@ -59,8 +58,6 @@ class MrpProduction(models.Model):
         'mrp_production_id',
         'Posibles Lotes'
     )
-
-    product_bom_id = fields.Many2one(related='bom_id.product_id')
 
     @api.multi
     def _compute_show_finished_move_line_ids(self):
