@@ -78,6 +78,9 @@
             <field name="total_in_weight" />
             <field name="total_out_weight" />
             <field name="performance" />
+
+            <field name="origin_location_id" />
+            <field name="dest_location_id" />
           </group>
           <group>
             <field name="in_variety" invisible="1" />
