@@ -74,7 +74,7 @@ class UnpelledDried(models.Model):
     @api.onchange('producer_id')
     def onchange_producer_id(self):
         if self.producer_id not in self.in_lot_ids.mapped('producer_id'):
-            for oven_use_id in self.oven_use_ids.in_lot_ids:
+            for oven_use_id in self.oven_use_ids:
                 oven_use_id.used_lot_ids = [(5,)]
 
     @api.onchange('product_in_id')
