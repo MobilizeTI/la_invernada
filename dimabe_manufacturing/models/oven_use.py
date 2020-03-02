@@ -48,6 +48,14 @@ class OvenUse(models.Model):
             item.active_time = date_helper.int_to_time(item.active_seconds)
 
     @api.multi
+    def unlink(self):
+
+        self.mapped('dried_oven_id').write({
+            'is_in_use': False
+        })
+        return super(OvenUse, self).unlink()
+
+    @api.multi
     def init_process(self):
         for item in self:
             if item.init_date:
