@@ -183,7 +183,7 @@ class UnpelledDried(models.Model):
             #     raise models.ValidationError('este lote ya fue procesado')
 
             stock_move = self.env['stock.move'].create({
-                'name': '',
+                'name': 'lala',
                 'company_id': self.env.user.company_id.id,
                 'location_id': item.origin_location_id.id,
                 'location_dest_id': item.dest_location_id.id,
