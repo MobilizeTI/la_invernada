@@ -18,9 +18,10 @@ class ProductProduct(models.Model):
     @api.multi
     def _search_variety(self, operator, value):
         attribute_value_ids = self.env['product.attribute.value'].search([('name', operator, value)])
+        product_ids = []
         if attribute_value_ids and len(attribute_value_ids) == 1:
             attribute_value_ids = attribute_value_ids[0]
-        product_ids = self.env['product.product'].search([
-            ('attribute_value_ids', '=', attribute_value_ids.id)
-        ])
-        return ['id', 'in', product_ids.mapped('id')]
+            product_ids = self.env['product.product'].search([
+                ('attribute_value_ids', '=', attribute_value_ids.id)
+            ]).mapped('id')
+        return ['id', 'in', product_ids]
