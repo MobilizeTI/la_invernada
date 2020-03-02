@@ -95,6 +95,7 @@ class MrpProduction(models.Model):
             for item in self:
                 for i in item.bom_id.bom_line_ids:
                     list_product.append(i.product_id.id)
+                    models._logger.error(list_product)
                 result = self.env['product.product'].search([('id', 'in', list_product)])
                 models._logger.error(result)
             production.update({
