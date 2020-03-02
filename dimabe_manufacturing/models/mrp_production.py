@@ -12,6 +12,8 @@ class MrpProduction(models.Model):
         related='stock_picking_id.sale_id'
     )
 
+    bom_id = fields.Many2one('Lista de Materiales',rel='mrp.bom')
+
     stock_lots = fields.Many2one("stock.production.lot")
 
     client_search_id = fields.Many2one(
@@ -61,10 +63,6 @@ class MrpProduction(models.Model):
 
     product_bom_id = fields.Many2one(related='bom_id.product_id')
 
-    @api.onchange('bom_id')
-    def _bom_domain(self):
-        models._logger.error("!1111111212121122121 {}".format(self.product_bom_id))
-
     @api.multi
     def _compute_show_finished_move_line_ids(self):
         for item in self:
@@ -88,6 +86,7 @@ class MrpProduction(models.Model):
             filtered_lot_ids = production.get_potential_lot_ids()
             models._logger.error("aaaaaaaaaaaaaaaaaaaa{}".format(self.product_bom_id.id))
             models._logger.error("bbbbbbbbbbbbbbbbbbbb{}".format(self.product_id.id))
+            models._logger.error('cccccccccccccccccccc{}'.format(self.bom_id))
             production.update({
                 'potential_lot_ids': [
                     (2, to_unlink_id.id) for to_unlink_id in production.potential_lot_ids.filtered(
