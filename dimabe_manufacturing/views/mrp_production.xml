@@ -46,7 +46,7 @@
                 attrs="{'invisible':[('state','=','done')]}"
           >
             <group>
-              <field name="client_search_id" attrs="{'invisible':[('state','=','done')]}" domain="[('is_company','=',True)]"/>
+              <field name="client_search_id" attrs="{'invisible':[('state','=','done')]}" domain="[('is_company','=',True),('customer','=',True)]"/>
               <field name="product_search_id" attrs="{'invisible':[('state','=','done')]}"/>
               <field name="stock_lots" invisible="1"/>
               <field name="potential_lot_ids" readonly="0" string="">
