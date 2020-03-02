@@ -28,4 +28,4 @@ class ProductProduct(models.Model):
 
             models._logger.error(product_ids)
 
-        return ['id', 'in', product_ids]
+        return [('id', 'in', product_ids)]
