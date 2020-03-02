@@ -68,7 +68,7 @@ class UnpelledDried(models.Model):
 
     total_in_weight = fields.Float(
         'Total Ingresado',
-        computed='_compute_total_in_weight'
+        compute='_compute_total_in_weight'
     )
 
     total_out_weight = fields.Float(
