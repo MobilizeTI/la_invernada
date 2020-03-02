@@ -61,6 +61,10 @@ class MrpProduction(models.Model):
 
     product_bom_id = fields.Many2one(related='bom_id.product_id')
 
+    @api.onchange('bom_id')
+    def _bom_domain(self):
+        models._logger.error("!1111111212121122121 {}".format(self.product_bom_id))
+
     @api.multi
     def _compute_show_finished_move_line_ids(self):
         for item in self:
