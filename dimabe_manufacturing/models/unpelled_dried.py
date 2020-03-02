@@ -225,6 +225,8 @@ class UnpelledDried(models.Model):
                 'move_id': stock_move.id
             })
 
+            models._logger.error('{} {}'.format(consumed, prd_move_line.consume_line_ids))
+
             oven_use_to_close_ids.mapped('dried_oven_id').set_is_in_use(False)
 
             # if not item.oven_use_ids.filtered(
