@@ -531,8 +531,12 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td rowspan="2">ADRESS / DIRECCION</td>
+                                    <td><span t-field="res_company.street"></span></td>
+                                </tr>
+                                <tr>
                                     <td></td>
-                                    <td></td>
+                                    <td><span ></span></td>
                                 </tr>
                                 <tr>
                                     <td></td>
