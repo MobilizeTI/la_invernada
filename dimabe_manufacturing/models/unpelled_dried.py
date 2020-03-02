@@ -187,7 +187,7 @@ class UnpelledDried(models.Model):
                 'qty_done': item.total_out_weight,
                 'product_uom_qty': item.total_out_weight,
                 'product_uom_id': item.out_product_id.uom_id.id,
-                'lot_id': item.out_lot_id,
+                'lot_id': item.out_lot_id.id,
                 'state': 'done',
             })
 
