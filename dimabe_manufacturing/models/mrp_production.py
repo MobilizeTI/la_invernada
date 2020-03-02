@@ -59,14 +59,6 @@ class MrpProduction(models.Model):
         'Posibles Lotes'
     )
 
-    bom_lines = fields.Many2Many('mrp.bom.line', compute='get_product_bom')
-
-    @api.multi
-    def get_product_bom(self):
-        for item in self:
-            result = self.env['mrp.bom.line'].search([('bom_id.id', '=', item.bom_id.id)])
-            for r in result:
-                models._logger.error(r.product_id)
 
     @api.multi
     def _compute_show_finished_move_line_ids(self):
@@ -89,7 +81,11 @@ class MrpProduction(models.Model):
     def onchange_client_search_id(self):
         for production in self:
             filtered_lot_ids = production.get_potential_lot_ids()
-            models._logger.error(self.product_bom_id)
+            test = self.env['product.product'].search([])
+            for t in test:
+                for i in self.bom_id.bom_line_id:
+                    if t.id == i.product_id.id:
+                        models._logger.error(t.name)
             production.update({
                 'potential_lot_ids': [
                     (2, to_unlink_id.id) for to_unlink_id in production.potential_lot_ids.filtered(
