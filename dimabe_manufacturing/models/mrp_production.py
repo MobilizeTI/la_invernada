@@ -66,8 +66,8 @@ class MrpProduction(models.Model):
         list_product = []
         for item in self:
             for i in item.bom_id.bom_line_ids:
-                list_product.append(i.product_id)
-            result = self.env['product.product'].search([('product_id', 'in', list_product)])
+                list_product.append(i.product_id.id)
+            result = self.env['product.product'].search([('id', 'in', list_product)])
             item.materials = result
 
     @api.multi
