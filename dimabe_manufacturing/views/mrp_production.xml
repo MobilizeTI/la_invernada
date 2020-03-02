@@ -15,7 +15,7 @@
                     />
                 </xpath>
                 <xpath expr="//field[@name='bom_id']" position="attributes">
-                    <attribute name="domain">['bom_id.product_id','=','product_id']</attribute>
+                    <attribute name="domain">['bom_id.product_id','=',product_id]</attribute>
                 </xpath>
                 <button name="action_assign" position="replace">
                 </button>
