@@ -509,44 +509,9 @@
         </t>
     </template>
 
-   <!--  <template id="report_packing_list">
-        <t t-call="web.html_container">
-            <t t-foreach="docs" t-as="d">
-                <div class="page">
-                    <div style="width:400px;align:left;">
-                        <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"/>
-                    </div>
-                    <br/>
-                    <div style="border:1px solid;width:100%;height:20px;">
-                        <strong>
-                            <span>PACKING LIST</span>
-                        </strong>
-                    </div>
-                    <br/>
-                    <div style="border:1px solid;width:45%;">
-                        <table style="border:1px solid;">
-                            <tr>
-                                <td>SHIPPER / PROVEEDOR</td>
-                                <td><span t-field="res_company.name"></span></td>
-                            </tr>
-                            <tr rowspan="2">
-                                <td>ADDRESS / DIRECCION</td>
-                                <td><span t-field="res_company.street"></span></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td><span t-field="res_company.city"></span><span t-field="res_company.country_id"></span></td>
-                            </tr>
-                            <tr>
-                                <td>PHONE / TELEFONO</td>
-                                <td><span t-field="res_company.phone"></span></td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </t>
-        </t>
-    </template> -->
+    <template id="report_packing_list">
+
+    </template>
 
     <template id="report_truck_dispatch">
         <t t-call="web.html_container">
