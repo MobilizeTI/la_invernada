@@ -521,7 +521,7 @@
                             <strong>PACKING LIST</strong>
                         </span>
                     </div>
-                    <div>
+                    <div style="display:inline-block;">
                         <div style="width:45%;">
                             <table></table>
                         </div>
