@@ -83,7 +83,7 @@ class MrpProduction(models.Model):
             filtered_lot_ids = production.get_potential_lot_ids()
             test = self.env['product.product'].search([])
             for t in test:
-                for i in self.bom_id.bom_line_id:
+                for i in self.bom_id.bom_line_ids:
                     if t.id == i.product_id.id:
                         models._logger.error(t.name)
             production.update({
