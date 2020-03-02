@@ -31,6 +31,12 @@ class UnpelledDried(models.Model):
         domain=[('categ_id.name', 'ilike', 'verde')]
     )
 
+    in_lot_ids = fields.Many2many(
+        'stock.production.lot',
+        related='oven_use_ids.mapped(used_lot_ids)',
+        string='Lotes de Entrada'
+    )
+
     in_variety = fields.Char(
         'Variedad Entrante',
         related='product_in_id.variety'
