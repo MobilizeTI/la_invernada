@@ -9,7 +9,7 @@
                     <field name="stock_picking_id" readonly="1" attrs="{'invisible':[('stock_picking_id','=',False)]}"/>
                 </field>
                 <xpath expr="//field[@name='bom_id']" position="attributes">
-                    <attribute name="domain">[('bom_id.product_id', '=', 'product_id')]</attribute>
+                    <attribute name="domain">[('product_bom_id', '=', 'product_id')]</attribute>
                 </xpath>
                 <xpath expr="//header" postition="after">
                     <button name="calculate_done" type="object"
