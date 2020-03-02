@@ -66,6 +66,36 @@ class UnpelledDried(models.Model):
         'Hornos'
     )
 
+    total_in_weight = fields.Float(
+        'Total Ingresado',
+        computed='_compute_total_in_weight'
+    )
+
+    total_out_weight = fields.Float(
+        'Total Secaco',
+        compute='_compute_total_out_weight'
+    )
+
+    performance = fields.Float(
+        'Rendimiento',
+        compute='_compute_performance'
+    )
+
+    @api.multi
+    def _compute_performance(self):
+        for item in self:
+            item.performance = (item.total_out_weight / item.total_in_weight) * 100
+
+    @api.multi
+    def _compute_total_out_weight(self):
+        for item in self:
+            item.total_out_weight = sum(item.out_serial_ids.mapped('display_weight'))
+
+    @api.multi
+    def _compute_total_in_weight(self):
+        for item in self:
+            item.total_in_weight = sum(item.in_lot_ids.mapped('balance'))
+
     @api.multi
     def _compute_in_lot_ids(self):
         for item in self:

@@ -75,6 +75,9 @@
                 />
               </tree>
             </field>
+            <field name="total_in_weight" />
+            <field name="total_out_weight" />
+            <field name="performance" />
           </group>
           <group>
             <field name="in_variety" invisible="1" />
