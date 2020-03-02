@@ -131,7 +131,7 @@ class MrpProduction(models.Model):
             restest = self.env['stock.production.lot'].search([])
 
             models._logger.error(restest)
-            models._logger.error(self.product_bom_id)
+
             domain += [('name', 'in', list(client_lot_ids) if client_lot_ids else [])]
             models._logger.error(domain)
         res = self.env['stock.production.lot'].search(domain)
