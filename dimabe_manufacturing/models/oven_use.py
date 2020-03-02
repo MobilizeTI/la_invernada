@@ -54,6 +54,8 @@ class OvenUse(models.Model):
                 raise models.ValidationError('este proceso ya ha sido iniciado')
             if not item.dried_oven_id:
                 raise models.ValidationError('Debe seleccionar el horno a iniciar')
+            if not item.used_lot_ids:
+                raise models.ValidationError('Debe Seleccionar al menos un lote a secar')
             item.init_date = datetime.utcnow()
             item.init_active_time = item.init_date.timestamp()
             item.unpelled_dried_id.state = 'progress'

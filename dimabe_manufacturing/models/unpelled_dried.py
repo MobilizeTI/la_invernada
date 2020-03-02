@@ -124,5 +124,9 @@ class UnpelledDried(models.Model):
     @api.multi
     def finish_unpelled_dried(self):
         for item in self:
+            if not item.out_serial_ids:
+                raise models.ValidationError('Debe agregar al menos una seria de salida al proceso')
+
             item.state = 'done'
+
             item.oven_use_ids.mapped('dried_ove_id').set_is_in_use(False)
