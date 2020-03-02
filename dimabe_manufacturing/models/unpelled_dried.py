@@ -38,7 +38,7 @@ class UnpelledDried(models.Model):
 
     in_variety = fields.Char(
         'Variedad Entrante',
-        related='product_in_id.variety'
+        # related='product_in_id.variety'
     )
 
     out_lot_id = fields.Many2one(
