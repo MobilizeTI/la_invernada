@@ -38,6 +38,7 @@ class MrpProduction(models.Model):
     product_search_id = fields.Many2one(
         'product.product',
         'Buscar Producto',
+        compute='get_bom_product',
         nullable=True,
     )
 
@@ -58,6 +59,13 @@ class MrpProduction(models.Model):
         'mrp_production_id',
         'Posibles Lotes'
     )
+
+    @api.multi
+    def get_bom_product(self):
+        for item in self:
+            for i in item.bom_id.bom_line_ids:
+                product = i.product_id
+                item.product_search_id = product
 
     @api.multi
     def _compute_show_finished_move_line_ids(self):

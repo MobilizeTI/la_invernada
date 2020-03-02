@@ -524,7 +524,20 @@
                     <div style="display:inline-block;">
                         <div style="width:45%;">
                             <table>
-                                <th>1</th>
+                                <tr>
+                                    <td>SHIPPER / PROVEEDOR</td>
+                                    <td>
+                                        <span t-field="res_company.name"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             </table>
                         </div>
                         <div style="width:45%;">
