@@ -14,9 +14,6 @@
                             attrs="{'invisible':[('state', '!=', 'progress')]}"
                     />
                 </xpath>
-                <xpath expr="//group[1]//group[1]//field[@name='bom_id']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
                 <button name="action_assign" position="replace">
                 </button>
                 <button name="button_unreserve" position="replace">
@@ -49,7 +46,7 @@
                             <field name="client_search_id" attrs="{'invisible':[('state','=','done')]}"
                                    domain="[('is_company','=',True),('customer','=',True)]"/>
                             <field name="product_search_id" attrs="{'invisible':[('state','=','done')]}"
-                                   domain="[('bom_id.product_id','=','product_id')]"
+
                             />
                             <field name="stock_lots" invisible="1"/>
                             <field name="potential_lot_ids" readonly="0" string="">
