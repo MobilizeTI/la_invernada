@@ -59,6 +59,15 @@ class MrpProduction(models.Model):
         'Posibles Lotes'
     )
 
+    bom_lines = fields.Many2Many('mrp.bom.line', compute='get_product_bom')
+
+    @api.multi
+    def get_product_bom(self):
+        for item in self:
+            result = self.env['mrp.bom.line'].search([('bom_id.id', '=', item.bom_id.id)])
+            for r in result:
+                models._logger.error(r.product_id)
+
     @api.multi
     def _compute_show_finished_move_line_ids(self):
         for item in self:
