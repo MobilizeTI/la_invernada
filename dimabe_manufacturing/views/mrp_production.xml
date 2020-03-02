@@ -15,7 +15,7 @@
           />
         </xpath>
         <xpath expr="//field[@name='bom_id']" position="attributes">
-          <attribute name="domain">{'bom_id.product_id','=','product_id'}</attribute>
+          <attribute name="domain">{['bom_id.product_id','=','product_id']}</attribute>
         </xpath>
         <button name="action_assign" position="replace">
         </button>
@@ -46,7 +46,8 @@
                 attrs="{'invisible':[('state','=','done')]}"
           >
             <group>
-              <field name="client_search_id" attrs="{'invisible':[('state','=','done')]}" domain="[('is_company','=',True),('customer','=',True)]"/>
+              <field name="client_search_id" attrs="{'invisible':[('state','=','done')]}"
+                     domain="[('is_company','=',True),('customer','=',True)]"/>
               <field name="product_search_id" attrs="{'invisible':[('state','=','done')]}"/>
               <field name="stock_lots" invisible="1"/>
               <field name="potential_lot_ids" readonly="0" string="">
