@@ -78,6 +78,7 @@
             <field name="total_in_weight" />
             <field name="total_out_weight" />
             <div class="oe_inline">
+              <label for="performance">Rendimiento</label>
               <field name="performance" /><span>%%</span>
             </div>
           </group>
