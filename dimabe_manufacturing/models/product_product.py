@@ -21,7 +21,11 @@ class ProductProduct(models.Model):
         product_ids = []
         if attribute_value_ids and len(attribute_value_ids) == 1:
             attribute_value_ids = attribute_value_ids[0]
+
             product_ids = self.env['product.product'].search([
                 ('attribute_value_ids', '=', attribute_value_ids.id)
             ]).mapped('id')
+
+            models._logger.error(product_ids)
+
         return ['id', 'in', product_ids]
