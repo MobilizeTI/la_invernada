@@ -38,6 +38,7 @@ class MrpProduction(models.Model):
     product_search_id = fields.Many2one(
         'product.product',
         'Buscar Producto',
+        domain=[('product_id', 'in', 'bom_id.bom_line_ids')],
         nullable=True,
     )
 
