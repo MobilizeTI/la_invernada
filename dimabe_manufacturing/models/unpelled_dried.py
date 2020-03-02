@@ -195,6 +195,7 @@ class UnpelledDried(models.Model):
 
             for used_lot_id in oven_use_to_close_ids.mapped('used_lot_ids'):
                 tmp = self.env['stock.move.line'].create({
+                    'lot_name': used_lot_id.name,
                     'reference': used_lot_id.name,
                     'product_id': used_lot_id.product_id.id,
                     'location_id': used_lot_id.get_stock_quant().location_id.id,
@@ -210,6 +211,7 @@ class UnpelledDried(models.Model):
                 consumed.append([4, tmp.id])
 
             prd_move_line = self.env['stock.move.line'].create({
+                'lot_name': item.out_lot_id.name,
                 'consume_line_ids': consumed,
                 'reference': item.out_lot_id.name,
                 'product_id': item.out_product_id.id,
