@@ -9,7 +9,7 @@
                 ${object.get_email_to('dimabe_purchase_process.group_purchase_budget_user')}
             </field>
             <field name="subject">Nueva solicitud de compra</field>
-            <field name="access_url"></field>
+            <field name="access_action"></field>
             <field name="body_html">
                 <![CDATA[
           <p>Estimados,<br/><br/>
@@ -45,7 +45,7 @@
             <field name="email_from">${object.sudo().create_uid.email_formatted | safe}</field>
             <field name="email_to">${object.partner_id.id}</field>
             <field name="subject">Nueva solicitud de presupuesto - La Invernada</field>
-            <field name="access_url"></field>
+            <field name="access_action"></field>
             <field name="body_html">
                 <![CDATA[
           <p>Estimados,<br/><br/>

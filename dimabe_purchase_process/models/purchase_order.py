@@ -108,8 +108,3 @@ class PurchaseOrder(models.Model):
                     if not line.price_unit or line.price_unit == 0:
                         raise models.ValidationError('debe agregar precio unitario')
         return res
-
-    def _compute_access_url(self):
-        super(PurchaseOrder, self)._compute_access_url
-        for item in self:
-            item.access_url = ''
