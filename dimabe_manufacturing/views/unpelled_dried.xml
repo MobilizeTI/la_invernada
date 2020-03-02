@@ -77,7 +77,7 @@
             </field>
             <field name="total_in_weight" />
             <field name="total_out_weight" />
-            <field name="performance" class="oe_inline" />
+            <field name="performance" class="oe_inline" /><span>%%</span>
           </group>
           <group>
             <field name="in_variety" invisible="1" />
