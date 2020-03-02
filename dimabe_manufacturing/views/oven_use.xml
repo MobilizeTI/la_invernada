@@ -10,7 +10,6 @@
                    readonly="1"
             />
             <field name="dried_oven_id" />
-            <field name="used_lot_ids" />
           </group>
           <group>
             <field name="finish_date"

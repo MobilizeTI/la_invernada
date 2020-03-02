@@ -49,7 +49,8 @@ class UnpelledDried(models.Model):
     out_serial_ids = fields.One2many(
         'stock.production.lot.serial',
         compute='_compute_out_serial_ids',
-        inverse='_inverse_out_serial_ids'
+        inverse='_inverse_out_serial_ids',
+        string='Series de Salida'
     )
 
     out_product_id = fields.Many2one(
