@@ -79,6 +79,7 @@
             </field>
           </group>
           <group>
+            <field name="in_variety" />
             <field name="out_product_id"
                    attrs="{'readonly':[('out_serial_ids','!=',False),('state','in',['done','cancel'])]}"
                    domain="[('id','=',product_in_id)]"

@@ -36,6 +36,11 @@ class UnpelledDried(models.Model):
         string='Lotes de Entrada'
     )
 
+    in_variety = fields.Char(
+        'Variedad Entrante',
+        related='product_in_id.get_variety()'
+    )
+
     out_lot_id = fields.Many2one(
         'stock.production.lot',
         'Lote Producción'
