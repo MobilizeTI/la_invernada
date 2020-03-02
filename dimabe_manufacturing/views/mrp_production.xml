@@ -50,7 +50,9 @@
                         <group>
                             <field name="client_search_id" attrs="{'invisible':[('state','=','done')]}"
                                    domain="[('is_company','=',True),('customer','=',True)]"/>
-                            <field name="product_search_id" attrs="{'invisible':[('state','=','done')]}"/>
+                            <field name="product_search_id" attrs="{'invisible':[('state','=','done')]}"
+                                   domain="[('product_id','=','product_bom_id')]"
+                            />
                             <field name="stock_lots" invisible="1"/>
                             <field name="potential_lot_ids" readonly="0" string="">
                                 <tree edit="true" delete="false" create="false">
