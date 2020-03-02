@@ -194,7 +194,7 @@ class UnpelledDried(models.Model):
                 'state': 'done',
             })
 
-            prd_move_line = self.env['stock.move.line'].sudo().create({
+            prd_move_line = self.env['stock.move.line'].create({
                 'reference': item.out_lot_id.name,
                 'product_id': item.out_product_id.id,
                 'location_id': item.origin_location_id.id,
@@ -206,6 +206,20 @@ class UnpelledDried(models.Model):
                 'state': 'done',
                 'move_id': stock_move.id
             })
+
+            for used_lot_id in oven_use_to_close_ids.mapped('used_lot_ids'):
+                self.env['stock.move.line'].create({
+                    'reference': used_lot_id.name,
+                    'product_id': used_lot_id.product_id.id,
+                    'location_id': used_lot_id.get_stock_quant().location_id.id,
+                    'location_dest_id': item.origin_location_id.id,
+                    'qty_done': used_lot_id.get_stock_quant().balance,
+                    'product_uom_qty': 0,
+                    'product_uom_id': used_lot_id.product_id.uom_id.id,
+                    'lot_id': used_lot_id.id,
+                    'state': 'done',
+                    'move_id': stock_move.id
+                })
 
             oven_use_to_close_ids.mapped('dried_oven_id').set_is_in_use(False)
 
