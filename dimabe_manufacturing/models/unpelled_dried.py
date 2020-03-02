@@ -33,7 +33,7 @@ class UnpelledDried(models.Model):
 
     in_lot_ids = fields.Many2many(
         'stock.production.lot',
-        related='oven_use_ids.mapped(used_lot_ids)',
+        compute='_compute_in_lot_ids',
         string='Lotes de Entrada'
     )
 
@@ -65,6 +65,11 @@ class UnpelledDried(models.Model):
         'unpelled_dried_id',
         'Hornos'
     )
+
+    @api.multi
+    def _compute_in_lot_ids(self):
+        for item in self:
+            item.in_lot_ids = item.oven_use_ids.mapped('used_lot_ids')
 
     @api.onchange('producer_id')
     def onchange_producer_id(self):
