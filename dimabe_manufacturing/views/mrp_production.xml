@@ -15,7 +15,7 @@
                     />
                 </xpath>
                 <xpath expr="//field[@name='bom_id']" position="attributes">
-                    <attribute name="domain">['product_id','in','bom_id']</attribute>
+                    <attribute name="invisible">1</attribute>
                 </xpath>
                 <button name="action_assign" position="replace">
                 </button>
