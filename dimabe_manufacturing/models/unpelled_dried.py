@@ -95,6 +95,7 @@ class UnpelledDried(models.Model):
     @api.multi
     def _compute_total_in_weight(self):
         for item in self:
+            models._logger.error('{} {}'.format(item.in_lot_ids, item.in_lot_ids.mapped('balance')))
             item.total_in_weight = sum(item.in_lot_ids.mapped('balance'))
 
     @api.multi
