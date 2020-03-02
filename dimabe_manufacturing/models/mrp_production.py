@@ -59,7 +59,7 @@ class MrpProduction(models.Model):
         'Posibles Lotes'
     )
 
-    @api.model('bom_id')
+    @api.onchange('bom_id')
     def onchange_bom(self):
         return {
             'domain': {
