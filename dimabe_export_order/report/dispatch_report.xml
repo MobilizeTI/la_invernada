@@ -516,6 +516,9 @@
                     <div>
                         <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"/>
                     </div>
+                    <div style="margin:0 auto;">
+                        <span><strong>PACKING LIST</strong></span>
+                    </div>
                 </div>
             </t>
         </t>
