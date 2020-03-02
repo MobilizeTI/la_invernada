@@ -15,7 +15,7 @@
                     />
                 </xpath>
                 <xpath expr="//group[1]//group[1]" position="attributes">
-                    <attribute name="name">Test</attribute>
+                    <attribute name="invisible">1</attribute>
                 </xpath>
                 <button name="action_assign" position="replace">
                 </button>
