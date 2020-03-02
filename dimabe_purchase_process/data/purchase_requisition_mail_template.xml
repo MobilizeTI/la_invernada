@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
+
         <record id="new_requisition_mail_template" model="mail.template">
             <field name="name">Nueva solicitud de compra</field>
             <field name="model_id" ref="dimabe_purchase_process.model_purchase_requisition"/>
@@ -58,6 +58,4 @@
       ]]>
             </field>
         </record>
-
-    </data>
 </odoo>
