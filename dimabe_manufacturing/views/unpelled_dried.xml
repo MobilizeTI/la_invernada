@@ -38,10 +38,6 @@
 
             <field name="product_in_id" />
 
-            <field name="in_lot_ids"
-                   domain="[('producer_id','=',producer_id),('balance','>',0),('product_id','=',product_in_id)]"
-                   attrs="{'invisible':[('producer_id','=',False)],'readonly':[('state','in',['done','cancel'])]}"
-            />
             <field name="oven_use_ids"
                    attrs="{'readonly':[('state','in',['done','cancel'])]}"
             >
