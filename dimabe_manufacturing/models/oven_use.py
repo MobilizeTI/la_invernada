@@ -25,7 +25,8 @@ class OvenUse(models.Model):
     )
 
     used_lot_ids = fields.Many2many(
-        'stock.production.lot'
+        'stock.production.lot',
+        string='Lotes a Secar'
     )
 
     init_active_time = fields.Integer('Inicio de tiempo activo')

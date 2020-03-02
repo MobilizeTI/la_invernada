@@ -54,6 +54,7 @@
                 />
                 <field name="used_lot_ids"
                        domain="[('producer_id','=',parent.producer_id),('balance','>',0)]"
+                       attrs="{'readonly':[('init_date','!=',False)]}"
                 />
                 <field name="init_date" readonly="1"/>
                 <field name="finish_date" readonly="1"/>
