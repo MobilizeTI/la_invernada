@@ -10,7 +10,7 @@
             </field>
             <field name="subject">Nueva solicitud de compra</field>
             <field name="arch" type="xml">
-                <xpath expr="//button[@name='access_action']" position="replace"></xpath>
+                <xpath expr="//t[@t-set='access_action']" position="replace"></xpath>
             </field>
             <field name="body_html">
                 <![CDATA[
@@ -48,7 +48,7 @@
             <field name="email_to">${object.partner_id.id}</field>
             <field name="subject">Nueva solicitud de presupuesto - La Invernada</field>
             <field name="arch" type="xml">
-                <xpath expr="//button[@name='access_action']" position="replace"></xpath>
+                <xpath expr="//t[@t-set='access_action']" position="replace"></xpath>
             </field>
             <field name="body_html">
                 <![CDATA[
