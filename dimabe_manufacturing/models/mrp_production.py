@@ -59,6 +59,8 @@ class MrpProduction(models.Model):
         'Posibles Lotes'
     )
 
+    product_bom_id = fields.Many2one(rel='bom_id.product_id')
+
     @api.multi
     def _compute_show_finished_move_line_ids(self):
         for item in self:
