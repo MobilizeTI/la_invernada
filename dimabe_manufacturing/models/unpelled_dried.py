@@ -84,7 +84,8 @@ class UnpelledDried(models.Model):
     @api.multi
     def _compute_performance(self):
         for item in self:
-            item.performance = (item.total_out_weight / item.total_in_weight) * 100
+            if item.total_in_weight > 0 and item.total_out_weight > 0:
+                item.performance = (item.total_out_weight / item.total_in_weight) * 100
 
     @api.multi
     def _compute_total_out_weight(self):
