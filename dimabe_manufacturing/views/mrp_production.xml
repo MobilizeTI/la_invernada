@@ -5,6 +5,9 @@
             <field name="model">mrp.production</field>
             <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
             <field name="arch" type="xml">
+                <xpath expr="//group[1]">
+                    <field name="materials" invisible="1"/>
+                </xpath>
                 <field name="date_planned_start" position="before">
                     <field name="stock_picking_id" readonly="1" attrs="{'invisible':[('stock_picking_id','=',False)]}"/>
                 </field>
