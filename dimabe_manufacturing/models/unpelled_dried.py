@@ -179,6 +179,18 @@ class UnpelledDried(models.Model):
             if not oven_use_to_close_ids:
                 raise models.ValidationError('no hay hornos terminados que procesar')
 
+            # if item.out_lot_id.quan_ids:
+            #     raise models.ValidationError('este lote ya fue procesado')
+
+            stock_quant = self.env['stock.quant'].create({
+                'location_id': item.dest_location_id.id,
+                'product_id': item.out_product_id.id,
+                'quantity': item.total_out_weight,
+                'reserved_quantity': 0,
+                'lot_id': item.out_lot_id.id,
+                'product_uom_id': item.out_product_id.uom_id.id
+            })
+
             prd_move_line = self.env['stock.move.line'].create({
                 'reference': item.out_lot_id.name,
                 'product_id': item.out_product_id.id,
