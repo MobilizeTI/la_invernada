@@ -514,46 +514,7 @@
             <t t-foreach="docs" t-as="d">
                 <div class="page">
                     <div>
-                        <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)" style="width:352px;"/>
-                    </div>
-                    <div style="margin:0 auto;width:100%;">
-                        <span>
-                            <strong>PACKING LIST</strong>
-                        </span>
-                    </div>
-                    <div style="display:inline-block;">
-                        <div style="width:45%;align:left;">
-                            <table>
-                                <tr>
-                                    <td>SHIPPER / PROVEEDOR</td>
-                                    <td>
-                                        <span t-field="res_company.name"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="2">ADRESS / DIRECCION</td>
-                                    <td>
-                                        <span t-field="res_company.street"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>
-                                        <span t-field="res_company.state_id"></span>
-                                        <span t-field="res_company.country_id"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>PHONE / TELEFONO</td>
-                                    <td>
-                                        <span t-field="res_company.phone"></span>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div style="width:45%;">
-                            <table>1</table>
-                        </div>
+                        <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)" style="width:352px;margin:0 auto;"/>
                     </div>
                 </div>
             </t>
