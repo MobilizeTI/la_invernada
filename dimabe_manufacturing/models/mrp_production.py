@@ -86,7 +86,8 @@ class MrpProduction(models.Model):
             filtered_lot_ids = production.get_potential_lot_ids()
             models._logger.error("aaaaaaaaaaaaaaaaaaaa{}".format(self.product_bom_id.id))
             models._logger.error("bbbbbbbbbbbbbbbbbbbb{}".format(self.product_id.id))
-            models._logger.error('cccccccccccccccccccc{}'.format(self.bom_id))
+            for i in self.bom_id:
+                models._logger.error(i.id)
             production.update({
                 'potential_lot_ids': [
                     (2, to_unlink_id.id) for to_unlink_id in production.potential_lot_ids.filtered(
