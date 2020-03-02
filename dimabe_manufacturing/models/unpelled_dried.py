@@ -185,8 +185,8 @@ class UnpelledDried(models.Model):
                 'location_id': item.origin_location_id.id,
                 'location_dest_id': item.dest_location_id.id,
                 'qty_done': item.total_out_weight,
-                'product_uom_qty': item.out_product_id.product_uom_id.id,
-                'product_uom_id': item.out_product_id.product_uom_id.id,
+                'product_uom_qty': item.total_out_weight,
+                'product_uom_id': item.out_product_id.uom_id.id,
                 'lot_id': item.out_lot_id,
                 'state': 'done',
             })
@@ -197,3 +197,5 @@ class UnpelledDried(models.Model):
                 lambda a: not a.finish_date
             ):
                 item.state = 'draft'
+
+
