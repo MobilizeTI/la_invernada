@@ -33,7 +33,7 @@
                     <field name="required_date_moving_to_production"/>
                 </field>
                 <field name="bom_id" position="replace"/>
-
+                <field name="bom_line" invisible="1"/>
                 <field name="product_tmpl_id" position="after" >
                     <field name="bom_id" domain="[('product_id','=',product_id)]"/>
                 </field>
