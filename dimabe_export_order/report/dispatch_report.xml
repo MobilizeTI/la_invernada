@@ -544,8 +544,10 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td></td>
-                                    <td></td>
+                                    <td>PHONE / TELEFONO</td>
+                                    <td>
+                                        <span t-field="res_company.phone"></span>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
