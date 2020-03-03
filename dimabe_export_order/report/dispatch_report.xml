@@ -518,10 +518,21 @@
                             <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
                                  style="width:352px;"/>
                         </div>
-                        <div styuel="margin:0 auto;">
+                        <div style="margin:0 auto;">
                             <span style="font-size:30px">
                                 <strong>PACKING LIST</strong>
                             </span>
+                        </div>
+                    </div>
+                    <div style="width:100%;display:inline-block">
+                        <div style="width:45%">
+                            <table border="1">
+                                <tr rowspan="2">
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr></tr>
+                            </table>
                         </div>
                     </div>
                 </div>
