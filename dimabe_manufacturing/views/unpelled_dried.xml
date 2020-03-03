@@ -25,9 +25,11 @@
                  statusbar_visible="draft,progress,done"/>
         </header>
         <div class="oe_button_box" name="button_box">
+          <field name="id" />
           <button string="Ver Historial"
                   name="go_history"
                   type="object"
+                  context="{'unpelled_dried_id': id}"
           />
         </div>
         <h1 class="d-none d-md-block">

@@ -270,4 +270,4 @@ class UnpelledDried(models.Model):
 
     @api.multi
     def go_history(self):
-        raise models.ValidationError(self.env.context)
+        raise models.ValidationError(self.env.context['unpelled_dried_id'])
