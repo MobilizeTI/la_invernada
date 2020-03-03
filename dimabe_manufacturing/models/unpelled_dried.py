@@ -210,7 +210,7 @@ class UnpelledDried(models.Model):
 
             prd_move_line = self.env['stock.move.line'].create({
                 'lot_name': item.out_lot_id.name,
-                # 'consume_line_ids': consumed,
+                'consume_line_ids': consumed,
                 'reference': item.out_lot_id.name,
                 'product_id': item.out_product_id.id,
                 'location_id': item.origin_location_id.id,

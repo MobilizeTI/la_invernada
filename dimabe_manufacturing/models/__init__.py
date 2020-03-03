@@ -15,3 +15,4 @@ from . import dried_oven
 from . import unpelled_dried
 from . import oven_use
 from . import product_product
+from . import stock_traceability
