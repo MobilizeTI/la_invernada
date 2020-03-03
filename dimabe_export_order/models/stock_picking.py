@@ -223,8 +223,10 @@ class StockPicking(models.Model):
                 if lot:
                     lot_serial = self.env['stock.production.lot.serial'].search(
                         [('stock_production_lot_id.id', '=', lot.id)])
-                    for ls in lot_serial:
-                        models._logger.error(ls.stock_product_id)
+                    if lot_serial:
+                        item.lot_serial = lot_serial
+                    if not lot_serial:
+                        item.lot_id = lot
 
     @api.multi
     def generate_report(self):
