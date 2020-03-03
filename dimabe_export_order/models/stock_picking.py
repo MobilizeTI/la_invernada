@@ -222,7 +222,7 @@ class StockPicking(models.Model):
                 models._logger.error(lot)
                 if lot:
                     lot_serial = self.env['stock.production.lot.serial'].search(
-                        [('stock_production_lot.id', '=', lot.id)])
+                        [('stock_production_lot_id.id', '=', lot.id)])
                     for ls in lot_serial:
                         models._logger.error(ls.id)
 
