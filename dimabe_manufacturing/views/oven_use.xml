@@ -29,7 +29,7 @@
     <field name="arch" type="xml">
       <tree>
         <field name="dried_oven_id"/>
-        <field name="used_lot_ids"/>
+        <field name="used_lot_ids" widget="many2many_tags"/>
         <field name="init_date"/>
         <field name="finish_date"/>
         <field name="active_time"/>
