@@ -35,6 +35,12 @@ class StockProductionLotSerial(models.Model):
 
     confirmed_serial = fields.Char('Confimacion de Serie')
 
+    @api.onchange('confirmed_serial')
+    def confirmed_serial_keyboard(self):
+        for item in self:
+            if item.confimed_serial == item.serial_number:
+                item.consumed = True
+
     @api.model
     def create(self, values_list):
         res = super(StockProductionLotSerial, self).create(values_list)
