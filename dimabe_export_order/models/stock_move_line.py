@@ -10,5 +10,7 @@ class StockMoveLine(models.Model):
     def get_serial(self):
         for item in self:
             if item.lot_id:
-                for serial in item.stock_production_lot_serial_ids:
-                    models._logger.error(serial.id)
+                serials = self.env['stock.production.lot.serial'].search(
+                    [('stock_production_lot_id.id', '=', item.lot_id.id)])
+                models._logger.error(serials)
+                item.lot_serial = serials
