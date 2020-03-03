@@ -14,6 +14,7 @@ class PotentialLot(models.Model):
 
     lot_balance = fields.Float(
         related='stock_production_lot_id.balance'
+
     )
 
     stock_production_lot_id = fields.Many2one('stock.production.lot', 'lote potencial')

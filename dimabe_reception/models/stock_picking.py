@@ -221,7 +221,7 @@ class StockPicking(models.Model):
                                 for i in range(int(total_qty)):
                                     tmp = '00{}'.format(i + 1)
                                     self.env['stock.production.lot.serial'].create({
-                                        'calculated_weight': calculated_weight,
+                                        'calculated_weight': calculated_weight - stock_picking.quality_weight,
                                         'stock_production_lot_id': stock_move_line.lot_id.id,
                                         'serial_number': '{}{}'.format(stock_move_line.lot_name, tmp[-3:])
                                     })
