@@ -17,7 +17,6 @@ class DriedUnpelledHistory(models.Model):
         'Proceso de Secado',
         readonly=True,
         required=True,
-        ondelete='set null'
     )
 
     producer_id = fields.Many2one(

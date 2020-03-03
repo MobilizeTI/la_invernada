@@ -91,6 +91,13 @@ class UnpelledDried(models.Model):
         compute='_compute_performance'
     )
 
+    history_ids = fields.One2many(
+        'dried.unpelled.history',
+        'unpelled_dried_id',
+        'Historial',
+        ondelete='set null'
+    )
+
     @api.multi
     def _compute_performance(self):
         for item in self:
