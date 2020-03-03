@@ -36,7 +36,11 @@ class StockTraceability(models.TransientModel):
                 lines = record.move_lines.mapped('move_line_ids').filtered(lambda m: m.lot_id and m.state == 'done')
             else:
                 lines = record.move_finished_ids.mapped('move_line_ids').filtered(lambda m: m.state == 'done')
+        models._logger.error('{} {} {} {} {}'.format(line_id,rec_id,model,level,lines))
         move_line_vals = self._lines(line_id, model_id=rec_id, model=model, level=level, move_lines=lines)
+        models._logger.error(move_line_vals)
         final_vals = sorted(move_line_vals, key=lambda v: v['date'], reverse=True)
+        models._logger.error('final vals {}'.format(final_vals))
         lines = self._final_vals_to_lines(final_vals, level)
+        models._logger.error('lines {}'.format(lines))
         return lines
