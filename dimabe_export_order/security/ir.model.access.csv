@@ -5,4 +5,4 @@ access_export_order_dimabe_shipping_company,export_order_dimabe.shipping_company
 access_export_order_dimabe_custom_ship,export_order_dimabe.custom_ship,model_custom_ship,,1,1,1,1
 access_export_order_dimabe_custom_shipment, export_order_dimabe.custom_shipment,model_custom_shipment,,1,1,1,1
 access_export_order_dimabe_custom_client_identifier, export_order_dimabe.custom_client_identifier,model_custom_client_identifier,,1,1,1,1
-
+access_export_order_dimabe_custom_note,export_order_dimabe.custom_note,model_custom_note,,1,1,1,1

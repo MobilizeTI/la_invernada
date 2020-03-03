@@ -1,6 +1,4 @@
 from odoo import models, fields, api
-
-
 class Carrier(models.Model):
 
     _name = 'custom.carrier'

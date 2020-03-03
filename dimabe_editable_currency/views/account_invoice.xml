@@ -12,7 +12,7 @@
         </record>
 
         <record model="ir.ui.view" id="account_invoice_form_inherit">
-            <field name="name">formulario cactura</field>
+            <field name="name">formulario factura</field>
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form" />
             <field name="arch" type="xml">

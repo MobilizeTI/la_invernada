@@ -6,7 +6,7 @@ class ProductCategory(models.Model):
 
     warehouse_ids = fields.Many2many(
         'stock.warehouse',
-        string='Bodegas en las que se puede almacenar'
+        string='Bodegas en las que se Puede Almacenar'
     )
 
     is_mp = fields.Boolean(

@@ -1,39 +1,62 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-  <record id="new_requisition_mail_template" model="mail.template">
-    <field name="name">Nueva solicitud de compra</field>
-    <field name="model_id" ref="dimabe_purchase_process.model_purchase_requisition"/>
-    <field name="email_from">info@lainvernada.com</field>
-    <field name="email_to">
-      ${object.get_email_to('dimabe_purchase_process.group_purchase_budget_user')}
-    </field>
-    <field name="subject">Nueva solicitud de compra</field>
-    <field name="body_html">
-      <![CDATA[
+    <data noupdate="1">
+        <record id="new_requisition_mail_template" model="mail.template">
+            <field name="name">Nueva solicitud de compra</field>
+            <field name="model_id" ref="dimabe_purchase_process.model_purchase_requisition"/>
+            <field name="email_from">info@lainvernada.com</field>
+            <field name="email_to">
+                ${object.get_email_to('dimabe_purchase_process.group_purchase_budget_user')}
+            </field>
+            <field name="subject">Nueva solicitud de compra</field>
+
+            <field name="body_html">
+                <![CDATA[
           <p>Estimados,<br/><br/>
-          Se ha generado una nueva solicitud de compra ${object.name}
+          Se ha generado una nueva solicitud de compra <a href="${object.base_url}/mail/view?model=purchase.requisition&amp;res_id=${object.id}">${object.name}</a> 
           <br/>
           </p>
           Atte,<br/>
           ${(object.company_id.name)}
       ]]>
-    </field>
-  </record>
-  <record id="budget_ready_mail_template" model="mail.template">
-    <field name="name">Cotizaciones listas</field>
-    <field name="model_id" ref="dimabe_purchase_process.model_purchase_requisition"/>
-    <field name="email_from">info@lainvernada.com</field>
-    <field name="email_to">${object.user_id.email}</field>
-    <field name="subject">Cotizaciones listas para solicitud ${object.name}</field>
-    <field name="body_html">
-      <![CDATA[
+            </field>
+        </record>
+        <record id="budget_ready_mail_template" model="mail.template">
+            <field name="name">Cotizaciones listas</field>
+            <field name="model_id" ref="dimabe_purchase_process.model_purchase_requisition"/>
+            <field name="email_from">info@lainvernada.com</field>
+            <field name="email_to">${object.user_id.email}</field>
+            <field name="subject">Cotizaciones listas para solicitud ${object.name}</field>
+            <field name="body_html">
+                <![CDATA[
+            <p>Estimados,<br/><br/>
+            Se informa que se encuentra disponible para revisión de cotización la solicitud ${object.name}
+            <br/>
+            </p>
+            Atte,<br/>
+            ${(object.company_id.name)}
+        ]]>
+            </field>
+        </record>
+
+        <record id="new_requisition_mail_for_supplier_template" model="mail.template">
+            <field name="name">Nueva solicitud de presupuesto</field>
+            <field name="model_id" ref="dimabe_purchase_process.model_purchase_order"/>
+            <field name="email_from">${object.sudo().create_uid.email_formatted | safe}</field>
+            <field name="email_to">${object.partner_id.id}</field>
+            <field name="subject">Nueva solicitud de presupuesto - La Invernada</field>
+            <field name="body_html">
+                <![CDATA[
           <p>Estimados,<br/><br/>
-          Se informa que se encuentra disponible para revisión de cotización la solicitud ${object.name}
+            Adjunto solicitud de presupuesto ${object.name}.
           <br/>
+          Si tiene alguna duda por favor comunicarlo al correo adquisiciones@lainvernada.com
           </p>
           Atte,<br/>
           ${(object.company_id.name)}
       ]]>
-    </field>
-  </record>
+            </field>
+        </record>
+
+    </data>
 </odoo>

@@ -10,7 +10,7 @@ class AccountPayment(models.Model):
     )
 
     @api.one
-    @api.depends('invoice_ids')
+    @api.depends('invoice_ids', 'move_line_ids')
     def _get_usd_val(self):
         try:
             if len(self.invoice_ids) == 1:

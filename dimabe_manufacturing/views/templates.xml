@@ -1,5 +1,12 @@
 <odoo>
-    <data>
+    <template id="production_assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script src="/dimabe_manufacturing/static/src/js/production_tablet_view.js"
+                    type="text/javascript"
+            />
+        </xpath>
+    </template>
+<!--    <data>-->
         <!-- <template id="listing"> -->
         <!--   <ul> -->
         <!--     <li t-foreach="objects" t-as="object"> -->
@@ -18,5 +25,5 @@
         <!--     </t> -->
         <!--   </dl> -->
         <!-- </template> -->
-    </data>
+<!--    </data>-->
 </odoo>

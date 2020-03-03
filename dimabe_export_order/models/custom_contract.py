@@ -28,4 +28,4 @@ class CustomContract(models.Model):
     def _check_is_complete(self):
         for item in self:
             total = len(self.sale_order_ids)
-            item.is_complete = total == item.container_number
+            item.is_complete = total == item.container_number ## If

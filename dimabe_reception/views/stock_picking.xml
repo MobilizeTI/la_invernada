@@ -5,6 +5,7 @@
       <field name="model">stock.picking</field>
       <field name="inherit_id" ref="stock.view_picking_form"/>
       <field name="arch" type="xml">
+
         <xpath expr="//field[@name='partner_id']" position="attributes">
           <attribute name="domain">[('is_company', '=', True), ('supplier', '=', True)]</attribute>
         </xpath>
@@ -51,30 +52,28 @@
                  attrs="{'invisible':[('is_mp_reception', '=', False)]}"
           />
         </field>
-        <xpath expr="//page[@name='note']" position="after"> 
+        <xpath expr="//page[@name='note']" position="after">
           <page string="Transportista" name="carrier_page" attrs="{'invisible':[('picking_type_code', 'not in', ('outgoing', 'incoming'))]}">
             <group name="carrier_page" position="inside">
               <field name="carrier_id"/>
               <field name="carrier_rut"/>
               <field name="carrier_cell_phone"/>
-              <field name="truck_id"/>
-              <field name="cart_id"/>
-         </group>
-         
-
-     <!--  -->
-     
+              <field name="carrier_truck_patent"/>
+              <field name="carrier_cart_patent"/>
+            </group>
           </page>
-         </xpath>  
+        </xpath>
       </field>
     </record>
 
     <record id="stock_picking_list" model="ir.ui.view">
       <field name="name">stock picking list</field>
       <field name="model">stock.picking</field>
+      <field name="view_mode">kanban,calendar,tree</field>
       <field name="arch" type="xml">
         <tree>
           <field name="name"/>
+          <field name="date"/>
           <field name="location_dest_id"/>
           <field name="partner_id"/>
           <field name="scheduled_date"/>

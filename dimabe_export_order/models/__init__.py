@@ -10,4 +10,5 @@ from . import custom_client_identifier
 from . import sale_order
 from . import stock_picking
 from . import stock_move
-
+from . import ir_attachment
+from . import custom_note

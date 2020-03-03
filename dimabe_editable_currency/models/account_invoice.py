@@ -7,7 +7,7 @@ class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
     exchange_rate = fields.Float(
-        'Taza de Cambio'
+        'Tasa de Cambio'
     )
 
     @api.model

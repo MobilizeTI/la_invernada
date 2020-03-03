@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
+    _order = 'date desc'
 
     guide_number = fields.Integer('Número de Guía')
 
@@ -109,6 +110,9 @@ class StockPicking(models.Model):
   #       related='transport_id.is_truck'
   #       )
 
+    #transport_is_truck = fields.Boolean(string='Es camión?', related="carrier")
+    
+
     hr_alert_notification_count = fields.Integer('Conteo de notificación de retraso de camión')
 
     kg_diff_alert_notification_count = fields.Integer('Conteo de notificación de diferencia de kg')
@@ -177,9 +181,14 @@ class StockPicking(models.Model):
     @api.one
     @api.depends('reception_type_selection', 'picking_type_id')
     def _compute_is_mp_reception(self):
+        models._logger.error('{} {}'.format(self.reception_type_selection,self.picking_type_id))
+        models._logger.error('{} {}'.format(self.picking_type_id.warehouse_id.name,
+                                            self.picking_type_id.name))
+
         self.is_mp_reception = self.reception_type_selection == 'mp' or\
+                               self.picking_type_id.warehouse_id.name and\
                                'Materia Prima' in self.picking_type_id.warehouse_id.name and \
-                               'Recepciones' in self.picking_type_id.name
+                               self.picking_type_id.name and 'Recepciones' in self.picking_type_id.name
 
     @api.one
     @api.depends('production_net_weight', 'tare_weight', 'gross_weight', 'move_ids_without_package')

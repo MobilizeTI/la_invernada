@@ -1,0 +1,24 @@
+<odoo>
+  <record id="product_category_form_view_inherit" model="ir.ui.view">
+    <field name="name">Formulario de Categoría</field>
+    <field name="model">product.category</field>
+    <field name="inherit_id" ref="product.product_category_form_view" />
+    <field name="arch" type="xml">
+      <field name="parent_id" position="after">
+        <field name="reserve_ignore" widget="boolean_toggle" />
+        <field name="child_id" />
+      </field>
+    </field>
+  </record>
+
+  <record id="product_category_list_view_inherit" model="ir.ui.view">
+    <field name="name">Lista de Categorías</field>
+    <field name="model">product.category</field>
+    <field name="inherit_id" ref="product.product_category_list_view" />
+    <field name="arch" type="xml">
+      <tree>
+        <field name="reserve_ignore" widget="boolean_toggle" />
+      </tree>
+    </field>
+  </record>
+</odoo>

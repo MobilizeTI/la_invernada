@@ -3,18 +3,82 @@
     <record id="mrp_production_form_view_inherit" model="ir.ui.view">
       <field name="name">formulario producción</field>
       <field name="model">mrp.production</field>
-      <field name="inherit_id" ref="mrp.mrp_production_form_view" />
+      <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
       <field name="arch" type="xml">
+        <field name="date_planned_start" position="before">
+          <field name="stock_picking_id" readonly="1" attrs="{'invisible':[('stock_picking_id','=',False)]}" />
+        </field>
         <xpath expr="//header" postition="after">
-          <button name="calculate_done"
-                  type="object"
+          <button name="calculate_done" type="object"
                   string="Calcular Realizado"
                   attrs="{'invisible':[('state', '!=', 'progress')]}"
           />
         </xpath>
-        <xpath expr="//field[@name='finished_move_line_ids']/tree"
-               postition="inside">
-          <field name="count_stock_production_lot_serial" />
+        <button name="action_assign" position="replace">
+        </button>
+        <button name="button_unreserve" position="replace">
+        </button>
+        <field name="product_id" position="attributes">
+          <attribute name="attrs">{'readonly':[('stock_picking_id','!=', False)]}</attribute>
+        </field>
+        <field name="product_id" position="after">
+          <field name="requested_qty" readonly="1"/>
+          <field name="sale_order_id" readonly="1"
+                 string="Pedido de Venta"
+          />
+          <field name="stock_picking_id" invisible="1"/>
+        </field>
+        <field name="company_id" position="after">
+          <field name="required_date_moving_to_production"/>
+        </field>
+        <field name="bom_id" position="replace"/>
+        <field name="product_tmpl_id" position="after">
+          <field name="bom_id"/>
+        </field>
+        <field name="origin" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </field>
+        <xpath expr="//page[3]" position="after">
+          <page string="Seleccionar Lote"
+                attrs="{'invisible':[('state','=','done')]}"
+          >
+            <group>
+              <field name="client_search_id" attrs="{'invisible':[('state','=','done')]}"/>
+              <field name="product_search_id" attrs="{'invisible':[('state','=','done')]}"/>
+              <field name="stock_lots" invisible="1"/>
+              <field name="potential_lot_ids" readonly="0" string="">
+                <tree edit="true" delete="false" create="false">
+                  <field name="stock_production_lot_id" readonly="1" widget="many2onebutton"/>
+                  <field name="lot_product_id" readonly="1"/>
+                  <field name="lot_balance" readonly="1" force_save="1"/>
+                  <field name="is_reserved" invisible="1"/>
+                  <field name="mrp_production_state" invisible="1"/>
+                  <button string="Reservar"
+                          name="reserve_stock"
+                          type="object"
+                          attrs="{'invisible':['|',('is_reserved', '=', True),('mrp_production_state','=','done')]}"
+                  />
+                  <button string="Quitar Reserva"
+                          name="unreserved_stock"
+                          type="object"
+                          attrs="{'invisible':['|',('is_reserved', '=', False),('mrp_production_state', '=', 'done')]}"
+                  />
+                  <field name="qty_to_reserve" readonly="1"/>
+                </tree>
+              </field>
+            </group>
+          </page>
+          <page string="Códigos Utilizados"
+                attrs="{'invisible':[('state','!=','done')]}"
+          >
+            <field name="consumed_material_ids">
+              <tree>
+                <field name="stock_production_lot_id"/>
+                <field name="serial_number"/>
+                <field name="display_weight"/>
+              </tree>
+            </field>
+          </page>
         </xpath>
       </field>
     </record>

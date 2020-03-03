@@ -1,50 +1,63 @@
 <odoo>
-  <data>
-    <record id="purchase_order_form_inherit" model="ir.ui.view">
-      <field name="name">Formulario de presupuesto</field>
-      <field name="model">purchase.order</field>
-      <field name="inherit_id" ref="purchase.purchase_order_form"/>
-      <field name="arch" type="xml">
-        <xpath expr="//field[@name='partner_id']" position="attributes">
-          <attribute name="string">Proveedor</attribute>
-        </xpath>
-        <xpath expr="//field[@name='requisition_id']" position="attributes">
-          <attribute name="readonly">1</attribute>
-        </xpath>
-        <button name="print_quotation" position="attributes">
-          <attribute name="groups">dimabe_purchase_process.group_purchase_approval_user</attribute>
-        </button>
-        <xpath expr="//button[@name='action_rfq_send'][1]" position="attributes">
-          <attribute name="groups">dimabe_purchase_process.group_purchase_approval_user</attribute>
-        </xpath>
-        <xpath expr="//button[@name='action_rfq_send'][2]" position="attributes">
-          <attribute name="groups">dimabe_purchase_process.group_purchase_approval_user</attribute>
-        </xpath>
-         <xpath expr="//button[@name='action_rfq_send'][3]" position="attributes">
-          <attribute name="groups">dimabe_purchase_process.group_purchase_approval_user</attribute>
-        </xpath>
-        <xpath expr="//button[@name='button_confirm'][1]" position="attributes">
-          <attribute name="groups">dimabe_purchase_process.group_purchase_requisition_user</attribute>
-        </xpath>
-        <xpath expr="//button[@name='button_confirm'][2]" position="attributes">
-          <attribute name="groups">dimabe_purchase_process.group_purchase_requisition_user</attribute>
-        </xpath>
-        <xpath expr="//button[@name='action_view_invoice'][1]" position="attributes">
-          <attribute name="groups">dimabe_purchase_process.group_purchase_approval_user</attribute>
-        </xpath>
-        <xpath expr="//button[@name='action_view_invoice'][2]" position="attributes">
-          <attribute name="groups">dimabe_purchase_process.group_purchase_approval_user</attribute>
-        </xpath>
-        <button name="action_view_picking" position="attributes">
-          <attribute name="groups">dimabe_purchase_process.group_purchase_budget_user</attribute>
-        </button>
-        <button name="button_cancel" position="attributes">
-          <attribute name="string">Rechazar</attribute>
-        </button>
-        <xpath expr="//field[@name='incoterm_id']" position="after">
-          <field name="provider_po_document" />
-        </xpath>
-      </field>
-    </record>
-  </data>
+    <data>
+        <record id="purchase_order_form_inherit" model="ir.ui.view">
+            <field name="name">Formulario de presupuesto</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <field name="state" position="attributes">
+                    <attribute name="statusbar_visible">draft,sent,purchase,purchase sent</attribute>
+                </field>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="string">Proveedor</attribute>
+                </xpath>
+                <xpath expr="//field[@name='requisition_id']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                <button name="print_quotation" position="attributes">
+                    <attribute name="groups">dimabe_purchase_process.group_purchase_approval_user</attribute>
+                </button>
+                <xpath expr="//button[@name='action_rfq_send'][1]" position="attributes">
+                    <attribute name="groups">dimabe_purchase_process.group_purchase_approval_user</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_rfq_send'][2]" position="attributes">
+                    <attribute name="groups">dimabe_purchase_process.group_purchase_approval_user</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_rfq_send'][3]" position="attributes">
+                    <attribute name="groups">dimabe_purchase_process.group_purchase_approval_user</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_confirm'][1]" position="attributes">
+                    <attribute name="groups">dimabe_purchase_process.group_purchase_requisition_user</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_confirm'][2]" position="attributes">
+                    <attribute name="groups">dimabe_purchase_process.group_purchase_requisition_user</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_view_invoice'][1]" position="attributes">
+                    <attribute name="groups">dimabe_purchase_process.group_purchase_approval_user</attribute>
+                    <attribute name="attrs">{'invisible': ['|', '|', ('state', 'not in', ('purchase', 'done','purchase sent')), ('invoice_status', 'not in', ('no', 'invoiced')), ('order_line', '=', [])]}</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_view_invoice'][2]" position="attributes">
+                    <attribute name="groups">dimabe_purchase_process.group_purchase_approval_user</attribute>
+                </xpath>
+                <button name="action_view_picking" position="attributes">
+                    <attribute name="groups">dimabe_purchase_process.group_purchase_budget_user</attribute>
+                    <attribute name="attrs">{'invisible': ['|', '|', ('state', 'not in', ('purchase', 'done','purchase sent')), ('invoice_status', 'not in', ('no', 'invoiced')), ('order_line', '=', [])]}</attribute>
+                </button>
+                <button name="button_cancel" position="attributes">
+                    <attribute name="string">Rechazar</attribute>
+                    <attribute name="state">"draft,to approve,sent,purchase,purchase sent"</attribute>
+                </button>
+                <xpath expr="//field[@name='incoterm_id']" position="after">
+                    <field name="provider_po_document"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='account_analytic_id']" position="attributes">
+                    <attribute name="required">True</attribute>
+                    <attribute name="string">Centro de Costo</attribute>
+                </xpath>
+                <field name="amount_untaxed" position="attributes">
+                    <attribute name="string">Valor Neto</attribute>
+                </field>
+            </field>
+        </record>
+    </data>
 </odoo>
