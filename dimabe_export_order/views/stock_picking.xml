@@ -120,7 +120,7 @@
                     </field>
                     <field name="lot_serial">
                         <tree>
-                            <field name="display_name"></field>
+                            <field name="serial_number"></field>
                         </tree>
                     </field>
                 </xpath>
