@@ -21,7 +21,7 @@
             <tree decoration-danger="consumed==False" decoration-success="consumed==True"
                   delete="false" create="false" editable="bottom">
               <field name="stock_production_lot_id" readonly="1"/>
-              <field name="serial_number" readonly="1"/>
+              <field name="serial_number" string="Ingrese codigo de barras" readonly="1"/>
               <field name="display_weight" readonly="1"/>
               <field name="consumed" groups="base.group_system"/>
             </tree>
