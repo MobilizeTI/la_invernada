@@ -34,7 +34,7 @@
           <group>
             <field name="producer_id" />
 
-            <field name="product_in_id" />
+            <field name="in_product_id" />
 
             <field name="oven_use_ids" />
 
