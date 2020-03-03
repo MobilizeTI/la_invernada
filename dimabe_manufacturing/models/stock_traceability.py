@@ -1,7 +1,7 @@
 from odoo import fields, models, api
 
 
-class StockTraceability(models.Model):
+class StockTraceability(models.TransientModel):
     _inherit = 'stock.traceability.report'
 
     @api.model
