@@ -178,7 +178,7 @@ class UnpelledDried(models.Model):
                 raise models.ValidationError('no hay hornos terminados que procesar')
 
             stock_move = self.env['stock.move'].create({
-                'name': 'lala',
+                'name': item.out_lot_id.name,
                 'company_id': self.env.user.company_id.id,
                 'location_id': item.origin_location_id.id,
                 'location_dest_id': item.dest_location_id.id,
@@ -192,7 +192,9 @@ class UnpelledDried(models.Model):
             consumed = []
 
             for used_lot_id in oven_use_to_close_ids.mapped('used_lot_ids'):
-                tmp = self.env['stock.move.line'].create({
+                # tmp = self.env['stock.move.line'].create()
+
+                consumed.append([0, 0, {
                     'lot_name': used_lot_id.name,
                     'reference': used_lot_id.name,
                     'product_id': used_lot_id.product_id.id,
@@ -204,9 +206,7 @@ class UnpelledDried(models.Model):
                     'lot_id': used_lot_id.id,
                     'state': 'done',
                     'move_id': stock_move.id
-                })
-
-                consumed.append([4, tmp.id])
+                }])
 
             prd_move_line = self.env['stock.move.line'].create({
                 'lot_name': item.out_lot_id.name,
