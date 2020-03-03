@@ -5,6 +5,8 @@ class DriedUnpelledHistory(models.Model):
     _name = 'dried.unpelled.history'
     _description = 'Historial de lotes terminados'
 
+    _order = 'create_date desc'
+
     name = fields.Char(
         'Nombre',
         compute='_compute_name'

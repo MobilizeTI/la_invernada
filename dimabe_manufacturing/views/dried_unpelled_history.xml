@@ -4,6 +4,7 @@
     <field name="model">dried.unpelled.history</field>
     <field name="arch" type="xml">
       <tree>
+        <field name="create_date" />
         <field name="producer_id"/>
         <field name="in_product_id"/>
         <field name="total_in_weight"/>
