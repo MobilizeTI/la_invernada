@@ -533,9 +533,9 @@
                                         <span t-field="res_company.name"></span>
                                     </td>
                                 </tr>
-                                <tr rowspan="2">
-                                    <td>ADDRESS / DIRECCION</td>
-                                    <td>
+                                <tr >
+                                    <td rowspan="2">ADDRESS / DIRECCION</td>
+                                    <td rowspan="2">
                                         <span t-field="res_company.street"></span>
                                     </td>
                                 </tr>
