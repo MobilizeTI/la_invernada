@@ -267,3 +267,7 @@ class UnpelledDried(models.Model):
 
             if not item.oven_use_ids:
                 item.state = 'draft'
+
+    @api.multi
+    def go_history(self):
+        raise models.ValidationError(self.env.context)
