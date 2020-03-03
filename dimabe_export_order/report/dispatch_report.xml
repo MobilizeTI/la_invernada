@@ -533,13 +533,13 @@
                                         <span t-field="res_company.name"></span>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr rowspan="2">
                                     <td>ADDRESS / DIRECCION</td>
                                     <td>
                                         <span t-field="res_company.street"></span>
                                     </td>
                                 </tr>
-                                <tr rowspan="2">
+                                <tr >
                                     <td></td>
                                     <td>
                                         <span t-field="res_company.state_id"></span>
