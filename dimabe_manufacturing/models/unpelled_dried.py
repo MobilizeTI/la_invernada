@@ -167,9 +167,14 @@ class UnpelledDried(models.Model):
 
     @api.model
     def create_history(self):
+
+        raise models.ValidationError(self.total_in_weight)
+
         history_id = self.env['dried.unpelled.history'].create({
             'unpelled_dried_id': self.id
         })
+
+
 
         for oven_use_id in self.oven_use_ids.filtered(lambda a: a.finish_date):
             oven_use_id.write({
