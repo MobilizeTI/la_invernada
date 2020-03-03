@@ -6,7 +6,6 @@ class StockTraceability(models.TransientModel):
 
     @api.model
     def get_lines(self, line_id=None, **kw):
-
         context = dict(self.env.context)
         models._logger.error('context {}'.format(self.env.context))
         model = kw and kw['model_name'] or context.get('model')
@@ -45,3 +44,23 @@ class StockTraceability(models.TransientModel):
         lines = self._final_vals_to_lines(final_vals, level)
         models._logger.error('lines {}'.format(lines))
         return lines
+
+    @api.model
+    def _get_reference(self, move_line):
+        res_model = ''
+        ref = ''
+        res_id = False
+        picking_id = move_line.picking_id or move_line.move_id.picking_id
+        if picking_id:
+            res_model = 'stock.picking'
+            res_id = picking_id.id
+            ref = picking_id.name
+        elif move_line.move_id.inventory_id:
+            res_model = 'stock.inventory'
+            res_id = move_line.move_id.inventory_id.id
+            ref = 'Inv. Adj.: ' + move_line.move_id.inventory_id.name
+        elif move_line.move_id.scrapped and move_line.move_id.scrap_ids:
+            res_model = 'stock.scrap'
+            res_id = move_line.move_id.scrap_ids[0].id
+            ref = move_line.move_id.scrap_ids[0].name
+        return res_model, res_id, ref

@@ -177,15 +177,15 @@ class UnpelledDried(models.Model):
             if not oven_use_to_close_ids:
                 raise models.ValidationError('no hay hornos terminados que procesar')
 
-            stock_move = self.env['stock.move'].create({
-                'name': item.out_lot_id.name,
+            consume_stock_move = self.env['stock.move'].create({
+                'name': 'lotes consumidos',
                 'company_id': self.env.user.company_id.id,
-                'location_id': item.origin_location_id.id,
-                'location_dest_id': item.dest_location_id.id,
-                'product_id': item.out_product_id.id,
-                'product_uom': item.out_product_id.uom_id.id,
-                'product_uom_qty': item.total_out_weight,
-                'quantity_done': item.total_out_weight,
+                'location_id': oven_use_to_close_ids.mapped('used_lot_ids')[0].get_stock_quant().location_id.id,
+                'location_dest_id': item.origin_location_id.id,
+                'product_id': item.product_id_id.id,
+                'product_uom': item.product_in_id.uom_id.id,
+                'product_uom_qty': item.total_in_weight,
+                'quantity_done': item.total_in_weight,
                 'state': 'done',
             })
 
@@ -205,8 +205,21 @@ class UnpelledDried(models.Model):
                     'product_uom_id': used_lot_id.product_id.uom_id.id,
                     'lot_id': used_lot_id.id,
                     'state': 'done',
-                    'move_id': stock_move.id
+                    'move_id': consume_stock_move.id
                 }])
+
+            prd_stock_move = self.env['stock.move'].create({
+                'name': item.out_lot_id.name,
+                'move_orig_ids': [(4, consume_stock_move.id)],
+                'company_id': self.env.user.company_id.id,
+                'location_id': item.origin_location_id.id,
+                'location_dest_id': item.dest_location_id.id,
+                'product_id': item.out_product_id.id,
+                'product_uom': item.out_product_id.uom_id.id,
+                'product_uom_qty': item.total_out_weight,
+                'quantity_done': item.total_out_weight,
+                'state': 'done',
+            })
 
             prd_move_line = self.env['stock.move.line'].create({
                 'lot_name': item.out_lot_id.name,
@@ -220,7 +233,7 @@ class UnpelledDried(models.Model):
                 'product_uom_id': item.out_product_id.uom_id.id,
                 'lot_id': item.out_lot_id.id,
                 'state': 'done',
-                'move_id': stock_move.id
+                'move_id': prd_stock_move.id
             })
 
             models._logger.error('{} {}'.format(consumed, prd_move_line.consume_line_ids))
