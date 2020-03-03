@@ -88,9 +88,9 @@ class DriedUnpelledHistory(models.Model):
         res = super(DriedUnpelledHistory, self).create(values_list)
         if 'unpelled_dried_id' in values_list:
             unpelled_dried_id = self.env['unpelled.dried'].search([('id', '=', values_list['unpelled_dried_id'])])
-            raise models.ValidationError(unpelled_dried_id.oven_use_ids.filtered(
+            raise models.ValidationError('{} {}'.format(unpelled_dried_id.oven_use_ids.filtered(
                 lambda a: a.finish_date
-            ))
+            ), unpelled_dried_id.total_in_weight))
             if unpelled_dried_id:
                 res.producer_id = unpelled_dried_id.producer_id.id
                 res.in_product_id = unpelled_dried_id.product_in_id.id
