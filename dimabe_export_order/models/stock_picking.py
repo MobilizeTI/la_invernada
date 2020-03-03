@@ -210,9 +210,9 @@ class StockPicking(models.Model):
         compute='_compute_elapsed_time'
     )
 
-    lot_id = fields.Many2many('stock.production.lot',compute='_get_serial')
+    lot_id = fields.Many2many('stock.production.lot', compute='_get_serial')
 
-    lot_serial = fields.Many2many('stock.production.lot.serial', 'Series Disponibles',compute='_get_serial')
+    lot_serial = fields.Many2many('stock.production.lot.serial', 'Series Disponibles', compute='_get_serial')
 
     @api.multi
     def _get_serial(self):
@@ -221,8 +221,10 @@ class StockPicking(models.Model):
                 lot = self.env['stock.production.lot'].search([('product_id.id', '=', move.product_id.id)])
                 models._logger.error(lot)
                 if lot:
-                    models._logger.error(lot.qty_standard_serial)
-
+                    lot_serial = self.env['stock.production.lot.serial'].search(
+                        [('stock.production.lot_id.id', '=', lot.id)])
+                    for ls in lot_serial:
+                        models._logger.error(ls.id)
 
     @api.multi
     def generate_report(self):
