@@ -6,6 +6,7 @@ class StockTraceability(models.TransientModel):
 
     @api.model
     def get_lines(self, line_id=None, **kw):
+
         context = dict(self.env.context)
         models._logger.error('context {}'.format(self.env.context))
         model = kw and kw['model_name'] or context.get('model')
