@@ -21,6 +21,7 @@ class StockMove(models.Model):
 
     product_name = fields.Char('Producto',compute='_get_variant')
 
+
     @api.model
     def _compute_reserved_amount(self):
         self.reserved_amount = 100

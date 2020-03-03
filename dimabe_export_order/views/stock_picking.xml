@@ -111,7 +111,6 @@
                     <field name="brand"></field>
                     <field name="type_of_package"></field>
                     <field name="specie"></field>
-                    <field name="lot_id"></field>
                 </xpath>
                 <xpath expr="//field[@name='move_line_ids_without_package']" position="attributes">
                     <attribute name="invisible">1</attribute>
