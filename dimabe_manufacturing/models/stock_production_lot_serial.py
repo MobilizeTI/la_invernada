@@ -39,7 +39,9 @@ class StockProductionLotSerial(models.Model):
     def confirmed_serial_keyboard(self):
         for item in self:
             if item.confimed_serial == item.serial_number:
-                item.consumed = True
+                item.update({
+                    'consumed' : True
+                })
 
     @api.model
     def create(self, values_list):

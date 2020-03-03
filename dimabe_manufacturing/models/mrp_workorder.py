@@ -144,6 +144,8 @@ class MrpWorkorder(models.Model):
 
         self.qty_done = 0
 
+
+
     def on_barcode_scanned(self, barcode):
 
         qty_done = self.qty_done
