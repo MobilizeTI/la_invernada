@@ -25,11 +25,14 @@
                  statusbar_visible="draft,progress,done"/>
         </header>
         <div class="oe_button_box" name="button_box">
-          <field name="id" />
+          <field name="id" invisible="1" />
+          <field name="history_ids" invisible="1" />
           <button string="Ver Historial"
                   name="go_history"
                   type="object"
+                  icon="fa-history"
                   context="{'unpelled_dried_id': id}"
+                  attrs="{'invisible':[('history_ids','!=',False)]}"
           />
         </div>
         <h1 class="d-none d-md-block">
