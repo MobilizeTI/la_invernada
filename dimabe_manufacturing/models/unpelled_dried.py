@@ -171,15 +171,11 @@ class UnpelledDried(models.Model):
             'unpelled_dried_id': self.id
         })
 
-        models._logger.error(history_id.total_in_weight)
-
         for oven_use_id in self.oven_use_ids.filtered(lambda a: a.finish_date):
             oven_use_id.write({
                 'history_id': history_id.id,
                 'unpelled_dried_id': None
             })
-
-        models._logger.error(history_id.total_in_weight)
 
     @api.model
     def create(self, values_list):
