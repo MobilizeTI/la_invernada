@@ -112,11 +112,6 @@
                     <field name="type_of_package"></field>
                     <field name="specie"></field>
                 </xpath>
-                <xpath expr="//page[1]" position="inside">
-                    <field name="lot_serial">
-                        <field name="product_id"/>
-                    </field>
-                </xpath>
             </field>
         </record>
     </data>
