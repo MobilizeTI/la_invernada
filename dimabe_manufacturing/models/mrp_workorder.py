@@ -151,6 +151,7 @@ class MrpWorkorder(models.Model):
                 item.update({
                     'consumed': True
                 })
+        self._compute_potential_lot_planned_ids()
 
     def on_barcode_scanned(self, barcode):
 
