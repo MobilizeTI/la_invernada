@@ -149,7 +149,7 @@ class UnpelledDried(models.Model):
     @api.multi
     def _compute_name(self):
         for item in self:
-            item.name = '{} {}'.format(item.producer_id.name, item.out_lot_id.product_id.name)
+            item.name = '{} {}'.format(item.producer_id.name, item.out_lot_id.product_id.display_name)
 
     @api.model
     def create_out_lot(self):
