@@ -5,7 +5,10 @@ class UnpelledDried(models.Model):
     _name = 'unpelled.dried'
     _description = 'clase que para producción de secado y despelonado'
 
-    active = fields.Boolean('Activo')
+    active = fields.Boolean(
+        'Activo',
+        default=True
+    )
 
     state = fields.Selection([
         ('draft', 'Borrador'),
