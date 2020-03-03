@@ -27,6 +27,9 @@
             </tree>
           </field>
         </xpath>
+        <xpath expr="//field[@name='finished_product_check_ids']" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </xpath>
       </field>
     </record>
 
