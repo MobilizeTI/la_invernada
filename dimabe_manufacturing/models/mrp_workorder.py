@@ -148,7 +148,7 @@ class MrpWorkorder(models.Model):
     @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
         for item in self:
-            if item.confimed_serial == item.serial_number:
+            if item.confirmed_serial == item.serial_number:
                 item.update({
                     'consumed': True
                 })

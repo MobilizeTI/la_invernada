@@ -16,10 +16,10 @@
             <field name="arch" type="xml">
                 <button name="action_open_manufacturing_order" position="replace">
                 </button>
-                <xpath expr="//field[@name='final_lot_id']" position="after">
-                  <group>
-                    <field name="confirmed_serial"/>
-                  </group>
+                <xpath expr="//div[@class='o_workorder_data']//field[@name='lot_id']" position="after">
+                    <group>
+                        <field name="confirmed_serial"/>
+                    </group>
                 </xpath>
                 <xpath expr="//div[@class='workorder_pdf']" position="before">
                     <field name="potential_serial_planned_ids">
