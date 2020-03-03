@@ -177,7 +177,6 @@ class UnpelledDried(models.Model):
                 'unpelled_dried_id': None
             })
 
-
     @api.model
     def create(self, values_list):
         res = super(UnpelledDried, self).create(values_list)
@@ -264,7 +263,7 @@ class UnpelledDried(models.Model):
             oven_use_to_close_ids.mapped('dried_oven_id').set_is_in_use(False)
 
             item.create_history()
-            item.out_lot_id = item.create_out_lot()
+            item.create_out_lot()
 
             if not item.oven_use_ids:
                 item.state = 'draft'
