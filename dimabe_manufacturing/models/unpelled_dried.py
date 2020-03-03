@@ -168,8 +168,6 @@ class UnpelledDried(models.Model):
     @api.model
     def create_history(self):
 
-        raise models.ValidationError(self.total_in_weight)
-
         history_id = self.env['dried.unpelled.history'].create({
             'unpelled_dried_id': self.id
         })
@@ -266,6 +264,8 @@ class UnpelledDried(models.Model):
             })
 
             oven_use_to_close_ids.mapped('dried_oven_id').set_is_in_use(False)
+
+            raise models.ValidationError(item.total_in_weight)
 
             item.create_history()
             item.create_out_lot()
