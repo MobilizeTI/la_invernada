@@ -541,9 +541,10 @@
                                         <span t-field="res_company.country_id"></span>
                                     </td>
                                 </tr>
-                                <tr >
-                                    <td></td>
+                                <tr>
+                                    <td>PHONE / TELEFONO</td>
                                     <td>
+                                        <span t-field="res_company.phone"></span>
                                     </td>
                                 </tr>
                             </table>
