@@ -251,9 +251,5 @@ class UnpelledDried(models.Model):
             item.create_history()
             item.out_lot_id = item.create_out_lot()
 
-            if not item.oven_use_ids.filtered(
-                lambda a: not a.finish_date
-            ):
+            if not item.oven_use_ids:
                 item.state = 'draft'
-
-
