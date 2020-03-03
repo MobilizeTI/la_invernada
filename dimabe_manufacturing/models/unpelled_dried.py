@@ -182,7 +182,7 @@ class UnpelledDried(models.Model):
                 'company_id': self.env.user.company_id.id,
                 'location_id': oven_use_to_close_ids.mapped('used_lot_ids')[0].get_stock_quant().location_id.id,
                 'location_dest_id': item.origin_location_id.id,
-                'product_id': item.product_id_id.id,
+                'product_id': item.product_in_id.id,
                 'product_uom': item.product_in_id.uom_id.id,
                 'product_uom_qty': item.total_in_weight,
                 'quantity_done': item.total_in_weight,
