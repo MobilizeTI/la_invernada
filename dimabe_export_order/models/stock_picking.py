@@ -210,7 +210,16 @@ class StockPicking(models.Model):
         compute='_compute_elapsed_time'
     )
 
+    lot_id = fields.Many2many('stock.production.lot',compute='_get_serial')
 
+    lot_serial = fields.Many2many('stock.production.lot.serial', 'Series Disponibles',compute='_get_serial')
+
+    @api.multi
+    def _get_serial(self):
+        for item in self:
+            for move in item.move_line_ids_without_package:
+                lot = self.env['stock.production.lot'].search([('product_id.id', '=', move.product_id.id)])
+                models._logger.error(lot)
 
     @api.multi
     def generate_report(self):
@@ -266,7 +275,7 @@ class StockPicking(models.Model):
                 prices = sum(list_price)
                 qtys = sum(list_qty)
             item.total_value = (prices * qtys) + item.freight_value + item.safe_value
-            
+
     @api.multi
     @api.depends('total_value')
     def _compute_value_per_kilogram(self):
