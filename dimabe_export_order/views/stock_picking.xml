@@ -107,7 +107,7 @@
                 </xpath>
                 <xpath expr="//page[1]" position="inside">
                     <field name="move_line_ids_without_package">
-                        <tree>
+                        <tree delete="false" create="false" editable="bottom">
                             <field name="lot_serial"/>
                         </tree>
                     </field>
