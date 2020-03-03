@@ -16,7 +16,7 @@
             <field name="arch" type="xml">
                 <button name="action_open_manufacturing_order" position="replace">
                 </button>
-                <xpath expr="//div[@class='o_workorder_data']//h3//field[@name='lot_id']" position="after">
+                <xpath expr="//div[@class='o_workorder_data']" position="inside">
                     <group>
                         <field name="confirmed_serial"/>
                     </group>
