@@ -25,7 +25,8 @@
         'sale_management',
         'contacts',
         'account',
-        'stock'
+        'stock',
+        'dimabe_manufacturing'
     ],
 
     # always loaded

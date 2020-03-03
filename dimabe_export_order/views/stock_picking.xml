@@ -119,9 +119,6 @@
                     <field name="lot_id">
                     </field>
                     <field name="lot_serial">
-                        <tree>
-                            <field name="serial_number" />
-                        </tree>
                     </field>
                 </xpath>
             </field>
