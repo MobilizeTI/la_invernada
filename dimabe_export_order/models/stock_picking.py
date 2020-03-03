@@ -224,7 +224,7 @@ class StockPicking(models.Model):
                     lot_serial = self.env['stock.production.lot.serial'].search(
                         [('stock_production_lot_id.id', '=', lot.id)])
                     for ls in lot_serial:
-                        models._logger.error(ls.product_id)
+                        models._logger.error(ls.stock_product_id)
 
     @api.multi
     def generate_report(self):
