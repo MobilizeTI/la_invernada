@@ -218,7 +218,7 @@ class StockPicking(models.Model):
             for move in item.move_line_ids_without_package:
                 if move.lot_id:
                     serials = self.env['stock.production.lot.serial'].search(
-                        [('stock_production_lot_id.id', '=', item.lot_id.id)])
+                        [('stock_production_lot_id.id', '=', move.lot_id.id)])
                     models._logger.error(serials)
                     item.lot_serial = serials
 
