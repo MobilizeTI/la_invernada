@@ -113,8 +113,8 @@
                     <field name="specie"></field>
                 </xpath>
                 <xpath expr="//page[1]" position="inside">
-                    <field name="move_line_ids_without_package">
-                        <field name="lot_serial" widget="many2many_tags"/>
+                    <field name="lot_serial">
+                        <field name="product_id"/>
                     </field>
                 </xpath>
             </field>
