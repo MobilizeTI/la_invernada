@@ -4,14 +4,14 @@
     <field name="model">dried.unpelled.history</field>
     <field name="arch" type="xml">
       <tree>
-        <field name="producer_id" />
-        <field name="in_product_id" />
-        <field name="total_in_weight" />
-        <field name="total_out_weight" />
-        <field name="performance" />
-        <field name="oven_use_ids" widget="many2many_tags" />
-        <field name="out_lot_id" />
-        <field name="out_product_id" />
+        <field name="producer_id"/>
+        <field name="in_product_id"/>
+        <field name="total_in_weight"/>
+        <field name="total_out_weight"/>
+        <field name="performance"/>
+        <field name="oven_use_ids" widget="many2many_tags"/>
+        <field name="out_lot_id"/>
+        <field name="out_product_id"/>
       </tree>
     </field>
   </record>
