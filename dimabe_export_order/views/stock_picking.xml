@@ -112,7 +112,8 @@
                     <field name="type_of_package"></field>
                     <field name="specie"></field>
                 </xpath>
-                <xpath expr="//field[@name='move_line_ids_without_package']/tree//field[@name='lot_id']" position="after">
+                <xpath expr="//field[@name='move_line_ids_without_package']/tree//field[@name='lot_id']"
+                       position="after">
                     <field name="lot_serial"/>
                 </xpath>
             </field>
