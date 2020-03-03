@@ -15,4 +15,9 @@
       </tree>
     </field>
   </record>
+  <record id="dried_unpelled_history_action" model="ir.actions.act_window">
+    <field name="name">Historial</field>
+    <field name="res_model">dried.unpelled.history</field>
+    <field name="view_mode">tree,form</field>
+  </record>
 </odoo>
