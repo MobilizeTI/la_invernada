@@ -73,11 +73,6 @@
                 </page>
             </page>
         </field>
-        <xpath expr="//page[1]">
-            <field name="move_line_ids_without_package">
-                <field name="serial"/>
-            </field>
-        </xpath>
     </record>
     <record id="view_plan_stock_tree" model="ir.ui.view">
         <field name="name">listado de pedidos pendientes</field>
