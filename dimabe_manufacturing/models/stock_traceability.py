@@ -60,5 +60,5 @@ class StockTraceability(models.TransientModel):
     @api.model
     def _get_linked_move_lines(self, move_line):
         move_lines, is_used = super(StockTraceability, self)._get_linked_move_lines(move_line)
-        models._logger.error('{} {}'.format(move_lines, is_used))
+        models._logger.error('{} {} {}'.format(move_line, move_lines, is_used))
         return move_lines, is_used
