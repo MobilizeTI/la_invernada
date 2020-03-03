@@ -278,11 +278,11 @@ class UnpelledDried(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'dried.unpelled.history',
+            'name': 'Historial',
             'views': [
                 [self.env.ref('dimabe_manufacturing.dried_unpelled_history_tree_view').id, 'tree'],
                 [False, 'form']
             ],
-            'res_id': self.id,
             'target': 'fullscreen',
             'domain': [('unpelled_dried_id', '=', unpelled_dried_id)]
         }
