@@ -35,9 +35,7 @@
                 <xpath expr="//field[@name='finished_product_check_ids']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
-                <xpath expr="//field[@name='product_id']" position="before">
-                    <field name="productors"/>
-                </xpath>
+
             </field>
         </record>
 
@@ -81,6 +79,7 @@
             <field name="model">mrp.workorder</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
+
                 <form>
                     <div>
                         <group>
@@ -88,6 +87,7 @@
                                 <h2>Salida Principal</h2>
                                 <field name="state" readonly="1"/>
                                 <field name="product_id" readonly="1"/>
+                                <field name="productors" domain="[('supplier','=',True)]"/>
                                 <field name="final_lot_id"
                                        readonly="1"
                                        attrs="{'invisible':[('state', '=', 'done')]}"
