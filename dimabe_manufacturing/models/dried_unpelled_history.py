@@ -5,6 +5,11 @@ class DriedUnpelledHistory(models.Model):
     _name = 'dried.unpelled.history'
     _description = 'Historial de lotes terminados'
 
+    name = fields.Char(
+        'Nombre',
+        compute='_compute_name'
+    )
+
     oven_use_ids = fields.One2many(
         'oven.use',
         'history_id',
@@ -78,6 +83,12 @@ class DriedUnpelledHistory(models.Model):
     )
 
     @api.multi
+    def _compute_name(self):
+        for item in self:
+            item.name = '{} {}'.format(item.producer_id.name, item.out_product_id.display_name)
+
+    @api.multi
+    @api.depends('total_in_weight', 'total_out_weight')
     def _compute_performance(self):
         for item in self:
             if item.total_in_weight > 0 and item.total_out_weight > 0:
