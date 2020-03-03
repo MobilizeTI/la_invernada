@@ -65,7 +65,7 @@
                                         attrs="{'invisible': [('is_reserved','=',True)]}"/>
                                 <button string="Quitar Reservar" type="object" name="unreserved"
                                         context="{'stock_picking_id':parent.id}"
-                                        attrs="{'invisible': [('is_reserved','!=',True)]}"
+                                        attrs="{'invisible': [('is_reserved','=',True)]}"
                                 />
                             </tree>
                         </field>
