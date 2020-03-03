@@ -2,7 +2,7 @@ from odoo import fields, models, api
 
 
 class StockTraceability(models.Model):
-    _inherit = 'stock.traceability'
+    _inherit = 'stock.traceability.report'
 
     @api.model
     def get_lines(self, line_id=None, **kw):
