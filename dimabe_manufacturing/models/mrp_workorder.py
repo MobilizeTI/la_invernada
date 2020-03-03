@@ -32,7 +32,7 @@ class MrpWorkorder(models.Model):
         inverse='_inverse_potential_lot_planned_ids'
     )
 
-    confirmed_serial = fields.Char('Confimar Serie')
+    confirmed_serial = fields.Char('Confirmar Serie')
 
     @api.multi
     def _compute_potential_lot_planned_ids(self):
