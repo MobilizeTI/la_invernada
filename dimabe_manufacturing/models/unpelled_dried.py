@@ -170,8 +170,6 @@ class UnpelledDried(models.Model):
             if not item.out_serial_ids:
                 raise models.ValidationError('Debe agregar al menos una serie de salida al proceso')
 
-            # item.state = 'done'
-
             oven_use_to_close_ids = item.oven_use_ids.filtered(
                 lambda a: a.finish_date
             )
@@ -212,7 +210,7 @@ class UnpelledDried(models.Model):
 
             prd_move_line = self.env['stock.move.line'].create({
                 'lot_name': item.out_lot_id.name,
-                'consume_line_ids': consumed,
+                # 'consume_line_ids': consumed,
                 'reference': item.out_lot_id.name,
                 'product_id': item.out_product_id.id,
                 'location_id': item.origin_location_id.id,
