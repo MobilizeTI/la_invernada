@@ -152,9 +152,16 @@ class UnpelledDried(models.Model):
 
     @api.model
     def create_history(self):
-        self.env['dried.unpelled.history'].create({
+        history_id = self.env['dried.unpelled.history'].create({
             'unpelled_dried_id': self.id
         })
+
+        for oven_use_id in self.oven_use_ids.filtered(lambda a: a.finish_date):
+            oven_use_id.write({
+                'history_id': history_id.id,
+                'unpelled_dried_id': None
+            })
+
 
     @api.model
     def create(self, values_list):
@@ -242,7 +249,6 @@ class UnpelledDried(models.Model):
             oven_use_to_close_ids.mapped('dried_oven_id').set_is_in_use(False)
 
             item.create_history()
-            item.oven_use_ids = oven_use_to_close_ids
             item.out_lot_id = item.create_out_lot()
 
             if not item.oven_use_ids.filtered(

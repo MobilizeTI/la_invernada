@@ -43,6 +43,8 @@ class OvenUse(models.Model):
 
     unpelled_dried_id = fields.Many2one('unpelled.dried', 'Proceso de secado')
 
+    history_id = fields.Many2one('dried.unpelled.history', 'Historial')
+
     @api.multi
     @api.depends('active_seconds')
     def _compute_active_time(self):
