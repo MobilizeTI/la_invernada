@@ -9,7 +9,7 @@ class StockTraceability(models.TransientModel):
         context = dict(self.env.context)
         models._logger.error('context {}'.format(self.env.context))
         model = kw and kw['model_name'] or context.get('model')
-        rec_id = 962  # kw and kw['model_id'] or context.get('active_id')
+        rec_id = kw and kw['model_id'] or context.get('active_id')
         level = kw and kw['level'] or 1
         models._logger.error('{} {} {}'.format(model, rec_id, level))
         lines = self.env['stock.move.line']
