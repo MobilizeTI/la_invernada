@@ -107,7 +107,7 @@
                 </xpath>
                 <xpath expr="//page[1]" position="inside">
                     <field name="move_line_ids_without_package">
-                        <field name="serial" />
+                        <field name="lot_serial" />
                     </field>
                 </xpath>
                 <xpath expr="//field[@name='move_ids_without_package']/tree//field[@name='product_id']"
