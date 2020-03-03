@@ -220,6 +220,9 @@ class StockPicking(models.Model):
             for move in item.move_line_ids_without_package:
                 lot = self.env['stock.production.lot'].search([('product_id.id', '=', move.product_id.id)])
                 models._logger.error(lot)
+                if lot:
+                    models._logger.error(lot.qty_standard_serial)
+
 
     @api.multi
     def generate_report(self):
