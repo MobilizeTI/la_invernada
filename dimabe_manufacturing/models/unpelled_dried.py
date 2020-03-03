@@ -270,4 +270,16 @@ class UnpelledDried(models.Model):
 
     @api.multi
     def go_history(self):
-        raise models.ValidationError(self.env.context['unpelled_dried_id'])
+
+        unpelled_dried_id = 'unpelled_dried_id' in self.env.context and self.env.context['unpelled_dried_id'] or False
+
+
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'dried.unpelled.history',
+            'views': [[self.env.ref('dimabe_manufacturing.dried_unpelled_history_tree_view').id, 'tree']],
+            'res_id': self.id,
+            'target': 'fullscreen',
+
+        }
+
