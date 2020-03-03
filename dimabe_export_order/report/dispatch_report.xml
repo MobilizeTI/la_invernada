@@ -534,8 +534,8 @@
                                     </td>
                                 </tr>
                                 <tr >
-                                    <td rowspan="2">ADDRESS / DIRECCION</td>
-                                    <td rowspan="2">
+                                    <td>ADDRESS / DIRECCION</td>
+                                    <td>
                                         <span t-field="res_company.street"></span>
                                         <span t-field="res_company.state_id"></span>
                                         <span t-field="res_company.country_id"></span>
