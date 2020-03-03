@@ -67,6 +67,6 @@ class StockTraceability(models.TransientModel):
         elif move_line.consume_line_ids:
             res_model = 'stock.move.line'
             res_id = move_line.consume_line_ids[0].id
-            ref = move_line.consume_line_ids[0].name
+            ref = move_line.consume_line_ids[0].display_name
         models._logger.error('{} {} {}'.format(res_model, res_id, ref))
         return res_model, res_id, ref
