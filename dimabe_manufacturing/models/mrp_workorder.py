@@ -32,6 +32,7 @@ class MrpWorkorder(models.Model):
         inverse='_inverse_potential_lot_planned_ids'
     )
 
+
     @api.multi
     def _compute_potential_lot_planned_ids(self):
         for item in self:

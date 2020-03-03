@@ -33,6 +33,8 @@ class StockProductionLotSerial(models.Model):
 
     consumed = fields.Boolean('Consumido')
 
+    confirmed_serial = fields.Char('Confimacion de Serie')
+
     @api.model
     def create(self, values_list):
         res = super(StockProductionLotSerial, self).create(values_list)
