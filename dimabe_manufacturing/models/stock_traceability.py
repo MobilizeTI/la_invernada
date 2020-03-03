@@ -47,26 +47,12 @@ class StockTraceability(models.TransientModel):
 
     @api.model
     def _get_reference(self, move_line):
-        models._logger.error(move_line)
-        res_model = ''
-        ref = ''
-        res_id = False
-        picking_id = move_line.picking_id or move_line.move_id.picking_id
-        if picking_id:
-            res_model = 'stock.picking'
-            res_id = picking_id.id
-            ref = picking_id.name
-        elif move_line.move_id.inventory_id:
-            res_model = 'stock.inventory'
-            res_id = move_line.move_id.inventory_id.id
-            ref = 'Inv. Adj.: ' + move_line.move_id.inventory_id.name
-        elif move_line.move_id.scrapped and move_line.move_id.scrap_ids:
-            res_model = 'stock.scrap'
-            res_id = move_line.move_id.scrap_ids[0].id
-            ref = move_line.move_id.scrap_ids[0].name
-        elif move_line.consume_line_ids:
-            res_model = 'stock.move.line'
-            res_id = move_line.consume_line_ids[0].id
-            ref = move_line.consume_line_ids[0].display_name
-        models._logger.error('{} {} {}'.format(res_model, res_id, ref))
+
+        res_model, res_id, ref = super(StockTraceability, self)._get_reference(move_line)
+
+        if not res_model and not res_id and not ref:
+            if move_line.lot_id:
+                res_model = 'stock.production.lot'
+                res_id = move_line.lot_id.id
+                ref = move_line.lot_id.name
         return res_model, res_id, ref
