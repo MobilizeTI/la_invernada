@@ -218,6 +218,8 @@ class UnpelledDried(models.Model):
             if not oven_use_to_close_ids:
                 raise models.ValidationError('no hay hornos terminados que procesar')
 
+            raise models.ValidationError(item.total_in_weight)
+
             stock_move = self.env['stock.move'].create({
                 'name': item.out_lot_id.name,
                 'company_id': self.env.user.company_id.id,
@@ -264,8 +266,6 @@ class UnpelledDried(models.Model):
             })
 
             oven_use_to_close_ids.mapped('dried_oven_id').set_is_in_use(False)
-
-            raise models.ValidationError(item.total_in_weight)
 
             item.create_history()
             item.create_out_lot()
