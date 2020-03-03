@@ -5,6 +5,8 @@ class UnpelledDried(models.Model):
     _name = 'unpelled.dried'
     _description = 'clase que para producción de secado y despelonado'
 
+    active = fields.Boolean('Activo')
+
     state = fields.Selection([
         ('draft', 'Borrador'),
         ('progress', 'En Proceso'),
@@ -94,8 +96,7 @@ class UnpelledDried(models.Model):
     history_ids = fields.One2many(
         'dried.unpelled.history',
         'unpelled_dried_id',
-        'Historial',
-        ondelete='set null'
+        'Historial'
     )
 
     @api.multi
