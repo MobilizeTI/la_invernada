@@ -141,22 +141,39 @@ class UnpelledDried(models.Model):
             item.name = '{} {}'.format(item.producer_id.name, item.out_lot_id.product_id.name)
 
     @api.model
+    def create_out_lot(self):
+        name = self.env['ir.sequence'].next_by_code('unpelled.dried')
+
+        self.out_lot_id = self.env['stock.production.lot'].create({
+            'name': name,
+            'product_id': self.out_product_id.id,
+            'is_prd_lot': True  # probar si funciona bien, de lo contrario dejar en False
+        })
+
+    @api.model
+    def create_history(self):
+        self.env['dried.unpelled.history'].create({
+            'unpelled_dried_id': self.id
+        })
+
+    @api.model
     def create(self, values_list):
         res = super(UnpelledDried, self).create(values_list)
 
         res.state = 'draft'
 
-        name = self.env['ir.sequence'].next_by_code('unpelled.dried')
-
-        out_lot = self.env['stock.production.lot'].create({
-            'name': name,
-            'product_id': res.out_product_id.id,
-            'is_prd_lot': True  # probar si funciona bien, de lo contrario dejar en False
-        })
-
-        res.out_lot_id = out_lot.id
+        res.create_out_lot()
 
         return res
+
+    @api.multi
+    def unlink(self):
+        for item in self:
+            item.oven_use_ids.mapped('dried_oven').write({
+                'is_in_use': False
+            })
+
+        return super(UnpelledDried, self).unlink()
 
     @api.multi
     def cancel_unpelled_dried(self):
@@ -192,19 +209,20 @@ class UnpelledDried(models.Model):
             consumed = []
 
             for used_lot_id in oven_use_to_close_ids.mapped('used_lot_ids'):
-                consumed.append([0, 0, {
-                    'lot_name': used_lot_id.name,
-                    'reference': used_lot_id.name,
-                    'product_id': used_lot_id.product_id.id,
-                    'location_id': used_lot_id.get_stock_quant().location_id.id,
-                    'location_dest_id': item.origin_location_id.id,
-                    'qty_done': 100,  # used_lot_id.get_stock_quant().balance,
-                    'product_uom_qty': 0,
-                    'product_uom_id': used_lot_id.product_id.uom_id.id,
-                    'lot_id': used_lot_id.id,
-                    'state': 'done',
-                    'move_id': stock_move.id
-                }])
+                if used_lot_id.get_stock_quant().balance > 0:
+                    consumed.append([0, 0, {
+                        'lot_name': used_lot_id.name,
+                        'reference': used_lot_id.name,
+                        'product_id': used_lot_id.product_id.id,
+                        'location_id': used_lot_id.get_stock_quant().location_id.id,
+                        'location_dest_id': item.origin_location_id.id,
+                        'qty_done': used_lot_id.get_stock_quant().balance,
+                        'product_uom_qty': 0,
+                        'product_uom_id': used_lot_id.product_id.uom_id.id,
+                        'lot_id': used_lot_id.id,
+                        'state': 'done',
+                        'move_id': stock_move.id
+                    }])
 
             prd_move_line = self.env['stock.move.line'].create({
                 'lot_name': item.out_lot_id.name,
@@ -221,13 +239,15 @@ class UnpelledDried(models.Model):
                 'move_id': stock_move.id
             })
 
-            models._logger.error('{} {}'.format(consumed, prd_move_line.consume_line_ids))
-
             oven_use_to_close_ids.mapped('dried_oven_id').set_is_in_use(False)
 
-            # if not item.oven_use_ids.filtered(
-            #     lambda a: not a.finish_date
-            # ):
-            #     item.state = 'draft'
+            item.create_history()
+            item.oven_use_ids = oven_use_to_close_ids
+            item.out_lot_id = item.create_out_lot()
+
+            if not item.oven_use_ids.filtered(
+                lambda a: not a.finish_date
+            ):
+                item.state = 'draft'
 
 

@@ -12,6 +12,8 @@ class OvenUse(models.Model):
         related='dried_oven_id.name'
     )
 
+    done = fields.Boolean('Listo')
+
     init_date = fields.Datetime('Inicio de Proceso')
 
     finish_date = fields.Datetime('Termino de Proceso')
