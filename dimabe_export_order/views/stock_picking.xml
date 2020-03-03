@@ -112,7 +112,7 @@
                     <field name="type_of_package"></field>
                     <field name="specie"></field>
                 </xpath>
-                <xpath expr="//page[1]" position="invisible">
+                <xpath expr="//page[1]" position="inside">
                     <field name="move_line_ids_without_package">
                         <field name="lot_serial" widget="many2many_tags"/>
                     </field>
