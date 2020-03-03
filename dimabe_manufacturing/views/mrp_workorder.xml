@@ -17,7 +17,9 @@
                 <button name="action_open_manufacturing_order" position="replace">
                 </button>
                 <xpath expr="//field[@name='final_lot_id']" position="after">
-                  <field name="confirmed_serial"/>
+                  <group>
+                    <field name="confirmed_serial"/>
+                  </group>
                 </xpath>
                 <xpath expr="//div[@class='workorder_pdf']" position="before">
                     <field name="potential_serial_planned_ids">
