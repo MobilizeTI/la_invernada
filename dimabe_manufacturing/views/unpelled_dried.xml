@@ -24,6 +24,7 @@
                  widget="statusbar"
                  statusbar_visible="draft,progress,done"/>
         </header>
+         <field name="history_ids" invisible="1" />
         <div class="oe_button_box" name="button_box">
           <field name="id" invisible="1" />
           <field name="history_ids" invisible="1" />
