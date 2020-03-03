@@ -180,7 +180,7 @@ class UnpelledDried(models.Model):
     @api.multi
     def unlink(self):
         for item in self:
-            item.oven_use_ids.mapped('dried_oven').write({
+            item.oven_use_ids.mapped('dried_oven_id').write({
                 'is_in_use': False
             })
 
