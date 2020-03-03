@@ -144,10 +144,14 @@ class UnpelledDried(models.Model):
     def create_out_lot(self):
         name = self.env['ir.sequence'].next_by_code('unpelled.dried')
 
-        self.out_lot_id = self.env['stock.production.lot'].create({
+        out_lot_id = self.env['stock.production.lot'].create({
             'name': name,
             'product_id': self.out_product_id.id,
             'is_prd_lot': True  # probar si funciona bien, de lo contrario dejar en False
+        })
+
+        self.write({
+            'out_lot_id': out_lot_id.id
         })
 
     @api.model
