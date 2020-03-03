@@ -220,7 +220,7 @@ class StockPicking(models.Model):
                     serials = self.env['stock.production.lot.serial'].search(
                         [('stock_production_lot_id.id', '=', move.lot_id.id)])
                     models._logger.error(serials)
-                    item.lot_serial = serials
+            item.lot_serial = serials
 
     @api.multi
     def generate_report(self):
