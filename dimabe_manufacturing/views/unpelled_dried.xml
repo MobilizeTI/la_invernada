@@ -32,7 +32,7 @@
                   type="object"
                   icon="fa-history"
                   context="{'unpelled_dried_id': id}"
-                  attrs="{'invisible':[('history_ids','=',None)]}"
+                  attrs="{'invisible':[('history_ids','=',[])]}"
           />
         </div>
         <h1 class="d-none d-md-block">
