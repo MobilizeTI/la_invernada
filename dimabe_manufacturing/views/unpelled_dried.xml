@@ -86,6 +86,11 @@
                         name="finish_process"
                         type="object"
                 />
+                <button string="Imprimir"
+                        attrs="{'invisible':[('used_lot_ids','=',[])]}"
+                        name="print_oven_label"
+                        type="object"
+                />
               </tree>
             </field>
             <field name="in_variety" invisible="1"/>
