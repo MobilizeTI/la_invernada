@@ -578,7 +578,7 @@
                         </div>
                     </div>
                     <div style="width:100%;">
-                        <div style="width:45%;display:inline-block;">
+                        <div style="width:40%;display:inline-block;">
                             <table border="1">
                                 <tr>
                                     <td>VESSEL / NAVE</td>
@@ -607,7 +607,7 @@
                             </table>
                         </div>
                         <div style="width:15%;display:inline-block;"></div>
-                        <div style="width:45%;display:inline-block;">
+                        <div style="width:40%;display:inline-block;">
                             <table border="1">
                                 <tr>
                                     <td>NOTIFY / NOTIFICADO</td>
@@ -638,7 +638,7 @@
                     </div>
                     <div style="width:100%;">
                         <div style="width:45%;display:inline-block;">
-                            <table>
+                            <table border="1">
                                 <tr>
                                     <td rowspan="2">ORDER N°<br/>NUMERO ORDEN</td>
                                     <td rowspan="2"><span t-field="d.name"></span></td>
