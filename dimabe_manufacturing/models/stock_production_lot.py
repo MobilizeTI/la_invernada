@@ -4,6 +4,18 @@ from odoo import fields, models, api
 class StockProductionLot(models.Model):
     _inherit = 'stock.production.lot'
 
+    producer_id = fields.Many2one(
+        'res.partner',
+        compute='_compute_reception_data',
+        search='_search_producer_id'
+    )
+
+    reception_guide_number = fields.Char(
+        'Guía',
+        compute='_compute_reception_data',
+        search='_search_reception_guide_number'
+    )
+
     is_prd_lot = fields.Boolean('Es Lote de salida de Proceso')
 
     is_standard_weight = fields.Boolean('Series Peso Estandar')
@@ -24,6 +36,29 @@ class StockProductionLot(models.Model):
     )
 
     qty_to_reserve = fields.Float('Cantidad a Reservar')
+
+    @api.multi
+    def _compute_reception_data(self):
+        for item in self:
+            stock_picking = self.env['stock.picking'].search([('name', '=', item.name)])
+            if stock_picking:
+                item.producer_id = stock_picking[0].partner_id
+                item.reception_guide_number = stock_picking[0].guide_number
+
+    def _search_producer_id(self, operator, value):
+        stock_picking_ids = self.env['stock.picking'].search([
+            ('partner_id', operator, value),
+            ('picking_type_code', '=', 'incoming')
+        ])
+        return [('name', 'in', stock_picking_ids.mapped('name'))]
+
+    @api.multi
+    def _search_reception_guide_number(self, operator, value):
+        stock_picking_ids = self.env['stock.picking'].search([
+            ('guide_number', operator, value),
+            ('picking_type_code', '=', 'incoming')
+        ])
+        return [('name', 'in', stock_picking_ids.mapped('name'))]
 
     @api.multi
     def _compute_total_serial(self):

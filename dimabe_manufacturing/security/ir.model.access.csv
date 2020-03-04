@@ -1,2 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_dimabe_manufacturing_potential_lot,dimabe_manufacturing.potential_lot,model_potential_lot,,1,1,1,1
+access_dimabe_manufacturing_unpelled_dried,dimabe_manufacturing.unpelled_dried,model_unpelled_dried,,1,1,1,1
+access_dimabe_manufacturing_oven_use,dimabe_manufacturing.oven_use,model_oven_use,,1,1,1,1
+access_dimabe_manufacturing_dried_oven,dimabe_manufacturing.dried_oven,model_dried_oven,,1,1,1,1
+access_dimabe_manufacturing_dried_unpelled_history,dimabe_manufacturing.dried_unpelled_history,model_dried_unpelled_history,,1,1,1,0

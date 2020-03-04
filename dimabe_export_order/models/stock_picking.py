@@ -249,42 +249,40 @@ class StockPicking(models.Model):
         diff = str((finish_date - init_date))
         return diff.split('.')[0]
 
-    @api.model
+    @api.multi
     @api.depends('freight_value', 'safe_value')
     def _compute_total_value(self):
-        result = self.env['sale.order'].search([])
-        list_price = []
-        list_qty = []
-        for item in result:
-            if item.name == self.origin:
-                for i in item.order_line:
-                    list_price.append(int(i.price_unit))
-                for a in self.move_ids_without_package:
-                    list_qty.append(int(a.quantity_done))
-            prices = sum(list_price)
-            qtys = sum(list_qty)
-        self.total_value = (prices * qtys) + self.freight_value + self.safe_value
+        for item in self:
+            list_price = []
+            list_qty = []
+            prices = 0
+            qtys = 0
+            for i in item.sale_id.order_line:
+                list_price.append(int(i.price_unit))
+            for a in item.move_ids_without_package:
+                list_qty.append(int(a.quantity_done))
+                prices = sum(list_price)
+                qtys = sum(list_qty)
+            item.total_value = (prices * qtys) + item.freight_value + item.safe_value
 
-
-
-    @api.model
+    @api.multi
     @api.depends('total_value')
     def _compute_value_per_kilogram(self):
-        print('')
-        qty_total = 0
-        for line in self.move_ids_without_package:
-            qty_total = qty_total + line.quantity_done
-        if qty_total > 0:
-            self.value_per_kilogram = self.total_value / qty_total
+        for item in self:
+            qty_total = 0
+            for line in item.move_ids_without_package:
+                qty_total = qty_total + line.quantity_done
+            if qty_total > 0:
+                item.value_per_kilogram = item.total_value / qty_total
 
-    @api.model
+    @api.multi
     @api.depends('agent_id')
     def _compute_total_commission(self):
         print('')
         # cambiar amount_total
         # self.total_commission = (self.agent_id.commission / 100) * self.amount_total
 
-    @api.model
+    @api.multi
     # @api.depends('contract_id')
     def _get_correlative_text(self):
         print('')
