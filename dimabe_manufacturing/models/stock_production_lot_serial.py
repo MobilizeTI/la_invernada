@@ -265,9 +265,7 @@ class StockProductionLotSerial(models.Model):
                         'reserved_availability': 0
                     })
 
-
     @api.multi
     def validate_picking(self):
-        if 'stock_picking' in self.env.context:
-            stock_picking_id = self.env.context['stock_picking_id']
-            models._logger.error('stock_picking_id : {]'.format(stock_picking_id))
+        stock_picking_id = self.env.context['validate_stock']
+        models._logger.error('stock_picking_id : {]'.format(stock_picking_id))

@@ -30,7 +30,7 @@
                                         type="object"
                                         name="validate_picking"
                                         attrs="{'invisible':[('parent.state','=','done')]}"
-                                        context="{'stock_picking_id':parent.id}"
+                                        context="{'validate_stock':parent.id}"
                                 />
                             </tree>
                         </field>
