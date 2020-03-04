@@ -4,7 +4,7 @@
     <field name="model">dried.unpelled.history</field>
     <field name="arch" type="xml">
       <tree>
-        <field name="create_date" />
+        <field name="create_date"/>
         <field name="producer_id"/>
         <field name="in_product_id"/>
         <field name="total_in_weight"/>
@@ -31,36 +31,37 @@
         <h1 class="d-none d-md-block">
           <field name="name"/>
         </h1>
-        <field name="create_date" />
+        <field name="create_date"/>
         <group>
           <group>
-            <field name="producer_id" />
+            <field name="producer_id"/>
 
-            <field name="in_product_id" />
+            <field name="in_product_id"/>
 
-            <field name="oven_use_ids" />
+            <field name="oven_use_ids"/>
 
-            <field name="total_in_weight" />
-
-            <field name="total_out_weight" />
-
-            <field name="performance" />
-
-            <field name="origin_location_id" />
-
-            <field name="dest_location_id" />
-          </group>
-          <group>
-            <field name="out_product_id" />
-            <field name="out_lot_id" />
+            <field name="out_product_id"/>
+            <field name="out_lot_id"/>
             <field name="out_serial_ids">
               <tree>
-                <field name="stock_production_lot_id" />
-                <field name="consumed" />
+                <field name="stock_production_lot_id"/>
+                <field name="consumed"/>
                 <field name="display_weight"/>
-                <field name="serial_number" />
+                <field name="serial_number"/>
               </tree>
             </field>
+          </group>
+          <group>
+            <field name="total_in_weight"/>
+
+            <field name="total_out_weight"/>
+
+            <field name="performance"/>
+
+            <field name="origin_location_id"/>
+
+            <field name="dest_location_id"/>
+
           </group>
         </group>
       </form>
