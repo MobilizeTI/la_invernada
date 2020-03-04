@@ -22,9 +22,9 @@
                     </group>
                 </xpath>
                 <xpath expr="//div[@class='workorder_pdf']" position="before">
-                    <field name="potential_serial_planned_ids">
+                    <field name="potential_serial_planned_ids" >
                         <tree decoration-danger="consumed==False" decoration-success="consumed==True"
-                              delete="false" create="false" editable="bottom">
+                              delete="false" create="false" editable="bottom" groups="mrp.group_mrp_manager">
                             <field name="stock_production_lot_id" readonly="1"/>
                             <field name="serial_number" readonly="1"/>
                             <field name="display_weight" readonly="1"/>

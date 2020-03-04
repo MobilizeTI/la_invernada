@@ -271,12 +271,3 @@ class StockProductionLotSerial(models.Model):
         if 'stock_picking' in self.env.context:
             stock_picking_id = self.env.context['stock_picking_id']
             models._logger.error('stock_picking_id : {]'.format(stock_picking_id))
-            stock_picking = self.env['stock.picking'].search([('id','=',stock_picking_id)])
-            for item in self:
-                item.update({
-                    'validate_to_stock_picking_id':stock_picking.id
-                })
-                stock_move = item.validate_to_stock_picking_id.move_lines.filtered(
-                    lambda a: a.product_id == item.stock_production_lot_id.product_id
-                )
-                models._logger.error(stock_move.quantity_done)
