@@ -16,7 +16,7 @@ class StockProductionLot(models.Model):
         search='_search_reception_guide_number'
     )
 
-    reception_state = fields.Selection(
+    reception_state = fields.Char(
         string='Estado de la reecepción',
         compute='_compute_reception_data',
         search='_search_reception_state'
