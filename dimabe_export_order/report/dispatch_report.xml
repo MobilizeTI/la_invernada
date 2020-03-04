@@ -525,7 +525,7 @@
                         </div>
                     </div>
                     <div style="width:100%;">
-                        <div style="width:45%;display: inline-block;">
+                        <div style="width:40%;display: inline-block;">
                             <table border="1">
                                 <tr>
                                     <td>SHIPPER / PROVEEDOR</td>
@@ -549,7 +549,7 @@
                                 </tr>
                             </table>
                         </div>
-                        <div style="width:45%;display: inline-block;">
+                        <div style="width:40%;display: inline-block;">
                             <table>
                                 <tr>
                                     <td>CONSIGNEE / CONSIGNATARIO</td>
