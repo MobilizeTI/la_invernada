@@ -273,7 +273,7 @@ class StockProductionLotSerial(models.Model):
             if stock_picking:
                 for item in self:
                     stock_move = stock_picking.move_ids_without_package.filtered(
-                        lambda x: x.product_id == item.product_id
+                        lambda x: x.product_id == item.stock_production_lot_id.product_id
                     )
                     stock_quant = item.get_stock_quant()
                     stock_quant.sudo().update({
