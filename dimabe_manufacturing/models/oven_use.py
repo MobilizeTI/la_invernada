@@ -97,5 +97,5 @@ class OvenUse(models.Model):
     @api.multi
     def print_oven_label(self):
         for item in self:
-            return self.env.ref('dimabe_manufacturing.oven_use_label_report') \
+            return self.env.ref('dimabe_manufacturing.action_oven_use_label_report') \
                 .report_action(item)

@@ -62,7 +62,7 @@
     </t>
   </template>
 
-  <report id="action_stock_production_lot_serial_label_report"
+  <report id="action_oven_use_label_report"
           string="Etiqueta para Salida de Proceso"
           model="stock.production.lot.serial"
           report_type="qweb-pdf"
