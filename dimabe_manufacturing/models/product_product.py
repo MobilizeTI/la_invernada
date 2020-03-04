@@ -19,7 +19,7 @@ class ProductProduct(models.Model):
     def _search_variety(self, operator, value):
         attribute_value_ids = self.env['product.attribute.value'].search([('name', operator, value)])
         product_ids = []
-        models._logger.error(attribute_value_ids.mapped('name'))
+        models._logger.error('{} {} {}'.format(attribute_value_ids.mapped('name'), attribute_value_ids.mapped('attribute_id'), attribute_value_ids.mapped('display_name')))
         if attribute_value_ids and len(attribute_value_ids) == 1:
             attribute_value_ids = attribute_value_ids[0]
 
