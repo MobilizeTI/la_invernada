@@ -31,6 +31,12 @@ class StockProductionLotSerial(models.Model):
         nullable=True
     )
 
+    validate_to_stock_picking_id = fields.Many2one(
+        'stock.picking',
+        'Validado',
+        nullable=True
+    )
+
     consumed = fields.Boolean('Consumido')
 
     confirmed_serial = fields.Char('Confimacion de Serie')
@@ -258,3 +264,20 @@ class StockProductionLotSerial(models.Model):
                         'product_uom_qty': 0,
                         'reserved_availability': 0
                     })
+
+
+    @api.multi
+    def validate_picking(self):
+        if 'stock_picking' in self.env.context:
+            stock_picking_id = self.env.context['stock_picking_id']
+            stock_picking = self.env['stock.picking'].search([('id','=',stock_picking_id)])
+            if not stock_picking:
+                raise models.ValidationError('No se encontró el picking al que reservar el stock')
+            for item in self:
+                item.update({
+                    'validate_to_stock_picking_id':stock_picking.id
+                })
+                stock_move = item.validate_to_stock_picking_id.move_lines.filtered(
+                    lambda a: a.product_id == item.stock_production_lot_id.product_id
+                )
+                models._logger.error(stock_move.quantity_done)
