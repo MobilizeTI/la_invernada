@@ -4,7 +4,7 @@
       <div class="page">
         <t t-foreach="docs" t-as="o">
           <t t-foreach="o.used_lot_ids" t-as="lot">
-            <table>
+            <table style="text-align:left;">
               <tr>
                 <th>Información Cajón</th>
                 <td style="text-align: right !important;">
