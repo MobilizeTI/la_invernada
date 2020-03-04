@@ -287,7 +287,6 @@ class StockProductionLotSerial(models.Model):
                         'location_id': stock_quant.location_id.id,
                         'location_dest_id': stock_picking.partner_id.property_stock_customer.id
                     })
-                    models._logger.error(item.is_reserved)
                     stock_move.sudo().update({
                         'move_line_ids': [
                             (4, move_line.id)
