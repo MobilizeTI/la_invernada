@@ -21,7 +21,7 @@ class ProductProduct(models.Model):
         product_ids = []
         if attribute_value_ids:
             product_ids = self.env['product.product'].search([
-                ('attribute_value_ids', '=', attribute_value_ids)
+                ('attribute_value_ids', '=', attribute_value_ids.mapped('id'))
             ]).mapped('id')
 
         return [('id', 'in', product_ids)]
