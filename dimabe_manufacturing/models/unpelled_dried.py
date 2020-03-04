@@ -87,7 +87,7 @@ class UnpelledDried(models.Model):
     )
 
     total_out_weight = fields.Float(
-        'Total Secaco',
+        'Total Secado',
         compute='_compute_total_out_weight'
     )
 
