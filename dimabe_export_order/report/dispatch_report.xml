@@ -575,6 +575,36 @@
                             </table>
                         </div>
                     </div>
+                    <div style="width:100%;">
+                        <div style="width:35%;display:inline-block;">
+                            <table border="1">
+                                <tr>
+                                    <td>VESSEL / NAVE</td>
+                                    <td>
+                                        <span t-field="d.shipping_id.ship"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>PORT OF LOADING </td>
+                                    <td>
+                                        <span t-field="d.departure_port"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>PORT OF DISCHARGE</td>
+                                    <td>
+                                        <span t-field="d.arrival_port"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>CONTAINER N°</td>
+                                    <td>
+                                        <span t-field="d.container_number"></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </t>
         </t>
@@ -629,7 +659,7 @@
 
     <report id="action_packing_list_dispatch_report" string="Packing List" model="stock.picking"
             report_type="qweb-pdf"
-            name="dimabe_export_order.report_packing_list" menu="True" paperformat="paper_format_letter_horizontal"/>
+            name="dimabe_export_order.report_packing_list" menu="True" paperformat="paper_format_letter_custom"/>
 
     <report id="action_dispatch_guide_report" string="Guia de despacho" model="stock.picking" report_type="qweb-pdf"
             name="dimabe_export_order.report_dispatch_guide" menu="True" paperformat="paper_format_letter_custom"
