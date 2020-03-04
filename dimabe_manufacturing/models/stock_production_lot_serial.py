@@ -268,4 +268,4 @@ class StockProductionLotSerial(models.Model):
     @api.multi
     def validate_picking(self):
         stock_picking_id = self.env.context['validate_stock']
-        models._logger.error('stock_picking_id : {]'.format(stock_picking_id))
+        models._logger.error('stock_picking_id : {}'.format(stock_picking_id))
