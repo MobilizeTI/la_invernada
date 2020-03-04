@@ -93,3 +93,9 @@ class OvenUse(models.Model):
                 item.finish_active_time = item.finish_date.timestamp()
                 item.active_seconds += item.finish_active_time - item.init_active_time
             item.dried_oven_id.is_in_use = False
+
+    @api.multi
+    def print_oven_label(self):
+        for item in self:
+            return self.env.ref('dimabe_manufacturing.oven_use_label_report') \
+                .report_action(item)

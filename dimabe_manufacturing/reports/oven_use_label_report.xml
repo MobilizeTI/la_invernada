@@ -1,0 +1,72 @@
+<odoo>
+  <template id="oven_use_label_report">
+    <t t-call="web.html_container">
+      <div class="page">
+        <t t-foreach="docs" t-as="o">
+          <table>
+            <tr>
+              <td colspan="2">Información Cajón</td>
+              <td style="text-align: right !important;"
+                  colspan="2"
+              >
+                <span t-field="o.dried_oven.name"/>
+              </td>
+            </tr>
+            <tr>
+              <td>N° guía:</td>
+              <td>
+                <span t-esc="o"/>
+              </td>
+            </tr>
+            <tr>
+              <td>Productor:</td>
+              <td>
+
+              </td>
+            </tr>
+            <tr>
+              <td>Variedad:</td>
+              <td>
+                <span t-esc="o"/>
+              </td>
+            </tr>
+            <tr>
+              <td>N° Lote:</td>
+              <td>
+                lote
+              </td>
+            </tr>
+            <tr>
+              <td>Fecha recepción / hr:</td>
+              <td>
+                fecha
+              </td>
+            </tr>
+            <tr>
+              <td>Fecha en cajón:</td>
+              <td>
+                fecha
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <img
+                  t-att-src="'%s/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % (o.get_full_url(), 'Code128','codigodebarra',550, 70)"
+                />
+              </td>
+            </tr>
+          </table>
+          <br/>
+        </t>
+      </div>
+    </t>
+  </template>
+
+  <report id="action_stock_production_lot_serial_label_report"
+          string="Etiqueta para Salida de Proceso"
+          model="stock.production.lot.serial"
+          report_type="qweb-pdf"
+          name="dimabe_manufacturing.oven_use_label_report"
+          paperformat="paper_format_10_x_7"
+  />
+</odoo>
