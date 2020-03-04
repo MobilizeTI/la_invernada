@@ -10,7 +10,7 @@
 
             <page name="note" position="after">
                 <page name="packing_list" string="Packing List"
-                      attrs="{'invisible':[('picking_type_code','!=','outgoing')]}"
+                      attrs="{'invisible':[('picking_type_code','!=','outgoing'),('state','=','cancel')]}"
                 >
                     <group>
                         <field name="state" invisible="1"/>
