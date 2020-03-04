@@ -19,7 +19,9 @@
               </tr>
               <tr>
                 <th>Productor:</th>
-                <td><span t-field="lot.producer_id.name" /></td>
+                <td>
+                  <span t-field="lot.producer_id.name"/>
+                </td>
               </tr>
               <tr>
                 <th>Variedad:</th>
@@ -29,15 +31,21 @@
               </tr>
               <tr>
                 <th>N° Lote:</th>
-                <td><span t-field="lot.name" /></td>
+                <td>
+                  <span t-field="lot.name"/>
+                </td>
               </tr>
-              <tr> <p style="page-break-after:always;"> </p>
+              <tr>
                 <th>Fecha recepción / hr:</th>
-                <td><span t-field="lot.create_date" /></td>
+                <td>
+                  <span t-field="lot.create_date"/>
+                </td>
               </tr>
               <tr>
                 <th>Fecha en cajón:</th>
-                <td><span t-field="o.init_date" /></td>
+                <td>
+                  <span t-field="o.init_date"/>
+                </td>
               </tr>
               <tr>
                 <td colspan="2" style="text-align:center !important;">
@@ -45,11 +53,13 @@
                   <img
                     t-att-src="'%s/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % (o.get_full_url(), 'Code128',lot.name,550, 70)"
                   />
-                   <span t-field="lot.name" />
+                  <span t-field="lot.name"/>
                 </td>
               </tr>
             </table>
-             <p style="page-break-after:always;"> </p>
+            <t t-if="lot.id != o.used_lot_ids[len(o.used_lot_ids - 1)]">
+              <p style="page-break-after:always;"></p>
+            </t>
           </t>
         </t>
       </div>
