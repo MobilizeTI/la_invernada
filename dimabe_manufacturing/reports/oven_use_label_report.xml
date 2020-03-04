@@ -14,39 +14,27 @@
               </tr>
               <tr>
                 <th>N° guía</th>
-                <td>
-                  : <span t-esc="o"/>
-                </td>
+                <td>: <span t-esc="lot.reception_guide_number"/></td>
               </tr>
               <tr>
                 <th>Productor:</th>
-                <td>
-                  : <span t-field="lot.producer_id.name"/>
-                </td>
+                <td>: <span t-field="lot.producer_id.name"/></td>
               </tr>
               <tr>
                 <th>Variedad:</th>
-                <td>
-                  : <span t-esc="lot.product_id.get_variety()"/>
-                </td>
+                <td>: <span t-esc="lot.product_id.get_variety()"/></td>
               </tr>
               <tr>
                 <th>N° Lote:</th>
-                <td>
-                  : <span t-field="lot.name"/>
-                </td>
+                <td>: <span t-field="lot.name"/></td>
               </tr>
               <tr>
                 <th>Fecha recepción / hr:</th>
-                <td>
-                  : <span t-field="lot.create_date"/>
-                </td>
+                <td>: <span t-field="lot.create_date"/></td>
               </tr>
               <tr>
                 <th>Fecha en cajón:</th>
-                <td>
-                  : <span t-field="o.init_date"/>
-                </td>
+                <td>: <span t-field="o.init_date"/></td>
               </tr>
               <tr>
                 <td colspan="2" style="text-align:center !important;">
