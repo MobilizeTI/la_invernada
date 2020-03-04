@@ -9,7 +9,7 @@
               <td style="text-align: right !important;"
                   colspan="2"
               >
-                <span t-field="o.dried_oven.name"/>
+                <span t-field="o.dried_oven_id.name"/>
               </td>
             </tr>
             <tr>
