@@ -40,11 +40,11 @@
                 <td><span t-field="o.init_date" /></td>
               </tr>
               <tr>
-                <td colspan="2">
-                  <span t-field="lot.name" />
+                <td colspan="2" style="text-align:center !important;">
                   <img
                     t-att-src="'%s/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % (o.get_full_url(), 'Code128',lot.name,550, 70)"
                   />
+                   <span t-field="lot.name" />
                 </td>
               </tr>
             </table>
