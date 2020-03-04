@@ -256,5 +256,5 @@ class StockProductionLotSerial(models.Model):
                         'move_id': None,
                         'picking_id': None,
                         'product_uom_qty': 0,
-                        'reserved_availibity': 0
+                        'reserved_availability': 0
                     })
