@@ -278,6 +278,7 @@ class StockProductionLotSerial(models.Model):
                     stock_move = item.validate_to_stock_picking_id.move_lines.filtered(
                         lambda a: a.product_id == item.stock_production_lot_id.product_id
                     )
-                    move_line = self.env['stock.move.line'].update({
+                    models._logger.error(stock_move)
+                    stock_move.update({
                         'quantity_done': item.display_weight
                     })
