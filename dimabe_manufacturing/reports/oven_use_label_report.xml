@@ -57,7 +57,7 @@
                 </td>
               </tr>
             </table>
-            <t t-if="lot.id != o.used_lot_ids[len(o.used_lot_ids - 1)].id">
+            <t t-if="lot.id != o.used_lot_ids[len(o.used_lot_ids) - 1].id">
               <p style="page-break-after:always;"></p>
             </t>
           </t>
