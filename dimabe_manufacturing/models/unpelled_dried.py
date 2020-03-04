@@ -209,11 +209,11 @@ class UnpelledDried(models.Model):
                     lambda a: not a.finish_date and len(a.used_lot_ids) == 1 and lot_id in a.used_lot_ids
                 )
                 if oven_use_id:
-                    raise models.ValidationError('el lote {} se no ha sido terminado en el cajón {}.'
+                    raise models.ValidationError('el lote {} no ha sido terminado en el cajón {}.'
                                                  ' no se puede cerrar un lote en que se encuentre en '
                                                  'cajones completos (no mezclados con otros lotes) y que '
                                                  'se encuentren todavía en proceso'.format(
-                        lot_id.name, oven_use_id.dried_oven_id
+                        lot_id.name, oven_use_id.dried_oven_id.name
                     ))
 
                 raise models.ValidationError('no funcionó tu validación qla')
