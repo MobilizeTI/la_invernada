@@ -36,6 +36,7 @@
         'views/stock_production_lot.xml',
         'views/mrp_production.xml',
         'reports/lot_serial_label_report.xml',
+        'reports/oven_use_label_report.xml',
         'views/views.xml',
         'views/mrp_dispatched.xml',
         'views/mrp_workcenter.xml',
