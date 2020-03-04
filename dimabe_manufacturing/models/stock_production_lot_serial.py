@@ -269,4 +269,5 @@ class StockProductionLotSerial(models.Model):
     def validate_picking(self):
         if 'validate_stock' in self.env.context:
             stock_picking_id = self.env.context['validate_stock']
-            models._logger.error('stock_picking_id : {}'.format(stock_picking_id))
+            stock_picking = self.env['stock.picking'].search([('id','=',stock_picking_id)])
+            models._logger.error('stock_picking : {}'.format(stock_picking.name))
