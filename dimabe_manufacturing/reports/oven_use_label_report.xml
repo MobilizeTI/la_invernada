@@ -9,7 +9,7 @@
                 <th style="text-align:center;"><h2>Información Cajón</h2></th>
                 <td style="text-align: right !important;">
                   <span t-field="o.dried_oven_id.name"
-                        style="border-left: solid 1px;border-bottom: solid 1px;margin:2px !important;" />
+                        style="border-left: solid 1px;border-bottom: solid 1px;padding:2px !important;" />
                 </td>
               </tr>
               <tr>

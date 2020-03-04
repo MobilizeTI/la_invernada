@@ -116,6 +116,10 @@
                 <field name="serial_number"
                        readonly="1"
                 />
+                <button name="print_serial_label"
+                        type="object" string="Imprimir"
+                        attrs="{'invisible':['|',('serial_number', '=', False)]}"
+                />
               </tree>
             </field>
           </group>
