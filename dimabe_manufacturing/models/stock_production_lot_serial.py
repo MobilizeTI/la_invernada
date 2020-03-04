@@ -9,6 +9,11 @@ class StockProductionLotSerial(models.Model):
         'Productión'
     )
 
+    producer_id = fields.Many2one(
+        'res.partner',
+        'Productor'
+    )
+
     belongs_to_prd_lot = fields.Boolean(
         'pertenece a lote productivo',
         related='stock_production_lot_id.is_prd_lot'
@@ -71,7 +76,9 @@ class StockProductionLotSerial(models.Model):
     @api.multi
     def print_serial_label(self):
         if 'producer_id' in self.env.context:
-            raise models.ValidationError(self.env.context['producer_id'])
+            for item in self:
+                item.producer_id = self.env.context['producer_id']
+
         return self.env.ref(
             'dimabe_manufacturing.action_stock_production_lot_serial_label_report'
         ).report_action(self)
