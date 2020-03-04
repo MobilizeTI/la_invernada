@@ -276,4 +276,7 @@ class StockProductionLotSerial(models.Model):
                         lambda x: x.product_id == item.stock_production_lot_id.product_id
                     )
                     for stock in stock_move:
-                        models._logger.error('product : {}'.format(stock))
+                        stock.update({
+                            'quantity_done': item.display_weight
+                        })
+                        models._logger.error('product : {}'.format(stock.quantity_done))
