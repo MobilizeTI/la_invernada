@@ -62,18 +62,21 @@ class MrpWorkorder(models.Model):
         for item in self:
             if item.final_lot_id:
                 item.summary_out_serial_ids = item.final_lot_id.stock_production_lot_serial_ids
+                models._logger.error(item.summary_out_serial_ids)
                 if item.byproduct_move_line_ids:
                     item.summary_out_serial_ids += item.byproduct_move_line_ids.mapped(
                         'lot_id'
                     ).mapped(
                         'stock_production_lot_serial_ids'
                     )
+                    models._logger.error(item.summary_out_serial_ids)
             else:
                 item.summary_out_serial_ids = item.production_finished_move_line_ids.mapped(
                     'lot_id'
                 ).mapped(
                     'stock_production_lot_serial_ids'
                 )
+                models._logger.error(item.summary_out_serial_ids)
 
     @api.multi
     def _compute_byproduct_move_line_ids(self):
