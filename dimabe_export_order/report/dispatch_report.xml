@@ -550,7 +550,7 @@
                             </table>
                         </div>
                         <div style="width:40%;display: inline-block;">
-                            <table border="1">
+                            <table border="1" style="height:154px;">
                                 <tr>
                                     <td>CONSIGNEE / CONSIGNATARIO</td>
                                     <td><span t-field="d.consignee_id"></span></td>
