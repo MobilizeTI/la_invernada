@@ -549,6 +549,28 @@
                                 </tr>
                             </table>
                         </div>
+                        <div style="width:45%">
+                            <table>
+                                <tr>
+                                    <td>CONSIGNEE / CONSIGNATARIO</td>
+                                    <td><span t-field="d.consignee_id"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ADDRESS / DIRECCION</td>
+                                    <td>
+                                        <span t-field="d.consignee_id.street"></span>
+                                        <span t-field="d.consignee_id.state_id"></span>
+                                        <span t-field="d.consignee_id.country_id"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>PHONE / TELEFONO</td>
+                                    <td>
+                                        <span t-field="d.consignee_id.phone"></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </t>
