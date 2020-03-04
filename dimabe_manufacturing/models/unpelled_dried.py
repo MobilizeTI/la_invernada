@@ -200,15 +200,29 @@ class UnpelledDried(models.Model):
     @api.multi
     def finish_unpelled_dried(self):
         for item in self:
-            if not item.out_serial_ids:
-                raise models.ValidationError('Debe agregar al menos una serie de salida al proceso')
-
             oven_use_to_close_ids = item.oven_use_ids.filtered(
                 lambda a: a.finish_date
             )
 
+            for lot_id in oven_use_to_close_ids.mapped('used_lot_ids'):
+                oven_use_id = item.oven_use_ids.filtered(
+                    lambda a: not a.finish_date and len(a.used_lot_ids) == 1 and lot_id in a.used_lot_ids
+                )
+                if oven_use_id:
+                    raise models.ValidationError('el lote {} se no ha sido terminado en el cajón {}.'
+                                                 ' no se puede cerrar un lote en que se encuentre en '
+                                                 'cajones completos (no mezclados con otros lotes) y que '
+                                                 'se encuentren todavía en proceso'.format(
+                        lot_id.name, oven_use_id.dried_oven_id
+                    ))
+
+                raise models.ValidationError('no funcionó tu validación qla')
+
             if not oven_use_to_close_ids:
                 raise models.ValidationError('no hay hornos terminados que procesar')
+
+            if not item.out_serial_ids:
+                raise models.ValidationError('Debe agregar al menos una serie de salida al proceso')
 
             history_id = item.create_history()
 
@@ -286,4 +300,3 @@ class UnpelledDried(models.Model):
             'target': 'fullscreen',
             'domain': [('unpelled_dried_id', '=', unpelled_dried_id)]
         }
-
