@@ -47,6 +47,8 @@ class StockPicking(models.Model):
 
     have_series = fields.Boolean('Tiene Serie', default=True, compute='_compute_potential_lot_serial_ids')
 
+
+
     @api.multi
     @api.depends('product_search_id')
     def _compute_potential_lot_serial_ids(self):
