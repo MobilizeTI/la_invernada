@@ -29,7 +29,6 @@
                                 <button string="Validar"
                                         type="object"
                                         name="validate_picking"
-                                        group="mrp.group_mrp_manager"
                                         attrs="{'invisible':[('parent.state','=','done')]}"
                                         context="{'stock_picking_id':parent.id}"
                                 />
