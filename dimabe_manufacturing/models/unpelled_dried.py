@@ -216,8 +216,6 @@ class UnpelledDried(models.Model):
                         lot_id.name, oven_use_id.dried_oven_id.name
                     ))
 
-                raise models.ValidationError('no funcionó tu validación qla')
-
             if not oven_use_to_close_ids:
                 raise models.ValidationError('no hay hornos terminados que procesar')
 
