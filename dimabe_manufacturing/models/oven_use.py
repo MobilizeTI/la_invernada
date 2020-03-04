@@ -99,3 +99,9 @@ class OvenUse(models.Model):
         for item in self:
             return self.env.ref('dimabe_manufacturing.action_oven_use_label_report') \
                 .report_action(item)
+
+    @api.multi
+    def get_full_url(self):
+        self.ensure_one()
+        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+        return base_url
