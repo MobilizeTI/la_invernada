@@ -587,7 +587,7 @@
                                 <tr>
                                     <td>PORT OF LOADING </td>
                                     <td>
-                                        <span t-field="d.departure_port"></span>
+                                        <span t-field="d.shipping_id.departure_port"></span>
                                     </td>
                                 </tr>
                                 <tr>
