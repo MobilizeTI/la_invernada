@@ -215,10 +215,12 @@ class StockProductionLotSerial(models.Model):
             models._logger.error(len(move_line))
 
             for move in move_line:
+
                 picking_move_line = item.reserved_to_stock_picking_id.move_line_ids.filtered(
                     lambda a: a.id == move.id
                 )
 
+                models._logger.error(picking_move_line.id)
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
                 stock_quant.sudo().update({
                     'reserved_quantity': stock_quant.reserved_quantity - item.display_weight
@@ -228,12 +230,12 @@ class StockProductionLotSerial(models.Model):
                     'reserved_to_stock_picking_id': None
                 })
 
-            for ml in move_line:
-                if ml.qty_done > 0:
-                    raise models.ValidationError('este producto ya ha sido validado')
-                ml.write({'move_id': None, 'product_uom_qty': 0})
-                picking_move_line.filtered(lambda a: a.id == ml.id).write({
-                    'move_id': None,
-                    'picking_id': None,
-                    'product_uom_qty': 0
-                })
+                for ml in move:
+                    if ml.qty_done > 0:
+                        raise models.ValidationError('este producto ya ha sido validado')
+                    ml.write({'move_id': None, 'product_uom_qty': 0})
+                    picking_move_line.filtered(lambda a: a.id == ml.id).write({
+                        'move_id': None,
+                        'picking_id': None,
+                        'product_uom_qty': 0
+                    })
