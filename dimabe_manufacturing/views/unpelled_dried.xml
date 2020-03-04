@@ -124,7 +124,6 @@
             </field>
           </group>
           <group>
-            <field name="in_variety" />
             <field name="total_in_weight"/>
             <field name="total_out_weight"/>
             <field name="performance"/>
