@@ -519,7 +519,7 @@
                                  style="width:352px;"/>
                         </div>
                         <div style="display: inline-block;text-align: center;">
-                            <span style="font-size:30px">
+                            <span style="font-size:30px;text-align:center;">
                                 <strong>PACKING LIST</strong>
                             </span>
                         </div>
@@ -550,7 +550,7 @@
                             </table>
                         </div>
                         <div style="width:40%;display: inline-block;">
-                            <table>
+                            <table border="1">
                                 <tr>
                                     <td>CONSIGNEE / CONSIGNATARIO</td>
                                     <td><span t-field="d.consignee_id"></span></td>
