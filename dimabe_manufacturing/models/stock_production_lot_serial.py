@@ -270,13 +270,42 @@ class StockProductionLotSerial(models.Model):
         if 'validate_stock' in self.env.context:
             stock_picking_id = self.env.context['validate_stock']
             stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
-            if stock_picking:
-                for item in self:
-                    stock_move = stock_picking.move_ids_without_package.filtered(
-                        lambda x: x.product_id == item.stock_production_lot_id.product_id
-                    )
-                    for stock in stock_move:
-                        stock.update({
-                            'quantity_done': item.display_weight
-                        })
-                        models._logger.error('product : {}'.format(stock.quantity_done))
+            if not stock_picking:
+                raise models.ValidationError('No se encontró el picking al que reservar el stock')
+            for item in self:
+                item.update({
+                    'reserved_to_stock_picking_id': stock_picking.id
+                })
+                stock_move = item.reserved_to_stock_picking_id.move_lines.filtered(
+                    lambda a: a.product_id == item.stock_production_lot_id.product_id
+                )
+
+                stock_quant = item.stock_production_lot_id.get_stock_quant()
+
+                stock_quant.sudo().update({
+                    'reserved_quantity': stock_quant.reserved_quantity + item.display_weight
+                })
+
+                move_line = self.env['stock.move.line'].create({
+                    'product_id': item.stock_production_lot_id.product_id.id,
+                    'lot_id': item.stock_production_lot_id.id,
+                    'qty_done': item.display_weight,
+                    'product_uom_id': stock_move.product_uom.id,
+                    'location_id': stock_quant.location_id.id,
+                    # 'qty_done': item.display_weight,
+                    'location_dest_id': stock_picking.partner_id.property_stock_customer.id
+                })
+
+                stock_move.sudo().update({
+                    'move_line_ids': [
+                        (4, move_line.id)
+                    ]
+                })
+
+                item.reserved_to_stock_picking_id.update({
+                    'move_line_ids': [
+                        (4, move_line.id)
+                    ]
+                })
+        else:
+            raise models.ValidationError('no se pudo identificar picknig')
