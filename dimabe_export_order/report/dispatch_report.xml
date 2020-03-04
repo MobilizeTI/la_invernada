@@ -606,7 +606,8 @@
                                 </tr>
                             </table>
                         </div>
-                        <div style="width:15%;">
+                        <div style="width:15%;display:inline-block;"></div>
+                        <div style="width:45%;display:inline-block;">
                             <table border="1">
                                 <tr>
                                     <td>NOTIFY / NOTIFICADO</td>
@@ -634,6 +635,18 @@
                                 </tr>
                             </table>
                         </div>
+                    </div>
+                    <div style="width:100%;">
+                        <div style="width:45%;display:inline-block;">
+                            <table>
+                                <tr>
+                                    <td rowspan="2">ORDER N°<br/>NUMERO ORDEN</td>
+                                    <td rowspan="2"><span t-field="d.name"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div style="width:15%;display:inline-block;"></div>
+                        <div style="width:45%;display:inline-block;"></div>
                     </div>
                 </div>
             </t>
