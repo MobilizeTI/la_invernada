@@ -277,7 +277,7 @@ class StockProductionLotSerial(models.Model):
                     )
                     stock_quant = item.stock_production_lot_id.get_stock_quant()
                     stock_quant.sudo().update({
-                        'reserved_quantity': stock_quant.reserved_quantity + item.qty_to_reserve
+                        'reserved_quantity': stock_quant.reserved_quantity + item.display_weight
                     })
                     move_line = self.env['stock.move.line'].create({
                         'product_id': item.stock_production_lot_id.product_id.id,
