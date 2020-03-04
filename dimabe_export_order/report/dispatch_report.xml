@@ -646,7 +646,14 @@
                             </table>
                         </div>
                         <div style="width:15%;display:inline-block;"></div>
-                        <div style="width:45%;display:inline-block;"></div>
+                        <div style="width:45%;display:inline-block;">
+                            <table border="1">
+                                <tr>
+                                    <td rowspan="2">CLIENT'S PURCHASE ORDER<br/>ORDEN DE COMPRA CLIENTE</td>
+                                    <td rowspan="2"></td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </t>
