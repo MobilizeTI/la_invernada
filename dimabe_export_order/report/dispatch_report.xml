@@ -556,7 +556,9 @@
                             <table border="1" style="height:154px;">
                                 <tr>
                                     <td>CONSIGNEE / CONSIGNATARIO</td>
-                                    <td><span t-field="d.consignee_id"></span></td>
+                                    <td>
+                                        <span t-field="d.consignee_id"></span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>ADDRESS / DIRECCION</td>
@@ -585,7 +587,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>PORT OF LOADING </td>
+                                    <td>PORT OF LOADING</td>
                                     <td>
                                         <span t-field="d.shipping_id.departure_port"></span>
                                     </td>
@@ -600,6 +602,34 @@
                                     <td>CONTAINER N°</td>
                                     <td>
                                         <span t-field="d.container_number"></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div style="width:15%;">
+                            <table border="1">
+                                <tr>
+                                    <td>NOTIFY / NOTIFICADO</td>
+                                    <td>
+                                        <![CDATA[
+                                            &nbsp;
+                                        ]]>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ADDRESS / DIRECCION</td>
+                                    <td>
+                                        <![CDATA[
+                                            &nbsp;
+                                        ]]>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>PHONE / TELEFONO</td>
+                                    <td>
+                                        <![CDATA[
+                                            &nbsp;
+                                        ]]>
                                     </td>
                                 </tr>
                             </table>
