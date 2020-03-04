@@ -214,18 +214,19 @@ class StockProductionLotSerial(models.Model):
 
             models._logger.error(len(move_line))
 
-            picking_move_line = item.reserved_to_stock_picking_id.move_line_ids.filtered(
-                lambda a: a.id == move_line.id
-            )
+            for move in move_line:
+                picking_move_line = item.reserved_to_stock_picking_id.move_line_ids.filtered(
+                    lambda a: a.id == move.id
+                )
 
-            stock_quant = item.stock_production_lot_id.get_stock_quant()
-            stock_quant.sudo().update({
-                'reserved_quantity': stock_quant.reserved_quantity - item.display_weight
-            })
+                stock_quant = item.stock_production_lot_id.get_stock_quant()
+                stock_quant.sudo().update({
+                    'reserved_quantity': stock_quant.reserved_quantity - item.display_weight
+                })
 
-            item.update({
-                'reserved_to_stock_picking_id': None
-            })
+                item.update({
+                    'reserved_to_stock_picking_id': None
+                })
 
             for ml in move_line:
                 if ml.qty_done > 0:
