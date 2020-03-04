@@ -7,7 +7,7 @@
             <table style="text-align:left;">
               <tr>
                 <th>Información Cajón</th>
-                <td style="text-align: right !important;">
+                <td style="text-align: right !important;border-left: solid 1px;border-bottom: solid 1px;">
                   <span t-field="o.dried_oven_id.name"/>
                 </td>
               </tr>
