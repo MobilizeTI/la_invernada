@@ -150,7 +150,7 @@
 
   <menuitem name="Proceso Secado"
             id="unpelled_dried_menu"
-            parent="mrp.mrp_planning_menu_root"
+            parent="mrp.menu_mrp_manufacturing"
             action="unpelled_dried_action"
   />
 </odoo>
