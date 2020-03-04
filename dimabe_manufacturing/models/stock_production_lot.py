@@ -145,3 +145,4 @@ class StockProductionLot(models.Model):
         return self.quant_ids.filtered(
             lambda a: a.location_id.name == 'Stock'
         )
+
