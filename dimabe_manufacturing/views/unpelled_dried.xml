@@ -119,6 +119,7 @@
                 <button name="print_serial_label"
                         type="object" string="Imprimir"
                         attrs="{'invisible':['|',('serial_number', '=', False)]}"
+                        context="{'producer_id': parent.producer_id}"
                 />
               </tree>
             </field>
