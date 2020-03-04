@@ -593,7 +593,7 @@
                                 <tr>
                                     <td>PORT OF DISCHARGE</td>
                                     <td>
-                                        <span t-field="d.arrival_port"></span>
+                                        <span t-field="d.shipping_id.arrival_port"></span>
                                     </td>
                                 </tr>
                                 <tr>
