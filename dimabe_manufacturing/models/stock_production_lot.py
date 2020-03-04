@@ -16,6 +16,12 @@ class StockProductionLot(models.Model):
         search='_search_reception_guide_number'
     )
 
+    reception_state = fields.Selection(
+        string='Estado de la reecepción',
+        compute='_compute_reception_data',
+        search='_search_reception_state'
+    )
+
     is_prd_lot = fields.Boolean('Es Lote de salida de Proceso')
 
     is_standard_weight = fields.Boolean('Series Peso Estandar')
@@ -44,6 +50,7 @@ class StockProductionLot(models.Model):
             if stock_picking:
                 item.producer_id = stock_picking[0].partner_id
                 item.reception_guide_number = stock_picking[0].guide_number
+                item.reception_state = stock_picking[0].state
 
     def _search_producer_id(self, operator, value):
         stock_picking_ids = self.env['stock.picking'].search([
@@ -59,6 +66,12 @@ class StockProductionLot(models.Model):
             ('picking_type_code', '=', 'incoming')
         ])
         return [('name', 'in', stock_picking_ids.mapped('name'))]
+
+    def _search_reception_state(self, operator, value):
+        models._logger.error(self)
+        stock_picking_ids = self.env['stock.picking'].search([
+            ('',operator, value)
+        ])
 
     @api.multi
     def _compute_total_serial(self):
