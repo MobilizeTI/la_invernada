@@ -275,20 +275,5 @@ class StockProductionLotSerial(models.Model):
                     stock_move = stock_picking.move_ids_without_package.filtered(
                         lambda x: x.product_id == item.stock_production_lot_id.product_id
                     )
-                    stock_quant = item.stock_production_lot_id.get_stock_quant()
-                    stock_quant.sudo().update({
-                        'reserved_quantity': stock_quant.reserved_quantity + item.display_weight
-                    })
-                    move_line = self.env['stock.move.line'].create({
-                        'product_id': item.stock_production_lot_id.product_id.id,
-                        'lot_id': item.stock_production_lot_id.id,
-                        'quantity_done': item.display_weight,
-                        'product_uom_id': stock_move.product_uom.id,
-                        'location_id': stock_quant.location_id.id,
-                        'location_dest_id': stock_picking.partner_id.property_stock_customer.id
-                    })
-                    stock_move.sudo().update({
-                        'move_line_ids': [
-                            (4, move_line.id)
-                        ]
-                    })
+                    for stock in stock_move:
+                        models._logger.error('product : {}'.format(stock))
