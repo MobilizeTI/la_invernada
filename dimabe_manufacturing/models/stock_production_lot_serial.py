@@ -35,7 +35,6 @@ class StockProductionLotSerial(models.Model):
 
     confirmed_serial = fields.Char('Confimacion de Serie')
 
-
     @api.model
     def create(self, values_list):
         res = super(StockProductionLotSerial, self).create(values_list)
@@ -175,14 +174,14 @@ class StockProductionLotSerial(models.Model):
                 })
 
                 move_line = self.env['stock.move.line'].create({
-                            'product_id': item.stock_production_lot_id.product_id.id,
-                            'lot_id': item.stock_production_lot_id.id,
-                            'product_uom_qty': item.display_weight,
-                            'product_uom_id': stock_move.product_uom.id,
-                            'location_id': stock_quant.location_id.id,
-                            # 'qty_done': item.display_weight,
-                            'location_dest_id': stock_picking.partner_id.property_stock_customer.id
-                        })
+                    'product_id': item.stock_production_lot_id.product_id.id,
+                    'lot_id': item.stock_production_lot_id.id,
+                    'product_uom_qty': item.display_weight,
+                    'product_uom_id': stock_move.product_uom.id,
+                    'location_id': stock_quant.location_id.id,
+                    # 'qty_done': item.display_weight,
+                    'location_dest_id': stock_picking.partner_id.property_stock_customer.id
+                })
 
                 stock_move.sudo().update({
                     'move_line_ids': [
@@ -214,8 +213,8 @@ class StockProductionLotSerial(models.Model):
                     lambda a: a.id == move.id
                 )
 
-                models._logger.error('picking_move_line.id : {}'.format(picking_move_line.id))
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
+                models._logger.error('stock_quant : {}'.format(stock_quant.id))
                 stock_quant.sudo().update({
                     'reserved_quantity': stock_quant.reserved_quantity - item.display_weight
                 })
