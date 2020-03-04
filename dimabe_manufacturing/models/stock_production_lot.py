@@ -30,7 +30,6 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_total_serial(self):
         for item in self:
-            models._logger.error(self.is_reserved)
             item.total_serial = sum(item.stock_production_lot_serial_ids.mapped('display_weight'))
 
     @api.multi
