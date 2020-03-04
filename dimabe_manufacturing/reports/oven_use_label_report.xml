@@ -5,10 +5,8 @@
         <t t-foreach="docs" t-as="o">
           <table>
             <tr>
-              <td colspan="2">Información Cajón</td>
-              <td style="text-align: right !important;"
-                  colspan="2"
-              >
+              <td>Información Cajón</td>
+              <td style="text-align: right !important;">
                 <span t-field="o.dried_oven_id.name"/>
               </td>
             </tr>
@@ -64,7 +62,7 @@
 
   <report id="dimabe_manufacturing.action_oven_use_label_report"
           string="Etiqueta para Salida de Proceso"
-          model="stock.production.lot.serial"
+          model="oven.use"
           report_type="qweb-pdf"
           name="dimabe_manufacturing.oven_use_label_report"
           paperformat="paper_format_10_x_7"
