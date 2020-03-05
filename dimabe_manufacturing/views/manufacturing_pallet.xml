@@ -25,6 +25,7 @@
             />
             <button string="Agregar" name="add_code"
                     attrs="{'invisible':[('add_manual_code','=',False)]}"
+                    type="object"
             />
             <field name="lot_serial_ids" readonly="1">
               <tree>
