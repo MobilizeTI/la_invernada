@@ -17,11 +17,13 @@
             <field name="name" readonly="1" attrs="{'invisible':[('name','=',False)]}"/>
           </h1>
           <group>
-
-            <field name="product_id"/>
             <field name="producer_id"/>
             <field name="sag_code"/>
-            <field name="lot_serial_ids" widget="many2many">
+            <field name="add_manual_code"/>
+            <field name="manual_code"
+                   attrs="{'invisible':[('add_manual_code','=',False)]}"
+            />
+            <field name="lot_serial_ids" readonly="1">
               <tree>
                 <field name="stock_production_lot_id"/>
                 <field name="stock_product_id"/>

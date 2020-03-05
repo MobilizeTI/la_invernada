@@ -8,17 +8,15 @@ class ManufacturingPallet(models.Model):
 
     name = fields.Char('Pallet')
 
-    product_id = fields.Many2one(
-        'product.product',
-        'Producto',
-        required=True
-    )
-
     producer_id = fields.Many2one(
         'res.partner',
         'Productor',
         domain=[('supplier', '=', True)]
     )
+
+    add_manual_code = fields.Boolean('Agregar Código Manualmente')
+
+    manual_code = fields.Char('Código Manual')
 
     sag_code = fields.Char(
         related='producer_id.sag_code'
@@ -77,18 +75,11 @@ class ManufacturingPallet(models.Model):
 
         serial_id = self.env['stock.production.lot.serial'].search([
             ('serial_number', '=', barcode),
-            ('pallet_id', '=', False)
+            ('consumed', '=', False)
         ])
 
         if not serial_id:
             raise models.ValidationError('no se encontró ningún registro asociado a este código')
-
-        if serial_id.stock_product_id.id != self.product_id.id:
-            raise models.ValidationError('el producto del código escaneado ({}) '
-                                         'no corresponde al del pallet ({})'.format(
-                serial_id.stock_product_id.display_name,
-                self.product_id.display_name
-            ))
 
         serial_id.update({
             'pallet_id': self.id
