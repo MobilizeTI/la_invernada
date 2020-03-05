@@ -135,6 +135,8 @@ class StockPicking(models.Model):
             'reserved_quantity': stock_quant.reserved_quantity + custom_serial.display_weight
         })
 
+        raise models.ValidationError(stock_move.product_uom)
+
         move_line = self.env['stock.move.line'].create({
             'product_id': custom_serial.stock_production_lot_id.product_id.id,
             'lot_id': custom_serial.stock_production_lot_id.id,
