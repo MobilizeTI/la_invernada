@@ -47,7 +47,8 @@
         'views/stock_picking.xml',
         'views/unpelled_dried.xml',
         'views/oven_use.xml',
-        'views/dried_unpelled_history.xml'
+        'views/dried_unpelled_history.xml',
+        'views/manufacturing_pallet.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
