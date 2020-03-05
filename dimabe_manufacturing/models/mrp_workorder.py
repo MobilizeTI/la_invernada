@@ -163,6 +163,7 @@ class MrpWorkorder(models.Model):
                     })
                 if s.serial_number != item.confirmed_serial:
                     models._logger.error(item.confirmed_serial)
+                    models._logger.error(s.serial_number)
                     raise models.ValidationError("Este codigo no esta en las series")
         self._compute_potential_lot_planned_ids()
 
