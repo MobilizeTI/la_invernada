@@ -45,6 +45,16 @@
             </div>
           </group>
         </group>
+        <button string="Cerrar Pallet"
+                type="object"
+                name="close_pallet"
+                attrs="{'invisible':[('state','=','close')]}"
+        />
+        <button string="Abrir Pallet"
+                type="object"
+                name="open_pallet"
+                attrs="{'invisible':[('state','=','open')]}"
+        />
         <field name="_barcode_scanned" widget="barcode_handler"/>
       </form>
     </field>

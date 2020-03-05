@@ -6,6 +6,14 @@ class ManufacturingPallet(models.Model):
     _description = 'clase para paletizaje de series de lote'
     _inherit = ['barcodes.barcode_events_mixin']
 
+    state = fields.Selection([
+        ('open', 'Abierto'),
+        ('close', 'Cerrado')
+    ],
+        string='Estado',
+        default='open'
+    )
+
     name = fields.Char('Pallet')
 
     producer_id = fields.Many2one(
@@ -84,6 +92,12 @@ class ManufacturingPallet(models.Model):
 
         if not serial_id:
             raise models.ValidationError('no se encontró ningún registro asociado a este código')
+
+        if serial_id.pallet_id.state == 'close':
+            raise models.ValidationError('Este código se encuentra en un pallet cerrado ({})'
+                                         'debe abrir el pallet para poder cambiar la caja de pallet'.format(
+                serial_id.pallet_id.name
+            ))
 
         serial_id.write({
             'pallet_id': self.id
