@@ -16,7 +16,7 @@ class StockProductionLot(models.Model):
         search='_search_reception_guide_number'
     )
 
-    reception_state = fields.Char([
+    reception_state = fields.Selection([
         ('draft', 'Draft'),
         ('waiting', 'Waiting Another Operation'),
         ('confirmed', 'Waiting'),
