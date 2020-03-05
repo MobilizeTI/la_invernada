@@ -17,12 +17,12 @@ class StockProductionLot(models.Model):
     )
 
     reception_state = fields.Selection([
-        ('draft', 'Draft'),
-        ('waiting', 'Waiting Another Operation'),
-        ('confirmed', 'Waiting'),
-        ('assigned', 'Ready'),
-        ('done', 'Done'),
-        ('cancel', 'Cancelled'),
+        ('draft', 'Borrador'),
+        ('waiting', 'Esperando Otra Operación'),
+        ('confirmed', 'En Espera'),
+        ('assigned', 'Preparado'),
+        ('done', 'Realizado'),
+        ('cancel', 'Cancelado'),
     ],
         string='Estado de la reecepción',
         compute='_compute_reception_data',
