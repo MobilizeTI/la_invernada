@@ -216,14 +216,15 @@ class StockPicking(models.Model):
             if mp_move and mp_move.move_line_ids and mp_move.picking_id \
                     and mp_move.picking_id.picking_type_code == 'incoming':
                 for move_line in mp_move.move_line_ids:
-                    lot = self.env['stock.production.lot'].create({
-                        'name': stock_picking.name,
-                        'product_id': move_line.product_id.id
-                    })
-                    if lot:
-                        move_line.update({
-                            'lot_id': lot.id
+                    if move_line.product_id.tracking == 'lot':
+                        lot = self.env['stock.production.lot'].create({
+                            'name': stock_picking.name,
+                            'product_id': move_line.product_id.id
                         })
+                        if lot:
+                            move_line.update({
+                                'lot_id': lot.id
+                            })
 
                 if mp_move.product_id.tracking == 'lot' and not mp_move.has_serial_generated:
                     for stock_move_line in mp_move.move_line_ids:
