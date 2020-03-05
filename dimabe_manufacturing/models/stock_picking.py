@@ -117,5 +117,13 @@ class StockPicking(models.Model):
 
         return super(StockPicking, self).button_validate()
 
-    def on_barcode_scanned(self, barcode):
-        models._logger.error(barcode)
+
+    def validate_barcode(self,barcode):
+        custom_serial = self.packing_list_ids.filtered(
+            lambda a: a.serial_number == barcode
+        )
+        return custom_serial
+
+    def on_barcode_scanned(self,barcode):
+        custom_serial = self.validate_barcode(barcode)
+        models._logger.error('custom_serial : {}'.format(custom_serial.id))
