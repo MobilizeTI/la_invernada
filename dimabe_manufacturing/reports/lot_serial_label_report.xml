@@ -32,7 +32,7 @@
             <tr>
               <td>Productor:</td>
               <td colspan="3">
-                <span t-field="o.productors"/>
+                <span t-field="o.stock_production_lot_id.productors"/>
               </td>
             </tr>
             <tr>
