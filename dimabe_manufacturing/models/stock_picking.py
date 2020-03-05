@@ -126,6 +126,8 @@ class StockPicking(models.Model):
     def on_barcode_scanned(self, barcode):
         for item in self:
             custom_serial = item.validate_barcode(barcode)
+            if custom_serial.validate == True:
+                raise models.ValidationError('Serie ya fue usada')
             stock_move = self.move_ids_without_package.filtered(
                 lambda a: a.product_id == custom_serial.stock_production_lot_id.product_id
             )
@@ -136,5 +138,7 @@ class StockPicking(models.Model):
                             'qty_done': custom_serial.display_weight
                         }
                     )
+                    custom_serial.update({
+                        'validate': True
+                    })
                     break
-

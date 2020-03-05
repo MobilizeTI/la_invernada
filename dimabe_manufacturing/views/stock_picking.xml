@@ -26,12 +26,6 @@
                                         groups="mrp.group_mrp_manager"
                                         attrs="{'invisible':[('parent.state','=','done')]}"
                                 />
-                                <button string="Validar"
-                                        type="object"
-                                        name="validate_picking"
-                                        attrs="{'invisible':[('parent.state','=','done')]}"
-                                        context="{'validate_stock':parent.id}"
-                                />
                             </tree>
                         </field>
                         <field name="product_search_id"
