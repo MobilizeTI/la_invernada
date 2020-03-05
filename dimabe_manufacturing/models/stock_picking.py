@@ -126,16 +126,13 @@ class StockPicking(models.Model):
     def on_barcode_scanned(self, barcode):
         for item in self:
             custom_serial = item.validate_barcode(barcode)
-            res = super(StockPicking, item).on_barcode_scanned(barcode)
-            if res:
-                return res
             move_id = 0
             for move in item.move_ids_without_package:
                 if move.product_id.id == custom_serial.stock_production_lot_id.product_id.id:
                     move_id = move.id
 
             stock_move = self.env['stock.move'].search([('id', '=', move_id)])
-
+            raise models.ValidationError(stock_move.id)
             stock_quant = custom_serial.stock_production_lot_id.get_stock_quant()
 
             stock_quant.sudo().update({
