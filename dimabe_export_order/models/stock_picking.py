@@ -212,7 +212,6 @@ class StockPicking(models.Model):
 
     @api.multi
     def generate_report(self):
-
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
             .report_action(self.picture)
 
@@ -258,11 +257,13 @@ class StockPicking(models.Model):
             prices = 0
             qtys = 0
             for i in item.sale_id.order_line:
-                list_price.append(int(i.price_unit))
+                if len(item.sale_id.order_line) != 0:
+                    list_price.append(int(i.price_unit))
             for a in item.move_ids_without_package:
-                list_qty.append(int(a.quantity_done))
-                prices = sum(list_price)
-                qtys = sum(list_qty)
+                if len(item.move_ids_without_package) != 0:
+                    list_qty.append(int(a.quantity_done))
+                    prices = sum(list_price)
+                    qtys = sum(list_qty)
             item.total_value = (prices * qtys) + item.freight_value + item.safe_value
 
     @api.multi

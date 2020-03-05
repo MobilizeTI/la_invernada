@@ -62,7 +62,6 @@ class MrpWorkorder(models.Model):
         for item in self:
             if item.final_lot_id:
                 item.summary_out_serial_ids = item.final_lot_id.stock_production_lot_serial_ids
-                models._logger.error(item.summary_out_serial_ids)
                 if item.byproduct_move_line_ids:
                     item.summary_out_serial_ids += item.byproduct_move_line_ids.mapped(
                         'lot_id'
@@ -106,7 +105,6 @@ class MrpWorkorder(models.Model):
 
     @api.multi
     def write(self, vals):
-
         for item in self:
 
             if item.active_move_line_ids and \
@@ -155,8 +153,10 @@ class MrpWorkorder(models.Model):
         for item in self:
             for s in item.potential_serial_planned_ids:
                 if s.serial_number == item.confirmed_serial:
+                    if s.is_consumed == True:
+                        raise models.ValidationError('Este codigo ya fue consumido')
                     s.update({
-                        'consumed':True
+                        'consumed': True
                     })
         self._compute_potential_lot_planned_ids()
 
@@ -201,7 +201,6 @@ class MrpWorkorder(models.Model):
                     )
 
     def validate_serial_code(self, barcode):
-
         custom_serial = self.potential_serial_planned_ids.filtered(
             lambda a: a.serial_number == barcode
         )
