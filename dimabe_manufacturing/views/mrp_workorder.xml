@@ -85,6 +85,7 @@
                       name="create_pallet"
                       type="object"
                       context="{'_default_product_id': product_id}"
+                      attrs="{'invisible':[('final_lot_id', '=', False)]}"
               />
               <field name="production_finished_move_line_ids"
                      attrs="{'invisible':[('state', '!=', 'done')]}"
