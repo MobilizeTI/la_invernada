@@ -119,6 +119,7 @@ class StockPicking(models.Model):
 
     def validate_barcode(self, barcode):
         serial = barcode
+        models._logger.error('serial : {} barcode: {}'.format(serial,barcode))
         custom_serial = self.packing_list_ids.filtered(
             lambda a: a.serial_number == serial
         )
