@@ -20,11 +20,13 @@
                                 <field name="stock_product_id"/>
                                 <field name="serial_number"/>
                                 <field name="display_weight"/>
+                                <field name="validate" invisible="1"/>
                                 <button string="Quitar de Packing List"
                                         type="object"
                                         name="unreserved_picking"
                                         groups="mrp.group_mrp_manager"
-                                        attrs="{'invisible':[('parent.state','=','done')]}"
+                                        attrs="{'invisible':['|',('parent.state','=','done'),('validate','=',True)]}"
+
                                 />
                             </tree>
                         </field>
