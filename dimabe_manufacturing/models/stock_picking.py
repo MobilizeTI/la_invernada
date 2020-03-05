@@ -131,8 +131,6 @@ class StockPicking(models.Model):
             for move in item.move_lines:
                 if move.product_id.id == custom_serial.stock_production_lot_id.product_id.id:
                     raise models.ValidationError(move.id)
-                    move_id = move.id
-            stock_move = self.env['stock.move'].search([('id','=',move_id)])
             stock_quant = custom_serial.stock_production_lot_id.get_stock_quant()
 
             stock_quant.sudo().update({
@@ -143,17 +141,17 @@ class StockPicking(models.Model):
                 'product_id': custom_serial.stock_production_lot_id.product_id.id,
                 'lot_id': custom_serial.stock_production_lot_id.id,
                 'qty_done': custom_serial.display_weight,
-                'product_uom_id': stock_move.product_uom.id,
+                #'product_uom_id': stock_move.product_uom.id,
                 'location_id': stock_quant.location_id.id,
                 # 'qty_done': item.display_weight,
                 'location_dest_id': item.partner_id.property_stock_customer.id
             })
 
-            stock_move.sudo().update({
-                'move_line_ids': [
-                    (4, move_line.id)
-                ]
-            })
+            # stock_move.sudo().update({
+            #     'move_line_ids': [
+            #         (4, move_line.id)
+            #     ]
+            # })
 
             item.update({
                 'move_line_ids': [
