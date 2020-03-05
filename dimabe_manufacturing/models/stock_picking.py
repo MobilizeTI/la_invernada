@@ -126,16 +126,14 @@ class StockPicking(models.Model):
     def on_barcode_scanned(self, barcode):
         custom_serial = self.validate_barcode(barcode)
         res = super(StockPicking, self).on_barcode_scanned(barcode)
-        stock_move = self.move_lines.filtered(
-            lambda a: a.product_id.id == custom_serial.stock_production_lot_id.product_id.id
-        )
-        raise models.ValidationError('stock_move = self.move_lines.filtered(lambda a: a.product_id == {}    {}'.format(custom_serial.stock_production_lot_id.product_id.name,stock_move))
+        stock_move = self.env['stock.move'].search(['picking_id', '=', self.id])
+        raise models.ValidationError('stock_move = self.move_lines.filtered(lambda a: a.product_id == {}    {}'.format(
+            custom_serial.stock_production_lot_id.product_id.name, stock_move))
         stock_quant = custom_serial.stock_production_lot_id.get_stock_quant()
 
         stock_quant.sudo().update({
             'reserved_quantity': stock_quant.reserved_quantity + custom_serial.display_weight
         })
-
 
         move_line = self.env['stock.move.line'].create({
             'product_id': custom_serial.stock_production_lot_id.product_id.id,
