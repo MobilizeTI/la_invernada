@@ -12,6 +12,22 @@
     <field name="model">manufacturing.pallet</field>
     <field name="arch" type="xml">
       <form>
+        <header>
+          <button string="Cerrar Pallet"
+                  type="object"
+                  name="close_pallet"
+                  attrs="{'invisible':[('state','=','close')]}"
+          />
+          <button string="Abrir Pallet"
+                  type="object"
+                  name="open_pallet"
+                  attrs="{'invisible':[('state','=','open')]}"
+          />
+
+          <field name="state"
+                 widget="statusbar"
+                 statusbar_visible="open,close"/>
+        </header>
         <group>
           <h1 class="d-none d-md-block">
             <field name="name" readonly="1" attrs="{'invisible':[('name','=',False)]}"/>
@@ -40,21 +56,12 @@
 
           </group>
           <group>
-            <div style="position:relative;width:100%;height:100%;min-height:300px;background-color:blue;color:white;font-size:200px;text-align:center;">
+            <div
+              style="position:relative;width:100%;height:100%;min-height:300px;background-color:blue;color:white;font-size:200px;text-align:center;">
               <field name="total_content" string=""/>
             </div>
           </group>
         </group>
-        <button string="Cerrar Pallet"
-                type="object"
-                name="close_pallet"
-                attrs="{'invisible':[('state','=','close')]}"
-        />
-        <button string="Abrir Pallet"
-                type="object"
-                name="open_pallet"
-                attrs="{'invisible':[('state','=','open')]}"
-        />
         <field name="_barcode_scanned" widget="barcode_handler"/>
       </form>
     </field>
