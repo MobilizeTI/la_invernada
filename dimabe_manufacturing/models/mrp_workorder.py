@@ -207,10 +207,13 @@ class MrpWorkorder(models.Model):
         }
 
     def create_pallet(self):
-        raise models.ValidationError(self.env.context['_default_product_id'])
+        default_product_id = None
+        if '_default_product_id' in self.env.context:
+            default_product_id = self.env.context['_default_product_id']
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'manufacturing.pallet',
             'views': [[self.env.ref('dimabe_manufacturing.manufacturing_pallet_form_view').id, 'form']],
-            'target': 'fullscreen'
+            'target': 'fullscreen',
+            'context': {'_default_product_id': default_product_id}
         }
