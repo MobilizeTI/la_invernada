@@ -208,8 +208,8 @@ class MrpWorkorder(models.Model):
 
     def create_pallet(self):
         default_product_id = None
-        if '_default_product_id' in self.env.context:
-            default_product_id = self.env.context['_default_product_id']
+        if 'default_product_id' in self.env.context:
+            default_product_id = self.env.context['default_product_id']
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'manufacturing.pallet',
