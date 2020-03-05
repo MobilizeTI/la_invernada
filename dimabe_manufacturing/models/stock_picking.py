@@ -117,6 +117,5 @@ class StockPicking(models.Model):
 
         return super(StockPicking, self).button_validate()
 
-
-    def on_barcode_scanner(self,barcode):
+    def on_barcode_scanned(self, barcode):
         models._logger.error(barcode)
