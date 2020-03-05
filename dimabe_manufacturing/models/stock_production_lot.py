@@ -27,6 +27,8 @@ class StockProductionLot(models.Model):
 
     is_reserved = fields.Boolean('Esta reservado?', compute='reserved', default=False)
 
+    productors = fields.Many2one('res.partner')
+
     @api.multi
     def _compute_total_serial(self):
         for item in self:

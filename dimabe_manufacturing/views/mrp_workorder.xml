@@ -87,7 +87,7 @@
                                 <h2>Salida Principal</h2>
                                 <field name="state" readonly="1"/>
                                 <field name="product_id" readonly="1"/>
-                                <field name="productors" domain="[('supplier','=',True),('is_company','=',True)]"/>
+
                                 <field name="final_lot_id"
                                        readonly="1"
                                        attrs="{'invisible':[('state', '=', 'done')]}"

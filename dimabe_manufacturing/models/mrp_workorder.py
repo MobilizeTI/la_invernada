@@ -34,7 +34,7 @@ class MrpWorkorder(models.Model):
 
     confirmed_serial = fields.Char('Ingrese Codigo de Barra')
 
-    productors = fields.Many2one('res.partner')
+
 
     @api.multi
     def _compute_potential_lot_planned_ids(self):

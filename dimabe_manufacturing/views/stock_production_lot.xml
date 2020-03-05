@@ -6,6 +6,7 @@
     <field name="arch" type="xml">
       <group name="main_group" position="inside">
         <field name="is_prd_lot" invisible="1"/>
+
         <field name="is_standard_weight" widget="boolean_toggle"
                attrs="{'invisible':[('is_prd_lot','=',False)]}"
         />
@@ -13,6 +14,7 @@
         <field name="standard_weight"
                attrs="{'invisible':[('is_standard_weight','=',False)]}"
         />
+        <field name="productors" domain="[('supplier','=',True),('is_company','=',True)]"/>
         <field name="qty_standard_serial"
                attrs="{'invisible':[('is_standard_weight','=',False)]}"
         />
