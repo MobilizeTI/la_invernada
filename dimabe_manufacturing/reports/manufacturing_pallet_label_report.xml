@@ -3,66 +3,65 @@
     <t t-call="web.html_container">
       <div class="page">
         <t t-foreach="docs" t-as="o">
-          <t t-foreach="o.used_lot_ids" t-as="lot">
-            <table style="text-align:left;">
-              <tr>
-                <th style="text-align:center;">
-                  <h2>PALLET</h2>
-                </th>
-                <td style="text-align: right !important;">
-                  <h2>
-                    <span t-field="o.name"
-                          style="border-left: solid 1px;border-bottom: solid 1px;padding:2px !important;"/>
-                  </h2>
-                </td>
-              </tr>
-              <tr>
-                <th colspan="2">
-                  <span t-field="o.product_id.name"/>
-                </th>
-              </tr>
-              <tr>
-                <th colspan="2">Productor:
-                  <span t-field="o.producer_id.name"/>
-                </th>
-              </tr>
-              <tr>
-                <th>Nro CSG:</th>
-                <td>:
-                  <span t-field="o.sag_number"/>
-                </td>
-              </tr>
-              <tr>
-                <th>Nro Pedido:</th>
-                <td>
-                  <span t-esc="o.lot_serial_ids.production_id.sale_id.name"/>
-                </td>
-              </tr>
-              <tr>
-                <th>Cant.:Unidades:</th>
-                <td>:
-                  <span t-field="o.total_content"/>
-                </td>
-              </tr>
-              <tr>
-                <th colspan="2">
-                  <span t-field="o.create_date"/>
-                </th>
-              </tr>
-              <tr>
-                <td colspan="2" style="text-align:center !important;">
-                  <br/>
-                  <img
-                    t-att-src="'%s/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % (o.get_full_url(), 'Code128',o.name,550, 70)"
-                  />
-                  <span t-field="o.name"/>
-                </td>
-              </tr>
-            </table>
 
-            <p style="page-break-after:always;"></p>
+          <table style="text-align:left;">
+            <tr>
+              <th style="text-align:center;">
+                <h2>PALLET</h2>
+              </th>
+              <td style="text-align: right !important;">
+                <h2>
+                  <span t-field="o.name"
+                        style="border-left: solid 1px;border-bottom: solid 1px;padding:2px !important;"/>
+                </h2>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2">
+                <span t-field="o.product_id.name"/>
+              </th>
+            </tr>
+            <tr>
+              <th colspan="2">Productor:
+                <span t-field="o.producer_id.name"/>
+              </th>
+            </tr>
+            <tr>
+              <th>Nro CSG:</th>
+              <td>:
+                <span t-field="o.sag_number"/>
+              </td>
+            </tr>
+            <tr>
+              <th>Nro Pedido:</th>
+              <td>
+                <span t-esc="o.lot_serial_ids.production_id.sale_id.name"/>
+              </td>
+            </tr>
+            <tr>
+              <th>Cant.:Unidades:</th>
+              <td>:
+                <span t-field="o.total_content"/>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2">
+                <span t-field="o.create_date"/>
+              </th>
+            </tr>
+            <tr>
+              <td colspan="2" style="text-align:center !important;">
+                <br/>
+                <img
+                  t-att-src="'%s/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % (o.get_full_url(), 'Code128',o.name,550, 70)"
+                />
+                <span t-field="o.name"/>
+              </td>
+            </tr>
+          </table>
 
-          </t>
+          <p style="page-break-after:always;"></p>
+
         </t>
       </div>
     </t>
