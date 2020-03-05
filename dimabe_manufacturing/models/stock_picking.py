@@ -127,9 +127,9 @@ class StockPicking(models.Model):
         custom_serial = self.validate_barcode(barcode)
         res = super(StockPicking, self).on_barcode_scanned(barcode)
         stock_move = self.move_lines.filtered(
-            lambda a: a.product_id == custom_serial.product_id
+            lambda a: a.name == custom_serial.product_id.name
         )
-        raise models.ValidationError(custom_serial.stock_production_lot_id.product_id.name)
+        raise models.ValidationError(stock_move.name)
         stock_quant = custom_serial.stock_production_lot_id.get_stock_quant()
 
         stock_quant.sudo().update({
