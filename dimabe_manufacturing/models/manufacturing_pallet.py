@@ -19,12 +19,19 @@ class ManufacturingPallet(models.Model):
     producer_id = fields.Many2one(
         'res.partner',
         'Productor',
-        domain=[('supplier', '=', True)]
+        domain=[('supplier', '=', True)],
+        states={'close': [('readonly', True)], 'open': [('readonly', False)]}
     )
 
-    add_manual_code = fields.Boolean('Agregar Código Manualmente')
+    add_manual_code = fields.Boolean(
+        'Agregar Código Manualmente',
+        states={'close': [('invisible', True)], 'open': [('invisible', False)]}
+    )
 
-    manual_code = fields.Char('Código Manual')
+    manual_code = fields.Char(
+        'Código Manual',
+        states={'close': [('invisible', True)], 'open': [('invisible', False)]}
+    )
 
     sag_code = fields.Char(
         related='producer_id.sag_code'
@@ -32,7 +39,8 @@ class ManufacturingPallet(models.Model):
 
     lot_serial_ids = fields.One2many(
         'stock.production.lot.serial',
-        'pallet_id'
+        'pallet_id',
+        states={'close': [('readonly', True)], 'open': [('readonly', False)]}
     )
 
     lot_available_serial_ids = fields.One2many(
@@ -82,6 +90,20 @@ class ManufacturingPallet(models.Model):
     def add_code(self):
         for item in self:
             item.on_barcode_scanned(item.manual_code)
+
+    @api.multi
+    def close_pallet(self):
+        for item in self:
+            item.set_state('close')
+
+    @api.multi
+    def open_pallet(self):
+        for item in self:
+            item.set_state('open')
+
+    @api.model
+    def set_state(self, state):
+        self.state = state
 
     def on_barcode_scanned(self, barcode):
 
