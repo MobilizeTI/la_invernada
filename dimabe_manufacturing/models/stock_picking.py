@@ -118,14 +118,12 @@ class StockPicking(models.Model):
         return super(StockPicking, self).button_validate()
 
     def validate_barcode(self, barcode):
-        custom_serial = self.potential_serial_planned_ids.filtered(
+        custom_serial = self.packing_list_ids.filtered(
             lambda a: a.serial_number == barcode
         )
         if custom_serial:
-            if custom_serial.consumed:
-                raise models.ValidationError('este código ya ha sido consumido')
             return custom_serial
-        self.validate_lot_code(barcode)
+        self.validate_barcode(barcode)
 
         return custom_serial
 
