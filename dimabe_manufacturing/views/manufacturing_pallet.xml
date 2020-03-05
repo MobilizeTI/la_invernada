@@ -23,6 +23,9 @@
             <field name="manual_code"
                    attrs="{'invisible':[('add_manual_code','=',False)]}"
             />
+            <button string="Agregar" name="add_code"
+                    attrs="{'invisible':[('add_manual_code','=',False)]}"
+            />
             <field name="lot_serial_ids" readonly="1">
               <tree>
                 <field name="stock_production_lot_id"/>
