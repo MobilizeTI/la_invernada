@@ -89,5 +89,3 @@ class ManufacturingPallet(models.Model):
         serial_id.write({
             'pallet_id': self.id
         })
-
-        raise models.ValidationError('{} {}'.format(serial_id, serial_id.pallet_id))
