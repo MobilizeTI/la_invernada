@@ -74,7 +74,6 @@ class ManufacturingPallet(models.Model):
     @api.multi
     def add_code(self):
         for item in self:
-            raise models.ValidationError(item.manual_code)
             item.on_barcode_scanned(item.manual_code)
 
     def on_barcode_scanned(self, barcode):
