@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, _
 from datetime import datetime
 from ..helpers import date_helper
 
@@ -92,7 +92,7 @@ class OvenUse(models.Model):
                 if lot.reception_state != 'done':
                     raise models.ValidationError(
                         'la recepción del lote {} se encuentra en stado {}. '
-                        'Primero debe terminar el proceso de recepción'.format(lot.name, lot.reception_state))
+                        'Primero debe terminar el proceso de recepción'.format(lot.name, _(lot.reception_state)))
             item.finish_date = datetime.utcnow()
             if item.finish_active_time == 0:
                 item.finish_active_time = item.finish_date.timestamp()

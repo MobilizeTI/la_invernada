@@ -37,12 +37,14 @@ class UnpelledDried(models.Model):
     producer_id = fields.Many2one(
         'res.partner',
         'Productor',
+        required=True,
         domain=[('supplier', '=', True)]
     )
 
     product_in_id = fields.Many2one(
         'product.product',
         'Producto a ingresar',
+        required=True,
         domain=[('categ_id.name', 'ilike', 'verde')]
     )
 
