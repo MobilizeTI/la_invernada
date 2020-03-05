@@ -24,7 +24,9 @@
             <field name="lot_serial_ids"/>
             <field name="total_content"/>
           </group>
-          <group></group>
+          <group>
+            <field name="_barcode_scanned" widget="barcode_handler"/>
+          </group>
         </group>
       </form>
     </field>

@@ -4,6 +4,7 @@ from odoo import api, models, fields
 class ManufacturingPallet(models.Model):
     _name = 'manufacturing.pallet'
     _description = 'clase para paletizaje de series de lote'
+    _inherit = ['barcodes.barcode_events_mixin']
 
     name = fields.Char('Pallet')
 
@@ -64,4 +65,8 @@ class ManufacturingPallet(models.Model):
     def _compute_total_available_content(self):
         for item in self:
             item.total_available_content = len(item.lot_available_serial_ids)
+
+    def on_barcode_scanned(self, barcode):
+        raise models.ValidationError(barcode)
+
 
