@@ -153,7 +153,7 @@ class MrpWorkorder(models.Model):
         for item in self:
             for s in item.potential_serial_planned_ids:
                 if s.serial_number == item.confirmed_serial:
-                    if s.is_consumed == True:
+                    if s.consumed == True:
                         raise models.ValidationError('Este codigo ya fue consumido')
                     s.update({
                         'consumed': True
@@ -161,18 +161,14 @@ class MrpWorkorder(models.Model):
         self._compute_potential_lot_planned_ids()
 
     def on_barcode_scanned(self, barcode):
-
         qty_done = self.qty_done
-
         custom_serial = self.validate_serial_code(barcode)
         if custom_serial:
             barcode = custom_serial.stock_production_lot_id.name
-
         res = super(MrpWorkorder, self).on_barcode_scanned(barcode)
         if res:
             return res
         self.qty_done = qty_done + custom_serial.display_weight
-
         custom_serial.update({
             'consumed': True
         })
@@ -184,7 +180,6 @@ class MrpWorkorder(models.Model):
         return self.finished_product_check_ids.filtered(
             lambda a: a.lot_id == self.lot_id and a.component_is_byproduct
         )
-
 
     def validate_lot_code(self, lot_code):
         if not self.lot_is_byproduct():
