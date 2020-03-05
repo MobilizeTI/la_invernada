@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-import os
+
 
 
 class StockMove(models.Model):
@@ -35,7 +35,7 @@ class StockMove(models.Model):
                 item.product_name = product.name
                 for attribute in product.attribute_value_ids:
                     if attribute.attribute_id.name == 'Variedad':
-                        item.variety = os.name
+                        item.variety = attribute.name
                     if attribute.attribute_id.name == 'Marca':
                         item.brand = attribute.name
                     if attribute.attribute_id.name == 'Tipo de envase':

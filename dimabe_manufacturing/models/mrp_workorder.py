@@ -61,6 +61,7 @@ class MrpWorkorder(models.Model):
     def _compute_summary_out_serial_ids(self):
         for item in self:
             if item.final_lot_id:
+                models._logger.error(item.final_lot_id)
                 item.summary_out_serial_ids = item.final_lot_id.stock_production_lot_serial_ids
                 if item.byproduct_move_line_ids:
                     item.summary_out_serial_ids += item.byproduct_move_line_ids.mapped(
@@ -110,6 +111,7 @@ class MrpWorkorder(models.Model):
             if item.active_move_line_ids and \
                     not item.active_move_line_ids.filtered(lambda a: a.is_raw):
                 for move_line in item.active_move_line_ids:
+                    models._logger.error(move_line)
                     move_line.update({
                         'is_raw': True
                     })
