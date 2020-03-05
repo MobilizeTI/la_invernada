@@ -119,5 +119,4 @@ class StockPicking(models.Model):
 
 
     def on_barcode_scanner(self,barcode):
-        custom_serial = barcode
         models._logger.error(barcode)
