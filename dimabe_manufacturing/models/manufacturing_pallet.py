@@ -47,6 +47,14 @@ class ManufacturingPallet(models.Model):
         store=True
     )
 
+    @api.model
+    def create(self, values_list):
+        res = super(ManufacturingPallet, self).create(values_list)
+
+        res.name = self.env['ir.sequence'].next_by_code('manufacturing.pallet')
+
+        return res
+
     @api.multi
     @api.depends('lot_serial_ids')
     def _compute_total_content(self):
