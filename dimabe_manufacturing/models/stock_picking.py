@@ -136,7 +136,7 @@ class StockPicking(models.Model):
                 'reserved_quantity': stock_quant.reserved_quantity + custom_serial.display_weight
             })
 
-            move_line = self.env['stock.move.line'].update({
+            move_line = self.env['stock.move.line'].create({
                 'product_id': custom_serial.stock_production_lot_id.product_id.id,
                 'lot_id': custom_serial.stock_production_lot_id.id,
                 'qty_done': custom_serial.display_weight,
