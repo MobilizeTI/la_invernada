@@ -16,7 +16,14 @@ class StockProductionLot(models.Model):
         search='_search_reception_guide_number'
     )
 
-    reception_state = fields.Char(
+    reception_state = fields.Char([
+        ('draft', 'Draft'),
+        ('waiting', 'Waiting Another Operation'),
+        ('confirmed', 'Waiting'),
+        ('assigned', 'Ready'),
+        ('done', 'Done'),
+        ('cancel', 'Cancelled'),
+    ],
         string='Estado de la reecepción',
         compute='_compute_reception_data',
         search='_search_reception_state'
@@ -57,6 +64,7 @@ class StockProductionLot(models.Model):
             ('partner_id', operator, value),
             ('picking_type_code', '=', 'incoming')
         ])
+        models._logger.error(stock_picking_ids)
         return [('name', 'in', stock_picking_ids.mapped('name'))]
 
     @api.multi
@@ -68,7 +76,6 @@ class StockProductionLot(models.Model):
         return [('name', 'in', stock_picking_ids.mapped('name'))]
 
     def _search_reception_state(self, operator, value):
-        models._logger.error(self)
         stock_picking_ids = self.env['stock.picking'].search([
             ('state', operator, value)
         ])

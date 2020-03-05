@@ -125,6 +125,7 @@ class StockPicking(models.Model):
         if self.is_mp_reception:
             if self.canning_weight:
                 self.net_weight = self.net_weight - self.canning_weight
+
     @api.one
     @api.depends('move_ids_without_package')
     def _compute_weight_guide(self):
