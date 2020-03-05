@@ -134,7 +134,6 @@ class StockPicking(models.Model):
         stock_quant.sudo().update({
             'reserved_quantity': stock_quant.reserved_quantity + custom_serial.display_weight
         })
-
         raise models.ValidationError(stock_move.id)
 
         move_line = self.env['stock.move.line'].create({
