@@ -155,7 +155,7 @@ class MrpWorkorder(models.Model):
     def confirmed_serial_keyboard(self):
         for item in self:
             for s in item.potential_serial_planned_ids:
-                if s.serial == item.confirmed_serial:
+                if s.serial_number == item.confirmed_serial:
                     s.update({
                         'consumed': True
                     })
