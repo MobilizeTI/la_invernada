@@ -129,7 +129,6 @@ class StockPicking(models.Model):
             stock_move = self.move_ids_without_package.filtered(
                 lambda a: a.product_id == custom_serial.stock_production_lot_id.product_id
             )
-
             for move in stock_move.move_line_ids:
                 if move.qty_done == 0:
                     move.update(
@@ -138,22 +137,4 @@ class StockPicking(models.Model):
                         }
                     )
                     break
-            stock_quant = custom_serial.stock_production_lot_id.get_stock_quant()
 
-            stock_quant.sudo().update({
-                'reserved_quantity': stock_quant.reserved_quantity + custom_serial.display_weight
-            })
-
-
-
-            stock_move.sudo().update({
-                'move_line_ids': [
-                    (4, move_line.id)
-                ]
-            })
-
-            item.update({
-                'move_line_ids': [
-                    (4, move_line.id)
-                ]
-            })
