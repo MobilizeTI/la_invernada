@@ -130,6 +130,7 @@ class StockPicking(models.Model):
             stock_move = item.move_lines.filtered(
                 lambda a: a.product_id == custom_serial.stock_production_lot_id.product_id
             )
+            models._logger.error(stock_move.id)
             stock_quant = custom_serial.stock_production_lot_id.get_stock_quant()
 
             stock_quant.sudo().update({
