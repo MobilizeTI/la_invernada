@@ -205,3 +205,11 @@ class MrpWorkorder(models.Model):
             'res_id': self.id,
             'target': 'fullscreen'
         }
+
+    def create_pallet(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'manufacturing.pallet',
+            'views': [[self.env.ref('dimabe_manufacturing.manufacturing_pallet_form_view').id, 'form']],
+            'target': 'fullscreen'
+        }
