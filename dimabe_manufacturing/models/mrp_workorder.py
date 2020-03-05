@@ -155,6 +155,7 @@ class MrpWorkorder(models.Model):
     def confirmed_serial_keyboard(self):
         for item in self:
             for s in item.potential_serial_planned_ids:
+                models._logger.error(s.serial_number)
                 if s.serial_number == item.confirmed_serial:
                     if s.consumed == True:
                         raise models.ValidationError('Este codigo ya fue consumido')
@@ -163,7 +164,7 @@ class MrpWorkorder(models.Model):
                     })
                 if s.serial_number != item.confirmed_serial:
                     models._logger.error('item.confirmed_serial : {}'.format(item.confirmed_serial))
-                    models._logger.error('s.serial_number : {}'.format(s.serial_number) )
+                    models._logger.error('s.serial_number : {}'.format(s.serial_number))
                     raise models.ValidationError("Este codigo no esta en las series")
         self._compute_potential_lot_planned_ids()
 
