@@ -118,8 +118,9 @@ class StockPicking(models.Model):
         return super(StockPicking, self).button_validate()
 
     def validate_barcode(self, barcode):
+        serial = barcode
         custom_serial = self.packing_list_ids.filtered(
-            lambda a: a.serial_number == barcode
+            lambda a: a.serial_number == serial
         )
         if custom_serial:
             return custom_serial
