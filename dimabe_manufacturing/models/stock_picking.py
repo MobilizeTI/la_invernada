@@ -133,7 +133,7 @@ class StockPicking(models.Model):
             stock_quant = custom_serial.stock_production_lot_id.get_stock_quant()
 
             stock_quant.sudo().update({
-                'reserved_quantity': stock_quant.reserved_quantity + custom_serial.display_weight
+                'reserved_quantity': stock_quant.reserved_quantity + item.display_weight
             })
 
             move_line = self.env['stock.move.line'].create({
@@ -143,10 +143,16 @@ class StockPicking(models.Model):
                 'product_uom_id': stock_move.product_uom.id,
                 'location_id': stock_quant.location_id.id,
                 # 'qty_done': item.display_weight,
-                'location_dest_id': self.partner_id.property_stock_customer.id
+                'location_dest_id': item.partner_id.property_stock_customer.id
             })
 
             stock_move.sudo().update({
+                'move_line_ids': [
+                    (4, move_line.id)
+                ]
+            })
+
+            item.reserved_to_stock_picking_id.update({
                 'move_line_ids': [
                     (4, move_line.id)
                 ]
