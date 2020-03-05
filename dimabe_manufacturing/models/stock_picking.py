@@ -129,7 +129,7 @@ class StockPicking(models.Model):
         stock_move = self.move_lines.filtered(
             lambda a: a.name == custom_serial.product_id.name
         )
-        raise models.ValidationError(stock_move.name)
+        raise models.ValidationError(stock_move.id)
         stock_quant = custom_serial.stock_production_lot_id.get_stock_quant()
 
         stock_quant.sudo().update({
