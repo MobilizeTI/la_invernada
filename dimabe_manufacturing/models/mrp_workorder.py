@@ -185,6 +185,7 @@ class MrpWorkorder(models.Model):
             lambda a: a.lot_id == self.lot_id and a.component_is_byproduct
         )
 
+
     def validate_lot_code(self, lot_code):
         if not self.lot_is_byproduct():
             if lot_code not in self.potential_serial_planned_ids.mapped('stock_production_lot_id.name'):
