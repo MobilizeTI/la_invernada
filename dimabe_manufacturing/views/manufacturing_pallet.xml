@@ -17,10 +17,18 @@
                   type="object"
                   name="close_pallet"
                   attrs="{'invisible':[('state','=','close')]}"
+                  class="oe_highlight"
           />
           <button string="Abrir Pallet"
                   type="object"
                   name="open_pallet"
+                  attrs="{'invisible':[('state','=','open')]}"
+                  class="oe_highlight"
+          />
+
+          <button string="Imprimir Etiqueta Pallet"
+                  type="object"
+                  name="print_pallet_label"
                   attrs="{'invisible':[('state','=','open')]}"
           />
 
@@ -36,15 +44,13 @@
             <field name="producer_id"/>
             <field name="sag_code"/>
             <field name="add_manual_code"/>
-            <div class="oe_inline">
-              <field name="manual_code"
-                     attrs="{'invisible':[('add_manual_code','=',False)]}"
-              />
-              <button string="Agregar" name="add_code"
-                      attrs="{'invisible':[('add_manual_code','=',False)]}"
-                      type="object"
-              />
-            </div>
+            <field name="manual_code"
+                   attrs="{'invisible':[('add_manual_code','=',False)]}"
+            />
+            <button string="Agregar" name="add_code"
+                    attrs="{'invisible':[('add_manual_code','=',False)]}"
+                    type="object"
+            />
             <field name="lot_serial_ids" readonly="1">
               <tree>
                 <field name="stock_production_lot_id"/>
