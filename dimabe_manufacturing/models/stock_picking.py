@@ -124,29 +124,31 @@ class StockPicking(models.Model):
         return custom_serial
 
     def on_barcode_scanned(self, barcode):
-        custom_serial = self.validate_barcode(barcode)
-        res = super(StockPicking, self).on_barcode_scanned(barcode)
-        stock_move = self.env['stock.move'].search(['picking_id', '=', self.id])
-        raise models.ValidationError('stock_move = self.move_lines.filtered(lambda a: a.product_id == {}    {}'.format(
-            custom_serial.stock_production_lot_id.product_id.name, stock_move))
-        stock_quant = custom_serial.stock_production_lot_id.get_stock_quant()
+        for item in self:
+            custom_serial = item.validate_barcode(barcode)
+            res = super(StockPicking, item).on_barcode_scanned(barcode)
+            stock_move = self.env['stock.move'].search(['picking_id.id', '=', item.id])
+            raise models.ValidationError(
+                'stock_move = self.move_lines.filtered(lambda a: a.product_id == {}    {}'.format(
+                    custom_serial.stock_production_lot_id.product_id.name, stock_move))
+            stock_quant = custom_serial.stock_production_lot_id.get_stock_quant()
 
-        stock_quant.sudo().update({
-            'reserved_quantity': stock_quant.reserved_quantity + custom_serial.display_weight
-        })
+            stock_quant.sudo().update({
+                'reserved_quantity': stock_quant.reserved_quantity + custom_serial.display_weight
+            })
 
-        move_line = self.env['stock.move.line'].create({
-            'product_id': custom_serial.stock_production_lot_id.product_id.id,
-            'lot_id': custom_serial.stock_production_lot_id.id,
-            'qty_done': custom_serial.display_weight,
-            'product_uom_id': stock_move.product_uom,
-            'location_id': stock_quant.location_id.id,
-            # 'qty_done': item.display_weight,
-            'location_dest_id': self.partner_id.property_stock_customer.id
-        })
+            move_line = self.env['stock.move.line'].create({
+                'product_id': custom_serial.stock_production_lot_id.product_id.id,
+                'lot_id': custom_serial.stock_production_lot_id.id,
+                'qty_done': custom_serial.display_weight,
+                'product_uom_id': stock_move.product_uom,
+                'location_id': stock_quant.location_id.id,
+                # 'qty_done': item.display_weight,
+                'location_dest_id': self.partner_id.property_stock_customer.id
+            })
 
-        stock_move.sudo().update({
-            'move_line_ids': [
-                (4, move_line.id)
-            ]
-        })
+            stock_move.sudo().update({
+                'move_line_ids': [
+                    (4, move_line.id)
+                ]
+            })
