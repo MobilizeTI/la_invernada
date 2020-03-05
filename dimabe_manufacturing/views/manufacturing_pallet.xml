@@ -21,7 +21,14 @@
             <field name="product_id"/>
             <field name="producer_id"/>
             <field name="sag_code"/>
-            <field name="lot_serial_ids" widget="many2many"/>
+            <field name="lot_serial_ids" widget="many2many">
+              <tree>
+                <field name="stock_production_lot_id"/>
+                <field name="stock_product_id"/>
+                <field name="serial_number"/>
+                <field name="display_weight"/>
+              </tree>
+            </field>
             <field name="total_content"/>
           </group>
           <group>
