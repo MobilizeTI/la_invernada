@@ -135,6 +135,12 @@ class ManufacturingPallet(models.Model):
     def set_state(self, state):
         self.state = state
 
+    @api.multi
+    def get_full_url(self):
+        self.ensure_one()
+        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+        return base_url
+
     def on_barcode_scanned(self, barcode):
 
         serial_id = self.env['stock.production.lot.serial'].search([

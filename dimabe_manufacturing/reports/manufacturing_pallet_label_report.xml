@@ -6,52 +6,62 @@
           <t t-foreach="o.used_lot_ids" t-as="lot">
             <table style="text-align:left;">
               <tr>
-                <th style="text-align:center;"><h2>PALLET</h2></th>
+                <th style="text-align:center;">
+                  <h2>PALLET</h2>
+                </th>
                 <td style="text-align: right !important;">
                   <h2>
                     <span t-field="o.name"
-                        style="border-left: solid 1px;border-bottom: solid 1px;padding:2px !important;" />
+                          style="border-left: solid 1px;border-bottom: solid 1px;padding:2px !important;"/>
                   </h2>
                 </td>
               </tr>
               <tr>
                 <th colspan="2">
-                  <span t-esc="lot.reception_guide_number"/>
+                  <span t-field="o.product_id.name"/>
                 </th>
               </tr>
               <tr>
-                <th>Productor:</th>
-                <td>: <span t-field="lot.producer_id.name"/></td>
+                <th colspan="2">Productor:
+                  <span t-field="o.producer_id.name"/>
+                </th>
               </tr>
               <tr>
-                <th>Variedad:</th>
-                <td>: <span t-esc="lot.product_id.get_variety()"/></td>
+                <th>Nro CSG:</th>
+                <td>:
+                  <span t-field="o.sag_number"/>
+                </td>
               </tr>
               <tr>
-                <th>N° Lote:</th>
-                <td>: <span t-field="lot.name"/></td>
+                <th>Nro Pedido:</th>
+                <td>
+                  <span t-esc="o.lot_serial_ids.production_id.sale_id.name"/>
+                </td>
               </tr>
               <tr>
-                <th>Fecha recepción / hr:</th>
-                <td>: <span t-field="lot.create_date"/></td>
+                <th>Cant.:Unidades:</th>
+                <td>:
+                  <span t-field="o.total_content"/>
+                </td>
               </tr>
               <tr>
-                <th>Fecha en cajón:</th>
-                <td>: <span t-field="o.init_date"/></td>
+                <th colspan="2">
+                  <span t-field="o.create_date"/>
+                </th>
               </tr>
               <tr>
                 <td colspan="2" style="text-align:center !important;">
                   <br/>
                   <img
-                    t-att-src="'%s/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % (o.get_full_url(), 'Code128',lot.name,550, 70)"
+                    t-att-src="'%s/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % (o.get_full_url(), 'Code128',o.name,550, 70)"
                   />
-                  <span t-field="lot.name"/>
+                  <span t-field="o.name"/>
                 </td>
               </tr>
             </table>
-            <t t-if="lot.id != o.used_lot_ids[len(o.used_lot_ids) - 1].id">
-              <p style="page-break-after:always;"></p>
-            </t>
+
+            <p style="page-break-after:always;"></p>
+
           </t>
         </t>
       </div>
