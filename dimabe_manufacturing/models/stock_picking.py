@@ -130,8 +130,6 @@ class StockPicking(models.Model):
             for move in item.move_lines:
                 if move.product_id.id == custom_serial.stock_production_lot_id.product_id.id:
                     raise models.ValidationError(move.id)
-
-            models._logger.error(stock_move.id)
             stock_quant = custom_serial.stock_production_lot_id.get_stock_quant()
 
             stock_quant.sudo().update({
