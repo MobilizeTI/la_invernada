@@ -24,8 +24,7 @@ class ManufacturingPallet(models.Model):
 
     lot_serial_ids = fields.One2many(
         'stock.production.lot.serial',
-        'pallet_id',
-        domain=[('pallet_id', '=', False)]
+        'pallet_id'
     )
 
     lot_available_serial_ids = fields.One2many(

@@ -20,13 +20,15 @@
             <field name="producer_id"/>
             <field name="sag_code"/>
             <field name="add_manual_code"/>
-            <field name="manual_code"
-                   attrs="{'invisible':[('add_manual_code','=',False)]}"
-            />
-            <button string="Agregar" name="add_code"
-                    attrs="{'invisible':[('add_manual_code','=',False)]}"
-                    type="object"
-            />
+            <div class="oe_inline">
+              <field name="manual_code"
+                     attrs="{'invisible':[('add_manual_code','=',False)]}"
+              />
+              <button string="Agregar" name="add_code"
+                      attrs="{'invisible':[('add_manual_code','=',False)]}"
+                      type="object"
+              />
+            </div>
             <field name="lot_serial_ids" readonly="1">
               <tree>
                 <field name="stock_production_lot_id"/>
@@ -41,7 +43,7 @@
 
           </group>
         </group>
-         <field name="_barcode_scanned" widget="barcode_handler"/>
+        <field name="_barcode_scanned" widget="barcode_handler"/>
       </form>
     </field>
   </record>
