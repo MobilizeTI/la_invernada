@@ -60,6 +60,7 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_summary_out_serial_ids(self):
         for item in self:
+            models._logger.error(item.final_lot_id)
             if item.final_lot_id:
                 models._logger.error(item.final_lot_id)
                 item.summary_out_serial_ids = item.final_lot_id.stock_production_lot_serial_ids
