@@ -126,13 +126,12 @@ class StockPicking(models.Model):
     def on_barcode_scanned(self, barcode):
         for item in self:
             custom_serial = item.validate_barcode(barcode)
-            move_id = 0
             stock_move = self.move_ids_without_package.filtered(
                 lambda a: a.product_id == custom_serial.stock_production_lot_id.product_id
             )
 
             for move in stock_move.move_line_ids:
-                if move_id.qty_done == 0:
+                if move.qty_done == 0:
                     move.update(
                         {
                             'qty_done': custom_serial.display_weight
