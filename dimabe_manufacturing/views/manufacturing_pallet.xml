@@ -51,7 +51,7 @@
                     attrs="{'invisible':['|',('add_manual_code','=',False),('state','=','close')]}"
                     type="object"
             />
-            <field name="lot_serial_ids">
+            <field name="lot_serial_ids" widget="many2many">
               <tree create="false" edit="false" delete="true">
                 <field name="stock_production_lot_id"/>
                 <field name="stock_product_id"/>
