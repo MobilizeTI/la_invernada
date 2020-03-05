@@ -159,9 +159,10 @@ class MrpWorkorder(models.Model):
                 if s.serial_number == item.confirmed_serial:
                     if s.consumed == True:
                         raise models.ValidationError('Este codigo ya fue consumido')
-                    s.update({
-                        'consumed': True
-                    })
+                    if s.consumed != True:
+                        s.update({
+                            'consumed': True
+                        })
                 if s.serial_number != item.confirmed_serial:
                     models._logger.error('item.confirmed_serial : {}'.format(item.confirmed_serial))
                     models._logger.error('s.serial_number : {}'.format(s.serial_number))
