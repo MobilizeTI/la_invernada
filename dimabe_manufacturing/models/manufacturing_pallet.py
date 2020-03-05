@@ -6,6 +6,11 @@ class ManufacturingPallet(models.Model):
     _description = 'clase para paletizaje de series de lote'
     _inherit = ['barcodes.barcode_events_mixin']
 
+    active = fields.Boolean(
+        'Activo',
+        default=True
+    )
+
     state = fields.Selection([
         ('open', 'Abierto'),
         ('close', 'Cerrado')
