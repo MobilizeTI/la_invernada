@@ -28,6 +28,12 @@ class ManufacturingPallet(models.Model):
         states={'close': [('readonly', True)], 'open': [('readonly', False)]}
     )
 
+    product_id = fields.Many2one(
+        'product.product',
+        compute='_compute_product_id',
+        store=True
+    )
+
     add_manual_code = fields.Boolean(
         'Agregar Código Manualmente',
         states={'close': [('invisible', True)], 'open': [('invisible', False)]}
@@ -75,6 +81,19 @@ class ManufacturingPallet(models.Model):
 
     @api.multi
     @api.depends('lot_serial_ids')
+    def _compute_product_id(self):
+        for item in self:
+            counter = 0
+            for serial_id in item.lot_serial_ids:
+                tmp = len(item.lot_serial_ids.filtered(
+                    lambda a: a.stock_product_id == serial_id.stock_product_id
+                ))
+                if counter < tmp:
+                    item.product_id = serial_id.stock_product_id
+                    counter = tmp
+
+    @api.multi
+    @api.depends('lot_serial_ids')
     def _compute_total_content(self):
         for item in self:
             item.total_content = len(item.lot_serial_ids)
@@ -105,6 +124,12 @@ class ManufacturingPallet(models.Model):
     def open_pallet(self):
         for item in self:
             item.set_state('open')
+
+    @api.multi
+    def print_pallet_label(self):
+        for item in self:
+            return self.env.ref('dimabe_manufacturing.action_manufacturing_pallet_label_report') \
+                .report_action(item)
 
     @api.model
     def set_state(self, state):
