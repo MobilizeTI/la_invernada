@@ -127,7 +127,7 @@ class StockPicking(models.Model):
         for item in self:
             custom_serial = item.validate_barcode(barcode)
             res = super(StockPicking, item).on_barcode_scanned(barcode)
-            stock_move = self.env['stock.move'].search(['picking_id.id', '=', item.id])
+            stock_move = self.env['stock.move'].search([('picking_id.id', '=', item.id)])
             raise models.ValidationError(
                 'stock_move = self.move_lines.filtered(lambda a: a.product_id == {}    {}'.format(
                     custom_serial.stock_production_lot_id.product_id.name, stock_move))
