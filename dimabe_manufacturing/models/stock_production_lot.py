@@ -79,7 +79,6 @@ class StockProductionLot(models.Model):
         stock_picking_ids = self.env['stock.picking'].search([
             ('state', operator, value)
         ])
-        models._logger.error(stock_picking_ids.mapped('name'))
         return [('name', 'in', stock_picking_ids.mapped('name'))]
 
     @api.multi

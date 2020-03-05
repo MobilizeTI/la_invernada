@@ -88,6 +88,11 @@ class OvenUse(models.Model):
     @api.multi
     def finish_process(self):
         for item in self:
+            for lot in item.used_lot_ids:
+                if lot.reception_state != 'done':
+                    raise models.ValidationError(
+                        'la recepción del lote {} se encuentra en stado {}. '
+                        'Primero debe terminar el proceso de recepción'.format(lot.name, lot.reception_state))
             item.finish_date = datetime.utcnow()
             if item.finish_active_time == 0:
                 item.finish_active_time = item.finish_date.timestamp()
