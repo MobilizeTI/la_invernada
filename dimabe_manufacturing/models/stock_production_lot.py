@@ -70,8 +70,10 @@ class StockProductionLot(models.Model):
     def _search_reception_state(self, operator, value):
         models._logger.error(self)
         stock_picking_ids = self.env['stock.picking'].search([
-            ('',operator, value)
+            ('state', operator, value)
         ])
+
+        return [('name', 'in', stock_picking_ids.mapped('name'))]
 
     @api.multi
     def _compute_total_serial(self):
