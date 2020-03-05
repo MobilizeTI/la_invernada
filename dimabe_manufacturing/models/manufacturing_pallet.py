@@ -17,8 +17,7 @@ class ManufacturingPallet(models.Model):
     producer_id = fields.Many2one(
         'res.partner',
         'Productor',
-        domain=[('supplier', '=', True)],
-        required=True
+        domain=[('supplier', '=', True)]
     )
 
     sag_code = fields.Char(

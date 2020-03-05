@@ -25,9 +25,10 @@
             <field name="total_content"/>
           </group>
           <group>
-            <field name="_barcode_scanned" widget="barcode_handler"/>
+
           </group>
         </group>
+         <field name="_barcode_scanned" widget="barcode_handler"/>
       </form>
     </field>
   </record>
