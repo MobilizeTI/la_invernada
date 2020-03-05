@@ -150,11 +150,11 @@ class StockPicking(models.Model):
                 'location_dest_id': item.partner_id.property_stock_customer.id
             })
 
-            # stock_move.sudo().update({
-            #     'move_line_ids': [
-            #         (4, move_line.id)
-            #     ]
-            # })
+            stock_move.sudo().update({
+                 'move_line_ids': [
+                     (4, move_line.id)
+                 ]
+             })
 
             item.update({
                 'move_line_ids': [
