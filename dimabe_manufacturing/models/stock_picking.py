@@ -127,6 +127,7 @@ class StockPicking(models.Model):
         for item in self:
             custom_serial = item.validate_barcode(barcode)
             res = super(StockPicking, item).on_barcode_scanned(barcode)
+            move_id = fields.Integer()
             for move in item.move_lines:
                 if move.product_id.id == custom_serial.stock_production_lot_id.product_id.id:
                     raise models.ValidationError(move.id)
