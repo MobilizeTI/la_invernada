@@ -139,7 +139,7 @@ class StockPicking(models.Model):
             'product_id': custom_serial.stock_production_lot_id.product_id.id,
             'lot_id': custom_serial.stock_production_lot_id.id,
             'qty_done': custom_serial.display_weight,
-            'product_uom_id': stock_move.product_uom_id.id,
+            'product_uom_id': stock_move.product_uom,
             'location_id': stock_quant.location_id.id,
             # 'qty_done': item.display_weight,
             'location_dest_id': self.partner_id.property_stock_customer.id
