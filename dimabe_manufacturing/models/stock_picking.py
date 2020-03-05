@@ -132,7 +132,6 @@ class StockPicking(models.Model):
                     move_id = move.id
 
             stock_move = self.env['stock.move'].search([('id', '=', move_id)])
-            raise models.ValidationError(stock_move.id)
             stock_quant = custom_serial.stock_production_lot_id.get_stock_quant()
 
             stock_quant.sudo().update({
@@ -145,7 +144,6 @@ class StockPicking(models.Model):
                 'qty_done': custom_serial.display_weight,
                 'product_uom_id': stock_move.product_uom.id,
                 'location_id': stock_quant.location_id.id,
-                # 'qty_done': item.display_weight,
                 'location_dest_id': item.partner_id.property_stock_customer.id
             })
 
