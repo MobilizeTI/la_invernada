@@ -127,4 +127,4 @@ class StockPicking(models.Model):
     def on_barcode_scanned(self,barcode):
         custom_serial = self.validate_barcode(barcode)
         res = super(StockPicking,self).on_barcode_scanned(barcode)
-        raise models.ValidationError(res)
+        raise models.ValidationError(res.name)
