@@ -40,7 +40,7 @@
 
           </group>
           <group>
-            <div style="position:relative;width:100%;height:100%;min-height:300px;background-color:blue;color:white;">
+            <div style="position:relative;width:100%;height:100%;min-height:300px;background-color:blue;color:white;font-size:200px;text-align:center;">
               <field name="total_content" string=""/>
             </div>
           </group>
