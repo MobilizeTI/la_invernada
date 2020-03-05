@@ -86,6 +86,8 @@ class ManufacturingPallet(models.Model):
         if not serial_id:
             raise models.ValidationError('no se encontró ningún registro asociado a este código')
 
+        raise models.ValidationError('{} {}'.format(self, self.id))
+
         serial_id.update({
             'pallet_id': self.id
         })
