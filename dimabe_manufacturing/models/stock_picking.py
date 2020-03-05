@@ -129,6 +129,7 @@ class StockPicking(models.Model):
 
     def on_barcode_scanned(self,barcode):
         custom_serial = self.validate_barcode(barcode)
+        models._logger.error(barcode)
         if custom_serial:
             barcode = custom_serial.stock_production_lot_id.name
 
