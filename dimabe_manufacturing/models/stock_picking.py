@@ -127,18 +127,17 @@ class StockPicking(models.Model):
         for item in self:
             custom_serial = item.validate_barcode(barcode)
             move_id = 0
-            for move in item.move_ids_without_package:
-                if move.product_id.id == custom_serial.stock_production_lot_id.product_id.id:
-                    move_id = move.id
-
-            stock_move = self.env['stock.move'].search([('id', '=', move_id)])
+            stock_move = self.move_ids_without_package.filtered(
+                lambda a: a.product_id == custom_serial.stock_production_lot_id.product_id
+            )
+            raise models.ValidationError(stock_move.id)
             stock_quant = custom_serial.stock_production_lot_id.get_stock_quant()
 
             stock_quant.sudo().update({
                 'reserved_quantity': stock_quant.reserved_quantity + custom_serial.display_weight
             })
 
-            move_line = self.env['stock.move.line'].create({
+            move_line = self.env['stock.move.line'].update({
                 'product_id': custom_serial.stock_production_lot_id.product_id.id,
                 'lot_id': custom_serial.stock_production_lot_id.id,
                 'qty_done': custom_serial.display_weight,
@@ -148,10 +147,10 @@ class StockPicking(models.Model):
             })
 
             stock_move.sudo().update({
-                 'move_line_ids': [
-                     (4, move_line.id)
-                 ]
-             })
+                'move_line_ids': [
+                    (4, move_line.id)
+                ]
+            })
 
             item.update({
                 'move_line_ids': [
