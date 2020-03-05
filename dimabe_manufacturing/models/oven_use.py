@@ -91,8 +91,8 @@ class OvenUse(models.Model):
             for lot in item.used_lot_ids:
                 if lot.reception_state != 'done':
                     raise models.ValidationError(
-                        'la recepción del lote {} se encuentra en estado {}. '
-                        'Primero debe terminar el proceso de recepción'.format(lot.name, lot.reception_state))
+                        'la recepción del lote {} no se encuentra en estado realizado. '
+                        'Primero termine el proceso de recepción'.format(lot.name))
             item.finish_date = datetime.utcnow()
             if item.finish_active_time == 0:
                 item.finish_active_time = item.finish_date.timestamp()
