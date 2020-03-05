@@ -126,9 +126,8 @@ class StockPicking(models.Model):
     def on_barcode_scanned(self, barcode):
         custom_serial = self.validate_barcode(barcode)
         res = super(StockPicking, self).on_barcode_scanned(barcode)
-        raise models.ValidationError(custom_serial.stock_production_lot_id.product_id.name)
         stock_move = self.move_lines.filtered(
-            lambda a: a.product_id.id == custom_serial.stock_production_lot_id.product_id.id
+            lambda a: a.product_id == custom_serial.stock_production_lot_id.product_id
         )
         stock_quant = custom_serial.stock_production_lot_id.get_stock_quant()
 
