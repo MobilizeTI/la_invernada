@@ -133,7 +133,7 @@ class StockPicking(models.Model):
             )
             for move in stock_move.move_line_ids:
                 if move.qty_done == 0:
-                    move.sudo().update(
+                    move.update(
                         {
                             'qty_done': custom_serial.display_weight
                         }
