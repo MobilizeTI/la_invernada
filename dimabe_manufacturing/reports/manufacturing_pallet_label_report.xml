@@ -29,7 +29,7 @@
             <tr>
               <th>Nro CSG:</th>
               <td>:
-                <span t-field="o.sag_number"/>
+                <span t-field="o.sag_code"/>
               </td>
             </tr>
             <tr>
