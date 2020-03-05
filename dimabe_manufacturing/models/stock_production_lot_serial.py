@@ -38,6 +38,11 @@ class StockProductionLotSerial(models.Model):
 
     consumed = fields.Boolean('Consumido')
 
+    pallet_id = fields.Many2one(
+        'manufacturing.pallet',
+        'Pallet'
+    )
+
     @api.model
     def create(self, values_list):
         res = super(StockProductionLotSerial, self).create(values_list)
