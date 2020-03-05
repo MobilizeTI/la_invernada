@@ -117,46 +117,7 @@ class StockPicking(models.Model):
 
         return super(StockPicking, self).button_validate()
 
-    def validate_barcode(self, barcode):
-        serial = barcode
-        models._logger.error('serial : {} barcode: {}'.format(serial,barcode))
-        custom_serial = self.packing_list_ids.filtered(
-            lambda a: a.serial_number == serial
-        )
-        if custom_serial:
-            return custom_serial
-        self.validate_barcode(barcode)
 
-        return custom_serial
-
-    def on_barcode_scanned(self, barcode):
-        custom_serial = self.validate_barcode(barcode)
-        if custom_serial:
-            barcode = custom_serial.stock_production_lot_id.name
-
-        res = super(StockPicking, self).on_barcode_scanned(barcode)
-        if res:
-            return res
-        stock_move = self.move_lines.filtered(
-            lambda a: a.product_id == custom_serial.stock_production_lot_id.product_id
-        )
-        stock_quant = custom_serial.stock_production_lot_id.get_stock_quant()
-
-        stock_quant.sudo().update({
-            'reserved_quantity': stock_quant.reserved_quantity + custom_serial.display_weight
-        })
-
-        move_line = self.env['stock.move.line'].create({
-            'product_id': custom_serial.stock_production_lot_id.product_id.id,
-            'lot_id': custom_serial.stock_production_lot_id.id,
-            'qty_done': custom_serial.display_weight,
-            'product_uom_id': stock_move.product_uom.id,
-            'location_id': stock_quant.location.id,
-            'location_dest_id': self.partner_id.property_stock_customer.id
-        })
-
-        stock_move.sudo().update({
-            'move_line_ids':[
-                (4,move_line.id)
-            ]
-        })
+    def on_barcode_scanner(self,barcode):
+        custom_serial = barcode
+        models._logger.error(barcode)
