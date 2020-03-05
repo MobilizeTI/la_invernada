@@ -161,7 +161,7 @@ class MrpWorkorder(models.Model):
                     })
                 if 'DELETE' in item.confirmed_serial:
                     s.update({
-                        'consumend':False
+                        'consumed':False
                     })
 
     def on_barcode_scanned(self, barcode):
