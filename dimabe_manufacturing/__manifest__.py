@@ -19,6 +19,7 @@
 
     # any module necessary for this one to work correctly
     'depends': [
+        'barcodes'
         'base',
         'web',
         'dimabe_reception',

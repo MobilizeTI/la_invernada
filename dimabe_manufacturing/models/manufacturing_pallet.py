@@ -74,6 +74,22 @@ class ManufacturingPallet(models.Model):
             item.total_available_content = len(item.lot_available_serial_ids)
 
     def on_barcode_scanned(self, barcode):
-        raise models.ValidationError(barcode)
 
+        serial_id = self.env['stock.production.lot.serial'].search([
+            ('serial_number', '=', barcode),
+            ('pallet_id', '=', False)
+        ])
 
+        if not serial_id:
+            raise models.ValidationError('no se encontró ningún registro asociado a este código')
+
+        if serial_id.stock_product_id.id != self.product_id.id:
+            raise models.ValidationError('el producto del código escaneado ({}) '
+                                         'no corresponde al del pallet ({})'.format(
+                serial_id.stock_product_id.display_name,
+                self.product_id.display_name
+            ))
+
+        serial_id.update({
+            'pallet_id': self.id
+        })
