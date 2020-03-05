@@ -129,7 +129,9 @@ class StockPicking(models.Model):
             res = super(StockPicking, item).on_barcode_scanned(barcode)
             for move in item.move_lines:
                 if move.product_id.id == custom_serial.stock_production_lot_id.product_id.id:
+                    raise models.ValidationError(move.id)
                     stock_move = move
+
             stock_quant = custom_serial.stock_production_lot_id.get_stock_quant()
 
             stock_quant.sudo().update({
