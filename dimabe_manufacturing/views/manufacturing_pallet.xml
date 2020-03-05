@@ -6,4 +6,27 @@
     <field name="padding">5</field>
     <field name="company_id" eval="False"/>
   </record>
+
+  <record id="manufacturing_pallet_form_view" model="ir.ui.view">
+    <field name="name">Formulario de Paletizaje</field>
+    <field name="model">manufacturing.pallet</field>
+    <field name="arch" type="xml">
+      <form>
+        <group>
+          <h1 class="d-none d-md-block">
+            <field name="name" readonly="1" attrs="{'invisible':[('name','=',False)]}"/>
+          </h1>
+          <group>
+
+            <field name="product_id"/>
+            <field name="producer_id"/>
+            <field name="sag_code"/>
+            <field name="lot_serial_ids"/>
+            <field name="total_content"/>
+          </group>
+          <group></group>
+        </group>
+      </form>
+    </field>
+  </record>
 </odoo>
