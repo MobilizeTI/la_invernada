@@ -158,6 +158,8 @@ class MrpWorkorder(models.Model):
                     s.update({
                         'consumed': True
                     })
+                if s.serial_number != item.confirmed_serial:
+                    raise models.ValidationError("Este codigo no esta en las series")
         self._compute_potential_lot_planned_ids()
 
     def on_barcode_scanned(self, barcode):
