@@ -207,6 +207,7 @@ class MrpWorkorder(models.Model):
         }
 
     def create_pallet(self):
+        raise models.ValidationError(self.env.context)
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'manufacturing.pallet',
