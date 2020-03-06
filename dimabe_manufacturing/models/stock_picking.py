@@ -139,7 +139,7 @@ class StockPicking(models.Model):
                 serie = self.env['stock.production.lot.serial'].search(
                     [('serial_number', '=', custom_serial.serial_number),
                      ('stock_production_lot_id.id', '=', stock_quant.lot_id.id)])
-                models._logger.error('serial : {}'.format(seria))
+                models._logger.error('serial : {}'.format(serie))
                 if serie:
                     move.update({
                         'qty_done': custom_serial.display_weight
