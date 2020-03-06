@@ -171,4 +171,4 @@ class ManufacturingPallet(models.Model):
             'pallet_id': self.id
         })
 
-        raise models.ValidationError(serial_id.pallet_id)
+        raise models.ValidationError(self.id)
