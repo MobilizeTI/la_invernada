@@ -139,3 +139,4 @@ class StockPicking(models.Model):
                 custom_serial.update({
                     'consumed': True
                 })
+                break
