@@ -136,7 +136,7 @@ class StockPicking(models.Model):
             )
             if len(move_line) > 1:
                 move_line[0].update({
-                    'qty_done': move_line.qty_done + custom_serial.display_weight
+                    'qty_done': move_line[0].qty_done + custom_serial.display_weight
                 })
             else:
                 move_line.update({
