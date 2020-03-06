@@ -213,21 +213,20 @@ class StockPicking(models.Model):
             if mp_move and mp_move.move_line_ids and mp_move.picking_id \
                     and mp_move.picking_id.picking_type_code == 'incoming':
                 for move_line in mp_move.move_line_ids:
-                    if move_line.product_id.tracking == 'lot':
-                        lot = self.env['stock.production.lot'].create({
-                            'name': stock_picking.name,
-                            'product_id': move_line.product_id.id
+                    lot = self.env['stock.production.lot'].create({
+                        'name': stock_picking.name,
+                        'product_id': move_line.product_id.id
+                    })
+                    if lot:
+                        move_line.update({
+                            'lot_id': lot.id
                         })
-                        if lot:
-                            move_line.update({
-                                'lot_id': lot.id
-                            })
+
                 if mp_move.product_id.tracking == 'lot' and not mp_move.has_serial_generated:
                     for stock_move_line in mp_move.move_line_ids:
                         if mp_move.product_id.categ_id.is_mp:
                             total_qty = mp_move.picking_id.get_canning_move().product_uom_qty
                             calculated_weight = stock_move_line.qty_done / total_qty
-                            raise models.ValidationError('calculated_weight : {}'.format(calculated_weight))
                             if stock_move_line.lot_id:
 
                                 for i in range(int(total_qty)):
