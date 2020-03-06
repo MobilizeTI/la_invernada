@@ -128,15 +128,15 @@ class StockPicking(models.Model):
             custom_serial = item.validate_barcode(barcode)
             if custom_serial.consumed == True:
                 raise models.ValidationError('Serie ya fue usada')
-            stock_move = self.move_ids_without_package.filtered(
+            stock_move = self.move_line_ids_without_package.filtered(
                 lambda a: a.product_id == custom_serial.stock_production_lot_id.product_id
             )
 
-            stock_move.move_line_ids[0].update({
-                'qty_done': stock_move.move_line_ids[0].qty_done + custom_serial.display_weight
-            })
+            stock_move.update{
+                'qty_done':stock_move.qty_done + custom_serial.display_weight
+            }
 
-            custom_serial.update(
+            custom_serial.sudo().update(
                 {
                     'consumed' : True
                 }
