@@ -133,7 +133,10 @@ class StockPicking(models.Model):
             )
 
             for move in stock_move.move_line_ids:
-                if move.lot_name == custom_serial.serial_number:
+                lot = self.env['stock.production.lot'].search([('name', '=', move.lot_name)])
+                serie = self.env['stock.production.serial'].search(
+                    [('serial_number', '=', custom_serial.number), ('stock_production_lot_id', '=', lot.id)])
+                if serie:
                     move.update({
                         'qty_done': custom_serial.display_weight
                     })
