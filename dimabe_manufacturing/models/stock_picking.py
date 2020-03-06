@@ -126,6 +126,10 @@ class StockPicking(models.Model):
             raise models.ValidationError('Esta serie no esta en packing list')
         return custom_serial
 
+    @api.onchange('_barcode_scanned')
+    def lala(self):
+        raise models.ValidationError('lala')
+
     def on_barcode_scanned(self, barcode):
 
         raise models.ValidationError(barcode)
