@@ -8,11 +8,14 @@
             <button name="action_assign" position="replace"/>
             <button name="do_unreserve" position="replace"/>
 
+            <field name="origin" position="after">
+                <field name="_barcode_scanned" widget="barcode_handler"/>
+            </field>
+
             <page name="note" position="after">
                 <page name="packing_list" string="Packing List"
                       attrs="{'invisible':['|',('state','=','cancel'),('picking_type_code', '!=', 'outgoing')]}"
                 >
-                    <field name="_barcode_scanned" widget="barcode_handler"/>
                     <group>
                         <field name="state" invisible="1"/>
                         <field name="packing_list_ids">
