@@ -25,7 +25,7 @@
                                         type="object"
                                         name="unreserved_picking"
                                         groups="mrp.group_mrp_manager"
-                                        attrs="{'invisible':['|',('parent.state','=','done'),('validate','=',True)]}"
+                                        attrs="{'invisible':['|',('parent.state','=','done'),('consumed','=',True)]}"
 
                                 />
                             </tree>
