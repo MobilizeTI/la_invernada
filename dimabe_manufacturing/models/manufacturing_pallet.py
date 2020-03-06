@@ -167,12 +167,8 @@ class ManufacturingPallet(models.Model):
                 serial_id.pallet_id.name
             ))
 
-        self.write({
-            'lot_serial_ids': [(4, serial_id.id)]
+        serial_id.write({
+            'pallet_id': self._origin.id
         })
-
-        # serial_id.write({
-        #     'pallet_id': self.id
-        # })
 
         raise models.ValidationError(self._origin.id)
