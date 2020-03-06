@@ -139,7 +139,7 @@ class StockProductionLotSerial(models.Model):
                                 'product_id': item.stock_production_lot_id.product_id.id,
                                 'lot_id': item.stock_production_lot_id.id,
                                 'product_uom_qty': item.display_weight,
-                                'product_uom_id': stock_move.product_uom.id,
+                                'product_uom_id': stock.product_uom.id,
                                 'location_id': stock_quant.location_id.id,
                                 'location_dest_id': virtual_location_production_id.id
                             })
