@@ -71,6 +71,11 @@ class ManufacturingPallet(models.Model):
         store=True
     )
 
+    total_content_weight = fields.Float(
+        'Peso Total',
+        compute='_compute_total_weight_content'
+    )
+
     @api.model
     def create(self, values_list):
         res = super(ManufacturingPallet, self).create(values_list)
@@ -78,6 +83,11 @@ class ManufacturingPallet(models.Model):
         res.name = self.env['ir.sequence'].next_by_code('manufacturing.pallet')
 
         return res
+
+    @api.multi
+    def _compute_total_weight_content(self):
+        for item in self:
+            item.total_content_weight = sum(item.lot_serial_ids.mapped('display_weight'))
 
     @api.multi
     @api.depends('lot_serial_ids')

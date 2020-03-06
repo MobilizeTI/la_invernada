@@ -43,6 +43,10 @@
               <td>: <span t-field="o.total_content"/></td>
             </tr>
             <tr>
+              <th>Kg Total</th>
+              <td>: <span t-field="o.total_content_weight" /></td>
+            </tr>
+            <tr>
               <th colspan="2">
                 <span t-field="o.create_date"/>
               </th>
