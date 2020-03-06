@@ -74,9 +74,7 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_summary_out_serial_ids(self):
         for item in self:
-            models._logger.error(item.final_lot_id)
             if item.final_lot_id:
-                models._logger.error(item.final_lot_id)
                 item.summary_out_serial_ids = item.final_lot_id.stock_production_lot_serial_ids
                 if item.byproduct_move_line_ids:
                     item.summary_out_serial_ids += item.byproduct_move_line_ids.mapped(
@@ -84,14 +82,12 @@ class MrpWorkorder(models.Model):
                     ).mapped(
                         'stock_production_lot_serial_ids'
                     )
-                    models._logger.error(item.summary_out_serial_ids)
             else:
                 item.summary_out_serial_ids = item.production_finished_move_line_ids.mapped(
                     'lot_id'
                 ).mapped(
                     'stock_production_lot_serial_ids'
                 )
-                models._logger.error(item.summary_out_serial_ids)
 
     @api.multi
     def _compute_byproduct_move_line_ids(self):
@@ -126,11 +122,9 @@ class MrpWorkorder(models.Model):
             if item.active_move_line_ids and \
                     not item.active_move_line_ids.filtered(lambda a: a.is_raw):
                 for move_line in item.active_move_line_ids:
-                    models._logger.error(move_line)
                     move_line.update({
                         'is_raw': True
                     })
-                # raise models.ValidationError(item.active_move_line_ids)
 
         res = super(MrpWorkorder, self).write(vals)
 
@@ -168,15 +162,16 @@ class MrpWorkorder(models.Model):
     @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
         for item in self:
-            for s in item.potential_serial_planned_ids:
-                if s.serial_number == item.confirmed_serial:
-                    s.update({
-                        'consumed': True
-                    })
-                if 'DELETE' in item.confirmed_serial:
-                    s.update({
-                        'consumed':False
-                    })
+            # for s in item.potential_serial_planned_ids:
+            #     if s.serial_number == item.confirmed_serial:
+            #         s.update({
+            #             'consumed': True
+            #         })
+            #     if 'DELETE' in item.confirmed_serial:
+            #         s.update({
+            #             'consumed':False
+            #         })
+            item.on_barcode_scanned(item.confirmed_serial)
 
     def on_barcode_scanned(self, barcode):
         qty_done = self.qty_done
