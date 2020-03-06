@@ -144,7 +144,7 @@ class StockPicking(models.Model):
                         'product_uom_qty': custom_serial.display_weight,
                         'product_uom_id': stock_move.product_uom.id,
                         'location_id': stock_quant.location_id.id,
-                        # 'qty_done': item.display_weight,
+                        'qty_done': custom_serial.display_weight,
                         'location_dest_id': item.partner_id.property_stock_customer.id
                     })
                     move.sudo().update({
