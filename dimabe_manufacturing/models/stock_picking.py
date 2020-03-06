@@ -149,7 +149,7 @@ class StockPicking(models.Model):
                     })
                     move.sudo().update({
                         'move_line_ids': [
-                            (4, move_line.id)
+                            (None, move_line.id)
                         ]
                     })
                     custom_serial.update({
