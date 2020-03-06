@@ -134,7 +134,7 @@ class StockPicking(models.Model):
 
             for move in stock_move.move_line_ids:
                 lot = self.env['stock.production.lot'].search([('name', '=', move.lot_name)])
-                serie = self.env['stock.production.serial'].search(
+                serie = self.env['stock.production.lot.serial'].search(
                     [('serial_number', '=', custom_serial.number), ('stock_production_lot_id', '=', lot.id)])
                 if serie:
                     move.update({
