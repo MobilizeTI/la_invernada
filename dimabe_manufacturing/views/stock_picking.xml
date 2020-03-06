@@ -8,10 +8,6 @@
             <button name="action_assign" position="replace"/>
             <button name="do_unreserve" position="replace"/>
 
-            <xpath name="//form" position="inside">
-                <field name="_barcode_scanned" widget="barcode_handler"/>
-            </xpath>
-
             <page name="note" position="after">
                 <page name="packing_list" string="Packing List"
                       attrs="{'invisible':['|',('state','=','cancel'),('picking_type_code', '!=', 'outgoing')]}"
