@@ -2,8 +2,7 @@ from odoo import models, api, fields
 
 
 class StockPicking(models.Model):
-    _name = 'stock.picking'
-    _inherit = ['stock.picking', 'barcodes.barcode_events_mixin']
+    _inherit = 'stock.picking'
 
     has_mrp_production = fields.Boolean('tiene orden de producción')
 
