@@ -227,6 +227,7 @@ class StockPicking(models.Model):
                         if mp_move.product_id.categ_id.is_mp:
                             total_qty = mp_move.picking_id.get_canning_move().product_uom_qty
                             calculated_weight = stock_move_line.qty_done / total_qty
+                            raise models.ValidationError('calculated_weight : {}'.format(calculated_weight))
                             if stock_move_line.lot_id:
 
                                 for i in range(int(total_qty)):
