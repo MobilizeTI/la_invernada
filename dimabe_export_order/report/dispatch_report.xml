@@ -562,7 +562,7 @@
             model="stock.picking"
             string="Print to XLSX"
             report_type="xlsx"
-            name="dimabe_export_order.report_weight_dispatch"
+            name="dimabe_export_order.report_packing_list"
             file="res_partner"
             menu="True"
             attachment_use="False"
