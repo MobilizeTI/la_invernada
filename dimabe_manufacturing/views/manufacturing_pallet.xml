@@ -66,10 +66,7 @@
             <field name="manual_code"
                    attrs="{'invisible':['|',('add_manual_code','=',False),('state','=','close')]}"
             />
-<!--            <button string="Agregar" name="add_code"-->
-<!--                    attrs="{'invisible':['|',('add_manual_code','=',False),('state','=','close')]}"-->
-<!--                    type="object"-->
-<!--            />-->
+
             <field name="lot_serial_ids" widget="many2many">
               <tree create="false" edit="false" delete="true">
                 <field name="stock_production_lot_id"/>
@@ -79,6 +76,9 @@
               </tree>
             </field>
             <field name="total_content"
+                   attrs="{'invisible':[('state','=','open')]}"
+            />
+            <field name="total_content_weight"
                    attrs="{'invisible':[('state','=','open')]}"
             />
           </group>
