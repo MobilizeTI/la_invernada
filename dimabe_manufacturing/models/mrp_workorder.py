@@ -32,7 +32,7 @@ class MrpWorkorder(models.Model):
         inverse='_inverse_potential_lot_planned_ids'
     )
 
-    confirmed_serial = fields.Char('Ingrese Codigo de Barra')
+    confirmed_serial = fields.Char('Codigo de Barra')
 
     manufacturing_pallet_ids = fields.One2many(
         'manufacturing.pallet',
@@ -162,15 +162,6 @@ class MrpWorkorder(models.Model):
     @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
         for item in self:
-            # for s in item.potential_serial_planned_ids:
-            #     if s.serial_number == item.confirmed_serial:
-            #         s.update({
-            #             'consumed': True
-            #         })
-            #     if 'DELETE' in item.confirmed_serial:
-            #         s.update({
-            #             'consumed':False
-            #         })
             item.on_barcode_scanned(item.confirmed_serial)
 
     def on_barcode_scanned(self, barcode):

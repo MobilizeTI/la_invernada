@@ -19,7 +19,9 @@
         </button>
         <xpath expr="//div[@class='o_workorder_data']" position="inside">
           <group>
-            <field name="confirmed_serial"/>
+            <field name="confirmed_serial"
+                   attrs="{'invisible':[('is_last_step','=',True)]}"
+            />
           </group>
         </xpath>
         <xpath expr="//div[@class='workorder_pdf']" position="before">
