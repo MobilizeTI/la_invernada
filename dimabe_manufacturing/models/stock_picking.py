@@ -141,7 +141,7 @@ class StockPicking(models.Model):
                 models._logger.error('serial : {}'.format(serie))
                 if serie:
                     stock_move({
-                        'quantity_done': custom_serial
+                        'quantity_done': custom_serial.display_weight
                     })
                     move.update({
                         'qty_done': custom_serial.display_weight
