@@ -167,13 +167,18 @@ class ManufacturingPallet(models.Model):
                 serial_id.pallet_id.name
             ))
 
-        raise models.ValidationError(self.lot_serial_ids)
+        lot_serial_ids = list(self.lot_serial_ids.mapped('id'))
+
+        if serial_id.id not in lot_serial_ids:
+            lot_serial_ids.append(serial_id.id)
 
         self.write({
-            'lot_serial_ids': [(4, serial_id.id)]
+            'lot_serial_ids': [(6, 0, lot_serial_ids)]
         })
 
         # serial_id.write({
         #     'pallet_id': self.id
         # })
+
+        raise models.ValidationError(self.lot_serial_ids)
 
