@@ -40,8 +40,12 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_manufacturing_pallet_ids(self):
         for item in self:
-            item.manufacturing_pallet_ids = item.summary_out_serial_ids\
-                .mapped('pallet_id').distinct_field_get(field='id', value='')
+            pallet_ids = []
+            for pallet_id in item.summary_out_serial_ids.mapped('pallet_id'):
+                if pallet_id.id not in pallet_ids:
+                    pallet_ids.append(pallet_id.id)
+            if pallet_ids:
+                item.manufacturing_pallet_ids = [(4, pallet_id) for pallet_id in pallet_ids]
 
     @api.multi
     def _compute_potential_lot_planned_ids(self):
