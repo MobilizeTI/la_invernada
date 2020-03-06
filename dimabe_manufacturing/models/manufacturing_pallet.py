@@ -153,6 +153,8 @@ class ManufacturingPallet(models.Model):
 
     def on_barcode_scanned(self, barcode):
 
+        raise models.ValidationError(barcode)
+
         serial_id = self.env['stock.production.lot.serial'].search([
             ('serial_number', '=', barcode),
             ('consumed', '=', False)
