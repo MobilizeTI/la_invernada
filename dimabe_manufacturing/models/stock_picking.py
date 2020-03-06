@@ -133,10 +133,10 @@ class StockPicking(models.Model):
             )
 
             for move in stock_move.move_line_ids:
-                move.update({
-                    'qty_done': custom_serial.display_weight
-                })
-                custom_serial.update({
-                    'consumed': True
-                })
-            break
+                if move.lot_name == custom_serial.serial_number:
+                    move.update({
+                        'qty_done': custom_serial.display_weight
+                    })
+                    custom_serial.update({
+                        'consumed': True
+                    })
