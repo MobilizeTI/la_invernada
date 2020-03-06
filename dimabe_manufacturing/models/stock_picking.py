@@ -131,13 +131,27 @@ class StockPicking(models.Model):
             stock_move = self.move_ids_without_package.filtered(
                 lambda a: a.product_id == custom_serial.stock_production_lot_id.product_id
             )
+            stock_quant = item.stock_production_lot_id.get_stock_quant()
+
+            stock_quant.sudo().update({
+                'reserved_quantity': stock_quant.reserved_quantity + item.display_weight
+            })
             for move in stock_move.move_line_ids:
                 if move.qty_done == 0:
-                    move.update(
-                        {
-                            'qty_done': custom_serial.display_weight
-                        }
-                    )
+                    move_line = self.env['stock.move.line'].create({
+                        'product_id': custom_serial.stock_production_lot_id.product_id.id,
+                        'lot_id': custom_serial.stock_production_lot_id.id,
+                        'product_uom_qty': custom_serial.display_weight,
+                        'product_uom_id': stock_move.product_uom.id,
+                        'location_id': stock_quant.location_id.id,
+                        # 'qty_done': item.display_weight,
+                        'location_dest_id': item.partner_id.property_stock_customer.id
+                    })
+                    stock_move.move_line_ids.update({
+                        'move_line_ids':[
+                            (4,move_line.id)
+                        ]
+                    })
                     custom_serial.update({
                         'validate': True
                     })
