@@ -736,7 +736,7 @@
             name="dimabe_export_order.report_weight_dispatch" menu="True" paperformat="paper_format_letter_horizontal"/>
 
     <report id="action_packing_list_dispatch_report" string="Packing List" model="stock.picking"
-            report_type="qweb-pdf"
+            report_type="xlsx"
             name="dimabe_export_order.report_packing_list" menu="True" paperformat="paper_format_letter_custom"/>
 
     <report id="action_dispatch_guide_report" string="Guia de despacho" model="stock.picking" report_type="qweb-pdf"
