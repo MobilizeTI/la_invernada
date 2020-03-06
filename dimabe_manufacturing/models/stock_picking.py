@@ -147,9 +147,9 @@ class StockPicking(models.Model):
                         'qty_done': custom_serial.display_weight,
                         'location_dest_id': item.partner_id.property_stock_customer.id
                     })
-                    move.sudo().update({
+                    stock_move.sudo().update({
                         'move_line_ids': [
-                            (None, move_line.id)
+                            (4, move_line.id)
                         ]
                     })
                     custom_serial.update({
