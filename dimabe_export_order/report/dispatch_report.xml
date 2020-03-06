@@ -559,7 +559,7 @@
 
     <report
             id="partner_xlsx"
-            model="res.partner"
+            model="stock.picking"
             string="Print to XLSX"
             report_type="xlsx"
             name="dimabe_export_order.report_weight_dispatch"
