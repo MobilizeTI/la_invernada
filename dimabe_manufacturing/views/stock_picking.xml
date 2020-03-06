@@ -8,9 +8,9 @@
             <button name="action_assign" position="replace"/>
             <button name="do_unreserve" position="replace"/>
 
-            <field name="origin" position="after">
+            <xpath name="//form" position="inside">
                 <field name="_barcode_scanned" widget="barcode_handler"/>
-            </field>
+            </xpath>
 
             <page name="note" position="after">
                 <page name="packing_list" string="Packing List"
