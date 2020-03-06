@@ -136,7 +136,14 @@
                 </field>
               </group>
               <group>
-                <field name="manufacturing_pallet_ids"/>
+                <field name="manufacturing_pallet_ids">
+                  <tree>
+                    <field name="name" widget="many2manybutton" />
+                    <field name="total_content" />
+                    <field name="total_content_weight" />
+                    <field name="state" />
+                  </tree>
+                </field>
               </group>
             </group>
           </div>
