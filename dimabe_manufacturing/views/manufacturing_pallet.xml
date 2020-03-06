@@ -7,6 +7,12 @@
     <field name="company_id" eval="False"/>
   </record>
 
+  <record id="manufacturing_pallet_action" model="ir.actions.act_window">
+    <field name="name">Pallet</field>
+    <field name="res_model">manufacturing.pallet</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
   <record id="manufacturing_pallet_form_view" model="ir.ui.view">
     <field name="name">Formulario de Paletizaje</field>
     <field name="model">manufacturing.pallet</field>
@@ -75,4 +81,10 @@
       </form>
     </field>
   </record>
+
+  <menuitem name="Pallets"
+            id="dimabe_manufacturing.manufacturing_pallet"
+            parent="mrp.menu_mrp_manufacturing"
+            action="manufacturing_pallet_action"
+  />
 </odoo>
