@@ -132,12 +132,14 @@ class StockPicking(models.Model):
                 lambda a: a.product_id == custom_serial.stock_production_lot_id.product_id
             )
 
-            stock_move.update({
-                'qty_done':stock_move.qty_done + custom_serial.display_weight
-            })
+            for stock in stock_move:
+                if stock.lot_id.id == custom_serial.stock_production_lot_id.id:
+                    stock.update({
+                        'qty_done': stock.qty_done + custom_serial.display_weight
+                    })
 
             custom_serial.sudo().update(
                 {
-                    'consumed' : True
+                    'consumed': True
                 }
             )
