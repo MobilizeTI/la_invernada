@@ -134,9 +134,14 @@ class StockPicking(models.Model):
             move_line = stock_move.filtered(
                 lambda a: a.lot_id == custom_serial.stock_production_lot_id
             )
-            move_line.update({
-                'qty_done': move_line.qty_done + custom_serial.display_weight
-            })
+            if len(move_line) > 1:
+                move_line[0].update({
+                    'qty_done': move_line.qty_done + custom_serial.display_weight
+                })
+            else:
+                move_line.update({
+                    'qty_done': move_line.qty_done + custom_serial.display_weight
+                })
             custom_serial.sudo().update(
                 {
                     'consumed': True
