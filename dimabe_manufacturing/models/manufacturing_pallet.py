@@ -159,7 +159,8 @@ class ManufacturingPallet(models.Model):
                 'target': 'current',
                 'res_model': 'manufacturing.pallet',
                 'res_id': item.id,
-                'view_mode': 'form'
+                'view_mode': 'form',
+                'flags': {'initial_mode': 'edit'}
             }
 
     def on_barcode_scanned(self, barcode):
