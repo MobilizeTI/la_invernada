@@ -25,7 +25,8 @@
         'mrp',
         'mrp_workorder',
         'dimabe_export_order',
-        'dimabe_quality_integration'
+        'dimabe_quality_integration',
+        'stock_barcode'
     ],
 
     # always loaded
