@@ -102,6 +102,5 @@
               parent="mrp.mrp_planning_menu_root"
               action="plan_stock_action"
     />
-    <field name="_barcode_scanned" widget="barcode_handler"/>
 
 </odoo>
