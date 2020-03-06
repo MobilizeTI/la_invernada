@@ -34,7 +34,21 @@ class MrpWorkorder(models.Model):
 
     confirmed_serial = fields.Char('Ingrese Codigo de Barra')
 
+    manufacturing_pallet_ids = fields.One2many(
+        'manufacturing.pallet',
+        compute='_compute_manufacturing_pallet_ids',
+        string='Pallets'
+    )
 
+    @api.multi
+    def _compute_manufacturing_pallet_ids(self):
+        for item in self:
+            pallet_ids = []
+            for pallet_id in item.summary_out_serial_ids.mapped('pallet_id'):
+                if pallet_id.id not in pallet_ids:
+                    pallet_ids.append(pallet_id.id)
+            if pallet_ids:
+                item.manufacturing_pallet_ids = [(4, pallet_id) for pallet_id in pallet_ids]
 
     @api.multi
     def _compute_potential_lot_planned_ids(self):
@@ -220,4 +234,16 @@ class MrpWorkorder(models.Model):
             'views': [[self.env.ref('dimabe_manufacturing.mrp_workorder_out_form_view').id, 'form']],
             'res_id': self.id,
             'target': 'fullscreen'
+        }
+
+    def create_pallet(self):
+        default_product_id = None
+        if 'default_product_id' in self.env.context:
+            default_product_id = self.env.context['default_product_id']
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'manufacturing.pallet',
+            'views': [[self.env.ref('dimabe_manufacturing.manufacturing_pallet_form_view').id, 'form']],
+            'target': 'fullscreen',
+            'context': {'_default_product_id': default_product_id}
         }

@@ -79,16 +79,28 @@ class StockPicking(models.Model):
 
     carrier_truck_patent = fields.Char(
         'Patente Camión',
-        related='carrier_id.truck_patent'
+        related='truck_id.name'
     )
 
     carrier_cart_patent = fields.Char(
         'Patente Carro',
-        related='carrier_id.cart_patent'
+        related='cart_id.name'
     )
 
-    #transport_is_truck = fields.Boolean(string='Es camión?', related="carrier")
-    
+    truck_id = fields.Many2one(
+        'transport',
+        'Patente Camión',
+        context={'default_is_truck': True},
+        domain=[('is_truck', '=', True)]
+    )
+
+    cart_id = fields.Many2one(
+        'transport',
+        'Patente Carro',
+        context={'default_is_truck': False},
+        domain=[('is_truck', '=', False)]
+
+    )
 
     hr_alert_notification_count = fields.Integer('Conteo de notificación de retraso de camión')
 
@@ -113,6 +125,7 @@ class StockPicking(models.Model):
         if self.is_mp_reception:
             if self.canning_weight:
                 self.net_weight = self.net_weight - self.canning_weight
+
     @api.one
     @api.depends('move_ids_without_package')
     def _compute_weight_guide(self):
@@ -136,6 +149,7 @@ class StockPicking(models.Model):
             self.gross_weight = 0
         if message:
             raise models.ValidationError(message)
+
     @api.one
     @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package', )
     def _compute_production_net_weight(self):
@@ -158,9 +172,6 @@ class StockPicking(models.Model):
     @api.one
     @api.depends('reception_type_selection', 'picking_type_id')
     def _compute_is_mp_reception(self):
-        models._logger.error('{} {}'.format(self.reception_type_selection,self.picking_type_id))
-        models._logger.error('{} {}'.format(self.picking_type_id.warehouse_id.name,
-                                            self.picking_type_id.name))
 
         self.is_mp_reception = self.reception_type_selection == 'mp' or\
                                self.picking_type_id.warehouse_id.name and\
@@ -202,14 +213,15 @@ class StockPicking(models.Model):
             if mp_move and mp_move.move_line_ids and mp_move.picking_id \
                     and mp_move.picking_id.picking_type_code == 'incoming':
                 for move_line in mp_move.move_line_ids:
-                    lot = self.env['stock.production.lot'].create({
-                        'name': stock_picking.name,
-                        'product_id': move_line.product_id.id
-                    })
-                    if lot:
-                        move_line.update({
-                            'lot_id': lot.id
+                    if move_line.product_id.tracking == 'lot':
+                        lot = self.env['stock.production.lot'].create({
+                            'name': stock_picking.name,
+                            'product_id': move_line.product_id.id
                         })
+                        if lot:
+                            move_line.update({
+                                'lot_id': lot.id
+                            })
 
                 if mp_move.product_id.tracking == 'lot' and not mp_move.has_serial_generated:
                     for stock_move_line in mp_move.move_line_ids:
@@ -253,7 +265,9 @@ class StockPicking(models.Model):
             mp_move.quantity_done = self.net_weight
             mp_move.product_uom_qty = self.weight_guide
             if mp_move.has_serial_generated and self.avg_unitary_weight:
-                self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)]).write({'real_weight': self.avg_unitary_weight})
+                self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)]).write({
+                    'real_weight': self.avg_unitary_weight
+                })
 
         return res
 

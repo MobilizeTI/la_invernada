@@ -32,7 +32,12 @@
             <tr>
               <td>Productor:</td>
               <td colspan="3">
-                <span t-field="o.stock_production_lot_id.productors"/>
+                <div t-if="o.stock_production_lot_id">
+                  <span t-field="o.stock_production_lot_id.productors"/>
+                </div>
+                <div t-elif="o.producer_id.name">
+                  <span t-field="o.producer_id.name" />
+                </div>
               </td>
             </tr>
             <tr>

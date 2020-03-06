@@ -1,0 +1,76 @@
+<odoo>
+  <template id="manufacturing_pallet_label_report">
+    <t t-call="web.html_container">
+      <div class="page">
+        <t t-foreach="docs" t-as="o">
+
+          <table style="text-align:left;">
+            <tr>
+              <th style="text-align:center;">
+                <h2>PALLET</h2>
+              </th>
+              <td style="text-align: right !important;">
+                <h2>
+                  <span t-field="o.name"/>
+                </h2>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2">
+                <h2>
+                  <span t-field="o.product_id.name"/>
+                </h2>
+              </th>
+            </tr>
+            <tr>
+              <th>Productor</th>
+              <td>: <span t-field="o.producer_id.name"/></td>
+            </tr>
+            <tr>
+              <th>Nro CSG</th>
+              <td>: <span t-field="o.sag_code"/></td>
+            </tr>
+            <tr>
+              <th>Nro Pedido</th>
+              <td>
+                <div t-if="o.lot_serial_ids.mapped('production_id.stock_picking_id')">
+                  <span t-esc="o.lot_serial_ids.mapped('production_id.stock_picking_id')[0].name"/>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th>Cant.:Unidades</th>
+              <td>: <span t-field="o.total_content"/></td>
+            </tr>
+            <tr>
+              <th>Kg Total</th>
+              <td>: <span t-field="o.total_content_weight" /></td>
+            </tr>
+            <tr>
+              <th colspan="2">
+                <span t-field="o.create_date"/>
+              </th>
+            </tr>
+            <tr>
+              <td colspan="2" style="text-align:center !important;">
+                <br/>
+                <img
+                  t-att-src="'%s/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % (o.get_full_url(), 'Code128',o.name,550, 70)"
+                />
+                <span t-field="o.name"/>
+              </td>
+            </tr>
+          </table>
+        </t>
+      </div>
+    </t>
+  </template>
+
+  <report id="dimabe_manufacturing.action_manufacturing_pallet_label_report"
+          string="Etiqueta Pallet"
+          model="manufacturing.pallet"
+          report_type="qweb-pdf"
+          name="dimabe_manufacturing.manufacturing_pallet_label_report"
+          paperformat="paper_format_10_x_7"
+  />
+</odoo>

@@ -12,3 +12,4 @@ from . import product_product
 from . import nut_variety
 from . import stock_production_lot_serial
 from . import res_company
+from . import transport

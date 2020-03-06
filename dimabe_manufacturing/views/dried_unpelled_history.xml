@@ -1,0 +1,70 @@
+<odoo>
+  <record id="dried_unpelled_history_tree_view" model="ir.ui.view">
+    <field name="name">Listado de Historial</field>
+    <field name="model">dried.unpelled.history</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="create_date"/>
+        <field name="producer_id"/>
+        <field name="in_product_id"/>
+        <field name="total_in_weight"/>
+        <field name="total_out_weight"/>
+        <field name="performance"/>
+        <field name="oven_use_ids" widget="many2many_tags"/>
+        <field name="out_lot_id"/>
+        <field name="out_product_id"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="dried_unpelled_history_action" model="ir.actions.act_window">
+    <field name="name">Historial</field>
+    <field name="res_model">dried.unpelled.history</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <record id="dried_unpelled_history_form_view" model="ir.ui.view">
+    <field name="name">Historial</field>
+    <field name="model">dried.unpelled.history</field>
+    <field name="arch" type="xml">
+      <form>
+        <h1 class="d-none d-md-block">
+          <field name="name"/>
+        </h1>
+        <field name="create_date"/>
+        <group>
+          <group>
+            <field name="producer_id"/>
+
+            <field name="in_product_id"/>
+
+            <field name="oven_use_ids"/>
+
+            <field name="out_product_id"/>
+            <field name="out_lot_id"/>
+            <field name="out_serial_ids">
+              <tree>
+                <field name="stock_production_lot_id"/>
+                <field name="consumed"/>
+                <field name="display_weight"/>
+                <field name="serial_number"/>
+              </tree>
+            </field>
+          </group>
+          <group>
+            <field name="total_in_weight"/>
+
+            <field name="total_out_weight"/>
+
+            <field name="performance"/>
+
+            <field name="origin_location_id"/>
+
+            <field name="dest_location_id"/>
+
+          </group>
+        </group>
+      </form>
+    </field>
+  </record>
+</odoo>

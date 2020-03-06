@@ -37,6 +37,7 @@ class StockMove(models.Model):
             # ('categ_id', 'in', self.picking_type_id.warehouse_id.products_can_be_stored)
         ]
         return domain
+
     @api.multi
     def write(self, values):
         res = super(StockMove, self).write(values)

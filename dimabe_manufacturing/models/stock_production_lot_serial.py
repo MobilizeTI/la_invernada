@@ -6,7 +6,12 @@ class StockProductionLotSerial(models.Model):
 
     production_id = fields.Many2one(
         'mrp.production',
-        'Productión'
+        'Producción'
+    )
+
+    producer_id = fields.Many2one(
+        'res.partner',
+        'Productor'
     )
 
     belongs_to_prd_lot = fields.Boolean(
@@ -22,7 +27,8 @@ class StockProductionLotSerial(models.Model):
 
     stock_product_id = fields.Many2one(
         'product.product',
-        related='stock_production_lot_id.product_id'
+        related='stock_production_lot_id.product_id',
+        string='Producto'
     )
 
     reserved_to_stock_picking_id = fields.Many2one(
@@ -39,9 +45,12 @@ class StockProductionLotSerial(models.Model):
 
     consumed = fields.Boolean('Consumido')
 
-    confirmed_serial = fields.Char('Confimacion de Serie')
+    confirmed_serial = fields.Char('Confimación de Serie')
 
-    validate = fields.Boolean('Realizado')
+    pallet_id = fields.Many2one(
+        'manufacturing.pallet',
+        'Pallet'
+    )
 
     @api.model
     def create(self, values_list):
@@ -81,6 +90,10 @@ class StockProductionLotSerial(models.Model):
 
     @api.multi
     def print_serial_label(self):
+        if 'producer_id' in self.env.context:
+            for item in self:
+                item.producer_id = self.env.context['producer_id']
+
         return self.env.ref(
             'dimabe_manufacturing.action_stock_production_lot_serial_label_report'
         ).report_action(self)

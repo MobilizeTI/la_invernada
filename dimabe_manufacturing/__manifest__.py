@@ -36,6 +36,8 @@
         'views/stock_production_lot.xml',
         'views/mrp_production.xml',
         'reports/lot_serial_label_report.xml',
+        'reports/oven_use_label_report.xml',
+        'reports/manufacturing_pallet_label_report.xml',
         'views/views.xml',
         'views/mrp_dispatched.xml',
         'views/mrp_workcenter.xml',
@@ -43,7 +45,11 @@
         'views/product_category.xml',
         'views/potential_lot.xml',
         'views/templates.xml',
-        'views/stock_picking.xml'
+        'views/stock_picking.xml',
+        'views/unpelled_dried.xml',
+        'views/oven_use.xml',
+        'views/dried_unpelled_history.xml',
+        'views/manufacturing_pallet.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

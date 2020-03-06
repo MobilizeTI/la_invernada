@@ -1,0 +1,103 @@
+<odoo>
+  <record id="seq_manufacturing_pallet" model="ir.sequence">
+    <field name="name">manufacturing.pallet</field>
+    <field name="code">manufacturing.pallet</field>
+    <field name="prefix">500</field>
+    <field name="padding">5</field>
+    <field name="company_id" eval="False"/>
+  </record>
+
+  <record id="manufacturing_pallet_action" model="ir.actions.act_window">
+    <field name="name">Pallet</field>
+    <field name="res_model">manufacturing.pallet</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <record id="manufacturing_pallet_tree_view" model="ir.ui.view">
+    <field name="name">Listado de Paletizaje</field>
+    <field name="model">manufacturing.pallet</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="name"/>
+        <field name="lot_serial_ids" widget="many2many_tags"/>
+        <field name="total_content"/>
+        <field name="state" />
+      </tree>
+    </field>
+  </record>
+
+  <record id="manufacturing_pallet_form_view" model="ir.ui.view">
+    <field name="name">Formulario de Paletizaje</field>
+    <field name="model">manufacturing.pallet</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button string="Cerrar Pallet"
+                  type="object"
+                  name="close_pallet"
+                  attrs="{'invisible':[('state','=','close')]}"
+                  class="oe_highlight"
+          />
+          <button string="Abrir Pallet"
+                  type="object"
+                  name="open_pallet"
+                  attrs="{'invisible':[('state','=','open')]}"
+                  class="oe_highlight"
+          />
+
+          <button string="Imprimir Etiqueta Pallet"
+                  type="object"
+                  name="print_pallet_label"
+                  attrs="{'invisible':[('state','=','open')]}"
+          />
+
+          <field name="state"
+                 widget="statusbar"
+                 statusbar_visible="open,close"/>
+        </header>
+        <group>
+          <h1 class="d-none d-md-block">
+            <field name="name" readonly="1" attrs="{'invisible':[('name','=',False)]}"/>
+          </h1>
+          <group>
+            <field name="producer_id"/>
+            <field name="sag_code"/>
+            <field name="add_manual_code"/>
+            <field name="manual_code"
+                   attrs="{'invisible':['|',('add_manual_code','=',False),('state','=','close')]}"
+            />
+            <button string="Agregar" name="add_code"
+                    attrs="{'invisible':['|',('add_manual_code','=',False),('state','=','close')]}"
+                    type="object"
+            />
+            <field name="lot_serial_ids" widget="many2many">
+              <tree create="false" edit="false" delete="true">
+                <field name="stock_production_lot_id"/>
+                <field name="stock_product_id"/>
+                <field name="serial_number"/>
+                <field name="display_weight"/>
+              </tree>
+            </field>
+            <field name="total_content"
+                   attrs="{'invisible':[('state','=','open')]}"
+            />
+          </group>
+          <group>
+            <div
+              attrs="{'invisible':[('state','=','close')]}"
+              style="position:relative;width:100%;height:100%;min-height:300px;background-color:blue;color:white;font-size:200px;text-align:center;">
+              <field name="total_content" string=""/>
+            </div>
+          </group>
+        </group>
+        <field name="_barcode_scanned" widget="barcode_handler"/>
+      </form>
+    </field>
+  </record>
+
+  <menuitem name="Pallets"
+            id="dimabe_manufacturing.manufacturing_pallet"
+            parent="mrp.menu_mrp_manufacturing"
+            action="manufacturing_pallet_action"
+  />
+</odoo>
