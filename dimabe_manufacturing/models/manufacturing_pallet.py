@@ -171,4 +171,4 @@ class ManufacturingPallet(models.Model):
             'pallet_id': self._origin.id
         })
 
-        raise models.ValidationError(self._origin.id)
+        # raise models.ValidationError(self._origin.id)
