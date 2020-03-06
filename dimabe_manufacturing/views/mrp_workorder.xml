@@ -119,6 +119,7 @@
                   <field name="display_weight" />
                 </tree>
               </field>
+              <field name="manufacturing_pallet_ids" />
             </group>
           </div>
         </form>

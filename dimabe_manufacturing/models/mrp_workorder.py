@@ -32,6 +32,17 @@ class MrpWorkorder(models.Model):
         inverse='_inverse_potential_lot_planned_ids'
     )
 
+    manufacturing_pallet_ids = fields.One2many(
+        'manufacturing.pallet',
+        compute='_compute_manufacturing_pallet_ids'
+    )
+
+    @api.multi
+    def _compute_manufacturing_pallet_ids(self):
+        for item in self:
+            item.manufacturing_pallet_ids = item.summary_out_serial_ids\
+                .mapped('pallet_id').distinct_field_get(field='id', value='')
+
     @api.multi
     def _compute_potential_lot_planned_ids(self):
         for item in self:
