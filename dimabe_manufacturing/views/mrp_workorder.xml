@@ -16,8 +16,8 @@
       <field name="arch" type="xml">
         <button name="action_open_manufacturing_order" position="replace">
         </button>
-         <xpath expr="//div[@class='workorder_pdf']" position="before">
-          <field name="potential_serial_planned_ids" >
+        <xpath expr="//div[@class='workorder_pdf']" position="before">
+          <field name="potential_serial_planned_ids">
             <tree decoration-danger="consumed==False" decoration-success="consumed==True"
                   delete="false" create="false" editable="bottom">
               <field name="stock_production_lot_id" readonly="1"/>
@@ -36,7 +36,7 @@
       <field name="inherit_id" ref="mrp.mrp_production_workorder_form_view_inherit"/>
       <field name="arch" type="xml">
         <field name="is_produced" position="after">
-          <field name="production_id" />
+          <field name="production_id"/>
         </field>
         <field name="final_lot_id" position="attributes">
           <attribute name="readonly">True</attribute>
@@ -73,53 +73,57 @@
         <form>
           <div>
             <group>
-            <group>
-              <h2>Salida Principal</h2>
-              <field name="state" readonly="1"/>
-              <field name="product_id" readonly="1"/>
-              <field name="final_lot_id"
-                     readonly="1"
-                     attrs="{'invisible':[('state', '=', 'done')]}"
-              />
-              <button string="Paletizar"
-                      name="create_pallet"
-                      type="object"
-                      context="{'default_product_id': product_id}"
-                      attrs="{'invisible':[('final_lot_id', '=', False)]}"
-              />
-              <field name="production_finished_move_line_ids"
-                     attrs="{'invisible':[('state', '!=', 'done')]}"
-                     readonly="1"
-              >
-                <tree readonly="1">
-                  <field name="product_id"/>
-                  <field name="lot_id" widget="many2onebutton"/>
-                </tree>
-              </field>
+              <group>
+                <h2>Salida Principal</h2>
+                <field name="state" readonly="1"/>
+                <field name="product_id" readonly="1"/>
+                <field name="final_lot_id"
+                       readonly="1"
+                       attrs="{'invisible':[('state', '=', 'done')]}"
+                />
+                <button string="Paletizar"
+                        name="create_pallet"
+                        type="object"
+                        context="{'default_product_id': product_id}"
+                        attrs="{'invisible':[('final_lot_id', '=', False)]}"
+                />
+                <field name="production_finished_move_line_ids"
+                       attrs="{'invisible':[('state', '!=', 'done')]}"
+                       readonly="1"
+                >
+                  <tree readonly="1">
+                    <field name="product_id"/>
+                    <field name="lot_id" widget="many2onebutton"/>
+                  </tree>
+                </field>
+              </group>
+              <group attrs="{'invisible':[('state', '=', 'done')]}">
+                <h2>Otras Salidas</h2>
+                <field name="byproduct_move_line_ids"
+                       readonly="1">
+                  <tree readonly="1">
+                    <field name="product_id"/>
+                    <field name="lot_id" widget="many2onebutton"/>
+                  </tree>
+                </field>
+              </group>
             </group>
-            <group attrs="{'invisible':[('state', '=', 'done')]}">
-              <h2>Otras Salidas</h2>
-              <field name="byproduct_move_line_ids"
-                     readonly="1">
-                <tree readonly="1">
-                  <field name="product_id"/>
-                  <field name="lot_id" widget="many2onebutton"/>
-                </tree>
-              </field>
-            </group>
-          </group>
           </div>
           <div>
             <group>
-              <field name="summary_out_serial_ids">
-                <tree>
-                  <field name="stock_production_lot_id" />
-                  <field name="stock_product_id" />
-                  <field name="serial_number" />
-                  <field name="display_weight" />
-                </tree>
-              </field>
-              <field name="manufacturing_pallet_ids" />
+              <group>
+                <field name="summary_out_serial_ids">
+                  <tree>
+                    <field name="stock_production_lot_id"/>
+                    <field name="stock_product_id"/>
+                    <field name="serial_number"/>
+                    <field name="display_weight"/>
+                  </tree>
+                </field>
+              </group>
+              <group>
+                <field name="manufacturing_pallet_ids"/>
+              </group>
             </group>
           </div>
         </form>
