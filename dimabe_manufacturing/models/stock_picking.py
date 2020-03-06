@@ -121,6 +121,8 @@ class StockPicking(models.Model):
         custom_serial = self.packing_list_ids.filtered(
             lambda a: a.serial_number == barcode
         )
+        if not custom_serial:
+            raise models.ValidationError('Esta serie no esta en packing list')
         return custom_serial
 
     def on_barcode_scanned(self, barcode):
