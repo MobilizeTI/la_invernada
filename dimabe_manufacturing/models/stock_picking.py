@@ -137,7 +137,6 @@ class StockPicking(models.Model):
                     stock.sudo().update({
                         'qty_done': stock.qty_done + custom_serial.display_weight
                     })
-                    break
 
 
             custom_serial.sudo().update(
