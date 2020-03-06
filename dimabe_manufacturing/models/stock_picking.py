@@ -153,6 +153,6 @@ class StockPicking(models.Model):
                         ]
                     })
                     custom_serial.update({
-                        'validate': True
+                        'consumed': True
                     })
                 break
