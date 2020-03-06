@@ -131,14 +131,12 @@ class StockPicking(models.Model):
             stock_move = self.move_line_ids_without_package.filtered(
                 lambda a: a.product_id == custom_serial.stock_production_lot_id.product_id
             )
-
-            for stock in stock_move:
-                if stock.lot_id.id == custom_serial.stock_production_lot_id.id:
-                    stock.sudo().update({
-                        'qty_done': stock.qty_done + custom_serial.display_weight
-                    })
-
-
+            move_line = stock_move.filtered(
+                lambda a: a.lot_id == custom_serial.stock_production_lot_id
+            )
+            move_line.update({
+                'qty_done': move_line.qty_done + custom_serial.display_weight
+            })
             custom_serial.sudo().update(
                 {
                     'consumed': True
