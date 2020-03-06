@@ -557,9 +557,15 @@
             report_type="qweb-pdf"
             name="dimabe_export_order.report_weight_dispatch" menu="True" paperformat="paper_format_letter_horizontal"/>
 
-    <report id="action_packing_list_dispatch_report" string="Packing List" model="stock.picking"
-            report_type="xlsx"
-            name="dimabe_export_order.report_packing_list" menu="True"/>
+    <report
+        id="partner_xlsx"
+        model="stock.picking"
+        string="Packing List"
+        report_type="xlsx"
+        name="dimabe_export_order.report_packing_list"
+        file="Packing_List"
+        attachment_use="False"
+    />
 
     <report id="action_dispatch_guide_report" string="Guia de despacho" model="stock.picking" report_type="qweb-pdf"
             name="dimabe_export_order.report_dispatch_guide" menu="True" paperformat="paper_format_letter_custom"
