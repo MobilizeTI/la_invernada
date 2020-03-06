@@ -138,7 +138,7 @@
               <group>
                 <field name="manufacturing_pallet_ids">
                   <tree>
-                    <field name="name" widget="many2manybutton" />
+                    <field name="name" widget="many2onebutton" />
                     <field name="total_content" />
                     <field name="total_content_weight" />
                     <field name="state" />
