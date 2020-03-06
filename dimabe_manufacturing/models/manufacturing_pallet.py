@@ -124,6 +124,7 @@ class ManufacturingPallet(models.Model):
     def onchange_manual_code(self):
         for item in self:
             item.on_barcode_scanned(item.manual_code)
+            item.manual_code = ''
 
     @api.multi
     def close_pallet(self):
