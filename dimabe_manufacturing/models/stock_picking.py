@@ -126,10 +126,13 @@ class StockPicking(models.Model):
         return custom_serial
 
     def on_barcode_scanned(self, barcode):
+
+        raise models.ValidationError(barcode)
+
         for item in self:
             custom_serial = item.validate_barcode(barcode)
-            if custom_serial.consumed == True:
-                raise models.ValidationError('Serie ya fue usada')
+            if custom_serial.consumed:
+                raise models.ValidationError('Serie ya fue consumida')
             stock_move = self.move_line_ids_without_package.filtered(
                 lambda a: a.product_id == custom_serial.stock_production_lot_id.product_id
             )
