@@ -36,9 +36,8 @@
               <th>Nro Pedido:</th>
               <td>
                 <div t-if="o.lot_serial_ids.mapped('production_id.stock_picking_id')">
-
+                  <span t-esc="o.lot_serial_ids.mapped('production_id.stock_picking_id')[0].name"/>
                 </div>
-                <span t-esc="o.lot_serial_ids.mapped('production_id.stock_picking_id')[0].name"/>
               </td>
             </tr>
             <tr>
