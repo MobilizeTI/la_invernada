@@ -151,6 +151,17 @@ class ManufacturingPallet(models.Model):
         base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
         return base_url
 
+    @api.multi
+    def show_pallet(self):
+        for item in self:
+            return {
+                'type': 'ir.actions.act_window',
+                'target': 'current',
+                'res_model': 'manufacturing.pallet',
+                'res_id': item.id,
+                'view_mode': 'form'
+            }
+
     def on_barcode_scanned(self, barcode):
 
         serial_id = self.env['stock.production.lot.serial'].search([
