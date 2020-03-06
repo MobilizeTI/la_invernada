@@ -133,19 +133,22 @@ class StockPicking(models.Model):
             stock_move = self.move_line_ids_without_package.filtered(
                 lambda a: a.product_id == custom_serial.stock_production_lot_id.product_id
             )
-            move_line = stock_move.filtered(
-                lambda a: a.lot_id == custom_serial.stock_production_lot_id
-            )
-            if len(move_line) > 1:
-                move_line[0].update({
-                    'qty_done': move_line[0].qty_done + custom_serial.display_weight
-                })
+            if custom_serial.stock_production_lot_id.id == stock_move.lot_id.id:
+                move_line = stock_move.filtered(
+                    lambda a: a.lot_id == custom_serial.stock_production_lot_id
+                )
+                if len(move_line) > 1:
+                    move_line[0].update({
+                        'qty_done': move_line[0].qty_done + custom_serial.display_weight
+                    })
+                else:
+                    move_line.update({
+                        'qty_done': move_line.qty_done + custom_serial.display_weight
+                    })
+                custom_serial.sudo().update(
+                    {
+                        'consumed': True
+                    }
+                )
             else:
-                move_line.update({
-                    'qty_done': move_line.qty_done + custom_serial.display_weight
-                })
-            custom_serial.sudo().update(
-                {
-                    'consumed': True
-                }
-            )
+                raise models.ValidationError('Esta serie no pertene al lote')
