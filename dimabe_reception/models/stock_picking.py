@@ -215,7 +215,8 @@ class StockPicking(models.Model):
                 for move_line in mp_move.move_line_ids:
                     lot = self.env['stock.production.lot'].create({
                         'name': stock_picking.name,
-                        'product_id': move_line.product_id.id
+                        'product_id': move_line.product_id.id,
+                        'standard_weight': stock_picking.net_weight - stock_picking.quality_weight
                     })
                     if lot:
                         move_line.update({
