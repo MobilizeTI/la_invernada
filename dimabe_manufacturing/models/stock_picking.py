@@ -147,7 +147,7 @@ class StockPicking(models.Model):
                         # 'qty_done': item.display_weight,
                         'location_dest_id': item.partner_id.property_stock_customer.id
                     })
-                    stock_move.move_line_ids.sudo().update({
+                    move.sudo().update({
                         'move_line_ids': [
                             (4, move_line.id)
                         ]
