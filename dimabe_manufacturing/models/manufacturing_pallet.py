@@ -163,7 +163,6 @@ class ManufacturingPallet(models.Model):
                 'flags': {'initial_mode': 'edit'}
             }
 
-    @api.returns('self')
     def on_barcode_scanned(self, barcode):
 
         serial_id = self.env['stock.production.lot.serial'].search([
@@ -193,7 +192,7 @@ class ManufacturingPallet(models.Model):
         #     'pallet_id': self.id
         # })
 
-        return self
 
-        raise models.ValidationError([(6, 0, lot_serial_ids)])
+
+        # raise models.ValidationError([(6, 0, lot_serial_ids)])
 
