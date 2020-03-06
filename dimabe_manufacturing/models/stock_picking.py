@@ -133,7 +133,7 @@ class StockPicking(models.Model):
             )
 
             for move in stock_move.move_line_ids:
-                stock_quant = self.env['stock.quant'].search([('location_id', '=', move.location_dest_id.id)])
+                stock_quant = self.env['stock.quant'].search([('location_id', '=', move.location_dest_id.id),('product_id','=',stock_move.product_id)])
                 models._logger.error('stock_quant : {}'.format(stock_quant))
                 serie = self.env['stock.production.lot.serial'].search(
                     [('serial_number', '=', custom_serial.serial_number)])
