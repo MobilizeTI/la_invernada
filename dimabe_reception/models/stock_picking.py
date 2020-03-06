@@ -9,8 +9,8 @@ class StockPicking(models.Model):
     guide_number = fields.Integer('Número de Guía')
 
     weight_guide = fields.Integer('Kilos Guía',
-                            compute='_compute_weight_guide',
-                            store=True)
+                                  compute='_compute_weight_guide',
+                                  store=True)
 
     gross_weight = fields.Integer('Kilos Brutos')
 
@@ -139,7 +139,7 @@ class StockPicking(models.Model):
         canning = self.get_canning_move()
         if len(canning) == 1 and canning.product_id.weight:
             self.canning_weight = canning.product_uom_qty * canning.product_id.weight
-    
+
     @api.model
     @api.onchange('gross_weight')
     def on_change_gross_weight(self):
@@ -173,8 +173,8 @@ class StockPicking(models.Model):
     @api.depends('reception_type_selection', 'picking_type_id')
     def _compute_is_mp_reception(self):
 
-        self.is_mp_reception = self.reception_type_selection == 'mp' or\
-                               self.picking_type_id.warehouse_id.name and\
+        self.is_mp_reception = self.reception_type_selection == 'mp' or \
+                               self.picking_type_id.warehouse_id.name and \
                                'Materia Prima' in self.picking_type_id.warehouse_id.name and \
                                self.picking_type_id.name and 'Recepciones' in self.picking_type_id.name
 
@@ -251,8 +251,8 @@ class StockPicking(models.Model):
                     message += 'Los kilos de la Guía no pueden ser mayores a los Kilos brutos ingresados \n'
                 if not stock_picking.tare_weight:
                     message += 'Debe agregar kg tara \n'
-                if not stock_picking.quality_weight and\
-                   'verde' not in str.lower(stock_picking.picking_type_id.warehouse_id.name):
+                if not stock_picking.quality_weight and \
+                        'verde' not in str.lower(stock_picking.picking_type_id.warehouse_id.name):
                     message += 'Los kilos de calidad aún no han sido registrados en el sistema,' \
                                ' no es posible cerrar el ciclo de recepción'
                 if message:
@@ -302,7 +302,6 @@ class StockPicking(models.Model):
                     self.message_post_with_template(template_id.id)
                     self.kg_diff_alert_notification_count += self.kg_diff_alert_notification_count
 
-    
     @api.multi
     def notify_alerts(self):
         alert_config = self.env['reception.alert.config'].search([])
