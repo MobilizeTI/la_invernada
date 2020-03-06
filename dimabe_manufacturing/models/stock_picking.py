@@ -134,9 +134,10 @@ class StockPicking(models.Model):
 
             for stock in stock_move:
                 if stock.lot_id.id == custom_serial.stock_production_lot_id.id:
-                    stock.update({
+                    stock.sudo().update({
                         'qty_done': stock.qty_done + custom_serial.display_weight
                     })
+                break
 
             custom_serial.sudo().update(
                 {
