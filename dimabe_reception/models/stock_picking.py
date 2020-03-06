@@ -222,7 +222,6 @@ class StockPicking(models.Model):
                             move_line.update({
                                 'lot_id': lot.id
                             })
-
                 if mp_move.product_id.tracking == 'lot' and not mp_move.has_serial_generated:
                     for stock_move_line in mp_move.move_line_ids:
                         if mp_move.product_id.categ_id.is_mp:
