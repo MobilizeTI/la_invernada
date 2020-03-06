@@ -126,31 +126,31 @@ class StockPicking(models.Model):
             raise models.ValidationError('Esta serie no esta en packing list')
         return custom_serial
 
-    # def on_barcode_scanned(self, barcode):
-    #
-    #     raise models.ValidationError(barcode)
-    #
-    #     for item in self:
-    #         custom_serial = item.validate_barcode(barcode)
-    #         if custom_serial.consumed:
-    #             raise models.ValidationError('Serie ya fue consumida')
-    #         stock_move = self.move_line_ids_without_package.filtered(
-    #             lambda a: a.product_id == custom_serial.stock_production_lot_id.product_id
-    #         )
-    #
-    #         move_line = stock_move.filtered(
-    #             lambda a: a.lot_id == custom_serial.stock_production_lot_id
-    #         )
-    #         if len(move_line) > 1:
-    #             move_line[0].update({
-    #                 'qty_done': move_line[0].qty_done + custom_serial.display_weight
-    #             })
-    #         else:
-    #             move_line.update({
-    #                 'qty_done': move_line.qty_done + custom_serial.display_weight
-    #             })
-    #         custom_serial.sudo().update(
-    #             {
-    #                 'consumed': True
-    #             }
-    #         )
+    def on_barcode_scanned(self, barcode):
+
+        raise models.ValidationError(barcode)
+
+        for item in self:
+            custom_serial = item.validate_barcode(barcode)
+            if custom_serial.consumed:
+                raise models.ValidationError('Serie ya fue consumida')
+            stock_move = self.move_line_ids_without_package.filtered(
+                lambda a: a.product_id == custom_serial.stock_production_lot_id.product_id
+            )
+
+            move_line = stock_move.filtered(
+                lambda a: a.lot_id == custom_serial.stock_production_lot_id
+            )
+            if len(move_line) > 1:
+                move_line[0].update({
+                    'qty_done': move_line[0].qty_done + custom_serial.display_weight
+                })
+            else:
+                move_line.update({
+                    'qty_done': move_line.qty_done + custom_serial.display_weight
+                })
+            custom_serial.sudo().update(
+                {
+                    'consumed': True
+                }
+            )
