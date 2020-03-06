@@ -120,8 +120,8 @@ class ManufacturingPallet(models.Model):
         for item in self:
             item.total_available_content = len(item.lot_available_serial_ids)
 
-    @api.multi
-    def add_code(self):
+    @api.onchange('manual_code')
+    def onchange_manual_code(self):
         for item in self:
             item.on_barcode_scanned(item.manual_code)
 
