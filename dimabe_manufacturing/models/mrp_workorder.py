@@ -34,7 +34,8 @@ class MrpWorkorder(models.Model):
 
     manufacturing_pallet_ids = fields.One2many(
         'manufacturing.pallet',
-        compute='_compute_manufacturing_pallet_ids'
+        compute='_compute_manufacturing_pallet_ids',
+        string='Pallets'
     )
 
     @api.multi
