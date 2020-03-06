@@ -17,11 +17,13 @@
             </tr>
             <tr>
               <th colspan="2">
-                <span t-field="o.product_id.name"/>
+                <h2>
+                  <span t-field="o.product_id.name"/>
+                </h2>
               </th>
             </tr>
             <tr>
-              <th colspan="2">Productor</th>
+              <th>Productor</th>
               <td>: <span t-field="o.producer_id.name"/></td>
             </tr>
             <tr>
