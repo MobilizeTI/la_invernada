@@ -63,7 +63,6 @@ class MrpProduction(models.Model):
 
     products = fields.Many2many('product.product')
 
-    fabricable = fields.Many2many('product.product',compute='get_fabricable')
 
     @api.multi
     def action_cancel(self):
