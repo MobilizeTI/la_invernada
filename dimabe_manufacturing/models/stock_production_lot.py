@@ -66,6 +66,17 @@ class StockProductionLot(models.Model):
 
     productors = fields.Many2one('res.partner')
 
+    context_picking_id = fields.Integer(
+        'picking del contexto',
+        compute='_compute_context_picking_id'
+    )
+
+    @api.multi
+    def _compute_context_picking_id(self):
+        for item in self:
+            if 'stock_picking_id' in self.env.context:
+                item.context_picking_id = self.env.context['stock_picking_id']
+
     @api.multi
     def _compute_stock_production_lot_available_serial_ids(self):
         for item in self:

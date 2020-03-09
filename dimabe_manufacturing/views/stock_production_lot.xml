@@ -47,6 +47,8 @@
           </tree>
         </field>
 
+        <field name="context_picking_id" />
+
          <field name="stock_production_lot_available_serial_ids"
                 attrs="{'readonly':[('is_standard_weight','=',True)]}"
                 invisible="not context.get('available', False)"
@@ -71,7 +73,7 @@
             <button name="reserve_picking"
                     type="object"
                     string="Agregar a Packing List"
-                    context="context"
+                    context="{'stock_picking_id':  parent.context_picking_id}"
             />
           </tree>
         </field>
