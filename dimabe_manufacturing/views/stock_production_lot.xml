@@ -71,7 +71,7 @@
             <button name="reserve_picking"
                     type="object"
                     string="Agregar a Packing List"
-                    context="{'stock_picking_id':  context.get('stock_picking_id', False)}"
+                    context="{'stock_picking_id':  context['stock_picking_id']}"
             />
           </tree>
         </field>
