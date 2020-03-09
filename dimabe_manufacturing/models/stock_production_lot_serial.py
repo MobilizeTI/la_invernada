@@ -221,7 +221,7 @@ class StockProductionLotSerial(models.Model):
                     ]
                 })
         else:
-            raise models.ValidationError('no se pudo identificar picknig')
+            raise models.ValidationError('no se pudo identificar picking')
 
     @api.multi
     def unreserved_picking(self):

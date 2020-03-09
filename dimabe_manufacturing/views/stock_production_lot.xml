@@ -52,7 +52,6 @@
                 invisible="not context.get('available', False)"
         >
           <tree editable="bottom">
-            <field name="reserved_to_stock_picking_id"/>
             <field name="stock_production_lot_id" readonly="1"/>
             <field name="belongs_to_prd_lot" invisible="1"/>
             <field name="consumed" readonly="1" />
@@ -71,6 +70,7 @@
             <button name="reserve_picking"
                     type="object"
                     string="Agregar a Packing List"
+                    context="{'stock_picking_id': parent.id}"
             />
           </tree>
         </field>
