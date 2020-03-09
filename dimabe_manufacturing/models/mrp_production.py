@@ -68,7 +68,9 @@ class MrpProduction(models.Model):
     def action_cancel(self):
         for item in self:
             for product in item.products:
+                models._logger.error(product.name)
                 for route in product.route_ids:
+                    models._logger.error(route.name)
                     if route.id == 11:
                         models._logger.error(route.name)
 
