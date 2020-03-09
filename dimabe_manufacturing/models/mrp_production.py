@@ -65,7 +65,7 @@ class MrpProduction(models.Model):
     def action_cancel(self):
         for item in self:
             for route in item.product_id.route_ids:
-                raise models.ValidationError(route.name)
+                raise models.ValidationError(item.product_id.route_ids)
 
 
     @api.multi
