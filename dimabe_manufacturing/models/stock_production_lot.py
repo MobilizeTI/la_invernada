@@ -145,11 +145,10 @@ class StockProductionLot(models.Model):
             if not stock_picking_id:
                 raise models.ValidationError('no se encontó el registro de despacho al que asociar el lote')
             serial_to_assign_ids = item.stock_production_lot_serial_ids.filtered(
-                lambda a: not a.consumed
+                lambda a: not a.consumed and a.reserved_to_stock_picking_id == False
             )
-            serial_to_assign_ids.write({
-                'reserved_to_stock_picking_id': item.id
-            })
+
+            serial_to_assign_ids.with_context(stock_picking_id=stock_picking_id.id).reserve_picking()
 
     @api.multi
     def reserved(self):
