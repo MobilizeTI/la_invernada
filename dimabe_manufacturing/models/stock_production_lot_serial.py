@@ -52,16 +52,7 @@ class StockProductionLotSerial(models.Model):
         'Pallet'
     )
 
-    producer_id = fields.Char('Productor', compute='get_productor')
-
-    @api.model
-    def get_productor(self):
-        for item in self:
-            if item.stock_production_lot_id.producer_id:
-                item.update({
-                    'producer_id':item.stock_production_lot_id.producer_id.name
-                })
-
+    producer_id = fields.Char('Productor')
 
     @api.model
     def create(self, values_list):
