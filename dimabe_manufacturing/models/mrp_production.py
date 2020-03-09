@@ -71,7 +71,8 @@ class MrpProduction(models.Model):
         for item in self:
             for product in item.products:
                 for route in product.route_ids:
-                    if route.name == "Fabricar":
+                    raise models.ValidationError(route.id)
+                    if route.name == 'Fabricar':
                         list_product.append(product.id)
             result = self.env['product.product'].search([('id', 'in', list_product)])
             item.products = result
