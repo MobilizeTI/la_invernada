@@ -85,10 +85,32 @@
       <form>
         <group>
           <group>
-            <field name="pallet_ids" />
+            <field name="pallet_ids"
+                   domain=""
+            >
+              <tree>
+                <field name="total_available_content" />
+                <field name="name" />
+                <field name="total_content_weight" />
+                <field name="total_content" />
+                <field name="state" />
+                <button string="Agregar a Packing List"
+                        name="add_to_picking"
+                        type="object"
+                />
+              </tree>
+            </field>
           </group>
           <group>
-            <field name="stock_production_lot_available_serial_ids" />
+            <field name="stock_production_lot_available_serial_ids" >
+              <tree>
+                <field name="serial_number" />
+                <field name="stock_product_id"/>
+                <field name="pallet_id"/>
+                <field name="display_weight" />
+                <button />
+              </tree>
+            </field>
           </group>
         </group>
       </form>

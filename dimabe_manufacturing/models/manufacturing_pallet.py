@@ -109,6 +109,7 @@ class ManufacturingPallet(models.Model):
             item.total_content = len(item.lot_serial_ids)
 
     @api.multi
+    @api.depends('lot_serial_ids')
     def _compute_lot_available_serial_ids(self):
         for item in self:
             item.lot_available_serial_ids = item.lot_serial_ids.filtered(
@@ -116,6 +117,7 @@ class ManufacturingPallet(models.Model):
             )
 
     @api.multi
+    @api.depends('lot_available_serial_ids')
     def _compute_total_available_content(self):
         for item in self:
             item.total_available_content = len(item.lot_available_serial_ids)
