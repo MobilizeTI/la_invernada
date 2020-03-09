@@ -1,10 +1,5 @@
 <odoo>
     <data>
-        <template id="assets_backend" name="mrp assets" inherit_id="web.assets_backend">
-            <xpath expr="." position="inside">
-                <script type="text/javascript" src="/mrp/static/src/js/mrp.js"></script>
-            </xpath>
-        </template>
         <record id="stock_picking_form_inherit" model="ir.ui.view">
             <field name="name">Export Page</field>
             <field name="model">stock.picking</field>
