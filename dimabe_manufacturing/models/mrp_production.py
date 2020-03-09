@@ -68,7 +68,8 @@ class MrpProduction(models.Model):
         products = self.env['product.product'].search([])
         for item in products:
             routes = item.route_ids.mapped('name')
-            models._logger.error(routes)
+            if routes == 'Fabricar':
+                models._logger.error(routes)
 
     @api.multi
     def get_product_bom(self):
