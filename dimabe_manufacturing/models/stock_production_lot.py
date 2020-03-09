@@ -73,6 +73,7 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def _compute_context_picking_id(self):
+        models._logger.error(self.env.context)
         for item in self:
             if 'stock_picking_id' in self.env.context:
                 item.context_picking_id = self.env.context['stock_picking_id']
