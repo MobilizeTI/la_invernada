@@ -61,6 +61,8 @@ class MrpProduction(models.Model):
 
     materials = fields.Many2many('product.product', compute='get_product_bom')
 
+    route_ids = fields.Many2many('product.')
+
     @api.multi
     def get_product_bom(self):
         list_product = []
