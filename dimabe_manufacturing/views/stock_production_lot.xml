@@ -25,7 +25,7 @@
         />
 
         <field name="stock_production_lot_serial_ids"
-               attrs="{'readonly':[('is_standard_weight','=',True)]}"
+               attrs="{'readonly':[('is_standard_weight','=',True)],'invisible':[('context.available','='True)]}"
         >
           <tree editable="bottom">
             <field name="stock_production_lot_id" readonly="1"/>
@@ -42,6 +42,32 @@
             <button name="print_serial_label"
                     type="object" string="Imprimir"
                     attrs="{'invisible':['|',('serial_number', '=', False), ('production_id', '=', False)]}"
+            />
+          </tree>
+        </field>
+
+         <field name="stock_production_lot_serial_ids"
+               attrs="{'readonly':[('is_standard_weight','=',True)],'invisible':[('context.available','='False)]}"
+        >
+          <tree editable="bottom">
+            <field name="stock_production_lot_id" readonly="1"/>
+            <field name="belongs_to_prd_lot" invisible="1"/>
+            <field name="consumed" readonly="1" />
+            <field name="display_weight"
+                   attrs="{'readonly':['|',('belongs_to_prd_lot', '=', False),('consumed','=',True)]}"
+            />
+            <field name="serial_number" readonly="1"/>
+            <field name="production_id"
+                   readonly="1"
+                   widget="many2onebutton"
+            />
+            <button name="print_serial_label"
+                    type="object" string="Imprimir"
+                    attrs="{'invisible':['|',('serial_number', '=', False), ('production_id', '=', False)]}"
+            />
+            <button name="reserve_picking"
+                    type="object"
+                    string="Agregar a Packing List"
             />
           </tree>
         </field>

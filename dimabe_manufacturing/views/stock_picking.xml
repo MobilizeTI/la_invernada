@@ -55,6 +55,7 @@
                    groups="mrp.group_mrp_manager"
                    attrs="{'invisible':[('state','=','done')]}"
                    readonly="0"
+                   context="{'available': True}"
             >
               <tree editable="bottom" edit="true" delete="false" create="false">
                 <field name="name" readonly="1"/>
