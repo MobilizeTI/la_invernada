@@ -66,7 +66,7 @@ class MrpProduction(models.Model):
     def get_product_route(self):
         self.ensure_one()
         products = self.env['product.product'].search([])
-        for item in product:
+        for item in products:
             routes = item.route_ids.mapped('name').ids
             models._logger.error(routes)
 
