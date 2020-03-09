@@ -57,8 +57,8 @@ class StockProductionLotSerial(models.Model):
     @api.model
     def get_productor(self):
         for item in self:
-            if item.stock_production_lot_id.producer:
-                item.producer_id = item.stock_production_lot_id.productors.name
+            if item.stock_production_lot_id.producer_id:
+                item.producer_id = item.stock_production_lot_id.producer_id.name
 
 
     @api.model
