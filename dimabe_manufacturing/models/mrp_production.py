@@ -63,18 +63,15 @@ class MrpProduction(models.Model):
 
     products = fields.Many2many('product.product', compute='get_to_manufacture')
 
-    to_manufracture = fields.Boolean(compute='get_to_manufacture')
-
     @api.multi
     def get_to_manufacture(self):
         list_product = []
         for item in self:
             for product in item.products:
                 for route in product.route_ids:
+                    models._logger.error('route : {}'.format(route.id))
                     if route.name == 'Fabricar':
                         list_product.append(product.id)
-                        models._logger.error(route.id)
-                        models._logger.error(route.id)
             result = self.env['product.product'].search([('id', 'in', list_product)])
             item.products = result
 
