@@ -55,7 +55,7 @@
                    groups="mrp.group_mrp_manager"
                    attrs="{'invisible':[('state','=','done')]}"
                    readonly="0"
-                   context="{'available': True}"
+                   context="{'available': True, 'stock_picking_id': parent.id}"
             >
               <tree editable="bottom" edit="true" delete="false" create="false">
                 <field name="name" readonly="1"/>
