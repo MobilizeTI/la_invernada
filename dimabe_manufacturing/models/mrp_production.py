@@ -73,7 +73,7 @@ class MrpProduction(models.Model):
                 for route in product.route_ids:
                     if route.name == 'Fabricar':
                         list_product.append(product.id)
-                        models._logger(route.id)
+                        models._logger.error(route.id)
                         models._logger.error(route.id)
             result = self.env['product.product'].search([('id', 'in', list_product)])
             item.products = result
