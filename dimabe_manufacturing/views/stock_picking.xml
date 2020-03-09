@@ -17,7 +17,18 @@
             <field name="state" invisible="1"/>
             <notebook>
               <page string="Pallets de packing list">
-                <field name="assigned_pallet_ids" />
+                <field name="assigned_pallet_ids">
+                  <tree>
+                    <field name="name"/>
+                    <field name="total_content_weight"/>
+                    <field name="total_available_content"/>
+                    <field name="state"/>
+                    <button string="Quitar de Packing List"
+                            name="remove_from_picking"
+                            type="object"
+                    />
+                  </tree>
+                </field>
               </page>
               <page string="Series de Packing list">
                 <field name="packing_list_ids">
@@ -37,35 +48,36 @@
                   </tree>
                 </field>
               </page>
-            </notebook>
+              <page string="Lotes Disponibles">
 
-
-            <field name="product_search_id"
-                   groups="mrp.group_mrp_manager"
-            />
-
-
-            <field name="potential_lot_ids"
-                   groups="mrp.group_mrp_manager"
-                   attrs="{'invisible':[('state','=','done')]}"
-                   readonly="0"
-                   context="{'available': True, 'stock_picking_id': id}"
-            >
-              <tree editable="bottom" edit="true" delete="false" create="false">
-                <field name="name" readonly="1"/>
-                <field name="product_id" readonly="1"/>
-                <field name="available_total_serial" readonly="1"/>
-                <field name="is_reserved" invisible="1"/>
-                <button string="Agregar a Packing List" type="object" name="add_to_packing_list"
-                        context="{'stock_picking_id':parent.id}"
-                        attrs="{'invisible': [('is_reserved','=',True)]}"/>
-                <button string="Ver Series"
-                        context="{'stock_picking_id': parent.id}"
-                        type="object"
-                        name="show_available_serial"
+                <field name="product_search_id"
+                       groups="mrp.group_mrp_manager"
                 />
-              </tree>
-            </field>
+
+
+                <field name="potential_lot_ids"
+                       groups="mrp.group_mrp_manager"
+                       attrs="{'invisible':[('state','=','done')]}"
+                       readonly="0"
+                       context="{'available': True, 'stock_picking_id': id}"
+                >
+                  <tree editable="bottom" edit="true" delete="false" create="false">
+                    <field name="name" readonly="1"/>
+                    <field name="product_id" readonly="1"/>
+                    <field name="available_total_serial" readonly="1"/>
+                    <field name="is_reserved" invisible="1"/>
+                    <button string="Agregar a Packing List" type="object" name="add_to_packing_list"
+                            context="{'stock_picking_id':parent.id}"
+                            attrs="{'invisible': [('is_reserved','=',True)]}"/>
+                    <button string="Ver Series"
+                            context="{'stock_picking_id': parent.id}"
+                            type="object"
+                            name="show_available_serial"
+                    />
+                  </tree>
+                </field>
+              </page>
+            </notebook>
           </group>
         </page>
       </page>
