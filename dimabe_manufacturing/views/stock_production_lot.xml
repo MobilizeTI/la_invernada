@@ -7,10 +7,6 @@
       <group name="main_group" position="inside">
         <field name="is_prd_lot" invisible="1"/>
 
-        <field name="name" position="attributes">
-          <attribute name="attrs">{'readonly':[('context_picking_id','!=',0)]}</attribute>
-        </field>
-
         <field name="is_standard_weight" widget="boolean_toggle"
                attrs="{'invisible':[('is_prd_lot','=',False)],'readonly':[('context_picking_id','!=',0)]}"
         />
@@ -79,6 +75,21 @@
           </tree>
         </field>
       </group>
+    </field>
+  </record>
+
+  <record id="available_lot_form_view" model="ir.ui.view">
+    <field name="name">Selección de Packing list</field>
+    <field name="model">stock.production.lot</field>
+    <field name="arch" type="xml">
+      <form>
+        <group>
+          <group>
+            <field name="" />
+          </group>
+          <group></group>
+        </group>
+      </form>
     </field>
   </record>
 </odoo>

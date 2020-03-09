@@ -71,9 +71,18 @@ class StockProductionLot(models.Model):
         compute='_compute_context_picking_id'
     )
 
+    pallet_ids = fields.One2many(
+        'manufacturing.pallet',
+        compute='_compute_pallet_ids'
+    )
+
+    @api.multi
+    def _compute_pallet_ids(self):
+        for item in self:
+            item.pallet_ids = item.stock_production_lot_available_serial_ids.mapped('pallet_id')
+
     @api.multi
     def _compute_context_picking_id(self):
-        models._logger.error(self.env.context)
         for item in self:
             if 'stock_picking_id' in self.env.context:
                 item.context_picking_id = self.env.context['stock_picking_id']
@@ -291,8 +300,7 @@ class StockProductionLot(models.Model):
             'res_id': self.id,
             'view_type': 'form',
             'view_mode': 'form',
-            'views': [(False, 'form')],
+            'views': [(self.env.ref('dimabe_manufacturing.available_lot_form_view').id, 'form')],
             'target': 'new',
             'context': self.env.context
         }
-
