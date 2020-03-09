@@ -142,7 +142,7 @@ class StockProductionLot(models.Model):
             serial_to_assign_ids = item.stock_production_lot_serial_ids.filtered(
                 lambda a: not a.consumed and a.reserved_to_stock_picking_id == False
             )
-
+            raise  models.ValidationError(serial_to_assign_ids)
             serial_to_assign_ids.with_context(stock_picking_id=picking_id).reserve_picking()
 
     @api.multi
