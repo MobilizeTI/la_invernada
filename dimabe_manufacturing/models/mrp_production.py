@@ -61,16 +61,7 @@ class MrpProduction(models.Model):
 
     materials = fields.Many2many('product.product', compute='get_product_bom')
 
-    route_manufacture = field.Many2one('stock.location.route',compute='get_route_manufacture',
-                                       domain='[("id","=",11)]')
-
-    @api.multi
-    def get_route_manufracte(self):
-        for item in self:
-            for route in item.product_id.route_ids:
-                if 11 in item.product_id.route_ids:
-                    raise models.ValidationError(item.route_manufacture)
-
+    route_manufacture = field.Many2one('stock.location.route',domain='[("id","=",11)]')
 
     @api.multi
     def get_product_bom(self):
