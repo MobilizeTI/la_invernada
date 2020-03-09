@@ -55,7 +55,7 @@ class StockPicking(models.Model):
     @api.multi
     def _compute_assigned_pallet_ids(self):
         for item in self:
-            item.assigned_pallet_ids =
+            item.assigned_pallet_ids = []
 
     @api.multi
     @api.depends('product_search_id')
