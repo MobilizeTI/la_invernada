@@ -61,14 +61,11 @@ class MrpProduction(models.Model):
 
     materials = fields.Many2many('product.product', compute='get_product_bom')
 
-    products = fields.Many2many('product.product')
-
-
     @api.multi
     def action_cancel(self):
         for item in self:
-            for product in item.products:
-                models._logger.error(product.name)
+            for route in item.product_id.route_ids:
+                raise models.ValidationError(route.name)
 
 
     @api.multi
