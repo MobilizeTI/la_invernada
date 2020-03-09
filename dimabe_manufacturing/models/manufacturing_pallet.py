@@ -212,5 +212,5 @@ class ManufacturingPallet(models.Model):
                 ))
                 item.lot_serial_ids.filtered(
                     lambda a: a.reserved_to_stock_picking_id == stock_picking_id
-                ).unreserved_serial()
+                ).unreserved_picking()
 
