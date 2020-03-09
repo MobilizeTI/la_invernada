@@ -8,7 +8,7 @@
         <field name="is_prd_lot" invisible="1"/>
 
         <field name="name" position="attributes">
-          <attribute name="readonly">[('context_picking_id','!=',False)]</attribute>
+          <attribute name="attrs">{'readonly':[('context_picking_id','!=',False)]}</attribute>
         </field>
 
         <field name="is_standard_weight" widget="boolean_toggle"
