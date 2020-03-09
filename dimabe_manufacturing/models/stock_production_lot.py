@@ -52,7 +52,7 @@ class StockProductionLot(models.Model):
 
     is_reserved = fields.Boolean('Esta reservado?', compute='reserved', default=False)
 
-    producers = fields.Many2one('res.partner','Productor')
+    productors = fields.Many2one('res.partner','Productor')
 
     @api.multi
     def _compute_reception_data(self):
