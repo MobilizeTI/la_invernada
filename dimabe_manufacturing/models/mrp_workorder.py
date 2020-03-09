@@ -168,7 +168,7 @@ class MrpWorkorder(models.Model):
     @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
         for item in self:
-            self.on_barcode_scanned(self,item.confirmed_serial)
+            item.on_barcode_scanned(item.confirmed_serial)
 
     def on_barcode_scanned(self, barcode):
         qty_done = self.qty_done
