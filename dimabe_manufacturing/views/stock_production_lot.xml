@@ -49,7 +49,7 @@
 
          <field name="stock_production_lot_serial_ids"
                 attrs="{'readonly':[('is_standard_weight','=',True)]}"
-                invisible="context.get('available', True)"
+                invisible="not context.get('available', True)"
         >
           <tree editable="bottom">
             <field name="stock_production_lot_id" readonly="1"/>
