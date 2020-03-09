@@ -43,6 +43,11 @@ class StockProductionLot(models.Model):
         string="Detalle"
     )
 
+    stock_production_lot_available_serial_ids = fields.One2many(
+        'stock.production.lot.serial',
+        compute='_compute_stock_production_lot_available_serial_ids'
+    )
+
     total_serial = fields.Float(
         'Total',
         compute='_compute_total_serial'
@@ -60,6 +65,12 @@ class StockProductionLot(models.Model):
 
     productors = fields.Many2one('res.partner')
 
+    @api.multi
+    def _compute_stock_production_lot_available_serial_ids(self):
+        for item in self:
+            item.stock_production_lot_available_serial_ids = item.stock_production_lot_serial_ids.filtered(
+                lambda a: not a.reserved_to_stock_picking_id
+            )
 
     @api.multi
     def _compute_available_total_serial(self):
