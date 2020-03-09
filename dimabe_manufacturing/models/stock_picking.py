@@ -122,7 +122,7 @@ class StockPicking(models.Model):
             lambda a: a.serial_number == barcode
         )
         if not custom_serial:
-            raise models.ValidationError('Esta serie no esta en packing list')
+            raise models.ValidationError('el código {} no corresponde a este despacho'.format(barcode))
         return custom_serial
 
     def on_barcode_scanned(self, barcode):
@@ -130,24 +130,22 @@ class StockPicking(models.Model):
         for item in self:
             custom_serial = item.validate_barcode(barcode)
             if custom_serial.consumed:
-                raise models.ValidationError('Serie ya fue consumida')
-            stock_move = self.move_line_ids_without_package.filtered(
-                lambda a: a.product_id == custom_serial.stock_production_lot_id.product_id
+                raise models.ValidationError('el código {} ya fue consumido'.format(barcode))
+            stock_move_line = self.move_line_ids_without_package.filtered(
+                lambda a: a.product_id == custom_serial.stock_production_lot_id.product_id and
+                          a.lot_id == custom_serial.stock_production_lot_id and
+                          a.product_uom_qty == custom_serial.display_weight and
+                          a.qty_done == 0
             )
 
-            move_line = stock_move.filtered(
-                lambda a: a.lot_id == custom_serial.stock_production_lot_id
-            )
-            if len(move_line) > 1:
-                move_line[0].update({
-                    'qty_done': move_line[0].qty_done + custom_serial.display_weight
+            if len(stock_move_line) > 1:
+                stock_move_line[0].update({
+                    'qty_done': stock_move_line[0].qty_done + custom_serial.display_weight
                 })
             else:
-                move_line.update({
-                    'qty_done': move_line.qty_done + custom_serial.display_weight
+                stock_move_line.update({
+                    'qty_done': stock_move_line.qty_done + custom_serial.display_weight
                 })
-            custom_serial.sudo().update(
-                {
-                    'consumed': True
-                }
-            )
+            custom_serial.sudo().update({
+                'consumed': True
+            })
