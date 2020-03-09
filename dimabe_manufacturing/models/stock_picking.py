@@ -155,5 +155,5 @@ class StockPicking(models.Model):
     def action_cancel(self):
         for move in self.move_ids_without_package:
             move.product_id.update({
-                'virtual_available': product_id.virtual_available - move.reserved_availability
+                'virtual_available': move.product_id.virtual_available - move.reserved_availability
             })
