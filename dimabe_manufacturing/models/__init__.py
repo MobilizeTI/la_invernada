@@ -1,6 +1,5 @@
 
 from . import mrp_workorder
-from . import res_partner
 from . import stock_production_lot
 from . import mrp_production
 from . import stock_production_lot_serial
@@ -18,3 +17,4 @@ from . import product_product
 from . import stock_traceability
 from . import dried_unpelled_history
 from . import manufacturing_pallet
+from . import res_partner
