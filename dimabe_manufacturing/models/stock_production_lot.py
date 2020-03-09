@@ -71,6 +71,7 @@ class StockProductionLot(models.Model):
     def _search_available_total_serial(self, operator, value):
         stock_production_lot_ids = self.env['stock.production.lot.serial'].search([
             ('consumed', '=', False),
+            ('reserved_to_stock_picking_id', '=', False)
         ]).mapped('stock_production_lot_id')
 
         if operator == '>':
