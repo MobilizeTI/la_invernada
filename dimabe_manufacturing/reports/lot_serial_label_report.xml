@@ -33,7 +33,7 @@
               <td>Productor:</td>
               <td colspan="3">
                 <div t-if="o.stock_production_lot_id">
-                  <span t-field="o.producer_id"/>
+                  <span t-field="o.producer_id.name"/>
                 </div>
                 <div t-elif="o.producer_id.name">
                   <span t-field="o.producer_id.name" />

@@ -52,7 +52,7 @@ class StockProductionLotSerial(models.Model):
         'Pallet'
     )
 
-    producer_id = fields.Char('Productor')
+    producer_id = fields.Many2one('Productor')
 
     @api.model
     def create(self, values_list):
@@ -68,7 +68,7 @@ class StockProductionLotSerial(models.Model):
             work_order = self.env['mrp.workorder'].search([
                 ('final_lot_id', '=', res.stock_production_lot_id.id)
             ])
-            res.producer_id = res.stock_production_lot_id.producer_id.name
+            res.producer_id = res.stock_production_lot_id.producer_id
             models._logger.error(res.stock_production_lot_id.name)
             models._logger.error(work_order.mapped('name'))
             if work_order.production_id:
