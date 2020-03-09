@@ -68,7 +68,6 @@ class ManufacturingPallet(models.Model):
     total_available_content = fields.Integer(
         'Cantidad Disponible',
         compute='_compute_total_available_content',
-        store=True
     )
 
     total_content_weight = fields.Float(
@@ -117,7 +116,6 @@ class ManufacturingPallet(models.Model):
             )
 
     @api.multi
-    @api.depends('lot_available_serial_ids')
     def _compute_total_available_content(self):
         for item in self:
             item.total_available_content = len(item.lot_available_serial_ids)
