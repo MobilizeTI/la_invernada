@@ -73,6 +73,12 @@
             </field>
           </page>
         </xpath>
+
+        <xpath expr="//page[3]" position="after">
+          <page string="Pallets">
+            <field name="manufacturing_pallet_ids" />
+          </page>
+        </xpath>
       </field>
     </record>
 
