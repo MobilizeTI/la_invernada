@@ -52,6 +52,8 @@ class StockProductionLotSerial(models.Model):
         'Pallet'
     )
 
+    productor = fields.Char(rel='stock_production_lot_id.productors')
+
     @api.model
     def create(self, values_list):
         res = super(StockProductionLotSerial, self).create(values_list)
