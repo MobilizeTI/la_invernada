@@ -108,7 +108,7 @@
                                 >
                                     <tree readonly="1">
                                         <field name="product_id"/>
-                                        <field name="lot_id" readonly="1" widget="many2onebutton"/>
+                                        <field name="lot_id" widget="many2onebutton"/>
                                     </tree>
                                 </field>
                             </group>
