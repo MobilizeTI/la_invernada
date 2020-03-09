@@ -112,7 +112,7 @@ class ManufacturingPallet(models.Model):
     def _compute_lot_available_serial_ids(self):
         for item in self:
             item.lot_available_serial_ids = item.lot_serial_ids.filtered(
-                lambda a: not a.consumed
+                lambda a: not a.consumed and not a.reserved_to_stock_picking_id
             )
 
     @api.multi
