@@ -48,11 +48,53 @@ class StockProductionLot(models.Model):
         compute='_compute_total_serial'
     )
 
+    available_total_serial = fields.Float(
+        'total disponible',
+        compute='_compute_available_total_serial',
+        search='_search_available_total_serial'
+    )
+
     qty_to_reserve = fields.Float('Cantidad a Reservar')
 
     is_reserved = fields.Boolean('Esta reservado?', compute='reserved', default=False)
 
     productors = fields.Many2one('res.partner')
+
+    @api.multi
+    def _compute_available_total_serial(self):
+        for item in self:
+            item.available_total_serial = sum(item.stock_production_lot_serial_ids.filtered(
+                lambda a: not a.consumed
+            ).mapped('display_weight'))
+
+    @api.multi
+    def _search_available_total_serial(self, operator, value):
+        stock_production_lot_ids = self.env['stock.production.lot.serial'].search([
+            ('consumed', '=', False),
+        ]).mapped('stock_production_lot_id')
+
+        if operator == '>':
+            stock_production_lot_ids = stock_production_lot_ids.filtered(
+                lambda a: sum(a.stock_production_lot_serial_ids.mapped('display_weight')) > value
+            )
+        elif operator == '=':
+            stock_production_lot_ids = stock_production_lot_ids.filtered(
+                lambda a: sum(a.stock_production_lot_serial_ids.mapped('display_weight')) == value
+            )
+        elif operator == '<':
+            stock_production_lot_ids = stock_production_lot_ids.filtered(
+                lambda a: sum(a.stock_production_lot_serial_ids.mapped('display_weight')) < value
+            )
+        elif operator == '>=':
+            stock_production_lot_ids = stock_production_lot_ids.filtered(
+                lambda a: sum(a.stock_production_lot_serial_ids.mapped('display_weight')) >= value
+            )
+        elif operator == '<=':
+            stock_production_lot_ids = stock_production_lot_ids.filtered(
+                lambda a: sum(a.stock_production_lot_serial_ids.mapped('display_weight')) <= value
+            )
+
+        return [('id', 'in', stock_production_lot_ids)]
 
     @api.multi
     def _compute_reception_data(self):

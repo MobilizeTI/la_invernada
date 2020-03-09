@@ -80,12 +80,13 @@ class StockPicking(models.Model):
     @api.multi
     def _compute_potential_lot(self):
         for item in self:
-            if not item.have_series:
-                for product in item.move_ids_without_package.mapped('product_id.id'):
-                    data = self.env['stock.production.lot.serial'].search([('stock_product_id', '=', product)])
-                    if not data:
-                        lot = self.env['stock.production.lot'].search([('product_id', '=', product)])
-                        item.potential_lot_ids = lot
+            domain = [
+                ('product_id', 'in', item.move_ids_without_package.mapped('product_id.id')),
+                ('available_total_serial', '>', 0)
+            ]
+
+            lot = self.env['stock.production.lot'].search(domain)
+            item.potential_lot_ids = lot
 
     @api.multi
     def _compute_packing_list_ids(self):

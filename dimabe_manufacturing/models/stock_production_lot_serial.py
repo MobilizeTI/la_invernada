@@ -191,7 +191,7 @@ class StockProductionLotSerial(models.Model):
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
 
                 if not stock_quant:
-                    raise models.ValidationError('El lote {} aun se encuentra en proceso.'.format(
+                    raise models.ValidationError('El lote {} aún se encuentra en proceso.'.format(
                         item.stock_production_lot_id.name
                     ))
 
