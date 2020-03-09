@@ -16,6 +16,9 @@
             <field name="id" invisible="1"/>
             <field name="state" invisible="1"/>
             <notebook>
+              <page string="Pallets de packing list">
+                <field name="assigned_pallet_ids" />
+              </page>
               <page string="Series de Packing list">
                 <field name="packing_list_ids">
                   <tree>
