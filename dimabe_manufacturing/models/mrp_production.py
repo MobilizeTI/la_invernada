@@ -61,14 +61,20 @@ class MrpProduction(models.Model):
 
     materials = fields.Many2many('product.product', compute='get_product_bom')
 
+    products = fields.Many2many('product.product', compute='get_to_manufacture')
+
     to_manufracture = fields.Boolean(compute='get_to_manufacture')
 
     @api.multi
     def get_to_manufacture(self):
+        list_product = []
         for item in self:
-                for route in item.product_id.route_ids:
-                    if route.name == 'Fabricar':
-                        models._logger.error('route: {}'.format(route.name))
+            for product in item.products:
+                for route in product.route_ids:
+                    if route.name == "Fabricar":
+                        list_product.append(product.id)
+            result = self.env['product.product'].search([('id', 'in', list_product)])
+            item.products = result
 
     @api.multi
     def get_product_bom(self):
@@ -80,7 +86,6 @@ class MrpProduction(models.Model):
 
             models._logger.error(result)
             item.materials = result
-
 
     @api.multi
     def _compute_show_finished_move_line_ids(self):
