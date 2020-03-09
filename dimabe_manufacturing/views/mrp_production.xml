@@ -26,7 +26,6 @@
                     <!-- <field name="sale_order_id" readonly="1"
                            string="Pedido de Venta"
                     /> -->
-
                     <field name="stock_picking_id" invisible="1"/>
                 </field>
                 <field name="company_id" position="after">
