@@ -190,7 +190,10 @@ class StockProductionLotSerial(models.Model):
 
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
 
-                raise models.ValidationError(stock_quant)
+                if not stock_quant:
+                    raise models.ValidationError('El lote {} aun se encuentra en proceso.'.format(
+                        item.stock_production_lot_id.name
+                    ))
 
                 stock_quant.sudo().update({
                     'reserved_quantity': stock_quant.reserved_quantity + item.display_weight
