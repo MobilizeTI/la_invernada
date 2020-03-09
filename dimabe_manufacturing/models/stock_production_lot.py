@@ -54,6 +54,14 @@ class StockProductionLot(models.Model):
 
     producer_id = fields.Many2one('res.partner','Productor')
 
+    @api.onchange('producer_id')
+    def set_producer_to_serial(self):
+        for item in self:
+            for serial in item.stock_production_lot_serial_ids:
+                serial.update({
+                    'producer_id':item.producer_id.name
+                })
+
     @api.multi
     def _compute_reception_data(self):
         for item in self:
