@@ -43,7 +43,6 @@
                           attrs="{'invisible':[('state','=','done')]}"
                     >
                         <group>
-                            <field name="fabricable" invisible="1"/>
                             <field name="materials" invisible="1"/>
                             <field name="client_search_id" attrs="{'invisible':[('state','=','done')]}"
                                    domain="[('is_company','=',True),('customer','=',True)]"/>
