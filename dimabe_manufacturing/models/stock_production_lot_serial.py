@@ -52,8 +52,14 @@ class StockProductionLotSerial(models.Model):
         'Pallet'
     )
 
-    productor = fields.Char('Productor')
+    producer = fields.Char('Productor',compute='get_productor')
 
+    @api.model
+    def get_productor(self):
+        for item in self:
+            item.producer = item.stock_production_lot_id.producer
+
+    item.producer
     @api.model
     def create(self, values_list):
         res = super(StockProductionLotSerial, self).create(values_list)
