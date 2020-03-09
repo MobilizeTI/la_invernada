@@ -61,6 +61,15 @@ class MrpProduction(models.Model):
 
     materials = fields.Many2many('product.product', compute='get_product_bom')
 
+
+    is_manufacturable = field.Boolean('Es Fabricable')
+
+    @api.multi
+    def get_route_ids(self):
+        for item in self:
+            for route in item.product_id.route_ids:
+                models._logger.error(route.name)
+
     @api.multi
     def get_product_bom(self):
         list_product = []
