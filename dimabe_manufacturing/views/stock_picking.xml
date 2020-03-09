@@ -15,7 +15,8 @@
           <group>
             <field name="id" invisible="1" />
             <field name="state" invisible="1"/>
-            <field name="packing_list_ids">
+            <page string="Series de Packing list">
+                 <field name="packing_list_ids">
               <tree>
                 <field name="stock_production_lot_id"/>
                 <field name="stock_product_id"/>
@@ -31,27 +32,13 @@
                 />
               </tree>
             </field>
+            </page>
+
             <field name="product_search_id"
                    groups="mrp.group_mrp_manager"
             />
 
-            <field name="potential_lot_serial_ids"
-                   groups="mrp.group_mrp_manager"
-                   attrs="{'invisible':[('state','=','done')]}"
 
-            >
-              <tree>
-                <field name="stock_production_lot_id"/>
-                <field name="stock_product_id"/>
-                <field name="serial_number"/>
-                <field name="display_weight"/>
-                <button string="Agregar a Packing List"
-                        type="object"
-                        name="reserve_picking"
-                        context="{'stock_picking_id':parent.id}"
-                />
-              </tree>
-            </field>
             <field name="potential_lot_ids"
                    groups="mrp.group_mrp_manager"
                    attrs="{'invisible':[('state','=','done')]}"

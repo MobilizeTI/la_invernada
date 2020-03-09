@@ -78,7 +78,7 @@
                 <field name="display_weight" />
                 <button string="Agregar a Packing List"
                         type="object"
-                         name="reserve_picking"
+                        name="reserve_picking"
                 />
               </tree>
             </field>
