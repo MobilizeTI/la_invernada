@@ -94,7 +94,7 @@ class StockProductionLot(models.Model):
                 lambda a: sum(a.stock_production_lot_serial_ids.mapped('display_weight')) <= value
             )
 
-        return [('id', 'in', stock_production_lot_ids)]
+        return [('id', 'in', stock_production_lot_ids.mapped('id'))]
 
     @api.multi
     def _compute_reception_data(self):
