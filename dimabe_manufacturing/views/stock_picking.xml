@@ -60,6 +60,7 @@
                 <field name="name" readonly="1"/>
                 <field name="product_id" readonly="1"/>
                 <field name="available_total_serial" readonly="1"/>
+                <field name="is_reserved" invisible="1" />
                 <button string="Agregar a Packing List" type="object" name="add_to_packing_list"
                         context="{'stock_picking_id':parent.id}"
                         attrs="{'invisible': [('is_reserved','=',True)]}"/>
