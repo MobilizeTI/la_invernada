@@ -61,7 +61,6 @@ class StockProductionLotSerial(models.Model):
             ('lot_id', '=', res.stock_production_lot_id.id),
             ('lot_id.is_prd_lot', '=', True)
         ])
-
         production = None
         if stock_move_line.move_id.production_id:
             production = stock_move_line.move_id.production_id[0]
