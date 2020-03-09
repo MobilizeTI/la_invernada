@@ -30,6 +30,7 @@
           <tree editable="bottom">
             <field name="stock_production_lot_id" readonly="1"/>
             <field name="belongs_to_prd_lot" invisible="1"/>
+            <field name="producer_id" readonly="1"/>
             <field name="consumed" readonly="1" />
             <field name="display_weight"
                    attrs="{'readonly':['|',('belongs_to_prd_lot', '=', False),('consumed','=',True)]}"
