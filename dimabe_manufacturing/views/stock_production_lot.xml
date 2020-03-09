@@ -85,9 +85,11 @@
       <form>
         <group>
           <group>
-            <field name="" />
+            <field name="pallet_ids" />
           </group>
-          <group></group>
+          <group>
+            <field name="stock_production_lot_available_serial_ids" />
+          </group>
         </group>
       </form>
     </field>
