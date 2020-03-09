@@ -7,12 +7,12 @@
       <group name="main_group" position="inside">
         <field name="is_prd_lot" invisible="1"/>
 
-        <field name="name" position="Attributes">
+        <field name="name" position="attributes">
           <attribute name="readonly">[('context_picking_id','!=',False)]</attribute>
         </field>
 
         <field name="is_standard_weight" widget="boolean_toggle"
-               attrs="{'invisible':[('is_prd_lot','=',False)], 'readonly':[('context_picking_id','!=',False)]}"
+               attrs="{'invisible':[('is_prd_lot','=',False)],'readonly':[('context_picking_id','!=',False)]}"
         />
 
         <field name="standard_weight"
