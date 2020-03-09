@@ -138,17 +138,12 @@ class StockProductionLot(models.Model):
         picking_id = None
         if 'stock_picking_id' in self.env.context:
             picking_id = self.env.context['stock_picking_id']
-        if not picking_id:
-            raise models.ValidationError('no se encontró el packing list al que asociar el lote')
         for item in self:
-            stock_picking_id = self.env['stock.picking'].search([('id', '=', picking_id)])
-            if not stock_picking_id:
-                raise models.ValidationError('no se encontó el registro de despacho al que asociar el lote')
             serial_to_assign_ids = item.stock_production_lot_serial_ids.filtered(
                 lambda a: not a.consumed and a.reserved_to_stock_picking_id == False
             )
 
-            serial_to_assign_ids.with_context(stock_picking_id=stock_picking_id.id).reserve_picking()
+            serial_to_assign_ids.with_context(stock_picking_id=picking_id).reserve_picking()
 
     @api.multi
     def reserved(self):
