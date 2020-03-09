@@ -227,6 +227,11 @@ class StockProductionLot(models.Model):
                 stock_picking_id = self.env.context['stock_picking_id']
                 stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
             if stock_picking:
+
+                item.stock_production_lot_serial_ids.filtered(
+                    lambda a: a.reserved_to_stock_picking_id.id == stock_picking_id
+                ).unreserved_picking()
+
                 stock_move = stock_picking.move_ids_without_package.filtered(
                     lambda x: x.product_id == item.product_id
                 )
