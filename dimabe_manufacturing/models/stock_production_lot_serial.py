@@ -175,9 +175,11 @@ class StockProductionLotSerial(models.Model):
 
     @api.multi
     def reserve_picking(self):
+        models._logger.error(self.env.context)
         if 'stock_picking_id' in self.env.context:
             stock_picking_id = self.env.context['stock_picking_id']
             stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
+
             raise models.ValidationError(stock_picking_id)
             if not stock_picking:
                 raise models.ValidationError('No se encontró el picking al que reservar el stock')
