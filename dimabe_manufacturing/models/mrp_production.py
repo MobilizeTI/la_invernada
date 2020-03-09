@@ -67,7 +67,8 @@ class MrpProduction(models.Model):
     def get_to_manufacture(self):
         for item in self:
                 for route in item.product_id.route_ids:
-                    models._logger.error('route: {}'.format(route.name))
+                    if route.name == 'Fabricar':
+                        models._logger.error('route: {}'.format(route.name))
 
     @api.multi
     def get_product_bom(self):
