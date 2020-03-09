@@ -66,6 +66,11 @@
                 <button string="Agregar a Packing List" type="object" name="add_to_packing_list"
                         context="{'stock_picking_id':parent.id}"
                         attrs="{'invisible': [('is_reserved','=',True)]}"/>
+                <button string="Ver Series"
+                        context="{'stock_picking_id': parent.id}"
+                        type="object"
+                        name="show_available_serial"
+                />
               </tree>
             </field>
           </group>
