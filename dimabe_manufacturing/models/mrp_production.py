@@ -61,7 +61,7 @@ class MrpProduction(models.Model):
 
     materials = fields.Many2many('product.product', compute='get_product_bom')
 
-    route_manufacture = field.Many2one('stock.location.route',domain='[("id","=",11)]')
+    route_manufacture = field.Many2one('stock.location.route',domain="[('id','=',11)]")
 
     @api.multi
     def get_product_bom(self):
