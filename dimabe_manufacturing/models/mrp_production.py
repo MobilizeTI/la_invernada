@@ -61,7 +61,14 @@ class MrpProduction(models.Model):
 
     materials = fields.Many2many('product.product', compute='get_product_bom')
 
-    route_manufacture = field.Many2one('stock.location.route',domain="[('id','=',11)]")
+
+    @api.onchange('product_id')
+    def get_product_route(self):
+        self.ensure_one()
+        products = self.env['product.product'].search[()]
+        for item in product:
+            routes = item.route_ids.mapped('name').ids
+            models._logger.error(routes)
 
     @api.multi
     def get_product_bom(self):
