@@ -66,7 +66,7 @@ class MrpProduction(models.Model):
     fabricable = fields.Many2many('product.product',compute='get_fabricable')
 
     @api.multi
-    def get_fabricable(self):
+    def action_cancel(self):
         for item in self:
             for product in item.products:
                 for route in product.route_ids:
