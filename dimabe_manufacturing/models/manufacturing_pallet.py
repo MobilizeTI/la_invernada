@@ -208,6 +208,6 @@ class ManufacturingPallet(models.Model):
             stock_picking_id = self.env.context['stock_picking_id']
             for item in self:
                 item.lot_serial_ids.filtered(
-                    lambda a: a.reserved_to_stock_picking_id == stock_picking_id
+                    lambda a: a.reserved_to_stock_picking_id.id == stock_picking_id
                 ).unreserved_picking()
 
