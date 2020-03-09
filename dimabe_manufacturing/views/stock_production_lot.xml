@@ -8,7 +8,7 @@
         <field name="is_prd_lot" invisible="1"/>
 
         <field name="is_standard_weight" widget="boolean_toggle"
-               attrs="{'invisible':[('is_prd_lot','=',False)],'readonly':[('context_picking_id','!=',False)]}"
+               attrs="{'invisible':[('is_prd_lot','=',False)],'readonly':[('context_picking_id','!=',0)]}"
         />
 
         <field name="standard_weight"
