@@ -45,7 +45,8 @@ class StockProductionLot(models.Model):
 
     stock_production_lot_available_serial_ids = fields.One2many(
         'stock.production.lot.serial',
-        compute='_compute_stock_production_lot_available_serial_ids'
+        compute='_compute_stock_production_lot_available_serial_ids',
+        string='Series Disponibles'
     )
 
     total_serial = fields.Float(
