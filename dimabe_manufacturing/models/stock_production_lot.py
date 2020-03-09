@@ -284,3 +284,14 @@ class StockProductionLot(models.Model):
             lambda a: a.location_id.name == 'Stock'
         )
 
+    def show_available_serial(self):
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "stock.production.lot",
+            "view_type": "form",
+            "view_mode": "form",
+            "views": [(False, "form")],
+            "target": "new",
+            "context": self.env.context
+        }
+
