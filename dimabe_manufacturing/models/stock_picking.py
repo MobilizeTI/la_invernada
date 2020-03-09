@@ -58,7 +58,7 @@ class StockPicking(models.Model):
     )
 
     @api.multi
-    def _compute_packing_list_ids(self):
+    def _compute_packing_list_lot_ids(self):
         for item in self:
             item.packing_list_lot_ids = item.packing_list_ids.mapped('stock_production_lot_id')
 
