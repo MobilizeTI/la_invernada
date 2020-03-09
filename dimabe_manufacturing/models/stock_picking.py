@@ -151,10 +151,3 @@ class StockPicking(models.Model):
                 }
             )
 
-    @api.multi
-    def action_cancel(self):
-        for move in self.move_ids_without_package:
-            raise models.ValidationError('virtual_available : {} - {}'.format(move.product_id.virtual_available, move.reserved_availability))
-            move.product_id.sudo().update({
-                'virtual_available': move.product_id.virtual_available - move.reserved_availability
-            })
