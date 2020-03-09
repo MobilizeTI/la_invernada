@@ -204,6 +204,7 @@ class ManufacturingPallet(models.Model):
     @api.multi
     def remove_from_picking(self):
         stock_picking_id = None
+        models._logger.error(self.env.context)
         if 'stock_picking_id' in self.env.context:
             stock_picking_id = self.env.context['stock_picking_id']
             for item in self:
