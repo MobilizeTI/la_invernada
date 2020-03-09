@@ -49,7 +49,7 @@
         <field name="context_picking_id" invisible="0"/>
 
          <field name="stock_production_lot_available_serial_ids"
-                attrs="{'readonly':['|',('is_standard_weight','=',True),('context_picking_id','>', 0)],'invisible':[('context_picking_id','=',None)]}"
+                attrs="{'readonly':['|',('is_standard_weight','=',True),('context_picking_id','>', 0)],'invisible':[('context_picking_id','=',0)]}"
         >
           <tree editable="bottom">
             <field name="stock_production_lot_id" readonly="1"/>
