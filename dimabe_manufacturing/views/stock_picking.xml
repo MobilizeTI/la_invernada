@@ -18,7 +18,15 @@
           <notebook>
             <page string="Lotes de Packing List">
               <group>
-                <field name="packing_list_lot_ids" />
+                <field name="packing_list_lot_ids" >
+                  <field name="name" />
+                  <field name="product_id" />
+                  <button string="Quitar de Packing List"
+                          type="object"
+                          name="unreserved"
+                          context="{'stock_picking_id':parent.id}"
+                  />
+                </field>
               </group>
             </page>
             <page string="Pallets de packing list">
