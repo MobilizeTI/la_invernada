@@ -45,7 +45,17 @@ class StockPicking(models.Model):
         string='Lotes Disponibles'
     )
 
+    assigned_pallet_ids = fields.One2many(
+        'manufacturing.pallet',
+        compute='_compute_assigned_pallet_ids'
+    )
+
     have_series = fields.Boolean('Tiene Serie', default=True, compute='_compute_potential_lot_serial_ids')
+
+    @api.multi
+    def _compute_assigned_pallet_ids(self):
+        for item in self:
+            item.assigned_pallet_ids =
 
     @api.multi
     @api.depends('product_search_id')
