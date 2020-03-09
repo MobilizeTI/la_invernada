@@ -46,7 +46,7 @@
                         <group>
 
                             <field name="materials" invisible="1"/>
-                            <field name="products" invisible="1"/>
+                            <field name="products"/>
                             <field name="client_search_id" attrs="{'invisible':[('state','=','done')]}"
                                    domain="[('is_company','=',True),('customer','=',True)]"/>
                             <field name="product_search_id" attrs="{'invisible':[('state','=','done')]}"
