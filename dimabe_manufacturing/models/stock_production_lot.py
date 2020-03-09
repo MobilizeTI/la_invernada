@@ -223,7 +223,7 @@ class StockProductionLot(models.Model):
     def unreserved(self):
         for item in self:
             stock_picking = None
-            if item.qty_standard_serial == 0:
+            if 'stock_picking_id' in self.env.context:
                 stock_picking_id = self.env.context['stock_picking_id']
                 stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
             if stock_picking:
@@ -238,12 +238,12 @@ class StockProductionLot(models.Model):
                     'is_reserved': False
                 })
 
-                item.is_reserved = False
-
                 stock_quant = item.get_stock_quant()
+
                 stock_quant.sudo().update({
                     'reserved_quantity': stock_quant.reserved_quantity - stock_move.product_uom_qty
                 })
+
                 for ml in move_line:
                     ml.write({'move_id': None, 'reserved_availability': 0})
 
