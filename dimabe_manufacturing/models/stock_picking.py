@@ -150,3 +150,9 @@ class StockPicking(models.Model):
                     'consumed': True
                 }
             )
+
+    @api.model
+    def action_cancel(self):
+        for item in self:
+            for move in item.move_ids_without_package:
+                raise models.ValidationError(move.product_id.virtual_available)
