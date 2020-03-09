@@ -147,7 +147,6 @@ class StockProductionLot(models.Model):
             serial_to_assign_ids = item.stock_production_lot_serial_ids.filtered(
                 lambda a: not a.consumed
             )
-            raise models.ValidationError(serial_to_assign_ids.mapped('reserved_to_stock_picking_id'))
             serial_to_assign_ids.write({
                 'reserved_to_stock_picking_id': item.id
             })
