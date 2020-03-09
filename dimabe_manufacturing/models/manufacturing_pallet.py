@@ -195,7 +195,11 @@ class ManufacturingPallet(models.Model):
         #     'pallet_id': self.id
         # })
 
-
-
-        # raise models.ValidationError([(6, 0, lot_serial_ids)])
+    @api.multi
+    def add_to_picking(self):
+        stock_picking_id = None
+        if 'stock_picking_id' in self.env.context:
+            stock_picking_id = self.env.context['stock_picking_id']
+        for item in self:
+            item.lot_available_serial_ids.with_context(stock_picking_id=stock_picking_id).reserve_picking()
 

@@ -56,9 +56,7 @@
       <form>
         <group>
           <group>
-            <field name="pallet_ids"
-                   domain=""
-            >
+            <field name="pallet_ids">
               <tree>
                 <field name="total_available_content" />
                 <field name="name" />
