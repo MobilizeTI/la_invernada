@@ -25,7 +25,7 @@
         />
 
         <field name="stock_production_lot_serial_ids"
-               attrs="{'readonly':[('is_standard_weight','=',True)],'invisible':[('context_picking_id','!=',False)]}"
+               attrs="{'readonly':[('is_standard_weight','=',True)],'invisible':[('context_picking_id','!=', 0)]}"
         >
           <tree editable="bottom">
             <field name="stock_production_lot_id" readonly="1"/>
