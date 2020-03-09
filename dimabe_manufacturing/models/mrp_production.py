@@ -61,13 +61,13 @@ class MrpProduction(models.Model):
 
     materials = fields.Many2many('product.product', compute='get_product_bom')
 
-    products = fields.Many2many('product.product', compute='get_to_manufacture')
+
 
     @api.multi
     def get_to_manufacture(self):
-        list_product = []
+        products = fields.Many2many('product.product')
         for item in self:
-            for product in item.products:
+            for product in products:
                 models._logger.error(product.route_ids)
 
 
