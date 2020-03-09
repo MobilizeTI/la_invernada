@@ -60,8 +60,6 @@ class StockProductionLotSerial(models.Model):
             if item.stock_production_lot_id.producer:
                 item.producer = item.stock_production_lot_id.productors.name
 
-    item.producer
-
     @api.model
     def create(self, values_list):
         res = super(StockProductionLotSerial, self).create(values_list)
