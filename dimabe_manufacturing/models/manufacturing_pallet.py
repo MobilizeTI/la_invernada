@@ -206,8 +206,10 @@ class ManufacturingPallet(models.Model):
         stock_picking_id = None
         if 'stock_picking_id' in self.env.context:
             stock_picking_id = self.env.context['stock_picking_id']
-            raise models.ValidationError(stock_picking_id)
             for item in self:
+                models.ValidationError(item.lot_serial_ids.filtered(
+                    lambda a: a.reserved_to_stock_picking_id == stock_picking_id
+                ))
                 item.lot_serial_ids.filtered(
                     lambda a: a.reserved_to_stock_picking_id == stock_picking_id
                 ).unreserved_serial()
