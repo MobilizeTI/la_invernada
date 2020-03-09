@@ -133,43 +133,63 @@ class StockProductionLot(models.Model):
             item.total_serial = sum(item.stock_production_lot_serial_ids.mapped('display_weight'))
 
     @api.multi
-    def reserved(self):
+    def add_to_packing_list(self):
+        picking_id = None
+        if 'stock_picking_id' in self.env.context:
+            picking_id = self.env.context['stock_picking_id']
+        if not picking_id:
+            raise models.ValidationError('no se encontró el packing list al que asociar el lote')
         for item in self:
-            if item.qty_standard_serial == 0:
-                if 'stock_picking_id' in self.env.context:
-                    stock_picking_id = self.env.context['stock_picking_id']
-                    reserve = self.env.context['reserved']
-                    models._logger.error(reserve)
-                    stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
-                    if stock_picking:
-                        stock_move = stock_picking.move_ids_without_package.filtered(
-                            lambda x: x.product_id == item.product_id
-                        )
-                        stock_quant = item.get_stock_quant()
-                        stock_quant.sudo().update({
-                            'reserved_quantity': stock_quant.reserved_quantity + item.qty_to_reserve
-                        })
-                        item.update({
-                            'qty_to_reserve': reserve,
-                            'is_reserved': True
-                        })
-                        models._logger.error(item.is_reserved)
-                        item.is_reserved = True
-                        models._logger.error(item.is_reserved)
-                        move_line = self.env['stock.move.line'].create({
-                            'product_id': item.product_id.id,
-                            'lot_id': item.id,
-                            'product_uom_qty': reserve,
-                            'product_uom_id': stock_move.product_uom.id,
-                            'location_id': stock_quant.location_id.id,
-                            'location_dest_id': stock_picking.partner_id.property_stock_customer.id
-                        })
-                        models._logger.error(item.is_reserved)
-                        stock_move.sudo().update({
-                            'move_line_ids': [
-                                (4, move_line.id)
-                            ]
-                        })
+            stock_picking_id = self.env['stock.picking'].search([('id', '=', picking_id)])
+            if not stock_picking_id:
+                raise models.ValidationError('no se encontó el registro de despacho al que asociar el lote')
+            serial_to_assign_ids = item.stock_production_lot_serial_ids.filtered(
+                lambda a: not a.consumed
+            )
+
+            serial_to_assign_ids.write({
+                'reserved_to_stock_picking_id': item.id
+            })
+
+    @api.multi
+    def reserved(self):
+        print()
+        # for item in self:
+        #     if item.qty_standard_serial == 0:
+        #         if 'stock_picking_id' in self.env.context:
+        #             stock_picking_id = self.env.context['stock_picking_id']
+        #             reserve = self.env.context['reserved']
+        #             models._logger.error(reserve)
+        #             stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
+        #             if stock_picking:
+        #                 stock_move = stock_picking.move_ids_without_package.filtered(
+        #                     lambda x: x.product_id == item.product_id
+        #                 )
+        #                 stock_quant = item.get_stock_quant()
+        #                 stock_quant.sudo().update({
+        #                     'reserved_quantity': stock_quant.reserved_quantity + item.qty_to_reserve
+        #                 })
+        #                 item.update({
+        #                     'qty_to_reserve': reserve,
+        #                     'is_reserved': True
+        #                 })
+        #                 models._logger.error(item.is_reserved)
+        #                 item.is_reserved = True
+        #                 models._logger.error(item.is_reserved)
+        #                 move_line = self.env['stock.move.line'].create({
+        #                     'product_id': item.product_id.id,
+        #                     'lot_id': item.id,
+        #                     'product_uom_qty': reserve,
+        #                     'product_uom_id': stock_move.product_uom.id,
+        #                     'location_id': stock_quant.location_id.id,
+        #                     'location_dest_id': stock_picking.partner_id.property_stock_customer.id
+        #                 })
+        #                 models._logger.error(item.is_reserved)
+        #                 stock_move.sudo().update({
+        #                     'move_line_ids': [
+        #                         (4, move_line.id)
+        #                     ]
+        #                 })
 
     @api.multi
     def unreserved(self):
