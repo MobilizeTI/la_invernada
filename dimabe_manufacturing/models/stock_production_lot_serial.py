@@ -179,7 +179,7 @@ class StockProductionLotSerial(models.Model):
             stock_picking_id = self.env.context['stock_picking_id']
             stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
             if not stock_picking:
-                raise models.ValidationError('No se encontró el picking al que reservar el stock')
+                raise models.ValidationError('No se encontró el picking al que reservar el stock {}'.format(stock_picking_id))
             for item in self:
                 item.update({
                     'reserved_to_stock_picking_id': stock_picking.id
