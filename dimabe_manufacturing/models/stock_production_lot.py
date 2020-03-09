@@ -60,6 +60,7 @@ class StockProductionLot(models.Model):
 
     productors = fields.Many2one('res.partner')
 
+
     @api.multi
     def _compute_available_total_serial(self):
         for item in self:
