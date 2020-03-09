@@ -52,6 +52,16 @@ class StockPicking(models.Model):
 
     have_series = fields.Boolean('Tiene Serie', default=True, compute='_compute_potential_lot_serial_ids')
 
+    packing_list_lot_ids = fields.One2many(
+        'stock.production.lot',
+        compute='_compute_packing_list_lot_ids'
+    )
+
+    @api.multi
+    def _compute_packing_list_ids(self):
+        for item in self:
+            item.packing_list_lot_ids = item.packing_list_ids.mapped('stock_production_lot_id')
+
     @api.multi
     def _compute_assigned_pallet_ids(self):
         for item in self:

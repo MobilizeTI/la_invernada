@@ -16,6 +16,11 @@
           <field name="id" invisible="1"/>
           <field name="state" invisible="1"/>
           <notebook>
+            <page string="Lotes de Packing List">
+              <group>
+                <field name="packing_list_lot_ids" />
+              </group>
+            </page>
             <page string="Pallets de packing list">
               <group>
                 <field name="assigned_pallet_ids">
