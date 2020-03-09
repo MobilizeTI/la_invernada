@@ -52,7 +52,7 @@ class StockProductionLotSerial(models.Model):
         'Pallet'
     )
 
-    productor = fields.Char(rel='stock_production_lot_id.productors')
+    productor = fields.Char('Productor')
 
     @api.model
     def create(self, values_list):
