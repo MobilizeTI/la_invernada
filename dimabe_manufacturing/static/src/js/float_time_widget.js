@@ -11,7 +11,7 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
         _timeCounter: function () {
             var self = this;
             clearTimeout(this.timer);
-            if (this.record.data.init_active_time && !this.record.date.finish_active_time){
+            if (this.record.data.init_active_time && !this.record.data.finish_active_time){
                 this.timer = setTimeout(function () {
                     self.record.data.active_seconds += 1
                     self._timeCounter();
