@@ -11,7 +11,7 @@ class OvenUse(models.Model):
 
     name = fields.Char(
         'Horno en uso',
-        cpompute='_compute_name'
+        compute='_compute_name'
     )
 
     done = fields.Boolean('Listo')
