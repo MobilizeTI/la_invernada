@@ -1,25 +1,22 @@
 odoo.define('dimabe_manufacturing.integer_time', function (require) {
     'use strict';
-    let AbstractField = require('web.AbstractField');
-    let fieldRegistry = require('web.field_registry');
+    var AbstractField = require('web.AbstractField');
+    var fieldRegistry = require('web.field_registry');
 
-    let timeField = AbstractField.extend({
+    var timeField = AbstractField.extend({
         supportedFieldTypes: ['integer'],
-        /**
-         * @override
-         */
-        willStart: function () {
-            console.log('llalala')
+        init: function () {
+            this._super.apply(this, arguments)
         },
-        destroy: function () {
-            console.log('destroy')
+        _renderEdit: function () {
+            this.$el.append($('<span>',{
+                'data-val': 'edit'
+            }))
         },
-
-        /**
-         * @override
-         */
-        isSet: function () {
-            return true
+        _renderReadonly: function () {
+            this.$el.append($('<span>',{
+                'data-val': 'readonly'
+            }))
         }
     })
 
