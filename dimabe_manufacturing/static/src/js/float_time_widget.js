@@ -11,14 +11,16 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
         _timeCounter: function () {
             var self = this;
             clearTimeout(this.timer);
-            this.timer = setTimeout(function () {
-                self.record.data.active_seconds += 1
-                self._timeCounter();
-            }, 1000);
-            this.$el.context.classList.remove('o_field_empty')
-            this.$el.html($('<span>' + self._to_date_format(self.record.data.active_seconds) + '</span>', {
-                'class': 'success'
-            }));
+            if (this.record.data.init_date && !this.record.date.finish_date){
+                this.timer = setTimeout(function () {
+                    self.record.data.active_seconds += 1
+                    self._timeCounter();
+                }, 1000);
+                this.$el.context.classList.remove('o_field_empty')
+                this.$el.html($('<span>' + self._to_date_format(self.record.data.active_seconds) + '</span>', {
+                    'class': 'success'
+                }));
+            }
         },
         _to_date_format: function (seconds) {
             var days = parseInt((seconds / 86400).toString())
@@ -34,16 +36,13 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
                 }
 
             }
-            return `${this._normalize_number(days)} ${this._normalize_number(hours)}:${this._normalize_number(minutes)}:${this._normalize_number(sec)}`
+            return `${this._normalize_number(days)}  ${this._normalize_number(hours)}:${this._normalize_number(minutes)}:${this._normalize_number(sec)}`
 
         },
         _normalize_number: function (number) {
             var tmp = '0'+number
             tmp = tmp.substr(tmp.length - 2, 2)
             return tmp
-            // tmp = tmp.substr(tmp.length - 2, 2)
-            // console.log(tmp)
-            // return tmp
         }
     })
 
