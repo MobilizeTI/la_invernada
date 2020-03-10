@@ -73,6 +73,8 @@ class MrpProduction(models.Model):
                 if route.name == 'Fabricar':
                     manufacturable.append(item.id)
                     p = self.env['product.product'].search([('id','in',manufacturable)])
+                    for pro in p:
+                        models._logger.error(pro.name)
         self.manufacturable = p
 
     @api.multi
