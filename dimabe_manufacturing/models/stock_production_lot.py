@@ -54,15 +54,6 @@ class StockProductionLot(models.Model):
 
     producer_id = fields.Many2one('res.partner', 'Productor')
 
-    is_prd_weight = field.Boolean(compute='_compute_is_prd_weight')
-
-    @api.multi
-    def _compute_is_prd_weight(self):
-        pro_tmp = item.env['product.template'].search([('name', '=', item.product_id.name)])
-        if pro_tmp.weight == 0:
-            self.is_prd_weight = False
-        elif pro_tmp.weight != 0:
-            self.is_prd_weight = True
 
     @api.multi
     def _compute_reception_data(self):
