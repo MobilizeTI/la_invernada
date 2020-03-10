@@ -59,6 +59,7 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_pr_weight(self):
         self.ensure_one()
+        models._logger.error(self.product_id.weight)
         if self.product_id.weight == 0:
             self.is_pr_weight = False
         else:
