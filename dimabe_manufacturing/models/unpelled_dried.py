@@ -112,7 +112,7 @@ class UnpelledDried(models.Model):
     @api.multi
     def _compute_can_close(self):
         for item in self:
-            item.can_close = len(item.out_serial_ids.filtered(
+            item.can_close = len(item.oven_use_ids.filtered(
                 lambda a: a.ready_to_close
             )) > 0
 
