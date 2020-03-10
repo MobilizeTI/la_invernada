@@ -15,8 +15,8 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
             if (this.record.data.init_active_time && !this.record.data.finish_active_time){
                 this.timer = setTimeout(function () {
                     var currentDate = new Date().getTime() / 1000
-                    console.log(currentDate - self.record.data.init_active_time)
-                    toSum = currentDate - self.record.data.init_active_time
+                    toSum = parseInt(currentDate - self.record.data.init_active_time)
+                    console.log(toSum)
                     self._timeCounter();
                 }, 1000);
                 this.$el.context.classList.remove('o_field_empty')
@@ -26,6 +26,7 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
             }
         },
         _to_date_format: function (seconds) {
+            console.log(seconds)
             var days = parseInt((seconds / 86400).toString())
             var hours = 0
             var minutes = 0
