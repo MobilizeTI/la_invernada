@@ -12,7 +12,7 @@ class UnpelledDried(models.Model):
 
     total_pending_lot_count = fields.Integer(
         'Lotes Pendientes',
-        compute='_compute_total_pending_tol_count'
+        compute='_compute_total_pending_lot_count'
     )
 
     can_close = fields.Boolean(
