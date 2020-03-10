@@ -215,12 +215,12 @@ class UnpelledDried(models.Model):
     def finish_unpelled_dried(self):
         for item in self:
             oven_use_to_close_ids = item.oven_use_ids.filtered(
-                lambda a: a.finish_date
+                lambda a: a.ready_to_close
             )
 
             for lot_id in oven_use_to_close_ids.mapped('used_lot_id'):
                 oven_use_id = item.oven_use_ids.filtered(
-                    lambda a: not a.finish_date and len(a.dried_oven_ids) == 1 and lot_id == a.used_lot_id
+                    lambda a: not a.ready_to_close and len(a.dried_oven_ids) == 1 and lot_id == a.used_lot_id
                 )
                 if oven_use_id:
                     raise models.ValidationError('el lote {} no ha sido terminado en el cajón {}.'
@@ -231,7 +231,7 @@ class UnpelledDried(models.Model):
                     ))
 
             if not oven_use_to_close_ids:
-                raise models.ValidationError('no hay hornos terminados que procesar')
+                raise models.ValidationError('no hay hornos terminados y listos para cerrar que procesar')
 
             if not item.out_serial_ids:
                 raise models.ValidationError('Debe agregar al menos una serie de salida al proceso')
