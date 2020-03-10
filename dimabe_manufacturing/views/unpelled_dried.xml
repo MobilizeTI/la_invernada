@@ -107,7 +107,7 @@
                    attrs="{'invisible':[('out_lot_id','=',False)],'readonly':[('state','in',['done'])]}"
             />
             <field name="out_serial_ids"
-                   attrs="{'readonly':[('state','in',['done'])],'invisible':[('out_lot_id','=',False)]}"
+                   attrs="{'readonly':['|',('state','in',['done']),('can_close','=',False)],'invisible':[('out_lot_id','=',False)]}"
             >
               <tree editable="bottom">
                 <field name="stock_production_lot_id"

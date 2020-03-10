@@ -7,7 +7,7 @@ class OvenUse(models.Model):
     _name = 'oven.use'
     _description = 'datos de uso de los hornos'
 
-    ready_to_close = fields.Boolean('Cerrar')
+    ready_to_close = fields.Boolean('Listo para Cerrar')
 
     name = fields.Char(
         'Horno en uso',

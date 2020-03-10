@@ -10,6 +10,11 @@ class UnpelledDried(models.Model):
         default=True
     )
 
+    can_close = fields.Boolean(
+        'Puede Cerrar',
+        compute='_compute_can_close'
+    )
+
     state = fields.Selection([
         ('draft', 'Borrador'),
         ('progress', 'En Proceso'),
@@ -103,6 +108,13 @@ class UnpelledDried(models.Model):
         'unpelled_dried_id',
         'Historial'
     )
+
+    @api.multi
+    def _compute_can_close(self):
+        for item in self:
+            item.can_close = len(item.out_serial_ids.filtered(
+                lambda a: a.ready_to_close
+            )) > 0
 
     @api.multi
     def _compute_performance(self):
