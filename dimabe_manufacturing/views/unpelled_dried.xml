@@ -55,6 +55,7 @@
               <tree editable="bottom">
                 <field name="init_active_time" invisible="1"/>
                 <field name="finish_active_time" invisible="1"/>
+                <field name="used_lot_ids" />
                 <field name="ready_to_close"
                        widget="boolean_toggle"
                        attrs="{'invisible':[('finish_date','=',False)]}"
