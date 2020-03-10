@@ -171,7 +171,7 @@ class StockProductionLot(models.Model):
     @api.multi
     def generate_standard_serial(self):
         for item in self:
-            pro_templ = self.env['product.template'].search([('product_variant_id','=',item.product_id.id)])
+            pro_templ = self.env['product.template'].search([('name','=',item.product_id.name)])
             for pro in pro_templ:
                 models._logger.error(pro.name)
 
