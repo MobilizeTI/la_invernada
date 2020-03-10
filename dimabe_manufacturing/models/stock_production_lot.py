@@ -181,7 +181,7 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def reserved(self):
-        print()
+        print('')
         # for item in self:
         #     if item.qty_standard_serial == 0:
         #         if 'stock_picking_id' in self.env.context:
