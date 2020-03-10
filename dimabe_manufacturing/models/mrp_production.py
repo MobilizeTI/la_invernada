@@ -63,6 +63,8 @@ class MrpProduction(models.Model):
 
     manufacturable = fields.Many2many('product.product',compute='get_product_route')
 
+    test = fields.Char('Prueba')
+
     @api.multi
     def get_product_route(self):
         self.ensure_one()
