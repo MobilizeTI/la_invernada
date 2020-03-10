@@ -54,7 +54,8 @@ class StockProductionLot(models.Model):
 
     producer_id = fields.Many2one('res.partner', 'Productor')
 
-    is_pr_weight = fields.Boolean('¿Producto tiene peso?')
+    is_pr_weight = fields.Boolean('¿Producto tiene peso?',default=False)
+
 
     @api.multi
     def _compute_reception_data(self):
