@@ -72,7 +72,8 @@ class MrpProduction(models.Model):
             for route in item.route_ids:
                 if route.name == 'Fabricar':
                     manufacturable.append(item.id)
-        self.manufacturable = self.env['product.product'].search(['id','in',manufacturable])
+
+        self.manufacturable = self.env['product.product'].search([('id','in',manufacturable)])
 
     @api.multi
     def get_product_bom(self):
