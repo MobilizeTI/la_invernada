@@ -50,8 +50,10 @@ class OvenUse(models.Model):
     @api.multi
     def _compute_name(self):
         for item in self:
+            tmp = ''
             for name in item.dried_oven_ids.mapped('name'):
-                item.name += '{} '.format(name)
+                tmp += '{} '.format(name)
+            item.name = tmp
             models._logger.error(item.name)
 
     @api.multi
