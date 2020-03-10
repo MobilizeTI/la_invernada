@@ -40,7 +40,7 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
         },
         _normalize_number: function (number) {
             var tmp = `0${number}`
-            tmp = tmp.substr(tmp.length - 2, tmp.length - 1)
+            tmp = tmp.substr(tmp.length - 2, 2)
             console.log(tmp)
             return tmp
         }
