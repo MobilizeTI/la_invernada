@@ -13,7 +13,7 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
             clearTimeout(this.timer);
             if (this.record.data.init_active_time && !this.record.data.finish_active_time){
                 this.timer = setTimeout(function () {
-                    var currentDate = new Date().getTime()
+                    var currentDate = new Date().getTime() / 1000
                     console.log(currentDate, self.record.data.init_active_time)
                     var toSum = currentDate - self.record.data.init_active_time
                     self.record.data.active_seconds += toSum
