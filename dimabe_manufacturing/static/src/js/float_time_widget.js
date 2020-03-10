@@ -6,6 +6,7 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
     var timeField = AbstractField.extend({
         supportedFieldTypes: ['integer'],
         _render: function () {
+            this.$el.context.classList.remove('o_field_empty')
             this._timeCounter()
         },
         _timeCounter: function () {
@@ -15,11 +16,36 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
                 self.record.data.active_seconds += 1
                 self._timeCounter();
             }, 1000);
-            console.log(self.record.data.active_seconds)
-            console.log(this.$el.context.classList.remove('o_field_empty'))
-            this.$el.html($('<span>' + self.record.data.active_seconds + '</span>',{
+
+            this.$el.html($('<span>' + self._to_date_format(self.record.data.active_seconds) + '</span>',{
                 'class': 'success'
             }));
+        },
+        _to_date_format: function (seconds) {
+            var days = parseInt((seconds / 86400).toString())
+            var hours = 0
+            var minutes = 0
+            var sec = 0
+            if (seconds % 86400 > 0){
+                hours = parseInt(((seconds % 86400) / 3600).toString())
+                if ((seconds % 86400) % 3600 > 0){
+                    minutes = parseInt((((seconds % 86400) % 3600) / 60).toString())
+                    if (((seconds % 86400) % 3600) % 60 > 0)
+                        sec = parseInt((((seconds % 86400) % 3600) % 60).toString())
+                }
+
+            }
+
+
+            return `${this._normalize_number(days)} 
+                ${this._normalize_number(hours)}:${this._normalize_number(minutes)}:${this._normalize_number(sec)}`
+
+
+
+        },
+        _normalize_number(number){
+            var tmp = `0${number}`
+            return tmp.substr(tmp.length - 2, tmp.length - 1)
         }
     })
 
