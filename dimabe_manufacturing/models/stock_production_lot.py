@@ -183,7 +183,6 @@ class StockProductionLot(models.Model):
     def generate_standard_serial(self):
         for item in self:
             serial_ids = []
-            pro_tmp = item.env['product.template'].search([('name', '=', item.product_id.name)])
             if pro_tmp.weight:
                 for counter in range(len(item.stock_production_lot_serial_ids) + item.qty_standard_serial):
                     tmp = '00{}'.format(counter + 1)
@@ -199,7 +198,7 @@ class StockProductionLot(models.Model):
                     else:
                         new_serial = item.env['stock.production.lot.serial'].create({
                             'stock_production_lot_id': item.id,
-                            'display_weight': pro_tmp.weight,
+                            'display_weight': product_id.weight,
                             'serial_number': item.name + tmp[-3:],
                             'belong_to_prd_lot': True
                         })
@@ -224,7 +223,7 @@ class StockProductionLot(models.Model):
                     else:
                         new_serial = item.env['stock.production.lot.serial'].create({
                             'stock_production_lot_id': item.id,
-                            'display_weight': pro_tmp.weight,
+                            'display_weight': product_id.weight,
                             'serial_number': item.name + tmp[-3:],
                             'belong_to_prd_lot': True
                         })
