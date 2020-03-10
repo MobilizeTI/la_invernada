@@ -6,7 +6,7 @@ class StockProductionLot(models.Model):
 
     product_variety = fields.Char(
         'Variedad',
-        related=lambda self: self.product_id.get_variety()
+        compute='_compute_product_variety'
     )
 
     producer_id = fields.Many2one(
@@ -80,6 +80,11 @@ class StockProductionLot(models.Model):
         'manufacturing.pallet',
         compute='_compute_pallet_ids'
     )
+
+    @api.multi
+    def _compute_product_variety(self):
+        for item in self:
+            item.product_variety = item.product_id.get_variety()
 
     @api.multi
     def _compute_pallet_ids(self):
