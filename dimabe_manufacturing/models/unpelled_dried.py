@@ -95,7 +95,7 @@ class UnpelledDried(models.Model):
 
     used_lot_ids = fields.One2many(
         'stock.production.lot',
-        related='oven_use_ids.used_lot_id'
+        compute='_compute_used_lot_ids'
     )
 
     total_in_weight = fields.Float(
@@ -118,6 +118,11 @@ class UnpelledDried(models.Model):
         'unpelled_dried_id',
         'Historial'
     )
+
+    @api.multi
+    def _compute_used_lot_ids(self):
+        for item in self:
+            item.used_lot_ids = item.oven_use_ids.mapped('used_lot_id')
 
     @api.multi
     def _compute_total_pending_lot_count(self):
