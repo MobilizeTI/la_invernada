@@ -6,7 +6,6 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
     var timeField = AbstractField.extend({
         supportedFieldTypes: ['integer'],
         _render: function () {
-            this.$el.context.classList.remove('o_field_empty')
             this._timeCounter()
         },
         _timeCounter: function () {
@@ -16,7 +15,7 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
                 self.record.data.active_seconds += 1
                 self._timeCounter();
             }, 1000);
-
+            this.$el.context.classList.remove('o_field_empty')
             this.$el.html($('<span>' + self._to_date_format(self.record.data.active_seconds) + '</span>', {
                 'class': 'success'
             }));
@@ -39,8 +38,8 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
 
         },
         _normalize_number: function (number) {
-            return 1
-            // var tmp = `0${number}`
+            var tmp = '0'+number
+            return tmp
             // tmp = tmp.substr(tmp.length - 2, 2)
             // console.log(tmp)
             // return tmp
