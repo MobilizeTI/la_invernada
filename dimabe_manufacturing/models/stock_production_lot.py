@@ -60,7 +60,10 @@ class StockProductionLot(models.Model):
     def _compute_pr_weight(self):
         self.ensure_one()
         pro_tmp = self.env['product.template'].search([('name','=',self.product_id.name)])
-        raise models.ValidationError(pro_tmp.name)
+        if pro_tmp.weight == 0:
+            self.is_pr_weight = False
+        else:
+            self.is_pr_weight = True
 
     @api.multi
     def _compute_reception_data(self):
