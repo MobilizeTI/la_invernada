@@ -11,7 +11,7 @@ class OvenUse(models.Model):
 
     name = fields.Char(
         'Horno en uso',
-        related='dried_oven_ids.mapped(name)'
+        cpompute='_compute_name'
     )
 
     done = fields.Boolean('Listo')
@@ -46,6 +46,11 @@ class OvenUse(models.Model):
     unpelled_dried_id = fields.Many2one('unpelled.dried', 'Proceso de secado')
 
     history_id = fields.Many2one('dried.unpelled.history', 'Historial')
+
+    @api.multi
+    def _compute_name(self):
+        for item in self:
+            item.name = item.dried_oven_ids.mapped('name')
 
     @api.multi
     @api.depends('active_seconds')
