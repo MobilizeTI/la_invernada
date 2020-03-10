@@ -54,6 +54,16 @@ class StockProductionLot(models.Model):
 
     producer_id = fields.Many2one('res.partner', 'Productor')
 
+    is_prd_weight = field.Boolean(compute='_compute_is_prd_weight')
+
+    @api.multi
+    def _compute_is_prd_weight(self):
+        pro_tmp = item.env['product.template'].search([('name', '=', item.product_id.name)])
+        if pro_tmp.weight == 0:
+            self.is_prd_weight = False
+        elif pro_tmp.weight != 0:
+            self.is_prd_weight = True
+
     @api.multi
     def _compute_reception_data(self):
         for item in self:
@@ -173,30 +183,56 @@ class StockProductionLot(models.Model):
         for item in self:
             serial_ids = []
             pro_tmp = item.env['product.template'].search([('name', '=', item.product_id.name)])
-        for counter in range(1):
-            tmp = '00{}'.format(counter + 1)
-            serial = item.stock_production_lot_serial_ids.filtered(
-                lambda a: a.serial_number == item.name + tmp[-3:]
-            )
-            if serial:
-                if not serial.consumed:
-                    serial.update({
-                        'display_weight': pro_tmp.weight
-                    })
-                    serial_ids.append(serial.id)
-            else:
-                new_serial = item.env['stock.production.lot.serial'].create({
-                    'stock_production_lot_id': item.id,
-                    'display_weight': pro_tmp.weight,
-                    'serial_number': item.name + tmp[-3:],
-                    'belong_to_prd_lot': True
-                })
-                serial_ids.append(new_serial.id)
-        serial_ids += list(item.stock_production_lot_serial_ids.filtered(
-            lambda a: a.consumed
-        ).mapped('id'))
+            if pro_tmp.weight:
+                for counter in range(1):
+                    tmp = '00{}'.format(counter + 1)
+                    serial = item.stock_production_lot_serial_ids.filtered(
+                        lambda a: a.serial_number == item.name + tmp[-3:]
+                    )
+                    if serial:
+                        if not serial.consumed:
+                            serial.update({
+                                'display_weight': pro_tmp.weight
+                            })
+                            serial_ids.append(serial.id)
+                    else:
+                        new_serial = item.env['stock.production.lot.serial'].create({
+                            'stock_production_lot_id': item.id,
+                            'display_weight': pro_tmp.weight,
+                            'serial_number': item.name + tmp[-3:],
+                            'belong_to_prd_lot': True
+                        })
+                        serial_ids.append(new_serial.id)
+                serial_ids += list(item.stock_production_lot_serial_ids.filtered(
+                    lambda a: a.consumed
+                ).mapped('id'))
 
-        item.stock_production_lot_serial_ids = [(6, 0, serial_ids)]
+                item.stock_production_lot_serial_ids = [(6, 0, serial_ids)]
+            else:
+                for counter in range(1):
+                    tmp = '00{}'.format(counter + 1)
+                    serial = item.stock_production_lot_serial_ids.filtered(
+                        lambda a: a.serial_number == item.name + tmp[-3:]
+                    )
+                    if serial:
+                        if not serial.consumed:
+                            serial.update({
+                                'display_weight': pro_tmp.weight
+                            })
+                            serial_ids.append(serial.id)
+                    else:
+                        new_serial = item.env['stock.production.lot.serial'].create({
+                            'stock_production_lot_id': item.id,
+                            'display_weight': item.weight,
+                            'serial_number': item.name + tmp[-3:],
+                            'belong_to_prd_lot': True
+                        })
+                        serial_ids.append(new_serial.id)
+                serial_ids += list(item.stock_production_lot_serial_ids.filtered(
+                    lambda a: a.consumed
+                ).mapped('id'))
+
+                item.stock_production_lot_serial_ids = [(6, 0, serial_ids)]
 
     @api.model
     def get_stock_quant(self):

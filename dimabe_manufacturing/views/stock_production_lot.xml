@@ -1,52 +1,53 @@
 <odoo>
-  <record id="view_production_lot_form_simple_inherit" model="ir.ui.view">
-    <field name="name">Pesajes de Lote</field>
-    <field name="model">stock.production.lot</field>
-    <field name="inherit_id" ref="stock.view_production_lot_form_simple"/>
-    <field name="arch" type="xml">
-      <group name="main_group" position="inside">
-        <field name="is_prd_lot" invisible="1"/>
+    <record id="view_production_lot_form_simple_inherit" model="ir.ui.view">
+        <field name="name">Pesajes de Lote</field>
+        <field name="model">stock.production.lot</field>
+        <field name="inherit_id" ref="stock.view_production_lot_form_simple"/>
+        <field name="arch" type="xml">
+            <group name="main_group" position="inside">
+                <field name="is_prd_lot" invisible="1"/>
 
-        <field name="is_standard_weight" widget="boolean_toggle"
-               attrs="{'invisible':[('is_prd_lot','=',False)]}"
-        />
+                <field name="is_standard_weight" widget="boolean_toggle"
+                       attrs="{'invisible':[('is_prd_lot','=',False)]}"
+                />
 
-<!--        <field name="standard_weight"-->
-<!--               attrs="{'invisible':[('is_standard_weight','=',False)]}"-->
-<!--        />-->
-        <field name="producer_id" domain="[('supplier','=',True),('is_company','=',True)]"/>
-        <field name="qty_standard_serial"
-               attrs="{'invisible':[('is_standard_weight','=',False)]}"
-        />
-        <button string="Generar Series Estandar" class="oe_highlight"
-                attrs="{'invisible':[('is_standard_weight','=',False)]}"
-                type="object"
-                name="generate_standard_serial"
-        />
 
-        <field name="stock_production_lot_serial_ids"
-               attrs="{'readonly':[('is_standard_weight','=',True)]}"
-        >
-          <tree editable="bottom">
-            <field name="stock_production_lot_id" readonly="1"/>
-            <field name="belongs_to_prd_lot" invisible="1"/>
-            <field name="producer_id" readonly="1"/>
-            <field name="consumed" readonly="1" />
-            <field name="display_weight"
-                   attrs="{'readonly':['|',('belongs_to_prd_lot', '=', False),('consumed','=',True)]}"
-            />
-            <field name="serial_number" readonly="1"/>
-            <field name="production_id"
-                   readonly="1"
-                   widget="many2onebutton"
-            />
-            <button name="print_serial_label"
-                    type="object" string="Imprimir"
-                    attrs="{'invisible':['|',('serial_number', '=', False), ('production_id', '=', False)]}"
-            />
-          </tree>
+                <field name="standard_weight"
+                       attrs="{'invisible':['|',('is_standard_weight','=',False)]}"
+                />
+                <field name="producer_id" domain="[('supplier','=',True),('is_company','=',True)]"/>
+                <field name="qty_standard_serial"
+                       attrs="{'invisible':[('is_standard_weight','=',False)]}"
+                />
+                <button string="Generar Series Estandar" class="oe_highlight"
+                        attrs="{'invisible':[('is_standard_weight','=',False)]}"
+                        type="object"
+                        name="generate_standard_serial"
+                />
+
+                <field name="stock_production_lot_serial_ids"
+                       attrs="{'readonly':[('is_standard_weight','=',True)]}"
+                >
+                    <tree editable="bottom">
+                        <field name="stock_production_lot_id" readonly="1"/>
+                        <field name="belongs_to_prd_lot" invisible="1"/>
+                        <field name="producer_id" readonly="1"/>
+                        <field name="consumed" readonly="1"/>
+                        <field name="display_weight"
+                               attrs="{'readonly':['|',('belongs_to_prd_lot', '=', False),('consumed','=',True)]}"
+                        />
+                        <field name="serial_number" readonly="1"/>
+                        <field name="production_id"
+                               readonly="1"
+                               widget="many2onebutton"
+                        />
+                        <button name="print_serial_label"
+                                type="object" string="Imprimir"
+                                attrs="{'invisible':['|',('serial_number', '=', False), ('production_id', '=', False)]}"
+                        />
+                    </tree>
+                </field>
+            </group>
         </field>
-      </group>
-    </field>
-  </record>
+    </record>
 </odoo>
