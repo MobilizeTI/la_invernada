@@ -10,7 +10,6 @@
                 <field name="is_standard_weight" widget="boolean_toggle"
                        attrs="{'invisible':[('is_prd_lot','=',False)]}"
                 />
-                <field name="is_prd_weight" invisible="1"/>
 
                 <field name="standard_weight"
                        attrs="{'invisible':['|',('is_standard_weight','=',False)]}"
