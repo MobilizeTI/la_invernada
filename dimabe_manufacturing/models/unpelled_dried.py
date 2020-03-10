@@ -120,18 +120,18 @@ class UnpelledDried(models.Model):
         for item in self:
             item.total_in_weight = sum(item.oven_use_ids.filtered(
                 lambda a: a.finish_date
-            ).mapped('used_lot_ids').mapped('balance'))
+            ).mapped('used_lot_id').mapped('balance'))
 
     @api.multi
     def _compute_in_lot_ids(self):
         for item in self:
-            item.in_lot_ids = item.oven_use_ids.mapped('used_lot_ids')
+            item.in_lot_ids = item.oven_use_ids.mapped('used_lot_id')
 
     @api.onchange('producer_id')
     def onchange_producer_id(self):
         if self.producer_id not in self.in_lot_ids.mapped('producer_id'):
             for oven_use_id in self.oven_use_ids:
-                oven_use_id.used_lot_ids = [(5,)]
+                oven_use_id.used_lot_id = None
 
     @api.onchange('product_in_id')
     def onchange_product_in_id(self):
@@ -206,9 +206,9 @@ class UnpelledDried(models.Model):
                 lambda a: a.finish_date
             )
 
-            for lot_id in oven_use_to_close_ids.mapped('used_lot_ids'):
+            for lot_id in oven_use_to_close_ids.mapped('used_lot_id'):
                 oven_use_id = item.oven_use_ids.filtered(
-                    lambda a: not a.finish_date and len(a.used_lot_ids) == 1 and lot_id in a.used_lot_ids
+                    lambda a: not a.finish_date and len(a.dried_oven_ids) == 1 and lot_id == a.used_lot_id
                 )
                 if oven_use_id:
                     raise models.ValidationError('el lote {} no ha sido terminado en el cajón {}.'
@@ -240,7 +240,7 @@ class UnpelledDried(models.Model):
 
             consumed = []
 
-            for used_lot_id in oven_use_to_close_ids.mapped('used_lot_ids'):
+            for used_lot_id in oven_use_to_close_ids.mapped('used_lot_id'):
                 if used_lot_id.get_stock_quant().balance > 0:
                     consumed.append([0, 0, {
                         'lot_name': used_lot_id.name,

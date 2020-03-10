@@ -30,7 +30,7 @@ class OvenUse(models.Model):
 
     used_lot_id = fields.Many2one(
         'stock.production.lot',
-        'Lotes a Secar'
+        'Lote a Secar'
     )
 
     init_active_time = fields.Integer('Inicio de tiempo activo')
@@ -39,7 +39,7 @@ class OvenUse(models.Model):
 
     dried_oven_ids = fields.Many2many(
         'dried.oven',
-        string='horno',
+        string='Hornos',
         required=True
     )
 
