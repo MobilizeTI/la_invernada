@@ -16,9 +16,9 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
                 this.timer = setTimeout(function () {
                     var currentDate = new Date().getTime() / 1000
                     toSum = parseInt(currentDate - self.record.data.init_active_time)
-                    this.$el.context.classList.remove('o_field_empty')
+                    self.$el.context.classList.remove('o_field_empty')
                     console.log(self.record.data.active_seconds)
-                    this.$el.html($('<span>' + self._to_date_format((self.record.data.active_seconds + toSum)) + '</span>', {
+                    self.$el.html($('<span>' + self._to_date_format((self.record.data.active_seconds + toSum)) + '</span>', {
                         'class': 'success'
                     }));
                     self._timeCounter();
