@@ -169,5 +169,4 @@
             parent="mrp.menu_mrp_manufacturing"
             action="unpelled_dried_action"
   />
-
 </odoo>

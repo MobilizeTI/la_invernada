@@ -30,7 +30,7 @@
           <tree editable="bottom">
             <field name="stock_production_lot_id" readonly="1"/>
             <field name="belongs_to_prd_lot" invisible="1"/>
-            <field name="consumed" readonly="1" />
+            <field name="consumed" readonly="1"/>
             <field name="display_weight"
                    attrs="{'readonly':['|',('belongs_to_prd_lot', '=', False),('consumed','=',True)]}"
             />
@@ -58,10 +58,10 @@
           <group>
             <field name="pallet_ids">
               <tree>
-                <field name="name" />
-                <field name="total_content_weight" />
-                <field name="total_available_content" />
-                <field name="state" />
+                <field name="name"/>
+                <field name="total_content_weight"/>
+                <field name="total_available_content"/>
+                <field name="state"/>
                 <button string="Agregar a Packing List"
                         name="add_to_picking"
                         type="object"
@@ -70,12 +70,12 @@
             </field>
           </group>
           <group>
-            <field name="stock_production_lot_available_serial_ids" >
+            <field name="stock_production_lot_available_serial_ids">
               <tree>
                 <field name="pallet_id"/>
-                <field name="serial_number" />
+                <field name="serial_number"/>
                 <field name="stock_product_id"/>
-                <field name="display_weight" />
+                <field name="display_weight"/>
                 <button string="Agregar a Packing List"
                         type="object"
                         name="reserve_picking"
@@ -87,4 +87,37 @@
       </form>
     </field>
   </record>
+
+  <record id="stock_production_lot_in_dashboard_tree_view" model="ir.ui.view">
+    <field name="name">Entrada Despelonado</field>
+    <field name="model">stock.production.lot</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="name"/>
+        <field name="producer_id"/>
+        <field name="reception_guide_number"/>
+        <field name="product_variety"/>
+        <field name="name"/>
+        <field name="name"/>
+        <field name="name"/>
+        <field name="name"/>
+        <field name="name"/>
+        <field name="name"/>
+        <field name="name"/>
+      </tree>
+    </field>
+  </record>
+  <record model="ir.actions.act_window" id="stock_production_lot_in_dashboard_action">
+    <field name="name">Vista General Despelonado Entrada</field>
+    <field name="res_model">stock.production.lot</field>
+    <field name="view_mode">tree</field>
+    <field name="view_id" ref="stock_production_lot_in_dashboard_tree_view" />
+  </record>
+
+
+  <menuitem name="Vista General Despelonado Entrada"
+            id="stock_production_lot_in_dashboard_menu"
+            parent="mrp.menu_mrp_reporting"
+            action="stock_production_lot_in_dashboard_action"
+  />
 </odoo>

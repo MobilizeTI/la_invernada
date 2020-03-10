@@ -4,6 +4,11 @@ from odoo import fields, models, api
 class StockProductionLot(models.Model):
     _inherit = 'stock.production.lot'
 
+    product_variety = fields.Char(
+        'Variedad',
+        related=lambda self: self.product_id.get_variety()
+    )
+
     producer_id = fields.Many2one(
         'res.partner',
         compute='_compute_reception_data',
