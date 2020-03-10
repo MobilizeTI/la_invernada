@@ -51,7 +51,7 @@ class UnpelledDried(models.Model):
     in_lot_ids = fields.Many2many(
         'stock.production.lot',
         compute='_compute_in_lot_ids',
-        string='Lotes de Entrada'
+        string='Lote de Entrada'
     )
 
     in_variety = fields.Char(
