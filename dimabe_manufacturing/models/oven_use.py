@@ -52,7 +52,6 @@ class OvenUse(models.Model):
         self.update({
             'used_lot_id': self.used_lot_id
         })
-        return self
 
     @api.multi
     def _compute_name(self):
