@@ -17,7 +17,7 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
                 self._timeCounter();
             }, 1000);
 
-            this.$el.html($('<span>' + self._to_date_format(self.record.data.active_seconds) + '</span>',{
+            this.$el.html($('<span>' + self._to_date_format(self.record.data.active_seconds) + '</span>', {
                 'class': 'success'
             }));
         },
@@ -26,9 +26,9 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
             var hours = 0
             var minutes = 0
             var sec = 0
-            if (seconds % 86400 > 0){
+            if (seconds % 86400 > 0) {
                 hours = parseInt(((seconds % 86400) / 3600).toString())
-                if ((seconds % 86400) % 3600 > 0){
+                if ((seconds % 86400) % 3600 > 0) {
                     minutes = parseInt((((seconds % 86400) % 3600) / 60).toString())
                     if (((seconds % 86400) % 3600) % 60 > 0)
                         sec = parseInt((((seconds % 86400) % 3600) % 60).toString())
@@ -38,9 +38,11 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
             return `${this._normalize_number(days)} ${this._normalize_number(hours)}:${this._normalize_number(minutes)}:${this._normalize_number(sec)}`
 
         },
-        _normalize_number: function(number){
+        _normalize_number: function (number) {
             var tmp = `0${number}`
-            return tmp.substr(tmp.length - 2, tmp.length - 1)
+            tmp = tmp.substr(tmp.length - 2, tmp.length - 1)
+            console.log(tmp)
+            return tmp
         }
     })
 
