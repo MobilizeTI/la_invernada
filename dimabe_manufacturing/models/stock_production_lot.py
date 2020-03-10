@@ -172,7 +172,7 @@ class StockProductionLot(models.Model):
     def generate_standard_serial(self):
         for item in self:
             serial_ids = []
-            pro_tmp = item.env['product.template'].search([('name','=',item.product_id.name)])
+            pro_tmp = item.env['product.template'].search([('name', '=', item.product_id.name)])
         for counter in range(item.qty_standard_serial):
             tmp = '00{}'.format(counter + 1)
             serial = item.stock_production_lot_serial_ids.filtered(
@@ -181,7 +181,7 @@ class StockProductionLot(models.Model):
             if serial:
                 if not serial.consumed:
                     serial.update({
-                        'display_weight': item.standard_weight
+                        'display_weight': pro_tmp.weight
                     })
                     serial_ids.append(serial.id)
             else:
