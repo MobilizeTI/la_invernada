@@ -97,7 +97,7 @@
         <field name="producer_id"/>
         <field name="reception_guide_number"/>
         <field name="product_variety"/>
-        <field name="name"/>
+        <field name="product_canning"/>
         <field name="name"/>
         <field name="name"/>
         <field name="name"/>

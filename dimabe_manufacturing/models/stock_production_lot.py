@@ -34,6 +34,11 @@ class StockProductionLot(models.Model):
         search='_search_reception_state'
     )
 
+    product_canning = fields.Char(
+        'Envase',
+        compute='_compute_reception_data'
+    )
+
     is_prd_lot = fields.Boolean('Es Lote de salida de Proceso')
 
     is_standard_weight = fields.Boolean('Series Peso Estandar')
@@ -149,6 +154,7 @@ class StockProductionLot(models.Model):
                 item.producer_id = stock_picking[0].partner_id
                 item.reception_guide_number = stock_picking[0].guide_number
                 item.reception_state = stock_picking[0].state
+                item.product_canning = stock_picking[0].get_canning_move().name
 
     def _search_producer_id(self, operator, value):
         stock_picking_ids = self.env['stock.picking'].search([
