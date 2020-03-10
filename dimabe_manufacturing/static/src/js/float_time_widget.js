@@ -17,7 +17,7 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
                     var currentDate = new Date().getTime() / 1000
                     toSum = parseInt(currentDate - self.record.data.init_active_time)
                     self.$el.context.classList.remove('o_field_empty')
-                    console.log(self.record.data.active_seconds)
+                    console.log('linea 20')
                     self.$el.html($('<span>' + self._to_date_format((self.record.data.active_seconds + toSum)) + '</span>', {
                         'class': 'success'
                     }));
@@ -29,7 +29,6 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
             }
         },
         _to_date_format: function (seconds) {
-            console.log(seconds)
             var days = parseInt((seconds / 86400).toString())
             var hours = 0
             var minutes = 0
