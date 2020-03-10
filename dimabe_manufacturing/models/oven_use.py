@@ -20,7 +20,7 @@ class OvenUse(models.Model):
 
     finish_date = fields.Datetime('Termino de Proceso')
 
-    active_seconds = fields.Integer('Segundos de Actividad')
+    active_seconds = fields.Integer('Tiempo Transcurrido')
 
     active_time = fields.Char(
         'Tiempo Transcurrido',

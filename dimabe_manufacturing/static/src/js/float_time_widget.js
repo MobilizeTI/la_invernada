@@ -23,6 +23,9 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
                     }));
                     self._timeCounter();
                 }, 1000);
+            }else{
+                clearTimeout(this.timer)
+                this.$el.html($('<span>' + this._to_date_format(self.record.data.active_seconds) + '</span>'))
             }
         },
         _to_date_format: function (seconds) {
