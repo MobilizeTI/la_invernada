@@ -3,34 +3,34 @@
     <t t-call="web.html_container">
       <div class="page">
         <t t-foreach="docs" t-as="o">
-          <t t-foreach="o.used_lot_ids" t-as="lot">
+          <t t-foreach="o.dried_oven_ids" t-as="dried_oven_id">
             <table style="text-align:left;">
               <tr>
                 <th style="text-align:center;"><h2>Información Cajón</h2></th>
                 <td style="text-align: right !important;">
-                  <span t-field="o.dried_oven_id.name"
+                  <span t-field="dried_oven_id.name"
                         style="border-left: solid 1px;border-bottom: solid 1px;padding:2px !important;" />
                 </td>
               </tr>
               <tr>
                 <th>N° guía</th>
-                <td>: <span t-esc="lot.reception_guide_number"/></td>
+                <td>: <span t-esc="o.used_lot_id.reception_guide_number"/></td>
               </tr>
               <tr>
                 <th>Productor:</th>
-                <td>: <span t-field="lot.producer_id.name"/></td>
+                <td>: <span t-field="o.used_lot_id.producer_id.name"/></td>
               </tr>
               <tr>
                 <th>Variedad:</th>
-                <td>: <span t-esc="lot.product_id.get_variety()"/></td>
+                <td>: <span t-esc="o.used_lot_id.product_id.get_variety()"/></td>
               </tr>
               <tr>
                 <th>N° Lote:</th>
-                <td>: <span t-field="lot.name"/></td>
+                <td>: <span t-field="o.used_lot_id.name"/></td>
               </tr>
               <tr>
                 <th>Fecha recepción / hr:</th>
-                <td>: <span t-field="lot.create_date"/></td>
+                <td>: <span t-field="o.used_lot_id.create_date"/></td>
               </tr>
               <tr>
                 <th>Fecha en cajón:</th>
@@ -40,13 +40,13 @@
                 <td colspan="2" style="text-align:center !important;">
                   <br/>
                   <img
-                    t-att-src="'%s/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % (o.get_full_url(), 'Code128',lot.name,550, 70)"
+                    t-att-src="'%s/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % (o.get_full_url(), 'Code128',o.used_lot_id.name,550, 70)"
                   />
-                  <span t-field="lot.name"/>
+                  <span t-field="o.used_lot_id.name"/>
                 </td>
               </tr>
             </table>
-            <t t-if="lot.id != o.used_lot_ids[len(o.used_lot_ids) - 1].id">
+            <t t-if="dried_oven_id.id != o.dried_oven_ids[len(o.dried_oven_ids) - 1].id">
               <p style="page-break-after:always;"></p>
             </t>
           </t>

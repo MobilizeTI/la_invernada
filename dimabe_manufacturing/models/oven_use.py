@@ -54,7 +54,6 @@ class OvenUse(models.Model):
             for name in item.dried_oven_ids.mapped('name'):
                 tmp += '{} '.format(name)
             item.name = tmp
-            models._logger.error(item.name)
 
     @api.multi
     @api.depends('active_seconds')
