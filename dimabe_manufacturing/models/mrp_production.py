@@ -70,11 +70,10 @@ class MrpProduction(models.Model):
         products = self.env['product.product'].search([])
         for item in products:
             for route in item.route_ids:
+                models._logger.error("route : {} and product = {}".format(route.name,item.name))
                 if route.name == 'Fabricar':
                     manufacturable.append(item.id)
                     p = self.env['product.product'].search([('id','in',manufacturable)])
-                    for pro in p:
-                        models._logger.error(pro.name)
         self.manufacturable = p
 
     @api.multi
