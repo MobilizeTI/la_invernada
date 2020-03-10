@@ -16,7 +16,7 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
                 self._timeCounter();
             }, 1000);
             console.log(self.record.data.active_seconds)
-            this.$el($('<span>' + self.record.data.active_seconds + '</span>',{
+            this.$el.append($('<span>' + self.record.data.active_seconds + '</span>',{
                 'class': 'success'
             }));
         }
