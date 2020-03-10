@@ -10,6 +10,11 @@ class UnpelledDried(models.Model):
         default=True
     )
 
+    total_pending_lot_count = fields.Integer(
+        'Lotes Pendientes',
+        compute='_compute_total_pending_tol_count'
+    )
+
     can_close = fields.Boolean(
         'Puede Cerrar',
         compute='_compute_can_close'
@@ -108,6 +113,16 @@ class UnpelledDried(models.Model):
         'unpelled_dried_id',
         'Historial'
     )
+
+    @api.multi
+    def _compute_total_pending_lot_count(self):
+        for item in self:
+            lot_ids = self.env['stock.production.lot'].search([
+                '&amp;', '&amp;', ('producer_id', '=', item.producer_id), (
+                    'product_id', '=', item.product_in_id), '|', ('balance', '>', 0), (
+                    'reception_state', '=', 'assigned')
+            ])
+            item.total_pending_lot_count = len(lot_ids)
 
     @api.multi
     def _compute_can_close(self):

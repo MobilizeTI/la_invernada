@@ -152,6 +152,7 @@
         <field name="in_lot_ids" widget="many2many_tags"/>
         <field name="out_lot_id" string="Lote Salida"/>
         <field name="oven_use_ids" widget="many2many_tags"/>
+        <field name="total_pending_lot_count" />
         <field name="state"/>
       </tree>
     </field>
