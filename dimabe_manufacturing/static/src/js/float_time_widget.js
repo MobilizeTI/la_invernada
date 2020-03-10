@@ -6,6 +6,7 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
     var timeField = AbstractField.extend({
         supportedFieldTypes: ['integer'],
         _render: function () {
+            console.log('render')
             this._timeCounter()
         },
         _timeCounter: function () {
