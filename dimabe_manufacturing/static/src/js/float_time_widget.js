@@ -9,6 +9,10 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
             console.log('render')
             this._timeCounter()
         },
+        destroy: function () {
+            this._super.apply(this, arguments);
+            clearTimeout(this.timer);
+        },
         _timeCounter: function () {
             var self = this;
             clearTimeout(this.timer);
