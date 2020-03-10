@@ -172,7 +172,8 @@ class StockProductionLot(models.Model):
     def generate_standard_serial(self):
         for item in self:
             pro_templ = self.env['product.template'].search([('product_variant_id','=',item.product_id.id)])
-            raise models.ValidationError(pro_templ.name)
+            for pro in pro_templ:
+                models._logger.error(pro.name)
 
     @api.model
     def get_stock_quant(self):
