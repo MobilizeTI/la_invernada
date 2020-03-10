@@ -120,7 +120,7 @@ class UnpelledDried(models.Model):
             lot_ids = self.env['stock.production.lot'].search([
                 '&', '&', '&', ('producer_id', '=', item.producer_id.id),
                 ('product_id', '=', item.product_in_id.id),
-                ('id', 'not in', item.oven_use_ids.mapped('used_lot_id')),
+                ('id', 'not in', item.oven_use_ids.mapped('used_lot_id.id')),
                 '|', ('balance', '>', 0), ('reception_state', '=', 'assigned')
             ])
             item.total_pending_lot_count = len(lot_ids)
