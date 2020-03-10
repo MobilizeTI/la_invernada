@@ -1,7 +1,8 @@
-odoo.define('dimabe_manufacturing.validate_on_scanned', function (require) {
+odoo.define('dimabe_manufacturing.integer_time', function (require) {
     'use strict';
     let AbstractField = require('web.AbstractField');
     let fieldRegistry = require('web.field_registry');
+    let field_registry = require('web.field_registry');
     let timeField = AbstractField.extend({
         supportedFieldTypes: ['integer'],
         init: function () {
