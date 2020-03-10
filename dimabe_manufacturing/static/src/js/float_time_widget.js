@@ -5,12 +5,25 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
 
     let timeField = AbstractField.extend({
         supportedFieldTypes: ['integer'],
-        init: function () {
+        /**
+         * @override
+         */
+        willStart: function () {
             console.log('llalala')
+        },
+        destroy: function () {
+            console.log('destroy')
+        },
+
+        /**
+         * @override
+         */
+        isSet: function () {
+            return true
         }
     })
 
-    //fieldRegistry.add('time_live', timeField);
+    fieldRegistry.add('time_live', timeField);
 });
 
 
