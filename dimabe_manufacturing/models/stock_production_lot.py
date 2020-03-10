@@ -191,13 +191,13 @@ class StockProductionLot(models.Model):
                 if serial:
                     if not serial.consumed:
                         serial.update({
-                            'display_weight': product_id.weight
+                            'display_weight': item.product_id.weight
                         })
                         serial_ids.append(serial.id)
                 else:
                     new_serial = item.env['stock.production.lot.serial'].create({
                         'stock_production_lot_id': item.id,
-                        'display_weight': product_id.weight,
+                        'display_weight': item.product_id.weight,
                         'serial_number': item.name + tmp[-3:],
                         'belong_to_prd_lot': True
                     })
