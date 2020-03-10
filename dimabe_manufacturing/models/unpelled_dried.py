@@ -199,7 +199,7 @@ class UnpelledDried(models.Model):
     @api.multi
     def unlink(self):
         for item in self:
-            item.oven_use_ids.mapped('dried_oven_id').write({
+            item.oven_use_ids.mapped('dried_oven_ids').write({
                 'is_in_use': False
             })
 
@@ -209,7 +209,7 @@ class UnpelledDried(models.Model):
     def cancel_unpelled_dried(self):
         for item in self:
             item.state = 'cancel'
-            item.oven_use_ids.mapped('dried_oven_id').set_is_in_use(False)
+            item.oven_use_ids.mapped('dried_oven_ids').set_is_in_use(False)
 
     @api.multi
     def finish_unpelled_dried(self):
@@ -227,11 +227,11 @@ class UnpelledDried(models.Model):
                                                  ' no se puede cerrar un lote en que se encuentre en '
                                                  'cajones completos (no mezclados con otros lotes) y que '
                                                  'se encuentren todavía en proceso'.format(
-                        lot_id.name, oven_use_id.dried_oven_id.name
+                        lot_id.name, oven_use_id.dried_oven_ids[0].name
                     ))
 
             if not oven_use_to_close_ids:
-                raise models.ValidationError('no hay hornos terminados y listos para cerrar que procesar')
+                raise models.ValidationError('no hay hornos listos para cerrar por procesar')
 
             if not item.out_serial_ids:
                 raise models.ValidationError('Debe agregar al menos una serie de salida al proceso')
@@ -283,7 +283,7 @@ class UnpelledDried(models.Model):
                 'move_id': stock_move.id
             })
 
-            oven_use_to_close_ids.mapped('dried_oven_id').set_is_in_use(False)
+            oven_use_to_close_ids.mapped('dried_oven_ids').set_is_in_use(False)
 
             for oven_use_id in self.oven_use_ids.filtered(lambda a: a.finish_date):
                 oven_use_id.write({
