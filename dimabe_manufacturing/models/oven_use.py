@@ -7,9 +7,11 @@ class OvenUse(models.Model):
     _name = 'oven.use'
     _description = 'datos de uso de los hornos'
 
+    ready_to_close = fields.Boolean('Cerrar')
+
     name = fields.Char(
         'Horno en uso',
-        related='dried_oven_id.name'
+        related='dried_oven_ids.name'
     )
 
     done = fields.Boolean('Listo')
@@ -26,18 +28,18 @@ class OvenUse(models.Model):
         store=True
     )
 
-    used_lot_ids = fields.Many2many(
+    used_lot_id = fields.Many2one(
         'stock.production.lot',
-        string='Lotes a Secar'
+        'Lotes a Secar'
     )
 
     init_active_time = fields.Integer('Inicio de tiempo activo')
 
     finish_active_time = fields.Integer('Fin de tiempo activo')
 
-    dried_oven_id = fields.Many2one(
+    dried_oven_ids = fields.Many2many(
         'dried.oven',
-        'horno',
+        string='horno',
         required=True
     )
 
@@ -54,7 +56,7 @@ class OvenUse(models.Model):
     @api.multi
     def unlink(self):
 
-        self.mapped('dried_oven_id').write({
+        self.mapped('dried_oven_ids').write({
             'is_in_use': False
         })
         return super(OvenUse, self).unlink()
@@ -64,14 +66,16 @@ class OvenUse(models.Model):
         for item in self:
             if item.init_date:
                 raise models.ValidationError('este proceso ya ha sido iniciado')
-            if not item.dried_oven_id:
+            if not item.dried_oven_ids:
                 raise models.ValidationError('Debe seleccionar el horno a iniciar')
-            if not item.used_lot_ids:
-                raise models.ValidationError('Debe Seleccionar al menos un lote a secar')
+            if not item.used_lot_id:
+                raise models.ValidationError('Debe Seleccionar un lote a secar')
             item.init_date = datetime.utcnow()
             item.init_active_time = item.init_date.timestamp()
             item.unpelled_dried_id.state = 'progress'
-            item.dried_oven_id.is_in_use = True
+            item.dried_oven_ids.update({
+                'is_in_use': True
+            })
 
     @api.multi
     def pause_process(self):
@@ -88,16 +92,17 @@ class OvenUse(models.Model):
     @api.multi
     def finish_process(self):
         for item in self:
-            for lot in item.used_lot_ids:
-                if lot.reception_state != 'done':
-                    raise models.ValidationError(
-                        'la recepción del lote {} no se encuentra en estado realizado. '
-                        'Primero termine el proceso de recepción'.format(lot.name))
+            if item.used_lot_id and item.used_lot_id.reception_state != 'done':
+                raise models.ValidationError(
+                    'la recepción del lote {} no se encuentra en estado realizado. '
+                    'Primero termine el proceso de recepción'.format(item.used_lot_id.name))
             item.finish_date = datetime.utcnow()
             if item.finish_active_time == 0:
                 item.finish_active_time = item.finish_date.timestamp()
                 item.active_seconds += item.finish_active_time - item.init_active_time
-            item.dried_oven_id.is_in_use = False
+            item.dried_oven_ids.update({
+                'is_in_use': False
+            })
 
     @api.multi
     def print_oven_label(self):
