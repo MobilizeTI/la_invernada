@@ -5,7 +5,7 @@ odoo.define('dimabe_manufacturing.validate_on_scanned', function (require) {
     let timeField = AbstractField.extend({
         supportedFieldTypes: ['integer'],
         init: function () {
-
+            console.log('llalala')
         }
     })
 
