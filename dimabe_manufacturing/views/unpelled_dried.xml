@@ -60,7 +60,7 @@
                        attrs="{'invisible':[('finish_date','=',False)]}"
                 />
                 <field name="used_lot_id"
-                       domain="['&amp;','&amp;',('producer_id','=',parent.producer_id),('product_id','=',parent.product_in_id),'|',('balance','>',0),('reception_state','=','assigned')]"
+                       domain="['&amp;','&amp;','&amp;',('producer_id','=',parent.producer_id),('product_id','=',parent.product_in_id),('id','not in',parent.used_lot_ids),'|',('balance','>',0),('reception_state','=','assigned')]"
                 />
                 <field name="dried_oven_ids"
                        attrs="{'readonly':[('init_date','!=',False)]}"

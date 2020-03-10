@@ -93,6 +93,11 @@ class UnpelledDried(models.Model):
         'Hornos'
     )
 
+    used_lot_ids = fields.One2many(
+        'stock.production.lot',
+        related='oven_use_ids.used_lot_id'
+    )
+
     total_in_weight = fields.Float(
         'Total Ingresado',
         compute='_compute_total_in_weight'
