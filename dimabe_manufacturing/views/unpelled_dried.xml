@@ -55,6 +55,10 @@
               <tree editable="bottom">
                 <field name="init_active_time" invisible="1"/>
                 <field name="finish_active_time" invisible="1"/>
+                <field name="ready_to_close"
+                       widget="boolean_toggle"
+                       attrs="{invisible:[('finish_date','=',False)]}"
+                />
                 <field name="used_lot_id"
                        domain="['&amp;','&amp;',('producer_id','=',parent.producer_id),('product_id','=',parent.product_in_id),'|',('balance','>',0),('reception_state','=','assigned')]"
                 />
@@ -65,7 +69,6 @@
                 />
                 <field name="init_date" readonly="1"/>
                 <field name="finish_date" readonly="1"/>
-                <field name="active_time"/>
                 <field name="active_seconds" widget="time_live" />
                 <button string="iniciar horno"
                         attrs="{'invisible':['|',('init_date','!=',False),('dried_oven_ids','=',False)]}"

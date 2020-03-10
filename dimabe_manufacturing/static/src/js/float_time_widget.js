@@ -6,7 +6,6 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
     var timeField = AbstractField.extend({
         supportedFieldTypes: ['integer'],
         _render: function () {
-            console.log('render')
             this._timeCounter()
         },
         destroy: function () {
@@ -22,7 +21,6 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
                     var currentDate = new Date().getTime() / 1000
                     toSum = parseInt(currentDate - self.record.data.init_active_time)
                     self.$el.context.classList.remove('o_field_empty')
-                    console.log('linea 20')
                     self.$el.html($('<span>' + self._to_date_format((self.record.data.active_seconds + toSum)) + '</span>', {
                         'class': 'success'
                     }));
