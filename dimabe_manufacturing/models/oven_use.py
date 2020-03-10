@@ -47,12 +47,6 @@ class OvenUse(models.Model):
 
     history_id = fields.Many2one('dried.unpelled.history', 'Historial')
 
-    @api.onchange('used_lot_id')
-    def onchange_used_lot_id(self):
-        self.update({
-            'used_lot_id': self.used_lot_id
-        })
-
     @api.multi
     def _compute_name(self):
         for item in self:
