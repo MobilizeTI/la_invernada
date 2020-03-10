@@ -57,6 +57,7 @@ class StockProductionLot(models.Model):
     is_pr_weight = fields.Boolean('¿Producto tiene peso?',default=False)
 
 
+
     @api.multi
     def _compute_reception_data(self):
         for item in self:
@@ -202,7 +203,7 @@ class StockProductionLot(models.Model):
 
                 item.stock_production_lot_serial_ids = [(6, 0, serial_ids)]
             else:
-                for counter in range(1):
+                for counter in range(len(item.stock_production_lot_serial_ids) + 1):
                     tmp = '00{}'.format(counter + 1)
                     serial = item.stock_production_lot_serial_ids.filtered(
                         lambda a: a.serial_number == item.name + tmp[-3:]
