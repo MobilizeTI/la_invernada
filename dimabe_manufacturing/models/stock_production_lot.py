@@ -178,7 +178,7 @@ class StockProductionLot(models.Model):
             serial_ids = []
             pro_tmp = item.env['product.template'].search([('name', '=', item.product_id.name)])
             if pro_tmp.weight:
-                for counter in range(1):
+                for counter in range(len(item.stock_production_lot_serial_ids) + item.qty_standard_serial):
                     tmp = '00{}'.format(counter + 1)
                     serial = item.stock_production_lot_serial_ids.filtered(
                         lambda a: a.serial_number == item.name + tmp[-3:]
