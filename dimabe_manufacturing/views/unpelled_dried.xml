@@ -66,6 +66,7 @@
                 <field name="init_date" readonly="1"/>
                 <field name="finish_date" readonly="1"/>
                 <field name="active_time"/>
+                <field name="active_seconds" widget="time_live" />
                 <button string="iniciar horno"
                         attrs="{'invisible':['|',('init_date','!=',False),('dried_oven_ids','=',False)]}"
                         name="init_process"
