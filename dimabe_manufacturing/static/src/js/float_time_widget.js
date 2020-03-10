@@ -2,7 +2,7 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
     'use strict';
     let AbstractField = require('web.AbstractField');
     let fieldRegistry = require('web.field_registry');
-    let field_registry = require('web.field_registry');
+
     let timeField = AbstractField.extend({
         supportedFieldTypes: ['integer'],
         init: function () {
@@ -10,7 +10,7 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
         }
     })
 
-    field_registry.add('time_live', timeField);
+    //fieldRegistry.add('time_live', timeField);
 });
 
 
