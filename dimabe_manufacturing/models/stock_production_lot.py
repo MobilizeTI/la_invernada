@@ -191,7 +191,7 @@ class StockProductionLot(models.Model):
                 if serial:
                     if not serial.consumed:
                         serial.update({
-                            'display_weight': pro_tmp.weight
+                            'display_weight': product_id.weight
                         })
                         serial_ids.append(serial.id)
                 else:
