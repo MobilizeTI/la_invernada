@@ -55,13 +55,13 @@
               <tree editable="bottom">
                 <field name="init_active_time" invisible="1"/>
                 <field name="finish_active_time" invisible="1"/>
+                <field name="used_lot_id"
+                       domain="['&amp;','&amp;',('producer_id','=',parent.producer_id),('product_id','=',parent.product_in_id),'|',('balance','>',0),('reception_state','=','assigned')]"
+                />
                 <field name="dried_oven_ids"
                        attrs="{'readonly':[('init_date','!=',False)]}"
                        domain="[('is_in_use','=',False)]"
                        widget="many2many_tags"
-                />
-                <field name="used_lot_id"
-                       domain="['&amp;','&amp;',('producer_id','=',parent.producer_id),('product_id','=',parent.product_in_id),'|',('balance','>',0),('reception_state','=','assigned')]"
                 />
                 <field name="init_date" readonly="1"/>
                 <field name="finish_date" readonly="1"/>
@@ -146,7 +146,7 @@
         <field name="producer_id"/>
         <field name="in_lot_ids" widget="many2many_tags"/>
         <field name="out_lot_id" string="Lote Salida"/>
-        <field name="oven_use_ids" widget="many2many_tags"/>
+        <field name="oven_use_ids" />
         <field name="state"/>
       </tree>
     </field>
