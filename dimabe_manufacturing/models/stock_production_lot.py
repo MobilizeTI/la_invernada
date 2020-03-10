@@ -166,7 +166,7 @@ class StockProductionLot(models.Model):
                 counter += 1
                 tmp = '00{}'.format(counter)
                 serial.serial_number = item.name + tmp[-3:]
-        return resp
+        return res
 
     @api.multi
     def generate_standard_serial(self):
