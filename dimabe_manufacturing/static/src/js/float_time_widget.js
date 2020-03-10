@@ -12,17 +12,17 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
             var self = this;
             clearTimeout(this.timer);
             var toSum = 0
-            if (this.record.data.init_active_time && !this.record.data.finish_active_time){
+            if (this.record.data.init_active_time && !this.record.data.finish_active_time) {
                 this.timer = setTimeout(function () {
                     var currentDate = new Date().getTime() / 1000
                     toSum = parseInt(currentDate - self.record.data.init_active_time)
+                    this.$el.context.classList.remove('o_field_empty')
+                    console.log(self.record.data.active_seconds)
+                    this.$el.html($('<span>' + self._to_date_format((self.record.data.active_seconds + toSum)) + '</span>', {
+                        'class': 'success'
+                    }));
                     self._timeCounter();
                 }, 1000);
-                this.$el.context.classList.remove('o_field_empty')
-                console.log(self.record.data.active_seconds)
-                this.$el.html($('<span>' + self._to_date_format((self.record.data.active_seconds + toSum)) + '</span>', {
-                    'class': 'success'
-                }));
             }
         },
         _to_date_format: function (seconds) {
@@ -44,7 +44,7 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
 
         },
         _normalize_number: function (number) {
-            var tmp = '0'+number
+            var tmp = '0' + number
             tmp = tmp.substr(tmp.length - 2, 2)
             return tmp
         }
