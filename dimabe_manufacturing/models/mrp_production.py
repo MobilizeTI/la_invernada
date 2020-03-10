@@ -1,6 +1,5 @@
 from odoo import fields, models, api
 from datetime import datetime
-import keyboard
 
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
@@ -63,17 +62,7 @@ class MrpProduction(models.Model):
 
     manufacturable = fields.Many2many('product.product',compute='get_product_route')
 
-    test = fields.Char('Prueba')
 
-    @api.onchange
-    def _test_keyboard(self):
-        while True:
-            try:
-                if keyboard.is_pressed('enter'):
-                    raise models.ValidationError('Enter')
-                    break
-            except:
-                break
     @api.multi
     def get_product_route(self):
         self.ensure_one()

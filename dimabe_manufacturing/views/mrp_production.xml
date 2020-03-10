@@ -45,7 +45,6 @@
                           attrs="{'invisible':[('state','=','done')]}"
                     >
                         <group>
-                            <field name="test"/>
                             <field name="manufacturable" invisible="1"/>
                             <field name="materials" invisible="1"/>
                             <field name="client_search_id" attrs="{'invisible':[('state','=','done')]}"
