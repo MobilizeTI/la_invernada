@@ -98,7 +98,7 @@
               </tree>
             </field>
             <field name="in_variety" invisible="1"/>
-            <field name="can_close" invisible="0"/>
+            <field name="can_close" invisible="1"/>
             <field name="out_product_id"
                    attrs="{'readonly':[('state','in',['done','progress'])]}"
                    domain="[('variety','=',in_variety)]"
