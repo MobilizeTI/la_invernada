@@ -1,5 +1,5 @@
 <odoo>
-    <template id="assets" inherit_id="stock_production_lot.assets">
+    <template id="assets" inherit_id="dimabe_manufacturing.assets">
         <xpath expr="." position="inside">
             <script type="text/JavaScript" src="dimabe_manufacturing/static/src/js/custom_script.js"></script>
         </xpath>
