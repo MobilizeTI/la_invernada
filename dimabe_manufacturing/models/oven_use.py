@@ -11,7 +11,7 @@ class OvenUse(models.Model):
 
     name = fields.Char(
         'Horno en uso',
-        related='dried_oven_ids.name'
+        related='dried_oven_ids.mapped(name)'
     )
 
     done = fields.Boolean('Listo')
