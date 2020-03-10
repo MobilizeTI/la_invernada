@@ -50,7 +50,8 @@ class OvenUse(models.Model):
     @api.multi
     def _compute_name(self):
         for item in self:
-            item.name = item.dried_oven_ids.mapped('name')
+            for name in item.dried_oven_ids.mapped('name'):
+                item.name = '{} '.format(name)
 
     @api.multi
     @api.depends('active_seconds')
