@@ -54,9 +54,13 @@ class StockProductionLot(models.Model):
 
     producer_id = fields.Many2one('res.partner', 'Productor')
 
-    is_pr_weight = fields.Boolean('¿Producto tiene peso?',default=False)
+    is_pr_weight = fields.Boolean('¿Producto tiene peso?',compute='_compute_pr_weight',default=False)
 
-
+    @api.multi
+    def _compute_pr_weight(self):
+        self.ensure_one()
+        pro_tmp = self.env['product.template'].search([('name','=',self.product_id.name)])
+        raise models.ValidationError(pro_tmp.name)
 
     @api.multi
     def _compute_reception_data(self):
