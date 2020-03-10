@@ -54,7 +54,7 @@ class StockProductionLot(models.Model):
 
     producer_id = fields.Many2one('res.partner', 'Productor')
 
-    is_prd_weight = field.Boolean(compute='_compute_is_prd_weight')
+    is_prd_weight = field.Boolean(compute='_compute_is_prd_weight',default=False)
 
     @api.multi
     def _compute_is_prd_weight(self):
