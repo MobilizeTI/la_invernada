@@ -95,7 +95,7 @@ class UnpelledDried(models.Model):
 
     used_lot_ids = fields.One2many(
         'stock.production.lot',
-        related='oven_use_ids.mapped(used_lot_id)'
+        related='oven_use_ids.mapped("used_lot_id")'
     )
 
     total_in_weight = fields.Float(
