@@ -173,7 +173,7 @@ class StockProductionLot(models.Model):
         for item in self:
             pro_templ = self.env['product.template'].search([('name','=',item.product_id.name)])
             for pro in pro_templ:
-                models._logger.error(pro.name)
+                models._logger.error(pro.id)
 
     @api.model
     def get_stock_quant(self):
