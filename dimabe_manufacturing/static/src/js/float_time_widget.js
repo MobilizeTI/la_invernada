@@ -35,17 +35,15 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
                 }
 
             }
-
-
-            return `${this._normalize_number(days)} 
-                ${this._normalize_number(hours)}:${this._normalize_number(minutes)}:${this._normalize_number(sec)}`
+            // return `${this._normalize_number(days)}
+            //     ${this._normalize_number(hours)}:${this._normalize_number(minutes)}:${this._normalize_number(sec)}`
 
 
 
         },
         _normalize_number(number){
             var tmp = `0${number}`
-            return tmp.substr(tmp.length - 2, tmp.length - 1)
+            // return tmp.substr(tmp.length - 2, tmp.length - 1)
         }
     })
 
