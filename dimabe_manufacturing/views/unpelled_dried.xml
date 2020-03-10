@@ -57,7 +57,7 @@
                 <field name="finish_active_time" invisible="1"/>
                 <field name="ready_to_close"
                        widget="boolean_toggle"
-                       attrs="{invisible:[('finish_date','=',False)]}"
+                       attrs="{'invisible':[('finish_date','=',False)]}"
                 />
                 <field name="used_lot_id"
                        domain="['&amp;','&amp;',('producer_id','=',parent.producer_id),('product_id','=',parent.product_in_id),'|',('balance','>',0),('reception_state','=','assigned')]"
