@@ -11,15 +11,11 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
         },
         _renderEdit: function () {
             console.log('_renderEdit')
-            this.$el.append($('<span>',{
-                'data-val': 'edit'
-            }))
+            this.$el.append($('<span>edit</span>',{}))
         },
         _renderReadonly: function () {
             console.log('_renderReadonly')
-            this.$el.append($('<span>',{
-                'data-val': 'readonly'
-            }))
+            this.$el.append($('<span>readonly</span>',{}))
         }
     })
 
