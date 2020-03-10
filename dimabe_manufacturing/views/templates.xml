@@ -1,11 +1,4 @@
 <odoo>
-    <template id="production_assets" inherit_id="web.assets_backend">
-        <xpath expr="." position="inside">
-            <script src="/dimabe_manufacturing/static/src/js/float_time_widget.js"
-                    type="text/javascript"
-            />
-        </xpath>
-    </template>
 <!--    <data>-->
         <!-- <template id="listing"> -->
         <!--   <ul> -->
