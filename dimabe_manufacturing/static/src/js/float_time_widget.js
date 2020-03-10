@@ -15,8 +15,9 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
             clearTimeout(this.timer);
             this.timer = setTimeout(function () {
                 self.duration += 1000;
-                self._startTimeCounter();
+                self._timeCounter();
             }, 1000);
+            console.log(self.duration)
             this.$el.html($('<span>' + self.duration + '</span>'));
         }
     })
