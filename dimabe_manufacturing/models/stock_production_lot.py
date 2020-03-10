@@ -171,7 +171,7 @@ class StockProductionLot(models.Model):
     @api.multi
     def generate_standard_serial(self):
         for item in self:
-            raise models._logger.error(type(item.product_id))
+            raise models.ValidationError(type(item.product_id))
 
     @api.model
     def get_stock_quant(self):
