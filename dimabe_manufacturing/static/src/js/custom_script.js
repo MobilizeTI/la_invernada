@@ -1,4 +1,4 @@
-odoo.define('dimabe_manufacturing.stock_production_lot', function (require) {
+odoo.define('dimabe_manufacturing', function (require) {
     var core = require('web.core');
     var field = new odoo.Model('stock.production.lot')
     field.query(['name'])
