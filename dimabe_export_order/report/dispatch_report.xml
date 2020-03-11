@@ -513,7 +513,7 @@
     <template id="report_truck_dispatch">
         <t t-call="web.html_container">
             <t t-foreach="docs.sorted(key=lambda x: x.create_date)" t-as="o">
-                <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)" width="210px" height="272px" HSPACE="40"
+                <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)" width="210px" height="270px" HSPACE="40"
                      VSPACE="5"/>
                 <p style="page-break-after:always;"></p>
             </t>
