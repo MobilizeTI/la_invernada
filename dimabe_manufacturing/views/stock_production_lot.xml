@@ -104,11 +104,6 @@
         <field name="reception_elapsed_time"/>
         <field name="unpelled_state"/>
         <field name="drier_counter" widget="picking_time_live"/>
-
-        <field name="oven_init_active_time"/>
-        <field name="finish_active_time"/>
-        <field name="oven_use_ids"/>
-
       </tree>
     </field>
   </record>
