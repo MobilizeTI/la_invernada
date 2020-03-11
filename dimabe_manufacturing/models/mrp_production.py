@@ -74,6 +74,7 @@ class MrpProduction(models.Model):
                         manufactureable.append(product.id)
                         p = item.env['product.product'].search([('id', 'in', manufactureable)])
         item.manufacturable = p
+        models._logger.error(item.manufacturable)
 
 
 
