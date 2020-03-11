@@ -98,7 +98,7 @@
         <field name="reception_guide_number"/>
         <field name="product_variety"/>
         <field name="product_canning"/>
-        <field name="name"/>
+        <field name="picking_type_id"/>
         <field name="name"/>
         <field name="name"/>
         <field name="name"/>

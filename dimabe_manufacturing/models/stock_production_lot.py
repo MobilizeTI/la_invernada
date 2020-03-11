@@ -86,6 +86,11 @@ class StockProductionLot(models.Model):
         compute='_compute_pallet_ids'
     )
 
+    picking_type_id = fields.Many2one(
+        'stock.picking.type',
+        compute='_compute_reception_data'
+    )
+
     @api.multi
     def _compute_product_variety(self):
         for item in self:
@@ -155,6 +160,7 @@ class StockProductionLot(models.Model):
                 item.reception_guide_number = stock_picking[0].guide_number
                 item.reception_state = stock_picking[0].state
                 item.product_canning = stock_picking[0].get_canning_move().name
+                item.picking_type_id = stock_picking[0].picking_type_id
 
     def _search_producer_id(self, operator, value):
         stock_picking_ids = self.env['stock.picking'].search([
