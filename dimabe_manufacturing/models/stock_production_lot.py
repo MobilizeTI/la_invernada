@@ -127,7 +127,9 @@ class StockProductionLot(models.Model):
             oven_use = self.env['oven.user'].search([
                 ('used_lot_id.id', '=', item.id)
             ])
-            item.drier_counter = oven_use.active_seconds
+            for rec in oven_use:
+                if item.drier_counter < rec.active_seconds:
+                    item.drier_counter = rec.active_seconds
 
     @api.multi
     def _compute_product_variety(self):
