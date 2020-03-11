@@ -1,4 +1,4 @@
-odoo.define("dimabe_manufacturing.stock_production_lot", function (require) {
+odoo.define("web.website", function (require) {
     'use strict';
     const core = require("stock.production.lot");
 })
