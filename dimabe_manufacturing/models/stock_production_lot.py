@@ -12,11 +12,6 @@ class StockProductionLot(models.Model):
         'Estado',
     )
 
-    drier_counter = fields.Integer(
-        'Hr en Secador',
-        compute='_compute_oven_data'
-    )
-
     product_variety = fields.Char(
         'Variedad',
         compute='_compute_product_variety'
@@ -131,6 +126,18 @@ class StockProductionLot(models.Model):
         compute='_compute_oven_data'
     )
 
+    oven_use_ids = fields.One2many(
+        'oven.use',
+        'used_lot_id',
+        'Uso de Hornos',
+        sort='active_seconds desc'
+    )
+
+    drier_counter = fields.Integer(
+        'Hr en Secador',
+        related='oven_use_ids.active_seconds'
+    )
+
     @api.multi
     def _compute_oven_data(self):
         for item in self:
@@ -141,7 +148,7 @@ class StockProductionLot(models.Model):
                 if item.drier_counter < rec.active_seconds:
                     item.drier_counter = rec.active_seconds
                     item.oven_init_active_time = rec.init_active_time
-                    raise models.ValidationError(rec.finish_active_time)
+
                     item.oven_time_is_running = rec.finish_active_time == 0
 
     @api.multi
