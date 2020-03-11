@@ -106,6 +106,7 @@
                 <button string="Paletizar"
                         name="create_pallet"
                         type="object"
+                        class="oe_highlight"
                         context="{'default_product_id': product_id}"
                         attrs="{'invisible':[('there_is_serial_without_pallet', '=', True)]}"
                 />
