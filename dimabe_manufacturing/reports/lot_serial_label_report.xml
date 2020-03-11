@@ -156,7 +156,12 @@
                             </td>
                         </tr>
                     </table>
-                    <p style="page-break-after:always;"> </p>
+                    <t t-if="not docs[-1].serial_number == o.serial_number">
+                        <p style="page-break-after:always;"></p>
+                    </t>
+                    <t t-else="">
+                        <p style="page-break-after:avoid;"></p>
+                    </t>
                 </div>
             </t>
         </t>
