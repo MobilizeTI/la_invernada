@@ -84,6 +84,7 @@ class OvenUse(models.Model):
             item.dried_oven_ids.update({
                 'is_in_use': True
             })
+            item.used_lot_id.unpelled_state = 'drying'
 
     @api.multi
     def pause_process(self):
@@ -111,6 +112,7 @@ class OvenUse(models.Model):
             item.dried_oven_ids.update({
                 'is_in_use': False
             })
+            item.used_lot_id.unpelled_state = 'done'
 
     @api.multi
     def print_oven_label(self):
