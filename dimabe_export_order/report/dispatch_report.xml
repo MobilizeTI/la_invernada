@@ -193,7 +193,7 @@
                                                         </tr>
                                                         <tr style="height:50%;">
                                                             <td>Nota</td>
-                                                            <td colspan="3" style="font-size:15px;text-align:center;">
+                                                            <td colspan="3" style="text-align:center;">
                                                                 <t t-esc="d.note_dispatched.get_full_note()"></t>
                                                             </td>
                                                         </tr>
