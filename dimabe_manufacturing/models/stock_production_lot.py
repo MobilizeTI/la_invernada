@@ -124,7 +124,7 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_drier_counter(self):
         for item in self:
-            oven_use = self.env['oven.user'].search([
+            oven_use = self.env['oven.use'].search([
                 ('used_lot_id.id', '=', item.id)
             ])
             for rec in oven_use:
