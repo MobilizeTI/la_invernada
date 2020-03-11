@@ -141,6 +141,7 @@ class StockProductionLot(models.Model):
                 if item.drier_counter < rec.active_seconds:
                     item.drier_counter = rec.active_seconds
                     item.oven_init_active_time = rec.init_active_time
+                    raise models.ValidationError(rec.finish_active_time)
                     item.oven_time_is_running = rec.finish_active_time == 0
 
     @api.multi
