@@ -1,109 +1,196 @@
 <odoo>
-  <template id="report_stock_production_lot_serial_label">
-    <t t-call="web.html_container">
-      <div class="page">
-        <t t-foreach="docs" t-as="o">
-          <table>
-            <tr>
-              <td colspan="2">FOLIO:</td>
-              <td style="text-align: right !important;"
-                  colspan="2"
-              >
-                <span t-field="o.serial_number"/>
-              </td>
-            </tr>
-            <tr>
-              <td>Especie:</td>
-              <td>
-                <span t-esc="o.stock_production_lot_id.product_id.get_species()" />
-              </td>
-              <td>Variedad:</td>
-              <td>
-                <span t-esc="o.stock_production_lot_id.product_id.get_variety()" />
-              </td>
-            </tr>
-            <tr>
-              <td colspan="4">
-                <h3>
-                  <span t-field="o.stock_production_lot_id.product_id.display_name" />
-                </h3>
-              </td>
-            </tr>
-            <tr>
-              <td>Productor:</td>
-              <td colspan="3">
-                <div t-if="o.stock_production_lot_id">
-                  <span t-field="o.producer_id.name"/>
-                </div>
-                <div t-elif="o.producer_id.name">
-                  <span t-field="o.producer_id.name" />
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Nro. Trazabilidad</td>
-              <td colspan="3">
-                <span t-field="o.production_id.name" />
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                Fecha:
-                <span t-field="o.create_date"/>
-              </td>
-              <td style="text-align:right;"
-                  colspan="2"
-              >
-                <stong>
-                  <span t-field="o.display_weight"/>
-                  kg.
-                </stong>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="4">
-                <h2 style="text-align: center !important;">
-                  <span t-field="o.serial_number"/>
-                </h2>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="4">
-                <img
-                  t-att-src="'%s/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % (o.get_full_url(), 'Code128',o.serial_number,550, 70)"
-                />
-              </td>
-            </tr>
-          </table>
-          <br/>
+    <template id="report_stock_production_lot_serial_label">
+        <t t-call="web.html_container">
+            <div class="page">
+                <t t-foreach="docs" t-as="o">
+                    <table>
+                        <tr>
+                            <td colspan="2">FOLIO:</td>
+                            <td style="text-align: right !important;"
+                                colspan="2"
+                            >
+                                <span t-field="o.serial_number"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Especie:</td>
+                            <td>
+                                <span t-esc="o.stock_production_lot_id.product_id.get_species()"/>
+                            </td>
+                            <td>Variedad:</td>
+                            <td>
+                                <span t-esc="o.stock_production_lot_id.product_id.get_variety()"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <h3>
+                                    <span t-field="o.stock_production_lot_id.product_id.display_name"/>
+                                </h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Productor:</td>
+                            <td colspan="3">
+                                <div t-if="o.stock_production_lot_id">
+                                    <span t-field="o.producer_id.name"/>
+                                </div>
+                                <div t-elif="o.producer_id.name">
+                                    <span t-field="o.producer_id.name"/>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Nro. Trazabilidad</td>
+                            <td colspan="3">
+                                <span t-field="o.production_id.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                Fecha:
+                                <span t-field="o.create_date"/>
+                            </td>
+                            <td style="text-align:right;"
+                                colspan="2"
+                            >
+                                <stong>
+                                    <span t-field="o.display_weight"/>
+                                    kg.
+                                </stong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <h2 style="text-align: center !important;">
+                                    <span t-field="o.serial_number"/>
+                                </h2>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <img
+                                        t-att-src="'%s/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % (o.get_full_url(), 'Code128',o.serial_number,550, 70)"
+                                />
+                            </td>
+                        </tr>
+                    </table>
+                    <br/>
+                </t>
+            </div>
         </t>
-      </div>
-    </t>
-  </template>
+    </template>
+    <template id="report_print_all_serial">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <table>
+                        <tr>
+                            <td colspan="2">FOLIO:</td>
+                            <td style="text-align: right !important;"
+                                colspan="2"
+                            >
+                                <span t-field="o.serial_number"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Especie:</td>
+                            <td>
+                                <span t-esc="o.stock_production_lot_id.product_id.get_species()"/>
+                            </td>
+                            <td>Variedad:</td>
+                            <td>
+                                <span t-esc="o.stock_production_lot_id.product_id.get_variety()"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <h3>
+                                    <span t-field="o.stock_production_lot_id.product_id.display_name"/>
+                                </h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Productor:</td>
+                            <td colspan="3">
+                                <div t-if="o.stock_production_lot_id">
+                                    <span t-field="o.producer_id.name"/>
+                                </div>
+                                <div t-elif="o.producer_id.name">
+                                    <span t-field="o.producer_id.name"/>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Nro. Trazabilidad</td>
+                            <td colspan="3">
+                                <span t-field="o.production_id.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                Fecha:
+                                <span t-field="o.create_date"/>
+                            </td>
+                            <td style="text-align:right;"
+                                colspan="2"
+                            >
+                                <stong>
+                                    <span t-field="o.display_weight"/>
+                                    kg.
+                                </stong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <h2 style="text-align: center !important;">
+                                    <span t-field="o.serial_number"/>
+                                </h2>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <img
+                                        t-att-src="'%s/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % (o.get_full_url(), 'Code128',o.serial_number,550, 70)"
+                                />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
 
-  <record id="paper_format_10_x_7"
-          model="report.paperformat"
-  >
-    <field name="name">Etiqueta 10x7</field>
-    <field name="default" eval="False"/>
-    <field name="format">custom</field>
-    <field name="page_height">71</field>
-    <field name="page_width">100</field>
-    <field name="orientation">Portrait</field>
-    <field name="margin_top">5</field>
-    <field name="margin_bottom">5</field>
-    <field name="margin_left">5</field>
-    <field name="margin_right">5</field>
-    <field name="header_line" eval="False"/>
-    <field name="header_spacing">0</field>
-    <field name="dpi">90</field>
-  </record>
+    <record id="paper_format_10_x_7"
+            model="report.paperformat"
+    >
+        <field name="name">Etiqueta 10x7</field>
+        <field name="default" eval="False"/>
+        <field name="format">custom</field>
+        <field name="page_height">71</field>
+        <field name="page_width">100</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">5</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
 
-  <report id="action_stock_production_lot_serial_label_report"
-          string="Etiqueta para Salida de Proceso"
-          model="stock.production.lot.serial"
-          report_type="qweb-pdf"
-          name="dimabe_manufacturing.report_stock_production_lot_serial_label"
-          paperformat="paper_format_10_x_7"
-  />
+    <report id="action_stock_production_lot_serial_label_report"
+            string="Etiqueta para Salida de Proceso"
+            model="stock.production.lot.serial"
+            report_type="qweb-pdf"
+            name="dimabe_manufacturing.report_stock_production_lot_serial_label"
+            paperformat="paper_format_10_x_7"
+    />
+    <report id="action_print_all_serial"
+            string="Etiquetas para Salida de Proceso"
+            model="stock.production.lot"
+            report_type="qweb-pdf"
+            name="dimabe_manufacturing.report_print_all_serial"
+            paperformat="paper_format_10_x_7"
+    />
 </odoo>
