@@ -1,6 +1,7 @@
 from odoo import fields, models, api
 from datetime import datetime
 
+
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
 
@@ -60,10 +61,9 @@ class MrpProduction(models.Model):
 
     materials = fields.Many2many('product.product', compute='get_product_bom')
 
-    manufactureable = fields.Many2many('product.product',compute='get_product_route')
+    manufactureable = fields.Many2many('product.product', compute='get_product_route')
 
-
-    @api.multi
+    @api.model
     def get_product_route(self):
         for item in self:
             manufactureable = []
@@ -74,7 +74,6 @@ class MrpProduction(models.Model):
                         manufactureable.append(product.id)
                         p = item.env['product.product'].search([('id', 'in', manufactureable)])
             item.manufactureable = p
-
 
     @api.multi
     def get_product_bom(self):
