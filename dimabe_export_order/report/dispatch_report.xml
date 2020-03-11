@@ -136,9 +136,9 @@
                     </div>
                     <div style="width:100%;margin:0 auto;height:650px;border:1px solid;">
                         <table style="width:100%;">
-                            <th>CANTIDAD</th>
-                            <th style="width:60%;">DETALLES</th>
-                            <th>VALOR UNITARIO</th>
+                            <th style="width:19%;border-right: solid;border-bottom:solid;">CANTIDAD</th>
+                            <th style="width:60%;border-right: solid;border-bottom:solid;border-left:solid;">DETALLES</th>
+                            <th style="width:19%;border-bottom:solid;border-left:solid;">VALOR UNITARIO</th>
                             <t t-foreach="d.move_ids_without_package" t-as="m">
                                 <tr>
                                     <td>
