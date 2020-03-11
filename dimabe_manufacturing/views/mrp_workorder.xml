@@ -101,11 +101,13 @@
                        attrs="{'invisible':[('state', '=', 'done')]}"
                 />
 
+                <field name="there_is_serial_without_pallet" invisible="1" />
+
                 <button string="Paletizar"
                         name="create_pallet"
                         type="object"
                         context="{'default_product_id': product_id}"
-                        attrs="{'invisible':[('final_lot_id', '=', False)]}"
+                        attrs="{'invisible':[('there_is_serial_without_pallet', '=', True)]}"
                 />
                 <field name="production_finished_move_line_ids"
                        attrs="{'invisible':[('state', '!=', 'done')]}"
