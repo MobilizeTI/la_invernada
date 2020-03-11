@@ -238,6 +238,7 @@ class UnpelledDried(models.Model):
                                                  'Solo puede encontrarse en un registro'.format(
                         oven_use.used_lot_id.name
                     ))
+        return res
 
     @api.multi
     def unlink(self):
