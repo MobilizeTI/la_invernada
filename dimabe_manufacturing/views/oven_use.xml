@@ -41,7 +41,7 @@
     <field name="name">Listado de Salidas Despelonado</field>
     <field name="model">oven.use</field>
     <field name="arch" type="xml">
-      <tree default_order="create_date">
+      <tree default_order="create_date desc">
         <field name="create_date" invisible="1" />
         <field name="used_lot_id" />
         <field name="lot_producer_id" />
