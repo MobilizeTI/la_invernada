@@ -71,7 +71,7 @@ class MrpProduction(models.Model):
             for product in products:
                 for route in product.route_ids:
                     if route.name == 'Fabricar':
-                        manufacturable.append(product.id)
+                        manufactureable.append(product.id)
                         p = self.env['product.product'].search([('id', 'in', manufacturable)])
             item.manufactureable = p
 
