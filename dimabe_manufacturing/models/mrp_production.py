@@ -73,10 +73,8 @@ class MrpProduction(models.Model):
                     if route.name == 'Fabricar':
                         manufactureable.append(product.id)
                         p = item.env['product.product'].search([('id', 'in', manufactureable)])
-            if not item.name:
-                item.manufacturable = products
-            else:
-                item.manufacturable = p
+
+            item.manufacturable = p
 
 
     @api.multi
