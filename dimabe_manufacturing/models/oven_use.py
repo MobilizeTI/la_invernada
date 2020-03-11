@@ -30,7 +30,8 @@ class OvenUse(models.Model):
 
     used_lot_id = fields.Many2one(
         'stock.production.lot',
-        'Lote a Secar'
+        'Lote a Secar',
+        required=True
     )
 
     lot_producer_id = fields.Many2one(

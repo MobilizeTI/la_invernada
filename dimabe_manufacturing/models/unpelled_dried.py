@@ -216,9 +216,11 @@ class UnpelledDried(models.Model):
     def create(self, values_list):
         res = super(UnpelledDried, self).create(values_list)
 
-        if res.oven_use_ids.filtered(
-            lambda a: a.used_lot_id
-        )
+        for oven_use in res.oven_use_ids:
+            if len(res.oven_use_ids.filtered(lambda a: a.used_lot_id == oven_use.used_lot_id)) > 1:
+                raise models.ValidationError('el lote {} se encuentra en más de un registro de secado'.format(
+                    oven_use.used_lot_id
+                ))
 
         res.state = 'draft'
 
