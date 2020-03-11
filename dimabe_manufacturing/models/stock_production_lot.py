@@ -121,8 +121,8 @@ class StockProductionLot(models.Model):
         related='oven_use_ids.init_active_time'
     )
 
-    oven_time_is_running = fields.Boolean(
-        'Tiepo Transcurriendo',
+    finish_active_time = fields.Integer(
+        'Fin Tiempo Activo',
         related='oven_use_ids.finish_active_time'
     )
 
