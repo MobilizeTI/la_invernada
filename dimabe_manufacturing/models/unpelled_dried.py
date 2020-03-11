@@ -229,6 +229,16 @@ class UnpelledDried(models.Model):
         return res
 
     @api.multi
+    def write(self, values):
+        res = super(UnpelledDried, self).write(values)
+        for item in self:
+            for oven_use in item.oven_use_ids:
+                if len(item.oven_use_ids.filtered(lambda a: a.used_lot_id == oven_use.used_lot_id)) > 1:
+                    raise models.ValidationError('el lote {} se encuentra en más de un registro de secado'.format(
+                        oven_use.used_lot_id
+                    ))
+
+    @api.multi
     def unlink(self):
         for item in self:
             item.oven_use_ids.mapped('dried_oven_ids').write({
