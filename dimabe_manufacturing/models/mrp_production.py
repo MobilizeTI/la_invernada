@@ -75,6 +75,7 @@ class MrpProduction(models.Model):
                         p = item.env['product.product'].search([('id', 'in', manufactureable)])
                         raise models.ValidationError(p)
             item.manufacturable = p
+            raise models.ValidationError(item.manufacturable)
 
 
     @api.multi
