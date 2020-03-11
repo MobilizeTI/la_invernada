@@ -16,6 +16,7 @@ odoo.define('dimabe_manufacturing.picking_integer_time', function (require) {
             var self = this;
             clearTimeout(this.timer);
             var toSum = 0
+            console.log(this.record.data.unpelled_state, this.record.data.oven_time_is_running)
             if (this.record.data.unpelled_state === 'drying' || this.record.data.oven_time_is_running) {
                 this.timer = setTimeout(function () {
                     var currentDate = new Date().getTime() / 1000
