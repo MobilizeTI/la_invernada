@@ -216,6 +216,10 @@ class UnpelledDried(models.Model):
     def create(self, values_list):
         res = super(UnpelledDried, self).create(values_list)
 
+        if res.oven_use_ids.filtered(
+            lambda a: a.used_lot_id
+        )
+
         res.state = 'draft'
 
         res.create_out_lot()
