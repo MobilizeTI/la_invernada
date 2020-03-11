@@ -80,7 +80,6 @@
             </div>
         </t>
     </template>
-
     <template id="report_stock_production_lot_serial_all_label">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="d">
@@ -93,7 +92,7 @@
                             </td>
                         </tr>
                         <tr>
-                           <td>Especie:</td>
+                            <td>Especie:</td>
                             <td>
                                 <span t-esc="d.stock_production_lot_id.product_id.get_species()"/>
                             </td>
@@ -112,7 +111,7 @@
                         <tr>
                             <td>Productor:</td>
                             <td colspan="3">
-                                <span t-field="d.producer_id.name" />
+                                <span t-field="d.producer_id.name"/>
                             </td>
                         </tr>
                         <tr>
@@ -145,7 +144,7 @@
                         <tr>
                             <td colspan="4">
                                 <img
-                                    t-att-src="'%s/report/barcode/?type=%s&amp;val'"
+                                        t-att-src="'%s/report/barcode/?type=%s&amp;val'"
                                 />
                             </td>
                         </tr>
