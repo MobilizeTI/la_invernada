@@ -39,7 +39,7 @@
 
    <record id="oven_use_out_dashboard_tree_view" model="ir.ui.view">
     <field name="name">Listado de Salidas Despelonado</field>
-    <field name="model">dried.unpelled.history</field>
+    <field name="model">oven.use</field>
     <field name="arch" type="xml">
       <tree>
         <field name="used_lot_id" />
@@ -62,7 +62,7 @@
 
   <record id="oven_use_out_dashboard_action" model="ir.actions.act_window">
     <field name="name">Vista General Despelonado Salida</field>
-    <field name="res_model">dried.unpelled.history</field>
+    <field name="res_model">oven.use</field>
     <field name="view_mode">tree</field>
     <field name="view_id" ref="dimabe_manufacturing.oven_use_out_dashboard_tree_view" />
   </record>
