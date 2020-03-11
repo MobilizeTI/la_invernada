@@ -65,6 +65,7 @@
     <field name="res_model">oven.use</field>
     <field name="view_mode">tree</field>
     <field name="view_id" ref="dimabe_manufacturing.oven_use_out_dashboard_tree_view" />
+    <field name="domain">[('history_id', '!=', False)]</field>
   </record>
 
   <menuitem name="Vista General Depelonado Salida"
