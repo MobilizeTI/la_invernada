@@ -99,7 +99,7 @@
         <field name="product_variety"/>
         <field name="product_canning"/>
         <field name="picking_type_id"/>
-        <field name="name"/>
+        <field name="reception_net_weight"/>
         <field name="name"/>
         <field name="name"/>
         <field name="name"/>
