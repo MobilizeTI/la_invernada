@@ -142,7 +142,7 @@
                             <t t-foreach="d.move_ids_without_package" t-as="m">
                                 <tr>
                                     <td>
-                                        <t t-esc="'{0:,2f}'.format(int(m.quantity_done))"/>
+                                        <t t-esc="'{0:,.2f}'.format(int(m.quantity_done))"/>
                                     </td>
                                     <td style="width:60%;">
                                         <span t-field="m.product_id"/>
