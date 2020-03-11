@@ -1,4 +1,4 @@
-odoo.define('dimabe_manufacturing.stock_production_lot', function (require) {
+odoo.define('dimabe_manufacturing.keyboard_validation', function (require) {
     var core = require('web.core');
     var Lot = new Model('stock.production.lot');
     document.addEventListener("keydown",function (event) {
