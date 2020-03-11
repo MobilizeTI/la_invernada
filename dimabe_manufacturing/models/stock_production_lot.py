@@ -88,6 +88,13 @@ class StockProductionLot(models.Model):
 
     picking_type_id = fields.Many2one(
         'stock.picking.type',
+        string='Bodega',
+        compute='_compute_reception_data'
+
+    )
+
+    reception_net_weight = fields.Float(
+        'kg. Neto',
         compute='_compute_reception_data'
     )
 
@@ -161,6 +168,7 @@ class StockProductionLot(models.Model):
                 item.reception_state = stock_picking[0].state
                 item.product_canning = stock_picking[0].get_canning_move().name
                 item.picking_type_id = stock_picking[0].picking_type_id
+                item.reception_net_weight = stock_picking[0].net_weight
 
     def _search_producer_id(self, operator, value):
         stock_picking_ids = self.env['stock.picking'].search([
