@@ -108,7 +108,7 @@
         <field name="oven_init_active_time"/>
         <field name="finish_active_time"/>
         <field name="oven_use_ids"/>
-        <field name="drier_counter"/>
+
       </tree>
     </field>
   </record>
