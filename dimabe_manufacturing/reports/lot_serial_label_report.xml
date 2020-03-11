@@ -188,7 +188,7 @@
     />
     <report id="action_print_all_serial"
             string="Etiquetas para Salida de Proceso"
-            model="stock.production.lot"
+            model="stock.production.lot.serial"
             report_type="qweb-pdf"
             name="dimabe_manufacturing.report_print_all_serial"
             paperformat="paper_format_10_x_7"
