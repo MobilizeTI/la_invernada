@@ -4,6 +4,12 @@
             <script src="/dimabe_manufacturing/static/src/js/float_time_widget.js"
                     type="text/javascript"
             />
+            <script src="/dimabe_manufacturing/static/src/js/date_methods.js"
+                    type="text/javascript"
+            />
+            <script src="/dimabe_manufacturing/static/src/js/picking_time_widget.js"
+                    type="text/javascript"
+            />
         </xpath>
     </template>
 <!--    <data>-->

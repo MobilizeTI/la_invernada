@@ -182,6 +182,7 @@ class StockProductionLotSerial(models.Model):
         if 'stock_picking_id' in self.env.context:
             stock_picking_id = self.env.context['stock_picking_id']
             stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
+
             if not stock_picking:
                 raise models.ValidationError('No se encontró el picking al que reservar el stock')
             for item in self:
@@ -193,6 +194,11 @@ class StockProductionLotSerial(models.Model):
                 )
 
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
+
+                if not stock_quant:
+                    raise models.ValidationError('El lote {} aún se encuentra en proceso.'.format(
+                        item.stock_production_lot_id.name
+                    ))
 
                 stock_quant.sudo().update({
                     'reserved_quantity': stock_quant.reserved_quantity + item.display_weight
@@ -220,7 +226,7 @@ class StockProductionLotSerial(models.Model):
                     ]
                 })
         else:
-            raise models.ValidationError('no se pudo identificar picknig')
+            raise models.ValidationError('no se pudo identificar picking')
 
     @api.multi
     def unreserved_picking(self):
@@ -240,7 +246,7 @@ class StockProductionLotSerial(models.Model):
                     )
 
                     stock_quant = item.stock_production_lot_id.get_stock_quant()
-                    models._logger.error('stock_quant : {}'.format(stock_quant.id))
+
                     stock_quant.sudo().update({
                         'reserved_quantity': stock_quant.reserved_quantity - item.display_weight
                     })
@@ -264,7 +270,7 @@ class StockProductionLotSerial(models.Model):
                 )
 
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
-                models._logger.error('stock_quant : {}'.format(stock_quant.id))
+
                 stock_quant.sudo().update({
                     'reserved_quantity': stock_quant.reserved_quantity - item.display_weight
                 })

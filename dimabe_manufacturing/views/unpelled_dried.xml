@@ -48,26 +48,30 @@
             <field name="product_in_id"
                    attrs="{'readonly':[('state','in',['done','progress'])]}"
             />
-
+            <field name="used_lot_ids"  invisible="1"/>
             <field name="oven_use_ids"
                    attrs="{'readonly':[('state','in',['done'])]}"
             >
               <tree editable="bottom">
                 <field name="init_active_time" invisible="1"/>
                 <field name="finish_active_time" invisible="1"/>
-                <field name="dried_oven_id"
+                <field name="ready_to_close"
+                       widget="boolean_toggle"
+                       attrs="{'invisible':[('finish_date','=',False)]}"
+                />
+                <field name="used_lot_id"
+                       domain="['&amp;','&amp;','&amp;',('producer_id','=',parent.producer_id),('product_id','=',parent.product_in_id),('id','not in',parent.used_lot_ids),'|',('balance','>',0),('reception_state','=','assigned')]"
+                />
+                <field name="dried_oven_ids"
                        attrs="{'readonly':[('init_date','!=',False)]}"
                        domain="[('is_in_use','=',False)]"
-                />
-                <field name="used_lot_ids"
                        widget="many2many_tags"
-                       domain="['&amp;','&amp;',('producer_id','=',parent.producer_id),('product_id','=',parent.product_in_id),'|',('balance','>',0),('reception_state','=','assigned')]"
                 />
                 <field name="init_date" readonly="1"/>
                 <field name="finish_date" readonly="1"/>
-                <field name="active_time"/>
+                <field name="active_seconds" widget="time_live" />
                 <button string="iniciar horno"
-                        attrs="{'invisible':['|',('init_date','!=',False),('dried_oven_id','=',False)]}"
+                        attrs="{'invisible':['|',('init_date','!=',False),('dried_oven_ids','=',False)]}"
                         name="init_process"
                         type="object"
                 />
@@ -87,13 +91,14 @@
                         type="object"
                 />
                 <button string="Imprimir"
-                        attrs="{'invisible':[('used_lot_ids','=',[])]}"
+                        attrs="{'invisible':[('used_lot_id','=',False)]}"
                         name="print_oven_label"
                         type="object"
                 />
               </tree>
             </field>
             <field name="in_variety" invisible="1"/>
+            <field name="can_close" invisible="1"/>
             <field name="out_product_id"
                    attrs="{'readonly':[('state','in',['done','progress'])]}"
                    domain="[('variety','=',in_variety)]"
@@ -103,7 +108,7 @@
                    attrs="{'invisible':[('out_lot_id','=',False)],'readonly':[('state','in',['done'])]}"
             />
             <field name="out_serial_ids"
-                   attrs="{'readonly':[('state','in',['done'])],'invisible':[('out_lot_id','=',False)]}"
+                   attrs="{'readonly':['|',('state','in',['done']),('can_close','=',False)],'invisible':[('out_lot_id','=',False)]}"
             >
               <tree editable="bottom">
                 <field name="stock_production_lot_id"
@@ -147,6 +152,7 @@
         <field name="in_lot_ids" widget="many2many_tags"/>
         <field name="out_lot_id" string="Lote Salida"/>
         <field name="oven_use_ids" widget="many2many_tags"/>
+        <field name="total_pending_lot_count" />
         <field name="state"/>
       </tree>
     </field>
@@ -163,5 +169,4 @@
             parent="mrp.menu_mrp_manufacturing"
             action="unpelled_dried_action"
   />
-
 </odoo>

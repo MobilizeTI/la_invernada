@@ -1,155 +1,179 @@
 <odoo>
-    <data>
-        <record id="seq_stock_production_lot" model="ir.sequence">
-            <field name="name">mrp workorder</field>
-            <field name="code">mrp.workorder</field>
-            <field name="prefix">2019</field>
-            <field name="padding">5</field>
-            <!--      <field name="number_next">60100</field>-->
-            <field name="company_id" eval="False"/>
-        </record>
+  <data>
+    <record id="seq_stock_production_lot" model="ir.sequence">
+      <field name="name">mrp workorder</field>
+      <field name="code">mrp.workorder</field>
+      <field name="prefix">2019</field>
+      <field name="padding">5</field>
+      <!--      <field name="number_next">60100</field>-->
+      <field name="company_id" eval="False"/>
+    </record>
+
+    <record id="mrp_workorder_view_form_tablet_inherit" model="ir.ui.view">
+      <field name="name">tablet producción</field>
+      <field name="model">mrp.workorder</field>
+      <field name="inherit_id" ref="mrp_workorder.mrp_workorder_view_form_tablet"/>
+      <field name="arch" type="xml">
+        <button name="action_open_manufacturing_order" position="replace">
+        </button>
+        <xpath expr="//div[@class='o_workorder_data']" position="inside">
+          <group>
+            <field name="confirmed_serial"
+                   attrs="{'invisible':[('is_last_step','=',True)]}"
+            />
+          </group>
+        </xpath>
+        <xpath expr="//div[@class='workorder_pdf']" position="before">
+          <field name="potential_serial_planned_ids">
+            <tree decoration-danger="consumed==False" decoration-success="consumed==True"
+                  delete="false" create="false" editable="bottom" groups="mrp.group_mrp_manager">
+              <field name="stock_production_lot_id" readonly="1"/>
+              <field name="serial_number" readonly="1"/>
+              <field name="display_weight" readonly="1"/>
+              <field name="consumed" groups="base.group_system"/>
+            </tree>
+          </field>
+        </xpath>
+        <xpath expr="//field[@name='qty_done']" position="attributes">
+          <attribute name="readonly">1</attribute>
+        </xpath>
+        <xpath expr="//field[@name='finished_product_check_ids']" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </xpath>
+      </field>
+    </record>
 
 
-        <record id="mrp_workorder_view_form_tablet_inherit" model="ir.ui.view">
-            <field name="name">tablet producción</field>
-            <field name="model">mrp.workorder</field>
-            <field name="inherit_id" ref="mrp_workorder.mrp_workorder_view_form_tablet"/>
-            <field name="arch" type="xml">
-                <button name="action_open_manufacturing_order" position="replace">
-                </button>
-                <xpath expr="//div[@class='o_workorder_data']" position="inside">
-                    <group>
-                        <field name="confirmed_serial"/>
-                    </group>
-                </xpath>
-                <xpath expr="//div[@class='workorder_pdf']" position="before">
-                    <field name="potential_serial_planned_ids">
-                        <tree decoration-danger="consumed==False" decoration-success="consumed==True"
-                              delete="false" create="false" editable="bottom" groups="mrp.group_mrp_manager">
-                            <field name="stock_production_lot_id" readonly="1"/>
-                            <field name="serial_number" readonly="1"/>
-                            <field name="display_weight" readonly="1"/>
-                            <field name="consumed" groups="base.group_system"/>
-                        </tree>
-                    </field>
-                </xpath>
-                <xpath expr="//field[@name='qty_done']" position="attributes">
-                    <attribute name="readonly">1</attribute>
-                </xpath>
-                <xpath expr="//field[@name='finished_product_check_ids']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
+    <record id="mrp_production_workorder_form_view_inherit" model="ir.ui.view">
+      <field name="name">formulario order de trabajo</field>
+      <field name="model">mrp.workorder</field>
+      <field name="inherit_id" ref="mrp.mrp_production_workorder_form_view_inherit"/>
+      <field name="arch" type="xml">
+        <field name="is_produced" position="after">
+          <field name="production_id"/>
+        </field>
+        <field name="final_lot_id" position="attributes">
+          <attribute name="readonly">True</attribute>
+        </field>
+        <button name="open_tablet_view" position="attributes">
+          <attribute name="string">Procesar Entrada</attribute>
+        </button>
+        <xpath expr="//header" position="inside">
+          <button name="open_out_form_view"
+                  type="object"
+                  string="Procesar Salida"
+                  attrs="{'invisible': [('production_state', '=', 'done')]}"
+          />
+        </xpath>
+        <xpath expr="//page[2]" position="after">
+          <page string="Lotes Planificados">
+            <field name="potential_serial_planned_ids" readonly="1">
+              <tree>
+                <field name="stock_production_lot_id"/>
+                <field name="serial_number"/>
+                <field name="display_weight"/>
+              </tree>
             </field>
-        </record>
+          </page>
+        </xpath>
+        <xpath expr="//page[3]" position="after">
+          <page string="Pallets">
+            <field name="manufacturing_pallet_ids"/>
+          </page>
+        </xpath>
+      </field>
+    </record>
 
-        <record id="mrp_production_workorder_form_view_inherit" model="ir.ui.view">
-            <field name="name">formulario order de trabajo</field>
-            <field name="model">mrp.workorder</field>
-            <field name="inherit_id" ref="mrp.mrp_production_workorder_form_view_inherit"/>
-            <field name="arch" type="xml">
-                <field name="is_produced" position="after">
-                    <field name="production_id"/>
+
+    <record id="mrp_workorder_out_form_view" model="ir.ui.view">
+      <field name="name">Procesar Salidas</field>
+      <field name="model">mrp.workorder</field>
+      <field name="priority">20</field>
+      <field name="arch" type="xml">
+
+        <form>
+          <div>
+            <group>
+              <group>
+                <h2>Salida Principal</h2>
+                <field name="state" readonly="1"/>
+                <field name="product_id" readonly="1"/>
+
+                <field name="final_lot_id"
+                       readonly="1"
+                       attrs="{'invisible':[('state', '=', 'done')]}"
+                />
+
+
+                <field name="there_is_serial_without_pallet" invisible="1"/>
+
+                <button string="Paletizar"
+                        name="create_pallet"
+                        type="object"
+                        class="oe_highlight"
+                        context="{'default_product_id': product_id}"
+                        attrs="{'invisible':[('there_is_serial_without_pallet', '=', False)]}"
+                />
+                <field name="production_finished_move_line_ids"
+                       attrs="{'invisible':[('state', '!=', 'done')]}"
+                       readonly="1"
+                >
+                  <tree readonly="1">
+                    <field name="product_id"/>
+                    <field name="lot_id" widget="many2onebutton"/>
+                  </tree>
                 </field>
-                <field name="final_lot_id" position="attributes">
-                    <attribute name="readonly">True</attribute>
+              </group>
+              <group attrs="{'invisible':[('state', '=', 'done')]}">
+                <h2>Otras Salidas</h2>
+                <field name="byproduct_move_line_ids"
+                       readonly="1">
+                  <tree readonly="1">
+                    <field name="product_id"/>
+                    <field name="lot_id" widget="many2onebutton"/>
+                  </tree>
                 </field>
-                <button name="open_tablet_view" position="attributes">
-                    <attribute name="string">Procesar Entrada</attribute>
-                </button>
-                <xpath expr="//header" position="inside">
-                    <button name="open_out_form_view"
+              </group>
+            </group>
+          </div>
+          <div>
+            <group>
+              <group>
+                <field name="summary_out_serial_ids">
+                  <tree>
+                    <field name="stock_production_lot_id"/>
+                    <field name="stock_product_id"/>
+                    <field name="serial_number"/>
+                    <field name="display_weight"/>
+                  </tree>
+                </field>
+              </group>
+              <group>
+                <field name="manufacturing_pallet_ids">
+                  <tree>
+                    <field name="name" widget="many2onebutton"/>
+                    <field name="total_content"/>
+                    <field name="total_content_weight"/>
+                    <field name="state"/>
+                    <button string="Ver"
+                            class="oe_highlight"
                             type="object"
-                            string="Procesar Salida"
-                            attrs="{'invisible': [('production_state', '=', 'done')]}"
+                            name="show_pallet"
                     />
-                </xpath>
-                <xpath expr="//page[2]" position="after">
-                    <page string="Lotes Planificados">
-                        <field name="potential_serial_planned_ids" readonly="1">
-                            <tree>
-                                <field name="stock_production_lot_id"/>
-                                <field name="serial_number"/>
-                                <field name="display_weight"/>
-                            </tree>
-                        </field>
-                    </page>
-                </xpath>
-            </field>
-        </record>
+                  </tree>
+                </field>
+              </group>
+            </group>
+          </div>
+        </form>
+      </field>
+    </record>
 
-        <record id="mrp_workorder_out_form_view" model="ir.ui.view">
-            <field name="name">Procesar Salidas</field>
-            <field name="model">mrp.workorder</field>
-            <field name="priority">20</field>
-            <field name="arch" type="xml">
-
-                <form>
-                    <div>
-                        <group>
-                            <group>
-                                <h2>Salida Principal</h2>
-                                <field name="state" readonly="1"/>
-                                <field name="product_id" readonly="1"/>
-
-                                <field name="final_lot_id"
-                                       readonly="1"
-                                       attrs="{'invisible':[('state', '=', 'done')]}"
-                                />
-
-                                <button string="Paletizar"
-                                        name="create_pallet"
-                                        type="object"
-                                        context="{'default_product_id': product_id}"
-                                        attrs="{'invisible':[('final_lot_id', '=', False)]}"
-                                />
-                                <field name="production_finished_move_line_ids"
-                                       attrs="{'invisible':[('state', '!=', 'done')]}"
-                                       readonly="1"
-                                >
-                                    <tree readonly="1">
-                                        <field name="product_id"/>
-                                        <field name="lot_id" widget="many2onebutton"/>
-                                    </tree>
-                                </field>
-                            </group>
-                            <group attrs="{'invisible':[('state', '=', 'done')]}">
-                                <h2>Otras Salidas</h2>
-                                <field name="byproduct_move_line_ids"
-                                       readonly="1">
-                                    <tree readonly="1">
-                                        <field name="product_id"/>
-                                        <field name="lot_id" widget="many2onebutton"/>
-                                    </tree>
-                                </field>
-                            </group>
-                        </group>
-                    </div>
-                    <div>
-                        <group>
-                            <group>
-                                <field name="summary_out_serial_ids">
-                                    <tree>
-                                        <field name="stock_production_lot_id"/>
-                                        <field name="stock_product_id"/>
-                                        <field name="serial_number"/>
-                                        <field name="display_weight"/>
-                                    </tree>
-                                </field>
-                            </group>
-                            <group>
-                                <field name="manufacturing_pallet_ids"/>
-                            </group>
-                        </group>
-                    </div>
-                </form>
-            </field>
-        </record>
-
-        <record id="mrp_workorder_out_form_action" model="ir.actions.act_window.view">
-            <field name="name">action out process</field>
-            <field name="res_model">mrp.workorder</field>
-            <field name="view_mode">form</field>
-            <field name="view_id" ref="dimabe_manufacturing.mrp_workorder_out_form_view"/>
-        </record>
-    </data>
+    <record id="mrp_workorder_out_form_action" model="ir.actions.act_window.view">
+      <field name="name">action out process</field>
+      <field name="res_model">mrp.workorder</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="dimabe_manufacturing.mrp_workorder_out_form_view"/>
+    </record>
+  </data>
 </odoo>

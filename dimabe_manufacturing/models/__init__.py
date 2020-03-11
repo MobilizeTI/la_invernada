@@ -17,4 +17,4 @@ from . import product_product
 from . import stock_traceability
 from . import dried_unpelled_history
 from . import manufacturing_pallet
-from . import res_partner
+from . import stock_picking_type

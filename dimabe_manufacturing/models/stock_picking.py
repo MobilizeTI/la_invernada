@@ -45,7 +45,27 @@ class StockPicking(models.Model):
         string='Lotes Disponibles'
     )
 
+    assigned_pallet_ids = fields.One2many(
+        'manufacturing.pallet',
+        compute='_compute_assigned_pallet_ids'
+    )
+
     have_series = fields.Boolean('Tiene Serie', default=True, compute='_compute_potential_lot_serial_ids')
+
+    packing_list_lot_ids = fields.One2many(
+        'stock.production.lot',
+        compute='_compute_packing_list_lot_ids'
+    )
+
+    @api.multi
+    def _compute_packing_list_lot_ids(self):
+        for item in self:
+            item.packing_list_lot_ids = item.packing_list_ids.mapped('stock_production_lot_id')
+
+    @api.multi
+    def _compute_assigned_pallet_ids(self):
+        for item in self:
+            item.assigned_pallet_ids = item.packing_list_ids.mapped('pallet_id')
 
     @api.multi
     @api.depends('product_search_id')
@@ -70,12 +90,13 @@ class StockPicking(models.Model):
     @api.multi
     def _compute_potential_lot(self):
         for item in self:
-            if not item.have_series:
-                for product in item.move_ids_without_package.mapped('product_id.id'):
-                    data = self.env['stock.production.lot.serial'].search([('stock_product_id', '=', product)])
-                    if not data:
-                        lot = self.env['stock.production.lot'].search([('product_id', '=', product)])
-                        item.potential_lot_ids = lot
+            domain = [
+                ('product_id', 'in', item.move_ids_without_package.mapped('product_id.id')),
+                ('available_total_serial', '>', 0)
+            ]
+
+            lot = self.env['stock.production.lot'].search(domain)
+            item.potential_lot_ids = lot
 
     @api.multi
     def _compute_packing_list_ids(self):
@@ -108,6 +129,16 @@ class StockPicking(models.Model):
         }
 
     @api.multi
+    def action_confirm(self):
+        res = super(StockPicking, self).action_confirm()
+        for stock_picking in self:
+            if stock_picking.picking_type_id.require_dried:
+                mp_move = stock_picking.get_mp_move()
+                for move_line in mp_move.move_line_ids:
+                    move_line.lot_id.unpelled_state = 'waiting'
+        return res
+
+    @api.multi
     def button_validate(self):
 
         for serial in self.packing_list_ids:
@@ -122,32 +153,31 @@ class StockPicking(models.Model):
             lambda a: a.serial_number == barcode
         )
         if not custom_serial:
-            raise models.ValidationError('Esta serie no esta en packing list')
+            raise models.ValidationError('el código {} no corresponde a este despacho'.format(barcode))
         return custom_serial
 
     def on_barcode_scanned(self, barcode):
+
         for item in self:
             custom_serial = item.validate_barcode(barcode)
-            if custom_serial.consumed == True:
-                raise models.ValidationError('Serie ya fue usada')
-            stock_move = self.move_line_ids_without_package.filtered(
-                lambda a: a.product_id == custom_serial.stock_production_lot_id.product_id
+            if custom_serial.consumed:
+                raise models.ValidationError('el código {} ya fue consumido'.format(barcode))
+            stock_move_line = self.move_line_ids_without_package.filtered(
+                lambda a: a.product_id == custom_serial.stock_production_lot_id.product_id and
+                          a.lot_id == custom_serial.stock_production_lot_id and
+                          a.product_uom_qty == custom_serial.display_weight and
+                          a.qty_done == 0
             )
 
-            move_line = stock_move.filtered(
-                lambda a: a.lot_id == custom_serial.stock_production_lot_id
-            )
-            if len(move_line) > 1:
-                move_line[0].update({
-                    'qty_done': move_line[0].qty_done + custom_serial.display_weight
+            if len(stock_move_line) > 1:
+                stock_move_line[0].update({
+                    'qty_done': stock_move_line[0].qty_done + custom_serial.display_weight
                 })
             else:
-                move_line.update({
-                    'qty_done': move_line.qty_done + custom_serial.display_weight
+                stock_move_line.update({
+                    'qty_done': stock_move_line.qty_done + custom_serial.display_weight
                 })
-            custom_serial.sudo().update(
-                {
-                    'consumed': True
-                }
-            )
 
+            custom_serial.sudo().update({
+                'consumed': True
+            })

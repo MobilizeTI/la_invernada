@@ -9,7 +9,7 @@
             <field name="init_date"
                    readonly="1"
             />
-            <field name="dried_oven_id" />
+            <field name="dried_oven_ids" />
           </group>
           <group>
             <field name="finish_date"
@@ -28,12 +28,51 @@
     <field name="model">oven.use</field>
     <field name="arch" type="xml">
       <tree>
-        <field name="dried_oven_id"/>
-        <field name="used_lot_ids" widget="many2many_tags"/>
+        <field name="dried_oven_ids"  widget="many2many_tags"/>
+        <field name="used_lot_id"/>
         <field name="init_date"/>
         <field name="finish_date"/>
         <field name="active_time"/>
       </tree>
     </field>
   </record>
+
+   <record id="oven_use_out_dashboard_tree_view" model="ir.ui.view">
+    <field name="name">Listado de Salidas Despelonado</field>
+    <field name="model">oven.use</field>
+    <field name="arch" type="xml">
+      <tree default_order="create_date desc">
+        <field name="create_date" invisible="1" />
+        <field name="used_lot_id" />
+        <field name="lot_producer_id" />
+        <field name="lot_guide_number" />
+        <field name="lot_variety" />
+        <field name="lot_picking_type_id" />
+        <field name="init_date" />
+        <field name="finish_date" />
+        <field name="active_time" />
+        <field name="dried_oven_ids" widget="many2many_tags" />
+        <field name="out_lot_id" />
+        <field name="out_lot_serial_count" />
+        <field name="reception_net_weight" />
+        <field name="total_out_weight" />
+        <field name="performance" />
+      </tree>
+    </field>
+  </record>
+
+  <record id="oven_use_out_dashboard_action" model="ir.actions.act_window">
+    <field name="name">Vista General Despelonado Salida</field>
+    <field name="res_model">oven.use</field>
+    <field name="view_mode">tree</field>
+    <field name="view_id" ref="dimabe_manufacturing.oven_use_out_dashboard_tree_view" />
+    <field name="domain">[('history_id', '!=', False)]</field>
+
+  </record>
+
+  <menuitem name="Vista General Depelonado Salida"
+            id="oven_use_out_dashboard_menu"
+            parent="mrp.menu_mrp_reporting"
+            action="oven_use_out_dashboard_action"
+  />
 </odoo>

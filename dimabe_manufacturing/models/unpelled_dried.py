@@ -10,6 +10,16 @@ class UnpelledDried(models.Model):
         default=True
     )
 
+    total_pending_lot_count = fields.Integer(
+        'Lotes Pendientes',
+        compute='_compute_total_pending_lot_count'
+    )
+
+    can_close = fields.Boolean(
+        'Puede Cerrar',
+        compute='_compute_can_close'
+    )
+
     state = fields.Selection([
         ('draft', 'Borrador'),
         ('progress', 'En Proceso'),
@@ -51,7 +61,7 @@ class UnpelledDried(models.Model):
     in_lot_ids = fields.Many2many(
         'stock.production.lot',
         compute='_compute_in_lot_ids',
-        string='Lotes de Entrada'
+        string='Lote de Entrada'
     )
 
     in_variety = fields.Char(
@@ -83,6 +93,11 @@ class UnpelledDried(models.Model):
         'Hornos'
     )
 
+    used_lot_ids = fields.One2many(
+        'stock.production.lot',
+        compute='_compute_used_lot_ids'
+    )
+
     total_in_weight = fields.Float(
         'Total Ingresado',
         compute='_compute_total_in_weight'
@@ -105,6 +120,29 @@ class UnpelledDried(models.Model):
     )
 
     @api.multi
+    def _compute_used_lot_ids(self):
+        for item in self:
+            item.used_lot_ids = item.oven_use_ids.mapped('used_lot_id')
+
+    @api.multi
+    def _compute_total_pending_lot_count(self):
+        for item in self:
+            lot_ids = self.env['stock.production.lot'].search([
+                '&', '&', '&', ('producer_id', '=', item.producer_id.id),
+                ('product_id', '=', item.product_in_id.id),
+                ('id', 'not in', item.oven_use_ids.mapped('used_lot_id.id')),
+                '|', ('balance', '>', 0), ('reception_state', '=', 'assigned')
+            ])
+            item.total_pending_lot_count = len(lot_ids)
+
+    @api.multi
+    def _compute_can_close(self):
+        for item in self:
+            item.can_close = len(item.oven_use_ids.filtered(
+                lambda a: a.ready_to_close
+            )) > 0
+
+    @api.multi
     def _compute_performance(self):
         for item in self:
             if item.total_in_weight > 0 and item.total_out_weight > 0:
@@ -119,19 +157,19 @@ class UnpelledDried(models.Model):
     def _compute_total_in_weight(self):
         for item in self:
             item.total_in_weight = sum(item.oven_use_ids.filtered(
-                lambda a: a.finish_date
-            ).mapped('used_lot_ids').mapped('balance'))
+                lambda a: a.ready_to_close
+            ).mapped('used_lot_id').mapped('balance'))
 
     @api.multi
     def _compute_in_lot_ids(self):
         for item in self:
-            item.in_lot_ids = item.oven_use_ids.mapped('used_lot_ids')
+            item.in_lot_ids = item.oven_use_ids.mapped('used_lot_id')
 
     @api.onchange('producer_id')
     def onchange_producer_id(self):
         if self.producer_id not in self.in_lot_ids.mapped('producer_id'):
             for oven_use_id in self.oven_use_ids:
-                oven_use_id.used_lot_ids = [(5,)]
+                oven_use_id.used_lot_id = None
 
     @api.onchange('product_in_id')
     def onchange_product_in_id(self):
@@ -178,6 +216,12 @@ class UnpelledDried(models.Model):
     def create(self, values_list):
         res = super(UnpelledDried, self).create(values_list)
 
+        for oven_use in res.oven_use_ids:
+            if len(res.oven_use_ids.filtered(lambda a: a.used_lot_id == oven_use.used_lot_id)) > 1:
+                raise models.ValidationError('el lote {} se encuentra en más de un registro de secado'.format(
+                    oven_use.used_lot_id
+                ))
+
         res.state = 'draft'
 
         res.create_out_lot()
@@ -185,9 +229,21 @@ class UnpelledDried(models.Model):
         return res
 
     @api.multi
+    def write(self, values):
+        res = super(UnpelledDried, self).write(values)
+        for item in self:
+            for oven_use in item.oven_use_ids:
+                if len(item.oven_use_ids.filtered(lambda a: a.used_lot_id == oven_use.used_lot_id)) > 1:
+                    raise models.ValidationError('el lote {} se encuentra en más de un registro de secado.'
+                                                 'Solo puede encontrarse en un registro'.format(
+                        oven_use.used_lot_id.name
+                    ))
+        return res
+
+    @api.multi
     def unlink(self):
         for item in self:
-            item.oven_use_ids.mapped('dried_oven_id').write({
+            item.oven_use_ids.mapped('dried_oven_ids').write({
                 'is_in_use': False
             })
 
@@ -197,29 +253,30 @@ class UnpelledDried(models.Model):
     def cancel_unpelled_dried(self):
         for item in self:
             item.state = 'cancel'
-            item.oven_use_ids.mapped('dried_oven_id').set_is_in_use(False)
+            item.oven_use_ids.mapped('dried_oven_ids').set_is_in_use(False)
 
     @api.multi
     def finish_unpelled_dried(self):
         for item in self:
             oven_use_to_close_ids = item.oven_use_ids.filtered(
-                lambda a: a.finish_date
+                lambda a: a.ready_to_close
             )
 
-            for lot_id in oven_use_to_close_ids.mapped('used_lot_ids'):
+            for lot_id in oven_use_to_close_ids.mapped('used_lot_id'):
                 oven_use_id = item.oven_use_ids.filtered(
-                    lambda a: not a.finish_date and len(a.used_lot_ids) == 1 and lot_id in a.used_lot_ids
+                    lambda a: not a.ready_to_close and len(a.dried_oven_ids) == 1 and lot_id == a.used_lot_id
                 )
                 if oven_use_id:
                     raise models.ValidationError('el lote {} no ha sido terminado en el cajón {}.'
                                                  ' no se puede cerrar un lote en que se encuentre en '
                                                  'cajones completos (no mezclados con otros lotes) y que '
                                                  'se encuentren todavía en proceso'.format(
-                        lot_id.name, oven_use_id.dried_oven_id.name
+                        lot_id.name, oven_use_id.dried_oven_ids[0].name
                     ))
+                lot_id.unpelled_state = 'done'
 
             if not oven_use_to_close_ids:
-                raise models.ValidationError('no hay hornos terminados que procesar')
+                raise models.ValidationError('no hay hornos listos para cerrar por procesar')
 
             if not item.out_serial_ids:
                 raise models.ValidationError('Debe agregar al menos una serie de salida al proceso')
@@ -240,7 +297,7 @@ class UnpelledDried(models.Model):
 
             consumed = []
 
-            for used_lot_id in oven_use_to_close_ids.mapped('used_lot_ids'):
+            for used_lot_id in oven_use_to_close_ids.mapped('used_lot_id'):
                 if used_lot_id.get_stock_quant().balance > 0:
                     consumed.append([0, 0, {
                         'lot_name': used_lot_id.name,
@@ -271,7 +328,7 @@ class UnpelledDried(models.Model):
                 'move_id': stock_move.id
             })
 
-            oven_use_to_close_ids.mapped('dried_oven_id').set_is_in_use(False)
+            oven_use_to_close_ids.mapped('dried_oven_ids').set_is_in_use(False)
 
             for oven_use_id in self.oven_use_ids.filtered(lambda a: a.finish_date):
                 oven_use_id.write({

@@ -56,6 +56,11 @@ class DriedUnpelledHistory(models.Model):
         string='Series de Salida'
     )
 
+    out_serial_count = fields.Integer(
+        'Cantidad Envases',
+        compute='_compute_out_serial_count'
+    )
+
     total_in_weight = fields.Float(
         'Total Ingresado',
         readonly=True
@@ -83,6 +88,11 @@ class DriedUnpelledHistory(models.Model):
         'Destino de Procesados',
         readonly=True
     )
+
+    @api.multi
+    def _compute_out_serial_count(self):
+        for item in self:
+            item.out_serial_count = len(item.out_serial_ids)
 
     @api.multi
     def _compute_name(self):

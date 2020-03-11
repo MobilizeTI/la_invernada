@@ -4,6 +4,19 @@ from odoo import fields, models, api
 class StockProductionLot(models.Model):
     _inherit = 'stock.production.lot'
 
+    unpelled_state = fields.Selection([
+        ('waiting', 'En Espera'),
+        ('drying', 'Secando'),
+        ('done', 'Terminado')
+    ],
+        'Estado',
+    )
+
+    product_variety = fields.Char(
+        'Variedad',
+        compute='_compute_product_variety'
+    )
+
     producer_id = fields.Many2one(
         'res.partner',
         compute='_compute_reception_data',
@@ -29,6 +42,11 @@ class StockProductionLot(models.Model):
         search='_search_reception_state'
     )
 
+    product_canning = fields.Char(
+        'Envase',
+        compute='_compute_reception_data'
+    )
+
     is_prd_lot = fields.Boolean('Es Lote de salida de Proceso')
 
     is_standard_weight = fields.Boolean('Series Peso Estandar')
@@ -43,9 +61,21 @@ class StockProductionLot(models.Model):
         string="Detalle"
     )
 
+    stock_production_lot_available_serial_ids = fields.One2many(
+        'stock.production.lot.serial',
+        compute='_compute_stock_production_lot_available_serial_ids',
+        string='Series Disponibles'
+    )
+
     total_serial = fields.Float(
         'Total',
         compute='_compute_total_serial'
+    )
+
+    available_total_serial = fields.Float(
+        'Total Disponible',
+        compute='_compute_available_total_serial',
+        search='_search_available_total_serial'
     )
 
     qty_to_reserve = fields.Float('Cantidad a Reservar')
@@ -53,6 +83,120 @@ class StockProductionLot(models.Model):
     is_reserved = fields.Boolean('Esta reservado?', compute='reserved', default=False)
 
     producer_id = fields.Many2one('res.partner','Productor')
+
+    context_picking_id = fields.Integer(
+        'picking del contexto',
+        compute='_compute_context_picking_id'
+    )
+
+    pallet_ids = fields.One2many(
+        'manufacturing.pallet',
+        compute='_compute_pallet_ids'
+    )
+
+    picking_type_id = fields.Many2one(
+        'stock.picking.type',
+        string='Bodega',
+        compute='_compute_reception_data'
+
+    )
+
+    reception_net_weight = fields.Float(
+        'kg. Neto',
+        compute='_compute_reception_data'
+    )
+
+    reception_date = fields.Datetime(
+        'Fecha Recepción',
+        compute='_compute_reception_data'
+    )
+
+    reception_elapsed_time = fields.Char(
+        'Hr Camión en Planta',
+        compute='_compute_reception_data'
+    )
+
+    oven_init_active_time = fields.Integer(
+        'Inicio Tiempo Activo',
+        related='oven_use_ids.init_active_time'
+    )
+
+    finish_active_time = fields.Integer(
+        'Fin Tiempo Activo',
+        related='oven_use_ids.finish_active_time'
+    )
+
+    oven_use_ids = fields.One2many(
+        'oven.use',
+        'used_lot_id',
+        'Uso de Hornos',
+        sort='active_seconds desc'
+    )
+
+    drier_counter = fields.Integer(
+        'Hr en Secador',
+        related='oven_use_ids.active_seconds'
+    )
+
+    @api.multi
+    def _compute_product_variety(self):
+        for item in self:
+            item.product_variety = item.product_id.get_variety()
+
+    @api.multi
+    def _compute_pallet_ids(self):
+        for item in self:
+            item.pallet_ids = item.stock_production_lot_available_serial_ids.mapped('pallet_id')
+
+    @api.multi
+    def _compute_context_picking_id(self):
+        for item in self:
+            if 'stock_picking_id' in self.env.context:
+                item.context_picking_id = self.env.context['stock_picking_id']
+
+    @api.multi
+    def _compute_stock_production_lot_available_serial_ids(self):
+        for item in self:
+            item.stock_production_lot_available_serial_ids = item.stock_production_lot_serial_ids.filtered(
+                lambda a: not a.reserved_to_stock_picking_id
+            )
+
+    @api.multi
+    def _compute_available_total_serial(self):
+        for item in self:
+            item.available_total_serial = sum(item.stock_production_lot_serial_ids.filtered(
+                lambda a: not a.consumed
+            ).mapped('display_weight'))
+
+    @api.multi
+    def _search_available_total_serial(self, operator, value):
+        stock_production_lot_ids = self.env['stock.production.lot.serial'].search([
+            ('consumed', '=', False),
+            ('reserved_to_stock_picking_id', '=', False)
+        ]).mapped('stock_production_lot_id')
+
+        if operator == '>':
+            stock_production_lot_ids = stock_production_lot_ids.filtered(
+                lambda a: sum(a.stock_production_lot_serial_ids.mapped('display_weight')) > value
+            )
+        elif operator == '=':
+            stock_production_lot_ids = stock_production_lot_ids.filtered(
+                lambda a: sum(a.stock_production_lot_serial_ids.mapped('display_weight')) == value
+            )
+        elif operator == '<':
+            stock_production_lot_ids = stock_production_lot_ids.filtered(
+                lambda a: sum(a.stock_production_lot_serial_ids.mapped('display_weight')) < value
+            )
+        elif operator == '>=':
+            stock_production_lot_ids = stock_production_lot_ids.filtered(
+                lambda a: sum(a.stock_production_lot_serial_ids.mapped('display_weight')) >= value
+            )
+        elif operator == '<=':
+            stock_production_lot_ids = stock_production_lot_ids.filtered(
+                lambda a: sum(a.stock_production_lot_serial_ids.mapped('display_weight')) <= value
+            )
+
+        return [('id', 'in', stock_production_lot_ids.mapped('id'))]
 
     @api.multi
     def _compute_reception_data(self):
@@ -62,6 +206,11 @@ class StockProductionLot(models.Model):
                 item.producer_id = stock_picking[0].partner_id
                 item.reception_guide_number = stock_picking[0].guide_number
                 item.reception_state = stock_picking[0].state
+                item.product_canning = stock_picking[0].get_canning_move().name
+                item.picking_type_id = stock_picking[0].picking_type_id
+                item.reception_net_weight = stock_picking[0].net_weight
+                item.reception_date = stock_picking[0].truck_in_date
+                item.reception_elapsed_time = stock_picking[0].elapsed_time
 
     def _search_producer_id(self, operator, value):
         stock_picking_ids = self.env['stock.picking'].search([
@@ -91,51 +240,70 @@ class StockProductionLot(models.Model):
             item.total_serial = sum(item.stock_production_lot_serial_ids.mapped('display_weight'))
 
     @api.multi
-    def reserved(self):
+    def add_to_packing_list(self):
+        picking_id = None
+        if 'stock_picking_id' in self.env.context:
+            picking_id = self.env.context['stock_picking_id']
         for item in self:
-            if item.qty_standard_serial == 0:
-                if 'stock_picking_id' in self.env.context:
-                    stock_picking_id = self.env.context['stock_picking_id']
-                    reserve = self.env.context['reserved']
-                    models._logger.error(reserve)
-                    stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
-                    if stock_picking:
-                        stock_move = stock_picking.move_ids_without_package.filtered(
-                            lambda x: x.product_id == item.product_id
-                        )
-                        stock_quant = item.get_stock_quant()
-                        stock_quant.sudo().update({
-                            'reserved_quantity': stock_quant.reserved_quantity + item.qty_to_reserve
-                        })
-                        item.update({
-                            'qty_to_reserve': reserve,
-                            'is_reserved': True
-                        })
-                        models._logger.error(item.is_reserved)
-                        item.is_reserved = True
-                        models._logger.error(item.is_reserved)
-                        move_line = self.env['stock.move.line'].create({
-                            'product_id': item.product_id.id,
-                            'lot_id': item.id,
-                            'product_uom_qty': reserve,
-                            'product_uom_id': stock_move.product_uom.id,
-                            'location_id': stock_quant.location_id.id,
-                            'location_dest_id': stock_picking.partner_id.property_stock_customer.id
-                        })
-                        models._logger.error(item.is_reserved)
-                        stock_move.sudo().update({
-                            'move_line_ids': [
-                                (4, move_line.id)
-                            ]
-                        })
+            serial_to_assign_ids = item.stock_production_lot_serial_ids.filtered(
+                lambda a: not a.consumed and not a.reserved_to_stock_picking_id
+            )
+
+            serial_to_assign_ids.with_context(stock_picking_id=picking_id).reserve_picking()
+
+    @api.multi
+    def reserved(self):
+        print('')
+        # for item in self:
+        #     if item.qty_standard_serial == 0:
+        #         if 'stock_picking_id' in self.env.context:
+        #             stock_picking_id = self.env.context['stock_picking_id']
+        #             reserve = self.env.context['reserved']
+        #             models._logger.error(reserve)
+        #             stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
+        #             if stock_picking:
+        #                 stock_move = stock_picking.move_ids_without_package.filtered(
+        #                     lambda x: x.product_id == item.product_id
+        #                 )
+        #                 stock_quant = item.get_stock_quant()
+        #                 stock_quant.sudo().update({
+        #                     'reserved_quantity': stock_quant.reserved_quantity + item.qty_to_reserve
+        #                 })
+        #                 item.update({
+        #                     'qty_to_reserve': reserve,
+        #                     'is_reserved': True
+        #                 })
+        #                 models._logger.error(item.is_reserved)
+        #                 item.is_reserved = True
+        #                 models._logger.error(item.is_reserved)
+        #                 move_line = self.env['stock.move.line'].create({
+        #                     'product_id': item.product_id.id,
+        #                     'lot_id': item.id,
+        #                     'product_uom_qty': reserve,
+        #                     'product_uom_id': stock_move.product_uom.id,
+        #                     'location_id': stock_quant.location_id.id,
+        #                     'location_dest_id': stock_picking.partner_id.property_stock_customer.id
+        #                 })
+        #                 models._logger.error(item.is_reserved)
+        #                 stock_move.sudo().update({
+        #                     'move_line_ids': [
+        #                         (4, move_line.id)
+        #                     ]
+        #                 })
 
     @api.multi
     def unreserved(self):
         for item in self:
-            if item.qty_standard_serial == 0:
+            stock_picking = None
+            if 'stock_picking_id' in self.env.context:
                 stock_picking_id = self.env.context['stock_picking_id']
                 stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
             if stock_picking:
+
+                item.stock_production_lot_serial_ids.filtered(
+                    lambda a: a.reserved_to_stock_picking_id.id == stock_picking_id
+                ).unreserved_picking()
+
                 stock_move = stock_picking.move_ids_without_package.filtered(
                     lambda x: x.product_id == item.product_id
                 )
@@ -146,13 +314,13 @@ class StockProductionLot(models.Model):
                     'qty_to_reserve': 0,
                     'is_reserved': False
                 })
-                models._logger.error(item.is_reserved)
-                item.is_reserved = False
-                models._logger.error(item.is_reserved)
+
                 stock_quant = item.get_stock_quant()
+
                 stock_quant.sudo().update({
                     'reserved_quantity': stock_quant.reserved_quantity - stock_move.product_uom_qty
                 })
+
                 for ml in move_line:
                     ml.write({'move_id': None, 'reserved_availability': 0})
 
@@ -203,3 +371,14 @@ class StockProductionLot(models.Model):
             lambda a: a.location_id.name == 'Stock'
         )
 
+    def show_available_serial(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'stock.production.lot',
+            'res_id': self.id,
+            'view_type': 'form',
+            'view_mode': 'form',
+            'views': [(self.env.ref('dimabe_manufacturing.available_lot_form_view').id, 'form')],
+            'target': 'new',
+            'context': self.env.context
+        }
