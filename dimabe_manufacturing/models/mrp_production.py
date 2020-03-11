@@ -60,23 +60,21 @@ class MrpProduction(models.Model):
 
     materials = fields.Many2many('product.product', compute='get_product_bom')
 
-    manufacturable = fields.Many2many('product.product',compute='get_product_route')
+    manufactureable = fields.Many2many('product.product',compute='get_product_route')
 
 
     @api.multi
     def get_product_route(self):
-        self.ensure_one()
-        manufacturable = []
-        products = self.env['product.product'].search([])
-        for item in products:
-            for route in item.route_ids:
-                if route.name == 'Fabricar':
-                    models._logger.error("route : {} and product = {}".format(route.name, item.name))
-                    manufacturable.append(item.id)
-                    models._logger.error('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa {}'.format(manufacturable))
-                    p = self.env['product.product'].search([('id','in',manufacturable)])
-                    models._logger.error('GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG {}'.format(p))
-        self.manufacturable = p
+        for item in self:
+            manufactureable = []
+            products = item.env['product.product'].search([])
+            for product in products:
+                for route in product.route_ids:
+                    if route.name == 'Fabricar':
+                        manufacturable.append(product.id)
+                        p = self.env['product.product'].search([('id', 'in', manufacturable)])
+            item.manufactureable = p
+
 
     @api.multi
     def get_product_bom(self):
