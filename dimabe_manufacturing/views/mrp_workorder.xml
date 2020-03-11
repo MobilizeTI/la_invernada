@@ -108,7 +108,7 @@
                         type="object"
                         class="oe_highlight"
                         context="{'default_product_id': product_id}"
-                        attrs="{'invisible':[('there_is_serial_without_pallet', '=', True)]}"
+                        attrs="{'invisible':[('there_is_serial_without_pallet', '=', False)]}"
                 />
                 <field name="production_finished_move_line_ids"
                        attrs="{'invisible':[('state', '!=', 'done')]}"
