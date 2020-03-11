@@ -73,7 +73,7 @@ class MrpProduction(models.Model):
                     if route.name == 'Fabricar':
                         manufactureable.append(product.id)
                         p = item.env['product.product'].search([('id', 'in', manufactureable)])
-
+                        raise models.ValidationError(p)
             item.manufacturable = p
 
 
