@@ -13,17 +13,17 @@
                         <div style="width:33.3%;display:inline-block;">
                             <table>
                                 <tr>
-                                    <td>
+                                    <td style="text-align:center;">
                                         <span t-field="res_company.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
+                                    <td style="text-align:center;">
                                         <span t-field="res_company.street"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
+                                    <td style="text-align:center;">
                                         <span t-field="res_company.city"/>
                                         <span t-field="res_company.country_id"/>
                                     </td>
