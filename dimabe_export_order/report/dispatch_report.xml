@@ -5,7 +5,7 @@
             <div class="page" style="margin:auto;">
                 <t t-foreach="docs" t-as="d">
                     <div style="width:100%;">
-                        <div style="width:33.3%;float:left;display:inline-block;">
+                        <div style="width:33.3%;display:inline-block;">
                             <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
                                 style="height:75px;"
                             />
