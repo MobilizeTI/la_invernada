@@ -82,7 +82,7 @@ class StockProductionLot(models.Model):
 
     is_reserved = fields.Boolean('Esta reservado?', compute='reserved', default=False)
 
-    producer_id = fields.Many2one('res.partner','Productor')
+    label_producer_id = fields.Many2one('res.partner','Productor')
 
     context_picking_id = fields.Integer(
         'picking del contexto',
