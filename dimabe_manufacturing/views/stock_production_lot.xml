@@ -100,10 +100,10 @@
         <field name="product_canning"/>
         <field name="picking_type_id"/>
         <field name="reception_net_weight"/>
-        <field name="name"/>
-        <field name="name"/>
-        <field name="name"/>
-        <field name="name"/>
+        <field name="reception_date"/>
+        <field name="reception_elapsed_time"/>
+        <field name="unpelled_state"/>
+        <field name="drier_counter"/>
       </tree>
     </field>
   </record>

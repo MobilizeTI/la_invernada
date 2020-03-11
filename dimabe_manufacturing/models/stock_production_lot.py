@@ -4,6 +4,18 @@ from odoo import fields, models, api
 class StockProductionLot(models.Model):
     _inherit = 'stock.production.lot'
 
+    unpelled_state = fields.Selection([
+        ('waiting', 'En Espera'),
+        ('drying', 'Secando'),
+        ('done', 'Terminado')
+    ],
+        'Estado',
+    )
+
+    drier_counter = fields.Integer(
+        'Hr en Secador'
+    )
+
     product_variety = fields.Char(
         'Variedad',
         compute='_compute_product_variety'
@@ -98,6 +110,16 @@ class StockProductionLot(models.Model):
         compute='_compute_reception_data'
     )
 
+    reception_date = fields.Datetime(
+        'Fecha Recepción',
+        compute='_compute_reception_data'
+    )
+
+    reception_elapsed_time = fields.Char(
+        'hr camión en planta',
+        compute='_compute_reception_data'
+    )
+
     @api.multi
     def _compute_product_variety(self):
         for item in self:
@@ -169,6 +191,8 @@ class StockProductionLot(models.Model):
                 item.product_canning = stock_picking[0].get_canning_move().name
                 item.picking_type_id = stock_picking[0].picking_type_id
                 item.reception_net_weight = stock_picking[0].net_weight
+                item.reception_date = stock_picking[0].truck_in_date
+                item.reception_elapsed_time = stock_picking[0].elapsed_time
 
     def _search_producer_id(self, operator, value):
         stock_picking_ids = self.env['stock.picking'].search([
