@@ -3,7 +3,7 @@ odoo.define('dimabe_manufacturing.stock_production_lot', function (require) {
     var website = require('web.website');
 
     document.addEventListener("keydown",function (event) {
-            console.log(core)
+            console.log(website)
     })
 
 })
