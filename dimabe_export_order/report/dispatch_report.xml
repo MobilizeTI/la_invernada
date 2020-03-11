@@ -68,6 +68,22 @@
                     <div style="width:100%;height:10px;"></div>
                     <br/>
                     <span style="text-align:left;" t-esc="d.create_date.date()"></span>
+                    <div style="width:100%;margin:0 auto;border:1px solid;">
+                        <table style="width:90%;margin 0 auto;" cellspacing="8">
+                            <tr>
+                                <td>
+                                    <strong>SEÑOR(ES):</strong>
+                                </td>
+                                <td>
+                                    <span t-field="d.partner_id"/>
+                                </td>
+                                <td>
+                                    <strong>R.U.T</strong>
+                                    <span t-field="d.partner_id.invoice_rut"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </t>
             </div>
         </t>
