@@ -129,6 +129,16 @@ class StockPicking(models.Model):
         }
 
     @api.multi
+    def action_confirm(self):
+        res = super(StockPicking, self).action_confirm()
+        for stock_picking in self:
+            if stock_picking.picking_type_id.require_dried:
+                mp_move = stock_picking.get_mp_move()
+                for move_line in mp_move.move_line_ids:
+                    move_line.lot_id.unpelled_state = 'waiting'
+        return res
+
+    @api.multi
     def button_validate(self):
 
         for serial in self.packing_list_ids:
