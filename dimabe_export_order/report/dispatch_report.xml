@@ -10,8 +10,8 @@
                                 style="height:75px;"
                             />
                         </div>
-                        <div style="width:33.3%;margin:0 auto;;display:inline-block;">
-                            <table>
+                        <div style="width:33.3%;display:inline-block;">
+                            <table style="margin: 0 auto;" >
                                 <tr>
                                     <td style="text-align:center;">
                                         <span t-field="res_company.name"/>
