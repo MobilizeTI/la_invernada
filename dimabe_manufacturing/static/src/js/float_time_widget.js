@@ -4,7 +4,7 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
     'use strict';
     var AbstractField = require('web.AbstractField');
     var fieldRegistry = require('web.field_registry');
-    var toDateFormat = require('dimabe_manufacturing.date_helper')
+    var date_helper = require('dimabe_manufacturing.date_helper')
 
     var timeField = AbstractField.extend({
         supportedFieldTypes: ['integer'],
@@ -34,7 +34,7 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
                 this.$el.html($('<span>' + this._to_date_format(self.record.data.active_seconds) + '</span>'))
             }
         },
-        _to_date_format: toDateFormat, //function (seconds) {
+        _to_date_format: date_helper.toDateFormat, //function (seconds) {
         //     var days = parseInt((seconds / 86400).toString())
         //     var hours = 0
         //     var minutes = 0
