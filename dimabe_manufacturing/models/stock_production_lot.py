@@ -56,6 +56,7 @@ class StockProductionLot(models.Model):
 
     is_pr_weight = fields.Boolean('¿Producto tiene peso?', compute='_compute_pr_weight', default=False)
 
+
     @api.multi
     def _compute_pr_weight(self):
         self.ensure_one()
