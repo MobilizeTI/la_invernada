@@ -1,5 +1,3 @@
-
-
 odoo.define('dimabe_manufacturing.integer_time', function (require) {
     'use strict';
     var AbstractField = require('web.AbstractField');
@@ -29,33 +27,12 @@ odoo.define('dimabe_manufacturing.integer_time', function (require) {
                     }));
                     self._timeCounter();
                 }, 1000);
-            }else{
+            } else {
                 clearTimeout(this.timer)
                 this.$el.html($('<span>' + this._to_date_format(self.record.data.active_seconds) + '</span>'))
             }
         },
-        _to_date_format: date_helper.toDateFormat, //function (seconds) {
-        //     var days = parseInt((seconds / 86400).toString())
-        //     var hours = 0
-        //     var minutes = 0
-        //     var sec = 0
-        //     if (seconds % 86400 > 0) {
-        //         hours = parseInt(((seconds % 86400) / 3600).toString())
-        //         if ((seconds % 86400) % 3600 > 0) {
-        //             minutes = parseInt((((seconds % 86400) % 3600) / 60).toString())
-        //             if (((seconds % 86400) % 3600) % 60 > 0)
-        //                 sec = parseInt((((seconds % 86400) % 3600) % 60).toString())
-        //         }
-        //
-        //     }
-        //     return `${this._normalize_number(days)}(d) ${this._normalize_number(hours)}:${this._normalize_number(minutes)}:${this._normalize_number(sec)}`
-        //
-        // },
-        // _normalize_number: function (number) {
-        //     var tmp = '0' + number
-        //     tmp = tmp.substr(tmp.length - 2, 2)
-        //     return tmp
-        // }
+        _to_date_format: date_helper.toDateFormat,
     })
 
     fieldRegistry.add('time_live', timeField);
