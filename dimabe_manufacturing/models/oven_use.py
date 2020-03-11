@@ -33,6 +33,26 @@ class OvenUse(models.Model):
         'Lote a Secar'
     )
 
+    lot_producer_id = fields.Many2one(
+        'res.partner',
+        related='used_lot_id.producer_id'
+    )
+
+    lot_guide_number = fields.Char(
+        'N° Guía',
+        related='used_lot_id.reception_guide_number'
+    )
+
+    lot_variety = fields.Char(
+        'Variedad',
+        related='used_lot_id.product_variety'
+    )
+
+    lot_picking_type_id = fields.Many2one(
+        'stock.picking.type',
+        related='used_lot_id.picking_type_id'
+    )
+
     init_active_time = fields.Integer('Inicio de tiempo activo')
 
     finish_active_time = fields.Integer('Fin de tiempo activo')
@@ -46,6 +66,31 @@ class OvenUse(models.Model):
     unpelled_dried_id = fields.Many2one('unpelled.dried', 'Proceso de secado')
 
     history_id = fields.Many2one('dried.unpelled.history', 'Historial')
+
+    out_lot_id = fields.Many2one(
+        'stock.production.lot',
+        related='history_id.out_lot_id'
+    )
+
+    out_lot_serial_count = fields.Integer(
+        'Cantidad Envases',
+        related='history_id.out_serial_count'
+    )
+
+    reception_net_weight = fields.Float(
+        'Kg Entrada',
+        related='used_lot_id.reception_net_weight'
+    )
+
+    total_out_weight = fields.Float(
+        'Kg Salida',
+        related='history_id.total_out_weight'
+    )
+
+    performance = fields.Float(
+        'Rendimiento',
+        related='history_id.performance'
+    )
 
     @api.multi
     def _compute_name(self):
