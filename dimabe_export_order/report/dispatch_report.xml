@@ -134,7 +134,7 @@
                             </tr>
                         </table>
                     </div>
-                    <div style="width:100%;margin:0 auto;height:650px;border:1px solid;">
+                    <div style="width:100%;margin:0 auto;height:645px;border:1px solid;">
                         <table style="width:100%;">
                             <th style="width:20%;border-right:1px solid;border-bottom:1px solid;">CANTIDAD</th>
                             <th style="width:60%;border-right:1px solid;border-bottom:1px solid;border-left:1px solid;">
@@ -156,7 +156,7 @@
                                         <tr>
                                             <td colspan="3">
                                                 <t t-if="d.type_of_dispatch == 'exp'">
-                                                    <table style="font-size:15px;">
+                                                    <table style="font-size:12px;">
                                                         <tr>
                                                             <td style="text-align:centerc">
                                                                 KILOS NETOS
