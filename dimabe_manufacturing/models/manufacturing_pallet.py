@@ -123,8 +123,9 @@ class ManufacturingPallet(models.Model):
     @api.onchange('manual_code')
     def onchange_manual_code(self):
         for item in self:
-            item.on_barcode_scanned(item.manual_code)
-            item.manual_code = ''
+            if item.manual_code:
+                item.on_barcode_scanned(item.manual_code)
+                item.manual_code = ''
 
     @api.multi
     def close_pallet(self):
@@ -188,10 +189,6 @@ class ManufacturingPallet(models.Model):
         self.update({
             'lot_serial_ids': [(6, 0, lot_serial_ids)]
         })
-
-        # serial_id.write({
-        #     'pallet_id': self.id
-        # })
 
     @api.multi
     def add_to_picking(self):
