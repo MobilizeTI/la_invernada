@@ -513,7 +513,7 @@
     <template id="report_truck_dispatch">
         <t t-call="web.html_container">
             <t t-foreach="docs.sorted(key=lambda x: x.create_date)" t-as="o">
-                <span t-esc="o_index + 1"></span>
+                <span t-esc="o_index + 1" invisible="1"></span>
             </t>
         </t>
     </template>
