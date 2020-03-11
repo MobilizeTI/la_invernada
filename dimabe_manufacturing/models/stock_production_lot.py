@@ -60,7 +60,7 @@ class StockProductionLot(models.Model):
     @api.multi
     def print_all_serial(self):
         return self.env.ref('dimabe_manufacturing.action_print_all_serial') \
-            .report_action(self.picture)
+            .report_action(self.stock_production_lot_serial_ids)
 
     @api.multi
     def _compute_pr_weight(self):
