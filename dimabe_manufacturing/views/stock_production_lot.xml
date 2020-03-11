@@ -105,6 +105,10 @@
         <field name="unpelled_state"/>
         <field name="drier_counter" widget="picking_time_live"/>
 
+        <field name="oven_init_active_time" invisible="1"/>
+        <field name="finish_active_time" invisible="1"/>
+        <field name="oven_use_ids" invisible="1"/>
+
       </tree>
     </field>
   </record>
