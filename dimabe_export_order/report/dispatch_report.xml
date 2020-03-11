@@ -7,11 +7,11 @@
                     <div style="width:100%;">
                         <div style="width:33.3%;display:inline-block;">
                             <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
-                                style="height:75px;"
+                                 style="height:75px;"
                             />
                         </div>
                         <div style="width:33.3%;display:inline-block;">
-                            <table style="margin: 0 auto;" >
+                            <table style="margin: 0 auto;">
                                 <tr>
                                     <td style="text-align:center;">
                                         <span t-field="res_company.name"/>
@@ -26,6 +26,39 @@
                                     <td style="text-align:center;">
                                         <span t-field="res_company.city"/>
                                         <span t-field="res_company.country_id"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div style="width:33.3%;display:inline-block;">
+                            <table style="border:3px solid;">
+                                <tr>
+                                    <td style="text-align:center;">
+                                        R.U.T
+                                        <span t-field="res_company.invoice_rut"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;">
+                                        GUIA DE DESPACHO ELECTRONICA
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;">
+                                        N°
+                                        <span t-field="d.guide_number"></span>
                                     </td>
                                 </tr>
                             </table>
@@ -141,13 +174,15 @@
         <t t-call="web.html_container">
             <t t-foreach="docs.sorted(key=lambda x: x.create_date)" t-as="o">
                 <t t-if="(o_index + 1) == 3">
-                    <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)" width="210px" height="270px" HSPACE="45"
-                     VSPACE="5"/>
+                    <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)" width="210px" height="270px"
+                         HSPACE="45"
+                         VSPACE="5"/>
                     <br/>
                 </t>
                 <t t-else="">
-                    <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)" width="200px" height="270px" HSPACE="45"
-                     VSPACE="5"/>
+                    <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)" width="200px" height="270px"
+                         HSPACE="45"
+                         VSPACE="5"/>
                 </t>
             </t>
         </t>
