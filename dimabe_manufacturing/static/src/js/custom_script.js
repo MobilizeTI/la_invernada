@@ -1,9 +1,5 @@
-odoo.define('dimabe_manufacturing.stock_production_lot', function (require) {
-    var core = require('web.core');
+odoo.define('dimabe_manufacturing', function (require) {
+    'use strict';
     var Lot = new Model('stock.production.lot');
-    document.addEventListener("keydown",function (event) {
-        if (event.code == 'Enter')
-            console.log(Lot)
-    })
-
+    console.log(Lot)
 })
