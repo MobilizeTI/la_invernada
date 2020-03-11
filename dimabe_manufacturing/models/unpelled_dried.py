@@ -234,8 +234,9 @@ class UnpelledDried(models.Model):
         for item in self:
             for oven_use in item.oven_use_ids:
                 if len(item.oven_use_ids.filtered(lambda a: a.used_lot_id == oven_use.used_lot_id)) > 1:
-                    raise models.ValidationError('el lote {} se encuentra en más de un registro de secado'.format(
-                        oven_use.used_lot_id
+                    raise models.ValidationError('el lote {} se encuentra en más de un registro de secado.'
+                                                 'Solo puede encontrarse en un registro'.format(
+                        oven_use.used_lot_id.name
                     ))
 
     @api.multi
