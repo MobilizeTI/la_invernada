@@ -49,7 +49,7 @@ class MrpWorkorder(models.Model):
     def _compute_there_is_serial_without_pallet(self):
         for item in self:
             item.there_is_serial_without_pallet = len(item.summary_out_serial_ids.filtered(
-                lambda a: a.pallet_id
+                lambda a: not a.pallet_id
             )) > 0
 
     @api.multi
