@@ -71,16 +71,66 @@
                     <div style="width:100%;margin:0 auto;border:1px solid;">
                         <table style="width:90%;margin 0 auto;" cellspacing="8">
                             <tr>
-                                <td>
-                                    <strong>SEÑOR(ES):</strong>
-                                </td>
-                                <td>
-                                    <span t-field="d.partner_id"/>
-                                </td>
-                                <td>
-                                    <strong>R.U.T</strong>
-                                    <span t-field="d.partner_id.invoice_rut"/>
-                                </td>
+                                <tr>
+                                    <td>
+                                        <strong>SEÑOR(ES):</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="d.partner_id"></span>
+                                    </td>
+                                    <td>
+                                        <strong>R.U.T:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-esc="d.partner_id.invoice_rut"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>DIRECCION:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="d.partner_id.street"></span>
+                                    </td>
+                                    <td>
+                                        <strong>TELEFONO:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="d.partner_id.phone"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>COMUNA:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="d.partner_id.state_id"></span>
+                                    </td>
+                                    <td>
+                                        <strong>VENCTO:</strong>
+                                    </td>
+                                    <td><![CDATA[&nbsp;]]></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>GIRO:</strong>
+                                    </td>
+                                    <td><![CDATA[&nbsp;]]></td>
+                                    <td>
+                                        <strong>COND.PAGO:</strong>
+                                    </td>
+                                    <td><![CDATA[&nbsp;]]></td>
+                                </tr>
+                                <t t-if="d.type_of_dispatch == 'nac'">
+                                    <tr>
+                                        <td>
+                                            <strong>TIPO DE TRASLADO:</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="d.type_of_transfer"></span>
+                                        </td>
+                                    </tr>
+                                </t>
                             </tr>
                         </table>
                     </div>
