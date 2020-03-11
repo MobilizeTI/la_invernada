@@ -151,7 +151,7 @@
                                         <span t-field="m.product_id.lst_price"/>
                                     </td>
                                     <t t-if="m.id == d.move_ids_without_package[-1].id">
-                                        <tr style="width:100%;">
+                                        <tr>
                                             <td colspan="3">
                                                 <t t-if="d.type_of_dispatch == 'exp'">
                                                     <table>
