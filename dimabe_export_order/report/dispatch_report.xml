@@ -75,51 +75,51 @@
                                     <td>
                                         <strong>SEÑOR(ES):</strong>
                                     </td>
-                                    <td>
+                                    <td style="text-align:left;">
                                         <span t-field="d.partner_id"></span>
                                     </td>
-                                    <td>
+                                    <td style="text-align:left;">
                                         <strong>R.U.T:</strong>
                                     </td>
-                                    <td>
+                                    <td style="text-align:left;">
                                         <span t-esc="d.partner_id.invoice_rut"></span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
+                                    <td style="text-align:left;">
                                         <strong>DIRECCION:</strong>
                                     </td>
-                                    <td>
+                                    <td style="text-align:left;">
                                         <span t-field="d.partner_id.street"></span>
                                     </td>
-                                    <td>
+                                    <td style="text-align:left;">
                                         <strong>TELEFONO:</strong>
                                     </td>
-                                    <td>
+                                    <td style="text-align:left;">
                                         <span t-field="d.partner_id.phone"></span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
+                                    <td style="text-align:left;">
                                         <strong>COMUNA:</strong>
                                     </td>
-                                    <td>
+                                    <td style="text-align:left;">
                                         <span t-field="d.partner_id.state_id"></span>
                                     </td>
-                                    <td>
+                                    <td style="text-align:left;">
                                         <strong>VENCTO:</strong>
                                     </td>
-                                    <td><![CDATA[&nbsp;]]></td>
+                                    <td style="text-align:left;"><![CDATA[&nbsp;]]></td>
                                 </tr>
                                 <tr>
-                                    <td>
+                                    <td style="text-align:left;">
                                         <strong>GIRO:</strong>
                                     </td>
-                                    <td><![CDATA[&nbsp;]]></td>
-                                    <td>
+                                    <td style="text-align:left;"><![CDATA[&nbsp;]]></td>
+                                    <td style="text-align:left;">
                                         <strong>COND.PAGO:</strong>
-                                    </td>
-                                    <td><![CDATA[&nbsp;]]></td>
+                                    </td >
+                                    <td style="text-align:left;"><![CDATA[&nbsp;]]></td>
                                 </tr>
                                 <t t-if="d.type_of_dispatch == 'nac'">
                                     <tr>
