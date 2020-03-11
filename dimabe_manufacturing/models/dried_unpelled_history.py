@@ -19,11 +19,6 @@ class DriedUnpelledHistory(models.Model):
         readonly=True
     )
 
-    oven_in_lot_ids = fields.One2many(
-        'stock.production.lot',
-        related='oven_use_ids.used_lot_id'
-    )
-
     unpelled_dried_id = fields.Many2one(
         'unpelled.dried',
         'Proceso de Secado',
