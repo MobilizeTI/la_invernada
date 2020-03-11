@@ -118,12 +118,12 @@ class StockProductionLot(models.Model):
 
     oven_init_active_time = fields.Integer(
         'Inicio Tiempo Activo',
-        compute='_compute_oven_data'
+        related='oven_use_ids.init_active_time'
     )
 
     oven_time_is_running = fields.Boolean(
         'Tiepo Transcurriendo',
-        compute='_compute_oven_data'
+        related='oven_use_ids.finish_active_time'
     )
 
     oven_use_ids = fields.One2many(
@@ -137,19 +137,6 @@ class StockProductionLot(models.Model):
         'Hr en Secador',
         related='oven_use_ids.active_seconds'
     )
-
-    @api.multi
-    def _compute_oven_data(self):
-        for item in self:
-            oven_use = self.env['oven.use'].search([
-                ('used_lot_id.id', '=', item.id)
-            ])
-            for rec in oven_use:
-                if item.drier_counter < rec.active_seconds:
-                    item.drier_counter = rec.active_seconds
-                    item.oven_init_active_time = rec.init_active_time
-
-                    item.oven_time_is_running = rec.finish_active_time == 0
 
     @api.multi
     def _compute_product_variety(self):
