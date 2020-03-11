@@ -75,6 +75,7 @@ class MrpProduction(models.Model):
                     manufacturable.append(item.id)
                     models._logger.error('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa {}'.format(manufacturable))
                     p = self.env['product.product'].search([('id','in',manufacturable)])
+                    models._logger.error('GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG {}'.format(p))
         self.manufacturable = p
 
     @api.multi
