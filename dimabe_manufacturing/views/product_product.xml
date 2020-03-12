@@ -8,10 +8,13 @@
                 <field name="is_standard_weight" />
             </xpath>
             <xpath expr="//field[@name='weight']" position="attributes">
-                <attribute name="invisible">[('is_standard_weigth','=',False)]</attribute>
+                <attribute name="invisible">[('is_standard_weight','=',False)]</attribute>
+            </xpath>
+            <xpath expr="//field[@name='weight_uom_name']" position="attributes">
+                <attribute name="invisible">[('is_standard_weight','=',False)]</attribute>
             </xpath>
             <xpath expr="//group[@name='weight']/label[2]" position="attributes">
-                <attribute name="invisible">[('is_standard_weigth','=',False)]</attribute>
+                <attribute name="invisible">[('is_standard_weight','=',False)]</attribute>
             </xpath>
         </field>
     </record>
