@@ -52,7 +52,7 @@ class DriedUnpelledHistory(models.Model):
 
     in_lot_ids = fields.One2many(
         'stock.production.lot',
-        'Lotes de Entrada',
+        string='Lotes de Entrada',
         compute='_compute_in_lot_ids'
     )
 
