@@ -448,12 +448,15 @@
         <t t-call="web.html_container">
             <t t-foreach="docs.sorted(key=lambda x: x.create_date)" t-as="o">
                 <t t-if="(o_index + 1) == 4 or (o_index + 1) == 7 or (o_index + 1) == 10">
+                    <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)" width="200px" height="270px"
+                         HSPACE="30"
+                         VSPACE="2.5"/>
                     <br/>
                 </t>
                 <t t-else="">
                     <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)" width="200px" height="270px"
-                         HSPACE="45"
-                         VSPACE="5"/>
+                         HSPACE="30"
+                         VSPACE="2.5"/>
                 </t>
             </t>
         </t>
