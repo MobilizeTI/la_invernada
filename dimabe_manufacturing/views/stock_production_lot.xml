@@ -1,9 +1,4 @@
 <odoo>
-    <template id="assets" inherit_id="web.assets_backend">
-        <xpath expr="." position="inside">
-            <script type="text/JavaScript" src="dimabe_manufacturing/static/src/js/custom_script.js"></script>
-        </xpath>
-    </template>
     <record id="view_production_lot_form_simple_inherit" model="ir.ui.view">
         <field name="name">Pesajes de Lote</field>
         <field name="model">stock.production.lot</field>
@@ -17,7 +12,7 @@
                        attrs="{'invisible':['|',('is_standard_weight','=',False)]}"
                        readonly="1"
                 />
-                <field name="producer_id" domain="[('supplier','=',True),('is_company','=',True)]"/>
+                <field name="label_producer_id" domain="[('supplier','=',True),('is_company','=',True)]"/>
                 <field name="qty_standard_serial"
                        attrs="{'invisible':[('is_standard_weight','=',False)]}"
                 />
@@ -54,4 +49,84 @@
             </group>
         </field>
     </record>
+
+
+    <record id="available_lot_form_view" model="ir.ui.view">
+        <field name="name">Selección de Packing list</field>
+        <field name="model">stock.production.lot</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="pallet_ids">
+                            <tree>
+                                <field name="name"/>
+                                <field name="total_content_weight"/>
+                                <field name="total_available_content"/>
+                                <field name="state"/>
+                                <button string="Agregar a Packing List"
+                                        name="add_to_picking"
+                                        type="object"
+                                />
+                            </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <field name="stock_production_lot_available_serial_ids">
+                            <tree>
+                                <field name="pallet_id"/>
+                                <field name="serial_number"/>
+                                <field name="stock_product_id"/>
+                                <field name="display_weight"/>
+                                <button string="Agregar a Packing List"
+                                        type="object"
+                                        name="reserve_picking"
+                                />
+                            </tree>
+                        </field>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="stock_production_lot_in_dashboard_tree_view" model="ir.ui.view">
+        <field name="name">Entrada Despelonado</field>
+        <field name="model">stock.production.lot</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="producer_id"/>
+                <field name="reception_guide_number"/>
+                <field name="product_variety"/>
+                <field name="product_canning"/>
+                <field name="picking_type_id"/>
+                <field name="reception_net_weight"/>
+                <field name="reception_date"/>
+                <field name="reception_elapsed_time"/>
+                <field name="unpelled_state"/>
+                <field name="drier_counter" widget="picking_time_live"/>
+
+                <field name="oven_init_active_time" invisible="1"/>
+                <field name="finish_active_time" invisible="1"/>
+                <field name="oven_use_ids" invisible="1"/>
+
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="stock_production_lot_in_dashboard_action">
+        <field name="name">Vista General Despelonado Entrada</field>
+        <field name="res_model">stock.production.lot</field>
+        <field name="view_mode">tree</field>
+        <field name="domain">[('unpelled_state','in',['waiting','drying'])]</field>
+        <field name="view_id" ref="stock_production_lot_in_dashboard_tree_view"/>
+    </record>
+
+
+    <menuitem name="Vista General Despelonado Entrada"
+              id="stock_production_lot_in_dashboard_menu"
+              parent="mrp.menu_mrp_reporting"
+              action="stock_production_lot_in_dashboard_action"
+    />
+    >>>>>>> test
 </odoo>

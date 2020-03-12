@@ -68,7 +68,6 @@ class ManufacturingPallet(models.Model):
     total_available_content = fields.Integer(
         'Cantidad Disponible',
         compute='_compute_total_available_content',
-        store=True
     )
 
     total_content_weight = fields.Float(
@@ -109,10 +108,11 @@ class ManufacturingPallet(models.Model):
             item.total_content = len(item.lot_serial_ids)
 
     @api.multi
+    @api.depends('lot_serial_ids')
     def _compute_lot_available_serial_ids(self):
         for item in self:
             item.lot_available_serial_ids = item.lot_serial_ids.filtered(
-                lambda a: not a.consumed
+                lambda a: not a.consumed and not a.reserved_to_stock_picking_id
             )
 
     @api.multi
@@ -120,10 +120,12 @@ class ManufacturingPallet(models.Model):
         for item in self:
             item.total_available_content = len(item.lot_available_serial_ids)
 
-    @api.multi
-    def add_code(self):
+    @api.onchange('manual_code')
+    def onchange_manual_code(self):
         for item in self:
-            item.on_barcode_scanned(item.manual_code)
+            if item.manual_code:
+                item.on_barcode_scanned(item.manual_code)
+                item.manual_code = ''
 
     @api.multi
     def close_pallet(self):
@@ -151,6 +153,18 @@ class ManufacturingPallet(models.Model):
         base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
         return base_url
 
+    @api.multi
+    def show_pallet(self):
+        for item in self:
+            return {
+                'type': 'ir.actions.act_window',
+                'target': 'current',
+                'res_model': 'manufacturing.pallet',
+                'res_id': item.id,
+                'view_mode': 'form',
+                'flags': {'initial_mode': 'edit'}
+            }
+
     def on_barcode_scanned(self, barcode):
 
         serial_id = self.env['stock.production.lot.serial'].search([
@@ -167,6 +181,30 @@ class ManufacturingPallet(models.Model):
                 serial_id.pallet_id.name
             ))
 
-        serial_id.write({
-            'pallet_id': self.id
+        lot_serial_ids = list(self.lot_serial_ids.mapped('id'))
+
+        if serial_id.id not in lot_serial_ids:
+            lot_serial_ids.append(serial_id.id)
+
+        self.update({
+            'lot_serial_ids': [(6, 0, lot_serial_ids)]
         })
+
+    @api.multi
+    def add_to_picking(self):
+        stock_picking_id = None
+        if 'stock_picking_id' in self.env.context:
+            stock_picking_id = self.env.context['stock_picking_id']
+        for item in self:
+            item.lot_available_serial_ids.with_context(stock_picking_id=stock_picking_id).reserve_picking()
+
+    @api.multi
+    def remove_from_picking(self):
+        stock_picking_id = None
+        if 'stock_picking_id' in self.env.context:
+            stock_picking_id = self.env.context['stock_picking_id']
+            for item in self:
+                item.lot_serial_ids.filtered(
+                    lambda a: a.reserved_to_stock_picking_id.id == stock_picking_id
+                ).unreserved_picking()
+

@@ -32,13 +32,25 @@ class MrpWorkorder(models.Model):
         inverse='_inverse_potential_lot_planned_ids'
     )
 
-    confirmed_serial = fields.Char('Ingrese Codigo de Barra')
+    confirmed_serial = fields.Char('Codigo de Barra')
 
     manufacturing_pallet_ids = fields.One2many(
         'manufacturing.pallet',
         compute='_compute_manufacturing_pallet_ids',
         string='Pallets'
     )
+
+    there_is_serial_without_pallet = fields.Boolean(
+        'Hay Series sin pallet',
+        compute='_compute_there_is_serial_without_pallet'
+    )
+
+    @api.multi
+    def _compute_there_is_serial_without_pallet(self):
+        for item in self:
+            item.there_is_serial_without_pallet = len(item.summary_out_serial_ids.filtered(
+                lambda a: not a.pallet_id
+            )) > 0
 
     @api.multi
     def _compute_manufacturing_pallet_ids(self):
@@ -74,9 +86,7 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_summary_out_serial_ids(self):
         for item in self:
-            models._logger.error(item.final_lot_id)
             if item.final_lot_id:
-                models._logger.error(item.final_lot_id)
                 item.summary_out_serial_ids = item.final_lot_id.stock_production_lot_serial_ids
                 if item.byproduct_move_line_ids:
                     item.summary_out_serial_ids += item.byproduct_move_line_ids.mapped(
@@ -84,14 +94,12 @@ class MrpWorkorder(models.Model):
                     ).mapped(
                         'stock_production_lot_serial_ids'
                     )
-                    models._logger.error(item.summary_out_serial_ids)
             else:
                 item.summary_out_serial_ids = item.production_finished_move_line_ids.mapped(
                     'lot_id'
                 ).mapped(
                     'stock_production_lot_serial_ids'
                 )
-                models._logger.error(item.summary_out_serial_ids)
 
     @api.multi
     def _compute_byproduct_move_line_ids(self):
@@ -126,11 +134,9 @@ class MrpWorkorder(models.Model):
             if item.active_move_line_ids and \
                     not item.active_move_line_ids.filtered(lambda a: a.is_raw):
                 for move_line in item.active_move_line_ids:
-                    models._logger.error(move_line)
                     move_line.update({
                         'is_raw': True
                     })
-                # raise models.ValidationError(item.active_move_line_ids)
 
         res = super(MrpWorkorder, self).write(vals)
 
