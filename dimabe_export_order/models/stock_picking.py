@@ -212,6 +212,10 @@ class StockPicking(models.Model):
 
     @api.multi
     def generate_report(self):
+        for item in self:
+            for image in item.picture:
+                if not "image" in image.mimetype:
+                    raise models.ValidationError('Se pueden subir solo imagenes.')
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
             .report_action(self.picture)
 
