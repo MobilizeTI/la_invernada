@@ -101,8 +101,20 @@ class DriedUnpelledHistory(models.Model):
     )
 
     lot_guide_numbers = fields.Char(
+        string='N° Guías',
         compute='_compute_lot_guide_numbers'
     )
+
+    picking_type_id = fields.Many2one(
+        'stock.picking.type',
+        compute='_compute_picking_type_id'
+    )
+
+    @api.multi
+    def _compute_picking_type_id(self):
+        for item in self:
+            if len(item.in_lot_ids.mapped('picking_type_id')) > 0:
+                item.picking_type_id = item.in_lot_ids.mapped('picking_type_id')[0]
 
     @api.multi
     def _compute_in_product_variety(self):

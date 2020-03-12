@@ -79,7 +79,7 @@
         <field name="producer_id"/>
         <field name="lot_guide_numbers"/>
         <field name="in_product_variety"/>
-<!--        <field name="lot_picking_type_id"/>-->
+        <field name="picking_type_id"/>
 <!--        <field name="init_date"/>-->
 <!--        <field name="finish_date"/>-->
 <!--        <field name="active_time"/>-->
