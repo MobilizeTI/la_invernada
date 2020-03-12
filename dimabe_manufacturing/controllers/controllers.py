@@ -3,12 +3,12 @@ from odoo import http, models
 import odoo.addons.web.controllers.main as main
 
 
-class Home(main.Home):
+class DataSetController(main.DataSet):
 
     @http.route(['/web/dataset/call_kw', '/web/dataset/call_kw/<path:path>'], type='json', auth="user")
     def call_kw(self, model, method, args, kwargs, path=None):
         models._logger.error('lalalala')
-        return super(Home, self).call_kw(model, method, args, kwargs)
+        return super(DataSetController, self).call_kw(model, method, args, kwargs)
 
 # class DimabeManufacturing(http.Controller):
 #     @http.route('/dimabe_manufacturing/dimabe_manufacturing/', auth='public')
