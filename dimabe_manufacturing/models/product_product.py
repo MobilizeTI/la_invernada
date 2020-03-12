@@ -12,6 +12,8 @@ class ProductProduct(models.Model):
 
     is_manufacturable = fields.Boolean('Es Fabricacion?',default=True,compute="_compute_manufacturable")
 
+    is_standard_weight = fields.Boolean('Es peso estandar',default=False)
+
 
     @api.multi
     def _compute_manufacturable(self):
