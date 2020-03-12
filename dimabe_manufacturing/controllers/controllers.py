@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
-from odoo import http, models
+from odoo import http
 import odoo.addons.web.controllers.main as main
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class DataSetController(main.DataSet):
@@ -8,8 +11,9 @@ class DataSetController(main.DataSet):
     @http.route(['/web/dataset/call_kw', '/web/dataset/call_kw/<path:path>'], type='json', auth="user")
     def call_kw(self, model, method, args, kwargs, path=None):
         res = super(DataSetController, self).call_kw(model, method, args, kwargs)
-
-        return 1
+        _logger.error(res)
+        _logger.error('lalal')
+        return res
 
 # class DimabeManufacturing(http.Controller):
 #     @http.route('/dimabe_manufacturing/dimabe_manufacturing/', auth='public')
