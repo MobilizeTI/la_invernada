@@ -10,6 +10,10 @@ class ProductProduct(models.Model):
         search='_search_variety'
     )
 
+    is_standard_weight = field.Boolean(
+        '¿Es peso estandar?'
+    )
+
     @api.multi
     def _compute_variety(self):
         for item in self:
