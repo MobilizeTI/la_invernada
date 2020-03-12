@@ -13,7 +13,7 @@ class DataSetController(main.DataSet):
         res = super(DataSetController, self).call_kw(model, method, args, kwargs)
         if model == 'stock.production.lot' and method == 'onchange':
             for reg in args:
-                if 'id' in reg and type(reg) == 'dict':
+                if 'id' in reg and type(reg) is dict:
                     _logger.error(reg)
                     lot_id = http.request.env['stock.production.lot'].search([('id', '=', reg['id'])])
                     if lot_id:
