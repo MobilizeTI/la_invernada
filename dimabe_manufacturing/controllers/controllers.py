@@ -11,6 +11,7 @@ class DataSetController(main.DataSet):
     @http.route(['/web/dataset/call_kw', '/web/dataset/call_kw/<path:path>'], type='json', auth="user")
     def call_kw(self, model, method, args, kwargs, path=None):
         res = super(DataSetController, self).call_kw(model, method, args, kwargs)
+        _logger.error(method)
         if model == 'stock.production.lot' and method == 'default_get':
             for reg in args:
                 if 'id' in reg and type(reg) is dict:
