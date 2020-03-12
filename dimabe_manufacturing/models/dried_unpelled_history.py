@@ -117,6 +117,30 @@ class DriedUnpelledHistory(models.Model):
         string='Bodega'
     )
 
+    init_date = fields.Datetime(
+        'Inicio Secado',
+        compute='_compute_oven_use_data'
+    )
+
+    finish_date = fields.Datetime(
+        'Término Secado',
+        compute='_compute_oven_use_data'
+    )
+
+    active_time = fields.Char(
+        'Cantidad hrs',
+        compute='_compute_oven_use_data'
+    )
+
+    @api.multi
+    def _compute_oven_use_data(self):
+        for item in self:
+            for oven_use in item.oven_use_ids:
+                if item.init_date > oven_use.init_date or not item.init_date:
+                    item.init_date = oven_use.init_date
+                    item.finish_date = oven_use.finish_date
+                    item.active_time = oven_use.active_time
+
     @api.multi
     def _compute_dried_oven_ids(self):
         for item in self:
