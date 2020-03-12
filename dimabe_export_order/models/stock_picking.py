@@ -1,6 +1,5 @@
 from odoo import models, fields, api
 from datetime import datetime, timedelta
-import Image
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
