@@ -357,3 +357,7 @@ class UnpelledDried(models.Model):
             'target': 'fullscreen',
             'domain': [('unpelled_dried_id', '=', unpelled_dried_id)]
         }
+
+    @api.onchange('out_serial_ids')
+    def onchange_out_serial_ids(self):
+        raise models.ValidationError('lala')
