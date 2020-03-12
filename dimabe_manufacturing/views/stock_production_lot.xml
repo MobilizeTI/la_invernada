@@ -12,7 +12,7 @@
 
             <group name="main_group" position="inside">
                 <field name="is_prd_lot" invisible="1"/>
-                <field name="is_standard_weight" readonly="1"/>
+                <field name="is_standard_weight" invisible="1" readonly="1"/>
                 <field name="standard_weight"
                        attrs="{'invisible':['|',('is_standard_weight','=',False)]}"
                        readonly="1"
