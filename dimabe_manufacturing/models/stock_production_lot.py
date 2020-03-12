@@ -189,7 +189,7 @@ class StockProductionLot(models.Model):
     @api.multi
     def generate_series(self):
         for item in self:
-            item.stock_production_lot_serial_ids = item.generate_standard_serial(item.qty_standard_serial)
+            series = item.generate_standard_serial(item.qty_standard_serial)
             item.env['manufacturing.pallet'].create(
                 {
                     'active':True,
@@ -197,7 +197,7 @@ class StockProductionLot(models.Model):
                     'pallet':item.name,
                     'producer_id':item.producer_id.id,
                     'product_id':item.product_id.id,
-                    'lot_serial_ids':item.stock_production_lot_serial_ids,
+                    'lot_serial_ids':series,
                 }
             )
 
