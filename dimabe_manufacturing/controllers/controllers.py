@@ -11,8 +11,10 @@ class DataSetController(main.DataSet):
     @http.route(['/web/dataset/call_kw', '/web/dataset/call_kw/<path:path>'], type='json', auth="user")
     def call_kw(self, model, method, args, kwargs, path=None):
         res = super(DataSetController, self).call_kw(model, method, args, kwargs)
-        _logger.error(res)
-        _logger.error('lalal')
+        if model == 'stock.production.lot' and method == 'onchange':
+            _logger.error(res)
+            _logger.error(args)
+
         return res
 
 # class DimabeManufacturing(http.Controller):
