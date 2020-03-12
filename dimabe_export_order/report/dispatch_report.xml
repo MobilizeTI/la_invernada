@@ -471,8 +471,7 @@
                 <span t-field="o.res_model_name" />
                 <span t-field="o.res_name" />
                 <span t-field="o.store_fname" />
-                <span t-field="o.test" />
-                
+
             </t>
         </t>
     </template>
