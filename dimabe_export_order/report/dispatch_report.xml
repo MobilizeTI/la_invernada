@@ -444,11 +444,10 @@
         </t>
     </template>
 
-
     <template id="report_truck_dispatch">
         <t t-call="web.html_container">
             <t t-foreach="docs.sorted(key=lambda x: x.create_date)" t-as="o">
-                <t t-if="(o_index + 1) == 3">
+                <t t-if="(o_index + 1) == 3 or (o_index + 1) == 6 or (o_index + 1) == 9">
                     <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)" width="210px" height="270px"
                          HSPACE="45"
                          VSPACE="5"/>
