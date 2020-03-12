@@ -1,6 +1,6 @@
 from odoo import models, fields, api
 from datetime import datetime, timedelta
-
+import Image
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
@@ -216,6 +216,9 @@ class StockPicking(models.Model):
             for image in item.picture:
                 if not "image" in image.mimetype:
                     raise models.ValidationError('Se pueden subir solo imagenes.')
+                if "image" in image.mimetype:
+                    img = Image.open(image.full_url)
+                    raise models.ValidationError(img.size)
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
             .report_action(self.picture)
 
