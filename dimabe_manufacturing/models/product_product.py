@@ -10,6 +10,16 @@ class ProductProduct(models.Model):
         search='_search_variety'
     )
 
+    is_manufacturable = fields.Boolean('Es Fabricacion?',default=True,compute="_compute_manufacturable")
+
+
+    @api.multi
+    def _compute_manufacturable(self):
+        for item in self:
+            for route in item.route_ids:
+                if route.name == "Fabricar":
+                    item.is_manufacturable = True
+
     @api.multi
     def _compute_variety(self):
         for item in self:
