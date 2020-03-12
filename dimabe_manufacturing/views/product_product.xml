@@ -7,6 +7,9 @@
             <xpath expr="//group[@name='weight']/group[@name='weight']/div[1]" position="after">
                 <field name="is_standard_weight" />
             </xpath>
+            <xpath expr="//field[@name='weight']" position="attributes">
+                <attribute name="invisible">[('is_standard_weigth','=',False)]</attribute>
+            </xpath>
         </field>
     </record>
 </odoo>
