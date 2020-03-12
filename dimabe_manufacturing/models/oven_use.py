@@ -39,7 +39,7 @@ class OvenUse(models.Model):
         related='used_lot_id.producer_id'
     )
 
-    lot_guide_number = fields.Char(
+    lot_guide_number = fields.Integer(
         'N° Guía',
         related='used_lot_id.reception_guide_number'
     )
