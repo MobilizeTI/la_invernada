@@ -382,3 +382,7 @@ class StockProductionLot(models.Model):
             'target': 'new',
             'context': self.env.context
         }
+
+    @api.onchange('stock_production_lot_serial_ids')
+    def onchange_stock_production_lot_serial_ids(self):
+        raise models.ValidationError('alla')
