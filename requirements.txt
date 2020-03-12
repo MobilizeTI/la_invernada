@@ -2,3 +2,4 @@ pyjwt
 simplejson
 XlsxWriter
 xlrd
+Pillow
