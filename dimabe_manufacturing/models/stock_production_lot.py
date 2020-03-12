@@ -19,27 +19,17 @@ class StockProductionLot(models.Model):
 
     producer_id = fields.Many2one(
         'res.partner',
-        compute='_compute_reception_data',
-        search='_search_producer_id'
+        related='stock_picking_id.partner_id'
     )
 
     reception_guide_number = fields.Char(
         'Guía',
-        compute='_compute_reception_data',
-        search='_search_reception_guide_number'
+        related='stock_picking_id.guide_number'
     )
 
-    reception_state = fields.Selection([
-        ('draft', 'Borrador'),
-        ('waiting', 'Esperando Otra Operación'),
-        ('confirmed', 'En Espera'),
-        ('assigned', 'Preparado'),
-        ('done', 'Realizado'),
-        ('cancel', 'Cancelado'),
-    ],
+    reception_state = fields.Selection(
         string='Estado de la reecepción',
-        compute='_compute_reception_data',
-        search='_search_reception_state'
+        related='stock_picking_id.state'
     )
 
     product_canning = fields.Char(
@@ -102,23 +92,23 @@ class StockProductionLot(models.Model):
     picking_type_id = fields.Many2one(
         'stock.picking.type',
         string='Bodega',
-        compute='_compute_reception_data'
+        related='stock_picking_id.picking_type_id'
 
     )
 
     reception_net_weight = fields.Float(
         'kg. Neto',
-        compute='_compute_reception_data'
+        related='stock_picking_id.net_weight'
     )
 
     reception_date = fields.Datetime(
         'Fecha Recepción',
-        compute='_compute_reception_data'
+        related='stock_picking_id.truck_in_date'
     )
 
     reception_elapsed_time = fields.Char(
         'Hr Camión en Planta',
-        compute='_compute_reception_data'
+        related='stock_picking_id.elapsed_time'
     )
 
     oven_init_active_time = fields.Integer(
@@ -218,36 +208,7 @@ class StockProductionLot(models.Model):
         for item in self:
             stock_picking = self.env['stock.picking'].search([('name', '=', item.name)])
             if stock_picking:
-                item.producer_id = stock_picking[0].partner_id
-                item.reception_guide_number = stock_picking[0].guide_number
-                item.reception_state = stock_picking[0].state
                 item.product_canning = stock_picking[0].get_canning_move().name
-                item.picking_type_id = stock_picking[0].picking_type_id
-                item.reception_net_weight = stock_picking[0].net_weight
-                item.reception_date = stock_picking[0].truck_in_date
-                item.reception_elapsed_time = stock_picking[0].elapsed_time
-
-    def _search_producer_id(self, operator, value):
-        stock_picking_ids = self.env['stock.picking'].search([
-            ('partner_id', operator, value),
-            ('picking_type_code', '=', 'incoming')
-        ])
-
-        return [('name', 'in', stock_picking_ids.mapped('name'))]
-
-    @api.multi
-    def _search_reception_guide_number(self, operator, value):
-        stock_picking_ids = self.env['stock.picking'].search([
-            ('guide_number', operator, value),
-            ('picking_type_code', '=', 'incoming')
-        ])
-        return [('name', 'in', stock_picking_ids.mapped('name'))]
-
-    def _search_reception_state(self, operator, value):
-        stock_picking_ids = self.env['stock.picking'].search([
-            ('state', operator, value)
-        ])
-        return [('name', 'in', stock_picking_ids.mapped('name'))]
 
     @api.multi
     def _compute_total_serial(self):
