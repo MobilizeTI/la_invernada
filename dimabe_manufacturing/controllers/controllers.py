@@ -14,7 +14,7 @@ class DataSetController(main.DataSet):
         if model == 'stock.production.lot' and method == 'onchange':
             for reg in args:
                 if 'id' in reg:
-                    _logger.error(type(reg['id']))
+                    _logger.error(type(reg))
                     lot_id = http.request.env['stock.production.lot'].search([('id', '=', reg['id'])])
                     if lot_id:
                         if 'stock_production_lot_serial_ids' in reg:
