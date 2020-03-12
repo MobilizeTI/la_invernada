@@ -17,5 +17,5 @@ class IrAttachment(models.Model):
             models._logger.error(item.id)
             models._logger.error(item.id)
             models._logger.error(item.id)
-        res = super(StockProductionLotSerial, self).create(values_list)
+        res = super(IrAttachment, self).create(values_list)
         return res
