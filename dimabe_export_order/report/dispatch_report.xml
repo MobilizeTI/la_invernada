@@ -11,7 +11,7 @@
                             />
                         </div>
                         <div style="width:33.3%;display:inline-block;">
-                            <table style="margin: 0 auto;">
+                            <table style="margin: 0 auto;font-size:11px;">
                                 <tr>
                                     <td style="text-align:center;">
                                         <span t-field="res_company.name"/>
@@ -31,7 +31,7 @@
                             </table>
                         </div>
                         <div style="width:32.3%;display:inline-block;">
-                            <table style="border:3px solid;">
+                            <table style="border:3px solid;font-size:11px;">
                                 <tr>
                                     <td style="text-align:center;">
                                         R.U.T
@@ -68,8 +68,8 @@
                     <div style="width:100%;height:10px;font-size:12px;"></div>
                     <br/>
                     <span style="text-align:left;font-size:12px;" t-esc="d.create_date.date()"></span>
-                    <div style="width:100%;margin:0 auto;border:1px solid;font-size:12px;">
-                        <table style="width:90%;margin 0 auto;" cellspacing="8">
+                    <div style="width:100%;margin:0 auto;border:1px solid;">
+                        <table style="width:90%;margin 0 auto;font-size:11px;" cellspacing="8">
                             <tr>
                                 <tr>
                                     <td>
@@ -134,8 +134,8 @@
                             </tr>
                         </table>
                     </div>
-                    <div style="width:100%;margin:0 auto;height:645px;border:1px solid;font-size:12px;">
-                        <table style="width:100%;">
+                    <div style="width:100%;margin:0 auto;height:645px;border:1px solid;">
+                        <table style="width:100%;font-size:11px;">
                             <th style="width:20%;border-right:1px solid;border-bottom:1px solid;">CANTIDAD</th>
                             <th style="width:60%;border-right:1px solid;border-bottom:1px solid;border-left:1px solid;">
                                 DETALLES
@@ -143,10 +143,10 @@
                             <th style="width:20%;border-bottom:1px solid;border-left:1px solid;">VALOR UNITARIO</th>
                             <t t-foreach="d.move_ids_without_package" t-as="m">
                                 <tr>
-                                    <td style="width:20%;border-right:1px solid;border-bottom:1px solid;text-align:center;">
+                                    <td style="width:20%;border-right:1px solid;border-bottom:1px solid;">
                                         <t t-esc="'{0:,.2f}'.format(int(m.quantity_done))"/>
                                     </td>
-                                    <td style="width:20%;border-right:1px solid;border-bottom:1px solid;border-left:1px solid;text-align:center">
+                                    <td style="width:20%;border-right:1px solid;border-bottom:1px solid;border-left:1px solid;text-align:center;">
                                         <span t-field="m.product_id"/>
                                     </td>
                                     <td style="width:20%;border-left:1px solid;border-bottom:1px solid;text-align:center;">
@@ -158,7 +158,7 @@
                                                 <t t-if="d.type_of_dispatch == 'exp'">
                                                     <table style="font-size:12px;">
                                                         <tr>
-                                                            <td style="text-align:centerc">
+                                                            <td style="text-align:center;">
                                                                 KILOS NETOS
                                                             </td>
                                                             <td>
