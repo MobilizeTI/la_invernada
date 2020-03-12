@@ -31,11 +31,11 @@ class StockProductionLot(models.Model):
 
     is_prd_lot = fields.Boolean('Es Lote de salida de Proceso')
 
-    is_standard_weight = fields.Boolean('Series Peso Estandar')
+    is_standard_weight = fields.Boolean('Series Peso Estandar', compute='_compute_is_standard_weight')
 
-    standard_weight = fields.Float('Peso Estandar')
+    standard_weight = fields.Float('Peso Estandar',compute='_get_product_weight')
 
-    qty_standard_serial = fields.Integer('Cantidad de Series',default=1)
+    qty_standard_serial = fields.Integer('Cantidad de Series', default=1)
 
     stock_production_lot_serial_ids = fields.One2many(
         'stock.production.lot.serial',
@@ -54,22 +54,23 @@ class StockProductionLot(models.Model):
 
     producer_id = fields.Many2one('res.partner', 'Productor')
 
-    is_pr_weight = fields.Boolean('¿Producto tiene peso?', compute='_compute_pr_weight', default=False)
-
-
     @api.multi
     def print_all_serial(self):
         return self.env.ref('dimabe_manufacturing.action_print_all_serial') \
             .report_action(self.stock_production_lot_serial_ids)
 
     @api.multi
-    def _compute_pr_weight(self):
+    def _get_product_weight(self):
         self.ensure_one()
-        models._logger.error(self.product_id.weight)
-        if self.product_id.weight > 0:
-            self.is_pr_weight = True
+        self.standard_weight = self.product_id.weight
+
+    @api.multi
+    def _compute_standard_weight(self):
+        self.ensure_one()
+        if self.product_id.is_standard_weight:
+            self.is_standard_weight = True
         else:
-            self.is_pr_weight = False
+            self.is_standard_weight = False
 
     @api.multi
     def _compute_reception_data(self):
