@@ -65,7 +65,7 @@ class StockProductionLot(models.Model):
         self.standard_weight = self.product_id.weight
 
     @api.multi
-    def _compute_standard_weight(self):
+    def _compute_is_standard_weight(self):
         self.ensure_one()
         if self.product_id.is_standard_weight:
             self.is_standard_weight = True
