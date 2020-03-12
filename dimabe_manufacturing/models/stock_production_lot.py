@@ -22,7 +22,7 @@ class StockProductionLot(models.Model):
         related='stock_picking_id.partner_id'
     )
 
-    reception_guide_number = fields.Char(
+    reception_guide_number = fields.Integer(
         'Guía',
         related='stock_picking_id.guide_number'
     )
