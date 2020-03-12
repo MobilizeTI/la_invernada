@@ -20,7 +20,7 @@ class DataSetController(main.DataSet):
                         _logger.error('entró a lot_id')
                         if 'stock_production_lot_serial_ids' in reg:
                             _logger.error('entró a write')
-                            lot_id.write({
+                            lot_id.update({
                                 'stock_production_lot_serial_ids': reg['stock_production_lot_serial_ids']
                             })
 
