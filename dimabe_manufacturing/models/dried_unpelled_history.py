@@ -53,7 +53,7 @@ class DriedUnpelledHistory(models.Model):
     in_lot_ids = fields.One2many(
         'stock.production.lot',
         'Lotes de Entrada',
-        related='oven_use_ids.used_lot_id'
+        compute='_compute_in_lot_ids'
     )
 
     out_serial_ids = fields.One2many(
@@ -94,6 +94,11 @@ class DriedUnpelledHistory(models.Model):
         'Destino de Procesados',
         readonly=True
     )
+
+    @api.multi
+    def _compute_in_lot_ids(self):
+        for item in self:
+            item.in_lot_ids = item.oven_use_ids.mapped('used_lot_id')
 
     @api.multi
     def _compute_out_serial_count(self):
