@@ -112,7 +112,8 @@ class DriedUnpelledHistory(models.Model):
     @api.multi
     def _compute_lot_guide_numbers(self):
         for item in self:
-            item.lot_guide_numbers = item.in_lot_ids.mapped('reception_guide_number')
+            for guide_number in item.in_lot_ids.mapped('reception_guide_number'):
+                item.lot_guide_numbers += '{} '.format(guide_number)
 
     @api.multi
     def _compute_in_lot_ids(self):
