@@ -49,7 +49,8 @@
         'views/unpelled_dried.xml',
         'views/oven_use.xml',
         'views/dried_unpelled_history.xml',
-        'views/manufacturing_pallet.xml'
+        'views/manufacturing_pallet.xml',
+        'views/product_product.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
