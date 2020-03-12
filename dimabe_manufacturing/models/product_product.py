@@ -17,6 +17,7 @@ class ProductProduct(models.Model):
     def _compute_manufacturable(self):
         for item in self:
             for route in item.route_ids:
+                models._logger_error('Route : {}'.format(route.name))
                 if route.name == "Fabricar":
                     item.is_manufacturable = True
 
