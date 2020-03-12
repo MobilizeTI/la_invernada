@@ -100,7 +100,7 @@ class DriedUnpelledHistory(models.Model):
         readonly=True
     )
 
-    lot_guide_numbers = fields.One2many(
+    lot_guide_numbers = fields.Char(
         compute='_compute_lot_guide_numbers'
     )
 
