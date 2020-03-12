@@ -136,7 +136,7 @@ class DriedUnpelledHistory(models.Model):
     def _compute_oven_use_data(self):
         for item in self:
             for oven_use in item.oven_use_ids:
-                if item.init_date > oven_use.init_date or not item.init_date:
+                if (item.init_date and item.init_date > oven_use.init_date) or not item.init_date:
                     item.init_date = oven_use.init_date
                     item.finish_date = oven_use.finish_date
                     item.active_time = oven_use.active_time
