@@ -8,8 +8,6 @@ class IrAttachment(models.Model):
 
 
     @api.model
-    def create(self,values_list):
+    def upload_attachment(self):
         for item in self:
             models._logger.error('Id : {}'.format(item.id))
-        res = super(IrAttachment, self).create(values_list)
-        return res
