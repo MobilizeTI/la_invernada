@@ -201,6 +201,7 @@ class StockProductionLot(models.Model):
                 }
             )
 
+
     @api.multi
     def generate_standard_serial(self,quantity):
         for item in self:
