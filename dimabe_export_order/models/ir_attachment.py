@@ -6,6 +6,7 @@ class IrAttachment(models.Model):
 
     @api.model
     def create(self,values_list):
+        res = super(IrAttachment, self).create(values_list)
         for item in self:
             models._logger.error("id {}".format(item.id))
             models._logger.error(item.id)
@@ -17,5 +18,4 @@ class IrAttachment(models.Model):
             models._logger.error(item.id)
             models._logger.error(item.id)
             models._logger.error(item.id)
-        res = super(IrAttachment, self).create(values_list)
         return res
