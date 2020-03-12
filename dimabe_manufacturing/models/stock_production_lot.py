@@ -187,10 +187,25 @@ class StockProductionLot(models.Model):
         return res
 
     @api.multi
-    def generate_standard_serial(self):
+    def generate_series(self):
+        for item in self:
+            item.stock_production_lot_serial_ids = item.generate_standard_serial(item.qty_standard_serial)
+            item.env['manufacturing.pallet'].create(
+                {
+                    'active':True,
+                    'state':'open',
+                    'pallet':item.name,
+                    'producer_id':item.producer_id.id,
+                    'product_id':item.product_id,
+                    'lot_serial_ids':item.stock_production_lot_serial_ids,
+                }
+            )
+
+    @api.multi
+    def generate_standard_serial(self,quantity):
         for item in self:
             serial_ids = []
-            for counter in range(len(item.stock_production_lot_serial_ids) + item.qty_standard_serial):
+            for counter in range(len(item.stock_production_lot_serial_ids) + quantity):
                 tmp = '00{}'.format(counter + 1)
                 serial = item.stock_production_lot_serial_ids.filtered(
                     lambda a: a.serial_number == item.name + tmp[-3:]
@@ -212,12 +227,12 @@ class StockProductionLot(models.Model):
             serial_ids += list(item.stock_production_lot_serial_ids.filtered(
                 lambda a: a.consumed
             ).mapped('id'))
-
             item.stock_production_lot_serial_ids = [(6, 0, serial_ids)]
 
 
-@api.model
-def get_stock_quant(self):
-    return self.quant_ids.filtered(
-        lambda a: a.location_id.name == 'Stock'
-    )
+
+    @api.model
+    def get_stock_quant(self):
+        return self.quant_ids.filtered(
+            lambda a: a.location_id.name == 'Stock'
+        )
