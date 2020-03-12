@@ -134,7 +134,7 @@
                             </tr>
                         </table>
                     </div>
-                    <div style="width:100%;margin:0 auto;height:645px;border:1px solid;">
+                    <div style="width:100%;margin:0 auto;height:635px;border:1px solid;">
                         <table style="width:100%;font-size:11px;">
                             <th style="width:20%;border-right:1px solid;border-bottom:1px solid;">CANTIDAD</th>
                             <th style="width:60%;border-right:1px solid;border-bottom:1px solid;border-left:1px solid;">
@@ -156,7 +156,7 @@
                                         <tr>
                                             <td colspan="3">
                                                 <t t-if="d.type_of_dispatch == 'exp'">
-                                                    <table style="font-size:12px;">
+                                                    <table style="font-size:11px;">
                                                         <tr>
                                                             <td style="text-align:center;">
                                                                 KILOS NETOS
@@ -316,10 +316,10 @@
                         </table>
                     </div>
                     <div style="width:100%;">
-                        <img style="width:50%;"
+                        <img style="align:center;width:50%;"
                              src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSvpUYgdP4YQoBwHx-DmNUazOh_Rgt0REdJWfvsEQwwP49Et5uY"/>
                     </div>
-                    <div style="width:100%;height:10%;border:1px solid;">
+                    <div style="width:100%;height:5%;border:1px solid;">
                         <table>
                             <tr>
                                 <td>Nombre:</td>
