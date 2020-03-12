@@ -4,4 +4,4 @@ from odoo import models, fields, api
 class IrAttachment(models.Model):
     _inherit = "ir.attachment"
 
-    test= fields.Boolean('Test')
+    counter = fields.Integer("Contador")
