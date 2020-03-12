@@ -75,9 +75,6 @@ class MrpProduction(models.Model):
                         p = item.env['product.product'].search([('id', 'in', manufactureable)])
         item.manufacturable = p
 
-
-
-
     @api.multi
     def get_product_bom(self):
         list_product = []
