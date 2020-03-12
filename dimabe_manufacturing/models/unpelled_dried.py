@@ -183,6 +183,7 @@ class UnpelledDried(models.Model):
 
     @api.multi
     def _inverse_out_serial_ids(self):
+        raise models.ValidationError('lala')
         for item in self:
             item.out_lot_id.stock_production_lot_serial_ids = item.out_serial_ids
 
@@ -357,7 +358,3 @@ class UnpelledDried(models.Model):
             'target': 'fullscreen',
             'domain': [('unpelled_dried_id', '=', unpelled_dried_id)]
         }
-
-    @api.onchange('out_serial_ids')
-    def onchange_out_serial_ids(self):
-        raise models.ValidationError('lala')
