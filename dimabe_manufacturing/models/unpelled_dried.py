@@ -183,7 +183,6 @@ class UnpelledDried(models.Model):
 
     @api.multi
     def _inverse_out_serial_ids(self):
-        raise models.ValidationError('lala')
         for item in self:
             item.out_lot_id.stock_production_lot_serial_ids = item.out_serial_ids
 
