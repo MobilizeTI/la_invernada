@@ -196,7 +196,7 @@ class StockProductionLot(models.Model):
                     'state':'open',
                     'pallet':item.name,
                     'producer_id':item.producer_id.id,
-                    'product_id':item.product_id,
+                    'product_id':item.product_id.id,
                     'lot_serial_ids':item.stock_production_lot_serial_ids,
                 }
             )
