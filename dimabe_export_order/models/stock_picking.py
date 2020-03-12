@@ -211,8 +211,10 @@ class StockPicking(models.Model):
 
     @api.multi
     def generate_report(self):
+        index = 1
         for item in self.picture:
-            item.counter = self.picture.index(item.id) + 1
+            item.counter = index
+            index += 1
             models._logger.error(item.counter)
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
             .report_action(self.picture)
