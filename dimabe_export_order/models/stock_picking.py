@@ -211,6 +211,7 @@ class StockPicking(models.Model):
 
     @api.multi
     def generate_report(self):
+        raise models.Validation.Error(self.picture)
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
             .report_action(self.picture)
 
