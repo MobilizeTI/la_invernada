@@ -40,7 +40,7 @@ class DriedUnpelledHistory(models.Model):
 
     in_product_variety = fields.Char(
         'Variedad',
-        related='in_product_id.product_variety'
+        compute='_compute_in_product_variety'
     )
 
     out_product_id = fields.Many2one(
@@ -103,6 +103,11 @@ class DriedUnpelledHistory(models.Model):
     lot_guide_numbers = fields.One2many(
         compute='_compute_lot_guide_numbers'
     )
+
+    @api.multi
+    def _compute_in_product_variety(self):
+        for item in self:
+            item.in_product_variety = item.in_product_id.get_variety()
 
     @api.multi
     def _compute_lot_guide_numbers(self):
