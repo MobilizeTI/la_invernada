@@ -1,5 +1,15 @@
 # -*- coding: utf-8 -*-
-from odoo import http
+from odoo import http, models
+import odoo.addons.web.controllers.main as main
+
+
+class Home(main.Home):
+
+    @http.route(['/web/dataset/call_kw', '/web/dataset/call_kw/<path:path>'], type='json', auth="user")
+    def call_kw(self, model, method, args, kwargs, path=None):
+        raise models.ValidationError('lala')
+        models._logger.error('aaaaaaaaaa')
+        return super(Home, self)._call_kw(model, method, args, kwargs)
 
 # class DimabeManufacturing(http.Controller):
 #     @http.route('/dimabe_manufacturing/dimabe_manufacturing/', auth='public')
