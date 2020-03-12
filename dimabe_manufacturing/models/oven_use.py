@@ -78,7 +78,7 @@ class OvenUse(models.Model):
         related='history_id.out_serial_count'
     )
 
-    reception_net_weight = fields.Float(
+    reception_net_weight = fields.Integer(
         'Kg Entrada',
         related='used_lot_id.reception_net_weight'
     )
