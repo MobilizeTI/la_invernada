@@ -83,12 +83,12 @@
 <!--        <field name="init_date"/>-->
 <!--        <field name="finish_date"/>-->
 <!--        <field name="active_time"/>-->
-<!--        <field name="dried_oven_ids" widget="many2many_tags"/>-->
-<!--        <field name="out_lot_id"/>-->
-<!--        <field name="out_lot_serial_count"/>-->
-<!--        <field name="reception_net_weight"/>-->
-<!--        <field name="total_out_weight"/>-->
-<!--        <field name="performance"/>-->
+        <field name="dried_oven_ids" widget="many2many_tags"/>
+        <field name="out_lot_id"/>
+        <field name="out_lot_serial_count"/>
+        <field name="total_in_weight"/>
+        <field name="total_out_weight"/>
+        <field name="performance"/>
       </tree>
     </field>
   </record>
@@ -96,8 +96,8 @@
   <record id="dried_unpelled_history_out_dashboard_action" model="ir.actions.act_window">
     <field name="name">Vista General Despelonado Salida</field>
     <field name="res_model">dried.unpelled.history</field>
-    <field name="view_mode">tree</field>
-    <field name="view_id" ref="dimabe_manufacturing.dried_unpelled_history_out_dashboard_tree_view"/>
+    <field name="view_mode">tree,form</field>
+    <field name="views" ref="dimabe_manufacturing.dried_unpelled_history_out_dashboard_tree_view"/>
 
   </record>
 

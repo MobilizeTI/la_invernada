@@ -107,7 +107,8 @@ class DriedUnpelledHistory(models.Model):
 
     picking_type_id = fields.Many2one(
         'stock.picking.type',
-        compute='_compute_picking_type_id'
+        compute='_compute_picking_type_id',
+        string='Bodega'
     )
 
     @api.multi
