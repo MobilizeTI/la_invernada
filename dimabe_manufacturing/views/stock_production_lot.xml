@@ -12,13 +12,11 @@
 
             <group name="main_group" position="inside">
                 <field name="is_prd_lot" invisible="1"/>
-
-                <field name="is_standard_weight" widget="boolean_toggle"
-                       attrs="{'invisible':[('is_prd_lot','=',False)]}"
-                />
+                <field name="is_standard_weight" readonly="1"/>
                 <field name="is_pr_weight" invisible="1"/>
                 <field name="standard_weight"
-                       attrs="{'invisible':['|',('is_standard_weight','=',False),('is_pr_weight','=',True)]}"
+                       attrs="{'invisible':['|',('is_standard_weight','=',False)]}"
+                       readonly="1"
                 />
                 <field name="producer_id" domain="[('supplier','=',True),('is_company','=',True)]"/>
                 <field name="qty_standard_serial"
