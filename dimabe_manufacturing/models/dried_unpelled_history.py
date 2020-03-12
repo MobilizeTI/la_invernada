@@ -19,6 +19,12 @@ class DriedUnpelledHistory(models.Model):
         readonly=True
     )
 
+    dried_oven_ids = fields.One2many(
+        'dried.oven',
+        compute='_compute_dried_oven_ids',
+        string='Hornos'
+    )
+
     unpelled_dried_id = fields.Many2one(
         'unpelled.dried',
         'Proceso de Secado',
@@ -110,6 +116,11 @@ class DriedUnpelledHistory(models.Model):
         compute='_compute_picking_type_id',
         string='Bodega'
     )
+
+    @api.multi
+    def _compute_dried_oven_ids(self):
+        for item in self:
+            item.dried_oven_ids = item.oven_use_ids.mapped('dried_oven_ids')
 
     @api.multi
     def _compute_picking_type_id(self):
