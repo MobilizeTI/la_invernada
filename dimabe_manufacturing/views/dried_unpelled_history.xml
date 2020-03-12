@@ -85,7 +85,7 @@
 <!--        <field name="active_time"/>-->
         <field name="dried_oven_ids" widget="many2many_tags"/>
         <field name="out_lot_id"/>
-        <field name="out_lot_serial_count"/>
+        <field name="out_serial_count"/>
         <field name="total_in_weight"/>
         <field name="total_out_weight"/>
         <field name="performance"/>
