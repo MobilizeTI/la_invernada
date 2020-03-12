@@ -72,6 +72,11 @@ class StockProductionLot(models.Model):
         compute='_compute_total_serial'
     )
 
+    count_serial = fields.Integer(
+        'Total Series',
+        compute='_compute_count_serial'
+    )
+
     available_total_serial = fields.Float(
         'Total Disponible',
         compute='_compute_available_total_serial',
@@ -137,6 +142,11 @@ class StockProductionLot(models.Model):
         'Hr en Secador',
         related='oven_use_ids.active_seconds'
     )
+
+    @api.multi
+    def _compute_count_serial(self):
+        for item in self:
+            item.count_serial = len(item.stock_production_lot_serial_ids)
 
     @api.multi
     def _compute_product_variety(self):
@@ -383,6 +393,6 @@ class StockProductionLot(models.Model):
             'context': self.env.context
         }
 
-    @api.onchange('stock_production_lot_serial_ids')
+    @api.onchange('count_serial')
     def onchange_stock_production_lot_serial_ids(self):
         raise models.ValidationError('alla')
