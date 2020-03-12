@@ -2,7 +2,7 @@
 <odoo>
     <template id="report_dispatch_guide">
         <t t-call="web.html_container">
-            <div class="page" style="margin:auto;">
+            <div class="page" style="margin:auto;font-size:12px;">
                 <t t-foreach="docs" t-as="d">
                     <div style="width:100%;">
                         <div style="width:33.3%;display:inline-block;">
@@ -156,7 +156,7 @@
                                         <tr>
                                             <td colspan="3">
                                                 <t t-if="d.type_of_dispatch == 'exp'">
-                                                    <table style="font-size:12px;">
+                                                    <table >
                                                         <tr>
                                                             <td style="text-align:centerc">
                                                                 KILOS NETOS
