@@ -38,6 +38,11 @@ class DriedUnpelledHistory(models.Model):
         readonly=True
     )
 
+    in_product_variety = fields.Char(
+        'Variedad',
+        related='in_product_id.product_variety'
+    )
+
     out_product_id = fields.Many2one(
         'product.product',
         'Producto de Salida',
@@ -94,6 +99,15 @@ class DriedUnpelledHistory(models.Model):
         'Destino de Procesados',
         readonly=True
     )
+
+    lot_guide_numbers = fields.One2many(
+        compute='_compute_lot_guide_numbers'
+    )
+
+    @api.multi
+    def _compute_lot_guide_numbers(self):
+        for item in self:
+            item.lot_guide_numbers = item.in_lot_ids.mapped('reception_guide_number')
 
     @api.multi
     def _compute_in_lot_ids(self):

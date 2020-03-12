@@ -75,20 +75,20 @@
     <field name="arch" type="xml">
       <tree default_order="create_date desc">
         <field name="create_date" invisible="1"/>
-        <field name="used_lot_id"/>
-        <field name="lot_producer_id"/>
-        <field name="lot_guide_number"/>
-        <field name="lot_variety"/>
-        <field name="lot_picking_type_id"/>
-        <field name="init_date"/>
-        <field name="finish_date"/>
-        <field name="active_time"/>
-        <field name="dried_oven_ids" widget="many2many_tags"/>
-        <field name="out_lot_id"/>
-        <field name="out_lot_serial_count"/>
-        <field name="reception_net_weight"/>
-        <field name="total_out_weight"/>
-        <field name="performance"/>
+        <field name="in_lot_ids" widget="many2many_tags"/>
+        <field name="producer_id"/>
+        <field name="lot_guide_numbers"/>
+        <field name="in_product_variety"/>
+<!--        <field name="lot_picking_type_id"/>-->
+<!--        <field name="init_date"/>-->
+<!--        <field name="finish_date"/>-->
+<!--        <field name="active_time"/>-->
+<!--        <field name="dried_oven_ids" widget="many2many_tags"/>-->
+<!--        <field name="out_lot_id"/>-->
+<!--        <field name="out_lot_serial_count"/>-->
+<!--        <field name="reception_net_weight"/>-->
+<!--        <field name="total_out_weight"/>-->
+<!--        <field name="performance"/>-->
       </tree>
     </field>
   </record>
