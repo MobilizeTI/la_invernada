@@ -7,7 +7,13 @@ class IrAttachment(models.Model):
     counter = fields.Integer("Contador")
 
 
-    @api.model
-    def upload_attachment(self):
-        for item in self:
-            models._logger.error('Id : {}'.format(item.id))
+    @api.model_create_multi
+    def create(self, vals_list):
+        for values in vals_list:
+            models._logger.error(values)
+            for field in ('file_size', 'checksum'):
+                values.pop(field, False)
+            values = self._check_contents(values)
+            values = self._make_thumbnail(values)
+            self.browse().check('write', values=values)
+        return super(IrAttachment, self).create(vals_list)
