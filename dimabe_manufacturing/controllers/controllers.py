@@ -17,7 +17,9 @@ class DataSetController(main.DataSet):
                     _logger.error(reg)
                     lot_id = http.request.env['stock.production.lot'].search([('id', '=', reg['id'])])
                     if lot_id:
+                        _logger.error('entró a lot_id')
                         if 'stock_production_lot_serial_ids' in reg:
+                            _logger.error('entró a write')
                             lot_id.write({
                                 'stock_production_lot_serial_ids': reg['stock_production_lot_serial_ids']
                             })
