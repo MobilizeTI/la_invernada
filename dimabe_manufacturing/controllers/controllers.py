@@ -21,8 +21,6 @@ class DataSetController(main.DataSet):
                             lot_id.write({
                                 'stock_production_lot_serial_ids': reg['stock_production_lot_serial_ids']
                             })
-            _logger.error(res)
-            _logger.error(args)
 
         return res
 
