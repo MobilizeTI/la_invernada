@@ -143,6 +143,11 @@ class StockProductionLot(models.Model):
         related='oven_use_ids.active_seconds'
     )
 
+    stock_picking_id = fields.Many2one(
+        'stock.picking',
+        'Recepción'
+    )
+
     @api.multi
     def _compute_count_serial(self):
         for item in self:
