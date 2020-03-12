@@ -93,6 +93,12 @@ class OvenUse(models.Model):
         related='history_id.performance'
     )
 
+    stock_picking_id = fields.Many2one(
+        'stock.picking',
+        related='used_lot_id.stock_picking_id',
+        string='Lote'
+    )
+
     @api.multi
     def _compute_name(self):
         for item in self:

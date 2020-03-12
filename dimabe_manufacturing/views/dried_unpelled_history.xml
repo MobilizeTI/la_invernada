@@ -38,7 +38,15 @@
 
             <field name="in_product_id"/>
 
-            <field name="oven_use_ids"/>
+            <field name="oven_use_ids">
+              <tree>
+                <field name="dried_oven_ids" widget="many2many_tags"/>
+                <field name="stock_picking_id" widget="many2onebutton" />
+                <field name="init_date" />
+                <field name="finish_date" />
+                <field name="active_time" />
+              </tree>
+            </field>
 
             <field name="out_product_id"/>
             <field name="out_lot_id"/>
