@@ -50,6 +50,12 @@ class DriedUnpelledHistory(models.Model):
         readonly=True
     )
 
+    in_lot_ids = fields.One2many(
+        'stock.production.lot',
+        'Lotes de Entrada',
+        related='oven_use_ids.used_lot_id'
+    )
+
     out_serial_ids = fields.One2many(
         'stock.production.lot.serial',
         related='out_lot_id.stock_production_lot_serial_ids',
