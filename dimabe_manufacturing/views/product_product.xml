@@ -5,7 +5,6 @@
         <field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='weight']/group[@name='weight']/div[2]" position="before">
-                <label for="is_standard_weight"/>
                 <field name="is_standard_weight" />
             </xpath>
         </field>
