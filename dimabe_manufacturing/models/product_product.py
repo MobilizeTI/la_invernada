@@ -10,6 +10,19 @@ class ProductProduct(models.Model):
         search='_search_variety'
     )
 
+    is_manufacturable = fields.Boolean('Es Fabricacion?',default=True,compute="_compute_manufacturable")
+
+    is_standard_weight = fields.Boolean('Es peso estandar',default=False)
+
+
+    @api.multi
+    def _compute_manufacturable(self):
+        for item in self:
+            for route in item.route_ids:
+                models._logger_error('Route : {}'.format(route.name))
+                if route.name == "Fabricar":
+                    item.is_manufacturable = True
+
     @api.multi
     def _compute_variety(self):
         for item in self:
