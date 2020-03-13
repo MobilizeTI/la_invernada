@@ -27,7 +27,7 @@
           <field name="truck_in_date"/>
           <field name="date_done"/>
           <field name="elapsed_time"/>
-          <field name="is_pt_reception" invisible="0"/>
+          <field name="is_pt_reception" invisible="1"/>
           <field name="harvest"
                  attrs="{'invisible':['&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False)]}"
           />
