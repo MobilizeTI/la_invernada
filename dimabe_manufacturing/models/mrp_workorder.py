@@ -120,7 +120,8 @@ class MrpWorkorder(models.Model):
         final_lot = self.env['stock.production.lot'].create({
             'name': name,
             'product_id': res.product_id.id,
-            'is_prd_lot': True
+            'is_prd_lot': True,
+            'can_add_serial': True
         })
 
         res.final_lot_id = final_lot.id

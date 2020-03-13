@@ -131,18 +131,15 @@ class MrpProduction(models.Model):
         ]
         if self.product_search_id:
             domain += [('product_id.id', '=', self.product_search_id.id)]
-        res = []
+
         if self.client_search_id:
             client_lot_ids = self.env['quality.analysis'].search([
                 ('potential_client_id', '=', self.client_search_id.id),
                 ('potential_workcenter_id.id', 'in', list(self.routing_id.operation_ids.mapped('workcenter_id.id')))
             ]).mapped('stock_production_lot_ids.name')
-            restest = self.env['stock.production.lot'].search([])
-
-            models._logger.error(restest)
 
             domain += [('name', 'in', list(client_lot_ids) if client_lot_ids else [])]
-            models._logger.error(domain)
+
         res = self.env['stock.production.lot'].search(domain)
 
         return [{
@@ -174,6 +171,10 @@ class MrpProduction(models.Model):
 
         for serial in serial_to_reserve_ids:
             serial.with_context(stock_picking_id=self.stock_picking_id.id).reserve_picking()
+
+        serial_to_reserve_ids.mapped('stock_production_lot_id').write({
+            'can_add_serial': False
+        })
 
         return res
 
@@ -212,7 +213,6 @@ class MrpProduction(models.Model):
                 stock_move.unit_factor = stock_move.product_uom_qty / order.product_qty
                 if stock_move.product_uom_qty == 0 and not stock_move.product_id.categ_id.reserve_ignore and \
                         stock_move.scrapped is False:
-                    models._logger.error(stock_move.product_id.name)
                     stock_move.update({
                         'raw_material_production_id': None
                     })

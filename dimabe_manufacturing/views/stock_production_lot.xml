@@ -21,8 +21,7 @@
                         type="object"
                         name="generate_standard_pallet"
                 />
-                <field name="balance" />
-                <field name="product_qty" />
+
 <!--                <button name="print_all_serial" attrs="{'invisible':[('is_standard_weight','=',False)]}"-->
 <!--                        string="Imprimir Series" type="object"/>-->
                 <field name="stock_production_lot_serial_ids"

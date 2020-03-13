@@ -12,6 +12,10 @@ class StockProductionLot(models.Model):
         'Estado',
     )
 
+    can_add_serial = fields.Boolean(
+        'Puede Agregar Series'
+    )
+
     product_variety = fields.Char(
         'Variedad',
         compute='_compute_product_variety'
