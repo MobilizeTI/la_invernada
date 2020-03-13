@@ -58,16 +58,16 @@
                                 <tr>
                                     <td style="text-align:center;">
                                         N°
-                                        <span t-field="d.guide_number"></span>
+                                        <span t-field="d.guide_number"/>
                                     </td>
                                 </tr>
                             </table>
                         </div>
                     </div>
                     <br/>
-                    <div style="width:100%;height:10px;font-size:12px;"></div>
+                    <div style="width:100%;height:10px;font-size:12px;"/>
                     <br/>
-                    <span style="text-align:left;font-size:12px;" t-esc="d.create_date.date()"></span>
+                    <span style="text-align:left;font-size:12px;" t-esc="d.create_date.date()"/>
                     <div style="width:100%;margin:0 auto;border:1px solid;">
                         <table style="width:90%;margin 0 auto;font-size:11px;" cellspacing="8">
                             <tr>
@@ -76,13 +76,13 @@
                                         <strong>SEÑOR(ES):</strong>
                                     </td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.partner_id"></span>
+                                        <span t-field="d.partner_id"/>
                                     </td>
                                     <td style="text-align:left;">
                                         <strong>R.U.T:</strong>
                                     </td>
                                     <td style="text-align:left;">
-                                        <span t-esc="d.partner_id.invoice_rut"></span>
+                                        <span t-esc="d.partner_id.invoice_rut"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -90,13 +90,13 @@
                                         <strong>DIRECCION:</strong>
                                     </td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.partner_id.street"></span>
+                                        <span t-field="d.partner_id.street"/>
                                     </td>
                                     <td style="text-align:left;">
                                         <strong>TELEFONO:</strong>
                                     </td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.partner_id.phone"></span>
+                                        <span t-field="d.partner_id.phone"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -104,7 +104,7 @@
                                         <strong>COMUNA:</strong>
                                     </td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.partner_id.state_id"></span>
+                                        <span t-field="d.partner_id.state_id"/>
                                     </td>
                                     <td style="text-align:left;">
                                         <strong>VENCTO:</strong>
@@ -127,7 +127,7 @@
                                             <strong>TIPO DE TRASLADO:</strong>
                                         </td>
                                         <td>
-                                            <span t-field="d.type_of_transfer"></span>
+                                            <span t-field="d.type_of_transfer"/>
                                         </td>
                                     </tr>
                                 </t>
@@ -194,84 +194,84 @@
                                                         <tr style="height:50%;">
                                                             <td>Nota</td>
                                                             <td colspan="3" style="text-align:center;">
-                                                                <t t-esc="d.note_dispatched.get_full_note()"></t>
+                                                                <t t-esc="d.note_dispatched.get_full_note()"/>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>Nave:</td>
                                                             <td>
                                                                 <t t-if="d.shipping_id.type_transport == 'terrestre'">
-                                                                    <span t-field="d.type_transport"></span>
+                                                                    <span t-field="d.type_transport"/>
                                                                 </t>
                                                                 <t t-elif="d.shipping_id.type_transport != 'terrestre'">
-                                                                    <span t-field="d.shipping_id.ship"></span>
+                                                                    <span t-field="d.shipping_id.ship"/>
                                                                 </t>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>N° DUS:</td>
                                                             <td>
-                                                                <span t-field="d.dus_number"></span>
+                                                                <span t-field="d.dus_number"/>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>PTO EMBARQUE:</td>
                                                             <td>
-                                                                <span t-field="d.shipping_id.departure_port"></span>
+                                                                <span t-field="d.shipping_id.departure_port"/>
                                                             </td>
                                                             <td>SELLO INVERNADA</td>
                                                             <td>
-                                                                <span t-field="d.sell_truck"></span>
+                                                                <span t-field="d.sell_truck"/>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>PTO DESCARGA</td>
                                                             <td>
-                                                                <span t-field="d.shipping_id.arrival_port"></span>
+                                                                <span t-field="d.shipping_id.arrival_port"/>
                                                             </td>
                                                             <td>N° RESERVA</td>
                                                             <td>
-                                                                <span t-field="d.booking_number"></span>
+                                                                <span t-field="d.booking_number"/>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>TRANSPORTE:</td>
                                                             <td>
-                                                                <span t-field="d.transport"></span>
+                                                                <span t-field="d.transport"/>
                                                             </td>
                                                             <td>CANDADO GPS:</td>
                                                             <td>
-                                                                <span t-field="d.gps_lock"></span>
+                                                                <span t-field="d.gps_lock"/>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>CHOFER:</td>
                                                             <td>
-                                                                <span t-field="d.carrier_id"></span>
+                                                                <span t-field="d.carrier_id"/>
                                                             </td>
                                                             <td>BOTON GPS:</td>
                                                             <td>
-                                                                <span t-field="d.gps_button"></span>
+                                                                <span t-field="d.gps_button"/>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>RUT:</td>
                                                             <td>
-                                                                <span t-field="d.carrier_rut"></span>
+                                                                <span t-field="d.carrier_rut"/>
                                                             </td>
                                                             <td>CLIENTE:</td>
                                                             <td>
-                                                                <span t-field="d.partner_id"></span>
+                                                                <span t-field="d.partner_id" />
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>CELULAR:</td>
                                                             <td>
-                                                                <span t-field="d.carrier_cell_phone"></span>
+                                                                <span t-field="d.carrier_cell_phone"/>
                                                             </td>
                                                             <td>SELLO SAG:</td>
                                                             <td>
-                                                                <span t-field="d.sell_sag"></span>
+                                                                <span t-field="d.sell_sag"/>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -279,7 +279,7 @@
                                                             <td><![CDATA[&nbsp;]]></td>
                                                             <td>N° Pedido:</td>
                                                             <td>
-                                                                <span t-field="d.name"></span>
+                                                                <span t-field="d.name"/>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -288,7 +288,7 @@
                                                         <tr>
                                                             <td>Pte Camion:</td>
                                                             <td>
-                                                                <span t-field="d.carrier_truck_patent"></span>
+                                                                <span t-field="d.carrier_truck_patent"/>
                                                             </td>
                                                             <td>Hora Llegada:</td>
                                                             <td>
@@ -298,7 +298,7 @@
                                                         <tr>
                                                             <td>Pte Rampla:</td>
                                                             <td>
-                                                                <span t-field="d.carrier_cart_patent"></span>
+                                                                <span t-field="d.carrier_cart_patent"/>
                                                             </td>
                                                             <td>Hora Salida</td>
                                                             <td>
