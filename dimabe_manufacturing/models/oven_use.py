@@ -164,7 +164,7 @@ class OvenUse(models.Model):
             for dried_oven_id in item.dried_oven_ids:
                 models._logger.error(dried_oven_id)
                 models._logger.error(item.unpelled_dried_id.oven_use_ids.filtered(
-                    lambda a: a.id != item.id and dried_oven_id.id in a.dried_oven_ids.mapped('id')  # and not a.finish_date
+                    lambda a: a.id != item.id and not a.finish_date
                 ))
                 if not item.unpelled_dried_id.oven_use_ids.filtered(
                     lambda a: a.id != item.id and dried_oven_id in a.dried_oven_ids and not a.finish_date
