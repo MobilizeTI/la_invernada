@@ -70,7 +70,8 @@ class MrpProduction(models.Model):
             products = item.env['product.product'].search([])
             for p in products:
                 if "Fabricar" in p.route_ids.mapped('name'):
-                    models._logger.error(p.name)
+                    list.append(p.id)
+            item.manufactureable = item.env['product.product'].search([('id','in',list)])
 
     @api.multi
     def get_product_bom(self):
