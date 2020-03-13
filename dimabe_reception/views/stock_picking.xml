@@ -27,7 +27,7 @@
           <field name="truck_in_date"/>
           <field name="date_done"/>
           <field name="elapsed_time"/>
-          <field name="is_pt_reception" invisible="0" />
+          <field name="is_pt_reception" invisible="0"/>
           <field name="harvest"
                  attrs="{'invisible':['&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False)]}"
           />
@@ -54,7 +54,8 @@
           />
         </field>
         <xpath expr="//page[@name='note']" position="after">
-          <page string="Transportista" name="carrier_page" attrs="{'invisible':[('picking_type_code', 'not in', ('outgoing', 'incoming'))]}">
+          <page string="Transportista" name="carrier_page"
+                attrs="{'invisible':[('picking_type_code', 'not in', ('outgoing', 'incoming'))]}">
             <group name="carrier_page" position="inside">
               <field name="carrier_id"/>
               <field name="carrier_rut"/>

@@ -185,16 +185,11 @@ class StockPicking(models.Model):
                                'materia prima' in str.lower(self.picking_type_id.warehouse_id.name) and \
                                self.picking_type_id.name and 'recepciones' in str.lower(self.picking_type_id.name)
 
-    @api.multi
+    @api.one
+    @api.depends('picking_type_id')
     def _compute_is_pt_reception(self):
-        for item in self:
-            models._logger.error('producto terminado' in str.lower(item.picking_type_id.warehouse_id.name) and
-                                 'recepciones' in str.lower(item.picking_type_id.name))
-            raise models.ValidationError('producto terminado' in str.lower(item.picking_type_id.warehouse_id.name) and
-                                         'recepciones' in str.lower(item.picking_type_id.name))
-
-            item.is_pt_reception = 'producto terminado' in str.lower(item.picking_type_id.warehouse_id.name) and \
-                                   'recepciones' in str.lower(item.picking_type_id.name)
+        self.is_pt_reception = 'producto terminado' in str.lower(self.picking_type_id.warehouse_id.name) and \
+                               'recepciones' in str.lower(self.picking_type_id.name)
 
     @api.one
     @api.depends('production_net_weight', 'tare_weight', 'gross_weight', 'move_ids_without_package')
