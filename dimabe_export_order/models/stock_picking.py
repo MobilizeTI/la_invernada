@@ -1,6 +1,6 @@
 from odoo import models, fields, api
 from datetime import datetime, timedelta
-from PIL import Image
+
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
@@ -213,11 +213,7 @@ class StockPicking(models.Model):
     @api.multi
     def generate_report(self):
         index = len(self.picture)
-
         for item in self.picture:
-            size = 7016, 4961
-            im = Image.open(item.local_url)
-
             item.counter = index
             index -= 1
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
