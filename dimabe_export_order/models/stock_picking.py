@@ -216,7 +216,7 @@ class StockPicking(models.Model):
 
     @api.multi
     def _compute_departure_weight(self):
-        self.departure_weight = self.vgm_weight_dispatch + self.arrival_weight
+        self.departure_weight = self.net_weight_dispatch + self.arrival_weight
 
     @api.multi
     def generate_report(self):
