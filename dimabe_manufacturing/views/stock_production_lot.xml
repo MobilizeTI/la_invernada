@@ -25,7 +25,7 @@
 <!--                <button name="print_all_serial" attrs="{'invisible':[('is_standard_weight','=',False)]}"-->
 <!--                        string="Imprimir Series" type="object"/>-->
                 <field name="stock_production_lot_serial_ids"
-                       attrs="{'readonly':[('is_standard_weight','=',True)],'invisible':[('is_standard_weight', '=', True)]}"
+                       attrs="{'readonly':[('can_add_serial','=',False)],'invisible':[('is_standard_weight', '=', True)]}"
                 >
                     <tree editable="bottom">
                         <field name="stock_production_lot_id" readonly="1"/>
