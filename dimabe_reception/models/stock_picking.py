@@ -52,8 +52,8 @@ class StockPicking(models.Model):
 
     is_pt_reception = fields.Boolean(
         'Recepción de PT',
-        compute='_compute_is_pt_reception'
-
+        compute='_compute_is_pt_reception',
+        store=True
     )
 
     carrier_id = fields.Many2one('custom.carrier', 'Conductor')
