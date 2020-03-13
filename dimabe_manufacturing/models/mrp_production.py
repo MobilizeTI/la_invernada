@@ -59,12 +59,14 @@ class MrpProduction(models.Model):
         'Posibles Lotes'
     )
 
-    materials = fields.Many2many('product.product', compute='get_product_bom')
+    material_ids = fields.Many2many(
+        compute='_compute_material_ids'
+    )
 
     @api.multi
-    def get_product_bom(self):
+    def _compute_material_ids(self):
         for item in self:
-            item.materials = item.bom_id.bom_line_ids.mapped('product_id')
+            item.materials = item.bom_id.bom_line_ids.mapped('product_id.id')
 
     @api.multi
     def _compute_show_finished_move_line_ids(self):
