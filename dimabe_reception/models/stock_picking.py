@@ -321,3 +321,4 @@ class StockPicking(models.Model):
 
         if len(res.move_ids_without_package) > len(res.move_ids_without_package.mapped('product_id')):
             raise models.ValidationError('no puede tener el mismo producto en mas de una linea')
+        return res
