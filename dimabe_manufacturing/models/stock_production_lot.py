@@ -343,6 +343,11 @@ class StockProductionLot(models.Model):
             })
 
             for counter in range(item.qty_standard_serial):
+                models._logger.error('{} {}'.format(
+                    len(item.stock_production_lot_serial_ids),
+                    counter
+                )
+                )
                 tmp = '00{}'.format(counter + len(item.stock_production_lot_serial_ids))
 
                 serial = item.env['stock.production.lot.serial'].create({
