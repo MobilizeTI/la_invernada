@@ -43,6 +43,7 @@
                   name="open_pallet"
                   attrs="{'invisible':[('state','=','open')]}"
                   class="oe_highlight"
+                  groups="base.group_system,stock.group_stock_manager"
           />
 
           <button string="Imprimir Etiqueta Pallet"
