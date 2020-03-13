@@ -212,11 +212,7 @@ class StockPicking(models.Model):
 
     arrival_weight = fields.Float('Peso de Entrada')
 
-    departure_weight = fields.Float('Peso de Salida',compute="_compute_departure_weight")
-
-    @api.multi
-    def _compute_departure_weight(self):
-        self.departure_weight = self.net_weight_dispatch + self.arrival_weight
+    departure_weight = fields.Float('Peso de Salida')
 
     @api.multi
     def generate_report(self):
