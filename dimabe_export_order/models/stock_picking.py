@@ -215,6 +215,10 @@ class StockPicking(models.Model):
     departure_weight = fields.Float('Peso de Salida',compute="_compute_departure_weight")
 
     @api.multi
+    def _compute_departure_weight(self):
+        self.departure_weight = self.vgm_weight_dispatch + self.arrival_weight
+
+    @api.multi
     def generate_report(self):
         index = len(self.picture)
         for item in self.picture:
