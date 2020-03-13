@@ -5,6 +5,7 @@ import io
 import base64
 import codecs
 
+
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
@@ -223,100 +224,108 @@ class StockPicking(models.Model):
         for item in self.picture:
             item.counter = index
             index -= 1
-            # item.datas = tools.image_resize_image_medium(
-            #     item.datas,size=(31,12)
-            # )
+            item.datas = tools.image_resize_image_medium(
+                item.datas, size=(1000,1000)
+            )
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
-            .report_action(self.picture)
+        .report_action(self.picture)
 
-    @api.multi
-    def get_permision(self):
-        for i in self.env.user.groups_id:
-            if i.name == "Despachos":
-                self.is_dispatcher = 1
 
-    @api.multi
-    def get_type_of_transfer(self):
-        self.type_of_transfer = \
-            dict(self._fields['type_of_transfer_list'].selection).get(self.type_of_transfer_list)
-        return self.type_of_transfer
+@api.multi
+def get_permision(self):
+    for i in self.env.user.groups_id:
+        if i.name == "Despachos":
+            self.is_dispatcher = 1
 
-    @api.one
-    @api.depends('tare_container_weight_dispatch', 'container_weight')
-    def compute_vgm_weight(self):
 
-        self.vgm_weight_dispatch = \
-            self.tare_container_weight_dispatch + self.container_weight
+@api.multi
+def get_type_of_transfer(self):
+    self.type_of_transfer = \
+        dict(self._fields['type_of_transfer_list'].selection).get(self.type_of_transfer_list)
+    return self.type_of_transfer
 
-    @api.one
-    def compute_elapsed_time(self):
-        if self.truck_in_date:
-            if self.date_done:
-                self.elapsed_time = self._get_hours(self.truck_in_date, self.date_done)
-            else:
-                self.elapsed_time = self._get_hours(self.truck_in_date, datetime.now())
+
+@api.one
+@api.depends('tare_container_weight_dispatch', 'container_weight')
+def compute_vgm_weight(self):
+    self.vgm_weight_dispatch = \
+        self.tare_container_weight_dispatch + self.container_weight
+
+
+@api.one
+def compute_elapsed_time(self):
+    if self.truck_in_date:
+        if self.date_done:
+            self.elapsed_time = self._get_hours(self.truck_in_date, self.date_done)
         else:
-            self.elapsed_time = '00:00:00'
+            self.elapsed_time = self._get_hours(self.truck_in_date, datetime.now())
+    else:
+        self.elapsed_time = '00:00:00'
 
-    def _get_hours(self, init_date, finish_date):
-        diff = str((finish_date - init_date))
-        return diff.split('.')[0]
 
-    @api.multi
-    @api.depends('freight_value', 'safe_value')
-    def _compute_total_value(self):
-        for item in self:
-            list_price = []
-            list_qty = []
-            prices = 0
-            qtys = 0
-            for i in item.sale_id.order_line:
-                if len(item.sale_id.order_line) != 0:
-                    list_price.append(int(i.price_unit))
+def _get_hours(self, init_date, finish_date):
+    diff = str((finish_date - init_date))
+    return diff.split('.')[0]
 
-            for a in item.move_ids_without_package:
-                if len(item.move_ids_without_package) != 0:
-                    list_qty.append(int(a.quantity_done))
-                    prices = sum(list_price)
-                    qtys = sum(list_qty)
 
-            item.total_value = (prices * qtys) + item.freight_value + item.safe_value
+@api.multi
+@api.depends('freight_value', 'safe_value')
+def _compute_total_value(self):
+    for item in self:
+        list_price = []
+        list_qty = []
+        prices = 0
+        qtys = 0
+        for i in item.sale_id.order_line:
+            if len(item.sale_id.order_line) != 0:
+                list_price.append(int(i.price_unit))
 
-    @api.multi
-    @api.depends('total_value')
-    def _compute_value_per_kilogram(self):
-        for item in self:
-            qty_total = 0
-            for line in item.move_ids_without_package:
-                qty_total = qty_total + line.quantity_done
-            if qty_total > 0:
-                item.value_per_kilogram = item.total_value / qty_total
+        for a in item.move_ids_without_package:
+            if len(item.move_ids_without_package) != 0:
+                list_qty.append(int(a.quantity_done))
+                prices = sum(list_price)
+                qtys = sum(list_qty)
 
-    @api.multi
-    @api.depends('agent_id')
-    def _compute_total_commission(self):
-        print('')
-        # cambiar amount_total
-        # self.total_commission = (self.agent_id.commission / 100) * self.amount_total
+        item.total_value = (prices * qtys) + item.freight_value + item.safe_value
 
-    @api.multi
-    # @api.depends('contract_id')
-    def _get_correlative_text(self):
-        print('')
-        # if self.contract_id:
-        # if self.contract_correlative == 0:
-        # existing = self.contract_id.sale_order_ids.search([('name', '=', self.name)])
-        # if existing:
-        # self.contract_correlative = existing.contract_correlative
-        # if self.contract_correlative == 0:
-        # self.contract_correlative = len(self.contract_id.sale_order_ids)
-        # else:
-        # self.contract_correlative = 0
-        # if self.contract_id.name and self.contract_correlative and self.contract_id.container_number:
-        # self.contract_correlative_view = '{}-{}/{}'.format(
-        # self.contract_id.name,
-        # self.contract_correlative,
-        # self.contract_id.container_number
-        # )
-        # else:
-        # self.contract_correlative_view = ''
+
+@api.multi
+@api.depends('total_value')
+def _compute_value_per_kilogram(self):
+    for item in self:
+        qty_total = 0
+        for line in item.move_ids_without_package:
+            qty_total = qty_total + line.quantity_done
+        if qty_total > 0:
+            item.value_per_kilogram = item.total_value / qty_total
+
+
+@api.multi
+@api.depends('agent_id')
+def _compute_total_commission(self):
+    print('')
+    # cambiar amount_total
+    # self.total_commission = (self.agent_id.commission / 100) * self.amount_total
+
+
+@api.multi
+# @api.depends('contract_id')
+def _get_correlative_text(self):
+    print('')
+    # if self.contract_id:
+    # if self.contract_correlative == 0:
+    # existing = self.contract_id.sale_order_ids.search([('name', '=', self.name)])
+    # if existing:
+    # self.contract_correlative = existing.contract_correlative
+    # if self.contract_correlative == 0:
+    # self.contract_correlative = len(self.contract_id.sale_order_ids)
+    # else:
+    # self.contract_correlative = 0
+    # if self.contract_id.name and self.contract_correlative and self.contract_id.container_number:
+    # self.contract_correlative_view = '{}-{}/{}'.format(
+    # self.contract_id.name,
+    # self.contract_correlative,
+    # self.contract_id.container_number
+    # )
+    # else:
+    # self.contract_correlative_view = ''
