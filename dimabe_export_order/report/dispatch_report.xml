@@ -380,30 +380,30 @@
                     </table>
                     <br/>
                     <table style="width:100%;height:30%">
-                        <tr>
+                        <tr style="height:25px;">
                             <td>NUMERO DE EMBARQUE</td>
-                            <td style="border:1px solid;"><span t-field="dis.shipping_number"/></td>
+                            <td style="border:1px solid;width:50%;"><span t-field="dis.shipping_number"/></td>
                             <td></td>
                             <td>PATENTE CAMION</td>
-                            <td style="border:1px solid;"><span t-field="dis.truck_id"/></td>
+                            <td style="border:1px solid;width:50%;"><span t-field="dis.truck_id"/></td>
                         </tr>
-                        <tr>
+                        <tr style="height:25px;">
                             <td>GUIA DE DESPACHO</td>
-                            <td style="border:1px solid;"><span t-field="dis.guide_number"/></td>
+                            <td style="border:1px solid;width:50%;"><span t-field="dis.guide_number"/></td>
                             <td></td>
                             <td>PATENTE CARRO</td>
-                            <td style="border:1px solid;"><span t-field="dis.cart_id"/></td>
+                            <td style="border:1px solid;width:50%;"><span t-field="dis.cart_id"/></td>
                         </tr>
-                        <tr>
+                        <tr style="height:25px;">
                             <td>NUMERO DE CONTENEDOR</td>
-                            <td style="border:1px solid;"><span t-field="dis.container_number"/></td>
+                            <td style="border:1px solid;width:50%;"><span t-field="dis.container_number"/></td>
                             <td></td>
                             <td>RUN CHOFER</td>
-                            <td style="border:1px solid;"><span t-field="dis.carrier_rut"/></td>
+                            <td style="border:1px solid;width:50%;"><span t-field="dis.carrier_rut"/></td>
                         </tr>
                         <tr>
                             <td>NOMBRE CHOFER</td>
-                            <td style="border:1px solid;"><span t-field="dis.container_number"/></td>
+                            <td style="border:1px solid;width:50%;"><span t-field="dis.container_number"/></td>
                         </tr>
                     </table>
 
