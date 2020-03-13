@@ -60,14 +60,14 @@ class MrpProduction(models.Model):
     )
 
     material_ids = fields.Many2many(
-        'product.product',
+
         compute='_compute_material_ids'
     )
 
     @api.multi
     def _compute_material_ids(self):
         for item in self:
-            item.material_ids = item.bom_id.bom_line_ids.mapped('product_id')
+            item.material_ids = item.bom_id.bom_line_ids.mapped('product_id.id')
 
     @api.multi
     def _compute_show_finished_move_line_ids(self):
