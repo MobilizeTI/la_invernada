@@ -182,14 +182,14 @@ class StockPicking(models.Model):
     def _compute_is_mp_reception(self):
         # self.reception_type_selection == 'mp' or \
         self.is_mp_reception = self.picking_type_id.warehouse_id.name and \
-                               'Materia Prima' in self.picking_type_id.warehouse_id.name and \
-                               self.picking_type_id.name and 'Recepciones' in self.picking_type_id.name
+                               'materia prima' in str.lower(self.picking_type_id.warehouse_id.name) and \
+                               self.picking_type_id.name and 'recepciones' in str.lower(self.picking_type_id.name)
 
     @api.multi
     def _compute_is_pt_reception(self):
         for item in self:
-            item.is_pt_reception = 'Producto Terminado' in self.picking_type_id.warehouse_id.name and \
-                                   'Recepciones' in self.picking_type_id.name
+            item.is_pt_reception = 'producto terminado' in str.lower(self.picking_type_id.warehouse_id.name) and \
+                                   'recepciones' in str.lower(self.picking_type_id.name)
 
     @api.one
     @api.depends('production_net_weight', 'tare_weight', 'gross_weight', 'move_ids_without_package')
