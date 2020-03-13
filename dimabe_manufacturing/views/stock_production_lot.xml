@@ -46,7 +46,7 @@
                         />
                         <button name="print_serial_label"
                                 type="object" string="Imprimir"
-                                attrs="{'invisible':['|',('serial_number', '=', False), ('production_id', '=', False)]}"
+                                attrs="{'invisible':['|',('serial_number', '=', False), ('is_prd_lot', '=', False)]}"
                         />
                     </tree>
                 </field>
