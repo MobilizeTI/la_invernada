@@ -220,8 +220,8 @@ class StockPicking(models.Model):
         for item in self.picture:
             item.counter = index
             index -= 1
-            item.datas_fname = tools.image_resize_image_medium(
-                item.datas_fname, size=(500, 500)
+            item.local_url = tools.image_resize_image_medium(
+                item.local_url, size=(500, 500)
             )
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
             .report_action(self.picture)
