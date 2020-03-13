@@ -139,6 +139,11 @@ class StockProductionLot(models.Model):
     )
 
     @api.multi
+    def print_all_serial(self):
+        return self.env.ref('dimabe_manufacturing.action_print_all_serial') \
+            .report_action(self.stock_production_lot_serial_ids)
+
+    @api.multi
     def _get_product_weight(self):
         self.ensure_one()
         self.standard_weight = self.product_id.weight
