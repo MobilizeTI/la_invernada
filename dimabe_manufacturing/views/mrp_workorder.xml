@@ -34,9 +34,7 @@
             </tree>
           </field>
         </xpath>
-        <xpath expr="//field[@name='qty_done']" position="attributes">
-          <attribute name="readonly">1</attribute>
-        </xpath>
+
         <xpath expr="//field[@name='finished_product_check_ids']" position="attributes">
           <attribute name="invisible">1</attribute>
         </xpath>
