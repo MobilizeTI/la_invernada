@@ -1,11 +1,11 @@
 from odoo import models, fields, api
+import os
 
 
 class IrAttachment(models.Model):
     _inherit = "ir.attachment"
 
     counter = fields.Integer("Contador")
-
 
     @api.model_create_multi
     def create(self, vals_list):

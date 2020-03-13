@@ -215,11 +215,7 @@ class StockPicking(models.Model):
         index = len(self.picture)
 
         for item in self.picture:
-            img = Image.open(item.datas_fname)
-            im_resized = img.resize(size,Image.ANTIALIAS)
-            im_resized.save("{}_resized.png","PNG")
-            item.datas_fname = im_resized
-            raise models.ValidationError(item.datas_fname)
+            raise models.ValidationError(item.store_fname)
             item.counter = index
             index -= 1
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
