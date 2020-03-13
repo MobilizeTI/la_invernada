@@ -44,7 +44,10 @@ class StockProductionLot(models.Model):
         related='product_id.is_standard_weight'
     )
 
-    standard_weight = fields.Float('Peso Estandar')
+    standard_weight = fields.Float(
+        'Peso Estandar',
+        related='product_id.weight'
+    )
 
     qty_standard_serial = fields.Integer('Cantidad de Series')
 
@@ -161,11 +164,6 @@ class StockProductionLot(models.Model):
     def print_all_serial(self):
         return self.env.ref('dimabe_manufacturing.action_print_all_serial') \
             .report_action(self.stock_production_lot_serial_ids)
-
-    @api.multi
-    def _get_product_weight(self):
-        self.ensure_one()
-        self.standard_weight = self.product_id.weight
 
     @api.multi
     def _compute_product_variety(self):
