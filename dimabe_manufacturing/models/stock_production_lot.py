@@ -339,7 +339,7 @@ class StockProductionLot(models.Model):
         for item in self:
 
             pallet = self.env['manufacturing.pallet'].create({
-                'producer_id': item.label_producer_id
+                'producer_id': item.label_producer_id.id
             })
             for counter in range(item.qty_standard_serial):
                 tmp = '00{}'.format(counter + 1 + len(item.stock_production_lot_serial_ids))
