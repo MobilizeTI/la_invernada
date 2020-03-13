@@ -14,7 +14,7 @@ class StockMoveLine(models.Model):
             if res.move_id.product_id.categ_id.is_canning:
                 prefix = 'ENV'
 
-            raise models.ValidationError(res.move_id.picking_id.move_lines.filtered(
+            raise models.ValidationError(res.move_id.picking_id.move_ids_without_package.filtered(
                 lambda a: a.product_id.categ_id.is_mp
             ))
 
