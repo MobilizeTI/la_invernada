@@ -401,7 +401,7 @@
                             <td style="text-align:center;">RUN CHOFER</td>
                             <td style="border:1px solid;width:25%;"><span t-field="dis.carrier_rut"/></td>
                         </tr>
-                        <tr>
+                        <tr style="height:25px;">
                             <td style="text-align:center;">NOMBRE CHOFER</td>
                             <td style="border:1px solid;width:25%;"><span t-field="dis.container_number"/></td>
                         </tr>
