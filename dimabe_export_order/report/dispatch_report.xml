@@ -407,24 +407,26 @@
                         </tr>
                     </table>
                     <br/>
-                    <table>
-                        <tr>
+                    <table style="border:1px solid;">
+                        <tr style="margin:0 auto;">
                             <td>PESO SIN CARGA</td>
-                            <td style="border:1px solid;"><span t-field="dis.arrival_weight"/></td>
+                            <td style="border:1px solid;width:25%;"><span t-field="dis.arrival_weight"/></td>
                         </tr>
                         <tr>
                             <td>PESO CON CARGA</td>
-                            <td style="border:1px solid;"><span t-field="dis.departure_weight"/></td>
+                            <td style="border:1px solid;width:25%;"><span t-field="dis.departure_weight"/></td>
                         </tr>
                         <tr>
                             <td>PESO NETO</td>
-                            <td style="border:1px solid;"><span t-field="dis.net_weight_dispatch"/></td>
+                            <td style="border:1px solid;width:25%;"><span t-field="dis.net_weight_dispatch"/></td>
                         </tr>
                     </table>
                     <br/>
                     <table style="float:left;">
                         <tr>
                             <td style="border-bottom:1pt dotted black;width:50%;"></td>
+                        </tr>
+                        <tr>
                             <td style="margin:0 auto;">Firma Chofer</td>
                         </tr>
                     </table>
