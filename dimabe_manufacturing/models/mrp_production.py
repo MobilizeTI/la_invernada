@@ -68,7 +68,7 @@ class MrpProduction(models.Model):
         for item in self:
             products = item.env['product.product'].search([])
             for p in products:
-                models._logger.error(p.routes_ids.mapped('name'))
+                models._logger.error(p.route_ids.mapped('name'))
 
     @api.multi
     def get_product_bom(self):
