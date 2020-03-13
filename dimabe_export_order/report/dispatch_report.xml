@@ -379,7 +379,7 @@
                         </th>
                     </table>
                     <br/>
-                    <table style="width:100%;height:25%;font-size:18px;">
+                    <table style="width:100%;height:40%;font-size:18px;">
                         <tr style="height:25px;">
                             <td style="text-align:center;">NUMERO DE EMBARQUE</td>
                             <td style="border:1px solid;width:25%;"><span t-field="dis.shipping_number"/></td>
@@ -409,18 +409,19 @@
                     <br/>
                     <table style="border:1px solid;width:100%;">
                         <tr>
-                            <td style="text-align:center;">PESO SIN CARGA</td>
-                            <td style="border:1px solid;width:25%;margin:0 auto;"><span t-field="dis.arrival_weight"/></td>
+                            <td style="text-align:center;width:50%;">PESO SIN CARGA</td>
+                            <td style="border:1px solid;width:50%;margin:0 auto;"><span t-field="dis.arrival_weight"/></td>
                         </tr>
                         <tr>
-                            <td style="text-align:center;">PESO CON CARGA</td>
-                            <td style="border:1px solid;width:25%;margin:0 auto;"><span t-field="dis.departure_weight"/></td>
+                            <td style="text-align:center;width:50%;">PESO CON CARGA</td>
+                            <td style="border:1px solid;width:50%;margin:0 auto;"><span t-field="dis.departure_weight"/></td>
                         </tr>
                         <tr>
-                            <td style="text-align:center;">PESO NETO</td>
-                            <td style="border:1px solid;width:25%;margin:0 auto;"><span t-field="dis.net_weight_dispatch"/></td>
+                            <td style="text-align:center;width:50%;">PESO NETO</td>
+                            <td style="border:1px solid;width:50%;margin:0 auto;"><span t-field="dis.net_weight_dispatch"/></td>
                         </tr>
                     </table>
+                    <br/>
                     <br/>
                     <table style="float:left;">
                         <tr>
