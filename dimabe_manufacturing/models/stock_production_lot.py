@@ -349,8 +349,8 @@ class StockProductionLot(models.Model):
                     'stock_production_lot_id': item.id,
                     'display_weight': item.product_id.weight,
                     'serial_number': item.name + tmp[-3:],
-                    'belong_to_prd_lot': True,
-                    'palled_id': pallet.id
+                    'belongs_to_prd_lot': True,
+                    'pallet_id': pallet.id
                 })
 
                 models._logger.error('{} {}'.format(serial.pallet_id, serial.stock_production_lot_id))
