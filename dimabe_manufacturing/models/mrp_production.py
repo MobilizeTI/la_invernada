@@ -66,7 +66,7 @@ class MrpProduction(models.Model):
     @api.multi
     def get_product_route(self):
         for item in self:
-            products = item.env['product.product'].search(['is_to_manufacturing','=',True])
+            products = item.env['product.product'].search([('is_to_manufacturing','=',True)])
             item.manufacturable = products
 
     @api.multi
