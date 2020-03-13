@@ -407,7 +407,7 @@
                         </tr>
                     </table>
                     <br/>
-                    <table style="border:1px solid;">
+                    <table style="border:1px solid;width:100%;">
                         <tr style="margin:0 auto;">
                             <td>PESO SIN CARGA</td>
                             <td style="border:1px solid;width:25%;"><span t-field="dis.arrival_weight"/></td>
@@ -426,14 +426,16 @@
                         <tr>
                             <td style="border-bottom:1pt dotted black;width:50%;"></td>
                         </tr>
-                        <tr>
-                            <td style="margin:0 auto;">Firma Chofer</td>
+                        <tr style="margin:0 auto;">
+                            <td>Firma Chofer</td>
                         </tr>
                     </table>
                     <table style="float:right;">
                         <tr>
                             <td style="border-bottom:1pt dotted black;width:50%;"></td>
-                            <td style="margin:0 auto;">Encargado de Despacho</td>
+                        </tr>
+                        <tr style="margin:0 auto;">
+                             <td>Encargado de Despacho</td>
                         </tr>
                     </table>
                 </t>
