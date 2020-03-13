@@ -13,7 +13,7 @@
                             string="Calcular Realizado"
                             attrs="{'invisible':[('state', '!=', 'progress')]}"
                     />
-                    <field name="manufactureable" invisible="1"/>
+
                 </xpath>
                 <button name="action_assign" position="replace">
                 </button>
