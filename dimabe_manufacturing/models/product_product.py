@@ -18,11 +18,7 @@ class ProductProduct(models.Model):
     @api.multi
     def compute_is_to_manufacturing(self):
         for item in self:
-            for route in item.route_ids:
-                if route.name == "Fabricar":
-                    item.update({
-                        'is_to_manufacturing' : True
-                    })
+            models._logger.error(item.route_ids.mapped('name'))
 
     @api.multi
     def _compute_variety(self):
