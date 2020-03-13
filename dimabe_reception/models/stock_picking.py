@@ -1,5 +1,5 @@
 from odoo import models, api, fields
-from datetime import datetime, timedelta
+from datetime import datetime
 
 
 class StockPicking(models.Model):
@@ -8,9 +8,11 @@ class StockPicking(models.Model):
 
     guide_number = fields.Integer('Número de Guía')
 
-    weight_guide = fields.Integer('Kilos Guía',
-                                  compute='_compute_weight_guide',
-                                  store=True)
+    weight_guide = fields.Integer(
+        'Kilos Guía',
+        compute='_compute_weight_guide',
+        store=True
+    )
 
     gross_weight = fields.Integer('Kilos Brutos')
 
@@ -210,8 +212,7 @@ class StockPicking(models.Model):
             res = super(StockPicking, self).action_confirm()
             mp_move = stock_picking.get_mp_move()
 
-            if mp_move and mp_move.move_line_ids and mp_move.picking_id \
-                    and mp_move.picking_id.picking_type_code == 'incoming':
+            if mp_move and mp_move.move_line_ids and mp_move.picking_id.picking_type_code == 'incoming':
                 for move_line in mp_move.move_line_ids:
                     lot = self.env['stock.production.lot'].create({
                         'name': stock_picking.name,

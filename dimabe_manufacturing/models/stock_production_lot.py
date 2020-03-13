@@ -331,12 +331,12 @@ class StockProductionLot(models.Model):
         for item in self:
             res = super(StockProductionLot, self).write(values)
             counter = 0
-        if not item.is_standard_weight:
-            for serial in item.stock_production_lot_serial_ids:
-                counter += 1
-                tmp = '00{}'.format(counter)
-                serial.serial_number = item.name + tmp[-3:]
-        return res
+            if not item.is_standard_weight:
+                for serial in item.stock_production_lot_serial_ids:
+                    counter += 1
+                    tmp = '00{}'.format(counter)
+                    serial.serial_number = item.name + tmp[-3:]
+            return res
 
     @api.multi
     def generate_standard_pallet(self):
