@@ -345,6 +345,7 @@
         </t>
     </template>
 
+
     <template id="report_weight_dispatch">
         <t t-call="web.html_container">
             <div class="page">
@@ -382,28 +383,28 @@
                     <table style="width:100%;height:20%;font-size:18px;" cellspacing="3">
                         <tr style="height:25px;">
                             <td style="text-align:center;">NUMERO DE EMBARQUE</td>
-                            <td style="border:1px solid;width:25%;"><span t-field="dis.shipping_number"/></td>
+                            <td style="border:1px solid;width:25%;text-align:center;"><span t-field="dis.shipping_number"/></td>
                             <td></td>
                             <td style="text-align:center;">PATENTE CAMION</td>
-                            <td style="border:1px solid;width:25%;"><span t-field="dis.truck_id"/></td>
+                            <td style="border:1px solid;width:25%;text-align:center;"><span t-field="dis.truck_id"/></td>
                         </tr>
                         <tr style="height:25px;">
                             <td style="text-align:center;">GUIA DE DESPACHO</td>
-                            <td style="border:1px solid;width:25%;"><span t-field="dis.guide_number"/></td>
+                            <td style="border:1px solid;width:25%;text-align:center;"><span t-field="dis.guide_number"/></td>
                             <td></td>
                             <td style="text-align:center;">PATENTE CARRO</td>
-                            <td style="border:1px solid;width:25%;"><span t-field="dis.cart_id"/></td>
+                            <td style="border:1px solid;width:25%;text-align:center;"><span t-field="dis.cart_id"/></td>
                         </tr>
                         <tr style="height:25px;">
                             <td style="text-align:center;">NUMERO DE CONTENEDOR</td>
-                            <td style="border:1px solid;width:25%;"><span t-field="dis.container_number"/></td>
+                            <td style="border:1px solid;width:25%;text-align:center;"><span t-field="dis.container_number"/></td>
                             <td></td>
                             <td style="text-align:center;">RUN CHOFER</td>
-                            <td style="border:1px solid;width:25%;"><span t-field="dis.carrier_rut"/></td>
+                            <td style="border:1px solid;width:25%;text-align:center;"><span t-field="dis.carrier_rut"/></td>
                         </tr>
                         <tr style="height:25px;">
                             <td style="text-align:center;">NOMBRE CHOFER</td>
-                            <td style="border:1px solid;width:25%;"><span t-field="dis.container_number"/></td>
+                            <td style="border:1px solid;width:25%;text-align:center;"><span t-field="dis.container_number"/></td>
                         </tr>
                     </table>
                     <br/>
@@ -413,15 +414,15 @@
                         </th>
                         <tr>
                             <td style="text-align:center;width:50%;">PESO SIN CARGA</td>
-                            <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;"><span t-field="dis.arrival_weight"/></td>
+                            <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;"><span t-esc="int(dis.arrival_weight)"/></td>
                         </tr>
                         <tr>
                             <td style="text-align:center;width:50%;">PESO CON CARGA</td>
-                            <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;"><span t-field="dis.departure_weight"/></td>
+                            <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;"><span t-esc="int(dis.departure_weight)"/></td>
                         </tr>
                         <tr>
                             <td style="text-align:center;width:50%;">PESO NETO</td>
-                            <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;"><span t-field="dis.net_weight_dispatch"/></td>
+                            <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;"><span t-esc="int(dis.net_weight_dispatch)"/></td>
                         </tr>
                     </table>
                     <br/>
