@@ -46,10 +46,10 @@
                  attrs="{'invisible':['&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False)]}"
                  readonly="1"/>
           <field name="net_weight"
-                 attrs="{'invisible':['&amp;'('is_mp_reception', '=', False),('is_pt_reception','=',False)]}"
+                 attrs="{'invisible':['&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False)]}"
           />
           <field name="avg_unitary_weight"
-                 attrs="{'invisible':['&amp;'('is_mp_reception', '=', False),('is_pt_reception','=',False)]}"
+                 attrs="{'invisible':['&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False)]}"
           />
         </field>
         <xpath expr="//page[@name='note']" position="after">
