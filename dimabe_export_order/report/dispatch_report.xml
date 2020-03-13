@@ -351,13 +351,13 @@
                 <div class="page">
                     <table style="width:100% !important; border:1px solid; text-align:center;">
                         <tr style="padding:10px;">
-                            <th>REGISTRO ORDEN DE DESPACHO</th>
                             <th>
                                 <img
                                         t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
                                         style="width:200px !important;"
                                 />
                             </th>
+                            <th>REGISTRO ORDEN DE DESPACHO</th>
                         </tr>
                     </table>
                     <br/>

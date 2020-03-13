@@ -99,23 +99,23 @@ class StockPicking(models.Model):
         'Tipo de contenedor'
     )
 
-    net_weight_dispatch = fields.Integer(
+    net_weight_dispatch = fields.Float(
         string="Kilos Netos"
     )
 
-    gross_weight_dispatch = fields.Integer(
+    gross_weight_dispatch = fields.Float(
         string="Kilos Brutos"
     )
 
-    tare_container_weight_dispatch = fields.Integer(
+    tare_container_weight_dispatch = fields.Float(
         string="Tara Contenedor"
     )
 
-    container_weight = fields.Integer(
+    container_weight = fields.Float(
         string="Peso Contenedor"
     )
 
-    vgm_weight_dispatch = fields.Integer(
+    vgm_weight_dispatch = fields.Float(
         string="Peso VGM",
         compute="compute_vgm_weight",
         store=True
