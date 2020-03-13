@@ -10,14 +10,19 @@ class StockMoveLine(models.Model):
 
         if res.move_id.picking_id and res.move_id.picking_id.picking_type_code == 'incoming':
             prefix = ''
+            suffix = ''
             if res.move_id.product_id.categ_id.is_canning:
                 prefix = 'ENV'
+
+            raise models.ValidationError(res.move_id.picking_id.move_lines.filtered(
+                lambda a: a.product_id.categ_id.is_mp
+            ))
 
             if len(res.move_id.picking_id.move_line_ids) > 1 and not res.move_id.picking_id.move_lines.filtered(
                 lambda a: a.product_id.categ_id.is_mp
             ):
                 suffix = str(res.move_id.product_id.id)
-                res.lot_name = '{}{}{}'.format(prefix, res.move_id.picking_id.name, suffix)
-                res.qty_done = res.product_uom_qty
+            res.lot_name = '{}{}{}'.format(prefix, res.move_id.picking_id.name, suffix)
+            res.qty_done = res.product_uom_qty
 
         return res
