@@ -358,7 +358,7 @@ class StockProductionLot(models.Model):
     def generate_standard_serial(self):
         for item in self:
             serial_ids = []
-        for counter in range(item.qty_standard_serial):
+        for counter in range(ilen(item.stock_production_lot_serial_ids) + item.qty_standard_serial):
             tmp = '00{}'.format(counter + 1)
             serial = item.stock_production_lot_serial_ids.filtered(
                 lambda a: a.serial_number == item.name + tmp[-3:]
