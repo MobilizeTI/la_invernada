@@ -53,6 +53,7 @@
                             <field name="product_search_id" attrs="{'invisible':[('state','=','done')]}"
                                     domain="[('id','in',materials)]"
                             />
+                            <field name="materials" />
                             <field name="stock_lots" invisible="1"/>
                             <field name="potential_lot_ids" readonly="0" string="">
                                 <tree edit="true" delete="false" create="false">
