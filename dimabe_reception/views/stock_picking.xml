@@ -28,28 +28,28 @@
           <field name="date_done"/>
           <field name="elapsed_time"/>
           <field name="harvest"
-                 attrs="{'invisible':[('is_mp_reception', '=', False)]}"
+                 attrs="{'invisible':['&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False)]}"
           />
           <field name="guide_number"
-                 attrs="{'invisible':[('is_mp_reception', '=', False)], 'readonly': [('state', '=', 'done')]}"
+                 attrs="{'invisible':['&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
           />
           <field name="weight_guide"
-                 attrs="{'invisible':[('is_mp_reception', '=', False)], 'readonly': 1}"
+                 attrs="{'invisible':['&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False)], 'readonly': 1}"
           />
           <field name="gross_weight"
-                 attrs="{'invisible':[('is_mp_reception', '=', False)], 'readonly': [('state', '=', 'done')]}"
+                 attrs="{'invisible':['&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
           />
           <field name="tare_weight"
-                 attrs="{'invisible':[('is_mp_reception', '=', False)], 'readonly': [('state', '=', 'done')]}"
+                 attrs="{'invisible':['&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
           />
           <field name="quality_weight"
-                 attrs="{'invisible':[('is_mp_reception', '=', False)]}"
+                 attrs="{'invisible':['&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False)]}"
                  readonly="1"/>
           <field name="net_weight"
-                 attrs="{'invisible':[('is_mp_reception', '=', False)]}"
+                 attrs="{'invisible':['&amp;'('is_mp_reception', '=', False),('is_pt_reception','=',False)]}"
           />
           <field name="avg_unitary_weight"
-                 attrs="{'invisible':[('is_mp_reception', '=', False)]}"
+                 attrs="{'invisible':['&amp;'('is_mp_reception', '=', False),('is_pt_reception','=',False)]}"
           />
         </field>
         <xpath expr="//page[@name='note']" position="after">

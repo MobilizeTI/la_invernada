@@ -36,18 +36,24 @@ class StockPicking(models.Model):
         store=True
     )
 
-    reception_type_selection = fields.Selection([
-        ('ins', 'Insumos'),
-        ('mp', 'Materia Prima')
-    ],
-        default='ins',
-        string='Tipo de recepción'
-    )
+    # reception_type_selection = fields.Selection([
+    #     ('ins', 'Insumos'),
+    #     ('mp', 'Materia Prima')
+    # ],
+    #     default='ins',
+    #     string='Tipo de recepción'
+    # )
 
     is_mp_reception = fields.Boolean(
         'Recepción de MP',
         compute='_compute_is_mp_reception',
         store=True
+    )
+
+    is_pt_reception = fields.Boolean(
+        'Recepción de PT',
+        compute='_compute_is_pt_reception',
+
     )
 
     carrier_id = fields.Many2one('custom.carrier', 'Conductor')
@@ -172,13 +178,18 @@ class StockPicking(models.Model):
             self.elapsed_time = '00:00:00'
 
     @api.one
-    @api.depends('reception_type_selection', 'picking_type_id')
+    @api.depends('picking_type_id')  # 'reception_type_selection',
     def _compute_is_mp_reception(self):
+        # self.reception_type_selection == 'mp' or \
+        self.is_mp_reception = self.picking_type_id.warehouse_id.name and \
+                               'materia prima' in str.lower(self.picking_type_id.warehouse_id.name) and \
+                               self.picking_type_id.name and 'recepciones' in str.lower(self.picking_type_id.name)
 
-        self.is_mp_reception = self.reception_type_selection == 'mp' or \
-                               self.picking_type_id.warehouse_id.name and \
-                               'Materia Prima' in self.picking_type_id.warehouse_id.name and \
-                               self.picking_type_id.name and 'Recepciones' in self.picking_type_id.name
+    @api.multi
+    def _compute_is_pt_reception(self):
+        for item in self:
+            self.is_pt_reception = 'producto terminado' in str.lower(self.picking_type_id.warehouse_id.name) and \
+                                   'recepciones' in str.lower(self.picking_type_id.name)
 
     @api.one
     @api.depends('production_net_weight', 'tare_weight', 'gross_weight', 'move_ids_without_package')
@@ -320,5 +331,5 @@ class StockPicking(models.Model):
         res = super(StockPicking, self).create(values_list)
 
         if len(res.move_ids_without_package) > len(res.move_ids_without_package.mapped('product_id')):
-            raise models.ValidationError('no puede tener el mismo producto en mas de una linea')
+            raise models.ValidationError('no puede tener el mismo producto en más de una linea')
         return res
