@@ -343,22 +343,15 @@ class StockProductionLot(models.Model):
             })
 
             for counter in range(item.qty_standard_serial):
-                models._logger.error('{} {}'.format(
-                    len(item.stock_production_lot_serial_ids),
-                    counter
-                )
-                )
-                tmp = '00{}'.format(counter + len(item.stock_production_lot_serial_ids))
+                tmp = '00{}'.format(1 + len(item.stock_production_lot_serial_ids))
 
-                serial = item.env['stock.production.lot.serial'].create({
+                item.env['stock.production.lot.serial'].create({
                     'stock_production_lot_id': item.id,
                     'display_weight': item.product_id.weight,
                     'serial_number': item.name + tmp[-3:],
                     'belongs_to_prd_lot': True,
                     'pallet_id': pallet.id
                 })
-
-                models._logger.error('{} {}'.format(serial.pallet_id, serial.stock_production_lot_id))
 
             pallet.update({
                 'state': 'close'
