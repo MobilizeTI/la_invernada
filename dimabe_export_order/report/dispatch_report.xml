@@ -379,45 +379,45 @@
                         </th>
                     </table>
                     <br/>
-                    <table style="width:100%;height:25%;">
+                    <table style="width:100%;height:25%;font-size:18px;">
                         <tr style="height:25px;">
-                            <td>NUMERO DE EMBARQUE</td>
+                            <td style="text-align:center;">NUMERO DE EMBARQUE</td>
                             <td style="border:1px solid;width:25%;"><span t-field="dis.shipping_number"/></td>
                             <td></td>
-                            <td>PATENTE CAMION</td>
+                            <td style="text-align:center;">PATENTE CAMION</td>
                             <td style="border:1px solid;width:25%;"><span t-field="dis.truck_id"/></td>
                         </tr>
                         <tr style="height:25px;">
-                            <td>GUIA DE DESPACHO</td>
+                            <td style="text-align:center;">GUIA DE DESPACHO</td>
                             <td style="border:1px solid;width:25%;"><span t-field="dis.guide_number"/></td>
                             <td></td>
-                            <td>PATENTE CARRO</td>
+                            <td style="text-align:center;">PATENTE CARRO</td>
                             <td style="border:1px solid;width:25%;"><span t-field="dis.cart_id"/></td>
                         </tr>
                         <tr style="height:25px;">
-                            <td>NUMERO DE CONTENEDOR</td>
+                            <td style="text-align:center;">NUMERO DE CONTENEDOR</td>
                             <td style="border:1px solid;width:25%;"><span t-field="dis.container_number"/></td>
                             <td></td>
-                            <td>RUN CHOFER</td>
+                            <td style="text-align:center;">RUN CHOFER</td>
                             <td style="border:1px solid;width:25%;"><span t-field="dis.carrier_rut"/></td>
                         </tr>
                         <tr>
-                            <td>NOMBRE CHOFER</td>
+                            <td style="text-align:center;">NOMBRE CHOFER</td>
                             <td style="border:1px solid;width:25%;"><span t-field="dis.container_number"/></td>
                         </tr>
                     </table>
                     <br/>
                     <table style="border:1px solid;width:100%;">
-                        <tr style="margin:0 auto;">
-                            <td>PESO SIN CARGA</td>
+                        <tr>
+                            <td style="text-align:center;">PESO SIN CARGA</td>
                             <td style="border:1px solid;width:25%;"><span t-field="dis.arrival_weight"/></td>
                         </tr>
                         <tr>
-                            <td>PESO CON CARGA</td>
+                            <td style="text-align:center;">PESO CON CARGA</td>
                             <td style="border:1px solid;width:25%;"><span t-field="dis.departure_weight"/></td>
                         </tr>
                         <tr>
-                            <td>PESO NETO</td>
+                            <td style="text-align:center;">PESO NETO</td>
                             <td style="border:1px solid;width:25%;"><span t-field="dis.net_weight_dispatch"/></td>
                         </tr>
                     </table>
