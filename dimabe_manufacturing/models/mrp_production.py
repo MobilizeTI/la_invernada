@@ -63,7 +63,7 @@ class MrpProduction(models.Model):
 
     manufactureable = fields.Many2many('product.product', compute='get_product_route',default=None)
 
-    @api.multi
+    @api.model
     def get_product_route(self):
         for item in self:
             products = item.env['product.product'].search([('is_to_manufacturing','=',True)])
