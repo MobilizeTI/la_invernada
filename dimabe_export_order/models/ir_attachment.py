@@ -10,7 +10,6 @@ class IrAttachment(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for values in vals_list:
-            models._logger.error(values)
             for field in ('file_size', 'checksum'):
                 values.pop(field, False)
             values = self._check_contents(values)

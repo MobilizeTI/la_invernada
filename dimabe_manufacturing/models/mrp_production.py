@@ -61,7 +61,7 @@ class MrpProduction(models.Model):
 
     materials = fields.Many2many('product.product', compute='get_product_bom')
 
-    manufactureable = fields.Many2many(compute='get_product_route')
+    manufactureable = fields.Many2many('product.product',compute='get_product_route')
 
     @api.model
     def get_product_route(self):
