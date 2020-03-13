@@ -47,9 +47,10 @@
                                readonly="1"
                                widget="many2onebutton"
                         />
+                        <field name="belongs_to_prd_lot" />
                         <button name="print_serial_label"
                                 type="object" string="Imprimir"
-                                attrs="{'invisible':['|',('serial_number', '=', False), ('is_prd_lot', '=', False)]}"
+                                attrs="{'invisible':['|',('serial_number', '=', False), ('belongs_to_prd_lot', '=', False)]}"
                         />
                     </tree>
                 </field>
