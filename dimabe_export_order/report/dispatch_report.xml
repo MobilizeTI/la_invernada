@@ -410,15 +410,15 @@
                     <table style="border:1px solid;width:100%;">
                         <tr>
                             <td style="text-align:center;">PESO SIN CARGA</td>
-                            <td style="border:1px solid;width:25%;"><span t-field="dis.arrival_weight"/></td>
+                            <td style="border:1px solid;width:25%;margin:0 auto;"><span t-field="dis.arrival_weight"/></td>
                         </tr>
                         <tr>
                             <td style="text-align:center;">PESO CON CARGA</td>
-                            <td style="border:1px solid;width:25%;"><span t-field="dis.departure_weight"/></td>
+                            <td style="border:1px solid;width:25%;margin:0 auto;"><span t-field="dis.departure_weight"/></td>
                         </tr>
                         <tr>
                             <td style="text-align:center;">PESO NETO</td>
-                            <td style="border:1px solid;width:25%;"><span t-field="dis.net_weight_dispatch"/></td>
+                            <td style="border:1px solid;width:25%;margin:0 auto;"><span t-field="dis.net_weight_dispatch"/></td>
                         </tr>
                     </table>
                     <br/>
