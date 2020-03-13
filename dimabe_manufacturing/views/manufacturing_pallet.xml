@@ -19,7 +19,7 @@
     <field name="arch" type="xml">
       <tree>
         <field name="name"/>
-        <field name="total_content_weight" widget="many2many_tags"/>
+        <field name="total_content_weight"/>
         <field name="total_content"/>
         <field name="state" />
       </tree>
