@@ -161,9 +161,14 @@ class OvenUse(models.Model):
             if item.finish_active_time == 0:
                 item.finish_active_time = item.finish_date.timestamp()
                 item.active_seconds += item.finish_active_time - item.init_active_time
-            item.dried_oven_ids.update({
-                'is_in_use': False
-            })
+            for dried_oven_id in item.dried_oven_ids:
+                if not item.unpelled_dried_id.oven_use_ids.filtered(
+                    lambda a: a.id != item.id and dried_oven_id in a.dried_oven_ids and not a.finish_date
+                ):
+                    raise models.ValidationError('entró')
+                    dried_oven_id.update({
+                        'is_in_use': False
+                    })
 
     @api.multi
     def print_oven_label(self):
