@@ -224,7 +224,7 @@ class StockPicking(models.Model):
             item.counter = index
             index -= 1
             item.datas = tools.image_resize_image_medium(
-                item.datas,size=(312,416)
+                item.datas,size=(31,12)
             )
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
             .report_action(self.picture)
