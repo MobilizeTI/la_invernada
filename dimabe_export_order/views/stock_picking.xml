@@ -77,7 +77,8 @@
                                         <field name="gross_weight_dispatch"/>
                                         <field name="tare_container_weight_dispatch"/>
                                         <field name="container_weight"/>
-
+                                        <field name="arrival_weight"/>
+                                        <field name="departure_weight" force_save="1" readonly="1"/>
                                         <field name="vgm_weight_dispatch" readonly="1"/>
                                     </group>
                                     <group string="Informacion de Exportacion">

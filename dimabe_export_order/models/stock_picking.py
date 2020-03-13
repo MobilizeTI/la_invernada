@@ -210,6 +210,10 @@ class StockPicking(models.Model):
         compute='_compute_elapsed_time'
     )
 
+    arrival_weight = fields.Float('Peso de Entrada')
+
+    departure_weight = fields.Float('Peso de Salida',compute="_compute_departure_weight")
+
     @api.multi
     def generate_report(self):
         index = len(self.picture)
