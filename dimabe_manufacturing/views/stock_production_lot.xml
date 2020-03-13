@@ -21,6 +21,9 @@
                         type="object"
                         name="generate_standard_pallet"
                 />
+                <field name="can_add_serial"
+                       groups="base.group_system"
+                />
 
 <!--                <button name="print_all_serial" attrs="{'invisible':[('is_standard_weight','=',False)]}"-->
 <!--                        string="Imprimir Series" type="object"/>-->
