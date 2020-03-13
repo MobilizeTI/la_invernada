@@ -15,10 +15,10 @@ class StockMoveLine(models.Model):
                 prefix = 'ENV'
 
             raise models.ValidationError(res.move_id.picking_id.move_ids_without_package.filtered(
-                lambda a: a.product_id.categ_id.is_mp
+                lambda a: a.product_id.categ_id.with_suffix
             ))
 
-            if len(res.move_id.picking_id.move_line_ids) > 1 and not res.move_id.picking_id.move_lines.filtered(
+            if len(res.move_id.picking_id.move_line_ids) > 1 and res.move_id.picking_id.move_lines.filtered(
                 lambda a: a.product_id.categ_id.with_suffix
             ):
                 suffix = str(res.move_id.product_id.id)
