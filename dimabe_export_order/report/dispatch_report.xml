@@ -352,6 +352,7 @@
                     <table style="width:100%;border:1px solid;">
                         <th style="border-right:1px solid;">
                             <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                                 style="height:50px;"
                             />
                         </th>
                         <th style="margin:0 auto;border-right:1px solid;">
