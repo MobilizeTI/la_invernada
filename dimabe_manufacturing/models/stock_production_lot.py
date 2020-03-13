@@ -343,7 +343,7 @@ class StockProductionLot(models.Model):
             })
 
             for counter in range(item.qty_standard_serial):
-                tmp = '00{}'.format(counter + 1 + len(item.stock_production_lot_serial_ids))
+                tmp = '00{}'.format(counter + len(item.stock_production_lot_serial_ids))
 
                 serial = item.env['stock.production.lot.serial'].create({
                     'stock_production_lot_id': item.id,
@@ -354,6 +354,10 @@ class StockProductionLot(models.Model):
                 })
 
                 models._logger.error('{} {}'.format(serial.pallet_id, serial.stock_production_lot_id))
+
+            pallet.update({
+                'state': 'close'
+            })
 
     @api.model
     def get_stock_quant(self):
