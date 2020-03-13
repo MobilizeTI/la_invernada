@@ -61,20 +61,6 @@ class MrpProduction(models.Model):
 
     materials = fields.Many2many('product.product', compute='get_product_bom')
 
-    manufactureable = fields.Many2many('product.product', compute='get_product_route',default=None)
-
-    @api.multi
-    def get_product_route(self):
-        for item in self:
-            manufactureable = []
-            products = item.env['product.product'].search([])
-            for product in products:
-                for route in product.route_ids:
-                    if route.name == 'Fabricar':
-                        manufactureable.append(product.id)
-                        p = item.env['product.product'].search([('id', 'in', manufactureable)])
-        item.manufacturable = p
-
     @api.multi
     def get_product_bom(self):
         list_product = []
