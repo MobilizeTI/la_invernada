@@ -74,10 +74,8 @@ class MrpProduction(models.Model):
     def get_product_bom(self):
         list_product = []
         for item in self:
-            for i in item.bom_id.bom_line_ids:
-                list_product.append(i.product_id.id)
-            result = self.env['product.product'].search([('id', 'in', list_product)])
-            item.materials = result
+            models._logger.error(item.bom_id.bom_line_ids.mapped('product_id'))
+
 
     @api.multi
     def _compute_show_finished_move_line_ids(self):
