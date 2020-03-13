@@ -314,8 +314,9 @@
                                 </tr>
                             </t>
                         </table>
-                        <span t-esc="d.note_dispatched.get_footer_note()" style="font-size:12px;"/>
+
                     </div>
+                    <span t-esc="d.note_dispatched.get_footer_note()" style="font-size:12px;"/>
                     <div style="width:100%;height:20%;">
 
                     </div>
