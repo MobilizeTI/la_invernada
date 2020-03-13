@@ -52,7 +52,7 @@ class StockPicking(models.Model):
 
     is_pt_reception = fields.Boolean(
         'Recepción de PT',
-        compute='_compute_is_pt_reception',
+        compute='_compute_is_pt_reception'
 
     )
 
@@ -188,8 +188,10 @@ class StockPicking(models.Model):
     @api.multi
     def _compute_is_pt_reception(self):
         for item in self:
-            raise models.ValidationError('producto terminado' in str.lower(self.picking_type_id.warehouse_id.name) and \
-                                   'recepciones' in str.lower(self.picking_type_id.name))
+            models._logger.error('producto terminado' in str.lower(self.picking_type_id.warehouse_id.name) and
+                                         'recepciones' in str.lower(self.picking_type_id.name))
+            raise models.ValidationError('producto terminado' in str.lower(self.picking_type_id.warehouse_id.name) and
+                                         'recepciones' in str.lower(self.picking_type_id.name))
             item.is_pt_reception = 'producto terminado' in str.lower(self.picking_type_id.warehouse_id.name) and \
                                    'recepciones' in str.lower(self.picking_type_id.name)
 
