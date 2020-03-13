@@ -137,7 +137,7 @@ class StockPicking(models.Model):
     @api.one
     @api.depends('move_ids_without_package')
     def _compute_weight_guide(self):
-        if self.is_mp_reception:
+        if self.is_mp_reception or self.is_pt_reception:
             if self.get_mp_move():
                 self.weight_guide = self.get_mp_move().product_uom_qty
 
