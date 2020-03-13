@@ -187,11 +187,13 @@ class StockPicking(models.Model):
 
     @api.multi
     def _compute_is_pt_reception(self):
+        models._logger.error('producto terminado' in str.lower(self.picking_type_id.warehouse_id.name) and
+                             'recepciones' in str.lower(self.picking_type_id.name))
+        raise models.ValidationError('producto terminado' in str.lower(self.picking_type_id.warehouse_id.name) and
+                                     'recepciones' in str.lower(self.picking_type_id.name))
         for item in self:
-            models._logger.error('producto terminado' in str.lower(self.picking_type_id.warehouse_id.name) and
-                                         'recepciones' in str.lower(self.picking_type_id.name))
-            raise models.ValidationError('producto terminado' in str.lower(self.picking_type_id.warehouse_id.name) and
-                                         'recepciones' in str.lower(self.picking_type_id.name))
+
+
             item.is_pt_reception = 'producto terminado' in str.lower(self.picking_type_id.warehouse_id.name) and \
                                    'recepciones' in str.lower(self.picking_type_id.name)
 
