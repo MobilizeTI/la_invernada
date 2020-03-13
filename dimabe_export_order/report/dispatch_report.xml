@@ -454,14 +454,14 @@
             <t t-foreach="docs.sorted(key=lambda x: x.counter)" t-as="o">
                 <t t-if="o.counter == 3 or o.counter == 6 or o.counter == 9">
                     <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
-                         HSPACE="20"
-                         VSPACE="2.5"/>
+                         HSPACE="15"
+                         VSPACE="2"/>
                     <br/>
                 </t>
                 <t t-else="">
                     <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
-                         HSPACE="20"
-                         VSPACE="2.5"/>
+                         HSPACE="15"
+                         VSPACE="2"/>
                 </t>
             </t>
         </t>
