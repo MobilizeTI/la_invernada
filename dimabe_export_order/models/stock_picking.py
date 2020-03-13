@@ -210,7 +210,6 @@ class StockPicking(models.Model):
         compute='_compute_elapsed_time'
     )
 
-
     @api.multi
     def generate_report(self):
         index = len(self.picture)
