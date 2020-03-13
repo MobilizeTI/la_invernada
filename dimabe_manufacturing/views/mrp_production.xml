@@ -50,7 +50,7 @@
                             <field name="client_search_id" attrs="{'invisible':[('state','=','done')]}"
                                    domain="[('is_company','=',True),('customer','=',True)]"/>
                             <field name="product_search_id" attrs="{'invisible':[('state','=','done')]}"
-                                   domain="[('self','in',material_ids)]"
+                                   domain="[('id','in',material_ids)]"
                             />
                             <field name="material_ids" />
                             <field name="stock_lots" invisible="1"/>
