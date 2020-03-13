@@ -68,8 +68,8 @@ class StockProductionLotSerial(models.Model):
             work_order = self.env['mrp.workorder'].search([
                 ('final_lot_id', '=', res.stock_production_lot_id.id)
             ])
-            raise models.ValidationError(res.stock_production_lot_id.label_producer_id.name)
             res.producer_id = res.stock_production_lot_id.label_producer_id.id
+            models._logger.error(res.stock_production_lot_id.label_producer_id)
             models._logger.error(res.stock_production_lot_id.name)
             models._logger.error(work_order.mapped('name'))
             if work_order.production_id:
