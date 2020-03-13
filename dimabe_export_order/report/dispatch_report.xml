@@ -350,7 +350,7 @@
             <div class="page">
                 <t t-foreach="docs" t-as="dis">
                     <table style="width:100%;border:1px solid;">
-                        <th style="border-right:1px solid;">
+                        <th style="border-right:1px solid;width:50px;">
                             <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
                                  style="height:50px;"
                             />
@@ -358,7 +358,24 @@
                         <th style="margin:0 auto;border-right:1px solid;">
                             REGISTRO INFORME DE DESPACHO
                         </th>
-                        <th>
+                        <th style="width:50px;">
+                            <table>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </table>
                         </th>
                     </table>
                 </t>
