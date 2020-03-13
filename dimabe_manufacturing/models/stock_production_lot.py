@@ -39,7 +39,10 @@ class StockProductionLot(models.Model):
 
     is_prd_lot = fields.Boolean('Es Lote de salida de Proceso')
 
-    is_standard_weight = fields.Boolean('Series Peso Estandar')
+    is_standard_weight = fields.Boolean(
+        'Series Peso Estandar',
+        related='product_id.is_standard_weight'
+    )
 
     standard_weight = fields.Float('Peso Estandar')
 
@@ -152,14 +155,6 @@ class StockProductionLot(models.Model):
     def _get_product_weight(self):
         self.ensure_one()
         self.standard_weight = self.product_id.weight
-
-    @api.multi
-    def _compute_is_standard_weight(self):
-        self.ensure_one()
-        if self.product_id.is_standard_weight:
-            self.is_standard_weight = True
-        else:
-            self.is_standard_weight = False
 
     @api.multi
     def _compute_product_variety(self):
