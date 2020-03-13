@@ -211,7 +211,7 @@ class StockPicking(models.Model):
                 stock_picking.truck_in_date = fields.datetime.now()
             res = super(StockPicking, self).action_confirm()
             mp_move = stock_picking.get_mp_move()
-            raise models.ValidationError(mp_move)
+
             if mp_move and mp_move.move_line_ids and mp_move.picking_id.picking_type_code == 'incoming':
                 for move_line in mp_move.move_line_ids:
                     lot = self.env['stock.production.lot'].create({
