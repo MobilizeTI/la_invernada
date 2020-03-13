@@ -431,7 +431,7 @@
                         <tr>
                             <td style="border-bottom:1pt dotted black;width:50%;"></td>
                         </tr>
-                        <tr style="margin:0 auto;text-align:center;">
+                        <tr style="margin:0 auto;width:200px;text-align:center;">
                             <td>Firma Chofer</td>
                         </tr>
                     </table>
@@ -439,7 +439,7 @@
                         <tr>
                             <td style="border-bottom:1pt dotted black;width:50%;"></td>
                         </tr>
-                        <tr style="margin:0 auto;text-align:center;">
+                        <tr style="margin:0 auto;width:200px;text-align:center;">
                              <td>Encargado de Despacho</td>
                         </tr>
                     </table>
