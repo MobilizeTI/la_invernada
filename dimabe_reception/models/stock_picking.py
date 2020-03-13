@@ -314,3 +314,10 @@ class StockPicking(models.Model):
             template_id = self.env.ref('dimabe_reception.truck_not_out_mail_template')
             self.message_post_with_template(template_id.id)
             self.hr_alert_notification_count += 1
+
+    @api.model
+    def create(self, values_list):
+        res = super(StockPicking, self).create(values_list)
+
+        if len(res.move_ids_without_package) > res.move_ids_without_package.mapped('product_id'):
+            raise models.ValidationError('no puede tener el mismo producto en mas de una linea')
