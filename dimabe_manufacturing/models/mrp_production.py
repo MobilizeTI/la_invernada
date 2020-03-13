@@ -61,12 +61,13 @@ class MrpProduction(models.Model):
 
     materials = fields.Many2many('product.product', compute='get_product_bom')
 
-    manufactureable = fields.Many2many('product.product', compute='get_product_route',default=None)
+    manufactureable = fields.Many2many(compute='get_product_route')
 
     @api.model
     def get_product_route(self):
         for item in self:
-            models._logger.error(item.product_id.route_ids.mapped('name'))
+            for item in item.manufactureable :
+                models._logger.error(item.route_ids.mapped('name'))
 
     @api.multi
     def get_product_bom(self):
