@@ -80,7 +80,7 @@ class StockProductionLot(models.Model):
 
     is_reserved = fields.Boolean('Esta reservado?', compute='reserved', default=False)
 
-    label_producer_id = fields.Many2one('res.partner','Productor')
+    label_producer_id = fields.Many2one('res.partner', 'Productor')
 
     context_picking_id = fields.Integer(
         'picking del contexto',
@@ -140,6 +140,17 @@ class StockProductionLot(models.Model):
         'stock.picking',
         'Recepción'
     )
+
+    all_pallet_ids = fields.One2many(
+        'manufacturing.pallet',
+        compute='_compute_all_pallet_ids',
+        string='pallets'
+    )
+
+    @api.multi
+    def _compute_all_pallet_ids(self):
+        for item in self:
+            item.all_pallet_ids = item.stock_production_lot_serial_ids.mapped('pallet_id')
 
     @api.multi
     def _compute_count_serial(self):

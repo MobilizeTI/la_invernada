@@ -46,6 +46,9 @@
                         />
                     </tree>
                 </field>
+                <field name="all_pallet_ids"
+                       attrs="{'invisible':[('is_standard_weight','=',False)]}"
+                />
             </group>
         </field>
     </record>
