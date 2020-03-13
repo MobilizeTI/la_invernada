@@ -72,9 +72,10 @@ class MrpProduction(models.Model):
 
     @api.multi
     def get_product_bom(self):
-        list_product = []
         for item in self:
-            models._logger.error(item.bom_id.bom_line_ids.mapped('product_id'))
+            item.update({
+                'materials':item.bom_id.bom_line_ids.mapped('product_id')
+            })
 
 
     @api.multi
