@@ -413,15 +413,15 @@
                         </th>
                         <tr>
                             <td style="text-align:center;width:50%;">PESO SIN CARGA</td>
-                            <td style="border:1px solid;width:50%;margin:0 auto;"><span t-field="dis.arrival_weight"/></td>
+                            <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;"><span t-field="dis.arrival_weight"/></td>
                         </tr>
                         <tr>
                             <td style="text-align:center;width:50%;">PESO CON CARGA</td>
-                            <td style="border:1px solid;width:50%;margin:0 auto;"><span t-field="dis.departure_weight"/></td>
+                            <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;"><span t-field="dis.departure_weight"/></td>
                         </tr>
                         <tr>
                             <td style="text-align:center;width:50%;">PESO NETO</td>
-                            <td style="border:1px solid;width:50%;margin:0 auto;"><span t-field="dis.net_weight_dispatch"/></td>
+                            <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;"><span t-field="dis.net_weight_dispatch"/></td>
                         </tr>
                     </table>
                     <br/>
@@ -430,7 +430,7 @@
                         <tr>
                             <td style="border-bottom:1pt dotted black;width:50%;"></td>
                         </tr>
-                        <tr style="margin:0 auto;">
+                        <tr style="margin:0 auto;text-align:center;">
                             <td>Firma Chofer</td>
                         </tr>
                     </table>
@@ -438,7 +438,7 @@
                         <tr>
                             <td style="border-bottom:1pt dotted black;width:50%;"></td>
                         </tr>
-                        <tr style="margin:0 auto;">
+                        <tr style="margin:0 auto;text-align:center;">
                              <td>Encargado de Despacho</td>
                         </tr>
                     </table>
