@@ -358,7 +358,7 @@
                         <th style="margin:0 auto;border-right:1px solid;">
                             REGISTRO INFORME DE DESPACHO
                         </th>
-                        <th style="width:50px;">
+                        <th style="width:60px;">
                             <table>
                                 <tr>
                                     <td></td>
@@ -378,6 +378,35 @@
                             </table>
                         </th>
                     </table>
+                    <br/>
+                    <table style="width:100%;height:70%">
+                        <tr>
+                            <td>NUMERO DE EMBARQUE</td>
+                            <td style="border:1px solid;"><span t-field="dis.shipping_number"/></td>
+                            <td></td>
+                            <td>PATENTE CAMION</td>
+                            <td style="border:1px solid;"><span t-field="dis.truck_id"/></td>
+                        </tr>
+                        <tr>
+                            <td>GUIA DE DESPACHO</td>
+                            <td style="border:1px solid;"><span t-field="dis.guide_number"/></td>
+                            <td></td>
+                            <td>PATENTE CARRO</td>
+                            <td style="border:1px solid;"><span t-field="dis.cart_id"/></td>
+                        </tr>
+                        <tr>
+                            <td>NUMERO DE CONTENEDOR</td>
+                            <td style="border:1px solid;"><span t-field="dis.container_number"/></td>
+                            <td></td>
+                            <td>RUN CHOFER</td>
+                            <td style="border:1px solid;"><span t-field="dis.carrier_rut"/></td>
+                        </tr>
+                        <tr>
+                            <td>NOMBRE CHOFER</td>
+                            <td style="border:1px solid;"><span t-field="dis.container_number"/></td>
+                        </tr>
+                    </table>
+
                 </t>
             </div>
         </t>
