@@ -60,7 +60,7 @@ class MrpProduction(models.Model):
     )
 
     material_ids = fields.Many2many(
-
+        'product.product',
         compute='_compute_material_ids'
     )
 
