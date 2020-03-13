@@ -341,17 +341,19 @@ class StockProductionLot(models.Model):
             pallet = self.env['manufacturing.pallet'].create({
                 'producer_id': item.label_producer_id.id
             })
-            raise models.ValidationError(pallet.name)
+
             for counter in range(item.qty_standard_serial):
                 tmp = '00{}'.format(counter + 1 + len(item.stock_production_lot_serial_ids))
 
-                item.env['stock.production.lot.serial'].create({
+                serial = item.env['stock.production.lot.serial'].create({
                     'stock_production_lot_id': item.id,
                     'display_weight': item.product_id.weight,
                     'serial_number': item.name + tmp[-3:],
                     'belong_to_prd_lot': True,
                     'palled_id': pallet.id
                 })
+
+                models._logger.error('{} {}'.format(serial.pallet_id, serial.stock_production_lot_id))
 
     @api.model
     def get_stock_quant(self):
