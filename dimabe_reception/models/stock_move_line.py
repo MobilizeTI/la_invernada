@@ -18,7 +18,7 @@ class StockMoveLine(models.Model):
                 lambda a: a.product_id.categ_id.with_suffix
             ):
                 suffix = str(res.move_id.product_id.id)
-                raise models.ValidationError(suffix)
+
             res.lot_name = '{}{}{}'.format(prefix, res.move_id.picking_id.name, suffix)
             res.qty_done = res.product_uom_qty
 
