@@ -162,7 +162,9 @@ class StockPicking(models.Model):
         related="picture.datas_fname"
     )
 
-    counter = fields.Integer(string="Posicion en la lista")
+    counter = fields.Selection([
+
+    ])
 
     type_of_transfer_list = fields.Selection(
         [('1', 'Operacion constituye venta'),
@@ -222,20 +224,22 @@ class StockPicking(models.Model):
 
     @api.multi
     def generate_report(self):
-        if not self.picture[0].counter:
-            for item in self.picture:
-                item.counter = self.counter
-                if item.counter >= 9:
-                    item.datas = tools.image_resize_image_medium(
-                        item.datas, size=(229, 305)
-                    )
-                else:
-                    item.datas = tools.image_resize_image_medium(
-                        item.datas, size=(241, 320)
-                    )
-
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
-            .report_action(self.picture)
+        .report_action(self.picture)
+
+    @api.onchange('picture')
+    def format_report(self):
+        for item in self.picture:
+            if not item.counter:
+                item.counter = self.counter
+            if item.counter >= 9:
+                item.datas = tools.image_resize_image_medium(
+                    item.datas, size=(229, 305)
+                )
+            else:
+                item.datas = tools.image_resize_image_medium(
+                    item.datas, size=(241, 320)
+                )
 
     @api.multi
     def get_permision(self):
