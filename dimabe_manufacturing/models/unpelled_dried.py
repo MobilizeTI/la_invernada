@@ -334,7 +334,7 @@ class UnpelledDried(models.Model):
                 'history_id': history_id.id,
                 'unpelled_dried_id': None
             })
-
+            models._logger.error('{}'.format(item.oven_use_ids.mapped('history_id')))
             raise models.ValidationError(oven_use_to_close_ids)
 
             item.create_out_lot()
