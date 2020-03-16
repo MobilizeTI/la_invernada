@@ -476,7 +476,6 @@
                     <t t-if="o.counter == 3 or o.counter == 6 or o.counter >= 9">
                         <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
                         />
-
                         <br/>
                     </t>
                     <t t-else="">
@@ -531,6 +530,6 @@
     <report id="action_dispatch_guide_report" string="Guia de despacho" model="stock.picking" report_type="qweb-pdf"
             name="dimabe_export_order.report_dispatch_guide" menu="True" paperformat="paper_format_letter_custom"
     />
-    <report id="action_dispatch_label_report" string="Informe despacho" model="ir.attachment" report_type="qweb-pdf"
+    <report id="action_dispatch_label_report" string="Informe despacho" model="ir.attachment" report_type="qweb-html"
             name="dimabe_export_order.report_truck_dispatch" paperformat="paper_format_letter_custom"/>
 </odoo>
