@@ -13,6 +13,9 @@ class StockMoveLine(models.Model):
 
     tmp_qty_done = fields.Float('Realizado')
 
+
+
+
     @api.multi
     def _compute_count_stock_production_lot_serial(self):
         for item in self:

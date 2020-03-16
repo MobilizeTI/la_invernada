@@ -32,6 +32,36 @@ class MrpWorkorder(models.Model):
         inverse='_inverse_potential_lot_planned_ids'
     )
 
+    confirmed_serial = fields.Char('Codigo de Barra')
+
+    manufacturing_pallet_ids = fields.One2many(
+        'manufacturing.pallet',
+        compute='_compute_manufacturing_pallet_ids',
+        string='Pallets'
+    )
+
+    there_is_serial_without_pallet = fields.Boolean(
+        'Hay Series sin pallet',
+        compute='_compute_there_is_serial_without_pallet'
+    )
+
+    @api.multi
+    def _compute_there_is_serial_without_pallet(self):
+        for item in self:
+            item.there_is_serial_without_pallet = len(item.summary_out_serial_ids.filtered(
+                lambda a: not a.pallet_id
+            )) > 0
+
+    @api.multi
+    def _compute_manufacturing_pallet_ids(self):
+        for item in self:
+            pallet_ids = []
+            for pallet_id in item.summary_out_serial_ids.mapped('pallet_id'):
+                if pallet_id.id not in pallet_ids:
+                    pallet_ids.append(pallet_id.id)
+            if pallet_ids:
+                item.manufacturing_pallet_ids = [(4, pallet_id) for pallet_id in pallet_ids]
+
     @api.multi
     def _compute_potential_lot_planned_ids(self):
         for item in self:
@@ -90,7 +120,8 @@ class MrpWorkorder(models.Model):
         final_lot = self.env['stock.production.lot'].create({
             'name': name,
             'product_id': res.product_id.id,
-            'is_prd_lot': True
+            'is_prd_lot': True,
+            'can_add_serial': True
         })
 
         res.final_lot_id = final_lot.id
@@ -99,7 +130,6 @@ class MrpWorkorder(models.Model):
 
     @api.multi
     def write(self, vals):
-
         for item in self:
 
             if item.active_move_line_ids and \
@@ -108,7 +138,6 @@ class MrpWorkorder(models.Model):
                     move_line.update({
                         'is_raw': True
                     })
-                # raise models.ValidationError(item.active_move_line_ids)
 
         res = super(MrpWorkorder, self).write(vals)
 
@@ -143,19 +172,20 @@ class MrpWorkorder(models.Model):
 
         self.qty_done = 0
 
+    @api.onchange('confirmed_serial')
+    def confirmed_serial_keyboard(self):
+        for item in self:
+            item.on_barcode_scanned(item.confirmed_serial)
+
     def on_barcode_scanned(self, barcode):
-
         qty_done = self.qty_done
-
         custom_serial = self.validate_serial_code(barcode)
         if custom_serial:
             barcode = custom_serial.stock_production_lot_id.name
-
         res = super(MrpWorkorder, self).on_barcode_scanned(barcode)
         if res:
             return res
         self.qty_done = qty_done + custom_serial.display_weight
-
         custom_serial.update({
             'consumed': True
         })
@@ -184,7 +214,6 @@ class MrpWorkorder(models.Model):
                     )
 
     def validate_serial_code(self, barcode):
-
         custom_serial = self.potential_serial_planned_ids.filtered(
             lambda a: a.serial_number == barcode
         )
@@ -204,4 +233,16 @@ class MrpWorkorder(models.Model):
             'views': [[self.env.ref('dimabe_manufacturing.mrp_workorder_out_form_view').id, 'form']],
             'res_id': self.id,
             'target': 'fullscreen'
+        }
+
+    def create_pallet(self):
+        default_product_id = None
+        if 'default_product_id' in self.env.context:
+            default_product_id = self.env.context['default_product_id']
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'manufacturing.pallet',
+            'views': [[self.env.ref('dimabe_manufacturing.manufacturing_pallet_form_view').id, 'form']],
+            'target': 'fullscreen',
+            'context': {'_default_product_id': default_product_id}
         }

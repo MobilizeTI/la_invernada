@@ -59,6 +59,27 @@ class MrpProduction(models.Model):
         'Posibles Lotes'
     )
 
+    materials = fields.Many2many('product.product', compute='get_product_bom')
+
+    manufactureable = fields.Many2many('product.product', compute='get_product_route')
+
+    @api.model
+    def get_product_route(self):
+        list = []
+        for item in self:
+            products = item.env['product.product'].search([])
+            for p in products:
+                if "Fabricar" in p.route_ids.mapped('name'):
+                    list.append(p.id)
+            item.manufactureable = item.env['product.product'].search([('id', 'in', list)])
+
+    @api.multi
+    def get_product_bom(self):
+        for item in self:
+            item.update({
+                'materials': item.bom_id.bom_line_ids.mapped('product_id')
+            })
+
     @api.multi
     def _compute_show_finished_move_line_ids(self):
         for item in self:
@@ -121,7 +142,7 @@ class MrpProduction(models.Model):
         ]
         if self.product_search_id:
             domain += [('product_id.id', '=', self.product_search_id.id)]
-        res = []
+
         if self.client_search_id:
             client_lot_ids = self.env['quality.analysis'].search([
                 ('potential_client_id', '=', self.client_search_id.id),
@@ -129,8 +150,6 @@ class MrpProduction(models.Model):
             ]).mapped('stock_production_lot_ids.name')
 
             domain += [('name', 'in', list(client_lot_ids) if client_lot_ids else [])]
-
-        models._logger.error(domain)
 
         res = self.env['stock.production.lot'].search(domain)
 
@@ -163,6 +182,10 @@ class MrpProduction(models.Model):
 
         for serial in serial_to_reserve_ids:
             serial.with_context(stock_picking_id=self.stock_picking_id.id).reserve_picking()
+
+        serial_to_reserve_ids.mapped('stock_production_lot_id').write({
+            'can_add_serial': False
+        })
 
         return res
 
@@ -201,7 +224,6 @@ class MrpProduction(models.Model):
                 stock_move.unit_factor = stock_move.product_uom_qty / order.product_qty
                 if stock_move.product_uom_qty == 0 and not stock_move.product_id.categ_id.reserve_ignore and \
                         stock_move.scrapped is False:
-                    models._logger.error(stock_move.product_id.name)
                     stock_move.update({
                         'raw_material_production_id': None
                     })

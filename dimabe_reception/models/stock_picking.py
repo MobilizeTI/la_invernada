@@ -1,5 +1,5 @@
 from odoo import models, api, fields
-from datetime import datetime, timedelta
+from datetime import datetime
 
 
 class StockPicking(models.Model):
@@ -8,9 +8,11 @@ class StockPicking(models.Model):
 
     guide_number = fields.Integer('Número de Guía')
 
-    weight_guide = fields.Integer('Kilos Guía',
-                            compute='_compute_weight_guide',
-                            store=True)
+    weight_guide = fields.Integer(
+        'Kilos Guía',
+        compute='_compute_weight_guide',
+        store=True
+    )
 
     gross_weight = fields.Integer('Kilos Brutos')
 
@@ -34,13 +36,13 @@ class StockPicking(models.Model):
         store=True
     )
 
-    reception_type_selection = fields.Selection([
-        ('ins', 'Insumos'),
-        ('mp', 'Materia Prima')
-    ],
-        default='ins',
-        string='Tipo de recepción'
-    )
+    # reception_type_selection = fields.Selection([
+    #     ('ins', 'Insumos'),
+    #     ('mp', 'Materia Prima')
+    # ],
+    #     default='ins',
+    #     string='Tipo de recepción'
+    # )
 
     is_mp_reception = fields.Boolean(
         'Recepción de MP',
@@ -48,7 +50,13 @@ class StockPicking(models.Model):
         store=True
     )
 
-    
+    is_pt_reception = fields.Boolean(
+        'Recepción de PT',
+        compute='_compute_is_pt_reception',
+        store=True
+    )
+
+    carrier_id = fields.Many2one('custom.carrier', 'Conductor')
 
     truck_in_date = fields.Datetime(
         'Entrada de Camión',
@@ -81,14 +89,28 @@ class StockPicking(models.Model):
 
     carrier_truck_patent = fields.Char(
         'Patente Camión',
-        related='carrier_id.truck_patent'
+        related='truck_id.name'
     )
 
     carrier_cart_patent = fields.Char(
         'Patente Carro',
-        related='carrier_id.cart_patent'
+        related='cart_id.name'
     )
 
+    truck_id = fields.Many2one(
+        'transport',
+        'Patente Camión',
+        context={'default_is_truck': True},
+        domain=[('is_truck', '=', True)]
+    )
+
+    cart_id = fields.Many2one(
+        'transport',
+        'Patente Carro',
+        context={'default_is_truck': False},
+        domain=[('is_truck', '=', False)]
+
+    )
 
     hr_alert_notification_count = fields.Integer('Conteo de notificación de retraso de camión')
 
@@ -113,10 +135,11 @@ class StockPicking(models.Model):
         if self.is_mp_reception:
             if self.canning_weight:
                 self.net_weight = self.net_weight - self.canning_weight
+
     @api.one
     @api.depends('move_ids_without_package')
     def _compute_weight_guide(self):
-        if self.is_mp_reception:
+        if self.is_mp_reception or self.is_pt_reception:
             if self.get_mp_move():
                 self.weight_guide = self.get_mp_move().product_uom_qty
 
@@ -126,7 +149,7 @@ class StockPicking(models.Model):
         canning = self.get_canning_move()
         if len(canning) == 1 and canning.product_id.weight:
             self.canning_weight = canning.product_uom_qty * canning.product_id.weight
-    
+
     @api.model
     @api.onchange('gross_weight')
     def on_change_gross_weight(self):
@@ -136,6 +159,7 @@ class StockPicking(models.Model):
             self.gross_weight = 0
         if message:
             raise models.ValidationError(message)
+
     @api.one
     @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package', )
     def _compute_production_net_weight(self):
@@ -156,16 +180,18 @@ class StockPicking(models.Model):
             self.elapsed_time = '00:00:00'
 
     @api.one
-    @api.depends('reception_type_selection', 'picking_type_id')
+    @api.depends('picking_type_id')  # 'reception_type_selection',
     def _compute_is_mp_reception(self):
-        models._logger.error('{} {}'.format(self.reception_type_selection,self.picking_type_id))
-        models._logger.error('{} {}'.format(self.picking_type_id.warehouse_id.name,
-                                            self.picking_type_id.name))
+        # self.reception_type_selection == 'mp' or \
+        self.is_mp_reception = self.picking_type_id.warehouse_id.name and \
+                               'materia prima' in str.lower(self.picking_type_id.warehouse_id.name) and \
+                               self.picking_type_id.name and 'recepciones' in str.lower(self.picking_type_id.name)
 
-        self.is_mp_reception = self.reception_type_selection == 'mp' or\
-                               self.picking_type_id.warehouse_id.name and\
-                               'Materia Prima' in self.picking_type_id.warehouse_id.name and \
-                               self.picking_type_id.name and 'Recepciones' in self.picking_type_id.name
+    @api.one
+    @api.depends('picking_type_id')
+    def _compute_is_pt_reception(self):
+        self.is_pt_reception = 'producto terminado' in str.lower(self.picking_type_id.warehouse_id.name) and \
+                               'recepciones' in str.lower(self.picking_type_id.name)
 
     @api.one
     @api.depends('production_net_weight', 'tare_weight', 'gross_weight', 'move_ids_without_package')
@@ -199,12 +225,12 @@ class StockPicking(models.Model):
             res = super(StockPicking, self).action_confirm()
             mp_move = stock_picking.get_mp_move()
 
-            if mp_move and mp_move.move_line_ids and mp_move.picking_id \
-                    and mp_move.picking_id.picking_type_code == 'incoming':
+            if mp_move and mp_move.move_line_ids and mp_move.picking_id.picking_type_code == 'incoming':
                 for move_line in mp_move.move_line_ids:
                     lot = self.env['stock.production.lot'].create({
                         'name': stock_picking.name,
-                        'product_id': move_line.product_id.id
+                        'product_id': move_line.product_id.id,
+                        'standard_weight': stock_picking.net_weight - stock_picking.quality_weight
                     })
                     if lot:
                         move_line.update({
@@ -221,7 +247,7 @@ class StockPicking(models.Model):
                                 for i in range(int(total_qty)):
                                     tmp = '00{}'.format(i + 1)
                                     self.env['stock.production.lot.serial'].create({
-                                        'calculated_weight': calculated_weight,
+                                        'calculated_weight': calculated_weight - stock_picking.quality_weight,
                                         'stock_production_lot_id': stock_move_line.lot_id.id,
                                         'serial_number': '{}{}'.format(stock_move_line.lot_name, tmp[-3:])
                                     })
@@ -240,8 +266,8 @@ class StockPicking(models.Model):
                     message += 'Los kilos de la Guía no pueden ser mayores a los Kilos brutos ingresados \n'
                 if not stock_picking.tare_weight:
                     message += 'Debe agregar kg tara \n'
-                if not stock_picking.quality_weight and\
-                   'verde' not in str.lower(stock_picking.picking_type_id.warehouse_id.name):
+                if not stock_picking.quality_weight and \
+                        'verde' not in str.lower(stock_picking.picking_type_id.warehouse_id.name):
                     message += 'Los kilos de calidad aún no han sido registrados en el sistema,' \
                                ' no es posible cerrar el ciclo de recepción'
                 if message:
@@ -253,7 +279,9 @@ class StockPicking(models.Model):
             mp_move.quantity_done = self.net_weight
             mp_move.product_uom_qty = self.weight_guide
             if mp_move.has_serial_generated and self.avg_unitary_weight:
-                self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)]).write({'real_weight': self.avg_unitary_weight})
+                self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)]).write({
+                    'real_weight': self.avg_unitary_weight
+                })
 
         return res
 
@@ -289,7 +317,6 @@ class StockPicking(models.Model):
                     self.message_post_with_template(template_id.id)
                     self.kg_diff_alert_notification_count += self.kg_diff_alert_notification_count
 
-    
     @api.multi
     def notify_alerts(self):
         alert_config = self.env['reception.alert.config'].search([])
@@ -300,3 +327,12 @@ class StockPicking(models.Model):
             template_id = self.env.ref('dimabe_reception.truck_not_out_mail_template')
             self.message_post_with_template(template_id.id)
             self.hr_alert_notification_count += 1
+
+    @api.model
+    def create(self, values_list):
+        res = super(StockPicking, self).create(values_list)
+
+        if len(res.move_ids_without_package) > len(res.move_ids_without_package.mapped('product_id')):
+            raise models.ValidationError('no puede tener el mismo producto en más de una linea')
+
+        return res

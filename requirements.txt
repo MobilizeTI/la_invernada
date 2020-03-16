@@ -1,2 +1,4 @@
 pyjwt
 simplejson
+XlsxWriter
+xlrd

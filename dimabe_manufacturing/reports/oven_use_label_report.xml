@@ -1,0 +1,65 @@
+<odoo>
+  <template id="oven_use_label_report">
+    <t t-call="web.html_container">
+      <div class="page">
+        <t t-foreach="docs" t-as="o">
+          <t t-foreach="o.dried_oven_ids" t-as="dried_oven_id">
+            <table style="text-align:left;">
+              <tr>
+                <th style="text-align:center;"><h2>Información Cajón</h2></th>
+                <td style="text-align: right !important;">
+                  <span t-field="dried_oven_id.name"
+                        style="border-left: solid 1px;border-bottom: solid 1px;padding:2px !important;" />
+                </td>
+              </tr>
+              <tr>
+                <th>N° guía</th>
+                <td>: <span t-esc="o.used_lot_id.reception_guide_number"/></td>
+              </tr>
+              <tr>
+                <th>Productor:</th>
+                <td>: <span t-field="o.used_lot_id.producer_id.name"/></td>
+              </tr>
+              <tr>
+                <th>Variedad:</th>
+                <td>: <span t-esc="o.used_lot_id.product_id.get_variety()"/></td>
+              </tr>
+              <tr>
+                <th>N° Lote:</th>
+                <td>: <span t-field="o.used_lot_id.name"/></td>
+              </tr>
+              <tr>
+                <th>Fecha recepción / hr:</th>
+                <td>: <span t-field="o.used_lot_id.create_date"/></td>
+              </tr>
+              <tr>
+                <th>Fecha en cajón:</th>
+                <td>: <span t-field="o.init_date"/></td>
+              </tr>
+              <tr>
+                <td colspan="2" style="text-align:center !important;">
+                  <br/>
+                  <img
+                    t-att-src="'%s/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % (o.get_full_url(), 'Code128',o.used_lot_id.name,550, 70)"
+                  />
+                  <span t-field="o.used_lot_id.name"/>
+                </td>
+              </tr>
+            </table>
+            <t t-if="dried_oven_id.id != o.dried_oven_ids[len(o.dried_oven_ids) - 1].id">
+              <p style="page-break-after:always;"></p>
+            </t>
+          </t>
+        </t>
+      </div>
+    </t>
+  </template>
+
+  <report id="dimabe_manufacturing.action_oven_use_label_report"
+          string="Etiqueta para Salida de Proceso"
+          model="oven.use"
+          report_type="qweb-pdf"
+          name="dimabe_manufacturing.oven_use_label_report"
+          paperformat="paper_format_10_x_7"
+  />
+</odoo>

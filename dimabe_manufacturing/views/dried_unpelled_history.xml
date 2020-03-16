@@ -1,0 +1,122 @@
+<odoo>
+  <record id="dried_unpelled_history_tree_view" model="ir.ui.view">
+    <field name="name">Listado de Historial</field>
+    <field name="model">dried.unpelled.history</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="create_date"/>
+        <field name="producer_id"/>
+        <field name="in_product_id"/>
+        <field name="total_in_weight"/>
+        <field name="total_out_weight"/>
+        <field name="performance"/>
+        <field name="oven_use_ids" widget="many2many_tags"/>
+        <field name="out_lot_id"/>
+        <field name="out_product_id"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="dried_unpelled_history_action" model="ir.actions.act_window">
+    <field name="name">Historial</field>
+    <field name="res_model">dried.unpelled.history</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <record id="dried_unpelled_history_form_view" model="ir.ui.view">
+    <field name="name">Historial</field>
+    <field name="model">dried.unpelled.history</field>
+    <field name="arch" type="xml">
+      <form>
+        <h1 class="d-none d-md-block">
+          <field name="name"/>
+        </h1>
+        <field name="create_date"/>
+        <group>
+          <group>
+            <field name="producer_id"/>
+
+            <field name="in_product_id"/>
+
+            <field name="oven_use_ids">
+              <tree>
+                <field name="dried_oven_ids" widget="many2many_tags"/>
+                <field name="stock_picking_id" widget="many2onebutton"/>
+                <field name="init_date"/>
+                <field name="finish_date"/>
+                <field name="active_time"/>
+              </tree>
+            </field>
+
+            <field name="out_product_id"/>
+            <field name="out_lot_id"/>
+            <field name="out_serial_ids">
+              <tree>
+                <field name="stock_production_lot_id"/>
+                <field name="consumed"/>
+                <field name="display_weight"/>
+                <field name="serial_number"/>
+                <button name="print_serial_label"
+                        type="object" string="Imprimir"
+                        context="{'producer_id': parent.producer_id}"
+                />
+              </tree>
+            </field>
+          </group>
+          <group>
+            <field name="total_in_weight"/>
+
+            <field name="total_out_weight"/>
+
+            <field name="performance"/>
+
+            <field name="origin_location_id"/>
+
+            <field name="dest_location_id"/>
+
+          </group>
+        </group>
+      </form>
+    </field>
+  </record>
+
+
+  <record id="dried_unpelled_history_out_dashboard_tree_view" model="ir.ui.view">
+    <field name="name">Listado de Salidas Despelonado</field>
+    <field name="model">dried.unpelled.history</field>
+    <field name="arch" type="xml">
+      <tree default_order="create_date desc">
+        <field name="create_date" invisible="1"/>
+        <field name="in_lot_ids" widget="many2many_tags"/>
+        <field name="producer_id"/>
+        <field name="lot_guide_numbers"/>
+        <field name="in_product_variety"/>
+        <field name="picking_type_id"/>
+        <field name="init_date"/>
+        <field name="finish_date"/>
+        <field name="active_time"/>
+        <field name="dried_oven_ids" widget="many2many_tags"/>
+        <field name="out_lot_id"/>
+        <field name="out_serial_count"/>
+        <field name="total_in_weight"/>
+        <field name="total_out_weight"/>
+        <field name="performance"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="dried_unpelled_history_out_dashboard_action" model="ir.actions.act_window">
+    <field name="name">Vista General Despelonado Salida</field>
+    <field name="res_model">dried.unpelled.history</field>
+    <field name="view_mode">tree,form</field>
+    <field name="views" ref="dimabe_manufacturing.dried_unpelled_history_out_dashboard_tree_view"/>
+
+  </record>
+
+  <menuitem name="Vista General Depelonado Salida"
+            id="dried_unpelled_history_out_dashboard_menu"
+            parent="mrp.menu_mrp_reporting"
+            action="dried_unpelled_history_out_dashboard_action"
+  />
+
+</odoo>
