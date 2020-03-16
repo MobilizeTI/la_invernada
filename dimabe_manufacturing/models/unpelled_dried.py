@@ -262,18 +262,19 @@ class UnpelledDried(models.Model):
                 lambda a: a.ready_to_close
             )
 
-            for lot_id in oven_use_to_close_ids.mapped('used_lot_id'):
+            for oven_use in oven_use_to_close_ids:
                 oven_use_id = item.oven_use_ids.filtered(
-                    lambda a: not a.ready_to_close and len(a.dried_oven_ids) == 1 and lot_id == a.used_lot_id
+                    lambda a: not a.ready_to_close and len(a.dried_oven_ids) == 1 and
+                              a.dried_oven_ids is oven_use.dried_oven_ids
                 )
                 if oven_use_id:
                     raise models.ValidationError('el lote {} no ha sido terminado en el cajón {}.'
                                                  ' no se puede cerrar un lote en que se encuentre en '
                                                  'cajones completos (no mezclados con otros lotes) y que '
                                                  'se encuentren todavía en proceso'.format(
-                        lot_id.name, oven_use_id.dried_oven_ids[0].name
+                        oven_use.lot_id.name, oven_use_id.dried_oven_ids[0].name
                     ))
-                lot_id.unpelled_state = 'done'
+                oven_use.lot_id.unpelled_state = 'done'
 
             if not oven_use_to_close_ids:
                 raise models.ValidationError('no hay hornos listos para cerrar por procesar')
@@ -313,7 +314,7 @@ class UnpelledDried(models.Model):
                         'move_id': stock_move.id
                     }])
 
-            prd_move_line = self.env['stock.move.line'].create({
+            self.env['stock.move.line'].create({
                 'lot_name': item.out_lot_id.name,
                 'consume_line_ids': consumed,
                 'reference': item.out_lot_id.name,
@@ -334,10 +335,10 @@ class UnpelledDried(models.Model):
                 'history_id': history_id.id,
                 'unpelled_dried_id': None
             })
-            models._logger.error('{}'.format(len(item.oven_use_ids.filtered(
-                lambda a: a.history_id
-            ))))
-            raise models.ValidationError(oven_use_to_close_ids)
+            # models._logger.error('{}'.format(len(item.oven_use_ids.filtered(
+            #     lambda a: a.history_id
+            # ))))
+            # raise models.ValidationError(oven_use_to_close_ids)
 
             item.create_out_lot()
 
