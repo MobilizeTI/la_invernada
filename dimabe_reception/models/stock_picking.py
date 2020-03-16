@@ -339,7 +339,7 @@ class StockPicking(models.Model):
     def write(self, vals):
         res = super(StockPicking, self).write(vals)
 
-        if len(res.move_ids_without_package) > len(res.move_ids_without_package.mapped('product_id')):
+        if len(self.move_ids_without_package) > len(self.move_ids_without_package.mapped('product_id')):
             raise models.ValidationError('no puede tener el mismo producto en más de una linea')
 
         return res
