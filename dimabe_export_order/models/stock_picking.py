@@ -155,6 +155,7 @@ class StockPicking(models.Model):
 
     picture = fields.Many2many(
         "ir.attachment",
+        column1="attachment_counter",
         string="Fotos Camión"
     )
 
