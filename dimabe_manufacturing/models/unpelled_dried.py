@@ -330,7 +330,7 @@ class UnpelledDried(models.Model):
 
             oven_use_to_close_ids.mapped('dried_oven_ids').set_is_in_use(False)
 
-            for oven_use_id in self.oven_use_ids.filtered(lambda a: a.finish_date):
+            for oven_use_id in self.oven_use_ids.filtered(lambda a: a.ready_to_close):
                 oven_use_id.write({
                     'history_id': history_id.id,
                     'unpelled_dried_id': None
