@@ -66,13 +66,13 @@
                     <page string="Despacho" id="dispatch_data"
                           attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"
                     >
-                        <group name="dispatch_data" position="inside" >
+                        <group name="dispatch_data" position="inside" style="width:100%%">
                             <group string="Información de Despacho" style="width:100%%">
                                 <group>
                                     <field name="type_of_dispatch" widget="radio"/>
                                     <field name="type_of_transfer_list"/>
                                 </group>
-                                <group attrs="{'invisible':[('type_of_dispatch','!=','exp')]}" style="width:100%%">
+                                <group attrs="{'invisible':[('type_of_dispatch','!=','exp')]}" style="width:100%%;">
                                     <group string="Pesos">
                                         <field name="net_weight_dispatch"/>
                                         <field name="gross_weight_dispatch"/>
@@ -97,7 +97,7 @@
                                     </group>
                                 </group>
                             </group>
-                            <group string="Fotos de Camión" style="width:100%%">
+                            <group string="Fotos de Camión" style="width:100%%;">
                                 <field name="picture" widget="many2many_binary"/>
                                 <button string="Crear Reporte" name="generate_report" type="object"/>
                             </group>

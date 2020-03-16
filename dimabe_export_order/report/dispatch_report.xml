@@ -346,7 +346,6 @@
         </t>
     </template>
 
-
     <template id="report_weight_dispatch">
         <t t-call="web.html_container">
             <div class="page">
@@ -527,7 +526,6 @@
     <report id="action_dispatch_weight_dispatch" string="Ticket Pesaje Despacho" model="stock.picking"
             report_type="qweb-pdf"
             name="dimabe_export_order.report_weight_dispatch" menu="True" paperformat="paper_format_letter_horizontal"/>
-
     <report id="action_dispatch_guide_report" string="Guia de despacho" model="stock.picking" report_type="qweb-pdf"
             name="dimabe_export_order.report_dispatch_guide" menu="True" paperformat="paper_format_letter_custom"
     />
