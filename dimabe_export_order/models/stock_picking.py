@@ -223,10 +223,11 @@ class StockPicking(models.Model):
     @api.multi
     def generate_report(self):
         for item in self.picture:
-            item.update({
-                'counter':self.counter,
-                'stock_picking_id':self.id
-            })
+            if not item.counter:
+                item.update({
+                    'counter': self.counter,
+                    'stock_picking_id': self.id
+                })
 
             if item.counter >= 9:
                 item.datas = tools.image_resize_image_medium(
