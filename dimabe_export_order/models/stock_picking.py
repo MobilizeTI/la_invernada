@@ -246,11 +246,11 @@ class StockPicking(models.Model):
         index = self.counter - 1
         if index <= len(self.picture):
             if not self.picture[index].counter:
-                item.update({
+                self.picture[index].update({
                     'counter': self.counter
                 })
             else:
-                if item == self.counter:
+                if self.picture[index].counter == self.counter:
                     raise models.ValidationError('Esta posicion ya esta ocupada')
 
     @api.multi
