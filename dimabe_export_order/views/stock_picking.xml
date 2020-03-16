@@ -101,7 +101,7 @@
                             <group string="Fotos de Camión" style="width:100%%;">
                                 <field name="picture" widget="many2many_binary"/>
                                 <field name="pictures">
-                                    <tree edit="true" editable="bottom">
+                                    <tree edit="true" editable="top">
                                         <field name="datas_fname" readonly="1"/>
                                         <field name="counter"/>
                                     </tree>
