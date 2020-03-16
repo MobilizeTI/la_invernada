@@ -99,9 +99,8 @@
                                 </group>
                             </group>
                             <group string="Fotos de Camión" style="width:100%%;">
-                                <field name="picture" widget="many2many_binary">
-                                    <field name="counter"/>
-                                </field>
+                                <field name="picture" widget="many2many_binary"/>
+                                <field name="counter"/>
                                 <button string="Crear Reporte" name="generate_report" type="object"/>
                             </group>
                         </group>
