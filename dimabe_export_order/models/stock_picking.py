@@ -243,13 +243,15 @@ class StockPicking(models.Model):
 
     @api.onchange('picture')
     def on_change_picture(self):
-        if not item.counter:
-            item.update({
-                'counter': self.counter
-            })
-        else:
-            if item == self.counter:
-                raise models.ValidationError('Esta posicion ya esta ocupada')
+        index = self.counter - 1
+        if index <= len(self.picture):
+            if not self.picture[index].counter:
+                item.update({
+                    'counter': self.counter
+                })
+            else:
+                if item == self.counter:
+                    raise models.ValidationError('Esta posicion ya esta ocupada')
 
     @api.multi
     def get_permision(self):
