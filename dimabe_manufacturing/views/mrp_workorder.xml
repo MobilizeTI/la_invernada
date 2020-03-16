@@ -8,38 +8,38 @@
       <!--      <field name="number_next">60100</field>-->
       <field name="company_id" eval="False"/>
     </record>
-        <record id="mrp_workorder_view_form_tablet_inherit" model="ir.ui.view">
-            <field name="name">tablet producción</field>
-            <field name="model">mrp.workorder</field>
-            <field name="inherit_id" ref="mrp_workorder.mrp_workorder_view_form_tablet"/>
-            <field name="arch" type="xml">
-                <button name="action_open_manufacturing_order" position="replace">
-                </button>
-                <xpath expr="//div[@class='o_workorder_data']" position="inside">
-                    <group>
-                        <field name="confirmed_serial"/>
-                    </group>
-                </xpath>
-                <xpath expr="//div[@class='workorder_pdf']" position="before">
-                    <field name="potential_serial_planned_ids">
-                        <tree decoration-danger="consumed==False" decoration-success="consumed==True"
-                              delete="false" create="false" editable="bottom" groups="mrp.group_mrp_manager">
-                            <field name="stock_production_lot_id" readonly="1"/>
-                            <field name="serial_number" readonly="1"/>
-                            <field name="display_weight" readonly="1"/>
-                            <field name="consumed" groups="base.group_system"/>
-                        </tree>
-                    </field>
-                </xpath>
-                <xpath expr="//field[@name='qty_done']" position="attributes">
-                    <attribute name="readonly">1</attribute>
-                    <attribute name="force_save">1</attribute>
-                </xpath>
-                <xpath expr="//field[@name='finished_product_check_ids']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-            </field>
-        </record>
+
+    <record id="mrp_workorder_view_form_tablet_inherit" model="ir.ui.view">
+      <field name="name">tablet producción</field>
+      <field name="model">mrp.workorder</field>
+      <field name="inherit_id" ref="mrp_workorder.mrp_workorder_view_form_tablet"/>
+      <field name="arch" type="xml">
+        <button name="action_open_manufacturing_order" position="replace">
+        </button>
+        <xpath expr="//div[@class='o_workorder_data']" position="inside">
+          <group>
+            <field name="confirmed_serial"
+                   attrs="{'invisible':[('is_last_step','=',True)]}"
+            />
+          </group>
+        </xpath>
+        <xpath expr="//div[@class='workorder_pdf']" position="before">
+          <field name="potential_serial_planned_ids">
+            <tree decoration-danger="consumed==False" decoration-success="consumed==True"
+                  delete="false" create="false" editable="bottom" groups="mrp.group_mrp_manager">
+              <field name="stock_production_lot_id" readonly="1"/>
+              <field name="serial_number" readonly="1"/>
+              <field name="display_weight" readonly="1"/>
+              <field name="consumed" groups="base.group_system"/>
+            </tree>
+          </field>
+        </xpath>
+
+        <xpath expr="//field[@name='finished_product_check_ids']" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </xpath>
+      </field>
+    </record>
 
     <record id="mrp_production_workorder_form_view_inherit" model="ir.ui.view">
       <field name="name">formulario order de trabajo</field>
@@ -80,7 +80,6 @@
         </xpath>
       </field>
     </record>
-
 
     <record id="mrp_workorder_out_form_view" model="ir.ui.view">
       <field name="name">Procesar Salidas</field>

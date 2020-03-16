@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.addons import decimal_precision as dp
 
 
 class StockProductionLotSerial(models.Model):
@@ -20,7 +21,8 @@ class StockProductionLotSerial(models.Model):
     display_weight = fields.Float(
         'Peso',
         compute='_compute_display_weight',
-        inverse='_inverse_real_weight'
+        inverse='_inverse_real_weight',
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     stock_production_lot_id = fields.Many2one(
