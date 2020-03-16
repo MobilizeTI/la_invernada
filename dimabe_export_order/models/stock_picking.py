@@ -158,7 +158,7 @@ class StockPicking(models.Model):
         string="Fotos Camión"
     )
 
-    file = fields.Binary(
+    file = fields.Char(
         related="picture.datas_fname"
     )
 
