@@ -272,7 +272,7 @@ class UnpelledDried(models.Model):
                                                  ' no se puede cerrar un lote en que se encuentre en '
                                                  'cajones completos (no mezclados con otros lotes) y que '
                                                  'se encuentren todavía en proceso'.format(
-                        oven_use.lot_id.name, oven_use_id.dried_oven_ids[0].name
+                        oven_use.used_lot_id.name, oven_use_id.dried_oven_ids[0].name
                     ))
                 oven_use.used_lot_id.unpelled_state = 'done'
 
