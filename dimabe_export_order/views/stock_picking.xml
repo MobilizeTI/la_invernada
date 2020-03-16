@@ -102,7 +102,7 @@
                                 <field name="picture" widget="many2many_binary"/>
                                 <field name="picture" widget="handle">
                                     <tree editable="bottom">
-                                        <field name="data_fname"/>
+                                        <field name="datas_fname"/>
                                         <field name="counter"/>
                                     </tree>
                                 </field>
