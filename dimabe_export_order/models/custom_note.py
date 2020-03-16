@@ -18,7 +18,7 @@ class CustomNote(models.Model):
     @api.model
     def get_full_note(self):
         destiny = dict(self._fields['destiny'].selection).get(self.destiny)
-        full_note = self.body
+        full_note = self.body.strip()
         full_note = full_note.replace('{destino}', destiny)
         full_note = full_note.upper()
         return full_note

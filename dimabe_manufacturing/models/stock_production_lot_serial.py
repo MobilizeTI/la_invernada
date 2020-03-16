@@ -66,6 +66,7 @@ class StockProductionLotSerial(models.Model):
             work_order = self.env['mrp.workorder'].search([
                 ('final_lot_id', '=', res.stock_production_lot_id.id)
             ])
+
             res.producer_id = res.stock_production_lot_id.producer_id.id
 
             if work_order.production_id:

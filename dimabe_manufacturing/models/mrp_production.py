@@ -59,15 +59,26 @@ class MrpProduction(models.Model):
         'Posibles Lotes'
     )
 
-    material_ids = fields.Many2many(
-        'product.product',
-        compute='_compute_material_ids'
-    )
+    materials = fields.Many2many('product.product', compute='get_product_bom')
+
+    manufactureable = fields.Many2many('product.product', compute='get_product_route')
+
+    @api.model
+    def get_product_route(self):
+        list = []
+        for item in self:
+            products = item.env['product.product'].search([])
+            for p in products:
+                if "Fabricar" in p.route_ids.mapped('name'):
+                    list.append(p.id)
+            item.manufactureable = item.env['product.product'].search([('id', 'in', list)])
 
     @api.multi
-    def _compute_material_ids(self):
+    def get_product_bom(self):
         for item in self:
-            item.material_ids = item.bom_id.bom_line_ids.mapped('product_id')
+            item.update({
+                'materials':item.bom_id.bom_line_ids.mapped('product_id')
+            })
 
     @api.multi
     def _compute_show_finished_move_line_ids(self):

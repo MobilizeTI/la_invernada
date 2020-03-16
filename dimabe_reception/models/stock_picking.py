@@ -274,7 +274,7 @@ class StockPicking(models.Model):
         self.sendKgNotify()
         if self.get_mp_move():
             mp_move = self.get_mp_move()
-            mp_move.quantity_done = self.net_weight - self.quality_weight
+            mp_move.quantity_done = self.net_weight
             mp_move.product_uom_qty = self.weight_guide
             if mp_move.has_serial_generated and self.avg_unitary_weight:
                 self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)]).write({
