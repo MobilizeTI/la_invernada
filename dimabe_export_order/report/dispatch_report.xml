@@ -261,7 +261,7 @@
                                                             </td>
                                                             <td>CLIENTE:</td>
                                                             <td>
-                                                                <span t-field="d.partner_id" />
+                                                                <span t-field="d.partner_id"/>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -384,28 +384,42 @@
                     <table style="width:100%;height:20%;font-size:18px;" cellspacing="3">
                         <tr style="height:25px;">
                             <td style="text-align:center;">NUMERO DE EMBARQUE</td>
-                            <td style="border:1px solid;width:25%;text-align:center;"><span t-field="dis.shipping_number"/></td>
+                            <td style="border:1px solid;width:25%;text-align:center;">
+                                <span t-field="dis.shipping_number"/>
+                            </td>
                             <td></td>
                             <td style="text-align:center;">PATENTE CAMION</td>
-                            <td style="border:1px solid;width:25%;text-align:center;"><span t-field="dis.truck_id"/></td>
+                            <td style="border:1px solid;width:25%;text-align:center;">
+                                <span t-field="dis.truck_id"/>
+                            </td>
                         </tr>
                         <tr style="height:25px;">
                             <td style="text-align:center;">GUIA DE DESPACHO</td>
-                            <td style="border:1px solid;width:25%;text-align:center;"><span t-field="dis.guide_number"/></td>
+                            <td style="border:1px solid;width:25%;text-align:center;">
+                                <span t-field="dis.guide_number"/>
+                            </td>
                             <td></td>
                             <td style="text-align:center;">PATENTE CARRO</td>
-                            <td style="border:1px solid;width:25%;text-align:center;"><span t-field="dis.cart_id"/></td>
+                            <td style="border:1px solid;width:25%;text-align:center;">
+                                <span t-field="dis.cart_id"/>
+                            </td>
                         </tr>
                         <tr style="height:25px;">
                             <td style="text-align:center;">NUMERO DE CONTENEDOR</td>
-                            <td style="border:1px solid;width:25%;text-align:center;"><span t-field="dis.container_number"/></td>
+                            <td style="border:1px solid;width:25%;text-align:center;">
+                                <span t-field="dis.container_number"/>
+                            </td>
                             <td></td>
                             <td style="text-align:center;">RUN CHOFER</td>
-                            <td style="border:1px solid;width:25%;text-align:center;"><span t-field="dis.carrier_rut"/></td>
+                            <td style="border:1px solid;width:25%;text-align:center;">
+                                <span t-field="dis.carrier_rut"/>
+                            </td>
                         </tr>
                         <tr style="height:25px;">
                             <td style="text-align:center;">NOMBRE CHOFER</td>
-                            <td style="border:1px solid;width:25%;text-align:center;"><span t-field="dis.container_number"/></td>
+                            <td style="border:1px solid;width:25%;text-align:center;">
+                                <span t-field="dis.container_number"/>
+                            </td>
                         </tr>
                     </table>
                     <br/>
@@ -415,15 +429,21 @@
                         </th>
                         <tr>
                             <td style="text-align:center;width:50%;">PESO SIN CARGA</td>
-                            <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;"><span t-esc="int(dis.arrival_weight)"/></td>
+                            <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;">
+                                <span t-esc="int(dis.arrival_weight)"/>
+                            </td>
                         </tr>
                         <tr>
                             <td style="text-align:center;width:50%;">PESO CON CARGA</td>
-                            <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;"><span t-esc="int(dis.departure_weight)"/></td>
+                            <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;">
+                                <span t-esc="int(dis.departure_weight)"/>
+                            </td>
                         </tr>
                         <tr>
                             <td style="text-align:center;width:50%;">PESO NETO</td>
-                            <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;"><span t-esc="int(dis.net_weight_dispatch)"/></td>
+                            <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;">
+                                <span t-esc="int(dis.net_weight_dispatch)"/>
+                            </td>
                         </tr>
                     </table>
                     <br/>
@@ -441,7 +461,7 @@
                             <td style="border-bottom:1pt dotted black;width:50%;"></td>
                         </tr>
                         <tr style="margin:0 auto;width:200px;text-align:center;">
-                             <td>Encargado de Despacho</td>
+                            <td>Encargado de Despacho</td>
                         </tr>
                     </table>
                 </t>
@@ -452,20 +472,24 @@
     <template id="report_truck_dispatch">
         <t t-call="web.html_container">
             <div class="page">
-            <t t-foreach="docs.sorted(key=lambda x: x.counter)" t-as="o">
-                <t t-if="o.counter == 3 or o.counter == 6 or o.counter == 9">
-                    <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
-                         />
-                    <br/>
+                <t t-foreach="docs.sorted(key=lambda x: x.counter)" t-as="o">
+                    <t t-if="o.counter == 3 or o.counter == 6 or o.counter == 9">
+                        <div style="margin: 0 auto;">
+                            <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
+                            />
+                            <br/>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <div style="margin:0 auto;">
+                            <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
+                            />
+                        </div>
+                    </t>
+                    <t t-if="docs[-1].id == o.id">
+                        <span style="style='page-break-before:avoid;'"/>
+                    </t>
                 </t>
-                <t t-else="">
-                    <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
-                         />
-                </t>
-                <t t-if="docs[-1].id == o.id">
-                    <span style="style='page-break-before:avoid;'"/>
-                </t>
-            </t>
             </div>
         </t>
     </template>
