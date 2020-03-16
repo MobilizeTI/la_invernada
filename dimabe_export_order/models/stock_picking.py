@@ -223,6 +223,9 @@ class StockPicking(models.Model):
     @api.multi
     def generate_report(self):
         for item in self.picture:
+            item.update({
+                'counter':self.counter
+            })
             if item.counter >= 9:
                 item.datas = tools.image_resize_image_medium(
                     item.datas, size=(229, 305)
@@ -237,10 +240,7 @@ class StockPicking(models.Model):
     @api.onchange('counter')
     def set_counter(self):
         if self.counter <= len(self.picture):
-            index = self.counter - 1
-            self.picture[index].update({
-                'counter':self.counter
-            })
+
 
     @api.multi
     def get_permision(self):
