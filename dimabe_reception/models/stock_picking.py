@@ -75,6 +75,8 @@ class StockPicking(models.Model):
 
     quality_weight = fields.Float('Kilos Calidad')
 
+    carrier_id = fields.Many2one('custom.carrier', 'Conductor')
+
     carrier_rut = fields.Char(
         'Rut',
         related='carrier_id.rut'
