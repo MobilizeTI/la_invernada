@@ -168,8 +168,6 @@ class StockPicking(models.Model):
         related="picture.datas_fname"
     )
 
-    counter = fields.Integer(string="Posicion en el informe",min=1,max=12)
-
     type_of_transfer_list = fields.Selection(
         [('1', 'Operacion constituye venta'),
          ('2', 'Ventas por efectuar'),
@@ -241,7 +239,6 @@ class StockPicking(models.Model):
                 item.datas = tools.image_resize_image_medium(
                     item.datas, size=(241, 320)
                 )
-            index -= 1
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
             .report_action(self.pictures)
 
