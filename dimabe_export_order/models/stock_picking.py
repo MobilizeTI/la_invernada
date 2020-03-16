@@ -153,7 +153,7 @@ class StockPicking(models.Model):
         string="Numero DUS"
     )
 
-    picture = fields.Many2many(
+    picture = fields.One2many(
         "ir.attachment",
         string="Fotos Camión"
     )
@@ -223,13 +223,7 @@ class StockPicking(models.Model):
     @api.multi
     def generate_report(self):
         for item in self.picture:
-            if not item.counter:
-                item.update({
-                    'counter': self.counter
-                })
-            else:
-                if item == self.counter:
-                    raise models.ValidationError('Esta posit')
+
             if item.counter >= 9:
                 item.datas = tools.image_resize_image_medium(
                     item.datas, size=(229, 305)
