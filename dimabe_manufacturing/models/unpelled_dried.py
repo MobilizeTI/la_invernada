@@ -274,7 +274,7 @@ class UnpelledDried(models.Model):
                                                  'se encuentren todavía en proceso'.format(
                         oven_use.lot_id.name, oven_use_id.dried_oven_ids[0].name
                     ))
-                oven_use.lot_id.unpelled_state = 'done'
+                oven_use.used_lot_id.unpelled_state = 'done'
 
             if not oven_use_to_close_ids:
                 raise models.ValidationError('no hay hornos listos para cerrar por procesar')
