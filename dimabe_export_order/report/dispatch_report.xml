@@ -465,6 +465,7 @@
                 </t>
             </t>
         </t>
+
     </template>
 
     <record id="paper_format_letter_custom" model="report.paperformat">
