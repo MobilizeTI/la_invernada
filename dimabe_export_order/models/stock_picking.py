@@ -227,7 +227,7 @@ class StockPicking(models.Model):
                 index -= 1
                 if item.counter >= 9:
                     item.datas = tools.image_resize_image_medium(
-                        item.datas, size=(438, 479)
+                        item.datas, size=(231, 310)
                     )
                 else:
                     item.datas = tools.image_resize_image_medium(
