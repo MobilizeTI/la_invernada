@@ -99,7 +99,7 @@
                                 </group>
                             </group>
                             <group string="Fotos de Camión" style="width:100%%;">
-                                <field name="picture" widget="many2many_binary"/>
+                                <field name="picture" widget="many2many_binary" options="{'picture_field': 'picture.datas'}"/>
                                 <group>
                                     <field name="picture">
                                         <tree editable="bottom">
