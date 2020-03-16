@@ -228,7 +228,8 @@ class StockPicking(models.Model):
                     'counter': self.counter,
                     'stock_picking_id': self.id
                 })
-
+            counters = self.env['ir.attachment'].search([('stock_picking_id','=',self.id)]).mapped('counter')
+            models._logger.error(counters)
             if item.counter >= 9:
                 item.datas = tools.image_resize_image_medium(
                     item.datas, size=(229, 305)
