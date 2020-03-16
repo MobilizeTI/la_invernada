@@ -103,7 +103,7 @@
                                 <group>
                                     <field name="pictures">
                                         <tree editable="bottom">
-                                            <field name="datas_fname" readonly="1"/>
+                                            <field name="datas_fname"/>
                                             <field name="counter"/>
                                         </tree>
                                     </field>
