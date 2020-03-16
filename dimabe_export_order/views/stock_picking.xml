@@ -70,6 +70,7 @@
                             <group string="Información de Despacho">
                                 <group>
                                     <field name="type_of_dispatch" widget="radio"/>
+                                    <field name="type_of_transfer_list"/>
                                 </group>
                                 <group attrs="{'invisible':[('type_of_dispatch','!=','exp')]}" style="width:100%%">
                                     <group string="Pesos">
@@ -94,9 +95,6 @@
                                         <field name="dus_number"/>
                                         <field name="sell_shipping"/>
                                     </group>
-                                </group>
-                                <group attrs="{'invisible':[('type_of_dispatch','==','exp')]}" >
-                                    <field name="type_of_transfer_list"/>
                                 </group>
                             </group>
                             <group string="Fotos de Camión">
