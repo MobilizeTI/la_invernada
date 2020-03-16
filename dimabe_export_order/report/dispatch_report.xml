@@ -462,7 +462,7 @@
                          />
                 </t>
                 <t t-if="docs[-1].id == o.id">
-                    <span style="style='page-break-before:always;'"/>
+                    <span style="style='page-break-before:avoid;'"/>
                 </t>
             </t>
         </t>
