@@ -247,7 +247,7 @@ class StockPicking(models.Model):
         if index <= len(self.picture):
             if not self.picture[index].counter:
                 self.picture[index].update({
-                    'counter': self.counter
+                    'counter': self.counter + 1
                 })
             else:
                 if self.picture[index].counter == self.counter:
