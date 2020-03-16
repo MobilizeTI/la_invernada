@@ -239,10 +239,6 @@ class StockPicking(models.Model):
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
             .report_action(self.picture)
 
-    @api.onchange('counter')
-    def set_counter(self):
-        if self.counter <= len(self.picture):
-
 
     @api.multi
     def get_permision(self):
