@@ -67,12 +67,12 @@
                                     <button string="Reservar"
                                             name="reserve_stock"
                                             type="object"
-                                            attrs="{'invisible':['|',('is_reserved', '=', True),('mrp_production_state','=','done')]}"
+                                            attrs="{'invisible':['|',('qty_to_reserve', '>', 0),('mrp_production_state','=','done')]}"
                                     />
                                     <button string="Quitar Reserva"
                                             name="unreserved_stock"
                                             type="object"
-                                            attrs="{'invisible':['|',('is_reserved', '=', False),('mrp_production_state', '=', 'done')]}"
+                                            attrs="{'invisible':['|',('qty_to_reserve', '=', 0),('mrp_production_state', '=', 'done')]}"
                                     />
                                     <field name="qty_to_reserve" readonly="1"/>
                                 </tree>
