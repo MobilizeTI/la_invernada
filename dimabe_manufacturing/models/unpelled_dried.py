@@ -335,9 +335,9 @@ class UnpelledDried(models.Model):
                 'history_id': history_id.id,
                 'unpelled_dried_id': None
             })
-            # models._logger.error('{}'.format(len(item.oven_use_ids.filtered(
-            #     lambda a: a.history_id
-            # ))))
+            models._logger.error('{}'.format(len(item.oven_use_ids.filtered(
+                lambda a: a.history_id
+            ))))
             # raise models.ValidationError(oven_use_to_close_ids)
 
             item.create_out_lot()
