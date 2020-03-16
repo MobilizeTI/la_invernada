@@ -161,11 +161,14 @@ class StockProductionLot(models.Model):
     )
 
     @api.onchange('label_producer_id')
+    @api.returns('self')
     def _onchange_label_producer_id(self):
-        # raise models.ValidationError(self.label_producer_id.id)
+
         self.stock_production_lot_serial_ids.write({
             'producer_id': self.label_producer_id.id
         })
+
+        return self
 
     @api.multi
     def _compute_all_pallet_ids(self):
