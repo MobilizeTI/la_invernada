@@ -7,7 +7,7 @@ class IrAttachment(models.Model):
 
     counter = fields.Integer("Contador")
 
-    stock_picking_id = fields.Many2one('stock.picking',store=True)
+    stock_picking_id = fields.Integer()
 
     @api.model_create_multi
     def create(self, vals_list):
