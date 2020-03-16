@@ -155,7 +155,15 @@ class StockPicking(models.Model):
 
     picture = fields.Many2many(
         "ir.attachment",
-        string="Fotos Camión"
+        string="Fotos Camión",
+    )
+
+    pictures = fields.Many2many(
+        "ir.attachment",
+        compute="get_pictures",
+        readonly=False,
+        store=True,
+        string="Datos Fotos"
     )
 
     file = fields.Char(
@@ -218,23 +226,23 @@ class StockPicking(models.Model):
 
     departure_weight = fields.Float('Peso de Salida')
 
+    @api.onchange('picture')
+    def get_pictures(self):
+        self.pictures = self.picture
+
     @api.multi
     def generate_report(self):
-        if not self.picture[0].counter:
-            index = len(self.picture)
-            for item in self.picture:
-                item.counter = index
-                index -= 1
-                if item.counter >= 9:
-                    item.datas = tools.image_resize_image_medium(
-                        item.datas, size=(229, 305)
-                    )
-                else:
-                    item.datas = tools.image_resize_image_medium(
-                        item.datas, size=(241, 320)
-                    )
+        for item in self.pictures:
+            if item.counter >= 9:
+                item.datas = tools.image_resize_image_medium(
+                    item.datas, size=(229, 305)
+                )
+            else:
+                item.datas = tools.image_resize_image_medium(
+                    item.datas, size=(241, 320)
+                )
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
-            .report_action(self.picture)
+            .report_action(self.pictures)
 
     @api.multi
     def get_permision(self):
@@ -242,20 +250,17 @@ class StockPicking(models.Model):
             if i.name == "Despachos":
                 self.is_dispatcher = 1
 
-
     @api.multi
     def get_type_of_transfer(self):
         self.type_of_transfer = \
             dict(self._fields['type_of_transfer_list'].selection).get(self.type_of_transfer_list)
         return self.type_of_transfer
 
-
     @api.one
     @api.depends('tare_container_weight_dispatch', 'container_weight')
     def compute_vgm_weight(self):
         self.vgm_weight_dispatch = \
             self.tare_container_weight_dispatch + self.container_weight
-
 
     @api.one
     def compute_elapsed_time(self):
@@ -267,11 +272,9 @@ class StockPicking(models.Model):
         else:
             self.elapsed_time = '00:00:00'
 
-
     def _get_hours(self, init_date, finish_date):
         diff = str((finish_date - init_date))
         return diff.split('.')[0]
-
 
     @api.multi
     @api.depends('freight_value', 'safe_value')
@@ -293,7 +296,6 @@ class StockPicking(models.Model):
 
             item.total_value = (prices * qtys) + item.freight_value + item.safe_value
 
-
     @api.multi
     @api.depends('total_value')
     def _compute_value_per_kilogram(self):
@@ -304,14 +306,12 @@ class StockPicking(models.Model):
             if qty_total > 0:
                 item.value_per_kilogram = item.total_value / qty_total
 
-
     @api.multi
     @api.depends('agent_id')
     def _compute_total_commission(self):
         print('')
         # cambiar amount_total
         # self.total_commission = (self.agent_id.commission / 100) * self.amount_total
-
 
     @api.multi
     # @api.depends('contract_id')

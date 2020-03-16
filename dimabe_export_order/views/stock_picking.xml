@@ -95,10 +95,21 @@
                                         <field name="dus_number"/>
                                         <field name="sell_shipping"/>
                                     </group>
+
                                 </group>
                             </group>
                             <group string="Fotos de Camión" style="width:100%%;">
                                 <field name="picture" widget="many2many_binary"/>
+                            </group>
+                            <group>
+                                <field name="pictures">
+                                    <tree editable="bottom" edit="True">
+                                        <field name="datas_fname" readonly="1"/>
+                                        <field name="counter"/>
+                                    </tree>
+                                </field>
+                            </group>
+                            <group>
                                 <button string="Crear Reporte" name="generate_report" type="object"/>
                             </group>
                         </group>

@@ -5,7 +5,9 @@ import os
 class IrAttachment(models.Model):
     _inherit = "ir.attachment"
 
-    counter = fields.Integer("Contador")
+    counter = fields.Integer("Contador",nullable=True)
+
+    stock_picking_id = fields.Integer()
 
     @api.model_create_multi
     def create(self, vals_list):
