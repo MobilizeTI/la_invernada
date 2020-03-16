@@ -7,10 +7,6 @@ class IrAttachment(models.Model):
 
     counter = fields.Integer("Contador")
 
-    to_stock_picking = fields.Boolean("Esta para stock picking",default=True)
-
-    related_stock_picking = fields.Many2one("stock.picking")
-
     @api.model_create_multi
     def create(self, vals_list):
         for values in vals_list:

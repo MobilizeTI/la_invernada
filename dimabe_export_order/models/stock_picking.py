@@ -228,7 +228,6 @@ class StockPicking(models.Model):
     @api.onchange('picture')
     def format_report(self):
         for item in self.picture:
-            counters = item.mapped('counter')
             if not item.counter:
                 item.counter = self.counter
             if item.counter >= 9:
