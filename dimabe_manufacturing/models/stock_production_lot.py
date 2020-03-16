@@ -112,7 +112,7 @@ class StockProductionLot(models.Model):
 
     )
 
-    reception_net_weight = fields.Integer(
+    reception_net_weight = fields.Float(
         'kg. Neto',
         related='stock_picking_id.net_weight'
     )
