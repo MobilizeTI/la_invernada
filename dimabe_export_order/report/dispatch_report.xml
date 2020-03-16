@@ -476,6 +476,7 @@
                     <t t-if="o.counter == 3 or o.counter == 6 or o.counter >= 9">
                         <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
                         />
+                        <span t-field="o.counter"/>
                         <br/>
                     </t>
                     <t t-else="">
