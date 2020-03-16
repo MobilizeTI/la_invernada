@@ -199,7 +199,7 @@ class DriedUnpelledHistory(models.Model):
                 res.out_product_id = unpelled_dried_id.out_product_id.id
                 res.out_lot_id = unpelled_dried_id.out_lot_id
                 res.oven_use_ids = unpelled_dried_id.oven_use_ids.filtered(
-                    lambda a: a.finish_date
+                    lambda a: a.ready_to_close
                 )
                 res.total_in_weight = unpelled_dried_id.total_in_weight
                 res.total_out_weight = unpelled_dried_id.total_out_weight
