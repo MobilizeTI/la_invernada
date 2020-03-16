@@ -238,7 +238,9 @@ class StockPicking(models.Model):
     def set_counter(self):
         if self.counter <= len(self.picture):
             index = self.counter - 1
-            self.picture[index].counter = self.counter + 1
+            self.picture[index].update({
+                'counter':self.counter
+            })
 
     @api.multi
     def get_permision(self):
