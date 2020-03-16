@@ -262,6 +262,8 @@ class UnpelledDried(models.Model):
                 lambda a: a.ready_to_close
             )
 
+            raise models.ValidationError(oven_use_to_close_ids)
+
             for lot_id in oven_use_to_close_ids.mapped('used_lot_id'):
                 oven_use_id = item.oven_use_ids.filtered(
                     lambda a: not a.ready_to_close and len(a.dried_oven_ids) == 1 and lot_id == a.used_lot_id
