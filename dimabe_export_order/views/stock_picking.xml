@@ -99,15 +99,14 @@
                                 </group>
                             </group>
                             <group string="Fotos de Camión" style="width:100%%;">
-                                <field name="picture" widget="many2many_binary" options="{'picture_field': 'picture.datas'}"/>
-                                <group>
-                                    <field name="pictures">
-                                        <tree editable="bottom">
-                                            <field name="datas_fname"/>
-                                            <field name="counter"/>
-                                        </tree>
-                                    </field>
-                                </group>
+                                <field name="picture" widget="many2many_binary"
+                                       options="{'picture_field': 'picture.datas'}"/>
+                                <field name="pictures">
+                                    <tree editable="bottom">
+                                        <field name="datas_fname"/>
+                                        <field name="counter"/>
+                                    </tree>
+                                </field>
                                 <button string="Crear Reporte" name="generate_report" type="object"/>
                             </group>
                         </group>
