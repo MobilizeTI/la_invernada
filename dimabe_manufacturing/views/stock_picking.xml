@@ -7,6 +7,9 @@
 
       <button name="action_assign" position="replace"/>
       <button name="do_unreserve" position="replace"/>
+      <field name="origin" position="attributes">
+        <attribute name="string">Pedido de Venta</attribute>
+      </field>
 
       <page name="note" position="after">
         <page name="packing_list" string="Packing List"

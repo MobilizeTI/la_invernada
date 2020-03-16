@@ -4,7 +4,7 @@ from odoo import fields, models, api
 class StockProductionLot(models.Model):
     _inherit = 'stock.production.lot'
     _sql_constraints = [
-        ('name_uniq', 'UNIQUE(name)', 'ya existe este lote en el sistema')
+        ('name_uniq', 'UNIQUE(name)', 'el lote que intenta crear, ya existe en el sistema')
     ]
 
     unpelled_state = fields.Selection([
