@@ -482,6 +482,7 @@
                     <t t-else="">
                         <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
                         />
+                        <span t-field="o.counter"/>
                     </t>
                     <t t-if="docs[-1].id == o.id">
                         <span style="style='page-break-before:avoid;'"/>
