@@ -162,9 +162,7 @@ class StockPicking(models.Model):
         related="picture.datas_fname"
     )
 
-    counter = fields.Selection([
-
-    ])
+    counter = fields.Integer(string="Position en el informe")
 
     type_of_transfer_list = fields.Selection(
         [('1', 'Operacion constituye venta'),
