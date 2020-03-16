@@ -223,13 +223,13 @@ class StockPicking(models.Model):
     @api.multi
     def generate_report(self):
         for item in self.picture:
-            if not item.counter:
-                item.update({
-                    'counter': self.counter,
-                    'stock_picking_id': self.id
-                })
-            counters = self.env['ir.attachment'].search([('stock_picking_id','=',self.id)])
-            models._logger.error(counters)
+            # if not item.counter:
+            #     item.update({
+            #         'counter': self.counter
+            #     })
+            # else:
+            #     if item == self.counter:
+            #         raise models.ValidationError('Esta posicion ya esta ocupada')
             if item.counter >= 9:
                 item.datas = tools.image_resize_image_medium(
                     item.datas, size=(229, 305)
@@ -241,6 +241,15 @@ class StockPicking(models.Model):
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
             .report_action(self.picture)
 
+    @api.onchange('picture')
+    def on_change_picture(self):
+        if not item.counter:
+            item.update({
+                'counter': self.counter
+            })
+        else:
+            if item == self.counter:
+                raise models.ValidationError('Esta posicion ya esta ocupada')
 
     @api.multi
     def get_permision(self):
