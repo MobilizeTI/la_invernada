@@ -262,8 +262,6 @@ class UnpelledDried(models.Model):
                 lambda a: a.ready_to_close
             )
 
-            raise models.ValidationError(oven_use_to_close_ids)
-
             for lot_id in oven_use_to_close_ids.mapped('used_lot_id'):
                 oven_use_id = item.oven_use_ids.filtered(
                     lambda a: not a.ready_to_close and len(a.dried_oven_ids) == 1 and lot_id == a.used_lot_id
@@ -332,11 +330,12 @@ class UnpelledDried(models.Model):
 
             oven_use_to_close_ids.mapped('dried_oven_ids').set_is_in_use(False)
 
-            for oven_use_id in oven_use_to_close_ids:
-                oven_use_id.write({
-                    'history_id': history_id.id,
-                    'unpelled_dried_id': None
-                })
+            oven_use_to_close_ids.write({
+                'history_id': history_id.id,
+                'unpelled_dried_id': None
+            })
+
+            raise models.ValidationError(oven_use_to_close_ids)
 
             item.create_out_lot()
 
