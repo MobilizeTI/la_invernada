@@ -1,4 +1,5 @@
 from odoo import models, api, fields
+from odoo.addons import decimal_precision as dp
 from datetime import datetime
 
 
@@ -8,20 +9,28 @@ class StockPicking(models.Model):
 
     guide_number = fields.Integer('Número de Guía')
 
-    weight_guide = fields.Integer(
+    weight_guide = fields.Float(
         'Kilos Guía',
         compute='_compute_weight_guide',
-        store=True
+        store=True,
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
-    gross_weight = fields.Integer('Kilos Brutos')
+    gross_weight = fields.Float(
+        'Kilos Brutos',
+        digits=dp.get_precision('Product Unit of Measure')
+    )
 
-    tare_weight = fields.Integer('Peso Tara')
+    tare_weight = fields.Float(
+        'Peso Tara',
+        digits=dp.get_precision('Product Unit of Measure')
+    )
 
-    net_weight = fields.Integer(
+    net_weight = fields.Float(
         'Kilos Netos',
         compute='_compute_net_weight',
-        store=True
+        store=True,
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     canning_weight = fields.Float(
@@ -240,12 +249,6 @@ class StockPicking(models.Model):
                         if mp_move.product_id.categ_id.is_mp:
                             total_qty = mp_move.picking_id.get_canning_move().product_uom_qty
                             calculated_weight = stock_move_line.qty_done / total_qty
-
-                            raise models.ValidationError('{} / {} = {}'.format(
-                                stock_move_line.qty_done,
-                                total_qty,
-                                calculated_weight
-                            ))
 
                             if stock_move_line.lot_id:
 
