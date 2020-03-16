@@ -159,9 +159,9 @@ class StockProductionLotSerial(models.Model):
 
 
 
-            move_line = stock_move.active_move_line_ids.filtered(
-                lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.display_weight
-            )
+            move_line = stock_move.active_move_line_ids#.filtered(
+            #     lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.display_weight
+            # )
 
             stock_quant = item.stock_production_lot_id.get_stock_quant()
             stock_quant.sudo().update({
