@@ -158,6 +158,12 @@ class StockPicking(models.Model):
         string="Fotos Camión"
     )
 
+    pictures = fields.Many2many(
+        "ir.attachment",
+        compute = "get_pictures",
+        string="Datos Fotos"
+    )
+
     file = fields.Char(
         related="picture.datas_fname"
     )
@@ -219,6 +225,10 @@ class StockPicking(models.Model):
     arrival_weight = fields.Float('Peso de Entrada')
 
     departure_weight = fields.Float('Peso de Salida')
+
+    @api.multi
+    def get_pictures(self):
+        self.pictures = self.picture
 
     @api.multi
     def generate_report(self):

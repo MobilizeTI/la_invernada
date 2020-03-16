@@ -101,7 +101,7 @@
                             <group string="Fotos de Camión" style="width:100%%;">
                                 <field name="picture" widget="many2many_binary" options="{'picture_field': 'picture.datas'}"/>
                                 <group>
-                                    <field name="picture">
+                                    <field name="pictures">
                                         <tree editable="bottom">
                                             <field name="datas_fname"/>
                                             <field name="counter"/>
