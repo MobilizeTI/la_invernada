@@ -237,7 +237,7 @@ class StockPicking(models.Model):
     @api.onchange('counter')
     def set_counter(self):
         index = self.counter - 1
-        self.picture[index].counter = self.counter
+        self.picture[index].counter = self.counter + 1
 
 
     @api.multi
