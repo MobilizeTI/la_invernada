@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
+    _order = 'date desc'
 
     guide_number = fields.Integer('Número de Guía')
 
@@ -47,7 +48,6 @@ class StockPicking(models.Model):
         store=True
     )
 
-    carrier_id = fields.Many2one('custom.carrier', 'Conductor')
     
 
     truck_in_date = fields.Datetime(
@@ -67,6 +67,8 @@ class StockPicking(models.Model):
 
     quality_weight = fields.Float('Kilos Calidad')
 
+    carrier_id = fields.Many2one('custom.carrier', 'Conductor')
+
     carrier_rut = fields.Char(
         'Rut',
         related='carrier_id.rut'
@@ -77,40 +79,16 @@ class StockPicking(models.Model):
         related='carrier_id.cell_number'
     )
 
-   # carrier_truck_patent = fields.Char(
-   #     'Patente Camión',
-   #     related='carrier_id.truck_patent'
-   # )
+    carrier_truck_patent = fields.Char(
+        'Patente Camión',
+        related='carrier_id.truck_patent'
+    )
 
-   # carrier_cart_patent = fields.Char(
-   #     'Patente Carro',
-   #     related='carrier_id.cart_patent'
-   # )
+    carrier_cart_patent = fields.Char(
+        'Patente Carro',
+        related='carrier_id.cart_patent'
+    )
 
-    truck_id = fields.Many2one(
-        'custom.transport',
-        'Patente de camión',
-         domain=[('is_truck', '=', False)] #True
-     )
-
-    cart_id = fields.Many2one(
-        'custom.transport',
-        'Patente de carro',
-        domain=[('is_truck', '=', True)] #False
-     )
-
-  #  transport_patent = fields.Char(
-  #      'Patente',
-  #       related='transport_id.patent'
-  #       )
-
-  #  transport_is_truck = fields.Boolean(
-  #      'Es camión?',
-  #       related='transport_id.is_truck'
-  #       )
-
-    #transport_is_truck = fields.Boolean(string='Es camión?', related="carrier")
-    
 
     hr_alert_notification_count = fields.Integer('Conteo de notificación de retraso de camión')
 
@@ -180,9 +158,14 @@ class StockPicking(models.Model):
     @api.one
     @api.depends('reception_type_selection', 'picking_type_id')
     def _compute_is_mp_reception(self):
+        models._logger.error('{} {}'.format(self.reception_type_selection,self.picking_type_id))
+        models._logger.error('{} {}'.format(self.picking_type_id.warehouse_id.name,
+                                            self.picking_type_id.name))
+
         self.is_mp_reception = self.reception_type_selection == 'mp' or\
+                               self.picking_type_id.warehouse_id.name and\
                                'Materia Prima' in self.picking_type_id.warehouse_id.name and \
-                               'Recepciones' in self.picking_type_id.name
+                               self.picking_type_id.name and 'Recepciones' in self.picking_type_id.name
 
     @api.one
     @api.depends('production_net_weight', 'tare_weight', 'gross_weight', 'move_ids_without_package')

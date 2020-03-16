@@ -23,7 +23,7 @@
               <field name="stock_production_lot_id" readonly="1"/>
               <field name="serial_number" readonly="1"/>
               <field name="display_weight" readonly="1"/>
-              <field name="consumed" invisible="1"/>
+              <field name="consumed" groups="base.group_system"/>
             </tree>
           </field>
         </xpath>

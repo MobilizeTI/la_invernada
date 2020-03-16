@@ -22,20 +22,51 @@ class StockPicking(models.Model):
 
     quantity_requested = fields.Float(related='move_ids_without_package.product_uom_qty')
 
+    packing_list_ids = fields.One2many(
+        'stock.production.lot.serial',
+        compute='_compute_packing_list_ids'
+    )
+
+    product_search_id = fields.Many2one(
+        'product.product',
+        string='Buscar Producto',
+    )
+
+    potential_lot_serial_ids = fields.One2many(
+        'stock.production.lot.serial',
+        compute='_compute_potential_lot_serial_ids',
+        string='Stock Disponibles',
+    )
+
+    @api.multi
+    @api.depends('product_search_id')
+    def _compute_potential_lot_serial_ids(self):
+        for item in self:
+            domain = [
+                ('stock_product_id', 'in', item.move_ids_without_package.mapped('product_id.id')),
+                ('consumed', '=', False),
+                ('reserved_to_stock_picking_id', '=', False)
+            ]
+            if item.product_search_id:
+                domain += [('stock_product_id', '=', item.product_search_id.id)]
+            item.potential_lot_serial_ids = self.env['stock.production.lot.serial'].search(domain)
+
+    @api.multi
+    def _compute_packing_list_ids(self):
+        for item in self:
+            reserved_serial_ids = self.env['stock.production.lot.serial'].search([
+                ('reserved_to_stock_picking_id', '=', item.id)
+            ])
+            item.packing_list_ids = reserved_serial_ids
+
     @api.multi
     def return_action(self):
-        procurement_group = self.env['procurement.group'].search([
-            ('name', '=', self.origin)
-        ])
-
-        if procurement_group:
-            procurement_group = procurement_group[0]
 
         context = {
             'default_product_id': self.product_id.id,
             'default_product_uom_qty': self.quantity_requested,
             'default_origin': self.name,
-            'default_procurement_group_id': procurement_group.id,
+            'default_stock_picking_id': self.id,
             'default_client_search_id': self.partner_id.id,
             'default_requested_qty': self.quantity_requested
         }
@@ -50,3 +81,13 @@ class StockPicking(models.Model):
             "target": "current",
             "context": context
         }
+
+    @api.multi
+    def button_validate(self):
+
+        for serial in self.packing_list_ids:
+            serial.update({
+                'consumed': True
+            })
+
+        return super(StockPicking, self).button_validate()

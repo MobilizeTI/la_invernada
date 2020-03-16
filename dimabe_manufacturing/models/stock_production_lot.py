@@ -59,7 +59,7 @@ class StockProductionLot(models.Model):
                         serial_ids.append(serial.id)
                 else:
                     new_serial = item.env['stock.production.lot.serial'].create({
-                        'stock_production_lot_serial_id': item.id,
+                        'stock_production_lot_id': item.id,
                         'display_weight': item.standard_weight,
                         'serial_number': item.name + tmp[-3:],
                         'belong_to_prd_lot': True
@@ -70,3 +70,9 @@ class StockProductionLot(models.Model):
             ).mapped('id'))
 
             item.stock_production_lot_serial_ids = [(6, 0, serial_ids)]
+
+    @api.model
+    def get_stock_quant(self):
+        return self.quant_ids.filtered(
+            lambda a: a.location_id.name == 'Stock'
+        )

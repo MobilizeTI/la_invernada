@@ -17,12 +17,14 @@ class StockPickingController(http.Controller):
                 'DispatchGuideNumber': res.guide_number,
                 'ReceptionDate': res.scheduled_date,
                 'ReceptionKgs': res.net_weight,
-                'ContainerType': res.get_canning_move().product_id.name,
+                'ContainerType': res.get_canning_move().product_id.display_name,
+                'ContainerWeightAverage': res.avg_unitary_weight,
                 'Season': res.scheduled_date.year,
-                'tare': res.tare_weight,
+                'Tare': res.tare_weight,
                 'Warehouse': res.location_dest_id.name,
                 'QualityWeight': res.quality_weight,
                 'ContainerQuantity': res.get_canning_move().quantity_done,
+                'ArticleCode': res.get_mp_move().product_id.default_code, 
                 'ArticleDescription': res.get_mp_move().product_id.display_name
             }
         else:
