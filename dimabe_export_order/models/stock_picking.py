@@ -226,7 +226,7 @@ class StockPicking(models.Model):
             if not item.counter:
                 item.update({
                     'counter': self.counter,
-                    'stock_picking_id.id': self.id
+                    'stock_picking_id': self.id
                 })
             counters = self.env['ir.attachment'].search([('stock_picking_id.id','=',self.id)]).mapped('counter')
             models._logger.error(counters)
