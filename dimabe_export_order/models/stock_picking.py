@@ -153,7 +153,7 @@ class StockPicking(models.Model):
         string="Numero DUS"
     )
 
-    picture = fields.One2many(
+    picture = fields.Many2many(
         "ir.attachment",
         string="Fotos Camión"
     )

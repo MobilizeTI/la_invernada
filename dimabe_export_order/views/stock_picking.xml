@@ -99,8 +99,7 @@
                                 </group>
                             </group>
                             <group string="Fotos de Camión" style="width:100%%;">
-                                <field name="picture"/>
-                                <field name="counter"/>
+                                <field name="picture" widget="handle"/>
                                 <button string="Crear Reporte" name="generate_report" type="object"/>
                             </group>
                         </group>
