@@ -474,13 +474,13 @@
             <div class="page">
                 <t t-foreach="docs.sorted(key=lambda x: x.counter)" t-as="o">
                     <t t-if="o.counter == 3 or o.counter == 6 or o.counter == 9">
-                            <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
-                            />
-                            <br/>
+                        <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
+                        />
+                        <br/>
                     </t>
                     <t t-else="">
-                            <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
-                            />
+                        <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
+                        />
                     </t>
                     <t t-if="docs[-1].id == o.id">
                         <span style="style='page-break-before:avoid;'"/>
@@ -497,10 +497,10 @@
         <field name="orientation">Portrait</field>
         <field name="page_height">0</field>
         <field name="page_width">0</field>
-        <field name="margin_top">5</field>
+        <field name="margin_top">0</field>
         <field name="margin_bottom">0</field>
-        <field name="margin_left">5</field>
-        <field name="margin_right">5</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
         <field name="header_line" eval="False"/>
         <field name="header_spacing">0</field>
         <field name="footer_line" eval="False"/>
