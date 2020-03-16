@@ -100,12 +100,16 @@
                             </group>
                             <group string="Fotos de Camión" style="width:100%%;">
                                 <field name="picture" widget="many2many_binary"/>
+                            </group>
+                            <group>
                                 <field name="pictures">
-                                    <tree edit="true" editable="top">
+                                    <tree>
                                         <field name="datas_fname" readonly="1"/>
                                         <field name="counter"/>
                                     </tree>
                                 </field>
+                            </group>
+                            <group>
                                 <button string="Crear Reporte" name="generate_report" type="object"/>
                             </group>
                         </group>
