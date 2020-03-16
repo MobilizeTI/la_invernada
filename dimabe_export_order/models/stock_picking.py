@@ -155,13 +155,15 @@ class StockPicking(models.Model):
 
     picture = fields.Many2many(
         "ir.attachment",
-        string="Fotos Camión"
+        string="Fotos Camión",
+        store = False,
     )
 
     pictures = fields.Many2many(
         "ir.attachment",
-        compute = "get_pictures",
+        compute="get_pictures",
         readonly=False,
+        store=True,
         string="Datos Fotos"
     )
 
@@ -242,7 +244,6 @@ class StockPicking(models.Model):
                 )
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
             .report_action(self.pictures)
-
 
     @api.multi
     def get_permision(self):
