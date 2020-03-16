@@ -461,6 +461,9 @@
                     <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
                          />
                 </t>
+                <t t-if="docs[-1].id == o.id">
+                    <span style="style='page-break-before:always;'"/>
+                </t>
             </t>
         </t>
     </template>
