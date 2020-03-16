@@ -162,7 +162,19 @@ class StockPicking(models.Model):
         related="picture.datas_fname"
     )
 
-    counter = fields.Integer(string="Position en el informe")
+    counter = fields.Selection([('1', '1'),
+                                ('2', '2'),
+                                ('3', '3'),
+                                ('4', '4'),
+                                ('5', '5'),
+                                ('6', '6'),
+                                ('7', '7'),
+                                ('8', '8'),
+                                ('9', '9'),
+                                ('10', '10'),
+                                ('11', '11'),
+                                ('12', '12')],
+                               string="Tipo de Traslado")
 
     type_of_transfer_list = fields.Selection(
         [('1', 'Operacion constituye venta'),
@@ -240,7 +252,6 @@ class StockPicking(models.Model):
                 )
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
             .report_action(self.picture)
-
 
     @api.multi
     def get_permision(self):
