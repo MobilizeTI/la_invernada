@@ -222,11 +222,6 @@ class StockPicking(models.Model):
 
     @api.multi
     def generate_report(self):
-        return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
-        .report_action(self.picture)
-
-    @api.onchange('picture')
-    def format_report(self):
         for item in self.picture:
             if not item.counter:
                 item.counter = self.counter
@@ -238,6 +233,9 @@ class StockPicking(models.Model):
                 item.datas = tools.image_resize_image_medium(
                     item.datas, size=(241, 320)
                 )
+        return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
+        .report_action(self.picture)
+
 
     @api.multi
     def get_permision(self):
