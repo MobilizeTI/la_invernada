@@ -77,7 +77,7 @@ class MrpProduction(models.Model):
     def get_product_bom(self):
         for item in self:
             item.update({
-                'materials':item.bom_id.bom_line_ids.mapped('product_id')
+                'materials': item.bom_id.bom_line_ids.mapped('product_id')
             })
 
     @api.multi
