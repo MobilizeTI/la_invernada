@@ -224,8 +224,10 @@ class StockPicking(models.Model):
     def generate_report(self):
         for item in self.picture:
             item.update({
-                'counter':self.counter
+                'counter':self.counter,
+                'stock_picking_id':self.id
             })
+
             if item.counter >= 9:
                 item.datas = tools.image_resize_image_medium(
                     item.datas, size=(229, 305)
