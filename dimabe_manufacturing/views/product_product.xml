@@ -1,0 +1,21 @@
+<odoo>
+    <record id="product_variant_easy_edit_view_inherit" model="ir.ui.view">
+        <field name="name">Formulario Producto</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='weight']/group[@name='weight']/div[1]" position="after">
+                <field name="is_standard_weight" />
+            </xpath>
+            <xpath expr="//field[@name='weight']" position="attributes">
+                <attribute name="attrs">{'invisible':[('is_standard_weight','!=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='weight_uom_name']" position="attributes">
+                <attribute name="attrs">{'invisible':[('is_standard_weight','!=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//group[@name='weight']/label[2]" position="attributes">
+                <attribute name="attrs">{'invisible':[('is_standard_weight','!=', True)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

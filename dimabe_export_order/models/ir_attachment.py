@@ -1,14 +1,18 @@
-from odoo import models,fields,api
+from odoo import models, fields, api
+import os
+
 
 class IrAttachment(models.Model):
     _inherit = "ir.attachment"
-    _sort = "create_date asc"
 
+    counter = fields.Integer("Contador")
 
-
-
-    @api.multi
-    def get_full_url(self):
-        self.ensure_one()
-        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
-        return base_url
+    @api.model_create_multi
+    def create(self, vals_list):
+        for values in vals_list:
+            for field in ('file_size', 'checksum'):
+                values.pop(field, False)
+            values = self._check_contents(values)
+            values = self._make_thumbnail(values)
+            self.browse().check('write', values=values)
+        return super(IrAttachment, self).create(vals_list)

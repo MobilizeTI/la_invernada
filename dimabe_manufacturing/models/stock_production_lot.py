@@ -3,6 +3,9 @@ from odoo import fields, models, api
 
 class StockProductionLot(models.Model):
     _inherit = 'stock.production.lot'
+    _sql_constraints = [
+        ('name_uniq', 'UNIQUE(name)', 'ya existe este lote en el sistema')
+    ]
 
     unpelled_state = fields.Selection([
         ('waiting', 'En Espera'),
@@ -12,6 +15,10 @@ class StockProductionLot(models.Model):
         'Estado',
     )
 
+    can_add_serial = fields.Boolean(
+        'Puede Agregar Series'
+    )
+
     product_variety = fields.Char(
         'Variedad',
         compute='_compute_product_variety'
@@ -19,27 +26,17 @@ class StockProductionLot(models.Model):
 
     producer_id = fields.Many2one(
         'res.partner',
-        compute='_compute_reception_data',
-        search='_search_producer_id'
+        related='stock_picking_id.partner_id'
     )
 
-    reception_guide_number = fields.Char(
+    reception_guide_number = fields.Integer(
         'Guía',
-        compute='_compute_reception_data',
-        search='_search_reception_guide_number'
+        related='stock_picking_id.guide_number'
     )
 
-    reception_state = fields.Selection([
-        ('draft', 'Borrador'),
-        ('waiting', 'Esperando Otra Operación'),
-        ('confirmed', 'En Espera'),
-        ('assigned', 'Preparado'),
-        ('done', 'Realizado'),
-        ('cancel', 'Cancelado'),
-    ],
+    reception_state = fields.Selection(
         string='Estado de la reecepción',
-        compute='_compute_reception_data',
-        search='_search_reception_state'
+        related='stock_picking_id.state'
     )
 
     product_canning = fields.Char(
@@ -49,9 +46,15 @@ class StockProductionLot(models.Model):
 
     is_prd_lot = fields.Boolean('Es Lote de salida de Proceso')
 
-    is_standard_weight = fields.Boolean('Series Peso Estandar')
+    is_standard_weight = fields.Boolean(
+        'Series Peso Estandar',
+        related='product_id.is_standard_weight'
+    )
 
-    standard_weight = fields.Float('Peso Estandar')
+    standard_weight = fields.Float(
+        'Peso Estandar',
+        related='product_id.weight'
+    )
 
     qty_standard_serial = fields.Integer('Cantidad de Series')
 
@@ -72,6 +75,11 @@ class StockProductionLot(models.Model):
         compute='_compute_total_serial'
     )
 
+    count_serial = fields.Integer(
+        'Total Series',
+        compute='_compute_count_serial'
+    )
+
     available_total_serial = fields.Float(
         'Total Disponible',
         compute='_compute_available_total_serial',
@@ -82,7 +90,10 @@ class StockProductionLot(models.Model):
 
     is_reserved = fields.Boolean('Esta reservado?', compute='reserved', default=False)
 
-    label_producer_id = fields.Many2one('res.partner','Productor')
+    label_producer_id = fields.Many2one(
+        'res.partner',
+        'Productor'
+    )
 
     context_picking_id = fields.Integer(
         'picking del contexto',
@@ -97,23 +108,23 @@ class StockProductionLot(models.Model):
     picking_type_id = fields.Many2one(
         'stock.picking.type',
         string='Bodega',
-        compute='_compute_reception_data'
+        related='stock_picking_id.picking_type_id'
 
     )
 
-    reception_net_weight = fields.Float(
+    reception_net_weight = fields.Integer(
         'kg. Neto',
-        compute='_compute_reception_data'
+        related='stock_picking_id.net_weight'
     )
 
     reception_date = fields.Datetime(
         'Fecha Recepción',
-        compute='_compute_reception_data'
+        related='stock_picking_id.truck_in_date'
     )
 
     reception_elapsed_time = fields.Char(
         'Hr Camión en Planta',
-        compute='_compute_reception_data'
+        related='stock_picking_id.elapsed_time'
     )
 
     oven_init_active_time = fields.Integer(
@@ -137,6 +148,39 @@ class StockProductionLot(models.Model):
         'Hr en Secador',
         related='oven_use_ids.active_seconds'
     )
+
+    stock_picking_id = fields.Many2one(
+        'stock.picking',
+        'Recepción'
+    )
+
+    all_pallet_ids = fields.One2many(
+        'manufacturing.pallet',
+        compute='_compute_all_pallet_ids',
+        string='pallets'
+    )
+
+    @api.onchange('label_producer_id')
+    def _onchange_label_producer_id(self):
+
+        self.stock_production_lot_serial_ids.write({
+            'producer_id': self.label_producer_id.id
+        })
+
+    @api.multi
+    def _compute_all_pallet_ids(self):
+        for item in self:
+            item.all_pallet_ids = item.stock_production_lot_serial_ids.mapped('pallet_id')
+
+    @api.multi
+    def _compute_count_serial(self):
+        for item in self:
+            item.count_serial = len(item.stock_production_lot_serial_ids)
+
+    @api.multi
+    def print_all_serial(self):
+        return self.env.ref('dimabe_manufacturing.action_print_all_serial') \
+            .report_action(self.stock_production_lot_serial_ids)
 
     @api.multi
     def _compute_product_variety(self):
@@ -203,36 +247,7 @@ class StockProductionLot(models.Model):
         for item in self:
             stock_picking = self.env['stock.picking'].search([('name', '=', item.name)])
             if stock_picking:
-                item.producer_id = stock_picking[0].partner_id
-                item.reception_guide_number = stock_picking[0].guide_number
-                item.reception_state = stock_picking[0].state
                 item.product_canning = stock_picking[0].get_canning_move().name
-                item.picking_type_id = stock_picking[0].picking_type_id
-                item.reception_net_weight = stock_picking[0].net_weight
-                item.reception_date = stock_picking[0].truck_in_date
-                item.reception_elapsed_time = stock_picking[0].elapsed_time
-
-    def _search_producer_id(self, operator, value):
-        stock_picking_ids = self.env['stock.picking'].search([
-            ('partner_id', operator, value),
-            ('picking_type_code', '=', 'incoming')
-        ])
-
-        return [('name', 'in', stock_picking_ids.mapped('name'))]
-
-    @api.multi
-    def _search_reception_guide_number(self, operator, value):
-        stock_picking_ids = self.env['stock.picking'].search([
-            ('guide_number', operator, value),
-            ('picking_type_code', '=', 'incoming')
-        ])
-        return [('name', 'in', stock_picking_ids.mapped('name'))]
-
-    def _search_reception_state(self, operator, value):
-        stock_picking_ids = self.env['stock.picking'].search([
-            ('state', operator, value)
-        ])
-        return [('name', 'in', stock_picking_ids.mapped('name'))]
 
     @api.multi
     def _compute_total_serial(self):
@@ -329,41 +344,35 @@ class StockProductionLot(models.Model):
         for item in self:
             res = super(StockProductionLot, self).write(values)
             counter = 0
-        if not item.is_standard_weight:
-            for serial in item.stock_production_lot_serial_ids:
-                counter += 1
-                tmp = '00{}'.format(counter)
-                serial.serial_number = item.name + tmp[-3:]
-        return res
+            if not item.is_standard_weight:
+                for serial in item.stock_production_lot_serial_ids:
+                    counter += 1
+                    tmp = '00{}'.format(counter)
+                    serial.serial_number = item.name + tmp[-3:]
+            return res
 
     @api.multi
-    def generate_standard_serial(self):
+    def generate_standard_pallet(self):
         for item in self:
-            serial_ids = []
-        for counter in range(item.qty_standard_serial):
-            tmp = '00{}'.format(counter + 1)
-            serial = item.stock_production_lot_serial_ids.filtered(
-                lambda a: a.serial_number == item.name + tmp[-3:]
-            )
-            if serial:
-                if not serial.consumed:
-                    serial.update({
-                        'display_weight': item.standard_weight
-                    })
-                    serial_ids.append(serial.id)
-            else:
-                new_serial = item.env['stock.production.lot.serial'].create({
-                    'stock_production_lot_id': item.id,
-                    'display_weight': item.standard_weight,
-                    'serial_number': item.name + tmp[-3:],
-                    'belong_to_prd_lot': True
-                })
-                serial_ids.append(new_serial.id)
-        serial_ids += list(item.stock_production_lot_serial_ids.filtered(
-            lambda a: a.consumed
-        ).mapped('id'))
 
-        item.stock_production_lot_serial_ids = [(6, 0, serial_ids)]
+            pallet = self.env['manufacturing.pallet'].create({
+                'producer_id': item.label_producer_id.id
+            })
+
+            for counter in range(item.qty_standard_serial):
+                tmp = '00{}'.format(1 + len(item.stock_production_lot_serial_ids))
+
+                item.env['stock.production.lot.serial'].create({
+                    'stock_production_lot_id': item.id,
+                    'display_weight': item.product_id.weight,
+                    'serial_number': item.name + tmp[-3:],
+                    'belongs_to_prd_lot': True,
+                    'pallet_id': pallet.id
+                })
+
+            pallet.update({
+                'state': 'close'
+            })
 
     @api.model
     def get_stock_quant(self):

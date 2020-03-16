@@ -19,6 +19,10 @@ class ProductCategory(models.Model):
         compute='_compute_is_canning'
     )
 
+    with_suffix = fields.Boolean(
+        'Lote con Sufijo'
+    )
+
     @api.one
     def _compute_is_mp(self):
         self.is_mp = 'Materia Prima' in self.name

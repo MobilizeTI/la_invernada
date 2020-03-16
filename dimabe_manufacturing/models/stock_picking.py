@@ -132,10 +132,13 @@ class StockPicking(models.Model):
     def action_confirm(self):
         res = super(StockPicking, self).action_confirm()
         for stock_picking in self:
+            mp_move = stock_picking.get_mp_move()
             if stock_picking.picking_type_id.require_dried:
-                mp_move = stock_picking.get_mp_move()
                 for move_line in mp_move.move_line_ids:
                     move_line.lot_id.unpelled_state = 'waiting'
+            mp_move.move_line_ids.mapped('lot_id').write({
+                'stock_picking_id': stock_picking.id
+            })
         return res
 
     @api.multi

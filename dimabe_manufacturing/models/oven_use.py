@@ -39,7 +39,7 @@ class OvenUse(models.Model):
         related='used_lot_id.producer_id'
     )
 
-    lot_guide_number = fields.Char(
+    lot_guide_number = fields.Integer(
         'N° Guía',
         related='used_lot_id.reception_guide_number'
     )
@@ -78,7 +78,7 @@ class OvenUse(models.Model):
         related='history_id.out_serial_count'
     )
 
-    reception_net_weight = fields.Float(
+    reception_net_weight = fields.Integer(
         'Kg Entrada',
         related='used_lot_id.reception_net_weight'
     )
@@ -91,6 +91,12 @@ class OvenUse(models.Model):
     performance = fields.Float(
         'Rendimiento',
         related='history_id.performance'
+    )
+
+    stock_picking_id = fields.Many2one(
+        'stock.picking',
+        related='used_lot_id.stock_picking_id',
+        string='Lote'
     )
 
     @api.multi
@@ -155,9 +161,13 @@ class OvenUse(models.Model):
             if item.finish_active_time == 0:
                 item.finish_active_time = item.finish_date.timestamp()
                 item.active_seconds += item.finish_active_time - item.init_active_time
-            item.dried_oven_ids.update({
-                'is_in_use': False
-            })
+            for dried_oven_id in item.dried_oven_ids:
+                if not item.unpelled_dried_id.oven_use_ids.filtered(
+                    lambda a: a.id != item.id and dried_oven_id in a.dried_oven_ids and not a.finish_date
+                ):
+                    dried_oven_id.update({
+                        'is_in_use': False
+                    })
 
     @api.multi
     def print_oven_label(self):

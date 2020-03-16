@@ -8,6 +8,7 @@
       <!--      <field name="number_next">60100</field>-->
       <field name="company_id" eval="False"/>
     </record>
+<<<<<<< HEAD
 
     <record id="mrp_workorder_view_form_tablet_inherit" model="ir.ui.view">
       <field name="name">tablet producción</field>
@@ -40,7 +41,6 @@
         </xpath>
       </field>
     </record>
-
 
     <record id="mrp_production_workorder_form_view_inherit" model="ir.ui.view">
       <field name="name">formulario order de trabajo</field>

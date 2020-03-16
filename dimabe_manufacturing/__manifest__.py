@@ -50,6 +50,7 @@
         'views/oven_use.xml',
         'views/dried_unpelled_history.xml',
         'views/manufacturing_pallet.xml',
+       'views/product_product.xml',
         'views/stock_picking_type.xml'
     ],
     # only loaded in demonstration mode
