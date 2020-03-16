@@ -226,15 +226,13 @@ class StockPicking(models.Model):
 
     departure_weight = fields.Float('Peso de Salida')
 
-    @api.multi
+    @api.onchange('picture')
     def get_pictures(self):
         self.pictures = self.picture
 
     @api.multi
     def generate_report(self):
-        index = len(self.picture)
-        for item in self.picture:
-
+        for item in self.pictures:
             if item.counter >= 9:
                 item.datas = tools.image_resize_image_medium(
                     item.datas, size=(229, 305)
@@ -245,7 +243,7 @@ class StockPicking(models.Model):
                 )
             index -= 1
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
-            .report_action(self.picture)
+            .report_action(self.pictures)
 
 
     @api.multi
