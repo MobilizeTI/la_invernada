@@ -90,7 +90,10 @@ class StockProductionLot(models.Model):
 
     is_reserved = fields.Boolean('Esta reservado?', compute='reserved', default=False)
 
-    label_producer_id = fields.Many2one('res.partner', 'Productor')
+    label_producer_id = fields.Many2one(
+        'res.partner',
+        'Productor'
+    )
 
     context_picking_id = fields.Integer(
         'picking del contexto',
@@ -156,6 +159,10 @@ class StockProductionLot(models.Model):
         compute='_compute_all_pallet_ids',
         string='pallets'
     )
+
+    @api.onchange('label_producer_id')
+    def _onchange_label_producer_id(self):
+        raise models.ValidationError(self)
 
     @api.multi
     def _compute_all_pallet_ids(self):
