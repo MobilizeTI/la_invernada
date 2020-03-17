@@ -101,7 +101,7 @@ class MrpProduction(models.Model):
     def onchange_client_search_id(self):
         self.search_potential_lot_ids()
 
-    @api.model
+    @api.multi
     def search_potential_lot_ids(self):
         for production in self:
             filtered_lot_ids = production.get_potential_lot_ids()
