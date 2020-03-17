@@ -189,41 +189,46 @@
               </tr>
               <tr>
                 <td colspan="2">
-                  VARIETY (VARIEDAD):
-                </td>
-                <td colspan="2">
-                  CROP (AÑO DE COSECHA):
-                </td>
-                <td colspan="2">
-                  PACKAGING DATE (FECHA PRODUCCIÓN):
-                </td>
-                <td colspan="2">
-                  BEST BEFORE DATE (CONSUMIR ANTES DE):
-                </td>
-                <td colspan="2">
-                  TRACE CODE (CÓDIGO De TRAZABILIDAD):
-                </td>
-                <td colspan="2">
-                  NET WEIGHT (PESO NETO):
-                </td>
-                <td colspan="2">
-                  GROSS WEIGHT (PESO BRUTO):
-                </td>
-                <td colspan="2">
-                  EXPORTED BY (EXPORTADO POR):
-                </td>
-                <td colspan="2">
-                  <img
-                    t-att-src="'%s/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % (o.get_full_url(), 'Code128',lot_serial_id.serial_number,550, 70)"
-                  />
-                  <span t-field="lot_serial_id.serial_number"/>
-                </td>
-                <td colspan="2">
-                  PRODUCT OF CHILE - PRODUCTO DE CHILE
+                  <div>
+                    VARIETY (VARIEDAD):
+                  </div>
+                  <div>
+                    CROP (AÑO DE COSECHA):
+                  </div>
+                  <div>
+                    PACKAGING DATE (FECHA PRODUCCIÓN):
+                  </div>
+                  <div>
+                    BEST BEFORE DATE (CONSUMIR ANTES DE):
+                  </div>
+                  <div>
+                    TRACE CODE (CÓDIGO De TRAZABILIDAD):
+                  </div>
+                  <div>
+                    NET WEIGHT (PESO NETO):
+                  </div>
+                  <div>
+                    NET WEIGHT (PESO NETO):
+                  </div>
+                  <div>
+                    GROSS WEIGHT (PESO BRUTO):
+                  </div>
+                  <div>
+                    EXPORTED BY (EXPORTADO POR):
+                  </div>
+                  <div>
+                    <img
+                      t-att-src="'%s/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % (o.get_full_url(), 'Code128',lot_serial_id.serial_number,550, 70)"
+                    />
+                    <span t-field="lot_serial_id.serial_number"/>
+                  </div>
+                  <div>
+                    PRODUCT OF CHILE - PRODUCTO DE CHILE
+                  </div>
                 </td>
               </tr>
             </table>
-            <p style="page-break-after:always;"></p>
+            <p style="page-break-after:always;" />
           </t>
         </t>
       </div>
