@@ -24,6 +24,11 @@ class PotentialLot(models.Model):
         compute='_compute_potential_serial_ids',
     )
 
+    consumed_serial_ids = fields.One2many(
+        'stock.production.lot.serial',
+        compute='_compute_consumed_serial_ids'
+    )
+
     mrp_production_id = fields.Many2one('mrp.production', 'Producción')
 
     mrp_production_state = fields.Selection(
@@ -40,6 +45,13 @@ class PotentialLot(models.Model):
         for item in self:
             item.potential_serial_ids = item.stock_production_lot_id.stock_production_lot_serial_ids.filtered(
                 lambda a: a.consumed is False and (a.reserved_to_production_id == item.mrp_production_id or not a.reserved_to_production_id)
+            )
+
+    @api.multi
+    def _compute_consumed_serial_ids(self):
+        for item in self:
+            item.consumed_serial_ids = item.stock_production_lot_id.stock_production_lot_serial_ids.filtered(
+                lambda a: a.consumed and a.reserved_to_production_id == item.mrp_production_id
             )
 
     @api.model
@@ -94,6 +106,6 @@ class PotentialLot(models.Model):
 
             serial_to_reserve.unreserved_serial()
 
-            item.qty_to_reserve = 0
+            item.qty_to_reserve = sum(item.consumed_serial_ids.mapped('display_weight'))
 
-            item.is_reserved = False
+            item.is_reserved = item.qty_to_reserve > 0
