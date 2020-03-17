@@ -1,9 +1,24 @@
 from odoo import fields, models, api
+from odoo.addons import decimal_precision as dp
 from datetime import datetime
 
 
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
+
+    unevenness_percent = fields.Float(
+        '% Descalibre',
+        digits=dp.get_precision('% Descalibre')
+    )
+
+    observation = fields.Text('Observación')
+
+    label_durability = fields.Datetime('Durabulidad Etiqueta')
+
+    pt_balance = fields.Float(
+        'Saldo Bodega PT',
+        digits=dp.get_precision('Saldo Bodega PT')
+    )
 
     stock_picking_id = fields.Many2one('stock.picking', 'Despacho')
 
