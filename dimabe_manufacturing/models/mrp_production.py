@@ -99,42 +99,42 @@ class MrpProduction(models.Model):
 
     @api.onchange('client_search_id', 'product_search_id')
     def onchange_client_search_id(self):
-        for production in self:
-            production.search_potential_lot_ids()
+        self.search_potential_lot_ids()
 
     @api.model
     def search_potential_lot_ids(self):
-        filtered_lot_ids = self.get_potential_lot_ids()
+        for production in self:
+            filtered_lot_ids = production.get_potential_lot_ids()
 
-        self.update({
-            'potential_lot_ids': [
-                (2, to_unlink_id.id) for to_unlink_id in self.potential_lot_ids.filtered(
-                    lambda a: a.qty_to_reserve <= 0
+            production.update({
+                'potential_lot_ids': [
+                    (2, to_unlink_id.id) for to_unlink_id in production.potential_lot_ids.filtered(
+                        lambda a: a.qty_to_reserve <= 0
+                    )]
+            })
+
+            to_keep = [
+                (4, to_keep_id.id) for to_keep_id in production.potential_lot_ids.filtered(
+                    lambda a: a.qty_to_reserve > 0
                 )]
-        })
 
-        to_keep = [
-            (4, to_keep_id.id) for to_keep_id in self.potential_lot_ids.filtered(
-                lambda a: a.qty_to_reserve > 0
-            )]
+            to_add = []
 
-        to_add = []
+            for filtered_lot_id in filtered_lot_ids:
+                if not production.potential_lot_ids.filtered(
+                        lambda a: a.stock_production_lot_id.id == filtered_lot_id['stock_production_lot_id']
+                ):
+                    to_add.append(filtered_lot_id)
 
-        for filtered_lot_id in filtered_lot_ids:
-            if not self.potential_lot_ids.filtered(
-                    lambda a: a.stock_production_lot_id.id == filtered_lot_id['stock_production_lot_id']
-            ):
-                to_add.append(filtered_lot_id)
+            to_add_processed = []
 
-        to_add_processed = []
+            for new_add in to_add:
+                tmp_id = self.env['potential.lot'].create(new_add)
+                to_add_processed.append((4, tmp_id.id))
 
-        for new_add in to_add:
-            tmp_id = self.env['potential.lot'].create(new_add)
-            to_add_processed.append((4, tmp_id.id))
-
-        self.update({
-            'potential_lot_ids': to_add_processed + to_keep
-        })
+            production.update({
+                'potential_lot_ids': to_add_processed + to_keep
+            })
 
     @api.model
     def get_potential_lot_ids(self):
