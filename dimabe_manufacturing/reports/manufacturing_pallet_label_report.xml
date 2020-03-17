@@ -178,7 +178,7 @@
                 <td style="border-top:solid 1px;border-left:solid 1px;border-bottom:solid 1px;">
                   <div>PACKED BY/EMBALADO POR</div>
                   <div>
-                    <span t-esc="o.company_id.name"/>
+                    <span t-esc="res_company.name"/>
                   </div>
                   <div>CSP: ?????</div>
                   <div>PROVINCE/PROVINCIA:</div>
