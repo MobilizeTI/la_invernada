@@ -155,7 +155,7 @@
           </table>
           <p style="page-break-after:always;"></p>
           <t t-foreach="o.lot_serial_ids" t-as="lot_serial_id">
-            <table>
+            <table style="font-size:5px;">
               <tr>
                 <th style="border-top: solid 1px;border-bottom:solid 1px;" colspan="2">
                     <span t-field="lot_serial_id.product_id.name"/>
@@ -214,7 +214,7 @@
                   <div>
                     EXPORTED BY (EXPORTADO POR):
                   </div>
-                  <div>
+                  <div style="text-align:center;">
                     <img
                       t-att-src="'%s/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % (o.get_full_url(), 'Code128',lot_serial_id.serial_number,550, 45)"
                     />
