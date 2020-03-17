@@ -142,7 +142,7 @@ class StockPicking(models.Model):
             for lot_id in mp_move.move_line_ids.mapped('lot_id'):
                 if lot_id.stock_production_lot_serial_ids:
                     lot_id.stock_production_lot_serial_ids.write({
-                        'producer_id': lot_id.stock_picking_id.partner_id
+                        'producer_id': lot_id.stock_picking_id.partner_id.id
                     })
         return res
 
