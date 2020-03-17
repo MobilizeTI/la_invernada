@@ -6,13 +6,13 @@ class MrpWorkorder(models.Model):
 
     client_id = fields.Many2one(
         'res.partner',
-        related='production_id.stock_picking_id.partner_id',
+        related='production_id.client_id',
         string='Cliente'
     )
 
     destiny_country_id = fields.Many2one(
         'res.country',
-        related='production_id.stock_picking_id.shipping_id.arrival_port.country_id',
+        related='production_id.destiny_country_id',
         string='País'
     )
 
@@ -23,7 +23,8 @@ class MrpWorkorder(models.Model):
     )
 
     charging_mode = fields.Selection(
-        related='production_id.stock_picking_id.charging_mode'
+        related='production_id.charging_mode',
+        string='Modo de Carga'
     )
 
     production_finished_move_line_ids = fields.One2many(

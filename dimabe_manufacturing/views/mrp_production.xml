@@ -109,5 +109,29 @@
         </xpath>
       </field>
     </record>
+
+    <record id="mrp_production_tree_view" model="ir.ui.view">
+      <field name="name">Listado de OP</field>
+      <field name="model">mrp.production</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="routing_id" string="Centro de Producción"/>
+          <field name="name"/>
+          <field name="date_planned_start_wo"/>
+          <field name="client_id"/>
+          <field name="destiny_country_id"/>
+          <field name="stock_picking_id"/>
+          <field name="product_id"/>
+          <field name="product_qty"/>
+          <field name="charging_mode"/>
+          <field name="client_label"/>
+          <field name="unevenness_percent"/>
+          <field name="etd"/>
+          <field name="label_durability"/>
+          <field name="observation"/>
+          <field name="state"/>
+        </tree>
+      </field>
+    </record>
   </data>
 </odoo>
