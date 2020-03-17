@@ -116,11 +116,11 @@
       <field name="arch" type="xml">
         <tree>
           <field name="routing_id" string="Centro de Producción"/>
-          <field name="name"/>
+          <field name="name" string="Orden de Fabricación"/>
           <field name="date_planned_start_wo"/>
           <field name="client_id"/>
           <field name="destiny_country_id"/>
-          <field name="stock_picking_id"/>
+          <field name="stock_picking_id" string="Pedido de Venta"/>
           <field name="product_id"/>
           <field name="product_qty"/>
           <field name="charging_mode"/>

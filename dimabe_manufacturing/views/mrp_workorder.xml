@@ -190,6 +190,7 @@
           <field name="product_id" />
           <field name="qty_production" />
           <field name="charging_mode" />
+          <field name="state" />
         </tree>
       </field>
     </record>
