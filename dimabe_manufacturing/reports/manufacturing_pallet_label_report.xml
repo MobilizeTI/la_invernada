@@ -155,7 +155,7 @@
           </table>
           <p style="page-break-after:always;"></p>
           <t t-foreach="o.lot_serial_ids" t-as="lot_serial_id">
-            <table style="font-size:10px;">
+            <table style="font-size:12px;">
               <tr>
                 <th style="border-top: solid 1px;border-bottom:solid 1px;" colspan="2">
                     <span t-field="lot_serial_id.product_id.name"/>
