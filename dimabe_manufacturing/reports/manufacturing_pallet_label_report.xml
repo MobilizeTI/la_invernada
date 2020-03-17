@@ -158,9 +158,9 @@
             <table>
               <tr>
                 <th style="border-top: solid 1px;border-bottom:solid 1px;" colspan="2">
-                  <h1>
+                  <h3>
                     <span t-field="lot_serial_id.product_id.name"/>
-                  </h1>
+                  </h3>
                 </th>
               </tr>
               <tr>
