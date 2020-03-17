@@ -192,6 +192,7 @@
           <field name="charging_mode" />
           <field name="client_label" />
           <field name="unevenness_percent" />
+          <field name="etd" />
           <field name="label_durability" />
           <field name="observation" />
           <field name="state" />

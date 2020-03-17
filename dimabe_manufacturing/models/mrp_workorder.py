@@ -37,6 +37,11 @@ class MrpWorkorder(models.Model):
         related='production_id.unevenness_percent'
     )
 
+    etd = fields.Date(
+        'Fecha de Despacho',
+        related='production_id.etd'
+    )
+
     label_durability = fields.Datetime(
         'Durabilidad Etiqueta',
         related='production_id.label_durability'
