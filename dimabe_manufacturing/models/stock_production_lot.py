@@ -168,9 +168,17 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_producer_ids(self):
         for item in self:
-            item.producer_ids = item.stock_production_lot_serial_ids.mapped(
-                'production_id.consumed_material_ids.producer_id'
-            )
+            if item.is_prd_lot:
+                item.producer_ids = item.stock_production_lot_serial_ids.mapped(
+                    'production_id.consumed_material_ids.producer_id'
+                )
+            else:
+                item.producer_ids = self.env['res.partner'].search([
+                    '|', '&amp;',
+                    ('supplier', '=', True),
+                    ('company_type', '=', 'company'),
+                    ('always_to_print', '=', True)
+                ])
 
     @api.onchange('label_producer_id')
     def _onchange_label_producer_id(self):
