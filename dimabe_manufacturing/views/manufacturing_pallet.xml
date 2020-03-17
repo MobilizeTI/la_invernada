@@ -52,6 +52,12 @@
                   attrs="{'invisible':[('state','=','open')]}"
           />
 
+          <button string="Imprimir Todo"
+                  type="object"
+                  name="print_all_pallet_label"
+                  attrs="{'invisible':[('state','=','open')]}"
+          />
+
           <field name="state"
                  widget="statusbar"
                  statusbar_visible="open,close"/>
@@ -74,6 +80,11 @@
                 <field name="stock_product_id"/>
                 <field name="serial_number"/>
                 <field name="display_weight"/>
+                <button string="Imprimir"
+                        name="print_serial_label"
+                        type="object"
+                        class="oe_highlight"
+                />
               </tree>
             </field>
             <field name="total_content"

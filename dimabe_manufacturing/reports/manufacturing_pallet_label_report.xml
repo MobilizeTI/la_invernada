@@ -24,27 +24,36 @@
             </tr>
             <tr>
               <th>Productor</th>
-              <td>: <span t-field="o.producer_id.name"/></td>
+              <td>:
+                <span t-field="o.producer_id.name"/>
+              </td>
             </tr>
             <tr>
               <th>Nro CSG</th>
-              <td>: <span t-field="o.sag_code"/></td>
+              <td>:
+                <span t-field="o.sag_code"/>
+              </td>
             </tr>
             <tr>
               <th>Nro Pedido</th>
               <td>
                 <div t-if="o.lot_serial_ids.mapped('production_id.stock_picking_id')">
-                  : <span t-esc="o.lot_serial_ids.mapped('production_id.stock_picking_id')[0].name"/>
+                  :
+                  <span t-esc="o.lot_serial_ids.mapped('production_id.stock_picking_id')[0].name"/>
                 </div>
               </td>
             </tr>
             <tr>
               <th>Cant.:Unidades</th>
-              <td>: <span t-field="o.total_content"/></td>
+              <td>:
+                <span t-field="o.total_content"/>
+              </td>
             </tr>
             <tr>
               <th>Kg Total</th>
-              <td>: <span t-field="o.total_content_weight" /></td>
+              <td>:
+                <span t-field="o.total_content_weight"/>
+              </td>
             </tr>
             <tr>
               <th colspan="2">
@@ -71,6 +80,159 @@
           model="manufacturing.pallet"
           report_type="qweb-pdf"
           name="dimabe_manufacturing.manufacturing_pallet_label_report"
+          paperformat="paper_format_10_x_7"
+  />
+
+  <template id="manufacturing_all_pallet_report">
+    <t t-call="web.html_container">
+      <div class="page">
+        <t t-foreach="docs" t-as="o">
+          <table style="text-align:left;">
+            <tr>
+              <th style="text-align:center;">
+                <h2>PALLET</h2>
+              </th>
+              <td style="text-align: right !important;">
+                <h2>
+                  <span t-field="o.name"/>
+                </h2>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2">
+                <h2>
+                  <span t-field="o.product_id.name"/>
+                </h2>
+              </th>
+            </tr>
+            <tr>
+              <th>Productor</th>
+              <td>:
+                <span t-field="o.producer_id.name"/>
+              </td>
+            </tr>
+            <tr>
+              <th>Nro CSG</th>
+              <td>:
+                <span t-field="o.sag_code"/>
+              </td>
+            </tr>
+            <tr>
+              <th>Nro Pedido</th>
+              <td>
+                <div t-if="o.lot_serial_ids.mapped('production_id.stock_picking_id')">
+                  :
+                  <span t-esc="o.lot_serial_ids.mapped('production_id.stock_picking_id')[0].name"/>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th>Cant.:Unidades</th>
+              <td>:
+                <span t-field="o.total_content"/>
+              </td>
+            </tr>
+            <tr>
+              <th>Kg Total</th>
+              <td>:
+                <span t-field="o.total_content_weight"/>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2">
+                <span t-field="o.create_date"/>
+              </th>
+            </tr>
+            <tr>
+              <td colspan="2" style="text-align:center !important;">
+                <br/>
+                <img
+                  t-att-src="'%s/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % (o.get_full_url(), 'Code128',o.name,550, 70)"
+                />
+                <span t-field="o.name"/>
+              </td>
+            </tr>
+          </table>
+          <t t-foreach="o.lot_serial_ids" t-as="lot_serial_id">
+            <table>
+              <tr>
+                <th style="border-top: solid 1px;border-bottom:solid 1px;" colspan="2">
+                  <h1>
+                    <span t-field="lot_serial_id.product_id.name"/>
+                  </h1>
+                </th>
+              </tr>
+              <tr>
+                <td style="border-top:solid 1px;border-right:solid 1px;border-bottom:solid 1px;">
+                  <div>GROWER/PRODUCTOR:</div>
+                  <div>
+                    <span t-field="lot_serial_id.producer_id.name"/>
+                  </div>
+                  <div>CSG:
+                    <span t-field="lot_serial_id.producer_id.sag_code"/>
+                  </div>
+                  <div>PROVINCE/PROVINCIA: PENDIENTE</div>
+                  <div>TOWNSHIP/COMUNA: PENDIENTE</div>
+                  <div>REGIÓN: PENDIENTE</div>
+                </td>
+                <td style="border-top:solid 1px;border-left:solid 1px;border-bottom:solid 1px;">
+                  <div>PACKED BY/EMBALADO POR</div>
+                  <div>
+                    <span t-esc="o.company_id.name"/>
+                  </div>
+                  <div>CSP: ?????</div>
+                  <div>PROVINCE/PROVINCIA:</div>
+                  <div>TOWNSHIP/COMUNA:</div>
+                  <div>REGIÓN:</div>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  VARIETY (VARIEDAD):
+                </td>
+                <td colspan="2">
+                  CROP (AÑO DE COSECHA):
+                </td>
+                <td colspan="2">
+                  PACKAGING DATE (FECHA PRODUCCIÓN):
+                </td>
+                <td colspan="2">
+                  BEST BEFORE DATE (CONSUMIR ANTES DE):
+                </td>
+                <td colspan="2">
+                  TRACE CODE (CÓDIGO De TRAZABILIDAD):
+                </td>
+                <td colspan="2">
+                  NET WEIGHT (PESO NETO):
+                </td>
+                <td colspan="2">
+                  GROSS WEIGHT (PESO BRUTO):
+                </td>
+                <td colspan="2">
+                  EXPORTED BY (EXPORTADO POR):
+                </td>
+                <td colspan="2">
+                  <img
+                    t-att-src="'%s/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % (o.get_full_url(), 'Code128',lot_serial_id.serial_number,550, 70)"
+                  />
+                  <span t-field="lot_serial_id.serial_number"/>
+                </td>
+                <td colspan="2">
+                  PRODUCT OF CHILE - PRODUCTO DE CHILE
+                </td>
+              </tr>
+            </table>
+          </t>
+        </t>
+      </div>
+    </t>
+  </template>
+
+  <report id="dimabe_manufacturing.action_all_pallet_label_report"
+          string="Imprimir todas las etiquetas"
+          model="manufacturing.pallet"
+          report_type="qweb-pdf"
+          name="dimabe_manufacturing.manufacturing_all_pallet_report"
           paperformat="paper_format_10_x_7"
   />
 </odoo>
