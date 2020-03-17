@@ -10,7 +10,8 @@ class MrpProduction(models.Model):
         ('pending', 'Pendiente'),
         ('done', 'Listo')
     ],
-        'Estado movimiento de bodega a producción'
+        'Estado movimiento de bodega a producción',
+        default='pending'
     )
 
     client_id = fields.Many2one(
