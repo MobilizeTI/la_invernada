@@ -241,6 +241,7 @@ class MrpWorkorder(models.Model):
             barcode = custom_serial.stock_production_lot_id.name
         res = super(MrpWorkorder, self).on_barcode_scanned(barcode)
         if res:
+            models._logger.error(res)
             return res
         self.qty_done = qty_done + custom_serial.display_weight
         custom_serial.update({
@@ -275,6 +276,8 @@ class MrpWorkorder(models.Model):
             lambda a: a.serial_number == barcode
         )
         if custom_serial:
+            if custom_serial.product_id != self.component_id:
+                raise models.ValidationError('El producto ingresado no corresponde al producto solicitado')
             if custom_serial.consumed:
                 raise models.ValidationError('este código ya ha sido consumido')
             return custom_serial
