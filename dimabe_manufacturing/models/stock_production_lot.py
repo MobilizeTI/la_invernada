@@ -19,6 +19,11 @@ class StockProductionLot(models.Model):
         'Puede Agregar Series'
     )
 
+    producer_ids = fields.One2many(
+        'res.partner',
+        compute='_compute_producer_ids'
+    )
+
     product_variety = fields.Char(
         'Variedad',
         compute='_compute_product_variety'
@@ -159,6 +164,11 @@ class StockProductionLot(models.Model):
         compute='_compute_all_pallet_ids',
         string='pallets'
     )
+
+    @api.multi
+    def _compute_producer_ids(self):
+        for item in self:
+            item.producer_ids = item.production_id.consumed_material_ids.mapped('producer_id')
 
     @api.onchange('label_producer_id')
     def _onchange_label_producer_id(self):
