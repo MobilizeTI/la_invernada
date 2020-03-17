@@ -171,5 +171,9 @@
       <field name="view_mode">form</field>
       <field name="view_id" ref="dimabe_manufacturing.mrp_workorder_out_form_view"/>
     </record>
+
+    <record id="mrp.mrp_workorder_todo" model="record_model">
+      <field name="view_mode">tree,form,kanban,pivot,graph</field>
+    </record>
   </data>
 </odoo>
