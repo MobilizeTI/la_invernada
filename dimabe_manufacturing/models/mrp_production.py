@@ -17,7 +17,8 @@ class MrpProduction(models.Model):
     client_id = fields.Many2one(
         'res.partner',
         related='stock_picking_id.partner_id',
-        string='Cliente'
+        string='Cliente',
+        readonly=True
     )
 
     destiny_country_id = fields.Many2one(
