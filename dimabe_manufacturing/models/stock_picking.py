@@ -139,6 +139,11 @@ class StockPicking(models.Model):
             mp_move.move_line_ids.mapped('lot_id').write({
                 'stock_picking_id': stock_picking.id
             })
+            for lot_id in mp_move.move_line_ids.mapped('lot_id'):
+                if lot_id.stock_production_lot_serial_ids:
+                    lot_id.stock_production_lot_serial_ids.write({
+                        'producer_id': lot_id.stock_picking_id.partner_id
+                    })
         return res
 
     @api.multi

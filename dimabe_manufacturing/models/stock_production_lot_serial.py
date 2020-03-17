@@ -21,7 +21,8 @@ class StockProductionLotSerial(models.Model):
 
     product_id = fields.Many2one(
         'product.product',
-        related='stock_production_lot_id.product_id'
+        related='stock_production_lot_id.product_id',
+        string='Producto'
     )
 
     belongs_to_prd_lot = fields.Boolean(
