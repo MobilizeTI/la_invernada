@@ -5,9 +5,14 @@ import os
 class IrAttachment(models.Model):
     _inherit = "ir.attachment"
 
-    counter = fields.Integer("Contador",nullable=True)
+    counter = fields.Integer("Posicion",nullable=True)
 
     stock_picking_id = fields.Integer()
+
+    @api.constrains('counter')
+    def _validate_counter(self):
+        if self.counter > 12:
+            raise models.ValidationError("La posicion de la imagen {} no existe".format(self.datas_fname))
 
     @api.model_create_multi
     def create(self, vals_list):

@@ -104,7 +104,7 @@
                             <group>
                                 <field name="pictures">
                                     <tree editable="bottom" edit="True">
-                                        <field name="datas_fname" readonly="1"/>
+                                        <field name="datas_fname" string="Archivo" readonly="1"/>
                                         <field name="counter"/>
                                     </tree>
                                 </field>
