@@ -56,6 +56,12 @@
                                    domain="[('id','in',materials)]"
                             />
 
+                            <button string="Buscar"
+                                    class="oe_highlight"
+                                    type="object"
+                                    name="search_potential_lot_ids"
+                            />
+
                             <field name="stock_lots" invisible="1"/>
                             <field name="potential_lot_ids" readonly="0" string="">
                                 <tree edit="true" delete="false" create="false">
