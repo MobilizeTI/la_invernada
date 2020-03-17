@@ -174,10 +174,9 @@ class StockProductionLot(models.Model):
                 )
             else:
                 item.producer_ids = self.env['res.partner'].search([
-                    '&',
+                    '|', '&',
                     ('supplier', '=', True),
                     ('company_type', '=', 'company'),
-                    '|',
                     ('always_to_print', '=', True)
                 ])
 
