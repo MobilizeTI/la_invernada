@@ -44,7 +44,7 @@ class MrpWorkorder(models.Model):
 
     observation = fields.Text(
         'Observación',
-        related='prouction_id.observation'
+        related='production_id.observation'
     )
 
     production_finished_move_line_ids = fields.One2many(
