@@ -180,6 +180,10 @@ class StockProductionLot(models.Model):
                     ('company_type', '=', 'company'),
 
                 ])
+                models._logger.error('{} {}'.format(
+                    item.producer_ids.mapped('supplier'),
+                    item.producer_ids.mapped('company_type')
+                ))
 
     @api.onchange('label_producer_id')
     def _onchange_label_producer_id(self):
