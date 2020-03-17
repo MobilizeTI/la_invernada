@@ -47,26 +47,26 @@
           <page string="Seleccionar Lote"
                 attrs="{'invisible':[('state','=','done')]}"
           >
-            <group>
+            <div>
               <group>
-                <field name="materials" invisible="1"/>
-                <field name="client_search_id" attrs="{'invisible':[('state','=','done')]}"
-                       domain="[('is_company','=',True),('customer','=',True)]"/>
-                <field name="product_search_id" attrs="{'invisible':[('state','=','done')]}"
-                       domain="[('id','in',materials)]"
-                />
-
-                <button string="Buscar"
-                        class="oe_highlight"
-                        type="object"
-                        name="search_potential_lot_ids"
-                />
+                <group>
+                  <field name="materials" invisible="1"/>
+                  <field name="client_search_id" attrs="{'invisible':[('state','=','done')]}"
+                         domain="[('is_company','=',True),('customer','=',True)]"/>
+                  <field name="product_search_id" attrs="{'invisible':[('state','=','done')]}"
+                         domain="[('id','in',materials)]"
+                  />
+                </group>
+                <group>
+                  <button string="Buscar"
+                          class="oe_highlight"
+                          type="object"
+                          name="search_potential_lot_ids"
+                  />
+                </group>
               </group>
-              <group>
-
-              </group>
-            </group>
-            <group>
+            </div>
+            <div>
               <group>
                 <field name="stock_lots" invisible="1"/>
                 <field name="potential_lot_ids" readonly="0" string="">
@@ -90,7 +90,7 @@
                   </tree>
                 </field>
               </group>
-            </group>
+            </div>
           </page>
           <page string="Códigos Utilizados"
                 attrs="{'invisible':[('state','!=','done')]}"
