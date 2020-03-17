@@ -153,6 +153,7 @@
               </td>
             </tr>
           </table>
+          <p style="page-break-after:always;"></p>
           <t t-foreach="o.lot_serial_ids" t-as="lot_serial_id">
             <table>
               <tr>
@@ -222,6 +223,7 @@
                 </td>
               </tr>
             </table>
+            <p style="page-break-after:always;"></p>
           </t>
         </t>
       </div>
