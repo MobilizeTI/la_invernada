@@ -162,7 +162,7 @@
                 </th>
               </tr>
               <tr>
-                <td style="border-top:solid 1px;border-right:solid 1px;border-bottom:solid 1px;">
+                <td style="border-right:solid 1px;border-bottom:solid 1px;">
                   <div>GROWER/PRODUCTOR:</div>
                   <div>
                     <span t-field="lot_serial_id.producer_id.name"/>
@@ -174,7 +174,7 @@
                   <div>TOWNSHIP/COMUNA: PENDIENTE</div>
                   <div>REGIÓN: PENDIENTE</div>
                 </td>
-                <td style="border-top:solid 1px;border-left:solid 1px;border-bottom:solid 1px;">
+                <td style="border-bottom:solid 1px;">
                   <div>PACKED BY/EMBALADO POR</div>
                   <div>
                     <span t-esc="res_company.name"/>
