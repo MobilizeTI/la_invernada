@@ -186,7 +186,7 @@ class StockProductionLot(models.Model):
                 ])
             if item.producer_ids:
                 item.producer_ids = item.producer_ids.filtered(
-                    lambda a: a.company_type == 'company'
+                    lambda a: a.company_type == 'company' or a.always_to_print
                 )
 
     @api.onchange('label_producer_id')
