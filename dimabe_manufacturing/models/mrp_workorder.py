@@ -27,6 +27,26 @@ class MrpWorkorder(models.Model):
         string='Modo de Carga'
     )
 
+    client_label = fields.Boolean(
+        'Etiqueta Cliente',
+        related='production_id.client_label'
+    )
+
+    unevenness_percent = fields.Float(
+        '% Descalibre',
+        related='production_id.unevenness_percent'
+    )
+
+    label_durability = fields.Datetime(
+        'Durabilidad Etiqueta',
+        related='production_id.label_durability'
+    )
+
+    observation = fields.Text(
+        'Observación',
+        related='prouction_id.observation'
+    )
+
     production_finished_move_line_ids = fields.One2many(
         string='Productos Finalizados',
         related='production_id.finished_move_line_ids'
