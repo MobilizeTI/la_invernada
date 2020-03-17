@@ -49,6 +49,11 @@
         <field name="is_produced" position="after">
           <field name="production_id"/>
         </field>
+        <xpath expr="//sheet/group" position="inside">
+          <group>
+            <field name="positioning_state" />
+          </group>
+        </xpath>
         <field name="final_lot_id" position="attributes">
           <attribute name="readonly">True</attribute>
         </field>
@@ -195,6 +200,7 @@
           <field name="etd" />
           <field name="label_durability" />
           <field name="observation" />
+          <field name="positioning_state" />
           <field name="state" />
         </tree>
       </field>

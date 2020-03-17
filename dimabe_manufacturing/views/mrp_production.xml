@@ -129,6 +129,7 @@
           <field name="etd"/>
           <field name="label_durability"/>
           <field name="observation"/>
+          <field name="positioning_state"/>
           <field name="state"/>
         </tree>
       </field>

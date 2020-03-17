@@ -6,6 +6,13 @@ from datetime import datetime
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
 
+    positioning_state = fields.Selection([
+        ('pending', 'Pendiente'),
+        ('done', 'Listo')
+    ],
+        'Estado movimiento de bodega a producción'
+    )
+
     client_id = fields.Many2one(
         'res.partner',
         related='stock_picking_id.partner_id',

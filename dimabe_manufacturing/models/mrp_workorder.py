@@ -4,6 +4,11 @@ from odoo import fields, models, api, exceptions
 class MrpWorkorder(models.Model):
     _inherit = 'mrp.workorder'
 
+    positioning_state = fields.Selection(
+        related='production_id.positioning_state',
+        string='Estado movimiento de bodega a producción'
+    )
+
     client_id = fields.Many2one(
         'res.partner',
         related='production_id.client_id',
