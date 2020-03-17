@@ -168,7 +168,9 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_producer_ids(self):
         for item in self:
-            item.producer_ids = item.production_id.consumed_material_ids.mapped('producer_id')
+            item.producer_ids = item.stock_production_lot_serial_ids.mapped(
+                'production_id.consumed_material_ids.producer_id'
+            )
 
     @api.onchange('label_producer_id')
     def _onchange_label_producer_id(self):
