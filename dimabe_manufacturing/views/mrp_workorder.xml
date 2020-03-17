@@ -172,7 +172,7 @@
       <field name="view_id" ref="dimabe_manufacturing.mrp_workorder_out_form_view"/>
     </record>
 
-    <record id="mrp.mrp_workorder_todo" model="it.actions.act_window">
+    <record id="mrp.mrp_workorder_todo" model="ir.actions.act_window">
       <field name="view_mode">tree,form,kanban,pivot,graph</field>
     </record>
   </data>
