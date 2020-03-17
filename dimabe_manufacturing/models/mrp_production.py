@@ -33,7 +33,7 @@ class MrpProduction(models.Model):
         digits=dp.get_precision('% Descalibre')
     )
 
-    etd = fields.Datetime(
+    etd = fields.Date(
         'Fecha Despacho',
         related='stock_picking_id.shipping_id.etd'
     )
