@@ -14,6 +14,16 @@ class StockProductionLotSerial(models.Model):
         'Productor'
     )
 
+    product_variety = fields.Char(
+        'Variedad',
+        related='stock_production_lot_id.product_variety'
+    )
+
+    product_id = fields.Many2one(
+        'product.product',
+        related='stock_production_lot_id.product_id'
+    )
+
     belongs_to_prd_lot = fields.Boolean(
         'pertenece a lote productivo',
         related='stock_production_lot_id.is_prd_lot'
