@@ -74,8 +74,11 @@
           <page string="Lotes Planificados">
             <field name="potential_serial_planned_ids" readonly="1">
               <tree>
+                <field name="producer_id" />
                 <field name="stock_production_lot_id"/>
                 <field name="serial_number"/>
+                <field name="product_variety" />
+                <field name="product_id" />
                 <field name="display_weight"/>
               </tree>
             </field>
