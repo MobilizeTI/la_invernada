@@ -4,6 +4,10 @@ from odoo import fields, models, api, exceptions
 class MrpWorkorder(models.Model):
     _inherit = 'mrp.workorder'
 
+    show_manual_input = fields.Boolean(
+        'Digitar Serie Manualmente'
+    )
+
     positioning_state = fields.Selection(
         related='production_id.positioning_state',
         string='Estado movimiento de bodega a producción'
