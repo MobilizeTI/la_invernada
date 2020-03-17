@@ -47,7 +47,7 @@
       <field name="inherit_id" ref="mrp.mrp_production_workorder_form_view_inherit"/>
       <field name="arch" type="xml">
         <field name="is_produced" position="after">
-          <field name="production_id"/>
+          <field name="production_id" readonly="1"/>
         </field>
         <xpath expr="//sheet/group" position="inside">
           <group>
