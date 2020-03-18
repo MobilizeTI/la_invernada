@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class LabelDurability(models.Model):
@@ -8,7 +8,25 @@ class LabelDurability(models.Model):
         ('name_uniq', 'UNIQUE(name)', 'esta cantidad de meses ya existe en el sistema')
     ]
 
-    name = fields.Integer(
+    name = fields.Char(
         'Duración',
-        required=True
+        compute='_compute_name',
+        inverse='_inverse_name',
+        store=True
     )
+
+    month_qty = fields.Integer(
+        'Meses',
+        required=True,
+    )
+
+    @api.depends('month_qty')
+    @api.multi
+    def _compute_name(self):
+        for item in self:
+            item.name = item.month_qty
+
+    @api.multi
+    def _inverse_name(self):
+        for item in self:
+            item.month_qty = item.name
