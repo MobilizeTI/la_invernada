@@ -38,7 +38,7 @@ class ResPartner(models.Model):
 
     @api.model
     def get_address_child(self):
-        return self.child_ids.filteres(
+        return self.child_ids.filtered(
                 lambda a: a.type == 'delivery'
             )
 
