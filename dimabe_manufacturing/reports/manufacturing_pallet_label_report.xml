@@ -153,12 +153,12 @@
               </td>
             </tr>
           </table>
-          <p style="page-break-after:always;" />
+          <p style="page-break-after:always;"/>
           <t t-foreach="o.lot_serial_ids" t-as="lot_serial_id">
             <table style="font-size:14px;">
               <tr>
                 <th style="border-top: solid 1px;border-bottom:solid 1px;" colspan="2">
-                    <span t-field="lot_serial_id.product_id.name"/>
+                  <span t-field="lot_serial_id.product_id.name"/>
                 </th>
               </tr>
               <tr>
@@ -170,46 +170,68 @@
                   <div>CSG:
                     <span t-field="lot_serial_id.producer_id.sag_code"/>
                   </div>
-                  <div>PROVINCE/PROVINCIA: <span t-esc="lot_serial_id.producer_id.state_id_address.name" /></div>
-                  <div>TOWNSHIP/COMUNA: <span t-esc="lot_serial_id.producer_id.city_address" /></div>
-                  <div>REGIÓN: <span t-esc="lot_serial_id.producer_id.region_address_id_address.name" /></div>
+                  <div>PROVINCE/PROVINCIA:
+                    <span t-esc="lot_serial_id.producer_id.state_id_address.name"/>
+                  </div>
+                  <div>TOWNSHIP/COMUNA:
+                    <span t-esc="lot_serial_id.producer_id.city_address"/>
+                  </div>
+                  <div>REGIÓN:
+                    <span t-esc="lot_serial_id.producer_id.region_address_id_address.name"/>
+                  </div>
                 </td>
                 <td style="border-bottom:solid 1px;">
                   <div>PACKED BY/EMBALADO POR</div>
                   <div>
                     <span t-esc="res_company.name"/>
                   </div>
-                  <div>CSP: <span t-esc="res_company.sag_code"/></div>
-                  <div>PROVINCE/PROVINCIA: <span t-esc="res_company.state_id.name"/></div>
-                  <div>TOWNSHIP/COMUNA: <span t-esc="res_company.city"/></div>
-                  <div>REGIÓN: <span t-esc="res_company.region_address_id.name"/></div>
+                  <div>CSP:
+                    <span t-esc="res_company.sag_code"/>
+                  </div>
+                  <div>PROVINCE/PROVINCIA:
+                    <span t-esc="res_company.state_id.name"/>
+                  </div>
+                  <div>TOWNSHIP/COMUNA:
+                    <span t-esc="res_company.city"/>
+                  </div>
+                  <div>REGIÓN:
+                    <span t-esc="res_company.region_address_id.name"/>
+                  </div>
                 </td>
               </tr>
               <tr>
                 <td colspan="2">
                   <div>
-                    VARIETY (VARIEDAD): <span t-esc="lot_serial_id.product_variety" />
+                    VARIETY (VARIEDAD):
+                    <span t-esc="lot_serial_id.product_variety"/>
                   </div>
                   <div>
-                    CROP (AÑO DE COSECHA): <span t-esc="lot_serial_id.harvest"/>
+                    CROP (AÑO DE COSECHA):
+                    <span t-esc="lot_serial_id.harvest"/>
                   </div>
                   <div>
-                    PACKAGING DATE (FECHA PRODUCCIÓN): <span t-esc="lot_serial_id.packaging_date"/>
+                    PACKAGING DATE (FECHA PRODUCCIÓN):
+                    <span t-esc="lot_serial_id.packaging_date"/>
                   </div>
                   <div>
-                    BEST BEFORE DATE (CONSUMIR ANTES DE): <span t-esc="lot_serial_id.best_before_date"/>
+                    BEST BEFORE DATE (CONSUMIR ANTES DE):
+                    <span t-esc="lot_serial_id.best_before_date"/>
                   </div>
                   <div>
-                    TRACE CODE (CÓDIGO De TRAZABILIDAD): <span t-esc="lot_serial_id.production_id.name"/>
+                    TRACE CODE (CÓDIGO De TRAZABILIDAD):
+                    <span t-esc="lot_serial_id.production_id.name"/>
                   </div>
                   <div>
-                    NET WEIGHT (PESO NETO): <span t-esc="lot_serial_id.display_weight"/>
+                    NET WEIGHT (PESO NETO):
+                    <span t-esc="lot_serial_id.display_weight"/>
                   </div>
                   <div>
-                    GROSS WEIGHT (PESO BRUTO):  <span t-esc="lot_serial_id.gross_weight"/>
+                    GROSS WEIGHT (PESO BRUTO):
+                    <span t-esc="lot_serial_id.gross_weight"/>
                   </div>
                   <div>
-                    EXPORTED BY (EXPORTADO POR): <span t-esc="res_company.name"/>
+                    EXPORTED BY (EXPORTADO POR):
+                    <span t-esc="res_company.name"/>
                   </div>
                   <div style="text-align:center;">
                     <img
@@ -223,7 +245,12 @@
                 </td>
               </tr>
             </table>
-            <p style="page-break-after:always;" />
+            <t t-if="not o.lot_serial_ids[-1].serial_number == lot_serial_id.serial_number">
+              <p style="page-break-after:always;" />
+            </t>
+            <t t-else="">
+              <p style="page-break-after:avoid;" />
+            </t>
           </t>
         </t>
       </div>
