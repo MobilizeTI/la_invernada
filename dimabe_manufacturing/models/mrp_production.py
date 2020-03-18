@@ -49,7 +49,10 @@ class MrpProduction(models.Model):
 
     observation = fields.Text('Observación')
 
-    label_durability = fields.Datetime('Durabulidad Etiqueta')
+    label_durability_id = fields.Many2one(
+        'label.durability',
+        'Durabulidad Etiqueta'
+    )
 
     pt_balance = fields.Float(
         'Saldo Bodega PT',
