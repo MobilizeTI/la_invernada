@@ -1,0 +1,15 @@
+<odoo>
+  <record id="label_durability_form_view" model="ir.ui.view">
+    <field name="name">Formulario Durabilidad Etiqueta</field>
+    <field name="model">label.durability</field>
+    <field name="arch" type="xml">
+      <form>
+        <group>
+          <group>
+            <field name="month_qty" />
+          </group>
+        </group>
+      </form>
+    </field>
+  </record>
+</odoo>

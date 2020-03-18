@@ -53,7 +53,8 @@
         'views/product_product.xml',
         'views/stock_picking_type.xml',
         'views/res_partner.xml',
-        'views/res_company.xml'
+        'views/res_company.xml',
+        'views/label_durability.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

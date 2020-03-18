@@ -8,6 +8,8 @@ class LabelDurability(models.Model):
         ('name_uniq', 'UNIQUE(name)', 'esta cantidad de meses ya existe en el sistema')
     ]
 
+    _order = 'name'
+
     name = fields.Char(
         'Duración',
         compute='_compute_name',
