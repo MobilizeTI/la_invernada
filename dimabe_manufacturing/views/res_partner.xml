@@ -7,7 +7,7 @@
       <field name="vat" position="after">
         <field name="always_to_print"/>
       </field>
-      <xpath expr="//form/sheet/notebook/page[1]"
+      <xpath expr="//form/sheet/notebook/page[1]/field[@name='child_ids']/form/sheet/group/group/div/div[@name='div_address']"
              position="inside"
       >
         <field name="region_address_id"/>
