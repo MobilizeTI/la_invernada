@@ -127,7 +127,7 @@ class UnpelledDried(models.Model):
 
     label_durability_id = fields.Many2one(
         'label.durability',
-        'Dirabilidad Etiqueta'
+        'Durabilidad Etiqueta'
     )
 
     @api.multi
