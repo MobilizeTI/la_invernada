@@ -34,7 +34,7 @@
           <field name="required_date_moving_to_production"/>
           <field name="unevenness_percent" />
           <field name="observation" />
-          <field name="label_durability_id" />
+<!--          <field name="label_durability_id" />-->
         </field>
 
         <field name="bom_id" position="replace"/>
@@ -125,7 +125,7 @@
           <field name="client_label"/>
           <field name="unevenness_percent"/>
           <field name="etd"/>
-          <field name="label_durability"/>
+<!--          <field name="label_durability_id"/>-->
           <field name="observation"/>
           <field name="positioning_state"/>
           <field name="state"/>
