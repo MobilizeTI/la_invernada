@@ -107,6 +107,7 @@
                    readonly="1"
                    attrs="{'invisible':[('out_lot_id','=',False)],'readonly':[('state','in',['done'])]}"
             />
+            <field name="canning_id" />
             <field name="out_serial_ids"
                    attrs="{'readonly':['|',('state','in',['done']),('can_close','=',False)],'invisible':[('out_lot_id','=',False)]}"
             >

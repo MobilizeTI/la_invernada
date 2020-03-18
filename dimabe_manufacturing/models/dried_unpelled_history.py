@@ -132,6 +132,12 @@ class DriedUnpelledHistory(models.Model):
         compute='_compute_oven_use_data'
     )
 
+    canning_id = fields.Many2one(
+        'product.product',
+        'Envase',
+        readonly=True
+    )
+
     @api.multi
     def _compute_oven_use_data(self):
         for item in self:
@@ -205,4 +211,5 @@ class DriedUnpelledHistory(models.Model):
                 res.total_out_weight = unpelled_dried_id.total_out_weight
                 res.origin_location_id = unpelled_dried_id.origin_location_id.id
                 res.dest_location_id = unpelled_dried_id.dest_location_id.id
+                res.canning_id = unpelled_dried_id.canning_id
         return res
