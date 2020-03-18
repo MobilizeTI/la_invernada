@@ -19,3 +19,5 @@ from . import dried_unpelled_history
 from . import manufacturing_pallet
 from . import stock_picking_type
 from . import res_partner
+from . import region_address
+from . import res_company

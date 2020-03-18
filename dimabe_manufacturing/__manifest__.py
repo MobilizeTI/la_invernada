@@ -52,7 +52,8 @@
         'views/manufacturing_pallet.xml',
         'views/product_product.xml',
         'views/stock_picking_type.xml',
-        'views/res_partner.xml'
+        'views/res_partner.xml',
+        'views/res_company.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
