@@ -122,6 +122,7 @@ class UnpelledDried(models.Model):
     canning_id = fields.Many2one(
         'product.product',
         'Envase',
+        domain=[('categ_id.name', 'in', ['Maxisaco'])]
     )
 
     @api.multi
