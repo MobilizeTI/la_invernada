@@ -10,7 +10,7 @@
       <xpath expr="//form/sheet/notebook/page[1]/field[@name='child_ids']/form/sheet/group/group/div/div[@name='div_address']"
              position="inside"
       >
-        <field name="region_address_id"/>
+        <field name="region_address_id" placeholder="Región"/>
       </xpath>
     </field>
   </record>
