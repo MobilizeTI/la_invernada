@@ -109,7 +109,7 @@ class StockProductionLot(models.Model):
 
     packaging_date = fields.Date(
         'Fecha Producción',
-        default=datetime.utcnow()
+        default=datetime.today()
     )
 
     best_before_date = fields.Date(
