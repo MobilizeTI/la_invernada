@@ -18,8 +18,11 @@
         </button>
         <xpath expr="//div[@class='o_workorder_data']" position="inside">
           <group>
-            <field name="confirmed_serial"
+            <field name="show_manual_input"
                    attrs="{'invisible':[('is_last_step','=',True)]}"
+            />
+            <field name="confirmed_serial"
+                   attrs="{'invisible':['|',('show_manual_input','=',False),('is_last_step','=',True)]}"
             />
           </group>
         </xpath>
@@ -27,8 +30,11 @@
           <field name="potential_serial_planned_ids">
             <tree decoration-danger="consumed==False" decoration-success="consumed==True"
                   delete="false" create="false" editable="bottom" groups="mrp.group_mrp_manager">
+              <field name="producer_id"/>
               <field name="stock_production_lot_id" readonly="1"/>
               <field name="serial_number" readonly="1"/>
+              <field name="product_variety" />
+              <field name="product_id" />
               <field name="display_weight" readonly="1"/>
               <field name="consumed" groups="base.group_system"/>
             </tree>
@@ -47,8 +53,16 @@
       <field name="inherit_id" ref="mrp.mrp_production_workorder_form_view_inherit"/>
       <field name="arch" type="xml">
         <field name="is_produced" position="after">
-          <field name="production_id"/>
+          <field name="production_id" readonly="1"/>
         </field>
+        <field name="production_availability" position="attributes">
+          <attribute name="invisible">True</attribute>
+        </field>
+        <xpath expr="//sheet/group" position="inside">
+          <group>
+            <field name="positioning_state" />
+          </group>
+        </xpath>
         <field name="final_lot_id" position="attributes">
           <attribute name="readonly">True</attribute>
         </field>
@@ -66,8 +80,11 @@
           <page string="Lotes Planificados">
             <field name="potential_serial_planned_ids" readonly="1">
               <tree>
+                <field name="producer_id" />
                 <field name="stock_production_lot_id"/>
                 <field name="serial_number"/>
+                <field name="product_variety" />
+                <field name="product_id" />
                 <field name="display_weight"/>
               </tree>
             </field>
@@ -171,5 +188,35 @@
       <field name="view_mode">form</field>
       <field name="view_id" ref="dimabe_manufacturing.mrp_workorder_out_form_view"/>
     </record>
+
+    <record id="mrp.mrp_workorder_todo" model="ir.actions.act_window">
+      <field name="view_mode">tree,form,kanban,pivot,graph</field>
+    </record>
+
+    <record id="mrp_workorder_tree_view" model="ir.ui.view">
+      <field name="name">listado de ordenes de trabajo</field>
+      <field name="model">mrp.workorder</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="workcenter_id"/>
+          <field name="production_id"/>
+          <field name="date_planned_start"/>
+          <field name="client_id"/>
+          <field name="destiny_country_id"/>
+          <field name="sale_order_id"/>
+          <field name="product_id" />
+          <field name="qty_production" string="Cantidad a Producir"/>
+          <field name="charging_mode" />
+          <field name="client_label" />
+          <field name="unevenness_percent" />
+          <field name="etd" />
+          <field name="label_durability_id" />
+          <field name="observation" />
+          <field name="positioning_state" />
+          <field name="state" />
+        </tree>
+      </field>
+    </record>
+
   </data>
 </odoo>

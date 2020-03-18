@@ -1,9 +1,63 @@
 from odoo import fields, models, api
+from odoo.addons import decimal_precision as dp
 from datetime import datetime
 
 
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
+
+    positioning_state = fields.Selection([
+        ('pending', 'Pendiente'),
+        ('done', 'Listo')
+    ],
+        'Estado movimiento de bodega a producción',
+        default='pending'
+    )
+
+    client_id = fields.Many2one(
+        'res.partner',
+        related='stock_picking_id.partner_id',
+        string='Cliente',
+        readonly=True
+    )
+
+    destiny_country_id = fields.Many2one(
+        'res.country',
+        related='stock_picking_id.shipping_id.arrival_port.country_id',
+        string='País'
+    )
+
+    charging_mode = fields.Selection(
+        related='stock_picking_id.charging_mode',
+        string='Modo de Carga'
+    )
+
+    client_label = fields.Boolean(
+        'Etiqueta Cliente',
+        related='stock_picking_id.client_label'
+    )
+
+    unevenness_percent = fields.Float(
+        '% Descalibre',
+        digits=dp.get_precision('% Descalibre')
+    )
+
+    etd = fields.Date(
+        'Fecha Despacho',
+        related='stock_picking_id.shipping_id.etd'
+    )
+
+    observation = fields.Text('Observación')
+
+    label_durability_id = fields.Many2one(
+        'label.durability',
+        'Durabilidad Etiqueta'
+    )
+
+    pt_balance = fields.Float(
+        'Saldo Bodega PT',
+        digits=dp.get_precision('Saldo Bodega PT')
+    )
 
     stock_picking_id = fields.Many2one('stock.picking', 'Despacho')
 
@@ -99,6 +153,10 @@ class MrpProduction(models.Model):
 
     @api.onchange('client_search_id', 'product_search_id')
     def onchange_client_search_id(self):
+        self.search_potential_lot_ids()
+
+    @api.multi
+    def search_potential_lot_ids(self):
         for production in self:
             filtered_lot_ids = production.get_potential_lot_ids()
 

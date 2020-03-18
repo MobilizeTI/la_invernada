@@ -4,6 +4,64 @@ from odoo import fields, models, api, exceptions
 class MrpWorkorder(models.Model):
     _inherit = 'mrp.workorder'
 
+    show_manual_input = fields.Boolean(
+        'Digitar Serie Manualmente'
+    )
+
+    positioning_state = fields.Selection(
+        related='production_id.positioning_state',
+        string='Estado movimiento de bodega a producción'
+    )
+
+    client_id = fields.Many2one(
+        'res.partner',
+        related='production_id.client_id',
+        string='Cliente'
+    )
+
+    destiny_country_id = fields.Many2one(
+        'res.country',
+        related='production_id.destiny_country_id',
+        string='País'
+    )
+
+    sale_order_id = fields.Many2one(
+        'sale.order',
+        related='production_id.stock_picking_id.sale_id',
+        string='Pedido de Venta'
+    )
+
+    charging_mode = fields.Selection(
+        related='production_id.charging_mode',
+        string='Modo de Carga'
+    )
+
+    client_label = fields.Boolean(
+        'Etiqueta Cliente',
+        related='production_id.client_label'
+    )
+
+    unevenness_percent = fields.Float(
+        '% Descalibre',
+        related='production_id.unevenness_percent'
+    )
+
+    etd = fields.Date(
+        'Fecha de Despacho',
+        related='production_id.etd'
+    )
+
+    label_durability_id = fields.Many2one(
+        'label.durability',
+        string='Durabilidad Etiqueta',
+        related='production_id.label_durability_id'
+    )
+
+    observation = fields.Text(
+        'Observación',
+        related='production_id.observation'
+    )
+
     production_finished_move_line_ids = fields.One2many(
         string='Productos Finalizados',
         related='production_id.finished_move_line_ids'
@@ -175,7 +233,9 @@ class MrpWorkorder(models.Model):
     @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
         for item in self:
-            item.on_barcode_scanned(item.confirmed_serial)
+            res = item.on_barcode_scanned(item.confirmed_serial)
+            if res and 'warning' in res and 'message' in res['warning']:
+                raise models.ValidationError(res['warning']['message'])
 
     def on_barcode_scanned(self, barcode):
         qty_done = self.qty_done
@@ -218,6 +278,8 @@ class MrpWorkorder(models.Model):
             lambda a: a.serial_number == barcode
         )
         if custom_serial:
+            if custom_serial.product_id != self.component_id:
+                raise models.ValidationError('El producto ingresado no corresponde al producto solicitado')
             if custom_serial.consumed:
                 raise models.ValidationError('este código ya ha sido consumido')
             return custom_serial

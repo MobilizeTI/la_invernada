@@ -119,6 +119,11 @@ class UnpelledDried(models.Model):
         'Historial'
     )
 
+    canning_id = fields.Many2one(
+        'product.product',
+        'Envase',
+    )
+
     @api.multi
     def _compute_used_lot_ids(self):
         for item in self:
@@ -238,6 +243,9 @@ class UnpelledDried(models.Model):
                                                  'Solo puede encontrarse en un registro'.format(
                         oven_use.used_lot_id.name
                     ))
+            if item.out_lot_id.stock_production_lot_serial_ids:
+                for serial_id in item.out_lot_id.stock_production_lot_serial_ids:
+                    serial_id.canning_id = item.canning_id
         return res
 
     @api.multi

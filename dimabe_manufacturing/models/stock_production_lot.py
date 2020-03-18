@@ -4,7 +4,7 @@ from odoo import fields, models, api
 class StockProductionLot(models.Model):
     _inherit = 'stock.production.lot'
     _sql_constraints = [
-        ('name_uniq', 'UNIQUE(name)', 'ya existe este lote en el sistema')
+        ('name_uniq', 'UNIQUE(name)', 'el lote que intenta crear, ya existe en el sistema')
     ]
 
     unpelled_state = fields.Selection([
@@ -17,6 +17,11 @@ class StockProductionLot(models.Model):
 
     can_add_serial = fields.Boolean(
         'Puede Agregar Series'
+    )
+
+    producer_ids = fields.One2many(
+        'res.partner',
+        compute='_compute_producer_ids'
     )
 
     product_variety = fields.Char(
@@ -112,7 +117,7 @@ class StockProductionLot(models.Model):
 
     )
 
-    reception_net_weight = fields.Integer(
+    reception_net_weight = fields.Float(
         'kg. Neto',
         related='stock_picking_id.net_weight'
     )
@@ -159,6 +164,30 @@ class StockProductionLot(models.Model):
         compute='_compute_all_pallet_ids',
         string='pallets'
     )
+
+    @api.multi
+    def _compute_producer_ids(self):
+        for item in self:
+            if item.is_prd_lot:
+                item.producer_ids = self.env['res.partner'].search([
+                    '|',
+                    ('id', 'in', item.stock_production_lot_serial_ids.mapped(
+                        'production_id.consumed_material_ids.producer_id.id'
+                    )),
+                    ('always_to_print', '=', True)
+                ])
+
+            else:
+                item.producer_ids = self.env['res.partner'].search([
+                    '|',
+                    ('supplier', '=', True),
+                    ('always_to_print', '=', True)
+
+                ])
+            if item.producer_ids:
+                item.producer_ids = item.producer_ids.filtered(
+                    lambda a: a.company_type == 'company' or a.always_to_print
+                )
 
     @api.onchange('label_producer_id')
     def _onchange_label_producer_id(self):

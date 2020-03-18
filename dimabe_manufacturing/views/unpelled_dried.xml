@@ -107,6 +107,7 @@
                    readonly="1"
                    attrs="{'invisible':[('out_lot_id','=',False)],'readonly':[('state','in',['done'])]}"
             />
+            <field name="canning_id" />
             <field name="out_serial_ids"
                    attrs="{'readonly':['|',('state','in',['done']),('can_close','=',False)],'invisible':[('out_lot_id','=',False)]}"
             >
@@ -121,6 +122,7 @@
                 <field name="serial_number"
                        readonly="1"
                 />
+                <field name="gross_weight" />
                 <button name="print_serial_label"
                         type="object" string="Imprimir"
                         attrs="{'invisible':['|',('serial_number', '=', False)]}"

@@ -50,8 +50,11 @@
         'views/oven_use.xml',
         'views/dried_unpelled_history.xml',
         'views/manufacturing_pallet.xml',
-       'views/product_product.xml',
-        'views/stock_picking_type.xml'
+        'views/product_product.xml',
+        'views/stock_picking_type.xml',
+        'views/res_partner.xml',
+        'views/res_company.xml',
+        'views/label_durability.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

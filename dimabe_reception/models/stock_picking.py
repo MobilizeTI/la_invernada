@@ -1,4 +1,5 @@
 from odoo import models, api, fields
+from odoo.addons import decimal_precision as dp
 from datetime import datetime
 
 
@@ -8,32 +9,42 @@ class StockPicking(models.Model):
 
     guide_number = fields.Integer('Número de Guía')
 
-    weight_guide = fields.Integer(
+    weight_guide = fields.Float(
         'Kilos Guía',
         compute='_compute_weight_guide',
-        store=True
+        store=True,
+        digits=dp.get_precision('Kilos Guía')
     )
 
-    gross_weight = fields.Integer('Kilos Brutos')
+    gross_weight = fields.Float(
+        'Kilos Brutos',
+        digits=dp.get_precision('Kilos Brutos')
+    )
 
-    tare_weight = fields.Integer('Peso Tara')
+    tare_weight = fields.Float(
+        'Peso Tara',
+        digits=dp.get_precision('Peso Tara')
+    )
 
-    net_weight = fields.Integer(
+    net_weight = fields.Float(
         'Kilos Netos',
         compute='_compute_net_weight',
-        store=True
+        store=True,
+        digits=dp.get_precision('Kilos Netos')
     )
 
     canning_weight = fields.Float(
         'Peso Envases',
         compute='_compute_canning_weight',
-        store=True
+        store=True,
+        digits=dp.get_precision('Peso Envases')
     )
 
     production_net_weight = fields.Float(
         'Kilos Netos Producción',
         compute='_compute_production_net_weight',
-        store=True
+        store=True,
+        digits=dp.get_precision('Kilos Netos Producción')
     )
 
     # reception_type_selection = fields.Selection([
@@ -70,12 +81,11 @@ class StockPicking(models.Model):
 
     avg_unitary_weight = fields.Float(
         'Promedio Peso unitario',
-        compute='_compute_avg_unitary_weight'
+        compute='_compute_avg_unitary_weight',
+        digits=dp.get_precision('Promedio Peso Unitario')
     )
 
     quality_weight = fields.Float('Kilos Calidad')
-
-    carrier_id = fields.Many2one('custom.carrier', 'Conductor')
 
     carrier_rut = fields.Char(
         'Rut',
@@ -230,7 +240,7 @@ class StockPicking(models.Model):
                     lot = self.env['stock.production.lot'].create({
                         'name': stock_picking.name,
                         'product_id': move_line.product_id.id,
-                        'standard_weight': stock_picking.net_weight - stock_picking.quality_weight
+                        'standard_weight': stock_picking.production_net_weight
                     })
                     if lot:
                         move_line.update({
@@ -241,13 +251,14 @@ class StockPicking(models.Model):
                     for stock_move_line in mp_move.move_line_ids:
                         if mp_move.product_id.categ_id.is_mp:
                             total_qty = mp_move.picking_id.get_canning_move().product_uom_qty
-                            calculated_weight = stock_move_line.qty_done / total_qty
+                            # calculated_weight = stock_move_line.qty_done / total_qty
+
                             if stock_move_line.lot_id:
 
                                 for i in range(int(total_qty)):
                                     tmp = '00{}'.format(i + 1)
                                     self.env['stock.production.lot.serial'].create({
-                                        'calculated_weight': calculated_weight - stock_picking.quality_weight,
+                                        'calculated_weight': stock_picking.avg_unitary_weight,
                                         'stock_production_lot_id': stock_move_line.lot_id.id,
                                         'serial_number': '{}{}'.format(stock_move_line.lot_name, tmp[-3:])
                                     })
@@ -276,7 +287,7 @@ class StockPicking(models.Model):
         self.sendKgNotify()
         if self.get_mp_move():
             mp_move = self.get_mp_move()
-            mp_move.quantity_done = self.net_weight
+            mp_move.quantity_done = self.production_net_weight
             mp_move.product_uom_qty = self.weight_guide
             if mp_move.has_serial_generated and self.avg_unitary_weight:
                 self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)]).write({
@@ -332,7 +343,20 @@ class StockPicking(models.Model):
     def create(self, values_list):
         res = super(StockPicking, self).create(values_list)
 
-        if len(res.move_ids_without_package) > len(res.move_ids_without_package.mapped('product_id')):
-            raise models.ValidationError('no puede tener el mismo producto en más de una linea')
+        res.validate_same_product_lines()
 
         return res
+
+    @api.multi
+    def write(self, vals):
+        res = super(StockPicking, self).write(vals)
+
+        for item in self:
+            item.validate_same_product_lines()
+
+        return res
+
+    @api.model
+    def validate_same_product_lines(self):
+        if len(self.move_ids_without_package) > len(self.move_ids_without_package.mapped('product_id')):
+            raise models.ValidationError('no puede tener el mismo producto en más de una linea')

@@ -1,4 +1,6 @@
 from odoo import fields, models, api
+from dateutil.relativedelta import relativedelta
+from odoo.addons import decimal_precision as dp
 
 
 class StockProductionLotSerial(models.Model):
@@ -12,6 +14,17 @@ class StockProductionLotSerial(models.Model):
     producer_id = fields.Many2one(
         'res.partner',
         'Productor'
+    )
+
+    product_variety = fields.Char(
+        'Variedad',
+        related='stock_production_lot_id.product_variety'
+    )
+
+    product_id = fields.Many2one(
+        'product.product',
+        related='stock_production_lot_id.product_id',
+        string='Producto'
     )
 
     belongs_to_prd_lot = fields.Boolean(
@@ -51,6 +64,51 @@ class StockProductionLotSerial(models.Model):
         'manufacturing.pallet',
         'Pallet'
     )
+
+    packaging_date = fields.Date(
+        'Fecha Producción',
+        default=fields.Date.today()
+    )
+
+    best_before_date = fields.Date(
+        'Consumir antes de',
+        compute='_compute_best_before_date'
+    )
+
+    harvest = fields.Integer(
+        'Año de Cosecha',
+        compute='_compute_harvest',
+        store=True
+    )
+
+    canning_id = fields.Many2one(
+        'product.product',
+        'Envase'
+    )
+
+    gross_weight = fields.Float(
+        'Peso Bruto',
+        compute='_compute_gross_weight',
+        digits=dp.get_precision('Peso Bruto')
+    )
+
+    @api.multi
+    def _compute_gross_weight(self):
+        for item in self:
+            if item.canning_id:
+                item.gross_weight = item.display_weight + item.canning_id.weight
+
+    @api.multi
+    @api.depends('packaging_date')
+    def _compute_harvest(self):
+        for item in self:
+            item.harvest = item.packaging_date.year
+
+    @api.multi
+    def _compute_best_before_date(self):
+        for item in self:
+            months = item.production_id.label_durability_id.month_qty or 0
+            item.best_before_date = item.packaging_date + relativedelta(months=months)
 
     @api.model
     def create(self, values_list):
@@ -152,6 +210,11 @@ class StockProductionLotSerial(models.Model):
     @api.multi
     def unreserved_serial(self):
         for item in self:
+
+            if item.consumed:
+                raise models.ValidationError('el código {} ya ha sido consumido'.format(
+                    item.name
+                ))
 
             stock_move = item.reserved_to_production_id.move_raw_ids.filtered(
                 lambda a: a.product_id == item.stock_production_lot_id.product_id

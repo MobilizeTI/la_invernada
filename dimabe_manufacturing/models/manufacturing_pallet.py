@@ -51,7 +51,8 @@ class ManufacturingPallet(models.Model):
     lot_serial_ids = fields.One2many(
         'stock.production.lot.serial',
         'pallet_id',
-        states={'close': [('readonly', True)], 'open': [('readonly', False)]}
+        states={'close': [('readonly', True)], 'open': [('readonly', False)]},
+        string='Detalle'
     )
 
     lot_available_serial_ids = fields.One2many(
@@ -142,6 +143,11 @@ class ManufacturingPallet(models.Model):
         for item in self:
             return self.env.ref('dimabe_manufacturing.action_manufacturing_pallet_label_report') \
                 .report_action(item)
+
+    @api.multi
+    def print_all_pallet_label(self):
+        for item in self:
+            return self.env.ref('dimabe_manufacturing.action_all_pallet_label_report').report_action(item)
 
     @api.model
     def set_state(self, state):
