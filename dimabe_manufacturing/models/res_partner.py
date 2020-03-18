@@ -23,7 +23,7 @@ class ResPartner(models.Model):
     )
 
     region_address_id_address = fields.Many2one(
-        'region_address',
+        'region.address',
         'Región',
         compute='_compute_region_address_id_address'
     )
