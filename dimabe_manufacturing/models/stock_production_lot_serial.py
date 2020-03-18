@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from dateutil.relativedelta import relativedelta
 
 
 class StockProductionLotSerial(models.Model):
@@ -62,6 +63,22 @@ class StockProductionLotSerial(models.Model):
         'manufacturing.pallet',
         'Pallet'
     )
+
+    packaging_date = fields.Date(
+        'Fecha Producción',
+        default=fields.Date.today()
+    )
+
+    best_before_date = fields.Date(
+        'Consumir antes de',
+        compute='_compute_best_before_date'
+    )
+
+    @api.multi
+    def _compute_best_before_date(self):
+        for item in self:
+            months = item.production_id.label_durability_id.month_qty or 0
+            item.best_before_date = item.packaging_date + relativedelta(months=months)
 
     @api.model
     def create(self, values_list):
