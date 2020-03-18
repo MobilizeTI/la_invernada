@@ -51,9 +51,9 @@ class MrpWorkorder(models.Model):
         related='production_id.etd'
     )
 
-    label_durability = fields.Datetime(
+    label_durability_id = fields.Datetime(
         'Durabilidad Etiqueta',
-        related='production_id.label_durability'
+        related='production_id.label_durability_id'
     )
 
     observation = fields.Text(
