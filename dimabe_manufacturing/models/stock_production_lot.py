@@ -165,6 +165,17 @@ class StockProductionLot(models.Model):
         string='pallets'
     )
 
+    label_durability_id = fields.Many2one(
+        'label.durability',
+        'Durabilidad Etiqueta'
+    )
+
+    @api.onchange('label_durability_id')
+    def onchange_label_durability_id(self):
+        if self.stock_production_lot_serial_ids:
+            for serial_id in self.stock_production_lot_serial_ids:
+                serial_id.label_durability_id = self.label_durability_id
+
     @api.multi
     def _compute_producer_ids(self):
         for item in self:
