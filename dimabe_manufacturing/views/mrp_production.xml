@@ -23,9 +23,7 @@
         <button name="button_unreserve" position="replace">
         </button>
         <field name="product_id" position="attributes">
-          <attribute name="attrs">{'readonly':[('stock_picking_id','!=',
-            False)]}
-          </attribute>
+          <attribute name="attrs">{'readonly':[('stock_picking_id','!=',False)]}</attribute>
         </field>
 
         <field name="product_id" position="after">
@@ -36,7 +34,7 @@
           <field name="required_date_moving_to_production"/>
           <field name="unevenness_percent" />
           <field name="observation" />
-          <field name="label_durability" />
+          <field name="label_durability_id" />
         </field>
 
         <field name="bom_id" position="replace"/>
