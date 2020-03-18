@@ -1,5 +1,6 @@
 from odoo import fields, models, api
 from dateutil.relativedelta import relativedelta
+from odoo.addons import decimal_precision as dp
 
 
 class StockProductionLotSerial(models.Model):
@@ -82,7 +83,8 @@ class StockProductionLotSerial(models.Model):
 
     gross_weight = fields.Float(
         'Peso Bruto',
-        compute='_compute_gross_weight'
+        compute='_compute_gross_weight',
+        digits=dp.get_precision('Peso Bruto')
     )
 
     @api.multi
@@ -92,7 +94,7 @@ class StockProductionLotSerial(models.Model):
                 unpelled_dried_id = item.stock_production_lot_id.oven_use_ids[0].unpelled_dried_id or \
                                     item.stock_production_lot_id.oven_use_ids[0].history_id
                 canning_weight = 0
-                raise models.ValidationError(unpelled_dried_id)
+                models._logger.error(unpelled_dried_id)
                 if unpelled_dried_id:
                     canning_weight = unpelled_dried_id.canning_id.weight
                 item.gross_weight = item.display_weight + canning_weight
