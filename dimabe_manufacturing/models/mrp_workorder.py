@@ -51,8 +51,9 @@ class MrpWorkorder(models.Model):
         related='production_id.etd'
     )
 
-    label_durability_id = fields.Datetime(
-        'Durabilidad Etiqueta',
+    label_durability_id = fields.Many2one(
+        'label.durability',
+        string='Durabilidad Etiqueta',
         related='production_id.label_durability_id'
     )
 
