@@ -243,6 +243,9 @@ class UnpelledDried(models.Model):
                                                  'Solo puede encontrarse en un registro'.format(
                         oven_use.used_lot_id.name
                     ))
+            if item.out_lot_id.stock_production_lot_serial_id:
+                for serial_id in item.out_lot_id.stock_production_lot_serial_id:
+                    serial_id.canning_id = item.canning_id
         return res
 
     @api.multi

@@ -81,6 +81,11 @@ class StockProductionLotSerial(models.Model):
         store=True
     )
 
+    canning_id = fields.Many2one(
+        'product.product',
+        'Envase'
+    )
+
     gross_weight = fields.Float(
         'Peso Bruto',
         compute='_compute_gross_weight',
@@ -90,14 +95,8 @@ class StockProductionLotSerial(models.Model):
     @api.multi
     def _compute_gross_weight(self):
         for item in self:
-            if item.stock_production_lot_id.oven_use_ids:
-                unpelled_dried_id = item.stock_production_lot_id.oven_use_ids[0].unpelled_dried_id or \
-                                    item.stock_production_lot_id.oven_use_ids[0].history_id
-                canning_weight = 0
-                models._logger.error(unpelled_dried_id)
-                if unpelled_dried_id:
-                    canning_weight = unpelled_dried_id.canning_id.weight
-                item.gross_weight = item.display_weight + canning_weight
+            if item.canning_id:
+                item.gross_weight = item.display_weight + item.canning_id.weight
 
     @api.multi
     @api.depends('packaging_date')
