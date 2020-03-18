@@ -170,8 +170,8 @@
                   <div>CSG:
                     <span t-field="lot_serial_id.producer_id.sag_code"/>
                   </div>
-                  <div>PROVINCE/PROVINCIA: PENDIENTE</div>
-                  <div>TOWNSHIP/COMUNA: PENDIENTE</div>
+                  <div>PROVINCE/PROVINCIA: <span t-esc="lot_serial_id.producer_id.state_id.addres.name" /></div>
+                  <div>TOWNSHIP/COMUNA: <span t-esc="lot_serial_id.producer_id.city_address" /></div>
                   <div>REGIÓN: <span t-esc="lot_serial_id.producer_id.region_address_id.name" /></div>
                 </td>
                 <td style="border-bottom:solid 1px;">
