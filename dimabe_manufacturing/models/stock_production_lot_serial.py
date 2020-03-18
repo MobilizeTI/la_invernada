@@ -93,7 +93,7 @@ class StockProductionLotSerial(models.Model):
     )
 
     label_durability_id = fields.Many2one(
-        'label.durabiity',
+        'label.durability',
         'Dirabilidad Etiqueta'
     )
 
