@@ -78,7 +78,7 @@ class StockProductionLotSerial(models.Model):
     harvest = fields.Integer(
         'Año de Cosecha',
         compute='_compute_harvest',
-        store=True
+        # store=True
     )
 
     canning_id = fields.Many2one(
@@ -104,7 +104,7 @@ class StockProductionLotSerial(models.Model):
                 item.gross_weight = item.display_weight + item.canning_id.weight
 
     @api.multi
-    @api.depends('packaging_date')
+    # @api.depends('packaging_date')
     def _compute_harvest(self):
         for item in self:
             item.harvest = item.packaging_date.year
