@@ -125,6 +125,11 @@ class UnpelledDried(models.Model):
         domain=[('categ_id.name', 'in', ['Maxisaco'])]
     )
 
+    label_durability_id = fields.Many2one(
+        'label.durability',
+        'Dirabilidad Etiqueta'
+    )
+
     @api.multi
     def _compute_used_lot_ids(self):
         for item in self:

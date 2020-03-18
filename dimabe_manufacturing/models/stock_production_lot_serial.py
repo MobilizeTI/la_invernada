@@ -92,6 +92,11 @@ class StockProductionLotSerial(models.Model):
         digits=dp.get_precision('Peso Bruto')
     )
 
+    label_durability_id = fields.Many2one(
+        'label.durabiity',
+        'Dirabilidad Etiqueta'
+    )
+
     @api.multi
     def _compute_gross_weight(self):
         for item in self:
@@ -107,7 +112,7 @@ class StockProductionLotSerial(models.Model):
     @api.multi
     def _compute_best_before_date(self):
         for item in self:
-            months = item.production_id.label_durability_id.month_qty or 0
+            months = item.label_durability_id.month_qty
             item.best_before_date = item.packaging_date + relativedelta(months=months)
 
     @api.model
