@@ -253,6 +253,7 @@ class UnpelledDried(models.Model):
                 for serial_id in item.out_lot_id.stock_production_lot_serial_ids:
                     serial_id.canning_id = item.canning_id
                     serial_id.label_durability_id = item.label_durability_id
+                    serial_id.producer_id = item.producer_id
         return res
 
     @api.multi
