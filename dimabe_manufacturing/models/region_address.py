@@ -15,13 +15,14 @@ class RegionAddress(models.Model):
 
     @api.model
     def create(self, values_list):
+        if 'name' in values_list:
+            values_list['name'] = str.upper(values_list['name'])
         res = super(RegionAddress, self).create(values_list)
-        res.name = str.upper(res.name)
         return res
 
     @api.multi
     def write(self, values):
+        if 'name' in values:
+            values['name'] = str.upper(values['name'])
         res = super(RegionAddress, self).write(values)
-        for item in self:
-            item.name = str.upper(item.name)
         return res
