@@ -35,27 +35,33 @@ class QualityAnalysis(models.Model):
 
     caliber_1 = fields.Float(
         '26-28',
-        compute='_compute_caliber_1'
+        compute='_compute_caliber_1',
+        store=True
     )
     caliber_2 = fields.Float(
         '28-30',
-        compute='_compute_caliber_2'
+        compute='_compute_caliber_2',
+        store=True
     )
     caliber_3 = fields.Float(
         '30-32',
-        compute='_compute_caliber_3'
+        compute='_compute_caliber_3',
+        store=True
     )
     caliber_4 = fields.Float(
         '32-34',
-        compute='_compute_caliber_4'
+        compute='_compute_caliber_4',
+        store=True
     )
     caliber_5 = fields.Float(
         '34-36',
-        compute='_compute_caliber_5'
+        compute='_compute_caliber_5',
+        store=True
     )
     caliber_6 = fields.Float(
         '36+',
-        compute='_compute_caliber_6'
+        compute='_compute_caliber_6',
+        store=True
     )
 
     @api.model
@@ -63,31 +69,37 @@ class QualityAnalysis(models.Model):
         return self.caliber_ids.filtered(lambda a: a.name == name)
 
     @api.multi
+    @api.depends('caliber_ids')
     def _compute_caliber_1(self):
         for item in self:
             item.caliber_1 = item.get_caliber('26 (mm) - 28 (mm)').percent
 
     @api.multi
+    @api.depends('caliber_ids')
     def _compute_caliber_2(self):
         for item in self:
             item.caliber_2 = item.get_caliber('28 (mm) - 30 (mm)').percent
 
     @api.multi
+    @api.depends('caliber_ids')
     def _compute_caliber_3(self):
         for item in self:
             item.caliber_3 = item.get_caliber('30 (mm) - 32 (mm)').percent
 
     @api.multi
+    @api.depends('caliber_ids')
     def _compute_caliber_4(self):
         for item in self:
             item.caliber_4 = item.get_caliber('32 (mm) - 34 (mm)').percent
 
     @api.multi
+    @api.depends('caliber_ids')
     def _compute_caliber_5(self):
         for item in self:
             item.caliber_5 = item.get_caliber('34 (mm) - 36 (mm)').percent
 
     @api.multi
+    @api.depends('caliber_ids')
     def _compute_caliber_6(self):
         for item in self:
             item.caliber_6 = item.get_caliber('> 36 (mm)').percent
