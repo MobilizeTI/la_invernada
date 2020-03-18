@@ -191,7 +191,7 @@
                     VARIETY (VARIEDAD): <span t-esc="lot_serial_id.product_variety" />
                   </div>
                   <div>
-                    CROP (AÑO DE COSECHA): <span t-esc="lot_serial_id.stock_production_lot_id.stock_picking_id"/>
+                    CROP (AÑO DE COSECHA): <span t-esc="lot_serial_id.harvest"/>
                   </div>
                   <div>
                     PACKAGING DATE (FECHA PRODUCCIÓN): <span t-esc="lot_serial_id.packaging_date"/>

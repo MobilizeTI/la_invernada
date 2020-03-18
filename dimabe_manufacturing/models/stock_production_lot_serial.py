@@ -74,6 +74,17 @@ class StockProductionLotSerial(models.Model):
         compute='_compute_best_before_date'
     )
 
+    harvest = fields.Integer(
+        'Año de Cosecha',
+        compute='_compute_harvest',
+        store=True
+    )
+
+    @api.multi
+    def _compute_harvest(self):
+        for item in self:
+            item.harvest = item.packaging_date.year
+
     @api.multi
     def _compute_best_before_date(self):
         for item in self:
