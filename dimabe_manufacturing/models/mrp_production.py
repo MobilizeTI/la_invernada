@@ -51,7 +51,7 @@ class MrpProduction(models.Model):
 
     label_durability_id = fields.Many2one(
         'label.durability',
-        'Durabulidad Etiqueta'
+        'Durabilidad Etiqueta'
     )
 
     pt_balance = fields.Float(

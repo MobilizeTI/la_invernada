@@ -10,3 +10,8 @@ class ResPartner(models.Model):
         'region.address',
         'Región'
     )
+
+    # city_address = fields.
+    #
+    # state_id_address = fields.
+
