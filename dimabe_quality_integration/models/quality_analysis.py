@@ -112,57 +112,68 @@ class QualityAnalysis(models.Model):
 
     external_damage_analysis_1 = fields.Float(
         'MANCHA GRAVE',
-        compute='_compute_external_damage_analysis_1'
+        compute='_compute_external_damage_analysis_1',
+        store=True
     )
 
     external_damage_analysis_2 = fields.Float(
         'MEZCLA VARIEDAD',
-        compute='_compute_external_damage_analysis_2'
+        compute='_compute_external_damage_analysis_2',
+        store=True
     )
 
     external_damage_analysis_3 = fields.Float(
         'CASCO ABIERTO',
-        compute='_compute_external_damage_analysis_3'
+        compute='_compute_external_damage_analysis_3',
+        store=True
     )
 
     external_damage_analysis_4 = fields.Float(
         'CÁSCARA IMPERFECTA',
-        compute='_compute_external_damage_analysis_4'
+        compute='_compute_external_damage_analysis_4',
+        store=True
     )
 
     external_damage_analysis_5 = fields.Float(
         'NUEZ PARTIDA',
-        compute='_compute_external_damage_analysis_5'
+        compute='_compute_external_damage_analysis_5',
+        store=True
     )
 
     external_damage_analysis_6 = fields.Float(
         'NUEZ TRIZADA',
-        compute='_compute_external_damage_analysis_6'
+        compute='_compute_external_damage_analysis_6',
+        store=True
     )
 
     external_damage_analysis_7 = fields.Float(
         'PELÓN ADERIDO',
-        compute='_compute_external_damage_analysis_7'
+        compute='_compute_external_damage_analysis_7',
+        store=True
     )
 
     external_damage_analysis_8 = fields.Float(
         'HONGO ACTIVO NCC',
-        compute='_compute_external_damage_analysis_8'
+        compute='_compute_external_damage_analysis_8',
+        store=True
     )
 
     external_damage_analysis_9 = fields.Float(
         'HONGO INACTIVO NCC',
-        compute='_compute_external_damage_analysis_9'
+        compute='_compute_external_damage_analysis_9',
+        store=True
     )
 
     external_damage_analysis_10 = fields.Float(
         'MANCHA LEVE',
-        compute='_compute_external_damage_analysis_10'
+        compute='_compute_external_damage_analysis_10',
+        store=True
     )
 
     external_damage_analysis_11 = fields.Float(
         'TIERRA',
-        compute='_compute_external_damage_analysis_11'
+        compute='_compute_external_damage_analysis_11',
+        store=True
     )
 
     @api.model
@@ -170,56 +181,67 @@ class QualityAnalysis(models.Model):
         return self.external_damage_analysis_ids.filtered(lambda a: a.name == name)
 
     @api.multi
+    @api.depends('external_damage_analysis_ids')
     def _compute_external_damage_analysis_1(self):
         for item in self:
             item.external_damage_analysis_1 = item.get_external_damage('MANCHA GRAVE').percent
 
     @api.multi
+    @api.depends('external_damage_analysis_ids')
     def _compute_external_damage_analysis_2(self):
         for item in self:
             item.external_damage_analysis_2 = item.get_external_damage('MEZCLA VARIEDAD').percent
 
     @api.multi
+    @api.depends('external_damage_analysis_ids')
     def _compute_external_damage_analysis_3(self):
         for item in self:
             item.external_damage_analysis_3 = item.get_external_damage('CASCO ABIERTO').percent
 
     @api.multi
+    @api.depends('external_damage_analysis_ids')
     def _compute_external_damage_analysis_4(self):
         for item in self:
             item.external_damage_analysis_4 = item.get_external_damage('CÁSCARA IMPERFECTA').percent
 
     @api.multi
+    @api.depends('external_damage_analysis_ids')
     def _compute_external_damage_analysis_5(self):
         for item in self:
             item.external_damage_analysis_5 = item.get_external_damage('NUEZ PARTIDA').percent
 
     @api.multi
+    @api.depends('external_damage_analysis_ids')
     def _compute_external_damage_analysis_6(self):
         for item in self:
             item.external_damage_analysis_6 = item.get_external_damage('NUEZ TRIZADA').percent
 
     @api.multi
+    @api.depends('external_damage_analysis_ids')
     def _compute_external_damage_analysis_7(self):
         for item in self:
             item.external_damage_analysis_7 = item.get_external_damage('PELÓN ADERIDO').percent
 
     @api.multi
+    @api.depends('external_damage_analysis_ids')
     def _compute_external_damage_analysis_8(self):
         for item in self:
             item.external_damage_analysis_8 = item.get_external_damage('HONGO ACTIVO NCC').percent
 
     @api.multi
+    @api.depends('external_damage_analysis_ids')
     def _compute_external_damage_analysis_9(self):
         for item in self:
             item.external_damage_analysis_9 = item.get_external_damage('HONGO INACTIVO NCC').percent
 
     @api.multi
+    @api.depends('external_damage_analysis_ids')
     def _compute_external_damage_analysis_10(self):
         for item in self:
             item.external_damage_analysis_10 = item.get_external_damage('MANCHA LEVE').percent
 
     @api.multi
+    @api.depends('external_damage_analysis_ids')
     def _compute_external_damage_analysis_11(self):
         for item in self:
             item.external_damage_analysis_11 = item.get_external_damage('TIERRA').percent
@@ -232,37 +254,44 @@ class QualityAnalysis(models.Model):
 
     internal_damage_analysis_1 = fields.Float(
         'RESECA GRAVE',
-        compute='_compute_internal_damage_analysis_1'
+        compute='_compute_internal_damage_analysis_1',
+        store=True
     )
 
     internal_damage_analysis_2 = fields.Float(
         'DAÑO INSECTO',
-        compute='_compute_internal_damage_analysis_2'
+        compute='_compute_internal_damage_analysis_2',
+        store=True
     )
 
     internal_damage_analysis_3 = fields.Float(
         'RESECA LEVE',
-        compute='_compute_internal_damage_analysis_3'
+        compute='_compute_internal_damage_analysis_3',
+        store=True
     )
 
     internal_damage_analysis_4 = fields.Float(
         'HONGO ACTIVO NSC',
-        compute='_compute_internal_damage_analysis_4'
+        compute='_compute_internal_damage_analysis_4',
+        store=True
     )
 
     internal_damage_analysis_5 = fields.Float(
         'HONGO INACTIVO NSC',
-        compute='_compute_internal_damage_analysis_5'
+        compute='_compute_internal_damage_analysis_5',
+        store=True
     )
 
     internal_damage_analysis_6 = fields.Float(
         'PULPA NARANJA',
-        compute='_compute_internal_damage_analysis_6'
+        compute='_compute_internal_damage_analysis_6',
+        store=True
     )
 
     internal_damage_analysis_7 = fields.Float(
         'RANCIDEZ',
-        compute='_compute_internal_damage_analysis_7'
+        compute='_compute_internal_damage_analysis_7',
+        store=True
     )
 
     @api.model
@@ -270,36 +299,43 @@ class QualityAnalysis(models.Model):
         return self.internal_damage_analysis_ids.filtered(lambda a: a.name == name)
 
     @api.multi
+    @api.depends('internal_damage_analysis_ids')
     def _compute_internal_damage_analysis_1(self):
         for item in self:
             item.internal_damage_analysis_1 = item.get_internal_damage('RESECA GRAVE').percent
 
     @api.multi
+    @api.depends('internal_damage_analysis_ids')
     def _compute_internal_damage_analysis_2(self):
         for item in self:
             item.internal_damage_analysis_2 = item.get_internal_damage('DAÑO INSECTO').percent
 
     @api.multi
+    @api.depends('internal_damage_analysis_ids')
     def _compute_internal_damage_analysis_3(self):
         for item in self:
             item.internal_damage_analysis_3 = item.get_internal_damage('RESECA LEVE').percent
 
     @api.multi
+    @api.depends('internal_damage_analysis_ids')
     def _compute_internal_damage_analysis_4(self):
         for item in self:
             item.internal_damage_analysis_4 = item.get_internal_damage('HONGO ACTIVO NSC').percent
 
     @api.multi
+    @api.depends('internal_damage_analysis_ids')
     def _compute_internal_damage_analysis_5(self):
         for item in self:
             item.internal_damage_analysis_5 = item.get_internal_damage('HONGO INACTIVO NSC').percent
 
     @api.multi
+    @api.depends('internal_damage_analysis_ids')
     def _compute_internal_damage_analysis_6(self):
         for item in self:
             item.internal_damage_analysis_6 = item.get_internal_damage('PULPA NARANJA').percent
 
     @api.multi
+    @api.depends('internal_damage_analysis_ids')
     def _compute_internal_damage_analysis_7(self):
         for item in self:
             item.internal_damage_analysis_7 = item.get_internal_damage('RANCIDEZ').percent
@@ -309,7 +345,6 @@ class QualityAnalysis(models.Model):
     humidity_percent = fields.Float(
         related='humidity_analysis_id.percent',
         string='% Humedad'
-
     )
 
     humidity_tolerance = fields.Float(
