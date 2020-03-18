@@ -1,4 +1,6 @@
 from odoo import fields, models, api
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 
 class StockProductionLot(models.Model):
@@ -105,6 +107,16 @@ class StockProductionLot(models.Model):
         compute='_compute_context_picking_id'
     )
 
+    packaging_date = fields.Date(
+        'Fecha Producción',
+        default=datetime.utcnow()
+    )
+
+    best_before_date = fields.Date(
+        'Consumir antes de',
+        compute='_compute_best_before_date'
+    )
+
     pallet_ids = fields.One2many(
         'manufacturing.pallet',
         compute='_compute_pallet_ids'
@@ -164,6 +176,11 @@ class StockProductionLot(models.Model):
         compute='_compute_all_pallet_ids',
         string='pallets'
     )
+
+    @api.multi
+    def _compute_best_before_date(self):
+        for item in self:
+            item.best_before_date = item.packaging_date + relativedelta(months=12)
 
     @api.multi
     def _compute_producer_ids(self):

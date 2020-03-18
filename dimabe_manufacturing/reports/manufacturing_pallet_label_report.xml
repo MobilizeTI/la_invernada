@@ -194,10 +194,10 @@
                     CROP (AÑO DE COSECHA): <span t-esc="lot_serial_id.stock_production_lot_id.stock_picking_id"/>
                   </div>
                   <div>
-                    PACKAGING DATE (FECHA PRODUCCIÓN):
+                    PACKAGING DATE (FECHA PRODUCCIÓN): <span t-esc="lot_serial_id.stock_production_lot_id.packaging_date"/>
                   </div>
                   <div>
-                    BEST BEFORE DATE (CONSUMIR ANTES DE):
+                    BEST BEFORE DATE (CONSUMIR ANTES DE): <span t-esc="lot_serial_id.stock_production_lot_id.best_before_date"/>
                   </div>
                   <div>
                     TRACE CODE (CÓDIGO De TRAZABILIDAD): <span t-esc="lot_serial_id.production_id.name"/>
