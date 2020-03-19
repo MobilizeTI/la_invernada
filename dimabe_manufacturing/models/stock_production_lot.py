@@ -6,7 +6,6 @@ class StockProductionLot(models.Model):
     _sql_constraints = [
         ('name_uniq', 'UNIQUE(name)', 'el lote que intenta crear, ya existe en el sistema')
     ]
-    _order = 'name, producer_id'
 
     unpelled_state = fields.Selection([
         ('waiting', 'En Espera'),
@@ -27,18 +26,21 @@ class StockProductionLot(models.Model):
 
     product_variety = fields.Char(
         'Variedad',
-        compute='_compute_product_variety'
+        compute='_compute_product_variety',
+        store=True
     )
 
     producer_id = fields.Many2one(
         'res.partner',
         related='stock_picking_id.partner_id',
-        string='Productor'
+        string='Productor',
+        store=True
     )
 
     reception_guide_number = fields.Integer(
         'Guía',
-        related='stock_picking_id.guide_number'
+        related='stock_picking_id.guide_number',
+        store=True
     )
 
     reception_state = fields.Selection(
@@ -48,7 +50,8 @@ class StockProductionLot(models.Model):
 
     product_canning = fields.Char(
         'Envase',
-        compute='_compute_reception_data'
+        related='stock_picking_id.get_canning_move().name'
+        # compute='_compute_reception_data'
     )
 
     is_prd_lot = fields.Boolean('Es Lote de salida de Proceso')
@@ -227,6 +230,7 @@ class StockProductionLot(models.Model):
             .report_action(self.stock_production_lot_serial_ids)
 
     @api.multi
+    @api.depends('product_id')
     def _compute_product_variety(self):
         for item in self:
             item.product_variety = item.product_id.get_variety()
@@ -289,9 +293,8 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_reception_data(self):
         for item in self:
-            stock_picking = self.env['stock.picking'].search([('name', '=', item.name)])
-            if stock_picking:
-                item.product_canning = stock_picking[0].get_canning_move().name
+            if item.stock_picking_id:
+                item.product_canning = item.stock_picking_id.get_canning_move().name
 
     @api.multi
     def _compute_total_serial(self):
