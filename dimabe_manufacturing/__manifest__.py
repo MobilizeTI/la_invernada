@@ -54,7 +54,8 @@
         'views/stock_picking_type.xml',
         'views/res_partner.xml',
         'views/res_company.xml',
-        'views/label_durability.xml'
+        'views/label_durability.xml',
+        'views/dried_oven.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
