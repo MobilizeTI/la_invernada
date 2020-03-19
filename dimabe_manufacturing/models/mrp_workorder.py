@@ -1,4 +1,5 @@
-from odoo import fields, models, api, exceptions
+from odoo import fields, models, api
+from odoo.addons import decimal_precision as dp
 
 
 class MrpWorkorder(models.Model):
@@ -29,6 +30,12 @@ class MrpWorkorder(models.Model):
         'sale.order',
         related='production_id.stock_picking_id.sale_id',
         string='Pedido de Venta'
+    )
+
+    pt_balance = fields.Float(
+        'Saldo Bodega PT',
+        digits=dp.get_precision('Saldo Bodega PT'),
+        related='production_id.pt_balance'
     )
 
     charging_mode = fields.Selection(

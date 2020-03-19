@@ -121,6 +121,7 @@
           <field name="stock_picking_id" string="Pedido de Venta"/>
           <field name="product_id"/>
           <field name="product_qty"/>
+          <field name="pt_balance" />
           <field name="charging_mode"/>
           <field name="client_label"/>
           <field name="unevenness_percent"/>
