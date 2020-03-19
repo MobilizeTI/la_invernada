@@ -13,7 +13,7 @@
                        readonly="1"
                 />
                 <field name="producer_ids" invisible="1" />
-                <field name="label_producer_id"
+                <field name="producer_id"
                        domain="['|',('id','in',producer_ids),('always_to_print','=',True)]"
                 />
                 <field name="qty_standard_serial"

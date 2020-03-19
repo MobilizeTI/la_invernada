@@ -98,11 +98,6 @@ class StockProductionLot(models.Model):
 
     is_reserved = fields.Boolean('Esta reservado?', compute='reserved', default=False)
 
-    label_producer_id = fields.Many2one(
-        'res.partner',
-        'Productor'
-    )
-
     context_picking_id = fields.Integer(
         'picking del contexto',
         compute='_compute_context_picking_id'
@@ -209,11 +204,11 @@ class StockProductionLot(models.Model):
                     lambda a: a.company_type == 'company' or a.always_to_print
                 )
 
-    @api.onchange('label_producer_id')
-    def _onchange_label_producer_id(self):
+    @api.onchange('producer_id')
+    def _onchange_producer_id(self):
 
         self.stock_production_lot_serial_ids.write({
-            'producer_id': self.label_producer_id.id
+            'producer_id': self.producer_id.id
         })
 
     @api.multi
@@ -404,7 +399,7 @@ class StockProductionLot(models.Model):
         for item in self:
 
             pallet = self.env['manufacturing.pallet'].create({
-                'producer_id': item.label_producer_id.id
+                'producer_id': item.producer_id.id
             })
 
             for counter in range(item.qty_standard_serial):
