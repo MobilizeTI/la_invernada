@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.addons import decimal_precision as dp
 
 
 class UnpelledDried(models.Model):
@@ -129,6 +130,18 @@ class UnpelledDried(models.Model):
         'label.durability',
         'Durabilidad Etiqueta'
     )
+
+    new_serial_weight = fields.Float(
+        'Peso nueva serie',
+        digits=dp.get_precision('Peso nueva serie')
+    )
+
+    @api.onchange('new_serial_weight')
+    def onchange_new_serial_weight(self):
+        if self.new_serial_weight:
+            self.out_serial_ids.create({
+                'display_weight': self.new_serial_weight
+            })
 
     @api.multi
     def _compute_used_lot_ids(self):

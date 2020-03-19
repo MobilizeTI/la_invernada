@@ -109,6 +109,7 @@
             />
             <field name="canning_id" />
             <field name="label_durability_id"/>
+            <field name="new_serial_weight"/>
             <field name="out_serial_ids"
                    attrs="{'readonly':['|',('state','in',['done']),('can_close','=',False)],'invisible':[('out_lot_id','=',False)]}"
             >
