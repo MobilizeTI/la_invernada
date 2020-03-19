@@ -56,7 +56,8 @@ class MrpProduction(models.Model):
 
     pt_balance = fields.Float(
         'Saldo Bodega PT',
-        digits=dp.get_precision('Saldo Bodega PT')
+        digits=dp.get_precision('Saldo Bodega PT'),
+        compute='_compute_pt_balance'
     )
 
     stock_picking_id = fields.Many2one('stock.picking', 'Despacho')
@@ -116,6 +117,13 @@ class MrpProduction(models.Model):
     materials = fields.Many2many('product.product', compute='get_product_bom')
 
     manufactureable = fields.Many2many('product.product', compute='get_product_route')
+
+    @api.multi
+    def _compute_pt_balance(self):
+        for item in self:
+            item.pt_balance = sum(item.stock_picking_id.packing_list_ids.filtered(
+                lambda a: a.production_id != item
+            ).mapped('display_weight'))
 
     @api.model
     def get_product_route(self):
