@@ -25,7 +25,7 @@
     <field name="view_mode">tree,form</field>
   </record>
 
-  <menuitem id="mrp.menu_mrp_configuration"
+  <menuitem id="menu_dried_oven"
             name="Hornos"
             parent="mrp.menu_mrp_bom"
 
