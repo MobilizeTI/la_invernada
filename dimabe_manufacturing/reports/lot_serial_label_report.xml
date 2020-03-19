@@ -141,7 +141,15 @@
             <tr>
               <td>Nro. Trazabilidad</td>
               <td colspan="3">
-                <span t-field="o.production_id.name"/>
+                <t t-if="o.production_id.stock_picking_id.name">
+                  <span t-field="o.production_id.stock_picking_id.name"/>
+                </t>
+                <t t-elif="o.production_id.name">
+                  <span t-field="o.production_id.name"/>
+                </t>
+                <t t-elif="o.stock_production_lot_id.name">
+                  <span t-field="o.stock_production_lot_id.name" />
+                </t>
               </td>
             </tr>
             <tr>
@@ -174,10 +182,10 @@
             </tr>
           </table>
           <t t-if="not docs[-1].serial_number == o.serial_number">
-            <p style="page-break-after:always;"></p>
+            <p style="page-break-after:always;" />
           </t>
           <t t-else="">
-            <p style="page-break-after:avoid;"></p>
+            <p style="page-break-after:avoid;" />
           </t>
 
 
