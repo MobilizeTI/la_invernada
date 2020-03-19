@@ -35,6 +35,10 @@
                        groups="base.group_system"
                 />
 
+                <field name="stock_picking_id"
+                       groups="base.group_system"
+                />
+
 <!--                <button name="print_all_serial" attrs="{'invisible':[('is_standard_weight','=',False)]}"-->
 <!--                        string="Imprimir Series" type="object"/>-->
                 <field name="stock_production_lot_serial_ids"
