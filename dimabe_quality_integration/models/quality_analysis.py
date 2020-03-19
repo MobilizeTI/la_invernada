@@ -359,12 +359,14 @@ class QualityAnalysis(models.Model):
 
     performance_analysis_1 = fields.Float(
         'Rendimiento Partido Total',
-        compute='_compute_performance_analysis_1'
+        compute='_compute_performance_analysis_1',
+        store=True
     )
 
     performance_analysis_2 = fields.Float(
         'Rendimiento Partido Exportable',
-        compute='_compute_performance_analysis_2'
+        compute='_compute_performance_analysis_2',
+        store=True
     )
 
     @api.model
@@ -372,11 +374,13 @@ class QualityAnalysis(models.Model):
         return self.performance_analysis_ids.filtered(lambda a: a.name == name)
 
     @api.multi
+    @api.depends('performance_analysis_ids')
     def _compute_performance_analysis_1(self):
         for item in self:
             item.performance_analysis_1 = item.get_performance('Rendimiento Partido Total').percent
 
     @api.multi
+    @api.depends('performance_analysis_ids')
     def _compute_performance_analysis_2(self):
         for item in self:
             item.performance_analysis_2 = item.get_performance('Rendimiento Partido Exportable').percent
@@ -389,37 +393,44 @@ class QualityAnalysis(models.Model):
 
     color_analysis_1 = fields.Float(
         'EXTRA LIGHT',
-        compute='_compute_color_analysis_1'
+        compute='_compute_color_analysis_1',
+        store=True
     )
 
     color_analysis_2 = fields.Float(
         'EXTRA LIGHT FANCY',
-        compute='_compute_color_analysis_2'
+        compute='_compute_color_analysis_2',
+        store=True
     )
 
     color_analysis_3 = fields.Float(
         'EXTRA LIGHT STANDAR',
-        compute='_compute_color_analysis_3'
+        compute='_compute_color_analysis_3',
+        store=True
     )
 
     color_analysis_4 = fields.Float(
         'LIGHT',
-        compute='_compute_color_analysis_4'
+        compute='_compute_color_analysis_4',
+        store=True
     )
 
     color_analysis_5 = fields.Float(
         'LIGHT AMBER',
-        compute='_compute_color_analysis_5'
+        compute='_compute_color_analysis_5',
+        store=True
     )
 
     color_analysis_6 = fields.Float(
         'AMBER',
-        compute='_compute_color_analysis_6'
+        compute='_compute_color_analysis_6',
+        store=True
     )
 
     color_analysis_7 = fields.Float(
         'AMARILLA',
-        compute='_compute_color_analysis_7'
+        compute='_compute_color_analysis_7',
+        store=True
     )
 
     @api.model
@@ -427,36 +438,43 @@ class QualityAnalysis(models.Model):
         return self.color_analysis_ids.filtered(lambda a: a.name == name)
 
     @api.multi
+    @api.depends('color_analysis_ids')
     def _compute_color_analysis_1(self):
         for item in self:
             item.color_analysis_1 = item.get_color('EXTRA LIGHT').percent
 
     @api.multi
+    @api.depends('color_analysis_ids')
     def _compute_color_analysis_2(self):
         for item in self:
             item.color_analysis_2 = item.get_color('EXTRA LIGHT FANCY').percent
 
     @api.multi
+    @api.depends('color_analysis_ids')
     def _compute_color_analysis_3(self):
         for item in self:
             item.color_analysis_3 = item.get_color('EXTRA LIGHT STANDAR').percent
 
     @api.multi
+    @api.depends('color_analysis_ids')
     def _compute_color_analysis_4(self):
         for item in self:
             item.color_analysis_4 = item.get_color('LIGHT').percent
 
     @api.multi
+    @api.depends('color_analysis_ids')
     def _compute_color_analysis_5(self):
         for item in self:
             item.color_analysis_5 = item.get_color('LIGHT AMBER').percent
 
     @api.multi
+    @api.depends('color_analysis_ids')
     def _compute_color_analysis_6(self):
         for item in self:
             item.color_analysis_6 = item.get_color('AMBER').percent
 
     @api.multi
+    @api.depends('color_analysis_ids')
     def _compute_color_analysis_7(self):
         for item in self:
             item.color_analysis_7 = item.get_color('AMARILLA').percent
@@ -469,22 +487,26 @@ class QualityAnalysis(models.Model):
 
     form_analysis_1 = fields.Float(
         'HALVES 7/8',
-        compute='_compute_form_analysis_1'
+        compute='_compute_form_analysis_1',
+        store=True
     )
 
     form_analysis_2 = fields.Float(
         'QUARTERS',
-        compute='_compute_form_analysis_2'
+        compute='_compute_form_analysis_2',
+        store=True
     )
 
     form_analysis_3 = fields.Float(
         'PIECES',
-        compute='_compute_form_analysis_3'
+        compute='_compute_form_analysis_3',
+        store=True
     )
 
     form_analysis_4 = fields.Float(
         'HALVES 3/4',
-        compute='_compute_form_analysis_4'
+        compute='_compute_form_analysis_4',
+        store=True
     )
 
     @api.model
@@ -492,21 +514,25 @@ class QualityAnalysis(models.Model):
         return self.form_analysis_ids.filtered(lambda a: a.name == name)
 
     @api.multi
+    @api.depends('form_analysis_ids')
     def _compute_form_analysis_1(self):
         for item in self:
             item.form_analysis_1 = item.get_form('HALVES 7/8').percent
 
     @api.multi
+    @api.depends('form_analysis_ids')
     def _compute_form_analysis_2(self):
         for item in self:
             item.form_analysis_2 = item.get_form('QUARTERS').percent
 
     @api.multi
+    @api.depends('form_analysis_ids')
     def _compute_form_analysis_3(self):
         for item in self:
             item.form_analysis_3 = item.get_form('PIECES').percent
 
     @api.multi
+    @api.depends('form_analysis_ids')
     def _compute_form_analysis_4(self):
         for item in self:
             item.form_analysis_4 = item.get_form('HALVES 3/4').percent
@@ -519,17 +545,20 @@ class QualityAnalysis(models.Model):
 
     impurity_analysis_1 = fields.Float(
         'SHELL',
-        compute='_compute_impurity_analysis_1'
+        compute='_compute_impurity_analysis_1',
+        store=True
     )
 
     impurity_analysis_2 = fields.Float(
         'SEPTUM',
-        compute='_compute_impurity_analysis_2'
+        compute='_compute_impurity_analysis_2',
+        store=True
     )
 
     impurity_analysis_3 = fields.Float(
         'FOREIGN MATERIAL',
-        compute='_compute_impurity_analysis_3'
+        compute='_compute_impurity_analysis_3',
+        store=True
     )
 
     @api.model
@@ -537,16 +566,19 @@ class QualityAnalysis(models.Model):
         return self.impurity_analysis_ids.filtered(lambda a: a.name == name)
 
     @api.multi
+    @api.depends('impurity_analysis_ids')
     def _compute_impurity_analysis_1(self):
         for item in self:
             item.impurity_analysis_1 = item.get_impurity('SHELL').percent
 
     @api.multi
+    @api.depends('impurity_analysis_ids')
     def _compute_impurity_analysis_2(self):
         for item in self:
             item.impurity_analysis_2 = item.get_impurity('SEPTUM').percent
 
     @api.multi
+    @api.depends('impurity_analysis_ids')
     def _compute_impurity_analysis_3(self):
         for item in self:
             item.impurity_analysis_3 = item.get_impurity('FOREIGN MATERIAL').percent
