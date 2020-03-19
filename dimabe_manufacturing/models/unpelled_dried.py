@@ -140,7 +140,8 @@ class UnpelledDried(models.Model):
     def onchange_new_serial_weight(self):
         if self.new_serial_weight:
             self.out_serial_ids.create({
-                'display_weight': self.new_serial_weight
+                'display_weight': self.new_serial_weight,
+                'stock_production_lot_id': self.out_lot_id.id
             })
 
     @api.multi
