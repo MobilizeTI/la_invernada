@@ -66,8 +66,16 @@
                   <span t-esc="lot_serial_id.best_before_date"/>
                 </div>
                 <div>
-                  TRACE CODE (CÓDIGO De TRAZABILIDAD):
-                  <span t-esc="lot_serial_id.production_id.name"/>
+                  TRACE CODE (CÓDIGO DE TRAZABILIDAD):
+                  <t t-if="o.production_id.stock_picking_id.name">
+                    <span t-field="o.production_id.stock_picking_id.name"/>
+                  </t>
+                  <t t-elif="o.production_id.name">
+                    <span t-field="o.production_id.name"/>
+                  </t>
+                  <t t-elif="o.stock_production_lot_id.name">
+                    <span t-field="o.stock_production_lot_id.name"/>
+                  </t>
                 </div>
                 <div>
                   NET WEIGHT (PESO NETO):
@@ -141,15 +149,7 @@
             <tr>
               <td>Nro. Trazabilidad</td>
               <td colspan="3">
-                <t t-if="o.production_id.stock_picking_id.name">
-                  <span t-field="o.production_id.stock_picking_id.name"/>
-                </t>
-                <t t-elif="o.production_id.name">
-                  <span t-field="o.production_id.name"/>
-                </t>
-                <t t-elif="o.stock_production_lot_id.name">
-                  <span t-field="o.stock_production_lot_id.name" />
-                </t>
+
               </td>
             </tr>
             <tr>
@@ -182,10 +182,10 @@
             </tr>
           </table>
           <t t-if="not docs[-1].serial_number == o.serial_number">
-            <p style="page-break-after:always;" />
+            <p style="page-break-after:always;"/>
           </t>
           <t t-else="">
-            <p style="page-break-after:avoid;" />
+            <p style="page-break-after:avoid;"/>
           </t>
 
 
