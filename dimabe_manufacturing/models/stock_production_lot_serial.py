@@ -118,6 +118,8 @@ class StockProductionLotSerial(models.Model):
     @api.model
     def create(self, values_list):
         res = super(StockProductionLotSerial, self).create(values_list)
+        if not res.display_weight > 0:
+            raise models.ValidationError('debe agregar un peso a la serie')
         stock_move_line = self.env['stock.move.line'].search([
             ('lot_id', '=', res.stock_production_lot_id.id),
             ('lot_id.is_prd_lot', '=', True)
@@ -140,6 +142,14 @@ class StockProductionLotSerial(models.Model):
             res.production_id = production.id
             res.reserve_to_stock_picking_id = production.stock_picking_id.id
 
+        return res
+
+    @api.multi
+    def write(self, vals):
+        res = super(StockProductionLotSerial, self).write(vals)
+        for item in self:
+            if not item.display_weight > 0:
+                raise models.ValidationError('debe agregar un peso a la serie')
         return res
 
     @api.model
