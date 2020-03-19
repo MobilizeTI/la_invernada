@@ -1,7 +1,7 @@
 <odoo>
   <record id="dried_oven_form_view" model="ir.ui.view">
     <field name="name">Formulario de Horno</field>
-    <field name="model">dired.oven</field>
+    <field name="model">dried.oven</field>
     <field name="arch" type="xml">
       <form>
         <field name="name"/>
@@ -11,7 +11,7 @@
 
   <record id="dried_oven_tree_view" model="ir.ui.view">
     <field name="name">lista de hornos</field>
-    <field name="model">dired.oven</field>
+    <field name="model">dried.oven</field>
     <field name="arch" type="xml">
       <tree>
         <field name="name"/>
