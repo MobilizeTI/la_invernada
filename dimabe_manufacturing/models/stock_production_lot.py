@@ -26,8 +26,7 @@ class StockProductionLot(models.Model):
 
     product_variety = fields.Char(
         'Variedad',
-        compute='_compute_product_variety',
-        store=True
+        compute='_compute_product_variety'
     )
 
     producer_id = fields.Many2one(
@@ -50,8 +49,7 @@ class StockProductionLot(models.Model):
 
     product_canning = fields.Char(
         'Envase',
-        related='stock_picking_id.get_canning_move().name'
-        # compute='_compute_reception_data'
+        compute='_compute_reception_data'
     )
 
     is_prd_lot = fields.Boolean('Es Lote de salida de Proceso')
@@ -118,23 +116,27 @@ class StockProductionLot(models.Model):
     picking_type_id = fields.Many2one(
         'stock.picking.type',
         string='Bodega',
-        related='stock_picking_id.picking_type_id'
+        related='stock_picking_id.picking_type_id',
+        store=True
 
     )
 
     reception_net_weight = fields.Float(
         'kg. Neto',
-        related='stock_picking_id.net_weight'
+        related='stock_picking_id.net_weight',
+        store=True
     )
 
     reception_date = fields.Datetime(
         'Fecha Recepción',
-        related='stock_picking_id.truck_in_date'
+        related='stock_picking_id.truck_in_date',
+        store=True
     )
 
     reception_elapsed_time = fields.Char(
         'Hr Camión en Planta',
-        related='stock_picking_id.elapsed_time'
+        related='stock_picking_id.elapsed_time',
+        store=True
     )
 
     oven_init_active_time = fields.Integer(
@@ -180,7 +182,7 @@ class StockProductionLot(models.Model):
         if self.stock_production_lot_serial_ids:
             for serial_id in self.stock_production_lot_serial_ids:
                 serial_id.write({
-                   'label_durability_id': self.label_durability_id.id
+                    'label_durability_id': self.label_durability_id.id
                 })
 
     @api.multi
@@ -230,7 +232,6 @@ class StockProductionLot(models.Model):
             .report_action(self.stock_production_lot_serial_ids)
 
     @api.multi
-    @api.depends('product_id')
     def _compute_product_variety(self):
         for item in self:
             item.product_variety = item.product_id.get_variety()
