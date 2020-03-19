@@ -131,22 +131,6 @@ class UnpelledDried(models.Model):
         'Durabilidad Etiqueta'
     )
 
-    new_serial_weight = fields.Float(
-        'Peso nueva serie',
-        digits=dp.get_precision('Peso nueva serie')
-    )
-
-    @api.onchange('new_serial_weight')
-    def onchange_new_serial_weight(self):
-        if self.new_serial_weight:
-            correlative = '00{}'.format(len(self.out_serial_ids))
-            self.out_serial_ids.create({
-                'real_weight': self.new_serial_weight,
-                'stock_production_lot_id': self.out_lot_id.id,
-                'serial_number': self.out_lot_id.name + correlative[-3:],
-                'label_durability_id': self.label_durability_id.id
-            })
-
     @api.multi
     def _compute_used_lot_ids(self):
         for item in self:
