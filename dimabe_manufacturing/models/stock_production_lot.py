@@ -6,6 +6,7 @@ class StockProductionLot(models.Model):
     _sql_constraints = [
         ('name_uniq', 'UNIQUE(name)', 'el lote que intenta crear, ya existe en el sistema')
     ]
+    _order = 'name, producer_id'
 
     unpelled_state = fields.Selection([
         ('waiting', 'En Espera'),
@@ -31,7 +32,8 @@ class StockProductionLot(models.Model):
 
     producer_id = fields.Many2one(
         'res.partner',
-        related='stock_picking_id.partner_id'
+        related='stock_picking_id.partner_id',
+        string='Productor'
     )
 
     reception_guide_number = fields.Integer(
