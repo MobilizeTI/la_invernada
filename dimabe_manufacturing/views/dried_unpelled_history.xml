@@ -4,8 +4,15 @@
     <field name="model">dried.unpelled.history</field>
     <field name="arch" type="xml">
       <tree>
-        <field name="create_date"/>
+        <field name="create_date" invisible="1"/>
+        <field name="in_lot_ids" widget="many2many_tags" />
         <field name="producer_id"/>
+        <field name="lot_guide_numbers" widget="many2many_tags" />
+        <field name="in_product_variety" />
+        <field name="picking_type_id" />
+        <field name="init_date" />
+        <field name="finish_date" />
+        <field name="active_time" />
         <field name="in_product_id"/>
         <field name="total_in_weight"/>
         <field name="total_out_weight"/>
