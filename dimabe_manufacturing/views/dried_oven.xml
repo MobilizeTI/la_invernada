@@ -27,7 +27,7 @@
 
   <menuitem id="mrp.menu_mrp_configuration"
             name="Hornos"
-            parent="mrp.menu_mrp_root"
+            parent="mrp.menu_mrp_bom"
 
   />
 </odoo>
