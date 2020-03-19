@@ -5,6 +5,7 @@ from odoo.addons import decimal_precision as dp
 
 class StockProductionLotSerial(models.Model):
     _inherit = 'stock.production.lot.serial'
+    _order = 'name , producer_id'
 
     production_id = fields.Many2one(
         'mrp.production',
@@ -13,7 +14,7 @@ class StockProductionLotSerial(models.Model):
 
     producer_id = fields.Many2one(
         'res.partner',
-        'Productor'
+        string='Productor'
     )
 
     product_variety = fields.Char(
