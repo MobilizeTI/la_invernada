@@ -4,7 +4,11 @@
     <field name="model">dried.oven</field>
     <field name="arch" type="xml">
       <form>
-        <field name="name"/>
+        <group>
+          <group>
+            <field name="name"/>
+          </group>
+        </group>
       </form>
     </field>
   </record>
