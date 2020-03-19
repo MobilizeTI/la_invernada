@@ -19,6 +19,7 @@ class StockPickingController(http.Controller):
                 'ReceptionKgs': res.net_weight,
                 'ContainerType': res.get_canning_move().product_id.display_name,
                 'ContainerWeightAverage': res.avg_unitary_weight,
+                'ContainerWeight': res.get_canning_move().product_id.weight,
                 'Season': res.scheduled_date.year,
                 'Tare': res.tare_weight,
                 'Warehouse': res.location_dest_id.name,
