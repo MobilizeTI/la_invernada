@@ -35,7 +35,7 @@
       <field name="view_id" ref="view_mrp_dispatched_tree"/>
       <field name="view_mode">tree,form</field>
       <field name="domain">
-        [('state','!=','cancel'),('state','!=','done'),('origin','!=',None),('picking_type_code','=','outgoing'),('has_mrp_production','!=',True)]
+        [('state','not in',['cancel','done']),('sale_id','!=',False),('picking_type_code','=','outgoing'),('has_mrp_production','!=',True)]
       </field>
     </record>
     <menuitem id="menu_mrp_dispatched_root"

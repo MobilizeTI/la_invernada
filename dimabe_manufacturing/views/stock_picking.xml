@@ -103,31 +103,4 @@
       </page>
     </field>
   </record>
-  <record id="view_plan_stock_tree" model="ir.ui.view">
-    <field name="name">listado de pedidos pendientes</field>
-    <field name="model">stock.picking</field>
-    <field name="priority">21</field>
-    <field name="arch" type="xml">
-      <tree>
-        <field name="name"/>
-        <field name="origin"/>
-        <field name="state"/>
-      </tree>
-    </field>
-  </record>
-
-  <record id="plan_stock_action" model="ir.actions.act_window">
-    <field name="name">Planificación de Pedidos</field>
-    <field name="res_model">stock.picking</field>
-    <field name="view_mode">tree,form</field>
-    <field name="view_id" ref="view_plan_stock_tree"/>
-    <field name="domain">[('state','not in',['done','cancel'])]</field>
-  </record>
-
-  <menuitem name="Planificar Pedidos"
-            id="order_plan_menu"
-            parent="mrp.mrp_planning_menu_root"
-            action="plan_stock_action"
-  />
-
 </odoo>
