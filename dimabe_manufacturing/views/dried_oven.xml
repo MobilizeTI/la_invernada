@@ -28,6 +28,6 @@
   <menuitem id="menu_dried_oven"
             name="Hornos"
             parent="mrp.menu_mrp_bom"
-
+            action="dried_oven_action"
   />
 </odoo>
