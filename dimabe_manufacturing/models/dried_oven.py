@@ -4,6 +4,9 @@ from odoo import fields, models, api
 class DriedOven(models.Model):
     _name = 'dried.oven'
     _description = 'horno de secado'
+    _sql_constraints = [
+        ('name_uniq', 'UNIQUE(name', 'ya existe este horno en el sistema')
+    ]
 
     name = fields.Char('Horno')
 
