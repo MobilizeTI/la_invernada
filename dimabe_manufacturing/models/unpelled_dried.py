@@ -275,6 +275,10 @@ class UnpelledDried(models.Model):
     @api.multi
     def finish_unpelled_dried(self):
         for item in self:
+            if item.out_lot_id.product_id != item.out_product_id:
+                item.out_lot_id.update({
+                    'product_id': item.out_product_id.id
+                })
             oven_use_to_close_ids = item.oven_use_ids.filtered(
                 lambda a: a.ready_to_close
             )
