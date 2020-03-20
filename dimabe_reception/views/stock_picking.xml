@@ -41,7 +41,7 @@
                  attrs="{'invisible':['&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
           />
           <field name="tare_weight"
-                 attrs="{'invisible':['&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False)]}"
+                 attrs="{'invisible':['&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
           />
           <field name="quality_weight"
                  attrs="{'invisible':['&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False)]}"
