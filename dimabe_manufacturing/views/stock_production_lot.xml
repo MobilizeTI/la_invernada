@@ -150,5 +150,4 @@
               parent="mrp.menu_mrp_reporting"
               action="stock_production_lot_in_dashboard_action"
     />
-    >>>>>>> test
 </odoo>
