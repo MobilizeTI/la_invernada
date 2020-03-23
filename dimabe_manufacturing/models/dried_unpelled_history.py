@@ -32,6 +32,11 @@ class DriedUnpelledHistory(models.Model):
         required=True,
     )
 
+    add_serial = fields.Boolean(
+        'Modificar Series',
+        related='out_lot_id.can_add_serial'
+    )
+
     producer_id = fields.Many2one(
         'res.partner',
         'Productor',

@@ -81,6 +81,8 @@
 
             <field name="dest_location_id"/>
 
+            <field name="add_serial" />
+
           </group>
         </group>
       </form>
