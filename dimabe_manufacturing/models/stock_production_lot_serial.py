@@ -138,7 +138,7 @@ class StockProductionLotSerial(models.Model):
     @api.model
     def create(self, values_list):
         res = super(StockProductionLotSerial, self).create(values_list)
-        if res.display_weight == 0:
+        if res.display_weight == 0 and res.gross_weight == 0:
             raise models.ValidationError('debe agregar un peso a la serie')
         stock_move_line = self.env['stock.move.line'].search([
             ('lot_id', '=', res.stock_production_lot_id.id),
