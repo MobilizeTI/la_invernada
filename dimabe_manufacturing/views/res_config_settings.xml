@@ -4,7 +4,7 @@
     <field name="model">res.config.settings</field>
     <field name="inherit_id" ref="mrp.res_config_settings_view_form"/>
     <field name="arch" type="xml">
-      <xpath expr="//div[hasclass('app_settings_block')]" position="inside">
+      <xpath expr="//div[hasclass('settings')]/div[hasclass('app_settings_block')]" position="inside">
         <h2>Despelonado</h2>
         <group>
           <group>
