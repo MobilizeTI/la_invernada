@@ -116,7 +116,8 @@ class StockProductionLotSerial(models.Model):
 
             if settings_percent:
                 item.label_percent = settings_percent / 100
-                models._logger.error('settings {}'.format(dp.get_precision('% Peso Etiqueta')))
+                pre = dp.get_precision('% Peso Etiqueta')
+                models._logger.error('settings {}'.format(pre))
 
     @api.onchange('gross_weight')
     def _onchange_gross_weight(self):
