@@ -122,6 +122,9 @@
                 <field name="display_weight"
                        readonly="1"
                 />
+
+                <field name="label_percent" />
+
                 <field name="serial_number"
                        readonly="1"
                 />
