@@ -103,7 +103,7 @@ class StockProductionLotSerial(models.Model):
 
     label_percent = fields.Float(
         '% Peso Etiqueta',
-        digits=dp.get_precision('​Product Unit of Measure'),
+        digits=dp.get_precision('Product Unit of Measure'),
         compute='_compute_label_percent'
     )
 
