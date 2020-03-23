@@ -24,6 +24,6 @@ class DryProcessController(http.Controller):
                 'totalInWeight': res.total_in_weight,
                 'totalOutWeight': res.total_out_weight,
                 'perfomance': res.performance,
-                'OdooUpdatedAt': res.__last_update
+                'OdooUpdatedAt': res.write_date
             })
         return processResult
