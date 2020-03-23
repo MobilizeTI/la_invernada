@@ -29,7 +29,27 @@ class StockPickingController(http.Controller):
                 'ArticleDescription': res.get_mp_move().product_id.display_name
             }
         else:
-            raise werkzeug.exceptions.NotFound('lote no encontrado')
+            res = request.env['dried.unpelled.history'].search([('out_lot_id.name', '=', lot)])
+            if res:
+                return {
+                    'ProducerCode': res.producer_id.id,
+                    'ProducerName': res.producer_id.name,
+                    'VarietyName': res.in_product_variety,
+                    'LotNumber': res.out_lot_id.name,
+                    'DispatchGuideNumber': res.lot_guide_numbers,
+                    'ReceptionDate': res.finish_date,
+                    'ReceptionKgs': res.total_out_weight,
+                    'ContainerType': res.canning_id.display_name,
+                    'ContainerWeightAverage': res.total_out_weight / res.out_serial_count,
+                    'ContainerWeight': res.canning_id.weight,
+                    'Season': res.finish_date.year,
+                    'Warehouse': res.picking_type_id.name,
+                    'ContainerQuantity': res.out_serial_count,
+                    'ArticleCode': res.out_product_id.id, 
+                    'ArticleDescription': res.out_product_id.name
+                }
+            else:
+                raise werkzeug.exceptions.NotFound('lote no encontrado')
 
     @http.route("/api/stock_picking", type='json', methods=['PUT'], auth='token', cors='*')
     def put_lot(self, lot, data):

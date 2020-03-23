@@ -23,7 +23,7 @@ class DryProcessController(http.Controller):
                 'producerId': res.producer_id.id,
                 'totalInWeight': res.total_in_weight,
                 'totalOutWeight': res.total_out_weight,
-                'perfomance': res.performance,
+                'performance': res.performance,
                 'OdooUpdatedAt': res.write_date
             })
         return processResult
