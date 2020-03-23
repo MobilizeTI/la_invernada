@@ -55,7 +55,8 @@
         'views/res_partner.xml',
         'views/res_company.xml',
         'views/label_durability.xml',
-        'views/dried_oven.xml'
+        'views/dried_oven.xml',
+        'views/res_config_settings.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
