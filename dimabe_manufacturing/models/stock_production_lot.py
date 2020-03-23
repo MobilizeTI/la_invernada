@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.addons import decimal_precision as dp
 
 
 class StockProductionLot(models.Model):
@@ -61,7 +62,8 @@ class StockProductionLot(models.Model):
 
     standard_weight = fields.Float(
         'Peso Estandar',
-        related='product_id.weight'
+        related='product_id.weight',
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     qty_standard_serial = fields.Integer('Cantidad de Series')
@@ -80,7 +82,8 @@ class StockProductionLot(models.Model):
 
     total_serial = fields.Float(
         'Total',
-        compute='_compute_total_serial'
+        compute='_compute_total_serial',
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     count_serial = fields.Integer(
@@ -91,10 +94,14 @@ class StockProductionLot(models.Model):
     available_total_serial = fields.Float(
         'Total Disponible',
         compute='_compute_available_total_serial',
-        search='_search_available_total_serial'
+        search='_search_available_total_serial',
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
-    qty_to_reserve = fields.Float('Cantidad a Reservar')
+    qty_to_reserve = fields.Float(
+        'Cantidad a Reservar',
+        digits=dp.get_precision('Product Unit of Measure')
+    )
 
     is_reserved = fields.Boolean('Esta reservado?', compute='reserved', default=False)
 
@@ -119,6 +126,7 @@ class StockProductionLot(models.Model):
     reception_net_weight = fields.Float(
         'kg. Neto',
         related='stock_picking_id.net_weight',
+        digits=dp.get_precision('Product Unit of Measure'),
         store=True
     )
 
@@ -170,6 +178,10 @@ class StockProductionLot(models.Model):
     label_durability_id = fields.Many2one(
         'label.durability',
         'Durabilidad Etiqueta'
+    )
+
+    is_dried_lot = fields.Boolean(
+        'Es lote de Secado'
     )
 
     @api.onchange('label_durability_id')

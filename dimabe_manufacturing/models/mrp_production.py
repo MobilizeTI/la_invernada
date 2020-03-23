@@ -39,7 +39,7 @@ class MrpProduction(models.Model):
 
     unevenness_percent = fields.Float(
         '% Descalibre',
-        digits=dp.get_precision('% Descalibre')
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     etd = fields.Date(
@@ -56,7 +56,7 @@ class MrpProduction(models.Model):
 
     pt_balance = fields.Float(
         'Saldo Bodega PT',
-        digits=dp.get_precision('Saldo Bodega PT'),
+        digits=dp.get_precision('Product Unit of Measure'),
         compute='_compute_pt_balance'
     )
 

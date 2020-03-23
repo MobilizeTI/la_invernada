@@ -34,7 +34,7 @@ class MrpWorkorder(models.Model):
 
     pt_balance = fields.Float(
         'Saldo Bodega PT',
-        digits=dp.get_precision('Saldo Bodega PT'),
+        digits=dp.get_precision('Product Unit of Measure'),
         related='production_id.pt_balance'
     )
 

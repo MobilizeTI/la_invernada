@@ -30,6 +30,9 @@
                 <field name="is_prd_lot"
                        groups="base.group_system"
                 />
+                <field name="is_dried_lot"
+                       groups="base.group_system"
+                />
 
                 <field name="label_durability_id"
                        groups="base.group_system"
