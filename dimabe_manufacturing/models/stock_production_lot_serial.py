@@ -93,7 +93,6 @@ class StockProductionLotSerial(models.Model):
 
     gross_weight = fields.Float(
         'Peso Bruto',
-        inverse='_inverse_gross_weight',
         digits=dp.get_precision('Peso Bruto')
     )
 
