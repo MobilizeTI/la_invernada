@@ -34,7 +34,8 @@ class DriedUnpelledHistory(models.Model):
 
     add_serial = fields.Boolean(
         'Modificar Series',
-        related='out_lot_id.can_add_serial'
+        related='out_lot_id.can_add_serial',
+        inverse='_inverse_add_serial'
     )
 
     producer_id = fields.Many2one(
@@ -142,6 +143,9 @@ class DriedUnpelledHistory(models.Model):
         'Envase',
         readonly=True
     )
+
+    def _inverse_add_serial(self):
+        self.out_lot_id.can_add_serial = self.add_serial
 
     @api.multi
     def _compute_oven_use_data(self):
