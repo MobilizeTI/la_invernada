@@ -164,6 +164,8 @@ class StockProductionLotSerial(models.Model):
             res.production_id = production.id
             res.reserve_to_stock_picking_id = production.stock_picking_id.id
 
+        res.update_history()
+
         return res
 
     @api.multi
@@ -172,7 +174,19 @@ class StockProductionLotSerial(models.Model):
         for item in self:
             if item.display_weight == 0 and item.gross_weight == 0:
                 raise models.ValidationError('debe agregar un peso a la serie')
+            item.update_history()
         return res
+
+    @api.multi
+    def update_history(self):
+        history = self.env['dried.unpelled.history'].search([
+            ('out_lot_id', '=', self.stock_production_lot_id.id)
+        ])
+
+        if history:
+            history.total_out_weight = sum(self.stock_production_lot_id.stock_production_lot_serial_ids.mapped(
+                'display_weight'
+            ))
 
     @api.model
     def unlink(self):
