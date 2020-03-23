@@ -8,7 +8,7 @@ class ResConfigSettings(models.TransientModel):
     label_percent_subtract = fields.Float(
         '% peso Etiqueta',
         digits=dp.get_precision('% peso Etiqueta'),
-        default=0.3
+        related='stock_production_lot_serial.label_percent.subtract'
     )
 
     label_percent_subtract_value = fields.Float(

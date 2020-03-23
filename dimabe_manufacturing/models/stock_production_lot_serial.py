@@ -97,6 +97,12 @@ class StockProductionLotSerial(models.Model):
         'Dirabilidad Etiqueta'
     )
 
+    label_percent_subtract = fields.Float(
+        '% Peso Etiqueta',
+        digits=dp.get_precision('% Peso Etiqueta'),
+        default=0.3
+    )
+
     @api.multi
     def _compute_gross_weight(self):
         for item in self:
