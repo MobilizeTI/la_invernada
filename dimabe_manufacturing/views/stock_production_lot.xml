@@ -61,6 +61,9 @@
                                readonly="1"
                                widget="many2onebutton"
                         />
+                        <field name="gross_weight"
+                               groups="base.group_system"
+                        />
                         <field name="belongs_to_prd_lot" />
                         <button name="print_serial_label"
                                 type="object" string="Imprimir"
