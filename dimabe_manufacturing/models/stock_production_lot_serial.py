@@ -118,15 +118,6 @@ class StockProductionLotSerial(models.Model):
                 item.label_percent = settings_percent / 100
                 models._logger.error('settings {}'.format(item.label_percent))
 
-    @api.onchange('gross_weight', 'canning_id')
-    def _onchange_gross_weight(self):
-        if self.is_dried_serial:
-            models._logger.error('{} {}'.format(
-                self.gross_weight, self._origin.canning_id
-            ))
-            gross_without_canning = self.gross_weight - self._origin.canning_id.weight
-            self.display_weight = gross_without_canning - (gross_without_canning * self.label_percent)
-
     @api.multi
     # @api.depends('packaging_date')
     def _compute_harvest(self):
@@ -144,6 +135,9 @@ class StockProductionLotSerial(models.Model):
         res = super(StockProductionLotSerial, self).create(values_list)
         if res.display_weight == 0 and res.gross_weight == 0:
             raise models.ValidationError('debe agregar un peso a la serie')
+        if res.is_dried_serial:
+            gross_without_canning = res.gross_weight - res.canning_id.weight
+            res.display_weight = gross_without_canning - (gross_without_canning * res.label_percent)
         stock_move_line = self.env['stock.move.line'].search([
             ('lot_id', '=', res.stock_production_lot_id.id),
             ('lot_id.is_prd_lot', '=', True)
@@ -174,6 +168,9 @@ class StockProductionLotSerial(models.Model):
         for item in self:
             if item.display_weight == 0 and item.gross_weight == 0:
                 raise models.ValidationError('debe agregar un peso a la serie')
+            if item.is_dried_serial:
+                gross_without_canning = item.gross_weight - item.canning_id.weight
+                item.display_weight = gross_without_canning - (gross_without_canning * item.label_percent)
         return res
 
     @api.model
