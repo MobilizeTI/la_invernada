@@ -101,17 +101,20 @@ class UnpelledDried(models.Model):
 
     total_in_weight = fields.Float(
         'Total Ingresado',
-        compute='_compute_total_in_weight'
+        compute='_compute_total_in_weight',
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     total_out_weight = fields.Float(
         'Total Secado',
-        compute='_compute_total_out_weight'
+        compute='_compute_total_out_weight',
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     performance = fields.Float(
         'Rendimiento',
-        compute='_compute_performance'
+        compute='_compute_performance',
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     history_ids = fields.One2many(

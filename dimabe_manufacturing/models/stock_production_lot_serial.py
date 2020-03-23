@@ -93,7 +93,7 @@ class StockProductionLotSerial(models.Model):
 
     gross_weight = fields.Float(
         'Peso Bruto',
-        digits=dp.get_precision('Peso Bruto')
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     label_durability_id = fields.Many2one(
@@ -103,7 +103,7 @@ class StockProductionLotSerial(models.Model):
 
     label_percent = fields.Float(
         '% Peso Etiqueta',
-        digits=dp.get_precision('% Peso Etiqueta'),
+        digits=dp.get_precision('​Product Unit of Measure'),
         compute='_compute_label_percent'
     )
 
@@ -116,8 +116,8 @@ class StockProductionLotSerial(models.Model):
 
             if settings_percent:
                 item.label_percent = settings_percent / 100
-                pre = dp.get_precision('% Peso Etiqueta')
-                models._logger.error('settings {}'.format(pre))
+
+                models._logger.error('settings {}'.format(item.label_percent))
 
     @api.onchange('gross_weight')
     def _onchange_gross_weight(self):
