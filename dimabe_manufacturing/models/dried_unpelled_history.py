@@ -34,7 +34,7 @@ class DriedUnpelledHistory(models.Model):
 
     add_serial = fields.Boolean(
         'Modificar Series',
-        related='out_lot_id.can_add_serial',
+        compute='_compute_add_serial',
         inverse='_inverse_add_serial'
     )
 
@@ -143,6 +143,11 @@ class DriedUnpelledHistory(models.Model):
         'Envase',
         readonly=True
     )
+
+    @api.multi
+    def _compute_add_serial(self):
+        for item in self:
+            item.add_serial = item.out_lot_id.can_add_serial
 
     def _inverse_add_serial(self):
         self.out_lot_id.can_add_serial = self.add_serial
