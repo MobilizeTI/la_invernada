@@ -114,11 +114,9 @@ class StockProductionLotSerial(models.Model):
                 'dimabe_manufacturing.label_percent_subtract'
             ))
 
-            models._logger.error('settings {}'.format(settings_percent))
-
             if settings_percent:
                 item.label_percent = settings_percent / 100
-                models._logger.error('settings {}'.format(item.label_percent))
+                models._logger.error('settings {}'.format(settings_percent / 100))
 
     @api.onchange('gross_weight')
     def _onchange_gross_weight(self):
