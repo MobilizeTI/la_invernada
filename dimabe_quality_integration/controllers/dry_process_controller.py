@@ -13,7 +13,7 @@ class DryProcessController(http.Controller):
             'init_date',
             'lot_guide_numbers',
             'finish_date',
-            'in_product_id.name',
+            'in_product_id',
             'in_product_variety',
-            'out_lot_id.name'
+            'out_lot_id'
         ])
