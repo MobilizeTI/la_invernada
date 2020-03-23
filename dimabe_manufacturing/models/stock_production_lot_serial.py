@@ -124,7 +124,7 @@ class StockProductionLotSerial(models.Model):
             models._logger.error('{} {}'.format(
                 self.gross_weight, self._origin.canning_id
             ))
-            gross_without_canning = self.gross_weight - self.canning_id.weight
+            gross_without_canning = self.gross_weight - self._origin.canning_id.weight
             self.display_weight = gross_without_canning - (gross_without_canning * self.label_percent)
 
     @api.multi
