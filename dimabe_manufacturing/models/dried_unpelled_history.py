@@ -75,8 +75,8 @@ class DriedUnpelledHistory(models.Model):
 
     out_serial_ids = fields.One2many(
         'stock.production.lot.serial',
-        compute='_compute_lot_serial_ids',
-        inverse='_inverse_lot_serial_ids',
+        compute='_compute_out_serial_ids',
+        inverse='_inverse_out_serial_ids',
         string='Series de Salida'
     )
 
