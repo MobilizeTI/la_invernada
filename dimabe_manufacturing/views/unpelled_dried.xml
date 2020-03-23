@@ -119,7 +119,9 @@
                 <field name="consumed"
                        readonly="1"
                 />
-                <field name="display_weight"/>
+                <field name="display_weight"
+                       readonly="1"
+                />
                 <field name="serial_number"
                        readonly="1"
                 />

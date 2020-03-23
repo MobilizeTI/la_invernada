@@ -172,6 +172,10 @@ class StockProductionLot(models.Model):
         'Durabilidad Etiqueta'
     )
 
+    is_dried_lot = fields.Boolean(
+        'Es lote de Secado'
+    )
+
     @api.onchange('label_durability_id')
     def onchange_label_durability_id(self):
         if self.stock_production_lot_serial_ids:

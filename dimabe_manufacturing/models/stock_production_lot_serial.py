@@ -56,6 +56,11 @@ class StockProductionLotSerial(models.Model):
         nullable=True
     )
 
+    is_dried_serial = fields.Boolean(
+        'Es Serie Secada',
+        related='stock_production_lot_id.is_dried_lot'
+    )
+
     consumed = fields.Boolean('Consumido')
 
     confirmed_serial = fields.Char('Confimación de Serie')
@@ -88,7 +93,7 @@ class StockProductionLotSerial(models.Model):
 
     gross_weight = fields.Float(
         'Peso Bruto',
-        compute='_compute_gross_weight',
+        inverse='_inverse_gross_weight',
         digits=dp.get_precision('Peso Bruto')
     )
 
@@ -97,17 +102,27 @@ class StockProductionLotSerial(models.Model):
         'Dirabilidad Etiqueta'
     )
 
-    label_percent_subtract = fields.Float(
+    label_percent = fields.Float(
         '% Peso Etiqueta',
         digits=dp.get_precision('% Peso Etiqueta'),
-        default=0.3
+        compute='_compute_label_percent'
     )
 
     @api.multi
-    def _compute_gross_weight(self):
+    def _compute_label_percent(self):
         for item in self:
-            if item.canning_id:
-                item.gross_weight = item.display_weight + item.canning_id.weight
+            settings_percent = float(self.env['ir.config_parameter'].get_param(
+                'dimabe_manufacturing.label_percent_subtract'
+            ))
+
+            if settings_percent:
+                item.label_percent = settings_percent / 100
+
+    @api.onchange('gross_weight')
+    def _onchange_gross_weight(self):
+        if self.is_dried_serial:
+            gross_without_canning = self.gross_weight - self.canning_id.weight
+            self.display_weight = gross_without_canning - (gross_without_canning * self.label_percent)
 
     @api.multi
     # @api.depends('packaging_date')
