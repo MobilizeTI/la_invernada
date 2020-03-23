@@ -75,7 +75,8 @@ class DriedUnpelledHistory(models.Model):
 
     out_serial_ids = fields.One2many(
         'stock.production.lot.serial',
-        related='out_lot_id.stock_production_lot_serial_ids',
+        compute='_compute_lot_serial_ids',
+        inverse='_inverse_lot_serial_ids',
         string='Series de Salida'
     )
 
@@ -143,6 +144,16 @@ class DriedUnpelledHistory(models.Model):
         'Envase',
         readonly=True
     )
+
+    @api.multi
+    def _compute_out_serial_ids(self):
+        for item in self:
+            item.out_serial_ids = item.out_lot_id.stock_production_lot_serial_ids
+
+    @api.multi
+    def _inverse_out_serial_ids(self):
+        for item in self:
+            item.out_lot_id.stock_production_lot_serial_ids = item.out_serial_ids
 
     @api.multi
     def _compute_add_serial(self):
