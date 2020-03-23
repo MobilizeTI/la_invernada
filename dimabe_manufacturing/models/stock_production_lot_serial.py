@@ -88,7 +88,8 @@ class StockProductionLotSerial(models.Model):
 
     canning_id = fields.Many2one(
         'product.product',
-        'Envase'
+        'Envase',
+        inverse='_inverse_gross_weight'
     )
 
     gross_weight = fields.Float(
