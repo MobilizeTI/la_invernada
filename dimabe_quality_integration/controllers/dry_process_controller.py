@@ -11,16 +11,19 @@ class DryProcessController(http.Controller):
         for res in result: 
             processResult.append({
                 'name': res.name,
-                'in_lot_ids': res.mapped('in_lot_ids.name'),
-                'init_date': res.init_date,
-                'lot_guide_numbers': res.lot_guide_numbers,
-                'finish_date': res.finish_date,
-                'in_product_id': res.in_product_id.name,
-                'in_product_variety': res.in_product_variety,
-                'out_lot_id': res.out_lot_id.name,
-                'producer_id': res.producer_id.name,
-                'total_in_weight': res.total_in_weight,
-                'total_out_weight': res.total_out_weight,
-                'perfomance': res.performance
+                'inLotIds': res.mapped('in_lot_ids.name'),
+                'initDate': res.init_date,
+                'guideNumbers': res.lot_guide_numbers,
+                'finishDate': res.finish_date,
+                'productName': res.in_product_id.name,
+                'productId': res.in_product_id.id,
+                'productVariety': res.in_product_variety,
+                'outLot': res.out_lot_id.name,
+                'producerName': res.producer_id.name,
+                'producerId': res.producer_id.id,
+                'totalInWeight': res.total_in_weight,
+                'totalOutWeight': res.total_out_weight,
+                'perfomance': res.performance,
+                'OdooUpdatedAt': res.__last_update
             })
         return processResult
