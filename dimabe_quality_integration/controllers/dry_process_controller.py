@@ -11,7 +11,7 @@ class DryProcessController(http.Controller):
         for res in result: 
             processResult.append({
                 'name': res.name,
-                'in_lot_ids': res.mapped('in_lot_ids'),
+                'in_lot_ids': res.mapped('in_lot_ids.name'),
                 'init_date': res.init_date,
                 'lot_guide_numbers': res.lot_guide_numbers,
                 'finish_date': res.finish_date,
@@ -20,6 +20,7 @@ class DryProcessController(http.Controller):
                 'out_lot_id': res.out_lot_id.name,
                 'producer_id': res.producer_id.name,
                 'total_in_weight': res.total_in_weight,
-                'total_out_weight': res.total_out_weight
+                'total_out_weight': res.total_out_weight,
+                'perfomance': res.performance
             })
         return processResult
