@@ -119,12 +119,10 @@ class StockProductionLotSerial(models.Model):
 
                 models._logger.error('settings {}'.format(item.label_percent))
 
-    @api.onchange('gross_weight')
+    @api.onchange('gross_weight', 'canning_id')
     def _onchange_gross_weight(self):
         if self.is_dried_serial:
-            models._logger.error(self.canning_id.weight)
             gross_without_canning = self.gross_weight - self.canning_id.weight
-            models._logger.error(gross_without_canning)
             self.display_weight = gross_without_canning - (gross_without_canning * self.label_percent)
 
     @api.multi
