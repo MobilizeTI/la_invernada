@@ -57,6 +57,7 @@
 
             <field name="out_product_id"/>
             <field name="out_lot_id"/>
+            <field name="out_serial_ids" />
             <field name="out_serial_ids">
               <tree>
                 <field name="stock_production_lot_id"/>
@@ -80,10 +81,6 @@
             <field name="origin_location_id"/>
 
             <field name="dest_location_id"/>
-
-            <field name="add_serial"
-                   groups="base.group_system"
-            />
 
           </group>
         </group>

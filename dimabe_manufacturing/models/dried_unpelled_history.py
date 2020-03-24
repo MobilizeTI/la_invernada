@@ -32,12 +32,6 @@ class DriedUnpelledHistory(models.Model):
         required=True,
     )
 
-    add_serial = fields.Boolean(
-        'Modificar Series',
-        compute='_compute_add_serial',
-        inverse='_inverse_add_serial'
-    )
-
     producer_id = fields.Many2one(
         'res.partner',
         'Productor',
@@ -154,14 +148,6 @@ class DriedUnpelledHistory(models.Model):
     def _inverse_out_serial_ids(self):
         for item in self:
             item.out_lot_id.stock_production_lot_serial_ids = item.out_serial_ids
-
-    @api.multi
-    def _compute_add_serial(self):
-        for item in self:
-            item.add_serial = item.out_lot_id.can_add_serial
-
-    def _inverse_add_serial(self):
-        self.out_lot_id.can_add_serial = self.add_serial
 
     @api.multi
     def _compute_oven_use_data(self):
