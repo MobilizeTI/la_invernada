@@ -164,6 +164,8 @@ class StockProductionLotSerial(models.Model):
             res.production_id = production.id
             res.reserve_to_stock_picking_id = production.stock_picking_id.id
 
+        res.label_durability_id = res.stock_production_lot_id.label_durability_id
+
         return res
 
     @api.multi
