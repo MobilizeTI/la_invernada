@@ -253,13 +253,18 @@ class DriedUnpelledHistory(models.Model):
     @api.multi
     def adjust_stock(self):
         for item in self:
-            stock_balance = item.out_serial_sum - item.total_out_weight
+
+            if item.out_serial_ids.filtered(
+                lambda a:a.consumed
+            ):
+                raise models.ValidationError('este proceso no se puede realizar porque ya existen series consumidas')
+
             stock_move_line = self.env['stock.move.line'].search([
                 ('lot_id', '=', item.out_lot_id.id)
             ])
+            item.total_out_weight = item.out_serial_sum
             if not stock_move_line:
                 raise models.ValidationError('no se encontró el registro de stock asociado a este proceso')
             stock_move_line.write({
                 'qty_done': item.out_serial_sum
             })
-
