@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.addons import decimal_precision as dp
 
 
 class DriedUnpelledHistory(models.Model):
@@ -82,7 +83,7 @@ class DriedUnpelledHistory(models.Model):
     out_serial_sum = fields.Float(
         'Total de Series',
         compute='_compute_out_serial_sum',
-
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     total_in_weight = fields.Float(
