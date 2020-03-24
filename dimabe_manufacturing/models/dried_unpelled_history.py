@@ -88,17 +88,20 @@ class DriedUnpelledHistory(models.Model):
 
     total_in_weight = fields.Float(
         'Total Ingresado',
-        readonly=True
+        readonly=True,
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     total_out_weight = fields.Float(
         'Total Secado',
-        readonly=True
+        readonly=True,
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     performance = fields.Float(
         'Rendimiento',
         compute='_compute_performance',
+        digits=dp.get_precision('Product Unit of Measure'),
         store=True
     )
 
