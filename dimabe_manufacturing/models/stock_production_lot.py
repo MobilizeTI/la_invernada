@@ -32,9 +32,7 @@ class StockProductionLot(models.Model):
 
     producer_id = fields.Many2one(
         'res.partner',
-        related='stock_picking_id.partner_id',
-        string='Productor',
-        store=True
+        string='Productor'
     )
 
     reception_guide_number = fields.Integer(
