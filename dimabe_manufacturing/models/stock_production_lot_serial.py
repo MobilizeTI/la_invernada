@@ -112,7 +112,7 @@ class StockProductionLotSerial(models.Model):
     def _inverse_gross_weight(self):
         if self.is_dried_serial:
             gross_weight_without_canning = self.gross_weight - self.canning_id.weight
-            self.display_weight = gross_weight_without_canning - (gross_weight_without_canning * self.label_percent)
+            self.display_weight = round(gross_weight_without_canning - (gross_weight_without_canning * self.label_percent),1)
 
     @api.multi
     def _compute_label_percent(self):
