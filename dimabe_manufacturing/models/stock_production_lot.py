@@ -184,6 +184,16 @@ class StockProductionLot(models.Model):
         'Es lote de Secado'
     )
 
+    is_dimabe_team = fields.Boolean(
+        'Es Equipo Dimabe',
+        compute='_compute_is_dimabe_team'
+    )
+
+    @api.multi
+    def _compute_is_dimabe_team(self):
+        for item in self:
+            item.is_dimabe_team = self.env.user.is_dimabe_team
+
     @api.onchange('label_durability_id')
     def onchange_label_durability_id(self):
         if self.stock_production_lot_serial_ids:

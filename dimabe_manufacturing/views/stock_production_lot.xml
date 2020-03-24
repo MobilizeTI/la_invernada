@@ -26,6 +26,7 @@
                 />
                 <field name="can_add_serial"
                        groups="base.group_system"
+                       attrs="{'invisible':[('is_dimabe_team','=',False)]}"
                 />
                 <field name="is_prd_lot"
                        groups="base.group_system"
