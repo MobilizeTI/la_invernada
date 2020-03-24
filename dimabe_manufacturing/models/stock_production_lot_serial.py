@@ -117,7 +117,7 @@ class StockProductionLotSerial(models.Model):
     @api.multi
     def _compute_label_percent(self):
         for item in self:
-            settings_percent = float(self.env['ir.config_parameter'].get_param(
+            settings_percent = float(self.env['ir.config_parameter'].sudo().get_param(
                 'dimabe_manufacturing.label_percent_subtract'
             ))
 
