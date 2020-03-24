@@ -249,3 +249,9 @@ class DriedUnpelledHistory(models.Model):
                 res.dest_location_id = unpelled_dried_id.dest_location_id.id
                 res.canning_id = unpelled_dried_id.canning_id
         return res
+
+    @api.multi
+    def adjust_stock(self):
+        for item in self:
+            stock_balance = item.total_out_weight - item.out_serial_sum
+            raise models.ValidationError(stock_balance)

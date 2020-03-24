@@ -91,7 +91,7 @@
                     type="object"
                     class="oe_highlight"
                     attrs="{'invisible': [('out_serial_sum','=', 'total_out_weight')]}"
-
+                    groups="base.group_system"
             />
 
           </group>
