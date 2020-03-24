@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.addons import decimal_precision as dp
 
 
 class DriedUnpelledHistory(models.Model):
@@ -69,7 +70,8 @@ class DriedUnpelledHistory(models.Model):
 
     out_serial_ids = fields.One2many(
         'stock.production.lot.serial',
-        related='out_lot_id.stock_production_lot_serial_ids',
+        compute='_compute_out_serial_ids',
+        inverse='_inverse_out_serial_ids',
         string='Series de Salida'
     )
 
@@ -78,19 +80,28 @@ class DriedUnpelledHistory(models.Model):
         compute='_compute_out_serial_count'
     )
 
+    out_serial_sum = fields.Float(
+        'Total de Series',
+        compute='_compute_out_serial_sum',
+        digits=dp.get_precision('Product Unit of Measure')
+    )
+
     total_in_weight = fields.Float(
         'Total Ingresado',
-        readonly=True
+        readonly=True,
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     total_out_weight = fields.Float(
         'Total Secado',
-        readonly=True
+        readonly=True,
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     performance = fields.Float(
         'Rendimiento',
         compute='_compute_performance',
+        digits=dp.get_precision('Product Unit of Measure'),
         store=True
     )
 
@@ -137,6 +148,31 @@ class DriedUnpelledHistory(models.Model):
         'Envase',
         readonly=True
     )
+
+    can_edit = fields.Boolean(
+        'Puede Editar',
+        compute='_compute_can_edit'
+    )
+
+    @api.multi
+    def _compute_out_serial_sum(self):
+        for item in self:
+            item.out_serial_sum = sum(item.out_serial_ids.mapped('display_weight'))
+
+    @api.multi
+    def _compute_can_edit(self):
+        for item in self:
+            item.can_edit = self.env.user.has_group('base.group_system')
+
+    @api.multi
+    def _compute_out_serial_ids(self):
+        for item in self:
+            item.out_serial_ids = item.out_lot_id.stock_production_lot_serial_ids
+
+    @api.multi
+    def _inverse_out_serial_ids(self):
+        for item in self:
+            item.out_lot_id.stock_production_lot_serial_ids = item.out_serial_ids
 
     @api.multi
     def _compute_oven_use_data(self):
@@ -213,3 +249,22 @@ class DriedUnpelledHistory(models.Model):
                 res.dest_location_id = unpelled_dried_id.dest_location_id.id
                 res.canning_id = unpelled_dried_id.canning_id
         return res
+
+    @api.multi
+    def adjust_stock(self):
+        for item in self:
+
+            if item.out_serial_ids.filtered(
+                lambda a: a.consumed
+            ):
+                raise models.ValidationError('este proceso no se puede realizar porque ya existen series consumidas')
+
+            stock_move_line = self.env['stock.move.line'].search([
+                ('lot_id', '=', item.out_lot_id.id)
+            ])
+            item.total_out_weight = item.out_serial_sum
+            if not stock_move_line:
+                raise models.ValidationError('no se encontró el registro de stock asociado a este proceso')
+            stock_move_line.write({
+                'qty_done': item.out_serial_sum
+            })

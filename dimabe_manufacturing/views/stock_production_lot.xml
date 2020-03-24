@@ -61,6 +61,7 @@
                                readonly="1"
                                widget="many2onebutton"
                         />
+
                         <field name="belongs_to_prd_lot" />
                         <button name="print_serial_label"
                                 type="object" string="Imprimir"

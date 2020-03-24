@@ -57,12 +57,15 @@
 
             <field name="out_product_id"/>
             <field name="out_lot_id"/>
-            <field name="out_serial_ids">
-              <tree>
-                <field name="stock_production_lot_id"/>
-                <field name="consumed"/>
-                <field name="display_weight"/>
-                <field name="serial_number"/>
+            <field name="can_edit" invisible="1" />
+            <field name="out_serial_ids"
+                   attrs="{'readonly':[('can_edit','=',False)]}"
+            >
+              <tree editable="bottom">
+                <field name="stock_production_lot_id" readonly="1"/>
+                <field name="consumed" readonly="1"/>
+                <field name="display_weight" />
+                <field name="serial_number" readonly="1"/>
                 <button name="print_serial_label"
                         type="object" string="Imprimir"
                         context="{'producer_id': parent.producer_id}"
@@ -80,6 +83,16 @@
             <field name="origin_location_id"/>
 
             <field name="dest_location_id"/>
+
+            <field name="out_serial_sum" invisible="1"/>
+
+            <button name="adjust_stock"
+                    string="Ajustar Diferencia de Stock"
+                    type="object"
+                    class="oe_highlight"
+                    attrs="{'invisible': [('out_serial_sum','=', 'total_out_weight')]}"
+                    groups="base.group_system"
+            />
 
           </group>
         </group>
