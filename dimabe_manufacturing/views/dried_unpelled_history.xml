@@ -84,7 +84,7 @@
 
             <field name="dest_location_id"/>
 
-            <field name="out_serial_sum" invisible="1"/>
+            <field name="out_serial_sum" invisible="0"/>
 
             <button name="adjust_stock"
                     string="Ajustar Diferencia de Stock"
