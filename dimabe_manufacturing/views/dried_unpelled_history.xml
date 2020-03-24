@@ -61,7 +61,7 @@
             <field name="out_serial_ids"
                    attrs="{'readonly':[('can_edit','=',False)]}"
             >
-              <tree>
+              <tree editable="bottom">
                 <field name="stock_production_lot_id"/>
                 <field name="consumed"/>
                 <field name="display_weight"/>
