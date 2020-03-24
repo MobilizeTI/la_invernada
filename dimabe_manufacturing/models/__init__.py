@@ -23,3 +23,4 @@ from . import region_address
 from . import res_company
 from . import label_durability
 from . import res_config_setttings
+from . import res_user
