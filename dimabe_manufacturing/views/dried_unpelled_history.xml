@@ -90,7 +90,7 @@
                     string="Ajustar Diferencia de Stock"
                     type="object"
                     class="oe_highlight"
-                    attrs="{'invisible': [('out_serial_sum','!=', 'total_out_weight')]}"
+                    attrs="{'invisible': [('out_serial_sum','==', 'total_out_weight')]}"
 
             />
 
