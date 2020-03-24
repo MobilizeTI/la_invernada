@@ -257,4 +257,9 @@ class DriedUnpelledHistory(models.Model):
             stock_move_line = self.env['stock.move.line'].search([
                 ('lot_id', '=', item.out_lot_id.id)
             ])
-            raise models.ValidationError(stock_move_line.qty_done)
+            if not stock_move_line:
+                raise models.ValidationError('no se encontró el registro de stock asociado a este proceso')
+            stock_move_line.write({
+                'qty_done': item.out_serial_sum
+            })
+
