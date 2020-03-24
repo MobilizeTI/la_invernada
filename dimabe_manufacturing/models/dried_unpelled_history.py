@@ -147,7 +147,7 @@ class DriedUnpelledHistory(models.Model):
     @api.multi
     def _compute_can_edit(self):
         for item in self:
-            item.can_edit = self.env.use.has_group('base.group_system')
+            item.can_edit = self.env.user.has_group('base.group_system')
 
     @api.multi
     def _compute_out_serial_ids(self):
