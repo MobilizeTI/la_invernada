@@ -139,6 +139,16 @@ class DriedUnpelledHistory(models.Model):
         readonly=True
     )
 
+    can_edit = fields.Boolean(
+        'Puede Editar',
+        compute='_compute_can_edit'
+    )
+
+    @api.multi
+    def _compute_can_edit(self):
+        for item in self:
+            item.can_edit = self.env.use.has_group('base.group_system')
+
     @api.multi
     def _compute_out_serial_ids(self):
         for item in self:

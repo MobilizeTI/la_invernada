@@ -57,7 +57,10 @@
 
             <field name="out_product_id"/>
             <field name="out_lot_id"/>
-            <field name="out_serial_ids">
+            <field name="can_edit" invisible="1" />
+            <field name="out_serial_ids"
+                   attrs="{'readonly':[('can_edit','=',False)]}"
+            >
               <tree>
                 <field name="stock_production_lot_id"/>
                 <field name="consumed"/>
