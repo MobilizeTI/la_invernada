@@ -211,6 +211,21 @@ class StockProductionLot(models.Model):
                     )),
                     ('always_to_print', '=', True)
                 ])
+            elif item.is_dried_lot:
+                dried_data = self.env['unpelled.dried'].search([
+                    ('out_lot_id', '=', item.id)
+                ])
+                if not dried_data:
+                    dried_data = self.env['dried.unpelled.history'].search([
+                        ('out_lot_id', '=', item.id)
+                    ])
+                if dried_data:
+
+                    item.producer_ids = self.env['res.partner'].search([
+                        '|',
+                        ('id', '=', dried_data.in_lot_ids.mapped('stock_picking_id.partner_id.id')),
+                        ('always_to_print', '=', True)
+                    ])
 
             else:
                 item.producer_ids = self.env['res.partner'].search([
