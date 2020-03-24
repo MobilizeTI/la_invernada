@@ -253,5 +253,8 @@ class DriedUnpelledHistory(models.Model):
     @api.multi
     def adjust_stock(self):
         for item in self:
-            stock_balance = item.total_out_weight - item.out_serial_sum
-            raise models.ValidationError(stock_balance)
+            stock_balance = item.out_serial_sum - item.total_out_weight
+            stock_move_line = self.env['stock.move_line'].search([
+                ('lot_id', '=', item.out_lot_id.id)
+            ])
+            raise models.ValidationError(stock_move_line.qty_done)
