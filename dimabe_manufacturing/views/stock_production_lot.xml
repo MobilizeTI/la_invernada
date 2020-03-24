@@ -24,6 +24,7 @@
                         type="object"
                         name="generate_standard_pallet"
                 />
+                <field name="is_dimabe_team" invisible="1"/>
                 <field name="can_add_serial"
                        groups="base.group_system"
                        attrs="{'invisible':[('is_dimabe_team','=',False)]}"
