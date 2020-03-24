@@ -169,6 +169,7 @@ class StockProductionLotSerial(models.Model):
     @api.multi
     def write(self, vals):
         res = super(StockProductionLotSerial, self).write(vals)
+
         for item in self:
             if item.display_weight == 0 and item.gross_weight == 0:
                 raise models.ValidationError('debe agregar un peso a la serie')

@@ -79,6 +79,12 @@ class DriedUnpelledHistory(models.Model):
         compute='_compute_out_serial_count'
     )
 
+    out_serial_sum = fields.Float(
+        'Total de Series',
+        compute='_compute_out_serial_sum',
+
+    )
+
     total_in_weight = fields.Float(
         'Total Ingresado',
         readonly=True
@@ -143,6 +149,11 @@ class DriedUnpelledHistory(models.Model):
         'Puede Editar',
         compute='_compute_can_edit'
     )
+
+    @api.multi
+    def _compute_out_serial_sum(self):
+        for item in self:
+            item.out_serial_sum = sum(item.out_serial_ids.mapped('display_weight'))
 
     @api.multi
     def _compute_can_edit(self):

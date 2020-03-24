@@ -84,6 +84,13 @@
 
             <field name="dest_location_id"/>
 
+            <button name="adjust_stock"
+                    string="Ajustar Diferencia de Stock"
+                    type="object"
+                    class="oe_highlight"
+
+            />
+
           </group>
         </group>
       </form>
