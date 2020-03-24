@@ -255,7 +255,7 @@ class DriedUnpelledHistory(models.Model):
         for item in self:
 
             if item.out_serial_ids.filtered(
-                lambda a:a.consumed
+                lambda a: a.consumed
             ):
                 raise models.ValidationError('este proceso no se puede realizar porque ya existen series consumidas')
 
