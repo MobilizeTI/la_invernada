@@ -435,11 +435,6 @@ class StockProductionLotSerial(models.Model):
 
         moves = wo.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == wo.component_id)
 
-        raise models.ValidationError('{} {}'.format(
-            sum(moves.mapped('unit_factor')),
-            wo.qty_producing
-        ))
-
         qty_producing = (wo.qty_producing * sum(moves.mapped('unit_factor'))) - self.display_weight
 
         wo.write({
