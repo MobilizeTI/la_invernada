@@ -240,7 +240,8 @@ class StockPicking(models.Model):
                     lot = self.env['stock.production.lot'].create({
                         'name': stock_picking.name,
                         'product_id': move_line.product_id.id,
-                        'standard_weight': stock_picking.production_net_weight
+                        'standard_weight': stock_picking.production_net_weight,
+                        'producer_id': stock_picking.partner_id.id
                     })
                     if lot:
                         move_line.update({
@@ -254,11 +255,11 @@ class StockPicking(models.Model):
                             # calculated_weight = stock_move_line.qty_done / total_qty
 
                             if stock_move_line.lot_id:
-
+                                default_value = stock_picking.avg_unitary_weight or 1
                                 for i in range(int(total_qty)):
                                     tmp = '00{}'.format(i + 1)
                                     self.env['stock.production.lot.serial'].create({
-                                        'calculated_weight': stock_picking.avg_unitary_weight,
+                                        'calculated_weight': default_value,
                                         'stock_production_lot_id': stock_move_line.lot_id.id,
                                         'serial_number': '{}{}'.format(stock_move_line.lot_name, tmp[-3:])
                                     })

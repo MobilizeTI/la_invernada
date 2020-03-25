@@ -3,8 +3,8 @@ from odoo.http import request
 import werkzeug
 
 
-class StockPickingController(http.Controller):
 
+class StockPickingController(http.Controller):
     @http.route('/api/stock_picking', type='json', methods=['GET'], auth='token', cors='*')
     def get_stock_picking(self, lot):
         res = request.env['stock.picking'].search([('name', '=', lot)])
@@ -16,7 +16,7 @@ class StockPickingController(http.Controller):
                 'LotNumber': res.name,
                 'DispatchGuideNumber': res.guide_number,
                 'ReceptionDate': res.scheduled_date,
-                'ReceptionKgs': res.net_weight,
+                'ReceptionKgs': res.production_net_weight,
                 'ContainerType': res.get_canning_move().product_id.display_name,
                 'ContainerWeightAverage': res.avg_unitary_weight,
                 'ContainerWeight': res.get_canning_move().product_id.weight,
