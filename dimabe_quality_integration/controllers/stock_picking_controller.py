@@ -8,7 +8,7 @@ class StockPickingController(http.Controller):
 
     @http.route('/api/stock_pickings', type='json', methods=['GET'], auth='token', cors='*')
     def get_stock_pickings(self):
-        result = request.env['stock.picking'].search()
+        result = request.env['stock.picking'].search([])
         data = []
         if result:
             for res in result:
