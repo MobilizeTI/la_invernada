@@ -423,8 +423,6 @@ class StockProductionLotSerial(models.Model):
 
     def remove_and_reduce(self):
 
-        raise models.ValidationError(self.qty_producing)
-
         wo = self.env['mrp.workorder'].search([
             ('production_id', '=', self.reserved_to_production_id.id)
         ])
@@ -434,6 +432,9 @@ class StockProductionLotSerial(models.Model):
 
         if len(wo) > 1:
             raise models.ValidationError('existen {} ordenes asociadas a esta producción')
+
+        raise models.ValidationError(wo.qty_producing)
+
         wo.write({
             'qty_producing': wo.qty_producing - self.display_weight
         })
