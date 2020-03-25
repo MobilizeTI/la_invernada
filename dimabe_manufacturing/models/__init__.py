@@ -24,4 +24,5 @@ from . import res_company
 from . import label_durability
 from . import res_config_setttings
 from . import stock_move
+from . import change_production_qty
 from . import res_user
