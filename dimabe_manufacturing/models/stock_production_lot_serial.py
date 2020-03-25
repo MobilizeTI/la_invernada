@@ -439,7 +439,10 @@ class StockProductionLotSerial(models.Model):
 
         wo.write({
             'qty_producing': qty_producing / sum(moves.mapped('unit_factor')),
-            'qty_production':qty_producing / sum(moves.mapped('unit_factor')),
+        })
+
+        self.reserved_to_production_id.write({
+            'product_qty': qty_producing / sum(moves.mapped('unit_factor'))
         })
 
         production_move = self.reserved_to_production_id.move_raw_ids.filtered(
