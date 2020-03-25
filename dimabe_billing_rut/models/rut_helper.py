@@ -41,7 +41,7 @@ def validate_rut(rut_str):
     if res == 11:
         digit = 0
     elif res == 10:
-        digit = "K"
+        digit = "k"
     else:
         digit = str(res)
     return digit == dv
