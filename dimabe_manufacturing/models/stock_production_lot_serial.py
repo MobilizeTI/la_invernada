@@ -435,10 +435,10 @@ class StockProductionLotSerial(models.Model):
 
         moves = wo.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == wo.component_id)
 
-        # raise models.ValidationError('{} {}'.format(
-        #     sum(moves.mapped('unit_factor')),
-        #     wo.qty_producing
-        # ))
+        raise models.ValidationError('{} {}'.format(
+            sum(moves.mapped('unit_factor')),
+            wo.qty_producing
+        ))
 
         qty_producing = (wo.qty_producing * sum(moves.mapped('unit_factor'))) - self.display_weight
 
@@ -450,7 +450,7 @@ class StockProductionLotSerial(models.Model):
             lambda a: a.product_id == self.product_id
         )
 
-        production_move.product_uom_qty = qty_producing
+        # production_move.product_uom_qty = qty_producing # no sirve
 
         self.unreserved_serial()
 
