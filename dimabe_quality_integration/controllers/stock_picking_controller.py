@@ -29,7 +29,8 @@ class StockPickingController(http.Controller):
                 'QualityWeight': res.quality_weight,
                 'ContainerQuantity': res.get_canning_move().quantity_done,
                 'ArticleCode': res.get_mp_move().product_id.default_code, 
-                'ArticleDescription': res.get_mp_move().product_id.display_name
+                'ArticleDescription': res.get_mp_move().product_id.display_name,
+                'OdooUpdated': res.write_date
             })
         return data 
 
