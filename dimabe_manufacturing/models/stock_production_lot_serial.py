@@ -292,6 +292,7 @@ class StockProductionLotSerial(models.Model):
 
             move_line = stock_move.active_move_line_ids.filtered(
                 lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.display_weight
+                        and a.qty_done == 0
             )
 
             stock_quant = item.stock_production_lot_id.get_stock_quant()
@@ -303,10 +304,8 @@ class StockProductionLotSerial(models.Model):
                 'reserved_to_production_id': None
             })
 
-            for ml in move_line:
-                if ml.qty_done > 0:
-                    raise models.ValidationError('este producto ya ha sido consumido')
-                ml.write({'move_id': None, 'product_uom_qty': 0})
+            if move_line:
+                move_line[0].write({'move_id': None, 'product_uom_qty': 0})
 
     @api.multi
     def reserve_picking(self):
