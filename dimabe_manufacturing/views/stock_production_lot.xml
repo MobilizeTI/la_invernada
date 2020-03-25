@@ -24,14 +24,18 @@
                         type="object"
                         name="generate_standard_pallet"
                 />
+                <field name="is_dimabe_team" invisible="1"/>
                 <field name="can_add_serial"
                        groups="base.group_system"
+                       attrs="{'invisible':[('is_dimabe_team','=',False)]}"
                 />
                 <field name="is_prd_lot"
                        groups="base.group_system"
+                       attrs="{'invisible':[('is_dimabe_team','=',False)]}"
                 />
                 <field name="is_dried_lot"
                        groups="base.group_system"
+                       attrs="{'invisible':[('is_dimabe_team','=',False)]}"
                 />
 
                 <field name="label_durability_id"
@@ -40,6 +44,7 @@
 
                 <field name="stock_picking_id"
                        groups="base.group_system"
+                       attrs="{'invisible':[('is_dimabe_team','=',False)]}"
                 />
 
 <!--                <button name="print_all_serial" attrs="{'invisible':[('is_standard_weight','=',False)]}"-->

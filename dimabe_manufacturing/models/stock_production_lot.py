@@ -32,9 +32,7 @@ class StockProductionLot(models.Model):
 
     producer_id = fields.Many2one(
         'res.partner',
-        related='stock_picking_id.partner_id',
-        string='Productor',
-        store=True
+        string='Productor'
     )
 
     reception_guide_number = fields.Integer(
@@ -184,6 +182,16 @@ class StockProductionLot(models.Model):
         'Es lote de Secado'
     )
 
+    is_dimabe_team = fields.Boolean(
+        'Es Equipo Dimabe',
+        compute='_compute_is_dimabe_team'
+    )
+
+    @api.multi
+    def _compute_is_dimabe_team(self):
+        for item in self:
+            item.is_dimabe_team = self.env.user.is_dimabe_team
+
     @api.onchange('label_durability_id')
     def onchange_label_durability_id(self):
         if self.stock_production_lot_serial_ids:
@@ -203,6 +211,21 @@ class StockProductionLot(models.Model):
                     )),
                     ('always_to_print', '=', True)
                 ])
+            elif item.is_dried_lot:
+                dried_data = self.env['unpelled.dried'].search([
+                    ('out_lot_id', '=', item.id)
+                ])
+                if not dried_data:
+                    dried_data = self.env['dried.unpelled.history'].search([
+                        ('out_lot_id', '=', item.id)
+                    ])
+                if dried_data:
+
+                    item.producer_ids = self.env['res.partner'].search([
+                        '|',
+                        ('id', '=', dried_data.in_lot_ids.mapped('stock_picking_id.partner_id.id')),
+                        ('always_to_print', '=', True)
+                    ])
 
             else:
                 item.producer_ids = self.env['res.partner'].search([
