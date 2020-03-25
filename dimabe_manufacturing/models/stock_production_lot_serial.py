@@ -109,6 +109,12 @@ class StockProductionLotSerial(models.Model):
         compute='_compute_label_percent'
     )
 
+    bom_id = fields.Many2many(
+        'mrp.bom',
+        'Lista de Materiales',
+        related='production_id.bom_id'
+    )
+
     @api.multi
     def _inverse_real_weight(self):
         for item in self:
@@ -173,7 +179,21 @@ class StockProductionLotSerial(models.Model):
 
         res.label_durability_id = res.stock_production_lot_id.label_durability_id
 
+        if res.bom_id:
+            res.set_bom_canning()
+
         return res
+
+    @api.model
+    def set_bom_canning(self):
+        canning_id = self.bom_id.bom_line_ids.filtered(
+            lambda a: 'envases' in [
+                str.lower(a.product_id.categ_id.name),
+                str.lower(a.product_id.categ_id.parent_id.name)
+            ]
+        )
+        if len(canning_id) == 1:
+            self.canning_id = canning_id[0]
 
     @api.multi
     def write(self, vals):
@@ -182,6 +202,8 @@ class StockProductionLotSerial(models.Model):
         for item in self:
             if item.display_weight == 0 and item.gross_weight == 0:
                 raise models.ValidationError('debe agregar un peso a la serie')
+            if not item.canning_id and item.bom_id:
+                item.set_bom_canning()
         return res
 
     @api.model
