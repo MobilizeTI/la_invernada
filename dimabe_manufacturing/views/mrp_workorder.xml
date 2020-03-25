@@ -36,6 +36,7 @@
               <field name="product_variety" />
               <field name="product_id" />
               <field name="display_weight" readonly="1"/>
+              <field name="consumed" invisible="1" />
             </tree>
           </field>
         </xpath>
