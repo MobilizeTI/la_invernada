@@ -109,7 +109,7 @@ class StockProductionLotSerial(models.Model):
         compute='_compute_label_percent'
     )
 
-    bom_id = fields.Many2many(
+    bom_id = fields.Many2one(
         'mrp.bom',
         'Lista de Materiales',
         related='production_id.bom_id'
