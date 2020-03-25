@@ -441,11 +441,11 @@ class StockProductionLotSerial(models.Model):
             'qty_producing': qty_producing / sum(moves.mapped('unit_factor'))
         })
 
-        # production_move = self.reserved_to_production_id.move_raw_ids.filtered(
-        #     lambda a: a.product_id == self.product_id
-        # )
+        production_move = self.reserved_to_production_id.move_raw_ids.filtered(
+            lambda a: a.product_id == self.product_id
+        )
 
-        # production_move.product_uom_qty = qty_producing # no sirve
+        production_move.product_uom_qty = qty_producing
 
         self.unreserved_serial()
 
