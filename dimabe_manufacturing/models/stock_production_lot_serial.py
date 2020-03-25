@@ -187,10 +187,10 @@ class StockProductionLotSerial(models.Model):
     @api.model
     def set_bom_canning(self):
         canning_id = self.bom_id.bom_line_ids.filtered(
-            lambda a: 'envases' in [
-                str.lower(a.product_id.categ_id.name),
-                str.lower(a.product_id.categ_id.parent_id.name)
-            ]
+            lambda a: 'envases' in str.lower(a.product_id.categ_id.name) or (
+                    a.product_id.categ_id.parent_id and
+                    'envases' in str.lower(a.product_id.categ_id.parent_id.name)
+            )
         )
         if len(canning_id) == 1:
             self.canning_id = canning_id[0]
