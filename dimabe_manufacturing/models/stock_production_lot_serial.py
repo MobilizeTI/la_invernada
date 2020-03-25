@@ -109,6 +109,13 @@ class StockProductionLotSerial(models.Model):
         compute='_compute_label_percent'
     )
 
+    @api.multi
+    def _inverse_real_weight(self):
+        for item in self:
+            item.real_weight = item.display_weight
+            if not item.is_dried_serial:
+                item.gross_weight = item.display_weight + item.canning_id.weight
+
     def _inverse_gross_weight(self):
         if self.is_dried_serial:
             gross_weight_without_canning = self.gross_weight - self.canning_id.weight
