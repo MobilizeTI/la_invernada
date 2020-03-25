@@ -86,6 +86,13 @@
                 <field name="product_variety" />
                 <field name="product_id" />
                 <field name="display_weight"/>
+                <button string="Quitar y Reducir"
+                        name="remove_and_reduce"
+                        type="object"
+                        class="oe_highlight"
+                        attrs="{'invisible':[('consumed','=',True)]}"
+                        groups="mrp.group_mrp_manager"
+                />
               </tree>
             </field>
           </page>
