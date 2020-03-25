@@ -181,8 +181,7 @@ class StockProductionLotSerial(models.Model):
 
         if res.bom_id:
             res.set_bom_canning()
-            res._inverse_gross_weight()
-
+            res.gross_weight = res.diplay_weight + res.canning_id.weight
         return res
 
     @api.model
