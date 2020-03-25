@@ -424,7 +424,7 @@ class StockProductionLotSerial(models.Model):
     def remove_and_reduce(self):
 
         wo = self.env['mrp.workorder'].search([
-            ('reserved_to_production_id', '=', self.reserved_to_production_id.id)
+            ('production_id', '=', self.reserved_to_production_id.id)
         ])
 
         if not wo:
