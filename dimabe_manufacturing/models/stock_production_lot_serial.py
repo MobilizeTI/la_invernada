@@ -433,7 +433,7 @@ class StockProductionLotSerial(models.Model):
         if len(wo) > 1:
             raise models.ValidationError('existen {} ordenes asociadas a esta producción')
         wo.write({
-            'qty_producing': wo.qty_producing - self.display_weight
+            'qty_producing': wo.qty_producing + self.display_weight
         })
 
         # self.unreserved_serial()
