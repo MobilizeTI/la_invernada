@@ -438,7 +438,8 @@ class StockProductionLotSerial(models.Model):
         qty_producing = (wo.qty_producing * sum(moves.mapped('unit_factor'))) - self.display_weight
 
         wo.write({
-            'qty_producing': qty_producing / sum(moves.mapped('unit_factor'))
+            'qty_producing': qty_producing / sum(moves.mapped('unit_factor')),
+            'qty_production':qty_producing / sum(moves.mapped('unit_factor')),
         })
 
         production_move = self.reserved_to_production_id.move_raw_ids.filtered(
