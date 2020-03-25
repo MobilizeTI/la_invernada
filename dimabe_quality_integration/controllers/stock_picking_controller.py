@@ -5,6 +5,34 @@ import werkzeug
 
 
 class StockPickingController(http.Controller):
+
+    @http.route('/api/stock_pickings', type='json', methods=['GET'], auth='token', cors='*')
+    def get_stock_pickings(self):
+        result = request.env['stock.picking'].search()
+        data = []
+        if result:
+            for res in result:
+                data.append({
+                'ProducerCode': res.partner_id.id,
+                'ProducerName': res.partner_id.name,
+                'VarietyName': res.get_mp_move().product_id.get_variety(),
+                'LotNumber': res.name,
+                'DispatchGuideNumber': res.guide_number,
+                'ReceptionDate': res.scheduled_date,
+                'ReceptionKgs': res.production_net_weight,
+                'ContainerType': res.get_canning_move().product_id.display_name,
+                'ContainerWeightAverage': res.avg_unitary_weight,
+                'ContainerWeight': res.get_canning_move().product_id.weight,
+                'Season': res.scheduled_date.year,
+                'Tare': res.tare_weight,
+                'Warehouse': res.location_dest_id.name,
+                'QualityWeight': res.quality_weight,
+                'ContainerQuantity': res.get_canning_move().quantity_done,
+                'ArticleCode': res.get_mp_move().product_id.default_code, 
+                'ArticleDescription': res.get_mp_move().product_id.display_name
+            })
+        return data 
+
     @http.route('/api/stock_picking', type='json', methods=['GET'], auth='token', cors='*')
     def get_stock_picking(self, lot):
         res = request.env['stock.picking'].search([('name', '=', lot)])
