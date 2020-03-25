@@ -420,3 +420,20 @@ class StockProductionLotSerial(models.Model):
                         'product_uom_qty': 0,
                         'reserved_availability': 0
                     })
+
+    def remove_and_reduce(self):
+        wo = self.env['mrp.workorder'].search([
+            ('production_id', '=', self.production_id.id)
+        ])
+
+        if not wo:
+            raise models.ValidationError('no se encontró orden de trabajo a reducir')
+
+        if len(wo) > 1:
+            raise models.ValidationError('existen {} ordenes asociadas a esta producción')
+        wo.write({
+            'qty_producing': wo.qty_producing - self.display_weight
+        })
+
+        # self.unreserved_serial()
+

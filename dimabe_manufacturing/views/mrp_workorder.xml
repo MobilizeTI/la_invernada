@@ -86,7 +86,7 @@
                 <field name="product_variety" />
                 <field name="product_id" />
                 <field name="display_weight"/>
-                <field name="consumed" />
+                <field name="consumed" invisible="1"/>
                 <button string="Quitar y Reducir"
                         name="remove_and_reduce"
                         type="object"
