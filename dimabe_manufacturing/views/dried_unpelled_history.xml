@@ -64,8 +64,9 @@
               <tree editable="bottom">
                 <field name="stock_production_lot_id" readonly="1"/>
                 <field name="consumed" readonly="1"/>
-                <field name="display_weight" />
+                <field name="display_weight" readonly="1" />
                 <field name="serial_number" readonly="1"/>
+                <field  name="gross_weight"  />
                 <button name="print_serial_label"
                         type="object" string="Imprimir"
                         context="{'producer_id': parent.producer_id}"
