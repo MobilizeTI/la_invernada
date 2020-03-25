@@ -422,6 +422,9 @@ class StockProductionLotSerial(models.Model):
 
     def remove_and_reduce(self):
 
+        if self.consumed:
+            raise models.ValidationError('esta serie ya fue consumida')
+
         wo = self.env['mrp.workorder'].search([
             ('production_id', '=', self.reserved_to_production_id.id)
         ])
@@ -443,6 +446,25 @@ class StockProductionLotSerial(models.Model):
         self.reserved_to_production_id.write({
             'product_qty': qty_producing / sum(moves.mapped('unit_factor'))
         })
+
+        done_qty = sum(wo.check_ids.filteded(
+            lambda a: a.component_id == wo.component_id and a.quality_state == 'pass'
+        ).mapped('qty_done'))
+
+        if done_qty >= qty_producing / sum(moves.mapped('unit_factor')):
+            pending_checks = wo.check_ids.filteded(
+                lambda a: a.component_id == wo.component_id and a.quality_state == 'none'
+            )
+
+            if pending_checks:
+                pending_checks.write({
+                    'quality_state': 'pass',
+                    'user_id': self.env.user.id,
+                    'control_date': fields.datetime.now()
+                })
+
+                if wo.current_quality_check_id in pending_checks:
+                    wo._change_quality_check(increment=1, children=1)
 
         production_move = self.reserved_to_production_id.move_raw_ids.filtered(
             lambda a: a.product_id == self.product_id
