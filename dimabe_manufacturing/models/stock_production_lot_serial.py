@@ -433,7 +433,12 @@ class StockProductionLotSerial(models.Model):
         if len(wo) > 1:
             raise models.ValidationError('existen {} ordenes asociadas a esta producción')
 
-        raise models.ValidationError(wo.qty_producing)
+        moves = wo.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == wo.component_id)
+
+        raise models.ValidationError('{} {}'.format(
+            sum(moves.mapped('unit_factor')),
+            wo.qty_producing
+        ))
 
         wo.write({
             'qty_producing': wo.qty_producing - self.display_weight
