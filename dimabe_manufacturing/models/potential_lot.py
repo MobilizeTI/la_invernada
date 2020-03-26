@@ -38,7 +38,8 @@ class PotentialLot(models.Model):
 
     qty_to_reserve = fields.Float(
         'Cantidad Reservada',
-        compute='_compute_qty_to_reserve'
+        compute='_compute_qty_to_reserve',
+        # search='_search_qty_to_reserve'
     )
 
     is_reserved = fields.Boolean('Reservado')
@@ -78,6 +79,12 @@ class PotentialLot(models.Model):
                     lambda a: a.reserved_to_production_id == item.mrp_production_id
                 ).mapped('display_weight')
             )
+
+    # def _search_qty_to_reserve(self, operation, value):
+    #
+    #
+    #
+    #     return [('id', 'in', ids)]
 
     @api.multi
     def reserve_stock(self):
