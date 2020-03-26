@@ -36,7 +36,10 @@ class PotentialLot(models.Model):
         related='mrp_production_id.state'
     )
 
-    qty_to_reserve = fields.Float('Cantidad Reservada')
+    qty_to_reserve = fields.Float(
+        'Cantidad Reservada',
+        compute='_compute_qty_to_reserve'
+    )
 
     is_reserved = fields.Boolean('Reservado')
 
@@ -44,7 +47,8 @@ class PotentialLot(models.Model):
     def _compute_potential_serial_ids(self):
         for item in self:
             item.potential_serial_ids = item.stock_production_lot_id.stock_production_lot_serial_ids.filtered(
-                lambda a: a.consumed is False and (a.reserved_to_production_id == item.mrp_production_id or not a.reserved_to_production_id)
+                lambda a: a.consumed is False and (
+                            a.reserved_to_production_id == item.mrp_production_id or not a.reserved_to_production_id)
             )
 
     @api.multi
@@ -66,13 +70,14 @@ class PotentialLot(models.Model):
             lambda a: a.location_id.name == 'Production'
         )
 
-    @api.model
-    def get_total_reserved(self):
-        return sum(
-            self.potential_serial_ids.filtered(
-                lambda a: a.reserved_to_production_id == self.mrp_production_id
-            ).mapped('display_weight')
-        )
+    @api.multi
+    def _compute_qty_to_reserve(self):
+        for item in self:
+            item.qty_to_reserve = sum(
+                item.potential_serial_ids.filtered(
+                    lambda a: a.reserved_to_production_id == item.mrp_production_id
+                ).mapped('display_weight')
+            )
 
     @api.multi
     def reserve_stock(self):
@@ -81,16 +86,10 @@ class PotentialLot(models.Model):
 
             serial_to_reserve.with_context(mrp_production_id=item.mrp_production_id.id).reserve_serial()
 
-            item.qty_to_reserve = item.get_total_reserved()
-
             item.is_reserved = True
 
     @api.multi
     def confirm_reserve(self):
-        for item in self:
-            item.update({
-                'qty_to_reserve': item.get_total_reserved(),
-            })
 
         return {
             'type': 'ir.actions.client',
@@ -105,7 +104,5 @@ class PotentialLot(models.Model):
             )
 
             serial_to_reserve.unreserved_serial()
-
-            item.qty_to_reserve = sum(item.consumed_serial_ids.mapped('display_weight'))
 
             item.is_reserved = item.qty_to_reserve > 0
