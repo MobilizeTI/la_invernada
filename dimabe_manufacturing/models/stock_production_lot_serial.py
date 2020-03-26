@@ -250,7 +250,7 @@ class StockProductionLotSerial(models.Model):
                     lambda a: a.product_id == item.stock_production_lot_id.product_id
                 )
 
-                # stock_quant = item.stock_production_lot_id.get_stock_quant()
+                stock_quant = item.stock_production_lot_id.get_stock_quant()
 
                 virtual_location_production_id = item.env['stock.location'].search([
                     ('usage', '=', 'production'),
