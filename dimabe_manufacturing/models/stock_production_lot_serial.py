@@ -257,9 +257,9 @@ class StockProductionLotSerial(models.Model):
                     ('location_id.name', 'like', 'Virtual Locations')
                 ])
 
-                # stock_quant.sudo().update({
-                #     'reserved_quantity': stock_quant.reserved_quantity + item.display_weight
-                # })
+                stock_quant.sudo().update({
+                    'reserved_quantity': stock_quant.reserved_quantity + item.display_weight
+                })
 
                 for stock in stock_move:
                     stock.sudo().update({
