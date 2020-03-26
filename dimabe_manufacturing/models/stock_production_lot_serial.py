@@ -457,11 +457,7 @@ class StockProductionLotSerial(models.Model):
             )
 
             if pending_checks:
-                pending_checks.write({
-                    'quality_state': 'pass',
-                    'user_id': self.env.user.id,
-                    'control_date': fields.datetime.now()
-                })
+                pending_checks.unlink()
 
                 if wo.current_quality_check_id in pending_checks:
                     wo._change_quality_check(increment=1, children=1)
