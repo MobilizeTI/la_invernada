@@ -134,7 +134,9 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_potential_lot_planned_ids(self):
         for item in self:
-            raise models.ValidationError(item.production_id.potential_lot_ids)
+            raise models.ValidationError(item.production_id.potential_lot_ids.filtered(
+                lambda a: a.qty_to_reserve > 0
+            ))
             item.potential_serial_planned_ids = item.production_id.potential_lot_ids.filtered(
                 lambda a: a.qty_to_reserve > 0
             ).mapped('stock_production_lot_id.stock_production_lot_serial_ids').filtered(
