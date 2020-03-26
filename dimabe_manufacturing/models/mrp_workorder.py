@@ -261,7 +261,7 @@ class MrpWorkorder(models.Model):
         custom_serial.update({
             'consumed': True
         })
-        # self._compute_potential_lot_planned_ids()
+
         return res
 
     @api.model
