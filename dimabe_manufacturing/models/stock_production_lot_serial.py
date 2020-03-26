@@ -457,6 +457,11 @@ class StockProductionLotSerial(models.Model):
             )
 
             if pending_checks:
+                raise models.ValidationError('{} {}'.format(
+                    wo.active_move_line_ids,
+                    pending_checks.mapped('move_line_id')
+                )
+                )
                 pending_checks.unlink()
 
                 if wo.current_quality_check_id in pending_checks:
