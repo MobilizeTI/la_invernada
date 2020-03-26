@@ -457,14 +457,14 @@ class StockProductionLotSerial(models.Model):
             )
 
             if pending_checks:
-                for check in pending_checks:
-                    line = wo.active_move_line_ids.filtered(
-                        lambda a: a.product_id == check.component_id and not a.lot_id
-                    )
-                    raise models.ValidationError('{} {}'.format(
-                        wo.active_move_line_ids,
-                        line
-                    ))
+
+                line = wo.active_move_line_ids.filtered(
+                    lambda a: a.product_id == wo.component_id and not a.lot_id
+                )
+                raise models.ValidationError('{} {}'.format(
+                    wo.active_move_line_ids,
+                    line
+                ))
                 pending_checks.unlink()
 
                 if wo.current_quality_check_id in pending_checks:
