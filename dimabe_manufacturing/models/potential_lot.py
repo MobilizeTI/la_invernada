@@ -75,7 +75,7 @@ class PotentialLot(models.Model):
     def _compute_qty_to_reserve(self):
         for item in self:
             item.qty_to_reserve = sum(
-                item.potential_serial_ids.filtered(
+                item.stock_production_lot_id.stock_production_lot_serial_ids.filtered(
                     lambda a: a.reserved_to_production_id == item.mrp_production_id
                 ).mapped('display_weight')
             )
