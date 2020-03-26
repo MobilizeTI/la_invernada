@@ -250,16 +250,16 @@ class StockProductionLotSerial(models.Model):
                     lambda a: a.product_id == item.stock_production_lot_id.product_id
                 )
 
-                stock_quant = item.stock_production_lot_id.get_stock_quant()
+                # stock_quant = item.stock_production_lot_id.get_stock_quant()
 
                 virtual_location_production_id = item.env['stock.location'].search([
                     ('usage', '=', 'production'),
                     ('location_id.name', 'like', 'Virtual Locations')
                 ])
 
-                stock_quant.sudo().update({
-                    'reserved_quantity': stock_quant.reserved_quantity + item.display_weight
-                })
+                # stock_quant.sudo().update({
+                #     'reserved_quantity': stock_quant.reserved_quantity + item.display_weight
+                # })
 
                 for stock in stock_move:
                     stock.sudo().update({
