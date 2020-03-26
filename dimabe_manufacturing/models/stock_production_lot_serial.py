@@ -306,7 +306,7 @@ class StockProductionLotSerial(models.Model):
 
             item.stock_production_lot_id.balance = stock_quant.quantity - stock_quant.reserved_quantity
 
-            # raise models.ValidationError(item.stock_production_lot_id.balance)
+            raise models.ValidationError(item.stock_production_lot_id.balance)
 
             if move_line:
                 move_line[0].write({'move_id': None, 'product_uom_qty': 0})
