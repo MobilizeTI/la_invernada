@@ -459,7 +459,7 @@ class StockProductionLotSerial(models.Model):
             if pending_checks:
 
                 line = wo.active_move_line_ids.filtered(
-                    lambda a: a.product_id == wo.component_id and not a.lot_id
+                    lambda a: a.product_id == self.product_id and not a.lot_id
                 )
                 raise models.ValidationError('{} {}'.format(
                     wo.active_move_line_ids,
