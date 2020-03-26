@@ -304,6 +304,8 @@ class StockProductionLotSerial(models.Model):
                 'reserved_to_production_id': None
             })
 
+            stock_quant.set_balance_on_lot()
+
             if move_line:
                 move_line[0].write({'move_id': None, 'product_uom_qty': 0})
 
