@@ -13,7 +13,7 @@ class PotentialLot(models.Model):
     )
 
     lot_balance = fields.Float(
-        related='stock_production_lot_id.product_qty'
+        related='stock_production_lot_id.balance'
 
     )
 
