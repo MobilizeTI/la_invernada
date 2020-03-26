@@ -81,6 +81,7 @@ class PotentialLot(models.Model):
             )
 
     def _search_qty_to_reserve(self, operation, value):
+        models._logger.error(self)
         potential_lot = self.env['potential.lot'].search({
             ('reserved_to_production_id', '=', self.reserved_to_production_id.id)
         })
