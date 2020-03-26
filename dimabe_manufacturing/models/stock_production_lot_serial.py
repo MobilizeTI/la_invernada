@@ -453,7 +453,7 @@ class StockProductionLotSerial(models.Model):
 
         if done_qty >= qty_producing / sum(moves.mapped('unit_factor')):
             pending_checks = wo.check_ids.filtered(
-                lambda a: a.component_id == wo.component_id and a.quality_state == 'none'
+                lambda a: a.component_id == self.product_id and a.quality_state == 'none'
             )
 
             if pending_checks:
