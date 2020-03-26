@@ -77,6 +77,7 @@ class PotentialLot(models.Model):
     @api.multi
     def reserve_stock(self):
         for item in self:
+            raise models.ValidationError('la')
             serial_to_reserve = item.potential_serial_ids.filtered(lambda a: not a.reserved_to_production_id)
 
             serial_to_reserve.with_context(mrp_production_id=item.mrp_production_id.id).reserve_serial()
