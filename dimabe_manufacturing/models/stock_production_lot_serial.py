@@ -448,7 +448,7 @@ class StockProductionLotSerial(models.Model):
         })
 
         done_qty = sum(wo.check_ids.filtered(
-            lambda a: a.component_id == wo.component_id and a.quality_state == 'pass'
+            lambda a: a.component_id == self.product_id and a.quality_state == 'pass'
         ).mapped('qty_done'))
 
         if done_qty >= qty_producing / sum(moves.mapped('unit_factor')):
