@@ -93,7 +93,6 @@
                         class="oe_highlight"
                         attrs="{'invisible':[('consumed','=',True)]}"
                         groups="mrp.group_mrp_manager"
-                        
                 />
               </tree>
             </field>
