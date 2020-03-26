@@ -239,7 +239,7 @@ class MrpProduction(models.Model):
             for move in item.move_raw_ids.filtered(
                 lambda a: a.product_id not in item.consumed_material_ids.mapped('product_id')
             ):
-                move.quantity_done = sum(lot.mannped('count_serial')) * sum(item.bom_id.bom_line_ids.filtered(
+                move.quantity_done = sum(lot.mapped('count_serial')) * sum(item.bom_id.bom_line_ids.filtered(
                     lambda a: a.product_id == move.product_id
                 ).mapped('product_qty'))
 
