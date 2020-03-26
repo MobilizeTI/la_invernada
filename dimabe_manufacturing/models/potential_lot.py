@@ -39,7 +39,7 @@ class PotentialLot(models.Model):
     qty_to_reserve = fields.Float(
         'Cantidad Reservada',
         compute='_compute_qty_to_reserve',
-        search='_search_qty_to_reserve'
+        # search='_search_qty_to_reserve'
     )
 
     is_reserved = fields.Boolean('Reservado')
@@ -80,38 +80,38 @@ class PotentialLot(models.Model):
                 ).mapped('display_weight')
             )
 
-    def _search_qty_to_reserve(self, operation, value):
-        models._logger.error(self)
-        potential_lot = self.env['potential.lot'].search({
-            ('reserved_to_production_id', '=', self.reserved_to_production_id.id)
-        })
-        ids = []
-
-        if operation == '=':
-            ids = potential_lot.filtered(
-                lambda a:a.qty_to_reserve == value
-            ).mapped('id')
-        elif operation == '!=':
-            ids = potential_lot.filtered(
-                lambda a: a.qty_to_reserve != value
-            ).mapped('id')
-        elif operation == '<=':
-            ids = potential_lot.filtered(
-                lambda a: a.qty_to_reserve <= value
-            ).mapped('id')
-        elif operation == '>=':
-            ids = potential_lot.filtered(
-                lambda a: a.qty_to_reserve >= value
-            ).mapped('id')
-        elif operation == '<':
-            ids = potential_lot.filtered(
-                lambda a: a.qty_to_reserve < value
-            ).mapped('id')
-        elif operation == '>':
-            ids = potential_lot.filtered(
-                lambda a: a.qty_to_reserve > value
-            ).mapped('id')
-        return [('id', 'in', ids)]
+    # def _search_qty_to_reserve(self, operation, value):
+    #     models._logger.error(self)
+    #     potential_lot = self.env['potential.lot'].search({
+    #         ('reserved_to_production_id', '=', self.reserved_to_production_id.id)
+    #     })
+    #     ids = []
+    #
+    #     if operation == '=':
+    #         ids = potential_lot.filtered(
+    #             lambda a:a.qty_to_reserve == value
+    #         ).mapped('id')
+    #     elif operation == '!=':
+    #         ids = potential_lot.filtered(
+    #             lambda a: a.qty_to_reserve != value
+    #         ).mapped('id')
+    #     elif operation == '<=':
+    #         ids = potential_lot.filtered(
+    #             lambda a: a.qty_to_reserve <= value
+    #         ).mapped('id')
+    #     elif operation == '>=':
+    #         ids = potential_lot.filtered(
+    #             lambda a: a.qty_to_reserve >= value
+    #         ).mapped('id')
+    #     elif operation == '<':
+    #         ids = potential_lot.filtered(
+    #             lambda a: a.qty_to_reserve < value
+    #         ).mapped('id')
+    #     elif operation == '>':
+    #         ids = potential_lot.filtered(
+    #             lambda a: a.qty_to_reserve > value
+    #         ).mapped('id')
+    #     return [('id', 'in', ids)]
 
 
     @api.multi
