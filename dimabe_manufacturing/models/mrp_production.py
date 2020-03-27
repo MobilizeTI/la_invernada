@@ -263,6 +263,9 @@ class MrpProduction(models.Model):
                 lambda a: a.reserved_to_production_id == self.id and a.consumed
             ))
 
+            raise models.ValidationError('{} {}'.format(
+                quant, quantity
+            ))
             quant.sudo().update({
                 'reserved_quantity': quant.reserved_quantity - quantity
             })
