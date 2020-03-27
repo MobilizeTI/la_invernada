@@ -264,7 +264,7 @@ class MrpProduction(models.Model):
             ))
 
             raise models.ValidationError('{} {}'.format(
-                quant, lot.stock_production_lot_serial_ids
+                lot.name, lot.stock_production_lot_serial_ids.mapped('reserved_to_production_id')
             ))
             quant.sudo().update({
                 'reserved_quantity': quant.reserved_quantity - quantity
