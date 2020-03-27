@@ -202,6 +202,7 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def _compute_producer_ids(self):
+        models._logger.error('compute_producers')
         for item in self:
             if item.is_prd_lot:
                 item.producer_ids = self.env['res.partner'].search([
@@ -211,6 +212,7 @@ class StockProductionLot(models.Model):
                     )),
                     ('always_to_print', '=', True)
                 ])
+                models._logger.error(item.producer_ids)
             elif item.is_dried_lot:
                 dried_data = self.env['unpelled.dried'].search([
                     ('out_lot_id', '=', item.id)
