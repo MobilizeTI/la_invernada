@@ -308,7 +308,7 @@ class StockProductionLotSerial(models.Model):
 
             move_line = stock_move.active_move_line_ids.filtered(
                 lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.display_weight
-                        and a.qty_done == 0
+                          and a.qty_done == 0
             )
 
             stock_quant = item.stock_production_lot_id.get_stock_quant()
@@ -455,7 +455,8 @@ class StockProductionLotSerial(models.Model):
         if len(wo) > 1:
             raise models.ValidationError('existen {} ordenes asociadas a esta producción')
 
-        moves = wo.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == self.product_id)
+        moves = wo.move_raw_ids.filtered(
+            lambda m: m.state not in ('done', 'cancel') and m.product_id == self.product_id)
 
         qty_producing = (wo.qty_producing * sum(moves.mapped('unit_factor'))) - self.display_weight
 
@@ -504,3 +505,7 @@ class StockProductionLotSerial(models.Model):
         if reserved_serials and not production_move.active_move_line_ids:
             for serial in reserved_serials:
                 serial.add_move_line(production_move)
+                q = serial.stock_production_lot_id.get_stock_quant()
+                q.sudo().update({
+                    'reserved_quantity': q.reserved_quantity + serial.display_weight
+                })
