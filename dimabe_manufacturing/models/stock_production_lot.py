@@ -254,6 +254,10 @@ class StockProductionLot(models.Model):
             'producer_id': self.producer_id.id
         })
 
+        self.all_pallet_ids.write({
+            'producer_id': self.producer_id.id
+        })
+
     @api.multi
     def _compute_all_pallet_ids(self):
         for item in self:
