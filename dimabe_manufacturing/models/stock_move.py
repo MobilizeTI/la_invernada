@@ -6,6 +6,5 @@ class StockMove(models.Model):
 
     def _action_assign(self):
         res = super(StockMove, self)._action_assign()
-        if self:
-            raise models.ValidationError(self)
+        raise models.ValidationError(self)
         return res
