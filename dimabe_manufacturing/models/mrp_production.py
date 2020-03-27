@@ -237,7 +237,7 @@ class MrpProduction(models.Model):
             for line_id in item.finished_move_line_ids:
                 line_id.qty_done = line_id.lot_id.total_serial
             for move in item.move_raw_ids.filtered(
-                lambda a: a.product_id not in item.consumed_material_ids.mapped('product_id')
+                    lambda a: a.product_id not in item.consumed_material_ids.mapped('product_id')
             ):
                 move.quantity_done = sum(lot.mapped('count_serial')) * sum(item.bom_id.bom_line_ids.filtered(
                     lambda a: a.product_id == move.product_id
@@ -264,7 +264,9 @@ class MrpProduction(models.Model):
             ))
 
             raise models.ValidationError('{} {}'.format(
-                lot.name, lot.stock_production_lot_serial_ids.mapped('reserved_to_production_id')
+                lot.name, lot.stock_production_lot_serial_ids.filtered(
+                    lambda a: a.reserved_to_production_id == self.id and a.consumed
+                )
             ))
             quant.sudo().update({
                 'reserved_quantity': quant.reserved_quantity - quantity
