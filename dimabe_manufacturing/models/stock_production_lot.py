@@ -202,17 +202,22 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def _compute_producer_ids(self):
-        models._logger.error('compute_producers')
+
         for item in self:
             if item.is_prd_lot:
+                workorder = self.env['mrp.workorder'].search([
+                    ('final_lot_id', '=', item.id),
+                    ('production_finished_move_line_ids.lot_id', '=', item.id)
+                ])
+
+                if workorder:
+                    producers = workorder.mapped('potential_serial_planned_ids.stock_production_lot_id.producer_id')
                 item.producer_ids = self.env['res.partner'].search([
                     '|',
-                    ('id', 'in', item.stock_production_lot_serial_ids.mapped(
-                        'production_id.consumed_material_ids.producer_id.id'
-                    )),
+                    ('id', 'in', producers.mapped('id')),
                     ('always_to_print', '=', True)
                 ])
-                models._logger.error(item.producer_ids)
+
             elif item.is_dried_lot:
                 dried_data = self.env['unpelled.dried'].search([
                     ('out_lot_id', '=', item.id)
