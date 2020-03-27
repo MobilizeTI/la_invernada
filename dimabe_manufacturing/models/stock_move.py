@@ -6,6 +6,6 @@ class StockMove(models.Model):
 
     def _action_assign(self):
         res = super(StockMove, self)._action_assign()
-        raise models.ValidationError('{}'.format(
-            self.filtered(lambda m: m.state in ['confirmed', 'waiting', 'partially_available'])))
+        if self:
+            raise models.ValidationError(self)
         return res
