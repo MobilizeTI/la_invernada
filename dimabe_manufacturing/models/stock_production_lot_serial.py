@@ -479,7 +479,8 @@ class StockProductionLotSerial(models.Model):
         production_move.product_uom_qty = qty_producing
 
         reserved_serials = self.env['stock.production.lot.serial'].search([
-            ('reserved_to_production_id', '=', self.reserved_to_production_id.id)
+            ('reserved_to_production_id', '=', self.reserved_to_production_id.id),
+            ('id', '!=', self.id)
         ])
 
         raise models.ValidationError(reserved_serials)
