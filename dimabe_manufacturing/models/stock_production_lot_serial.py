@@ -478,15 +478,15 @@ class StockProductionLotSerial(models.Model):
 
         production_move.product_uom_qty = qty_producing
 
-        self.unreserved_serial()
-
         reserved_serials = self.env['stock.production.lot.serial'].search([
             ('reserved_to_production_id', '=', self.reserved_to_production_id.id)
         ])
 
-        raise models.ValidationError(reserved_serials.mapped('reserved_to_production_id'))
+        raise models.ValidationError(reserved_serials)
 
         # for serial in reserved_serials:
+
+        self.unreserved_serial()
 
         raise models.ValidationError(production_move.active_move_line_ids)
 
