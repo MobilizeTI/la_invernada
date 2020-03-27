@@ -256,16 +256,16 @@ class MrpProduction(models.Model):
         for serial in serial_to_reserve_ids:
             serial.with_context(stock_picking_id=self.stock_picking_id.id).reserve_picking()
 
-        for lot in self.consumed_material_ids.mapped('stock_production_lot_id'):
-            quant = lot.get_stock_quant()
-
-            quantity = sum(lot.stock_production_lot_serial_ids.filtered(
-                lambda a: a.reserved_to_production_id.id == self.id and a.consumed
-            ).mapped('display_weight'))
-
-            quant.sudo().update({
-                'reserved_quantity': quant.reserved_quantity - quantity
-            })
+        # for lot in self.consumed_material_ids.mapped('stock_production_lot_id'):
+        #     quant = lot.get_stock_quant()
+        #
+        #     quantity = sum(lot.stock_production_lot_serial_ids.filtered(
+        #         lambda a: a.reserved_to_production_id.id == self.id and a.consumed
+        #     ).mapped('display_weight'))
+        #
+        #     quant.sudo().update({
+        #         'reserved_quantity': quant.reserved_quantity - quantity
+        #     })
 
         serial_to_reserve_ids.mapped('stock_production_lot_id').write({
             'can_add_serial': False

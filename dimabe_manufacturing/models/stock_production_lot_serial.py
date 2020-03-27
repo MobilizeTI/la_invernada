@@ -505,7 +505,3 @@ class StockProductionLotSerial(models.Model):
         if reserved_serials and not production_move.active_move_line_ids:
             for serial in reserved_serials:
                 serial.add_move_line(production_move)
-                # q = serial.stock_production_lot_id.get_stock_quant()
-                # q.sudo().update({
-                #     'reserved_quantity': q.reserved_quantity + serial.display_weight
-                # })
