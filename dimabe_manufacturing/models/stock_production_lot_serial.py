@@ -276,7 +276,7 @@ class StockProductionLotSerial(models.Model):
     @api.model
     def add_move_line(self, stock_move):
         stock_quant = self.stock_production_lot_id.get_stock_quant()
-        virtual_location_production_id = item.env['stock.location'].search([
+        virtual_location_production_id = self.env['stock.location'].search([
             ('usage', '=', 'production'),
             ('location_id.name', 'like', 'Virtual Locations')
         ])
