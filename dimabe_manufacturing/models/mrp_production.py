@@ -233,8 +233,15 @@ class MrpProduction(models.Model):
     @api.multi
     def calculate_done(self):
         for item in self:
+            lot = item.finished_move_line_ids.mapped('lot_id')
             for line_id in item.finished_move_line_ids:
                 line_id.qty_done = line_id.lot_id.total_serial
+            for move in item.move_raw_ids.filtered(
+                    lambda a: a.product_id not in item.consumed_material_ids.mapped('product_id')
+            ):
+                move.quantity_done = sum(lot.mapped('count_serial')) * sum(item.bom_id.bom_line_ids.filtered(
+                    lambda a: a.product_id == move.product_id
+                ).mapped('product_qty'))
 
     @api.multi
     def button_mark_done(self):

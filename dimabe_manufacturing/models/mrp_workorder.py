@@ -127,6 +127,10 @@ class MrpWorkorder(models.Model):
             if pallet_ids:
                 item.manufacturing_pallet_ids = [(4, pallet_id) for pallet_id in pallet_ids]
 
+    @api.onchange('qty_producing')
+    def _onchange_qty_producing(self):
+        print('se inhabilita este método')
+
     @api.multi
     def _compute_potential_lot_planned_ids(self):
         for item in self:
@@ -257,7 +261,7 @@ class MrpWorkorder(models.Model):
         custom_serial.update({
             'consumed': True
         })
-        self._compute_potential_lot_planned_ids()
+
         return res
 
     @api.model

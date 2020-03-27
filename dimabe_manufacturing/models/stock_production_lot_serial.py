@@ -109,6 +109,19 @@ class StockProductionLotSerial(models.Model):
         compute='_compute_label_percent'
     )
 
+    bom_id = fields.Many2one(
+        'mrp.bom',
+        'Lista de Materiales',
+        related='production_id.bom_id'
+    )
+
+    @api.multi
+    def _inverse_real_weight(self):
+        for item in self:
+            item.real_weight = item.display_weight
+            if not item.is_dried_serial:
+                item.gross_weight = item.display_weight + item.canning_id.weight
+
     def _inverse_gross_weight(self):
         if self.is_dried_serial:
             gross_weight_without_canning = self.gross_weight - self.canning_id.weight
@@ -166,7 +179,21 @@ class StockProductionLotSerial(models.Model):
 
         res.label_durability_id = res.stock_production_lot_id.label_durability_id
 
+        if res.bom_id:
+            res.set_bom_canning()
+            res.gross_weight = res.display_weight + res.canning_id.weight
         return res
+
+    @api.model
+    def set_bom_canning(self):
+        canning_id = self.bom_id.bom_line_ids.filtered(
+            lambda a: 'envases' in str.lower(a.product_id.categ_id.name) or (
+                    a.product_id.categ_id.parent_id and
+                    'envases' in str.lower(a.product_id.categ_id.parent_id.name)
+            )
+        ).mapped('product_id')
+        if len(canning_id) == 1:
+            self.canning_id = canning_id[0]
 
     @api.multi
     def write(self, vals):
@@ -175,6 +202,8 @@ class StockProductionLotSerial(models.Model):
         for item in self:
             if item.display_weight == 0 and item.gross_weight == 0:
                 raise models.ValidationError('debe agregar un peso a la serie')
+            if not item.canning_id and item.bom_id:
+                item.set_bom_canning()
         return res
 
     @api.model
@@ -223,30 +252,46 @@ class StockProductionLotSerial(models.Model):
 
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
 
-                virtual_location_production_id = item.env['stock.location'].search([
-                    ('usage', '=', 'production'),
-                    ('location_id.name', 'like', 'Virtual Locations')
-                ])
-
                 stock_quant.sudo().update({
                     'reserved_quantity': stock_quant.reserved_quantity + item.display_weight
                 })
 
                 for stock in stock_move:
-                    stock.sudo().update({
-                        'active_move_line_ids': [
-                            (0, 0, {
-                                'product_id': item.stock_production_lot_id.product_id.id,
-                                'lot_id': item.stock_production_lot_id.id,
-                                'product_uom_qty': item.display_weight,
-                                'product_uom_id': stock.product_uom.id,
-                                'location_id': stock_quant.location_id.id,
-                                'location_dest_id': virtual_location_production_id.id
-                            })
-                        ]
-                    })
+                    item.add_move_line(stock)
+                    # stock.sudo().update({
+                    #     'active_move_line_ids': [
+                    #         (0, 0, {
+                    #             'product_id': item.stock_production_lot_id.product_id.id,
+                    #             'lot_id': item.stock_production_lot_id.id,
+                    #             'product_uom_qty': item.display_weight,
+                    #             'product_uom_id': stock.product_uom.id,
+                    #             'location_id': stock_quant.location_id.id,
+                    #             'location_dest_id': virtual_location_production_id.id
+                    #         })
+                    #     ]
+                    # })
         else:
             raise models.ValidationError('no se pudo identificar producción')
+
+    @api.model
+    def add_move_line(self, stock_move):
+        stock_quant = self.stock_production_lot_id.get_stock_quant()
+        virtual_location_production_id = self.env['stock.location'].search([
+            ('usage', '=', 'production'),
+            ('location_id.name', 'like', 'Virtual Locations')
+        ])
+        stock_move.sudo().update({
+            'active_move_line_ids': [
+                (0, 0, {
+                    'product_id': self.stock_production_lot_id.product_id.id,
+                    'lot_id': self.stock_production_lot_id.id,
+                    'product_uom_qty': self.display_weight,
+                    'product_uom_id': stock_move.product_uom.id,
+                    'location_id': stock_quant.location_id.id,
+                    'location_dest_id': virtual_location_production_id.id
+                })
+            ]
+        })
 
     @api.multi
     def unreserved_serial(self):
@@ -263,6 +308,7 @@ class StockProductionLotSerial(models.Model):
 
             move_line = stock_move.active_move_line_ids.filtered(
                 lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.display_weight
+                          and a.qty_done == 0
             )
 
             stock_quant = item.stock_production_lot_id.get_stock_quant()
@@ -274,10 +320,12 @@ class StockProductionLotSerial(models.Model):
                 'reserved_to_production_id': None
             })
 
-            for ml in move_line:
-                if ml.qty_done > 0:
-                    raise models.ValidationError('este producto ya ha sido consumido')
-                ml.write({'move_id': None, 'product_uom_qty': 0})
+            item.stock_production_lot_id.write({
+                'balance': stock_quant.quantity - stock_quant.reserved_quantity
+            })
+
+            if move_line:
+                move_line[0].write({'move_id': None, 'product_uom_qty': 0})
 
     @api.multi
     def reserve_picking(self):
@@ -391,3 +439,69 @@ class StockProductionLotSerial(models.Model):
                         'product_uom_qty': 0,
                         'reserved_availability': 0
                     })
+
+    def remove_and_reduce(self):
+
+        if self.consumed:
+            raise models.ValidationError('esta serie ya fue consumida')
+
+        wo = self.env['mrp.workorder'].search([
+            ('production_id', '=', self.reserved_to_production_id.id)
+        ])
+
+        if not wo:
+            raise models.ValidationError('no se encontró orden de trabajo a reducir')
+
+        if len(wo) > 1:
+            raise models.ValidationError('existen {} ordenes asociadas a esta producción')
+
+        moves = wo.move_raw_ids.filtered(
+            lambda m: m.state not in ('done', 'cancel') and m.product_id == self.product_id)
+
+        qty_producing = (wo.qty_producing * sum(moves.mapped('unit_factor'))) - self.display_weight
+
+        wo.write({
+            'qty_producing': qty_producing / sum(moves.mapped('unit_factor')),
+        })
+
+        self.reserved_to_production_id.write({
+            'product_qty': qty_producing / sum(moves.mapped('unit_factor'))
+        })
+
+        done_qty = sum(wo.check_ids.filtered(
+            lambda a: a.component_id == self.product_id and a.quality_state == 'pass'
+        ).mapped('qty_done'))
+
+        if done_qty >= qty_producing / sum(moves.mapped('unit_factor')):
+            pending_checks = wo.check_ids.filtered(
+                lambda a: a.component_id == self.product_id and a.quality_state == 'none'
+            )
+
+            if pending_checks:
+
+                line = wo.active_move_line_ids.filtered(
+                    lambda a: a.product_id == self.product_id and not a.lot_id
+                )
+
+                pending_checks.unlink()
+                line.unlink()
+
+                if wo.current_quality_check_id in pending_checks:
+                    wo._change_quality_check(increment=1, children=1)
+
+        production_move = self.reserved_to_production_id.move_raw_ids.filtered(
+            lambda a: a.product_id == self.product_id
+        )
+
+        production_move.product_uom_qty = qty_producing
+
+        reserved_serials = self.env['stock.production.lot.serial'].search([
+            ('reserved_to_production_id', '=', self.reserved_to_production_id.id),
+            ('id', '!=', self.id)
+        ])
+
+        self.unreserved_serial()
+
+        if reserved_serials and not production_move.active_move_line_ids:
+            for serial in reserved_serials:
+                serial.add_move_line(production_move)
