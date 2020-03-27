@@ -206,6 +206,7 @@ class StockProductionLot(models.Model):
         for item in self:
             if item.is_prd_lot:
                 workorder = self.env['mrp.workorder'].search([
+                    '|',
                     ('final_lot_id', '=', item.id),
                     ('production_finished_move_line_ids.lot_id', '=', item.id)
                 ])
