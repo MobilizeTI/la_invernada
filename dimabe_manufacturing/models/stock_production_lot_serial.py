@@ -480,5 +480,5 @@ class StockProductionLotSerial(models.Model):
 
         self.unreserved_serial()
 
-        raise models.ValidationError('lal')
+        raise models.ValidationError(production_move.active_move_line_ids)
 
