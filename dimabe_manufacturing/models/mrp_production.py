@@ -261,7 +261,7 @@ class MrpProduction(models.Model):
 
             quantity = sum(lot.stock_production_lot_serial_ids.filtered(
                 lambda a: a.reserved_to_production_id.id == self.id and a.consumed
-            ))
+            ).mapped('display_weight'))
 
             quant.sudo().update({
                 'reserved_quantity': quant.reserved_quantity - quantity
