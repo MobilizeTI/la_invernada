@@ -484,7 +484,7 @@ class StockProductionLotSerial(models.Model):
             ('reserved_to_production_id', '=', self.reserved_to_production_id.id)
         ])
 
-        raise models.ValidationError(reserved_serials)
+        raise models.ValidationError(reserved_serials.mapped('reserved_to_production_id'))
 
         # for serial in reserved_serials:
 
