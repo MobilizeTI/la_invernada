@@ -264,7 +264,8 @@ class MrpProduction(models.Model):
             ))
 
             raise models.ValidationError('{} {}'.format(
-                self.id, lot.stock_production_lot_serial_ids.filtered(
+                lot.stock_production_lot_serial_ids.mapped('consumed'),
+                lot.stock_production_lot_serial_ids.filtered(
                     lambda a: a.reserved_to_production_id == self.id and a.consumed
                 )
             ))
