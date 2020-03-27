@@ -213,8 +213,6 @@ class StockProductionLot(models.Model):
 
                 producers = workorder.mapped('potential_serial_planned_ids.stock_production_lot_id.producer_id')
 
-                raise models.ValidationError(producers.mapped('name'))
-
                 item.producer_ids = self.env['res.partner'].search([
                     '|',
                     ('id', 'in', producers.mapped('id')),
