@@ -267,8 +267,6 @@ class MrpProduction(models.Model):
                 'reserved_quantity': quant.reserved_quantity - quantity
             })
 
-            raise models.ValidationError(quant.reserved_quantity)
-
         serial_to_reserve_ids.mapped('stock_production_lot_id').write({
             'can_add_serial': False
         })
