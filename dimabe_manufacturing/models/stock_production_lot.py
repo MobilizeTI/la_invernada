@@ -210,8 +210,8 @@ class StockProductionLot(models.Model):
                     ('production_finished_move_line_ids.lot_id', '=', item.id)
                 ])
 
-                if workorder:
-                    producers = workorder.mapped('potential_serial_planned_ids.stock_production_lot_id.producer_id')
+                producers = workorder.mapped('potential_serial_planned_ids.stock_production_lot_id.producer_id')
+
                 item.producer_ids = self.env['res.partner'].search([
                     '|',
                     ('id', 'in', producers.mapped('id')),
