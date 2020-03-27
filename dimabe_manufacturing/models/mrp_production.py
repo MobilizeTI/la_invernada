@@ -260,18 +260,14 @@ class MrpProduction(models.Model):
             quant = lot.get_stock_quant()
 
             quantity = sum(lot.stock_production_lot_serial_ids.filtered(
-                lambda a: a.reserved_to_production_id == self.id and a.consumed
+                lambda a: a.reserved_to_production_id.id == self.id and a.consumed
             ))
 
-            raise models.ValidationError('{} {}'.format(
-                lot.stock_production_lot_serial_ids.mapped('consumed'),
-                lot.stock_production_lot_serial_ids.filtered(
-                    lambda a: a.reserved_to_production_id.id == self.id and a.consumed
-                )
-            ))
             quant.sudo().update({
                 'reserved_quantity': quant.reserved_quantity - quantity
             })
+
+            raise models.ValidationError(quant.reserved_quantity)
 
         serial_to_reserve_ids.mapped('stock_production_lot_id').write({
             'can_add_serial': False
