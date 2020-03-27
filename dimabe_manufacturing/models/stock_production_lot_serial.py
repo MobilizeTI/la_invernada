@@ -503,8 +503,6 @@ class StockProductionLotSerial(models.Model):
             for serial in reserved_serials:
                 serial.add_move_line(production_move)
 
-        raise models.ValidationError(production_move.active_move_line_ids)
-
         self.unreserved_serial()
 
         raise models.ValidationError(production_move.active_move_line_ids)
