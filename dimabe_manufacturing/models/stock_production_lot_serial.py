@@ -252,30 +252,46 @@ class StockProductionLotSerial(models.Model):
 
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
 
-                virtual_location_production_id = item.env['stock.location'].search([
-                    ('usage', '=', 'production'),
-                    ('location_id.name', 'like', 'Virtual Locations')
-                ])
-
                 stock_quant.sudo().update({
                     'reserved_quantity': stock_quant.reserved_quantity + item.display_weight
                 })
 
                 for stock in stock_move:
-                    stock.sudo().update({
-                        'active_move_line_ids': [
-                            (0, 0, {
-                                'product_id': item.stock_production_lot_id.product_id.id,
-                                'lot_id': item.stock_production_lot_id.id,
-                                'product_uom_qty': item.display_weight,
-                                'product_uom_id': stock.product_uom.id,
-                                'location_id': stock_quant.location_id.id,
-                                'location_dest_id': virtual_location_production_id.id
-                            })
-                        ]
-                    })
+                    item.add_move_line(stock)
+                    # stock.sudo().update({
+                    #     'active_move_line_ids': [
+                    #         (0, 0, {
+                    #             'product_id': item.stock_production_lot_id.product_id.id,
+                    #             'lot_id': item.stock_production_lot_id.id,
+                    #             'product_uom_qty': item.display_weight,
+                    #             'product_uom_id': stock.product_uom.id,
+                    #             'location_id': stock_quant.location_id.id,
+                    #             'location_dest_id': virtual_location_production_id.id
+                    #         })
+                    #     ]
+                    # })
         else:
             raise models.ValidationError('no se pudo identificar producción')
+
+    @api.model
+    def add_move_line(self, stock_move):
+        stock_quant = self.stock_production_lot_id.get_stock_quant()
+        virtual_location_production_id = item.env['stock.location'].search([
+            ('usage', '=', 'production'),
+            ('location_id.name', 'like', 'Virtual Locations')
+        ])
+        stock_move.sudo().update({
+            'active_move_line_ids': [
+                (0, 0, {
+                    'product_id': self.stock_production_lot_id.product_id.id,
+                    'lot_id': self.stock_production_lot_id.id,
+                    'product_uom_qty': self.display_weight,
+                    'product_uom_id': stock_move.product_uom.id,
+                    'location_id': stock_quant.location_id.id,
+                    'location_dest_id': virtual_location_production_id.id
+                })
+            ]
+        })
 
     @api.multi
     def unreserved_serial(self):
@@ -483,9 +499,11 @@ class StockProductionLotSerial(models.Model):
             ('id', '!=', self.id)
         ])
 
-        raise models.ValidationError(reserved_serials)
+        if reserved_serials and not production_move.active_move_line_ids:
+            for serial in reserved_serials:
+                serial.add_move_line(production_move)
 
-        # for serial in reserved_serials:
+        raise models.ValidationError(production_move.active_move_line_ids)
 
         self.unreserved_serial()
 
