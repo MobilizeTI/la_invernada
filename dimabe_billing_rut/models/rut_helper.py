@@ -39,9 +39,9 @@ def validate_rut(rut_str):
     mod = tmp_res % 11
     res = 11 - mod
     if res == 11:
-        digit = 0
+        digit = '0'
     elif res == 10:
-        digit = "K"
+        digit = "k"
     else:
         digit = str(res)
     return digit == dv
