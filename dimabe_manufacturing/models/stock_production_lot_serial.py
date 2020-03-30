@@ -179,6 +179,8 @@ class StockProductionLotSerial(models.Model):
 
         res.label_durability_id = res.stock_production_lot_id.label_durability_id
 
+        raise models.ValidationError(res.bom_id)
+
         if res.bom_id:
             res.set_bom_canning()
             res.gross_weight = res.display_weight + res.canning_id.weight
