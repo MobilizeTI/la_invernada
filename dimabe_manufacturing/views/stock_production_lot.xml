@@ -17,10 +17,10 @@
                        domain="['|',('id','in',producer_ids),('always_to_print','=',True)]"
                 />
                 <field name="qty_standard_serial"
-                       attrs="{'invisible':[('is_standard_weight','=',False)]}"
+                       attrs="{'invisible':['|',('is_standard_weight','=',False),('can_add_serial','=',False)]}"
                 />
                 <button string="Generar Pallet" class="oe_highlight"
-                        attrs="{'invisible':[('is_standard_weight','=',False)]}"
+                        attrs="{'invisible':['|',('is_standard_weight','=',False),('can_add_serial','=',False)]}"
                         type="object"
                         name="generate_standard_pallet"
                 />
