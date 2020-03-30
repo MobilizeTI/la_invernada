@@ -160,8 +160,8 @@ class StockProductionLotSerial(models.Model):
             ('lot_id.is_prd_lot', '=', True)
         ])
         production = None
-        if stock_move_line.move_id.production_id:
-            production = stock_move_line.move_id.production_id[0]
+        if stock_move_line.mapped('move_id.production_id'):
+            production = stock_move_line.mapped('move_id.production_id')[0]
         else:
             work_order = self.env['mrp.workorder'].search([
                 ('final_lot_id', '!=', False),
