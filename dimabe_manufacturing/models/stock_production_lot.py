@@ -310,6 +310,7 @@ class StockProductionLot(models.Model):
             ('reserved_to_stock_picking_id', '=', False)
         ]).mapped('stock_production_lot_id')
 
+        models._logger.error(stock_production_lot_ids.mapped('name'))
         if operator == '>':
             stock_production_lot_ids = stock_production_lot_ids.filtered(
                 lambda a: sum(a.stock_production_lot_serial_ids.mapped('display_weight')) > value
