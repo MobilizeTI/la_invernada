@@ -10,7 +10,8 @@ class QualityAnalysis(models.Model):
 
     lot_producer_id = fields.Many2one(
         'res.partner',
-        related='stock_production_lot_ids.producer_id'
+        related='stock_production_lot_ids.producer_id',
+        string='Productor'
     )
 
     lot_product_variety = fields.Char(
