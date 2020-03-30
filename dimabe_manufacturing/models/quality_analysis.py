@@ -7,3 +7,15 @@ class QualityAnalysis(models.Model):
     potential_client_id = fields.Many2one('res.partner', 'Posible Cliente')
 
     potential_workcenter_id = fields.Many2one('mrp.workcenter', 'Posible Proceso')
+
+    lot_producer_id = fields.Many2one(
+        'res.partner',
+        related='stock_production_lot_id.producer_id'
+    )
+
+    lot_product_variety = fields.Char(
+        'Variedad',
+        related='stock_production_lot_id.product_variety'
+    )
+
+    process_observation = fields.Text('Observación para proceso')
