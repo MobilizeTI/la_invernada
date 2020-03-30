@@ -8,8 +8,8 @@ import werkzeug
 class StockPickingController(http.Controller):
 
     @http.route('/api/stock_pickings', type='json', methods=['GET'], auth='token', cors='*')
-    def get_stock_pickings(self, toDate = None):
-        date_to_search = toDate or (date.today() - timedelta(days=1))
+    def get_stock_pickings(self, sinceDate = None):
+        date_to_search = sinceDate or (date.today() - timedelta(days=1))
 
         result = request.env['stock.picking'].search([('write_date', '>=', date_to_search)])
         data = []

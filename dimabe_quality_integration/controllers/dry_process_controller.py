@@ -1,12 +1,14 @@
 from odoo import http, exceptions, models
 from odoo.http import request
+from datetime import date, timedelta
 import werkzeug
 
 class DryProcessController(http.Controller):
     
     @http.route('/api/dry_process', type='json', methods=['GET'], auth='token', cors='*')
-    def get_dry_process(self):
-        result = request.env['dried.unpelled.history'].sudo().search([])
+    def get_dry_process(self, sinceDate = None):
+        search_date = sinceDate or (date.today() - timedelta(days=1))
+        result = request.env['dried.unpelled.history'].sudo().search([('write_date', '>=', search_date)])
         processResult = []
         for res in result: 
             processResult.append({
