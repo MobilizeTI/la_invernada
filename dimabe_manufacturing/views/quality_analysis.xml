@@ -2,13 +2,11 @@
   <record id="quality_analysis_tree_view_inherit" model="ir.ui.view">
     <field name="name">Listado de Calidad</field>
     <field name="model">quality.analysis</field>
-    <field name="inherit_id" ref="dimabe_quality_integration.quality_analysis_tree_view" />
+    <field name="inherit_id" ref="dimabe_quality_integration.quality_analysis_tree_view"/>
     <field name="arch" type="xml">
       <tree>
-        <field name="lot_name" position="before">
-          <field name="lot_producer_id" />
-          <field name="lot_product_variety" />
-        </field>
+        <field name="lot_producer_id"/>
+        <field name="lot_product_variety"/>
         <field name="potential_client_id"
                domain="[('is_company','=',True),('customer', '=', True)]"
         />
