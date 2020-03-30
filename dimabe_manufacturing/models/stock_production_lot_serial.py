@@ -120,7 +120,10 @@ class StockProductionLotSerial(models.Model):
         for item in self:
             item.real_weight = item.display_weight
             if not item.is_dried_serial:
-                item.gross_weight = item.display_weight + item.canning_id.weight
+                canning_weight = item.canning_id.weight
+                if not canning_weight:
+                    canning_weight = sum(item.get_possible_canning_id().weight)
+                item.gross_weight = item.display_weight + canning_weight
 
     def _inverse_gross_weight(self):
         if self.is_dried_serial:
@@ -182,12 +185,18 @@ class StockProductionLotSerial(models.Model):
         if res.bom_id:
             res.set_bom_canning()
             res.gross_weight = res.display_weight + res.canning_id.weight
-            raise models.ValidationError(res.canning_id)
+            raise models.ValidationError(res.gross_weight)
         return res
 
     @api.model
     def set_bom_canning(self):
-        canning_id = self.bom_id.bom_line_ids.filtered(
+        canning_id = self.get_possible_canning_id()
+        if len(canning_id) == 1:
+            self.canning_id = canning_id[0]
+
+    @api.model
+    def get_possible_canning_id(self):
+        return self.bom_id.bom_line_ids.filtered(
             lambda a: 'envases' in str.lower(a.product_id.categ_id.name) or
                       'embalaje' in str.lower(a.product_id.categ_id.name)
                       or (
@@ -196,9 +205,6 @@ class StockProductionLotSerial(models.Model):
                               'embalaje' in str.lower(a.product_id.categ_id.parent_id.name))
                       )
         ).mapped('product_id')
-        raise models.ValidationError(canning_id)
-        if len(canning_id) == 1:
-            self.canning_id = canning_id[0]
 
     @api.multi
     def write(self, vals):
