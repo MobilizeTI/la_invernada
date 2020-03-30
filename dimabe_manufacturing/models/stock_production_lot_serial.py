@@ -122,7 +122,7 @@ class StockProductionLotSerial(models.Model):
             if not item.is_dried_serial:
                 canning_weight = item.canning_id.weight
                 if not canning_weight:
-                    canning_weight = sum(item.get_possible_canning_id().weight)
+                    canning_weight = sum(item.get_possible_canning_id().mapped('weight'))
                 item.gross_weight = item.display_weight + canning_weight
 
     def _inverse_gross_weight(self):
