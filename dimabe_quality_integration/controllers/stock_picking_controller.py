@@ -1,5 +1,6 @@
 from odoo import http, models
 from odoo.http import request
+from datetime import date, timedelta
 import werkzeug
 
 
@@ -7,8 +8,10 @@ import werkzeug
 class StockPickingController(http.Controller):
 
     @http.route('/api/stock_pickings', type='json', methods=['GET'], auth='token', cors='*')
-    def get_stock_pickings(self):
-        result = request.env['stock.picking'].search([])
+    def get_stock_pickings(self, toDate):
+        date_to_search = toDate or (date.today() - timedelta(days=1))
+
+        result = request.env['stock.picking'].search([('write_date', '>=', date_to_search)])
         data = []
         if result:
             for res in result:
