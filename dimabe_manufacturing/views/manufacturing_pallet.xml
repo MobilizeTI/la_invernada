@@ -80,6 +80,7 @@
                 <field name="stock_product_id"/>
                 <field name="serial_number"/>
                 <field name="display_weight"/>
+                <field name="gross_weight"/>
                 <button string="Imprimir"
                         name="print_serial_label"
                         type="object"
