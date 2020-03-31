@@ -114,4 +114,10 @@ class PotentialLot(models.Model):
 
             serial_to_reserve.unreserved_serial()
 
+            quant = item.get_stock_quant()
+
+            quant.sudo().update({
+                'reserved_quantity': quant.total_reserved
+            })
+
             item.is_reserved = item.qty_to_reserve > 0
