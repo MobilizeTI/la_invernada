@@ -50,7 +50,7 @@ class PotentialLot(models.Model):
         for item in self:
             item.potential_serial_ids = item.stock_production_lot_id.stock_production_lot_serial_ids.filtered(
                 lambda a: a.consumed is False and (
-                            a.reserved_to_production_id == item.mrp_production_id or not a.reserved_to_production_id)
+                        a.reserved_to_production_id == item.mrp_production_id or not a.reserved_to_production_id)
             )
 
     @api.multi
@@ -85,7 +85,7 @@ class PotentialLot(models.Model):
     def reserve_stock(self):
         for item in self:
             serial_to_reserve = item.potential_serial_ids.filtered(lambda a: not a.reserved_to_production_id and not
-                                                                   a.reserved_to_stock_picking_id)
+            a.reserved_to_stock_picking_id)
 
             serial_to_reserve.with_context(mrp_production_id=item.mrp_production_id.id).reserve_serial()
 
@@ -115,11 +115,11 @@ class PotentialLot(models.Model):
             serial_to_reserve.unreserved_serial()
 
             quant = item.get_stock_quant()
-            raise models.ValidationError('{} {}'.format(sum(quant.lot_id.stock_production_lot_serial_ids.filtered(
-                lambda a: not a.consumed and (a.reserved_to_production_id or a.reserved_to_stock_picking_id)
-            ).mapped('display_weight')), quant.total_reserved))
+
             quant.sudo().update({
-                'reserved_quantity': quant.total_reserved
+                'reserved_quantity': sum(quant.lot_id.stock_production_lot_serial_ids.filtered(
+                    lambda a: not a.consumed and (a.reserved_to_production_id or a.reserved_to_stock_picking_id)
+                ).mapped('display_weight'))
             })
 
             item.is_reserved = item.qty_to_reserve > 0
