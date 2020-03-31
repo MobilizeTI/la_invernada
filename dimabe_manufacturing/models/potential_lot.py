@@ -84,9 +84,16 @@ class PotentialLot(models.Model):
     @api.multi
     def reserve_stock(self):
         for item in self:
-            serial_to_reserve = item.potential_serial_ids.filtered(lambda a: not a.reserved_to_production_id)
+            serial_to_reserve = item.potential_serial_ids.filtered(lambda a: not a.reserved_to_production_id and not
+                                                                   a.reserved_to_stock_picking_id)
 
             serial_to_reserve.with_context(mrp_production_id=item.mrp_production_id.id).reserve_serial()
+
+            quant = item.get_stock_quant()
+
+            quant.sudo().update({
+                'reserved_quantity': quant.total_reserved
+            })
 
             item.is_reserved = True
 
