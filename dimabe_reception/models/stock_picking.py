@@ -291,7 +291,6 @@ class StockPicking(models.Model):
                                     })
 
                                 m_move.has_serial_generated = True
-                            raise models.ValidationError(m_move.has_serial_generated)
             return res
 
     @api.multi
