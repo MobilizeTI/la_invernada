@@ -334,8 +334,6 @@ class StockProductionLotSerial(models.Model):
                 'reserved_quantity': stock_quant.total_reserved
             })
 
-            raise models.ValidationError(stock_quant.reserved_quantity)
-
             item.stock_production_lot_id.write({
                 'balance': stock_quant.quantity - stock_quant.reserved_quantity
             })
