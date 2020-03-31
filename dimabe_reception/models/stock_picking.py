@@ -151,7 +151,7 @@ class StockPicking(models.Model):
     @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package', 'quality_weight')
     def _compute_net_weight(self):
         self.net_weight = self.gross_weight - self.tare_weight + self.quality_weight
-        if self.is_mp_reception:
+        if self.is_mp_reception or self.is_pt_reception or self.is_satelite_reception:
             if self.canning_weight:
                 self.net_weight = self.net_weight - self.canning_weight
 
@@ -186,7 +186,7 @@ class StockPicking(models.Model):
     @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package', )
     def _compute_production_net_weight(self):
         self.production_net_weight = self.gross_weight - self.tare_weight
-        if self.is_mp_reception:
+        if self.is_mp_reception or self.is_pt_reception or self.is_satelite_reception:
             if self.canning_weight:
                 self.production_net_weight = self.production_net_weight - self.canning_weight
 
@@ -316,7 +316,7 @@ class StockPicking(models.Model):
         if self.get_mp_move() or self.get_pt_move():
             m_move = self.get_mp_move()
             if not m_move:
-               m_move = self.get_pt_move()
+                m_move = self.get_pt_move()
             m_move.quantity_done = self.production_net_weight
             m_move.product_uom_qty = self.weight_guide
             if m_move.has_serial_generated and self.avg_unitary_weight:
