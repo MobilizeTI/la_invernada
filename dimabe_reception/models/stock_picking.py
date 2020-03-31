@@ -252,9 +252,7 @@ class StockPicking(models.Model):
             m_move = stock_picking.get_mp_move()
             if not m_move:
                 m_move = stock_picking.get_pt_move()
-            raise models.ValidationError(
-                m_move and m_move.move_line_ids and m_move.picking_id.picking_type_code == 'incoming'
-            )
+
             if m_move and m_move.move_line_ids and m_move.picking_id.picking_type_code == 'incoming':
                 for move_line in m_move.move_line_ids:
                     lot = self.env['stock.production.lot'].create({
