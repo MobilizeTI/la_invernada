@@ -251,7 +251,7 @@ class StockPicking(models.Model):
     @api.multi
     def action_confirm(self):
         for stock_picking in self:
-            if stock_picking.is_mp_reception:
+            if stock_picking.is_mp_reception or stock_picking.is_pt_reception or stock_picking.is_satelite_reception:
                 stock_picking.validate_mp_reception()
                 stock_picking.truck_in_date = fields.datetime.now()
             res = super(StockPicking, self).action_confirm()
@@ -332,8 +332,8 @@ class StockPicking(models.Model):
 
         if not self.get_canning_move():
             message += 'debe agregar envases'
-        if not self.get_mp_move():
-            message += 'debe agregar MP'
+        if not self.get_mp_move() and not self.get_pt_move():
+            message += 'debe agregar Materia a recepcionar'
         if message:
             raise models.ValidationError(message)
 
