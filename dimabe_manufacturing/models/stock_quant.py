@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.addons import decimal_precision as dp
 
 
 class StockQuant(models.Model):
@@ -6,7 +7,8 @@ class StockQuant(models.Model):
 
     total_reserved = fields.Float(
         'Total Reservado',
-        compute='_compute_total_reserved'
+        compute='_compute_total_reserved',
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     @api.multi
