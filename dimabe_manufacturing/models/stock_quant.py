@@ -15,5 +15,8 @@ class StockQuant(models.Model):
     def _compute_total_reserved(self):
         for item in self:
             item.total_reserved = sum(item.lot_id.stock_production_lot_serial_ids.filtered(
-                lambda a: not a.consumed and (a.reserved_to_production_id or a.reserved_to_stock_picking_id)
+                lambda a: (a.reserved_to_production_id or a.reserved_to_stock_picking_id) and (
+                    a.reserved_to_production_id.state not in ['done', 'cancel'] or
+                    a.reserved_to_stock_picking_id.state not in ['done', 'cancel']
+                )
             ).mapped('display_weight'))
