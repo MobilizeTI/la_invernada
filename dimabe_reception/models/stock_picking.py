@@ -279,7 +279,7 @@ class StockPicking(models.Model):
                         if m_move.product_id.categ_id.is_mp or m_move.product_id.categ_id.is_pt:
                             total_qty = m_move.picking_id.get_canning_move().product_uom_qty
                             # calculated_weight = stock_move_line.qty_done / total_qty
-                            raise models.ValidationError(total_qty)
+                            raise models.ValidationError(stock_move_line.lot_id)
 
                             if stock_move_line.lot_id:
                                 default_value = stock_picking.avg_unitary_weight or 1
