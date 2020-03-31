@@ -313,11 +313,13 @@ class StockPicking(models.Model):
                     raise models.ValidationError(message)
         res = super(StockPicking, self).button_validate()
         self.sendKgNotify()
-        if self.get_mp_move():
-            mp_move = self.get_mp_move()
-            mp_move.quantity_done = self.production_net_weight
-            mp_move.product_uom_qty = self.weight_guide
-            if mp_move.has_serial_generated and self.avg_unitary_weight:
+        if self.get_mp_move() or self.get_pt_move():
+            m_move = self.get_mp_move()
+            if not m_move:
+               m_move = self.get_pt_move()
+            m_move.quantity_done = self.production_net_weight
+            m_move.product_uom_qty = self.weight_guide
+            if m_move.has_serial_generated and self.avg_unitary_weight:
                 self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)]).write({
                     'real_weight': self.avg_unitary_weight
                 })
