@@ -115,7 +115,7 @@ class PotentialLot(models.Model):
             serial_to_reserve.unreserved_serial()
 
             quant = item.get_stock_quant()
-            raise models.ValidationError(serial_to_reserve)
+            raise models.ValidationError(serial_to_reserve.mapped('reserved_to_production_id'))
             quant.sudo().update({
                 'reserved_quantity': quant.total_reserved
             })
