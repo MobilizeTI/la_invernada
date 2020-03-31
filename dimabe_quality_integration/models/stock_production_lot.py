@@ -24,4 +24,4 @@ class StockProductionLot(models.Model):
             ('balance', operator, value)
         ]).mapped('lot_id')
 
-        return [('id', 'in', lot_ids)]
+        return [('id', 'in', lot_ids.mapped('id'))]
