@@ -1,4 +1,5 @@
 from odoo import models, api, fields
+from odoo.addons import decimal_precision as dp
 
 
 class StockPicking(models.Model):
@@ -12,7 +13,8 @@ class StockPicking(models.Model):
     )
 
     required_loading_date = fields.Date(
-        related='shipping_id.required_loading_date')
+        related='shipping_id.required_loading_date'
+    )
 
     variety = fields.Many2many(related="product_id.attribute_value_ids")
 
@@ -21,7 +23,9 @@ class StockPicking(models.Model):
     product_id = fields.Many2one(related="move_ids_without_package.product_id")
 
     quantity_requested = fields.Float(
-        related='move_ids_without_package.product_uom_qty')
+        related='move_ids_without_package.product_uom_qty',
+        digits=dp.get_precision('Product Unit of Measure')
+    )
 
     packing_list_ids = fields.One2many(
         'stock.production.lot.serial',

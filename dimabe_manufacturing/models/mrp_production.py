@@ -101,7 +101,10 @@ class MrpProduction(models.Model):
         related="stock_lots.product_id"
     )
 
-    requested_qty = fields.Float('Cantidad Solicitada')
+    requested_qty = fields.Float(
+        'Cantidad Solicitada',
+        digits=dp.get_precision('Product Unit of Measure')
+    )
 
     serial_lot_ids = fields.One2many(
         'stock.production.lot.serial',

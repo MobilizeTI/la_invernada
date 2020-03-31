@@ -1,4 +1,5 @@
 from odoo import api, models, fields
+from odoo.addons import decimal_precision as dp
 
 
 class ManufacturingPallet(models.Model):
@@ -73,6 +74,7 @@ class ManufacturingPallet(models.Model):
 
     total_content_weight = fields.Float(
         'Peso Total',
+        digits=dp.get_precision('Product Unit of Measure'),
         compute='_compute_total_weight_content'
     )
 
