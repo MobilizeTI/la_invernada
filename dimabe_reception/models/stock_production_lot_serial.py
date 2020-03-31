@@ -10,12 +10,16 @@ class StockProductionLotSerial(models.Model):
         compute='_compute_name'
     )
 
-    calculated_weight = fields.Float('Peso Estimado')
+    calculated_weight = fields.Float(
+        'Peso Estimado',
+        digits=dp.get_precision('Product Unit of Measure')
+    )
 
     real_weight = fields.Float(
         'Peso Real',
         nulable=True,
-        default=None
+        default=None,
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     display_weight = fields.Float(
