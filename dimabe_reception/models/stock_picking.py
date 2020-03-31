@@ -271,7 +271,7 @@ class StockPicking(models.Model):
 
                 if m_move.product_id.tracking == 'lot' and not m_move.has_serial_generated:
                     for stock_move_line in m_move.move_line_ids:
-                        if m_move.product_id.categ_id.is_mp:
+                        if m_move.product_id.categ_id.is_mp or m_move.product_id.categ_id.is_pt:
                             total_qty = m_move.picking_id.get_canning_move().product_uom_qty
                             # calculated_weight = stock_move_line.qty_done / total_qty
 
