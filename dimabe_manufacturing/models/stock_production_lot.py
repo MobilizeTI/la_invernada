@@ -457,7 +457,8 @@ class StockProductionLot(models.Model):
     @api.multi
     def generate_standard_pallet(self):
         for item in self:
-
+            if not item.producer_id:
+                raise models.ValidationError('debe seleccionar un productor')
             pallet = self.env['manufacturing.pallet'].create({
                 'producer_id': item.producer_id.id
             })
