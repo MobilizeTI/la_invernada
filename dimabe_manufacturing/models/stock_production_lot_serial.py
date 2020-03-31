@@ -322,10 +322,6 @@ class StockProductionLotSerial(models.Model):
                 'reserved_quantity': stock_quant.total_reserved
             })
 
-            item.stock_production_lot_id.write({
-                'balance': stock_quant.quantity - stock_quant.reserved_quantity
-            })
-
             if move_line:
                 move_line[0].write({'move_id': None, 'product_uom_qty': 0})
 

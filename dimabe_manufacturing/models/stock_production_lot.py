@@ -360,7 +360,7 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def reserved(self):
-        print('')
+        raise models.ValidationError('reserved de lot')
         # for item in self:
         #     if item.qty_standard_serial == 0:
         #         if 'stock_picking_id' in self.env.context:
@@ -400,36 +400,37 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def unreserved(self):
-        for item in self:
-            stock_picking = None
-            if 'stock_picking_id' in self.env.context:
-                stock_picking_id = self.env.context['stock_picking_id']
-                stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
-            if stock_picking:
-
-                item.stock_production_lot_serial_ids.filtered(
-                    lambda a: a.reserved_to_stock_picking_id.id == stock_picking_id
-                ).unreserved_picking()
-
-                stock_move = stock_picking.move_ids_without_package.filtered(
-                    lambda x: x.product_id == item.product_id
-                )
-                move_line = stock_move.move_line_ids.filtered(
-                    lambda a: a.lot_id.id == item.id and a.product_uom_qty == stock_move.reserved_availability
-                )
-                item.update({
-                    'qty_to_reserve': 0,
-                    'is_reserved': False
-                })
-
-                stock_quant = item.get_stock_quant()
-
-                stock_quant.sudo().update({
-                    'reserved_quantity': stock_quant.reserved_quantity - stock_move.product_uom_qty
-                })
-
-                for ml in move_line:
-                    ml.write({'move_id': None, 'reserved_availability': 0})
+        raise models.ValidationError('unreserved de lot')
+        # for item in self:
+        #     stock_picking = None
+        #     if 'stock_picking_id' in self.env.context:
+        #         stock_picking_id = self.env.context['stock_picking_id']
+        #         stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
+        #     if stock_picking:
+        #
+        #         item.stock_production_lot_serial_ids.filtered(
+        #             lambda a: a.reserved_to_stock_picking_id.id == stock_picking_id
+        #         ).unreserved_picking()
+        #
+        #         stock_move = stock_picking.move_ids_without_package.filtered(
+        #             lambda x: x.product_id == item.product_id
+        #         )
+        #         move_line = stock_move.move_line_ids.filtered(
+        #             lambda a: a.lot_id.id == item.id and a.product_uom_qty == stock_move.reserved_availability
+        #         )
+        #         item.update({
+        #             'qty_to_reserve': 0,
+        #             'is_reserved': False
+        #         })
+        #
+        #         stock_quant = item.get_stock_quant()
+        #
+        #         stock_quant.sudo().update({
+        #             'reserved_quantity': stock_quant.reserved_quantity - stock_move.product_uom_qty
+        #         })
+        #
+        #         for ml in move_line:
+        #             ml.write({'move_id': None, 'reserved_availability': 0})
 
     @api.multi
     def write(self, values):
