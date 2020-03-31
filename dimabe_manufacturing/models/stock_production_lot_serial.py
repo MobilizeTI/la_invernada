@@ -271,18 +271,6 @@ class StockProductionLotSerial(models.Model):
 
                 for stock in stock_move:
                     item.add_move_line(stock)
-                    # stock.sudo().update({
-                    #     'active_move_line_ids': [
-                    #         (0, 0, {
-                    #             'product_id': item.stock_production_lot_id.product_id.id,
-                    #             'lot_id': item.stock_production_lot_id.id,
-                    #             'product_uom_qty': item.display_weight,
-                    #             'product_uom_id': stock.product_uom.id,
-                    #             'location_id': stock_quant.location_id.id,
-                    #             'location_dest_id': virtual_location_production_id.id
-                    #         })
-                    #     ]
-                    # })
         else:
             raise models.ValidationError('no se pudo identificar producción')
 

@@ -260,16 +260,16 @@ class StockProductionLot(models.Model):
                     lambda a: a.company_type == 'company' or a.always_to_print
                 )
 
-    @api.onchange('producer_id')
-    def _onchange_producer_id(self):
-
-        self.stock_production_lot_serial_ids.write({
-            'producer_id': self.producer_id.id
-        })
-
-        self.all_pallet_ids.write({
-            'producer_id': self.producer_id.id
-        })
+    # @api.onchange('producer_id')
+    # def _onchange_producer_id(self):
+    #
+    #     self.stock_production_lot_serial_ids.write({
+    #         'producer_id': self.producer_id.id
+    #     })
+    #
+    #     self.all_pallet_ids.write({
+    #         'producer_id': self.producer_id.id
+    #     })
 
     @api.multi
     def _compute_all_pallet_ids(self):
