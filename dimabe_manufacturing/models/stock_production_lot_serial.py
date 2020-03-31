@@ -326,15 +326,15 @@ class StockProductionLotSerial(models.Model):
 
             stock_quant = item.stock_production_lot_id.get_stock_quant()
 
+            item.update({
+                'reserved_to_production_id': None
+            })
+
             stock_quant.sudo().update({
                 'reserved_quantity': stock_quant.total_reserved
             })
 
             raise models.ValidationError(stock_quant.reserved_quantity)
-
-            item.update({
-                'reserved_to_production_id': None
-            })
 
             item.stock_production_lot_id.write({
                 'balance': stock_quant.quantity - stock_quant.reserved_quantity
@@ -366,10 +366,6 @@ class StockProductionLotSerial(models.Model):
                         item.stock_production_lot_id.name
                     ))
 
-                stock_quant.sudo().update({
-                    'reserved_quantity': stock_quant.total_reserved
-                })
-
                 move_line = self.env['stock.move.line'].create({
                     'product_id': item.stock_production_lot_id.product_id.id,
                     'lot_id': item.stock_production_lot_id.id,
@@ -390,6 +386,10 @@ class StockProductionLotSerial(models.Model):
                     'move_line_ids': [
                         (4, move_line.id)
                     ]
+                })
+
+                stock_quant.sudo().update({
+                    'reserved_quantity': stock_quant.total_reserved
                 })
         else:
             raise models.ValidationError('no se pudo identificar picking')
@@ -437,10 +437,6 @@ class StockProductionLotSerial(models.Model):
 
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
 
-                stock_quant.sudo().update({
-                    'reserved_quantity': stock_quant.total_reserved
-                })
-
                 item.update({
                     'reserved_to_stock_picking_id': None
                 })
@@ -455,6 +451,9 @@ class StockProductionLotSerial(models.Model):
                         'product_uom_qty': 0,
                         'reserved_availability': 0
                     })
+                stock_quant.sudo().update({
+                    'reserved_quantity': stock_quant.total_reserved
+                })
 
     def remove_and_reduce(self):
 
