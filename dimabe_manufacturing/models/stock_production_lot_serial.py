@@ -329,6 +329,8 @@ class StockProductionLotSerial(models.Model):
                 'reserved_quantity': stock_quant.reserved_quantity - item.display_weight
             })
 
+            raise models.ValidationError(stock_quant.reserved_quantity)
+
             item.update({
                 'reserved_to_production_id': None
             })
