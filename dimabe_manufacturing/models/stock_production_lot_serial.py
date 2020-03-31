@@ -266,7 +266,7 @@ class StockProductionLotSerial(models.Model):
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
 
                 stock_quant.sudo().update({
-                    'reserved_quantity': stock_quant.reserved_quantity + item.display_weight
+                    'reserved_quantity': stock_quant.total_reserved
                 })
 
                 for stock in stock_move:
@@ -325,9 +325,9 @@ class StockProductionLotSerial(models.Model):
             )
 
             stock_quant = item.stock_production_lot_id.get_stock_quant()
-            raise models.ValidationError(stock_quant.reserved_quantity)
+
             stock_quant.sudo().update({
-                'reserved_quantity': stock_quant.reserved_quantity - item.display_weight
+                'reserved_quantity': stock_quant.total_reserved
             })
 
             raise models.ValidationError(stock_quant.reserved_quantity)
@@ -367,7 +367,7 @@ class StockProductionLotSerial(models.Model):
                     ))
 
                 stock_quant.sudo().update({
-                    'reserved_quantity': stock_quant.reserved_quantity + item.display_weight
+                    'reserved_quantity': stock_quant.total_reserved
                 })
 
                 move_line = self.env['stock.move.line'].create({
@@ -414,7 +414,7 @@ class StockProductionLotSerial(models.Model):
                     stock_quant = item.stock_production_lot_id.get_stock_quant()
 
                     stock_quant.sudo().update({
-                        'reserved_quantity': stock_quant.reserved_quantity - item.display_weight
+                        'reserved_quantity': stock_quant.total_reserved
                     })
 
                     item.update({
@@ -438,7 +438,7 @@ class StockProductionLotSerial(models.Model):
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
 
                 stock_quant.sudo().update({
-                    'reserved_quantity': stock_quant.reserved_quantity - item.display_weight
+                    'reserved_quantity': stock_quant.total_reserved
                 })
 
                 item.update({
