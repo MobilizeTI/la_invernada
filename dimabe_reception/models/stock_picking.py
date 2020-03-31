@@ -160,7 +160,7 @@ class StockPicking(models.Model):
             if not m_move:
                 m_move = self.get_pt_move()
             if m_move:
-                self.weight_guide = m_move()[0].product_uom_qty
+                self.weight_guide = m_move[0].product_uom_qty
 
     @api.one
     @api.depends('move_ids_without_package')
