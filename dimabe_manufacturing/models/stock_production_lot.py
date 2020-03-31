@@ -72,6 +72,12 @@ class StockProductionLot(models.Model):
         string="Detalle"
     )
 
+    serial_without_pallet_ids = fields.One2many(
+        'stock.production.lot.serial',
+        compute='_compute_serial_without_pallet_ids',
+        string='Series sin Pallet'
+    )
+
     stock_production_lot_available_serial_ids = fields.One2many(
         'stock.production.lot.serial',
         compute='_compute_stock_production_lot_available_serial_ids',
@@ -186,6 +192,13 @@ class StockProductionLot(models.Model):
         'Es Equipo Dimabe',
         compute='_compute_is_dimabe_team'
     )
+
+    @api.multi
+    def _compute_serial_without_pallet_ids(self):
+        for item in self:
+            item.serial_without_pallet_ids = item.stock_production_lot_serial_ids.filtered(
+                lambda a: not a.pallet_id
+            )
 
     @api.multi
     def _compute_is_dimabe_team(self):
