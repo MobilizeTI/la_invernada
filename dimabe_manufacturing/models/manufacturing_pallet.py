@@ -25,6 +25,7 @@ class ManufacturingPallet(models.Model):
     producer_id = fields.Many2one(
         'res.partner',
         'Productor',
+        required=True,
         domain=[('supplier', '=', True)],
         states={'close': [('readonly', True)], 'open': [('readonly', False)]}
     )
