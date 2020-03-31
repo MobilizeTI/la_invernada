@@ -115,9 +115,9 @@ class PotentialLot(models.Model):
             serial_to_reserve.unreserved_serial()
 
             quant = item.get_stock_quant()
-            raise models.ValidationError(sum(quant.lot_id.stock_production_lot_serial_ids.filtered(
+            raise models.ValidationError('{} {}'.format(sum(quant.lot_id.stock_production_lot_serial_ids.filtered(
                 lambda a: not a.consumed and (a.reserved_to_production_id or a.reserved_to_stock_picking_id)
-            ).mapped('display_weight')))
+            ).mapped('display_weight'))), quant.total_reserved)
             quant.sudo().update({
                 'reserved_quantity': quant.total_reserved
             })
