@@ -67,6 +67,12 @@ class StockPicking(models.Model):
         store=True
     )
 
+    is_satelite_reception = fields.Boolean(
+        'Recepción Sételite',
+        compute='_compute_is_satelite_reception',
+        store=True
+    )
+
     carrier_id = fields.Many2one('custom.carrier', 'Conductor')
 
     truck_in_date = fields.Datetime(
@@ -149,7 +155,7 @@ class StockPicking(models.Model):
     @api.one
     @api.depends('move_ids_without_package')
     def _compute_weight_guide(self):
-        if self.is_mp_reception or self.is_pt_reception:
+        if self.is_mp_reception or self.is_pt_reception or self.is_satelite_reception:
             if self.get_mp_move():
                 self.weight_guide = self.get_mp_move()[0].product_uom_qty
 
@@ -204,6 +210,12 @@ class StockPicking(models.Model):
                                'recepciones' in str.lower(self.picking_type_id.name)
 
     @api.one
+    @api.depends('picking_type_id')
+    def _compute_is_satelite_reception(self):
+        self.is_satelite_reception = 'packing' in str.lower(self.picking_type_id.warehouse_id.name) and \
+                                     'recepciones' in str.lower(self.picking_type_id.name)
+
+    @api.one
     @api.depends('production_net_weight', 'tare_weight', 'gross_weight', 'move_ids_without_package')
     def _compute_avg_unitary_weight(self):
         if self.production_net_weight:
@@ -229,7 +241,7 @@ class StockPicking(models.Model):
     @api.multi
     def action_confirm(self):
         for stock_picking in self:
-            if stock_picking.is_mp_reception:
+            if stock_picking.is_mp_reception or stock_picking.is_pt_reception or stock_picking.is_satelite_reception:
                 stock_picking.validate_mp_reception()
                 stock_picking.truck_in_date = fields.datetime.now()
             res = super(StockPicking, self).action_confirm()
@@ -271,7 +283,7 @@ class StockPicking(models.Model):
     def button_validate(self):
         for stock_picking in self:
             message = ''
-            if stock_picking.is_mp_reception:
+            if stock_picking.is_mp_reception or stock_picking.is_pt_reception or stock_picking.is_satelite_reception:
                 if not stock_picking.gross_weight:
                     message = 'Debe agregar kg brutos \n'
                 if stock_picking.gross_weight < stock_picking.weight_guide:
