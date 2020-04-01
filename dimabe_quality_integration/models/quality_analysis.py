@@ -20,7 +20,8 @@ class QualityAnalysis(models.Model):
     )
 
     lot_name = fields.Char(
-        compute='_compute_lot_name'
+        compute='_compute_lot_name',
+        string='Lote'
     )
 
     name = fields.Char('Informe')
