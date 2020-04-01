@@ -174,13 +174,15 @@ class StockPicking(models.Model):
             custom_serial = item.validate_barcode(barcode)
             if custom_serial.consumed:
                 raise models.ValidationError('el código {} ya fue consumido'.format(barcode))
-            raise models.ValidationError(custom_serial)
+
             stock_move_line = self.move_line_ids_without_package.filtered(
                 lambda a: a.product_id == custom_serial.stock_production_lot_id.product_id and
                           a.lot_id == custom_serial.stock_production_lot_id and
                           a.product_uom_qty == custom_serial.display_weight and
                           a.qty_done == 0
             )
+
+            raise models.ValidationError(stock_move_line)
 
             if len(stock_move_line) > 1:
                 stock_move_line[0].update({
