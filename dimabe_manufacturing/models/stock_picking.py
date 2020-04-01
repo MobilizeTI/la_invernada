@@ -193,6 +193,6 @@ class StockPicking(models.Model):
                     'qty_done': custom_serial.display_weight
                 })
 
-            custom_serial.sudo().update({
+            custom_serial.sudo().write({
                 'consumed': True
             })
