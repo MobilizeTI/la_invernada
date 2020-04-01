@@ -189,7 +189,7 @@ class StockPicking(models.Model):
                     'qty_done': custom_serial.display_weight
                 })
             else:
-                stock_move_line.update({
+                stock_move_line.write({
                     'qty_done': custom_serial.display_weight
                 })
 
