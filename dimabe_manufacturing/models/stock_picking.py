@@ -185,10 +185,9 @@ class StockPicking(models.Model):
             # raise models.ValidationError(stock_move_line)
 
             if len(stock_move_line) > 1:
-                stock_move_line[0].update({
+                stock_move_line[0].write({
                     'qty_done': custom_serial.display_weight
                 })
-                raise models.ValidationError(stock_move_line.mapped('qty_done'))
             else:
                 stock_move_line.update({
                     'qty_done': custom_serial.display_weight
