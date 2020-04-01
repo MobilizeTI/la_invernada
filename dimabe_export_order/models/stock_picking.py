@@ -335,5 +335,3 @@ class StockPicking(models.Model):
         # else:
         # self.contract_correlative_view = ''
 
-    def on_barcode_scanned(self, barcode):
-        raise models.ValidationError(barcode)
