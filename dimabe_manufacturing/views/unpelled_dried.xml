@@ -100,10 +100,10 @@
             <field name="in_variety" invisible="1"/>
             <field name="can_close" invisible="1"/>
             <field name="out_product_id"
-                   attrs="{'readonly':[('state','in',['done','progress'])]}"
                    domain="[('variety','=',in_variety)]"
             />
             <field name="out_lot_id"
+                   readonly="1"
                    attrs="{'invisible':[('out_lot_id','=',False)],'readonly':[('state','in',['done'])]}"
             />
             <field name="canning_id" />
