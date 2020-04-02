@@ -193,7 +193,7 @@ class UnpelledDried(models.Model):
 
     @api.onchange('out_product_id')
     def onchange_out_product_id(self):
-        self.out_lot_id.update({
+        self.out_lot_id.write({
             'product_id': self.out_product_id.id
         })
 
