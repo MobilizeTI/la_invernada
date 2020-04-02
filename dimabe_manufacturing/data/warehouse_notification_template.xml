@@ -19,7 +19,7 @@
                  <tr>
                  <td>${row.stock_production_lot_id.name}</td>
                  <td>${row.producer_id.name}</td>
-                 <td>${row.lot_product_id.name}</td>
+                 <td>${row.stock_product_id.name}</td>
                  <td>${row.serial_number}</td>
                  <td>${row.display_name}</td>
                  </tr>
