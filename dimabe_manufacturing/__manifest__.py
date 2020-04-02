@@ -38,6 +38,7 @@
         'reports/lot_serial_label_report.xml',
         'reports/oven_use_label_report.xml',
         'reports/manufacturing_pallet_label_report.xml',
+        'data/warehouse_notification_template.xml',
         'views/views.xml',
         'views/mrp_dispatched.xml',
         'views/mrp_workcenter.xml',
