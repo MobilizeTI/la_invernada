@@ -5,7 +5,7 @@
         <field name="model_id" ref="dimabe_manufacturing.model_mrp_production"/>
         <field name="email_from">info@lainvernada.com</field>
         <field name="email_to">
-            ${object.env['res_partner'].search([('is_warehouse_notify','=',True)])}
+            ${object.env['res.partner'].search([('is_warehouse_notify','=',True)])}
         </field>
         <field name="subject">Movimiento de Fruta a Producción</field>
         <field name="body_html">
