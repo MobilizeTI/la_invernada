@@ -14,15 +14,15 @@
                 Se informa que se necesita mover fruta a producción para el día ${object.required_date_moving_to_production}
 
                 <br/>
+                % for row in object.consumed_material_ids:
+                 <div>
+                 ${row.serial_number}
+                 </div>
+                %endfor
                 </p>
                 Atte,<br/>
                 ${(object.company_id.name)}
             ]]>
-
-            <t t-foreach="range(5)" t-as="i">
-              <span t-esc="i" />
-            </t>
-
         </field>
     </record>
 </odoo>
