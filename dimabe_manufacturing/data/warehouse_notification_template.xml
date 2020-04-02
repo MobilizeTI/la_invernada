@@ -18,11 +18,11 @@
                 Atte,<br/>
                 ${(object.company_id.name)}
             ]]>
-          <t>
+
             <t t-foreach="range(5)" t-as="i">
               <span t-esc="i" />
             </t>
-          </t>
+
         </field>
     </record>
 </odoo>
