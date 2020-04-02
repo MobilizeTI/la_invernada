@@ -1,6 +1,0 @@
-<odoo>
-  <record id="group_warehouse_manger" model="res.groups">
-    <field name="name">Notificación Bodega</field>
-    <field name="category_id" ref="base.module_category_manufacturing"/>
-  </record>
-</odoo>
