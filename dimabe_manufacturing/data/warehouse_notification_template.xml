@@ -16,6 +16,13 @@
                 <br/>
                 <table border="1">
                 % for row in object.consumed_material_ids:
+                <tr>
+                <th>Lote</th>
+                <th>Productor</th>
+                <th>Producto</th>
+                <th>Serie</th>
+                <th>Peso</th>
+                </tr>
                  <tr>
                  <td>${row.stock_production_lot_id.name}</td>
                  <td>${row.producer_id.name}</td>
