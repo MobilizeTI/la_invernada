@@ -104,7 +104,6 @@
                    domain="[('variety','=',in_variety)]"
             />
             <field name="out_lot_id"
-                   readonly="1"
                    attrs="{'invisible':[('out_lot_id','=',False)],'readonly':[('state','in',['done'])]}"
             />
             <field name="canning_id" />

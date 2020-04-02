@@ -191,6 +191,12 @@ class UnpelledDried(models.Model):
         if self.in_variety != self.out_product_id.get_variety():
             self.out_product_id = [(5,)]
 
+    @api.onchange('out_product_id')
+    def onchange_out_product_id(self):
+        self.out_lot_id.update({
+            'product_id': self.out_product_id.id
+        })
+
     @api.multi
     def _compute_out_serial_ids(self):
         for item in self:
