@@ -16,12 +16,12 @@
                 <br/>
                 <table border="0">
                 % for row in object.consumed_material_ids:
-                 <tr>
-                 <td>${row.stock_production_lot_id.name}</td>
-                 <td>${row.producer_id.name}</td>
-                 <td>${row.stock_product_id.name}</td>
-                 <td>${row.serial_number}</td>
-                 <td>${row.display_name}</td>
+                 <tr style="border-left:solid 1px; border-bottom:solid 1px;">
+                 <td style="border-right:solid 1px;">${row.stock_production_lot_id.name}</td>
+                 <td style="border-right:solid 1px;">${row.producer_id.name}</td>
+                 <td style="border-right:solid 1px;">${row.stock_product_id.name}</td>
+                 <td style="border-right:solid 1px;">${row.serial_number}</td>
+                 <td style="border-right:solid 1px;">${row.display_weight}</td>
                  </tr>
                 %endfor
                 </table>
