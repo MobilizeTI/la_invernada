@@ -309,4 +309,8 @@ class MrpProduction(models.Model):
 
             res = super(MrpProduction, order).button_plan()
 
+            template_id = self.env.ref('dimabe_manufacturing.moving_fruit_template')
+
+            self.message_post_with_template(template_id.id)
+
             return res

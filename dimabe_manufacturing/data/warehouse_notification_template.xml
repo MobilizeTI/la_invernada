@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+  <record id="moving_fruit_template" model="mail.template">
+    <field name="name">move mp notification</field>
+    <field name="model_id" ref="dimabe_manufacturing.model_mrp_production"/>
+    <field name="email_from">info@lainvernada.com</field>
+    <field name="email_to">
+      ${object.env['res.partner'].search([('is_warehouse_notify','=',True)]).mapped('email')}
+    </field>
+    <field name="subject">Movimiento de Fruta a Producción</field>
+    <field name="body_html">
+      <![CDATA[
+                <p>Estimados,<br/><br/>
+                Se informa que se necesita mover fruta a producción para el día ${object.required_date_moving_to_production}
+
+                <br/>
+                <table border="1">
+                    <tr>
+                <th>Lote</th>
+                <th>Productor</th>
+                <th>Producto</th>
+                <th>Serie</th>
+                <th>Peso</th>
+                </tr>
+                % for row in object.consumed_material_ids:
+
+                 <tr>
+                 <td>${row.stock_production_lot_id.name}</td>
+                 <td>${row.producer_id.name}</td>
+                 <td>${row.stock_product_id.name}</td>
+                 <td>${row.serial_number}</td>
+                 <td>${row.display_weight}</td>
+                 </tr>
+                %endfor
+                </table>
+
+                </p>
+                Atte,<br/>
+                ${(object.company_id.name)}
+            ]]>
+    </field>
+  </record>
+</odoo>
