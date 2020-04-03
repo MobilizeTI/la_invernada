@@ -7,7 +7,7 @@ class StockPicking(models.Model):
     _inherit = 'stock.picking'
     _order = 'date desc'
 
-    guide_number = fields.Integer('Número de Guía')
+    reception_guide_number = fields.Integer('Número de Guía')
 
     weight_guide = fields.Float(
         'Kilos Guía',
@@ -328,7 +328,7 @@ class StockPicking(models.Model):
     @api.model
     def validate_mp_reception(self):
         message = ''
-        if not self.guide_number or not self.guide_number > 0:
+        if not self.reception_guide_number or not self.reception_guide_number > 0:
             message = 'debe agregar número de guía \n'
         if not self.weight_guide:
             message += 'debe agregar kilos guía \n'
