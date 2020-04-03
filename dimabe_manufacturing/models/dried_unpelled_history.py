@@ -212,7 +212,8 @@ class DriedUnpelledHistory(models.Model):
     def _compute_in_lot_ids(self):
         for item in self:
             for guide in item.oven_use_ids.mapped('used_lot_id'):
-                models._logger.error(guide.lot_guide_number)
+                models._logger.error(
+                    "Guide Number {} Type {}".format(guide.lot_guide_number, type(guide.lot_guide_number)))
             models._logger.error(item.oven_use_ids.mapped('used_lot_id'))
             item.in_lot_ids = item.oven_use_ids.mapped('used_lot_id')
 
@@ -259,7 +260,7 @@ class DriedUnpelledHistory(models.Model):
         for item in self:
 
             if item.out_serial_ids.filtered(
-                lambda a: a.consumed
+                    lambda a: a.consumed
             ):
                 raise models.ValidationError('este proceso no se puede realizar porque ya existen series consumidas')
 
