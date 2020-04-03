@@ -33,7 +33,7 @@
           <field name="harvest"
                  attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
           />
-          <field name="reception_guide_number"
+          <field name="guide_number"
                  attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
           />
           <field name="weight_guide"

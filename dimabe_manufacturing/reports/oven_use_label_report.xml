@@ -14,7 +14,7 @@
               </tr>
               <tr>
                 <th>N° guía</th>
-                <td>: <span t-esc="o.used_lot_id.reception_guide_number"/></td>
+                <td>: <span t-esc="o.used_lot_id.guide_number"/></td>
               </tr>
               <tr>
                 <th>Productor:</th>
