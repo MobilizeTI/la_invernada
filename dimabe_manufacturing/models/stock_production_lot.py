@@ -37,7 +37,7 @@ class StockProductionLot(models.Model):
 
     reception_guide_number = fields.Integer(
         'Guía',
-        related='stock_picking_id.reception_guide_number',
+        related='stock_picking_id.guide_number',
         store=True
     )
 
