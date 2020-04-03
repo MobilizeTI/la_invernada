@@ -211,8 +211,6 @@ class DriedUnpelledHistory(models.Model):
     @api.multi
     def _compute_in_lot_ids(self):
         for item in self:
-            for guide in item.oven_use_ids.mapped('used_lot_id'):
-                models._logger.error(item.oven_use_ids.mapped('used_lot_id'))
             item.in_lot_ids = item.oven_use_ids.mapped('used_lot_id')
 
     @api.multi
