@@ -24,5 +24,4 @@ class StockProductionLot(models.Model):
             ('balance', operator, value),
             ('location_id.name', '=', 'Stock')
         ]).mapped('lot_id')
-        models._logger.error(lot_ids.mapped('name'))
         return [('id', 'in', lot_ids.mapped('id'))]
