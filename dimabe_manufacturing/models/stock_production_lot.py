@@ -72,6 +72,12 @@ class StockProductionLot(models.Model):
         string="Detalle"
     )
 
+    serial_without_pallet_ids = fields.One2many(
+        'stock.production.lot.serial',
+        compute='_compute_serial_without_pallet_ids',
+        string='Series sin Pallet'
+    )
+
     stock_production_lot_available_serial_ids = fields.One2many(
         'stock.production.lot.serial',
         compute='_compute_stock_production_lot_available_serial_ids',
@@ -188,6 +194,13 @@ class StockProductionLot(models.Model):
     )
 
     @api.multi
+    def _compute_serial_without_pallet_ids(self):
+        for item in self:
+            item.serial_without_pallet_ids = item.stock_production_lot_serial_ids.filtered(
+                lambda a: not a.pallet_id
+            )
+
+    @api.multi
     def _compute_is_dimabe_team(self):
         for item in self:
             item.is_dimabe_team = self.env.user.is_dimabe_team
@@ -247,16 +260,16 @@ class StockProductionLot(models.Model):
                     lambda a: a.company_type == 'company' or a.always_to_print
                 )
 
-    @api.onchange('producer_id')
-    def _onchange_producer_id(self):
-
-        self.stock_production_lot_serial_ids.write({
-            'producer_id': self.producer_id.id
-        })
-
-        self.all_pallet_ids.write({
-            'producer_id': self.producer_id.id
-        })
+    # @api.onchange('producer_id')
+    # def _onchange_producer_id(self):
+    #
+    #     self.stock_production_lot_serial_ids.write({
+    #         'producer_id': self.producer_id.id
+    #     })
+    #
+    #     self.all_pallet_ids.write({
+    #         'producer_id': self.producer_id.id
+    #     })
 
     @api.multi
     def _compute_all_pallet_ids(self):
@@ -445,6 +458,8 @@ class StockProductionLot(models.Model):
     def generate_standard_pallet(self):
         for item in self:
 
+            if not item.producer_id:
+                raise models.ValidationError('debe seleccionar un productor')
             pallet = self.env['manufacturing.pallet'].create({
                 'producer_id': item.producer_id.id
             })
@@ -457,7 +472,8 @@ class StockProductionLot(models.Model):
                     'display_weight': item.product_id.weight,
                     'serial_number': item.name + tmp[-3:],
                     'belongs_to_prd_lot': True,
-                    'pallet_id': pallet.id
+                    'pallet_id': pallet.id,
+                    'producer_id': pallet.producer_id.id
                 })
 
             pallet.update({

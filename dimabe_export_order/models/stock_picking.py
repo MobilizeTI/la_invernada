@@ -334,3 +334,4 @@ class StockPicking(models.Model):
         # )
         # else:
         # self.contract_correlative_view = ''
+

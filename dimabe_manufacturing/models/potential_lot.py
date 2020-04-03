@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.addons import decimal_precision as dp
 
 
 class PotentialLot(models.Model):
@@ -13,8 +14,8 @@ class PotentialLot(models.Model):
     )
 
     lot_balance = fields.Float(
-        related='stock_production_lot_id.balance'
-
+        related='stock_production_lot_id.balance',
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     stock_production_lot_id = fields.Many2one('stock.production.lot', 'lote potencial')
@@ -38,7 +39,8 @@ class PotentialLot(models.Model):
 
     qty_to_reserve = fields.Float(
         'Cantidad Reservada',
-        compute='_compute_qty_to_reserve'
+        compute='_compute_qty_to_reserve',
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     is_reserved = fields.Boolean('Reservado')
@@ -48,7 +50,7 @@ class PotentialLot(models.Model):
         for item in self:
             item.potential_serial_ids = item.stock_production_lot_id.stock_production_lot_serial_ids.filtered(
                 lambda a: a.consumed is False and (
-                            a.reserved_to_production_id == item.mrp_production_id or not a.reserved_to_production_id)
+                        a.reserved_to_production_id == item.mrp_production_id or not a.reserved_to_production_id)
             )
 
     @api.multi
@@ -82,9 +84,16 @@ class PotentialLot(models.Model):
     @api.multi
     def reserve_stock(self):
         for item in self:
-            serial_to_reserve = item.potential_serial_ids.filtered(lambda a: not a.reserved_to_production_id)
+            serial_to_reserve = item.potential_serial_ids.filtered(lambda a: not a.reserved_to_production_id and not
+            a.reserved_to_stock_picking_id)
 
             serial_to_reserve.with_context(mrp_production_id=item.mrp_production_id.id).reserve_serial()
+
+            quant = item.get_stock_quant()
+
+            quant.sudo().update({
+                'reserved_quantity': quant.total_reserved
+            })
 
             item.is_reserved = True
 
@@ -104,5 +113,13 @@ class PotentialLot(models.Model):
             )
 
             serial_to_reserve.unreserved_serial()
+
+            quant = item.get_stock_quant()
+
+            quant.sudo().update({
+                'reserved_quantity': sum(quant.lot_id.stock_production_lot_serial_ids.filtered(
+                    lambda a: not a.consumed and (a.reserved_to_production_id or a.reserved_to_stock_picking_id)
+                ).mapped('display_weight'))
+            })
 
             item.is_reserved = item.qty_to_reserve > 0

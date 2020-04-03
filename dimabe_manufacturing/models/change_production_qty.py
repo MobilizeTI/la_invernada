@@ -6,5 +6,5 @@ class ChangeProductionQty(models.TransientModel):
 
     @api.multi
     def change_prod_qty(self):
-        raise models.ValidationError('lala')
+        raise models.ValidationError('Opción no disponible')
         return {}

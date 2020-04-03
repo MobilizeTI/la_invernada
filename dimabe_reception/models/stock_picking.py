@@ -13,38 +13,38 @@ class StockPicking(models.Model):
         'Kilos Guía',
         compute='_compute_weight_guide',
         store=True,
-        digits=dp.get_precision('Kilos Guía')
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     gross_weight = fields.Float(
         'Kilos Brutos',
-        digits=dp.get_precision('Kilos Brutos')
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     tare_weight = fields.Float(
         'Peso Tara',
-        digits=dp.get_precision('Peso Tara')
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     net_weight = fields.Float(
         'Kilos Netos',
         compute='_compute_net_weight',
         store=True,
-        digits=dp.get_precision('Kilos Netos')
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     canning_weight = fields.Float(
         'Peso Envases',
         compute='_compute_canning_weight',
         store=True,
-        digits=dp.get_precision('Peso Envases')
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     production_net_weight = fields.Float(
         'Kilos Netos Producción',
         compute='_compute_production_net_weight',
         store=True,
-        digits=dp.get_precision('Kilos Netos Producción')
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     # reception_type_selection = fields.Selection([
@@ -67,6 +67,12 @@ class StockPicking(models.Model):
         store=True
     )
 
+    is_satelite_reception = fields.Boolean(
+        'Recepción Sételite',
+        compute='_compute_is_satelite_reception',
+        store=True
+    )
+
     carrier_id = fields.Many2one('custom.carrier', 'Conductor')
 
     truck_in_date = fields.Datetime(
@@ -82,10 +88,13 @@ class StockPicking(models.Model):
     avg_unitary_weight = fields.Float(
         'Promedio Peso unitario',
         compute='_compute_avg_unitary_weight',
-        digits=dp.get_precision('Promedio Peso Unitario')
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
-    quality_weight = fields.Float('Kilos Calidad')
+    quality_weight = fields.Float(
+        'Kilos Calidad',
+        digits=dp.get_precision('Product Unit of Measure')
+    )
 
     carrier_rut = fields.Char(
         'Rut',
@@ -142,16 +151,19 @@ class StockPicking(models.Model):
     @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package', 'quality_weight')
     def _compute_net_weight(self):
         self.net_weight = self.gross_weight - self.tare_weight + self.quality_weight
-        if self.is_mp_reception:
+        if self.is_mp_reception or self.is_pt_reception or self.is_satelite_reception:
             if self.canning_weight:
                 self.net_weight = self.net_weight - self.canning_weight
 
     @api.one
     @api.depends('move_ids_without_package')
     def _compute_weight_guide(self):
-        if self.is_mp_reception or self.is_pt_reception:
-            if self.get_mp_move():
-                self.weight_guide = self.get_mp_move()[0].product_uom_qty
+        if self.is_mp_reception or self.is_pt_reception or self.is_satelite_reception:
+            m_move = self.get_mp_move()
+            if not m_move:
+                m_move = self.get_pt_move()
+            if m_move:
+                self.weight_guide = m_move[0].product_uom_qty
 
     @api.one
     @api.depends('move_ids_without_package')
@@ -174,7 +186,7 @@ class StockPicking(models.Model):
     @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package', )
     def _compute_production_net_weight(self):
         self.production_net_weight = self.gross_weight - self.tare_weight
-        if self.is_mp_reception:
+        if self.is_mp_reception or self.is_pt_reception or self.is_satelite_reception:
             if self.canning_weight:
                 self.production_net_weight = self.production_net_weight - self.canning_weight
 
@@ -204,6 +216,12 @@ class StockPicking(models.Model):
                                'recepciones' in str.lower(self.picking_type_id.name)
 
     @api.one
+    @api.depends('picking_type_id')
+    def _compute_is_satelite_reception(self):
+        self.is_satelite_reception = 'packing' in str.lower(self.picking_type_id.warehouse_id.name) and \
+                                     'recepciones' in str.lower(self.picking_type_id.name)
+
+    @api.one
     @api.depends('production_net_weight', 'tare_weight', 'gross_weight', 'move_ids_without_package')
     def _compute_avg_unitary_weight(self):
         if self.production_net_weight:
@@ -219,6 +237,10 @@ class StockPicking(models.Model):
         return self.move_ids_without_package.filtered(lambda x: x.product_id.categ_id.is_mp is True)
 
     @api.model
+    def get_pt_move(self):
+        return self.move_ids_without_package.filtered(lambda a: a.product_id.categ_id.is_pt)
+
+    @api.model
     def get_canning_move(self):
         return self.move_ids_without_package.filtered(lambda x: x.product_id.categ_id.is_canning is True)
 
@@ -229,14 +251,16 @@ class StockPicking(models.Model):
     @api.multi
     def action_confirm(self):
         for stock_picking in self:
-            if stock_picking.is_mp_reception:
+            if stock_picking.is_mp_reception or stock_picking.is_pt_reception or stock_picking.is_satelite_reception:
                 stock_picking.validate_mp_reception()
                 stock_picking.truck_in_date = fields.datetime.now()
             res = super(StockPicking, self).action_confirm()
-            mp_move = stock_picking.get_mp_move()
+            m_move = stock_picking.get_mp_move()
+            if not m_move:
+                m_move = stock_picking.get_pt_move()
 
-            if mp_move and mp_move.move_line_ids and mp_move.picking_id.picking_type_code == 'incoming':
-                for move_line in mp_move.move_line_ids:
+            if m_move and m_move.move_line_ids and m_move.picking_id.picking_type_code == 'incoming':
+                for move_line in m_move.move_line_ids:
                     lot = self.env['stock.production.lot'].create({
                         'name': stock_picking.name,
                         'product_id': move_line.product_id.id,
@@ -248,10 +272,12 @@ class StockPicking(models.Model):
                             'lot_id': lot.id
                         })
 
-                if mp_move.product_id.tracking == 'lot' and not mp_move.has_serial_generated:
-                    for stock_move_line in mp_move.move_line_ids:
-                        if mp_move.product_id.categ_id.is_mp:
-                            total_qty = mp_move.picking_id.get_canning_move().product_uom_qty
+                if m_move.product_id.tracking == 'lot' and not m_move.has_serial_generated:
+
+                    for stock_move_line in m_move.move_line_ids:
+
+                        if m_move.product_id.categ_id.is_mp or m_move.product_id.categ_id.is_pt:
+                            total_qty = m_move.picking_id.get_canning_move().product_uom_qty
                             # calculated_weight = stock_move_line.qty_done / total_qty
 
                             if stock_move_line.lot_id:
@@ -264,14 +290,14 @@ class StockPicking(models.Model):
                                         'serial_number': '{}{}'.format(stock_move_line.lot_name, tmp[-3:])
                                     })
 
-                                mp_move.has_serial_generated = True
+                                m_move.has_serial_generated = True
             return res
 
     @api.multi
     def button_validate(self):
         for stock_picking in self:
             message = ''
-            if stock_picking.is_mp_reception:
+            if stock_picking.is_mp_reception or stock_picking.is_pt_reception or stock_picking.is_satelite_reception:
                 if not stock_picking.gross_weight:
                     message = 'Debe agregar kg brutos \n'
                 if stock_picking.gross_weight < stock_picking.weight_guide:
@@ -280,17 +306,19 @@ class StockPicking(models.Model):
                     message += 'Debe agregar kg tara \n'
                 if not stock_picking.quality_weight and \
                         'verde' not in str.lower(stock_picking.picking_type_id.warehouse_id.name):
-                    message += 'Los kilos de calidad aún no han sido registrados en el sistema,' \
+                    message += 'Los kilos de calidad aún no han sido registrados en el sistema,'\
                                ' no es posible cerrar el ciclo de recepción'
                 if message:
                     raise models.ValidationError(message)
         res = super(StockPicking, self).button_validate()
         self.sendKgNotify()
-        if self.get_mp_move():
-            mp_move = self.get_mp_move()
-            mp_move.quantity_done = self.production_net_weight
-            mp_move.product_uom_qty = self.weight_guide
-            if mp_move.has_serial_generated and self.avg_unitary_weight:
+        if self.get_mp_move() or self.get_pt_move():
+            m_move = self.get_mp_move()
+            if not m_move:
+                m_move = self.get_pt_move()
+            m_move.quantity_done = self.production_net_weight
+            m_move.product_uom_qty = self.weight_guide
+            if m_move.has_serial_generated and self.avg_unitary_weight:
                 self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)]).write({
                     'real_weight': self.avg_unitary_weight
                 })
@@ -307,8 +335,8 @@ class StockPicking(models.Model):
 
         if not self.get_canning_move():
             message += 'debe agregar envases'
-        if not self.get_mp_move():
-            message += 'debe agregar MP'
+        if not self.get_mp_move() and not self.get_pt_move():
+            message += 'debe agregar Materia a recepcionar'
         if message:
             raise models.ValidationError(message)
 

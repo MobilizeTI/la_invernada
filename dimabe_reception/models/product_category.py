@@ -19,6 +19,11 @@ class ProductCategory(models.Model):
         compute='_compute_is_canning'
     )
 
+    is_pt = fields.Boolean(
+        'Es PT',
+        compute='_compute_is_pt'
+    )
+
     with_suffix = fields.Boolean(
         'Lote con Sufijo'
     )
@@ -28,6 +33,12 @@ class ProductCategory(models.Model):
         self.is_mp = 'Materia Prima' in self.name
         if not self.is_mp and self.parent_id:
             self.is_mp = 'Materia Prima' in self.parent_id.name
+
+    @api.one
+    def _compute_is_pt(self):
+        self.is_pt = 'producto terminado' in str.lower(self.name)
+        if not self.is_pt and self.parent_id:
+            self.is_pt = 'producto terminado' in str.lower(self.parent_id.name)
 
     @api.one
     def _compute_is_canning(self):

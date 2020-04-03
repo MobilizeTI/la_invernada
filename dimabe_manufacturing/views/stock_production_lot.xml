@@ -1,162 +1,196 @@
 <odoo>
-    <record id="view_production_lot_form_simple_inherit" model="ir.ui.view">
-        <field name="name">Pesajes de Lote</field>
-        <field name="model">stock.production.lot</field>
-        <field name="inherit_id" ref="stock.view_production_lot_form_simple"/>
-        <field name="arch" type="xml">
+  <record id="view_production_lot_form_simple_inherit" model="ir.ui.view">
+    <field name="name">Pesajes de Lote</field>
+    <field name="model">stock.production.lot</field>
+    <field name="inherit_id" ref="stock.view_production_lot_form_simple"/>
+    <field name="arch" type="xml">
 
-            <group name="main_group" position="inside">
-                <field name="is_prd_lot" invisible="1"/>
-                <field name="is_standard_weight" invisible="1" readonly="1"/>
-                <field name="standard_weight"
-                       attrs="{'invisible':['|',('is_standard_weight','=',False)]}"
-                       readonly="1"
-                />
-                <field name="producer_ids" invisible="1" />
-                <field name="producer_id"
-                       domain="['|',('id','in',producer_ids),('always_to_print','=',True)]"
-                />
-                <field name="qty_standard_serial"
-                       attrs="{'invisible':['|',('is_standard_weight','=',False),('can_add_serial','=',False)]}"
-                />
-                <button string="Generar Pallet" class="oe_highlight"
-                        attrs="{'invisible':['|',('is_standard_weight','=',False),('can_add_serial','=',False)]}"
-                        type="object"
-                        name="generate_standard_pallet"
-                />
-                <field name="is_dimabe_team" invisible="1"/>
-                <field name="can_add_serial"
-                       groups="base.group_system"
-                       attrs="{'invisible':[('is_dimabe_team','=',False)]}"
-                />
-                <field name="is_prd_lot"
-                       groups="base.group_system"
-                       attrs="{'invisible':[('is_dimabe_team','=',False)]}"
-                />
-                <field name="is_dried_lot"
-                       groups="base.group_system"
-                       attrs="{'invisible':[('is_dimabe_team','=',False)]}"
-                />
+      <group name="main_group" position="inside">
+        <field name="is_prd_lot" invisible="1"/>
+        <field name="is_standard_weight" invisible="1" readonly="1"/>
+        <field name="standard_weight"
+               attrs="{'invisible':['|',('is_standard_weight','=',False)]}"
+               readonly="1"
+        />
+        <field name="producer_ids" invisible="1"/>
+        <field name="producer_id"
+               domain="['|',('id','in',producer_ids),('always_to_print','=',True)]"
+        />
+        <field name="qty_standard_serial"
+               attrs="{'invisible':['|',('is_standard_weight','=',False),('can_add_serial','=',False)]}"
+        />
+        <button string="Generar Pallet" class="oe_highlight"
+                attrs="{'invisible':['|',('is_standard_weight','=',False),('can_add_serial','=',False)]}"
+                type="object"
+                name="generate_standard_pallet"
+        />
+        <field name="is_dimabe_team" invisible="1"/>
+        <field name="can_add_serial"
+               groups="base.group_system"
+               attrs="{'invisible':[('is_dimabe_team','=',False)]}"
+        />
+        <field name="is_prd_lot"
+               groups="base.group_system"
+               attrs="{'invisible':[('is_dimabe_team','=',False)]}"
+        />
+        <field name="is_dried_lot"
+               groups="base.group_system"
+               attrs="{'invisible':[('is_dimabe_team','=',False)]}"
+        />
 
-                <field name="label_durability_id"
-                       groups="base.group_system"
-                />
+        <field name="label_durability_id"
+               groups="base.group_system"
+        />
 
-                <field name="stock_picking_id"
-                       groups="base.group_system"
-                       attrs="{'invisible':[('is_dimabe_team','=',False)]}"
-                />
+        <field name="stock_picking_id"
+               groups="base.group_system"
+               attrs="{'invisible':[('is_dimabe_team','=',False)]}"
+        />
 
-<!--                <button name="print_all_serial" attrs="{'invisible':[('is_standard_weight','=',False)]}"-->
-<!--                        string="Imprimir Series" type="object"/>-->
-                <field name="stock_production_lot_serial_ids"
-                       attrs="{'readonly':[('can_add_serial','=',False)],'invisible':[('is_standard_weight', '=', True)]}"
-                >
-                    <tree editable="bottom">
-                        <field name="stock_production_lot_id" readonly="1"/>
-                        <field name="belongs_to_prd_lot" invisible="1"/>
-                        <field name="producer_id" readonly="1" />
-                        <field name="consumed" readonly="1"/>
-                        <field name="display_weight"
-                               attrs="{'readonly':['|',('belongs_to_prd_lot', '=', False),('consumed','=',True)]}"
-                               onclick="custom_script.js"
-                        />
-                        <field name="serial_number" readonly="1"/>
-                        <field name="production_id"
-                               readonly="1"
-                               widget="many2onebutton"
-                        />
+        <!--                <button name="print_all_serial" attrs="{'invisible':[('is_standard_weight','=',False)]}"-->
+        <!--                        string="Imprimir Series" type="object"/>-->
+        <field name="stock_production_lot_serial_ids"
+               attrs="{'readonly':[('can_add_serial','=',False)],'invisible':[('is_standard_weight', '=', True)]}"
+        >
+          <tree editable="bottom">
+            <field name="stock_production_lot_id" readonly="1"/>
+            <field name="belongs_to_prd_lot" invisible="1"/>
+            <field name="producer_id" readonly="1"/>
+            <field name="consumed" readonly="1"/>
+            <field name="display_weight"
+                   attrs="{'readonly':['|',('belongs_to_prd_lot', '=', False),('consumed','=',True)]}"
+                   onclick="custom_script.js"
+            />
+            <field name="serial_number" readonly="1"/>
+            <field name="production_id"
+                   readonly="1"
+                   widget="many2onebutton"
+            />
 
-                        <field name="belongs_to_prd_lot" />
-                        <button name="print_serial_label"
-                                type="object" string="Imprimir"
-                                attrs="{'invisible':['|',('serial_number', '=', False), ('belongs_to_prd_lot', '=', False)]}"
-                        />
-                    </tree>
-                </field>
-                <field name="all_pallet_ids"
-                       attrs="{'invisible':[('is_standard_weight','=',False)]}"
-                />
-            </group>
+            <field name="belongs_to_prd_lot"/>
+            <button name="print_serial_label"
+                    type="object" string="Imprimir"
+                    attrs="{'invisible':['|',('serial_number', '=', False), ('belongs_to_prd_lot', '=', False)]}"
+            />
+          </tree>
         </field>
-    </record>
-
-
-    <record id="available_lot_form_view" model="ir.ui.view">
-        <field name="name">Selección de Packing list</field>
-        <field name="model">stock.production.lot</field>
-        <field name="arch" type="xml">
-            <form>
-                <group>
-                    <group>
-                        <field name="pallet_ids">
-                            <tree>
-                                <field name="name"/>
-                                <field name="total_content_weight"/>
-                                <field name="total_available_content"/>
-                                <field name="state"/>
-                                <button string="Agregar a Packing List"
-                                        name="add_to_picking"
-                                        type="object"
-                                />
-                            </tree>
-                        </field>
-                    </group>
-                    <group>
-                        <field name="stock_production_lot_available_serial_ids">
-                            <tree>
-                                <field name="pallet_id"/>
-                                <field name="serial_number"/>
-                                <field name="stock_product_id"/>
-                                <field name="display_weight"/>
-                                <button string="Agregar a Packing List"
-                                        type="object"
-                                        name="reserve_picking"
-                                />
-                            </tree>
-                        </field>
-                    </group>
-                </group>
-            </form>
+        <field name="all_pallet_ids"
+               attrs="{'invisible':[('is_standard_weight','=',False)]}"
+        />
+        <field name="serial_without_pallet_ids"
+               attrs="{'invisible':[('is_standard_weight','=',False)]}"
+        >
+          <tree>
+            <field name="stock_production_lot_id" readonly="1"/>
+            <field name="belongs_to_prd_lot" invisible="1"/>
+            <field name="producer_id" readonly="1"/>
+            <field name="consumed" readonly="1"/>
+            <field name="display_weight"
+                   readonly="1"
+            />
+            <field name="serial_number" readonly="1"/>
+            <field name="production_id"
+                   readonly="1"
+                   widget="many2onebutton"
+            />
+            <field name="belongs_to_prd_lot" readonly="1"/>
+            <button name="print_serial_label"
+                    type="object" string="Imprimir"
+                    attrs="{'invisible':['|',('serial_number', '=', False), ('belongs_to_prd_lot', '=', False)]}"
+            />
+          </tree>
         </field>
-    </record>
+      </group>
+    </field>
+  </record>
 
-    <record id="stock_production_lot_in_dashboard_tree_view" model="ir.ui.view">
-        <field name="name">Entrada Despelonado</field>
-        <field name="model">stock.production.lot</field>
-        <field name="arch" type="xml">
-            <tree>
+  <record id="view_production_lot_form_inherit" model="ir.ui.view">
+    <field name="name">formulario de lote</field>
+    <field name="model">stock.production.lot</field>
+    <field name="inherit_id" ref="stock.view_production_lot_form" />
+    <field name="arch" type="xml">
+      <field name="ref" position="after">
+        <field name="balance" />
+      </field>
+    </field>
+  </record>
+
+  <record id="available_lot_form_view" model="ir.ui.view">
+    <field name="name">Selección de Packing list</field>
+    <field name="model">stock.production.lot</field>
+    <field name="arch" type="xml">
+      <form>
+        <group>
+          <group>
+            <field name="pallet_ids">
+              <tree>
                 <field name="name"/>
-                <field name="producer_id"/>
-                <field name="reception_guide_number"/>
-                <field name="product_variety"/>
-                <field name="product_canning"/>
-                <field name="picking_type_id"/>
-                <field name="reception_net_weight"/>
-                <field name="reception_date"/>
-                <field name="reception_elapsed_time"/>
-                <field name="unpelled_state"/>
-                <field name="drier_counter" widget="picking_time_live"/>
+                <field name="total_content_weight"/>
+                <field name="total_available_content"/>
+                <field name="state"/>
+                <button string="Agregar a Packing List"
+                        name="add_to_picking"
+                        type="object"
+                />
+              </tree>
+            </field>
+          </group>
+          <group>
+            <field name="stock_production_lot_available_serial_ids">
+              <tree>
+                <field name="pallet_id"/>
+                <field name="serial_number"/>
+                <field name="stock_product_id"/>
+                <field name="display_weight"/>
+                <button string="Agregar a Packing List"
+                        type="object"
+                        name="reserve_picking"
+                />
+              </tree>
+            </field>
+          </group>
+        </group>
+      </form>
+    </field>
+  </record>
 
-                <field name="oven_init_active_time" invisible="1"/>
-                <field name="finish_active_time" invisible="1"/>
-                <field name="oven_use_ids" invisible="1"/>
+  <record id="stock_production_lot_in_dashboard_tree_view" model="ir.ui.view">
+    <field name="name">Entrada Despelonado</field>
+    <field name="model">stock.production.lot</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="name"/>
+        <field name="producer_id"/>
+        <field name="reception_guide_number"/>
+        <field name="product_variety"/>
+        <field name="product_canning"/>
+        <field name="picking_type_id"/>
+        <field name="reception_net_weight"/>
+        <field name="reception_date"/>
+        <field name="reception_elapsed_time"/>
+        <field name="unpelled_state"/>
+        <field name="drier_counter" widget="picking_time_live"/>
 
-            </tree>
-        </field>
-    </record>
-    <record model="ir.actions.act_window" id="stock_production_lot_in_dashboard_action">
-        <field name="name">Vista General Despelonado Entrada</field>
-        <field name="res_model">stock.production.lot</field>
-        <field name="view_mode">tree</field>
-        <field name="domain">[('unpelled_state','in',['waiting','drying'])]</field>
-        <field name="view_id" ref="stock_production_lot_in_dashboard_tree_view"/>
-    </record>
+        <field name="oven_init_active_time" invisible="1"/>
+        <field name="finish_active_time" invisible="1"/>
+        <field name="oven_use_ids" invisible="1"/>
+
+      </tree>
+    </field>
+  </record>
+
+  <record model="ir.actions.act_window" id="stock_production_lot_in_dashboard_action">
+    <field name="name">Vista General Despelonado Entrada</field>
+    <field name="res_model">stock.production.lot</field>
+    <field name="view_mode">tree</field>
+    <field name="domain">[('unpelled_state','in',['waiting','drying'])]</field>
+    <field name="view_id" ref="stock_production_lot_in_dashboard_tree_view"/>
+  </record>
 
 
-    <menuitem name="Vista General Despelonado Entrada"
-              id="stock_production_lot_in_dashboard_menu"
-              parent="mrp.menu_mrp_reporting"
-              action="stock_production_lot_in_dashboard_action"
-    />
+  <menuitem name="Vista General Despelonado Entrada"
+            id="stock_production_lot_in_dashboard_menu"
+            parent="mrp.menu_mrp_reporting"
+            action="stock_production_lot_in_dashboard_action"
+  />
 </odoo>

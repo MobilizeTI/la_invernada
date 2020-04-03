@@ -266,23 +266,11 @@ class StockProductionLotSerial(models.Model):
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
 
                 stock_quant.sudo().update({
-                    'reserved_quantity': stock_quant.reserved_quantity + item.display_weight
+                    'reserved_quantity': stock_quant.total_reserved
                 })
 
                 for stock in stock_move:
                     item.add_move_line(stock)
-                    # stock.sudo().update({
-                    #     'active_move_line_ids': [
-                    #         (0, 0, {
-                    #             'product_id': item.stock_production_lot_id.product_id.id,
-                    #             'lot_id': item.stock_production_lot_id.id,
-                    #             'product_uom_qty': item.display_weight,
-                    #             'product_uom_id': stock.product_uom.id,
-                    #             'location_id': stock_quant.location_id.id,
-                    #             'location_dest_id': virtual_location_production_id.id
-                    #         })
-                    #     ]
-                    # })
         else:
             raise models.ValidationError('no se pudo identificar producción')
 
@@ -325,16 +313,13 @@ class StockProductionLotSerial(models.Model):
             )
 
             stock_quant = item.stock_production_lot_id.get_stock_quant()
-            stock_quant.sudo().update({
-                'reserved_quantity': stock_quant.reserved_quantity - item.display_weight
-            })
 
             item.update({
                 'reserved_to_production_id': None
             })
 
-            item.stock_production_lot_id.write({
-                'balance': stock_quant.quantity - stock_quant.reserved_quantity
+            stock_quant.sudo().update({
+                'reserved_quantity': stock_quant.total_reserved
             })
 
             if move_line:
@@ -342,6 +327,7 @@ class StockProductionLotSerial(models.Model):
 
     @api.multi
     def reserve_picking(self):
+        models._logger.error('linea {330} reserve picking')
         if 'stock_picking_id' in self.env.context:
             stock_picking_id = self.env.context['stock_picking_id']
             stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
@@ -363,10 +349,6 @@ class StockProductionLotSerial(models.Model):
                         item.stock_production_lot_id.name
                     ))
 
-                stock_quant.sudo().update({
-                    'reserved_quantity': stock_quant.reserved_quantity + item.display_weight
-                })
-
                 move_line = self.env['stock.move.line'].create({
                     'product_id': item.stock_production_lot_id.product_id.id,
                     'lot_id': item.stock_production_lot_id.id,
@@ -387,6 +369,10 @@ class StockProductionLotSerial(models.Model):
                     'move_line_ids': [
                         (4, move_line.id)
                     ]
+                })
+
+                stock_quant.sudo().update({
+                    'reserved_quantity': stock_quant.total_reserved
                 })
         else:
             raise models.ValidationError('no se pudo identificar picking')
@@ -411,7 +397,7 @@ class StockProductionLotSerial(models.Model):
                     stock_quant = item.stock_production_lot_id.get_stock_quant()
 
                     stock_quant.sudo().update({
-                        'reserved_quantity': stock_quant.reserved_quantity - item.display_weight
+                        'reserved_quantity': stock_quant.total_reserved
                     })
 
                     item.update({
@@ -434,10 +420,6 @@ class StockProductionLotSerial(models.Model):
 
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
 
-                stock_quant.sudo().update({
-                    'reserved_quantity': stock_quant.reserved_quantity - item.display_weight
-                })
-
                 item.update({
                     'reserved_to_stock_picking_id': None
                 })
@@ -452,6 +434,9 @@ class StockProductionLotSerial(models.Model):
                         'product_uom_qty': 0,
                         'reserved_availability': 0
                     })
+                stock_quant.sudo().update({
+                    'reserved_quantity': stock_quant.total_reserved
+                })
 
     def remove_and_reduce(self):
 
@@ -496,7 +481,7 @@ class StockProductionLotSerial(models.Model):
                     lambda a: a.product_id == self.product_id and not a.lot_id
                 )
 
-                pending_checks.unlink()
+                pending_checks.sudo().unlink()
                 line.unlink()
 
                 if wo.current_quality_check_id in pending_checks:

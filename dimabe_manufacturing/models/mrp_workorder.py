@@ -50,6 +50,7 @@ class MrpWorkorder(models.Model):
 
     unevenness_percent = fields.Float(
         '% Descalibre',
+        digits=dp.get_precision('Product Unit of Measure'),
         related='production_id.unevenness_percent'
     )
 

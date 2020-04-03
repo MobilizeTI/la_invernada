@@ -28,6 +28,10 @@ class ResPartner(models.Model):
         compute='_compute_region_address_id_address'
     )
 
+    is_warehouse_notify = fields.Boolean(
+        'Notificar Movimiento de Materia'
+    )
+
     @api.multi
     def _compute_city_address(self):
         for item in self:

@@ -93,6 +93,7 @@
                         class="oe_highlight"
                         attrs="{'invisible':[('consumed','=',True)]}"
                         groups="mrp.group_mrp_manager"
+                        confirm="¡ATENCIÓN! si realiza esta acción la cantidad a ingresar en el proceso será reducida. ¿realmente desea realizar esta operación?"
                 />
               </tree>
             </field>

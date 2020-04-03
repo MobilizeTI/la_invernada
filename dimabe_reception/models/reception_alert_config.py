@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.addons import decimal_precision as dp
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -6,14 +7,20 @@ _logger = logging.getLogger(__name__)
 class ReceptionAlertConfig(models.Model):
     _name = 'reception.alert.config'
 
-    hr_alert = fields.Float('hr para alerta')
+    hr_alert = fields.Float(
+        'hr para alerta',
+        digits=dp.get_precision('Product Unit of Measure')
+    )
 
     notify_elapsed_time_to = fields.Many2many(
         'res.partner',
         string='Notificar Retraso de Camión a'
     )
 
-    kg_diff_alert = fields.Float('diferencia de kg para alerta')
+    kg_diff_alert = fields.Float(
+        'diferencia de kg para alerta',
+        digits=dp.get_precision('Product Unit of Measure')
+    )
 
     notify_diff_kg = fields.Many2many(
         'res.partner',

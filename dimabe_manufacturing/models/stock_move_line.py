@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.addons import decimal_precision as dp
 
 
 class StockMoveLine(models.Model):
@@ -11,7 +12,10 @@ class StockMoveLine(models.Model):
 
     is_raw = fields.Boolean('Es Subproducto')
 
-    tmp_qty_done = fields.Float('Realizado')
+    tmp_qty_done = fields.Float(
+        'Realizado',
+        digits=dp.get_precision('Product Unit of Measure')
+    )
 
     @api.multi
     def _compute_count_stock_production_lot_serial(self):

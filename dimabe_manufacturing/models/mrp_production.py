@@ -101,7 +101,10 @@ class MrpProduction(models.Model):
         related="stock_lots.product_id"
     )
 
-    requested_qty = fields.Float('Cantidad Solicitada')
+    requested_qty = fields.Float(
+        'Cantidad Solicitada',
+        digits=dp.get_precision('Product Unit of Measure')
+    )
 
     serial_lot_ids = fields.One2many(
         'stock.production.lot.serial',
@@ -252,7 +255,7 @@ class MrpProduction(models.Model):
             'lot_id').filtered(
             lambda a: a.product_id in self.stock_picking_id.move_ids_without_package.mapped('product_id')
         ).mapped('stock_production_lot_serial_ids')
-
+        models._logger.error('linea 258 {}'.format(serial_to_reserve_ids))
         for serial in serial_to_reserve_ids:
             serial.with_context(stock_picking_id=self.stock_picking_id.id).reserve_picking()
 
@@ -305,5 +308,9 @@ class MrpProduction(models.Model):
             )
 
             res = super(MrpProduction, order).button_plan()
+
+            template_id = self.env.ref('dimabe_manufacturing.moving_fruit_template')
+
+            self.message_post_with_template(template_id.id)
 
             return res

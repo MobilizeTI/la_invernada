@@ -20,7 +20,8 @@ class QualityAnalysis(models.Model):
     )
 
     lot_name = fields.Char(
-        compute='_compute_lot_name'
+        compute='_compute_lot_name',
+        string='Lote'
     )
 
     name = fields.Char('Informe')
@@ -184,61 +185,61 @@ class QualityAnalysis(models.Model):
     @api.depends('external_damage_analysis_ids')
     def _compute_external_damage_analysis_1(self):
         for item in self:
-            item.external_damage_analysis_1 = item.get_external_damage('MANCHA GRAVE').percent
+            item.external_damage_analysis_1 = item.get_external_damage('MANCHA GRAVE (SERIOUS STAIN)').percent
 
     @api.multi
     @api.depends('external_damage_analysis_ids')
     def _compute_external_damage_analysis_2(self):
         for item in self:
-            item.external_damage_analysis_2 = item.get_external_damage('MEZCLA VARIEDAD').percent
+            item.external_damage_analysis_2 = item.get_external_damage('MEZCLA VARIEDAD (MIX VARIETY)').percent
 
     @api.multi
     @api.depends('external_damage_analysis_ids')
     def _compute_external_damage_analysis_3(self):
         for item in self:
-            item.external_damage_analysis_3 = item.get_external_damage('CASCO ABIERTO').percent
+            item.external_damage_analysis_3 = item.get_external_damage('CASCO ABIERTO (OPEN SHELL)').percent
 
     @api.multi
     @api.depends('external_damage_analysis_ids')
     def _compute_external_damage_analysis_4(self):
         for item in self:
-            item.external_damage_analysis_4 = item.get_external_damage('CÁSCARA IMPERFECTA').percent
+            item.external_damage_analysis_4 = item.get_external_damage('CÁSCARA IMPERFECTA (IMPERFECT SHELL)').percent
 
     @api.multi
     @api.depends('external_damage_analysis_ids')
     def _compute_external_damage_analysis_5(self):
         for item in self:
-            item.external_damage_analysis_5 = item.get_external_damage('NUEZ PARTIDA').percent
+            item.external_damage_analysis_5 = item.get_external_damage('NUEZ PARTIDA (BROKEN SHELL)').percent
 
     @api.multi
     @api.depends('external_damage_analysis_ids')
     def _compute_external_damage_analysis_6(self):
         for item in self:
-            item.external_damage_analysis_6 = item.get_external_damage('NUEZ TRIZADA').percent
+            item.external_damage_analysis_6 = item.get_external_damage('NUEZ TRIZADA (CRACKED SHELL)').percent
 
     @api.multi
     @api.depends('external_damage_analysis_ids')
     def _compute_external_damage_analysis_7(self):
         for item in self:
-            item.external_damage_analysis_7 = item.get_external_damage('PELÓN ADERIDO').percent
+            item.external_damage_analysis_7 = item.get_external_damage('PELÓN ADHERIDO (ADHERING HULL)').percent
 
     @api.multi
     @api.depends('external_damage_analysis_ids')
     def _compute_external_damage_analysis_8(self):
         for item in self:
-            item.external_damage_analysis_8 = item.get_external_damage('HONGO ACTIVO NCC').percent
+            item.external_damage_analysis_8 = item.get_external_damage('HONGO ACTIVO NCC (DECAY)').percent
 
     @api.multi
     @api.depends('external_damage_analysis_ids')
     def _compute_external_damage_analysis_9(self):
         for item in self:
-            item.external_damage_analysis_9 = item.get_external_damage('HONGO INACTIVO NCC').percent
+            item.external_damage_analysis_9 = item.get_external_damage('HONGO INACTIVO NCC (MOLD)').percent
 
     @api.multi
     @api.depends('external_damage_analysis_ids')
     def _compute_external_damage_analysis_10(self):
         for item in self:
-            item.external_damage_analysis_10 = item.get_external_damage('MANCHA LEVE').percent
+            item.external_damage_analysis_10 = item.get_external_damage('MANCHA LEVE (SLIGHT STAIN)').percent
 
     @api.multi
     @api.depends('external_damage_analysis_ids')
@@ -302,31 +303,31 @@ class QualityAnalysis(models.Model):
     @api.depends('internal_damage_analysis_ids')
     def _compute_internal_damage_analysis_1(self):
         for item in self:
-            item.internal_damage_analysis_1 = item.get_internal_damage('RESECA GRAVE').percent
+            item.internal_damage_analysis_1 = item.get_internal_damage('RESECA GRAVE (SERIOUS SHRIVELLING)').percent
 
     @api.multi
     @api.depends('internal_damage_analysis_ids')
     def _compute_internal_damage_analysis_2(self):
         for item in self:
-            item.internal_damage_analysis_2 = item.get_internal_damage('DAÑO INSECTO').percent
+            item.internal_damage_analysis_2 = item.get_internal_damage('DAÑO INSECTO (INSECT DAMAGE)').percent
 
     @api.multi
     @api.depends('internal_damage_analysis_ids')
     def _compute_internal_damage_analysis_3(self):
         for item in self:
-            item.internal_damage_analysis_3 = item.get_internal_damage('RESECA LEVE').percent
+            item.internal_damage_analysis_3 = item.get_internal_damage('RESECA LEVE (LIGHT SHRIVELLING)').percent
 
     @api.multi
     @api.depends('internal_damage_analysis_ids')
     def _compute_internal_damage_analysis_4(self):
         for item in self:
-            item.internal_damage_analysis_4 = item.get_internal_damage('HONGO ACTIVO NSC').percent
+            item.internal_damage_analysis_4 = item.get_internal_damage('HONGO ACTIVO NSC (DECAY)').percent
 
     @api.multi
     @api.depends('internal_damage_analysis_ids')
     def _compute_internal_damage_analysis_5(self):
         for item in self:
-            item.internal_damage_analysis_5 = item.get_internal_damage('HONGO INACTIVO NSC').percent
+            item.internal_damage_analysis_5 = item.get_internal_damage('HONGO INACTIVO NSC (MOLD)').percent
 
     @api.multi
     @api.depends('internal_damage_analysis_ids')
@@ -338,7 +339,7 @@ class QualityAnalysis(models.Model):
     @api.depends('internal_damage_analysis_ids')
     def _compute_internal_damage_analysis_7(self):
         for item in self:
-            item.internal_damage_analysis_7 = item.get_internal_damage('RANCIDEZ').percent
+            item.internal_damage_analysis_7 = item.get_internal_damage('CRISTALINO (RANCID)').percent
 
     humidity_analysis_id = fields.Many2one('humidity.analysis', 'Análisis de Humedad')
 
@@ -453,7 +454,7 @@ class QualityAnalysis(models.Model):
     @api.depends('color_analysis_ids')
     def _compute_color_analysis_3(self):
         for item in self:
-            item.color_analysis_3 = item.get_color('EXTRA LIGHT STANDAR').percent
+            item.color_analysis_3 = item.get_color('EXTRA LIGHT STANDARD').percent
 
     @api.multi
     @api.depends('color_analysis_ids')
@@ -477,7 +478,7 @@ class QualityAnalysis(models.Model):
     @api.depends('color_analysis_ids')
     def _compute_color_analysis_7(self):
         for item in self:
-            item.color_analysis_7 = item.get_color('AMARILLA').percent
+            item.color_analysis_7 = item.get_color('AMARIILA (YELLOW)').percent
 
     form_analysis_ids = fields.One2many(
         'form.analysis',

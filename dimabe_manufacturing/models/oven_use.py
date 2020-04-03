@@ -1,4 +1,5 @@
 from odoo import fields, models, api, _
+from odoo.addons import decimal_precision as dp
 from datetime import datetime
 from ..helpers import date_helper
 
@@ -80,17 +81,21 @@ class OvenUse(models.Model):
 
     reception_net_weight = fields.Float(
         'Kg Entrada',
-        related='used_lot_id.reception_net_weight'
+        related='used_lot_id.reception_net_weight',
+        digits=dp.get_precision('Product Unit of Measure')
+
     )
 
     total_out_weight = fields.Float(
         'Kg Salida',
-        related='history_id.total_out_weight'
+        related='history_id.total_out_weight',
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     performance = fields.Float(
         'Rendimiento',
-        related='history_id.performance'
+        related='history_id.performance',
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     stock_picking_id = fields.Many2one(
