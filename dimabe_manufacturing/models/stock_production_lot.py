@@ -472,7 +472,8 @@ class StockProductionLot(models.Model):
                     'display_weight': item.product_id.weight,
                     'serial_number': item.name + tmp[-3:],
                     'belongs_to_prd_lot': True,
-                    'pallet_id': pallet.id
+                    'pallet_id': pallet.id,
+                    'producer_id': pallet.producer_id.id
                 })
 
             pallet.update({

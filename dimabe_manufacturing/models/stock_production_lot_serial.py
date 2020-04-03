@@ -481,7 +481,7 @@ class StockProductionLotSerial(models.Model):
                     lambda a: a.product_id == self.product_id and not a.lot_id
                 )
 
-                pending_checks.unlink()
+                pending_checks.sudo().unlink()
                 line.unlink()
 
                 if wo.current_quality_check_id in pending_checks:
