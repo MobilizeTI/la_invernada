@@ -21,7 +21,7 @@ class StockProductionLot(models.Model):
 
     def _search_balance(self, operator, value):
         lot_ids = self.env['stock.quant'].search([
-            ('balance', operator, value)
+            ('balance', operator, value),
+            ('location_id.name', '=', 'Stock')
         ]).mapped('lot_id')
-
         return [('id', 'in', lot_ids.mapped('id'))]

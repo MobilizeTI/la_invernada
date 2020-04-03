@@ -255,7 +255,7 @@ class MrpProduction(models.Model):
             'lot_id').filtered(
             lambda a: a.product_id in self.stock_picking_id.move_ids_without_package.mapped('product_id')
         ).mapped('stock_production_lot_serial_ids')
-
+        models._logger.error('linea 258 {}'.format(serial_to_reserve_ids))
         for serial in serial_to_reserve_ids:
             serial.with_context(stock_picking_id=self.stock_picking_id.id).reserve_picking()
 

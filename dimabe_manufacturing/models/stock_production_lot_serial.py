@@ -327,6 +327,7 @@ class StockProductionLotSerial(models.Model):
 
     @api.multi
     def reserve_picking(self):
+        models._logger.error('linea {330} reserve picking')
         if 'stock_picking_id' in self.env.context:
             stock_picking_id = self.env.context['stock_picking_id']
             stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
@@ -480,7 +481,7 @@ class StockProductionLotSerial(models.Model):
                     lambda a: a.product_id == self.product_id and not a.lot_id
                 )
 
-                pending_checks.unlink()
+                pending_checks.sudo().unlink()
                 line.unlink()
 
                 if wo.current_quality_check_id in pending_checks:
