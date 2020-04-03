@@ -133,7 +133,7 @@ class StockPicking(models.Model):
         string="Sello Invernada"
     )
 
-    guide_number = fields.Char(
+    dispatch_guide_number = fields.Char(
         string="Numero de Guia"
     )
 

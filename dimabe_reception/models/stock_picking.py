@@ -7,7 +7,7 @@ class StockPicking(models.Model):
     _inherit = 'stock.picking'
     _order = 'date desc'
 
-    guide_number = fields.Integer('Número de Guía')
+    reception_guide_number = fields.Integer('Número de Guía')
 
     weight_guide = fields.Float(
         'Kilos Guía',
