@@ -473,7 +473,7 @@ class StockProductionLot(models.Model):
                     'serial_number': item.name + tmp[-3:],
                     'belongs_to_prd_lot': True,
                     'pallet_id': pallet.id,
-                    'producer_id': pallet.producer_id
+                    'producer_id': pallet.producer_id.id
                 })
 
             pallet.update({
