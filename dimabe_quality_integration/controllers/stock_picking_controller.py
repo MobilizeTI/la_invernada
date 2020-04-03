@@ -20,7 +20,7 @@ class StockPickingController(http.Controller):
                 'ProducerName': res.partner_id.name,
                 'VarietyName': res.get_mp_move().product_id.get_variety(),
                 'LotNumber': res.name,
-                'DispatchGuideNumber': res.guide_number,
+                'DispatchGuideNumber': res.reception_guide_number,
                 'ReceptionDate': res.scheduled_date,
                 'ReceptionKgs': res.production_net_weight,
                 'ContainerType': res.get_canning_move().product_id.display_name,
