@@ -104,6 +104,16 @@
     </field>
   </record>
 
+  <record id="view_production_lot_form_inherit" model="ir.ui.view">
+    <field name="name">formulario de lote</field>
+    <field name="model">stock.production.lot</field>
+    <field name="inherit_id" ref="stock.view_production_lot_form" />
+    <field name="arch" type="xml">
+      <field name="ref" position="after">
+        <field name="balance" />
+      </field>
+    </field>
+  </record>
 
   <record id="available_lot_form_view" model="ir.ui.view">
     <field name="name">Selección de Packing list</field>
@@ -168,6 +178,7 @@
       </tree>
     </field>
   </record>
+
   <record model="ir.actions.act_window" id="stock_production_lot_in_dashboard_action">
     <field name="name">Vista General Despelonado Entrada</field>
     <field name="res_model">stock.production.lot</field>
