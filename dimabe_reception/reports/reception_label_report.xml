@@ -192,7 +192,7 @@
                 <tr>
                   <td style="text-align: right !important;">N° DE GUÍA:</td>
                   <td>
-                    <span t-field="o.guide_number"/>
+                    <span t-field="o.reception_guide_number"/>
                   </td>
                 </tr>
                 <tr>
@@ -343,7 +343,7 @@
                 <tr>
                   <td style="text-align: right !important;">N° DE GUÍA:</td>
                   <td>
-                    <span t-field="o.guide_number"/>
+                    <span t-field="o.reception_guide_number"/>
                   </td>
                 </tr>
                 <tr>
@@ -427,7 +427,7 @@
                 </t>
               </th>
               <th>N° GUÍA:
-                <span t-field="stock_picking.guide_number"/>
+                <span t-field="stock_picking.reception_guide_number"/>
               </th>
             </tr>
           </table>

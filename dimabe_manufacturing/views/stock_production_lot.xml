@@ -161,7 +161,7 @@
       <tree>
         <field name="name"/>
         <field name="producer_id"/>
-        <field name="guide_number"/>
+        <field name="reception_guide_number"/>
         <field name="product_variety"/>
         <field name="product_canning"/>
         <field name="picking_type_id"/>

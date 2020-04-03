@@ -52,7 +52,7 @@
                     </tr>
                     <tr>
                         <td>Nro de Guía</td>
-                        <td>${object.guide_number}</td>
+                        <td>${object.reception_guide_number}</td>
                     </tr>
                     <tr>
                         <td>Kilos Guía</td>
