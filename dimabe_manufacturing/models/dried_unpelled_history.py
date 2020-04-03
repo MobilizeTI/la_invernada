@@ -203,6 +203,7 @@ class DriedUnpelledHistory(models.Model):
     def _compute_lot_guide_numbers(self):
         for item in self:
             tmp = ''
+            models._logger.error(item.in_lot_ids.mapped('reception_guide_number'));
             for guide_number in item.in_lot_ids.mapped('reception_guide_number'):
                 tmp += '{} '.format(guide_number)
                 item.lot_guide_numbers = tmp
