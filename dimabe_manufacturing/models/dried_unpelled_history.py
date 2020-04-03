@@ -211,7 +211,8 @@ class DriedUnpelledHistory(models.Model):
     @api.multi
     def _compute_in_lot_ids(self):
         for item in self:
-            item.in_lot_ids = item.oven_use_ids.mapped('used_lot_id')
+            for guide in item.oven_use_ids.mapped('used_lot_id'):
+                item.in_lot_ids = item.oven_use_ids.mapped('used_lot_id')
 
     @api.multi
     def _compute_out_serial_count(self):
