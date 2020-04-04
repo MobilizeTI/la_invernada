@@ -11,7 +11,7 @@ class StockPickingController(http.Controller):
     def get_stock_pickings(self, sinceDate = None):
         date_to_search = sinceDate or (date.today() - timedelta(days=1))
 
-        result = request.env['stock.picking'].search([('write_date', '>=', date_to_search)])
+        result = request.env['stock.picking'].search([])
         data = []
         if result:
             for res in result:
