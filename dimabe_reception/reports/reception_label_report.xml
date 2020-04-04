@@ -192,7 +192,7 @@
                 <tr>
                   <td style="text-align: right !important;">N° DE GUÍA:</td>
                   <td>
-                    <span t-field="o.reception_guide_number"/>
+                    <span t-field="o.guide_number"/>
                   </td>
                 </tr>
                 <tr>
