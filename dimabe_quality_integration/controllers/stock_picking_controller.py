@@ -21,7 +21,7 @@ class StockPickingController(http.Controller):
                 'VarietyName': res.get_mp_move().product_id.get_variety(),
                 'LotNumber': res.name,
                 'DispatchGuideNumber': res.guide_number,
-                'ReceptionDate': res.scheduled_date,
+                'ReceptionDate': res.scheduled_date or res.write_date,
                 'ReceptionKgs': res.production_net_weight,
                 'ContainerType': res.get_canning_move().product_id.display_name,
                 'ContainerWeightAverage': res.avg_unitary_weight,
