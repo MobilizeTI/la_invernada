@@ -77,8 +77,8 @@
                     <field name="lot_balance" readonly="1" force_save="1"/>
                     <field name="is_reserved" invisible="1"/>
                     <field name="mrp_production_state" invisible="1"/>
-                    <button string="Reservar"
-                            name="reserve_stock"
+                    <button string="Reservar Lote"
+                            name="reserve_stock_lot"
                             type="object"
                             attrs="{'invisible':['|',('qty_to_reserve', '>', 0),('mrp_production_state','=','done')]}"
                     />
