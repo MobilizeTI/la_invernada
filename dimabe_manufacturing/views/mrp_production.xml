@@ -87,7 +87,7 @@
                             type="object"
                             attrs="{'invisible':['|',('qty_to_reserve', '=', 0),('mrp_production_state', '=', 'done')]}"
                     />
-                    <field name="qty_to_reserve" readonly="1"/>
+                    <field name="qty_to_reserve" />
                   </tree>
                 </field>
               </group>
