@@ -253,13 +253,10 @@ class StockProductionLotSerial(models.Model):
             if not production:
                 raise models.ValidationError('No se encontró la orden de producción a la que reservar el producto')
             for item in self:
+                models._logger.error(item)
                 item.update({
                     'reserved_to_production_id': production.id
                 })
-
-                stock_move = production.move_raw_ids.filtered(
-                    lambda a: a.product_id == item.stock_production_lot_id.product_id
-                )
 
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
 
