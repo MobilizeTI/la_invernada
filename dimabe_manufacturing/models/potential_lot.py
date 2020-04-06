@@ -85,6 +85,8 @@ class PotentialLot(models.Model):
     def reserve_stock_lot(self):
         for item in self:
             serials = self.env['stock.production.lot.serial'].search([('stock_production_lot_id','=',self.stock_production_lot_id.id)])
+            for serial in serials:
+                models._logger.error(serial)
             raise models.ValidationError("LotSerials : {}".format(serials))
             item.is_reserved = True
 
