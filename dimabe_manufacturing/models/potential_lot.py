@@ -82,13 +82,14 @@ class PotentialLot(models.Model):
             )
 
     @api.multi
-    def reserve_stock(self):
+    def reserve_stock_serial(self):
         for item in self:
-            item.potential_serial_ids.filtered(lambda a: not a.reserved_to_production_id and not
-            a.reserved_to_stock_picking_id).with_context(mrp_production_id=item.mrp_production_id.id).reserve_serial()
-            item.get_stock_quant().sudo().update({
-                'reserved_quantity':  item.get_stock_quant().total_reserved
-            })
+            raise models.ValidationError('Balance: {}'.format(item.lot_balance))
+            #item.potential_serial_ids.filtered(lambda a: not a.reserved_to_production_id and not
+            #a.reserved_to_stock_picking_id).with_context(mrp_production_id=item.mrp_production_id.id).reserve_serial()
+            #item.get_stock_quant().sudo().update({
+            #    'reserved_quantity':  item.get_stock_quant().total_reserved
+            #})
             item.is_reserved = True
 
     @api.multi
