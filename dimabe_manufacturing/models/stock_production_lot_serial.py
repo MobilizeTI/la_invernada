@@ -248,10 +248,8 @@ class StockProductionLotSerial(models.Model):
 
     @api.multi
     def reserve_serial(self):
-
         if 'mrp_production_id' in self.env.context:
-            production_id = self.env.context['mrp_production_id']
-            production = self.env['mrp.production'].search([('id', '=', production_id)])
+            production = self.env['mrp.production'].search([('id', '=', self.env.context['mrp_production_id'])])
             if not production:
                 raise models.ValidationError('No se encontró la orden de producción a la que reservar el producto')
             for item in self:
@@ -269,7 +267,9 @@ class StockProductionLotSerial(models.Model):
                     'reserved_quantity': stock_quant.total_reserved
                 })
 
-                for stock in stock_move:
+                for stock in production.move_raw_ids.filtered(
+                    lambda a : a.product_id == item.stock_production_lot_id.product_id
+                ):
                     item.add_move_line(stock)
         else:
             raise models.ValidationError('no se pudo identificar producción')
