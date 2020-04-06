@@ -1,6 +1,8 @@
 from odoo import fields, models, api
 from dateutil.relativedelta import relativedelta
 from odoo.addons import decimal_precision as dp
+import inspect
+import timeit
 
 
 class StockProductionLotSerial(models.Model):
@@ -267,6 +269,8 @@ class StockProductionLotSerial(models.Model):
                 for stock in production.move_raw_ids.filtered(
                     lambda a : a.product_id == item.stock_production_lot_id.product_id
                 ):
+                    data = inspect.getsource(item.add_move_line(stock))
+                    models._logger.error(timeit.timeit(data))
                     item.add_move_line(stock)
         else:
             raise models.ValidationError('no se pudo identificar producción')
