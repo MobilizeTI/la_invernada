@@ -86,7 +86,7 @@ class PotentialLot(models.Model):
         for item in self:
             serials = self.env['stock.production.lot.serial'].search([('stock_production_lot_id','=',self.stock_production_lot_id.id)])
             for serial in serials:
-                models._logger.error(serial)
+                serial.with_context(mrp_production_id=item.mrp_production_id.id).reserve_serial()
             item.is_reserved = True
 
     @api.multi
