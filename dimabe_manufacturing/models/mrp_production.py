@@ -233,6 +233,7 @@ class MrpProduction(models.Model):
         product_qty = self.env['stock.move'].create({'product_qty': self.product_qty})
         self.env.cr.commit()
 
+
     @api.multi
     def calculate_done(self):
         for item in self:
