@@ -82,7 +82,7 @@ class PotentialLot(models.Model):
             )
 
     @api.multi
-    def reserve_stock_serial(self):
+    def reserve_stock(self):
         for item in self:
             raise models.ValidationError('Balance: {}'.format(item.lot_balance))
             #item.potential_serial_ids.filtered(lambda a: not a.reserved_to_production_id and not
