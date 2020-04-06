@@ -87,6 +87,7 @@ class PotentialLot(models.Model):
             item.potential_serial_ids.filtered(lambda a: not a.reserved_to_production_id and not
             a.reserved_to_stock_picking_id).with_context(mrp_production_id=item.mrp_production_id.id).reserve_serial()
             quant = item.get_stock_quant()
+            
             quant.sudo().update({
                 'reserved_quantity': quant.total_reserved
             })
