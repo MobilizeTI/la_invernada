@@ -121,4 +121,4 @@ class PotentialLot(models.Model):
     @api.multi
     def unreserved_stock(self):
         for item in self:
-            raise models.ValidationError(item.stock_production_lot_id.lot_balance)
+            raise models.ValidationError(item.lot_balance)
