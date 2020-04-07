@@ -266,7 +266,8 @@ class StockProductionLotSerial(models.Model):
                         'reserved_to_production_id': production.id
                     })
                     item.stock_production_lot_id.update({
-                        'qty_to_reserve': item.stock_production_lot_id.qty_to_reserve + item.display_weight
+                        'qty_to_reserve': item.stock_production_lot_id.qty_to_reserve + item.display_weight,
+                        'balance': item.stock_production_lot_id.balance + item.display_weight
                     })
 
         else:
