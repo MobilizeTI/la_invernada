@@ -108,7 +108,8 @@ class PotentialLot(models.Model):
                             })
                         ]
                     })
-
+            else:
+                raise models.ValidationError("Esta asosiado a una produccion")
         item.is_reserved = True
 
     @api.multi
