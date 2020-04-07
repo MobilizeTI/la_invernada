@@ -123,7 +123,6 @@ class PotentialLot(models.Model):
         for item in self:
             if 'from_lot' in self.env.context:
                 from_lot = self.env.context['from_lot']
-                raise models.ValidationError(from_lot)
                 if from_lot:
                     stock_move = item.mrp_production_id.move_raw_ids.filtered(
                         lambda a: a.product_id == item.stock_production_lot_id.product_id
