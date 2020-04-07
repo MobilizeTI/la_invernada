@@ -137,7 +137,7 @@ class PotentialLot(models.Model):
                     ('usage', '=', 'production'),
                     ('location_id.name', 'like', 'Virtual Locations')
                 ])
-                stock_move.sudo().update({
+                stock.sudo().update({
                     'active_move_line_ids': [
                         (0, 0, {
                             'product_id': None,
