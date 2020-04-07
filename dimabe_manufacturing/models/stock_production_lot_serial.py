@@ -267,7 +267,7 @@ class StockProductionLotSerial(models.Model):
                 stock_quant.sudo().update({
                     'reserved_quantity': stock_quant.total_reserved
                 })
-            # f or stock in self.env['mrp.production'].search([('id', '=', self.env.context['mrp_production_id'])]).move_raw_ids.filtered(
+            # for stock in self.env['mrp.production'].search([('id', '=', self.env.context['mrp_production_id'])]).move_raw_ids.filtered(
             #   lambda a : a.product_id == item.stock_production_lot_id.product_id
             # ):
             #   item.add_move_line(stock)
