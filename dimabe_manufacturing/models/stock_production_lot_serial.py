@@ -258,6 +258,7 @@ class StockProductionLotSerial(models.Model):
                 raise models.ValidationError('No se encontró la orden de producción a la que reservar el producto')
             for item in self:
                 # models._logger.error(item)
+                raise models.ValidationError(sum(self.display_weight))
                 if from_lot:
                     item.update({
                         'reserved_to_production_id': production.id
