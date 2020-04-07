@@ -36,7 +36,6 @@
                         name="unreserved_serial"
                         attrs="{'invisible':['|',('reserved_to_production_id', '=', False),('consumed','=',True)]}"
                         type="object"
-                        context="{'from_lot':False}"
                 />
                 <field name="serial_number"/>
                 <field name="display_weight"/>

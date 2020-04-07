@@ -86,6 +86,7 @@
                             name="unreserved_stock"
                             type="object"
                             attrs="{'invisible':['|',('qty_to_reserve', '=', 0),('mrp_production_state', '=', 'done')]}"
+                            context="{'from_lot':True}"
                     />
                     <field name="qty_to_reserve" />
                   </tree>
