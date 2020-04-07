@@ -130,7 +130,7 @@ class PotentialLot(models.Model):
             )
             item.update(
                 {
-                    'qty_to_reserved': 0
+                    'qty_to_reserve': 0
                 }
             )
             stock_quant = item.stock_production_lot_id.get_stock_quant()
