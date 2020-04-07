@@ -238,6 +238,7 @@ class MrpProduction(models.Model):
     def calculate_done(self):
         for item in self:
             lot = item.finished_move_line_ids.mapped('lot_id')
+            raise models.ValidationError(lot)
             for line_id in item.finished_move_line_ids:
                 line_id.qty_done = line_id.lot_id.total_serial
             for move in item.move_raw_ids.filtered(
