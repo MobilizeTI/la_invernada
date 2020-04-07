@@ -264,10 +264,19 @@ class StockProductionLotSerial(models.Model):
                     item.update({
                         'reserved_to_production_id': production.id
                     })
-                    item.stock_production_lot_id.update({
-                        'qty_to_reserve': item.stock_production_lot_id.qty_to_reserve + item.display_weight,
-                        'balance': item.stock_production_lot_id.balance + item.display_weight
+
+                    stock_move = production.move_raw_ids.filtered(
+                        lambda a: a.product_id == item.stock_production_lot_id.product_id
+                    )
+
+                    stock_quant = item.stock_production_lot_id.get_stock_quant()
+
+                    stock_quant.sudo().update({
+                        'reserved_quantity': stock_quant.total_reserved
                     })
+
+                    for stock in stock_move:
+                        item.add_move_line(stock)
 
         else:
             raise models.ValidationError('no se pudo identificar producción')
