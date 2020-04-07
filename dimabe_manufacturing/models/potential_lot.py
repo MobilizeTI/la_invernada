@@ -128,9 +128,15 @@ class PotentialLot(models.Model):
                 lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.lot_balance
                           and a.qty_done == 0
             )
+            item.update(
+                {
+                    'qty_to_reserved': 0
+                }
+            )
             stock_quant = item.stock_production_lot_id.get_stock_quant()
             stock_quant.sudo().update({
                 'reserved_quantity': 0
+
             })
             if move_line:
                 move_line[0].write({'move_id': None, 'product_uom_qty': 0})
