@@ -134,3 +134,4 @@ class PotentialLot(models.Model):
             })
             if move_line:
                 move_line[0].write({'move_id': None, 'product_uom_qty': 0})
+            item.is_reserved = False
