@@ -265,7 +265,7 @@ class StockProductionLotSerial(models.Model):
                     item.update({
                         'reserved_to_production_id': production.id
                     })
-                    raise models.ValidationError(item.stock_production_lot_id.qty_to_reseve)
+                    raise models.ValidationError(item.stock_production_lot_id.qty_to_reserve)
 
         else:
             raise models.ValidationError('no se pudo identificar producción')
