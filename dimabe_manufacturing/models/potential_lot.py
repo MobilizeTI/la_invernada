@@ -86,9 +86,9 @@ class PotentialLot(models.Model):
         for item in self:
             serial_to_reserve = item.potential_serial_ids.filtered(lambda a: not a.reserved_to_production_id and not
             a.reserved_to_stock_picking_id)
-            serial_to_reserve.with_context(mrp_production_id=item.mrp_production_id.id,from_lot=True).reserve_serial()
+            serial_to_reserve.with_context(mrp_production_id=item.mrp_production_id.id, from_lot=True).reserve_serial()
             for stock in item.mrp_production_id.move_raw_ids.filtered(
-                lambda a: a.product_id == item.stock_production_lot_id.product_id
+                    lambda a: a.product_id == item.stock_production_lot_id.product_id
             ):
                 stock_quant = self.stock_production_lot_id.get_stock_quant()
                 virtual_location_production_id = self.env['stock.location'].search([
@@ -121,25 +121,5 @@ class PotentialLot(models.Model):
     @api.multi
     def unreserved_stock(self):
         for item in self:
-            quant = item.get_stock_quant()
-
-            quant.sudo().update({
-                'reserved_quantity' : sum(quant.lot_id.stock_production_lot_serial_ids.filtered(
-                    lambda a : not a.consumed and (a.reserved_to_production_id or a.reserved_to_stock_picking_id)
-                ).mapped('display_weight')
-                                          )
-            })
-            for stock in item.mrp_production_id.move_raw_ids.filtered(
-                lambda a: a.product_id == item.stock_production_lot_id.product_id
-            ):
-                stock_quant = self.stock_production_lot_id.get_stock_quant()
-                virtual_location_production_id = self.env['stock.location'].search([
-                    ('usage', '=', 'production'),
-                    ('location_id.name', 'like', 'Virtual Locations')
-                ])
-
-            move_line = stock.active_move_line_ids.filtered(
-                lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.lot_balance
-                    and a.qty_done == 0
-            )
-            raise models.ValidationError(move_line)
+            quant = item.stock_production_lot_id.get_stock_quant()
+            raise models.ValidationError(quant)
