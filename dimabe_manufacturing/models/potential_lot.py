@@ -121,11 +121,6 @@ class PotentialLot(models.Model):
     @api.multi
     def unreserved_stock(self):
         for item in self:
-            if item.consumed:
-                raise models.ValidationError('el código {} ya ha sido consumido'.format(
-                    item.name
-                ))
-
                 stock_move = item.reserved_to_production_id.move_raw_ids.filtered(
                      lambda a: a.product_id == item.stock_production_lot_id.product_id
                 )
