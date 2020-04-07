@@ -254,7 +254,6 @@ class StockProductionLotSerial(models.Model):
         if 'mrp_production_id' in self.env.context and 'from_lot' in self.env.context:
             production = self.env['mrp.production'].search([('id', '=', self.env.context['mrp_production_id'])])
             from_lot = self.env.context['from_lot']
-            raise models.ValidationError(type(from_lot))
             if not production:
                 raise models.ValidationError('No se encontró la orden de producción a la que reservar el producto')
             for item in self:
