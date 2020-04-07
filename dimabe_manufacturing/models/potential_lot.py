@@ -92,23 +92,26 @@ class PotentialLot(models.Model):
                 for stock in item.mrp_production_id.move_raw_ids.filtered(
                         lambda a: a.product_id == item.stock_production_lot_id.product_id
                 ):
-                    stock_quant = self.stock_production_lot_id.get_stock_quant()
-                    virtual_location_production_id = self.env['stock.location'].search([
-                        ('usage', '=', 'production'),
-                        ('location_id.name', 'like', 'Virtual Locations')
-                    ])
-                    stock.sudo().update({
-                        'active_move_line_ids': [
-                            (0, 0, {
-                                'product_id': self.stock_production_lot_id.product_id.id,
-                                'lot_id': self.stock_production_lot_id.id,
-                                'product_uom_qty': self.lot_balance,
-                                'product_uom_id': stock.product_uom.id,
-                                'location_id': stock_quant.location_id.id,
-                                'location_dest_id': virtual_location_production_id.id
-                            })
-                        ]
-                    })
+                    if stock.lot_id != item.stock_production_lot_id.name:
+                        stock_quant = self.stock_production_lot_id.get_stock_quant()
+                        virtual_location_production_id = self.env['stock.location'].search([
+                            ('usage', '=', 'production'),
+                            ('location_id.name', 'like', 'Virtual Locations')
+                        ])
+                        stock.sudo().update({
+                            'active_move_line_ids': [
+                                (0, 0, {
+                                    'product_id': self.stock_production_lot_id.product_id.id,
+                                    'lot_id': self.stock_production_lot_id.id,
+                                    'product_uom_qty': self.lot_balance,
+                                    'product_uom_id': stock.product_uom.id,
+                                    'location_id': stock_quant.location_id.id,
+                                    'location_dest_id': virtual_location_production_id.id
+                                })
+                            ]
+                        })
+                    else :
+                        raise models.ValidationError("Test")
         item.is_reserved = True
 
     @api.multi
