@@ -251,13 +251,12 @@ class StockProductionLotSerial(models.Model):
     def reserve_serial(self):
         if 'mrp_production_id' in self.env.context:
             production = self.env['mrp.production'].search([('id', '=', self.env.context['mrp_production_id'])])
-            # from_lot = self.env.context['from_lot']
-            total = 0
+            from_lot = self.env.context['from_lot']
+            raise models._logger.error(from_lot)
             if not production:
                 raise models.ValidationError('No se encontró la orden de producción a la que reservar el producto')
             for item in self:
-                total = total + item.display_weight
-                models._logger.error(total)
+
                 # if from_lot:
                 item.update({
                     'reserved_to_production_id': production.id
