@@ -132,7 +132,10 @@ class PotentialLot(models.Model):
 
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
 
-                raise models.ValidationError(item.stock_production_lot_id.stock_production_lot_serial_ids)
+                for serial in item.stock_production_lot_id.stock_production_lot_serial_ids:
+                    serial.update({
+                        'reserved_to_production_id': None
+                    })
 
                 stock_quant.sudo().update({
                      'reserved_quantity': stock_quant.total_reserved
