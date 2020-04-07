@@ -121,18 +121,43 @@ class PotentialLot(models.Model):
     @api.multi
     def unreserved_stock(self):
         for item in self:
-            serial_to_reserve = item.potential_serial_ids.filtered(
-                lambda a: a.reserved_to_production_id == item.mrp_production_id
-            )
-
-            serial_to_reserve.unreserved_serial()
-
             quant = item.get_stock_quant()
 
             quant.sudo().update({
-                'reserved_quantity': sum(quant.lot_id.stock_production_lot_serial_ids.filtered(
-                    lambda a: not a.consumed and (a.reserved_to_production_id or a.reserved_to_stock_picking_id)
-                ).mapped('display_weight'))
+                'reserved_quantity' : sum(quant.lot_id.stock_production_lot_serial_ids.filtered(
+                    lambda a : not a.consumed and (a.reserved_to_production_id or a.reserved_to_stock_picking_id)
+                ).mapped('display_weight')
+                                          )
             })
-
-            item.is_reserved = item.qty_to_reserve > 0
+            for stock in item.mrp_production_id.move_raw_ids.filtered(
+                lambda a: a.product_id == item.stock_production_lot_id.product_id
+            ):
+                stock_quant = self.stock_production_lot_id.get_stock_quant()
+                virtual_location_production_id = self.env['stock.location'].search([
+                    ('usage', '=', 'production'),
+                    ('location_id.name', 'like', 'Virtual Locations')
+                ])
+                stock.sudo().update({
+                    'active_move_line_ids': [
+                        (0, 0, {
+                            'product_uom_qty': 0,
+                            'location_id': None,
+                            'location_dest_id': None
+                        })
+                    ]
+                })
+            # serial_to_reserve = item.potential_serial_ids.filtered(
+            #     lambda a: a.reserved_to_production_id == item.mrp_production_id
+            # )
+            #
+            # serial_to_reserve.unreserved_serial()
+            #
+            # quant = item.get_stock_quant()
+            #
+            # quant.sudo().update({
+            #     'reserved_quantity': sum(quant.lot_id.stock_production_lot_serial_ids.filtered(
+            #         lambda a: not a.consumed and (a.reserved_to_production_id or a.reserved_to_stock_picking_id)
+            #     ).mapped('display_weight'))
+            # })
+            #
+            # item.is_reserved = item.qty_to_reserve > 0

@@ -263,11 +263,11 @@ class StockProductionLotSerial(models.Model):
                     'reserved_to_production_id': production.id
                 })
                 models.ValidationError(type(from_lot))
-            # stock_quant = item.stock_production_lot_id.get_stock_quant()
-            # stock_quant.sudo().update({
-            #     'reserved_quantity': stock_quant.total_reserved
-            # })
-            # for stock in self.env['mrp.production'].search([('id', '=', self.env.context['mrp_production_id'])]).move_raw_ids.filtered(
+                stock_quant = item.stock_production_lot_id.get_stock_quant()
+                stock_quant.sudo().update({
+                    'reserved_quantity': stock_quant.total_reserved
+                })
+            # f or stock in self.env['mrp.production'].search([('id', '=', self.env.context['mrp_production_id'])]).move_raw_ids.filtered(
             #   lambda a : a.product_id == item.stock_production_lot_id.product_id
             # ):
             #   item.add_move_line(stock)
@@ -302,28 +302,28 @@ class StockProductionLotSerial(models.Model):
                 raise models.ValidationError('el código {} ya ha sido consumido'.format(
                     item.name
                 ))
+            #
+            # stock_move = item.reserved_to_production_id.move_raw_ids.filtered(
+            #     lambda a: a.product_id == item.stock_production_lot_id.product_id
+            # )
 
-            stock_move = item.reserved_to_production_id.move_raw_ids.filtered(
-                lambda a: a.product_id == item.stock_production_lot_id.product_id
-            )
-
-            move_line = stock_move.active_move_line_ids.filtered(
-                lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.display_weight
-                          and a.qty_done == 0
-            )
-
-            stock_quant = item.stock_production_lot_id.get_stock_quant()
-
-            item.update({
-                'reserved_to_production_id': None
-            })
-
-            stock_quant.sudo().update({
-                'reserved_quantity': stock_quant.total_reserved
-            })
-
-            if move_line:
-                move_line[0].write({'move_id': None, 'product_uom_qty': 0})
+                # move_line = stock_move.active_move_line_ids.filtered(
+                #     lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.display_weight
+                #               and a.qty_done == 0
+                # )
+                #
+                # stock_quant = item.stock_production_lot_id.get_stock_quant()
+                #
+                # item.update({
+                #     'reserved_to_production_id': None
+                # })
+                #
+                # stock_quant.sudo().update({
+                #     'reserved_quantity': stock_quant.total_reserved
+                # })
+                #
+                # if move_line:
+                #     move_line[0].write({'move_id': None, 'product_uom_qty': 0})
 
     @api.multi
     def reserve_picking(self):
