@@ -145,5 +145,5 @@ class PotentialLot(models.Model):
                      'reserved_quantity': stock_quant.total_reserved
                  })
 
-                 if move_line:
+                if move_line:
                      move_line[0].write({'move_id': None, 'product_uom_qty': 0})
