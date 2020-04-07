@@ -137,30 +137,9 @@ class PotentialLot(models.Model):
                     ('usage', '=', 'production'),
                     ('location_id.name', 'like', 'Virtual Locations')
                 ])
-                stock.sudo().update({
-                    'active_move_line_ids': [
-                        (0, 0, {
-                            'product_id': None,
-                            'lot_id': None,
-                            'product_uom_qty': 0,
-                            'product_uom_id': None,
-                            'location_id': None,
-                            'location_dest_id': None
-                        })
-                    ]
-                })
-            # serial_to_reserve = item.potential_serial_ids.filtered(
-            #     lambda a: a.reserved_to_production_id == item.mrp_production_id
-            # )
-            #
-            # serial_to_reserve.unreserved_serial()
-            #
-            # quant = item.get_stock_quant()
-            #
-            # quant.sudo().update({
-            #     'reserved_quantity': sum(quant.lot_id.stock_production_lot_serial_ids.filtered(
-            #         lambda a: not a.consumed and (a.reserved_to_production_id or a.reserved_to_stock_picking_id)
-            #     ).mapped('display_weight'))
-            # })
-            #
-            # item.is_reserved = item.qty_to_reserve > 0
+
+            move_line = stock.active_move_line_ids.filtered(
+                lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.lot_balance
+                    and a.qty_done == 0
+            )
+            raise models.ValidationError(move_line)

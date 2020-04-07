@@ -250,7 +250,7 @@ class StockProductionLotSerial(models.Model):
 
     @api.multi
     def reserve_serial(self):
-        
+
         if 'mrp_production_id' in self.env.context and 'from_lot' in self.env.context:
             production = self.env['mrp.production'].search([('id', '=', self.env.context['mrp_production_id'])])
             from_lot = self.env.context['from_lot']
@@ -306,11 +306,11 @@ class StockProductionLotSerial(models.Model):
             #     lambda a: a.product_id == item.stock_production_lot_id.product_id
             # )
 
-                # move_line = stock_move.active_move_line_ids.filtered(
-                #     lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.display_weight
-                #               and a.qty_done == 0
-                # )
-                #
+                move_line = stock_move.active_move_line_ids.filtered(
+                     lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.display_weight
+                               and a.qty_done == 0
+                )
+
                 # stock_quant = item.stock_production_lot_id.get_stock_quant()
                 #
                 # item.update({
