@@ -84,9 +84,27 @@ class PotentialLot(models.Model):
     @api.multi
     def reserve_stock_lot(self):
         for item in self:
-            serials = self.env['stock.production.lot.serial'].search([('stock_production_lot_id','=',self.stock_production_lot_id.id)])
-            for serial in serials:
-                serial.with_context(mrp_production_id=item.mrp_production_id.id).reserve_serial()
+            for stock in item.mrp_production_id.move_raws_ids.filtered(
+                lambda a: a.product_id == item.stock_production_lot_id.product_id
+            ):
+                stock_quant = self.stock_production_lot_id.get_stock_quant()
+                virtual_location_production_id = self.env['stock.location'].search([
+                    ('usage', '=', 'production'),
+                    ('location_id.name', 'like', 'Virtual Locations')
+                ])
+                stock.sudo().update({
+                    'active_move_line_ids': [
+                        (0, 0, {
+                            'product_id': self.stock_production_lot_id.product_id.id,
+                            'lot_id': self.stock_production_lot_id.id,
+                            'product_uom_qty': self.display_weight,
+                            'product_uom_id': stock.product_uom.id,
+                            'location_id': stock_quant.location_id.id,
+                            'location_dest_id': virtual_location_production_id.id
+                        })
+                    ]
+                })
+
             item.is_reserved = True
 
     @api.multi
