@@ -122,11 +122,15 @@ class PotentialLot(models.Model):
     def unreserved_stock(self):
         for item in self:
             stock_move = item.mrp_production_id.move_raw_ids.filtered(
-                lambda a : a.product_id == item.stock_production_lot_id.product_id
+                lambda a: a.product_id == item.stock_production_lot_id.product_id
             )
             move_line = stock_move.active_move_line_ids.filtered(
-                lambda a : a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.lot_balance
-                    and a.qty_done == 0
+                lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.lot_balance
+                          and a.qty_done == 0
             )
             stock_quant = item.stock_production_lot_id.get_stock_quant()
-            raise models.ValidationError(stock_quant)
+            stock_quant.sudo().update({
+                'reserved_quantity': stock_quant.total_reserved
+            })
+            if move_line:
+                move_line[0].write({'move_id': None, 'product_uom_qty': 0})
