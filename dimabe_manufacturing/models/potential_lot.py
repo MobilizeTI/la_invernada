@@ -128,4 +128,5 @@ class PotentialLot(models.Model):
                 lambda a : a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.lot_balance
                     and a.qty_done == 0
             )
-            raise models.ValidationError(move_line)
+            stock_quant = item.stock_production_lot_id.get_stock_quant()
+            raise models.ValidationError(stock_quant)
