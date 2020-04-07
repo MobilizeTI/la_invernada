@@ -124,4 +124,8 @@ class PotentialLot(models.Model):
             stock_move = item.mrp_production_id.move_raw_ids.filtered(
                 lambda a : a.product_id == item.stock_production_lot_id.product_id
             )
-            raise models.ValidationError(stock_move)
+            move_line = stock_move.active_move_line_ids.filtered(
+                lambda a : a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.lot_balance
+                    and a.qty_done == 0
+            )
+            raise models.ValidationError(move_line)
