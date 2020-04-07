@@ -260,10 +260,10 @@ class StockProductionLotSerial(models.Model):
                 'reserved_to_production_id': self.env['mrp.production'].search(
                     [('id', '=', self.env.context['mrp_production_id'])]).id
             })
-            stock_quant = item.stock_production_lot_id.get_stock_quant()
-            stock_quant.sudo().update({
-                'reserved_quantity': stock_quant.total_reserved
-            })
+            # stock_quant = item.stock_production_lot_id.get_stock_quant()
+            # stock_quant.sudo().update({
+            #     'reserved_quantity': stock_quant.total_reserved
+            # })
             # for stock in self.env['mrp.production'].search([('id', '=', self.env.context['mrp_production_id'])]).move_raw_ids.filtered(
             #   lambda a : a.product_id == item.stock_production_lot_id.product_id
             # ):
