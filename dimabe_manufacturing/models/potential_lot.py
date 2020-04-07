@@ -141,6 +141,7 @@ class PotentialLot(models.Model):
                     'active_move_line_ids': [
                         (0, 0, {
                             'product_uom_qty': 0,
+                            'product_uom_id': None,
                             'location_id': None,
                             'location_dest_id': None
                         })
