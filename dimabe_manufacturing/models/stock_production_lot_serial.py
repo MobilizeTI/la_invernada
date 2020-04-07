@@ -1,8 +1,7 @@
 from odoo import fields, models, api
 from dateutil.relativedelta import relativedelta
 from odoo.addons import decimal_precision as dp
-import inspect
-import timeit
+import math
 
 
 class StockProductionLotSerial(models.Model):
@@ -250,7 +249,7 @@ class StockProductionLotSerial(models.Model):
 
     @api.multi
     def reserve_serial(self):
-        raise models.ValidationError(sum(self.display_weight))
+        raise models.ValidationError(math.fsum(self.display_weight))
         if 'mrp_production_id' in self.env.context and 'from_lot' in self.env.context:
             production = self.env['mrp.production'].search([('id', '=', self.env.context['mrp_production_id'])])
             from_lot = self.env.context['from_lot']
