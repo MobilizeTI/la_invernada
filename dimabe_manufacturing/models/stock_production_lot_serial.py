@@ -116,6 +116,7 @@ class StockProductionLotSerial(models.Model):
         related='production_id.bom_id'
     )
 
+
     @api.multi
     def _inverse_real_weight(self):
         for item in self:
@@ -264,7 +265,7 @@ class StockProductionLotSerial(models.Model):
                     item.update({
                         'reserved_to_production_id': production.id
                     })
-                    raise models.ValidationError(item.stock_production_lot_id.balance)
+                    raise models.ValidationError(item.stock_production_lot_id.qty_to_reseve)
 
         else:
             raise models.ValidationError('no se pudo identificar producción')
