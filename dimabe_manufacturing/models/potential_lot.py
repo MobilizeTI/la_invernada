@@ -85,7 +85,7 @@ class PotentialLot(models.Model):
     def reserve_stock_lot(self):
         for item in self:
             raise models.ValidationError(
-                item.stock_production_lot_id.stock_production_lot_serial_ids.mapped('consumed'))
+                item.stock_production_lot_id.stock_production_lot_serial_ids.mapped('reserved_to_production_id'))
             serial_to_reserve = item.potential_serial_ids.filtered(lambda a: not a.reserved_to_production_id and not
             a.reserved_to_stock_picking_id)
             serial_to_reserve.with_context(mrp_production_id=item.mrp_production_id.id, from_lot=True).reserve_serial()
