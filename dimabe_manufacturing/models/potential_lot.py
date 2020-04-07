@@ -130,7 +130,7 @@ class PotentialLot(models.Model):
             )
             stock_quant = item.stock_production_lot_id.get_stock_quant()
             stock_quant.sudo().update({
-                'reserved_quantity': stock_quant.total_reserved
+                'reserved_quantity': 0
             })
             if move_line:
                 move_line[0].write({'move_id': None, 'product_uom_qty': 0})
