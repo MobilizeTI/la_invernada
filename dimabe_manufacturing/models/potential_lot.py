@@ -93,6 +93,7 @@ class PotentialLot(models.Model):
                 for stock in item.mrp_production_id.move_raw_ids.filtered(
                         lambda a: a.product_id == item.stock_production_lot_id.product_id
                 ):
+                    
                     stock_quant = self.stock_production_lot_id.get_stock_quant()
                     virtual_location_production_id = self.env['stock.location'].search([
                         ('usage', '=', 'production'),
