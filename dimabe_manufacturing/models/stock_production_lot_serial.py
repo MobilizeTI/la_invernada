@@ -255,23 +255,32 @@ class StockProductionLotSerial(models.Model):
             if not production:
                 raise models.ValidationError('No se encontró la orden de producción a la que reservar el producto')
             for item in self:
-                if not item.reserved_to_production_id:
-                        item.update({
-                            'reserved_to_production_id': production.id
-                        })
-                        stock_move = production.move_raw_ids.filtered(
-                            lambda a: a.product_id == item.stock_production_lot_id.product_id
-                        )
-                        stock_quant = item.stock_production_lot_id.get_stock_quant()
-
-                        stock_quant.sudo().update({
-                            'reserved_quantity': stock_quant.total_reserved
-                        })
-
-                        for stock in stock_move:
-                            item.add_move_line(stock)
+                if from_lot:
+                    item.update({
+                        'reserved_to_production_id': production.id
+                    })
+                    
+                    item.stock_production_lot_id.update({
+                        'qty_to_reserved' : item.stock_production_lot_id.balance + item.display_weight
+                    })
+                    raise models.ValidationError(item.stock_production_lot_id.qty_to_reserved)
                 else:
-                    raise models.ValidationError('Serie ya reservada a una produccion')
+                    item.update({
+                        'reserved_to_production_id': production.id
+                    })
+
+                    stock_move = production.move_raw_ids.filtered(
+                        lambda a: a.product_id == item.stock_production_lot_id.product_id
+                    )
+
+                    stock_quant = item.stock_production_lot_id.get_stock_quant()
+
+                    stock_quant.sudo().update({
+                        'reserved_quantity': stock_quant.total_reserved
+                    })
+
+                    for stock in stock_move:
+                        item.add_move_line(stock)
         else:
             raise models.ValidationError('no se pudo identificar producción')
 
