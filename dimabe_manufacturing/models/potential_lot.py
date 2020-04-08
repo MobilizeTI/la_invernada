@@ -85,33 +85,32 @@ class PotentialLot(models.Model):
     def reserve_stock_lot(self):
         for item in self:
             serial_to_reserve = item.potential_serial_ids.filtered(lambda a: not a.reserved_to_production_id and not
-                                                                            a.reserved_to_stock_picking_id)
+            a.reserved_to_stock_picking_id)
             models._logger.error(serial_to_reserve)
             if serial_to_reserve:
-                serial_to_reserve.with_context(mrp_production_id=item.mrp_production_id.id, from_lot=True).reserve_serial()
+                serial_to_reserve.with_context(mrp_production_id=item.mrp_production_id.id,
+                                               from_lot=True).reserve_serial()
                 for stock in item.mrp_production_id.move_raw_ids.filtered(
                         lambda a: a.product_id == item.stock_production_lot_id.product_id
                 ):
-                    if stock.lot_id != item.stock_production_lot_id.name:
-                        stock_quant = self.stock_production_lot_id.get_stock_quant()
-                        virtual_location_production_id = self.env['stock.location'].search([
-                            ('usage', '=', 'production'),
-                            ('location_id.name', 'like', 'Virtual Locations')
-                        ])
-                        stock.sudo().update({
-                            'active_move_line_ids': [
-                                (0, 0, {
-                                    'product_id': self.stock_production_lot_id.product_id.id,
-                                    'lot_id': self.stock_production_lot_id.id,
-                                    'product_uom_qty': self.lot_balance,
-                                    'product_uom_id': stock.product_uom.id,
-                                    'location_id': stock_quant.location_id.id,
-                                    'location_dest_id': virtual_location_production_id.id
-                                })
-                            ]
-                        })
-                    else :
-                        raise models.ValidationError("Test")
+                    stock_quant = self.stock_production_lot_id.get_stock_quant()
+                    virtual_location_production_id = self.env['stock.location'].search([
+                        ('usage', '=', 'production'),
+                        ('location_id.name', 'like', 'Virtual Locations')
+                    ])
+                    stock.sudo().update({
+                        'active_move_line_ids': [
+                            (0, 0, {
+                                'product_id': self.stock_production_lot_id.product_id.id,
+                                'lot_id': self.stock_production_lot_id.id,
+                                'product_uom_qty': self.lot_balance,
+                                'product_uom_id': stock.product_uom.id,
+                                'location_id': stock_quant.location_id.id,
+                                'location_dest_id': virtual_location_production_id.id
+                            })
+                        ]
+                    })
+
         item.is_reserved = True
 
     @api.multi
