@@ -115,6 +115,7 @@ class StockProductionLotSerial(models.Model):
         'Lista de Materiales',
         related='production_id.bom_id'
     )
+    
 
     @api.multi
     def _inverse_real_weight(self):
@@ -260,6 +261,11 @@ class StockProductionLotSerial(models.Model):
                     item.update({
                         'reserved_to_production_id': production.id
                     })
+                    
+                    item.stock_production_lot_id.update({
+                        'qty_to_reserved' : item.stock_production_lot_id.balance + item.display_weight
+                    })
+                    raise models.ValidationError(item.stock_production_lot_id.qty_to_reserved)
                 else:
                     item.update({
                         'reserved_to_production_id': production.id
