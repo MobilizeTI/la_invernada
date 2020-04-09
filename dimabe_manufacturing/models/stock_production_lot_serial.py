@@ -182,8 +182,11 @@ class StockProductionLotSerial(models.Model):
             res.reserve_to_stock_picking_id = production.stock_picking_id.id
 
         res.label_durability_id = res.stock_production_lot_id.label_durability_id
-
+        
         if res.bom_id:
+            if res.bom_id.product_id != res.product_id:
+                res.gross_weight = res.display_weight
+                return res
             res.set_bom_canning()
             if res.canning_id:
                 res.gross_weight = res.display_weight + res.canning_id.weight

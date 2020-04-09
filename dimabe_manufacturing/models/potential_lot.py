@@ -93,16 +93,14 @@ class PotentialLot(models.Model):
                                                from_lot=True).reserve_serial()
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
                 stock_quant.sudo().update({
-                    'reserved_quantity': stock_quant.total_reserved
+                    'reserved_quantity': stock_quant.total_reserved 
                 })
-                item.update({
-                    'lot_balance':0
-                })
+                models._logger.error(item.lot_balance)
                 for stock in item.mrp_production_id.move_raw_ids.filtered(
                         lambda a: a.product_id == item.stock_production_lot_id.product_id
                 ):
 
-                    item.add_move_line(stock,stock_quant)
+                    item.add_move_line(stock , stock_quant)
         item.is_reserved = True
         
         
@@ -121,7 +119,7 @@ class PotentialLot(models.Model):
                 (0, 0, {
                     'product_id': self.stock_production_lot_id.product_id.id,
                     'lot_id': self.stock_production_lot_id.id,
-                    'product_uom_qty': self.qty_to_reserve,
+                    'product_uom_qty': self.qty_to_reserve + self.lot_balance,
                     'product_uom_id': stock_move.product_uom.id,
                     'location_id': stock_quant.location_id.id,
                     'location_dest_id': virtual_location_production_id.id
