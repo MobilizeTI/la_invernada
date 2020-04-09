@@ -95,7 +95,7 @@ class PotentialLot(models.Model):
                         lambda a: a.product_id == item.stock_production_lot_id.product_id
                 ):
                     item.add_move_line(stock)
-            item.update({
+            item.stock_production_lot_id.update({
                 'balance': item.stock_production_lot_id.balance - item.qty_to_reserve
             })
         item.is_reserved = True
