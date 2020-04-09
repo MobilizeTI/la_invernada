@@ -98,7 +98,7 @@ class PotentialLot(models.Model):
                 for stock in item.mrp_production_id.move_raw_ids.filtered(
                         lambda a: a.product_id == item.stock_production_lot_id.product_id
                 ):
-                    item.add_move_line(stock)
+                    item.add_move_line(stock,stock_quant)
         raise UserError("Balance after : {}".format(item.stock_production_lot_id.balance - item.qty_to_reserve))
         item.is_reserved = True
         
