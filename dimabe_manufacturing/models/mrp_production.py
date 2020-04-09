@@ -255,7 +255,7 @@ class MrpProduction(models.Model):
         serial_to_reserve_ids = self.workorder_ids.mapped('production_finished_move_line_ids').mapped(
             'lot_id').filtered(
             lambda a: a.product_id in self.stock_picking_id.move_ids_without_package.mapped('product_id')
-        ).mapped('stock_production_lot_serial_ids').update({'reserved_to_stock_picking_id': self.stock_picking.id})
+        ).mapped('stock_production_lot_serial_ids').update({'reserved_to_stock_picking_id': self.stock_picking_id.id})
 
         for serial in serial_to_reserve_ids:
             stock_move = self.stock_picking_id.move_lines.filtered(
