@@ -312,6 +312,7 @@ class StockPicking(models.Model):
                     raise models.ValidationError(message)
         res = super(StockPicking, self).button_validate()
         self.sendKgNotify()
+        models._logger.error(self.canning_weight)
         if self.get_mp_move() or self.get_pt_move():
             m_move = self.get_mp_move()
             if not m_move:
