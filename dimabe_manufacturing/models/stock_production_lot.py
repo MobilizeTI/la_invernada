@@ -380,7 +380,22 @@ class StockProductionLot(models.Model):
                 stock_move = stock_picking.move_ids_without_package.filtered(
                     lambda a : a.product_id == item.product_id
                 )
-                models._logger.error(stock_move)
+                stock_quant = item.get_stock_quant()
+                stock_quant.sudo().update({
+                    'reserved_quantity' : stock_quant.total_reserved
+                })
+                stock_move.sudo().update({
+                    'active_move_line_ids': [
+                        (0, 0, {
+                            'product_id': item.product_id.id,
+                            'lot_id': item.id,
+                            'product_uom_qty': item.available_total_serial,
+                            'product_uom_id': stock_move.product_uom.id,
+                            'location_id': stock_quant.location_id.id,
+                            'location_dest_id': virtual_location_production_id.id
+                        })
+                    ]
+                })
             #serial_to_assign_ids.with_context(stock_picking_id=picking_id).reserve_picking()
 
     @api.multi
