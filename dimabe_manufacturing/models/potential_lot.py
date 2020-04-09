@@ -41,7 +41,8 @@ class PotentialLot(models.Model):
     qty_to_reserve = fields.Float(
         'Cantidad Reservada',
         compute='_compute_qty_to_reserve',
-        digits=dp.get_precision('Product Unit of Measure')
+        digits=(12,1)
+        # digits=dp.get_precision('Product Unit of Measure')
     )
 
     is_reserved = fields.Boolean('Reservado')
