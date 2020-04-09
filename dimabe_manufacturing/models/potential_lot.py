@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 from odoo.addons import decimal_precision as dp
 
 
