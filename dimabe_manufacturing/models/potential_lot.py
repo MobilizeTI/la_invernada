@@ -88,7 +88,7 @@ class PotentialLot(models.Model):
             serial_to_reserve = item.potential_serial_ids.filtered(lambda a: not a.reserved_to_production_id and not
             a.reserved_to_stock_picking_id)
             if serial_to_reserve:
-                raise UserError('Balance:{}'.format(item.stock_production_lot_id.balance))
+
                 serial_to_reserve.with_context(mrp_production_id=item.mrp_production_id.id,
                                                from_lot=True).reserve_serial()
                 for stock in item.mrp_production_id.move_raw_ids.filtered(
@@ -105,6 +105,7 @@ class PotentialLot(models.Model):
             ('usage', '=', 'production'),
             ('location_id.name', 'like', 'Virtual Locations')
         ])
+        raise UserError('Balance:{}'.format(self.stock_production_lot_id.balance))
         stock_move.sudo().update({
             'active_move_line_ids': [
                 (0, 0, {
