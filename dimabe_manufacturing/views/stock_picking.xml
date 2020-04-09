@@ -9,14 +9,14 @@
       <button name="do_unreserve" position="replace"/>
 
       <page name="note" position="after">
-        <page name="packing_list" string="Packing List"
+        <page name="packing_list" string="Reservados"
               attrs="{'invisible':['|',('state','=','cancel'),('picking_type_code', '!=', 'outgoing')]}"
         >
 
           <field name="id" invisible="1"/>
           <field name="state" invisible="1"/>
           <notebook>
-            <page string="Lotes de Packing List">
+            <page string="Lotes de Reservados">
               <group>
                 <field name="packing_list_lot_ids">
                   <tree>
@@ -31,7 +31,7 @@
                 </field>
               </group>
             </page>
-            <page string="Pallets de packing list">
+            <page string="Pallets Reservados">
               <group>
                 <field name="assigned_pallet_ids">
                   <tree>
@@ -39,7 +39,7 @@
                     <field name="total_content_weight"/>
                     <field name="total_available_content"/>
                     <field name="state"/>
-                    <button string="Quitar de Packing List"
+                    <button string="Quitar Reserva"
                             name="remove_from_picking"
                             type="object"
                             context="{'stock_picking_id': parent.id}"
@@ -48,7 +48,7 @@
                 </field>
               </group>
             </page>
-            <page string="Series de Packing list">
+            <page string="Series Reservados">
               <group>
                 <field name="packing_list_ids">
                   <tree>
@@ -57,7 +57,7 @@
                     <field name="serial_number"/>
                     <field name="display_weight"/>
                     <field name="consumed" invisible="1"/>
-                    <button string="Quitar de Packing List"
+                    <button string="Quitar Reserva"
                             type="object"
                             name="unreserved_picking"
                             groups="mrp.group_mrp_manager"
@@ -86,7 +86,7 @@
                     <field name="product_id" readonly="1"/>
                     <field name="available_total_serial" readonly="1"/>
                     <field name="is_reserved" invisible="1"/>
-                    <button string="Agregar a Packing List" type="object" name="add_to_packing_list"
+                    <button string="Agregar Reserva" type="object" name="add_to_packing_list"
                             context="{'stock_picking_id':parent.id}"
                             attrs="{'invisible': [('is_reserved','=',True)]}"/>
                     <button string="Ver Series"
