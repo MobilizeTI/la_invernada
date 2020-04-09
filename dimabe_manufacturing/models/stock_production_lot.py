@@ -17,7 +17,7 @@ class StockProductionLot(models.Model):
     )
 
     can_add_serial = fields.Boolean(
-        'Puede Agregar Series'
+        'Puede Agregar Series',
         compute='_compute_can_add_serial'
     )
 
