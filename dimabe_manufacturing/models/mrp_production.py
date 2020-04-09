@@ -257,10 +257,12 @@ class MrpProduction(models.Model):
             lambda a: a.product_id in self.stock_picking_id.move_ids_without_package.mapped('product_id')
         ).mapped('stock_production_lot_serial_ids')
 
-        if  serial_to_reserve_ids and len(serial_to_reserve_ids) > 0:
+        if serial_to_reserve_ids and len(serial_to_reserve_ids) > 0:
             serial_to_reserve_ids.write({
                 'reserved_to_stock_picking_id': self.stock_picking_id.id
             })
+
+        models._logger.error(serial_to_reserve_ids.mapped('stock_production_lot'))
 
         for serial in serial_to_reserve_ids:
             stock_move = self.stock_picking_id.move_lines.filtered(
