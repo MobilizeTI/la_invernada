@@ -392,7 +392,7 @@ class StockProductionLot(models.Model):
                             'product_uom_qty': item.available_total_serial,
                             'product_uom_id': stock_move.product_uom.id,
                             'location_id': stock_quant.location_id.id,
-                            'location_dest_id': virtual_location_production_id.id
+                            'location_dest_id': stock_picking.partner_id.property_stock_customer.id
                         })
                     ]
                 })
