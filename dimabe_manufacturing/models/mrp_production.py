@@ -276,7 +276,7 @@ class MrpProduction(models.Model):
                     serial.stock_production_lot_id.name
             ))
 
-            potential_lot = self.env['potential.lot'].search([('stock_production_lot_id','==',lot.id)])
+            potential_lot = self.env['potential.lot'].search([('stock_production_lot_id','=',lot)])
 
             move_line = self.env['stock.move.line'].create({
                 'product_id': lot.product_id.id,
