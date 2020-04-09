@@ -389,7 +389,6 @@ class StockProductionLotSerial(models.Model):
     @api.multi
     def unreserved_picking(self):
         for item in self:
-
             stock_move = item.reserved_to_stock_picking_id.move_lines.filtered(
                 lambda a: a.product_id == item.stock_production_lot_id.product_id
             )

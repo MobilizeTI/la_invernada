@@ -389,7 +389,7 @@ class StockProductionLot(models.Model):
 
                 if not stock_quant:
                     raise models.ValidationError('El lote {} aún se encuentra en proceso.'.format(
-                        item.stock_production_lot_id.name
+                        item.name
                     ))
 
                 move_line = self.env['stock.move.line'].create({
