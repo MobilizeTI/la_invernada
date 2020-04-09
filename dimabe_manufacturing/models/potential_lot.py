@@ -105,11 +105,12 @@ class PotentialLot(models.Model):
         
     @api.model
     def add_move_line(self, stock_move,stock_quant):
-
         virtual_location_production_id = self.env['stock.location'].search([
             ('usage', '=', 'production'),
             ('location_id.name', 'like', 'Virtual Locations')
         ])
+        data = stock_move.mapped('active_move_line_ids')
+        raise UserError(data)
         stock_move.sudo().update({
             'active_move_line_ids': [
                 (0, 0, {
