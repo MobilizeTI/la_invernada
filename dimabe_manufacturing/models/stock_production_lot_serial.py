@@ -182,7 +182,7 @@ class StockProductionLotSerial(models.Model):
             res.reserve_to_stock_picking_id = production.stock_picking_id.id
 
         res.label_durability_id = res.stock_production_lot_id.label_durability_id
-        
+
         if res.bom_id:
             if res.bom_id.product_id != res.product_id:
                 res.gross_weight = res.display_weight
@@ -317,7 +317,7 @@ class StockProductionLotSerial(models.Model):
 
             move_line = stock_move.active_move_line_ids.filtered(
                 lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.display_weight
-                    and a.qty_done == 0
+                          and a.qty_done == 0
             )
 
             stock_quant = item.stock_production_lot_id.get_stock_quant()
@@ -332,7 +332,6 @@ class StockProductionLotSerial(models.Model):
 
             if move_line:
                 move_line[0].write({'move_id': None, 'product_uom_qty': 0})
-
 
     @api.multi
     def reserve_picking(self):
@@ -349,44 +348,43 @@ class StockProductionLotSerial(models.Model):
                     'reserved_to_stock_picking_id': stock_picking.id
                 })
                 stock_move = item.reserved_to_stock_picking_id.move_lines.filtered(
-                     lambda a: a.product_id == item.stock_production_lot_id.product_id
-                 )
+                    lambda a: a.product_id == item.stock_production_lot_id.product_id
+                )
 
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
 
                 if not stock_quant:
-                     raise models.ValidationError('El lote {} aún se encuentra en proceso.'.format(
-                         item.stock_production_lot_id.name
-                     ))
+                    raise models.ValidationError('El lote {} aún se encuentra en proceso.'.format(
+                        item.stock_production_lot_id.name
+                    ))
 
                 move_line = self.env['stock.move.line'].create({
-                     'product_id': item.stock_production_lot_id.product_id.id,
-                     'lot_id': item.stock_production_lot_id.id,
-                     'product_uom_qty': item.display_weight,
-                     'product_uom_id': stock_move.product_uom.id,
-                     'location_id': stock_quant.location_id.id,
-                     # 'qty_done': item.display_weight,
-                     'location_dest_id': stock_picking.partner_id.property_stock_customer.id
-                 })
+                    'product_id': item.stock_production_lot_id.product_id.id,
+                    'lot_id': item.stock_production_lot_id.id,
+                    'product_uom_qty': item.display_weight,
+                    'product_uom_id': stock_move.product_uom.id,
+                    'location_id': stock_quant.location_id.id,
+                    # 'qty_done': item.display_weight,
+                    'location_dest_id': stock_picking.partner_id.property_stock_customer.id
+                })
 
                 stock_move.sudo().update({
-                     'move_line_ids': [
-                         (4, move_line.id)
-                     ]
-                 })
+                    'move_line_ids': [
+                        (4, move_line.id)
+                    ]
+                })
 
                 item.reserved_to_stock_picking_id.update({
-                     'move_line_ids': [
-                         (4, move_line.id)
-                     ]
-                 })
+                    'move_line_ids': [
+                        (4, move_line.id)
+                    ]
+                })
 
                 stock_quant.sudo().update({
-                     'reserved_quantity': stock_quant.total_reserved
-                 })
+                    'reserved_quantity': stock_quant.total_reserved
+                })
         else:
             raise models.ValidationError('no se pudo identificar picking')
-
 
     @api.multi
     def unreserved_picking(self):
@@ -397,15 +395,17 @@ class StockProductionLotSerial(models.Model):
             )
 
             move_line = stock_move.move_line_ids.filtered(
-                lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.display_weight
+                lambda
+                    a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.stock_production_lot_id.available_total_serial
             )
+            raise models.ValidationError(move_line)
             if len(move_line) > 1:
                 for move in move_line:
 
                     picking_move_line = item.reserved_to_stock_picking_id.move_line_ids.filtered(
                         lambda a: a.id == move.id
                     )
-                    raise models.ValidationError(picking_move_line)
+
                     stock_quant = item.stock_production_lot_id.get_stock_quant()
 
                     stock_quant.sudo().update({
@@ -449,7 +449,6 @@ class StockProductionLotSerial(models.Model):
                 stock_quant.sudo().update({
                     'reserved_quantity': stock_quant.total_reserved
                 })
-
 
     def remove_and_reduce(self):
         if self.consumed:
