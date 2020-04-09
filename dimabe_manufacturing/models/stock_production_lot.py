@@ -380,7 +380,7 @@ class StockProductionLot(models.Model):
                 stock_move = stock_picking.move_ids_without_package.filtered(
                     lambda a : a.product_id == item.product_id
                 )
-                model._logger.error(stock_move)
+                models._logger.error(stock_move)
             #serial_to_assign_ids.with_context(stock_picking_id=picking_id).reserve_picking()
 
     @api.multi
