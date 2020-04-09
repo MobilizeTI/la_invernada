@@ -111,7 +111,6 @@ class PotentialLot(models.Model):
         ])
         data = stock_move.mapped('active_move_line_ids')
         for d in data:
-            raise UserError(d.lot_id)
             if d.lot_id.name == self.stock_production_lot_id.name:
                 raise UserError("Error")
         stock_move.sudo().update({
