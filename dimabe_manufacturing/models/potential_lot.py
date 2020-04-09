@@ -16,7 +16,7 @@ class PotentialLot(models.Model):
 
     lot_balance = fields.Float(
         related='stock_production_lot_id.balance',
-        digits=dp.get_precision('Product Unit of Measure')
+        digits=dp.get_precision('Lot')
     )
 
     stock_production_lot_id = fields.Many2one('stock.production.lot', 'lote potencial')
