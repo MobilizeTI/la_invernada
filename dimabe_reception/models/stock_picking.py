@@ -189,6 +189,7 @@ class StockPicking(models.Model):
         if self.is_mp_reception or self.is_pt_reception or self.is_satelite_reception:
             if self.canning_weight:
                 self.production_net_weight = self.production_net_weight - self.canning_weight
+        models._logger.error(self.production_net_weight)
 
     @api.one
     def _compute_elapsed_time(self):
@@ -230,7 +231,7 @@ class StockPicking(models.Model):
                 divisor = canning.product_uom_qty
                 if divisor == 0:
                     divisor = 1
-                    models._logger.error(self.production_net_weight)
+                    
                 self.avg_unitary_weight = self.production_net_weight / divisor
 
     @api.model
