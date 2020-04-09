@@ -145,10 +145,9 @@ class PotentialLot(models.Model):
                     )
 
                     move_line = stock_move.active_move_line_ids.filtered(
-                        lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.lot_balance
+                        lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.qty_to_reserve
                                   and a.qty_done == 0
                     )
-                    raise UserError(move_line)
                     stock_quant = item.stock_production_lot_id.get_stock_quant()
 
                     for serial in item.stock_production_lot_id.stock_production_lot_serial_ids:
