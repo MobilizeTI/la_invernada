@@ -255,8 +255,7 @@ class MrpProduction(models.Model):
         serial_to_reserve_ids = self.workorder_ids.mapped('production_finished_move_line_ids').mapped(
             'lot_id').filtered(
             lambda a: a.product_id in self.stock_picking_id.move_ids_without_package.mapped('product_id')
-        ).mapped('stock_production_lot_serial_ids')
-        models._logger.error('linea 258 {}'.format(serial_to_reserve_ids)).update({'reserved_to_stock_picking_id': self.stock_picking.id})
+        ).mapped('stock_production_lot_serial_ids').update({'reserved_to_stock_picking_id': self.stock_picking.id})
 
         for serial in serial_to_reserve_ids:
             stock_move = self.stock_picking_id.move_lines.filtered(
@@ -292,9 +291,9 @@ class MrpProduction(models.Model):
                 ]
                 })
 
-        stock_quant.sudo().update({
-            'reserved_quantity': stock_quant.total_reserved
-            })
+            stock_quant.sudo().update({
+                'reserved_quantity': stock_quant.total_reserved
+                })
         serial_to_reserve_ids.mapped('stock_production_lot_id').write({
             'can_add_serial': False
         })
