@@ -157,7 +157,7 @@ class PotentialLot(models.Model):
                         })
 
                     stock_quant.sudo().update({
-                        'reserved_quantity': stock_quant.total_reserved
+                        'reserved_quantity': 0
                     })
 
                     if move_line:
