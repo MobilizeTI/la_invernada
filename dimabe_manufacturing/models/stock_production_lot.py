@@ -18,6 +18,7 @@ class StockProductionLot(models.Model):
 
     can_add_serial = fields.Boolean(
         'Puede Agregar Series'
+        compute='_compute_can_add_serial'
     )
 
     producer_ids = fields.One2many(
@@ -192,6 +193,12 @@ class StockProductionLot(models.Model):
         'Es Equipo Dimabe',
         compute='_compute_is_dimabe_team'
     )
+    
+    @api.multi
+    def _compute_can_add_serial(self):
+        for item in self:
+            if item.is_prd_lot:
+                item.can_add_serial = True
 
     @api.multi
     def _compute_serial_without_pallet_ids(self):
