@@ -259,10 +259,6 @@ class StockProductionLotSerial(models.Model):
                     item.update({
                         'reserved_to_production_id': production.id
                     })
-                    stock_move = production.move_raw_ids.filtered(
-                        lambda a: a.product_id == item.stock_production_lot_id.product_id
-                    )
-                    item.stock_production_lot_id.add_move_line(stock_move)
                 else:
                     item.update({
                         'reserved_to_production_id': production.id

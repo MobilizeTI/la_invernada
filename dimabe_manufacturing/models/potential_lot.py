@@ -93,9 +93,6 @@ class PotentialLot(models.Model):
                         lambda a: a.product_id == item.stock_production_lot_id.product_id
                 ):
                     item.add_move_line(stock)
-                    
-                    
-
         item.is_reserved = True
         
         
