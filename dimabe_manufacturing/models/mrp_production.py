@@ -262,7 +262,7 @@ class MrpProduction(models.Model):
                 'reserved_to_stock_picking_id': self.stock_picking_id.id
             })
 
-        models._logger.error(serial_to_reserve_ids.mapped('stock_production_lot'))
+        models._logger.error(serial_to_reserve_ids.mapped('stock_production_lot_id'))
 
         for serial in serial_to_reserve_ids:
             stock_move = self.stock_picking_id.move_lines.filtered(
