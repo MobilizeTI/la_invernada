@@ -96,13 +96,13 @@ class PotentialLot(models.Model):
                     'reserved_quantity': stock_quant.total_reserved
                 })
                 item.update({
-                    'lot_balance':0
+                    'lot_balance': 0
                 })
                 for stock in item.mrp_production_id.move_raw_ids.filtered(
                         lambda a: a.product_id == item.stock_production_lot_id.product_id
                 ):
 
-                    item.add_move_line(stock,stock_quant)
+                    item.add_move_line(stock , stock_quant)
         item.is_reserved = True
         
         
