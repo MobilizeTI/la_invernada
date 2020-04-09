@@ -352,7 +352,7 @@ class StockProductionLotSerial(models.Model):
                      lambda a: a.product_id == item.stock_production_lot_id.product_id
                  )
 
-                 stock_quant = item.stock_production_lot_id.get_stock_quant()
+                stock_quant = item.stock_production_lot_id.get_stock_quant()
 
                  if not stock_quant:
                      raise models.ValidationError('El lote {} aún se encuentra en proceso.'.format(
