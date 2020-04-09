@@ -373,8 +373,43 @@ class StockProductionLot(models.Model):
             serial_to_assign_ids = item.stock_production_lot_serial_ids.filtered(
                 lambda a: not a.consumed and not a.reserved_to_stock_picking_id
             )
+            stock_move = item.reserved_to_stock_picking_id.move_lines.filtered(
+                    lambda a: a.product_id == item.stock_production_lot_id.product_id
+                )
 
-            serial_to_assign_ids.with_context(stock_picking_id=picking_id).reserve_picking()
+            stock_quant = item.get_stock_quant()
+
+            if not stock_quant:
+                raise models.ValidationError('El lote {} aún se encuentra en proceso.'.format(
+                    item.name
+                ))
+
+            move_line = self.env['stock.move.line'].create({
+                'product_id': item.product_id.id,
+                'lot_id': item.id,
+                'product_uom_qty': item.balance,
+                'product_uom_id': stock_move.product_uom.id,
+                'location_id': stock_quant.location_id.id,
+                # 'qty_done': item.display_weight,
+                'location_dest_id': picking_id.partner_id.property_stock_customer.id
+                })
+
+            stock_move.sudo().update({
+                'move_line_ids': [
+                    (4, move_line.id)
+                ]
+            })
+
+            item.reserved_to_stock_picking_id.update({
+                'move_line_ids': [
+                    (4, move_line.id)
+                ]
+            })
+
+            stock_quant.sudo().update({
+                    'reserved_quantity': stock_quant.total_reserved
+            })
+            serial_to_assign_ids.with_context(stock_picking_id=picking_id,from_lot=True).reserve_picking()
 
     @api.multi
     def reserved(self):
