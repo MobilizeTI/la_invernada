@@ -257,52 +257,52 @@ class MrpProduction(models.Model):
             lambda a: a.product_id in self.stock_picking_id.move_ids_without_package.mapped('product_id')
         ).mapped('stock_production_lot_serial_ids')
 
-        if serial_to_reserve_ids and len(serial_to_reserve_ids) > 0:
-            serial_to_reserve_ids.write({
-                'reserved_to_stock_picking_id': self.stock_picking_id.id
-            })
-
-        lot_id = serial_to_reserve_ids.mapped('stock_production_lot_id')
-        models._logger.error(lot_id)
-        for lot in lot_id:
-            stock_move = self.stock_picking_id.move_lines.filtered(
-                    lambda a: a.product_id == lot.product_id
-            )
-
-            stock_quant = lot.get_stock_quant()
-
-            if not stock_quant:
-                raise models.ValidationError('El lote {} aún se encuentra en proceso.'.format(
-                    serial.stock_production_lot_id.name
-            ))
-
-            potential_lot = self.env['potential.lot'].search([('stock_production_lot_id.id','=',lot.id)])
-
-            move_line = self.env['stock.move.line'].create({
-                'product_id': lot.product_id.id,
-                'lot_id': lot.id,
-                'product_uom_qty': potential_lot.qty_to_reserve,
-                'product_uom_id': stock_move.product_uom.id,
-                'location_id': stock_quant.location_id.id,
-                # 'qty_done': item.display_weight,
-                'location_dest_id': self.stock_picking_id.partner_id.property_stock_customer.id
-            })
-
-            stock_move.sudo().update({
-                'move_line_ids': [
-                    (4, move_line.id)
-                    ]
-                })
-
-            serial.reserved_to_stock_picking_id.update({
-                'move_line_ids': [
-                    (4, move_line.id)
-                ]
-                })
-
-            stock_quant.sudo().update({
-                'reserved_quantity': stock_quant.total_reserved
-                })
+        # if serial_to_reserve_ids and len(serial_to_reserve_ids) > 0:
+        #     serial_to_reserve_ids.write({
+        #         'reserved_to_stock_picking_id': self.stock_picking_id.id
+        #     })
+        #
+        # lot_id = serial_to_reserve_ids.mapped('stock_production_lot_id')
+        # models._logger.error(lot_id)
+        # for lot in lot_id:
+        #     stock_move = self.stock_picking_id.move_lines.filtered(
+        #             lambda a: a.product_id == lot.product_id
+        #     )
+        #
+        #     stock_quant = lot.get_stock_quant()
+        #
+        #     if not stock_quant:
+        #         raise models.ValidationError('El lote {} aún se encuentra en proceso.'.format(
+        #             serial.stock_production_lot_id.name
+        #     ))
+        #
+        #     potential_lot = self.env['potential.lot'].search([('stock_production_lot_id.id','=',lot.id)])
+        #
+        #     move_line = self.env['stock.move.line'].create({
+        #         'product_id': lot.product_id.id,
+        #         'lot_id': lot.id,
+        #         'product_uom_qty': potential_lot.qty_to_reserve,
+        #         'product_uom_id': stock_move.product_uom.id,
+        #         'location_id': stock_quant.location_id.id,
+        #         # 'qty_done': item.display_weight,
+        #         'location_dest_id': self.stock_picking_id.partner_id.property_stock_customer.id
+        #     })
+        #
+        #     stock_move.sudo().update({
+        #         'move_line_ids': [
+        #             (4, move_line.id)
+        #             ]
+        #         })
+        #
+        #     serial.reserved_to_stock_picking_id.update({
+        #         'move_line_ids': [
+        #             (4, move_line.id)
+        #         ]
+        #         })
+        #
+        #     stock_quant.sudo().update({
+        #         'reserved_quantity': stock_quant.total_reserved
+        #         })
         serial_to_reserve_ids.mapped('stock_production_lot_id').write({
             'can_add_serial': False
         })
