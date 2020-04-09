@@ -395,6 +395,7 @@ class StockProductionLotSerial(models.Model):
             stock_move = item.reserved_to_stock_picking_id.move_lines.filtered(
                 lambda a: a.product_id == item.stock_production_lot_id.product_id
             )
+            raise models.ValidationError(stock_move)
             move_line = stock_move.move_line_ids.filtered(
                 lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.display_weight
             )
