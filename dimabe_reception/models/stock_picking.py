@@ -13,38 +13,38 @@ class StockPicking(models.Model):
         'Kilos Guía',
         compute='_compute_weight_guide',
         store=True,
-        digits=dp.get_precision('Lot')
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     gross_weight = fields.Float(
         'Kilos Brutos',
-        digits=dp.get_precision('Lot')
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     tare_weight = fields.Float(
         'Peso Tara',
-        digits=dp.get_precision('Lot')
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     net_weight = fields.Float(
         'Kilos Netos',
         compute='_compute_net_weight',
         store=True,
-        digits=dp.get_precision('Lot')
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     canning_weight = fields.Float(
         'Peso Envases',
         compute='_compute_canning_weight',
         store=True,
-        digits=dp.get_precision('Lot')
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     production_net_weight = fields.Float(
         'Kilos Netos Producción',
         compute='_compute_production_net_weight',
         store=True,
-        digits=dp.get_precision('Lot')
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     # reception_type_selection = fields.Selection([
@@ -93,7 +93,7 @@ class StockPicking(models.Model):
 
     quality_weight = fields.Float(
         'Kilos Calidad',
-        digits=dp.get_precision('Lot')
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     carrier_rut = fields.Char(
