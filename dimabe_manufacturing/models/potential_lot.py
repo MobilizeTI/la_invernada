@@ -148,7 +148,7 @@ class PotentialLot(models.Model):
                         lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.lot_balance
                                   and a.qty_done == 0
                     )
-
+                    raise UserError(move_line)
                     stock_quant = item.stock_production_lot_id.get_stock_quant()
 
                     for serial in item.stock_production_lot_id.stock_production_lot_serial_ids:
