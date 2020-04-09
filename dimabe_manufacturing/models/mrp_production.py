@@ -262,6 +262,8 @@ class MrpProduction(models.Model):
                 'reserved_to_stock_picking_id': self.stock_picking_id.id
             })
 
+        move_lines = []
+
         for serial in serial_to_reserve_ids:
             stock_move = self.stock_picking_id.move_lines.filtered(
                     lambda a: a.product_id == serial.stock_production_lot_id.product_id
@@ -274,16 +276,21 @@ class MrpProduction(models.Model):
                     serial.stock_production_lot_id.name
             ))
 
-            move_line = self.env['stock.move.line'].create({
+            move_lines.append({
                 'product_id': serial.stock_production_lot_id.product_id.id,
                 'lot_id': serial.stock_production_lot_id.id,
                 'product_uom_qty': serial.display_weight,
                 'product_uom_id': stock_move.product_uom.id,
                 'location_id': stock_quant.location_id.id,
-                # 'qty_done': item.display_weight,
+                'qty_done': serial.display_weight,
                 'location_dest_id': self.stock_picking_id.partner_id.property_stock_customer.id
             })
+            stock_quant.sudo().update({
+                'reserved_quantity': stock_quant.total_reserved
+                })
 
+        result = self.env['stock_move_line'].create(move_lines)
+        for move_line in result:
             stock_move.sudo().update({
                 'move_line_ids': [
                     (4, move_line.id)
@@ -294,10 +301,6 @@ class MrpProduction(models.Model):
                 'move_line_ids': [
                     (4, move_line.id)
                 ]
-                })
-
-            stock_quant.sudo().update({
-                'reserved_quantity': stock_quant.total_reserved
                 })
         serial_to_reserve_ids.mapped('stock_production_lot_id').write({
             'can_add_serial': False
