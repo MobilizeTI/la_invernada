@@ -286,7 +286,7 @@ class StockPicking(models.Model):
                                 
                                 default_value = stock_picking.avg_unitary_weight or 1
                                 for i in range(int(total_qty)):
-                                    if i+1 == int(total_qty):
+                                    if i == int(total_qty):
                                         diff = stock_picking.production_net_weight - (int(total_qty) * default_value)
                                         tmp = '00{}'.format(i + 1)
                                         self.env['stock.production.lot.serial'].create({
