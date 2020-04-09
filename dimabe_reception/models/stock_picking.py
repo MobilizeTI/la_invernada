@@ -88,7 +88,7 @@ class StockPicking(models.Model):
     avg_unitary_weight = fields.Float(
         'Promedio Peso unitario',
         compute='_compute_avg_unitary_weight',
-        digits=dp.get_precision('Lot')
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     quality_weight = fields.Float(

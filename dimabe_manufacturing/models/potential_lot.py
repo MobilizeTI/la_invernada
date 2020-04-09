@@ -16,7 +16,7 @@ class PotentialLot(models.Model):
 
     lot_balance = fields.Float(
         related='stock_production_lot_id.balance',
-        digits=dp.get_precision('Lot')
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     stock_production_lot_id = fields.Many2one('stock.production.lot', 'lote potencial')
@@ -41,7 +41,7 @@ class PotentialLot(models.Model):
     qty_to_reserve = fields.Float(
         'Cantidad Reservada',
         compute='_compute_qty_to_reserve',
-        digits=dp.get_precision('Lot')
+        digits=dp.get_precision('Product Unit of Measure')
     )
 
     is_reserved = fields.Boolean('Reservado')
