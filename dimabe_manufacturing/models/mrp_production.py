@@ -277,7 +277,7 @@ class MrpProduction(models.Model):
                 'product_uom_id': stock_move.product_uom.id,
                 'location_id': stock_quant.location_id.id,
                 # 'qty_done': item.display_weight,
-                'location_dest_id': self.stock_picking.partner_id.property_stock_customer.id
+                'location_dest_id': self.stock_picking_id.partner_id.property_stock_customer.id
             })
 
             stock_move.sudo().update({
