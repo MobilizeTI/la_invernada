@@ -261,7 +261,7 @@ class MrpProduction(models.Model):
             serial.with_context(stock_picking_id=self.stock_picking_id.id).reserve_picking()
 
         serial_to_reserve_ids.mapped('stock_production_lot_id').write({
-            'can_add_serial': False
+            'can_add_serial': True
         })
 
         return res
