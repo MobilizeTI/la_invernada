@@ -260,7 +260,7 @@ class MrpProduction(models.Model):
         for serial in serial_to_reserve_ids:
             serial.with_context(stock_picking_id=self.stock_picking_id.id).reserve_picking()
             stock_move = self.stock_picking_id.move_lines.filtered(
-                    lambda a: a.product_id == serial.stock_production_id.product_id
+                    lambda a: a.product_id == serial.stock_production_lot_id.product_id
             )
 
             stock_quant = serial.stock_production_lot_id.get_stock_quant()
