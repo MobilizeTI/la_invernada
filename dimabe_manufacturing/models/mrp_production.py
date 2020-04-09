@@ -259,9 +259,44 @@ class MrpProduction(models.Model):
         models._logger.error('linea 258 {}'.format(serial_to_reserve_ids))
         for serial in serial_to_reserve_ids:
             serial.with_context(stock_picking_id=self.stock_picking_id.id).reserve_picking()
+            stock_move = self.stock_picking_id.move_lines.filtered(
+                    lambda a: a.product_id == serial.stock_production_id.product_id
+            )
 
+            stock_quant = serial.stock_production_lot_id.get_stock_quant()
+
+            if not stock_quant:
+                raise models.ValidationError('El lote {} aún se encuentra en proceso.'.format(
+                    serial.stock_production_lot_id.name
+            ))
+
+            move_line = self.env['stock.move.line'].create({
+                'product_id': serial.stock_production_lot_id.product_id.id,
+                'lot_id': serial.stock_production_lot_id.id,
+                'product_uom_qty': serial.display_weight,
+                'product_uom_id': stock_move.product_uom.id,
+                'location_id': stock_quant.location_id.id,
+                # 'qty_done': item.display_weight,
+                'location_dest_id': self.stock_picking.partner_id.property_stock_customer.id
+            })
+
+            stock_move.sudo().update({
+                'move_line_ids': [
+                    (4, move_line.id)
+                    ]
+                })
+
+            serial.reserved_to_stock_picking_id.update({
+                'move_line_ids': [
+                    (4, move_line.id)
+                ]
+                })
+
+        stock_quant.sudo().update({
+            'reserved_quantity': stock_quant.total_reserved
+            })
         serial_to_reserve_ids.mapped('stock_production_lot_id').write({
-            'can_add_serial': True
+            'can_add_serial': False
         })
 
         return res
