@@ -95,10 +95,7 @@ class PotentialLot(models.Model):
                 stock_quant.sudo().update({
                     'reserved_quantity': stock_quant.total_reserved
                 })
-                serial_to_reserve.create({
-                    'name': 'DIF' + item.stock_production_lot_id.name,
-                    'display_weight' : item.lot_balance                
-                })
+                models._logger.error(item._lot_balance)
                 for stock in item.mrp_production_id.move_raw_ids.filtered(
                         lambda a: a.product_id == item.stock_production_lot_id.product_id
                 ):
