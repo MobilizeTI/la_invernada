@@ -396,7 +396,7 @@ class StockProductionLotSerial(models.Model):
 
             move_line = stock_move.move_line_ids.filtered(
                 lambda
-                    a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.stock_production_lot_id.available_total_serial
+                    a: a.lot_id.id == item.stock_production_lot_id.id
             )
             if len(move_line) > 1:
 
