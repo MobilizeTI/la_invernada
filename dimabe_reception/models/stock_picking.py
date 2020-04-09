@@ -230,7 +230,7 @@ class StockPicking(models.Model):
                 divisor = canning.product_uom_qty
                 if divisor == 0:
                     divisor = 1
-                self.avg_unitary_weight = self.production_net_weight / divisor
+                self.avg_unitary_weight = round(self.production_net_weight / divisor,1)
 
     @api.model
     def get_mp_move(self):
@@ -312,7 +312,7 @@ class StockPicking(models.Model):
                     raise models.ValidationError(message)
         res = super(StockPicking, self).button_validate()
         self.sendKgNotify()
-        models._logger.error(self.canning_weight)
+        
         if self.get_mp_move() or self.get_pt_move():
             m_move = self.get_mp_move()
             if not m_move:
