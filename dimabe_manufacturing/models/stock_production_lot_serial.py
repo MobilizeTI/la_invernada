@@ -395,7 +395,7 @@ class StockProductionLotSerial(models.Model):
             stock_move = item.reserved_to_stock_picking_id.move_lines.filtered(
                 lambda a: a.product_id == item.stock_production_lot_id.product_id
             )
-            raise models.ValidationError(stock_move)
+
             move_line = stock_move.move_line_ids.filtered(
                 lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.display_weight
             )
@@ -405,7 +405,7 @@ class StockProductionLotSerial(models.Model):
                     picking_move_line = item.reserved_to_stock_picking_id.move_line_ids.filtered(
                         lambda a: a.id == move.id
                     )
-
+                    raise models.ValidationError(picking_move_line)
                     stock_quant = item.stock_production_lot_id.get_stock_quant()
 
                     stock_quant.sudo().update({
