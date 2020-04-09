@@ -376,7 +376,8 @@ class StockProductionLot(models.Model):
             lot_id = serial_to_assign_ids.mapped('stock_production_lot_id')
             models._logger.error(lot_id)
             for lot in lot_id:
-                stock_move = picking_id.move_without_package.filtered(
+                stock_picking = self.env['stock.picking'].search([('id','=',picking_id)])
+                stock_move = stock_picking.move_without_package.filtered(
                     lambda a : a.product_id == item.product_id
                 )
                 model._logger.error(stock_move)
