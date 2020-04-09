@@ -263,7 +263,7 @@ class MrpProduction(models.Model):
             })
 
         lot_id = serial_to_reserve_ids.mapped('stock_production_lot_id')
-
+        models._logger.error(lot_id)
         for lot in lot_id:
             stock_move = self.stock_picking_id.move_lines.filtered(
                     lambda a: a.product_id == lot.product_id
