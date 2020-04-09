@@ -199,7 +199,7 @@ class StockProductionLotSerial(models.Model):
 
     @api.model
     def get_possible_canning_id(self):
-        models._logger_error('Bom Product : {}'.format(self.bom_id.product_id))
+        models._logger.error('Bom Product : {}'.format(self.bom_id.product_id))
         return self.bom_id.bom_line_ids.filtered(
             lambda a: 'envases' in str.lower(a.product_id.categ_id.name) or
                       'embalaje' in str.lower(a.product_id.categ_id.name)
