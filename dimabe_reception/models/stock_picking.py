@@ -283,14 +283,24 @@ class StockPicking(models.Model):
                             # calculated_weight = stock_move_line.qty_done / total_qty
 
                             if stock_move_line.lot_id:
+                                
                                 default_value = stock_picking.avg_unitary_weight or 1
                                 for i in range(int(total_qty)):
-                                    tmp = '00{}'.format(i + 1)
-                                    self.env['stock.production.lot.serial'].create({
-                                        'calculated_weight': default_value,
-                                        'stock_production_lot_id': stock_move_line.lot_id.id,
-                                        'serial_number': '{}{}'.format(stock_move_line.lot_name, tmp[-3:])
-                                    })
+                                    if i+1 == int(total_qty):
+                                        diff = stock_picking.production_net_weight - (int(total_qty) * default_value)
+                                        tmp = '00{}'.format(i + 1)
+                                        self.env['stock.production.lot.serial'].create({
+                                            'calculated_weight': default_value + diff,
+                                            'stock_production_lot_id': stock_move_line.lot_id.id,
+                                            'serial_number': '{}{}'.format(stock_move_line.lot_name, tmp[-3:])
+                                        })
+                                    else:     
+                                        tmp = '00{}'.format(i + 1)
+                                        self.env['stock.production.lot.serial'].create({
+                                            'calculated_weight': default_value,
+                                            'stock_production_lot_id': stock_move_line.lot_id.id,
+                                            'serial_number': '{}{}'.format(stock_move_line.lot_name, tmp[-3:])
+                                        })
 
                                 m_move.has_serial_generated = True
             return res
