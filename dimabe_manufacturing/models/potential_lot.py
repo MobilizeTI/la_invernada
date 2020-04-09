@@ -95,6 +95,9 @@ class PotentialLot(models.Model):
                         lambda a: a.product_id == item.stock_production_lot_id.product_id
                 ):
                     item.add_move_line(stock)
+            item.update({
+                'balance':item.lot_balance + item.qty_to_reserve
+            })
         item.is_reserved = True
         
         
@@ -106,6 +109,7 @@ class PotentialLot(models.Model):
             ('location_id.name', 'like', 'Virtual Locations')
         ])
         raise UserError('Balance:{}'.format(self.stock_production_lot_id.balance))
+
         stock_move.sudo().update({
             'active_move_line_ids': [
                 (0, 0, {
