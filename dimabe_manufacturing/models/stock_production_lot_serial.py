@@ -421,7 +421,7 @@ class StockProductionLotSerial(models.Model):
                         picking_move_line.filtered(lambda a: a.id == ml.id).write({
                             'move_id': None,
                             'picking_id': None,
-                            'product_uom_qty': 0
+                            'product_uom_qty': item.stock_production_lot_id.available_total_serial - item.display_weight
                         })
             else:
                 picking_move_line = item.reserved_to_stock_picking_id.move_line_ids.filtered(
