@@ -93,7 +93,7 @@ class PotentialLot(models.Model):
                                                from_lot=True).reserve_serial()
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
                 stock_quant.sudo().update({
-                    'reserved_quantity': stock_quant.total_reserved
+                    'reserved_quantity': stock_quant.total_reserved + item.lot_balance
                 })
                 models._logger.error(item.lot_balance)
                 for stock in item.mrp_production_id.move_raw_ids.filtered(
