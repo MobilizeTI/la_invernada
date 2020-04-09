@@ -380,7 +380,7 @@ class StockProductionLot(models.Model):
                     'reserved_to_stock_picking_id': picking_id
                 })
                 stock_picking = self.env['stock.picking'].search([('id','=',picking_id)])
-                stock_move = stock_picking.move_ids_without_package.filtered(
+                stock_move = stock_picking.move_line_ids_without_package.filtered(
                     lambda a : a.product_id == item.product_id
                 )
                 stock_quant = item.get_stock_quant()
