@@ -275,7 +275,7 @@ class StockProductionLotSerial(models.Model):
                     })
 
                     for stock in stock_move:
-                        item.add_move_line(stock)
+                        item.add_move_line(stock,stock_quant)
         else:
             raise models.ValidationError('no se pudo identificar producción')
 
