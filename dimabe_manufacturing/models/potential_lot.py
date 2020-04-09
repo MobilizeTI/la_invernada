@@ -91,6 +91,10 @@ class PotentialLot(models.Model):
 
                 serial_to_reserve.with_context(mrp_production_id=item.mrp_production_id.id,
                                                from_lot=True).reserve_serial()
+                stock_quant = item.stock_production_lot_id.get_stock_quant()
+                stock_quant.sudo().update({
+                    'reserved_quantity': stock_quant.total_reserved
+                })
                 for stock in item.mrp_production_id.move_raw_ids.filtered(
                         lambda a: a.product_id == item.stock_production_lot_id.product_id
                 ):
@@ -100,8 +104,8 @@ class PotentialLot(models.Model):
         
         
     @api.model
-    def add_move_line(self, stock_move):
-        stock_quant = self.stock_production_lot_id.get_stock_quant()
+    def add_move_line(self, stock_move,stock_quant):
+
         virtual_location_production_id = self.env['stock.location'].search([
             ('usage', '=', 'production'),
             ('location_id.name', 'like', 'Virtual Locations')
