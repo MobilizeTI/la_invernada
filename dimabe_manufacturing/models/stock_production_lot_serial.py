@@ -354,7 +354,7 @@ class StockProductionLotSerial(models.Model):
 
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
 
-                 if not stock_quant:
+                if not stock_quant:
                      raise models.ValidationError('El lote {} aún se encuentra en proceso.'.format(
                          item.stock_production_lot_id.name
                      ))
@@ -369,19 +369,19 @@ class StockProductionLotSerial(models.Model):
                      'location_dest_id': stock_picking.partner_id.property_stock_customer.id
                  })
 
-                 stock_move.sudo().update({
+                stock_move.sudo().update({
                      'move_line_ids': [
                          (4, move_line.id)
                      ]
                  })
 
-                 item.reserved_to_stock_picking_id.update({
+                item.reserved_to_stock_picking_id.update({
                      'move_line_ids': [
                          (4, move_line.id)
                      ]
                  })
 
-                 stock_quant.sudo().update({
+                stock_quant.sudo().update({
                      'reserved_quantity': stock_quant.total_reserved
                  })
         else:
