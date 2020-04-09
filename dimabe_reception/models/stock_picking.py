@@ -183,7 +183,7 @@ class StockPicking(models.Model):
             raise models.ValidationError(message)
 
     @api.one
-    @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package', )
+    @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package' )
     def _compute_production_net_weight(self):
         self.production_net_weight = self.gross_weight - self.tare_weight
         if self.is_mp_reception or self.is_pt_reception or self.is_satelite_reception:
