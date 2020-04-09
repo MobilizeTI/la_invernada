@@ -108,8 +108,6 @@ class PotentialLot(models.Model):
             ('usage', '=', 'production'),
             ('location_id.name', 'like', 'Virtual Locations')
         ])
-        raise UserError('Balance:{}'.format(self.stock_production_lot_id.balance))
-
         stock_move.sudo().update({
             'active_move_line_ids': [
                 (0, 0, {
