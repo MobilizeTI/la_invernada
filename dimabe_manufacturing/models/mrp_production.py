@@ -262,24 +262,26 @@ class MrpProduction(models.Model):
                 'reserved_to_stock_picking_id': self.stock_picking_id.id
             })
 
-        models._logger.error(serial_to_reserve_ids.mapped('stock_production_lot_id'))
+        lot_id = serial_to_reserve_ids.mapped('stock_production_lot_id')
 
-        for serial in serial_to_reserve_ids:
+        for lot in lot_id:
             stock_move = self.stock_picking_id.move_lines.filtered(
-                    lambda a: a.product_id == serial.stock_production_lot_id.product_id
+                    lambda a: a.product_id == lot.product_id
             )
 
-            stock_quant = serial.stock_production_lot_id.get_stock_quant()
+            stock_quant = lot.get_stock_quant()
 
             if not stock_quant:
                 raise models.ValidationError('El lote {} aún se encuentra en proceso.'.format(
                     serial.stock_production_lot_id.name
             ))
 
+            potential_lot = self.env['potential_lot'].search([('stock_production_lot_id','=',lot.id)])
+
             move_line = self.env['stock.move.line'].create({
-                'product_id': serial.stock_production_lot_id.product_id.id,
-                'lot_id': serial.stock_production_lot_id.id,
-                'product_uom_qty': serial.display_weight,
+                'product_id': lot.product_id.id,
+                'lot_id': lot.id,
+                'product_uom_qty': potential_lot.qty_to_reserved,
                 'product_uom_id': stock_move.product_uom.id,
                 'location_id': stock_quant.location_id.id,
                 # 'qty_done': item.display_weight,
