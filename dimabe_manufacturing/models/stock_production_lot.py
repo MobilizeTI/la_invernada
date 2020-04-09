@@ -408,7 +408,7 @@ class StockProductionLot(models.Model):
                     ]
                 })
 
-                item.reserved_to_stock_picking_id.update({
+                stock_picking.update({
                     'move_line_ids': [
                         (4, move_line.id)
                     ]
