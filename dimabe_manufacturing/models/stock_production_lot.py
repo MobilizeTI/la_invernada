@@ -369,12 +369,55 @@ class StockProductionLot(models.Model):
         picking_id = None
         if 'stock_picking_id' in self.env.context:
             picking_id = self.env.context['stock_picking_id']
+            stock_picking = self.env['stock.picking'].search([('id','=',picking_id)])
         for item in self:
             serial_to_assign_ids = item.stock_production_lot_serial_ids.filtered(
                 lambda a: not a.consumed and not a.reserved_to_stock_picking_id
             )
+            lot_id = serial_to_assign_ids.mapped('stock_production_lot_id')
+            models._logger.error(lot_id)
+            for lot in lot_id:
 
-            serial_to_assign_ids.with_context(stock_picking_id=picking_id).reserve_picking()
+                serial_to_assign_ids.update({
+                    'reserved_to_stock_picking_id': stock_picking.id
+                })
+                stock_move = stock_picking.move_lines.filtered(
+                    lambda a: a.product_id == item.product_id
+                )
+
+                stock_quant = item.get_stock_quant()
+
+                if not stock_quant:
+                    raise models.ValidationError('El lote {} aún se encuentra en proceso.'.format(
+                        item.name
+                    ))
+
+                move_line = self.env['stock.move.line'].create({
+                    'product_id': item.product_id.id,
+                    'lot_id': item.id,
+                    'product_uom_qty': item.available_total_serial,
+                    'product_uom_id': stock_move.product_uom.id,
+                    'location_id': stock_quant.location_id.id,
+                    # 'qty_done': item.display_weight,
+                    'location_dest_id': stock_picking.partner_id.property_stock_customer.id
+                })
+
+                stock_move.sudo().update({
+                    'move_line_ids': [
+                        (4, move_line.id)
+                    ]
+                })
+
+                stock_picking.update({
+                    'move_line_ids': [
+                        (4, move_line.id)
+                    ]
+                })
+
+                stock_quant.sudo().update({
+                    'reserved_quantity': stock_quant.total_reserved
+                })
+            #serial_to_assign_ids.with_context(stock_picking_id=picking_id).reserve_picking()
 
     @api.multi
     def reserved(self):
