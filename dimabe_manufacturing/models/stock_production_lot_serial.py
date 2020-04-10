@@ -449,7 +449,7 @@ class StockProductionLotSerial(models.Model):
                         'move_id': None,
                         'picking_id': None,
                         'product_uom_qty': ml.product_uom_qty - item.display_weight,
-                        'reserved_availability': 0
+                        'reserved_availability': ml.product_uom_qty - item.display_weight
                     })
                 stock_quant.sudo().update({
                     'reserved_quantity': stock_quant.total_reserved
