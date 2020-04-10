@@ -184,7 +184,7 @@ class MrpWorkorder(models.Model):
     @api.model
     def create(self, values_list):
         res = super(MrpWorkorder, self).create(values_list)
-        raise models.ValidationError(res.sub_products)
+
         name = self.env['ir.sequence'].next_by_code('mrp.workorder')
 
         final_lot = self.env['stock.production.lot'].create({
