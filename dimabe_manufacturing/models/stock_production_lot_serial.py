@@ -404,7 +404,7 @@ class StockProductionLotSerial(models.Model):
             #     lambda
             #         a: a.lot_id.id == item.stock_production_lot_id.id
             # )
-
+            stock_picking = item.reserved_to_stock_picking_id.id
             if len(stock_move) > 1:
 
                 for move in move_line:
