@@ -396,7 +396,7 @@ class StockProductionLotSerial(models.Model):
     @api.multi
     def unreserved_picking(self):
         for item in self:
-            stock_move = item.reserved_to_stock_picking_id.move_ids_line_without_package.filtered(
+            stock_move = item.reserved_to_stock_picking_id.move_line_ids_without_package.filtered(
                 lambda a: a.product_id == item.stock_production_lot_id.product_id
             )
             raise models.ValidationError(stock_move)
