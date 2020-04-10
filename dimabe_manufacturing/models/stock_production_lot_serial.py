@@ -399,7 +399,7 @@ class StockProductionLotSerial(models.Model):
             stock_move = item.reserved_to_stock_picking_id.move_line_ids_without_package.filtered(
                 lambda a: a.product_id == item.stock_production_lot_id.product_id
             )
-            raise models.ValidationError(stock_move)
+
             move_line = stock_move.move_line_ids.filtered(
                 lambda
                     a: a.lot_id.id == item.stock_production_lot_id.id
@@ -441,7 +441,7 @@ class StockProductionLotSerial(models.Model):
                     'reserved_to_stock_picking_id': None
                 })
 
-                for ml in move_line:
+                for ml in stock_move:
                     if ml.qty_done > 0:
                         raise models.ValidationError('este producto ya ha sido validado')
 
