@@ -157,7 +157,7 @@ class StockProductionLotSerial(models.Model):
     @api.model
     def create(self, values_list):
         res = super(StockProductionLotSerial, self).create(values_list)
-        raise models.ValidationError(res.producer_id)
+
         if res.display_weight == 0 and res.gross_weight == 0:
             raise models.ValidationError('debe agregar un peso a la serie')
 
@@ -175,7 +175,7 @@ class StockProductionLotSerial(models.Model):
             ])
 
             res.producer_id = res.stock_production_lot_id.producer_id.id
-
+            raise models.ValidationError(res.producer_id)
             if work_order.production_id:
                 production = work_order.production_id[0]
 
