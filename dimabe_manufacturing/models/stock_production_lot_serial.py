@@ -115,7 +115,6 @@ class StockProductionLotSerial(models.Model):
         'Lista de Materiales',
         related='production_id.bom_id'
     )
-    
 
     @api.multi
     def _inverse_real_weight(self):
@@ -265,9 +264,9 @@ class StockProductionLotSerial(models.Model):
                     item.update({
                         'reserved_to_production_id': production.id
                     })
-                    
+
                     item.stock_production_lot_id.update({
-                        'qty_to_reserve' : item.stock_production_lot_id.balance
+                        'qty_to_reserve': item.stock_production_lot_id.balance
                     })
                 else:
                     item.update({
@@ -404,9 +403,7 @@ class StockProductionLotSerial(models.Model):
                 lambda
                     a: a.lot_id.id == item.stock_production_lot_id.id
             )
-            stock_picking = item.reserved_to_stock_picking_id.id
-            if len(stock_move) > 1:
-
+            if len(move_line) > 1:
                 for move in move_line:
                     picking_move_line = item.reserved_to_stock_picking_id.move_line_ids.filtered(
                         lambda a: a.id == move.id
@@ -424,7 +421,7 @@ class StockProductionLotSerial(models.Model):
                     for ml in move:
                         if ml.qty_done > 0:
                             raise models.ValidationError('este producto ya ha sido validado')
-                        ml.update({'move_id': None, 'product_uom_qty': ml.product_uom_qty - item.display_weight})
+                        ml.update({'move_id': None, 'product_uom_qty': 0})
                         picking_move_line.filtered(lambda a: a.id == ml.id).update({
                             'move_id': None,
                             'picking_id': None,
@@ -444,14 +441,12 @@ class StockProductionLotSerial(models.Model):
                 for ml in move_line:
                     if ml.qty_done > 0:
                         raise models.ValidationError('este producto ya ha sido validado')
-
-                    ml.update({'move_id': None, 'product_uom_qty': ml.product_uom_qty - item.display_weight})
-
+                    ml.update({'move_id': None, 'product_uom_qty': 0})
                     picking_move_line.filtered(lambda a: a.id == ml.id).update({
-                        'move_id': ml.id,
-                        'picking_id': stock_picking,
-                        'product_uom_qty': ml.product_uom_qty,
-                        'reserved_availability': ml.product_uom_qty
+                        'move_id': None,
+                        'picking_id': None,
+                        'product_uom_qty': 0,
+                        'reserved_availability': 0
                     })
                 stock_quant.sudo().update({
                     'reserved_quantity': stock_quant.total_reserved
