@@ -431,9 +431,9 @@ class StockProductionLotSerial(models.Model):
                             'product_uom_qty': item.stock_production_lot_id.available_total_serial - item.display_weight
                         })
             else:
-                picking_move_line = item.reserved_to_stock_picking_id.move_line_ids.filtered(
-                    lambda a: a.id == move_line.id
-                )
+                # picking_move_line = item.reserved_to_stock_picking_id.move_line_ids.filtered(
+                #     lambda a: a.id == move_line.id
+                # )
 
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
 
