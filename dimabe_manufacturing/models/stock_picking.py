@@ -92,6 +92,16 @@ class StockPicking(models.Model):
                 domain)
 
     @api.multi
+    def calculate_last_serial(self):
+        canning = self.get_canning_move()
+        if len(canning) == 1:
+            diff = self.production_net_weight - (canning.product_uom_qty*self.avg_unitary_weight)
+            self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)])[-1].write({
+            'real_weight': self.avg_unitary_weight + diff
+            })
+            
+
+    @api.multi
     def _compute_potential_lot(self):
         for item in self:
             domain = [
