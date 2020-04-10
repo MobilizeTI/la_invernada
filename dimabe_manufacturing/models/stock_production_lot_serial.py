@@ -446,6 +446,7 @@ class StockProductionLotSerial(models.Model):
                         raise models.ValidationError('este producto ya ha sido validado')
 
                     ml.write({'move_id': None, 'product_uom_qty': ml.product_uom_qty - item.display_weight})
+                    raise models.ValidationError(ml)
                     picking_move_line.filtered(lambda a: a.id == ml.id).write({
                         'move_id': ml.id,
                         'picking_id': stock_picking,
