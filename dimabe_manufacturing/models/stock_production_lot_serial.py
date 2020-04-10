@@ -168,6 +168,7 @@ class StockProductionLotSerial(models.Model):
         production = None
         if stock_move_line.mapped('move_id.production_id'):
             production = stock_move_line.mapped('move_id.production_id')[0]
+            res.producer_id = res.stock_production_lot_id.producer_id.id
         else:
             work_order = self.env['mrp.workorder'].search([
                 ('final_lot_id', '!=', False),
@@ -175,7 +176,7 @@ class StockProductionLotSerial(models.Model):
             ])
 
             res.producer_id = res.stock_production_lot_id.producer_id.id
-            raise models.ValidationError(res.producer_id)
+
             if work_order.production_id:
                 production = work_order.production_id[0]
 
