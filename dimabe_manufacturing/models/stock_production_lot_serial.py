@@ -448,7 +448,7 @@ class StockProductionLotSerial(models.Model):
                     picking_move_line.filtered(lambda a: a.id == ml.id).write({
                         'move_id': None,
                         'picking_id': None,
-                        'product_uom_qty': 0,
+                        'product_uom_qty': ml.product_uom_qty - item.display_weight,
                         'reserved_availability': 0
                     })
                 stock_quant.sudo().update({
