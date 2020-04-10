@@ -443,7 +443,7 @@ class StockProductionLotSerial(models.Model):
                 for ml in move_line:
                     if ml.qty_done > 0:
                         raise models.ValidationError('este producto ya ha sido validado')
-                    raise models.ValidationError("ml.product_uom_qty : {} , item.display_weight : {} , picking_move_line {},".format(ml.product_uom_qty,item.display_weight,picking_move_line.filtered(lambda a: a.id == ml.id).mapped('reserved_availability')))
+                    raise models.ValidationError("ml.product_uom_qty : {} , item.display_weight : {}".format(ml.product_uom_qty,item.display_weight))
                     ml.write({'move_id': None, 'product_uom_qty': ml.product_uom_qty - item.display_weight})
                     picking_move_line.filtered(lambda a: a.id == ml.id).write({
                         'move_id': None,
