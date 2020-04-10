@@ -265,7 +265,7 @@ class StockProductionLotSerial(models.Model):
                     })
                     
                     item.stock_production_lot_id.update({
-                        'qty_to_reserved' : item.stock_production_lot_id.balance + item.display_weight
+                        'qty_to_reserved' : item.stock_production_lot_id.balance
                     })
                     raise models.ValidationError(item.stock_production_lot_id.qty_to_reserved)
                 else:
