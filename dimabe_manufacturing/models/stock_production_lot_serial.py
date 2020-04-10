@@ -396,14 +396,14 @@ class StockProductionLotSerial(models.Model):
     @api.multi
     def unreserved_picking(self):
         for item in self:
-            stock_move = item.reserved_to_stock_picking_id.move_line_ids_without_package.filtered(
+            stock_move = item.reserved_to_stock_picking_id.move_ids_without_package.filtered(
                 lambda a: a.product_id == item.stock_production_lot_id.product_id
             )
 
-            # move_line = stock_move.move_line_ids.filtered(
-            #     lambda
-            #         a: a.lot_id.id == item.stock_production_lot_id.id
-            # )
+            move_line = stock_move.move_line_ids.filtered(
+                lambda
+                    a: a.lot_id.id == item.stock_production_lot_id.id
+            )
             stock_picking = item.reserved_to_stock_picking_id.id
             if len(stock_move) > 1:
 
@@ -431,9 +431,9 @@ class StockProductionLotSerial(models.Model):
                             'product_uom_qty': item.stock_production_lot_id.available_total_serial - item.display_weight
                         })
             else:
-                # picking_move_line = item.reserved_to_stock_picking_id.move_line_ids.filtered(
-                #     lambda a: a.id == move_line.id
-                # )
+                picking_move_line = item.reserved_to_stock_picking_id.move_line_ids.filtered(
+                    lambda a: a.id == move_line.id
+                )
 
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
 
@@ -447,7 +447,7 @@ class StockProductionLotSerial(models.Model):
 
                     ml.write({'move_id': None, 'product_uom_qty': ml.product_uom_qty - item.display_weight})
 
-                    stock_move.filtered(lambda a: a.id == ml.id).write({
+                    picking_move_line.filtered(lambda a: a.id == ml.id).write({
                         'move_id': ml.id,
                         'picking_id': stock_picking,
                         'product_uom_qty': ml.product_uom_qty,
