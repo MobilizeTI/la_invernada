@@ -444,7 +444,7 @@ class StockProductionLotSerial(models.Model):
                     ml.update({'move_id': None, 'product_uom_qty': ml.product_uom_qty - item.display_weight})
                     picking_move_line.filtered(lambda a: a.id == ml.id).update({
                         'move_id': ml.id,
-                        'picking_id': None,
+                        'picking_id': stock_picking,
                         'product_uom_qty': ml.product_uom_qty
                     })
                 stock_quant.sudo().update({
