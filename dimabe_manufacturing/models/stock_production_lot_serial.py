@@ -441,7 +441,7 @@ class StockProductionLotSerial(models.Model):
                     'reserved_to_stock_picking_id': None
                 })
 
-                for ml in stock_move:
+                for ml in picking_move_line:
                     if ml.qty_done > 0:
                         raise models.ValidationError('este producto ya ha sido validado')
 
