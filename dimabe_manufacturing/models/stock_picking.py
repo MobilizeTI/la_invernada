@@ -93,12 +93,22 @@ class StockPicking(models.Model):
 
     @api.multi
     def calculate_last_serial(self):
-        canning = self.get_canning_move()
-        if len(canning) == 1:
-            diff = self.production_net_weight - (canning.product_uom_qty*self.avg_unitary_weight)
-            self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)])[-1].write({
-            'real_weight': self.avg_unitary_weight + diff
-            })
+        if self.get_mp_move() or self.get_pt_move():
+            m_move = self.get_mp_move()
+            if not m_move:
+                m_move = self.get_pt_move()
+            m_move.quantity_done = self.production_net_weight
+            m_move.product_uom_qty = self.weight_guide
+            if m_move.has_serial_generated and self.avg_unitary_weight:
+                self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)]).write({
+                    'real_weight': self.avg_unitary_weight
+                })
+                canning = self.get_canning_move()
+                if len(canning) == 1:
+                    diff = self.production_net_weight - (canning.product_uom_qty*self.avg_unitary_weight)
+                    self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)])[-1].write({
+                    'real_weight': self.avg_unitary_weight + diff
+                    })
             
 
     @api.multi
