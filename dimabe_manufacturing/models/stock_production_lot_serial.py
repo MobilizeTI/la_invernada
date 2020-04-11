@@ -425,7 +425,7 @@ class StockProductionLotSerial(models.Model):
                         picking_move_line.filtered(lambda a: a.id == ml.id).write({
                             'move_id': None,
                             'picking_id': None,
-                            'product_uom_qty': item.stock_production_lot_id.available_total_serial - item.display_weight
+                            'product_uom_qty': 0
                         })
             else:
                 picking_move_line = item.reserved_to_stock_picking_id.move_line_ids.filtered(
@@ -441,11 +441,11 @@ class StockProductionLotSerial(models.Model):
                 for ml in move_line:
                     if ml.qty_done > 0:
                         raise models.ValidationError('este producto ya ha sido validado')
-                    ml.write({'move_id': None, 'product_uom_qty': ml.product_uom_qty - item.display_weight})
+                    ml.write({'move_id': None, 'product_uom_qty': None})
                     picking_move_line.filtered(lambda a: a.id == ml.id).write({
-                        'move_id': ml.id,
-                        'picking_id': stock_picking,
-                        'product_uom_qty': ml.product_uom_qty
+                        'move_id': None,
+                        'picking_id': None,
+                        'product_uom_qty': 0
                     })
                 stock_quant.sudo().update({
                     'reserved_quantity': stock_quant.total_reserved
