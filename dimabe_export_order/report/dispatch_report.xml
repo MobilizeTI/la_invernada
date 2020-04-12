@@ -490,6 +490,18 @@
         </t>
     </template>
 
+    <template id="report_packing_list">
+        <t t-call="web.html.container">
+            <div class="page">
+                <t t-foreach="docs" t-as="d">
+                    <table width="100%%">
+                        <th><strong>Packing List</strong></th>
+                    </table>
+                </t>
+            </div>
+        </t>
+    </template>
+
     <record id="paper_format_letter_custom" model="report.paperformat">
         <field name="name">Carta Custom</field>
         <field name="default" eval="False"/>
