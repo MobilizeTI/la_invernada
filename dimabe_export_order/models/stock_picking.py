@@ -230,7 +230,7 @@ class StockPicking(models.Model):
     def get_pictures(self):
         self.pictures = self.picture
 
-    @api.one
+    @api.multi
     def generate_packing_list(self):
         return self.env.ref('dimabe_export_order.action_packing_list') \
             .report_action(self)
