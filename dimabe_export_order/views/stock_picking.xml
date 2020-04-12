@@ -122,6 +122,9 @@
                     <field name="type_of_package"></field>
                     <field name="specie"></field>
                 </xpath>
+                <xpath expr="//header">
+                    <button name="report_packing_list" string="Packing List"/>
+                </xpath>
             </field>
         </record>
     </data>
