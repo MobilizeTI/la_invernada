@@ -232,7 +232,8 @@ class StockPicking(models.Model):
 
     @api.one
     def generate_packing_list(self):
-        return self.env.ref('dimabe_export_order.action_packing_list').report_action(self)
+        return self.env.ref('dimabe_export_order.action_packing_list') \
+            .report_action(self)
 
     @api.multi
     def generate_report(self):
