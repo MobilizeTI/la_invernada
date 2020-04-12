@@ -495,7 +495,7 @@
             <div class="page">
                 <t t-foreach="docs" t-as="d">
                     <table width="100%%">
-                        <th>
+                        <th style="font-size:10%;">
                             <strong>Packing List</strong>
                         </th>
                     </table>
