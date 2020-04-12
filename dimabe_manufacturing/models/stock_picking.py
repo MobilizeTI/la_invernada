@@ -60,7 +60,6 @@ class StockPicking(models.Model):
         'stock.production.lot',
         compute='_compute_packing_list_lot_ids'
     )
-
     @api.multi
     def _compute_packing_list_lot_ids(self):
         for item in self:

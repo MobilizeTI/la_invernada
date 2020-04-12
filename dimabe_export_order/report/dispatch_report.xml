@@ -495,7 +495,9 @@
             <div class="page">
                 <t t-foreach="docs" t-as="d">
                     <table width="100%%">
-                        <th><strong>Packing List</strong></th>
+                        <th>
+                            <strong>Packing List</strong>
+                        </th>
                     </table>
                 </t>
             </div>
@@ -535,6 +537,11 @@
         <field name="footer_line" eval="False"/>
         <field name="dpi">90</field>
     </record>
+
+    <report id="action_packing_list" model="stock.picking" paperformat="paper_format_letter_horizontal"
+            report_type="qweb-pdf"
+            name="dimabe_export_order.report_packing_list" string="Packing List"/>
+
 
     <report id="action_dispatch_weight_dispatch" string="Ticket Pesaje Despacho" model="stock.picking"
             report_type="qweb-pdf"
