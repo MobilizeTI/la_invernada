@@ -626,6 +626,19 @@
                             </td>
                         </tr>
                     </table>
+                    <br/>
+                    <table width="100%%" style="font-size:14px;">
+                        <th><strong>ITEM/PRODUCT</strong></th>
+                        <th><strong>TYPE OF PRODUCT/TIPO DE PRODUCTO</strong></th>
+                        <th><strong>TICKET N°/TRACE CODE</strong></th>
+                        <th><strong>PALLET NUMBER/FOLIO PALLET</strong></th>
+                        <th><strong>PACKING DATE/FECHA ELAB.</strong></th>
+                        <th><strong>BEST BEFORE DATE/FECHA VENCIMIENTO</strong></th>
+                        <th><strong>PACKING AMOUNT/N° DE ENVASES</strong></th>
+                        <th><strong>PACKING TYPE/ TYPE DE EMPAQUE</strong></th>
+                        <th><strong>NET WEIGHT / PESO NETO</strong></th>
+                        <th><strong>GROSS WEIGHT / PESO BRUTO</strong></th>
+                    </table>
                 </t>
             </div>
         </t>
