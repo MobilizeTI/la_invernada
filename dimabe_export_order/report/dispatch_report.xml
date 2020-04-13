@@ -534,7 +534,7 @@
                         </tr>
                     </table>
                     <div width="4%%" style="display:inline-block;"></div>
-                    <table width="45%%" style="display:inline-block;">
+                    <table width="45%%" style="border:solid 1px;display:inline-block;">
                         <tr>
                             <td>
                                 <strong>CONSIGNEE/CONSIGNATARIO:</strong>
@@ -598,7 +598,7 @@
                         </tr>
                     </table>
                     <div width="4%%" style="display:inline-block;"></div>
-                    <table width="45%%" style="display:inline-block;">
+                    <table width="45%%" style="border:solid 1px;display:inline-block;">
                         <tr>
                             <td>
                                 <strong>NOTIFY/NOTIFICADO:</strong>
@@ -663,6 +663,15 @@
                                     </td>
                                     <td style="text-align:center;">
                                         <span t-field="p.total_content"/>
+                                    </td>
+                                    <td style="text-align:center;">
+
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <span t-esc="sum(p.lot_serial_ids.mapped('display_weight'))"/>
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <span t-esc="sum(p.lot_serial_ids.mapped('gross_weight'))"/>
                                     </td>
                                 </tr>
                             </t>
