@@ -440,7 +440,7 @@ class StockProductionLotSerial(models.Model):
                 })
 
                 for ml in move_line:
-                    raise models.ValidationError("{}{}".format(ml.move_id,ml.product_uom_qty))
+                    raise models.ValidationError(ml.move_id == stock_move)
                     if ml.qty_done > 0:
                         raise models.ValidationError('este producto ya ha sido validado')
                     ml.write({'move_id': None, 'product_uom_qty': None})
