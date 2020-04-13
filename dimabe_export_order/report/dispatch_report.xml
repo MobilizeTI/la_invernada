@@ -685,10 +685,10 @@
 
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;">
-                                        <span t-esc="sum(p.lot_serial_ids.mapped('display_weight'))"/>
+                                        <span t-esc="'%.2f' %round(sum(p.lot_serial_ids.mapped('display_weight')))"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;">
-                                        <span t-esc="sum(p.lot_serial_ids.mapped('gross_weight'))"/>
+                                        <span t-esc="'%.2f' %round(sum(p.lot_serial_ids.mapped('gross_weight')))"/>
                                     </td>
                                 </tr>
                             </t>
