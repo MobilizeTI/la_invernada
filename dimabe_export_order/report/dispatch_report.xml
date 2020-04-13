@@ -505,7 +505,7 @@
                         </th>
                     </table>
                     <br/>
-                    <table width="45%%" style="border:solid 1px;display:inline-block;">
+                    <table width="50%%" style="border:solid 1px;display:inline-block;">
                         <tr>
                             <td>
                                 <strong>SHIPPER/PROVEEDOR:</strong>
@@ -533,8 +533,7 @@
                             </td>
                         </tr>
                     </table>
-                    <div width="4%%" style="display:inline-block;"></div>
-                    <table width="45%%" style="border:solid 1px;display:inline-block;">
+                    <table width="50%%" style="border:solid 1px;display:inline-block;">
                         <tr>
                             <td>
                                 <strong>CONSIGNEE/CONSIGNATARIO:</strong>
@@ -563,7 +562,7 @@
                         </tr>
                     </table>
                     <br/>
-                    <table width="45%%" style="border:solid 1px;display:inline-block;">
+                    <table width="50%%" style="border:solid 1px;display:inline-block;">
                         <tr>
                             <td>
                                 <strong>VESSEL/NAVE:</strong>
@@ -597,8 +596,7 @@
                             </td>
                         </tr>
                     </table>
-                    <div width="4%%" style="display:inline-block;"></div>
-                    <table width="45%%" style="border:solid 1px;display:inline-block;">
+                    <table width="50%%" style="border:solid 1px;display:inline-block;">
                         <tr>
                             <td>
                                 <strong>NOTIFY/NOTIFICADO:</strong>
@@ -624,6 +622,19 @@
                             <td>
                                 <span t-field="d.consignee_id.phone"/>
                             </td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <table width="40%%" style="border:solid 1px;display:inline-block;">
+                        <tr rowspan="2">
+                            <td>ORDER N°/N° DE ORDER</td>
+                            <td><span t-field="d.name"/></td>
+                        </tr>
+                    </table>
+                    <table width="40%%" style="border:solid 1px;display:inline-block;">
+                        <tr rowspan="2">
+                            <td style="text-align:center;">CLIENT PURCHASE ORDER/ORDER DE COMPRA CLIENTE</td>
+                            <td style="text-align:center;"></td>
                         </tr>
                     </table>
                     <br/>
