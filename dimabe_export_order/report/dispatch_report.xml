@@ -713,6 +713,13 @@
                                         <span t-esc="'%.2f' %sum(p.lot_serial_ids.mapped('gross_weight'))"/>
                                     </td>
                                 </tr>
+                                <t t-if="p.id == d.assigned_pallet_ids[-1].id">
+                                    <tr>
+                                        <td colspan="6">
+                                            Total
+                                        </td>
+                                    </tr>
+                                </t>
                             </t>
                         </tbody>
                     </table>
