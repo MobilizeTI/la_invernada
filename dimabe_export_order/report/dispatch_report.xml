@@ -540,7 +540,7 @@
                                 <strong>CONSIGNEE/CONSIGNATARIO:</strong>
                             </td>
                             <td>
-                                <span t-field=""/>
+                                <span/>
                             </td>
                         </tr>
                         <tr>
