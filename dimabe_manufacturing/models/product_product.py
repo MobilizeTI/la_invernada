@@ -24,7 +24,10 @@ class ProductProduct(models.Model):
         for item in self:
             type = []
             for value in item.attribute_value_ids:
-                type.append(value.name)
+                if value.id != item.attribute_value_ids[0].id:
+                    type.append(','+value.name)
+                else:
+                    type.append(value.name)
             type_string = ''.join(type)
             item.type_product = type_string
 
