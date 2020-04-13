@@ -507,13 +507,13 @@
                     <br/>
                     <table width="45%%" style="border:solid 1px;">
                         <tr>
-                            <td>SHIPPER/PROVEEDOR</td>
+                            <td><strong>SHIPPER/PROVEEDOR:</strong></td>
                             <td>
                                 <span t-field="res_company.name"/>
                             </td>
                         </tr>
                         <tr>
-                            <td>ADDRESS/DIRRECCION</td>
+                            <td><strong>ADDRESS/DIRRECCION:</strong></td>
                             <td>
                                 <span t-field="res_company.street"/>
                             </td>
