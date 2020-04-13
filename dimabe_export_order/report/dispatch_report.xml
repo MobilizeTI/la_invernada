@@ -641,7 +641,7 @@
                         <th><strong>GROSS WEIGHT / PESO BRUTO</strong></th>
                         </theader>
                         <tbody>
-                            <t t-foreach="d.assigned_pallets_ids" t-as="p">
+                            <t t-foreach="d.assigned_pallet_ids" t-as="p">
                                 <tr>
                                     <td>
                                         <span t-esc="p.lot_serial_ids[0].product_id.display_name"/>
