@@ -656,10 +656,13 @@
                                         <span t-field="p.name"/>
                                     </td>
                                     <td style="text-align:center;">
-                                        <span t-field="p.total_content"/>
+                                        <span t-field="p.lot_serial_ids[0].packing_date"/>
                                     </td>
                                     <td style="text-align:center;">
                                         <span t-field="p.lot_serial_ids[0].best_before_date"/>
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <span t-field="p.total_content"/>
                                     </td>
                                 </tr>
                             </t>
