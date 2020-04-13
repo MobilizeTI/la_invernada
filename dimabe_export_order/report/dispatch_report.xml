@@ -516,6 +516,7 @@
                             <td><strong>ADDRESS/DIRRECCION:</strong></td>
                             <td>
                                 <span t-field="res_company.street"/>
+                                <span t-field="res_company.country_id"/>
                             </td>
                         </tr>
                     </table>
