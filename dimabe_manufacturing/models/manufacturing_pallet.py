@@ -207,7 +207,12 @@ class ManufacturingPallet(models.Model):
         if 'stock_picking_id' in self.env.context:
             stock_picking_id = self.env.context['stock_picking_id']
         for item in self:
-            item.lot_available_serial_ids.with_context(stock_picking_id=stock_picking_id).reserve_picking()
+            item.lot_available_serial_ids.update({
+                'reserved_to_stock_picking_id' : stock_picking_id
+            })
+            item.update({
+                'is_reserved':True
+            })
 
     @api.multi
     def remove_from_picking(self):
