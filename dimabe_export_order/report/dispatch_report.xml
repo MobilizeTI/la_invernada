@@ -540,7 +540,7 @@
                                 <strong>CONSIGNEE/CONSIGNATARIO:</strong>
                             </td>
                             <td>
-                                <span/>
+                                <span t-field="d.consignee_id.name"/>
                             </td>
                         </tr>
                         <tr>
@@ -548,9 +548,9 @@
                                 <strong>ADDRESS/DIRRECCION:</strong>
                             </td>
                             <td rowspan="2">
-                                <span t-field="res_company.street"/>
+                                <span t-field="d.consignee_id.street"/>
                                 <br/>
-                                <span t-field="res_company.country_id"/>
+                                <span t-field="d.consignee_id.country_id"/>
                             </td>
                         </tr>
                         <tr>
@@ -558,7 +558,71 @@
                                 <strong>PHONE/TELEFONO:</strong>
                             </td>
                             <td>
-                                <span t-field="res_company.phone"/>
+                                <span t-field="d.consignee_id.phone"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <table width="45%%" style="border:solid 1px;display:inline-block;">
+                        <tr>
+                            <td>
+                                <strong>VESSEL/NAVE:</strong>
+                            </td>
+                            <td>
+                                <span t-field="d.shipping_id.ship.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>PORT OF LOADING:</strong>
+                            </td>
+                            <td>
+                                <span t-field="d.shipping_id.departure_port.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>PORT OF DISCHARGE:</strong>
+                            </td>
+                            <td>
+                                <span t-field="d.shipping_id.arrival_port.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>CONTAINER:</strong>
+                            </td>
+                            <td>
+                                <span t-field="d.container_number"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <div width="4%%" style="display:inline-block;"></div>
+                    <table width="45%%" style="display:inline-block;">
+                        <tr>
+                            <td>
+                                <strong>NOTIFY/NOTIFICADO:</strong>
+                            </td>
+                            <td>
+                                <span t-field="d.consignee_id.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>ADDRESS/DIRRECCION:</strong>
+                            </td>
+                            <td rowspan="2">
+                                <span t-field="d.consignee_id.street"/>
+                                <br/>
+                                <span t-field="d.consignee_id.country_id"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>PHONE/TELEFONO:</strong>
+                            </td>
+                            <td>
+                                <span t-field="d.consignee_id.phone"/>
                             </td>
                         </tr>
                     </table>
