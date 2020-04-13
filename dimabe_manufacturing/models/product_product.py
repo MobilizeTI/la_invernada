@@ -10,9 +10,19 @@ class ProductProduct(models.Model):
         search='_search_variety'
     )
 
+    type_product = fields.Char(
+        'Tipo de Producto'
+        ,compute='_compute_type_product'
+    )
+
     is_to_manufacturing = fields.Boolean('Es Fabricacion?',default=True,compute="compute_is_to_manufacturing")
 
     is_standard_weight = fields.Boolean('Es peso estandar', default=False)
+
+    @api.multi
+    def _compute_type_product(self):
+        for item in self:
+             item.type_product = self.env['product.attribute.value'].search([('name', operator, value)])
 
     @api.multi
     def compute_is_to_manufacturing(self):
