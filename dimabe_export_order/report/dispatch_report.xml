@@ -514,8 +514,9 @@
                         </tr>
                         <tr>
                             <td><strong>ADDRESS/DIRRECCION:</strong></td>
-                            <td>
+                            <td rowspan="2">
                                 <span t-field="res_company.street"/>
+                                <br/>
                                 <span t-field="res_company.country_id"/>
                             </td>
                         </tr>
