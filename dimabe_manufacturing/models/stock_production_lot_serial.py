@@ -329,7 +329,8 @@ class StockProductionLotSerial(models.Model):
             stock_quant = item.stock_production_lot_id.get_stock_quant()
 
             item.update({
-                'reserved_to_production_id': None
+                'reserved_to_production_id': None,
+                'consumed':False
             })
 
             stock_quant.sudo().update({
