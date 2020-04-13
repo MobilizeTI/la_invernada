@@ -226,7 +226,6 @@ class StockPicking(models.Model):
 
     departure_weight = fields.Float('Peso de Salida')
 
-    type_product
 
     @api.onchange('picture')
     def get_pictures(self):
