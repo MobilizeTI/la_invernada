@@ -207,7 +207,10 @@ class ManufacturingPallet(models.Model):
         if 'stock_picking_id' in self.env.context:
             stock_picking_id = self.env.context['stock_picking_id']
             stock_picking = self.env['stock.picking'].search([('id','=',stock_picking_id)])
-            raise models.ValidationError(stock_picking)
+            stock_move = stock_picking.move_lines.filtered(
+                lambda a : a.product_id == self.product_id
+            )
+            raise models.ValidationError(stock_move)
         for item in self:
             item.lot_available_serial_ids.update({
                 'reserved_to_stock_picking_id' : stock_picking_id
