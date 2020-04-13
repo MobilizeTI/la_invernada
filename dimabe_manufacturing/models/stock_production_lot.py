@@ -379,7 +379,8 @@ class StockProductionLot(models.Model):
             for lot in lot_id:
 
                 serial_to_assign_ids.update({
-                    'reserved_to_stock_picking_id': stock_picking.id
+                    'reserved_to_stock_picking_id': stock_picking.id,
+                    'consumed': True
                 })
                 stock_move = stock_picking.move_lines.filtered(
                     lambda a: a.product_id == item.product_id
