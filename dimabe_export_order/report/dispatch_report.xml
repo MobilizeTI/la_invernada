@@ -697,10 +697,10 @@
                                         <span t-field="p.name"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
-                                        <span t-field="p.lot_serial_ids[0].packaging_date"/>
+                                        <span t-field="p.lot_serial_ids[0].packaging_date.strftime('%d-%b-%y')"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
-                                        <span t-field="p.lot_serial_ids[0].best_before_date"/>
+                                        <span t-esc="p.lot_serial_ids[0].best_before_date.strftime('%d-%b-%y')"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
                                         <span t-field="p.total_content"/>
