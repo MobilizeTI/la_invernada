@@ -628,14 +628,14 @@
                         </tr>
                     </table>
                     <br/>
-                    <table width="40%%" style="border:solid 1px;display:inline-block;">
+                    <table width="45%%" style="border:solid 1px;display:inline-block;">
                         <tr rowspan="2">
                             <td>ORDER N°/N° DE ORDER</td>
                             <td><span t-field="d.name"/></td>
                         </tr>
                         <tr></tr>
                     </table>
-                    <table width="58%%" style="border:solid 1px;display:inline-block;">
+                    <table width="50%%" style="border:solid 1px;display:inline-block;">
                         <tr rowspan="2">
                             <td style="text-align:center;">CLIENT PURCHASE ORDER/ORDER DE COMPRA CLIENTE</td>
                             <td style="text-align:center;"></td>
