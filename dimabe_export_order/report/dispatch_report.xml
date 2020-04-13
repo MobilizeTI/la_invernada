@@ -643,50 +643,50 @@
                         <tr></tr>
                     </table>
                     <br/>
-                    <table width="100%%" style="border-style:solid;font-size:14px;">
+                    <table width="100%%" style="border-collapse: collapse;border:solid 1px black;font-size:14px;">
                         <theader>
-                        <th style="text-align:center;"><strong>ITEM/PRODUCT</strong></th>
-                        <th style="text-align:center;"><strong>TYPE OF PRODUCT/TIPO DE PRODUCTO</strong></th>
-                        <th style="text-align:center;"><strong>TICKET N°/TRACE CODE</strong></th>
-                        <th style="text-align:center;"><strong>PALLET NUMBER/FOLIO PALLET</strong></th>
-                        <th style="text-align:center;"><strong>PACKING DATE/FECHA ELAB.</strong></th>
-                        <th style="text-align:center;"><strong>BEST BEFORE DATE/FECHA VENCIMIENTO</strong></th>
-                        <th style="text-align:center;"><strong>PACKING AMOUNT/N° DE ENVASES</strong></th>
-                        <th style="text-align:center;"><strong>PACKING TYPE/ TYPE DE EMPAQUE</strong></th>
-                        <th style="text-align:center;"><strong>NET WEIGHT / PESO NETO</strong></th>
-                        <th style="text-align:center;"><strong>GROSS WEIGHT / PESO BRUTO</strong></th>
+                        <th style="text-align:center;border:solid 1px black;"><strong>ITEM/PRODUCT</strong></th>
+                        <th style="text-align:center;border:solid 1px black;"><strong>TYPE OF PRODUCT/TIPO DE PRODUCTO</strong></th>
+                        <th style="text-align:center;border:solid 1px black;"><strong>TICKET N°/TRACE CODE</strong></th>
+                        <th style="text-align:center;border:solid 1px black;"><strong>PALLET NUMBER/FOLIO PALLET</strong></th>
+                        <th style="text-align:center;border:solid 1px black;"><strong>PACKING DATE/FECHA ELAB.</strong></th>
+                        <th style="text-align:center;border:solid 1px black;"><strong>BEST BEFORE DATE/FECHA VENCIMIENTO</strong></th>
+                        <th style="text-align:center;border:solid 1px black;"><strong>PACKING AMOUNT/N° DE ENVASES</strong></th>
+                        <th style="text-align:center;border:solid 1px black;"><strong>PACKING TYPE/ TYPE DE EMPAQUE</strong></th>
+                        <th style="text-align:center;border:solid 1px black;"><strong>NET WEIGHT / PESO NETO</strong></th>
+                        <th style="text-align:center;border:solid 1px black;"><strong>GROSS WEIGHT / PESO BRUTO</strong></th>
                         </theader>
                         <tbody>
                             <t t-foreach="d.assigned_pallet_ids" t-as="p">
                                 <tr>
-                                    <td style="text-align:center;">
+                                    <td style="text-align:center;border:solid 1px black;">
                                         <span t-esc="p.lot_serial_ids[0].product_id.name"/>
                                     </td>
-                                    <td style="text-align:center;">
+                                    <td style="text-align:center;border:solid 1px black;">
                                         <span t-esc="p.lot_serial_ids[0].product_id.display_name"/>
                                     </td>
-                                    <td style="text-align:center;">
+                                    <td style="text-align:center;border:solid 1px black;">
                                         <span t-field="d.name"/>
                                     </td>
-                                    <td style="text-align:center;">
+                                    <td style="text-align:center;border:solid 1px black;">
                                         <span t-field="p.name"/>
                                     </td>
-                                    <td style="text-align:center;">
+                                    <td style="text-align:center;border:solid 1px black;">
                                         <span t-field="p.lot_serial_ids[0].packaging_date"/>
                                     </td>
-                                    <td style="text-align:center;">
+                                    <td style="text-align:center;border:solid 1px black;">
                                         <span t-field="p.lot_serial_ids[0].best_before_date"/>
                                     </td>
-                                    <td style="text-align:center;">
+                                    <td style="text-align:center;border:solid 1px black;">
                                         <span t-field="p.total_content"/>
                                     </td>
-                                    <td style="text-align:center;">
+                                    <td style="text-align:center;border:solid 1px black;">
 
                                     </td>
-                                    <td style="text-align:center;">
+                                    <td style="text-align:center;border:solid 1px black;">
                                         <span t-esc="sum(p.lot_serial_ids.mapped('display_weight'))"/>
                                     </td>
-                                    <td style="text-align:center;">
+                                    <td style="text-align:center;border:solid 1px black;">
                                         <span t-esc="sum(p.lot_serial_ids.mapped('gross_weight'))"/>
                                     </td>
                                 </tr>
