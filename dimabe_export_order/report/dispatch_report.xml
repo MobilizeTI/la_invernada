@@ -656,7 +656,7 @@
                                         <span t-field="p.name"/>
                                     </td>
                                     <td style="text-align:center;">
-                                        <span t-field="p.lot_serial_ids[0].packing_date"/>
+                                        <span t-field="p.lot_serial_ids[0].packaging_date"/>
                                     </td>
                                     <td style="text-align:center;">
                                         <span t-field="p.lot_serial_ids[0].best_before_date"/>
