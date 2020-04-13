@@ -659,34 +659,34 @@
                         <tbody>
                             <t t-foreach="d.assigned_pallet_ids" t-as="p">
                                 <tr>
-                                    <td style="text-align:center;border:solid 1px black;padding:0;">
+                                    <td style="border:solid 1px black;margin:0 auto;">
                                         <span t-esc="p.lot_serial_ids[0].product_id.name"/>
                                     </td>
-                                    <td style="text-align:center;border:solid 1px black;padding:0;">
+                                    <td style="border:solid 1px black;margin:0 auto;">
                                         <span t-esc="p.lot_serial_ids[0].product_id.display_name"/>
                                     </td>
-                                    <td style="text-align:center;border:solid 1px black;padding:0;">
+                                    <td style="border:solid 1px black;margin:0 auto;">
                                         <span t-field="d.name"/>
                                     </td>
-                                    <td style="text-align:center;border:solid 1px black;padding:0;">
+                                    <td style="border:solid 1px black;margin:0 auto;">
                                         <span t-field="p.name"/>
                                     </td>
-                                    <td style="text-align:center;border:solid 1px black;padding:0;">
+                                    <td style="border:solid 1px black;margin:0 auto;">
                                         <span t-field="p.lot_serial_ids[0].packaging_date"/>
                                     </td>
-                                    <td style="text-align:center;border:solid 1px black;padding:0;">
+                                    <td style="border:solid 1px black;margin:0 auto;">
                                         <span t-field="p.lot_serial_ids[0].best_before_date"/>
                                     </td>
-                                    <td style="text-align:center;border:solid 1px black;padding:0;">
+                                    <td style="border:solid 1px black;margin:0 auto;">
                                         <span t-field="p.total_content"/>
                                     </td>
-                                    <td style="text-align:center;border:solid 1px black;padding:0;">
+                                    <td style="border:solid 1px black;margin:0 auto;">
 
                                     </td>
-                                    <td style="text-align:center;border:solid 1px black;padding:0;">
+                                    <td style="border:solid 1px black;margin:0 auto;">
                                         <span t-esc="sum(p.lot_serial_ids.mapped('display_weight'))"/>
                                     </td>
-                                    <td style="text-align:center;border:solid 1px black;padding:0;">
+                                    <td style="border:solid 1px black;margin:0 auto;">
                                         <span t-esc="sum(p.lot_serial_ids.mapped('gross_weight'))"/>
                                     </td>
                                 </tr>
