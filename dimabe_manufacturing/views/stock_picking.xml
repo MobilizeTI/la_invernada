@@ -8,7 +8,7 @@
       <xpath expr="//header" postition="after">
           <button name="calculate_last_serial" type="object"
                   string="Peso ultima serie"
-                  attrs="{'visible':[('state', '==', 'done')]}"
+                  attrs="{'visible':[('state', '==', 'done')],'invisible':[('picking_type_code','=','outgoing')]}"
           />
 
         </xpath>
