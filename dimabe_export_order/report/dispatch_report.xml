@@ -644,7 +644,7 @@
                         <tr></tr>
                     </table>
                     <br/>
-                    <table width="100%%" style="border:solid 1px black;" class="table table-condensed">
+                    <table width="100%%" class="table table-condensed">
                         <theader>
                         <th style="text-align:center;border:solid 1px black;font-size:10px;"><strong>ITEM/PRODUCT</strong></th>
                         <th style="text-align:center;border:solid 1px black;font-size:10px;"><strong>TYPE OF PRODUCT/TIPO DE PRODUCTO</strong></th>
