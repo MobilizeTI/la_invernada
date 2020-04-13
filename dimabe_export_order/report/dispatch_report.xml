@@ -495,7 +495,7 @@
             <div class="page">
                 <t t-foreach="docs" t-as="d">
                     <table width="100%%">
-                         <th style="border-right:1px solid;width:50px;">
+                         <th style="width:50px;">
                             <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
                                  style="height:50px;"
                             />
