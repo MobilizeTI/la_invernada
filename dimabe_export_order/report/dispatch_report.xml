@@ -664,7 +664,7 @@
                                         <span t-esc="p.lot_serial_ids[0].product_id.name"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;">
-                                        <span t-esc="p.lot_serial_ids[0].product_id.description"/>
+                                        <span t-esc="p.lot_serial_ids[0].product_id.variety"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;">
                                         <span t-field="d.name"/>
