@@ -495,7 +495,7 @@
             <div class="page">
                 <t t-foreach="docs" t-as="d">
                     <table width="100%%">
-                         <th style="width:50px;">
+                        <th style="width:50px;">
                             <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
                                  style="height:50px;"
                             />
@@ -507,17 +507,58 @@
                     <br/>
                     <table width="45%%" style="border:solid 1px;">
                         <tr>
-                            <td><strong>SHIPPER/PROVEEDOR:</strong></td>
+                            <td>
+                                <strong>SHIPPER/PROVEEDOR:</strong>
+                            </td>
                             <td>
                                 <span t-field="res_company.name"/>
                             </td>
                         </tr>
                         <tr>
-                            <td><strong>ADDRESS/DIRRECCION:</strong></td>
+                            <td>
+                                <strong>ADDRESS/DIRRECCION:</strong>
+                            </td>
                             <td rowspan="2">
                                 <span t-field="res_company.street"/>
                                 <br/>
                                 <span t-field="res_company.country_id"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>PHONE/TELEFONO:</strong>
+                            </td>
+                            <td>
+                                <span t-field="res_company.phone"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <div width="5%%"></div>
+                    <table width="45%%">
+                        <tr>
+                            <td>
+                                <strong>CONSIGNEE/CONSIGNATARIO:</strong>
+                            </td>
+                            <td>
+                                <span t-field=""/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>ADDRESS/DIRRECCION:</strong>
+                            </td>
+                            <td rowspan="2">
+                                <span t-field="res_company.street"/>
+                                <br/>
+                                <span t-field="res_company.country_id"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>PHONE/TELEFONO:</strong>
+                            </td>
+                            <td>
+                                <span t-field="res_company.phone"/>
                             </td>
                         </tr>
                     </table>
