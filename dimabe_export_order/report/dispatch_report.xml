@@ -629,25 +629,37 @@
                     <br/>
                     <table width="100%%" style="font-size:14px;">
                         <theader>
-                        <th><strong>ITEM/PRODUCT</strong></th>
-                        <th><strong>TYPE OF PRODUCT/TIPO DE PRODUCTO</strong></th>
-                        <th><strong>TICKET N°/TRACE CODE</strong></th>
-                        <th><strong>PALLET NUMBER/FOLIO PALLET</strong></th>
-                        <th><strong>PACKING DATE/FECHA ELAB.</strong></th>
-                        <th><strong>BEST BEFORE DATE/FECHA VENCIMIENTO</strong></th>
-                        <th><strong>PACKING AMOUNT/N° DE ENVASES</strong></th>
-                        <th><strong>PACKING TYPE/ TYPE DE EMPAQUE</strong></th>
-                        <th><strong>NET WEIGHT / PESO NETO</strong></th>
-                        <th><strong>GROSS WEIGHT / PESO BRUTO</strong></th>
+                        <th style="text-align:center;"><strong>ITEM/PRODUCT</strong></th>
+                        <th style="text-align:center;"><strong>TYPE OF PRODUCT/TIPO DE PRODUCTO</strong></th>
+                        <th style="text-align:center;"><strong>TICKET N°/TRACE CODE</strong></th>
+                        <th style="text-align:center;"><strong>PALLET NUMBER/FOLIO PALLET</strong></th>
+                        <th style="text-align:center;"><strong>PACKING DATE/FECHA ELAB.</strong></th>
+                        <th style="text-align:center;"><strong>BEST BEFORE DATE/FECHA VENCIMIENTO</strong></th>
+                        <th style="text-align:center;"><strong>PACKING AMOUNT/N° DE ENVASES</strong></th>
+                        <th style="text-align:center;"><strong>PACKING TYPE/ TYPE DE EMPAQUE</strong></th>
+                        <th style="text-align:center;"><strong>NET WEIGHT / PESO NETO</strong></th>
+                        <th style="text-align:center;"><strong>GROSS WEIGHT / PESO BRUTO</strong></th>
                         </theader>
                         <tbody>
                             <t t-foreach="d.assigned_pallet_ids" t-as="p">
                                 <tr>
-                                    <td>
+                                    <td style="text-align:center;">
+                                        <span t-esc="p.lot_serial_ids[0].product_id.name"/>
+                                    </td>
+                                    <td style="text-align:center;">
                                         <span t-esc="p.lot_serial_ids[0].product_id.display_name"/>
                                     </td>
-                                    <td>
-                                        <span t-esc="p.lot_serial_ids[0].product_id.name"/>
+                                    <td style="text-align:center;">
+                                        <span t-field="d.name"/>
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <span t-field="p.name"/>
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <span t-field="p.total_content"/>
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <span t-field="p.lot_serial_ids[0].best_before_date"/>
                                     </td>
                                 </tr>
                             </t>
