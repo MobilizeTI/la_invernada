@@ -403,7 +403,7 @@ class StockProductionLotSerial(models.Model):
                 lambda
                     a: a.lot_id.id == item.stock_production_lot_id.id
             )
-            raise models.ValidationError(move_line)
+
             if len(move_line) > 1:
                 for move in move_line:
                     picking_move_line = item.reserved_to_stock_picking_id.move_line_ids.filtered(
@@ -432,7 +432,7 @@ class StockProductionLotSerial(models.Model):
                 picking_move_line = item.reserved_to_stock_picking_id.move_line_ids.filtered(
                     lambda a: a.id == move_line.id
                 )
-
+                raise models.ValidationError(picking_move_line)
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
 
                 item.update({
