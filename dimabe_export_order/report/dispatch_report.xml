@@ -505,7 +505,7 @@
                         </th>
                     </table>
                     <br/>
-                    <table width="45%%" style="border:solid 1px;">
+                    <table width="45%%" style="border:solid 1px;display:inline-block;">
                         <tr>
                             <td>
                                 <strong>SHIPPER/PROVEEDOR:</strong>
@@ -533,8 +533,7 @@
                             </td>
                         </tr>
                     </table>
-                    <div width="4%%"></div>
-                    <table width="45%%">
+                    <table width="45%%" style="display:inline-block;">
                         <tr>
                             <td>
                                 <strong>CONSIGNEE/CONSIGNATARIO:</strong>
