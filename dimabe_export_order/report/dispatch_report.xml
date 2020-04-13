@@ -648,7 +648,7 @@
                         <tr></tr>
                     </table>
                     <br/>
-                    <table style="width:100%;height:50%;border:solid 1px black;font-size:11px;">
+                    <table style="width:100%;height:30%;border:solid 1px black;font-size:11px;">
                         <theader>
                             <th style="text-align:center;border:solid 1px black;">
                                 <strong>ITEM/PRODUCT</strong>
@@ -719,6 +719,9 @@
                                     <tr>
                                         <td colspan="6">
                                             Total
+                                        </td>
+                                        <td>
+                                            <span  t-esc="sum(d.assigned_pallet_ids.mapped('total_content'))"/>
                                         </td>
                                     </tr>
                                 </t>
