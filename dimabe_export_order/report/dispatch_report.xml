@@ -604,7 +604,7 @@
                                 <strong>NOTIFY/NOTIFICADO:</strong>
                             </td>
                             <td>
-                                <span t-field="d.consignee_id.name"/>
+                                <span t-field="d.notify_ids[0].name"/>
                             </td>
                         </tr>
                         <tr>
@@ -612,9 +612,9 @@
                                 <strong>ADDRESS/DIRRECCION:</strong>
                             </td>
                             <td rowspan="2">
-                                <span t-field="d.consignee_id.street"/>
+                                <span t-field="d.notify_ids[0].street"/>
                                 <br/>
-                                <span t-field="d.consignee_id.country_id"/>
+                                <span t-field="d.notify_ids[0].country_id"/>
                             </td>
                         </tr>
                         <tr></tr>
@@ -623,7 +623,7 @@
                                 <strong>PHONE/TELEFONO:</strong>
                             </td>
                             <td>
-                                <span t-field="d.consignee_id.phone"/>
+                                <span t-field="d.notify_ids[0].phone"/>
                             </td>
                         </tr>
                     </table>
