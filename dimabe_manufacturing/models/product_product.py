@@ -22,7 +22,10 @@ class ProductProduct(models.Model):
     @api.multi
     def _compute_type_product(self):
         for item in self:
-             item.type_product = item.attribute_value_ids[1].name
+            type = ''
+            for value in item.attribute_value_ids:
+                type.append(value.name)
+            item.type_product = type
 
     @api.multi
     def compute_is_to_manufacturing(self):
