@@ -492,7 +492,7 @@
 
     <template id="report_packing_list">
         <t t-call="web.html_container">
-            <div class="container">
+            <div class="page">
                 <div class="oe_structure"/>
                 <t t-foreach="docs" t-as="d">
                     <table width="100%%">
@@ -644,7 +644,7 @@
                         <tr></tr>
                     </table>
                     <br/>
-                    <table width="100%%" class="table table-condensed">
+                    <table style="width:100%;border:solid 1px black;">
                         <theader>
                         <th style="text-align:center;border:solid 1px black;font-size:10px;"><strong>ITEM/PRODUCT</strong></th>
                         <th style="text-align:center;border:solid 1px black;font-size:10px;"><strong>TYPE OF PRODUCT/TIPO DE PRODUCTO</strong></th>
