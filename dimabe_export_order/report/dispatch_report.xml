@@ -505,7 +505,7 @@
                         </th>
                     </table>
                     <br/>
-                    <table width="45%%">
+                    <table width="45%%" style="border:solid 1px;">
                         <tr>
                             <td>SHIPPER/PROVEEDOR</td>
                             <td>
