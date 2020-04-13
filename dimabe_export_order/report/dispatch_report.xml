@@ -524,6 +524,7 @@
                                 <span t-field="res_company.country_id"/>
                             </td>
                         </tr>
+                        <tr></tr>
                         <tr>
                             <td>
                                 <strong>PHONE/TELEFONO:</strong>
@@ -552,6 +553,7 @@
                                 <span t-field="d.consignee_id.country_id"/>
                             </td>
                         </tr>
+                        <tr></tr>
                         <tr>
                             <td>
                                 <strong>PHONE/TELEFONO:</strong>
@@ -615,6 +617,7 @@
                                 <span t-field="d.consignee_id.country_id"/>
                             </td>
                         </tr>
+                        <tr></tr>
                         <tr>
                             <td>
                                 <strong>PHONE/TELEFONO:</strong>
