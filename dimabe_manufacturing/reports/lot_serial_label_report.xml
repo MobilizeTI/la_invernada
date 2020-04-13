@@ -79,11 +79,11 @@
                 </div>
                 <div>
                   NET WEIGHT (PESO NETO):
-                  <span t-esc="round(lot_serial_id.display_weight, 1)"/>
+                  <span t-esc="round(lot_serial_id.display_weight,1)"/>
                 </div>
                 <div>
                   GROSS WEIGHT (PESO BRUTO):
-                  <span t-esc="lot_serial_id.gross_weight"/>
+                  <span t-esc="round(lot_serial_id.gross_weight,1)"/>
                 </div>
                 <div>
                   EXPORTED BY (EXPORTADO POR):

@@ -1,6 +1,7 @@
 from odoo import fields, models, api
 from dateutil.relativedelta import relativedelta
 from odoo.addons import decimal_precision as dp
+import math
 
 
 class StockProductionLotSerial(models.Model):
@@ -165,6 +166,7 @@ class StockProductionLotSerial(models.Model):
         production = None
         if stock_move_line.mapped('move_id.production_id'):
             production = stock_move_line.mapped('move_id.production_id')[0]
+            res.producer_id = res.stock_production_lot_id.producer_id.id
         else:
             work_order = self.env['mrp.workorder'].search([
                 ('final_lot_id', '!=', False),
@@ -183,6 +185,9 @@ class StockProductionLotSerial(models.Model):
         res.label_durability_id = res.stock_production_lot_id.label_durability_id
 
         if res.bom_id:
+            if res.bom_id.product_id != res.product_id:
+                res.gross_weight = res.display_weight
+                return res
             res.set_bom_canning()
             if res.canning_id:
                 res.gross_weight = res.display_weight + res.canning_id.weight
@@ -248,29 +253,33 @@ class StockProductionLotSerial(models.Model):
 
     @api.multi
     def reserve_serial(self):
-
         if 'mrp_production_id' in self.env.context:
-            production_id = self.env.context['mrp_production_id']
-            production = self.env['mrp.production'].search([('id', '=', production_id)])
+            production = self.env['mrp.production'].search([('id', '=', self.env.context['mrp_production_id'])])
+            from_lot = self.env.context['from_lot']
             if not production:
                 raise models.ValidationError('No se encontró la orden de producción a la que reservar el producto')
             for item in self:
-                item.update({
-                    'reserved_to_production_id': production.id
-                })
+                if from_lot:
+                    item.update({
+                        'reserved_to_production_id': production.id
+                    })
+                else:
+                    item.update({
+                        'reserved_to_production_id': production.id
+                    })
 
-                stock_move = production.move_raw_ids.filtered(
-                    lambda a: a.product_id == item.stock_production_lot_id.product_id
-                )
+                    stock_move = production.move_raw_ids.filtered(
+                        lambda a: a.product_id == item.stock_production_lot_id.product_id
+                    )
 
-                stock_quant = item.stock_production_lot_id.get_stock_quant()
+                    stock_quant = item.stock_production_lot_id.get_stock_quant()
 
-                stock_quant.sudo().update({
-                    'reserved_quantity': stock_quant.total_reserved
-                })
+                    stock_quant.sudo().update({
+                        'reserved_quantity': stock_quant.total_reserved
+                    })
 
-                for stock in stock_move:
-                    item.add_move_line(stock)
+                    for stock in stock_move:
+                        item.add_move_line(stock)
         else:
             raise models.ValidationError('no se pudo identificar producción')
 
@@ -334,6 +343,7 @@ class StockProductionLotSerial(models.Model):
 
             if not stock_picking:
                 raise models.ValidationError('No se encontró el picking al que reservar el stock')
+
             for item in self:
                 item.update({
                     'reserved_to_stock_picking_id': stock_picking.id
@@ -380,20 +390,20 @@ class StockProductionLotSerial(models.Model):
     @api.multi
     def unreserved_picking(self):
         for item in self:
-
             stock_move = item.reserved_to_stock_picking_id.move_lines.filtered(
                 lambda a: a.product_id == item.stock_production_lot_id.product_id
             )
+
             move_line = stock_move.move_line_ids.filtered(
-                lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.display_weight
+                lambda
+                    a: a.lot_id.id == item.stock_production_lot_id.id
             )
             if len(move_line) > 1:
+                raise models.ValidationError(len(move_line) > 1)
                 for move in move_line:
-
                     picking_move_line = item.reserved_to_stock_picking_id.move_line_ids.filtered(
                         lambda a: a.id == move.id
                     )
-
                     stock_quant = item.stock_production_lot_id.get_stock_quant()
 
                     stock_quant.sudo().update({
@@ -411,7 +421,7 @@ class StockProductionLotSerial(models.Model):
                         picking_move_line.filtered(lambda a: a.id == ml.id).write({
                             'move_id': None,
                             'picking_id': None,
-                            'product_uom_qty': 0
+                            'product_uom_qty': item.stock_production_lot_id.available_total_serial - item.display_weight
                         })
             else:
                 picking_move_line = item.reserved_to_stock_picking_id.move_line_ids.filtered(
@@ -439,7 +449,6 @@ class StockProductionLotSerial(models.Model):
                 })
 
     def remove_and_reduce(self):
-
         if self.consumed:
             raise models.ValidationError('esta serie ya fue consumida')
 

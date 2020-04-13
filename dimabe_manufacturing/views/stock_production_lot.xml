@@ -128,7 +128,7 @@
                 <field name="total_content_weight"/>
                 <field name="total_available_content"/>
                 <field name="state"/>
-                <button string="Agregar a Packing List"
+                <button string="Agregar Reserva"
                         name="add_to_picking"
                         type="object"
                 />
@@ -142,7 +142,7 @@
                 <field name="serial_number"/>
                 <field name="stock_product_id"/>
                 <field name="display_weight"/>
-                <button string="Agregar a Packing List"
+                <button string="Agregar Reserva"
                         type="object"
                         name="reserve_picking"
                 />
@@ -186,8 +186,6 @@
     <field name="domain">[('unpelled_state','in',['waiting','drying'])]</field>
     <field name="view_id" ref="stock_production_lot_in_dashboard_tree_view"/>
   </record>
-
-
   <menuitem name="Vista General Despelonado Entrada"
             id="stock_production_lot_in_dashboard_menu"
             parent="mrp.menu_mrp_reporting"

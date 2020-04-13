@@ -58,7 +58,7 @@
                                 <tr>
                                     <td style="text-align:center;">
                                         N°
-                                        <span t-field="d.guide_number"/>
+                                        <span t-field="d.dispatch_guide_number"/>
                                     </td>
                                 </tr>
                             </table>
@@ -396,7 +396,7 @@
                         <tr style="height:25px;">
                             <td style="text-align:center;">GUIA DE DESPACHO</td>
                             <td style="border:1px solid;width:25%;text-align:center;">
-                                <span t-field="dis.guide_number"/>
+                                <span t-field="dis.dispatch_guide_number"/>
                             </td>
                             <td></td>
                             <td style="text-align:center;">PATENTE CARRO</td>

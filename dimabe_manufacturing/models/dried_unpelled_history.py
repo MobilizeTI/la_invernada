@@ -211,7 +211,8 @@ class DriedUnpelledHistory(models.Model):
     @api.multi
     def _compute_in_lot_ids(self):
         for item in self:
-            item.in_lot_ids = item.oven_use_ids.mapped('used_lot_id')
+            for guide in item.oven_use_ids.mapped('used_lot_id'):
+                item.in_lot_ids = item.oven_use_ids.mapped('used_lot_id')
 
     @api.multi
     def _compute_out_serial_count(self):
@@ -256,7 +257,7 @@ class DriedUnpelledHistory(models.Model):
         for item in self:
 
             if item.out_serial_ids.filtered(
-                lambda a: a.consumed
+                    lambda a: a.consumed
             ):
                 raise models.ValidationError('este proceso no se puede realizar porque ya existen series consumidas')
 

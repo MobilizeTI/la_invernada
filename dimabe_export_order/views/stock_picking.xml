@@ -85,7 +85,7 @@
                                     <group string="Informacion de Exportacion">
                                         <field name="note_dispatched"/>
                                         <field name="sell_truck"/>
-                                        <field name="guide_number"/>
+                                        <field name="dispatch_guide_number"/>
                                         <field name="transport"/>
                                         <field name="sell_sag"/>
                                         <field name="gps_lock"/>
