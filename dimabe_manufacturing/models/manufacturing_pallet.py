@@ -79,6 +79,8 @@ class ManufacturingPallet(models.Model):
         compute='_compute_total_weight_content'
     )
 
+    is_reserved = fields.Boolean('¿Esta reservado?')
+
     @api.model
     def create(self, values_list):
         res = super(ManufacturingPallet, self).create(values_list)
