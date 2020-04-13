@@ -505,7 +505,7 @@
                         </th>
                     </table>
                     <br/>
-                    <table width="50%%" style="border:solid 1px;display:inline-block;">
+                    <table width="45%%" style="border:solid 1px;display:inline-block;">
                         <tr>
                             <td>
                                 <strong>SHIPPER/PROVEEDOR:</strong>
@@ -562,7 +562,7 @@
                         </tr>
                     </table>
                     <br/>
-                    <table width="50%%" style="border:solid 1px;display:inline-block;">
+                    <table width="45%%" style="border:solid 1px;display:inline-block;">
                         <tr>
                             <td>
                                 <strong>VESSEL/NAVE:</strong>
