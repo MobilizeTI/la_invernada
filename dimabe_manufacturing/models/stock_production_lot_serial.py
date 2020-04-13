@@ -448,7 +448,7 @@ class StockProductionLotSerial(models.Model):
                     picking_move_line.filtered(lambda a: a.id == ml.id).update({
                         'product_uom_qty': ml.product_uom_qty
                     })
-                raise models.ValidationError(stock_quant.total_reserved)
+                raise models.ValidationError(stock_quant.total_reserved - picking_move_line.product_uom_qty)
                 stock_quant.sudo().update({
                     'reserved_quantity': stock_quant.total_reserved - picking_move_line.product_uom_qty
                 })
