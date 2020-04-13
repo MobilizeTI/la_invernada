@@ -643,18 +643,18 @@
                         <tr></tr>
                     </table>
                     <br/>
-                    <table width="100%%" style="border:solid 1px black;font-size:10px;">
+                    <table width="100%%" style="border:solid 1px black;">
                         <theader>
-                        <th style="text-align:center;border:solid 1px black;"><strong>ITEM/PRODUCT</strong></th>
-                        <th style="text-align:center;border:solid 1px black;"><strong>TYPE OF PRODUCT/TIPO DE PRODUCTO</strong></th>
-                        <th style="text-align:center;border:solid 1px black;"><strong>TICKET N°/TRACE CODE</strong></th>
-                        <th style="text-align:center;border:solid 1px black;"><strong>PALLET NUMBER/FOLIO PALLET</strong></th>
-                        <th style="text-align:center;border:solid 1px black;"><strong>PACKING DATE/FECHA ELAB.</strong></th>
-                        <th style="text-align:center;border:solid 1px black;"><strong>BEST BEFORE DATE/FECHA VENCIMIENTO</strong></th>
-                        <th style="text-align:center;border:solid 1px black;"><strong>PACKING AMOUNT/N° DE ENVASES</strong></th>
-                        <th style="text-align:center;border:solid 1px black;"><strong>PACKING TYPE/ TYPE DE EMPAQUE</strong></th>
-                        <th style="text-align:center;border:solid 1px black;"><strong>NET WEIGHT / PESO NETO</strong></th>
-                        <th style="text-align:center;border:solid 1px black;"><strong>GROSS WEIGHT / PESO BRUTO</strong></th>
+                        <th style="text-align:center;border:solid 1px black;font-size:10px;"><strong>ITEM/PRODUCT</strong></th>
+                        <th style="text-align:center;border:solid 1px black;font-size:10px;"><strong>TYPE OF PRODUCT/TIPO DE PRODUCTO</strong></th>
+                        <th style="text-align:center;border:solid 1px black;font-size:10px;"><strong>TICKET N°/TRACE CODE</strong></th>
+                        <th style="text-align:center;border:solid 1px black;font-size:10px;"><strong>PALLET NUMBER/FOLIO PALLET</strong></th>
+                        <th style="text-align:center;border:solid 1px black;font-size:10px;"><strong>PACKING DATE/FECHA ELAB.</strong></th>
+                        <th style="text-align:center;border:solid 1px black;font-size:10px;"><strong>BEST BEFORE DATE/FECHA VENCIMIENTO</strong></th>
+                        <th style="text-align:center;border:solid 1px black;font-size:10px;"><strong>PACKING AMOUNT/N° DE ENVASES</strong></th>
+                        <th style="text-align:center;border:solid 1px black;font-size:10px;"><strong>PACKING TYPE/ TYPE DE EMPAQUE</strong></th>
+                        <th style="text-align:center;border:solid 1px black;font-size:10px;"><strong>NET WEIGHT / PESO NETO</strong></th>
+                        <th style="text-align:center;border:solid 1px black;font-size:10px;"><strong>GROSS WEIGHT / PESO BRUTO</strong></th>
                         </theader>
                         <tbody>
                             <t t-foreach="d.assigned_pallet_ids" t-as="p">
