@@ -504,6 +504,21 @@
                             <strong>Packing List</strong>
                         </th>
                     </table>
+                    <br/>
+                    <table width="45%%">
+                        <tr>
+                            <td>SHIPPER/PROVEEDOR</td>
+                            <td>
+                                <span t-field="res_company.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ADDRESS/DIRRECCION</td>
+                            <td>
+                                <span t-field="res_company.street"/>
+                            </td>
+                        </tr>
+                    </table>
                 </t>
             </div>
         </t>
