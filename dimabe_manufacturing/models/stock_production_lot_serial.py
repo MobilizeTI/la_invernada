@@ -322,7 +322,7 @@ class StockProductionLotSerial(models.Model):
             )
 
             move_line = stock_move.active_move_line_ids.filtered(
-                lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.display_weight
+                lambda a: a.lot_id.id == item.stock_production_lot_id.id
                           and a.qty_done == 0
             )
 
@@ -337,7 +337,7 @@ class StockProductionLotSerial(models.Model):
             })
 
             if move_line:
-                move_line[0].write({'move_id': None, 'product_uom_qty': 0})
+                move_line[0].update({'product_uom_qty': move_line[0].product_uom_qty - item.display_weight})
 
     @api.multi
     def reserve_picking(self):
