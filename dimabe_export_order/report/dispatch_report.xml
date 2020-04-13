@@ -643,7 +643,7 @@
                         <tr></tr>
                     </table>
                     <br/>
-                    <table width="100%%" style="border:solid 1px black;font-size:14px;">
+                    <table width="100%%" style="border:solid 1px black;font-size:14px;table-layout: fixed;">
                         <theader>
                         <th style="text-align:center;border:solid 1px black;"><strong>ITEM/PRODUCT</strong></th>
                         <th style="text-align:center;border:solid 1px black;"><strong>TYPE OF PRODUCT/TIPO DE PRODUCTO</strong></th>
