@@ -231,6 +231,11 @@ class StockPicking(models.Model):
         self.pictures = self.picture
 
     @api.multi
+    def generate_packing_list(self):
+        return self.env.ref('dimabe_export_order.action_packing_list') \
+            .report_action(self)
+
+    @api.multi
     def generate_report(self):
         for item in self.pictures:
             if item.counter >= 9:

@@ -393,9 +393,9 @@ class StockProductionLot(models.Model):
                     ))
 
                 move_line = self.env['stock.move.line'].create({
-                    'product_id': item.product_id.id,
-                    'lot_id': item.id,
-                    'product_uom_qty': item.available_total_serial,
+                    'product_id': lot.product_id.id,
+                    'lot_id': lot.id,
+                    'product_uom_qty': lot.available_total_serial,
                     'product_uom_id': stock_move.product_uom.id,
                     'location_id': stock_quant.location_id.id,
                     # 'qty_done': item.display_weight,

@@ -122,6 +122,9 @@
                     <field name="type_of_package"></field>
                     <field name="specie"></field>
                 </xpath>
+                <xpath expr="//header">
+                    <button name="generate_packing_list" type="object" string="Packing List" attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"/>
+                </xpath>
             </field>
         </record>
     </data>
