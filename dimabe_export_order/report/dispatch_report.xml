@@ -717,11 +717,17 @@
                                 </tr>
                                 <t t-if="p.id == d.assigned_pallet_ids[-1].id">
                                     <tr>
-                                        <td colspan="6">
+                                        <td colspan="6" style="text-align:left;">
                                             Total
                                         </td>
-                                        <td>
-                                            <span  t-esc="sum(d.assigned_pallet_ids.mapped('total_content'))"/>
+                                        <td style="text-align:center;">
+                                            <span t-esc="sum(d.assigned_pallet_ids.mapped('total_content'))"/>
+                                        </td>
+                                        <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
+                                            <span t-esc="'%.2f' %sum(sum(p.lot_serial_ids.mapped('display_weight')))"/>
+                                        </td>
+                                        <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
+                                            <span t-esc="'%.2f' %sum(sum(p.lot_serial_ids.mapped('gross_weight')))"/>
                                         </td>
                                     </tr>
                                 </t>
