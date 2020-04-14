@@ -211,16 +211,16 @@ class ManufacturingPallet(models.Model):
                 lambda a : a.product_id == self.product_id
             )
             raise models.ValidationError(self.lot_serial_ids.mapped('stock_production_lot_id'))
-            if not stock_move:
-                move_line = self.env['stock.move.line'].create({
-                    'product_id': self.product_id.id,
-                    'lot_id': ,
-                    'product_uom_qty': lot.available_total_serial,
-                    'product_uom_id': stock_move.product_uom.id,
-                    'location_id': stock_quant.location_id.id,
-                    # 'qty_done': item.display_weight,
-                    'location_dest_id': stock_picking.partner_id.property_stock_customer.id
-                })
+            # if not stock_move:
+            #     move_line = self.env['stock.move.line'].create({
+            #         'product_id': self.product_id.id,
+            #         'lot_id': ,
+            #         'product_uom_qty': lot.available_total_serial,
+            #         'product_uom_id': stock_move.product_uom.id,
+            #         'location_id': stock_quant.location_id.id,
+            #         # 'qty_done': item.display_weight,
+            #         'location_dest_id': stock_picking.partner_id.property_stock_customer.id
+            #     })
         for item in self:
             item.lot_available_serial_ids.update({
                 'reserved_to_stock_picking_id' : stock_picking_id
