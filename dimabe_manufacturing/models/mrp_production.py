@@ -342,7 +342,10 @@ class MrpProduction(models.Model):
             stock_quant.sudo().update({
                 'reserved_quantity': 0
             })
-
+            if item.stock_picking_id:
+                item.stock_picking_id.update({
+                    'has_mrp_production': False
+                })
             if move_line:
                 move_line[0].write({'move_id': None, 'product_uom_qty': 0})
         res = super(MrpProduction,self).action_cancel()
