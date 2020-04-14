@@ -137,12 +137,13 @@
                         </field>
                     </group>
                     <group>
-                        <field name="stock_production_lot_available_serial_ids">
+                        <field name="stock_production_lot_available_serial_ids" domain="[('reserved_to_stock_picking_id','!=',None)]">
                             <tree>
                                 <field name="pallet_id"/>
                                 <field name="serial_number"/>
                                 <field name="stock_product_id"/>
                                 <field name="display_weight"/>
+
                                 <button string="Agregar Reserva"
                                         type="object"
                                         name="reserve_picking"
