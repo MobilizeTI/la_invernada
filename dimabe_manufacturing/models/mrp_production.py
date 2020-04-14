@@ -334,7 +334,7 @@ class MrpProduction(models.Model):
             )
             stock_quant = lot.get_stock_quant()
 
-            for serial in lot.stock_production_lot_serial_ids:
+            for serial in lot.stock_production_lot_id.stock_production_lot_serial_ids:
                 serial.update({
                     'reserved_to_production_id': None
                 })
