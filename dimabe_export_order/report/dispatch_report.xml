@@ -648,13 +648,10 @@
                         <tr></tr>
                     </table>
                     <br/>
-                    <table style="width:100%;height:30%;border:solid 1px black;font-size:9px;">
+                    <table style="width:100%;height:355px;border:solid 1px black;font-size:9px;">
                         <theader>
-                            <th rowspan="2" style="text-align:center;border:solid 1px black;">
-                                <strong>ITEM</strong>
-                            </th>
-                            <th>
-                                <strong>PRODUCT</strong>
+                            <th style="text-align:center;border:solid 1px black;">
+                                <strong>ITEM/PRODUCT</strong>
                             </th>
                             <th style="text-align:center;border:solid 1px black;">
                                 <strong>TYPE OF PRODUCT/TIPO DE PRODUCTO</strong>
