@@ -467,7 +467,7 @@ class StockProductionLotSerial(models.Model):
 
                 for ml in move_line:
                     product_uom_qty = ml.product_uom_qty
-                    raise models.ValidationError(product_uom_qty)
+
                     if ml.qty_done > 0:
                         raise models.ValidationError('este producto ya ha sido validado')
 
