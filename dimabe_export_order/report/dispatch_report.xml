@@ -648,7 +648,7 @@
                         <tr></tr>
                     </table>
                     <br/>
-                    <table style="width:100%;height:355px;border:solid 1px black;font-size:10px;" cellspacing="0"
+                    <table style="width:100%;border:solid 1px black;font-size:10px;" cellspacing="0"
                            cellpadding="0">
                         <theader>
                             <th style="text-align:center;border:solid 1px black;width:10%;" scope="col">
