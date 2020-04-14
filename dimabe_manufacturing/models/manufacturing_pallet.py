@@ -211,7 +211,7 @@ class ManufacturingPallet(models.Model):
                 lambda a : a.product_id == self.product_id
             )
             lot_id = self.lot_serial_ids.mapped('stock_production_lot_id')
-            raise models.ValidationError(self.product_id.product_uom)
+            raise models.ValidationError(self.product_id.uom_id)
             # if not stock_move:
             #     move_line = self.env['stock.move.line'].create({
             #         'product_id': self.product_id.id,
