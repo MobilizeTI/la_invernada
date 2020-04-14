@@ -215,10 +215,10 @@ class ManufacturingPallet(models.Model):
             stock_quant = lot_id.get_stock_quant()
             if not stock_move:
                 move_line = self.env['stock.move.line'].create({
-                    'product_id': self.product_id.id,
+                    'product_id': item.product_id.id,
                     'lot_id': lot_id.id,
-                    'product_uom_qty': self.total_content_weight,
-                    'product_uom_id': self.product_id.uom_id.id,
+                    'product_uom_qty': item.total_content_weight,
+                    'product_uom_id': item.product_id.uom_id.id,
                     'location_id': stock_quant.location_id.id,
                     # 'qty_done': item.display_weight,
                     'location_dest_id': stock_picking.partner_id.property_stock_customer.id
@@ -256,12 +256,12 @@ class ManufacturingPallet(models.Model):
                     if ml.qty_done > 0:
                         raise models.ValidationError('este producto ya ha sido validado')
 
-                    ml.update({'product_uom_qty': self.total_content_weight})
+                    ml.update({'product_uom_qty': item.total_content_weight})
                     picking_move_line.filtered(lambda a: a.id == ml.id).update({
                         'product_uom_qty': ml.product_uom_qty
                     })
                 stock_quant.sudo().update({
-                    'reserved_quantity': item.display_weight
+                    'reserved_quantity': item.total_content_weight
                 })
             item.lot_available_serial_ids.update({
                 'reserved_to_stock_picking_id' : stock_picking_id
