@@ -123,6 +123,7 @@
                 <group>
                     <group>
                         <field name="pallet_ids">
+                            <field name="is_reserved" invisible="1"/>
                             <tree>
                                 <group attrs="{'invisible':['is_reserved','=',True]}">
                                     <field name="name"/>
