@@ -250,7 +250,7 @@ class ManufacturingPallet(models.Model):
                 )
 
                 stock_quant = lot_id.get_stock_quant()
-
+                raise models.ValidationError(item.total_content_weight)
                 for ml in move_line:
                     product_uom_qty = ml.product_uom_qty
                     if ml.qty_done > 0:
