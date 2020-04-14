@@ -245,8 +245,8 @@ class ManufacturingPallet(models.Model):
                         a: a.lot_id.id == lot_id.id
                 )
 
-                picking = stock_picking.move_lines_ids.filtered(
-                    lambda a : a.id == move_line.id
+                picking_move_line = stock_picking.move_line_ids.filtered(
+                    lambda a: a.id == move_line.id
                 )
 
                 stock_quant = lot_id.get_stock_quant()
