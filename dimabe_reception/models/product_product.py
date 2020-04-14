@@ -19,6 +19,10 @@ class ProductProduct(models.Model):
         return self.get_variant('variedad')
 
     @api.model
+    def get_caliber(self):
+        return self.get_variant('calibre')
+
+    @api.model
     def get_species(self):
         return self.get_variant('especie')
 
