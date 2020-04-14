@@ -323,8 +323,30 @@ class MrpProduction(models.Model):
 
     @api.multi
     def action_cancel(self):
-        self.potential_lot_ids.mapped('potential_serial_ids').with_context(from_lot=True).unreserved_serial()
+        for lot in self.potential_lot_ids:
+            stock_move = self.move_raw_ids.filtered(
+                lambda a: a.product_id == lot.product_id
+            )
+
+            move_line = stock_move.active_move_line_ids.filtered(
+                lambda a: a.lot_id.id == lot.id and a.product_qty == lot.qty_to_reserve
+                          and a.qty_done == 0
+            )
+            stock_quant = lot.get_stock_quant()
+
+            for serial in lot.stock_production_lot_serial_ids:
+                serial.update({
+                    'reserved_to_production_id': None
+                })
+
+            stock_quant.sudo().update({
+                'reserved_quantity': 0
+            })
+
+            if move_line:
+                move_line[0].write({'move_id': None, 'product_uom_qty': 0})
         res = super(MrpProduction,self).action_cancel()
+
 
 
     @api.multi
