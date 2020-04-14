@@ -461,7 +461,6 @@ class StockProductionLotSerial(models.Model):
                 )
 
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
-                raise models.ValidationError(stock_quant)
                 item.update({
                     'reserved_to_stock_picking_id': None
                 })
@@ -476,7 +475,7 @@ class StockProductionLotSerial(models.Model):
                         'product_uom_qty': ml.product_uom_qty
                     })
                 stock_quant.sudo().update({
-                    'reserved_quantity': item.display_weight
+                    'reserved_quantity': stock.quant.quantity - item.display_weight
                 })
 
     def remove_and_reduce(self):
