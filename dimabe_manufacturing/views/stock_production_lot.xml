@@ -132,6 +132,7 @@
                                     <button string="Agregar Reserva"
                                             name="add_to_picking"
                                             type="object"
+                                            context="{'stock_picking_id':parent.id}"
                                     />
                             </tree>
                         </field>
@@ -147,6 +148,7 @@
                                 <button string="Agregar Reserva"
                                         type="object"
                                         name="reserve_picking"
+                                        context="{'stock_picking_id':parent.id}"
                                 />
                             </tree>
                         </field>
