@@ -40,7 +40,7 @@ class ProductProduct(models.Model):
     def _compute_label_name(self):
         for item in self:
             for value in item.attribute_value_ids:
-                if value == 'Nuez con Cascara':
+                if value.name == 'Nuez con Cascara':
                     item.label_name = 'Hola'
 
     @api.multi
