@@ -194,9 +194,7 @@ class StockProductionLot(models.Model):
         compute='_compute_is_dimabe_team'
     )
 
-    is_for_dispatch = field.Boolean(
-        'Esta para despacho?'
-    )
+
     
     @api.multi
     def _compute_can_add_serial(self):
@@ -425,9 +423,7 @@ class StockProductionLot(models.Model):
                 stock_quant.sudo().update({
                     'reserved_quantity': stock_quant.total_reserved
                 })
-                item.update({
-                    'is_for_dispatch': True
-                })
+
             #serial_to_assign_ids.with_context(stock_picking_id=picking_id).reserve_picking()
 
     @api.multi
