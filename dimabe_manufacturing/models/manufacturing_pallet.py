@@ -245,7 +245,7 @@ class ManufacturingPallet(models.Model):
                         a: a.lot_id.id == lot_id.id
                 )
 
-                picking = move_line.move_lines_ids.filtered(
+                picking = stock_picking.move_lines_ids.filtered(
                     lambda a : a.id == move_line.id
                 )
 
@@ -257,7 +257,7 @@ class ManufacturingPallet(models.Model):
                         raise models.ValidationError('este producto ya ha sido validado')
 
                     ml.update({'product_uom_qty': self.total_content_weight})
-                    picking_move_line.filtered(lambda a: a.id == ml.id).update({
+                    picking.filtered(lambda a: a.id == ml.id).update({
                         'product_uom_qty': ml.product_uom_qty
                     })
                 stock_quant.sudo().update({
