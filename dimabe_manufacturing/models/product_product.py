@@ -14,6 +14,8 @@ class ProductProduct(models.Model):
 
     is_standard_weight = fields.Boolean('Es peso estandar', default=False)
 
+    label_name = fields.Char('Nombre etiqueta',compute='_compute_label_name')
+
     @api.multi
     def compute_is_to_manufacturing(self):
         for item in self:
@@ -21,6 +23,11 @@ class ProductProduct(models.Model):
                 item.update({
                     'is_to_manufacturing': True
                 })
+
+    @api.multi
+    def _compute_label_name(self):
+        for item in self:
+            item.label_name = item.name + ' (' + item.get_caliber() + ')'
 
     @api.multi
     def _compute_variety(self):
