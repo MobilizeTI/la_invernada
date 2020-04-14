@@ -638,7 +638,8 @@
                         </tr>
                         <tr></tr>
                     </table>
-                    <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
+                    <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;" cellspacing="0"
+                           cellpadding="0">
                         <tr rowspan="2">
                             <td style="text-align:center;">CLIENT PURCHASE ORDER/ORDER DE COMPRA CLIENTE</td>
                             <td style="text-align:center;">
