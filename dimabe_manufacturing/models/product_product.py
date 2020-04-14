@@ -39,9 +39,9 @@ class ProductProduct(models.Model):
     @api.multi
     def _compute_label_name(self):
         for item in self:
-            for value in item.attribute_value_ids:
-                for line in item.attribute_line_ids:
-                    item.label_name = line.name
+            item.label_name = item.name + '(' + item.variety +')'
+
+
 
     @api.multi
     def compute_is_to_manufacturing(self):
