@@ -256,7 +256,7 @@ class ManufacturingPallet(models.Model):
                     if ml.qty_done > 0:
                         raise models.ValidationError('este producto ya ha sido validado')
 
-                    ml.update({'product_uom_qty': item.total_content_weight })
+                    ml.update({'product_uom_qty':  item.total_content_weight })
 
                     picking_move_line.filtered(lambda a: a.id == ml.id).update({
                         'product_uom_qty': item.total_content_weight

@@ -321,6 +321,12 @@ class MrpProduction(models.Model):
 
         return res
 
+    @api.model
+    def action_cancel(self):
+        raise models.ValidationError(self.potential_lot_ids.mapped('potential_serial_ids'))
+        res = super(MrpProduction,self).action_cancel()
+
+
     @api.multi
     def button_plan(self):
         for order in self:
