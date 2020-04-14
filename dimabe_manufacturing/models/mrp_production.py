@@ -321,7 +321,7 @@ class MrpProduction(models.Model):
 
         return res
 
-    @api.model
+    @api.multi
     def action_cancel(self):
         raise models.ValidationError(self.potential_lot_ids.mapped('potential_serial_ids'))
         res = super(MrpProduction,self).action_cancel()
