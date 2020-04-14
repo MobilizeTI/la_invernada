@@ -210,12 +210,13 @@ class ManufacturingPallet(models.Model):
             stock_move = stock_picking.move_lines.filtered(
                 lambda a : a.product_id == self.product_id
             )
-            raise models.ValidationError(self.lot_serial_ids.mapped('stock_production_lot_id'))
+            lot_id = self.lot_serial_ids.mapped('stock_production_lot_id')
+            raise models.ValidationError(self.product_id.product_uom)
             # if not stock_move:
             #     move_line = self.env['stock.move.line'].create({
             #         'product_id': self.product_id.id,
-            #         'lot_id': ,
-            #         'product_uom_qty': lot.available_total_serial,
+            #         'lot_id': lot_id.id,
+            #         'product_uom_qty': self.,
             #         'product_uom_id': stock_move.product_uom.id,
             #         'location_id': stock_quant.location_id.id,
             #         # 'qty_done': item.display_weight,
