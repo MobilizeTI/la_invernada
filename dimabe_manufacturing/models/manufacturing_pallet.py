@@ -252,11 +252,12 @@ class ManufacturingPallet(models.Model):
                 stock_quant = lot_id.get_stock_quant()
 
                 for ml in move_line:
-                    product_uom_qty = ml.product_uom_qty
+
                     if ml.qty_done > 0:
                         raise models.ValidationError('este producto ya ha sido validado')
 
-                    ml.update({'product_uom_qty': sum(item.lot_serial_ids.mapped('display_weight'))})
+                    ml.update({'product_uom_qty': item.total_content_weight })
+                    raise models.ValidationError(picking_move_line.filtered(lambda a: a.id == ml.id))
                     picking_move_line.filtered(lambda a: a.id == ml.id).update({
                         'product_uom_qty': item.total_content_weight
                     })
