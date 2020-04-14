@@ -260,9 +260,9 @@ class ManufacturingPallet(models.Model):
                     picking_move_line.filtered(lambda a: a.id == ml.id).update({
                         'product_uom_qty': item.total_content_weight
                     })
-            #     stock_quant.sudo().update({
-            #         'reserved_quantity': item.total_content_weight
-            #     })
+                stock_quant.sudo().update({
+                     'reserved_quantity': stock_quant.total_reserved
+                })
             item.lot_available_serial_ids.update({
                 'reserved_to_stock_picking_id' : stock_picking_id
             })
