@@ -40,7 +40,8 @@ class ProductProduct(models.Model):
     def _compute_label_name(self):
         for item in self:
             for value in item.attribute_value_ids:
-                item.label_name = value.display_name
+                for line in item.attribute_line_ids:
+                    item.label_name = line.name
 
     @api.multi
     def compute_is_to_manufacturing(self):
