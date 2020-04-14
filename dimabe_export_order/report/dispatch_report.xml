@@ -648,37 +648,37 @@
                         <tr></tr>
                     </table>
                     <br/>
-                    <table style="width:100%;height:355px;border:solid 1px black;font-size:12px;" cellspacing="0"
+                    <table style="width:100%;height:355px;border:solid 1px black;font-size:10px;" cellspacing="0"
                            cellpadding="0">
                         <theader>
-                            <th style="text-align:center;border:solid 1px black;width:50%;" scope="col">
+                            <th style="text-align:center;border:solid 1px black;" scope="col">
                                 <strong>ITEM/PRODUCT</strong>
                             </th>
                             <th style="text-align:center;border:solid 1px black;width:50%;" scope="col">
                                 <strong>TYPE OF PRODUCT/TIPO DE PRODUCTO</strong>
                             </th>
-                            <th style="text-align:center;border:solid 1px black;width:50%;" scope="col">
+                            <th style="text-align:center;border:solid 1px black;" scope="col">
                                 <strong>TICKET N°/TRACE CODE</strong>
                             </th>
-                            <th style="text-align:center;border:solid 1px black;width:50%;" scope="col">
+                            <th style="text-align:center;border:solid 1px black;" scope="col">
                                 <strong>PALLET NUMBER/FOLIO PALLET</strong>
                             </th>
-                            <th style="text-align:center;border:solid 1px black;width:50%;" scope="col">
+                            <th style="text-align:center;border:solid 1px black;" scope="col">
                                 <strong>PACKING DATE/FECHA ELAB.</strong>
                             </th>
-                            <th style="text-align:center;border:solid 1px black;width:50%;" scope="col">
+                            <th style="text-align:center;border:solid 1px black;" scope="col">
                                 <strong>BEST BEFORE DATE/FECHA VENCIMIENTO</strong>
                             </th>
-                            <th style="text-align:center;border:solid 1px black;width:50%;" scope="col">
+                            <th style="text-align:center;border:solid 1px black;" scope="col">
                                 <strong>PACKING AMOUNT/N° DE ENVASES</strong>
                             </th>
-                            <th style="text-align:center;border:solid 1px black;width:50%;" scope="col">
+                            <th style="text-align:center;border:solid 1px black;" scope="col">
                                 <strong>PACKING TYPE/ TYPE DE EMPAQUE</strong>
                             </th>
-                            <th style="text-align:center;border:solid 1px black;width:50%;" scope="col">
+                            <th style="text-align:center;border:solid 1px black;" scope="col">
                                 <strong>NET WEIGHT / PESO NETO</strong>
                             </th>
-                            <th style="text-align:center;border:solid 1px black;width:50%;" scope="col">
+                            <th style="text-align:center;border:solid 1px black;" scope="col">
                                 <strong>GROSS WEIGHT / PESO BRUTO</strong>5
                             </th>
                         </theader>
