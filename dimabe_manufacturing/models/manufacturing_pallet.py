@@ -207,8 +207,9 @@ class ManufacturingPallet(models.Model):
         if 'stock_picking_id' in self.env.context:
             stock_picking_id = self.env.context['stock_picking_id']
             stock_picking = self.env['stock.picking'].search([('id','=',stock_picking_id)])
+        for item in self:
             stock_move = stock_picking.move_lines.filtered(
-                lambda a : a.product_id == self.product_id
+                lambda a: a.product_id == self.product_id
             )
             lot_id = self.lot_serial_ids.mapped('stock_production_lot_id')
             stock_quant = lot_id.get_stock_quant()
@@ -216,7 +217,7 @@ class ManufacturingPallet(models.Model):
                 move_line = self.env['stock.move.line'].create({
                     'product_id': self.product_id.id,
                     'lot_id': lot_id.id,
-                    'product_uom_qty': self.,
+                    'product_uom_qty': self.total_content_weight,
                     'product_uom_id': self.product_id.uom_id.id,
                     'location_id': stock_quant.location_id.id,
                     # 'qty_done': item.display_weight,
@@ -262,8 +263,6 @@ class ManufacturingPallet(models.Model):
                 stock_quant.sudo().update({
                     'reserved_quantity': item.display_weight
                 })
-
-        for item in self:
             item.lot_available_serial_ids.update({
                 'reserved_to_stock_picking_id' : stock_picking_id
             })
