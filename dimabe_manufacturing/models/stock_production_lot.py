@@ -379,7 +379,7 @@ class StockProductionLot(models.Model):
             lot_id = serial_to_assign_ids.mapped('stock_production_lot_id')
             models._logger.error(lot_id)
             for lot in lot_id:
-
+                available_total_serial = lot.available_total_serial
                 serial_to_assign_ids.update({
                     'reserved_to_stock_picking_id': stock_picking.id
                 })
@@ -401,7 +401,7 @@ class StockProductionLot(models.Model):
                 move_line = self.env['stock.move.line'].create({
                     'product_id': lot.product_id.id,
                     'lot_id': lot.id,
-                    'product_uom_qty': lot.available_total_serial,
+                    'product_uom_qty': available_total_serial,
                     'product_uom_id': stock_move.product_uom.id,
                     'location_id': stock_quant.location_id.id,
                     # 'qty_done': item.display_weight,
