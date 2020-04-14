@@ -474,8 +474,8 @@ class StockProductionLotSerial(models.Model):
                     picking_move_line.filtered(lambda a: a.id == ml.id).update({
                         'product_uom_qty': ml.product_uom_qty
                     })
-                stock_quant.sudo().update({
-                    'quantity': stock_quant.quantity - item.display_weight
+                item.stock_production_lot_id.update({
+                    'available_total_serial' : item.stock_production_lot_id.available_total_serial - item.display_weight
                 })
 
     def remove_and_reduce(self):
