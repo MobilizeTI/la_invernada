@@ -323,7 +323,7 @@ class MrpProduction(models.Model):
 
     @api.multi
     def action_cancel(self):
-        raise models.ValidationError(self.potential_lot_ids.mapped('potential_serial_ids'))
+        self.potential_lot_ids.with_contex(from_lot=True).unreserved_stock()
         res = super(MrpProduction,self).action_cancel()
 
 
