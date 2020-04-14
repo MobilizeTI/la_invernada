@@ -122,10 +122,9 @@
             <form>
                 <group>
                     <group>
-                        <field name="pallet_ids">
+                        <field name="pallet_ids" domain="[('is_reserved','=',True)]">
                             <field name="is_reserved" invisible="1"/>
                             <tree>
-                                <group attrs="{'invisible':['is_reserved','=',True]}">
                                     <field name="name"/>
                                     <field name="total_content_weight"/>
                                     <field name="total_available_content"/>
@@ -134,7 +133,6 @@
                                             name="add_to_picking"
                                             type="object"
                                     />
-                                </group>
                             </tree>
                         </field>
                     </group>
