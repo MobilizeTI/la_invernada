@@ -130,7 +130,6 @@
                                     <field name="total_content_weight"/>
                                     <field name="total_available_content"/>
                                     <field name="state"/>
-                                    <field name="is_reserved" invisible="1"/>
                                     <button string="Agregar Reserva"
                                             name="add_to_picking"
                                             type="object"
