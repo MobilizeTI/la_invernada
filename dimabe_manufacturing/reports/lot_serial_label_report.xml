@@ -6,7 +6,7 @@
           <table style="font-size:14px;">
             <tr>
               <th style="border-top: solid 1px;border-bottom:solid 1px;" colspan="2">
-                <span t-field="lot_serial_id.product_id.display_name"/>
+                <span t-field="lot_serial_id.product_id.label_name"/>
               </th>
             </tr>
             <tr>

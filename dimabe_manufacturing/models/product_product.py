@@ -15,6 +15,11 @@ class ProductProduct(models.Model):
         ,compute='_compute_type_product'
     )
 
+    label_name = fields.Char(
+        'Nombre para Etiqueta',
+        compute='_compute_label_name'
+    )
+
     is_to_manufacturing = fields.Boolean('Es Fabricacion?',default=True,compute="compute_is_to_manufacturing")
 
     is_standard_weight = fields.Boolean('Es peso estandar', default=False)
@@ -30,6 +35,12 @@ class ProductProduct(models.Model):
                     type.append(value.name)
             type_string = ''.join(type)
             item.type_product = type_string
+
+    @api.multi
+    def _compute_label_name(self):
+        for item in self:
+            for value in item.attribute_value_ids:
+                item.label_name = value.name
 
     @api.multi
     def compute_is_to_manufacturing(self):
