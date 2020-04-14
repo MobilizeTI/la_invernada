@@ -211,17 +211,58 @@ class ManufacturingPallet(models.Model):
                 lambda a : a.product_id == self.product_id
             )
             lot_id = self.lot_serial_ids.mapped('stock_production_lot_id')
-            raise models.ValidationError(self.product_id.uom_id)
-            # if not stock_move:
-            #     move_line = self.env['stock.move.line'].create({
-            #         'product_id': self.product_id.id,
-            #         'lot_id': lot_id.id,
-            #         'product_uom_qty': self.,
-            #         'product_uom_id': stock_move.product_uom.id,
-            #         'location_id': stock_quant.location_id.id,
-            #         # 'qty_done': item.display_weight,
-            #         'location_dest_id': stock_picking.partner_id.property_stock_customer.id
-            #     })
+            stock_quant = lot_id.get_stock_quant()
+            if not stock_move:
+                move_line = self.env['stock.move.line'].create({
+                    'product_id': self.product_id.id,
+                    'lot_id': lot_id.id,
+                    'product_uom_qty': self.,
+                    'product_uom_id': self.product_id.uom_id.id,
+                    'location_id': stock_quant.location_id.id,
+                    # 'qty_done': item.display_weight,
+                    'location_dest_id': stock_picking.partner_id.property_stock_customer.id
+                })
+
+                stock_move.sudo().update({
+                    'move_line_ids': [
+                        (4, move_line.id)
+                    ]
+                })
+
+                stock_picking.update({
+                    'move_line_ids': [
+                        (4, move_line.id)
+                    ]
+                })
+
+                stock_quant.sudo().update({
+                    'reserved_quantity': stock_quant.total_reserved
+                })
+            else:
+                move_line = stock_move.move_line_ids.filtered(
+                    lambda
+                        a: a.lot_id.id == lot_id.id
+                )
+
+                picking = move_line.move_lines_ids.filtered(
+                    lambda a : a.id == move_line.id
+                )
+
+                stock_quant = lot_id.get_stock_quant()
+
+                for ml in move_line:
+                    product_uom_qty = ml.product_uom_qty
+                    if ml.qty_done > 0:
+                        raise models.ValidationError('este producto ya ha sido validado')
+
+                    ml.update({'product_uom_qty': self.total_content_weight})
+                    picking_move_line.filtered(lambda a: a.id == ml.id).update({
+                        'product_uom_qty': ml.product_uom_qty
+                    })
+                stock_quant.sudo().update({
+                    'reserved_quantity': item.display_weight
+                })
+
         for item in self:
             item.lot_available_serial_ids.update({
                 'reserved_to_stock_picking_id' : stock_picking_id
