@@ -250,7 +250,7 @@ class ManufacturingPallet(models.Model):
                 )
 
                 stock_quant = lot_id.get_stock_quant()
-                raise models.ValidationError(item.total_content_weight)
+
                 for ml in move_line:
                     product_uom_qty = ml.product_uom_qty
                     if ml.qty_done > 0:
@@ -258,7 +258,7 @@ class ManufacturingPallet(models.Model):
 
                     ml.update({'product_uom_qty': item.total_content_weight})
                     picking_move_line.filtered(lambda a: a.id == ml.id).update({
-                        'product_uom_qty': ml.product_uom_qty
+                        'product_uom_qty': item.total_content_weight
                     })
             #     stock_quant.sudo().update({
             #         'reserved_quantity': item.total_content_weight
