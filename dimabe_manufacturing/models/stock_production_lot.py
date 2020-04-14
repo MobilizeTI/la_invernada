@@ -322,7 +322,7 @@ class StockProductionLot(models.Model):
     def _compute_available_total_serial(self):
         for item in self:
             item.available_total_serial = sum(item.stock_production_lot_serial_ids.filtered(
-                lambda a: not a.reserved_to_stock_picking_id
+                lambda a: not a.consumed or not a.reserved_to_stock_picking_id
             ).mapped('display_weight'))
 
     @api.multi
