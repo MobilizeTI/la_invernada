@@ -325,7 +325,7 @@ class MrpProduction(models.Model):
     def action_cancel(self):
         for lot in self.potential_lot_ids:
             stock_move = self.move_raw_ids.filtered(
-                lambda a: a.product_id == lot.product_id
+                lambda a: a.product_id == lot.stock_production_lot_id.product_id
             )
 
             move_line = stock_move.active_move_line_ids.filtered(
