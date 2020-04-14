@@ -323,7 +323,7 @@ class MrpProduction(models.Model):
 
     @api.multi
     def action_cancel(self):
-        self.potential_lot_ids.with_contex(from_lot=True).unreserved_stock()
+        self.potential_lot_ids.unreserved_stock()
         res = super(MrpProduction,self).action_cancel()
 
 
