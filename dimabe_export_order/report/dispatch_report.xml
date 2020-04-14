@@ -654,7 +654,7 @@
                             <th style="text-align:center;border:solid 1px black;" scope="col">
                                 <strong>ITEM/PRODUCT</strong>
                             </th>
-                            <th style="text-align:center;border:solid 1px black;width:36.6%;" scope="col">
+                            <th style="text-align:center;border:solid 1px black;width:36.6%;height:11px;" scope="col">
                                 <strong>TYPE OF PRODUCT/TIPO DE PRODUCTO</strong>
                             </th>
                             <th style="text-align:center;border:solid 1px black;" scope="col">
