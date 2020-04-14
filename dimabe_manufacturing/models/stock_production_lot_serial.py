@@ -475,7 +475,7 @@ class StockProductionLotSerial(models.Model):
                         'product_uom_qty': ml.product_uom_qty
                     })
                 stock_quant.sudo().update({
-                    'reserved_quantity': stock_quant.quantity - item.display_weight
+                    'quantity': stock_quant.quantity - item.display_weight
                 })
 
     def remove_and_reduce(self):
