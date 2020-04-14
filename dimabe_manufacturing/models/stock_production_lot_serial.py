@@ -390,21 +390,27 @@ class StockProductionLotSerial(models.Model):
                     })
                 else:
                     picking_move_line = item.reserved_to_stock_picking_id.move_line_ids.filtered(
-                        lambda a: a.id == move.id
+                        lambda a: a.id == move_line.id
                     )
+
                     stock_quant = item.stock_production_lot_id.get_stock_quant()
 
-                    stock_quant.sudo().update({
-                        'reserved_quantity': stock_quant.total_reserved
+                    item.update({
+                        'reserved_to_stock_picking_id': None
                     })
 
-                    for ml in move:
+                    for ml in move_line:
+                        product_uom_qty = ml.product_uom_qty
                         if ml.qty_done > 0:
                             raise models.ValidationError('este producto ya ha sido validado')
-                        ml.update({'move_id': None, 'product_uom_qty': item.display_weight})
+
+                        ml.update({'product_uom_qty': product_uom_qty + item.display_weight})
                         picking_move_line.filtered(lambda a: a.id == ml.id).update({
-                            'product_uom_qty': item.display_weight
+                            'product_uom_qty': ml.product_uom_qty
                         })
+                    stock_quant.sudo().update({
+                        'reserved_quantity': item.display_weight
+                    })
         else:
             raise models.ValidationError('no se pudo identificar picking')
 
