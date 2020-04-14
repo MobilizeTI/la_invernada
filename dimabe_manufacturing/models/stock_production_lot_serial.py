@@ -328,7 +328,6 @@ class StockProductionLotSerial(models.Model):
 
             stock_quant = item.stock_production_lot_id.get_stock_quant()
 
-            raise models.ValidationError(stock_quant)
 
             item.update({
                 'reserved_to_production_id': None
@@ -462,7 +461,7 @@ class StockProductionLotSerial(models.Model):
                 )
 
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
-
+                raise models.ValidationError(stock_quant)
                 item.update({
                     'reserved_to_stock_picking_id': None
                 })
