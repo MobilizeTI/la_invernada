@@ -267,7 +267,6 @@ class ManufacturingPallet(models.Model):
             item.lot_available_serial_ids.update({
                 'reserved_to_stock_picking_id' : stock_picking_id
             })
-            raise models.ValidationError(item.lot_available_serial_ids.mapped('reserved_to_stock_picking_id'))
             item.update({
                  'is_reserved':True
             })
