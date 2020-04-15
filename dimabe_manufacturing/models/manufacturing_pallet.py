@@ -267,9 +267,9 @@ class ManufacturingPallet(models.Model):
             item.lot_available_serial_ids.update({
                 'reserved_to_stock_picking_id' : stock_picking_id
             })
-            # item.update({
-            #     'is_reserved':True
-            # })
+            item.update({
+                 'is_reserved':True
+            })
 
     @api.multi
     def remove_from_picking(self):
