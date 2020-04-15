@@ -33,7 +33,7 @@
                     <button string="Quitar Reserva"
                             type="object"
                             name="unreserved"
-                            context="{'stock_picking_id':id}"
+                            context="{'stock_picking_id':parent.id}"
                     />
                   </tree>
                 </field>
@@ -71,7 +71,7 @@
                             name="unreserved_picking"
                             groups="mrp.group_mrp_manager"
                             attrs="{'invisible':['|',('parent.state','=','done'),('consumed','=',True)]}"
-
+                            context="{'stock_picking_id': parent.id}"
                     />
                   </tree>
                 </field>
