@@ -45,8 +45,8 @@ class ProductProduct(models.Model):
     @api.multi
     def _compute_type_of_caning(self):
         for item in self:
-            models._logger.error(item.get_caning())
-            item.type_of_caning = item.get_caning()
+            caning = item.get_caning()
+            item.type_of_caning = caning
 
     @api.multi
     def _compute_label_product(self):
