@@ -72,6 +72,7 @@
                 <field name="stock_lots" invisible="1"/>
                 <field name="potential_lot_ids" readonly="0" string="" domain="[('lot_balance','=',0),('all_serial_consumed','=',0)]">
                   <tree edit="true" delete="false" create="false">
+                    <field name="all_serial_consumed" invisible="1"/>
                     <field name="stock_production_lot_id" readonly="1" widget="many2onebutton"/>
                     <field name="lot_product_id" readonly="1"/>
                     <field name="lot_balance" readonly="1" force_save="1"/>
