@@ -53,7 +53,7 @@ class PotentialLot(models.Model):
     @api.multi
     def _compute_all_serial_consumed(self):
         for item in self:
-            item.all_serial_consumed = len(item.potential_serial_ids) < 0
+            item.all_serial_consumed = len(item.potential_serial_ids.filtered(lambda a:a.consumed is True)) > 0
 
     @api.multi
     def _compute_potential_serial_ids(self):
