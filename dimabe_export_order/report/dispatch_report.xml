@@ -741,7 +741,7 @@
         </t>
     </template>
 
-    <template id="report_packing_list_2">
+    <template id="report_inform">
         <t t-call="web.html_container">
             <div class="page">
                 <div class="oe_structure"/>
@@ -753,7 +753,7 @@
                             />
                         </th>
                         <th style="font-size:20px;">
-                            <strong>Packing List</strong>
+                            <strong>Informe de Salidas</strong>
                         </th>
                     </table>
                     <br/>
@@ -915,6 +915,9 @@
                                 <strong>PALLET NUMBER/FOLIO PALLET</strong>
                             </th>
                             <th style="text-align:center;border:solid 1px black;" scope="col">
+                                <strong>PRODUCER/PRODUCTOR</strong>
+                            </th>
+                            <th style="text-align:center;border:solid 1px black;" scope="col">
                                 <strong>PACKING DATE/FECHA ELAB.</strong>
                             </th>
                             <th style="text-align:center;border:solid 1px black;" scope="col">
@@ -947,6 +950,9 @@
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                         <span t-field="p.name"/>
+                                    </td>
+                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px;">
+                                        <span t-field="p.lot_serial_ids[0].producer_id.name"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                         <span t-esc="p.lot_serial_ids[0].packaging_date.strftime('%d-%b-%y')"/>
@@ -1030,6 +1036,9 @@
             report_type="qweb-pdf"
             name="dimabe_export_order.report_packing_list" string="Packing List"/>
 
+    <report id="action_inform" model="stock.picking" paperformat="paper_format_letter_horizontal"
+            report_type="qweb-pdf"
+            name="dimabe_export_order.report_inform" string="Informe de Salida"/>
 
     <report id="action_dispatch_weight_dispatch" string="Ticket Pesaje Despacho" model="stock.picking"
             report_type="qweb-pdf"

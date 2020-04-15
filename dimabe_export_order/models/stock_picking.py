@@ -237,6 +237,11 @@ class StockPicking(models.Model):
             .report_action(self)
 
     @api.multi
+    def generate_inform(self):
+        return self.env.ref('dimabe_export_order.action_inform') \
+            .report_action(self)
+
+    @api.multi
     def generate_report(self):
         for item in self.pictures:
             if item.counter >= 9:
