@@ -193,6 +193,8 @@ class StockProductionLot(models.Model):
         'Es Equipo Dimabe',
         compute='_compute_is_dimabe_team'
     )
+
+
     
     @api.multi
     def _compute_can_add_serial(self):
@@ -320,7 +322,7 @@ class StockProductionLot(models.Model):
     def _compute_available_total_serial(self):
         for item in self:
             item.available_total_serial = sum(item.stock_production_lot_serial_ids.filtered(
-                lambda a: not a.consumed
+                lambda a: not a.reserved_to_stock_picking_id
             ).mapped('display_weight'))
 
     @api.multi
@@ -377,9 +379,13 @@ class StockProductionLot(models.Model):
             lot_id = serial_to_assign_ids.mapped('stock_production_lot_id')
             models._logger.error(lot_id)
             for lot in lot_id:
-
+                available_total_serial = lot.available_total_serial
                 serial_to_assign_ids.update({
                     'reserved_to_stock_picking_id': stock_picking.id
+                })
+
+                item.all_pallet_ids.update({
+                    'is_reserved': True
                 })
                 stock_move = stock_picking.move_lines.filtered(
                     lambda a: a.product_id == item.product_id
@@ -395,7 +401,7 @@ class StockProductionLot(models.Model):
                 move_line = self.env['stock.move.line'].create({
                     'product_id': lot.product_id.id,
                     'lot_id': lot.id,
-                    'product_uom_qty': lot.available_total_serial,
+                    'product_uom_qty': available_total_serial,
                     'product_uom_id': stock_move.product_uom.id,
                     'location_id': stock_quant.location_id.id,
                     # 'qty_done': item.display_weight,
@@ -417,6 +423,7 @@ class StockProductionLot(models.Model):
                 stock_quant.sudo().update({
                     'reserved_quantity': stock_quant.total_reserved
                 })
+
             #serial_to_assign_ids.with_context(stock_picking_id=picking_id).reserve_picking()
 
     @api.multi

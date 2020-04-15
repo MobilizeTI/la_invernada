@@ -16,9 +16,10 @@ class ProductProduct(models.Model):
     )
 
     label_name = fields.Char(
-        'Nombre para Etiqueta',
-        compute='_compute_label_name'
+        'Nombre de Etiqueta'
+        ,compute='_compute_label_product'
     )
+
 
     is_to_manufacturing = fields.Boolean('Es Fabricacion?',default=True,compute="compute_is_to_manufacturing")
 
@@ -36,12 +37,18 @@ class ProductProduct(models.Model):
             type_string = ''.join(type)
             item.type_product = type_string
 
-    @api.multi
-    def _compute_label_name(self):
+    def _compute_label_product(self):
         for item in self:
-            item.label_name = item.name + '(' + item.variety +')'
-
-
+            specie = item.get_species()
+            models._logger.error(specie)
+            if specie == 'Nuez Con Cáscara':
+                caliber = item.get_calibers()
+                models._logger.error(caliber)
+                item.label_name = item.name + ' (' + caliber + ')'
+            elif specie == 'Nuez Sin Cáscara':
+                color = item.get_color()
+                models._logger.error(color)
+                item.label_name = item.name + ' (' + color + ')'
 
     @api.multi
     def compute_is_to_manufacturing(self):
