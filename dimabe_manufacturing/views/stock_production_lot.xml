@@ -119,7 +119,7 @@
         <field name="name">Selección de Packing list</field>
         <field name="model">stock.production.lot</field>
         <field name="arch" type="xml">
-
+            <field name="context_picking_id" invisible="1"/>
             <form>
                 <group>
                     <group>
