@@ -70,7 +70,7 @@
             <div>
               <group>
                 <field name="stock_lots" invisible="1"/>
-                <field name="potential_lot_ids" readonly="0" string="">
+                <field name="potential_lot_ids" readonly="0" string="" domain="[('lot_balance','=',0)]">
                   <tree edit="true" delete="false" create="false">
                     <field name="stock_production_lot_id" readonly="1" widget="many2onebutton"/>
                     <field name="lot_product_id" readonly="1"/>
