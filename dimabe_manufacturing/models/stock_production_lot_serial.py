@@ -397,7 +397,7 @@ class StockProductionLotSerial(models.Model):
                         lambda
                             a: a.lot_id.id == item.stock_production_lot_id.id
                     )
-                    models._logger.error(move_line)
+                    models._logger.error(item.stock_production_lot_id)
                     picking_move_line = item.reserved_to_stock_picking_id.move_line_ids.filtered(
                         lambda a: a.id == move_line.id
                     )
