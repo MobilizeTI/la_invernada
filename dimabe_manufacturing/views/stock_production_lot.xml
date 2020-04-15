@@ -119,6 +119,7 @@
         <field name="name">Selección de Packing list</field>
         <field name="model">stock.production.lot</field>
         <field name="arch" type="xml">
+            <field name="context_picking_id" />
             <form>
                 <group>
                     <group>
@@ -129,6 +130,7 @@
                                     <field name="total_content_weight"/>
                                     <field name="total_available_content"/>
                                     <field name="state"/>
+
                                     <button string="Agregar Reserva"
                                             name="add_to_picking"
                                             type="object"
