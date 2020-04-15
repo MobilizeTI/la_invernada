@@ -40,9 +40,11 @@ class ProductProduct(models.Model):
     def _compute_label_product(self):
         for item in self:
             if item.get_species() == 'Nuez con Cáscara':
-                item.label_name = item.name + ' (' + item.get_caliber() + ')'
+                caliber = item.get_caliber()
+                item.label_name = item.name + ' (' + caliber + ')'
             elif item.get_species() == 'Nuez sin Cascara':
-                item.label_name = item.name + ' (' + item.get_color() + ')'
+                color = item.get_color()
+                item.label_name = item.name + ' (' + color + ')'
 
     @api.multi
     def compute_is_to_manufacturing(self):
