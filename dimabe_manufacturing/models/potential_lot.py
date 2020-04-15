@@ -54,7 +54,8 @@ class PotentialLot(models.Model):
     def _compute_all_serial_consumed(self):
         for item in self:
             item.all_serial_consumed = len(item.stock_production_lot_id.stock_production_lot_serial_ids.filtered(
-                lambda a: a.reserved_to_production_id is not None
+                lambda a: a.consumed is False and (
+                        a.reserved_to_production_id == item.mrp_production_id or not a.reserved_to_production_id)
             ))
 
     @api.multi
