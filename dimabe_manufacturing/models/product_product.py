@@ -20,12 +20,6 @@ class ProductProduct(models.Model):
         ,compute='_compute_label_product'
     )
 
-    type_of_caning = fields.Char(
-        'Tipo de Envase',
-        compute='_compute_type_of_caning'
-    )
-
-
     is_to_manufacturing = fields.Boolean('Es Fabricacion?',default=True,compute="compute_is_to_manufacturing")
 
     is_standard_weight = fields.Boolean('Es peso estandar', default=False)
@@ -41,14 +35,6 @@ class ProductProduct(models.Model):
                     type.append(value.name)
             type_string = ''.join(type)
             item.type_product = type_string
-
-    @api.multi
-    def _compute_type_of_caning(self):
-        for item in self:
-            caning = item.attribute_value_ids.filtered(
-                lambda a : a.attribute_id.name == 'Tipo de envase'
-            )
-            models._logger.error(caning)
 
     @api.multi
     def _compute_label_product(self):
