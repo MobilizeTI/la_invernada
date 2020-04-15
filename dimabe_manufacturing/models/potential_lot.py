@@ -46,6 +46,15 @@ class PotentialLot(models.Model):
 
     is_reserved = fields.Boolean('Reservado')
 
+    all_serial_consumed = fields.Boolean('¿Todas las series estan consumidas?'
+                                         ,compute='_compute_all_serial_consumed'
+                                         )
+
+    @api.multi
+    def _compute_all_serial_consumed(self):
+        for item in self:
+            item.all_serial_consumed = len(item.potential_serial_ids) < 0
+
     @api.multi
     def _compute_potential_serial_ids(self):
         for item in self:

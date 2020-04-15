@@ -121,6 +121,7 @@ class MrpProduction(models.Model):
 
     manufactureable = fields.Many2many('product.product', compute='get_product_route')
 
+
     @api.multi
     def _compute_pt_balance(self):
         for item in self:
