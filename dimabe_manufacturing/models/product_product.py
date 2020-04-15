@@ -45,8 +45,8 @@ class ProductProduct(models.Model):
                 caliber = item.get_calibers()
                 models._logger.error(caliber)
                 item.label_name = item.name + ' (' + caliber + ')'
-            elif specie == 'Nuez sin Cáscara':
-                color = item.get_color()
+            elif specie == 'Nuez Sin Cáscara':
+                color = item.get_colors()
                 models._logger.error(color)
                 item.label_name = item.name + ' (' + color + ')'
 
