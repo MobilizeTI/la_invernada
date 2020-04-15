@@ -20,6 +20,11 @@ class ProductProduct(models.Model):
         ,compute='_compute_label_product'
     )
 
+    type_of_caning = fields.Char(
+        'Tipo de Envase',
+        compute='_compute_type_of_caning'
+    )
+
 
     is_to_manufacturing = fields.Boolean('Es Fabricacion?',default=True,compute="compute_is_to_manufacturing")
 
@@ -37,6 +42,12 @@ class ProductProduct(models.Model):
             type_string = ''.join(type)
             item.type_product = type_string
 
+    @api.multi
+    def _compute_type_of_caning(self):
+        for item in self:
+            item.type_of_caning = item.get_caning()
+
+    @api.multi
     def _compute_label_product(self):
         for item in self:
             specie = item.get_species()
