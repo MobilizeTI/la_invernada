@@ -964,7 +964,7 @@
                                         <span t-field="p.total_content"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-esc="p.product_id.type_of_caning"/>
+                                        <span t-field="p.product_id.type_of_caning"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                         <span t-esc="'%.2f' %sum(p.lot_serial_ids.mapped('display_weight'))"/>
