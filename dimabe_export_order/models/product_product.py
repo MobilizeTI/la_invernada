@@ -9,6 +9,7 @@ class ProductProduct(models.Model):
     @api.multi
     def _compute_packing_type(self):
         for item in self:
-            caning = item.get_variant('tipo de envase')
-            models._logger.error(canning)
-            item.packing_type = caning
+            for attr in item.attribute_value_ids:
+                models._logger.error(attr.attribute_id.name)
+                models._logger.error(attr.name)
+                packing_type = attr.name
