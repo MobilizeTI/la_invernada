@@ -40,6 +40,7 @@ class ProductProduct(models.Model):
     def _compute_label_product(self):
         for item in self:
             specie = item.get_species()
+            raise models.ValidationError(specie)
             if specie == 'Nuez con Cáscara':
                 caliber = item.get_caliber()
                 item.label_name = item.name + ' (' + caliber + ')'
