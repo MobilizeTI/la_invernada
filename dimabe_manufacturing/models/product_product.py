@@ -41,7 +41,7 @@ class ProductProduct(models.Model):
         for item in self:
             specie = item.get_species()
             models._logger.error(specie)
-            if specie == 'Nuez con Cáscara':
+            if specie == 'Nuez Con Cáscara':
                 caliber = item.get_caliber()
                 models._logger.error(caliber)
                 item.label_name = item.name + ' (' + caliber + ')'
