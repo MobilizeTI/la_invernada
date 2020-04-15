@@ -204,8 +204,8 @@ class ManufacturingPallet(models.Model):
     @api.multi
     def add_to_picking(self):
         stock_picking_id = None
-        if 'stock_picking_id' in self.env.context:
-            stock_picking_id = self.env.context['stock_picking_id']
+        if 'dispatch_id' in self.env.context:
+            stock_picking_id = self.env.context['dispatch_id']
             stock_picking = self.env['stock.picking'].search([('id','=',stock_picking_id)])
         for item in self:
             stock_move = stock_picking.move_lines.filtered(
