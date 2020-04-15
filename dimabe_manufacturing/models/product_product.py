@@ -39,10 +39,11 @@ class ProductProduct(models.Model):
     @api.multi
     def _compute_label_product(self):
         for item in self:
-            if item.get_species() == 'Nuez con Cáscara':
+            specie = item.get_species()
+            if specie == 'Nuez con Cáscara':
                 caliber = item.get_caliber()
                 item.label_name = item.name + ' (' + caliber + ')'
-            elif item.get_species() == 'Nuez sin Cascara':
+            elif specie == 'Nuez sin Cascara':
                 color = item.get_color()
                 item.label_name = item.name + ' (' + color + ')'
 
