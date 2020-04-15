@@ -33,7 +33,7 @@
                     <button string="Quitar Reserva"
                             type="object"
                             name="unreserved"
-                            context="{'stock_picking_id':parent.id}"
+                            context="{'stock_picking_id':id}"
                     />
                   </tree>
                 </field>
