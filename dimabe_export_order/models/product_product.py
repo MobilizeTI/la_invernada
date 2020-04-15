@@ -12,4 +12,4 @@ class ProductProduct(models.Model):
             for attr in item.attribute_value_ids:
                 models._logger.error(attr.attribute_id.name)
                 models._logger.error(attr.name)
-                packing_type = attr.name
+                item.packing_type = attr.name
