@@ -244,6 +244,7 @@ class ManufacturingPallet(models.Model):
                     lambda
                         a: a.lot_id.id == lot_id.id
                 )
+                raise models.ValidationError(move_line)
                 if not move_line:
                     picking_move_line = stock_picking.move_line_ids.filtered(
                         lambda a: a.id == move_line.id
@@ -263,32 +264,6 @@ class ManufacturingPallet(models.Model):
                         })
                     stock_quant.sudo().update({
                          'reserved_quantity': stock_quant.total_reserved
-                    })
-                else:
-                    move_line = self.env['stock.move.line'].create({
-                        'product_id': item.product_id.id,
-                        'lot_id': lot_id.id,
-                        'product_uom_qty': item.total_content_weight,
-                        'product_uom_id': item.product_id.uom_id.id,
-                        'location_id': stock_quant.location_id.id,
-                        # 'qty_done': item.display_weight,
-                        'location_dest_id': stock_picking.partner_id.property_stock_customer.id
-                    })
-
-                    stock_move.sudo().update({
-                        'move_line_ids': [
-                            (4, move_line.id)
-                        ]
-                    })
-
-                    stock_picking.update({
-                        'move_line_ids': [
-                            (4, move_line.id)
-                        ]
-                    })
-
-                    stock_quant.sudo().update({
-                        'reserved_quantity': stock_quant.total_reserved
                     })
             item.lot_available_serial_ids.update({
                 'reserved_to_stock_picking_id' : stock_picking_id
