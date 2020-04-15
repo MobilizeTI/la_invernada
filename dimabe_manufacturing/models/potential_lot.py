@@ -47,14 +47,14 @@ class PotentialLot(models.Model):
     is_reserved = fields.Boolean('Reservado')
 
     all_serial_consumed = fields.Integer('¿Todas las series estan consumidas?'
-                                         ,compute='_compute_all_serial_consumed'
+                                         , compute='_compute_all_serial_consumed'
                                          )
 
     @api.multi
     def _compute_all_serial_consumed(self):
         for item in self:
             item.all_serial_consumed = len(item.stock_production_lot_id.stock_production_lot_serial_ids.filtered(
-                lambda a:a.consumed is True
+                lambda a: a.reserved_to_production_id is not None
             ))
 
     @api.multi
@@ -104,19 +104,17 @@ class PotentialLot(models.Model):
                                                from_lot=True).reserve_serial()
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
                 stock_quant.sudo().update({
-                    'reserved_quantity': stock_quant.total_reserved 
+                    'reserved_quantity': stock_quant.total_reserved
                 })
                 models._logger.error(item.lot_balance)
                 for stock in item.mrp_production_id.move_raw_ids.filtered(
                         lambda a: a.product_id == item.stock_production_lot_id.product_id
                 ):
-
-                    item.add_move_line(stock , stock_quant)
+                    item.add_move_line(stock, stock_quant)
         item.is_reserved = True
-        
-        
+
     @api.model
-    def add_move_line(self, stock_move,stock_quant):
+    def add_move_line(self, stock_move, stock_quant):
         virtual_location_production_id = self.env['stock.location'].search([
             ('usage', '=', 'production'),
             ('location_id.name', 'like', 'Virtual Locations')
@@ -157,8 +155,9 @@ class PotentialLot(models.Model):
                     )
 
                     move_line = stock_move.active_move_line_ids.filtered(
-                        lambda a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.qty_to_reserve
-                                  and a.qty_done == 0
+                        lambda
+                            a: a.lot_id.id == item.stock_production_lot_id.id and a.product_qty == item.qty_to_reserve
+                               and a.qty_done == 0
                     )
                     stock_quant = item.stock_production_lot_id.get_stock_quant()
 
