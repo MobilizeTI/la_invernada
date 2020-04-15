@@ -32,7 +32,7 @@ class ProductProduct(models.Model):
 
     @api.model
     def get_caning(self):
-        return self.get_variant('tipo de envase')
+        return self.get_variant('Tipo de envase')
 
     def get_variant(self, variant_search):
         variant = ''
