@@ -17,7 +17,7 @@ class ProductProduct(models.Model):
 
     label_name = fields.Char(
         'Nombre de Etiqueta'
-        ,compute='_compute_label_name'
+        ,compute='_compute_label_product'
     )
 
     is_to_manufacturing = fields.Boolean('Es Fabricacion?',default=True,compute="compute_is_to_manufacturing")
