@@ -92,15 +92,6 @@ class StockPicking(models.Model):
 
     @api.multi
     def calculate_last_serial(self):
-        canning = self.get_canning_move()
-        if self.production_net_weight:
-            canning = self.get_canning_move()
-            if len(canning) == 1:
-                divisor = canning.product_uom_qty
-                if divisor == 0:
-                    divisor = 1
-
-                self.avg_unitary_weight = self.production_net_weight / divisor
         if len(canning) == 1:
             if self.production_net_weight == self.net_weight:
                 self.production_net_weight = self.net_weight - self.quality_weight
