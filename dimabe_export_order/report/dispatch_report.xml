@@ -951,6 +951,9 @@
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                         <span t-field="p.name"/>
                                     </td>
+                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:Opx;">
+                                        <span t-esc="p.lot_serial_ids[0].stock_production_lot_id.stock_picking_id"/>
+                                    </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px;">
                                         <span t-field="p.producer_id.name"/>
                                     </td>
