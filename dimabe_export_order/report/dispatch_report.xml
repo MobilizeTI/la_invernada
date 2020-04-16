@@ -741,7 +741,7 @@
         </t>
     </template>
 
-    <template id="report_traceability_report">
+    <template id="traceability_report">
         <t t-call="web.html_container">
             <div class="page">
                 <div class="oe_structure"/>
@@ -1044,7 +1044,7 @@
 
     <report id="action_inform" model="stock.picking" paperformat="paper_format_letter_horizontal"
             report_type="qweb-pdf"
-            name="dimabe_export_order.report_inform" string="Informe de Salida"/>
+            name="dimabe_export_order.traceability_report" string="Informe de Tracabilidad"/>
 
     <report id="action_dispatch_weight_dispatch" string="Ticket Pesaje Despacho" model="stock.picking"
             report_type="qweb-pdf"
