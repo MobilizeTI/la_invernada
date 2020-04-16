@@ -741,7 +741,7 @@
         </t>
     </template>
 
-    <template id="report_inform">
+    <template id="report_traceability_report">
         <t t-call="web.html_container">
             <div class="page">
                 <div class="oe_structure"/>
@@ -753,7 +753,7 @@
                             />
                         </th>
                         <th style="font-size:20px;">
-                            <strong>Informe de Salidas</strong>
+                            <strong>Informe de Tracabilidad</strong>
                         </th>
                     </table>
                     <br/>
@@ -981,7 +981,7 @@
                                 </tr>
                                 <t t-if="p.id == d.assigned_pallet_ids[-1].id">
                                     <tr>
-                                        <td colspan="6" style="text-align:right;">
+                                        <td colspan="8" style="text-align:right;">
                                             Total
                                         </td>
                                         <td style="text-align:center;">
