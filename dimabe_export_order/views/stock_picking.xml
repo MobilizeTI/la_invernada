@@ -124,7 +124,7 @@
                 </xpath>
                 <xpath expr="//header">
                     <button name="generate_packing_list" type="object" string="Packing List" attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"/>
-                    <button name="generate_inform" type="object" string="Informe de Tracabilidad" attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"/>
+                    <button name="generate_inform" type="object" string="Informe de Trazabilidad" attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"/>
                 </xpath>
             </field>
         </record>
