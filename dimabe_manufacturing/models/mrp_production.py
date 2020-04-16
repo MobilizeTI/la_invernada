@@ -181,7 +181,7 @@ class MrpProduction(models.Model):
 
             to_keep = [
                 (4, to_keep_id.id) for to_keep_id in production.potential_lot_ids.filtered(
-                    lambda a: a.qty_to_reserve > 0
+                    lambda a: a.qty_to_reserve > 0 and a.all_serial_consumed <= 0
                 )]
 
             to_add = []
