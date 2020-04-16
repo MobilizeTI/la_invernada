@@ -915,6 +915,9 @@
                                 <strong>PALLET NUMBER/FOLIO PALLET</strong>
                             </th>
                             <th style="text-align:center;border:solid 1px black;" scope="col">
+                                <strong>LOT RAW MATERIALS/LOTE MATERIA PRIMA</strong>
+                            </th>
+                            <th style="text-align:center;border:solid 1px black;" scope="col">
                                 <strong>PRODUCER/PRODUCTOR</strong>
                             </th>
                             <th style="text-align:center;border:solid 1px black;" scope="col">
