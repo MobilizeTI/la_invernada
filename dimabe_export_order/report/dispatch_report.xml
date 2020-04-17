@@ -1319,7 +1319,7 @@
                                         <span t-field="d.name"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:Opx;">
-                                        <table style="width:100%;border:solid 1px black;font-size:10px;text-align:center;">
+                                        <table style="width:100%;font-size:10px;text-align:center;">
                                             <t t-foreach="p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('production_id').mapped('consumed_material_ids').mapped('stock_production_lot_id')"
                                                t-as="c">
                                                 <tr>
@@ -1354,7 +1354,7 @@
                                         <td colspan="8" style="text-align:right;">
                                             Total
                                         </td>
-                                        <td style="text-align:center;">
+                                        <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
                                             <span t-esc="sum(d.assigned_pallet_ids.mapped('total_content'))"/>
                                         </td>
                                         <td></td>
