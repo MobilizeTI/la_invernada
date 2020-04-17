@@ -226,6 +226,8 @@ class StockPicking(models.Model):
 
     departure_weight = fields.Float('Peso de Salida')
 
+    customs_department = fields.Many2one('Oficina Aduanera')
+
 
     @api.onchange('picture')
     def get_pictures(self):
