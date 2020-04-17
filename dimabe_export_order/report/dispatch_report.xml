@@ -1255,7 +1255,7 @@
                     <br/>
                     <table width="45%%" style="border:solid 1px;font-size:12px;display:inline-block;">
                         <tr rowspan="2">
-                            <td>ORDER N°/N° DE ORDER</td>
+                            <td>DISPATCH N°/NUMERO DE DESPACHO</td>
                             <td>
                                 <span t-field="d.name"/>
                             </td>
