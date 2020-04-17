@@ -743,7 +743,7 @@
                                 </tr>
                                 <t t-if="p.id == d.assigned_pallet_ids[-1].id">
                                     <tr>
-                                        <td colspan="7" style="border:solid 1px black;text-align:right;">
+                                        <td colspan="7" style="border:solid 1px black;text-align:right;padding-right:10px;">
                                             Total
                                         </td>
                                         <td style="text-align:center;">
