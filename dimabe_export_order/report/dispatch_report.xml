@@ -87,7 +87,12 @@
                                         <strong>R.U.T:</strong>
                                     </td>
                                     <td style="text-align:left;">
-                                        <span t-esc="d.partner_id.invoice_rut"/>
+                                        <t t-if="d.type_of_dispatch == 'nac'">
+                                            <span t-field="d.partner_id.invoice_rut"/>
+                                        </t>
+                                        <t t-if="d.type_of_dispatch == 'exp'">
+                                            <span t-field="d.customs_department.invoice_rut"/>
+                                        </t>
                                     </td>
                                 </tr>
                                 <tr>
@@ -95,13 +100,23 @@
                                         <strong>DIRECCION:</strong>
                                     </td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.partner_id.street"/>
+                                        <t t-if="d.type_of_dispatch == 'nac'">
+                                            <span t-field="d.partner_id.street"/>
+                                        </t>
+                                        <t t-if="d.type_of_dispatch == 'exp'">
+                                            <span t-field="d.customs_department.street"/>
+                                        </t>
                                     </td>
                                     <td style="text-align:left;">
                                         <strong>TELEFONO:</strong>
                                     </td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.partner_id.phone"/>
+                                        <t t-if="d.type_of_dispatch == 'nac'">
+                                            <span t-field="d.partner_id.phone"/>
+                                        </t>
+                                        <t t-if="d.type_of_dispatch == 'exp'">
+                                            <span t-field="d.customs_department.phone"/>
+                                        </t>
                                     </td>
                                 </tr>
                                 <tr>
@@ -109,7 +124,12 @@
                                         <strong>COMUNA:</strong>
                                     </td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.partner_id.state_id"/>
+                                        <t t-if="d.type_of_dispatch == 'nac'">
+                                            <span t-field="d.partner_id.state_id"/>
+                                        </t>
+                                        <t t-if="d.type_of_dispatch == 'exp'">
+                                            <span t-field="d.customs_department.state_id"/>
+                                        </t>
                                     </td>
                                     <td style="text-align:left;">
                                         <strong>VENCTO:</strong>
