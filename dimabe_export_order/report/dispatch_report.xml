@@ -170,7 +170,7 @@
                                         <t t-esc="'{0:,.2f}'.format(int(m.quantity_done))"/>
                                     </td>
                                     <td style="width:20%;border-right:1px solid;border-bottom:1px solid;border-left:1px solid;text-align:center;">
-                                        <span t-field="m.product_id.package"/>
+                                        <span t-field="m.product_id.package"/><span t-field="m.product_id.name"/>
                                     </td>
                                     <td style="width:20%;border-left:1px solid;border-bottom:1px solid;text-align:center;">
                                         <span t-field="m.product_id.lst_price"/>
