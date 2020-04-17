@@ -120,7 +120,8 @@
           <field name="date_planned_start_wo"/>
           <field name="client_id"/>
           <field name="destiny_country_id"/>
-          <field name="stock_picking_id" string="Pedido de Venta"/>
+          <field name="stock_picking_id" string="Numero de Despacho"/>
+          <field name="stock_picking_id.sale_id" string="Pedido de Venta"/>
           <field name="product_id"/>
           <field name="product_qty"/>
           <field name="pt_balance" />
