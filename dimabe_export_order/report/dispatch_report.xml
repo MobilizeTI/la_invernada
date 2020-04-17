@@ -170,7 +170,8 @@
                                         <t t-esc="len(d.packing_list_ids)"/>
                                     </td>
                                     <td style="width:20%;border-right:1px solid;border-bottom:1px solid;border-left:1px solid;text-align:center;">
-                                        <span t-field="m.product_id.package"/><span t-field="m.product_id.display_name"/>
+                                        <span t-field="m.product_id.package"/>
+                                        <span t-field="m.product_id.display_name"/>
                                     </td>
                                     <td style="width:20%;border-left:1px solid;border-bottom:1px solid;text-align:center;">
                                         <span t-esc="len(d.packing_list_ids) * m.product_id.lst_price"/>
@@ -1010,7 +1011,7 @@
                         </tr>
                         <tr></tr>
                     </table>
-                    <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;" >
+                    <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
                         <tr rowspan="2">
                             <td style="text-align:center;">CLIENT PURCHASE ORDER/ORDER DE COMPRA CLIENTE</td>
                             <td style="text-align:center;">
@@ -1090,7 +1091,8 @@
                                 </tr>
                                 <t t-if="p.id == d.assigned_pallet_ids[-1].id">
                                     <tr>
-                                        <td colspan="7" style="border:solid 1px black;text-align:right;padding-right:10px;">
+                                        <td colspan="7"
+                                            style="border:solid 1px black;text-align:right;padding-right:10px;">
                                             Total
                                         </td>
                                         <td style="text-align:center;">
@@ -1260,7 +1262,7 @@
                         </tr>
                         <tr></tr>
                     </table>
-                    <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;" >
+                    <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
                         <tr rowspan="2">
                             <td style="text-align:center;">CLIENT PURCHASE ORDER/ORDER DE COMPRA CLIENTE</td>
                             <td style="text-align:center;">
@@ -1323,15 +1325,16 @@
                                         <span t-field="d.name"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:Opx;">
-                                        <t t-foreach="p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('production_id').mapped('consumed_material_ids').mapped('stock_production_lot_id')" t-as="c">
-                                            <table style="width:100%;border:solid 1px black;font-size:10px;">
+                                        <table style="width:100%;border:solid 1px black;font-size:10px;">
+                                            <t t-foreach="p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('production_id').mapped('consumed_material_ids').mapped('stock_production_lot_id')"
+                                               t-as="c">
                                                 <tr>
                                                     <td>
                                                         <span t-field="c.name"></span>
                                                     </td>
                                                 </tr>
-                                            </table>
-                                        </t>
+                                            </t>
+                                        </table>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px;">
                                         <span t-field="p.producer_id.name"/>
