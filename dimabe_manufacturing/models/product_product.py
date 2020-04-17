@@ -30,7 +30,9 @@ class ProductProduct(models.Model):
     @api.multi
     def _compute_package(self):
         for item in self:
-            item.package = item.attribute_value_ids.mapped('name')
+            for value in item.attribute_value_ids.mapped('name'):
+                if "Saco" in value:
+                    item.package = value
 
     @api.multi
     def _compute_type_product(self):
