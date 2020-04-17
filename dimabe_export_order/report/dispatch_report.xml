@@ -1332,7 +1332,7 @@
                                         <span t-esc="p.all_pallet_ids[0].lot_serial_ids[0].packaging_date.strftime('%d-%b-%y')"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-esc="p.lot_serial_ids[0].best_before_date.strftime('%d-%b-%y')"/>
+                                        <span t-esc="p.all_pallet_ids[0].lot_serial_ids[0].best_before_date.strftime('%d-%b-%y')"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                         <span t-esc="sum(p.all_pallet_ids[0].lot_serial_ids.mapped('display_weight'))"/>
