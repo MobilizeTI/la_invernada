@@ -723,7 +723,7 @@
                                         <span t-field="p.name"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-esc="p.mapped('lot_serial_ids').mapped('stock_production_lot_id').mapped(name)"/>
+                                        <span t-esc="p.mapped('lot_serial_ids').mapped('stock_production_lot_id').mapped('name')"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                         <span t-esc="p.lot_serial_ids[0].packaging_date.strftime('%d-%b-%y')"/>
