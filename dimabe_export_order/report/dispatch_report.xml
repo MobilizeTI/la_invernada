@@ -76,10 +76,10 @@
                                         <strong>SEÑOR(ES):</strong>
                                     </td>
                                     <td style="text-align:left;">
-                                        <t t-if="d.customs_department.name == None">
+                                        <t t-if="d.customs_department == None">
                                             <span t-field="d.partner_id"/>
                                         </t>
-                                        <t t-elif="">
+                                        <t t-if="d.customs_department != None">
                                             <span t-field="d.customs_department"/>
                                         </t>
                                     </td>
