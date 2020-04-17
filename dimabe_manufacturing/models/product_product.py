@@ -20,9 +20,17 @@ class ProductProduct(models.Model):
         ,compute='_compute_label_product'
     )
 
+
+    package = fields.Char('Envase',compute='_compute_package')
+
     is_to_manufacturing = fields.Boolean('Es Fabricacion?',default=True,compute="compute_is_to_manufacturing")
 
     is_standard_weight = fields.Boolean('Es peso estandar', default=False)
+
+    @api.multi
+    def _compute_package(self):
+        for item in self:
+            item.package = item.attribute_value_ids.mapped('name')
 
     @api.multi
     def _compute_type_product(self):
@@ -49,6 +57,8 @@ class ProductProduct(models.Model):
                 color = item.get_color()
                 models._logger.error(color)
                 item.label_name = item.name + ' (' + color + ')'
+
+
 
     @api.multi
     def compute_is_to_manufacturing(self):
