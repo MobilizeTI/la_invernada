@@ -1323,7 +1323,7 @@
                                         <span t-field="d.name"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:Opx;">
-                                        <t t-foreach="p.mapped('all_pallet_ids').mapped('lot_serial_ids').production_id.mapped('consumed_material_ids')" t-as="c">
+                                        <t t-foreach="p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('production_id').mapped('consumed_material_ids')" t-as="c">
                                             <table>
                                                 <tr>
                                                     <td>
