@@ -83,7 +83,7 @@
                                         <field name="vgm_weight_dispatch" readonly="1"/>
                                     </group>
                                     <group string="Informacion de Exportacion">
-                                        <field name="customs_department" domain="[('category_id.name', '=', 'Aduana')]"/>
+                                        <field name="customs_department" domain="[('category_id.name', '=', 'Aduana')]" attrs="{'required':['parent.type_of_dispatch','=','exp']}"/>
                                         <field name="note_dispatched"/>
                                         <field name="sell_truck"/>
                                         <field name="dispatch_guide_number"/>

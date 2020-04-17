@@ -226,7 +226,7 @@ class StockPicking(models.Model):
 
     departure_weight = fields.Float('Peso de Salida')
 
-    customs_department = fields.Many2one('res.partner','Oficina Aduanera',required=True)
+    customs_department = fields.Many2one('res.partner','Oficina Aduanera')
 
 
     @api.onchange('picture')
