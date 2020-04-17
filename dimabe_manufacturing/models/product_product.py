@@ -32,9 +32,7 @@ class ProductProduct(models.Model):
         for item in self:
             for value in item.attribute_value_ids.mapped('name'):
                 if "Saco" in value:
-                    text = type(value.slip())
-                    item.package = text
-
+                    item.package = type(value.split())
 
     @api.multi
     def _compute_type_product(self):
