@@ -379,26 +379,23 @@
                 <t t-foreach="docs" t-as="d">
                     <div style="width:100%;">
                         <div style="width:33.3%;display:inline-block;">
-                            <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
-                                 style="height:75px;"
-                            />
+                            <![CDATA[&nbsp;]]>
                         </div>
                         <div style="width:33.3%;display:inline-block;">
                             <table style="margin: 0 auto;font-size:12px;">
                                 <tr>
                                     <td style="text-align:center;">
-                                        <span t-field="res_company.name"/>
+                                        <![CDATA[&nbsp;]]>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="text-align:center;">
-                                        <span t-field="res_company.street"/>
+                                        <![CDATA[&nbsp;]]>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="text-align:center;">
-                                        <span t-field="res_company.city"/>
-                                        <span t-field="res_company.country_id"/>
+                                        <![CDATA[&nbsp;]]>
                                     </td>
                                 </tr>
                             </table>
@@ -407,7 +404,7 @@
                             <table style="border:3px solid;">
                                 <tr>
                                     <td style="text-align:center;">
-                                        R.U.T
+                                        <![CDATA[&nbsp;]]>
                                         <span t-field="res_company.invoice_rut"/>
                                     </td>
                                 </tr>
@@ -419,7 +416,7 @@
                                 </tr>
                                 <tr>
                                     <td style="text-align:center;">
-                                        GUIA DE DESPACHO ELECTRONICA
+                                        <![CDATA[&nbsp;]]>
                                     </td>
                                 </tr>
                                 <tr>
@@ -430,8 +427,7 @@
                                 </tr>
                                 <tr>
                                     <td style="text-align:center;">
-                                        N°
-                                        <span t-field="d.dispatch_guide_number"/>
+                                       <![CDATA[&nbsp;]]>
                                     </td>
                                 </tr>
                             </table>
