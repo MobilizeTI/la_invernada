@@ -1341,10 +1341,10 @@
 
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-esc="'%.2f' %sum(p.mapped('all_pallets_ids').mapped('lot_serial_ids').mapped('display_weight'))"/>
+                                        <span t-esc="'%.2f' %sum(p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('display_weight'))"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-esc="'%.2f' %sum(p.mapped('all_pallets_ids').mapped('lot_serial_ids').mapped('gross_weight'))"/>
+                                        <span t-esc="'%.2f' %sum(p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('gross_weight'))"/>
                                     </td>
                                 </tr>
                                 <t t-if="p.id == d.assigned_pallet_ids[-1].id">
