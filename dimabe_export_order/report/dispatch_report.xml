@@ -76,7 +76,12 @@
                                         <strong>SEÑOR(ES):</strong>
                                     </td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.partner_id"/>
+                                        <t t-if="d.customs_department == None">
+                                            <span t-field="d.partner_id"/>
+                                        </t>
+                                        <t t-elif="">
+                                            <span t-field="d.customs_department"/>
+                                        </t>
                                     </td>
                                     <td style="text-align:left;">
                                         <strong>R.U.T:</strong>
