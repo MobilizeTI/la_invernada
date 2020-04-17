@@ -33,6 +33,7 @@ class ProductProduct(models.Model):
             for value in item.attribute_value_ids.mapped('name'):
                 if "Saco" in value:
                     list = value.split()
+                    list[0] = 'Sacos'
                     list.insert(1,' ')
                     list.insert(2, 'de')
                     list.insert(3,' ')
