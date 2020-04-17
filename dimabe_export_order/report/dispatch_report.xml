@@ -1300,9 +1300,6 @@
                                 <strong>PACKING AMOUNT/N° DE ENVASES</strong>
                             </th>
                             <th style="text-align:center;border:solid 1px black;" scope="col">
-                                <strong>PACKING TYPE/ TIPO DE EMPAQUE</strong>
-                            </th>
-                            <th style="text-align:center;border:solid 1px black;" scope="col">
                                 <strong>NET WEIGHT / PESO NETO</strong>
                             </th>
                             <th style="text-align:center;border:solid 1px black;" scope="col">
@@ -1322,7 +1319,7 @@
                                         <span t-field="d.name"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:Opx;">
-                                        <table style="width:100%;border:solid 1px black;font-size:10px;">
+                                        <table style="width:100%;border:solid 1px black;font-size:10px;text-align:center;">
                                             <t t-foreach="p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('production_id').mapped('consumed_material_ids').mapped('stock_production_lot_id')"
                                                t-as="c">
                                                 <tr>
@@ -1344,9 +1341,6 @@
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                         <span t-esc="sum(p.all_pallet_ids[0].lot_serial_ids.mapped('display_weight'))"/>
-                                    </td>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                         <span t-esc="'%.2f' %sum(p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('display_weight'))"/>
