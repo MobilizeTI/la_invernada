@@ -1,7 +1,7 @@
 from odoo import fields, models, api
 from odoo.addons import decimal_precision as dp
 from datetime import datetime
-
+import inspect
 
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
@@ -324,6 +324,7 @@ class MrpProduction(models.Model):
 
     @api.multi
     def action_cancel(self):
+        raise models.ValidationError(inspect.getsource(self.change_prod_qty))
         for lot in self.potential_lot_ids:
             stock_move = self.move_raw_ids.filtered(
                 lambda a: a.product_id == lot.stock_production_lot_id.product_id
