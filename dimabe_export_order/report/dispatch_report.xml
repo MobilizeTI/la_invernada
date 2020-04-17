@@ -446,30 +446,16 @@
                             <tr>
                                 <tr>
                                     <td>
-                                        <strong></strong>
+                                        <strong><![CDATA[&nbsp;]]></strong>
                                     </td>
                                     <td style="text-align:left;">
-
+                                        <![CDATA[&nbsp;]]>
                                     </td>
                                     <td style="text-align:left;">
-                                        <strong></strong>
+                                        <strong><![CDATA[&nbsp;]]></strong>
                                     </td>
                                     <td style="text-align:left;">
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:left;">
-                                        <strong></strong>
-                                    </td>
-                                    <td style="text-align:left;">
-
-                                    </td>
-                                    <td style="text-align:left;">
-                                        <strong></strong>
-                                    </td>
-                                    <td style="text-align:left;">
-
+                                        <![CDATA[&nbsp;]]>
                                     </td>
                                 </tr>
                                 <tr>
@@ -477,16 +463,30 @@
                                         <strong></strong>
                                     </td>
                                     <td style="text-align:left;">
-
+                                        <![CDATA[&nbsp;]]>
                                     </td>
                                     <td style="text-align:left;">
                                         <strong></strong>
+                                    </td>
+                                    <td style="text-align:left;">
+                                        <![CDATA[&nbsp;]]>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:left;">
+                                        <strong><![CDATA[&nbsp;]]></strong>
+                                    </td>
+                                    <td style="text-align:left;">
+                                        <![CDATA[&nbsp;]]>
+                                    </td>
+                                    <td style="text-align:left;">
+                                        <strong><![CDATA[&nbsp;]]></strong>
                                     </td>
                                     <td style="text-align:left;"><![CDATA[&nbsp;]]></td>
                                 </tr>
                                 <tr>
                                     <td style="text-align:left;">
-                                        <strong></strong>
+                                        <strong><![CDATA[&nbsp;]]></strong>
                                     </td>
                                     <td style="text-align:left;"><![CDATA[&nbsp;]]></td>
                                     <td style="text-align:left;">
@@ -496,10 +496,10 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <strong></strong>
+                                        <strong><![CDATA[&nbsp;]]></strong>
                                     </td>
                                     <td>
-
+                                        <![CDATA[&nbsp;]]>
                                     </td>
                                 </tr>
                             </tr>
@@ -507,11 +507,11 @@
                     </div>
                     <div style="width:100%;margin:0 auto;height:583px;border:1px solid;">
                         <table style="width:100%;font-size:11px;">
-                            <th style="width:20%;border-right:1px solid;border-bottom:1px solid;"></th>
-                            <th style="width:60%;border-right:1px solid;border-bottom:1px solid;border-left:1px solid;">
-
+                            <th style="width:20%;"><![CDATA[&nbsp;]]></th>
+                            <th style="width:60%;border-left:1px solid;">
+                                <![CDATA[&nbsp;]]>
                             </th>
-                            <th style="width:20%;border-bottom:1px solid;border-left:1px solid;"></th>
+                            <th style="width:20%;"><![CDATA[&nbsp;]]></th>
                             <t t-foreach="d.move_ids_without_package" t-as="m">
                                 <tr>
                                     <td style="width:20%;text-align:center;">
