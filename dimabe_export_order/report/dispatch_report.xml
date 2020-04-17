@@ -514,13 +514,13 @@
                             <t t-foreach="d.move_ids_without_package" t-as="m">
                                 <tr>
                                     <td style="width:20%;border-right:1px solid;border-bottom:1px solid;text-align:center;">
-
+                                        <![CDATA[&nbsp;]]>
                                     </td>
                                     <td style="width:20%;border-right:1px solid;border-bottom:1px solid;border-left:1px solid;text-align:center;">
-
+                                        <![CDATA[&nbsp;]]>
                                     </td>
                                     <td style="width:20%;border-left:1px solid;border-bottom:1px solid;text-align:center;">
-
+                                        <![CDATA[&nbsp;]]>
                                     </td>
                                     <t t-if="m.id == d.move_ids_without_package[-1].id">
                                         <tr>
