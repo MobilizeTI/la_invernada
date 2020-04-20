@@ -50,6 +50,8 @@ class PotentialLot(models.Model):
                                          , compute='_compute_all_serial_consumed'
                                          )
 
+    producer_id = fields.Many2one('res.partner',related='stock_production_lot_id.producer_id')
+
     @api.multi
     def _compute_all_serial_consumed(self):
         for item in self:
