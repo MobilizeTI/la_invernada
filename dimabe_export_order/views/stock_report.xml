@@ -2,6 +2,6 @@
 <odoo>
     <data>
         <menuitem id="stock_report_menuitem" name="Informe de Materia Prima"
-                  parent="stock.menu_warehouse_report"/>
+                  parent="stock.menu_stock_root"/>
     </data>
 </odoo>
