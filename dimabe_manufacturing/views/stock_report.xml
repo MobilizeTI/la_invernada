@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_stock_report_tree" model="ir.ui.view">
+            <field name="name">Informe de Materia Prima</field>
+            <field name="model">stock.production.lot</field>
+            <field name="priority">20</field>
+            <field name="arch" type="xml">
+                <tree name="Informe de Materia Prima">
+                    <field name="producer_id"/>
+                    <field name="product_variety" string="Variedad"/>
+
+                </tree>
+            </field>
+        </record>
+        <record id="dimabe_manufacturing.stock_report" model="ir.actions.act_window">
+            <field name="name">Informe de Materia prima</field>
+            <field name="res_model">stock.production.lot</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_stock_report_tree"/>
+            <field name="domain">
+                [('id','!=',False)]
+            </field>
+        </record>
+        <menuitem id="stock_report_tree_menu"
+                  action="dimabe_manufacturing.stock_report"
+                  name="Informe de Materia Prima"
+                  parent="stock.menu_warehouse_report"
+        />
+    </data>
+</odoo>

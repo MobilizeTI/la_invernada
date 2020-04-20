@@ -11,6 +11,7 @@
               <field name="lot_balance"/>
             </group>
             <group>
+              <field name="all_serial_consumed" invisible="1"/>
               <field name="mrp_production_id" invisible="1"/>
               <field name="lot_product_id"/>
               <button name="confirm_reserve"

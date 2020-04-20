@@ -1,7 +1,7 @@
 from odoo import fields, models, api
 from odoo.addons import decimal_precision as dp
 from datetime import datetime
-
+import inspect
 
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
@@ -121,6 +121,7 @@ class MrpProduction(models.Model):
 
     manufactureable = fields.Many2many('product.product', compute='get_product_route')
 
+
     @api.multi
     def _compute_pt_balance(self):
         for item in self:
@@ -180,7 +181,7 @@ class MrpProduction(models.Model):
 
             to_keep = [
                 (4, to_keep_id.id) for to_keep_id in production.potential_lot_ids.filtered(
-                    lambda a: a.qty_to_reserve > 0
+                    lambda a: a.qty_to_reserve > 0 and a.all_serial_consumed <= 0
                 )]
 
             to_add = []
@@ -320,6 +321,38 @@ class MrpProduction(models.Model):
         })
 
         return res
+
+    @api.multi
+    def action_cancel(self):
+
+        for lot in self.potential_lot_ids:
+            stock_move = self.move_raw_ids.filtered(
+                lambda a: a.product_id == lot.stock_production_lot_id.product_id
+            )
+
+            move_line = stock_move.active_move_line_ids.filtered(
+                lambda a: a.lot_id.id == lot.id and a.product_qty == lot.qty_to_reserve
+                          and a.qty_done == 0
+            )
+            stock_quant = lot.get_stock_quant()
+
+            for serial in lot.stock_production_lot_id.stock_production_lot_serial_ids:
+                serial.update({
+                    'reserved_to_production_id': None
+                })
+
+            stock_quant.sudo().update({
+                'reserved_quantity': 0
+            })
+            if item.stock_picking_id:
+                item.stock_picking_id.update({
+                    'has_mrp_production': False
+                })
+            if move_line:
+                move_line[0].write({'move_id': None, 'product_uom_qty': 0})
+        res = super(MrpProduction,self).action_cancel()
+
+
 
     @api.multi
     def button_plan(self):

@@ -60,7 +60,6 @@ class StockPicking(models.Model):
         'stock.production.lot',
         compute='_compute_packing_list_lot_ids'
     )
-
     @api.multi
     def _compute_packing_list_lot_ids(self):
         for item in self:
@@ -93,7 +92,6 @@ class StockPicking(models.Model):
 
     @api.multi
     def calculate_last_serial(self):
-        canning = self.get_canning_move()
         if len(canning) == 1:
             if self.production_net_weight == self.net_weight:
                 self.production_net_weight = self.net_weight - self.quality_weight

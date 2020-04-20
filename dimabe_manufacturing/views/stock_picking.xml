@@ -8,7 +8,7 @@
       <xpath expr="//header" postition="after">
           <button name="calculate_last_serial" type="object"
                   string="Peso ultima serie"
-                  attrs="{'visible':[('state', '==', 'done')]}"
+                  attrs="{'visible':[('state', '==', 'done')],'invisible':[('picking_type_code','=','outgoing')]}"
           />
 
         </xpath>
@@ -56,6 +56,7 @@
                 </field>
               </group>
             </page>
+
             <page string="Series Reservadas">
               <group>
                 <field name="packing_list_ids">
@@ -65,12 +66,12 @@
                     <field name="serial_number"/>
                     <field name="display_weight"/>
                     <field name="consumed" invisible="1"/>
-                    <button string="Quitar Reservas"
+                    <button string="Quitar Reserva"
                             type="object"
                             name="unreserved_picking"
                             groups="mrp.group_mrp_manager"
                             attrs="{'invisible':['|',('parent.state','=','done'),('consumed','=',True)]}"
-
+                            context="{'stock_picking_id': parent.id}"
                     />
                   </tree>
                 </field>

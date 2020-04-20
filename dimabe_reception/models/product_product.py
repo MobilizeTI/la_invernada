@@ -26,6 +26,18 @@ class ProductProduct(models.Model):
     def get_species(self):
         return self.get_variant('especie')
 
+    @api.model
+    def get_calibers(self):
+        return self.get_variant('calibre')
+
+    @api.model
+    def get_color(self):
+        return self.get_variant('color')
+
+    @api.model
+    def get_caning(self):
+        return self.get_variant('Tipo de envase')
+
     def get_variant(self, variant_search):
         variant = ''
         if self.is_product_variant:

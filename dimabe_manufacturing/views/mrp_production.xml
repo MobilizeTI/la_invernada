@@ -70,8 +70,9 @@
             <div>
               <group>
                 <field name="stock_lots" invisible="1"/>
-                <field name="potential_lot_ids" readonly="0" string="">
+                <field name="potential_lot_ids" readonly="0" string="Lotes Potenciales" >
                   <tree edit="true" delete="false" create="false">
+                    <field name="all_serial_consumed" />
                     <field name="stock_production_lot_id" readonly="1" widget="many2onebutton"/>
                     <field name="lot_product_id" readonly="1"/>
                     <field name="lot_balance" readonly="1" force_save="1"/>
@@ -119,7 +120,8 @@
           <field name="date_planned_start_wo"/>
           <field name="client_id"/>
           <field name="destiny_country_id"/>
-          <field name="stock_picking_id" string="Pedido de Venta"/>
+          <field name="stock_picking_id" string="Numero de Despacho"/>
+          <field name="sale_order_id" string="Pedido de Venta"/>
           <field name="product_id"/>
           <field name="product_qty"/>
           <field name="pt_balance" />

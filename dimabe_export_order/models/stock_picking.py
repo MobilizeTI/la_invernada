@@ -226,9 +226,22 @@ class StockPicking(models.Model):
 
     departure_weight = fields.Float('Peso de Salida')
 
+    customs_department = fields.Many2one('res.partner','Oficina Aduanera')
+
+
     @api.onchange('picture')
     def get_pictures(self):
         self.pictures = self.picture
+
+    @api.multi
+    def generate_packing_list(self):
+        return self.env.ref('dimabe_export_order.action_packing_list') \
+            .report_action(self)
+
+    @api.multi
+    def generate_inform(self):
+        return self.env.ref('dimabe_export_order.action_inform') \
+            .report_action(self)
 
     @api.multi
     def generate_report(self):
