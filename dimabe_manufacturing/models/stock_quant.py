@@ -27,6 +27,8 @@ class StockQuant(models.Model):
         store=True
     )
 
+    producer_id = fields.Many2one('res.partner',related='lot_id.producer_id')
+
     @api.multi
     def _compute_total_reserved(self):
         for item in self:
