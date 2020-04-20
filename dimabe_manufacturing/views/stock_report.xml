@@ -7,7 +7,7 @@
             <field name="priority">20</field>
             <field name="arch" type="xml">
                 <tree name="Informe de Materia Prima">
-                    <field name="producer_id"/>
+                    <field name="name"/>
                 </tree>
             </field>
         </record>
