@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <menuitem id="stock.menu_warehouse_report_root" name="Informe de Materia Prima"/>
+        <menuitem id="stock_report_menuitem" name="Informe de Materia Prima"
+                  parent="stock.menu_warehouse_report"/>
     </data>
 </odoo>
