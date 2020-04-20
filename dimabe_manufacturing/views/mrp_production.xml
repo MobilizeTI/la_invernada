@@ -71,7 +71,7 @@
               <group>
                 <field name="stock_lots" invisible="1"/>
                 <field name="potential_lot_ids" readonly="0" string="Lotes Potenciales" >
-                  <tree edit="true" delete="false" create="false" attrs="{'invisible':['|',('is_reserved', '=',False),('mrp_production_id','!=',None)]}">
+                  <tree edit="true" delete="false" create="false">
                     <field name="all_serial_consumed" invisible="1"/>
                     <field name="stock_production_lot_id" readonly="1" widget="many2onebutton"/>
                     <field name="lot_product_id" readonly="1"/>

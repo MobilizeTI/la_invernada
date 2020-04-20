@@ -115,7 +115,6 @@ class MrpProduction(models.Model):
         'potential.lot',
         'mrp_production_id',
         'Posibles Lotes'
-
     )
 
     materials = fields.Many2many('product.product', compute='get_product_bom')

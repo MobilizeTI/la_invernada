@@ -46,7 +46,7 @@ class PotentialLot(models.Model):
 
     is_reserved = fields.Boolean('Reservado')
 
-    all_serial_consumed = fields.Boolean('Cantidad de serie sin usar'
+    all_serial_consumed = fields.Integer('Cantidad de serie sin usar'
                                          , compute='_compute_all_serial_consumed'
                                          )
 
@@ -58,7 +58,7 @@ class PotentialLot(models.Model):
             item.all_serial_consumed = len(item.stock_production_lot_id.stock_production_lot_serial_ids.filtered(
                 lambda a: a.consumed is False and (
                         a.reserved_to_production_id == item.mrp_production_id or not a.reserved_to_production_id)
-            )) == 0
+            ))
 
 
     @api.multi
