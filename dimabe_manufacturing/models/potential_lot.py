@@ -46,7 +46,7 @@ class PotentialLot(models.Model):
 
     is_reserved = fields.Boolean('Reservado')
 
-    all_serial_consumed = fields.Integer('¿Todas las series estan consumidas?'
+    all_serial_consumed = fields.Integer('Cantidad de serie sin usar'
                                          , compute='_compute_all_serial_consumed'
                                          )
 
