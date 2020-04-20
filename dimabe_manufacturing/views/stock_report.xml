@@ -9,6 +9,7 @@
                 <tree name="Informe de Materia Prima">
                     <field name="producer_id"/>
                     <field name="product_variety" string="Variedad"/>
+                    <field name="name" widget="many2onebutton"/>
                     <field name="product_qty"/>
                     <field name="product_caliber"/>
                     <field name="picking_type_id"/>
