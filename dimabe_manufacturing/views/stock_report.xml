@@ -13,7 +13,7 @@
         </record>
 
 
-        <record id="dimabe_manufacturing.stock_report" model="ir.action.act_window">
+        <record id="dimabe_manufacturing.stock_report" model="ir.actions.act_window">
             <field name="name">Informe de Materia prima</field>
             <field name="res_model">stock.quant</field>
             <field name="view_mode">tree,kanban,calendar</field>
