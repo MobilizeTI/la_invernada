@@ -44,7 +44,7 @@ def validate_rut(rut_str):
         digit = "k"
     else:
         digit = str(res)
-    return digit == dv
+    return str(digit).lower() == str(dv).lower()
 
 
 def prepare_rut(values):
