@@ -199,6 +199,10 @@ class StockProductionLot(models.Model):
         related='product_id.variety'
     )
 
+    product_caliber = fields.Char(
+        'Calibre del Producto',
+        related='product_id.caliber'
+    )
 
     
     @api.multi

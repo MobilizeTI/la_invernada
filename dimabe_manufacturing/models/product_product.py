@@ -20,12 +20,24 @@ class ProductProduct(models.Model):
         ,compute='_compute_label_product'
     )
 
+    caliber = fields.Char(
+        'Caliber',
+        compute='_compute_caliber'
+    )
 
     package = fields.Char('Envase',compute='_compute_package')
 
     is_to_manufacturing = fields.Boolean('Es Fabricacion?',default=True,compute="compute_is_to_manufacturing")
 
     is_standard_weight = fields.Boolean('Es peso estandar', default=False)
+
+    @api.multi
+    def _compute_caliber(self):
+        for item in self:
+            if item.get_calibers():
+                item.caliber = item.get_calibers()
+            else:
+                item.caliber = "S/Calibre"
 
     @api.multi
     def _compute_package(self):
