@@ -18,6 +18,9 @@
             <field name="res_model">stock.quant</field>
             <field name="view_mode">tree</field>
             <field name="view_id" ref="view_stock_report_tree"/>
+            <field name="domain">
+                [('lot_id','!=',False)]
+            </field>
         </record>
 
         <menuitem id="stock_report_tree_menu"
