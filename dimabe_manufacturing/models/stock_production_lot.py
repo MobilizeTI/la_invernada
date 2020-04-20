@@ -194,6 +194,11 @@ class StockProductionLot(models.Model):
         compute='_compute_is_dimabe_team'
     )
 
+    product_variety = fields.Char(
+        'Variedad del Producto',
+        related='product_id.variety'
+    )
+
 
     
     @api.multi
