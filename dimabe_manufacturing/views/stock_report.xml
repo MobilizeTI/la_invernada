@@ -9,7 +9,7 @@
                 <tree name="Informe de Materia Prima">
                     <field name="producer_id" widget="many2onebutton" string="Productor"/>
                     <field name="lot_id" widget="many2onebutton" string="Lote"/>
-                    <field name="lot_balance" string="Kilos"/>
+                    <field name="quantity" string="Kilos"/>
                     <field name="product_variety" string="Variedad"/>
                     <field name="product_caliber" string="Calibre"/>
                 </tree>
