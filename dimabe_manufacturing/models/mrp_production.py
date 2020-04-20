@@ -114,8 +114,8 @@ class MrpProduction(models.Model):
     potential_lot_ids = fields.One2many(
         'potential.lot',
         'mrp_production_id',
-        'Posibles Lotes',
-        domain=[('all_serial_consumed', '=', False)]
+        'Posibles Lotes'
+
     )
 
     materials = fields.Many2many('product.product', compute='get_product_bom')
