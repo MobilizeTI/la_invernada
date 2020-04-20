@@ -11,6 +11,22 @@ class StockQuant(models.Model):
         digits=dp.get_precision('Product Unit of Measure')
     )
 
+    product_variety = fields.Char(
+        'Variedad del Producto',
+        related='product_id.variety'
+    )
+
+    product_caliber = fields.Char(
+        'Calibre del Producto',
+        related='product_id.caliber'
+    )
+
+    reception_guide_number = fields.Integer(
+        'Guía',
+        related='lot_id.stock_picking_id.guide_number',
+        store=True
+    )
+
     @api.multi
     def _compute_total_reserved(self):
         for item in self:
