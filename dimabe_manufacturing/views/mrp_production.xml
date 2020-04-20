@@ -70,8 +70,8 @@
             <div>
               <group>
                 <field name="stock_lots" invisible="1"/>
-                <field name="potential_lot_ids" readonly="0" string="Lotes Potenciales" attrs="{'invisible':[('all_serial_consumed','>',0)]}">
-                  <tree edit="true" delete="false" create="false" >
+                <field name="potential_lot_ids" readonly="0" string="Lotes Potenciales" >
+                  <tree edit="true" delete="false" create="false" attrs="{'invisible':[('all_serial_consumed','>',0)]}">
                     <field name="all_serial_consumed"/>
                     <field name="stock_production_lot_id" readonly="1" widget="many2onebutton"/>
                     <field name="lot_product_id" readonly="1"/>
