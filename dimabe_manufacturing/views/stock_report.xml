@@ -4,7 +4,7 @@
         <record id="view_stock_report_tree" model="ir.ui.view">
             <field name="name">Informe de Materia Prima</field>
             <field name="model">stock.quant</field>
-            <field name="oriority">20</field>
+            <field name="priority">20</field>
             <field name="arch" type="xml">
                 <tree name="Informe de Materia Prima">
                     <field name="lot_id.name"/>
@@ -17,6 +17,7 @@
             <field name="name">Informe de Materia prima</field>
             <field name="res_model">stock.quant</field>
             <field name="view_mode">tree,kanban,calendar</field>
+            <field name="view_id" ref="view_stock_report_tree"/>
         </record>
 
         <menu id="stock_report_tree_menu"
