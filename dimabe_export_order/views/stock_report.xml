@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem id="stock.menu_warehouse_report_root" name="Informe de Materia Prima"/>
+    </data>
+</odoo>
