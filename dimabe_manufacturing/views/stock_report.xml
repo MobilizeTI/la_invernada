@@ -20,7 +20,7 @@
             <field name="view_id" ref="view_stock_report_tree"/>
         </record>
 
-        <menu id="stock_report_tree_menu"
+        <menuitem id="stock_report_tree_menu"
               action="dimabe_manufacturing.stock_report"
               name="Informe de Materia Prima"
               parent="stock.menu_warehouse_report"
