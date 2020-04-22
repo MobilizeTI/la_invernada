@@ -37,7 +37,6 @@
               <field name="product_id" />
               <field name="display_weight" readonly="1"/>
               <field name="consumed" invisible="1" />
-              <field name="consumed_in_production_id"/>
             </tree>
           </field>
         </xpath>
