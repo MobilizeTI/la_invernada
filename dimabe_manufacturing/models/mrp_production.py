@@ -359,7 +359,7 @@ class MrpProduction(models.Model):
     @api.multi
     def button_plan(self):
         for order in self:
-            order.move_raw_ids.mapped('active_move_lines_ids').mapped('lot_id').mapped(
+            order.move_raw_ids.mapped('active_move_line_ids').mapped('lot_id').mapped(
                 'stock_production_lot_serial_ids').update({
                 'reserved_to_production_id': self.id
             })
