@@ -135,8 +135,9 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_potential_lot_planned_ids(self):
         for item in self:
+            product_id = self.production_id.mapped('move_raw_ids').mapped('product_id')
             item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search(
-                [('reserved_to_production_id', '=', item.production_id.id)])
+                [('reserved_to_production_id', '=', item.production_id.id),('product_id','=',product_id.id)])
 
     #             lambda a: a.qty_to_reserve > 0
     #         ).mapped('stock_production_lot_id.stock_production_lot_serial_ids').filtered(
