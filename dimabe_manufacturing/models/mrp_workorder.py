@@ -139,7 +139,7 @@ class MrpWorkorder(models.Model):
                 lambda a: a.qty_to_reserve > 0
             ).mapped('stock_production_lot_id.stock_production_lot_serial_ids').filtered(
                 lambda b: b.reserved_to_production_id == item.production_id
-             )
+            )
 
     def _inverse_potential_lot_planned_ids(self):
 
@@ -260,7 +260,7 @@ class MrpWorkorder(models.Model):
             return res
         self.qty_done = qty_done + custom_serial.display_weight
         self.potential_serial_planned_ids.update({
-            'id':custom_serial.id
+            'id': custom_serial.id
         })
         custom_serial.update({
             'consumed': True
@@ -276,15 +276,8 @@ class MrpWorkorder(models.Model):
 
     def validate_lot_code(self, lot_code):
         if not self.lot_is_byproduct():
-            lot_search = self.env['stock.production.lot'].search([('name','=',lot_code)])
+            lot_search = self.env['stock.production.lot'].search([('name', '=', lot_code)])
             models.ValidationError('Lot : {}'.format(lot_search))
-                if not lot_search:
-                    raise models.ValidationError('no se encontró registro asociado al código ingresado')
-
-                if not lot_search.product_id.categ_id.reserve_ignore:
-                    raise models.ValidationError(
-                        'el código escaneado no se encuentra dentro de la planificación de esta producción'
-                    )
 
     def validate_serial_code(self, barcode):
         custom_serial = self.potential_serial_planned_ids.filtered(
@@ -300,8 +293,8 @@ class MrpWorkorder(models.Model):
 
         return custom_serial
 
-    def open_out_form_view(self):
 
+    def open_out_form_view(self):
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'mrp.workorder',
@@ -309,6 +302,7 @@ class MrpWorkorder(models.Model):
             'res_id': self.id,
             'target': 'fullscreen'
         }
+
 
     def create_pallet(self):
         default_product_id = None
