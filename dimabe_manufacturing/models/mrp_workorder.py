@@ -135,18 +135,11 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_potential_lot_planned_ids(self):
         for item in self:
-            if item.potential_serial_planned_ids.mapped(
-                    'stock_production_lot_id.stock_production_lot_serial_ids').filtered(
-                    lambda b: b.reserved_to_production_id == item.production_id
-            ):
                 item.potential_serial_planned_ids = item.production_id.potential_lot_ids.filtered(
                     lambda a: a.qty_to_reserve > 0
                 ).mapped('stock_production_lot_id.stock_production_lot_serial_ids').filtered(
                     lambda b: b.reserved_to_production_id == item.production_id
                 )
-            else:
-                product_id = item.production_id.move_raw_ids.mapped('product_id').mapped('id')
-                item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search([('consumed_in_production_id','=',item.production_id.id),('stock_production_lot_id.product_id','in',product_id)])
 
     def _inverse_potential_lot_planned_ids(self):
 
@@ -158,7 +151,6 @@ class MrpWorkorder(models.Model):
             )
             serial.update({
                 'consumed': lot_serial.consumed,
-                'consumed_in_production_id': self.production_id
             })
 
     @api.multi
@@ -268,10 +260,10 @@ class MrpWorkorder(models.Model):
         if res:
             return res
         self.qty_done = qty_done + custom_serial.display_weight
-        # if custom_serial not in self.potential_serial_planned_ids.mapped('serial_number'):
-        #     self.potential_serial_planned_ids.update({
-        #
-        #     })
+        if custom_serial not in self.potential_serial_planned_ids.mapped('serial_number'):
+            self.potential_serial_planned_ids.update({
+                'serial_number':custom_serial.serial_number
+            })
         custom_serial.update({
             'consumed': True
         })
@@ -290,8 +282,8 @@ class MrpWorkorder(models.Model):
                 ('name', '=', lot_code)
             ])
 
-            if not lot_search:
-                raise models.ValidationError('no se encontró registro asociado al código ingresado')
+            # if not lot_search:
+            #     raise models.ValidationError('no se encontró registro asociado al código ingresado')
 
             # if not lot_search.product_id.categ_id.reserve_ignore:
             #     raise models.ValidationError(
