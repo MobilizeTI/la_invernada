@@ -264,7 +264,7 @@ class MrpWorkorder(models.Model):
             self.write({
                 'potential_serial_planned_ids':[(6,0,{
                         'serial_number':custom_serial.serial_number,
-                        'consumed':None
+                        'consumed':True
                 })]
             })
         custom_serial.update({
