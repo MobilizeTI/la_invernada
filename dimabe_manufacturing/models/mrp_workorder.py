@@ -260,7 +260,7 @@ class MrpWorkorder(models.Model):
         if res:
             return res
         self.qty_done = qty_done + custom_serial.display_weight
-        if not custom_serial.id in self.potential_serial_planned_ids:
+        if not custom_serial in self.potential_serial_planned_ids:
             raise models.ValidationError('La serie {} no esta en las series planificadas'.format(custom_serial.serial_number))
         custom_serial.update({
             'consumed': True
