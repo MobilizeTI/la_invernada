@@ -132,18 +132,15 @@ class MrpWorkorder(models.Model):
     def _onchange_qty_producing(self):
         print('se inhabilita este método')
 
-    # @api.multi
-    # def _compute_potential_lot_planned_ids(self):
-    #     for item in self:
-    #         product_id = self.production_id.mapped('move_raw_ids').mapped('product_id')
-    #         item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search(
-    #             [('reserved_to_production_id', '=', item.production_id.id),('consumed','=',True)])
+    @api.multi
+    def _compute_potential_lot_planned_ids(self):
+        for item in self:
+            item.potential_lot_planned_ids = self.env['stock.production.lot.serial'].search([])
+    #             lambda a: a.qty_to_reserve > 0
+    #         ).mapped('stock_production_lot_id.stock_production_lot_serial_ids').filtered(
+    #             lambda b: b.reserved_to_production_id == item.production_id
+    #         )
     #
-    # #             lambda a: a.qty_to_reserve > 0
-    # #         ).mapped('stock_production_lot_id.stock_production_lot_serial_ids').filtered(
-    # #             lambda b: b.reserved_to_production_id == item.production_id
-    # #         )
-    # #
     def _inverse_potential_lot_planned_ids(self):
 
         for lot_serial in self.potential_serial_planned_ids:
