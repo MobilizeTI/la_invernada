@@ -144,8 +144,8 @@ class MrpWorkorder(models.Model):
                     lambda b: b.reserved_to_production_id == item.production_id
                 )
             else:
+                lot_reserved = []
                 for lot in self.env['stock.move.line'].search([('move_id','=',item.production_id.move_raw_ids.mapped('id'))]).mapped('lot_id'):
-                    lot_reserved = []
                     lot_reserved.append(lot.id)
 
                 item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search([('consumed','=',False),('stock_production_lot_id','in',lot_reserved)])
