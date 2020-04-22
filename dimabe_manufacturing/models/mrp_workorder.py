@@ -144,17 +144,17 @@ class MrpWorkorder(models.Model):
     # #             lambda b: b.reserved_to_production_id == item.production_id
     # #         )
     # #
-    # # def _inverse_potential_lot_planned_ids(self):
-    # #
-    # #     for lot_serial in self.potential_serial_planned_ids:
-    # #         serial = self.production_id.potential_lot_ids.mapped(
-    # #             'stock_production_lot_id.stock_production_lot_serial_ids'
-    # #         ).filtered(
-    # #             lambda b: b.id == lot_serial.id
-    # #         )
-    # #         serial.update({
-    # #             'consumed': lot_serial.consumed
-    # #         })
+    def _inverse_potential_lot_planned_ids(self):
+
+        for lot_serial in self.potential_serial_planned_ids:
+            serial = self.production_id.potential_lot_ids.mapped(
+                'stock_production_lot_id.stock_production_lot_serial_ids'
+            ).filtered(
+                lambda b: b.id == lot_serial.id
+            )
+            serial.update({
+                'consumed': lot_serial.consumed
+            })
 
     @api.multi
     def _compute_summary_out_serial_ids(self):
