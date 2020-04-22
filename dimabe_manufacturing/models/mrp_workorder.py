@@ -93,9 +93,9 @@ class MrpWorkorder(models.Model):
     )
 
     potential_serial_planned_ids = fields.One2many(
-        'stock.production.lot.serial',
-        compute='_compute_potential_lot_planned_ids',
-        inverse='_inverse_potential_lot_planned_ids'
+        'stock.production.lot.serial'
+        # compute='_compute_potential_lot_planned_ids',
+        # inverse='_inverse_potential_lot_planned_ids'
     )
 
     confirmed_serial = fields.Char('Codigo de Barra')
