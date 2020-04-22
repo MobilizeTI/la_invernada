@@ -277,7 +277,7 @@ class MrpWorkorder(models.Model):
     def validate_lot_code(self, lot_code):
         if not self.lot_is_byproduct():
             lot_search = self.env['stock.production.lot'].search([('name','=',lot_code)])
-            raise models.ValidationError(lot_search)
+            raise models.ValidationError(lot_code)
 
     def validate_serial_code(self, barcode):
         custom_serial = self.potential_serial_planned_ids.filtered(
