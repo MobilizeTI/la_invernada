@@ -144,12 +144,13 @@ class MrpWorkorder(models.Model):
                     lambda b: b.reserved_to_production_id == item.production_id
                 )
             else:
-                item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search([('consumed','=',True),('reserved_to_production_id','=',item.production_id.id)])
+                item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search([('consumed','=',True),('reserved_to_production_id','=',item.production_id)])
 
     def _inverse_potential_lot_planned_ids(self):
 
         for lot_serial in self.potential_serial_planned_ids:
-            lot_serial.update({
+            serial = self.potential_serial_planned_ids.filtered(lambda a: a.id == lot_serial.id)
+            serial.update({
                 'consumed': lot_serial.consumed
             })
 
