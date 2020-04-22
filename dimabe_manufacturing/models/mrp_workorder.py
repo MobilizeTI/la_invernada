@@ -253,7 +253,7 @@ class MrpWorkorder(models.Model):
     @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
         for item in self:
-            raise models.ValidationError(item.production_id.move_raw_ids)
+            raise models.ValidationError(self.env['stock.move.line'].search([('move_id','=',item.production_id.move_raw_ids.mapped('id'))]))
             res = item.on_barcode_scanned(item.confirmed_serial)
             if res and 'warning' in res and 'message' in res['warning']:
                 raise models.ValidationError(res['warning']['message'])
