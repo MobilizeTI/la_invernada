@@ -31,7 +31,7 @@
                     <field name="potential_serial_planned_ids">
                         <tree decoration-danger="consumed==False" decoration-success="consumed==True"
                               delete="false" create="false" editable="bottom" groups="mrp.group_mrp_manager"
-                              default_order="consumed desc" attrs="{'invisible': [('reserved_to_production_id', '=', 'production_id')]}">
+                              default_order="consumed desc" attrs="{'invisible': [('reserved_to_production_id', '!=', 'production_id')]}">
                             <field name="producer_id"/>
                             <field name="stock_production_lot_id" readonly="1"/>
                             <field name="serial_number" readonly="1"/>
