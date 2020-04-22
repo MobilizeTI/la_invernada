@@ -228,6 +228,8 @@ class MrpProduction(models.Model):
             'mrp_production_id': self.id
         } for lot in res]
 
+
+
     @api.multi
     def set_stock_move(self):
         product = self.env['stock.move'].create({'product_id': self.product_id})

@@ -135,11 +135,8 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_potential_lot_planned_ids(self):
         for item in self:
-            item.potential_serial_planned_ids = item.production_id.potential_lot_ids.filtered(
-                lambda a: a.qty_to_reserve > 0
-            ).mapped('stock_production_lot_id.stock_production_lot_serial_ids').filtered(
-                lambda b: b.reserved_to_production_id == item.production_id
-            )
+            item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search(
+                [('reserved_to_production_id','=',item.production_id.id)])
 
     def _inverse_potential_lot_planned_ids(self):
 
@@ -261,6 +258,7 @@ class MrpWorkorder(models.Model):
             return res
         self.qty_done = qty_done + custom_serial.display_weight
         if not custom_serial in self.potential_serial_planned_ids:
+            if custom_serial.stock_production_lot_id.product_id == self.product_id
             custom_serial.update({
                 'reserved_to_production_id':self.production_id,
                 'consumed':True
