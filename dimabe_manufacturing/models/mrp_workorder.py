@@ -132,6 +132,7 @@ class MrpWorkorder(models.Model):
     def _onchange_qty_producing(self):
         print('se inhabilita este método')
 
+    @api.onchange('lot_id')
     @api.multi
     def _compute_potential_lot_planned_ids(self):
         for item in self:
@@ -144,11 +145,7 @@ class MrpWorkorder(models.Model):
                     lambda b: b.reserved_to_production_id == item.production_id
                 )
             else:
-                lot_reserved = []
-                for lot in self.env['stock.move.line'].search([('move_id','=',item.production_id.move_raw_ids.mapped('id'))]).mapped('lot_id'):
-                    lot_reserved.append(lot.id)
-
-                item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search([('consumed','=',False),('stock_production_lot_id','in',lot_reserved)])
+                item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search([('consumed','=',False),('stock_production_lot_id','in',item.lot_id)])
 
     def _inverse_potential_lot_planned_ids(self):
 
@@ -293,10 +290,7 @@ class MrpWorkorder(models.Model):
                 ])
 
                 if not lot_search:
-                    lot_add = self.env['stock.production.lot'].search([
-                        ('name', '=', lot_code)
-                    ])
-                    raise models.ValidationError(lot_add)
+                    raise models.ValidationError('no se encontró registro asociado al código ingresado')
 
                 # if not lot_search.product_id.categ_id.reserve_ignore:
                 #     raise models.ValidationError(
