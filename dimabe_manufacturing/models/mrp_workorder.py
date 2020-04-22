@@ -92,7 +92,7 @@ class MrpWorkorder(models.Model):
         string='subproductos'
     )
 
-    potential_serial_planned_ids = fields.One2many(
+    potential_serial_planned_ids = fields.Many2many(
         'stock.production.lot.serial'
     )
 
