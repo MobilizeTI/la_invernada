@@ -273,19 +273,19 @@ class MrpWorkorder(models.Model):
             lambda a: a.lot_id == self.lot_id and a.component_is_byproduct
         )
 
-    # def validate_lot_code(self, lot_code):
-    #     if not self.lot_is_byproduct():
-    #         lot_search = self.env['stock.production.lot'].search([
-    #             ('name', '=', lot_code)
-    #         ])
-    #
-    #         # if not lot_search:
-    #         #     raise models.ValidationError('no se encontró registro asociado al código ingresado')
-    #
-    #         # if not lot_search.product_id.categ_id.reserve_ignore:
-    #         #     raise models.ValidationError(
-    #         #         'el código escaneado no se encuentra dentro de la planificación de esta producción'
-    #         #     )
+    def validate_lot_code(self, lot_code):
+        if not self.lot_is_byproduct():
+            lot_search = self.env['stock.production.lot'].search([
+                ('name', '=', lot_code)
+            ])
+
+            # if not lot_search:
+            #     raise models.ValidationError('no se encontró registro asociado al código ingresado')
+
+            # if not lot_search.product_id.categ_id.reserve_ignore:
+            #     raise models.ValidationError(
+            #         'el código escaneado no se encuentra dentro de la planificación de esta producción'
+            #     )
 
     def validate_serial_code(self, barcode):
         custom_serial = self.potential_serial_planned_ids.filtered(
