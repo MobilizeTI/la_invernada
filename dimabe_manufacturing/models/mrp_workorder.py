@@ -262,11 +262,10 @@ class MrpWorkorder(models.Model):
         if res:
             return res
         self.qty_done = qty_done + custom_serial.display_weight
-        raise models.ValidationError('{},{},{}'.format(custom_serial,self.production_id.id,self.potential_serial_planned_ids))
-        custom_serial.update({
-            'reserved_to_production_id': self.production_id.id,
-            'consumed': True
-            })
+        self.potential_serial_planned_ids.write({
+            (4,custom_serial.id)
+        })
+
         return res
 
     @api.model
