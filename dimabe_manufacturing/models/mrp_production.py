@@ -168,13 +168,6 @@ class MrpProduction(models.Model):
         self.search_potential_lot_ids()
 
     @api.multi
-    def action_assign(self):
-        self.move_raw_ids.mapped('active_move_lines_ids').mapped('lot_id').mapped('stock_production_lot_serial_ids').update({
-            'reserved_to_production_id':self.id
-        })
-        res = res = super(MrpProduction, self).action_assign()
-
-    @api.multi
     def search_potential_lot_ids(self):
         for production in self:
             filtered_lot_ids = production.get_potential_lot_ids()
@@ -366,6 +359,10 @@ class MrpProduction(models.Model):
     @api.multi
     def button_plan(self):
         for order in self:
+            order.move_raw_ids.mapped('active_move_lines_ids').mapped('lot_id').mapped(
+                'stock_production_lot_serial_ids').update({
+                'reserved_to_production_id': self.id
+            })
             # total_reserved = sum(order.move_raw_ids.filtered(
             #     lambda a: not a.product_id.categ_id.reserve_ignore).mapped('reserved_availability')
             #                      )
