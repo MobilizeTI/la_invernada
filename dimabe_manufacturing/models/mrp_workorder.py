@@ -157,7 +157,7 @@ class MrpWorkorder(models.Model):
             )
             serial.update({
                 'consumed': lot_serial.consumed,
-                'consumed_in_production_id':self.prodution_id
+                'consumed_in_production_id':self.production_id
             })
 
     @api.multi
