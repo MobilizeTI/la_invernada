@@ -150,7 +150,7 @@ class MrpWorkorder(models.Model):
                 lambda b: b.id == lot_serial.id
             )
             serial.update({
-                'consumed': lot_serial.consumed,
+                'consumed': lot_serial.consumed
             })
 
     @api.multi
