@@ -293,6 +293,9 @@ class MrpWorkorder(models.Model):
                 ])
 
                 if not lot_search:
+                    lot_add = self.env['stock.production.lot'].search([
+                        ('name', '=', lot_code)
+                    ])
                     raise models.ValidationError('no se encontró registro asociado al código ingresado')
 
                 # if not lot_search.product_id.categ_id.reserve_ignore:
