@@ -39,6 +39,12 @@ class StockProductionLotSerial(models.Model):
         nullable=True
     )
 
+    consumed_in_production_id = fields.Many2one(
+        'mrp.production',
+        'Consumida en la produccion',
+        nullable=True
+    )
+
     stock_product_id = fields.Many2one(
         'product.product',
         related='stock_production_lot_id.product_id',
