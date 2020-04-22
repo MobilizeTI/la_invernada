@@ -136,7 +136,7 @@ class MrpWorkorder(models.Model):
     def _compute_potential_lot_planned_ids(self):
         for item in self:
             item.potential_serial_planned_ids = self.env['stock.production.lot'].search(
-                [('reserved_to_production_id', '=', item.production_id.id)])
+                [('reserved_to_production_id', 'in', item.production_id)])
 
     #             lambda a: a.qty_to_reserve > 0
     #         ).mapped('stock_production_lot_id.stock_production_lot_serial_ids').filtered(
