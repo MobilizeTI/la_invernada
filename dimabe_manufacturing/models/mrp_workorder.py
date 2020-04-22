@@ -263,7 +263,7 @@ class MrpWorkorder(models.Model):
             return res
         self.qty_done = qty_done + custom_serial.display_weight
         self.update({
-            'potential_lot_planned_ids':[
+            'potential_serial_planned_ids':[
                 (4,custom_serial.id)
             ]
         })
