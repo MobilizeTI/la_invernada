@@ -135,7 +135,7 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_potential_lot_planned_ids(self):
         for item in self:
-            if not item.potential_serial_planned_ids.filtered(lambda a: a.qty_to_reserve > 0).mapped('stock_production_lot_id.stock_production_lot_serial_ids').filtered(
+            if item.potential_serial_planned_ids.filtered(lambda a: a.qty_to_reserve > 0).mapped('stock_production_lot_id.stock_production_lot_serial_ids').filtered(
                 lambda b:b.reserved_to_production_id == item.production_id
             ):
                 item.potential_serial_planned_ids = item.production_id.potential_lot_ids.filtered(
@@ -144,8 +144,11 @@ class MrpWorkorder(models.Model):
                     lambda b: b.reserved_to_production_id == item.production_id
                 )
             else:
+                for lot in self.env['stock.move.line'].search([('move_id','=',item.production_id.move_raw_ids.mapped('id'))]).mapped('lot_id'):
+                    lot_reserved = []
+                    lot_reserved.append(lot.id)
 
-                item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search([('consumed','=',False)])
+                item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search([('consumed','=',False),('stock_production_lot_id','in',lot_reserved)])
 
     def _inverse_potential_lot_planned_ids(self):
 
@@ -253,7 +256,7 @@ class MrpWorkorder(models.Model):
     @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
         for item in self:
-            raise models.ValidationError(self.env['stock.move.line'].search([('move_id','=',item.production_id.move_raw_ids.mapped('id'))]).mapped('lot_id'))
+
             res = item.on_barcode_scanned(item.confirmed_serial)
             if res and 'warning' in res and 'message' in res['warning']:
                 raise models.ValidationError(res['warning']['message'])
