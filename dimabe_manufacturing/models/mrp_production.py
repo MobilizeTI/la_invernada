@@ -348,9 +348,11 @@ class MrpProduction(models.Model):
                 item.stock_picking_id.update({
                     'has_mrp_production': False
                 })
-            if move_line:
-                move_line[0].write({'move_id': None, 'product_uom_qty': 0})
-        res = super(MrpProduction,self).action_cancel()
+                if move_line:
+                    move_line[0].write({'move_id': None, 'product_uom_qty': 0})
+                res = super(MrpProduction, self).action_cancel()
+            else:
+                res = super(MrpProduction,self).action_cancel()
 
 
 
