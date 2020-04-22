@@ -135,7 +135,7 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_potential_lot_planned_ids(self):
         for item in self:
-            item.potential_serial_planned_ids = self.env['stock.production.lot_serial'].search([])
+            item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search([])
 
     def _inverse_potential_lot_planned_ids(self):
 
