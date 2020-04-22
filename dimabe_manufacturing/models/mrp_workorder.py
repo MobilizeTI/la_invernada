@@ -93,8 +93,7 @@ class MrpWorkorder(models.Model):
     )
 
     potential_serial_planned_ids = fields.One2many(
-        'stock.production.lot.serial',
-        compute='_compute_potential_lot_planned_ids'
+        'stock.production.lot.serial'
     )
 
     confirmed_serial = fields.Char('Codigo de Barra')
@@ -131,15 +130,7 @@ class MrpWorkorder(models.Model):
     def _onchange_qty_producing(self):
         print('se inhabilita este método')
 
-    @api.multi
-    def _compute_potential_lot_planned_ids(self):
-        for item in self:
-            item.potential_lot_planned_ids = self.env['stock.production.lot.serial'].search([])
-    #             lambda a: a.qty_to_reserve > 0
-    #         ).mapped('stock_production_lot_id.stock_production_lot_serial_ids').filtered(
-    #             lambda b: b.reserved_to_production_id == item.production_id
-    #         )
-    #
+
 
 
 
