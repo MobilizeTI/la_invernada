@@ -255,7 +255,7 @@ class MrpWorkorder(models.Model):
         if res:
             return res
         self.qty_done = qty_done + custom_serial.display_weight
-        item.potential_serial_planned_ids.update({
+        self.potential_serial_planned_ids.update({
             'id':custom_serial
         })
         custom_serial.update({
