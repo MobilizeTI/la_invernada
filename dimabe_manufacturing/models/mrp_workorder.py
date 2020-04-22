@@ -252,14 +252,14 @@ class MrpWorkorder(models.Model):
 
     def on_barcode_scanned(self, barcode):
         qty_done = self.qty_done
-        custom_serial = self.validate_serial_code(barcode)
+        # custom_serial = self.validate_serial_code(barcode)
         if custom_serial:
             barcode = custom_serial.stock_production_lot_id.name
         res = super(MrpWorkorder, self).on_barcode_scanned(barcode)
         if res:
             return res
         self.qty_done = qty_done + custom_serial.display_weight
-        item.potential_serial_planned_ids.update({
+        self.potential_serial_planned_ids.update({
             'id':custom_serial.id
         })
         custom_serial.update({
