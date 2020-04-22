@@ -263,7 +263,8 @@ class MrpWorkorder(models.Model):
         if custom_serial not in self.potential_serial_planned_ids.mapped('serial_number'):
             self.write({
                 'potential_serial_planned_ids':[(6,0,{
-                        'serial_number':custom_serial
+                        'serial_number':custom_serial.serial_number
+
                 })]
             })
         custom_serial.update({
