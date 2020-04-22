@@ -261,8 +261,9 @@ class MrpWorkorder(models.Model):
         if res:
             return res
         self.qty_done = qty_done + custom_serial.display_weight
-        if custom_serial in self.potential_serial_planned_ids:
-            raise models.ValidationError(self.potential_serial_planned_ids)
+        raise models.ValidationError(self.potential_serial_planned_ids)
+        if custom_serial.id in self.potential_serial_planned_ids.mapped('id'):
+
             if custom_serial.stock_production_lot_id.product_id == self.product_id:
                 custom_serial.update({
                     'reserved_to_production_id': self.production_id,
