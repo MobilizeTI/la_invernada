@@ -262,7 +262,8 @@ class MrpWorkorder(models.Model):
         self.qty_done = qty_done + custom_serial.display_weight
         if not custom_serial in self.potential_serial_planned_ids:
             custom_serial.update({
-                'reserved_to_production_id':self.production_id
+                'reserved_to_production_id':self.production_id,
+                'consumed':True
             })
         custom_serial.update({
             'consumed': True
