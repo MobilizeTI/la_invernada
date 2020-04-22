@@ -144,7 +144,7 @@ class MrpWorkorder(models.Model):
                     lambda b: b.reserved_to_production_id == item.production_id
                 )
             else:
-                raise models.ValidationError(item.active_move_line_ids.mapped('lot_id'))
+                models._logger.error(item.production_id.move_raw_ids)
                 item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search([('consumed','=',False),('stock_production_lot_id.name','=',lot_reserved)])
 
     def _inverse_potential_lot_planned_ids(self):
