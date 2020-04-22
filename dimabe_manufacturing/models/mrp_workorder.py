@@ -267,7 +267,6 @@ class MrpWorkorder(models.Model):
                 'reserved_to_production_id': self.production_id,
                 'consumed': True
             })
-
         return res
 
     @api.model
