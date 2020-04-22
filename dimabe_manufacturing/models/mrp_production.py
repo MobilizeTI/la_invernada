@@ -169,7 +169,7 @@ class MrpProduction(models.Model):
 
     @api.multi
     def action_assign(self):
-        self.move_raws_ids.mapped('active_move_lines_ids').mapped('lot_id').mapped('stock_production_lot_serial_ids').update({
+        self.move_raw_ids.mapped('active_move_lines_ids').mapped('lot_id').mapped('stock_production_lot_serial_ids').update({
             'reserved_to_production_id':self.id
         })
         res = res = super(MrpProduction, self).action_assign()
