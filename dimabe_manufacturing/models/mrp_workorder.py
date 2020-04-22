@@ -135,23 +135,25 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_potential_lot_planned_ids(self):
         for item in self:
-            item.potential_serial_planned_ids = item.production_id.potential_lot_ids.filtered(
-                lambda a: a.qty_to_reserve > 0
-            ).mapped('stock_production_lot_id.stock_production_lot_serial_ids').filtered(
-                lambda b: b.reserved_to_production_id == item.production_id
-            )
+            item.potential_serial_planned_ids = self.env['stock.production.lot'].search(
+                [('reserved_to_production_id', '=', item.production_id)])
 
-    def _inverse_potential_lot_planned_ids(self):
-
-        for lot_serial in self.potential_serial_planned_ids:
-            serial = self.production_id.potential_lot_ids.mapped(
-                'stock_production_lot_id.stock_production_lot_serial_ids'
-            ).filtered(
-                lambda b: b.id == lot_serial.id
-            )
-            serial.update({
-                'consumed': lot_serial.consumed
-            })
+    #             lambda a: a.qty_to_reserve > 0
+    #         ).mapped('stock_production_lot_id.stock_production_lot_serial_ids').filtered(
+    #             lambda b: b.reserved_to_production_id == item.production_id
+    #         )
+    #
+    # def _inverse_potential_lot_planned_ids(self):
+    #
+    #     for lot_serial in self.potential_serial_planned_ids:
+    #         serial = self.production_id.potential_lot_ids.mapped(
+    #             'stock_production_lot_id.stock_production_lot_serial_ids'
+    #         ).filtered(
+    #             lambda b: b.id == lot_serial.id
+    #         )
+    #         serial.update({
+    #             'consumed': lot_serial.consumed
+    #         })
 
     @api.multi
     def _compute_summary_out_serial_ids(self):
@@ -263,8 +265,8 @@ class MrpWorkorder(models.Model):
         if not custom_serial in self.potential_serial_planned_ids:
             if custom_serial.stock_production_lot_id.product_id == self.product_id
                 custom_serial.update({
-                    'reserved_to_production_id':self.production_id,
-                    'consumed':True
+                    'reserved_to_production_id': self.production_id,
+                    'consumed': True
                 })
         custom_serial.update({
             'consumed': True
@@ -305,7 +307,7 @@ class MrpWorkorder(models.Model):
             return custom_serial
         # self.validate_lot_code(barcode)
         else:
-            custom_serial = self.env['stock.production.lot.serial'].search([('serial_number','=',barcode)])
+            custom_serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', barcode)])
         return custom_serial
 
     def open_out_form_view(self):
