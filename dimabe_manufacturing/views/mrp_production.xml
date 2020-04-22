@@ -46,7 +46,7 @@
         </field>
         <xpath expr="//page[3]" position="after">
           <page string="Seleccionar Lote"
-                attrs="{'invisible':[('state','=','done')]}"
+                invisible="1"
           >
             <div>
               <group>
