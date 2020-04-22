@@ -255,10 +255,10 @@ class MrpWorkorder(models.Model):
         if res:
             return res
         self.qty_done = qty_done + custom_serial.display_weight
-        if custom_serial not in self.potential_serial_planned_ids.mapped('serial_number'):
-            self.potential_serial_planned_ids.update({
-                'id':custom_serial.id
-            })
+        # if custom_serial not in self.potential_serial_planned_ids.mapped('serial_number'):
+        #     self.potential_serial_planned_ids.update({
+        #
+        #     })
         custom_serial.update({
             'consumed': True
         })
