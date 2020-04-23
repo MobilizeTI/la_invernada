@@ -209,19 +209,7 @@ class MrpWorkorder(models.Model):
 
             if not check.component_is_byproduct:
                 check.qty_done = 0
-                if not self.component_id == self.potential_serial_planned_ids.mapped('product_id'):
-                    lot_tmp = self.env['stock.production.lot'].create({
-                        'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
-                        'product_id': self.component_id.id,
-                        'is_prd_lot': True
-                    })
-                    self.lot_id = lot_tmp.id
-                    qty = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == self.component_id.id)
-
-                    self.active_move_line_ids.filtered(lambda a: a.product_id.id == self.component_id.id).write({
-                        'qty_done': qty.product_uom_qty
-                    })
-                    self.action_skip()
+                self.action_skip()
             else:
                 if not check.lot_id:
                     lot_tmp = self.env['stock.production.lot'].create({
@@ -243,6 +231,20 @@ class MrpWorkorder(models.Model):
         super(MrpWorkorder, self).action_next()
         self.qty_done = 0
 
+    def action_skip(self):
+        if not self.component_id == self.potential_serial_planned_ids.mapped('product_id'):
+            lot_tmp = self.env['stock.production.lot'].create({
+                'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
+                'product_id': self.component_id.id,
+                'is_prd_lot': True
+            })
+            self.lot_id = lot_tmp.id
+            qty = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == self.component_id.id)
+
+            self.active_move_line_ids.filtered(lambda a: a.product_id.id == self.component_id.id).write({
+                'qty_done': qty.product_uom_qty
+            })
+            super(MrpWorkorder,self).action_skip()
 
     @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
