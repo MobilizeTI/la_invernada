@@ -207,20 +207,20 @@ class MrpWorkorder(models.Model):
         while self.current_quality_check_id:
             check = self.current_quality_check_id
 
-            # # if not check.component_is_byproduct:
-            # #     check.qty_done = 0
-            # #     self.action_skip()
-            # if:
-            if not check.lot_id:
-                lot_tmp = self.env['stock.production.lot'].create({
-                    'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
-                    'product_id': check.component_id.id,
-                    'is_prd_lot': True
-                })
-                check.lot_id = lot_tmp.id
-                check.qty_done = self.component_remaining_qty
-            if check.quality_state == 'none':
-                self.action_next()
+            if not check.component_is_byproduct:
+                check.qty_done = 0
+                self.action_skip()
+            else:
+                if not check.lot_id:
+                    lot_tmp = self.env['stock.production.lot'].create({
+                        'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
+                        'product_id': check.component_id.id,
+                        'is_prd_lot': True
+                    })
+                    check.lot_id = lot_tmp.id
+                    check.qty_done = self.component_remaining_qty
+                if check.quality_state == 'none':
+                    self.action_next()
 
         self.action_first_skipped_step()
         return super(MrpWorkorder, self).open_tablet_view()
@@ -231,8 +231,7 @@ class MrpWorkorder(models.Model):
         self.qty_done = 0
 
     def action_ignore(self):
-        move_line = self.active_move_line_ids.filtered(lambda a: a.product_id.id == self.component_id.id)
-        raise models.ValidationError(move_line)
+        move_line = self.active_move_line_ids.filtered(lambda a: a.product_id.id == self.component_id.id and not a.lot_id)
         self.update({
             'active_move_line_ids': [
                 (4, move_line.id)
