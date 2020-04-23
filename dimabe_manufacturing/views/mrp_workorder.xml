@@ -28,8 +28,7 @@
                     </group>
                 </xpath>
                 <xpath expr="//div[@class='workorder_pdf']" position="before">
-                    <field name="potential_serial_planned_ids">
-
+                    <field name="potential_serial_planned_ids" domain="[('consumed','=',True)]">
                         <tree decoration-danger="consumed==False" decoration-success="consumed==True"
                               delete="false" create="false" editable="bottom" groups="mrp.group_mrp_manager"
                               default_order="consumed desc" >
