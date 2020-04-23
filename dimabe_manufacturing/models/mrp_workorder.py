@@ -130,8 +130,6 @@ class MrpWorkorder(models.Model):
     def _onchange_qty_producing(self):
         print('se inhabilita este método')
 
-
-
     @api.multi
     def _compute_summary_out_serial_ids(self):
         for item in self:
