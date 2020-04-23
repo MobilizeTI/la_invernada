@@ -233,7 +233,7 @@ class MrpWorkorder(models.Model):
     def action_ignore(self):
         move_line = self.active_move_line_ids.filtered(lambda a : a.product_id.id == self.component_id)
         self.write({
-            (4,move_line.id)
+            (3,move_line.id)
         })
 
     @api.onchange('confirmed_serial')
