@@ -260,15 +260,16 @@ class MrpWorkorder(models.Model):
         if res:
             return res
         self.qty_done = qty_done + custom_serial.display_weight
+        custom_serial.update({
+            'reserved_to_production_id': self.production_id.id,
+            'consumed': True
+        })
         self.update({
             'potential_serial_planned_ids': [
                 (4, custom_serial.id)
             ]
         })
-        custom_serial.update({
-            'reserved_to_production_id': self.production_id.id,
-            'consumed': True
-        })
+
         return res
 
     @api.model
