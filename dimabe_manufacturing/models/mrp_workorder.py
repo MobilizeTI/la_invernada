@@ -213,9 +213,9 @@ class MrpWorkorder(models.Model):
             else:
                 if not check.lot_id:
                     lot_tmp = self.env['stock.production.lot'].create({
-                    'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
-                    'product_id': check.component_id.id,
-                    'is_prd_lot': True
+                        'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
+                        'product_id': check.component_id.id,
+                        'is_prd_lot': True
                     })
                     check.lot_id = lot_tmp.id
                     check.qty_done = self.component_remaining_qty
@@ -225,19 +225,10 @@ class MrpWorkorder(models.Model):
         self.action_first_skipped_step()
         return super(MrpWorkorder, self).open_tablet_view()
 
-
     def action_next(self):
         self.validate_lot_code(self.lot_id.name)
         super(MrpWorkorder, self).action_next()
         self.qty_done = 0
-
-    def action_skip(self):
-        if not self.component_id == self.potential_serial_planned_ids.mapped('product_id'):
-            qty = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == self.component_id.id)
-            self.write({
-                'component_remaining_qty': self.component_remaining_qty - qty.component_remaining_qty
-            })
-            super(MrpWorkorder,self).action_skip()
 
     @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
@@ -245,7 +236,6 @@ class MrpWorkorder(models.Model):
             res = item.on_barcode_scanned(item.confirmed_serial)
             if res and 'warning' in res and 'message' in res['warning']:
                 raise models.ValidationError(res['warning']['message'])
-
 
     def on_barcode_scanned(self, barcode):
         qty_done = self.qty_done
@@ -267,20 +257,17 @@ class MrpWorkorder(models.Model):
         self.qty_done = qty_done + custom_serial.display_weight
         return res
 
-
     @api.model
     def lot_is_byproduct(self):
         return self.finished_product_check_ids.filtered(
             lambda a: a.lot_id == self.lot_id and a.component_is_byproduct
         )
 
-
     def validate_lot_code(self, lot_code):
         if not self.lot_is_byproduct():
             lot_search = self.env['stock.production.lot'].search([
                 ('name', '=', lot_code)
             ])
-
 
     def validate_serial_code(self, barcode):
         custom_serial = self.potential_serial_planned_ids.filtered(
@@ -297,7 +284,6 @@ class MrpWorkorder(models.Model):
             custom_serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', barcode)])
         return custom_serial
 
-
     def open_out_form_view(self):
         return {
             'type': 'ir.actions.act_window',
@@ -306,7 +292,6 @@ class MrpWorkorder(models.Model):
             'res_id': self.id,
             'target': 'fullscreen'
         }
-
 
     def create_pallet(self):
         default_product_id = None
