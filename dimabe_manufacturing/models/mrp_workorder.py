@@ -228,10 +228,16 @@ class MrpWorkorder(models.Model):
     def action_next(self):
 
         self.validate_lot_code(self.lot_id.name)
-        raise models.ValidationError(self.component_id in self.potential_serial_planned_ids.mapped('product_id'))
-        super(MrpWorkorder, self).action_next()
-
-        self.qty_done = 0
+        if self.component_id in self.potential_serial_planned_ids.mapped('product_id'):
+            super(MrpWorkorder, self).action_next()
+            self.qty_done = 0
+        else:
+            qty = self.production_id.move_raws_ids.filtered(lambda p: p.product_id.id == self.component_id).mapped('product_uom_qty')
+            self.active_move_line_ids.filtered(lambda a: a.product_id.id == self.component_id.id).write({
+                'qty_done' : qty
+            })
+            super(MrpWorkorder, self).action_next()
+            self.qty_done = 0
 
     @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
