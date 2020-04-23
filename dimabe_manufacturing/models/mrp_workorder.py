@@ -174,9 +174,6 @@ class MrpWorkorder(models.Model):
             'label_durability_id': res.production_id.label_durability_id.id
         })
         res.final_lot_id = final_lot.id
-        res.potential_serial_planned_ids = self.potential_serial_planned_ids = self.env[
-            'stock.production.lot.serial'].search(
-            [('reserved_to_production_id', '=', self.production_id.id), ('consumed', '=', False)])
         return res
 
     @api.multi
