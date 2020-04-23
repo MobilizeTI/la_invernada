@@ -231,7 +231,7 @@ class MrpWorkorder(models.Model):
         self.qty_done = 0
 
     def action_ignore(self):
-        move_line = self.active_move_line_ids.filtered(lambda a: a.product_id.id == self.component_id)
+        move_line = self.active_move_line_ids.filtered(lambda a: a.product_id.id == self.component_id.id)
         raise models.ValidationError(move_line)
         self.update({
             'active_move_line_ids': [
