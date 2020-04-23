@@ -238,7 +238,7 @@ class MrpWorkorder(models.Model):
             if not self.lot_id:
                 lot_tmp = self.env['stock.production.lot'].create({
                     'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
-                    'product_id': check.component_id.id,
+                    'product_id': self.component_id.id,
                     'is_prd_lot': True
                 })
                 self.lot_id = lot_tmp.id
