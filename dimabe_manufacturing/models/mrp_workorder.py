@@ -231,7 +231,6 @@ class MrpWorkorder(models.Model):
         self.qty_done = 0
 
     def action_skip(self):
-        if not self.component_id in self.potential_serial_planned_ids.mapped('product_id'):
             move_line = self.active_move_line_ids.filtered(lambda a:a.product_id.id == self.component_id.id)
             self.write({
                 'active_move_line_ids':[
