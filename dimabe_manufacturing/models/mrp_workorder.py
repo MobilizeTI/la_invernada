@@ -208,9 +208,6 @@ class MrpWorkorder(models.Model):
             check = self.current_quality_check_id
 
             if not check.component_is_byproduct:
-                self.active_move_line_ids.filtered(lambda a: a.product_id.id == self.component_id.id).write({
-                    'qty_done': 0
-                })
                 check.qty_done = 0
                 self.action_skip()
             else:
@@ -229,6 +226,14 @@ class MrpWorkorder(models.Model):
 
     def action_next(self):
         self.validate_lot_code(self.lot_id.name)
+        if not self.component_id == self.potential_serial_planned_ids.mapped('product_id'):
+            qty = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == self.component_id.id).mapped(
+                'product_uom_qty')
+            self.active_move_line_ids.filtered(lambda a: a.product_id.id == self.component_id.id).write({
+                'qty_done': qty
+            })
+            super(MrpWorkorder, self).action_next()
+            self.qty_done = 0
         super(MrpWorkorder, self).action_next()
         self.qty_done = 0
 
