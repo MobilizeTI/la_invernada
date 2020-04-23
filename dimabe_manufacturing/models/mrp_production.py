@@ -163,11 +163,6 @@ class MrpProduction(models.Model):
                         'tmp_qty_done': existing_move.tmp_qty_done + move_line.qty_done
                     })
 
-    @api.onchange('client_search_id', 'product_search_id')
-    def onchange_client_search_id(self):
-        self.search_potential_lot_ids()
-
-
     @api.model
     def get_potential_lot_ids(self):
         domain = [
