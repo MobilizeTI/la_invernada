@@ -195,8 +195,6 @@ class MrpWorkorder(models.Model):
             'can_add_serial': True,
             'label_durability_id': res.production_id.label_durability_id.id
         })
-
-        res.potential_lot_planned_ids = self.env['stock.production.lot.serial'].search([])
         res.final_lot_id = final_lot.id
 
         return res
