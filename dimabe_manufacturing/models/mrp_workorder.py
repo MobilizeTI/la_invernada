@@ -244,7 +244,7 @@ class MrpWorkorder(models.Model):
     def on_barcode_scanned(self, barcode):
         qty_done = self.qty_done
         custom_serial = self.validate_serial_code(barcode)
-        custom_serial.update({
+        custom_serial.write({
             'reserved_to_production_id': self.production_id.id,
             'consumed': True
         })
