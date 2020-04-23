@@ -240,7 +240,7 @@ class MrpWorkorder(models.Model):
             })
             self.lot_id = lot_tmp.id
             qty = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == self.component_id.id)
-
+            self.qty_done = qty.product_uom_qty
             self.active_move_line_ids.filtered(lambda a: a.product_id.id == self.component_id.id).write({
                 'qty_done': qty.product_uom_qty
             })
