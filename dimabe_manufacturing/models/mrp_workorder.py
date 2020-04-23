@@ -93,10 +93,10 @@ class MrpWorkorder(models.Model):
     )
 
     potential_serial_planned_ids = fields.One2many(
-        'stock.production.lot.serial'
+        'stock.production.lot.serial',
+        compute='_compute_potential_lot_planned_ids',
+        inverse='_inverse_potential_lot_planned_ids'
     )
-
-
 
     confirmed_serial = fields.Char('Codigo de Barra')
 
@@ -131,6 +131,20 @@ class MrpWorkorder(models.Model):
     @api.onchange('qty_producing')
     def _onchange_qty_producing(self):
         print('se inhabilita este método')
+
+    @api.multi
+    def _compute_potential_lot_planned_ids(self):
+        for item in self:
+                 item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search(
+                    [('reserved_to_production_id', '=', item.production_id.id), ('consumed', '=', False)])
+
+    def _inverse_potential_lot_planned_ids(self):
+        for item in self.potential_serial_planned_ids:
+            if item.reserved_to_production_id.id == item.production_id.id:
+                item.update({
+                    'reserved_to_production_id': self.production_id.id,
+                    'consumed': True
+                })
 
     @api.multi
     def _compute_summary_out_serial_ids(self):
@@ -174,6 +188,9 @@ class MrpWorkorder(models.Model):
             'label_durability_id': res.production_id.label_durability_id.id
         })
         res.final_lot_id = final_lot.id
+        res.potential_serial_planned_ids = self.potential_serial_planned_ids = self.env[
+            'stock.production.lot.serial'].search(
+            [('reserved_to_production_id', '=', self.production_id.id), ('consumed', '=', False)])
         return res
 
     @api.multi
@@ -259,6 +276,14 @@ class MrpWorkorder(models.Model):
             lot_search = self.env['stock.production.lot'].search([
                 ('name', '=', lot_code)
             ])
+
+            # if not lot_search:
+            #     raise models.ValidationError('no se encontró registro asociado al código ingresado')
+
+            # if not lot_search.product_id.categ_id.reserve_ignore:
+            #     raise models.ValidationError(
+            #         'el código escaneado no se encuentra dentro de la planificación de esta producción'
+            #     )
 
     def validate_serial_code(self, barcode):
         custom_serial = self.potential_serial_planned_ids.filtered(
