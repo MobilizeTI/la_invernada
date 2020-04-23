@@ -147,6 +147,7 @@ class MrpWorkorder(models.Model):
                 item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search(
                     [('reserved_to_production_id','=',item.production_id.id),('consumed','=',False)])
 
+
     def _inverse_potential_lot_planned_ids(self):
         for item in self.potential_serial_planned_ids:
             if item.reserved_to_production_id.id == item.production_id.id:
