@@ -14,6 +14,7 @@
             <field name="model">mrp.workorder</field>
             <field name="inherit_id" ref="mrp_workorder.mrp_workorder_view_form_tablet"/>
             <field name="arch" type="xml">
+                <field name="production_id" invisible="1"/>
                 <button name="action_open_manufacturing_order" position="replace">
                 </button>
                 <xpath expr="//div[@class='o_workorder_data']" position="inside">
@@ -27,10 +28,12 @@
                     </group>
                 </xpath>
                 <xpath expr="//div[@class='workorder_pdf']" position="before">
+                    <field name="production_id" invisible="1"/>
                     <field name="potential_serial_planned_ids">
                         <tree decoration-danger="consumed==False" decoration-success="consumed==True"
                               delete="false" create="false" editable="bottom" groups="mrp.group_mrp_manager"
-                              default_order="consumed desc" >
+                              default_order="consumed desc"
+                              attrs="{'invisible': [('reserved_to_production_id','!=','production_id'),('consumed','=',True)]}">
                             <field name="producer_id"/>
                             <field name="stock_production_lot_id" readonly="1"/>
                             <field name="serial_number" readonly="1"/>
@@ -38,7 +41,7 @@
                             <field name="product_id"/>
                             <field name="display_weight" readonly="1"/>
                             <field name="consumed" invisible="1"/>
-                            <field name="reserved_to_production_id"/>
+                            <field name="reserved_to_production_id" invisible="1"/>
                         </tree>
                     </field>
                 </xpath>

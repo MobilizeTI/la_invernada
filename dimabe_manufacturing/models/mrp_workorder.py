@@ -135,24 +135,16 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_potential_lot_planned_ids(self):
         for item in self:
-            # if item.potential_serial_planned_ids.filtered(lambda a: a.qty_to_reserve > 0).mapped('stock_production_lot_id.stock_production_lot_serial_ids').filtered(
-            #     lambda b:b.reserved_to_production_id == item.production_id
-            # ):
-            #     item.potential_serial_planned_ids = item.production_id.potential_lot_ids.filtered(
-            #         lambda a: a.qty_to_reserve > 0
-            #     ).mapped('stock_production_lot_id.stock_production_lot_serial_ids').filtered(
-            #         lambda b: b.reserved_to_production_id == item.production_id
-            #     )
-            # else:
-            item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search(
-                [('reserved_to_production_id', '=', self.production_id.id)])
+                 item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search(
+                    [('reserved_to_production_id', '=', item.production_id.id), ('consumed', '=', True)])
 
     def _inverse_potential_lot_planned_ids(self):
         for item in self.potential_serial_planned_ids:
-            if item.reserved_to_production_id.id == item.production_id.id:
-                item.update({
-                    'consumed':True
-                })
+            item.update({
+                'reserved_to_production_id': self.production_id.id,
+                'consumed': True
+            })
+
     @api.multi
     def _compute_summary_out_serial_ids(self):
         for item in self:
@@ -194,10 +186,7 @@ class MrpWorkorder(models.Model):
             'can_add_serial': True,
             'label_durability_id': res.production_id.label_durability_id.id
         })
-
-        res.potential_lot_planned_ids = self.env['stock.production.lot.serial'].search([])
         res.final_lot_id = final_lot.id
-
         return res
 
     @api.multi
@@ -212,12 +201,12 @@ class MrpWorkorder(models.Model):
                     })
 
         res = super(MrpWorkorder, self).write(vals)
-
         return res
 
     def open_tablet_view(self):
         while self.current_quality_check_id:
             check = self.current_quality_check_id
+
             if not check.component_is_byproduct:
                 check.qty_done = 0
                 self.action_skip()
@@ -255,21 +244,21 @@ class MrpWorkorder(models.Model):
     def on_barcode_scanned(self, barcode):
         qty_done = self.qty_done
         custom_serial = self.validate_serial_code(barcode)
+        custom_serial.write({
+            'reserved_to_production_id': self.production_id.id,
+            'consumed': True
+        })
+        self.write({
+            'potential_serial_planned_ids': [
+                (4, custom_serial.id)
+            ]
+        })
         if custom_serial:
             barcode = custom_serial.stock_production_lot_id.name
         res = super(MrpWorkorder, self).on_barcode_scanned(barcode)
         if res:
             return res
         self.qty_done = qty_done + custom_serial.display_weight
-        self.update({
-            'potential_serial_planned_ids': [
-                (4, custom_serial.id)
-            ]
-        })
-        custom_serial.update({
-            'reserved_to_production_id': self.production_id.id,
-            'consumed': True
-        })
         return res
 
     @api.model
@@ -283,14 +272,6 @@ class MrpWorkorder(models.Model):
             lot_search = self.env['stock.production.lot'].search([
                 ('name', '=', lot_code)
             ])
-
-            # if not lot_search:
-            #     raise models.ValidationError('no se encontró registro asociado al código ingresado')
-
-            # if not lot_search.product_id.categ_id.reserve_ignore:
-            #     raise models.ValidationError(
-            #         'el código escaneado no se encuentra dentro de la planificación de esta producción'
-            #     )
 
     def validate_serial_code(self, barcode):
         custom_serial = self.potential_serial_planned_ids.filtered(
