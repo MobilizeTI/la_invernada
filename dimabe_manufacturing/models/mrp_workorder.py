@@ -229,7 +229,7 @@ class MrpWorkorder(models.Model):
         if not self.component_id == self.potential_serial_planned_ids.mapped('product_id'):
             qty = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == self.component_id.id).mapped(
                 'product_uom_qty')
-            raise models.ValidationError(qty)
+
             self.active_move_line_ids.filtered(lambda a: a.product_id.id == self.component_id.id).write({
                 'qty_done': qty
             })
