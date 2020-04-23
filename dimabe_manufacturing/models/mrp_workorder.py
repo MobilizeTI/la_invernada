@@ -228,7 +228,12 @@ class MrpWorkorder(models.Model):
     def action_next(self):
         self.validate_lot_code(self.lot_id.name)
         if not self.component_id in self.potential_serial_planned_ids.mapped('product_id'):
-            self.action_first_skipped_step()
+            move_line = self.active_move_line_ids.filtered(lambda a:a.product_id.id == self.component_id.id)
+            self.write({
+                'active_move_line_ids':[
+                    (3,move_line)
+                ]
+            })
         super(MrpWorkorder, self).action_next()
         self.qty_done = 0
 
