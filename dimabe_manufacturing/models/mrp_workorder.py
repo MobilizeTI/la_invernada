@@ -273,7 +273,6 @@ class MrpWorkorder(models.Model):
                 (4, custom_serial.id)
             ]
         })
-
         return res
 
     @api.model
