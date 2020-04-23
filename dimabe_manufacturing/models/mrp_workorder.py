@@ -234,8 +234,7 @@ class MrpWorkorder(models.Model):
     def action_skip(self):
         if not self.component_id == self.potential_serial_planned_ids.mapped('product_id'):
             qty = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == self.component_id.id)
-            self.qty_done = qty.product_uom_qty
-            self.component_remaining_qty = self.qty_done - qty.product_uom_qty
+            self.component_remaining_qty = self.component_remaining_qty - qty.product_uom_qty
             super(MrpWorkorder,self).action_skip()
 
     @api.onchange('confirmed_serial')
