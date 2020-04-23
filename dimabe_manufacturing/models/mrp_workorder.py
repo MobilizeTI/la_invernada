@@ -93,9 +93,9 @@ class MrpWorkorder(models.Model):
     )
 
     potential_serial_planned_ids = fields.One2many(
-        'stock.production.lot.serial',
-        compute='_compute_potential_lot_planned_ids',
-        inverse='_inverse_potential_lot_planned_ids'
+        'stock.production.lot.serial'
+        # compute='_compute_potential_lot_planned_ids',
+        # inverse='_inverse_potential_lot_planned_ids'
     )
 
     confirmed_serial = fields.Char('Codigo de Barra')
@@ -132,22 +132,22 @@ class MrpWorkorder(models.Model):
     def _onchange_qty_producing(self):
         print('se inhabilita este método')
 
-    @api.multi
-    def _compute_potential_lot_planned_ids(self):
-        for item in self:
-            # if item.potential_serial_planned_ids.filtered(lambda a: a.qty_to_reserve > 0).mapped('stock_production_lot_id.stock_production_lot_serial_ids').filtered(
-            #     lambda b:b.reserved_to_production_id == item.production_id
-            # ):
-            #     item.potential_serial_planned_ids = item.production_id.potential_lot_ids.filtered(
-            #         lambda a: a.qty_to_reserve > 0
-            #     ).mapped('stock_production_lot_id.stock_production_lot_serial_ids').filtered(
-            #         lambda b: b.reserved_to_production_id == item.production_id
-            #     )
-            # else:
-                item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search([('reserved_to_production_id','=',self.production_id.id)])
-
-    def _inverse_potential_lot_planned_ids(self):
-        self.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search([('consumed','=',True),('reserved_to_production_id','=',self.production_id.id)])
+    # @api.multi
+    # def _compute_potential_lot_planned_ids(self):
+    #     for item in self:
+    #         # if item.potential_serial_planned_ids.filtered(lambda a: a.qty_to_reserve > 0).mapped('stock_production_lot_id.stock_production_lot_serial_ids').filtered(
+    #         #     lambda b:b.reserved_to_production_id == item.production_id
+    #         # ):
+    #         #     item.potential_serial_planned_ids = item.production_id.potential_lot_ids.filtered(
+    #         #         lambda a: a.qty_to_reserve > 0
+    #         #     ).mapped('stock_production_lot_id.stock_production_lot_serial_ids').filtered(
+    #         #         lambda b: b.reserved_to_production_id == item.production_id
+    #         #     )
+    #         # else:
+    #             item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search([('reserved_to_production_id','=',self.production_id.id)])
+    #
+    # def _inverse_potential_lot_planned_ids(self):
+    #     self.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search([('consumed','=',True),('reserved_to_production_id','=',self.production_id.id)])
 
     @api.multi
     def _compute_summary_out_serial_ids(self):
