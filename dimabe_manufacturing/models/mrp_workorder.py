@@ -256,7 +256,7 @@ class MrpWorkorder(models.Model):
         custom_serial = self.validate_serial_code(barcode)
         if custom_serial:
             barcode = custom_serial.stock_production_lot_id.name
-        if custom_serial.reserved_to_production_id != self.production_id and not custom_serial.reserved_to_production_id :
+        if custom_serial.reserved_to_production_id != self.production_id or not custom_serial.reserved_to_production_id :
             raise models.ValidationError('Esta serie esta siendo usada en la produccion {}'.format(custom_serial.reserved_to_production_id.name))
         if custom_serial.stock_production_lot_id.product_id != self.component_id:
             raise models.ValidationError('El producto de esta serie no coincide con el componente')
