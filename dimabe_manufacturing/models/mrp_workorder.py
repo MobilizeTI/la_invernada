@@ -226,8 +226,11 @@ class MrpWorkorder(models.Model):
         return super(MrpWorkorder, self).open_tablet_view()
 
     def action_next(self):
-
         self.validate_lot_code(self.lot_id.name)
+        super(MrpWorkorder, self).action_next()
+        self.qty_done = 0
+
+    def action_skip(self):
         if self.component_id in self.potential_serial_planned_ids.mapped('product_id'):
             super(MrpWorkorder, self).action_next()
             self.qty_done = 0
