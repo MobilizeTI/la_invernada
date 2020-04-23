@@ -231,13 +231,9 @@ class MrpWorkorder(models.Model):
         self.qty_done = 0
 
     def action_ignore(self):
-        move_line = self.active_move_line_ids.filtered(lambda a: a.product_id.id == self.component_id.id and not a.lot_id)
-        self.write({
-            'active_move_line_ids': [
-                (4, move_line.id)
-            ]
-
-        })
+        for move in self.active_move_line_ids:
+            if move.product_id.id == self.component_id and not move.lot_id:
+                move.unlink()
         self.action_skip()
 
     @api.onchange('confirmed_serial')
