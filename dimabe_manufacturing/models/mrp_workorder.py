@@ -230,22 +230,6 @@ class MrpWorkorder(models.Model):
         super(MrpWorkorder, self).action_next()
         self.qty_done = 0
 
-    def action_skip(self):
-        if not self.component_id in self.potential_serial_planned_ids.mapped('product_id'):
-            if not self.lot_id:
-                lot_tmp = self.env['stock.production.lot'].create({
-                    'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
-                    'product_id': self.component_id.id,
-                    'is_prd_lot': True
-                })
-                self.lot_id = lot_tmp.id
-                self.qty_done = self.component_remaining_qty
-            qty = self.production_id.move_raw_ids.filtered(lambda p: p.product_id.id == self.component_id).mapped('product_uom_qty')
-            self.active_move_line_ids.filtered(lambda a: a.product_id.id == self.component_id.id).write({
-                'qty_done' : qty
-            })
-            super(MrpWorkorder, self).action_next()
-            self.qty_done = 0
 
     @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
