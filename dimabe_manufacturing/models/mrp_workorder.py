@@ -239,7 +239,7 @@ class MrpWorkorder(models.Model):
     def action_next(self):
 
         self.validate_lot_code(self.lot_id.name)
-
+        raise models.ValidationError(self.qty_done)
         super(MrpWorkorder, self).action_next()
 
         self.qty_done = 0
@@ -296,7 +296,6 @@ class MrpWorkorder(models.Model):
         custom_serial = self.potential_serial_planned_ids.filtered(
             lambda a: a.serial_number == barcode
         )
-
         if custom_serial:
             if custom_serial.product_id != self.component_id:
                 raise models.ValidationError('El producto ingresado no corresponde al producto solicitado')

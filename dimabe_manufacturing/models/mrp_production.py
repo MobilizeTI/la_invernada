@@ -167,40 +167,6 @@ class MrpProduction(models.Model):
     def onchange_client_search_id(self):
         self.search_potential_lot_ids()
 
-    @api.multi
-    def search_potential_lot_ids(self):
-        for production in self:
-            filtered_lot_ids = production.get_potential_lot_ids()
-
-            production.update({
-                'potential_lot_ids': [
-                    (2, to_unlink_id.id) for to_unlink_id in production.potential_lot_ids.filtered(
-                        lambda a: a.qty_to_reserve <= 0
-                    )]
-            })
-
-            to_keep = [
-                (4, to_keep_id.id) for to_keep_id in production.potential_lot_ids.filtered(
-                    lambda a: a.qty_to_reserve > 0 and a.all_serial_consumed <= 0
-                )]
-
-            to_add = []
-
-            for filtered_lot_id in filtered_lot_ids:
-                if not production.potential_lot_ids.filtered(
-                        lambda a: a.stock_production_lot_id.id == filtered_lot_id['stock_production_lot_id']
-                ):
-                    to_add.append(filtered_lot_id)
-
-            to_add_processed = []
-
-            for new_add in to_add:
-                tmp_id = self.env['potential.lot'].create(new_add)
-                to_add_processed.append((4, tmp_id.id))
-
-            production.update({
-                'potential_lot_ids': to_add_processed + to_keep
-            })
 
     @api.model
     def get_potential_lot_ids(self):
@@ -253,7 +219,6 @@ class MrpProduction(models.Model):
     @api.multi
     def button_mark_done(self):
         self.calculate_done()
-        self.potential_lot_ids.filtered(lambda a: not a.qty_to_reserve > 0).unlink()
         res = super(MrpProduction, self).button_mark_done()
         serial_to_reserve_ids = self.workorder_ids.mapped('production_finished_move_line_ids').mapped(
             'lot_id').filtered(
