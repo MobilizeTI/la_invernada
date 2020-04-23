@@ -255,6 +255,11 @@ class MrpWorkorder(models.Model):
             'reserved_to_production_id.id': self.production_id.id,
             'consumed': True
         })
+        self.write({
+            'potential_serial_planned_ids': [
+                (4, custom_serial.id)
+            ]
+        })
         return res
 
     @api.model
