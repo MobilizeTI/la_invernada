@@ -32,7 +32,7 @@
 
                         <tree decoration-danger="consumed==False" decoration-success="consumed==True"
                               delete="false" create="false" editable="bottom" groups="mrp.group_mrp_manager"
-                              default_order="consumed desc" attrs="{'invisible':[('consumed','=',False)}">
+                              default_order="consumed desc" attrs="{'invisible':[('consumed','=',False)]}">
                             <field name="producer_id"/>
                             <field name="stock_production_lot_id" readonly="1"/>
                             <field name="serial_number" readonly="1"/>
@@ -40,7 +40,7 @@
                             <field name="product_id"/>
                             <field name="display_weight" readonly="1"/>
                             <field name="consumed" invisible="1"/>
-                            <field name="reserved_to_production_id"/>
+                            <field name="reserved_to_production_id" invisible="1"/>
                         </tree>
                     </field>
                 </xpath>
