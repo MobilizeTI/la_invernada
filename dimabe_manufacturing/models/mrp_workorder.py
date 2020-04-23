@@ -94,7 +94,7 @@ class MrpWorkorder(models.Model):
 
     potential_serial_planned_ids = fields.One2many(
         'stock.production.lot.serial',
-        # compute='_compute_potential_lot_planned_ids',
+        compute='_compute_potential_lot_planned_ids',
         inverse='_inverse_potential_lot_planned_ids'
     )
 
@@ -144,7 +144,8 @@ class MrpWorkorder(models.Model):
             #         lambda b: b.reserved_to_production_id == item.production_id
             #     )
             # else:
-            item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search([('reserved_to_production_id','=',self.production_id.id)])
+            item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search(
+                [('reserved_to_production_id', '=', self.production_id.id)])
 
     def _inverse_potential_lot_planned_ids(self):
         self.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search([])
@@ -258,14 +259,14 @@ class MrpWorkorder(models.Model):
             return res
         self.qty_done = qty_done + custom_serial.display_weight
         self.update({
-            'potential_serial_planned_ids':[
-                (4,custom_serial.id)
+            'potential_serial_planned_ids': [
+                (4, custom_serial.id)
             ]
         })
         custom_serial.update({
             'reserved_to_production_id': self.production_id.id,
             'consumed': True
-            })
+        })
         return res
 
     @api.model
