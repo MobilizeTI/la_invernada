@@ -275,13 +275,9 @@ class MrpProduction(models.Model):
     @api.model
     def create(self, values_list):
         res = super(MrpProduction, self).create(values_list)
-
-        res.onchange_client_search_id()
-
         res.stock_picking_id.update({
             'has_mrp_production': True
         })
-
         return res
 
     # @api.multi
