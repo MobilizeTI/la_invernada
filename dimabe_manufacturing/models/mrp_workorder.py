@@ -208,6 +208,11 @@ class MrpWorkorder(models.Model):
             check = self.current_quality_check_id
 
             if not check.component_is_byproduct:
+                qty = self.production_id.move_raw_ids.filtered(lambda p: p.product_id.id == self.component_id).mapped(
+                    'product_uom_qty')
+                self.active_move_line_ids.filtered(lambda a: a.product_id.id == self.component_id.id).write({
+                    'qty_done': qty
+                })
                 check.qty_done = 0
                 self.action_skip()
             else:
