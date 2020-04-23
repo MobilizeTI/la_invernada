@@ -231,10 +231,7 @@ class MrpWorkorder(models.Model):
         self.qty_done = 0
 
     def action_skip(self):
-        if self.component_id in self.potential_serial_planned_ids.mapped('product_id'):
-            super(MrpWorkorder, self).action_next()
-            self.qty_done = 0
-        else:
+        if not self.component_id in self.potential_serial_planned_ids.mapped('product_id'):
             if not self.lot_id:
                 lot_tmp = self.env['stock.production.lot'].create({
                     'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
