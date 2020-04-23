@@ -135,8 +135,9 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_potential_lot_planned_ids(self):
         for item in self:
-            if item.potential_serial_planned_ids.filtered(lambda a: a.qty_to_reserve > 0).mapped('stock_production_lot_id.stock_production_lot_serial_ids').filtered(
-                lambda b:b.reserved_to_production_id == item.production_id
+            if item.potential_serial_planned_ids.filtered(lambda a: a.qty_to_reserve > 0).mapped(
+                    'stock_production_lot_id.stock_production_lot_serial_ids').filtered(
+                lambda b: b.reserved_to_production_id == item.production_id
             ):
                 item.potential_serial_planned_ids = item.production_id.potential_lot_ids.filtered(
                     lambda a: a.qty_to_reserve > 0
@@ -145,16 +146,16 @@ class MrpWorkorder(models.Model):
                 )
             else:
                 item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search(
-                    [('reserved_to_production_id','=',item.production_id.id),('consumed','=',False)])
-
+                    [('reserved_to_production_id', '=', item.production_id.id), ('consumed', '=', False)])
 
     def _inverse_potential_lot_planned_ids(self):
         for item in self.potential_serial_planned_ids:
             if item.reserved_to_production_id.id == item.production_id.id:
                 item.update({
-                    'reserved_to_production_id':self.production_id.id,
-                    'consumed':True
+                    'reserved_to_production_id': self.production_id.id,
+                    'consumed': True
                 })
+
     @api.multi
     def _compute_summary_out_serial_ids(self):
         for item in self:
@@ -197,7 +198,9 @@ class MrpWorkorder(models.Model):
             'label_durability_id': res.production_id.label_durability_id.id
         })
         res.final_lot_id = final_lot.id
-        res.potential_serial_planned_ids = self.potential_serial_planned_ids
+        res.potential_serial_planned_ids = self.potential_serial_planned_ids = self.env[
+            'stock.production.lot.serial'].search(
+            [('reserved_to_production_id', '=', self.production_id.id), ('consumed', '=', False)])
         return res
 
     @api.multi
@@ -262,7 +265,7 @@ class MrpWorkorder(models.Model):
             return res
         self.qty_done = qty_done + custom_serial.display_weight
         custom_serial.update({
-            'reserved_to_production_id': self.production_id.id,
+            'reserved_to_production_id.id': self.production_id.id,
             'consumed': True
         })
         self.update({
