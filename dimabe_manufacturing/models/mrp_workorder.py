@@ -147,7 +147,7 @@ class MrpWorkorder(models.Model):
                 item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search([('reserved_to_production_id','=',self.production_id.id)])
 
     def _inverse_potential_lot_planned_ids(self):
-        self.potential_serial_planned_ids =item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search([('consumed','=',True),('reserved_to_production_id','=',self.production_id.id)])
+        self.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search([('consumed','=',True),('reserved_to_production_id','=',self.production_id.id)])
 
     @api.multi
     def _compute_summary_out_serial_ids(self):
