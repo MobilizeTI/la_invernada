@@ -232,7 +232,7 @@ class MrpWorkorder(models.Model):
 
     def action_ignore(self):
         move_line = self.active_move_line_ids.filtered(lambda a: a.product_id.id == self.component_id.id and not a.lot_id)
-        self.update({
+        self.write({
             'active_move_line_ids': [
                 (4, move_line.id)
             ]
