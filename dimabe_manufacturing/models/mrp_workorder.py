@@ -211,7 +211,6 @@ class MrpWorkorder(models.Model):
                     })
 
         res = super(MrpWorkorder, self).write(vals)
-        res.potential_serial_planned_ids = self.potential_serial_planned_ids
         return res
 
     def open_tablet_view(self):
