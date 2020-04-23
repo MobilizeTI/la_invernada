@@ -17,7 +17,7 @@
                 <field name="production_id" invisible="1"/>
                 <button name="action_open_manufacturing_order" position="replace">
                 </button>
-                <xpath expr="//div[@class='workorder_actions']//div[@class='o_workorder_bar_content_right']//div[1]//button[@name='action_next']" position="before">
+                <xpath expr="//div[@class='workorder_actions']//div[@class='o_workorder_bar_content_right']//div[0]//button[@name='action_next']" position="before">
                     <button name="action_ignore" string="IGNORAR">
 
                     </button>
