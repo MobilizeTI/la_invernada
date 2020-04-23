@@ -96,9 +96,7 @@ class MrpWorkorder(models.Model):
         'stock.production.lot.serial'
     )
 
-    used_to_production_ids = fields.Many2many(
-        'stock.production.lot.serial'
-    )
+
 
     confirmed_serial = fields.Char('Codigo de Barra')
 
