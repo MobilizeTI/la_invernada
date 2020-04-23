@@ -216,9 +216,9 @@ class MrpWorkorder(models.Model):
                     'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
                     'product_id': check.component_id.id,
                     'is_prd_lot': True
-                })
-                check.lot_id = lot_tmp.id
-                check.qty_done = self.component_remaining_qty
+                    })
+                    check.lot_id = lot_tmp.id
+                    check.qty_done = self.component_remaining_qty
                 if check.quality_state == 'none':
                     self.action_next()
 
