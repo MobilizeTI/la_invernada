@@ -230,13 +230,12 @@ class MrpWorkorder(models.Model):
         super(MrpWorkorder, self).action_next()
         self.qty_done = 0
 
-    # def action_skip(self):
-    #         move_line = self.active_move_line_ids.filtered(lambda a:a.product_id.id == self.component_id.id)
-    #         self.write({
-    #             'active_move_line_ids':[
-    #                 (3,move_line)
-    #             ]
-    #         })
+    def action_ignore(self):
+        move_line = self.active_move_line_ids.filtered(lambda a : a.product_id.id == self.component_id)
+        self.write({
+            (4,move_line.id)
+        })
+
     @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
         for item in self:
