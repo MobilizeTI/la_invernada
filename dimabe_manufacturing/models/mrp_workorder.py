@@ -196,7 +196,7 @@ class MrpWorkorder(models.Model):
             'label_durability_id': res.production_id.label_durability_id.id
         })
         res.final_lot_id = final_lot.id
-
+        res.potential_serial_planned_ids = self.potential_serial_planned_ids
         return res
 
     @api.multi
@@ -211,7 +211,7 @@ class MrpWorkorder(models.Model):
                     })
 
         res = super(MrpWorkorder, self).write(vals)
-
+        res.potential_serial_planned_ids = self.potential_serial_planned_ids
         return res
 
     def open_tablet_view(self):
