@@ -215,13 +215,13 @@ class MrpWorkorder(models.Model):
                         'product_id': self.component_id.id,
                         'is_prd_lot': True
                     })
-                self.lot_id = lot_tmp.id
-                qty = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == self.component_id.id)
+                    self.lot_id = lot_tmp.id
+                    qty = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == self.component_id.id)
 
-                self.active_move_line_ids.filtered(lambda a: a.product_id.id == self.component_id.id).write({
-                    'qty_done': qty.product_uom_qty
-                })
-                self.action_skip()
+                    self.active_move_line_ids.filtered(lambda a: a.product_id.id == self.component_id.id).write({
+                        'qty_done': qty.product_uom_qty
+                    })
+                    self.action_skip()
             else:
                 if not check.lot_id:
                     lot_tmp = self.env['stock.production.lot'].create({
