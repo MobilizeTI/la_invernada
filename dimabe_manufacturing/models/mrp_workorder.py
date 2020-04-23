@@ -237,7 +237,6 @@ class MrpWorkorder(models.Model):
                     (3,move_line)
                 ]
             })
-
     @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
         for item in self:
