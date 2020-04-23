@@ -238,6 +238,7 @@ class MrpWorkorder(models.Model):
             self.active_move_line_ids.filtered(lambda a: a.product_id.id == self.component_id.id).write({
                 'qty_done': qty.product_uom_qty
             })
+            self.action_first_skipped_step()
             super(MrpWorkorder, self).action_next()
             self.qty_done = 0
         super(MrpWorkorder, self).action_next()
