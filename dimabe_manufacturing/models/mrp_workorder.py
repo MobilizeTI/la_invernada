@@ -232,7 +232,7 @@ class MrpWorkorder(models.Model):
             super(MrpWorkorder, self).action_next()
             self.qty_done = 0
         else:
-            qty = self.production_id.move_raws_ids.filtered(lambda p: p.product_id.id == self.component_id).mapped('product_uom_qty')
+            qty = self.production_id.move_raw_ids.filtered(lambda p: p.product_id.id == self.component_id).mapped('product_uom_qty')
             self.active_move_line_ids.filtered(lambda a: a.product_id.id == self.component_id.id).write({
                 'qty_done' : qty
             })
