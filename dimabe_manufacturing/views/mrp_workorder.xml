@@ -17,6 +17,11 @@
                 <field name="production_id" invisible="1"/>
                 <button name="action_open_manufacturing_order" position="replace">
                 </button>
+                <xpath expr="//button[name='action_next']" position="before">
+                    <button name="action_ignore" string="IGNORAR">
+
+                    </button>
+                </xpath>
                 <xpath expr="//div[@class='o_workorder_data']" position="inside">
                     <group>
                         <field name="show_manual_input"
