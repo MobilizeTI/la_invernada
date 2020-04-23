@@ -231,9 +231,12 @@ class MrpWorkorder(models.Model):
         self.qty_done = 0
 
     def action_ignore(self):
-        move_line = self.active_move_line_ids.filtered(lambda a : a.product_id.id == self.component_id)
+        move_line = self.active_move_line_ids.filtered(lambda a: a.product_id.id == self.component_id)
         self.write({
-            (3,move_line.id)
+            'active_move_line_ids': [
+                (3, move_line.id)
+            ]
+
         })
 
     @api.onchange('confirmed_serial')
