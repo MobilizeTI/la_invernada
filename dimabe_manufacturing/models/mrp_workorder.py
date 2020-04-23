@@ -149,11 +149,10 @@ class MrpWorkorder(models.Model):
                      ('stock_production_lot_id.product_id.id','=',item.component_id.id)])
 
     def _inverse_potential_lot_planned_ids(self):
-        for item in self.potential_serial_planned_ids:
-            if item.reserved_to_production_id.id == item.production_id.id:
-                item.update({
-                    'consumed':True
-                })
+        item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search(
+            [('reserved_to_production_id', '=', self.production_id.id),
+             ('stock_production_lot_id.product_id.id', '=', self.component_id.id)])
+
     @api.multi
     def _compute_summary_out_serial_ids(self):
         for item in self:
