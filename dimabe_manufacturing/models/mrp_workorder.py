@@ -206,7 +206,7 @@ class MrpWorkorder(models.Model):
     def open_tablet_view(self):
         while self.current_quality_check_id:
             check = self.current_quality_check_id
-
+            raise models.ValidationError(check.component_is_byproduct)
             if not check.component_is_byproduct:
                 check.qty_done = 0
                 self.action_skip()
@@ -222,7 +222,6 @@ class MrpWorkorder(models.Model):
                     if check.quality_state == 'none':
                         self.action_next()
         self.action_first_skipped_step()
-
         return super(MrpWorkorder, self).open_tablet_view()
 
     def action_next(self):
@@ -234,7 +233,6 @@ class MrpWorkorder(models.Model):
     @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
         for item in self:
-
             res = item.on_barcode_scanned(item.confirmed_serial)
             if res and 'warning' in res and 'message' in res['warning']:
                 raise models.ValidationError(res['warning']['message'])
