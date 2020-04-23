@@ -228,7 +228,7 @@ class MrpWorkorder(models.Model):
     def action_next(self):
 
         self.validate_lot_code(self.lot_id.name)
-        raise models.ValidationError(self.qty_done)
+        raise models.ValidationError(self.potential_serial_planned_ids.mapped('product_id'))
         super(MrpWorkorder, self).action_next()
 
         self.qty_done = 0
