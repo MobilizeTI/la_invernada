@@ -227,6 +227,12 @@ class MrpWorkorder(models.Model):
     def action_next(self):
         self.validate_lot_code(self.lot_id.name)
         if not self.component_id == self.potential_serial_planned_ids.mapped('product_id'):
+            lot_tmp = self.env['stock.production.lot'].create({
+                'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
+                'product_id': self.component_id.id,
+                'is_prd_lot': True
+            })
+            self.lot_id = lot_tmp.id
             qty = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == self.component_id.id)
 
             self.active_move_line_ids.filtered(lambda a: a.product_id.id == self.component_id.id).write({
