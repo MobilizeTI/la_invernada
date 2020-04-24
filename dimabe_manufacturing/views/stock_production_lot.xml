@@ -119,28 +119,30 @@
         <field name="name">Selección de Packing list</field>
         <field name="model">stock.production.lot</field>
         <field name="arch" type="xml">
-            <field name="context_picking_id" invisible="1"/>
             <form>
+
+            <field name="context_picking_id" invisible="1"/>
                 <group>
                     <group>
                         <field name="pallet_ids" domain="[('is_reserved','=',True)]">
                             <field name="is_reserved" invisible="1"/>
                             <tree>
-                                    <field name="name"/>
-                                    <field name="total_content_weight"/>
-                                    <field name="total_available_content"/>
-                                    <field name="state"/>
+                                <field name="name"/>
+                                <field name="total_content_weight"/>
+                                <field name="total_available_content"/>
+                                <field name="state"/>
 
-                                    <button string="Agregar Reserva"
-                                            name="add_to_picking"
-                                            type="object"
-                                            context="{'dispatch_id':parent.context_picking_id}"
-                                    />
+                                <button string="Agregar Reserva"
+                                        name="add_to_picking"
+                                        type="object"
+                                        context="{'dispatch_id':parent.context_picking_id}"
+                                />
                             </tree>
                         </field>
                     </group>
                     <group>
-                        <field name="stock_production_lot_available_serial_ids" domain="[('reserved_to_stock_picking_id','!=',None)]">
+                        <field name="stock_production_lot_available_serial_ids"
+                               domain="[('reserved_to_stock_picking_id','!=',None)]">
                             <tree>
                                 <field name="pallet_id"/>
                                 <field name="serial_number"/>

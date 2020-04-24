@@ -163,45 +163,6 @@ class MrpProduction(models.Model):
                         'tmp_qty_done': existing_move.tmp_qty_done + move_line.qty_done
                     })
 
-    @api.onchange('client_search_id', 'product_search_id')
-    def onchange_client_search_id(self):
-        self.search_potential_lot_ids()
-
-    @api.multi
-    def search_potential_lot_ids(self):
-        for production in self:
-            filtered_lot_ids = production.get_potential_lot_ids()
-
-            production.update({
-                'potential_lot_ids': [
-                    (2, to_unlink_id.id) for to_unlink_id in production.potential_lot_ids.filtered(
-                        lambda a: a.qty_to_reserve <= 0
-                    )]
-            })
-
-            to_keep = [
-                (4, to_keep_id.id) for to_keep_id in production.potential_lot_ids.filtered(
-                    lambda a: a.qty_to_reserve > 0 and a.all_serial_consumed <= 0
-                )]
-
-            to_add = []
-
-            for filtered_lot_id in filtered_lot_ids:
-                if not production.potential_lot_ids.filtered(
-                        lambda a: a.stock_production_lot_id.id == filtered_lot_id['stock_production_lot_id']
-                ):
-                    to_add.append(filtered_lot_id)
-
-            to_add_processed = []
-
-            for new_add in to_add:
-                tmp_id = self.env['potential.lot'].create(new_add)
-                to_add_processed.append((4, tmp_id.id))
-
-            production.update({
-                'potential_lot_ids': to_add_processed + to_keep
-            })
-
     @api.model
     def get_potential_lot_ids(self):
         domain = [
@@ -228,6 +189,8 @@ class MrpProduction(models.Model):
             'mrp_production_id': self.id
         } for lot in res]
 
+
+
     @api.multi
     def set_stock_move(self):
         product = self.env['stock.move'].create({'product_id': self.product_id})
@@ -242,7 +205,7 @@ class MrpProduction(models.Model):
             for line_id in item.finished_move_line_ids:
                 line_id.qty_done = line_id.lot_id.total_serial
             for move in item.move_raw_ids.filtered(
-                    lambda a: a.product_id not in item.consumed_material_ids.mapped('product_id')
+                    lambda a: a.product_id not in item.consumed_material_ids.mapped('product_id') and a.needs_lots is False
             ):
                 move.quantity_done = sum(lot.mapped('count_serial')) * sum(item.bom_id.bom_line_ids.filtered(
                     lambda a: a.product_id == move.product_id
@@ -251,7 +214,6 @@ class MrpProduction(models.Model):
     @api.multi
     def button_mark_done(self):
         self.calculate_done()
-        self.potential_lot_ids.filtered(lambda a: not a.qty_to_reserve > 0).unlink()
         res = super(MrpProduction, self).button_mark_done()
         serial_to_reserve_ids = self.workorder_ids.mapped('production_finished_move_line_ids').mapped(
             'lot_id').filtered(
@@ -313,81 +275,52 @@ class MrpProduction(models.Model):
     @api.model
     def create(self, values_list):
         res = super(MrpProduction, self).create(values_list)
-
-        res.onchange_client_search_id()
-
         res.stock_picking_id.update({
             'has_mrp_production': True
         })
-
         return res
 
-    @api.multi
-    def action_cancel(self):
+    # @api.multi
+    # def action_cancel(self):
+    #
+    #     for lot in self.potential_lot_ids:
+    #         stock_move = self.move_raw_ids.filtered(
+    #             lambda a: a.product_id == lot.stock_production_lot_id.product_id
+    #         )
+    #
+    #         move_line = stock_move.active_move_line_ids.filtered(
+    #             lambda a: a.lot_id.id == lot.id and a.product_qty == lot.qty_to_reserve
+    #                       and a.qty_done == 0
+    #         )
+    #         stock_quant = lot.get_stock_quant()
+    #
+    #         for serial in lot.stock_production_lot_id.stock_production_lot_serial_ids:
+    #             serial.update({
+    #                 'reserved_to_production_id': None
+    #             })
+    #
+    #         stock_quant.sudo().update({
+    #             'reserved_quantity': 0
+    #         })
+    #         if item.stock_picking_id:
+    #             item.stock_picking_id.update({
+    #                 'has_mrp_production': False
+    #             })
+    #             if move_line:
+    #                 move_line[0].write({'move_id': None, 'product_uom_qty': 0})
+    #             res = super(MrpProduction, self).action_cancel()
+    #         else:
+    #             res = super(MrpProduction,self).action_cancel()
 
-        for lot in self.potential_lot_ids:
-            stock_move = self.move_raw_ids.filtered(
-                lambda a: a.product_id == lot.stock_production_lot_id.product_id
-            )
+    #
+    #
+    # @api.multi
+    # def button_plan(self):
+    #     for order in self:
+    #         order.move_raw_ids.mapped('active_move_line_ids').mapped('lot_id').mapped(
+    #             'stock_production_lot_serial_ids').filtered(lambda a: not a.consumed).update({
+    #             'reserved_to_production_id': self.id
 
-            move_line = stock_move.active_move_line_ids.filtered(
-                lambda a: a.lot_id.id == lot.id and a.product_qty == lot.qty_to_reserve
-                          and a.qty_done == 0
-            )
-            stock_quant = lot.get_stock_quant()
-
-            for serial in lot.stock_production_lot_id.stock_production_lot_serial_ids:
-                serial.update({
-                    'reserved_to_production_id': None
-                })
-
-            stock_quant.sudo().update({
-                'reserved_quantity': 0
-            })
-            if item.stock_picking_id:
-                item.stock_picking_id.update({
-                    'has_mrp_production': False
-                })
-            if move_line:
-                move_line[0].write({'move_id': None, 'product_uom_qty': 0})
-        res = super(MrpProduction,self).action_cancel()
-
-
-
-    @api.multi
-    def button_plan(self):
-        for order in self:
-            total_reserved = sum(order.move_raw_ids.filtered(
-                lambda a: not a.product_id.categ_id.reserve_ignore).mapped('reserved_availability')
-                                 )
-            if total_reserved < order.product_qty:
-                raise models.ValidationError(
-                    'la cantidad a consumir ({}) no puede ser menor a la cantidad a producir ({})'.format(
-                        total_reserved, order.product_qty
-                    )
-                )
-
-            for stock_move in order.move_raw_ids:
-                if not stock_move.product_id.categ_id.reserve_ignore:
-                    stock_move.product_uom_qty = stock_move.reserved_availability
-
-                if stock_move.product_uom_qty % 1 > 0 and stock_move.product_uom.category_id.measure_type == 'unit':
-                    stock_move.product_uom_qty = stock_move.product_uom_qty + 1 - stock_move.product_uom_qty % 1
-
-                stock_move.unit_factor = stock_move.product_uom_qty / order.product_qty
-                if stock_move.product_uom_qty == 0 and not stock_move.product_id.categ_id.reserve_ignore and \
-                        stock_move.scrapped is False:
-                    stock_move.update({
-                        'raw_material_production_id': None
-                    })
-            order.move_raw_ids = order.move_raw_ids.filtered(
-                lambda a: a.raw_material_production_id.id == order.id
-            )
-
-            res = super(MrpProduction, order).button_plan()
-
-            template_id = self.env.ref('dimabe_manufacturing.moving_fruit_template')
-
-            self.message_post_with_template(template_id.id)
-
-            return res
+    #         res = super(MrpProduction, order).button_plan()
+    #
+    #         return res

@@ -1262,6 +1262,9 @@
                                 <strong>LOT RAW MATERIALS/LOTE MATERIA PRIMA</strong>
                             </th>
                             <th style="text-align:center;border:solid 1px black;" scope="col">
+                                <strong>RAW MATERIAL WEIGHT / PESO MATERIA PRIMA</strong>
+                            </th>
+                            <th style="text-align:center;border:solid 1px black;" scope="col">
                                 <strong>PRODUCER/PRODUCTOR</strong>
                             </th>
                             <th style="text-align:center;border:solid 1px black;" scope="col">
@@ -1299,6 +1302,18 @@
                                                 <tr>
                                                     <td>
                                                         <span t-field="c.name"></span>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </table>
+                                    </td>
+                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:Opx;">
+                                        <table style="width:100%;font-size:10px;text-align:center;">
+                                            <t t-foreach="p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('production_id').mapped('consumed_material_ids').mapped('stock_production_lot_id')"
+                                               t-as="c">
+                                                <tr>
+                                                    <td>
+                                                        <span t-field="c.balance"></span>
                                                     </td>
                                                 </tr>
                                             </t>
