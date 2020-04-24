@@ -220,7 +220,7 @@ class MrpWorkorder(models.Model):
                     check.lot_id = lot_tmp.id
                     check.qty_done = self.component_remaining_qty
                     for move in self.active_move_line_ids:
-                        self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == move.product_id.id).write({
+                        self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == move.product_id.id).update({
                             'lot_id':move.lot_id.id
                         })
 
