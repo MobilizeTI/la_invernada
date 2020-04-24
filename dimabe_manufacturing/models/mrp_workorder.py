@@ -233,7 +233,7 @@ class MrpWorkorder(models.Model):
     def action_ignore(self):
         for move in self.active_move_line_ids:
             if move.product_id.id == self.component_id and not move.lot_id:
-                self.write({
+                self.update({
                     'active_move_line_ids':[
                         (3, move.id)
                     ]
@@ -241,7 +241,7 @@ class MrpWorkorder(models.Model):
         self.action_skip()
         for skip in self.skipped_check_ids:
             if skip.component_id == self.component_id:
-                self.write({
+                self.update({
                     'skipped_check_ids':[
                         (3,skip.id)
                     ]
