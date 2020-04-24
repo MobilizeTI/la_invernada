@@ -71,6 +71,8 @@ class ProductProduct(models.Model):
                 color = item.get_color()
                 models._logger.error(color)
                 item.label_name = item.name + ' (' + color + ')'
+            else:
+                item.label_name = item.name
 
 
 
