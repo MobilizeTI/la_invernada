@@ -237,7 +237,7 @@ class MrpWorkorder(models.Model):
         self.action_skip()
         for skip in self.skipped_check_ids:
             if skip.component_id == self.component_id:
-                raise models.ValidationError(skip.component_id.display_name)
+                raise models.ValidationError(skip.component_id.id)
 
 
     @api.onchange('confirmed_serial')
