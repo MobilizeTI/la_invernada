@@ -34,7 +34,7 @@
           <field name="required_date_moving_to_production"/>
           <field name="unevenness_percent" />
           <field name="observation" />
-          <field name="label_durability_id" required="required" />
+          <field name="label_durability_id" required="1" />
         </field>
 
         <field name="bom_id" position="replace"/>
