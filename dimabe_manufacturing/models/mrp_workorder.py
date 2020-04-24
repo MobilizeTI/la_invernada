@@ -231,7 +231,7 @@ class MrpWorkorder(models.Model):
         self.qty_done = 0
 
     def action_ignore(self):
-        raise models.ValidationError(self.skipped_check_ids.mapped('component_id').mapped('name'))
+        raise models.ValidationError(self.skipped_check_ids.mapped('component_id').mapped('display_name'))
         for move in self.active_move_line_ids:
             if move.product_id.id == self.component_id and not move.lot_id:
                 self.write({
