@@ -235,11 +235,6 @@ class MrpWorkorder(models.Model):
         for move in self.active_move_line_ids:
             if not move.lot_id:
                 move.unlink()
-            else:
-                self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == move.product_id.id).update({
-                    'lot_id': move.lot_id.id
-                })
-
         self.action_skip()
         for skip in self.skipped_check_ids:
             skip.unlink()
