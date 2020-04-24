@@ -72,7 +72,7 @@ class ProductProduct(models.Model):
                 models._logger.error(color)
                 item.label_name = item.name + ' (' + color + ')'
             else:
-                item.label_name = item.name
+                item.label_name = item.display_name
 
 
 
