@@ -233,19 +233,11 @@ class MrpWorkorder(models.Model):
     def action_ignore(self):
         for move in self.active_move_line_ids:
             if move.product_id.id == self.component_id and not move.lot_id:
-                self.update({
-                    'active_move_line_ids':[
-                        (3, move.id)
-                    ]
-                })
+                move.unlink()
         self.action_skip()
         for skip in self.skipped_check_ids:
             if skip.component_id == self.component_id:
-                self.update({
-                    'skipped_check_ids':[
-                        (3,skip.id)
-                    ]
-                })
+                raise models.ValidationError(skip.component_id.display_name)
 
 
     @api.onchange('confirmed_serial')
