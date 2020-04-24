@@ -232,7 +232,7 @@ class MrpWorkorder(models.Model):
 
     def action_ignore(self):
         for move in self.active_move_line_ids:
-            if move.product_id.id == self.component_id.id and not move.lot_id:
+            if not move.lot_id:
                 move.unlink()
         self.action_skip()
         for skip in self.skipped_check_ids:
