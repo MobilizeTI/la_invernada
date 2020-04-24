@@ -231,7 +231,6 @@ class MrpWorkorder(models.Model):
         self.qty_done = 0
 
     def action_ignore(self):
-        raise models.ValidationError(self.skipped_check_ids.mapped('component_id').mapped('display_name'))
         for move in self.active_move_line_ids:
             if move.product_id.id == self.component_id and not move.lot_id:
                 self.write({
@@ -240,6 +239,14 @@ class MrpWorkorder(models.Model):
                     ]
                 })
         self.action_skip()
+        for skip in self.skipped_check_ids:
+            if skip.component_id == self.component_id:
+                self.write({
+                    'skipped_check_ids':[
+                        (3,skip)
+                    ]
+                })
+
 
     @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
