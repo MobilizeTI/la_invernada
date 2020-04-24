@@ -236,8 +236,7 @@ class MrpWorkorder(models.Model):
                 move.unlink()
         self.action_skip()
         for skip in self.skipped_check_ids:
-            if skip.component_id == self.component_id:
-                raise models.ValidationError(skip.component_id.id)
+                skip.unlink()
 
 
     @api.onchange('confirmed_serial')
