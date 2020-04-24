@@ -62,14 +62,14 @@ class ProductProduct(models.Model):
     def _compute_label_product(self):
         for item in self:
             specie = item.get_species()
-            models._logger.error(specie)
+            models._logger.error('Especie: {}'.format(specie))
             if specie == 'Nuez Con Cáscara':
                 caliber = item.get_calibers()
                 models._logger.error(caliber)
                 item.label_name = item.name + ' (' + caliber + ')'
             elif specie == 'Nuez Sin Cáscara':
                 color = item.get_color()
-                models._logger.error(color)
+                models._logger.error('Nuez Sin Cáscara : {}'.format('color'))
                 item.label_name = item.name + ' (' + color + ')'
             else:
                 item.label_name = item.display_name
