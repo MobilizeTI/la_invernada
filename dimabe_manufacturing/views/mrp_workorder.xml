@@ -18,7 +18,7 @@
                 <button name="action_open_manufacturing_order" position="replace">
                 </button>
                 <xpath expr="//div[2]//div[2]//div[1]//button[1]" position="before">
-                    <button name="action_ignore" string="IGNORAR" type="object" attrs="{'invisible': ['|', '|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '!=', True), ('skipped_check_ids', '!=', []), ('is_last_lot', '=', False)]}">
+                    <button name="action_ignore" string="IGNORAR" type="object" attrs="{'invisible': [('is_user_working', '=', False), ('is_last_step', '!=', True), ('skipped_check_ids', '!=', []), ('is_last_lot', '=', False)]}">
 
                     </button>
                 </xpath>
