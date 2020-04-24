@@ -243,7 +243,7 @@ class MrpWorkorder(models.Model):
             if skip.component_id == self.component_id:
                 self.write({
                     'skipped_check_ids':[
-                        (3,skip)
+                        (3,skip.id)
                     ]
                 })
 
