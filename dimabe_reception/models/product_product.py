@@ -28,7 +28,7 @@ class ProductProduct(models.Model):
 
     @api.model
     def get_color(self):
-        return self.get_variant('color')
+        return self.get_variant('Color')
 
     @api.model
     def get_caning(self):
