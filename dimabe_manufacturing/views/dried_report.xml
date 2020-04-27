@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="view_stock_report_dried_tree" model="ir.ui.view">
+            <field name="name">Informe de Secado</field>
+            <field name="model">stock.production.lot</field>
+            <field name="priority">20</field>
+            <field name="arch" type="xml">
+                <tree name="Informe de Secado">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="dimabe_manufacturing.stock_dried_report" model="ir.actions.act_window">
+            <field name="name">Informe de Secado</field>
+            <field name="res_model">stock.production.lot</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_stock_dried_report_tree"/>
+            <field name="domain">
+                [('is_dried_lot','=',True)]
+            </field>
+        </record>
+        <menuitem id="stock_report_pt_menu"
+                  action="dimabe_manufacturing.stock_dried_report"
+                  name="Informe de Secado"
+                  parent="stock.menu_warehouse_report"
+        />
+    </data>
+</odoo>

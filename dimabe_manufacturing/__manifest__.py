@@ -59,7 +59,8 @@
         'views/dried_oven.xml',
         'views/res_config_settings.xml',
         'views/stock_report.xml',
-        'views/pt_report.xml'
+        'views/pt_report.xml',
+        'views/dried_report.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

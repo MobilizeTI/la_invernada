@@ -12,6 +12,8 @@
                     <field name="create_date"/>
                     <field name="product_id"/>
                     <field name="total_content"/>
+                    <field name="sag_code"/>
+                    <field name="name"/>
                 </tree>
             </field>
         </record>
