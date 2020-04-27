@@ -14,7 +14,7 @@
                     <field name="product_caliber" string="Calibre"/>
                     <field name="location_id"/>
                     <field name="product_id"/>
-                    <field name="is_mp" invisible="1"/>
+                    <field name="is_mp" />
                 </tree>
             </field>
         </record>
