@@ -26,6 +26,7 @@
             <field name="arch" type="xml">
                 <tree name="Informe de Producto Terminado">
                     <field name="producer_id" widget="many2onebutton" string="Productor"/>
+                    <field name="state" string="Estado"/>
                 </tree>
             </field>
         </record>
