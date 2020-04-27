@@ -789,7 +789,7 @@
                         <tr>
                             <td style="text-align:center;width:50%;">PESO NETO</td>
                             <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;">
-                                <span t-esc="int(dis.net_weight_dispatch)"/>
+                                <span t-esc="int(dis.arrival_weight)+ int(dis.departure_weight)"/>
                             </td>
                         </tr>
                     </table>
