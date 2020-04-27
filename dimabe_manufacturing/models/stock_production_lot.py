@@ -204,6 +204,12 @@ class StockProductionLot(models.Model):
         related='product_id.caliber'
     )
 
+    serial_not_consumed = fields.Integer('Envases Disponible',compute='_compute_serial_not_consumed')
+
+    @api.multi
+    def _compute_serial_not_consumed(self):
+        self.serial_not_consumed = len(self.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed))
+
     @api.multi
     def _compute_can_add_serial(self):
         for item in self:
