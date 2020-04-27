@@ -31,8 +31,6 @@ class StockQuant(models.Model):
 
     lot_balance = fields.Float('Stock Disponible', related='lot_id.balance')
 
-    is_mp = fields.Boolean('Es materia prima', compute='_compute_is_mp')
-
     serial_not_consumed = fields.Integer('Envases disponible',compute='_compute_serial_not_consumed')
 
     @api.multi
@@ -40,12 +38,6 @@ class StockQuant(models.Model):
         for item in self:
             item.serial_not_consumed = len(item.lot_id.stock_production_lot_serial_ids.filtered(
                 lambda a: not a.consumed))
-
-    @api.multi
-    def _compute_is_mp(self):
-        for item in self:
-            if 'Materia Prima' in item.product_id.categ_id.parent_id.name:
-                item.is_mp = True
 
     @api.multi
     def _compute_total_reserved(self):

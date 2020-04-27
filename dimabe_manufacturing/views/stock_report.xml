@@ -14,28 +14,19 @@
                     <field name="product_caliber" string="Calibre"/>
                     <field name="location_id" widget="many2onebutton" string="Ubicacion"/>
                     <field name="product_id" widget="many2onebutton" string="Producto"/>
-                    <field name="is_mp" />
+                    <field name="is_mp"/>
                     <field name="serial_not_consumed"/>
-                    <field name="reception_guide_number" />
+                    <field name="reception_guide_number"/>
                 </tree>
             </field>
         </record>
-                <record id="view_stock_report_pt_tree" model="ir.ui.view">
-            <field name="name">Informe de Materia Prima</field>
-            <field name="model">stock.quant</field>
+        <record id="view_stock_report_pt_tree" model="ir.ui.view">
+            <field name="name">Informe de Producto Terminado</field>
+            <field name="model">manufacturing.pallet</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Materia Prima">
+                <tree name="Informe de Producto Terminado">
                     <field name="producer_id" widget="many2onebutton" string="Productor"/>
-                    <field name="lot_id" widget="many2onebutton" string="Lote"/>
-                    <field name="quantity" string="Kilos"/>
-                    <field name="product_variety" string="Variedad"/>
-                    <field name="product_caliber" string="Calibre"/>
-                    <field name="location_id" widget="many2onebutton" string="Ubicacion"/>
-                    <field name="product_id" widget="many2onebutton" string="Producto"/>
-                    <field name="is_mp" />
-
-                    <field name="reception_guide_number" />
                 </tree>
             </field>
         </record>
@@ -50,11 +41,11 @@
         </record>
         <record id="dimabe_manufacturing.stock_report_pt" model="ir.actions.act_window">
             <field name="name">Informe de Producto Terminado</field>
-            <field name="res_model">stock.quant</field>
+            <field name="res_model">manufacturing.pallet</field>
             <field name="view_mode">tree</field>
             <field name="view_id" ref="view_stock_report_pt_tree"/>
             <field name="domain">
-                [('id','!=',False),('quantity','>',0)]
+                [('id','!=',False)]
             </field>
         </record>
         <menuitem id="stock_report_tree_menu"
@@ -66,6 +57,6 @@
                   action="dimabe_manufacturing.stock_report_pt"
                   name="Informe de PT"
                   parent="stock.menu_warehouse_report"
-                  />
+        />
     </data>
 </odoo>
