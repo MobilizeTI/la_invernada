@@ -208,7 +208,8 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def _compute_serial_not_consumed(self):
-        self.serial_not_consumed = len(self.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed))
+        for item in self:
+            item.serial_not_consumed = len(item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed))
 
     @api.multi
     def _compute_can_add_serial(self):
