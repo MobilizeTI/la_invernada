@@ -104,8 +104,7 @@ class StockPicking(models.Model):
     )
 
     net_weight_dispatch = fields.Float(
-        string="Kilos Netos",
-        compute='_compute_ticket_weight_dispatch'
+        string="Kilos Netos"
     )
 
     gross_weight_dispatch = fields.Float(
@@ -223,18 +222,11 @@ class StockPicking(models.Model):
         compute='_compute_elapsed_time'
     )
 
-
     arrival_weight = fields.Float('Peso de Entrada')
 
     departure_weight = fields.Float('Peso de Salida')
 
     customs_department = fields.Many2one('res.partner','Oficina Aduanera')
-
-    @api.onchange('arrival_weight','departure_weight')
-    @api.multi
-    def _compute_ticket_weight_dispatch(self):
-        self.net_weight_dispatch = self.arrival_weight + self.departure_weight
-
 
     @api.onchange('picture')
     def get_pictures(self):
