@@ -33,7 +33,7 @@ class StockQuant(models.Model):
 
     is_mp = fields.Boolean('Es materia prima', compute='_compute_is_mp')
 
-    serial_not_consumed = fields.Integer('Envases disponible')
+    serial_not_consumed = fields.Integer('Envases disponible',compute='_compute_serial_not_consumed')
 
     @api.multi
     def _compute_serial_not_consumed(self):
