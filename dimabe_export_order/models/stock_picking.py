@@ -232,7 +232,7 @@ class StockPicking(models.Model):
 
     @api.multi
     def compute_show_packing_list(self):
-        self.show_packing_list = self.consignee_id != None and self.notify_ids.count != None
+        self.show_packing_list = self.consignee_id != None and self.notify_ids != None
 
 
     @api.onchange('picture')
