@@ -124,7 +124,8 @@
                     <field name="specie"></field>
                 </xpath>
                 <xpath expr="//header">
-                    <button name="generate_packing_list" type="object" string="Packing List" attrs="{'invisible':[('picking_type_code', '!=', 'outgoing'),('consignee_id','=',None),('notify_ids','=',None)]}"/>
+                    <field name="show_packing_list" invisible="1"/>
+                    <button name="generate_packing_list" type="object" string="Packing List" attrs="{'invisible':[('picking_type_code', '!=', 'outgoing'),('show_packing_list','=',False)]}"/>
                     <button name="generate_inform" type="object" string="Informe de Trazabilidad" attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"/>
                 </xpath>
             </field>

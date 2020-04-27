@@ -228,6 +228,12 @@ class StockPicking(models.Model):
 
     customs_department = fields.Many2one('res.partner','Oficina Aduanera')
 
+    show_packing_list = fields.Boolean('Mostrar el packing list')
+
+    @api.onchange('consignee_id','notify_ids')
+    def compute_show_packing_list(self):
+        self.show_packing_list = self.consignee_id == None and self.notify_ids.count > 0
+
 
     @api.onchange('picture')
     def get_pictures(self):
