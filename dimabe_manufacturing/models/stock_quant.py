@@ -31,7 +31,7 @@ class StockQuant(models.Model):
 
     lot_balance = fields.Float('Stock Disponible',related='lot_id.balance')
 
-    is_mp = fields.Char('Es materia prima')
+    is_mp = fields.Char('Es materia prima',compute='_compute_is_mp')
 
     @api.multi
     def _compute_is_mp(self):
