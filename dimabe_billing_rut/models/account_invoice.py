@@ -23,6 +23,7 @@ class AccountInvoice(models.Model):
         string="Tipo Documento",
     )
     dte_xml = fields.Text("XML")
+    dte_pdf = fields.Text("PDF")
     ted = fields.Text("TED")
     pdf_url = fields.Text("URL PDF")
 
