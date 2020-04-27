@@ -20,7 +20,7 @@
                 [('is_dried_lot','=',True)]
             </field>
         </record>
-        <menuitem id="stock_report_pt_menu"
+        <menuitem id="stock_dried_report"
                   action="dimabe_manufacturing.stock_dried_report"
                   name="Informe de Secado"
                   parent="stock.menu_warehouse_report"
