@@ -38,8 +38,8 @@ class StockQuant(models.Model):
     @api.multi
     def _compute_serial_not_consumed(self):
         for item in self:
-            item.serial_not_consumed = item.lot_id.stock_production_lot_serial_ids.filtered(
-                lambda a: not a.consumed).count
+            item.serial_not_consumed = len(item.lot_id.stock_production_lot_serial_ids.filtered(
+                lambda a: not a.consumed))
 
     @api.multi
     def _compute_is_mp(self):
