@@ -13,14 +13,17 @@
             </field>
         </record>
          <record id="dimabe_manufacturing.stock_report_dried" model="ir.actions.act_window">
-            <field name="name">Informe de Producto Terminado</field>
+            <field name="name">Informe de Secado</field>
             <field name="res_model">stock.production.lot</field>
             <field name="view_mode">tree</field>
             <field name="view_id" ref="view_stock_report_dried_tree"/>
+             <field name="domain">
+                 [('is_dried_lot','=',True)]
+             </field>
         </record>
         <menuitem id="stock_report_dried_menu"
                   action="dimabe_manufacturing.stock_report_dried"
-                  name="Informe de PT"
+                  name="Informe de Secado"
                   parent="stock.menu_warehouse_report"
         />
     </data>
