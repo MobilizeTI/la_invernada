@@ -6,7 +6,7 @@
             <field name="model">stock.quant</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Materia Prima">
+                <tree name="Informe de Materia Prima" attrs="{'invisible':[('is_mp','!=',True)]}">
                     <field name="producer_id" widget="many2onebutton" string="Productor"/>
                     <field name="lot_id" widget="many2onebutton" string="Lote"/>
                     <field name="quantity" string="Kilos"/>
