@@ -12,6 +12,7 @@
                     <field name="reception_guide_number"/>
                     <field name="product_variety"/>
                     <field name="product_caliber"/>
+                    <field name="serial_not_consumed"/>
                 </tree>
             </field>
         </record>
