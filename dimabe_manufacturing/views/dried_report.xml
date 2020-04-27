@@ -6,23 +6,21 @@
             <field name="model">stock.production.lot</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Secado">
+                <tree name="Informe de Producto Terminado">
+
                     <field name="name"/>
                 </tree>
             </field>
         </record>
-        <record id="dimabe_manufacturing.stock_dried_report" model="ir.actions.act_window">
-            <field name="name">Informe de Secado</field>
+         <record id="dimabe_manufacturing.stock_report_dried" model="ir.actions.act_window">
+            <field name="name">Informe de Producto Terminado</field>
             <field name="res_model">stock.production.lot</field>
             <field name="view_mode">tree</field>
-            <field name="view_id" ref="view_stock_dried_report_tree"/>
-            <field name="domain">
-                [('is_dried_lot','=',True)]
-            </field>
+            <field name="view_id" ref="view_stock_report_dried_tree"/>
         </record>
-        <menuitem id="stock_dried_report"
-                  action="dimabe_manufacturing.stock_dried_report"
-                  name="Informe de Secado"
+        <menuitem id="stock_report_dried_menu"
+                  action="dimabe_manufacturing.stock_report_dried"
+                  name="Informe de PT"
                   parent="stock.menu_warehouse_report"
         />
     </data>
