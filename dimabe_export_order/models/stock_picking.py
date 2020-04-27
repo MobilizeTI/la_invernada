@@ -230,6 +230,7 @@ class StockPicking(models.Model):
 
     customs_department = fields.Many2one('res.partner','Oficina Aduanera')
 
+    @api.onchange('arrival_weight','departure_weight')
     @api.multi
     def _compute_ticket_weight_dispatch(self):
         self.net_weight_dispatch = self.arrival_weight + self.departure_weight
