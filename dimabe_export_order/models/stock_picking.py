@@ -228,12 +228,6 @@ class StockPicking(models.Model):
 
     customs_department = fields.Many2one('res.partner','Oficina Aduanera')
 
-    show_packing_list = fields.Boolean('Mostrar el packing list',compute='compute_show_packing_list')
-
-    @api.multi
-    def compute_show_packing_list(self):
-        self.show_packing_list = self.consignee_id != None and self.notify_ids != None
-
 
     @api.onchange('picture')
     def get_pictures(self):
@@ -241,6 +235,10 @@ class StockPicking(models.Model):
 
     @api.multi
     def generate_packing_list(self):
+        if not self.consignee_id:
+            raise models.ValidationError('No tiene definido el consignatario')
+        if not self.notify_ids:
+            raise models.ValidationError('No tiene ninguna persona para notificar')
         return self.env.ref('dimabe_export_order.action_packing_list') \
             .report_action(self)
 
