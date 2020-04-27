@@ -27,16 +27,24 @@ class StockQuant(models.Model):
         store=True
     )
 
-    producer_id = fields.Many2one('res.partner',related='lot_id.producer_id')
+    producer_id = fields.Many2one('res.partner', related='lot_id.producer_id')
 
-    lot_balance = fields.Float('Stock Disponible',related='lot_id.balance')
+    lot_balance = fields.Float('Stock Disponible', related='lot_id.balance')
 
-    is_mp = fields.Boolean('Es materia prima',compute='_compute_is_mp')
+    is_mp = fields.Boolean('Es materia prima', compute='_compute_is_mp')
+
+    serial_not_consumed = fields.Integer('Envases disponible')
+
+    @api.multi
+    def _compute_serial_not_consumed(self):
+        for item in self:
+            item.serial_not_consumed = item.lot_id.stock_production_lot_serial_ids.filtered(
+                lambda a: not a.consumed).count
 
     @api.multi
     def _compute_is_mp(self):
         for item in self:
-            if 'Materia Prima' in item.product_id.categ_id.parent_id.name :
+            if 'Materia Prima' in item.product_id.categ_id.parent_id.name:
                 item.is_mp = True
 
     @api.multi
