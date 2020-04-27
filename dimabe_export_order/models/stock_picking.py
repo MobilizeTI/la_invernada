@@ -232,7 +232,7 @@ class StockPicking(models.Model):
 
     @api.multi
     def _compute_ticket_weight_dispatch(self):
-        self.ticket_weight_weight = self.arrival_weight + self.departure_weight
+        self.net_weight_dispatch = self.arrival_weight + self.departure_weight
 
 
     @api.onchange('picture')
