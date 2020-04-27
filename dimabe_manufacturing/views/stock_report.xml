@@ -12,9 +12,10 @@
                     <field name="quantity" string="Kilos"/>
                     <field name="product_variety" string="Variedad"/>
                     <field name="product_caliber" string="Calibre"/>
-                    <field name="location_id"/>
-                    <field name="product_id"/>
+                    <field name="location_id" widget="many2onebutton" string="Ubicacion"/>
+                    <field name="product_id" widget="many2onebutton" string="Producto"/>
                     <field name="is_mp" />
+                    <field name="reception_guide_number" />
                 </tree>
             </field>
         </record>
@@ -24,7 +25,7 @@
             <field name="view_mode">tree</field>
             <field name="view_id" ref="view_stock_report_tree"/>
             <field name="domain">
-                [('id','!=',False),('quantity','>',0),('is_mp','!=',False)]
+                [('id','!=',False),('quantity','>',0)]
             </field>
         </record>
         <record id="dimabe_manufacturing.stock_report_pt" model="ir.actions.act_window">
