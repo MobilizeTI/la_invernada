@@ -26,6 +26,8 @@
         # 'security/ir.model.access.csv',
         'views/res_company.xml',
         'views/res_partner.xml',
+        'views/account_invoice.py',
+        'views/stock_location',
         'views/custom_economic_activity.xml',
         'views/templates.xml',
     ],
