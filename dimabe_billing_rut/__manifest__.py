@@ -19,11 +19,11 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'account', 'stock'],
+    'depends': ['base', 'stock','account'],
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/res_company.xml',
         'views/res_partner.xml',
         'views/account_invoice.xml',
