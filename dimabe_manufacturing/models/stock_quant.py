@@ -31,6 +31,13 @@ class StockQuant(models.Model):
 
     lot_balance = fields.Float('Stock Disponible',related='lot_id.balance')
 
+    is_mp = fields.Boolean('Es Materia Prima')
+
+    @api.multi
+    def _compute_is_mp(self):
+        for item in self:
+            item.is_mp = 'Materia Prima' in item.product_id.categ_id.name
+
     @api.multi
     def _compute_total_reserved(self):
         for item in self:
