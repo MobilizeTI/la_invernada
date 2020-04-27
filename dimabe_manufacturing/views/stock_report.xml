@@ -24,7 +24,7 @@
             <field name="view_mode">tree</field>
             <field name="view_id" ref="view_stock_report_tree"/>
             <field name="domain">
-                [('id','!=',False),('quantity','>',0)]
+                [('id','!=',False),('quantity','>',0),('is_mp','=',True)]
             </field>
         </record>
         <record id="dimabe_manufacturing.stock_report_pt" model="ir.actions.act_window">
