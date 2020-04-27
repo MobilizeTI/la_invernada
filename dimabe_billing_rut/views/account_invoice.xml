@@ -1,0 +1,55 @@
+<odoo>
+    <data>
+        <record id="xdte_invoice_form" model="ir.ui.view">
+            <field name="name">xdte account invoice</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+
+                <data>
+                    <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+                        <page string="Referencias">
+                            <field name="references" mode="tree">
+                              <form>
+                                <group>
+                                  <field name="folio_reference" required="True"/>
+                                  <field name="document_type_reference" required="True" />
+                                  <field name="code_reference"/>
+                                  <field name="reason"/>
+                                  <field name="document_date"/>
+                                </group>
+                              </form>
+                              <tree>
+                                <field name="folio_reference" required="True"/>
+                                <field name="document_type_reference" required="True" />
+                                <field name="code_reference"/>
+                                <field name="reason"/>
+                                <field name="document_date"/>
+                              </tree>
+                            </field>
+                        </page>
+                        <page name="xdte_tab" string="DTE">
+                            <group name="xdte_info" cols="">
+
+                                <button  type="object" name="send_to_sii" string="Enviar al SII" attrs="{'invisible': ['|',('dte_folio', '!=', False),('state','=','draft')]}" class="oe_highlight"/>
+<!--                                <field name="identificador_envio" readonly="1"/>-->
+                                <field name="method_of_payment" attrs="{'readonly=1': [('dte_folio', '!=', False)]}"/>
+                                <field name="dte_folio" readonly="1"/>
+                                <field name="dte_type" attrs="{'readonly=1': [('dte_folio', '!=', False)]}"/>
+<!--                                <field name="xml_dte" readonly="1"/>-->
+                                <field name="ted" widget="image"  readonly="1"/>
+                                <field name="pdf_url" widget="url" readonly="1" text="Url de Descarga"/>
+                                <field name="dte_xml" widget="binary" filename="dte.xml" />
+
+                                <field name="pdf_dte" widget="binary" filename="dte.pdf" />
+<!--                                <field name="estado_envio" readonly="1"/>-->
+                            </group>
+                        </page>
+                    </xpath>
+
+                </data>
+            </field>
+        </record>
+
+    </data>
+</odoo>
