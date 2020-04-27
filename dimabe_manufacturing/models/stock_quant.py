@@ -37,7 +37,6 @@ class StockQuant(models.Model):
     def _compute_is_mp(self):
         for item in self:
             item.is_mp = item.product_id.categ_id.name
-            models._logger.error(item.is_mp)
 
     @api.multi
     def _compute_total_reserved(self):
