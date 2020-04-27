@@ -6,3 +6,4 @@ from . import rut_helper
 from . import custom_economic_activity
 from . import account_invoice
 from . import account_invoice_references
+from . import stock_location
