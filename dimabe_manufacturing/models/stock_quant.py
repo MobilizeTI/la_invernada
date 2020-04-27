@@ -31,12 +31,12 @@ class StockQuant(models.Model):
 
     lot_balance = fields.Float('Stock Disponible',related='lot_id.balance')
 
-    is_mp = fields.Boolean('Es Materia Prima')
+    is_mp = fields.Char('Es materia prima')
 
     @api.multi
     def _compute_is_mp(self):
         for item in self:
-            item.is_mp = 'Materia Prima' in item.product_id.categ_id.name
+            item.is_mp = item.product_id.categ_id.name
             models._logger.error(item.is_mp)
 
     @api.multi

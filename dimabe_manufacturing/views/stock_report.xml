@@ -32,5 +32,10 @@
                   name="Informe de Materia Prima"
                   parent="stock.menu_warehouse_report"
         />
+        <menuitem id="stock_report_pt_menu"
+                  action="dimabe_manufacturing.stock_report_pt"
+                  name="Informe de PT"
+                  parent="stock.menu_warehouse_report"
+                  />
     </data>
 </odoo>
