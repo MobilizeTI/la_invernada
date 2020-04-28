@@ -206,6 +206,23 @@ class StockProductionLot(models.Model):
 
     serial_not_consumed = fields.Integer('Envases Disponible',compute='_compute_serial_not_consumed')
 
+    dried_report_product_name = fields.Char(compute='_compute_lot_oven_use')
+
+    @api.multi
+    def _compute_lot_oven_use(self):
+        for item in self:
+            if item.is_dried_lot:
+                dried = self.env['dried.unpelled.history'].search([('out_lot_id','=',item.id)])
+                dried_oven = []
+                for oven in dried.oven_use_ids.mapped('dried_oven_ids'):
+                    dried_oven.append(oven.name+" ")
+                    if oven.id == dried.oven_use_ids.mapped('dried_oven_ids')[-1].id:
+                        dried_oven.append(oven.name)
+                ovens = ''
+                item.dried_report_product_name = item.product_id.display_name + ovens.join(dried_oven)
+
+
+
     @api.multi
     def _compute_serial_not_consumed(self):
         for item in self:
