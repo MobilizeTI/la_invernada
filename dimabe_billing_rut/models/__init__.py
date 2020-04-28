@@ -7,3 +7,4 @@ from . import custom_economic_activity
 from . import account_invoice
 from . import account_invoice_references
 from . import stock_location
+from . import dte_type
