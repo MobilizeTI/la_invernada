@@ -12,12 +12,12 @@
                     <field name="create_date" string="Fecha Pallet"/>
                     <field name="state" string="Estado"/>
                     <field name="producer_id" widget="many2onebutton" string="Productor"/>
+                    <field name="country" string="Pais"/>
+                    <field name="state_id" string="Comuna"/>
                     <field name="product_id" string="Producto"/>
                     <field name="total_content" />
                     <field name="measure"/>
                     <field name="sag_code" string="Cod.Sag"/>
-                    <field name="country" string="Pais"/>
-                    <field name="state_id" string="Comuna"/>
                     <field name="dest_client_id" string="Cliente"/>
                     <field name="dest_country_id" string="Pais Destino"/>
                 </tree>
