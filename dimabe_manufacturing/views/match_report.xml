@@ -13,7 +13,7 @@
         </record>
          <record id="dimabe_manufacturing.match_report" model="ir.actions.act_window">
             <field name="name">Informe de Partido</field>
-            <field name="res_model">stock.production.lot</field>
+            <field name="res_model">mrp.workorder</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_stock_report_match_tree"/>
         </record>
