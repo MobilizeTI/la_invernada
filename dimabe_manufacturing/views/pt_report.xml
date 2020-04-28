@@ -12,8 +12,13 @@
                     <field name="create_date"/>
                     <field name="product_id"/>
                     <field name="total_content"/>
-                    <field name="sag_code"/>
                     <field name="name"/>
+                    <field name="producer_id"/>
+                    <field name="sag_code"/>
+                    <field name="country_id"/>
+                    <field name="state_id" />
+                    <field name="city" />
+                    <field name="location_id"/>
                 </tree>
             </field>
         </record>

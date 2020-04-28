@@ -50,6 +50,20 @@ class ManufacturingPallet(models.Model):
         related='producer_id.sag_code'
     )
 
+    country = fields.Many2one(
+        'res.country',
+        related='producer_id.country_id'
+    )
+
+    state_id = fields.Many2one(
+        'res.country.state',
+        related='producer_id.state_id'
+    )
+
+    city = fields.Char(
+        related='producer_id.city'
+    )
+
     lot_serial_ids = fields.One2many(
         'stock.production.lot.serial',
         'pallet_id',
@@ -81,6 +95,14 @@ class ManufacturingPallet(models.Model):
 
     is_reserved = fields.Boolean('¿Esta reservado?')
 
+    location_id = fields.Many2one(
+        'stock.location'
+    )
+
+    @api.multi
+    def _compute_location(self):
+        for item in self:
+            item.location = item.lot_serial_ids.mapped('stock_production_lot').get_stock_quant().location_id
 
     @api.model
     def create(self, values_list):
