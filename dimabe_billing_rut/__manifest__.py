@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Rut Facturación",
+    'name': "Documentos Tributarios Electrónicos",
 
     'summary': """
-        Agrega campo Rut a empresas y valida""",
+        Agrega campo rut de facturación y validación de este, además contempla conector con facturador electrónico""",
 
     'description': """
         Long description of module's purpose
