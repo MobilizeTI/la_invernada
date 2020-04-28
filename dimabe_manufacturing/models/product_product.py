@@ -31,6 +31,19 @@ class ProductProduct(models.Model):
 
     is_standard_weight = fields.Boolean('Es peso estandar', default=False)
 
+    measure = fields.Char('Medida')
+
+    @api.multi
+    def _compute_measure(self):
+        for item in self:
+            measure = item.get_caning()
+            if measure == 'Saco 10K':
+                item.measure = "10 Kilos"
+            if measure == 'Saco 25K':
+                item.measure = "25 Kilos"
+            else:
+                item.measure = ""
+
     @api.multi
     def _compute_caliber(self):
         for item in self:

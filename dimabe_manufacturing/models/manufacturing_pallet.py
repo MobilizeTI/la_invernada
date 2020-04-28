@@ -95,7 +95,7 @@ class ManufacturingPallet(models.Model):
 
     is_reserved = fields.Boolean('¿Esta reservado?')
 
-
+    measure = fields.Char('Medida',related='product_id.measure')
 
     @api.model
     def create(self, values_list):

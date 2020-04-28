@@ -7,17 +7,15 @@
             <field name="priority">20</field>
             <field name="arch" type="xml">
                 <tree name="Informe de Producto Terminado">
-                    <field name="producer_id" widget="many2onebutton" string="Productor"/>
+                    <field name="name" string="Folio Pallet"/>
+                    <field name="create_date" string="Fecha Pallet"/>
                     <field name="state" string="Estado"/>
-                    <field name="create_date"/>
-                    <field name="product_id"/>
-                    <field name="total_content"/>
-                    <field name="name"/>
-                    <field name="sag_code"/>
-                    <field name="country"/>
-                    <field name="state_id" />
-                    <field name="city" />
-                    <field name="location_id"/>
+                    <field name="producer_id" widget="many2onebutton" string="Productor"/>
+                    <field name="product_id" string="Producto"/>
+                    <field name="total_content" />
+                    <field name="sag_code" string="Cod.Sag"/>
+                    <field name="country" string="Pais"/>
+                    <field name="state_id" string="Comuna"/>
                 </tree>
             </field>
         </record>
