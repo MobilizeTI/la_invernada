@@ -20,7 +20,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_stock_report_match_tree"/>
              <field name="domain">
-                 [('final_lot_id','!=',None)]
+                 [('is_match','=',True)]
              </field>
         </record>
         <menuitem id="stock_report_match_menu"
