@@ -6,20 +6,20 @@
             <field name="model">mrp.workorder</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Partido">
+                <tree name="Informe de Producto Partido">
                     <field name="is_match"/>
                 </tree>
             </field>
         </record>
-         <record id="dimabe_manufacturing.match_report" model="ir.actions.act_window">
-            <field name="name">Informe de Partido</field>
+        <record id="dimabe_manufacturing.stock_report_match" model="ir.actions.act_window">
+            <field name="name">Informe de Producto Partido</field>
             <field name="res_model">mrp.workorder</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="view_stock_report_match_tree"/>
+            <field name="view_id" red="view_stock_report_match_tree"/>
         </record>
         <menuitem id="stock_report_match_menu"
-                  action="dimabe_manufacturing.match_report"
-                  name="Informe de Partido"
+                  action="dimabe_manufacturing.stock_report_match"
+                  name="Informe de Producto Partido"
                   parent="stock.menu_warehouse_report"
         />
     </data>
