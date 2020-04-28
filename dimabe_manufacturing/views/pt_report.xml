@@ -7,6 +7,7 @@
             <field name="priority">20</field>
             <field name="arch" type="xml">
                 <tree name="Informe de Producto Terminado">
+                    <field name="sale_order_id" string="Pedido"/>
                     <field name="name" string="Folio Pallet"/>
                     <field name="create_date" string="Fecha Pallet"/>
                     <field name="state" string="Estado"/>

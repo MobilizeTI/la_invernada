@@ -97,6 +97,14 @@ class ManufacturingPallet(models.Model):
 
     measure = fields.Char('Medida',related='product_id.measure')
 
+    sale_order_id = fields.Many2one('sale.order',compute='_compute_sale_order_id')
+
+    @api.multi
+    def _compute_sale_order_id(self):
+        for item in self:
+            item.production_id = item.lot_serial_ids\
+                .mapped('stock_production_lot_id').mapped('production_id').sale_order_id
+
     @api.model
     def create(self, values_list):
         res = super(ManufacturingPallet, self).create(values_list)
