@@ -95,9 +95,6 @@ class ManufacturingPallet(models.Model):
 
     is_reserved = fields.Boolean('¿Esta reservado?')
 
-    location_id = fields.Many2one(
-        'stock.location',compute='_compute_location'
-    )
 
     @api.multi
     def _compute_location(self):
