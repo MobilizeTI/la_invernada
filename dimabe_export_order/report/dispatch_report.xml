@@ -427,7 +427,7 @@
                                 </tr>
                                 <tr>
                                     <td style="text-align:center;">
-                                       <![CDATA[&nbsp;]]>
+                                        <![CDATA[&nbsp;]]>
                                     </td>
                                 </tr>
                             </table>
@@ -502,919 +502,917 @@
                         </table>
                     </div>
                     <div style="width:100%;margin:0 auto;height:570px;border:1px solid;">
-                        <table style="width:100%;height:50%;font-size:11px;">
-                            <th style="width:20%;"><![CDATA[&nbsp;]]></th>
-                            <th style="width:60%;">
-                                <![CDATA[&nbsp;]]>
-                            </th>
-                            <th style="width:20%;"><![CDATA[&nbsp;]]></th>
-                            <t t-foreach="d.move_ids_without_package" t-as="m">
-                                <tr>
-                                    <t t-if="m.id == d.move_ids_without_package[-1].id">
+                    <table style="width:100%;height:50%;font-size:11px;">
+                    <th style="width:20%;"><![CDATA[&nbsp;]]></th>
+                    <th style="width:60%;">
+                        <![CDATA[&nbsp;]]>
+                    </th>
+                    <th style="width:20%;"><![CDATA[&nbsp;]]></th>
+                    <tr>
+                        <tr>
+                            <td colspan="3">
+                                <t t-if="d.type_of_dispatch == 'exp'">
+                                    <table style="font-size:11px;width:55%;margin:0 auto;">
                                         <tr>
-                                            <td colspan="3">
-                                                <t t-if="d.type_of_dispatch == 'exp'">
-                                                    <table style="font-size:11px;width:55%;margin:0 auto;">
-                                                        <tr>
-                                                            <td style="text-align:center;">
-                                                                KILOS NETOS
-                                                            </td>
-                                                            <td>
-                                                                <span t-field="d.net_weight_dispatch"/>
-                                                            </td>
-                                                            <td>N° CONTENEDOR</td>
-                                                            <td>
-                                                                <span t-field="d.container_number"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>KILOS BRUTOS:</td>
-                                                            <td>
-                                                                <span t-field="d.gross_weight_dispatch"/>
-                                                            </td>
-                                                            <td>SELLO NAVIERA</td>
-                                                            <td>
-                                                                <span t-field="d.sell_shipping"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>TARA CONTE:</td>
-                                                            <td>
-                                                                <span t-field="d.tare_container_weight_dispatch"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>PESO VGM:</td>
-                                                            <td>
-                                                                <span t-field="d.vgm_weight_dispatch"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr style="height:50%;">
-                                                            <td>Nota</td>
-                                                            <td colspan="3" style="text-align:center;">
-                                                                <t t-esc="d.note_dispatched.get_full_note()"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Nave:</td>
-                                                            <td>
-                                                                <t t-if="d.shipping_id.type_transport == 'terrestre'">
-                                                                    <span t-field="d.type_transport"/>
-                                                                </t>
-                                                                <t t-elif="d.shipping_id.type_transport != 'terrestre'">
-                                                                    <span t-field="d.shipping_id.ship"/>
-                                                                </t>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>N° DUS:</td>
-                                                            <td>
-                                                                <span t-field="d.dus_number"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>PTO EMBARQUE:</td>
-                                                            <td>
-                                                                <span t-field="d.shipping_id.departure_port"/>
-                                                            </td>
-                                                            <td>SELLO INVERNADA</td>
-                                                            <td>
-                                                                <span t-field="d.sell_truck"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>PTO DESCARGA</td>
-                                                            <td>
-                                                                <span t-field="d.shipping_id.arrival_port"/>
-                                                            </td>
-                                                            <td>N° RESERVA</td>
-                                                            <td>
-                                                                <span t-field="d.booking_number"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>TRANSPORTE:</td>
-                                                            <td>
-                                                                <span t-field="d.transport"/>
-                                                            </td>
-                                                            <td>CANDADO GPS:</td>
-                                                            <td>
-                                                                <span t-field="d.gps_lock"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>CHOFER:</td>
-                                                            <td>
-                                                                <span t-field="d.carrier_id"/>
-                                                            </td>
-                                                            <td>BOTON GPS:</td>
-                                                            <td>
-                                                                <span t-field="d.gps_button"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>RUT:</td>
-                                                            <td>
-                                                                <span t-field="d.carrier_rut"/>
-                                                            </td>
-                                                            <td>CLIENTE:</td>
-                                                            <td>
-                                                                <span t-field="d.partner_id"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>CELULAR:</td>
-                                                            <td>
-                                                                <span t-field="d.carrier_cell_phone"/>
-                                                            </td>
-                                                            <td>SELLO SAG:</td>
-                                                            <td>
-                                                                <span t-field="d.sell_sag"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><![CDATA[&nbsp;]]></td>
-                                                            <td><![CDATA[&nbsp;]]></td>
-                                                            <td>N° Pedido:</td>
-                                                            <td>
-                                                                <span t-field="d.name"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <![CDATA[&nbsp;]]>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Pte Camion:</td>
-                                                            <td>
-                                                                <span t-field="d.carrier_truck_patent"/>
-                                                            </td>
-                                                            <td>Hora Llegada:</td>
-                                                            <td>
-                                                                <t t-esc="'%02d:%02d' % (int(d.hour_arrival),d.hour_arrival % 1 * 60)"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Pte Rampla:</td>
-                                                            <td>
-                                                                <span t-field="d.carrier_cart_patent"/>
-                                                            </td>
-                                                            <td>Hora Salida</td>
-                                                            <td>
-                                                                <t t-esc="'%02d:%02d' % (int(d.hour_departure),d.hour_departure % 1 * 60)"/>
-                                                            </td>
-
-                                                        </tr>
-                                                    </table>
+                                            <td style="text-align:center;">
+                                                KILOS NETOS
+                                            </td>
+                                            <td>
+                                                <span t-field="d.net_weight_dispatch"/>
+                                            </td>
+                                            <td>N° CONTENEDOR</td>
+                                            <td>
+                                                <span t-field="d.container_number"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>KILOS BRUTOS:</td>
+                                            <td>
+                                                <span t-field="d.gross_weight_dispatch"/>
+                                            </td>
+                                            <td>SELLO NAVIERA</td>
+                                            <td>
+                                                <span t-field="d.sell_shipping"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>TARA CONTE:</td>
+                                            <td>
+                                                <span t-field="d.tare_container_weight_dispatch"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>PESO VGM:</td>
+                                            <td>
+                                                <span t-field="d.vgm_weight_dispatch"/>
+                                            </td>
+                                        </tr>
+                                        <tr style="height:50%;">
+                                            <td>Nota</td>
+                                            <td colspan="3" style="text-align:center;">
+                                                <t t-esc="d.note_dispatched.get_full_note()"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Nave:</td>
+                                            <td>
+                                                <t t-if="d.shipping_id.type_transport == 'terrestre'">
+                                                    <span t-field="d.type_transport"/>
+                                                </t>
+                                                <t t-elif="d.shipping_id.type_transport != 'terrestre'">
+                                                    <span t-field="d.shipping_id.ship"/>
                                                 </t>
                                             </td>
                                         </tr>
-                                    </t>
-                                </tr>
-                            </t>
-                        </table>
+                                        <tr>
+                                            <td>N° DUS:</td>
+                                            <td>
+                                                <span t-field="d.dus_number"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>PTO EMBARQUE:</td>
+                                            <td>
+                                                <span t-field="d.shipping_id.departure_port"/>
+                                            </td>
+                                            <td>SELLO INVERNADA</td>
+                                            <td>
+                                                <span t-field="d.sell_truck"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>PTO DESCARGA</td>
+                                            <td>
+                                                <span t-field="d.shipping_id.arrival_port"/>
+                                            </td>
+                                            <td>N° RESERVA</td>
+                                            <td>
+                                                <span t-field="d.booking_number"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>TRANSPORTE:</td>
+                                            <td>
+                                                <span t-field="d.transport"/>
+                                            </td>
+                                            <td>CANDADO GPS:</td>
+                                            <td>
+                                                <span t-field="d.gps_lock"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>CHOFER:</td>
+                                            <td>
+                                                <span t-field="d.carrier_id"/>
+                                            </td>
+                                            <td>BOTON GPS:</td>
+                                            <td>
+                                                <span t-field="d.gps_button"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>RUT:</td>
+                                            <td>
+                                                <span t-field="d.carrier_rut"/>
+                                            </td>
+                                            <td>CLIENTE:</td>
+                                            <td>
+                                                <span t-field="d.partner_id"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>CELULAR:</td>
+                                            <td>
+                                                <span t-field="d.carrier_cell_phone"/>
+                                            </td>
+                                            <td>SELLO SAG:</td>
+                                            <td>
+                                                <span t-field="d.sell_sag"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><![CDATA[&nbsp;]]></td>
+                                            <td><![CDATA[&nbsp;]]></td>
+                                            <td>N° Pedido:</td>
+                                            <td>
+                                                <span t-field="d.name"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <![CDATA[&nbsp;]]>
+                                        </tr>
+                                        <tr>
+                                            <td>Pte Camion:</td>
+                                            <td>
+                                                <span t-field="d.carrier_truck_patent"/>
+                                            </td>
+                                            <td>Hora Llegada:</td>
+                                            <td>
+                                                <t t-esc="'%02d:%02d' % (int(d.hour_arrival),d.hour_arrival % 1 * 60)"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Pte Rampla:</td>
+                                            <td>
+                                                <span t-field="d.carrier_cart_patent"/>
+                                            </td>
+                                            <td>Hora Salida</td>
+                                            <td>
+                                                <t t-esc="'%02d:%02d' % (int(d.hour_departure),d.hour_departure % 1 * 60)"/>
+                                            </td>
 
-                    </div>
-                    <t t-if="d.type_of_dispatch == 'exp'">
-                        <span t-esc="d.note_dispatched.get_footer_note()" style="font-size:12px;"/>
-                    </t>
-                    <div style="width:100%;height:18.5%;">
+                                        </tr>
+                                    </table>
+                                </t>
+                            </td>
+                        </tr>
 
-                    </div>
+                    </tr>
                 </t>
-            </div>
-        </t>
-    </template>
+            </table>
 
-    <template id="report_weight_dispatch">
-        <t t-call="web.html_container">
-            <div class="page">
-                <t t-foreach="docs" t-as="dis">
-                    <table style="width:100%;border:1px solid;">
-                        <th style="border-right:1px solid;width:50px;">
-                            <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
-                                 style="height:50px;"
-                            />
-                        </th>
-                        <th style="margin:0 auto;border-right:1px solid;">
-                            REGISTRO INFORME DE DESPACHO
-                        </th>
-                        <th style="width:60px;">
-                            <table>
-                                <tr>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </table>
-                        </th>
-                    </table>
-                    <br/>
-                    <table style="width:100%;height:20%;font-size:18px;" cellspacing="3">
-                        <tr style="height:25px;">
-                            <td style="text-align:center;">NUMERO DE EMBARQUE</td>
-                            <td style="border:1px solid;width:25%;text-align:center;">
-                                <span t-field="dis.shipping_number"/>
-                            </td>
-                            <td></td>
-                            <td style="text-align:center;">PATENTE CAMION</td>
-                            <td style="border:1px solid;width:25%;text-align:center;">
-                                <span t-field="dis.truck_id"/>
-                            </td>
-                        </tr>
-                        <tr style="height:25px;">
-                            <td style="text-align:center;">GUIA DE DESPACHO</td>
-                            <td style="border:1px solid;width:25%;text-align:center;">
-                                <span t-field="dis.dispatch_guide_number"/>
-                            </td>
-                            <td></td>
-                            <td style="text-align:center;">PATENTE CARRO</td>
-                            <td style="border:1px solid;width:25%;text-align:center;">
-                                <span t-field="dis.cart_id"/>
-                            </td>
-                        </tr>
-                        <tr style="height:25px;">
-                            <td style="text-align:center;">NUMERO DE CONTENEDOR</td>
-                            <td style="border:1px solid;width:25%;text-align:center;">
-                                <span t-field="dis.container_number"/>
-                            </td>
-                            <td></td>
-                            <td style="text-align:center;">RUN CHOFER</td>
-                            <td style="border:1px solid;width:25%;text-align:center;">
-                                <span t-field="dis.carrier_rut"/>
-                            </td>
-                        </tr>
-                        <tr style="height:25px;">
-                            <td style="text-align:center;">NOMBRE CHOFER</td>
-                            <td style="border:1px solid;width:25%;text-align:center;">
-                                <span t-field="dis.carrier_id.name"/>
-                            </td>
-                        </tr>
-                    </table>
-                    <br/>
-                    <table style="border:1px solid;width:100%;" cellspacing="3">
-                        <th style="text-align:center;">
-                            <td colspan="2">PESAJES</td>
-                        </th>
-                        <tr>
-                            <td style="text-align:center;width:50%;">PESO SIN CARGA</td>
-                            <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;">
-                                <span t-esc="int(dis.arrival_weight)"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:center;width:50%;">PESO CON CARGA</td>
-                            <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;">
-                                <span t-esc="int(dis.departure_weight)"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:center;width:50%;">PESO NETO</td>
-                            <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;">
-                                <span t-esc="int(dis.departure_weight) - int(dis.arrival_weight)"/>
-                            </td>
-                        </tr>
-                    </table>
-                    <br/>
-                    <br/>
-                    <table style="float:left;">
-                        <tr>
-                            <td style="border-bottom:1pt dotted black;width:50%;"></td>
-                        </tr>
-                        <tr style="margin:0 auto;width:200px;text-align:center;">
-                            <td>Firma Chofer</td>
-                        </tr>
-                    </table>
-                    <table style="float:right;">
-                        <tr>
-                            <td style="border-bottom:1pt dotted black;width:50%;"></td>
-                        </tr>
-                        <tr style="margin:0 auto;width:200px;text-align:center;">
-                            <td>Encargado de Despacho</td>
-                        </tr>
-                    </table>
-                </t>
-            </div>
+        </div>
+        <t t-if="d.type_of_dispatch == 'exp'">
+            <span t-esc="d.note_dispatched.get_footer_note()" style="font-size:12px;"/>
         </t>
-    </template>
+        <div style="width:100%;height:18.5%;">
 
-    <template id="report_truck_dispatch">
-        <t t-call="web.html_container">
-            <div class="page">
-                <t t-foreach="docs.sorted(key=lambda x: x.counter)" t-as="o">
-                    <t t-if="o.counter == 3 or o.counter == 6 or o.counter == 9">
-                        <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
-                        />
+        </div>
+    </t>
+</div>
+        </t>
+        </template>
+
+<template id="report_weight_dispatch">
+<t t-call="web.html_container">
+    <div class="page">
+        <t t-foreach="docs" t-as="dis">
+            <table style="width:100%;border:1px solid;">
+                <th style="border-right:1px solid;width:50px;">
+                    <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                         style="height:50px;"
+                    />
+                </th>
+                <th style="margin:0 auto;border-right:1px solid;">
+                    REGISTRO INFORME DE DESPACHO
+                </th>
+                <th style="width:60px;">
+                    <table>
+                        <tr>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </th>
+            </table>
+            <br/>
+            <table style="width:100%;height:20%;font-size:18px;" cellspacing="3">
+                <tr style="height:25px;">
+                    <td style="text-align:center;">NUMERO DE EMBARQUE</td>
+                    <td style="border:1px solid;width:25%;text-align:center;">
+                        <span t-field="dis.shipping_number"/>
+                    </td>
+                    <td></td>
+                    <td style="text-align:center;">PATENTE CAMION</td>
+                    <td style="border:1px solid;width:25%;text-align:center;">
+                        <span t-field="dis.truck_id"/>
+                    </td>
+                </tr>
+                <tr style="height:25px;">
+                    <td style="text-align:center;">GUIA DE DESPACHO</td>
+                    <td style="border:1px solid;width:25%;text-align:center;">
+                        <span t-field="dis.dispatch_guide_number"/>
+                    </td>
+                    <td></td>
+                    <td style="text-align:center;">PATENTE CARRO</td>
+                    <td style="border:1px solid;width:25%;text-align:center;">
+                        <span t-field="dis.cart_id"/>
+                    </td>
+                </tr>
+                <tr style="height:25px;">
+                    <td style="text-align:center;">NUMERO DE CONTENEDOR</td>
+                    <td style="border:1px solid;width:25%;text-align:center;">
+                        <span t-field="dis.container_number"/>
+                    </td>
+                    <td></td>
+                    <td style="text-align:center;">RUN CHOFER</td>
+                    <td style="border:1px solid;width:25%;text-align:center;">
+                        <span t-field="dis.carrier_rut"/>
+                    </td>
+                </tr>
+                <tr style="height:25px;">
+                    <td style="text-align:center;">NOMBRE CHOFER</td>
+                    <td style="border:1px solid;width:25%;text-align:center;">
+                        <span t-field="dis.carrier_id.name"/>
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <table style="border:1px solid;width:100%;" cellspacing="3">
+                <th style="text-align:center;">
+                    <td colspan="2">PESAJES</td>
+                </th>
+                <tr>
+                    <td style="text-align:center;width:50%;">PESO SIN CARGA</td>
+                    <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;">
+                        <span t-esc="int(dis.arrival_weight)"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:center;width:50%;">PESO CON CARGA</td>
+                    <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;">
+                        <span t-esc="int(dis.departure_weight)"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:center;width:50%;">PESO NETO</td>
+                    <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;">
+                        <span t-esc="int(dis.departure_weight) - int(dis.arrival_weight)"/>
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <br/>
+            <table style="float:left;">
+                <tr>
+                    <td style="border-bottom:1pt dotted black;width:50%;"></td>
+                </tr>
+                <tr style="margin:0 auto;width:200px;text-align:center;">
+                    <td>Firma Chofer</td>
+                </tr>
+            </table>
+            <table style="float:right;">
+                <tr>
+                    <td style="border-bottom:1pt dotted black;width:50%;"></td>
+                </tr>
+                <tr style="margin:0 auto;width:200px;text-align:center;">
+                    <td>Encargado de Despacho</td>
+                </tr>
+            </table>
+        </t>
+    </div>
+</t>
+</template>
+
+<template id="report_truck_dispatch">
+<t t-call="web.html_container">
+    <div class="page">
+        <t t-foreach="docs.sorted(key=lambda x: x.counter)" t-as="o">
+            <t t-if="o.counter == 3 or o.counter == 6 or o.counter == 9">
+                <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
+                />
+                <br/>
+            </t>
+            <t t-else="">
+                <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
+                />
+            </t>
+            <t t-if="docs[-1].id == o.id">
+                <span style="style='page-break-before:avoid;'"/>
+            </t>
+        </t>
+    </div>
+</t>
+</template>
+
+<template id="report_packing_list">
+<t t-call="web.html_container">
+    <div class="page">
+        <div class="oe_structure"/>
+        <t t-foreach="docs" t-as="d">
+            <table width="100%%">
+                <th style="width:50px;">
+                    <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                         style="height:50px;"
+                    />
+                </th>
+                <th style="font-size:20px;">
+                    <strong>Packing List</strong>
+                </th>
+            </table>
+            <br/>
+            <table width="45%%" style="border:solid 1px;font-size:12px;display:inline-block;">
+                <tr>
+                    <td>
+                        <strong>SHIPPER/PROVEEDOR:</strong>
+                    </td>
+                    <td>
+                        <span t-field="res_company.name"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>ADDRESS/DIRRECCION:</strong>
+                    </td>
+                    <td rowspan="2">
+                        <span t-field="res_company.street"/>
                         <br/>
-                    </t>
-                    <t t-else="">
-                        <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
-                        />
-                    </t>
-                    <t t-if="docs[-1].id == o.id">
-                        <span style="style='page-break-before:avoid;'"/>
-                    </t>
-                </t>
-            </div>
-        </t>
-    </template>
-
-    <template id="report_packing_list">
-        <t t-call="web.html_container">
-            <div class="page">
-                <div class="oe_structure"/>
-                <t t-foreach="docs" t-as="d">
-                    <table width="100%%">
-                        <th style="width:50px;">
-                            <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
-                                 style="height:50px;"
-                            />
-                        </th>
-                        <th style="font-size:20px;">
-                            <strong>Packing List</strong>
-                        </th>
-                    </table>
-                    <br/>
-                    <table width="45%%" style="border:solid 1px;font-size:12px;display:inline-block;">
+                        <span t-field="res_company.country_id"/>
+                    </td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>
+                        <strong>PHONE/TELEFONO:</strong>
+                    </td>
+                    <td>
+                        <span t-field="res_company.phone"/>
+                    </td>
+                </tr>
+            </table>
+            <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
+                <tr>
+                    <td>
+                        <strong>CONSIGNEE/CONSIGNATARIO:</strong>
+                    </td>
+                    <td>
+                        <span t-field="d.consignee_id.name"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>ADDRESS/DIRRECCION:</strong>
+                    </td>
+                    <td rowspan="2">
+                        <span t-field="d.consignee_id.street"/>
+                        <br/>
+                        <span t-field="d.consignee_id.country_id"/>
+                    </td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>
+                        <strong>PHONE/TELEFONO:</strong>
+                    </td>
+                    <td>
+                        <span t-field="d.consignee_id.phone"/>
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <table width="45%%" style="border:solid 1px;font-size:12px;display:inline-block;">
+                <tr>
+                    <td>
+                        <strong>VESSEL/NAVE:</strong>
+                    </td>
+                    <td>
+                        <span t-field="d.shipping_id.ship.name"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>PORT OF LOADING:</strong>
+                    </td>
+                    <td>
+                        <span t-field="d.shipping_id.departure_port.name"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>PORT OF DISCHARGE:</strong>
+                    </td>
+                    <td>
+                        <span t-field="d.shipping_id.arrival_port.name"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>CONTAINER:</strong>
+                    </td>
+                    <td>
+                        <span t-field="d.container_number"/>
+                    </td>
+                </tr>
+            </table>
+            <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
+                <tr>
+                    <td>
+                        <strong>NOTIFY/NOTIFICADO:</strong>
+                    </td>
+                    <td>
+                        <span t-field="d.notify_ids[0].name"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>ADDRESS/DIRRECCION:</strong>
+                    </td>
+                    <td rowspan="2">
+                        <span t-field="d.notify_ids[0].street"/>
+                        <br/>
+                        <span t-field="d.notify_ids[0].country_id"/>
+                    </td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>
+                        <strong>PHONE/TELEFONO:</strong>
+                    </td>
+                    <td>
+                        <span t-field="d.notify_ids[0].phone"/>
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <table width="45%%" style="border:solid 1px;font-size:12px;display:inline-block;">
+                <tr rowspan="2">
+                    <td>DISPATCH N°/NUMERO DE DESPACHO</td>
+                    <td>
+                        <span t-field="d.name"/>
+                    </td>
+                </tr>
+                <tr></tr>
+            </table>
+            <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
+                <tr rowspan="2">
+                    <td style="text-align:center;">CLIENT PURCHASE ORDER/ORDER DE COMPRA CLIENTE</td>
+                    <td style="text-align:center;">
+                        <span t-field="d.origin"/>
+                    </td>
+                </tr>
+                <tr></tr>
+            </table>
+            <br/>
+            <table style="width:100%;border:solid 1px black;font-size:10px;" cellspacing="0"
+                   cellpadding="0">
+                <theader>
+                    <th style="text-align:center;border:solid 1px black;width:10%;" scope="col">
+                        <strong>ITEM/PRODUCT</strong>
+                    </th>
+                    <th style="text-align:center;border:solid 1px black;width:35%;" scope="col">
+                        <strong>TYPE OF PRODUCT/TIPO DE PRODUCTO</strong>
+                    </th>
+                    <th style="text-align:center;border:solid 1px black;" scope="col">
+                        <strong>TICKET N°/TRACE CODE</strong>
+                    </th>
+                    <th style="text-align:center;border:solid 1px black;" scope="col">
+                        <strong>PALLET NUMBER/FOLIO PALLET</strong>
+                    </th>
+                    <th style="text-align:center;border:solid 1px black;" scope="col">
+                        <strong>LOT NUMBER/NUMERO DE LOTE</strong>
+                    </th>
+                    <th style="text-align:center;border:solid 1px black;" scope="col">
+                        <strong>PACKING DATE/FECHA ELAB.</strong>
+                    </th>
+                    <th style="text-align:center;border:solid 1px black;" scope="col">
+                        <strong>BEST BEFORE DATE/FECHA VENCIMIENTO</strong>
+                    </th>
+                    <th style="text-align:center;border:solid 1px black;" scope="col">
+                        <strong>PACKING AMOUNT/N° DE ENVASES</strong>
+                    </th>
+                    <th style="text-align:center;border:solid 1px black;" scope="col">
+                        <strong>NET WEIGHT / PESO NETO</strong>
+                    </th>
+                    <th style="text-align:center;border:solid 1px black;" scope="col">
+                        <strong>GROSS WEIGHT / PESO BRUTO</strong>5
+                    </th>
+                </theader>
+                <tbody>
+                    <t t-foreach="d.assigned_pallet_ids" t-as="p">
                         <tr>
-                            <td>
-                                <strong>SHIPPER/PROVEEDOR:</strong>
+                            <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
+                                <span t-esc="p.lot_serial_ids[0].product_id.name"/>
                             </td>
-                            <td>
-                                <span t-field="res_company.name"/>
+                            <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
+                                <span t-esc="p.lot_serial_ids[0].product_id.type_product"/>
                             </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>ADDRESS/DIRRECCION:</strong>
-                            </td>
-                            <td rowspan="2">
-                                <span t-field="res_company.street"/>
-                                <br/>
-                                <span t-field="res_company.country_id"/>
-                            </td>
-                        </tr>
-                        <tr></tr>
-                        <tr>
-                            <td>
-                                <strong>PHONE/TELEFONO:</strong>
-                            </td>
-                            <td>
-                                <span t-field="res_company.phone"/>
-                            </td>
-                        </tr>
-                    </table>
-                    <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
-                        <tr>
-                            <td>
-                                <strong>CONSIGNEE/CONSIGNATARIO:</strong>
-                            </td>
-                            <td>
-                                <span t-field="d.consignee_id.name"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>ADDRESS/DIRRECCION:</strong>
-                            </td>
-                            <td rowspan="2">
-                                <span t-field="d.consignee_id.street"/>
-                                <br/>
-                                <span t-field="d.consignee_id.country_id"/>
-                            </td>
-                        </tr>
-                        <tr></tr>
-                        <tr>
-                            <td>
-                                <strong>PHONE/TELEFONO:</strong>
-                            </td>
-                            <td>
-                                <span t-field="d.consignee_id.phone"/>
-                            </td>
-                        </tr>
-                    </table>
-                    <br/>
-                    <table width="45%%" style="border:solid 1px;font-size:12px;display:inline-block;">
-                        <tr>
-                            <td>
-                                <strong>VESSEL/NAVE:</strong>
-                            </td>
-                            <td>
-                                <span t-field="d.shipping_id.ship.name"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>PORT OF LOADING:</strong>
-                            </td>
-                            <td>
-                                <span t-field="d.shipping_id.departure_port.name"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>PORT OF DISCHARGE:</strong>
-                            </td>
-                            <td>
-                                <span t-field="d.shipping_id.arrival_port.name"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>CONTAINER:</strong>
-                            </td>
-                            <td>
-                                <span t-field="d.container_number"/>
-                            </td>
-                        </tr>
-                    </table>
-                    <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
-                        <tr>
-                            <td>
-                                <strong>NOTIFY/NOTIFICADO:</strong>
-                            </td>
-                            <td>
-                                <span t-field="d.notify_ids[0].name"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>ADDRESS/DIRRECCION:</strong>
-                            </td>
-                            <td rowspan="2">
-                                <span t-field="d.notify_ids[0].street"/>
-                                <br/>
-                                <span t-field="d.notify_ids[0].country_id"/>
-                            </td>
-                        </tr>
-                        <tr></tr>
-                        <tr>
-                            <td>
-                                <strong>PHONE/TELEFONO:</strong>
-                            </td>
-                            <td>
-                                <span t-field="d.notify_ids[0].phone"/>
-                            </td>
-                        </tr>
-                    </table>
-                    <br/>
-                    <table width="45%%" style="border:solid 1px;font-size:12px;display:inline-block;">
-                        <tr rowspan="2">
-                            <td>DISPATCH N°/NUMERO DE DESPACHO</td>
-                            <td>
+                            <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                 <span t-field="d.name"/>
                             </td>
-                        </tr>
-                        <tr></tr>
-                    </table>
-                    <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
-                        <tr rowspan="2">
-                            <td style="text-align:center;">CLIENT PURCHASE ORDER/ORDER DE COMPRA CLIENTE</td>
-                            <td style="text-align:center;">
-                                <span t-field="d.origin"/>
+                            <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
+                                <span t-field="p.name"/>
+                            </td>
+                            <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
+                                <span t-field="p.mapped('lot_serial_ids').mapped('stock_production_lot_id').name"/>
+                            </td>
+                            <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
+                                <span t-esc="p.lot_serial_ids[0].packaging_date.strftime('%d-%b-%y')"/>
+                            </td>
+                            <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
+                                <span t-esc="p.lot_serial_ids[0].best_before_date.strftime('%d-%b-%y')"/>
+                            </td>
+                            <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
+                                <span t-field="p.total_content"/>
+                            </td>
+                            <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
+                                <span t-esc="'%.2f' %sum(p.lot_serial_ids.mapped('display_weight'))"/>
+                            </td>
+                            <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
+                                <span t-esc="'%.2f' %sum(p.lot_serial_ids.mapped('gross_weight'))"/>
                             </td>
                         </tr>
-                        <tr></tr>
-                    </table>
-                    <br/>
-                    <table style="width:100%;border:solid 1px black;font-size:10px;" cellspacing="0"
-                           cellpadding="0">
-                        <theader>
-                            <th style="text-align:center;border:solid 1px black;width:10%;" scope="col">
-                                <strong>ITEM/PRODUCT</strong>
-                            </th>
-                            <th style="text-align:center;border:solid 1px black;width:35%;" scope="col">
-                                <strong>TYPE OF PRODUCT/TIPO DE PRODUCTO</strong>
-                            </th>
-                            <th style="text-align:center;border:solid 1px black;" scope="col">
-                                <strong>TICKET N°/TRACE CODE</strong>
-                            </th>
-                            <th style="text-align:center;border:solid 1px black;" scope="col">
-                                <strong>PALLET NUMBER/FOLIO PALLET</strong>
-                            </th>
-                            <th style="text-align:center;border:solid 1px black;" scope="col">
-                                <strong>LOT NUMBER/NUMERO DE LOTE</strong>
-                            </th>
-                            <th style="text-align:center;border:solid 1px black;" scope="col">
-                                <strong>PACKING DATE/FECHA ELAB.</strong>
-                            </th>
-                            <th style="text-align:center;border:solid 1px black;" scope="col">
-                                <strong>BEST BEFORE DATE/FECHA VENCIMIENTO</strong>
-                            </th>
-                            <th style="text-align:center;border:solid 1px black;" scope="col">
-                                <strong>PACKING AMOUNT/N° DE ENVASES</strong>
-                            </th>
-                            <th style="text-align:center;border:solid 1px black;" scope="col">
-                                <strong>NET WEIGHT / PESO NETO</strong>
-                            </th>
-                            <th style="text-align:center;border:solid 1px black;" scope="col">
-                                <strong>GROSS WEIGHT / PESO BRUTO</strong>5
-                            </th>
-                        </theader>
-                        <tbody>
-                            <t t-foreach="d.assigned_pallet_ids" t-as="p">
-                                <tr>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-esc="p.lot_serial_ids[0].product_id.name"/>
-                                    </td>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-esc="p.lot_serial_ids[0].product_id.type_product"/>
-                                    </td>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-field="d.name"/>
-                                    </td>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-field="p.name"/>
-                                    </td>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-field="p.mapped('lot_serial_ids').mapped('stock_production_lot_id').name"/>
-                                    </td>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-esc="p.lot_serial_ids[0].packaging_date.strftime('%d-%b-%y')"/>
-                                    </td>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-esc="p.lot_serial_ids[0].best_before_date.strftime('%d-%b-%y')"/>
-                                    </td>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-field="p.total_content"/>
-                                    </td>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-esc="'%.2f' %sum(p.lot_serial_ids.mapped('display_weight'))"/>
-                                    </td>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-esc="'%.2f' %sum(p.lot_serial_ids.mapped('gross_weight'))"/>
-                                    </td>
-                                </tr>
-                                <t t-if="p.id == d.assigned_pallet_ids[-1].id">
-                                    <tr>
-                                        <td colspan="7"
-                                            style="border:solid 1px black;text-align:right;padding-right:10px;">
-                                            Total
-                                        </td>
-                                        <td style="text-align:center;">
-                                            <span t-esc="sum(d.assigned_pallet_ids.mapped('total_content'))"/>
-                                        </td>
-                                        <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
-                                            <span t-esc="'%.2f' %sum(d.assigned_pallet_ids.mapped('lot_serial_ids').mapped('display_weight'))"/>
-                                        </td>
-                                        <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
-                                            <span t-esc="'%.2f' %sum(d.assigned_pallet_ids.mapped('lot_serial_ids').mapped('gross_weight'))"/>
-                                        </td>
-                                    </tr>
-                                </t>
-                            </t>
-                        </tbody>
-                    </table>
-                </t>
-            </div>
+                        <t t-if="p.id == d.assigned_pallet_ids[-1].id">
+                            <tr>
+                                <td colspan="7"
+                                    style="border:solid 1px black;text-align:right;padding-right:10px;">
+                                    Total
+                                </td>
+                                <td style="text-align:center;">
+                                    <span t-esc="sum(d.assigned_pallet_ids.mapped('total_content'))"/>
+                                </td>
+                                <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
+                                    <span t-esc="'%.2f' %sum(d.assigned_pallet_ids.mapped('lot_serial_ids').mapped('display_weight'))"/>
+                                </td>
+                                <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
+                                    <span t-esc="'%.2f' %sum(d.assigned_pallet_ids.mapped('lot_serial_ids').mapped('gross_weight'))"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </t>
+                </tbody>
+            </table>
         </t>
-    </template>
+    </div>
+</t>
+</template>
 
-    <template id="traceability_report">
-        <t t-call="web.html_container">
-            <div class="page">
-                <div class="oe_structure"/>
-                <t t-foreach="docs" t-as="d">
-                    <table width="100%%">
-                        <th style="width:50px;">
-                            <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
-                                 style="height:50px;"
-                            />
-                        </th>
-                        <th style="font-size:20px;">
-                            <strong>Informe de Trazabilidad</strong>
-                        </th>
-                    </table>
-                    <br/>
-                    <table width="45%%" style="border:solid 1px;font-size:12px;display:inline-block;">
+<template id="traceability_report">
+<t t-call="web.html_container">
+    <div class="page">
+        <div class="oe_structure"/>
+        <t t-foreach="docs" t-as="d">
+            <table width="100%%">
+                <th style="width:50px;">
+                    <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                         style="height:50px;"
+                    />
+                </th>
+                <th style="font-size:20px;">
+                    <strong>Informe de Trazabilidad</strong>
+                </th>
+            </table>
+            <br/>
+            <table width="45%%" style="border:solid 1px;font-size:12px;display:inline-block;">
+                <tr>
+                    <td>
+                        <strong>SHIPPER/PROVEEDOR:</strong>
+                    </td>
+                    <td>
+                        <span t-field="res_company.name"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>ADDRESS/DIRRECCION:</strong>
+                    </td>
+                    <td rowspan="2">
+                        <span t-field="res_company.street"/>
+                        <br/>
+                        <span t-field="res_company.country_id"/>
+                    </td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>
+                        <strong>PHONE/TELEFONO:</strong>
+                    </td>
+                    <td>
+                        <span t-field="res_company.phone"/>
+                    </td>
+                </tr>
+            </table>
+            <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
+                <tr>
+                    <td>
+                        <strong>CONSIGNEE/CONSIGNATARIO:</strong>
+                    </td>
+                    <td>
+                        <span t-field="d.consignee_id.name"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>ADDRESS/DIRRECCION:</strong>
+                    </td>
+                    <td rowspan="2">
+                        <span t-field="d.consignee_id.street"/>
+                        <br/>
+                        <span t-field="d.consignee_id.country_id"/>
+                    </td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>
+                        <strong>PHONE/TELEFONO:</strong>
+                    </td>
+                    <td>
+                        <span t-field="d.consignee_id.phone"/>
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <table width="45%%" style="border:solid 1px;font-size:12px;display:inline-block;">
+                <tr>
+                    <td>
+                        <strong>VESSEL/NAVE:</strong>
+                    </td>
+                    <td>
+                        <span t-field="d.shipping_id.ship.name"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>PORT OF LOADING:</strong>
+                    </td>
+                    <td>
+                        <span t-field="d.shipping_id.departure_port.name"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>PORT OF DISCHARGE:</strong>
+                    </td>
+                    <td>
+                        <span t-field="d.shipping_id.arrival_port.name"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>CONTAINER:</strong>
+                    </td>
+                    <td>
+                        <span t-field="d.container_number"/>
+                    </td>
+                </tr>
+            </table>
+            <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
+                <tr>
+                    <td>
+                        <strong>NOTIFY/NOTIFICADO:</strong>
+                    </td>
+                    <td>
+                        <span t-field="d.notify_ids[0].name"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>ADDRESS/DIRRECCION:</strong>
+                    </td>
+                    <td rowspan="2">
+                        <span t-field="d.notify_ids[0].street"/>
+                        <br/>
+                        <span t-field="d.notify_ids[0].country_id"/>
+                    </td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>
+                        <strong>PHONE/TELEFONO:</strong>
+                    </td>
+                    <td>
+                        <span t-field="d.notify_ids[0].phone"/>
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <table width="45%%" style="border:solid 1px;font-size:12px;display:inline-block;">
+                <tr rowspan="2">
+                    <td>DISPATCH N°/NUMERO DE DESPACHO</td>
+                    <td>
+                        <span t-field="d.name"/>
+                    </td>
+                </tr>
+                <tr></tr>
+            </table>
+            <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
+                <tr rowspan="2">
+                    <td style="text-align:center;">CLIENT PURCHASE ORDER/ORDER DE COMPRA CLIENTE</td>
+                    <td style="text-align:center;">
+                        <span t-field="d.origin"/>
+                    </td>
+                </tr>
+                <tr></tr>
+            </table>
+            <br/>
+            <table style="width:100%;border:solid 1px black;font-size:10px;" cellspacing="0"
+                   cellpadding="0">
+                <theader>
+                    <th style="text-align:center;border:solid 1px black;width:10%;" scope="col">
+                        <strong>ITEM/PRODUCT</strong>
+                    </th>
+                    <th style="text-align:center;border:solid 1px black;width:44%;" scope="col">
+                        <strong>TYPE OF PRODUCT/TIPO DE PRODUCTO</strong>
+                    </th>
+                    <th style="text-align:center;border:solid 1px black;" scope="col">
+                        <strong>TICKET N°/TRACE CODE</strong>
+                    </th>
+                    <th style="text-align:center;border:solid 1px black;" scope="col">
+                        <strong>LOT RAW MATERIALS/LOTE MATERIA PRIMA</strong>
+                    </th>
+                    <th style="text-align:center;border:solid 1px black;" scope="col">
+                        <strong>RAW MATERIAL WEIGHT / PESO MATERIA PRIMA</strong>
+                    </th>
+                    <th style="text-align:center;border:solid 1px black;" scope="col">
+                        <strong>PRODUCER/PRODUCTOR</strong>
+                    </th>
+                    <th style="text-align:center;border:solid 1px black;" scope="col">
+                        <strong>PACKING DATE/FECHA ELAB.</strong>
+                    </th>
+                    <th style="text-align:center;border:solid 1px black;" scope="col">
+                        <strong>BEST BEFORE DATE/FECHA VENCIMIENTO</strong>
+                    </th>
+                    <th style="text-align:center;border:solid 1px black;" scope="col">
+                        <strong>PACKING AMOUNT/N° DE ENVASES</strong>
+                    </th>
+                    <th style="text-align:center;border:solid 1px black;" scope="col">
+                        <strong>NET WEIGHT / PESO NETO</strong>
+                    </th>
+                    <th style="text-align:center;border:solid 1px black;" scope="col">
+                        <strong>GROSS WEIGHT / PESO BRUTO</strong>5
+                    </th>
+                </theader>
+                <tbody>
+                    <t t-foreach="d.packing_list_lot_ids" t-as="p">
                         <tr>
-                            <td>
-                                <strong>SHIPPER/PROVEEDOR:</strong>
+                            <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
+                                <span t-esc="p.product_id.name"/>
                             </td>
-                            <td>
-                                <span t-field="res_company.name"/>
+                            <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
+                                <span t-esc="p.product_id.type_product"/>
                             </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>ADDRESS/DIRRECCION:</strong>
-                            </td>
-                            <td rowspan="2">
-                                <span t-field="res_company.street"/>
-                                <br/>
-                                <span t-field="res_company.country_id"/>
-                            </td>
-                        </tr>
-                        <tr></tr>
-                        <tr>
-                            <td>
-                                <strong>PHONE/TELEFONO:</strong>
-                            </td>
-                            <td>
-                                <span t-field="res_company.phone"/>
-                            </td>
-                        </tr>
-                    </table>
-                    <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
-                        <tr>
-                            <td>
-                                <strong>CONSIGNEE/CONSIGNATARIO:</strong>
-                            </td>
-                            <td>
-                                <span t-field="d.consignee_id.name"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>ADDRESS/DIRRECCION:</strong>
-                            </td>
-                            <td rowspan="2">
-                                <span t-field="d.consignee_id.street"/>
-                                <br/>
-                                <span t-field="d.consignee_id.country_id"/>
-                            </td>
-                        </tr>
-                        <tr></tr>
-                        <tr>
-                            <td>
-                                <strong>PHONE/TELEFONO:</strong>
-                            </td>
-                            <td>
-                                <span t-field="d.consignee_id.phone"/>
-                            </td>
-                        </tr>
-                    </table>
-                    <br/>
-                    <table width="45%%" style="border:solid 1px;font-size:12px;display:inline-block;">
-                        <tr>
-                            <td>
-                                <strong>VESSEL/NAVE:</strong>
-                            </td>
-                            <td>
-                                <span t-field="d.shipping_id.ship.name"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>PORT OF LOADING:</strong>
-                            </td>
-                            <td>
-                                <span t-field="d.shipping_id.departure_port.name"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>PORT OF DISCHARGE:</strong>
-                            </td>
-                            <td>
-                                <span t-field="d.shipping_id.arrival_port.name"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>CONTAINER:</strong>
-                            </td>
-                            <td>
-                                <span t-field="d.container_number"/>
-                            </td>
-                        </tr>
-                    </table>
-                    <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
-                        <tr>
-                            <td>
-                                <strong>NOTIFY/NOTIFICADO:</strong>
-                            </td>
-                            <td>
-                                <span t-field="d.notify_ids[0].name"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>ADDRESS/DIRRECCION:</strong>
-                            </td>
-                            <td rowspan="2">
-                                <span t-field="d.notify_ids[0].street"/>
-                                <br/>
-                                <span t-field="d.notify_ids[0].country_id"/>
-                            </td>
-                        </tr>
-                        <tr></tr>
-                        <tr>
-                            <td>
-                                <strong>PHONE/TELEFONO:</strong>
-                            </td>
-                            <td>
-                                <span t-field="d.notify_ids[0].phone"/>
-                            </td>
-                        </tr>
-                    </table>
-                    <br/>
-                    <table width="45%%" style="border:solid 1px;font-size:12px;display:inline-block;">
-                        <tr rowspan="2">
-                            <td>DISPATCH N°/NUMERO DE DESPACHO</td>
-                            <td>
+                            <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                 <span t-field="d.name"/>
                             </td>
-                        </tr>
-                        <tr></tr>
-                    </table>
-                    <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
-                        <tr rowspan="2">
-                            <td style="text-align:center;">CLIENT PURCHASE ORDER/ORDER DE COMPRA CLIENTE</td>
-                            <td style="text-align:center;">
-                                <span t-field="d.origin"/>
+                            <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:Opx;">
+                                <table style="width:100%;font-size:10px;text-align:center;">
+                                    <t t-foreach="p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('production_id').mapped('consumed_material_ids').mapped('stock_production_lot_id')"
+                                       t-as="c">
+                                        <tr>
+                                            <td>
+                                                <span t-field="c.name"></span>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </table>
+                            </td>
+                            <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:Opx;">
+                                <table style="width:100%;font-size:10px;text-align:center;">
+                                    <t t-foreach="p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('production_id').mapped('consumed_material_ids').mapped('stock_production_lot_id')"
+                                       t-as="c">
+                                        <tr>
+                                            <td>
+                                                <span t-field="c.balance"></span>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </table>
+                            </td>
+                            <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:Opx;">
+                                <table style="width:100%;font-size:10px;text-align:center;">
+                                    <t t-foreach="p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('production_id').mapped('consumed_material_ids').mapped('stock_production_lot_id')"
+                                       t-as="c">
+                                        <tr>
+                                            <td>
+                                                <span t-field="c.producer_id"></span>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </table>
+                            </td>
+                            <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
+                                <span t-esc="p.all_pallet_ids[0].lot_serial_ids[0].packaging_date.strftime('%d-%b-%y')"/>
+                            </td>
+                            <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
+                                <span t-esc="p.all_pallet_ids[0].lot_serial_ids[0].best_before_date.strftime('%d-%b-%y')"/>
+                            </td>
+                            <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
+                                <span t-esc="sum(p.all_pallet_ids[0].lot_serial_ids.mapped('display_weight'))"/>
+                            </td>
+                            <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
+                                <span t-esc="'%.2f' %sum(p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('display_weight'))"/>
+                            </td>
+                            <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
+                                <span t-esc="'%.2f' %sum(p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('gross_weight'))"/>
                             </td>
                         </tr>
-                        <tr></tr>
-                    </table>
-                    <br/>
-                    <table style="width:100%;border:solid 1px black;font-size:10px;" cellspacing="0"
-                           cellpadding="0">
-                        <theader>
-                            <th style="text-align:center;border:solid 1px black;width:10%;" scope="col">
-                                <strong>ITEM/PRODUCT</strong>
-                            </th>
-                            <th style="text-align:center;border:solid 1px black;width:44%;" scope="col">
-                                <strong>TYPE OF PRODUCT/TIPO DE PRODUCTO</strong>
-                            </th>
-                            <th style="text-align:center;border:solid 1px black;" scope="col">
-                                <strong>TICKET N°/TRACE CODE</strong>
-                            </th>
-                            <th style="text-align:center;border:solid 1px black;" scope="col">
-                                <strong>LOT RAW MATERIALS/LOTE MATERIA PRIMA</strong>
-                            </th>
-                            <th style="text-align:center;border:solid 1px black;" scope="col">
-                                <strong>RAW MATERIAL WEIGHT / PESO MATERIA PRIMA</strong>
-                            </th>
-                            <th style="text-align:center;border:solid 1px black;" scope="col">
-                                <strong>PRODUCER/PRODUCTOR</strong>
-                            </th>
-                            <th style="text-align:center;border:solid 1px black;" scope="col">
-                                <strong>PACKING DATE/FECHA ELAB.</strong>
-                            </th>
-                            <th style="text-align:center;border:solid 1px black;" scope="col">
-                                <strong>BEST BEFORE DATE/FECHA VENCIMIENTO</strong>
-                            </th>
-                            <th style="text-align:center;border:solid 1px black;" scope="col">
-                                <strong>PACKING AMOUNT/N° DE ENVASES</strong>
-                            </th>
-                            <th style="text-align:center;border:solid 1px black;" scope="col">
-                                <strong>NET WEIGHT / PESO NETO</strong>
-                            </th>
-                            <th style="text-align:center;border:solid 1px black;" scope="col">
-                                <strong>GROSS WEIGHT / PESO BRUTO</strong>5
-                            </th>
-                        </theader>
-                        <tbody>
-                            <t t-foreach="d.packing_list_lot_ids" t-as="p">
-                                <tr>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-esc="p.product_id.name"/>
-                                    </td>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-esc="p.product_id.type_product"/>
-                                    </td>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-field="d.name"/>
-                                    </td>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:Opx;">
-                                        <table style="width:100%;font-size:10px;text-align:center;">
-                                            <t t-foreach="p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('production_id').mapped('consumed_material_ids').mapped('stock_production_lot_id')"
-                                               t-as="c">
-                                                <tr>
-                                                    <td>
-                                                        <span t-field="c.name"></span>
-                                                    </td>
-                                                </tr>
-                                            </t>
-                                        </table>
-                                    </td>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:Opx;">
-                                        <table style="width:100%;font-size:10px;text-align:center;">
-                                            <t t-foreach="p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('production_id').mapped('consumed_material_ids').mapped('stock_production_lot_id')"
-                                               t-as="c">
-                                                <tr>
-                                                    <td>
-                                                        <span t-field="c.balance"></span>
-                                                    </td>
-                                                </tr>
-                                            </t>
-                                        </table>
-                                    </td>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:Opx;">
-                                        <table style="width:100%;font-size:10px;text-align:center;">
-                                            <t t-foreach="p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('production_id').mapped('consumed_material_ids').mapped('stock_production_lot_id')"
-                                               t-as="c">
-                                                <tr>
-                                                    <td>
-                                                        <span t-field="c.producer_id"></span>
-                                                    </td>
-                                                </tr>
-                                            </t>
-                                        </table>
-                                    </td>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-esc="p.all_pallet_ids[0].lot_serial_ids[0].packaging_date.strftime('%d-%b-%y')"/>
-                                    </td>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-esc="p.all_pallet_ids[0].lot_serial_ids[0].best_before_date.strftime('%d-%b-%y')"/>
-                                    </td>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-esc="sum(p.all_pallet_ids[0].lot_serial_ids.mapped('display_weight'))"/>
-                                    </td>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-esc="'%.2f' %sum(p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('display_weight'))"/>
-                                    </td>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-esc="'%.2f' %sum(p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('gross_weight'))"/>
-                                    </td>
-                                </tr>
-                                <t t-if="p.id == d.assigned_pallet_ids[-1].id">
-                                    <tr>
-                                        <td colspan="8" style="text-align:right;">
-                                            Total
-                                        </td>
-                                        <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
-                                            <span t-esc="sum(d.assigned_pallet_ids.mapped('total_content'))"/>
-                                        </td>
-                                        <td></td>
-                                        <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
-                                            <span t-esc="'%.2f' %sum(d.assigned_pallet_ids.mapped('lot_serial_ids').mapped('display_weight'))"/>
-                                        </td>
-                                        <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
-                                            <span t-esc="'%.2f' %sum(d.assigned_pallet_ids.mapped('lot_serial_ids').mapped('gross_weight'))"/>
-                                        </td>
-                                    </tr>
-                                </t>
-                            </t>
-                        </tbody>
-                    </table>
-                </t>
-            </div>
+                        <t t-if="p.id == d.assigned_pallet_ids[-1].id">
+                            <tr>
+                                <td colspan="8" style="text-align:right;">
+                                    Total
+                                </td>
+                                <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
+                                    <span t-esc="sum(d.assigned_pallet_ids.mapped('total_content'))"/>
+                                </td>
+                                <td></td>
+                                <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
+                                    <span t-esc="'%.2f' %sum(d.assigned_pallet_ids.mapped('lot_serial_ids').mapped('display_weight'))"/>
+                                </td>
+                                <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
+                                    <span t-esc="'%.2f' %sum(d.assigned_pallet_ids.mapped('lot_serial_ids').mapped('gross_weight'))"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </t>
+                </tbody>
+            </table>
         </t>
-    </template>
+    </div>
+</t>
+</template>
 
-    <record id="paper_format_letter_custom" model="report.paperformat">
-        <field name="name">Carta Custom</field>
-        <field name="default" eval="False"/>
-        <field name="format">A4</field>
-        <field name="orientation">Portrait</field>
-        <field name="page_height">0</field>
-        <field name="page_width">0</field>
-        <field name="margin_top">5</field>
-        <field name="margin_bottom">0</field>
-        <field name="margin_left">15</field>
-        <field name="margin_right">15</field>
-        <field name="header_line" eval="False"/>
-        <field name="header_spacing">0</field>
-        <field name="footer_line" eval="False"/>
-        <field name="dpi">90</field>
-    </record>
+<record id="paper_format_letter_custom" model="report.paperformat">
+<field name="name">Carta Custom</field>
+<field name="default" eval="False"/>
+<field name="format">A4</field>
+<field name="orientation">Portrait</field>
+<field name="page_height">0</field>
+<field name="page_width">0</field>
+<field name="margin_top">5</field>
+<field name="margin_bottom">0</field>
+<field name="margin_left">15</field>
+<field name="margin_right">15</field>
+<field name="header_line" eval="False"/>
+<field name="header_spacing">0</field>
+<field name="footer_line" eval="False"/>
+<field name="dpi">90</field>
+</record>
 
-    <record id="paper_format_letter_horizontal" model="report.paperformat">
-        <field name="name">Carta Horizontal</field>
-        <field name="default" eval="False"/>
-        <field name="format">Letter</field>
-        <field name="orientation">Landscape</field>
-        <field name="page_height">0</field>
-        <field name="page_width">0</field>
-        <field name="margin_top">5</field>
-        <field name="margin_bottom">0</field>
-        <field name="margin_left">5</field>
-        <field name="margin_right">5</field>
-        <field name="header_line" eval="False"/>
-        <field name="header_spacing">0</field>
-        <field name="footer_line" eval="False"/>
-        <field name="dpi">90</field>
-    </record>
+<record id="paper_format_letter_horizontal" model="report.paperformat">
+<field name="name">Carta Horizontal</field>
+<field name="default" eval="False"/>
+<field name="format">Letter</field>
+<field name="orientation">Landscape</field>
+<field name="page_height">0</field>
+<field name="page_width">0</field>
+<field name="margin_top">5</field>
+<field name="margin_bottom">0</field>
+<field name="margin_left">5</field>
+<field name="margin_right">5</field>
+<field name="header_line" eval="False"/>
+<field name="header_spacing">0</field>
+<field name="footer_line" eval="False"/>
+<field name="dpi">90</field>
+</record>
 
-    <report id="action_packing_list" model="stock.picking" paperformat="paper_format_letter_horizontal"
-            report_type="qweb-pdf"
-            name="dimabe_export_order.report_packing_list" string="Packing List"/>
+<report id="action_packing_list" model="stock.picking" paperformat="paper_format_letter_horizontal"
+        report_type="qweb-pdf"
+        name="dimabe_export_order.report_packing_list" string="Packing List"/>
 
-    <report id="action_dispatch_guide_report_dte" string="Plantilla DTE" model="stock.picking" report_type="qweb-pdf"
-            name="dimabe_export_order.report_dispatch_guide_dte" menu="True" paperformat="paper_format_letter_custom"
-    />
+<report id="action_dispatch_guide_report_dte" string="Plantilla DTE" model="stock.picking" report_type="qweb-pdf"
+        name="dimabe_export_order.report_dispatch_guide_dte" menu="True" paperformat="paper_format_letter_custom"
+/>
 
-    <report id="action_inform" model="stock.picking" paperformat="paper_format_letter_horizontal"
-            report_type="qweb-pdf"
-            name="dimabe_export_order.traceability_report" string="Informe de Tracabilidad"/>
+<report id="action_inform" model="stock.picking" paperformat="paper_format_letter_horizontal"
+        report_type="qweb-pdf"
+        name="dimabe_export_order.traceability_report" string="Informe de Tracabilidad"/>
 
-    <report id="action_dispatch_weight_dispatch" string="Ticket Pesaje Despacho" model="stock.picking"
-            report_type="qweb-pdf"
-            name="dimabe_export_order.report_weight_dispatch" menu="True" paperformat="paper_format_letter_horizontal"/>
-    <report id="action_dispatch_guide_report" string="Guia de despacho" model="stock.picking" report_type="qweb-pdf"
-            name="dimabe_export_order.report_dispatch_guide" menu="True" paperformat="paper_format_letter_custom"
-    />
-    <report id="action_dispatch_label_report" string="Informe despacho" model="ir.attachment" report_type="qweb-pdf"
-            name="dimabe_export_order.report_truck_dispatch" paperformat="paper_format_letter_custom"/>
-</odoo>
+<report id="action_dispatch_weight_dispatch" string="Ticket Pesaje Despacho" model="stock.picking"
+        report_type="qweb-pdf"
+        name="dimabe_export_order.report_weight_dispatch" menu="True" paperformat="paper_format_letter_horizontal"/>
+<report id="action_dispatch_guide_report" string="Guia de despacho" model="stock.picking" report_type="qweb-pdf"
+        name="dimabe_export_order.report_dispatch_guide" menu="True" paperformat="paper_format_letter_custom"
+/>
+<report id="action_dispatch_label_report" string="Informe despacho" model="ir.attachment" report_type="qweb-pdf"
+        name="dimabe_export_order.report_truck_dispatch" paperformat="paper_format_letter_custom"/>
+        </odoo>
