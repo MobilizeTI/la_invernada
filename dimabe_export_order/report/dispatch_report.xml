@@ -378,7 +378,7 @@
             <div class="page" style="margin:auto;">
                 <t t-foreach="docs" t-as="d">
                     <div style="width:100%;">
-                        <div style="width:33.3%;display:inline-block;">
+                        <div style="width:33.3%;height:100px;display:inline-block;">
                             <![CDATA[&nbsp;]]>
                         </div>
                         <div style="width:33.3%;display:inline-block;">
