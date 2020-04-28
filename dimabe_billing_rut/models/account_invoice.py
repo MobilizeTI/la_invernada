@@ -5,22 +5,8 @@ import requests
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
     dte_folio = fields.Text(string='Folio DTE')
-    dte_type =  fields.Selection(
-        [
-            ('33', 'Factura Electrónica'),
-            ('34', 'Factura No Afecta o Exenta Electrónica'),
-            ('39', 'Boleta de Venta Electrónica'),
-            ('43', 'Liquidación-Factura Electrónica'),
-            ('46', 'Factura de Compra Electrónica.'),
-            ('52', 'Guía de Despacho Electrónica'),
-            ('56', 'Nota de Débito Electrónica'),
-            ('61', 'Nota de Crédito Electrónica'),
-            ('110', 'Factura de Exportación.'),
-            ('111', 'Nota de Débito de Exportación.'),
-            ('112', 'Nota de Crédito de Exportación'),
-
-        ],
-        string="Tipo Documento",
+    dte_type_id =  fields.Many2one(
+        'dte.type', string = 'Tipo Documento'
     )
     dte_xml = fields.Text("XML")
     dte_pdf = fields.Text("PDF")
