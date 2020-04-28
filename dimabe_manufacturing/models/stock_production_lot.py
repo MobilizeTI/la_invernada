@@ -213,8 +213,8 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_lot_location(self):
         for item in self:
-            stock_quant = item.get_stock_quant()
-            item.location_id = stock_quant.location_id
+            dried = self.env['dried.unpelled.history'].search([('out_lot_id','=',item.id)])
+            item.location_id = dried.dest_location_id
 
     @api.multi
     def _compute_lot_oven_use(self):
