@@ -96,11 +96,6 @@ class ManufacturingPallet(models.Model):
     is_reserved = fields.Boolean('¿Esta reservado?')
 
 
-    @api.multi
-    def _compute_location(self):
-        for item in self:
-            quant = item.lot_serial_ids.mapped('stock_production_lot_id').get_stock_quant()
-            item.location = quant.location_id
 
     @api.model
     def create(self, values_list):
