@@ -93,7 +93,7 @@ class AccountInvoice(models.Model):
     def send_dte(self, dte):
         url = self.company_id.dte_url
         rut_emisor = self.company_id.invoice_rut.replace(".", "").split("-")[0]
-        hash = self.company_id.hash_dte
+        hash = self.company_id.dte_hash
         auth = requests.auth.HTTPBasicAuth(hash, 'X')
         ssl_check = False
         # Api para Generar DTE
