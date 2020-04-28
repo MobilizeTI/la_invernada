@@ -213,7 +213,7 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_lot_location(self):
         for item in self:
-            item.location_id = item.mapped('quant_ids').filtered(lambda a: a.location_id.name == 'Stock').mapped('location_id')
+            item.location_id = item.get_stock_quant.mapped('location_id')
 
     @api.multi
     def _compute_lot_oven_use(self):
