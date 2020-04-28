@@ -61,7 +61,7 @@
         'views/stock_report.xml',
         'views/pt_report.xml',
         'views/dried_report.xml',
-        'view/match_report.xml'
+        'views/match_report.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
