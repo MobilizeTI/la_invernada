@@ -19,9 +19,6 @@
             <field name="res_model">mrp.workorder</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_stock_report_match_tree"/>
-             <field name="domain">
-                 [('state','=','done')]
-             </field>
         </record>
         <menuitem id="stock_report_match_menu"
                   action="dimabe_manufacturing.stock_report_match"
