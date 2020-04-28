@@ -99,9 +99,19 @@ class ManufacturingPallet(models.Model):
 
     sale_order_id = fields.Many2one('sale.order',compute='_compute_sale_order_id')
 
-    dest_client_id = fields.Many2one('res.partner',related='sale_order_id.partner_id')
+    dest_client_id = fields.Many2one('res.partner',compute='_compute_dest_client_id')
 
-    dest_country_id = fields.Manyone('res.country',related='dest_client_id.country_id')
+    dest_country_id = fields.Manyone('res.country',compute='_compute_dest_country_id')
+
+    @api.multi
+    def _compute_dest_client_id(self):
+        for item in self:
+            item.dest_client_id = item.sale_order_id.partner_id
+
+    @api.multi
+    def _compute_dest_client_id(self):
+        for item in self:
+            item.dest_country_id = item.sale_order_id.partner_id.country_id
 
     @api.multi
     def _compute_sale_order_id(self):
