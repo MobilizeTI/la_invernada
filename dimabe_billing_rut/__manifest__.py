@@ -25,7 +25,7 @@
     'data': [
         'security/ir.model.access.csv',
         'data/dte.type.csv',
-        'data/custom.economic.activity',
+        'data/custom.economic.activity.csv',
         'views/res_company.xml',
         'views/dte_type.xml',
         'views/res_partner.xml',
