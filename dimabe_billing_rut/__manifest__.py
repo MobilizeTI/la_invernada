@@ -26,6 +26,7 @@
         'security/ir.model.access.csv',
         'data/dte.type.csv',
         'views/res_company.xml',
+        'views/dte_type.xml',
         'views/res_partner.xml',
         'views/account_invoice.xml',
         'views/stock_location.xml',
