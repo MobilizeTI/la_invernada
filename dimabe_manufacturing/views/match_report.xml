@@ -10,6 +10,7 @@
                     <field name="product_id"/>
                     <field name="product_variety"/>
                     <field name="location_id"/>
+                    <field name="product_qty"/>
                 </tree>
             </field>
         </record>
