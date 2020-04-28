@@ -31,7 +31,7 @@ class ProductProduct(models.Model):
 
     is_standard_weight = fields.Boolean('Es peso estandar', default=False)
 
-    measure = fields.Char('Medida')
+    measure = fields.Char('Medida',compute='_compute_measure')
 
     @api.multi
     def _compute_measure(self):
