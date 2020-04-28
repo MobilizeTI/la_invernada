@@ -102,7 +102,8 @@ class ManufacturingPallet(models.Model):
     @api.multi
     def _compute_location(self):
         for item in self:
-            item.location = item.lot_serial_ids.mapped('stock_production_lot_id').get_stock_quant().location_id
+            quant = item.lot_serial_ids.mapped('stock_production_lot_id').get_stock_quant()
+            item.location = quant.location_id
 
     @api.model
     def create(self, values_list):
