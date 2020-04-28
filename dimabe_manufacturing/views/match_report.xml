@@ -7,7 +7,7 @@
             <field name="priority">20</field>
             <field name="arch" type="xml">
                 <tree name="Informe de Producto Partido">
-                    <field name="is_match"/>
+                    <field name="name"/>
                 </tree>
             </field>
         </record>
