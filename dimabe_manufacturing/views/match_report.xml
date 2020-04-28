@@ -4,7 +4,7 @@
         <record id="view_stock_report_match_tree" model="ir.ui.view">
             <field name="name">Informe de Producto Partido</field>
             <field name="model">mrp.workorder</field>
-            <field name="priority">100</field>
+            <field name="priority">20</field>
             <field name="arch" type="xml">
                 <tree name="Informe de Partido">
                     <field name="is_match"/>
@@ -16,9 +16,6 @@
             <field name="res_model">stock.production.lot</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_stock_report_match_tree"/>
-             <field name="domain">
-
-             </field>
         </record>
         <menuitem id="stock_report_match_menu"
                   action="dimabe_manufacturing.match_report"
