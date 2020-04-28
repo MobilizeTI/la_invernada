@@ -7,7 +7,7 @@
             <field name="priority">20</field>
             <field name="arch" type="xml">
                 <tree name="Informe de Partido">
-                    <field name="is_match" />
+                    <field name="product_id"/>
                 </tree>
             </field>
         </record>
@@ -17,7 +17,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_stock_report_match_tree"/>
              <field name="domain">
-                 [('is_match','=',True)]
+                 [('is_match','!=',False),('state','=','done')]
              </field>
         </record>
         <menuitem id="stock_report_match_menu"

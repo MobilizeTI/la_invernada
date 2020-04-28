@@ -113,6 +113,8 @@ class MrpWorkorder(models.Model):
 
     is_match = fields.Boolean('Es Partido',compute='compute_is_match')
 
+    producer_id = fields.Many2one()
+
     @api.multi
     def compute_is_match(self):
         for item in self:
