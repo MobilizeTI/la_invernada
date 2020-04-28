@@ -9,7 +9,6 @@
                 <tree name="Informe de Partido">
                     <field name="product_id"/>
                     <field name="product_variety"/>
-                    <field name="final_lot_id"/>
                     <field name="location_id"/>
                 </tree>
             </field>

@@ -117,6 +117,8 @@ class MrpWorkorder(models.Model):
 
     location_id = fields.Many2one('stock.location',related='production_id.location_dest_id')
 
+    product_qty = fields.Float(related='production_id.product_qty')
+
     @api.multi
     def compute_is_match(self):
         for item in self:
