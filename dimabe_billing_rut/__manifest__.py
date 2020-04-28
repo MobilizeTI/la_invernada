@@ -23,6 +23,7 @@
 
     # always loaded
     'data': [
+        'data/dte.type.csv',
         'security/ir.model.access.csv',
         'views/res_company.xml',
         'views/res_partner.xml',
