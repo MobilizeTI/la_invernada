@@ -111,6 +111,13 @@ class MrpWorkorder(models.Model):
         compute='_compute_there_is_serial_without_pallet'
     )
 
+    is_match = fields.Boolean('Es Partido',compute='compute_is_match')
+
+    @api.multi
+    def compute_is_match(self):
+        for item in self:
+            item.is_match = item.production_id.routing_id.code == 'RO/00006'
+
     @api.multi
     def _compute_there_is_serial_without_pallet(self):
         for item in self:
