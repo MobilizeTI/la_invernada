@@ -97,7 +97,7 @@ class AccountInvoice(models.Model):
         auth = requests.auth.HTTPBasicAuth(hash, 'X')
         ssl_check = False
         # Api para Generar DTE
-        apidte = '/dte/documentos/gendte?getXML=true&getPDF=false&getTED=png'
+        apidte = '/dte/documentos/gendte?getXML=true&getPDF=true&getTED=png'
         emitir = requests.post(url + '/api' + apidte, dte, auth=auth, verify=ssl_check)
         if emitir.status_code != 200:
             raise Exception('Error al Temporal: ' + emitir.json())
