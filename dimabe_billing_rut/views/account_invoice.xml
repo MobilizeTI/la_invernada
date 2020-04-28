@@ -32,7 +32,7 @@
                                 <button  type="object" name="send_to_sii" string="Enviar al SII" attrs="{'invisible': ['|',('dte_folio', '!=', False),('state','=','draft')]}" class="oe_highlight"/>
                                 <field name="method_of_payment" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
                                 <field name="dte_folio" readonly="1"/>
-                                <field name="dte_type_id" domain="[('code', 'in', ['33','34','39', '110'])]"  attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
+                                <field name="dte_type_id" domain="[('code', 'in', [33,34,39,110])]"  attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
                                 <field name="ted" widget="image"  readonly="1"/>
                                 <field name="pdf_url" widget="url" readonly="1" text="Url de Descarga"/>
                                 <field name="dte_xml" widget="binary" filename="dte.xml" />

@@ -1,12 +1,12 @@
 id,code,name
-dte_type_33,33,'Factura Electrónica'
-dte_type_34,34,'Factura No Afecta o Exenta Electrónica'
-dte_type_39,39,'Boleta de Venta Electrónica'
-dte_type_43,43,'Liquidación-Factura Electrónica'
-dte_type_46,46,'Factura de Compra Electrónica.'
-dte_type_52,52,'Guía de Despacho Electrónica'
-dte_type_56,56,'Nota de Débito Electrónica'
-dte_type_61,61,'Nota de Crédito Electrónica'
-dte_type_110,110,'Factura de Exportación.'
-dte_type_111,111,'Nota de Débito de Exportación.'
-dte_type_112,112,'Nota de Crédito de Exportación'
+dte_type_33,33,Factura Electrónica
+dte_type_34,34,Factura No Afecta o Exenta Electrónica
+dte_type_39,39,Boleta de Venta Electrónica
+dte_type_43,43,Liquidación-Factura Electrónica
+dte_type_46,46,Factura de Compra Electrónica
+dte_type_52,52,Guía de Despacho Electrónica
+dte_type_56,56,Nota de Débito Electrónica
+dte_type_61,61,Nota de Crédito Electrónica
+dte_type_110,110,Factura de Exportación
+dte_type_111,111,Nota de Débito de Exportación
+dte_type_112,112,Nota de Crédito de Exportación
