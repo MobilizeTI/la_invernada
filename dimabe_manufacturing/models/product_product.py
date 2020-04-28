@@ -72,20 +72,16 @@ class ProductProduct(models.Model):
     @api.multi
     def _compute_label_product(self):
         for item in self:
-            specie = item.get_species()
-            models._logger.error('Especie: {}'.format(specie))
-            if specie == 'Nuez Con Cáscara':
-                caliber = item.get_calibers()
-                models._logger.error(caliber)
-                item.label_name = item.name + ' (' + caliber + ')'
-            if specie == 'Nuez Sin Cáscara':
-                color = item.get_color()
-                models._logger.error('Nuez Sin Cáscara : {}'.format('color'))
-                item.label_name = item.name + ' (' + color + ')'
-            else:
-                item.label_name = item.display_name
-
-
+            for value in item.attribute_value_ids:
+                if 'Especie' == value.attribute_id:
+                    if 'Nuez Con Cáscara' == value.name:
+                        caliber = item.attribute_value_ids.filtered(lambda a: a.attribute_id == 'Calibre').name
+                        item.label_name = item.name + '('+caliber+')'
+                    if 'Nuez Sin Cáscara' == value.name:
+                        color = item.attribute_value_ids.filtered(lambda a: a.attribute_id == 'Color').name
+                        item.label_name = item.name + '(' + color + ')'
+                    else:
+                        item.label_name = item.display_name
 
     @api.multi
     def compute_is_to_manufacturing(self):
