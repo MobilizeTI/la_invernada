@@ -101,7 +101,7 @@ class ManufacturingPallet(models.Model):
 
     dest_client_id = fields.Many2one('res.partner',compute='_compute_dest_client_id')
 
-    dest_country_id = fields.Manyone('res.country',compute='_compute_dest_country_id')
+    dest_country_id = fields.Many2one('res.country',compute='_compute_dest_country_id')
 
     @api.multi
     def _compute_dest_client_id(self):
