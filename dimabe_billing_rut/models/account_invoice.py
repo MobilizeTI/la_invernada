@@ -91,7 +91,7 @@ class AccountInvoice(models.Model):
         self.send_dte(json.dumps(dte))
 
     def send_dte(self, dte):
-        url = self.company_id.url_dte
+        url = self.company_id.dte_url
         rut_emisor = self.company_id.invoice_rut.replace(".", "").split("-")[0]
         hash = self.company_id.hash_dte
         auth = requests.auth.HTTPBasicAuth(hash, 'X')
