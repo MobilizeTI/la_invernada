@@ -75,13 +75,10 @@ class ProductProduct(models.Model):
             for value in item.attribute_value_ids:
                 if 'Especie' == value.attribute_id:
                     if 'Nuez Con Cáscara' == value.name:
-                        caliber = item.attribute_value_ids.filtered(lambda a: a.attribute_id == 'Calibre').name
-                        item.label_name = item.name + '('+caliber+')'
-                    if 'Nuez Sin Cáscara' == value.name:
-                        color = item.attribute_value_ids.filtered(lambda a: a.attribute_id == 'Color').name
-                        item.label_name = item.name + '(' + color + ')'
-                    else:
-                        item.label_name = item.display_name
+                        item.label_name = item.name + '('+item.get_calibers()+
+
+
+
 
     @api.multi
     def compute_is_to_manufacturing(self):
