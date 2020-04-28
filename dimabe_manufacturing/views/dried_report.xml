@@ -14,6 +14,7 @@
                     <field name="product_caliber"/>
                     <field name="serial_not_consumed"/>
                     <field name="dried_report_product_name"/>
+                    <field name="location_id"/>
                 </tree>
             </field>
         </record>

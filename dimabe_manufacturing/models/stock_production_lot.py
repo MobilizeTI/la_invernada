@@ -208,6 +208,13 @@ class StockProductionLot(models.Model):
 
     dried_report_product_name = fields.Char(compute='_compute_lot_oven_use')
 
+    location_id = fields.Many2one('stock.location',compute='_compute_lot_location')
+
+    @api.multi
+    def _compute_lot_location(self):
+        for item in self:
+            item.location_id = self.get_stock_quant()
+
     @api.multi
     def _compute_lot_oven_use(self):
         for item in self:
@@ -219,7 +226,7 @@ class StockProductionLot(models.Model):
                     if oven.id == dried.oven_use_ids.mapped('dried_oven_ids')[-1].id:
                         dried_oven.append(oven.name)
                 ovens = ''
-                item.dried_report_product_name = item.product_id.display_name + ovens.join(dried_oven)
+                item.dried_report_product_name = item.product_id.display_name + ' ' + ovens.join(dried_oven)
 
 
 
