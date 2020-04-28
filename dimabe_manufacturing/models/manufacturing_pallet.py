@@ -102,7 +102,7 @@ class ManufacturingPallet(models.Model):
     @api.multi
     def _compute_sale_order_id(self):
         for item in self:
-            item.production_id = item.lot_serial_ids.mapped('production_id').sale_order_id
+            item.sale_order_id = item.lot_serial_ids.mapped('production_id').mapped('sale_order_id')
 
     @api.model
     def create(self, values_list):
