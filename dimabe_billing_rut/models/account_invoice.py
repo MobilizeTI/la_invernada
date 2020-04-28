@@ -39,12 +39,12 @@ class AccountInvoice(models.Model):
         dte = {}
         dte["Encabezado"] = {}
         # El Portal completa los datos del Emisor
-        dte["Encabezado"]["IdDoc"] = {"TipoDTE": self.dte_type}
+        dte["Encabezado"]["IdDoc"] = {"TipoDTE": self.dte_type_id.code}
         #Si es Boleta de debe indicar el tipo de servicio, por defecto de venta de servicios
-        if self.dte_type in ('39', 39):
+        if self.dte_type_id.code in ('39', 39):
             dte["Encabezado"]["IdDoc"]["IndServicio"] = 3
 
-        if not self.dte_type in ('39', 39):
+        if not self.dte_type_id.code in ('39', 39):
             #Se debe inicar SOLO SI los valores indicados en el documento son con iva incluido
             dte["Encabezado"]["IdDoc"]["MntBruto"] = 1
 
