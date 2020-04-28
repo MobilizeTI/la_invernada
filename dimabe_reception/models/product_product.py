@@ -16,15 +16,15 @@ class ProductProduct(models.Model):
 
     @api.model
     def get_variety(self):
-        return self.get_variant('variedad')
+        return self.get_variant('Variedad')
 
     @api.model
     def get_species(self):
-        return self.get_variant('especie')
+        return self.get_variant('Especie')
 
     @api.model
     def get_calibers(self):
-        return self.get_variant('calibre')
+        return self.get_variant('Calibre')
 
     @api.model
     def get_color(self):
