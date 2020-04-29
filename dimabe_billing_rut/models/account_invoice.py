@@ -6,7 +6,7 @@ class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
     dte_folio = fields.Text(string='Folio DTE')
     dte_type_id =  fields.Many2one(
-        'dte.type', string = 'Tipo Documento'
+        comodel_name='dte.type', string = 'Tipo Documento'
     )
     dte_xml = fields.Text("XML")
     dte_pdf = fields.Text("PDF")
