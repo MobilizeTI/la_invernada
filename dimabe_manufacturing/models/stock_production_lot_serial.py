@@ -130,6 +130,16 @@ class StockProductionLotSerial(models.Model):
 
     produce_weight = fields.Float('Kilos Producidos',compute='_compute_produce_weight')
 
+    pallet_name = fields.Char('Folio Pallet',compute='_compute_pallet_name')
+
+    @api.multi
+    def _compute_pallet_name(self):
+        for item in self:
+            if item.pallet_id:
+                item.pallet_name = item.pallet_id.name
+            else:
+                item.pallet_name = 'Sin Pallet'
+
     @api.multi
     def _compute_produce_weight(self):
         for item in self:
