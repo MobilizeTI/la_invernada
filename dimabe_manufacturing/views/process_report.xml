@@ -12,7 +12,9 @@
                     <field name="producer_id"/>
                     <field name="product_id"/>
                     <field name="serial_number"/>
-                    <field name="process_id" invisible="1"/>
+                    <field name="stock_production_lot_id"/>
+                    <field name="in_weight"/>
+                    <field name="produce_weight"/>
                 </tree>
             </field>
         </record>

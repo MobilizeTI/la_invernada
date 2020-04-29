@@ -126,6 +126,27 @@ class StockProductionLotSerial(models.Model):
 
     process_id = fields.Char('Proceso',compute='_compute_process_id',store=True)
 
+    in_weight = fields.Float('Kilos Ingresado',compute='_compute_in_weight')
+
+    produce_weight = fields.Float('Kilos Producidos',compute='_compute_produce_weight')
+
+    @api.multi
+    def _compute_produce_weight(self):
+        for item in self:
+            if item.production_id:
+                item.produce_weight = item.real_weight
+            else:
+                item.produce_weight = 0.0
+
+
+    @api.multi
+    def _compute_in_weight(self):
+        for item in self:
+            if item.reserved_to_production_id:
+                item.in_weight = item.real_weight
+            else:
+                item.in_weight = 0.0
+
     @api.multi
     def _compute_process_id(self):
         for item in self:
