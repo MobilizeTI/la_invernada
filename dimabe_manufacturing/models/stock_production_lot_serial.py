@@ -136,7 +136,7 @@ class StockProductionLotSerial(models.Model):
 
     work_order_id = fields.Many2one('mrp.workorder','Order Fabricacion',compute='_compute_workorder_id')
 
-    work_order_name = fields.Char('Order de Fabricacion',related='work_order_id.name')
+    work_order_name = fields.Many2one('Order de Fabricacion',related='work_order.production_id')
 
     @api.multi
     def _compute_workorder_id(self):
