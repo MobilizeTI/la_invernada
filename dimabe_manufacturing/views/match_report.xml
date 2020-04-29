@@ -7,10 +7,11 @@
             <field name="priority">20</field>
             <field name="arch" type="xml">
                 <tree name="Informe de Partido">
-                    <field name="product_id"/>
-                    <field name="product_variety"/>
-                    <field name="location_id"/>
-                    <field name="product_qty"/>
+                    <field name="product_id" string="Producto"/>
+                    <field name="product_variety" string="Variedad"/>
+                    <field name="location_id" string="Ubicacion"/>
+                    <field name="product_qty" string="Kilos"/>
+                    
                 </tree>
             </field>
         </record>
