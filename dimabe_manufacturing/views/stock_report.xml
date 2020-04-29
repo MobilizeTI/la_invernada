@@ -25,7 +25,7 @@
             <field name="view_mode">tree</field>
             <field name="view_id" ref="view_stock_report_tree"/>
             <field name="domain">
-                [('quantity','>',0),('product_id.categ_id.parent_id.name','like','Materia Prima Seca',('serial_not_consumed','>',0))]
+                [('quantity','>',0),('product_id.categ_id.parent_id.name','like','Materia Prima Seca'),('serial_not_consumed','>',0))]
             </field>
         </record>
         <menuitem id="stock_report_tree_menu"
