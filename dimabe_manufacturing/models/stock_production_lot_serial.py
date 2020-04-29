@@ -136,7 +136,17 @@ class StockProductionLotSerial(models.Model):
 
     work_order_id = fields.Many2one('mrp.workorder','Order Fabricacion',compute='_compute_workorder_id')
 
-    work_order_name = fields.Many2one('mrp.production','Order de Fabricacion',related='work_order.production_id')
+    production_id_to_view = fields.Many2one('mrp.production','Order de Fabricacion',compute='_compute_production_id_to_view')
+
+    @api.multi
+    def _compute_production_id_to_view(self):
+        for item in self:
+            if item.reserved_to_production_id:
+                item.production_id_to_view = item.reserved_to_production_id
+            elif item.production_id:
+                item.production_id_to_view = item.production_id
+            else:
+                item.production_id_to_view = None
 
     @api.multi
     def _compute_workorder_id(self):
