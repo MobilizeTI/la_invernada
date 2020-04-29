@@ -62,7 +62,8 @@
         'views/pt_report.xml',
         'views/dried_report.xml',
         'views/match_report.xml',
-        'views/process_report.xml'
+        'views/process_report.xml',
+        'views/laser_report.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
