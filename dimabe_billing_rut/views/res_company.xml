@@ -15,7 +15,7 @@
                   <field name="resolution_date" placeholder="Fecha Resolución" colspan="3" style="width: 29%"/>
                   <field name="resolution_number" placeholder="Núm. Resolución" colspan="3" style="width: 29%"/>
                   <field name="acteco" placeholder="Actividad Economica" colspan="3" style="width: 29%"/>
-                  <field name="giro" placeholder="Giro" colspan="8" />
+                  <field name="economic_activities" placeholder="Giros" colspan="8" />
                   <field name="dte_url" placeholder="URL Portal de Facturacion" colspan="3" style="width: 29%"/>
                   <field name="dte_hash" placeholder="Hash DTE" colspan="3" style="width: 29%"/>
                   <field name="ticket_url" placeholder="URL para validación de Boletas Electrónicas." colspan="3" />

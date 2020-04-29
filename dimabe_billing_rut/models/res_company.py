@@ -9,6 +9,8 @@ class ResCompany(models.Model):
         'Rut Facturación'
     )
 
+    economic_activities = fiels.Many2many('custom_economic_activity', string='Giros de la empresa')
+
     giro = fields.Char(string='Giro')
     acteco = fields.Char(string='Actividad Economica',
                          help='Codigo de actividad Economica asignada por el SII',
