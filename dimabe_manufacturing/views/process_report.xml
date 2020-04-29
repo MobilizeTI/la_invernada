@@ -15,6 +15,7 @@
                     <field name="stock_production_lot_id"/>
                     <field name="in_weight"/>
                     <field name="produce_weight"/>
+                    <field name="pallet_name"/>
                 </tree>
             </field>
         </record>
