@@ -135,7 +135,7 @@ class StockProductionLotSerial(models.Model):
     sale_order_id = fields.Many2one('sale.order','N° Pedido',compute='_compute_sale_order_id')
 
     @api.multi
-    def _compute_sale_order(self):
+    def _compute_sale_order_id(self):
         for item in self:
             if item.reserved_to_production_id:
                 item.sale_order_id = item.reserved_to_production_id.sale_order_id
