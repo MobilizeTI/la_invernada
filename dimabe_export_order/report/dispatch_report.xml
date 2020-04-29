@@ -405,7 +405,7 @@
                                 <tr>
                                     <td style="text-align:center;">
                                         <![CDATA[&nbsp;]]>
-                                        <span t-field="res_company.invoice_rut"/>
+
                                     </td>
                                 </tr>
                                 <tr>
@@ -438,7 +438,6 @@
 
                     </div>
                     <br/>
-                    <span style="text-align:left;font-size:12px;" t-esc="d.create_date.date()"/>
                     <div style="width:100%;margin:0 auto;">
                         <table style="width:90%;margin 0 auto;font-size:11px;" cellspacing="8">
                             <tr>
