@@ -3,25 +3,23 @@
     <data>
         <record id="view_stock_report_match_tree" model="ir.ui.view">
             <field name="name">Informe de Partido</field>
-            <field name="model">mrp.workorder</field>
+            <field name="model">stock.quant</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
                 <tree name="Informe de Partido">
                     <field name="product_id" string="Producto"/>
                     <field name="product_variety" string="Variedad"/>
                     <field name="location_id" string="Ubicacion"/>
-                    <field name="product_qty" string="Kilos"/>
-                    
                 </tree>
             </field>
         </record>
          <record id="dimabe_manufacturing.stock_report_match" model="ir.actions.act_window">
             <field name="name">Informe de Partido</field>
-            <field name="res_model">mrp.workorder</field>
-            <field name="view_mode">tree,form</field>
+            <field name="res_model">stock.quant</field>
+            <field name="view_mode">tree</field>
             <field name="view_id" ref="view_stock_report_match_tree"/>
              <field name="domain">
-                 ['|',('production_id.routing_id.code','=','RO/00006'),('production_id.routing_id.code','=','RO/00007')]
+                 [('product_id.categ_id.parent_id.name','like','Partido')]
              </field>
         </record>
         <menuitem id="stock_report_match_menu"
