@@ -132,6 +132,19 @@ class StockProductionLotSerial(models.Model):
 
     pallet_name = fields.Char('Folio Pallet',compute='_compute_pallet_name')
 
+    sale_order_id = fields.Many2one('sale.order','N° Pedido',compute='_compute_sale_order_id')
+
+    @api.multi
+    def _compute_sale_order(self):
+        for item in self:
+            if item.reserved_to_production_id:
+                item.sale_order_id = item.reserved_to_production_id.sale_order_id
+            elif item.production_id:
+                item.sale_order_id = item.production_id.sale_order_id
+            else:
+                item.sale_order_id = None
+
+
     @api.multi
     def _compute_pallet_name(self):
         for item in self:
