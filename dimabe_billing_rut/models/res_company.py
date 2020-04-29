@@ -9,7 +9,7 @@ class ResCompany(models.Model):
         'Rut Facturación'
     )
 
-    economic_activities = fields.Many2many(comodel_name='custom.economic.activity', string='Giros de la empresa')
+    economic_activities = fields.Many2many('custom.economic.activity', string='Giros de la empresa')
 
     giro = fields.Char(string='Giro')
     acteco = fields.Char(string='Actividad Economica',

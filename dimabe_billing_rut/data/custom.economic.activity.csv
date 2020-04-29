@@ -1,4 +1,4 @@
-id,code,name,vat_affect,tax_category,active
+id,code,name,tax_affect,tax_category,active
 eco_acti_11101,11101,Cultivo de trigo,SI,1,1
 eco_acti_11102,11102,Cultivo de maíz,SI,1,1
 eco_acti_11103,11103,Cultivo de avena,SI,1,1
