@@ -129,7 +129,7 @@ class StockProductionLotSerial(models.Model):
         for item in self:
             if item.reserved_to_production_id:
                 item.movement = 'ENTRADA'
-            if item.production_id:
+            elif item.production_id:
                 item.movement = 'SALIDA'
             else:
                 item.movement = 'NO DEFINIDO'
