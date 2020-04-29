@@ -124,6 +124,8 @@ class StockProductionLotSerial(models.Model):
 
     movement = fields.Char('Movimiento',compute='_compute_movement',store=True)
 
+
+
     @api.multi
     def _compute_movement(self):
         for item in self:

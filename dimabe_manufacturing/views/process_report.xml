@@ -8,6 +8,10 @@
             <field name="arch" type="xml">
                 <tree name="Informe de Proceso NCC">
                     <field name="movement" />
+                    <field name="product_variety"/>
+                    <field name="producer_id"/>
+                    <field name="product_id"/>
+                    <field name="serial_number"/>
                 </tree>
             </field>
         </record>
