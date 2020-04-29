@@ -19,7 +19,7 @@
         </record>
         <menuitem id="process_ncc_menu"
                   action="dimabe_manufacturing.process_report_ncc"
-                  name="Informe de Secado"
+                  name="Informe de Proceso Envasado NCC"
                   parent="stock.menu_warehouse_report"
         />
     </data>

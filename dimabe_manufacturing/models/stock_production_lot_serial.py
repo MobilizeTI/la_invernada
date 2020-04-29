@@ -122,6 +122,18 @@ class StockProductionLotSerial(models.Model):
         related='production_id.bom_id'
     )
 
+    movement = fields.Char('Movimiento',compute='_compute_movement',store=True)
+
+    @api.multi
+    def _compute_movement(self):
+        for item in self:
+            if item.reserved_to_production_id:
+                item.movement = 'ENTRADA'
+            if item.production_id:
+                item.movement = 'SALIDA'
+            else:
+                item.movement = 'NO DEFINIDO'
+
     @api.multi
     def _inverse_real_weight(self):
         for item in self:
