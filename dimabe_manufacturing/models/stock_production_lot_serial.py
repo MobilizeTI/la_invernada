@@ -134,6 +134,22 @@ class StockProductionLotSerial(models.Model):
 
     sale_order_id = fields.Many2one('sale.order','N° Pedido',compute='_compute_sale_order_id')
 
+    work_order_id = fields.Many2one('mrp.workorder','Order Trabajo',compute='_compute_workorder_id')
+
+    @api.multi
+    def _compute_workorder_id(self):
+        for item in self:
+            for item in self:
+                if item.reserved_to_production_id:
+                    workorder = self.env['mrp.workorder'].search([('production_id','=',item.reserved_to_production_id.id)])
+                    item.work_order_id = workorder
+                elif item.production_id:
+                    workorder = self.env['mrp.workorder'].search(
+                        [('production_id', '=', item.production_id.id)])
+                    item.work_order_id = workorder
+                else:
+                    item.work_order_id = None
+
     @api.multi
     def _compute_sale_order_id(self):
         for item in self:
