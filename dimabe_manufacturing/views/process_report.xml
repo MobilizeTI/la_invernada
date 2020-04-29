@@ -7,7 +7,7 @@
             <field name="priority">20</field>
             <field name="arch" type="xml">
                 <tree name="Informe de Proceso NCC">
-                    <field name="movement" />
+                    <field name="movement"/>
                     <field name="product_variety"/>
                     <field name="producer_id"/>
                     <field name="product_id"/>
@@ -15,14 +15,15 @@
                 </tree>
             </field>
         </record>
-         <record id="dimabe_manufacturing.process_report_ncc" model="ir.actions.act_window">
+        <record id="dimabe_manufacturing.process_report_ncc" model="ir.actions.act_window">
             <field name="name">Informe de Proceso Envasado NCC</field>
             <field name="res_model">stock.production.lot.serial</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_process_report_ncc_tree"/>
-             <field name="domain">
-                 [('movement','!=','NO DEFINIDO')]
-             </field>
+            <field name="domain">
+                [('movement','!=','NO DEFINIDO'),('|',('production_id.routing_id.name','like','ENVASADO
+                NCC'),('reserved_to_production_id.routing_id.name','like','ENVASADO NCC'))]
+            </field>
         </record>
         <menuitem id="process_ncc_menu"
                   action="dimabe_manufacturing.process_report_ncc"
