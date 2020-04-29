@@ -21,7 +21,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_process_report_ncc_tree"/>
             <field name="domain">
-                [('movement','!=','NO DEFINIDO'),('process_id.name','like','ENVASADO NCC')]
+                [('movement','!=','NO DEFINIDO'),('process_id.name','=','ENVASADO NCC')]
             </field>
         </record>
         <menuitem id="process_ncc_menu"
