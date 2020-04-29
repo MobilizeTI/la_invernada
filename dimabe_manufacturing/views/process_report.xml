@@ -9,13 +9,14 @@
                 <tree name="Informe de Proceso NCC">
                     <field name="movement"/>
                     <field name="product_variety"/>
-                    <field name="producer_id"/>
-                    <field name="product_id"/>
+                    <field name="producer_id" widget="many2onebutton"/>
+                    <field name="product_id" widget="many2onebutton"/>
                     <field name="serial_number"/>
-                    <field name="stock_production_lot_id"/>
+                    <field name="stock_production_lot_id" widget="many2onebutton"/>
                     <field name="in_weight"/>
                     <field name="produce_weight"/>
-                    <field name="pallet_id"/>
+                    <field name="pallet_id" widget="many2onebutton"/>
+                    <field name="sale_order_id" widget="many2onebutton"/>
                 </tree>
             </field>
         </record>
