@@ -325,9 +325,7 @@ class StockPicking(models.Model):
     @api.multi
     @api.depends('agent_id')
     def _compute_total_commission(self):
-        print('')
-        # cambiar amount_total
-        # self.total_commission = (self.agent_id.commission / 100) * self.amount_total
+        self.total_commission = (self.agent_id.commission / 100) * self.total_value
 
     @api.multi
     # @api.depends('contract_id')
