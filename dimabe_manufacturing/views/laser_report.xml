@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="view_process_report_laser_tree" model="ir.ui.view">
+            <field name="name">Informe de Partido Laser</field>
+            <field name="model">stock.production.lot.serial</field>
+            <field name="priority">20</field>
+            <field name="arch" type="xml">
+                <tree name="Informe de Proceso NCC">
+                    <field name="movement"/>
+                    <field name="product_variety"/>
+                    <field name="producer_id" widget="many2onebutton"/>
+                    <field name="product_id" widget="many2onebutton"/>
+                    <field name="serial_number"/>
+                    <field name="stock_production_lot_id" widget="many2onebutton"/>
+                    <field name="in_weight"/>
+                    <field name="produce_weight"/>
+                    <field name="pallet_id" widget="many2onebutton"/>
+                    <field name="sale_order_id" widget="many2onebutton"/>
+                </tree>
+            </field>
+        </record>
+        <record id="dimabe_manufacturing.process_report_laser" model="ir.actions.act_window">
+            <field name="name">Informe de Proceso Envasado NCC</field>
+            <field name="res_model">stock.production.lot.serial</field>
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="view_id" ref="view_process_report_laser_tree"/>
+            <field name="domain">
+                [('movement','!=','NO DEFINIDO'),('process_id','=','PARTIDO MECÁNICO/LÁSER')]
+            </field>
+        </record>
+        <menuitem id="process_laser_menu"
+                  action="dimabe_manufacturing.process_report_laser"
+                  name="Informe de Proceso Partido Mecánico / Laser"
+                  parent="stock.menu_warehouse_report"
+        />
+    </data>
+</odoo>
