@@ -36,11 +36,11 @@ class AccountInvoice(models.Model):
 
     @api.depends('partner_id')
     def _get_partner_activities(self):
-        return self.partner_id.economic_activities
+        self.partner_activity_id = self.partner_id.economic_activities
 
     @api.depends('company_id')
     def _get_company_activities(self):
-        return self.company_id.economic_activities
+        self.company_activity_id = self.company_id.economic_activities
     @api.one
     def send_to_sii(self):
         #PARA COMPLETAR EL DOCUMENTO SE DEBE BASAR EN http://www.sii.cl/factura_electronica/formato_dte.pdf
