@@ -124,7 +124,7 @@ class StockProductionLotSerial(models.Model):
 
     movement = fields.Char('Movimiento',compute='_compute_movement',store=True)
 
-    process_id = fields.Char('mrp.routing','Proceso',compute='_compute_process_id')
+    process_id = fields.Char('Proceso',compute='_compute_process_id')
 
     @api.multi
     def _compute_process_id(self):
