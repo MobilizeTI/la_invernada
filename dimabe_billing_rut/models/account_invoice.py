@@ -44,7 +44,8 @@ class AccountInvoice(models.Model):
     @api.one
     def send_to_sii(self):
         #PARA COMPLETAR EL DOCUMENTO SE DEBE BASAR EN http://www.sii.cl/factura_electronica/formato_dte.pdf
-
+        if not self.company_activity_id or not self.partner_activity_id:
+            raise models.ValidationError('Por favor seleccione las actividades de la compañía y del proveedor')
         if not self.company_id.invoice_rut or not self.partner_id.invoice_rut:
             raise models.ValidationError('No se encuentra registrado el rut de facturación')
 
@@ -96,6 +97,8 @@ class AccountInvoice(models.Model):
             referencias.append(ref)
         if referencias:
             dte['Referencia'] = referencias
+
+        raise.models.ValidationError(dte)
         self.send_dte(json.dumps(dte))
 
     def send_dte(self, dte):
