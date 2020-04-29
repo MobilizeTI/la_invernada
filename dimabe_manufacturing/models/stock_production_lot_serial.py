@@ -122,6 +122,30 @@ class StockProductionLotSerial(models.Model):
         related='production_id.bom_id'
     )
 
+    movement = fields.Char('Movimiento',compute='_compute_movement',store=True)
+
+    process_id = fields.Many2one('mrp.routing','Proceso',compute='_compute_process_id')
+
+    @api.multi
+    def _compute_process_id(self):
+        for item in self:
+            if item.reserved_to_production_id:
+                item.process_id = item.reserved_to_production_id.routing_id
+            elif item.production_id:
+                item.process_id = item.production_id.routing_id
+            else:
+                item.process_id = None
+
+    @api.multi
+    def _compute_movement(self):
+        for item in self:
+            if item.reserved_to_production_id:
+                item.movement = 'ENTRADA'
+            elif item.production_id:
+                item.movement = 'SALIDA'
+            else:
+                item.movement = 'NO DEFINIDO'
+
     @api.multi
     def _inverse_real_weight(self):
         for item in self:

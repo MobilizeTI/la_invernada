@@ -31,6 +31,17 @@ class ProductProduct(models.Model):
 
     is_standard_weight = fields.Boolean('Es peso estandar', default=False)
 
+    measure = fields.Char('Medida',compute='_compute_measure')
+
+    @api.multi
+    def _compute_measure(self):
+        for item in self:
+            for value in item.attribute_value_ids.mapped('name'):
+                if "Saco 10K" == value:
+                    item.measure = '10 Kilos'
+                if "Saco 25K" == value:
+                    item.measure = '25 Kilos'
+
 
     @api.multi
     def _compute_caliber(self):
@@ -74,8 +85,6 @@ class ProductProduct(models.Model):
                 item.label_name = item.name + ' (' + color + ')'
             else:
                 item.label_name = item.display_name
-
-
 
     @api.multi
     def compute_is_to_manufacturing(self):

@@ -228,13 +228,16 @@ class StockPicking(models.Model):
 
     customs_department = fields.Many2one('res.partner','Oficina Aduanera')
 
-
     @api.onchange('picture')
     def get_pictures(self):
         self.pictures = self.picture
 
     @api.multi
     def generate_packing_list(self):
+        if not self.consignee_id:
+            raise models.ValidationError('No tiene definido el consignatario')
+        if not self.notify_ids:
+            raise models.ValidationError('No tiene ninguna persona para notificar')
         return self.env.ref('dimabe_export_order.action_packing_list') \
             .report_action(self)
 
@@ -322,9 +325,22 @@ class StockPicking(models.Model):
     @api.multi
     @api.depends('agent_id')
     def _compute_total_commission(self):
-        print('')
-        # cambiar amount_total
-        # self.total_commission = (self.agent_id.commission / 100) * self.amount_total
+        for item in self:
+            list_price = []
+            list_qty = []
+            prices = 0
+            qtys = 0
+            for i in item.sale_id.order_line:
+                if len(item.sale_id.order_line) != 0:
+                    list_price.append(int(i.price_unit))
+
+            for a in item.move_ids_without_package:
+                if len(item.move_ids_without_package) != 0:
+                    list_qty.append(int(a.quantity_done))
+                    prices = sum(list_price)
+                    qtys = sum(list_qty)
+            item.total_commission = (item.agent_id.commission / 100) * (prices * qtys)
+
 
     @api.multi
     # @api.depends('contract_id')

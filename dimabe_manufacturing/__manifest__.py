@@ -58,7 +58,11 @@
         'views/label_durability.xml',
         'views/dried_oven.xml',
         'views/res_config_settings.xml',
-        'views/stock_report.xml'
+        'views/stock_report.xml',
+        'views/pt_report.xml',
+        'views/dried_report.xml',
+        'views/match_report.xml',
+        'views/process_report.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

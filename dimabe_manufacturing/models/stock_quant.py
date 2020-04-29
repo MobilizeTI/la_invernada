@@ -27,9 +27,17 @@ class StockQuant(models.Model):
         store=True
     )
 
-    producer_id = fields.Many2one('res.partner',related='lot_id.producer_id')
+    producer_id = fields.Many2one('res.partner', related='lot_id.producer_id')
 
-    lot_balance = fields.Float('Stock Disponible',related='lot_id.balance')
+    lot_balance = fields.Float('Stock Disponible', related='lot_id.balance')
+
+    serial_not_consumed = fields.Integer('Envases disponible',compute='_compute_serial_not_consumed')
+
+    @api.multi
+    def _compute_serial_not_consumed(self):
+        for item in self:
+            item.serial_not_consumed = len(item.lot_id.stock_production_lot_serial_ids.filtered(
+                lambda a: not a.consumed))
 
     @api.multi
     def _compute_total_reserved(self):

@@ -50,6 +50,20 @@ class ManufacturingPallet(models.Model):
         related='producer_id.sag_code'
     )
 
+    country = fields.Many2one(
+        'res.country',
+        related='producer_id.country_id'
+    )
+
+    state_id = fields.Many2one(
+        'res.country.state',
+        related='producer_id.state_id'
+    )
+
+    city = fields.Char(
+        related='producer_id.city'
+    )
+
     lot_serial_ids = fields.One2many(
         'stock.production.lot.serial',
         'pallet_id',
@@ -80,6 +94,29 @@ class ManufacturingPallet(models.Model):
     )
 
     is_reserved = fields.Boolean('¿Esta reservado?')
+
+    measure = fields.Char('Medida',related='product_id.measure')
+
+    sale_order_id = fields.Many2one('sale.order',compute='_compute_sale_order_id')
+
+    dest_client_id = fields.Many2one('res.partner',compute='_compute_dest_client_id')
+
+    dest_country_id = fields.Many2one('res.country',compute='_compute_dest_country_id')
+
+    @api.multi
+    def _compute_dest_client_id(self):
+        for item in self:
+            item.dest_client_id = item.sale_order_id.partner_id
+
+    @api.multi
+    def _compute_dest_client_id(self):
+        for item in self:
+            item.dest_country_id = item.sale_order_id.partner_id.country_id
+
+    @api.multi
+    def _compute_sale_order_id(self):
+        for item in self:
+            item.sale_order_id = item.lot_serial_ids.mapped('production_id').mapped('sale_order_id')
 
     @api.model
     def create(self, values_list):

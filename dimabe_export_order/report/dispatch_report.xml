@@ -378,7 +378,7 @@
             <div class="page" style="margin:auto;">
                 <t t-foreach="docs" t-as="d">
                     <div style="width:100%;">
-                        <div style="width:33.3%;display:inline-block;">
+                        <div style="width:33.3%;height:100px;display:inline-block;">
                             <![CDATA[&nbsp;]]>
                         </div>
                         <div style="width:33.3%;display:inline-block;">
@@ -405,7 +405,7 @@
                                 <tr>
                                     <td style="text-align:center;">
                                         <![CDATA[&nbsp;]]>
-                                        <span t-field="res_company.invoice_rut"/>
+
                                     </td>
                                 </tr>
                                 <tr>
@@ -427,17 +427,18 @@
                                 </tr>
                                 <tr>
                                     <td style="text-align:center;">
-                                       <![CDATA[&nbsp;]]>
+                                        <![CDATA[&nbsp;]]>
                                     </td>
                                 </tr>
                             </table>
                         </div>
                     </div>
                     <br/>
-                    <div style="width:100%;height:10px;font-size:12px;"/>
+                    <div style="height:80px;">
+
+                    </div>
                     <br/>
-                    <span style="text-align:left;font-size:12px;" t-esc="d.create_date.date()"/>
-                    <div style="width:100%;margin:0 auto;border:1px solid;">
+                    <div style="width:100%;margin:0 auto;">
                         <table style="width:90%;margin 0 auto;font-size:11px;" cellspacing="8">
                             <tr>
                                 <tr>
@@ -501,185 +502,170 @@
                             </tr>
                         </table>
                     </div>
-                    <div style="width:100%;margin:0 auto;height:583px;border:1px solid;">
-                        <table style="width:100%;font-size:11px;">
+                    <div style="width:80%;margin:0 auto;height:440px;">
+                        <table style="width:100%;height:30%;font-size:8px;">
                             <th style="width:20%;"><![CDATA[&nbsp;]]></th>
                             <th style="width:60%;">
                                 <![CDATA[&nbsp;]]>
                             </th>
                             <th style="width:20%;"><![CDATA[&nbsp;]]></th>
-                            <t t-foreach="d.move_ids_without_package" t-as="m">
-                                <tr>
-                                    <td style="width:20%;text-align:center;">
-                                        <![CDATA[&nbsp;]]>
-                                    </td>
-                                    <td style="width:20%;text-align:center;">
-                                        <![CDATA[&nbsp;]]>
-                                    </td>
-                                    <td style="width:20%;ext-align:center;">
-                                        <![CDATA[&nbsp;]]>
-                                    </td>
-                                    <t t-if="m.id == d.move_ids_without_package[-1].id">
-                                        <tr>
-                                            <td colspan="3">
-                                                <t t-if="d.type_of_dispatch == 'exp'">
-                                                    <table style="font-size:11px;">
-                                                        <tr>
-                                                            <td style="text-align:center;">
-                                                                KILOS NETOS
-                                                            </td>
-                                                            <td>
-                                                                <span t-field="d.net_weight_dispatch"/>
-                                                            </td>
-                                                            <td>N° CONTENEDOR</td>
-                                                            <td>
-                                                                <span t-field="d.container_number"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>KILOS BRUTOS:</td>
-                                                            <td>
-                                                                <span t-field="d.gross_weight_dispatch"/>
-                                                            </td>
-                                                            <td>SELLO NAVIERA</td>
-                                                            <td>
-                                                                <span t-field="d.sell_shipping"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>TARA CONTE:</td>
-                                                            <td>
-                                                                <span t-field="d.tare_container_weight_dispatch"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>PESO VGM:</td>
-                                                            <td>
-                                                                <span t-field="d.vgm_weight_dispatch"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr style="height:50%;">
-                                                            <td>Nota</td>
-                                                            <td colspan="3" style="text-align:center;">
-                                                                <t t-esc="d.note_dispatched.get_full_note()"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Nave:</td>
-                                                            <td>
-                                                                <t t-if="d.shipping_id.type_transport == 'terrestre'">
-                                                                    <span t-field="d.type_transport"/>
-                                                                </t>
-                                                                <t t-elif="d.shipping_id.type_transport != 'terrestre'">
-                                                                    <span t-field="d.shipping_id.ship"/>
-                                                                </t>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>N° DUS:</td>
-                                                            <td>
-                                                                <span t-field="d.dus_number"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>PTO EMBARQUE:</td>
-                                                            <td>
-                                                                <span t-field="d.shipping_id.departure_port"/>
-                                                            </td>
-                                                            <td>SELLO INVERNADA</td>
-                                                            <td>
-                                                                <span t-field="d.sell_truck"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>PTO DESCARGA</td>
-                                                            <td>
-                                                                <span t-field="d.shipping_id.arrival_port"/>
-                                                            </td>
-                                                            <td>N° RESERVA</td>
-                                                            <td>
-                                                                <span t-field="d.booking_number"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>TRANSPORTE:</td>
-                                                            <td>
-                                                                <span t-field="d.transport"/>
-                                                            </td>
-                                                            <td>CANDADO GPS:</td>
-                                                            <td>
-                                                                <span t-field="d.gps_lock"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>CHOFER:</td>
-                                                            <td>
-                                                                <span t-field="d.carrier_id"/>
-                                                            </td>
-                                                            <td>BOTON GPS:</td>
-                                                            <td>
-                                                                <span t-field="d.gps_button"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>RUT:</td>
-                                                            <td>
-                                                                <span t-field="d.carrier_rut"/>
-                                                            </td>
-                                                            <td>CLIENTE:</td>
-                                                            <td>
-                                                                <span t-field="d.partner_id"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>CELULAR:</td>
-                                                            <td>
-                                                                <span t-field="d.carrier_cell_phone"/>
-                                                            </td>
-                                                            <td>SELLO SAG:</td>
-                                                            <td>
-                                                                <span t-field="d.sell_sag"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><![CDATA[&nbsp;]]></td>
-                                                            <td><![CDATA[&nbsp;]]></td>
-                                                            <td>N° Pedido:</td>
-                                                            <td>
-                                                                <span t-field="d.name"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <![CDATA[&nbsp;]]>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Pte Camion:</td>
-                                                            <td>
-                                                                <span t-field="d.carrier_truck_patent"/>
-                                                            </td>
-                                                            <td>Hora Llegada:</td>
-                                                            <td>
-                                                                <t t-esc="'%02d:%02d' % (int(d.hour_arrival),d.hour_arrival % 1 * 60)"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Pte Rampla:</td>
-                                                            <td>
-                                                                <span t-field="d.carrier_cart_patent"/>
-                                                            </td>
-                                                            <td>Hora Salida</td>
-                                                            <td>
-                                                                <t t-esc="'%02d:%02d' % (int(d.hour_departure),d.hour_departure % 1 * 60)"/>
-                                                            </td>
+                            <tr>
+                                <td colspan="3">
+                                    <t t-if="d.type_of_dispatch == 'exp'">
+                                        <table style="font-size:9px;width:55%;height:30%;margin:0 auto;">
+                                            <tr>
+                                                <td style="text-align:center;">
+                                                    KILOS NETOS
+                                                </td>
+                                                <td>
+                                                    <span t-field="d.net_weight_dispatch"/>
+                                                </td>
+                                                <td>N° CONTENEDOR</td>
+                                                <td>
+                                                    <span t-field="d.container_number"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>KILOS BRUTOS:</td>
+                                                <td>
+                                                    <span t-field="d.gross_weight_dispatch"/>
+                                                </td>
+                                                <td>SELLO NAVIERA</td>
+                                                <td>
+                                                    <span t-field="d.sell_shipping"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>TARA CONTE:</td>
+                                                <td>
+                                                    <span t-field="d.tare_container_weight_dispatch"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>PESO VGM:</td>
+                                                <td>
+                                                    <span t-field="d.vgm_weight_dispatch"/>
+                                                </td>
+                                            </tr>
+                                            <tr style="height:50%;">
+                                                <td>Nota</td>
+                                                <td colspan="3" style="text-align:center;">
+                                                    <t t-esc="d.note_dispatched.get_full_note()"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Nave:</td>
+                                                <td>
+                                                    <t t-if="d.shipping_id.type_transport == 'terrestre'">
+                                                        <span t-field="d.type_transport"/>
+                                                    </t>
+                                                    <t t-elif="d.shipping_id.type_transport != 'terrestre'">
+                                                        <span t-field="d.shipping_id.ship"/>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>N° DUS:</td>
+                                                <td>
+                                                    <span t-field="d.dus_number"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>PTO EMBARQUE:</td>
+                                                <td>
+                                                    <span t-field="d.shipping_id.departure_port"/>
+                                                </td>
+                                                <td>SELLO INVERNADA</td>
+                                                <td>
+                                                    <span t-field="d.sell_truck"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>PTO DESCARGA</td>
+                                                <td>
+                                                    <span t-field="d.shipping_id.arrival_port"/>
+                                                </td>
+                                                <td>N° RESERVA</td>
+                                                <td>
+                                                    <span t-field="d.booking_number"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>TRANSPORTE:</td>
+                                                <td>
+                                                    <span t-field="d.transport"/>
+                                                </td>
+                                                <td>CANDADO GPS:</td>
+                                                <td>
+                                                    <span t-field="d.gps_lock"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>CHOFER:</td>
+                                                <td>
+                                                    <span t-field="d.carrier_id"/>
+                                                </td>
+                                                <td>BOTON GPS:</td>
+                                                <td>
+                                                    <span t-field="d.gps_button"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>RUT:</td>
+                                                <td>
+                                                    <span t-field="d.carrier_rut"/>
+                                                </td>
+                                                <td>CLIENTE:</td>
+                                                <td>
+                                                    <span t-field="d.partner_id"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>CELULAR:</td>
+                                                <td>
+                                                    <span t-field="d.carrier_cell_phone"/>
+                                                </td>
+                                                <td>SELLO SAG:</td>
+                                                <td>
+                                                    <span t-field="d.sell_sag"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><![CDATA[&nbsp;]]></td>
+                                                <td><![CDATA[&nbsp;]]></td>
+                                                <td>N° Pedido:</td>
+                                                <td>
+                                                    <span t-field="d.name"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <![CDATA[&nbsp;]]>
+                                            </tr>
+                                            <tr>
+                                                <td>Pte Camion:</td>
+                                                <td>
+                                                    <span t-field="d.carrier_truck_patent"/>
+                                                </td>
+                                                <td>Hora Llegada:</td>
+                                                <td>
+                                                    <t t-esc="'%02d:%02d' % (int(d.hour_arrival),d.hour_arrival % 1 * 60)"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Pte Rampla:</td>
+                                                <td>
+                                                    <span t-field="d.carrier_cart_patent"/>
+                                                </td>
+                                                <td>Hora Salida</td>
+                                                <td>
+                                                    <t t-esc="'%02d:%02d' % (int(d.hour_departure),d.hour_departure % 1 * 60)"/>
+                                                </td>
 
-                                                        </tr>
-                                                    </table>
-                                                </t>
-                                            </td>
-                                        </tr>
+                                            </tr>
+                                        </table>
                                     </t>
-                                </tr>
-                            </t>
+                                </td>
+                            </tr>
                         </table>
 
                     </div>
@@ -789,7 +775,7 @@
                         <tr>
                             <td style="text-align:center;width:50%;">PESO NETO</td>
                             <td style="border:1px solid;width:50%;margin:0 auto;text-align:center;">
-                                <span t-esc="int(dis.net_weight_dispatch)"/>
+                                <span t-esc="int(dis.departure_weight) - int(dis.arrival_weight)"/>
                             </td>
                         </tr>
                     </table>
