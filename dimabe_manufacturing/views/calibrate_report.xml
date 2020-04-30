@@ -30,7 +30,7 @@
             </field>
         </record>
         <menuitem id="process_calibrate_menu"
-                  action="dimabe_manufacturing.process_report_laser"
+                  action="dimabe_manufacturing.process_report_calibrate"
                   name="Informe de Proceso Calibrado"
                   parent="process_report_menu"
         />
