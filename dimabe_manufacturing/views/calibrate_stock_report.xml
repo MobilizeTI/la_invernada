@@ -19,17 +19,18 @@
                 </tree>
             </field>
         </record>
-        <record id="dimabe_manufacturing.stock_report" model="ir.actions.act_window">
+        <record id="dimabe_manufacturing.stock_calibrate_report" model="ir.actions.act_window">
             <field name="name">Informe de Producto Calibrado</field>
             <field name="res_model">stock.production.lot</field>
             <field name="view_mode">tree,graph,form</field>
-            <field name="view_id" ref="view_stock_report_tree"/>
+            <field name="view_id" ref="view_stock_report_calibrate_tree"/>
             <field name="domain">
-                [('product_id.categ_id.name','=','Calibrado'),('id','!=',2),('serial_not_consumed','>',0)]
+                [('product_id.categ_id.name','=','Calibrado'),('product_id.name','not
+                like','Descarte'),('product_id.name','not like','Vana'),('id','!=',2),('serial_not_consumed','>',0)]
             </field>
         </record>
         <menuitem id="stock_report_calibrate_tree_menu"
-                  action="dimabe_manufacturing.stock_report"
+                  action="dimabe_manufacturing.stock_calibrate_report"
                   name="Informe de Existencia Producto Calibrado"
                   parent="stock_report_menu"
         />
