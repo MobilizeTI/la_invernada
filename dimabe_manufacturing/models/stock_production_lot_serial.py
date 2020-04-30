@@ -124,15 +124,87 @@ class StockProductionLotSerial(models.Model):
 
     movement = fields.Char('Movimiento',compute='_compute_movement',store=True)
 
-    process_id = fields.Many2one('mrp.routing','Proceso',compute='_compute_process_id')
+    process_id = fields.Char('Proceso',compute='_compute_process_id',store=True)
+
+    in_weight = fields.Float('Kilos Ingresado',compute='_compute_in_weight')
+
+    produce_weight = fields.Float('Kilos Producidos',compute='_compute_produce_weight')
+
+    pallet_name = fields.Char('Folio Pallet',compute='_compute_pallet_name')
+
+    sale_order_id = fields.Many2one('sale.order','N° Pedido',compute='_compute_sale_order_id')
+
+    work_order_id = fields.Many2one('mrp.workorder','Order Fabricacion',compute='_compute_workorder_id')
+
+    production_id_to_view = fields.Many2one('mrp.production','Order de Fabricacion',compute='_compute_production_id_to_view')
+
+    @api.multi
+    def _compute_production_id_to_view(self):
+        for item in self:
+            if item.reserved_to_production_id:
+                item.production_id_to_view = item.reserved_to_production_id
+            elif item.production_id:
+                item.production_id_to_view = item.production_id
+            else:
+                item.production_id_to_view = None
+
+    @api.multi
+    def _compute_workorder_id(self):
+        for item in self:
+            for item in self:
+                if item.reserved_to_production_id:
+                    workorder = self.env['mrp.workorder'].search([('production_id','=',item.reserved_to_production_id.id)])
+                    item.work_order_id = workorder
+                elif item.production_id:
+                    workorder = self.env['mrp.workorder'].search(
+                        [('production_id', '=', item.production_id.id)])
+                    item.work_order_id = workorder
+                else:
+                    item.work_order_id = None
+
+    @api.multi
+    def _compute_sale_order_id(self):
+        for item in self:
+            if item.reserved_to_production_id:
+                item.sale_order_id = item.reserved_to_production_id.sale_order_id
+            elif item.production_id:
+                item.sale_order_id = item.production_id.sale_order_id
+            else:
+                item.sale_order_id = None
+
+
+    @api.multi
+    def _compute_pallet_name(self):
+        for item in self:
+            if item.pallet_id:
+                item.pallet_name = item.pallet_id.name
+            else:
+                item.pallet_name = 'Sin Pallet'
+
+    @api.multi
+    def _compute_produce_weight(self):
+        for item in self:
+            if item.production_id:
+                item.produce_weight = item.real_weight
+            else:
+                item.produce_weight = 0.0
+
+
+    @api.multi
+    def _compute_in_weight(self):
+        for item in self:
+            if item.reserved_to_production_id:
+                item.in_weight = item.real_weight
+            else:
+                item.in_weight = 0.0
 
     @api.multi
     def _compute_process_id(self):
         for item in self:
             if item.reserved_to_production_id:
-                item.process_id = item.reserved_to_production_id.routing_id
+                item.process_id = item.reserved_to_production_id.routing_id.name
             elif item.production_id:
-                item.process_id = item.production_id.routing_id
+                item.process_id = item.production_id.routing_id.name
             else:
                 item.process_id = None
 

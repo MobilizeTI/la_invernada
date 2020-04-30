@@ -1,61 +1,68 @@
 <odoo>
-  <data>
-    
-    <!-- explicit list view definition -->
-    <!--
-    <record model="ir.ui.view" id="dimabe_manufacturing.list">
-      <field name="name">dimabe_manufacturing list</field>
-      <field name="model">dimabe_manufacturing.dimabe_manufacturing</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
-        </tree>
-      </field>
-    </record>
-    -->
+    <data>
+        <menuitem id="stock_report_menu"
+                  name="Existencias"
+                  parent="stock.menu_stock_root"
+        />
+        <menuitem id="process_report_menu"
+                  name="Procesos"
+                  parent="stock.menu_stock_root"
+        />
+        <!-- explicit list view definition -->
+        <!--
+        <record model="ir.ui.view" id="dimabe_manufacturing.list">
+          <field name="name">dimabe_manufacturing list</field>
+          <field name="model">dimabe_manufacturing.dimabe_manufacturing</field>
+          <field name="arch" type="xml">
+            <tree>
+              <field name="name"/>
+              <field name="value"/>
+              <field name="value2"/>
+            </tree>
+          </field>
+        </record>
+        -->
 
-    <!-- actions opening views on models -->
-    <!--
-    <record model="ir.actions.act_window" id="dimabe_manufacturing.action_window">
-      <field name="name">dimabe_manufacturing window</field>
-      <field name="res_model">dimabe_manufacturing.dimabe_manufacturing</field>
-      <field name="view_mode">tree,form</field>
-    </record>
-    -->
+        <!-- actions opening views on models -->
+        <!--
+        <record model="ir.actions.act_window" id="dimabe_manufacturing.action_window">
+          <field name="name">dimabe_manufacturing window</field>
+          <field name="res_model">dimabe_manufacturing.dimabe_manufacturing</field>
+          <field name="view_mode">tree,form</field>
+        </record>
+        -->
 
-    <!-- server action to the one above -->
-    <!--
-    <record model="ir.actions.server" id="dimabe_manufacturing.action_server">
-      <field name="name">dimabe_manufacturing server</field>
-      <field name="model_id" ref="model_dimabe_manufacturing_dimabe_manufacturing"/>
-      <field name="state">code</field>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": self._name,
-        }
-      </field>
-    </record>
-    -->
+        <!-- server action to the one above -->
+        <!--
+        <record model="ir.actions.server" id="dimabe_manufacturing.action_server">
+          <field name="name">dimabe_manufacturing server</field>
+          <field name="model_id" ref="model_dimabe_manufacturing_dimabe_manufacturing"/>
+          <field name="state">code</field>
+          <field name="code">
+            action = {
+              "type": "ir.actions.act_window",
+              "view_mode": "tree,form",
+              "res_model": self._name,
+            }
+          </field>
+        </record>
+        -->
 
-    <!-- Top menu item -->
-    <!--
-    <menuitem name="dimabe_manufacturing" id="dimabe_manufacturing.menu_root"/>
-    -->
-    <!-- menu categories -->
-    <!--
-    <menuitem name="Menu 1" id="dimabe_manufacturing.menu_1" parent="dimabe_manufacturing.menu_root"/>
-    <menuitem name="Menu 2" id="dimabe_manufacturing.menu_2" parent="dimabe_manufacturing.menu_root"/>
-    -->
-    <!-- actions -->
-    <!--
-    <menuitem name="List" id="dimabe_manufacturing.menu_1_list" parent="dimabe_manufacturing.menu_1"
-              action="dimabe_manufacturing.action_window"/>
-    <menuitem name="Server to list" id="dimabe_manufacturing" parent="dimabe_manufacturing.menu_2"
-              action="dimabe_manufacturing.action_server"/>
-    -->
-  </data>
+        <!-- Top menu item -->
+        <!--
+        <menuitem name="dimabe_manufacturing" id="dimabe_manufacturing.menu_root"/>
+        -->
+        <!-- menu categories -->
+        <!--
+        <menuitem name="Menu 1" id="dimabe_manufacturing.menu_1" parent="dimabe_manufacturing.menu_root"/>
+        <menuitem name="Menu 2" id="dimabe_manufacturing.menu_2" parent="dimabe_manufacturing.menu_root"/>
+        -->
+        <!-- actions -->
+        <!--
+        <menuitem name="List" id="dimabe_manufacturing.menu_1_list" parent="dimabe_manufacturing.menu_1"
+                  action="dimabe_manufacturing.action_window"/>
+        <menuitem name="Server to list" id="dimabe_manufacturing" parent="dimabe_manufacturing.menu_2"
+                  action="dimabe_manufacturing.action_server"/>
+        -->
+    </data>
 </odoo>

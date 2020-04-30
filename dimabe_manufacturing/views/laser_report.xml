@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-        <record id="view_process_report_ncc_tree" model="ir.ui.view">
-            <field name="name">Informe de Proceso Envasado NCC</field>
+        <record id="view_process_report_laser_tree" model="ir.ui.view">
+            <field name="name">Informe de Partido Laser</field>
             <field name="model">stock.production.lot.serial</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Proceso NCC">
-                    <field name="production_id_to_view" string="Orden de Fabricacion" widget="many2onebutton"/>
+                <tree name="Informe de Proceso Partido Laser">
                     <field name="movement"/>
                     <field name="product_variety"/>
                     <field name="producer_id" widget="many2onebutton"/>
@@ -21,18 +20,18 @@
                 </tree>
             </field>
         </record>
-        <record id="dimabe_manufacturing.process_report_ncc" model="ir.actions.act_window">
-            <field name="name">Informe de Proceso Envasado NCC</field>
+        <record id="dimabe_manufacturing.process_report_laser" model="ir.actions.act_window">
+            <field name="name">Informe de Partido Laser</field>
             <field name="res_model">stock.production.lot.serial</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="view_process_report_ncc_tree"/>
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="view_id" ref="view_process_report_laser_tree"/>
             <field name="domain">
-                [('movement','!=','NO DEFINIDO'),('process_id','=','ENVASADO NCC')]
+                [('movement','!=','NO DEFINIDO'),('process_id','=','PARTIDO MECÁNICO/LÁSER')]
             </field>
         </record>
-        <menuitem id="process_ncc_menu"
-                  action="dimabe_manufacturing.process_report_ncc"
-                  name="Informe de Proceso Envasado NCC"
+        <menuitem id="process_laser_menu"
+                  action="dimabe_manufacturing.process_report_laser"
+                  name="Informe de Proceso Partido Mecánico / Laser"
                   parent="process_report_menu"
         />
     </data>

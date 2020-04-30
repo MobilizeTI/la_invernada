@@ -103,6 +103,20 @@ class ManufacturingPallet(models.Model):
 
     dest_country_id = fields.Many2one('res.country',compute='_compute_dest_country_id')
 
+    available_weight = fields.Float('Kilos Disponible',compute='_compute_available_weight',store=True)
+
+    serial_not_consumed = fields.Integer('Cantidad',compute='_compute_serial_not_consumed')
+
+    @api.multi
+    def _compute_available_weight(self):
+        for item in self:
+            item.available_weight = sum(item.lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
+
+    @api.multi
+    def _compute_serial_not_consumed(self):
+        for item in self:
+            item.serial_not_consumed = len(item.lot_serial_ids.filtered(lambda a: not a.consumed))
+
     @api.multi
     def _compute_dest_client_id(self):
         for item in self:
