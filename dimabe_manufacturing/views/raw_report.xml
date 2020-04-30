@@ -31,7 +31,7 @@
         <menuitem id="stock_report_tree_menu"
                   action="dimabe_manufacturing.stock_report"
                   name="Informe de Existencia Materia Prima Seca"
-                  parent="stock.menu_warehouse_report"
+                  parent="stock_report_menu"
         />
     </data>
 </odoo>

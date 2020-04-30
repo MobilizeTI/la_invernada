@@ -1,6 +1,10 @@
 <odoo>
   <data>
-    
+    <menuitem id="stock_report_menu"
+                  action="dimabe_manufacturing.stock_report"
+                  name="Informe de Existencia Materia Prima Seca"
+                  parent="stock.menu_warehouse_report"
+        />
     <!-- explicit list view definition -->
     <!--
     <record model="ir.ui.view" id="dimabe_manufacturing.list">
