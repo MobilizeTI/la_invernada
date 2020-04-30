@@ -55,7 +55,7 @@
         'views/stock_picking_type.xml',
         'views/res_partner.xml',
         'views/res_company.xml',
-        'views/label_durabilcaity.xml',
+        'views/label_durability.xml',
         'views/dried_oven.xml',
         'views/res_config_settings.xml',
         'views/raw_report.xml',
