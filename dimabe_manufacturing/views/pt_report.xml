@@ -16,6 +16,7 @@
                     <field name="state_id" string="Comuna"/>
                     <field name="product_id" string="Producto"/>
                     <field name="total_content" />
+                    <field name="total_content_weight" string="Kilos"/>
                     <field name="measure"/>
                     <field name="sag_code" string="Cod.Sag"/>
                     <field name="dest_client_id" string="Cliente"/>
@@ -32,7 +33,7 @@
         <menuitem id="stock_report_pt_menu"
                   action="dimabe_manufacturing.stock_report_pt"
                   name="Informe de PT"
-                  parent="stock.menu_warehouse_report"
+                  parent="stock_report_menu"
         />
     </data>
 </odoo>
