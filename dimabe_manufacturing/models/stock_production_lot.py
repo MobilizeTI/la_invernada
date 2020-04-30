@@ -218,7 +218,7 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_available_weight(self):
         for item in self:
-            item.available_weight = sum(item.lot_id.stock_production_lot_serial_ids.filtered(
+            item.available_weight = sum(item.stock_production_lot_serial_ids.filtered(
                 lambda a: not a.consumed
             ).mapped('real_weight'))
 
@@ -226,7 +226,7 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_serial_not_consumed(self):
         for item in self:
-            item.serial_not_consumed = len(item.lot_id.stock_production_lot_serial_ids.filtered(
+            item.serial_not_consumed = len(item.stock_production_lot_serial_ids.filtered(
                 lambda a: not a.consumed))
 
 
