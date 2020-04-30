@@ -22,7 +22,7 @@
         <record id="dimabe_manufacturing.stock_report" model="ir.actions.act_window">
             <field name="name">Informe de Materia prima</field>
             <field name="res_model">stock.production.lot</field>
-            <field name="view_mode">tree,graph</field>
+            <field name="view_mode">tree,graph,form</field>
             <field name="view_id" ref="view_stock_report_tree"/>
             <field name="domain">
                 [('product_id.categ_id.name','like','Seca'),('id','!=',2),('serial_not_consumed','>',0)]
