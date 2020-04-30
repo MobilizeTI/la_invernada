@@ -31,7 +31,7 @@ class StockQuant(models.Model):
 
     lot_balance = fields.Float('Stock Disponible', related='lot_id.balance')
 
-    serial_not_consumed = fields.Integer('Envases disponible',compute='_compute_serial_not_consumed',store=True)
+    serial_not_consumed = fields.Integer('Envases disponible',compute='_compute_serial_not_consumed')
 
     available_weight = fields.Float('Kilos Disponible',compute='_compute_available_weight')
 
