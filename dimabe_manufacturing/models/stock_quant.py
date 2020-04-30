@@ -40,7 +40,7 @@ class StockQuant(models.Model):
     def _compute_available_weight(self):
         for item in self:
             item.available_weight = sum(item.lot_id.stock_production_lot_serial_ids.filtered(
-                lambda a: not consumed
+                lambda a: not a.consumed
             ).mapped('real_weight'))
 
 
