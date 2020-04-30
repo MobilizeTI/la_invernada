@@ -105,7 +105,10 @@ class ManufacturingPallet(models.Model):
 
     available_weight = fields.Float('Kilos Disponible',compute='_compute_available_weight',store=True)
 
-
+    @api.multi
+    def _compute_available_weight(self):
+        for item in self:
+            item.available_weight = sum(item.lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
 
     @api.multi
     def _compute_dest_client_id(self):

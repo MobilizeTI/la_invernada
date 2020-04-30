@@ -17,6 +17,7 @@
                     <field name="product_id" string="Producto"/>
                     <field name="total_content" />
                     <field name="total_content_weight" string="Kilos"/>
+                    <field name="available_weight"/>
                     <field name="measure"/>
                     <field name="sag_code" string="Cod.Sag"/>
                     <field name="dest_client_id" string="Cliente"/>
