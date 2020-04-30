@@ -13,7 +13,9 @@ class AccountInvoice(models.Model):
     ted = fields.Text("TED")
     pdf_url = fields.Text("URL PDF")
 
-    partner_activity_id = fields.Many2one('custom.economic.activity', string='Actividad del Proveedor', domain='_compute_partner_activity')
+    economic_activities = fields.Many2many('custom.economic.activity',related='partner_id.economic_activities')
+
+    partner_activity_id = fields.Many2one('custom.economic.activity', string='Actividad del Proveedor', domain=[('id','in',economic_activities)])
     company_activity_id = fields.Many2one('custom.economic.activity', string='Actividad de la Compañía')
     references = fields.One2many(
         'account.invoice.references',
