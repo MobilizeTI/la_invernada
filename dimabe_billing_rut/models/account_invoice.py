@@ -15,7 +15,7 @@ class AccountInvoice(models.Model):
 
     economic_activities = fields.Many2many('custom.economic.activity',related='partner_id.economic_activities')
 
-    partner_activity_id = fields.Many2one('custom.economic.activity', string='Actividad del Proveedor', domain=[('id','in',economic_activities)])
+    partner_activity_id = fields.Many2one('custom.economic.activity', string='Actividad del Proveedor')
     company_activity_id = fields.Many2one('custom.economic.activity', string='Actividad de la Compañía')
     references = fields.One2many(
         'account.invoice.references',
