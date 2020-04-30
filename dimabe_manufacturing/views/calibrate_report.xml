@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <record id="view_process_report_laser_tree" model="ir.ui.view">
-            <field name="name">Informe de Partido Laser</field>
+            <field name="name">Informe de Calibrado</field>
             <field name="model">stock.production.lot.serial</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
@@ -21,17 +21,17 @@
             </field>
         </record>
         <record id="dimabe_manufacturing.process_report_laser" model="ir.actions.act_window">
-            <field name="name">Informe de Partido Laser</field>
+            <field name="name">Informe de Proceso Calibrado</field>
             <field name="res_model">stock.production.lot.serial</field>
             <field name="view_mode">tree,form,pivot</field>
             <field name="view_id" ref="view_process_report_laser_tree"/>
             <field name="domain">
-                [('movement','!=','NO DEFINIDO'),('process_id','=','PARTIDO MECÁNICO/LÁSER')]
+                [('movement','!=','NO DEFINIDO'),('process_id','=','CALIBRADO')]
             </field>
         </record>
         <menuitem id="process_laser_menu"
                   action="dimabe_manufacturing.process_report_laser"
-                  name="Informe de Proceso Partido Mecánico / Laser"
+                  name="Informe de Proceso Calibrado"
                   parent="process_report_menu"
         />
     </data>
