@@ -28,7 +28,7 @@
                 [('product_id.categ_id.name','=','Calibrado'),('id','!=',2),('serial_not_consumed','>',0)]
             </field>
         </record>
-        <menuitem id="stock_report_tree_menu"
+        <menuitem id="stock_report_calibrate_tree_menu"
                   action="dimabe_manufacturing.stock_report"
                   name="Informe de Existencia Producto Calibrado"
                   parent="stock_report_menu"
