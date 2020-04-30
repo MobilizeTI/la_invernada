@@ -13,8 +13,8 @@ class AccountInvoice(models.Model):
     ted = fields.Text("TED")
     pdf_url = fields.Text("URL PDF")
 
-    partner_activity_id = fields.Many2one('custom.economic.activity')
-    company_activity_id = fields.Many2one('custom.economic.activity')
+    partner_activity_id = fields.Many2one('custom.economic.activity', string='Actividad del Proveedor', compute='_compute_partner_activity')
+    company_activity_id = fields.Many2one('custom.economic.activity', string='Actividad de la Coompañía')
     references = fields.One2many(
         'account.invoice.references',
         'invoice_id',
@@ -34,6 +34,15 @@ class AccountInvoice(models.Model):
         default='1',
     )
 
+    @api.depends('partner_id')
+    @api.onchange('partner_id')
+    @api.multi
+    def _compute_partner_activity(self):
+        for item in self:
+            activities = []
+            for activity in item.partner_id.economic_activities:
+                activities.append(activity)
+            item.partner_activity_id = activities
     @api.one
     def send_to_sii(self):
         #PARA COMPLETAR EL DOCUMENTO SE DEBE BASAR EN http://www.sii.cl/factura_electronica/formato_dte.pdf

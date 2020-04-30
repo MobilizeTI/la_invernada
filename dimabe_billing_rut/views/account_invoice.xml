@@ -31,8 +31,8 @@
                             <group name="xdte_info" cols="">
                                 <button  type="object" name="send_to_sii" string="Enviar al SII" attrs="{'invisible': ['|',('dte_folio', '!=', False),('state','=','draft')]}" class="oe_highlight"/>
                                 <field name="method_of_payment" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
-                                <field name="partner_activity_id" domain="[('id', 'in', partner_id.economic_activities)]" />
-                                <field name="company_activity_id" domain="[('id', 'in', company_id.economic_activities)]" />
+                                <field name="partner_activity_id" />
+                                <field name="company_activity_id" />
                                 <field name="dte_folio" readonly="1"/>
                                 <field name="dte_type_id" domain="[('code', 'in', [33,34,39,110])]"  attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
                                 <field name="ted" widget="image"  readonly="1"/>
