@@ -32,7 +32,7 @@
         <menuitem id="process_laser_menu"
                   action="dimabe_manufacturing.process_report_laser"
                   name="Informe de Proceso Partido Mecánico / Laser"
-                  parent="stock.menu_warehouse_report"
+                  parent="process_report_menu"
         />
     </data>
 </odoo>

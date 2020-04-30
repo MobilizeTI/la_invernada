@@ -32,7 +32,7 @@
         </record>
         <menuitem id="stock_report_pt_menu"
                   action="dimabe_manufacturing.stock_report_pt"
-                  name="Informe de PT"
+                  name="Informe de Existencia de Producto Terminado"
                   parent="stock_report_menu"
         />
     </data>

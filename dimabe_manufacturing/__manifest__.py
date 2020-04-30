@@ -60,7 +60,6 @@
         'views/res_config_settings.xml',
         'views/raw_report.xml',
         'views/pt_report.xml',
-        'views/dried_report.xml',
         'views/match_report.xml',
         'views/process_report.xml',
         'views/laser_report.xml'
