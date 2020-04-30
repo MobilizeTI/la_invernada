@@ -29,7 +29,7 @@
                 [('movement','!=','NO DEFINIDO'),('process_id','=','PARTIDO MECÁNICO/LÁSER')]
             </field>
         </record>
-        <menuitem id="process_calibrate_menu"
+        <menuitem id="process_laser_menu"
                   action="dimabe_manufacturing.process_report_laser"
                   name="Informe de Proceso Partido Mecánico / Laser"
                   parent="process_report_menu"
