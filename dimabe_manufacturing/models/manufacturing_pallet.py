@@ -103,6 +103,10 @@ class ManufacturingPallet(models.Model):
 
     dest_country_id = fields.Many2one('res.country',compute='_compute_dest_country_id')
 
+    available_weight = fields.Float('Kilos Disponible',compute='_compute_available_weight',store=True)
+
+
+
     @api.multi
     def _compute_dest_client_id(self):
         for item in self:
