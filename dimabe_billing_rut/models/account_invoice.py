@@ -14,7 +14,7 @@ class AccountInvoice(models.Model):
     pdf_url = fields.Text("URL PDF")
 
     partner_activity_id = fields.Many2one('custom.economic.activity', string='Actividad del Proveedor', compute='_compute_partner_activity')
-    company_activity_id = fields.Many2one('custom.economic.activity', string='Actividad de la Coompañía')
+    company_activity_id = fields.Many2one('custom.economic.activity', string='Actividad de la Compañía')
     references = fields.One2many(
         'account.invoice.references',
         'invoice_id',
@@ -34,14 +34,13 @@ class AccountInvoice(models.Model):
         default='1',
     )
 
-    @api.depends('partner_id')
     @api.onchange('partner_id')
     @api.multi
     def _compute_partner_activity(self):
         for item in self:
             activities = []
             for activity in item.partner_id.economic_activities:
-                activities.append(activity)
+                activities.append(activity.id)
             item.partner_activity_id = activities
     @api.one
     def send_to_sii(self):
