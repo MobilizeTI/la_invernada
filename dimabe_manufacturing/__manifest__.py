@@ -58,7 +58,7 @@
         'views/label_durability.xml',
         'views/dried_oven.xml',
         'views/res_config_settings.xml',
-        'views/stock_report.xml',
+        'views/raw_report.xml',
         'views/pt_report.xml',
         'views/dried_report.xml',
         'views/match_report.xml',

@@ -31,7 +31,18 @@ class StockQuant(models.Model):
 
     lot_balance = fields.Float('Stock Disponible', related='lot_id.balance')
 
-    serial_not_consumed = fields.Integer('Envases disponible',compute='_compute_serial_not_consumed')
+    serial_not_consumed = fields.Integer('Envases disponible',compute='_compute_serial_not_consumed',store=True)
+
+    available_weight = fields.Float('Kilos Disponible',compute='_compute_available_weight')
+
+
+    @api.multi
+    def _compute_available_weight(self):
+        for item in self:
+            item.available_weight = sum(item.lot_id.stock_production_lot_serial_ids.filtered(
+                lambda a: not consumed
+            ).mapped('real_weight'))
+
 
     @api.multi
     def _compute_serial_not_consumed(self):
