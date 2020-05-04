@@ -59,12 +59,12 @@
         'views/dried_oven.xml',
         'views/res_config_settings.xml',
         'reports/stock/raw_report.xml',
-        'views/pt_report.xml',
-        'views/match_report.xml',
-        'views/process_report.xml',
-        'views/laser_report.xml',
-        'views/calibrate_report.xml',
-        'views/calibrate_stock_report.xml'
+        'reports/stock/pt_report.xml',
+        'reports/stock/match_report.xml',
+        'report/process/process_report.xml',
+        'report/process/laser_report.xml',
+        'report/process/calibrate_report.xml',
+        'reports/stock/calibrate_stock_report.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
