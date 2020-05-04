@@ -61,8 +61,11 @@
         'reports/stock/raw_report.xml',
         'reports/stock/pt_report.xml',
         'reports/stock/match_report.xml',
-        'reports/process/process_report.xml',
+        'reports/process/packing_ncc_report.xml',
+        'reports/process/packing_nsc_report.xml',
+        'reports/process/washed_report.xml',
         'reports/process/laser_report.xml',
+        'reports/process/manual_report.xml',
         'reports/process/calibrate_report.xml',
         'reports/stock/calibrate_stock_report.xml'
     ],
