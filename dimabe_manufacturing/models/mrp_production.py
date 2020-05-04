@@ -124,8 +124,11 @@ class MrpProduction(models.Model):
     @api.multi
     def fix_moves(self):
         for item in self:
-            for active in item.active_move_line_ids:
-                raise models.UserError(sum(item.active_move_line_ids.mapped('qty_done')))
+            for move in item.move_raw_ids:
+                if move.reserved_availability > 0:
+                    raise models.UserError(sum(move.active_move_line_ids.mapped('product_qty')))
+
+
 
     @api.multi
     def _compute_pt_balance(self):
