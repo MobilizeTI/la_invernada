@@ -122,10 +122,10 @@ class MrpProduction(models.Model):
     manufactureable = fields.Many2many('product.product', compute='get_product_route')
 
     @api.multi
-    def unreserved(self):
+    def fix_moves(self):
         for item in self:
-            for active in item.move_raw_ids:
-                raise models.UserError(sum(item.move_raw_ids.mapped('qty_done')))
+            for active in item.active_move_line_ids:
+                raise models.UserError(sum(item.active_move_line_ids.mapped('qty_done')))
 
     @api.multi
     def _compute_pt_balance(self):
