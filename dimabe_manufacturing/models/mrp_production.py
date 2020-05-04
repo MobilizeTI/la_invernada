@@ -125,10 +125,13 @@ class MrpProduction(models.Model):
     @api.multi
     def fix_moves(self):
         for item in self:
+            counter = 0
+            list_qty_done = []
             for move in item.move_raw_ids:
-                if move.reserved_availability > 0:
-                    raise models.UserError(move.active_move_line_ids.filtered(
-                        lambda a: a.lot_id == move.active_move_line_ids[0].lot_id).mapped('lot_id').name)
+                for line in move.active_move_line_ids:
+                    if line.lot_id == move.active_move_line_ids[counter].lot_id:
+                        raise models.UserError(len(move.active_move_line_ids.filtered(lambda a: a.lot_id == move.active_move_line_ids[0].lot_id)))
+
 
     @api.multi
     def _compute_pt_balance(self):
