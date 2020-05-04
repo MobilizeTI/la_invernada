@@ -135,10 +135,12 @@ class MrpProduction(models.Model):
                                 {
                                     'qty_done': sum(
                                         move.active_move_line_ids.filtered(lambda a: a.lot_id.id == lot.id).mapped(
-                                            'qty_done')),
-                                    'product_uom_qty': 0
+                                            'qty_done'))
                                 }
                             )
+                move.update({
+                    'reserved_availability': 0
+                })
 
     @api.multi
     def _compute_pt_balance(self):
