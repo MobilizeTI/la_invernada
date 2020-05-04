@@ -25,7 +25,7 @@
       <field name="view_mode">tree,graph,form</field>
       <field name="view_id" ref="view_stock_report_tree"/>
       <field name="domain">
-        ['|',('product_id.display_name','like','Secada'),('&amp;',('product_id.categ_id.name','=','Seca'),('id','!=',2),('serial_not_consumed','>',0))]
+        [('|',('product_id.display_name','like','Secada'),('&amp;',('product_id.categ_id.name','=','Seca'),('id','!=',2),('serial_not_consumed','>',0)))]
       </field>
     </record>
     <menuitem id="stock_report_tree_menu"
