@@ -3,6 +3,7 @@ from odoo.addons import decimal_precision as dp
 from datetime import datetime
 import inspect
 
+
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
 
@@ -126,9 +127,8 @@ class MrpProduction(models.Model):
         for item in self:
             for move in item.move_raw_ids:
                 if move.reserved_availability > 0:
-                    raise models.UserError(sum(move.active_move_line_ids.mapped('product_qty')))
-
-
+                    raise models.UserError(move.active_move_line_ids.filtered(
+                        lambda a: a.lot_id == move.active_move_line_ids[0].lot_id).mapped('lot_id').name)
 
     @api.multi
     def _compute_pt_balance(self):
@@ -197,14 +197,11 @@ class MrpProduction(models.Model):
             'mrp_production_id': self.id
         } for lot in res]
 
-
-
     @api.multi
     def set_stock_move(self):
         product = self.env['stock.move'].create({'product_id': self.product_id})
         product_qty = self.env['stock.move'].create({'product_qty': self.product_qty})
         self.env.cr.commit()
-
 
     @api.multi
     def calculate_done(self):
@@ -213,7 +210,8 @@ class MrpProduction(models.Model):
             for line_id in item.finished_move_line_ids:
                 line_id.qty_done = line_id.lot_id.total_serial
             for move in item.move_raw_ids.filtered(
-                    lambda a: a.product_id not in item.consumed_material_ids.mapped('product_id') and a.needs_lots is False
+                    lambda a: a.product_id not in item.consumed_material_ids.mapped(
+                        'product_id') and a.needs_lots is False
             ):
                 move.quantity_done = sum(lot.mapped('count_serial')) * sum(item.bom_id.bom_line_ids.filtered(
                     lambda a: a.product_id == move.product_id
