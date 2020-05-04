@@ -130,7 +130,7 @@ class MrpProduction(models.Model):
                 for line in move.active_move_line_ids:
                     for lot in move.active_move_line_ids.mapped('lot_id'):
                         if line.lot_id.id == lot.id:
-                            line = move.active_move_line_ids.filtered(lambda a: a.lot_id == lot.id)[0]
+                            line = move.active_move_line_ids.filtered(lambda a: a.lot_id.id == lot.id)[0]
                             line.update(
                                 {
                                     'qty_done': sum(
