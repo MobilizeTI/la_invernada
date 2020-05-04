@@ -125,9 +125,20 @@ class MrpProduction(models.Model):
     @api.multi
     def fix_moves(self):
         for item in self:
+
             for move in item.move_raw_ids:
                 for line in move.active_move_line_ids:
-                    raise models.ValidationError(move.active_move_line_ids.mapped('lot_id'))
+                    for lot in move.active_move_line_ids.mapped('lot_id'):
+                        if line.lot_id == lot.id:
+                            line = move.active_move_line_ids.filtered(lambda a: a.lot_id == lot.id)[0]
+                            line.write(
+                                {
+                                    'qty_done': sum(
+                                        move.active_move_line_ids.filtered(lambda a: a.lot_id == lot.id).mapped(
+                                            'qty_done')),
+                                    'product_qty': 0
+                                }
+                            )
 
     @api.multi
     def _compute_pt_balance(self):
