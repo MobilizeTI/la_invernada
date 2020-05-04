@@ -61,9 +61,9 @@
         'reports/stock/raw_report.xml',
         'reports/stock/pt_report.xml',
         'reports/stock/match_report.xml',
-        'report/process/process_report.xml',
-        'report/process/laser_report.xml',
-        'report/process/calibrate_report.xml',
+        'reports/process/process_report.xml',
+        'reports/process/laser_report.xml',
+        'reports/process/calibrate_report.xml',
         'reports/stock/calibrate_stock_report.xml'
     ],
     # only loaded in demonstration mode
