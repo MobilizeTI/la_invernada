@@ -136,7 +136,7 @@ class MrpProduction(models.Model):
                                     'qty_done': sum(
                                         move.active_move_line_ids.filtered(lambda a: a.lot_id == lot.id).mapped(
                                             'qty_done')),
-                                    'product_qty': 0
+                                    'product_uom_qty': 0
                                 }
                             )
 
