@@ -134,8 +134,8 @@ class MrpProduction(models.Model):
                             line.update(
                                 {
                                     'qty_done': sum(
-                                        move.active_move_line_ids.filtered(lambda a: a.lot_id == lot.id).mapped(
-                                            'qty_done')) + line.qty_done,
+                                        move.active_move_line_ids.filtered(lambda a: a.lot_id.id == lot.id).mapped(
+                                            'qty_done')),
                                     'product_uom_qty': 0
                                 }
                             )
