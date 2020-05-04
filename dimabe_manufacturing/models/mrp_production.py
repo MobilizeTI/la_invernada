@@ -129,6 +129,7 @@ class MrpProduction(models.Model):
             for move in item.move_raw_ids:
                 for line in move.active_move_line_ids:
                     for lot in move.active_move_line_ids.mapped('lot_id'):
+                        raise models.UserError(lot.id)
                         if line.lot_id == lot.id:
                             raise models.UserError(lot.id)
                             line = move.active_move_line_ids.filtered(lambda a: a.lot_id == lot.id)[0]
