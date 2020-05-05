@@ -3,6 +3,7 @@ from odoo.addons import decimal_precision as dp
 from datetime import datetime
 import inspect
 
+
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
 
@@ -122,10 +123,24 @@ class MrpProduction(models.Model):
     manufactureable = fields.Many2many('product.product', compute='get_product_route')
 
     @api.multi
-    def unreserved(self):
+    def fix_moves(self):
         for item in self:
-            for active in item.move_raw_ids:
-                raise models.UserError(sum(item.move_raw_ids.mapped('qty_done')))
+
+            for move in item.move_raw_ids:
+                for line in move.active_move_line_ids:
+                    for lot in move.active_move_line_ids.mapped('lot_id'):
+                        if line.lot_id.id == lot.id:
+                            line = move.active_move_line_ids.filtered(lambda a: a.lot_id.id == lot.id)[0]
+                            line.update(
+                                {
+                                    'qty_done': sum(
+                                        move.active_move_line_ids.filtered(lambda a: a.lot_id.id == lot.id).mapped(
+                                            'qty_done'))
+                                }
+                            )
+                move.update({
+                    'reserved_availability': 0
+                })
 
     @api.multi
     def _compute_pt_balance(self):
@@ -194,14 +209,11 @@ class MrpProduction(models.Model):
             'mrp_production_id': self.id
         } for lot in res]
 
-
-
     @api.multi
     def set_stock_move(self):
         product = self.env['stock.move'].create({'product_id': self.product_id})
         product_qty = self.env['stock.move'].create({'product_qty': self.product_qty})
         self.env.cr.commit()
-
 
     @api.multi
     def calculate_done(self):
@@ -210,7 +222,8 @@ class MrpProduction(models.Model):
             for line_id in item.finished_move_line_ids:
                 line_id.qty_done = line_id.lot_id.total_serial
             for move in item.move_raw_ids.filtered(
-                    lambda a: a.product_id not in item.consumed_material_ids.mapped('product_id') and a.needs_lots is False
+                    lambda a: a.product_id not in item.consumed_material_ids.mapped(
+                        'product_id') and a.needs_lots is False
             ):
                 move.quantity_done = sum(lot.mapped('count_serial')) * sum(item.bom_id.bom_line_ids.filtered(
                     lambda a: a.product_id == move.product_id
