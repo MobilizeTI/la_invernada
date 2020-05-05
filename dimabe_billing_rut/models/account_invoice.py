@@ -52,6 +52,11 @@ class AccountInvoice(models.Model):
         if not self.company_id.invoice_rut or not self.partner_id.invoice_rut:
             raise models.ValidationError('No se encuentra registrado el rut de facturación')
 
+        if not self.dte_type_id:
+            raise models.ValidationError('Por favor seleccione tipo de documento a emitir')
+        if not self.company_activity_id or not self.partner_activity_id:
+            raise models.ValidationError('Debe seleccionar el giro de la compañí y proveedor a utilizar')
+
         dte = {}
         dte["Encabezado"] = {}
         # El Portal completa los datos del Emisor
