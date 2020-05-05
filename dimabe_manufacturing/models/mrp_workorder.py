@@ -295,7 +295,7 @@ class MrpWorkorder(models.Model):
                 line = self.env['stock.move.line'].create({
                     'product_id': lot_search.product_id,
                     'lot_id': lot_search.id,
-                    'qty_done': sum(self.potential_serial_planned_ids.filtered(lambda a: a.lot_id.id == lot_search.id).mapped('display_weight'))
+                    'qty_done': sum(self.potential_serial_planned_ids.filtered(lambda a: a.stock_production_lot_id.id == lot_search.id).mapped('display_weight'))
                 })
                 raise models.UserError(line)
 
