@@ -83,7 +83,7 @@ class AccountInvoice(models.Model):
         
         dte["Encabezado"]["IdDoc"]["TermPagoGlosa"] = self.comment or ''
         dte["Encabezado"]["IdDoc"]["Folio"] = '0'
-        dte["Encabezado"]["IdDoc"]["FchEmis"] = date.today()
+        dte["Encabezado"]["IdDoc"]["FchEmis"] = str(date.today())
         dte["Detalle"] = []
         for line in self.invoice_line_ids:
             #El Portal Calculos los Subtotales
