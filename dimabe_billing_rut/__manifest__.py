@@ -27,11 +27,11 @@
         #'data/dte.type.csv',
         #'data/custom.economic.activity.csv',
         'views/res_company.xml',
-        'views/dte_type.xml',
         'views/res_partner.xml',
         'views/account_invoice.xml',
         'views/stock_location.xml',
         'views/custom_economic_activity.xml',
+        'views/dte_type.xml',
         'views/templates.xml',
     ],
     # only loaded in demonstration mode
