@@ -290,8 +290,8 @@ class MrpWorkorder(models.Model):
             lot_search = self.env['stock.production.lot'].search([
                 ('name', '=', lot_code)
             ])
-            if lot_search.id in self.potential_serial_planned_ids.mapped('lot_id') \
-                    and lot_search.id not in self.active_move_line_ids.mapped('stock_production_lot_id'):
+            if lot_search.id in self.potential_serial_planned_ids.mapped('stock_production_lot_id') \
+                    and lot_search.id not in self.active_move_line_ids.mapped('lot_id'):
                 line = self.env['stock.move.line'].create({
                     'product_id': lot_search.product_id,
                     'lot_id': lot_search.id,
