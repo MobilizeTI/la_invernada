@@ -80,7 +80,7 @@
                 <field name="serial_without_pallet_ids"
                        attrs="{'invisible':[('is_standard_weight','=',False)]}"
                 >
-                    <tree delete="1">
+                    <tree editable="top" delete="true">
                         <field name="stock_production_lot_id" />
                         <field name="belongs_to_prd_lot" invisible="1"/>
                         <field name="producer_id" />
