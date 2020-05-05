@@ -59,6 +59,7 @@ class AccountInvoice(models.Model):
 
         dte = {}
         dte["Encabezado"] = {}
+        dte["Encabezado"]["IdDoc"] = {}
         # El Portal completa los datos del Emisor
         dte["Encabezado"]["IdDoc"] = {"TipoDTE": self.dte_type_id.code}
         #Si es Boleta de debe indicar el tipo de servicio, por defecto de venta de servicios
@@ -77,8 +78,8 @@ class AccountInvoice(models.Model):
                                          "RznSocRecep": self.partner_id.name,
                                          "DirRecep": self.partner_id.street +  ' ' + self.partner_id.city,
                                          "CmnaRecep": self.partner_id.city,
-                                         "GiroRecep": self.partner_id.giro}
-        dte["Encabezado"]["IdDoc"] = {}
+                                         "GiroRecep": self.partner_activity_id.name}
+        
         dte["Encabezado"]["IdDoc"]["TermPagoGlosa"] = self.comment
         dte["Detalle"] = []
         for line in self.invoice_line_ids:
