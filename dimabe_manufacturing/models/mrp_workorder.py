@@ -111,11 +111,11 @@ class MrpWorkorder(models.Model):
         compute='_compute_there_is_serial_without_pallet'
     )
 
-    is_match = fields.Boolean('Es Partido',compute='compute_is_match')
+    is_match = fields.Boolean('Es Partido', compute='compute_is_match')
 
-    product_variety  = fields.Char(related='product_id.variety')
+    product_variety = fields.Char(related='product_id.variety')
 
-    location_id = fields.Many2one('stock.location',related='production_id.location_dest_id')
+    location_id = fields.Many2one('stock.location', related='production_id.location_dest_id')
 
     product_qty = fields.Float(related='production_id.product_qty')
 
@@ -290,14 +290,23 @@ class MrpWorkorder(models.Model):
             lot_search = self.env['stock.production.lot'].search([
                 ('name', '=', lot_code)
             ])
+            if lot_search.id in self.potential_serial_planned_ids.mapped('lot_id') \
+                    and lot_search.id not in self.active_move_line_ids.mapped('lot_id'):
+                line = self.env['stock.move.line'].create({
+                    'product_id': lot_search.product_id,
+                    'lot_id': lot_search.id,
+                    'qty_done': sum(self.potential_serial_planned_ids.filtered(lambda a: a.lot_id.id == lot_search.id).mapped('display_weight'))
+                })
+                raise models.UserError(line)
 
     def validate_serial_code(self, barcode):
-        custom_serial = self.env['stock.production.lot.serial'].search([('serial_number','=',barcode)])
+        custom_serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', barcode)])
         if custom_serial:
             if custom_serial.product_id != self.component_id:
                 raise models.ValidationError('El producto ingresado no corresponde al producto solicitado')
             if custom_serial.consumed:
-                raise models.ValidationError('este código ya ha sido consumido en la produccion {}'.format(custom_serial.reserved_to_production_id.name))
+                raise models.ValidationError('este código ya ha sido consumido en la produccion {}'.format(
+                    custom_serial.reserved_to_production_id.name))
             return custom_serial
         # self.validate_lot_code(barcode)
         else:
