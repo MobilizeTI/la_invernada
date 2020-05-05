@@ -294,7 +294,7 @@ class MrpWorkorder(models.Model):
                     and lot_search not in self.active_move_line_ids.mapped('lot_id'):
                 line = self.env['stock.move.line'].create({
                     'product_id': lot_search.product_id.id,
-                    'product_uom_id':lot_search.product_id.product_uom_id.id,
+                    'product_uom_id':lot_search.product_id.uom_id.id,
                     'lot_id': lot_search.id,
                     'qty_done': sum(self.potential_serial_planned_ids.filtered(lambda a: a.stock_production_lot_id.id == lot_search.id).mapped('display_weight'))
                 })
