@@ -80,7 +80,7 @@
                 <field name="serial_without_pallet_ids"
                        attrs="{'invisible':[('is_standard_weight','=',False)]}"
                 >
-                    <tree editable="top" delete="true" >
+                    <tree delete="true" editable="bottom" create="false">
                         <field name="stock_production_lot_id" readonly="1"/>
                         <field name="belongs_to_prd_lot" invisible="1"/>
                         <field name="producer_id" readonly="1"/>
@@ -98,7 +98,6 @@
                                 type="object" string="Imprimir"
                                 attrs="{'invisible':['|',('serial_number', '=', False), ('belongs_to_prd_lot', '=', False)]}"
                         />
-                        <button type="object" icon="gtk-delete" name="unlink"/>
                     </tree>
                 </field>
             </group>
