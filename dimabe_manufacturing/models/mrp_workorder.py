@@ -232,7 +232,8 @@ class MrpWorkorder(models.Model):
                     })
                     check.lot_id = lot_tmp.id
                     check.qty_done = self.component_remaining_qty
-
+                if self.active_move_line_ids.filtered(lambda a: not a.lot_id):
+                    self.action_ignore()
                 if check.quality_state == 'none':
                     self.action_next()
 
@@ -245,9 +246,9 @@ class MrpWorkorder(models.Model):
         self.qty_done = 0
 
     def action_ignore(self):
-        # for move in self.active_move_line_ids:
-        #     if not move.lot_id:
-        #         move.unlink()
+        for move in self.active_move_line_ids:
+            if not move.lot_id:
+                move.unlink()
         self.action_skip()
         for skip in self.skipped_check_ids:
             skip.unlink()
