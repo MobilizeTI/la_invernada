@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 import json
 import requests
+from datetime import date
 
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
@@ -80,7 +81,9 @@ class AccountInvoice(models.Model):
                                          "CmnaRecep": self.partner_id.city,
                                          "GiroRecep": self.partner_activity_id.name}
         
-        dte["Encabezado"]["IdDoc"]["TermPagoGlosa"] = self.comment
+        dte["Encabezado"]["IdDoc"]["TermPagoGlosa"] = self.comment or ''
+        dte["Encabezado"]["IdDoc"]["Folio"] = '0'
+        dte["Encabezado"]["IdDoc"]["FchEmis"] = date.today()
         dte["Detalle"] = []
         for line in self.invoice_line_ids:
             #El Portal Calculos los Subtotales
@@ -107,7 +110,7 @@ class AccountInvoice(models.Model):
         if referencias:
             dte['Referencia'] = referencias
 
-        raise models.ValidationError(json.dumps(dte))
+        
         self.send_dte(json.dumps(dte))
 
     def send_dte(self, dte):
