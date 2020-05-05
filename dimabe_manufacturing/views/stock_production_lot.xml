@@ -98,6 +98,7 @@
                                 type="object" string="Imprimir"
                                 attrs="{'invisible':['|',('serial_number', '=', False), ('belongs_to_prd_lot', '=', False)]}"
                         />
+
                     </tree>
                 </field>
             </group>
