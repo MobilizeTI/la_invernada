@@ -86,11 +86,11 @@
                         <field name="producer_id" />
                         <field name="consumed" />
                         <field name="display_weight"
-                               readonly="1"
+
                         />
                         <field name="serial_number" />
                         <field name="production_id"
-                               readonly="1"
+
                                widget="many2onebutton"
                         />
                         <field name="belongs_to_prd_lot" />
