@@ -102,6 +102,7 @@ class StockProductionLotSerial(models.Model):
     gross_weight = fields.Float(
         'Peso Bruto',
         digits=dp.get_precision('Product Unit of Measure'),
+        compute='_compute_gross_weight',
         inverse='_inverse_gross_weight'
     )
 
@@ -217,6 +218,17 @@ class StockProductionLotSerial(models.Model):
                 item.movement = 'SALIDA'
             else:
                 item.movement = 'NO DEFINIDO'
+
+    @api.depends('real_weight')
+    @api.multi
+    def _compute_gross_weight(self):
+        for item in self:
+            item.real_weight = item.display_weight
+            if not item.is_dried_serial:
+                canning_weight = item.canning_id.weight
+                if not canning_weight:
+                    canning_weight = sum(item.get_possible_canning_id().mapped('weight'))
+                item.gross_weight = item.display_weight + canning_weight
 
     @api.multi
     def _inverse_real_weight(self):

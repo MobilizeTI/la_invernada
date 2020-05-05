@@ -434,7 +434,7 @@
                         </div>
                     </div>
                     <br/>
-                    <div style="height:80px;">
+                    <div style="height:98px;">
 
                     </div>
                     <br/>
@@ -1040,7 +1040,7 @@
                                         <span t-esc="p.lot_serial_ids[0].best_before_date.strftime('%d-%b-%y')"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-field="p.total_content"/>
+                                        <span t-esc="p.total_content - p.total_available_content"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                         <span t-esc="'%.2f' %sum(p.lot_serial_ids.mapped('display_weight'))"/>
@@ -1056,7 +1056,7 @@
                                             Total
                                         </td>
                                         <td style="text-align:center;">
-                                            <span t-esc="sum(d.assigned_pallet_ids.mapped('total_content'))"/>
+                                            <span t-esc="(sum(d.assigned_pallet_ids.mapped('total_content')))-(sum(d.assigned_pallet_ids.mapped('total_available_content')))"/>
                                         </td>
                                         <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
                                             <span t-esc="'%.2f' %sum(d.assigned_pallet_ids.mapped('lot_serial_ids').mapped('display_weight'))"/>

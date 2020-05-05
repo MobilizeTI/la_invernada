@@ -16,9 +16,11 @@
                   string="Calcular Realizado"
                   attrs="{'invisible':[('state', '!=', 'progress')]}"
           />
-          <button name="unreserved" type="object"
-                  string="Quitar Reservas" invisible="1"
-          />
+
+          <button name="fix_moves" type="object"
+                  string="Organizar Movimentos"
+                  invisible="1"
+                  />
         </xpath>
         <button name="action_assign" position="replace">
         </button>
