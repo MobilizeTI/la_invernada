@@ -245,9 +245,9 @@ class MrpWorkorder(models.Model):
         self.qty_done = 0
 
     def action_ignore(self):
-        for move in self.active_move_line_ids:
-            if not move.lot_id:
-                move.unlink()
+        # for move in self.active_move_line_ids:
+        #     if not move.lot_id:
+        #         move.unlink()
         self.action_skip()
         for skip in self.skipped_check_ids:
             skip.unlink()
@@ -290,15 +290,6 @@ class MrpWorkorder(models.Model):
             lot_search = self.env['stock.production.lot'].search([
                 ('name', '=', lot_code)
             ])
-            if lot_search in self.potential_serial_planned_ids.mapped('stock_production_lot_id') \
-                    and lot_search not in self.active_move_line_ids.mapped('lot_id'):
-                line = self.env['stock.move.line'].create({
-                    'product_id': lot_search.product_id.id,
-                    'product_uom_id':lot_search.product_id.uom_id.id,
-                    'lot_id': lot_search.id,
-                    'qty_done': sum(self.potential_serial_planned_ids.filtered(lambda a: a.stock_production_lot_id.id == lot_search.id).mapped('display_weight'))
-                })
-                raise models.UserError(line)
 
     def validate_serial_code(self, barcode):
         custom_serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', barcode)])
