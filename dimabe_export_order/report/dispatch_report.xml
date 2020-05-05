@@ -1056,7 +1056,7 @@
                                             Total
                                         </td>
                                         <td style="text-align:center;">
-                                            <span t-esc="(sum(d.assigned_pallet_ids.mapped('total_content'))-(sum(d.assigned_pallet_ids.mapped('total_available_content')))))"/>
+                                            <span t-esc="(sum(d.assigned_pallet_ids.mapped('total_content')))-(sum(d.assigned_pallet_ids.mapped('total_available_content')))"/>
                                         </td>
                                         <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
                                             <span t-esc="'%.2f' %sum(d.assigned_pallet_ids.mapped('lot_serial_ids').mapped('display_weight'))"/>
