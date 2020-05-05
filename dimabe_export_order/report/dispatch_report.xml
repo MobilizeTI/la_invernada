@@ -1040,7 +1040,7 @@
                                         <span t-esc="p.lot_serial_ids[0].best_before_date.strftime('%d-%b-%y')"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-field="p.total_content"/>
+                                        <span t-esc="p.total_content - p.total_available_content"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                         <span t-esc="'%.2f' %sum(p.lot_serial_ids.mapped('display_weight'))"/>
