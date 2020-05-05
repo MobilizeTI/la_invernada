@@ -107,7 +107,6 @@ class AccountInvoice(models.Model):
         if referencias:
             dte['Referencia'] = referencias
 
-        raise models.ValidationError(json.dumps(dte))
         self.send_dte(json.dumps(dte))
 
     def send_dte(self, dte):
