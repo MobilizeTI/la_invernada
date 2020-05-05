@@ -223,6 +223,7 @@ class StockProductionLotSerial(models.Model):
     @api.multi
     def _compute_gross_weight(self):
         for item in self:
+
             item.gross_weight = item.display_weight + item.canning_id.weight
 
     @api.multi
