@@ -1,4 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dimabe_manufacturing_stock_production_lot,dimabe_manufacturing.stock_production_lot,model_stock_production_lot,0,0,0,1
 access_dimabe_manufacturing_potential_lot,dimabe_manufacturing.potential_lot,model_potential_lot,,1,1,1,1
 access_dimabe_manufacturing_unpelled_dried,dimabe_manufacturing.unpelled_dried,model_unpelled_dried,,1,1,1,1
 access_dimabe_manufacturing_oven_use,dimabe_manufacturing.oven_use,model_oven_use,,1,1,1,1
