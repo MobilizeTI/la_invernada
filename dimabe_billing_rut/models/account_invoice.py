@@ -126,6 +126,7 @@ class AccountInvoice(models.Model):
         data = emitir.json()
         self.dte_folio = data.get('folio', None)
         self.dte_xml = data.get("xml", None)
+        self.dte_pdf = data.get('pdf', None)
         self.ted = data.get("ted", None)
         fecha = data.get("fecha", None)
         total = data.get("total", None)
