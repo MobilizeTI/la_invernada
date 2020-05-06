@@ -44,7 +44,7 @@ class AccountInvoice(models.Model):
                 activities.append(activity.id)
             item.partner_activity_id = activities
 
-    @api.one()
+    @api.one
     def send_to_sii(self):
         dte = dte_helper.DteHelper()
         dte.send_to_sii(self)

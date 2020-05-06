@@ -3,6 +3,9 @@ import requests
 from datetime import date
 
 class DteHelper():
+
+    def __init__(self):
+        
     
     def send_to_sii(self,model):
         #PARA COMPLETAR EL DOCUMENTO SE DEBE BASAR EN http://www.sii.cl/factura_electronica/formato_dte.pdf
