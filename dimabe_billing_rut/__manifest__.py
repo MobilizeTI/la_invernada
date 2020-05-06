@@ -29,6 +29,7 @@
         'views/res_company.xml',
         'views/res_partner.xml',
         'views/account_invoice.xml',
+        'views/stock_picking.xml',
         'views/stock_location.xml',
         'views/custom_economic_activity.xml',
         'views/dte_type.xml',
