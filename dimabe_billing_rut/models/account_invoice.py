@@ -4,7 +4,7 @@ import requests
 from datetime import date
 
 class AccountInvoice(models.Model):
-    _inherit = ['account.invoice', 'stock.pickintg']
+    _inherit = ['account.invoice', 'stock.picking']
     dte_folio = fields.Text(string='Folio DTE')
     dte_type_id =  fields.Many2one(
         'dte.type', string = 'Tipo Documento'
