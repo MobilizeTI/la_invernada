@@ -109,7 +109,7 @@ class AccountInvoice(models.Model):
             referencias.append(ref)
         if referencias:
             dte['Referencia'] = referencias
-            
+
         self.send_dte(json.dumps(dte))
 
     def send_dte(self, dte):
@@ -129,4 +129,4 @@ class AccountInvoice(models.Model):
         self.ted = data.get("ted", None)
         fecha = data.get("fecha", None)
         total = data.get("total", None)
-        self.pdf_url = "%s/dte/dte_emitidos/pdf/%s/%s/0/%s/%s/%s" % (url, self.tipo_dte, self.folio_dte, rut_emisor, fecha, total)
+        self.pdf_url = "%s/dte/dte_emitidos/pdf/%s/%s/0/%s/%s/%s" % (url, self.dte_type_id.code, self.dte_folio, rut_emisor, fecha, total)
