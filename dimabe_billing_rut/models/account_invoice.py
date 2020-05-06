@@ -46,4 +46,5 @@ class AccountInvoice(models.Model):
 
     @api.one()
     def send_to_sii(self):
-        dte_helper.DteHelper().send_to_sii(self)
+        dte = dte_helper.DteHelper()
+        dte.send_to_sii(self)
