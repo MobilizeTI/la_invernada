@@ -81,7 +81,7 @@ class StockPicking(models.Model):
                                          "CmnaRecep": self.partner_id.city,
                                          "GiroRecep": self.partner_activity_id.name}
         
-        dte["Encabezado"]["IdDoc"]["TermPagoGlosa"] = self.comment or ''
+        dte["Encabezado"]["IdDoc"]["TermPagoGlosa"] = self.note or ''
         dte["Encabezado"]["IdDoc"]["Folio"] = '0'
         dte["Encabezado"]["IdDoc"]["FchEmis"] = str(date.today())
         dte["Detalle"] = []
