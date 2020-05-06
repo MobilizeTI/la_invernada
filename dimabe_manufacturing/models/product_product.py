@@ -18,6 +18,7 @@ class ProductProduct(models.Model):
     label_name = fields.Char(
         'Nombre de Etiqueta'
         , compute='_compute_label_product'
+        , store=True
     )
 
     caliber = fields.Char(
