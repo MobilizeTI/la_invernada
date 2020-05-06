@@ -12,12 +12,12 @@ class ProductProduct(models.Model):
 
     type_product = fields.Char(
         'Tipo de Producto'
-        ,compute='_compute_type_product'
+        , compute='_compute_type_product'
     )
 
     label_name = fields.Char(
         'Nombre de Etiqueta'
-        ,compute='_compute_label_product'
+        , compute='_compute_label_product'
     )
 
     caliber = fields.Char(
@@ -25,13 +25,13 @@ class ProductProduct(models.Model):
         compute='_compute_caliber'
     )
 
-    package = fields.Char('Envase',compute='_compute_package')
+    package = fields.Char('Envase', compute='_compute_package')
 
-    is_to_manufacturing = fields.Boolean('Es Fabricacion?',default=True,compute="compute_is_to_manufacturing")
+    is_to_manufacturing = fields.Boolean('Es Fabricacion?', default=True, compute="compute_is_to_manufacturing")
 
     is_standard_weight = fields.Boolean('Es peso estandar', default=False)
 
-    measure = fields.Char('Medida',compute='_compute_measure')
+    measure = fields.Char('Medida', compute='_compute_measure')
 
     @api.multi
     def _compute_measure(self):
@@ -63,7 +63,7 @@ class ProductProduct(models.Model):
             type = []
             for value in item.attribute_value_ids:
                 if value.id != item.attribute_value_ids[0].id:
-                    type.append(','+value.name)
+                    type.append(',' + value.name)
                 else:
                     type.append(value.name)
             type_string = ''.join(type)
@@ -96,7 +96,6 @@ class ProductProduct(models.Model):
     @api.multi
     def _compute_variety(self):
         for item in self:
-
             item.variety = item.get_variety()
 
     @api.multi
