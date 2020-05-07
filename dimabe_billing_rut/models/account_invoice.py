@@ -7,7 +7,7 @@ class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
     dte_folio = fields.Text(string='Folio DTE')
     dte_type_id =  fields.Many2one(
-        'dte.type', string = 'Tipo Documento'
+        'dte.type', string = 'Tipo Documento', cumpute='_compute_dte_type'
     )
     dte_xml = fields.Text("XML")
     dte_pdf = fields.Text("PDF")
@@ -36,6 +36,16 @@ class AccountInvoice(models.Model):
         states={'draft': [('readonly', False)]},
         default='1',
     )
+
+    @api.onchange('type')
+    @api.multi
+    def _compute_dte_type(self):
+        for item in self:
+            if self.type is 'out_invoice':
+                item.dte_type_id = self.dte_type_id.code in [33,34,39,110]
+            if self.type is 'out_refund':
+                item.dte_type_id = self.dte_type_id.code in [56,61,111,112]
+
 
     @api.onchange('partner_id')
     @api.multi
