@@ -308,7 +308,7 @@ class StockProductionLotSerial(models.Model):
                 res.gross_weight = res.display_weight + res.canning_id.weight
             else:
                 res.gross_weight = res.display_weight + sum(res.get_possible_canning_id().mapped('weight'))
-            self.stock_production_lot_id.update(
+            self.stock_production_lot_id.write(
                 {
                     'available_serial': len(self.stock_production_lot_id.stock_production_lot_serial_ids)
                 }
