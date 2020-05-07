@@ -37,8 +37,8 @@ class AccountInvoice(models.Model):
         default='1',
     )
 
-    @api.depends('type')
-    @api.one
+
+    @api.model
     def get_type_ids(self):
         if self.type is 'out_invoice': 
             self.dte_type_id = self.env['dte.type'].search([('code','in', [33,34,39,110])]) 
