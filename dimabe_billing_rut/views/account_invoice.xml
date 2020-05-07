@@ -36,8 +36,8 @@
                                 <field name="company_economic_activities" invisible="1"/>
                                 <field name="company_activity_id" domain="[('id','in',company_economic_activities)]" />
                                 <field name="dte_folio" readonly="1"/>
-                                <field name="dte_type_id" context="[('type','=','out_invoice')]" domain="[('code', 'in', [33,34,39,110])]"  attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
-                                <field name="dte_type_id" context="[('type','=','out_refund')]" domain="[('code', 'in', [56,61,111,112])]"  attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
+                                <field name="dte_type_id" attrs="{'invisible': [('type','=','out_invoice')]" domain="[('code', 'in', [33,34,39,110])]"  attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
+                                <field name="dte_type_id" attrs="{'invisible': [('type','=','out_refund')]" domain="[('code', 'in', [56,61,111,112])]"  attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
                                 <field name="ted" widget="image"  readonly="1"/>
                                 <field name="pdf_url" widget="url" readonly="1" text="Url de Descarga"/>
                                 <field name="dte_xml" widget="binary" filename="dte.xml" />
