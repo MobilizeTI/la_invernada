@@ -37,15 +37,6 @@ class AccountInvoice(models.Model):
         default='1',
     )
 
-    @api.onchange('type')
-    @api.multi
-    def _compute_dte_type(self):
-        for item in self:
-            if self.type is 'out_invoice':
-                self.dte_type_id = self.dte_type_id = [x for x in dte_type_id if x.code in [33,34,39,110]] 
-            if self.type is 'out_refund':
-                self.dte_type_id = [x for x in self.dte_type_id.code if x.code in [56,61,111,112]]
-                
     @api.onchange('partner_id')
     @api.multi
     def _compute_partner_activity(self):
