@@ -227,14 +227,18 @@ class StockProductionLot(models.Model):
             stock_quant = item.get_stock_quant()
             item.location_id = stock_quant.location_id
 
-    @api.onchange('stock_production_lot_serial_ids')
+    @api.multi
     def _compute_serial_not_consumed(self):
         for item in self:
             item.serial_not_consumed = len(item.stock_production_lot_serial_ids.filtered(
                 lambda a: not a.consumed))
-            item.write({
-                'available_serial':item.serial_not_consumed
-            })
+
+    @api.onchange('serial_not_consumed')
+    @api.multi
+    def _compute_available_serial(self):
+        for item in self:
+            self.available_serial = len(item.stock_production_lot_serial_ids.filtered(
+                lambda a: not a.consumed))
 
     @api.multi
     def _compute_can_add_serial(self):
