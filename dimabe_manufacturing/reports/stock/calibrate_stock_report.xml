@@ -25,7 +25,7 @@
             <field name="view_mode">tree,graph,form</field>
             <field name="view_id" ref="view_stock_calibrate_report_tree"/>
             <field name="domain">
-                [('product_id.name','like','Calibrada'),('product_id.name','not like','Descarte'),('product_id.name','not like','Vana'),('product_id.name','not like','Servicio'),('id','!=',2),('available_serial','>',0)]
+                [('product_id.name','like','Calibrada'),('product_id.name','not like','Descarte'),('product_id.name','not like','Vana'),('product_id.name','not like','Servicio'),('id','!=',2),('have_available_serial','=',True)]
             </field>
         </record>
         <menuitem id="stock_report_calibrate_tree_menu"
