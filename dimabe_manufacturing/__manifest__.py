@@ -66,6 +66,7 @@
         'reports/process/washed_report.xml',
         'reports/process/laser_report.xml',
         'reports/process/manual_report.xml',
+        'reports/process/washed_stock_report.xml',
         'reports/process/laser_discart_report.xml',
         'reports/process/calibrate_report.xml',
         'reports/stock/calibrate_stock_report.xml'
