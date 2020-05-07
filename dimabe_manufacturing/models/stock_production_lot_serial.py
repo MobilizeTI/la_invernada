@@ -348,6 +348,10 @@ class StockProductionLotSerial(models.Model):
                 )
 
             )
+        if self.stock_production_lot_id.serial_without_pallet_ids:
+            for item in self.stock_production_lot_id.serial_without_pallet_ids:
+                if item.id == self.id:
+                    item.unlink()
         return super(StockProductionLotSerial, self).unlink()
 
     @api.multi

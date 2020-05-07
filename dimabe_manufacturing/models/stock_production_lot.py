@@ -232,7 +232,8 @@ class StockProductionLot(models.Model):
         for item in self:
             item.serial_not_consumed = len(item.stock_production_lot_serial_ids.filtered(
                 lambda a: not a.consumed))
-            if item.serial_not_consumed > 0:
+            if len(item.stock_production_lot_serial_ids.filtered(
+                lambda a: not a.consumed)) > 0:
                 item.have_available_serial = True
 
     @api.onchange('serial_not_consumed')
