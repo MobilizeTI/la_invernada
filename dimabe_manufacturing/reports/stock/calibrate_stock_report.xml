@@ -27,8 +27,8 @@
             <field name="domain">
                 [('product_id.categ_id.name','=','Calibrado'),('product_id.name','not like','Descarte'),\
                 ('product_id.name','not like','Vana'),\
-                ('product_id.name','not like','Servicio'),('len(item.stock_production_lot_serial_ids.filtered(
-                lambda a: not a.consumed))','>',0)]
+                ('product_id.name','not like','Servicio'),(len(item.stock_production_lot_serial_ids.filtered(
+                lambda a: not a.consumed)),'>',0)]
             </field>
         </record>
         <menuitem id="stock_report_calibrate_tree_menu"
