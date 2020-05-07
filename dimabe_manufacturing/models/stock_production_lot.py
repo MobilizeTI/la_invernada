@@ -208,7 +208,6 @@ class StockProductionLot(models.Model):
 
     location_id = fields.Many2one('stock.location', compute='_compute_lot_location')
 
-    have_available_serial = fields.Boolean('Envases disponible', default=False)
 
     serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed',store=True)
 
@@ -227,6 +226,7 @@ class StockProductionLot(models.Model):
             stock_quant = item.get_stock_quant()
             item.location_id = stock_quant.location_id
 
+    @api.depends('stock_production_lot_serial_ids')
     @api.multi
     def _compute_serial_not_consumed(self):
         for item in self:
