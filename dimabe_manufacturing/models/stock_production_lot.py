@@ -228,7 +228,7 @@ class StockProductionLot(models.Model):
             stock_quant = item.get_stock_quant()
             item.location_id = stock_quant.location_id
 
-    @api.onchange('stock_production_lot_serial_ids')
+    @api.onchange('write_date')
     @api.multi
     def _compute_serial_not_consumed(self):
         for item in self:
