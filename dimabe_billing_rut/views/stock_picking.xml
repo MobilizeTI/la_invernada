@@ -29,7 +29,7 @@
                         </page>
                         <page name="xdte_stock_picking_tab" string="DTE">
                             <group name="xdte_stock_picking_info" cols="">
-                                <button  type="object" name="send_to_sii" string="Enviar al SII" attrs="{'invisible': ['|',('dte_folio', '!=', False),('state','=','draft')]}" class="oe_highlight"/>
+                                <button  type="object" name="send_to_sii" string="Enviar al SII" attrs="{'invisible': ['|',('dte_folio', '!=', False),('state','!=','done')]}" class="oe_highlight"/>
                                 <field name="method_of_payment" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
                                 <field name="partner_activity_id" domain="[('id','in',partner_economic_activities)]"/>
                                 <field name="partner_economic_activities" invisible="1"/>

@@ -85,12 +85,12 @@ class StockPicking(models.Model):
         dte["Encabezado"]["IdDoc"]["Folio"] = '0'
         dte["Encabezado"]["IdDoc"]["FchEmis"] = str(date.today())
         dte["Detalle"] = []
-        for line in self.invoice_line_ids:
+        for line in self.move_ids_without_package:
             #El Portal Calculos los Subtotales
             ld = {'NmbItem': line.product_id.name,
-             'DscItem': '',
-             'QtyItem': round(line.quantity, 6),
-             'PrcItem': round(line.price_unit,4)
+             'DscItem': line.product_id.display_name,
+             'QtyItem': round(line.quantity_done, 6),
+             'PrcItem': round(line.product_id.lst_price,4)
             }
             if line.product_id.default_code:
                 ld['CdgItem'] = {"TpoCodigo": "INT1",
