@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
                 <data>
                     <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
-                        <page string="Referencias">
+                        <page string="Referencias" invisible="[('state', '!=', 'done')]">
                             <field name="references" mode="tree">
                               <form>
                                 <group>
@@ -27,7 +27,7 @@
                               </tree>
                             </field>
                         </page>
-                        <page name="xdte_tab" string="DTE">
+                        <page name="xdte_tab" string="DTE" invisible="[('state', '!=', 'done')]">
                             <group name="xdte_info" cols="">
                                 <button  type="object" name="send_to_sii" string="Enviar al SII" attrs="{'invisible': ['|',('dte_folio', '!=', False),('state','=','draft')]}" class="oe_highlight"/>
                                 <field name="method_of_payment" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
