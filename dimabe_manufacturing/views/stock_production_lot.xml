@@ -98,7 +98,7 @@
                                 type="object" string="Imprimir"
                                 attrs="{'invisible':['|',('serial_number', '=', False), ('belongs_to_prd_lot', '=', False)]}"
                         />
-                        <button type="object" name="unlink" String="Eliminar"/>
+                        <button type="object" name="delete" String="Eliminar"/>
                     </tree>
                 </field>
             </group>
