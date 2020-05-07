@@ -204,8 +204,6 @@ class StockProductionLot(models.Model):
         related='product_id.caliber'
     )
 
-    serial_not_consumed = fields.Integer('Envases Disponible', compute='_compute_serial_not_consumed')
-
     dried_report_product_name = fields.Char(compute='_compute_lot_oven_use')
 
     location_id = fields.Many2one('stock.location', compute='_compute_lot_location')
@@ -235,7 +233,7 @@ class StockProductionLot(models.Model):
             item.serial_not_consumed = len(item.stock_production_lot_serial_ids.filtered(
                 lambda a: not a.consumed))
             item.write({
-                'available_serial':item.serial_not_consumed
+                'available_serial': item.serial_not_consumed
             })
 
     @api.multi
