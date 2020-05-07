@@ -95,8 +95,7 @@ class StockPicking(models.Model):
             if line.product_id.default_code:
                 ld['CdgItem'] = {"TpoCodigo": "INT1",
                               "VlrCodigo": line.product_id.default_code}
-            if line.discount:
-                ld['DescuentoPct']= round(line.discount,2)
+
             dte["Detalle"].append(ld)
         referencias = []
         for reference in self.references:
