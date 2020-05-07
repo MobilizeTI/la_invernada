@@ -210,7 +210,7 @@ class StockProductionLot(models.Model):
 
     have_available_serial = fields.Boolean('Envases disponible', default=False)
 
-    serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed')
+    serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed',store=True)
 
     available_weight = fields.Float('Kilos Disponible', compute='_compute_available_weight')
 
