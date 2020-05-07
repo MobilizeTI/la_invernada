@@ -1,11 +1,11 @@
 <odoo>
     <data>
         <record id="view_stock_washed_report_tree" model="ir.ui.view">
-            <field name="name">Informe de Producto Calibrado</field>
+            <field name="name">Informe de Producto Lavado</field>
             <field name="model">stock.production.lot</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Producto Calibrado">
+                <tree name="Informe de Producto Lavado">
                     <field name="producer_id" widget="many2onebutton" string="Productor"/>
                     <field name="name" widget="many2onebutton" string="Lote"/>
                     <field name="available_weight" string="Kilos"/>
@@ -29,7 +29,7 @@
         </record>
         <menuitem id="stock_report_washed_tree_menu"
                   action="dimabe_manufacturing.stock_washed_report"
-                  name="Informe de Existencia Producto Calibrado"
+                  name="Informe de Existencia Producto Lavado"
                   parent="stock_report_menu"
         />
     </data>
