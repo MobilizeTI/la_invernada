@@ -123,21 +123,22 @@ class StockProductionLotSerial(models.Model):
         related='production_id.bom_id'
     )
 
-    movement = fields.Char('Movimiento',compute='_compute_movement',store=True)
+    movement = fields.Char('Movimiento', compute='_compute_movement', store=True)
 
-    process_id = fields.Char('Proceso',compute='_compute_process_id',store=True)
+    process_id = fields.Char('Proceso', compute='_compute_process_id', store=True)
 
-    in_weight = fields.Float('Kilos Ingresado',compute='_compute_in_weight')
+    in_weight = fields.Float('Kilos Ingresado', compute='_compute_in_weight')
 
-    produce_weight = fields.Float('Kilos Producidos',compute='_compute_produce_weight')
+    produce_weight = fields.Float('Kilos Producidos', compute='_compute_produce_weight')
 
-    pallet_name = fields.Char('Folio Pallet',compute='_compute_pallet_name')
+    pallet_name = fields.Char('Folio Pallet', compute='_compute_pallet_name')
 
-    sale_order_id = fields.Many2one('sale.order','N° Pedido',compute='_compute_sale_order_id')
+    sale_order_id = fields.Many2one('sale.order', 'N° Pedido', compute='_compute_sale_order_id')
 
-    work_order_id = fields.Many2one('mrp.workorder','Order Fabricacion',compute='_compute_workorder_id')
+    work_order_id = fields.Many2one('mrp.workorder', 'Order Fabricacion', compute='_compute_workorder_id')
 
-    production_id_to_view = fields.Many2one('mrp.production','Order de Fabricacion',compute='_compute_production_id_to_view')
+    production_id_to_view = fields.Many2one('mrp.production', 'Order de Fabricacion',
+                                            compute='_compute_production_id_to_view')
 
     @api.multi
     def _compute_production_id_to_view(self):
@@ -154,7 +155,8 @@ class StockProductionLotSerial(models.Model):
         for item in self:
             for item in self:
                 if item.reserved_to_production_id:
-                    workorder = self.env['mrp.workorder'].search([('production_id','=',item.reserved_to_production_id.id)])
+                    workorder = self.env['mrp.workorder'].search(
+                        [('production_id', '=', item.reserved_to_production_id.id)])
                     item.work_order_id = workorder
                 elif item.production_id:
                     workorder = self.env['mrp.workorder'].search(
@@ -173,7 +175,6 @@ class StockProductionLotSerial(models.Model):
             else:
                 item.sale_order_id = None
 
-
     @api.multi
     def _compute_pallet_name(self):
         for item in self:
@@ -189,7 +190,6 @@ class StockProductionLotSerial(models.Model):
                 item.produce_weight = item.real_weight
             else:
                 item.produce_weight = 0.0
-
 
     @api.multi
     def _compute_in_weight(self):
@@ -310,7 +310,7 @@ class StockProductionLotSerial(models.Model):
                 res.gross_weight = res.display_weight + sum(res.get_possible_canning_id().mapped('weight'))
             self.stock_production_lot_id.update(
                 {
-                    'available_serial':self.stock_production_lot_id.available_serial + 1
+                    'available_serial': len(self.stock_production_lot_id.stock_production_lot_serial_ids)
                 }
             )
         return res
@@ -446,7 +446,6 @@ class StockProductionLotSerial(models.Model):
             )
 
             stock_quant = item.stock_production_lot_id.get_stock_quant()
-
 
             item.update({
                 'reserved_to_production_id': None
@@ -621,7 +620,7 @@ class StockProductionLotSerial(models.Model):
                         'product_uom_qty': ml.product_uom_qty
                     })
                 item.stock_production_lot_id.update({
-                    'available_total_serial' : item.stock_production_lot_id.available_total_serial - item.display_weight
+                    'available_total_serial': item.stock_production_lot_id.available_total_serial - item.display_weight
                 })
 
     def remove_and_reduce(self):
