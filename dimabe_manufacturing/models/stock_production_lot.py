@@ -234,10 +234,9 @@ class StockProductionLot(models.Model):
                 lambda a: not a.consumed))
 
     @api.onchange('serial_not_consumed')
-    @api.multi
-    def _compute_available_serial(self):
-        for item in self:
-            self.available_serial = len(item.stock_production_lot_serial_ids.filtered(
+    def _onchange_available_serial(self):
+        if self.serial_not_consumed > 0:
+            self.available_serial = len(self.stock_production_lot_serial_ids.filtered(
                 lambda a: not a.consumed))
 
     @api.multi
