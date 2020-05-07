@@ -58,7 +58,7 @@
                                 <tr>
                                     <td style="text-align:center;">
                                         N°
-                                        <span t-field="d.dispatch_guide_number"/>
+                                        <span t-field="d.dte_folio"/>
                                     </td>
                                 </tr>
                             </table>
@@ -167,14 +167,14 @@
                             <t t-foreach="d.move_ids_without_package" t-as="m">
                                 <tr>
                                     <td style="width:20%;border-right:1px solid;border-bottom:1px solid;text-align:center;">
-                                        <t t-esc="len(d.packing_list_ids)"/>
+                                        <span t-field="m.quantity_done"/>
                                     </td>
                                     <td style="width:20%;border-right:1px solid;border-bottom:1px solid;border-left:1px solid;text-align:center;">
                                         <span t-field="m.product_id.package"/>
                                         <span t-field="m.product_id.display_name"/>
                                     </td>
                                     <td style="width:20%;border-left:1px solid;border-bottom:1px solid;text-align:center;">
-                                        <span t-esc="len(d.packing_list_ids) * m.product_id.lst_price"/>
+                                        <span t-field="m.product_id.lst_price"/>
                                     </td>
                                     <t t-if="m.id == d.move_ids_without_package[-1].id">
                                         <tr>
@@ -343,8 +343,10 @@
                     <t t-if="d.type_of_dispatch == 'exp'">
                         <span t-esc="d.note_dispatched.get_footer_note()" style="font-size:12px;"/>
                     </t>
-                    <div style="width:100%;height:18.5%;">
-
+                    <div style="width:100%;height:18.5%;text-align:center;">
+                        <img t-att-src="'data:image/png;base64,%s' % to_text(d.ted)"
+                                 style="height:140px;padding-top:12px;"
+                            />
                     </div>
                     <div style="width:100%;height:5%;border:1px solid;">
                         <table style="font-size:11px;">

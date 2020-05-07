@@ -3,8 +3,8 @@ import json
 import requests
 from datetime import date
 
-class AccountInvoice(models.Model):
-    _inherit = 'account.invoice'
+class StockPicking(models.Model):
+    _inherit = 'stock.picking'
     dte_folio = fields.Text(string='Folio DTE')
     dte_type_id =  fields.Many2one(
         'dte.type', string = 'Tipo Documento'
@@ -81,22 +81,21 @@ class AccountInvoice(models.Model):
                                          "CmnaRecep": self.partner_id.city,
                                          "GiroRecep": self.partner_activity_id.name}
         
-        dte["Encabezado"]["IdDoc"]["TermPagoGlosa"] = self.comment or ''
+        dte["Encabezado"]["IdDoc"]["TermPagoGlosa"] = self.note or ''
         dte["Encabezado"]["IdDoc"]["Folio"] = '0'
         dte["Encabezado"]["IdDoc"]["FchEmis"] = str(date.today())
         dte["Detalle"] = []
-        for line in self.invoice_line_ids:
+        for line in self.move_ids_without_package:
             #El Portal Calculos los Subtotales
             ld = {'NmbItem': line.product_id.name,
-             'DscItem': '',
-             'QtyItem': round(line.quantity, 6),
-             'PrcItem': round(line.price_unit,4)
+             'DscItem': line.product_id.display_name,
+             'QtyItem': round(line.quantity_done, 6),
+             'PrcItem': round(line.product_id.lst_price,4)
             }
             if line.product_id.default_code:
                 ld['CdgItem'] = {"TpoCodigo": "INT1",
                               "VlrCodigo": line.product_id.default_code}
-            if line.discount:
-                ld['DescuentoPct']= round(line.discount,2)
+
             dte["Detalle"].append(ld)
         referencias = []
         for reference in self.references:
