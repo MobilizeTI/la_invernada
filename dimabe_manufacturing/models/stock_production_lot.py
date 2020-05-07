@@ -234,7 +234,7 @@ class StockProductionLot(models.Model):
         for item in self:
             item.serial_not_consumed = len(item.stock_production_lot_serial_ids.filtered(
                 lambda a: not a.consumed))
-            item.update({
+            item.write({
                 'available_serial':item.serial_not_consumed
             })
 
