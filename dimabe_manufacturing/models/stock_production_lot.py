@@ -238,7 +238,6 @@ class StockProductionLot(models.Model):
 
     @api.onchange('serial_not_consumed')
     @api.depends('serial_not_consumed')
-    @api.multi
     def _compute_available_serial(self):
         for item in self:
             item.available_serial = item.serial_not_consumed
