@@ -9,11 +9,8 @@ class ResCompany(models.Model):
         'Rut Facturación'
     )
 
-    giro = fields.Char(string='Giro')
-    acteco = fields.Char(string='Actividad Economica',
-                         help='Codigo de actividad Economica asignada por el SII',
-                         required=True,
-                         default='102030')
+    economic_activities = fields.Many2many('custom.economic.activity', string='Actividades de la empresa')
+    
     dte_url = fields.Char(string='URL portal de Facturacion',
                           help='',
                           required=True,

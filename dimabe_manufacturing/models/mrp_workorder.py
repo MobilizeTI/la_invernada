@@ -243,6 +243,11 @@ class MrpWorkorder(models.Model):
         super(MrpWorkorder, self).action_next()
         self.qty_done = 0
 
+    def action_skip(self):
+        if self.qty_done > 0:
+            raise models.ValidationError('Tiene que validar el kilos de ingresados')
+        super(MrpWorkorder, self).action_skip()
+
     def action_ignore(self):
         for move in self.active_move_line_ids:
             if not move.lot_id:

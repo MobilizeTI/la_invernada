@@ -1,33 +1,36 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-        <record id="view_stock_report_match_tree" model="ir.ui.view">
-            <field name="name">Informe de Partido</field>
-            <field name="model">mrp.workorder</field>
+        <record id="view_stock_match_report_tree" model="ir.ui.view">
+            <field name="name">Informe de Producto Partido</field>
+            <field name="model">stock.production.lot</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Partido">
-                    <field name="product_id" string="Producto"/>
+                <tree name="Informe de Producto Partido">
+                    <field name="producer_id" widget="many2onebutton" string="Productor"/>
+                    <field name="name" widget="many2onebutton" string="Lote"/>
+                    <field name="available_weight" string="Kilos"/>
                     <field name="product_variety" string="Variedad"/>
-                    <field name="location_id" string="Ubicacion"/>
-                    <field name="product_qty" string="Kilos"/>
-
+                    <field name="product_caliber" string="Calibre"/>
+                    <field name="location_id" widget="many2onebutton" string="Ubicacion"/>
+                    <field name="product_id" widget="many2onebutton" string="Producto"/>
+                    <field name="reception_guide_number" string="N° Guia"/>
+                    <field name="serial_not_consumed" string="Series Disponible"/>
                 </tree>
             </field>
         </record>
-         <record id="dimabe_manufacturing.stock_report_match" model="ir.actions.act_window">
-            <field name="name">Informe de Partido</field>
-            <field name="res_model">mrp.workorder</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="view_stock_report_match_tree"/>
-             <field name="domain">
-                 ['|',('production_id.routing_id.code','=','RO/00006'),('production_id.routing_id.code','=','RO/00007')]
-             </field>
+        <record id="dimabe_manufacturing.stock_match_report" model="ir.actions.act_window">
+            <field name="name">Informe de Producto Partido</field>
+            <field name="res_model">stock.production.lot</field>
+            <field name="view_mode">tree,graph,form</field>
+            <field name="view_id" ref="view_stock_match_report_tree"/>
+            <field name="domain">
+                [('product_id.categ_id.name','like','Partido'),('product_id.name','not like','Descarte'),('product_id.name','not like','Vana'),('product_id.name','not like','(S)'),('serial_not_consumed','!=',0)]
+            </field>
         </record>
-        <menuitem id="stock_report_match_menu"
-                  action="dimabe_manufacturing.stock_report_match"
-                  name="Informe de Partido"
-                  parent="stock.menu_warehouse_report"
+        <menuitem id="stock_report_match_tree_menu"
+                  action="dimabe_manufacturing.stock_match_report"
+                  name="Informe de Existencia Producto Partido"
+                  parent="stock_report_menu"
         />
     </data>
 </odoo>

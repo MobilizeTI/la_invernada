@@ -1,3 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_dimabe_billing_rut_dimabe_billing_rut,dimabe_billing_rut.dimabe_billing_rut,model_dimabe_billing_rut_dimabe_billing_rut,,1,0,0,0
-access_dimabe_billing_rut_custom_economic_activity, dimabe_billing_rut.custom_economic_activity,model_custom_economic_activity,,1,1,1,1
+access_dimabe_account_invoice_references,dimabe_billing_rut.account_invoice_references,model_account_invoice_references,,1,1,1,1
+access_dimabe_custom_economic_activity,dimabe_billing_rut.custom_economic_activity,model_custom_economic_activity,,1,1,1,1
+access_dimabe_dte_type,dimabe_billing_rut.dte_type,model_dte_type,,1,1,1,1

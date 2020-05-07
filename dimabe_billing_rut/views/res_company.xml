@@ -8,6 +8,19 @@
         <xpath expr="//field[@name='vat']" position="after">
           <field name="invoice_rut" />
         </xpath>
+
+        <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+          <page name="xdte_tab" string="DTE">
+              <group name="sii_info" cols="">
+                  <field name="resolution_date" placeholder="Fecha Resolución" colspan="3" style="width: 29%"/>
+                  <field name="resolution_number" placeholder="Núm. Resolución" colspan="3" style="width: 29%"/>
+                  <field name="economic_activities" placeholder="Giros" colspan="8" />
+                  <field name="dte_url" placeholder="URL Portal de Facturacion" colspan="3" style="width: 29%"/>
+                  <field name="dte_hash" placeholder="Hash DTE" colspan="3" style="width: 29%"/>
+                  <field name="ticket_url" placeholder="URL para validación de Boletas Electrónicas." colspan="3" />
+              </group>
+          </page>
+      </xpath>
       </field>
     </record>
   </data>

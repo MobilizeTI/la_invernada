@@ -20,11 +20,11 @@ class ProductProduct(models.Model):
 
     @api.model
     def get_species(self):
-        return self.get_variant('Especie')
+        return self.get_variant('especie')
 
     @api.model
     def get_calibers(self):
-        return self.get_variant('Calibre')
+        return self.get_variant('calibre')
 
     @api.model
     def get_color(self):

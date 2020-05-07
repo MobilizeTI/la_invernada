@@ -7,4 +7,4 @@ class StockLocation(models.Model):
 
     branch_address = fields.Char(string='Dirección Sucursal', required=True, default='')
 
-    city_id = fields.Many2One('res.city', string='comuna sucursal')
+    city_id = fields.Many2one('res.city', string='Comuna Sucursal',help='Comuna de Sucursal', default='')

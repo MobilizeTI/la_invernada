@@ -204,16 +204,14 @@ class StockProductionLot(models.Model):
         related='product_id.caliber'
     )
 
-    serial_not_consumed = fields.Integer('Envases Disponible',compute='_compute_serial_not_consumed')
-
     dried_report_product_name = fields.Char(compute='_compute_lot_oven_use')
 
-    location_id = fields.Many2one('stock.location',compute='_compute_lot_location')
+    location_id = fields.Many2one('stock.location', compute='_compute_lot_location')
 
-    serial_not_consumed = fields.Integer('Envases disponible',compute='_compute_serial_not_consumed',store=True)
 
-    available_weight = fields.Float('Kilos Disponible',compute='_compute_available_weight')
+    serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed',store=True)
 
+    available_weight = fields.Float('Kilos Disponible', compute='_compute_available_weight')
 
     @api.multi
     def _compute_available_weight(self):
@@ -228,16 +226,20 @@ class StockProductionLot(models.Model):
             stock_quant = item.get_stock_quant()
             item.location_id = stock_quant.location_id
 
+    @api.depends('stock_production_lot_serial_ids')
     @api.multi
     def _compute_serial_not_consumed(self):
         for item in self:
             item.serial_not_consumed = len(item.stock_production_lot_serial_ids.filtered(
                 lambda a: not a.consumed))
+            if len(item.stock_production_lot_serial_ids.filtered(
+                lambda a: not a.consumed)) > 0:
+                item.have_available_serial = True
 
-    @api.multi
-    def _compute_serial_not_consumed(self):
+    @api.onchange('serial_not_consumed')
+    def _onchange_have_available_serial(self):
         for item in self:
-            item.serial_not_consumed = len(item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed))
+            item.have_available_serial = True
 
     @api.multi
     def _compute_can_add_serial(self):
@@ -293,7 +295,6 @@ class StockProductionLot(models.Model):
                         ('out_lot_id', '=', item.id)
                     ])
                 if dried_data:
-
                     item.producer_ids = self.env['res.partner'].search([
                         '|',
                         ('id', '=', dried_data.in_lot_ids.mapped('stock_picking_id.partner_id.id')),
@@ -414,7 +415,7 @@ class StockProductionLot(models.Model):
         picking_id = None
         if 'stock_picking_id' in self.env.context:
             picking_id = self.env.context['stock_picking_id']
-            stock_picking = self.env['stock.picking'].search([('id','=',picking_id)])
+            stock_picking = self.env['stock.picking'].search([('id', '=', picking_id)])
         for item in self:
             serial_to_assign_ids = item.stock_production_lot_serial_ids.filtered(
                 lambda a: not a.consumed and not a.reserved_to_stock_picking_id
@@ -467,7 +468,7 @@ class StockProductionLot(models.Model):
                     'reserved_quantity': stock_quant.total_reserved
                 })
 
-            #serial_to_assign_ids.with_context(stock_picking_id=picking_id).reserve_picking()
+            # serial_to_assign_ids.with_context(stock_picking_id=picking_id).reserve_picking()
 
     @api.multi
     def reserved(self):
