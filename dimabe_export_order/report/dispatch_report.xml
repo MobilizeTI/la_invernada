@@ -345,7 +345,7 @@
                     </t>
                     <div style="width:100%;height:18.5%;text-align:center;">
                         <img t-att-src="'data:image/png;base64,%s' % to_text(d.ted)"
-                                 style="height:80%;width:90%;"
+                                 style="height:140px;"
                             />
                     </div>
                     <div style="width:100%;height:5%;border:1px solid;">
