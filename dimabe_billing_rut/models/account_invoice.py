@@ -38,14 +38,12 @@ class AccountInvoice(models.Model):
     )
 
     @api.depends('type')
-    @api.onchange('type')
-    @api.multi
+    @api.one
     def get_type_ids(self):
-        for item in self:
-            if item.type is 'out_invoice': 
-                item.dte_type_id = self.env['dte.type'].search([('code','in', [33,34,39,110])]) 
-            if item.type is 'out_refund': 
-                item.dte_type_id = self.env['dte.type'].search([('code','in', [56,61,111,112])]) 
+        if self.type is 'out_invoice': 
+            self.dte_type_id = self.env['dte.type'].search([('code','in', [33,34,39,110])]) 
+        if self.type is 'out_refund': 
+            self.dte_type_id = self.env['dte.type'].search([('code','in', [56,61,111,112])]) 
 
     @api.onchange('partner_id')
     @api.multi
