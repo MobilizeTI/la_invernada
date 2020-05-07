@@ -107,6 +107,13 @@ class ManufacturingPallet(models.Model):
 
     serial_not_consumed = fields.Integer('Cantidad',compute='_compute_serial_not_consumed')
 
+    lot_id = fields.Many2one('stock.production.lot',compute='_compute_lot_id')
+
+    @api.multi
+    def _compute_lot_id(self):
+        for item in self:
+            item.lot_id = item.lot_serial_ids.mapped('stock_production_lot_id')
+
     @api.multi
     def _compute_available_weight(self):
         for item in self:
