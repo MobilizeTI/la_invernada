@@ -906,7 +906,7 @@
                                 <strong>VESSEL/NAVE:</strong>
                             </td>
                             <td>
-                                <span t-field="d.shipping_id.ship.name"/>
+                                <span t-field="d.shipping_id.ship.name"/><span t-field="d.shipping_id.ship_number"/>
                             </td>
                         </tr>
                         <tr>
