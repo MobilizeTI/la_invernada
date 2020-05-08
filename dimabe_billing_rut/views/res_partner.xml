@@ -7,6 +7,7 @@
       <field name="arch" type="xml">
         <xpath expr="//field[@name='vat']" position="before">
           <field name="invoice_rut"/>
+          <field name="economic_activities" placeholder="Giros" colspan="8" />
         </xpath>
       </field>
     </record>

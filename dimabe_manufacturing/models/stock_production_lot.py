@@ -208,9 +208,8 @@ class StockProductionLot(models.Model):
 
     location_id = fields.Many2one('stock.location', compute='_compute_lot_location')
 
-    available_serial = fields.Integer('Envases disponible', compute='_compute_available_serial', store=True)
 
-    serial_not_consumed = fields.Integer(compute='_compute_serial_not_consumed')
+    serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed',store=True)
 
     available_weight = fields.Float('Kilos Disponible', compute='_compute_available_weight')
 
@@ -227,14 +226,21 @@ class StockProductionLot(models.Model):
             stock_quant = item.get_stock_quant()
             item.location_id = stock_quant.location_id
 
-    @api.onchange('write_date')
+    @api.depends('stock_production_lot_serial_ids')
+    @api.multi
     def _compute_serial_not_consumed(self):
         for item in self:
             item.serial_not_consumed = len(item.stock_production_lot_serial_ids.filtered(
                 lambda a: not a.consumed))
-            item.write({
-                'available_serial': item.serial_not_consumed
-            })
+            if len(item.stock_production_lot_serial_ids.filtered(
+                lambda a: not a.consumed)) > 0:
+                item.have_available_serial = True
+
+    @api.onchange('serial_not_consumed')
+    def _onchange_have_available_serial(self):
+        for item in self:
+            item.have_available_serial = True
+>>>>>>> test
 
     @api.multi
     def _compute_can_add_serial(self):

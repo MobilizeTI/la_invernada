@@ -1,0 +1,58 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_dte_type_tree">
+            <field name="name">view.dte.type.tree</field>
+            <field name="model">dte.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                <field name="code"/>
+                <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+
+            <record id="view_dte_type_form" model="ir.ui.view">
+            <field name="name">view.dte.type.form</field>
+            <field name="model">dte.type</field>
+            <field name="arch" type="xml">
+                <form name="Tipo DTE">
+                <sheet>
+                    <div class="oe_title">
+                    <label for="code" class="oe_edit_only" />
+                    <h1>
+                        <field name="code" placeholder="Código DTE" />
+                    </h1>
+                    </div>
+                    <group>
+                        <field name="name" placeholder="Nombre" />
+                    </group>
+                </sheet>
+                </form>
+            </field>
+            </record>
+
+
+            <record id="action_dte_type_views" model="ir.actions.act_window">
+            <field name="name">Tipo DTE</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dte.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                Tipo DTE
+                </p>
+                <p>
+                Click aquí para agregar tipo DTE
+                </p>
+            </field>
+            </record>
+            
+
+            <menuitem id="menu_dte_type"
+                    name="Tipo DTE"
+                    parent="menu_account_dte"
+                    action="action_dte_type_views"
+            />
+    </data>
+</odoo>

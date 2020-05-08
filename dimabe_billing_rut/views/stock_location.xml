@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+        <record id="stock_view_location_form_inherit_2" model="ir.ui.view">
+            <field name="name">stock.view_location_form</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='return_location']" position="after">
+                    <group string="SII">
+                        <field name="branch_code_sii" placeholder="Codigo Sii" colspan="3"/>
+                        <field name="branch_address" placeholder="Dirección" colspan="8"/>
+                        <field name="city_id" placeholder="Comuna" colspan="4"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+
+

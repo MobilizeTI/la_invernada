@@ -8,10 +8,8 @@ class ResPartner(models.Model):
     invoice_rut = fields.Char(
         'Rut Facturación'
     )
-
-    giro = fields.Char(
-        'Giro'
-    )
+    
+    economic_activities = fields.Many2many('custom.economic.activity', string='Actividades de la empresa')
 
     @api.model
     def create(self, values_list):
