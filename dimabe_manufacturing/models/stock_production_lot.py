@@ -240,7 +240,6 @@ class StockProductionLot(models.Model):
     def _onchange_have_available_serial(self):
         for item in self:
             item.have_available_serial = True
->>>>>>> test
 
     @api.multi
     def _compute_can_add_serial(self):
