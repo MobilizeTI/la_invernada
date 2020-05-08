@@ -1097,10 +1097,10 @@
                                             <span t-esc="(sum(d.assigned_pallet_ids.mapped('total_content')))-(sum(d.assigned_pallet_ids.mapped('total_available_content')))+len(d.packing_list_ids.filtered(lambda a : not a.pallet_id))"/>
                                         </td>
                                         <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
-                                            <span t-esc="'%.2f' %sum(d.assigned_pallet_ids.mapped('lot_serial_ids').mapped('display_weight'))+sum(d.packing_list_ids.filtered(lambda a : not a.pallet_id)"/>
+                                            <span t-esc="'%.2f' %sum(d.assigned_pallet_ids.mapped('lot_serial_ids').mapped('display_weight'))+sum(d.packing_list_ids.filtered(lambda a : not a.pallet_id).mapped('display_weight'))"/>
                                         </td>
                                         <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
-                                            <span t-esc="'%.2f' %sum(d.assigned_pallet_ids.mapped('lot_serial_ids').mapped('gross_weight'))++sum(d.packing_list_ids.filtered(lambda a : not a.pallet_id)"/>
+                                            <span t-esc="'%.2f' %sum(d.assigned_pallet_ids.mapped('lot_serial_ids').mapped('gross_weight'))++sum(d.packing_list_ids.filtered(lambda a : not a.pallet_id).mapped('gross_weight'))"/>
                                         </td>
                                     </tr>
                                 </t>
