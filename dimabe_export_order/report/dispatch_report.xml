@@ -906,7 +906,7 @@
                                 <strong>VESSEL/NAVE:</strong>
                             </td>
                             <td>
-                                <span t-field="d.shipping_id.ship.name"/><span t-field="d.shipping_id.ship_number"/>
+                                <span t-field="d.shipping_id.ship.name"/> <span t-field="d.shipping_id.ship_number"/>
                             </td>
                         </tr>
                         <tr>
@@ -914,7 +914,7 @@
                                 <strong>PORT OF LOADING:</strong>
                             </td>
                             <td>
-                                <span t-field="d.shipping_id.departure_port.name"/>
+                                <span t-field="d.shipping_id.departure_port.name"/>,<span t-field="d.shipping_id.departure_port.country_id.name"/>
                             </td>
                         </tr>
                         <tr>
@@ -922,7 +922,7 @@
                                 <strong>PORT OF DISCHARGE:</strong>
                             </td>
                             <td>
-                                <span t-field="d.shipping_id.arrival_port.name"/>
+                                <span t-field="d.shipping_id.arrival_port.name"/>,<span t-field="d.shipping_id.arrival_port.country_id.name"/>
                             </td>
                         </tr>
                         <tr>
