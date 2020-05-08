@@ -9,6 +9,7 @@
                 <tree name="Informe de Producto Terminado">
                     <field name="sale_order_id" string="Pedido"/>
                     <field name="name" string="Folio Pallet"/>
+                    <field name="lot_id" string="Lote"/>
                     <field name="create_date" string="Fecha Pallet"/>
                     <field name="state" string="Estado"/>
                     <field name="producer_id" widget="many2onebutton" string="Productor"/>
