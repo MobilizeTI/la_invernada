@@ -1045,10 +1045,10 @@
                                         <span t-esc="p.total_content - p.total_available_content"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-esc="'%.2f' %sum(d.packing_list_ids.filtered(lambda a : a.pallet_id == p.id).mapped('display_weight'))"/>
+                                        <span t-esc="'%.2f' %sum(d.packing_list_ids.filtered(lambda a : a.pallet_id.id == p.id).mapped('display_weight'))"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-esc="'%.2f' %sum(d.packing_list_ids.filtered(lambda a : a.pallet_id == p.id).mapped('display_weight'))"/>
+                                        <span t-esc="'%.2f' %sum(d.packing_list_ids.filtered(lambda a : a.pallet_id.id == p.id).mapped('display_weight'))"/>
                                     </td>
                                 </tr>
                                 <t t-if="d.packing_list_ids.filtered(lambda a : not a.pallet_id) and p.id == d.assigned_pallet_ids[-1].id">
