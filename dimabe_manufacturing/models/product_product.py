@@ -43,6 +43,7 @@ class ProductProduct(models.Model):
                 if "Saco 25K" == value:
                     item.measure = '25 Kilos'
 
+    @api.depends('attribute_value_ids')
     @api.multi
     def _compute_caliber(self):
         for item in self:

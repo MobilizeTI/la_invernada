@@ -201,7 +201,8 @@ class StockProductionLot(models.Model):
 
     product_caliber = fields.Char(
         'Calibre del Producto',
-        related='product_id.caliber'
+        related='product_id.caliber',
+        store=True
     )
 
     dried_report_product_name = fields.Char(compute='_compute_lot_oven_use')
