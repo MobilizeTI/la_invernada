@@ -81,6 +81,11 @@ class AccountInvoice(models.Model):
                 'MntExeOtrMnda': round(self.amount_total * self.exchange_rate, 2),
                 'MntTotOtrMnda': round(self.amount_total * self.exchange_rate, 2)
             }
+            dte["Encabezado"]["Totales"] = {
+                'TpoMoneda': 'DOLAR USA',
+                'MntExe': self.amount_total,
+                'MntTotal': self.amount_total
+            }
 
         #EL CAMPO RUT DE FACTURACIÓN, debe corresponder al RUT de la Empresa
         dte["Encabezado"]["Emisor"] = {"RUTEmisor": self.company_id.invoice_rut.replace(".","")}
@@ -120,7 +125,7 @@ class AccountInvoice(models.Model):
             referencias.append(ref)
         if referencias:
             dte['Referencia'] = referencias
-        raise models.ValidationError(json.dumps(dte))
+        #raise models.ValidationError(json.dumps(dte))
         self.send_dte(json.dumps(dte))
 
     def send_dte(self, dte):
