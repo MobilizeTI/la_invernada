@@ -58,7 +58,7 @@ class AccountInvoice(models.Model):
         if not self.company_activity_id or not self.partner_activity_id:
             raise models.ValidationError('Debe seleccionar el giro de la compañí y proveedor a utilizar')
 
-        if self.dte_type_id.code is 110 and (self.currency_id.name is not 'USD' or not self.exchange_rate):
+        if self.dte_type_id.code is 110 and self.currency_id.name is not 'USD' and not self.exchange_rate:
             raise models.ValidationError('Para emitir una factura de exportación la moneda debe ser en USD y debe tener una tasa de cambio')
 
         dte = {}
