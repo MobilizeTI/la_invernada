@@ -74,7 +74,7 @@ class AccountInvoice(models.Model):
             #Se debe inicar SOLO SI los valores indicados en el documento son con iva incluido
             dte["Encabezado"]["IdDoc"]["MntBruto"] = 1
 
-        if self.dte_type_id.code = 110:
+        if self.dte_type_id.code is 110:
             dte["Ecabezado"]["OtraMoneda"] = {
                 'TpoMoneda': 'PESO CL',
                 'TpoCambio': self.exchange_rate,
