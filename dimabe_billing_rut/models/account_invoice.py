@@ -58,6 +58,9 @@ class AccountInvoice(models.Model):
         if not self.company_activity_id or not self.partner_activity_id:
             raise models.ValidationError('Debe seleccionar el giro de la compañí y proveedor a utilizar')
 
+        if self.dte_type_id.code is 110 and (self.currency_id.name is not 'USD' or not self.exchange_rate):
+            raise models.ValidationError('Para emitir una factura de exportación la moneda debe ser en USD y debe tener una tasa de cambio')
+
         dte = {}
         dte["Encabezado"] = {}
         dte["Encabezado"]["IdDoc"] = {}
@@ -67,9 +70,17 @@ class AccountInvoice(models.Model):
         if self.dte_type_id.code in ('39', 39):
             dte["Encabezado"]["IdDoc"]["IndServicio"] = 3
 
-        if not self.dte_type_id.code in ('39', 39):
+        if not self.dte_type_id.code in ('39', 39, 110):
             #Se debe inicar SOLO SI los valores indicados en el documento son con iva incluido
             dte["Encabezado"]["IdDoc"]["MntBruto"] = 1
+
+        if self.dte_type_id.code = 110:
+            dte["Ecabezado"]["OtraMoneda"] = {
+                'TpoMoneda': 'PESO CL',
+                'TpoCambio': self.exchange_rate,
+                'MntExeOtrMnda': self.amount_total * self.exchange_rate,
+                'MntTotOtrMnda': self.amount_total * self.exchange_rate
+            }
 
         #EL CAMPO RUT DE FACTURACIÓN, debe corresponder al RUT de la Empresa
         dte["Encabezado"]["Emisor"] = {"RUTEmisor": self.company_id.invoice_rut.replace(".","")}
