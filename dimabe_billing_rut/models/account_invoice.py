@@ -75,11 +75,11 @@ class AccountInvoice(models.Model):
             dte["Encabezado"]["IdDoc"]["MntBruto"] = 1
 
         if self.dte_type_id.code is 110:
-            dte["Ecabezado"]["OtraMoneda"] = {
+            dte["Encabezado"]["OtraMoneda"] = {
                 'TpoMoneda': 'PESO CL',
                 'TpoCambio': self.exchange_rate,
-                'MntExeOtrMnda': self.amount_total * self.exchange_rate,
-                'MntTotOtrMnda': self.amount_total * self.exchange_rate
+                'MntExeOtrMnda': round(self.amount_total * self.exchange_rate, 2),
+                'MntTotOtrMnda': round(self.amount_total * self.exchange_rate, 2)
             }
 
         #EL CAMPO RUT DE FACTURACIÓN, debe corresponder al RUT de la Empresa
