@@ -158,7 +158,12 @@
             <table style="font-size:14px;">
               <tr>
                 <th style="border-top: solid 1px;border-bottom:solid 1px;" colspan="2">
-                  <span t-field="lot_serial_id.product_id.label_name"/>
+                  <t t-if="lot_serial_id.product_id.label_name">
+                    <span t-field="lot_serial_id.product_id.label_name"/>
+                  </t>
+                  <t t-if="not lot_serial_id.product_id.label_name">
+                    <span t-field="lot_serial_id.product_id.display_name"/>
+                  </t>
                 </th>
               </tr>
               <tr>
@@ -246,10 +251,10 @@
               </tr>
             </table>
             <t t-if="not o.lot_serial_ids[-1].serial_number == lot_serial_id.serial_number">
-              <p style="page-break-after:always;" />
+              <p style="page-break-after:always;"/>
             </t>
             <t t-else="">
-              <p style="page-break-after:avoid;" />
+              <p style="page-break-after:avoid;"/>
             </t>
           </t>
         </t>

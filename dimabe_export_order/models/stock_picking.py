@@ -324,6 +324,7 @@ class StockPicking(models.Model):
 
     @api.multi
     @api.depends('agent_id')
+    @api.onchange('agent_id')
     def _compute_total_commission(self):
         for item in self:
             list_price = []
