@@ -328,7 +328,7 @@ class StockPicking(models.Model):
     @api.multi
     def _compute_total_commission(self):
         for item in self:
-            if item.commission > 3 or item.commission == 3:
+            if item.commission > 3:
                 raise models.ValidationError('la comisión debe ser mayor que 0 y menor o igual que 3')
             else:
                 item.total_commission = (item.commission / 100) \
