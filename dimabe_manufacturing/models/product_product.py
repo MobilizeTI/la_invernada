@@ -78,8 +78,6 @@ class ProductProduct(models.Model):
                 item.label_name = item.name + ' (' + item.get_calibers() + ')'
             if specie == 'Nuez Sin Cáscara':
                 item.label_name = item.name + ' (' + item.get_color() + ')'
-            else:
-                item.label_name = item.display_name
 
     @api.multi
     def compute_is_to_manufacturing(self):
