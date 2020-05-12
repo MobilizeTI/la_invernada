@@ -43,7 +43,6 @@ class ProductProduct(models.Model):
                 if "Saco 25K" == value:
                     item.measure = '25 Kilos'
 
-    @api.depends('attribute_value_ids')
     @api.multi
     def _compute_caliber(self):
         for item in self:
@@ -75,15 +74,10 @@ class ProductProduct(models.Model):
     def _compute_label_product(self):
         for item in self:
             specie = item.get_species()
-            models._logger.error('Especie: {}'.format(specie))
             if specie == 'Nuez Con Cáscara':
-                caliber = item.get_calibers()
-                models._logger.error(caliber)
-                item.label_name = item.name + ' (' + caliber + ')'
+                item.label_name = item.name + ' (' + item.get_calibers() + ')'
             if specie == 'Nuez Sin Cáscara':
-                color = item.get_color()
-                models._logger.error('Nuez Sin Cáscara : {}'.format('color'))
-                item.label_name = item.name + ' (' + color + ')'
+                item.label_name = item.name + ' (' + item.get_color() + ')'
             else:
                 item.label_name = item.display_name
 
