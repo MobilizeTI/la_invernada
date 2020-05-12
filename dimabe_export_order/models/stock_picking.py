@@ -324,14 +324,11 @@ class StockPicking(models.Model):
             if qty_total > 0:
                 item.value_per_kilogram = item.total_value / qty_total
 
-    @api.multi
     @api.onchange('commission')
+    @api.multi
     def _compute_total_commission(self):
         for item in self:
-            item.total_commission = (int(item.commission) / 100) * (
-                    sum(item.sale_id.order_line.mapped('price_unit')) * sum(
-                item.move_ids_without_package.mapped('product_uom_qty')
-            ))
+            item.total_commission = item.commission
 
     @api.multi
     # @api.depends('contract_id')
