@@ -37,6 +37,8 @@ class StockPicking(models.Model):
         compute='_get_correlative_text'
     )
 
+    commission = fields.Float('Comisión')
+
     #   elapsed_time_dispatch = fields.Float(string="Hora de Camión en Planta")
 
     consignee_id = fields.Many2one(
@@ -226,7 +228,7 @@ class StockPicking(models.Model):
 
     departure_weight = fields.Float('Peso de Salida')
 
-    customs_department = fields.Many2one('res.partner','Oficina Aduanera')
+    customs_department = fields.Many2one('res.partner', 'Oficina Aduanera')
 
     @api.onchange('picture')
     def get_pictures(self):
@@ -323,7 +325,7 @@ class StockPicking(models.Model):
                 item.value_per_kilogram = item.total_value / qty_total
 
     @api.multi
-    @api.depends('agent_id')
+    @api.depends('commission')
     def _compute_total_commission(self):
         for item in self:
             list_price = []
@@ -340,7 +342,6 @@ class StockPicking(models.Model):
                     prices = sum(list_price)
                     qtys = sum(list_qty)
             item.total_commission = (item.agent_id.commission / 100) * (prices * qtys)
-
 
     @api.multi
     # @api.depends('contract_id')
@@ -364,3 +365,8 @@ class StockPicking(models.Model):
         # else:
         # self.contract_correlative_view = ''
 
+    @api.constrains('commission')
+    def _check_data_typed(self):
+        for item in self:
+            if item.is_agent and not item.commission or item.commission > 3:
+                raise models.ValidationError('la comisión debe ser mayor que 0 y menor o igual que 3')
