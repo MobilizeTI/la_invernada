@@ -328,21 +328,10 @@ class StockPicking(models.Model):
     @api.onchange('commission')
     def _compute_total_commission(self):
         for item in self:
-            list_price = []
-            list_qty = []
-            prices = 0
-            quantitys = 0
-            for i in item.sale_id.order_line:
-                if len(item.sale_id.order_line) != 0:
-                    list_price.append(int(i.price_unit))
-
-            for a in item.move_ids_without_package:
-                if len(item.move_ids_without_package) != 0:
-                    list_qty.append(int(a.quantity_done))
-
-            prices = sum(list_price)
-            quantitys = sum(list_qty)
-            item.total_commission = (item.commission / 100) * (prices * quantitys)
+            item.total_commission = (item.commission / 100) * (
+                    sum(item.sale_id.order_line.mapped('price_unit')) * sum(
+                item.move_ids_without_package.mapped('product_uom_qty')
+            ))
 
     @api.multi
     # @api.depends('contract_id')
