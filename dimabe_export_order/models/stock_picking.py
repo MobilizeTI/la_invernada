@@ -55,7 +55,7 @@ class StockPicking(models.Model):
     agent_id = fields.Many2one(
         'res.partner',
         'Agente',
-        domain=[('is_agent', '=', True), ('commission', '>', 0)]
+        domain=[('is_agent', '=', True)]
     )
 
     total_commission = fields.Float(
