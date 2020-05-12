@@ -328,7 +328,7 @@ class StockPicking(models.Model):
     @api.multi
     def _compute_total_commission(self):
         for item in self:
-            item.total_commission = item.commission
+            item.total_commission = item.commission / 100
 
     @api.multi
     # @api.depends('contract_id')
