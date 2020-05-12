@@ -325,7 +325,7 @@ class StockPicking(models.Model):
                 item.value_per_kilogram = item.total_value / qty_total
 
     @api.multi
-    @api.depends('commission')
+    @api.onchange('commission')
     def _compute_total_commission(self):
         for item in self:
             list_price = []
@@ -341,7 +341,7 @@ class StockPicking(models.Model):
                     list_qty.append(int(a.quantity_done))
                     prices = sum(list_price)
                     qtys = sum(list_qty)
-            item.total_commission = (item.agent_id.commission / 100) * (prices * qtys)
+            item.total_commission = (item.commission / 100) * (prices * qtys)
 
     @api.multi
     # @api.depends('contract_id')
