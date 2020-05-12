@@ -34,7 +34,7 @@
                                     <field name="contract_correlative" invisible="1"/>
                                     <field name="shipping_id" attrs="{'readonly':[('is_dispatcher', '=', 1)]}"/>
                                     <field name="agent_id"/>
-                                    <field name="commission" attrs="{'invisible':[('agent_id.id','!=',None)]}"/>
+                                    <field name="commission"/>
                                     <field name="total_commission"/>
                                     <field name="charging_mode"/>
                                     <field name="booking_number"/>
