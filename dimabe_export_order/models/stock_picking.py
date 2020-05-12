@@ -331,18 +331,18 @@ class StockPicking(models.Model):
             list_price = []
             list_qty = []
             prices = 0
-            qtys = 0
+            quantitys = 0
             for i in item.sale_id.order_line:
                 if len(item.sale_id.order_line) != 0:
                     list_price.append(int(i.price_unit))
-                    raise models.ValidationError(list_price)
 
             for a in item.move_ids_without_package:
                 if len(item.move_ids_without_package) != 0:
                     list_qty.append(int(a.quantity_done))
-                    prices = sum(list_price)
-                    qtys = sum(list_qty)
-            item.total_commission = (item.commission / 100) * (prices * qtys)
+
+            prices = sum(list_price)
+            quantitys = sum(list_qty)
+            item.total_commission = (item.commission / 100) * (prices * quantitys)
 
     @api.multi
     # @api.depends('contract_id')
@@ -369,5 +369,5 @@ class StockPicking(models.Model):
     @api.constrains('commission')
     def _check_data_typed(self):
         for item in self:
-            if item.agent_id.is_agent and not item.commission or item.commission > 3:
+            if item.agent_id.is_agent or item.commission > 3:
                 raise models.ValidationError('la comisión debe ser mayor que 0 y menor o igual que 3')
