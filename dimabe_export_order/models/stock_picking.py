@@ -329,7 +329,7 @@ class StockPicking(models.Model):
     def _compute_total_commission(self):
         for item in self:
             item.total_commission = (item.commission / 100) \
-                                    + (sum(item.sale_id.order_line.mapped('price_unit'))
+                                    * (sum(item.sale_id.order_line.mapped('price_unit'))
                                        * sum(item.move_ids_without_package.mapped('product_uom_qty')))
 
     @api.multi
