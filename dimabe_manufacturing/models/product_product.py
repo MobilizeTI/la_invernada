@@ -22,7 +22,8 @@ class ProductProduct(models.Model):
 
     caliber = fields.Char(
         'Caliber',
-        compute='_compute_caliber'
+        compute='_compute_caliber',
+        store=True
     )
 
     package = fields.Char('Envase', compute='_compute_package')

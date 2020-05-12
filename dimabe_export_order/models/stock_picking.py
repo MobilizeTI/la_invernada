@@ -37,6 +37,8 @@ class StockPicking(models.Model):
         compute='_get_correlative_text'
     )
 
+    commission = fields.Float('Comisión')
+
     #   elapsed_time_dispatch = fields.Float(string="Hora de Camión en Planta")
 
     consignee_id = fields.Many2one(
@@ -53,7 +55,7 @@ class StockPicking(models.Model):
     agent_id = fields.Many2one(
         'res.partner',
         'Agente',
-        domain=[('is_agent', '=', True), ('commission', '>', 0)]
+        domain=[('is_agent', '=', True)]
     )
 
     total_commission = fields.Float(
@@ -226,7 +228,7 @@ class StockPicking(models.Model):
 
     departure_weight = fields.Float('Peso de Salida')
 
-    customs_department = fields.Many2one('res.partner','Oficina Aduanera')
+    customs_department = fields.Many2one('res.partner', 'Oficina Aduanera')
 
     @api.onchange('picture')
     def get_pictures(self):
@@ -299,7 +301,7 @@ class StockPicking(models.Model):
             list_price = []
             list_qty = []
             prices = 0
-            qtys = 0
+            qantas = 0
             for i in item.sale_id.order_line:
                 if len(item.sale_id.order_line) != 0:
                     list_price.append(int(i.price_unit))
@@ -308,9 +310,9 @@ class StockPicking(models.Model):
                 if len(item.move_ids_without_package) != 0:
                     list_qty.append(int(a.quantity_done))
                     prices = sum(list_price)
-                    qtys = sum(list_qty)
+                    qantas = sum(list_qty)
 
-            item.total_value = (prices * qtys) + item.freight_value + item.safe_value
+            item.total_value = (prices * qantas) + item.freight_value + item.safe_value
 
     @api.multi
     @api.depends('total_value')
@@ -322,26 +324,16 @@ class StockPicking(models.Model):
             if qty_total > 0:
                 item.value_per_kilogram = item.total_value / qty_total
 
+    @api.onchange('commission')
     @api.multi
-    @api.depends('agent_id')
-    @api.onchange('agent_id')
     def _compute_total_commission(self):
         for item in self:
-            list_price = []
-            list_qty = []
-            prices = 0
-            qtys = 0
-            for i in item.sale_id.order_line:
-                if len(item.sale_id.order_line) != 0:
-                    list_price.append(int(i.price_unit))
-
-            for a in item.move_ids_without_package:
-                if len(item.move_ids_without_package) != 0:
-                    list_qty.append(int(a.quantity_done))
-                    prices = sum(list_price)
-                    qtys = sum(list_qty)
-            item.total_commission = (item.agent_id.commission / 100) * (prices * qtys)
-
+            if item.agent_id.is_agent or item.commission > 3:
+                raise models.ValidationError('la comisión debe ser mayor que 0 y menor o igual que 3')
+            else:
+                item.total_commission = (item.commission / 100) \
+                                    * (sum(item.sale_id.order_line.mapped('price_unit'))
+                                       * sum(item.move_ids_without_package.mapped('product_uom_qty')))
 
     @api.multi
     # @api.depends('contract_id')
@@ -365,3 +357,8 @@ class StockPicking(models.Model):
         # else:
         # self.contract_correlative_view = ''
 
+    @api.constrains('commission')
+    def _check_data_typed(self):
+        for item in self:
+            if item.agent_id.is_agent or item.commission > 3:
+                raise models.ValidationError('la comisión debe ser mayor que 0 y menor o igual que 3')
