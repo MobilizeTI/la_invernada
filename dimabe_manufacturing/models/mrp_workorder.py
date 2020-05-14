@@ -290,7 +290,7 @@ class MrpWorkorder(models.Model):
     def organize_move_line(self):
         for lot in self.potential_serial_planned_ids.mapped('stock_production_lot_id'):
             stock_quant = lot.get_stock_quant()
-            stock_move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id == item.product_id)
+            stock_move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id == lot.product_id)
             virtual_location_production_id = self.env['stock.location'].search([
                 ('usage', '=', 'production'),
                 ('location_id.name', 'like', 'Virtual Locations')
