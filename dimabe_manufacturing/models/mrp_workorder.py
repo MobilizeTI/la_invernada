@@ -261,7 +261,8 @@ class MrpWorkorder(models.Model):
                     (4, move_line.id)
                 ]
             })
-
+        elif self.lot_id in self.active_move_line_ids.mapped('lot_id'):
+            raise models.ValidationError(self.active_move_line.filtered(lambda a : a.lot_id == self.lot_id.id))
 
         super(MrpWorkorder, self).action_next()
         self.qty_done = 0
