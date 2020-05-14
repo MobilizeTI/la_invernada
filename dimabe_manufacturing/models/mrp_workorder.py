@@ -249,7 +249,7 @@ class MrpWorkorder(models.Model):
                     'lot_id': lot.id,
                     'product_uom_qty': self.qty_done,
                     'product_uom_id': stock_move.product_uom.id,
-                    'location_id': lot.location_id
+                    'location_id': lot.location_id.id
                 })
             })
         super(MrpWorkorder, self).action_next()
