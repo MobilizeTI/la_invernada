@@ -79,11 +79,16 @@
                 <button name="open_tablet_view" position="attributes">
                     <attribute name="string">Procesar Entrada</attribute>
                 </button>
+
                 <xpath expr="//header" position="inside">
                     <button name="open_out_form_view"
                             type="object"
                             string="Procesar Salida"
                             attrs="{'invisible': [('production_state', '=', 'done')]}"
+                    />
+                    <button type="object"
+                            name="organize_move_line"
+                            string="Organizar Movimientos"
                     />
                 </xpath>
                 <xpath expr="//page[2]" position="after">
