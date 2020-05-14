@@ -244,10 +244,7 @@ class MrpWorkorder(models.Model):
             if self.lot_id.id not in self.active_move_line_ids.mapped('lot_id').mapped('id'):
                 raise models.ValidationError('rot')
             else:
-                self.active_move_line_ids.filtered(lambda a: a.lot_id.id == self.lot_id.id).write({
-                    'product_uom_qty': self.active_move_line_ids.filtered(
-                        lambda a: a.lot_id.id == self.lot_id.id).product_uom_qty + self.qty_done
-                })
+                raise models.ValidationError('ryr')
                 super(MrpWorkorder,self).action_next()
         self.qty_done = 0
 
