@@ -242,7 +242,7 @@ class MrpWorkorder(models.Model):
         self.validate_lot_code(self.lot_id.name)
         if self.current_quality_check_id.quality_state != 'none':
             for item in self.potential_serial_planned_ids:
-                if item.stock_production_lot_id not in self.active_move_line_ids.mapped('lot_id'):
+                if item.stock_production_lot_id.id not in self.active_move_line_ids.mapped('lot_id'):
                     lot = self.env['stock.production.lot'].search([('id', '=', item.stock_production_lot_id.id)])
                     stock_quant = lot.get_stock_quant()
                     stock_move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id == item.product_id)
