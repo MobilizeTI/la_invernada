@@ -246,7 +246,7 @@ class MrpWorkorder(models.Model):
             else:
                 for item in self.active_move_line_ids:
                     if self.lot_id.id == item.lot_id.id:
-                        item.write({
+                        item.update({
                             'product_uom_qty': sum(self.potential_serial_planned_ids.filtered(
                                 lambda a: a.stock_production_lot_id.id == item.lot_id.id).mapped('display_weight'))
                         })
