@@ -244,8 +244,13 @@ class MrpWorkorder(models.Model):
             if self.lot_id.id not in self.active_move_line_ids.mapped('lot_id').mapped('id'):
                 raise models.ValidationError('rot')
             else:
-                raise models.ValidationError('ryr')
-                super(MrpWorkorder,self).action_next()
+                for item in self.active_move_line_ids:
+                    if self.lot_id.id == item.lot_id.id:
+                        item.update({
+                            'product_uom_qty': sum(self.potential_serial_planned_ids.filtered(
+                                lambda a: a.stock_production_lot_id.id == item.lot_id.id).mapped('display_weight'))
+                        })
+                super(MrpWorkorder, self).action_next()
         self.qty_done = 0
 
     def action_skip(self):
