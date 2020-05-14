@@ -255,7 +255,7 @@ class MrpWorkorder(models.Model):
     def organize_move_line(self):
         for item in self.active_move_line_ids:
                 self.active_move_line_ids = [1, item.id, sum(
-                    self.potential_serial_planned_ids.filtered(lambda a: a.lot_id.id == item.lot_id.id).mapped(
+                    self.potential_serial_planned_ids.filtered(lambda a: a.stock_production_lot_id.id == item.lot_id.id).mapped(
                         'display_weight'))]
 
     def action_skip(self):
