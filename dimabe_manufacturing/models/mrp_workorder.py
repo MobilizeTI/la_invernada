@@ -267,7 +267,7 @@ class MrpWorkorder(models.Model):
                 super(MrpWorkorder, self).action_next()
             else:
                 raise models.ValidationError(
-                    self.active_move_line_ids.filtered(lambda a: a.lot_id.id == item.stock_production_id.id))
+                    self.active_move_line_ids.filtered(lambda a: a.lot_id.id == self.lot_id.id))
 
 
         self.qty_done = 0
