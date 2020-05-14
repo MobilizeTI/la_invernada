@@ -242,7 +242,7 @@ class MrpWorkorder(models.Model):
         self.validate_lot_code(self.lot_id.name)
         if self.lot_id not in self.active_move_line_ids.mapped('lot_id'):
             lot = self.env['stock.production.lot'].search([('id','=',self.lot_id.id)])
-            self.active_move_line.update({
+            self.active_move_line_ids.update({
                 (0, 0, {
                     'product_id': lot.product_id.id,
                     'lot_id': lot.id,
