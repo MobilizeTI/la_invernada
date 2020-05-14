@@ -241,9 +241,9 @@ class MrpWorkorder(models.Model):
     def action_next(self):
         self.validate_lot_code(self.lot_id.name)
         if self.current_quality_check_id.quality_state != 'none':
-            if self.lot_id not in self.active_move_line_ids.mapped('lot_id') and self.qty_done != 0:
-                for item in self.potential_serial_planned_ids:
-                    lot = self.env['stock.production.lot'].search([('id', '=', item.lot_id.id)])
+            for item in self.potential_serial_planned_ids:
+                if item.stock_production_lot_id not in self.active_move_line_ids.mapped('lot_id'):
+                    lot = self.env['stock.production.lot'].search([('id', '=', item.stock_production_lot_id.id)])
                     stock_quant = lot.get_stock_quant()
                     stock_move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id == item.product_id)
                     virtual_location_production_id = self.env['stock.location'].search([
@@ -264,8 +264,10 @@ class MrpWorkorder(models.Model):
                             (4, move_line.id)
                         ]
                     })
-            else:
-                raise models.ValidationError(self.active_move_line.filtered(lambda a: a.lot_id == self.lot_id.id))
+                else:
+                    raise models.ValidationError(self.active_move_line.filtered(lambda a: a.lot_id == self.lot_id.id))
+        else:
+            raise models.ValidationError(self.active_move_line.filtered(lambda a: a.lot_id == self.lot_id.id))
 
         super(MrpWorkorder, self).action_next()
         self.qty_done = 0
