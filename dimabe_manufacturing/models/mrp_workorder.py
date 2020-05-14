@@ -296,7 +296,7 @@ class MrpWorkorder(models.Model):
                 ('location_id.name', 'like', 'Virtual Locations')
             ])
             move_line = self.env['stock.move.line'].create({
-                'product_id': item.product_id.id,
+                'product_id': lot.product_id.id,
                 'lot_id': lot.id,
                 'product_uom_qty': sum(self.potential_serial_planned_ids.filtered(
                     lambda a: a.stock_production_lot_id == lot.id).mapped('display_weight')),
