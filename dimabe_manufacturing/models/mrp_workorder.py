@@ -250,7 +250,8 @@ class MrpWorkorder(models.Model):
                             'product_uom_qty': sum(self.potential_serial_planned_ids.filtered(
                                 lambda a: a.stock_production_lot_id.id == item.lot_id.id).mapped('display_weight'))
                         })
-                super(MrpWorkorder, self).action_next()
+                        self.qty_done = 0
+                super(MrpWorkorder, self).action_skip()
         self.qty_done = 0
 
     def action_skip(self):
