@@ -241,19 +241,20 @@ class MrpWorkorder(models.Model):
     def action_next(self):
         self.validate_lot_code(self.lot_id.name)
         if self.current_quality_check_id.quality_state != 'none':
-            if item.lot_id not in self.active_move_line_ids.mapped('lot_id') and self.qty_done != 0:
+            if self.lot_id not in self.active_move_line_ids.mapped('lot_id') and self.qty_done != 0:
                 for item in self.potential_serial_planned_ids:
-                    lot = self.env['stock.production.lot'].search([('id', '=', self.lot_id.id)])
+                    lot = self.env['stock.production.lot'].search([('id', '=', item.lot_id.id)])
                     stock_quant = lot.get_stock_quant()
-                    stock_move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id == self.component_id)
+                    stock_move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id == item.product_id)
                     virtual_location_production_id = self.env['stock.location'].search([
                         ('usage', '=', 'production'),
                         ('location_id.name', 'like', 'Virtual Locations')
                     ])
                     move_line = self.env['stock.move.line'].create({
-                        'product_id': self.component_id.id,
+                        'product_id': item.product_id.id,
                         'lot_id': lot.id,
-                        'product_uom_qty': self.qty_done,
+                        'product_uom_qty': sum(self.potential_serial_planned_ids.filtered(
+                            lambda a: a.stock_production_lot_id == lot.id).mapped('display_weight')),
                         'product_uom_id': stock_move.product_uom.id,
                         'location_id': stock_quant.location_id.id,
                         'location_dest_id': virtual_location_production_id.id
