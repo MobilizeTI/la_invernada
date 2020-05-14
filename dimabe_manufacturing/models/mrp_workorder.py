@@ -286,6 +286,30 @@ class MrpWorkorder(models.Model):
         for skip in self.skipped_check_ids:
             skip.unlink()
 
+    @api.multi
+    def organize_move_line(self):
+        for lot in self.potential_serial_planned_ids.mapped('stock_production_lot_id'):
+            stock_quant = lot.get_stock_quant()
+            stock_move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id == item.product_id)
+            virtual_location_production_id = self.env['stock.location'].search([
+                ('usage', '=', 'production'),
+                ('location_id.name', 'like', 'Virtual Locations')
+            ])
+            move_line = self.env['stock.move.line'].create({
+                'product_id': item.product_id.id,
+                'lot_id': lot.id,
+                'product_uom_qty': sum(self.potential_serial_planned_ids.filtered(
+                    lambda a: a.stock_production_lot_id == lot.id).mapped('display_weight')),
+                'product_uom_id': stock_move.product_uom.id,
+                'location_id': stock_quant.location_id.id,
+                'location_dest_id': virtual_location_production_id.id
+            })
+            self.write({
+                'active_move_line_ids': [
+                    (4, move_line.id)
+                ]
+            })
+
     @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
         for item in self:
