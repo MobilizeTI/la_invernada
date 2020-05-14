@@ -256,7 +256,6 @@ class MrpWorkorder(models.Model):
                 'location_id':stock_quant.location_id.id,
                 'location_dest_id':virtual_location_production_id.id
             })
-            raise models.ValidationError(move_line)
 
 
         super(MrpWorkorder, self).action_next()
