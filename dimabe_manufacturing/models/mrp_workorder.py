@@ -268,7 +268,7 @@ class MrpWorkorder(models.Model):
             else:
                 self.active_move_line_ids.filtered(lambda a: a.lot_id.id == self.lot_id.id).update({
                     'product_uom_qty': self.active_move_line_ids.filtered(
-                        lambda a: a.lot_id.id == self.lot_id.id).mapped('product_uom_qty') + self.qty_done
+                        lambda a: a.lot_id.id == self.lot_id.id).product_uom_qty + self.qty_done
                 })
 
         self.qty_done = 0
