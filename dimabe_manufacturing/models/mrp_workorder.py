@@ -244,13 +244,17 @@ class MrpWorkorder(models.Model):
             lot = self.env['stock.production.lot'].search([('id', '=', self.lot_id.id)])
             stock_quant = lot.get_stock_quant()
             stock_move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id == self.component_id)
+            virtual_location_production_id = self.env['stock.location'].search([
+                ('usage', '=', 'production'),
+                ('location_id.name', 'like', 'Virtual Locations')
+            ])
             move_line = self.env['stock.move.line'].create({
                 'product_id':self.component_id.id,
                 'lot_id':lot.id,
                 'product_uom_qty':self.qty_done,
                 'product_uom_id':stock_move.product_uom.id,
                 'location_id':stock_quant.location_id.id,
-                'location_dest_id':None
+                'location_dest_id':virtual_location_production_id.id
             })
             raise models.ValidationError(move_line)
 
