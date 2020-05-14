@@ -241,8 +241,8 @@ class MrpWorkorder(models.Model):
     def action_next(self):
         self.validate_lot_code(self.lot_id.name)
         if self.lot_id not in self.active_move_line_ids.mapped('lot_id'):
-            stock_quant = self.lot_id.get_stock_quant()
-            raise models.ValidationError(stock_quant)
+            lot = self.env['stock.production.lot'].search([('id','=',self.lot_id.id)])
+            raise models.ValidationError(lot)
         super(MrpWorkorder, self).action_next()
         self.qty_done = 0
 
