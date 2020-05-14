@@ -256,6 +256,11 @@ class MrpWorkorder(models.Model):
                 'location_id':stock_quant.location_id.id,
                 'location_dest_id':virtual_location_production_id.id
             })
+            self.write({
+                'active_move_line_ids': [
+                    (4, move_line.id)
+                ]
+            })
 
 
         super(MrpWorkorder, self).action_next()
