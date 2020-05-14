@@ -248,17 +248,16 @@ class MrpWorkorder(models.Model):
                     'product_uom_qty': self.active_move_line_ids.filtered(
                         lambda a: a.lot_id.id == self.lot_id.id).product_uom_qty + self.qty_done
                 })
-                super(MrpWorkorder,self,)
+                super(MrpWorkorder, self, )
         self.qty_done = 0
 
     @api.multi
     def organize_move_line(self):
         for item in self.active_move_line_ids:
             if self.lot_id.id == item.lot_id.id:
-                item.update({
-                    'product_uom_qty': sum(self.potential_serial_planned_ids.filtered(
-                        lambda a: a.stock_production_lot_id.id == item.lot_id.id).mapped('display_weight'))
-                })
+                self.active_move_line_ids = [1, item.id, sum(
+                    self.potential_serial_planned_ids.filtered(lambda a: a.lot_id.id == item.lot_id.id).mapped(
+                        'display_weight'))]
 
     def action_skip(self):
         if self.qty_done > 0:
