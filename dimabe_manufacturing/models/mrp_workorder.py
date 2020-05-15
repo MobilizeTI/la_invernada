@@ -326,9 +326,10 @@ class MrpWorkorder(models.Model):
                                     'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                         lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight'))
                                 })
-                for move in stock_move.active_move_line_ids:
-                    if move.product_qty > 0:
-                        move.unlink()
+                for move in stock_move:
+                    for active in move.active_move_line_ids:
+                        if active.product_qty > 0:
+                            active.unlink()
             else:
                 if item not in stock_move.active_move_line_ids.mapped('lot_id'):
                     stock_move.update({
