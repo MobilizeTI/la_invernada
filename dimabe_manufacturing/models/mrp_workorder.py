@@ -248,7 +248,7 @@ class MrpWorkorder(models.Model):
                 ('usage', '=', 'production'),
                 ('location_id.name', 'like', 'Virtual Locations')
             ])
-            self.update({
+            stock_move.update({
                 'active_move_line_ids': [
                     (0, 0, {
                         'product_id': item.product_id.id,
