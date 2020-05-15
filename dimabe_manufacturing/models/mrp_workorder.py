@@ -265,7 +265,7 @@ class MrpWorkorder(models.Model):
             else:
                 stock_move.active_move_line_ids = [1, item.id, sum(
                     self.potential_serial_planned_ids.filtered(
-                        lambda a: a.stock_production_lot_id.id == item.lot_id.id).mapped(
+                        lambda a: a.stock_production_lot_id.id == item.id).mapped(
                         'display_weight')),stock_move.product_uom.id]
 
 
