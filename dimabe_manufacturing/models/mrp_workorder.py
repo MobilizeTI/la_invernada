@@ -312,6 +312,9 @@ class MrpWorkorder(models.Model):
                         })
                     ]
                 })
+                for move in stock_move.active_move_line_ids:
+                    if move.product_qty > 0 and move.qty_done < 0:
+                        move.unlink()
                 self.qty_done = 0
             else:
                 for line in stock_move.active_move_line_ids:
