@@ -263,20 +263,6 @@ class MrpWorkorder(models.Model):
                         })
                     ]
                 })
-                self.update({
-                    'active_move_line_ids': [
-                        (1, 0, {
-                            'product_id': item.product_id.id,
-                            'lot_id': item.id,
-                            'qty_done': sum(self.potential_serial_planned_ids.filtered(
-                                lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
-                            'lot_produced_id': self.final_lot_id,
-                            'product_uom_id': stock_move.product_uom.id,
-                            'location_id': stock_quant.location_id.id,
-                            'location_dest_id': virtual_location_production_id.id
-                        })
-                    ]
-                })
                 self.qty_done = 0
                 super(MrpWorkorder, self).action_skip()
             else:
