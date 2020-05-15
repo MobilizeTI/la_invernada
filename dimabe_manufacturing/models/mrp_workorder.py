@@ -243,7 +243,7 @@ class MrpWorkorder(models.Model):
         if self.current_quality_check_id.quality_state != 'none':
             for item in self.potential_serial_planned_ids.mapped('stock_production_lot_id'):
                 stock_quant = item.get_stock_quant()
-                raise models.UserError(stock_quant)
+                raise models.ValidationError(stock_quant)
         self.qty_done = 0
 
     @api.multi
