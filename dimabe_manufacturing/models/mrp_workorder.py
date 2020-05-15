@@ -256,6 +256,7 @@ class MrpWorkorder(models.Model):
                             'lot_id': item.id,
                             'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                 lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
+                            'lot_produced_id':self.final_lot_id,
                             'product_uom_id': stock_move.product_uom.id,
                             'location_id': stock_quant.location_id.id,
                             'location_dest_id': virtual_location_production_id.id
