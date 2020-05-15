@@ -240,23 +240,19 @@ class MrpWorkorder(models.Model):
 
     def action_next(self):
         self.validate_lot_code(self.lot_id.name)
-        if self.current_quality_check_id.quality_state != 'none':
-            if self.lot_id.id not in self.active_move_line_ids.mapped('lot_id').mapped('id'):
-                raise models.ValidationError('rot')
-            else:
-                self.active_move_line_ids.filtered(lambda a: a.lot_id.id == self.lot_id.id).write({
-                    'product_uom_qty': self.active_move_line_ids.filtered(
-                        lambda a: a.lot_id.id == self.lot_id.id).product_uom_qty + self.qty_done
-                })
-                super(MrpWorkorder, self).action_next()
+        if self.current_quality_check_id.state != 'none':
+            for item in self.potential_serial_planned_ids.mapped('stock_production_lot_id'):
+                stock_quant = item.get_stock_quant()
+                raise models.UserError(stock_quant)
         self.qty_done = 0
 
     @api.multi
     def organize_move_line(self):
         for item in self.active_move_line_ids:
-                self.active_move_line_ids = [1, item.id, sum(
-                    self.potential_serial_planned_ids.filtered(lambda a: a.stock_production_lot_id.id == item.lot_id.id).mapped(
-                        'display_weight'))]
+            self.active_move_line_ids = [1, item.id, sum(
+                self.potential_serial_planned_ids.filtered(
+                    lambda a: a.stock_production_lot_id.id == item.lot_id.id).mapped(
+                    'display_weight'))]
 
     def action_skip(self):
         if self.qty_done > 0:
