@@ -312,9 +312,7 @@ class MrpWorkorder(models.Model):
                         })
                     ]
                 })
-                for move in stock_move.active_move_line_ids:
-                    if move.product_qty > 0 and move.qty_done < 0:
-                        move.unlink()
+
                 self.qty_done = 0
             else:
                 for line in stock_move.active_move_line_ids:
@@ -323,6 +321,9 @@ class MrpWorkorder(models.Model):
                             'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                 lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight'))
                         })
+            for move in stock_move.active_move_line_ids:
+                if move.product_qty > 0 and move.qty_done < 0:
+                    move.unlink()
 
     def action_skip(self):
         if self.qty_done > 0:
