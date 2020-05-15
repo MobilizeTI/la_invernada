@@ -265,7 +265,10 @@ class MrpWorkorder(models.Model):
             else:
                 for line in stock_move.active_move_line_ids:
                     if line.lot_id.id == item.id:
-                        raise models.ValidationError(line)
+                        line.update({
+                            'qty_done':sum(self.potential_serial_planned_ids.filtered(
+                                lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight'))
+                        })
 
         self.qty_done = 0
 
