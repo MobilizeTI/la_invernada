@@ -299,35 +299,64 @@ class MrpWorkorder(models.Model):
             ])
             if len(stock_move) > 1:
                 stock_move[0].update({
-                    'qty_done': 0
+                    'quantity_done': 0
                 })
-            if item not in stock_move.active_move_line_ids.mapped('lot_id'):
-                stock_move.update({
-                    'active_move_line_ids': [
-                        (0, 0, {
-                            'product_id': item.product_id.id,
-                            'lot_id': item.id,
-                            'qty_done': sum(self.potential_serial_planned_ids.filtered(
-                                lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
-                            'lot_produced_id': self.final_lot_id,
-                            'product_uom_id': stock_move.product_uom.id,
-                            'location_id': stock_quant.location_id.id,
-                            'location_dest_id': virtual_location_production_id.id
-                        })
-                    ]
-                })
+                if item not in stock_move.active_move_line_ids.mapped('lot_id'):
+                    stock_move[1].update({
+                        'active_move_line_ids': [
+                            (0, 0, {
+                                'product_id': item.product_id.id,
+                                'lot_id': item.id,
+                                'qty_done': sum(self.potential_serial_planned_ids.filtered(
+                                    lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
+                                'lot_produced_id': self.final_lot_id,
+                                'product_uom_id': stock_move.product_uom.id,
+                                'location_id': stock_quant.location_id.id,
+                                'location_dest_id': virtual_location_production_id.id
+                            })
+                        ]
+                    })
 
-                self.qty_done = 0
+                    self.qty_done = 0
+                else:
+                    for line in stock_move.active_move_line_ids:
+                        if line.lot_id.id == item.id:
+                            line.update({
+                                'qty_done': sum(self.potential_serial_planned_ids.filtered(
+                                    lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight'))
+                            })
+                for move in stock_move.active_move_line_ids:
+                    if move.product_qty > 0:
+                        move.unlink()
             else:
-                for line in stock_move.active_move_line_ids:
-                    if line.lot_id.id == item.id:
-                        line.update({
-                            'qty_done': sum(self.potential_serial_planned_ids.filtered(
-                                lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight'))
-                        })
-            for move in stock_move.active_move_line_ids:
-                if move.product_qty > 0:
-                    move.unlink()
+                if item not in stock_move.active_move_line_ids.mapped('lot_id'):
+                    stock_move.update({
+                        'active_move_line_ids': [
+                            (0, 0, {
+                                'product_id': item.product_id.id,
+                                'lot_id': item.id,
+                                'qty_done': sum(self.potential_serial_planned_ids.filtered(
+                                    lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
+                                'lot_produced_id': self.final_lot_id,
+                                'product_uom_id': stock_move.product_uom.id,
+                                'location_id': stock_quant.location_id.id,
+                                'location_dest_id': virtual_location_production_id.id
+                            })
+                        ]
+                    })
+
+                    self.qty_done = 0
+                else:
+                    for line in stock_move.active_move_line_ids:
+                        if line.lot_id.id == item.id:
+                            line.update({
+                                'qty_done': sum(self.potential_serial_planned_ids.filtered(
+                                    lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight'))
+                            })
+                for move in stock_move.active_move_line_ids:
+                    if move.product_qty > 0:
+                        move.unlink()
+
 
     def action_skip(self):
         if self.qty_done > 0:
