@@ -262,7 +262,7 @@ class MrpWorkorder(models.Model):
                         })
                     ]
                 })
-                self.write({
+                self.update({
                     'active_move_line_ids': [
                         (0, 0, {
                             'product_id': item.product_id.id,
