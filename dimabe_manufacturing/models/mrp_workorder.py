@@ -303,7 +303,7 @@ class MrpWorkorder(models.Model):
                         (5)
                     ]
                 })
-                if item not in stock_move.active_move_line_ids.mapped('lot_id'):
+                if item not in stock_move[1].active_move_line_ids.mapped('lot_id'):
                     stock_move[1].update({
                         'active_move_line_ids': [
                             (0, 0, {
