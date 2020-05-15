@@ -297,6 +297,10 @@ class MrpWorkorder(models.Model):
                 ('usage', '=', 'production'),
                 ('location_id.name', 'like', 'Virtual Locations')
             ])
+            if len(stock_move) > 1:
+                stock_move[0].update({
+                    'qty_done': 0
+                })
             if item not in stock_move.active_move_line_ids.mapped('lot_id'):
                 stock_move.update({
                     'active_move_line_ids': [
