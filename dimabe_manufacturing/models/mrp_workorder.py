@@ -298,9 +298,7 @@ class MrpWorkorder(models.Model):
                 ('location_id.name', 'like', 'Virtual Locations')
             ])
             if len(stock_move) > 1:
-                stock_move[0].update({
-                    'quantity_done': 0
-                })
+                stock_move[0].update(5)
                 if item not in stock_move.active_move_line_ids.mapped('lot_id'):
                     stock_move[1].update({
                         'active_move_line_ids': [
