@@ -243,7 +243,7 @@ class MrpWorkorder(models.Model):
 
         for item in self.potential_serial_planned_ids.mapped('stock_production_lot_id'):
             stock_quant = item.get_stock_quant()
-            stock_move = self.production_id.move_raw_ids.filtered(lambda a : a.product_id == item.product_id.id)
+            stock_move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == item.product_id.id)
             raise models.UserError(stock_move)
         self.qty_done = 0
 
