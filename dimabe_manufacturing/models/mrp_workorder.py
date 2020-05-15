@@ -277,11 +277,36 @@ class MrpWorkorder(models.Model):
 
     @api.multi
     def organize_move_line(self):
-        for item in self.active_move_line_ids:
-            self.active_move_line_ids = [1, item.id, sum(
-                self.potential_serial_planned_ids.filtered(
-                    lambda a: a.stock_production_lot_id.id == item.lot_id.id).mapped(
-                    'display_weight'))]
+        for item in self.potential_serial_planned_ids.mapped('stock_production_lot_id'):
+            stock_quant = item.get_stock_quant()
+            stock_move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == item.product_id.id)
+            virtual_location_production_id = self.env['stock.location'].search([
+                ('usage', '=', 'production'),
+                ('location_id.name', 'like', 'Virtual Locations')
+            ])
+            if item not in stock_move.active_move_line_ids.mapped('lot_id'):
+                stock_move.update({
+                    'active_move_line_ids': [
+                        (0, 0, {
+                            'product_id': item.product_id.id,
+                            'lot_id': item.id,
+                            'qty_done': sum(self.potential_serial_planned_ids.filtered(
+                                lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
+                            'lot_produced_id': self.final_lot_id,
+                            'product_uom_id': stock_move.product_uom.id,
+                            'location_id': stock_quant.location_id.id,
+                            'location_dest_id': virtual_location_production_id.id
+                        })
+                    ]
+                })
+                self.qty_done = 0
+            else:
+                for line in stock_move.active_move_line_ids:
+                    if line.lot_id.id == item.id:
+                        line.update({
+                            'qty_done': sum(self.potential_serial_planned_ids.filtered(
+                                lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight'))
+                        })
 
     def action_skip(self):
         if self.qty_done > 0:
