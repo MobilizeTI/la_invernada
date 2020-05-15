@@ -280,6 +280,9 @@ class MrpWorkorder(models.Model):
         for item in self.potential_serial_planned_ids.mapped('stock_production_lot_id'):
             stock_quant = item.get_stock_quant()
             stock_move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == item.product_id.id)
+            for move in stock_move:
+                for active in move.active_move_line_ids:
+                        active.unlink()
             virtual_location_production_id = self.env['stock.location'].search([
                 ('usage', '=', 'production'),
                 ('location_id.name', 'like', 'Virtual Locations')
@@ -313,10 +316,7 @@ class MrpWorkorder(models.Model):
                                     'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                         lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight'))
                                 })
-                for move in stock_move:
-                    for active in move.active_move_line_ids:
-                        if active.product_qty > 0:
-                            active.unlink()
+
             else:
                 if item not in stock_move.active_move_line_ids.mapped('lot_id'):
                     stock_move.update({
@@ -340,9 +340,6 @@ class MrpWorkorder(models.Model):
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight'))
                             })
-                for move in stock_move.active_move_line_ids:
-                    if move.product_qty > 0:
-                        move.unlink()
 
     def action_skip(self):
         if self.qty_done > 0:
