@@ -322,7 +322,7 @@ class MrpWorkorder(models.Model):
                                 lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight'))
                         })
             for move in stock_move.active_move_line_ids:
-                if move.product_qty > 0 or move.qty_done < 0:
+                if move.product_qty > 0 or move.quantity_done < 0:
                     move.unlink()
 
     def action_skip(self):
