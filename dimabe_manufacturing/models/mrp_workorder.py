@@ -318,8 +318,6 @@ class MrpWorkorder(models.Model):
                             })
                         ]
                     })
-
-                    self.qty_done = 0
                 else:
                     for line in stock_move.active_move_line_ids:
                         if line.lot_id.id == item.id:
@@ -346,8 +344,6 @@ class MrpWorkorder(models.Model):
                             })
                         ]
                     })
-
-                    self.qty_done = 0
                 else:
                     for line in stock_move.active_move_line_ids:
                         if line.lot_id.id == item.id:
