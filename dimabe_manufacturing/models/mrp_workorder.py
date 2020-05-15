@@ -248,18 +248,27 @@ class MrpWorkorder(models.Model):
                 ('usage', '=', 'production'),
                 ('location_id.name', 'like', 'Virtual Locations')
             ])
-            stock_move.update({
-                'active_move_line_ids': [
-                    (0, 0, {
-                        'product_id': item.product_id.id,
-                        'lot_id': item.id,
-                        'qty_done': sum(self.potential_serial_planned_ids.filtered(lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
-                        'product_uom_id': stock_move.product_uom.id,
-                        'location_id': stock_quant.location_id.id,
-                        'location_dest_id': virtual_location_production_id.id
-                    })
-                ]
-            })
+            if item not in stock_move.active_move_line_ids.mapped('lot_id'):
+                stock_move.update({
+                    'active_move_line_ids': [
+                        (0, 0, {
+                            'product_id': item.product_id.id,
+                            'lot_id': item.id,
+                            'qty_done': sum(self.potential_serial_planned_ids.filtered(
+                                lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
+                            'product_uom_id': stock_move.product_uom.id,
+                            'location_id': stock_quant.location_id.id,
+                            'location_dest_id': virtual_location_production_id.id
+                        })
+                    ]
+                })
+            else:
+                stock_move.active_move_line_ids = [1, item.id, sum(
+                    self.potential_serial_planned_ids.filtered(
+                        lambda a: a.stock_production_lot_id.id == item.lot_id.id).mapped(
+                        'display_weight')),stock_move.product_uom.id]
+
+
         self.qty_done = 0
 
     @api.multi
