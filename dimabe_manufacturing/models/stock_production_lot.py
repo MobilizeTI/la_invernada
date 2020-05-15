@@ -224,7 +224,7 @@ class StockProductionLot(models.Model):
     def _compute_lot_location(self):
         for item in self:
             stock_quant = item.get_stock_quant()
-            item.location_id = stock_quant.location_id
+            item.location_id = stock_quant.mapped('location_id')
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
