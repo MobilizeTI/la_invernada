@@ -248,6 +248,7 @@ class MrpWorkorder(models.Model):
                 ('location_id.name', 'like', 'Virtual Locations')
             ])
             if item not in stock_move.active_move_line_ids.mapped('lot_id'):
+                raise models.ValidationError(stock_move.product_uom)
                 stock_move.update({
                     'active_move_line_ids': [
                         (0, 0, {
