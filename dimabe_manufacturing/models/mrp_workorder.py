@@ -274,9 +274,7 @@ class MrpWorkorder(models.Model):
 
     @api.multi
     def organize_move_line(self):
-        for move in self.production_id.move_raw_ids:
-            for active in move.active_move_line_ids:
-                active.unlink()
+
         for item in self.potential_serial_planned_ids.mapped('stock_production_lot_id'):
             stock_quant = item.get_stock_quant()
             stock_move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == item.product_id.id)
