@@ -216,7 +216,7 @@ class MrpWorkorder(models.Model):
         return res
 
     def open_tablet_view(self):
-        raise models.ValidationError(self.current_quality_check_id)
+        raise models.ValidationError(not self.current_quality_check_id.component_is_byproduct)
         while self.current_quality_check_id:
             check = self.current_quality_check_id
             if not check.component_is_byproduct:
