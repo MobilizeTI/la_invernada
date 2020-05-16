@@ -216,7 +216,7 @@ class MrpWorkorder(models.Model):
         return res
 
     def open_tablet_view(self):
-        if not check.lot_id:
+        if not self.current_quality_check_id.lot_id:
             lot_tmp = self.env['stock.production.lot'].create({
                 'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
                 'product_id': check.component_id.id,
