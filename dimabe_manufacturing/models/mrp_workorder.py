@@ -229,8 +229,8 @@ class MrpWorkorder(models.Model):
                     'is_prd_lot': True
                 })
                 check.lot_id = lot_tmp.id
-            # if check.quality_state == 'none':
-            #     super(MrpWorkorder,self).action_next()
+            if check.quality_state == 'none':
+                super(MrpWorkorder,self).action_next()
 
         return super(MrpWorkorder, self).open_tablet_view()
 
