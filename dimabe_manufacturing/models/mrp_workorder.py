@@ -216,17 +216,15 @@ class MrpWorkorder(models.Model):
         return res
 
     def open_tablet_view(self):
-        while self.current_quality_check_id:
-            check = self.current_quality_check_id
-            if not check.lot_id:
-                lot_tmp = self.env['stock.production.lot'].create({
-                    'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
-                    'product_id': check.component_id.id,
-                    'is_prd_lot': True
-                })
-                check.lot_id = lot_tmp.id
-                check.qty_done = self.component_remaining_qty
-
+        check = self.current_quality_check_id
+        if not check.lot_id:
+            lot_tmp = self.env['stock.production.lot'].create({
+                'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
+                'product_id': check.component_id.id,
+                'is_prd_lot': True
+            })
+            check.lot_id = lot_tmp.id
+            check.qty_done = self.component_remaining_qty
         return super(MrpWorkorder, self).open_tablet_view()
 
     def action_next(self):
