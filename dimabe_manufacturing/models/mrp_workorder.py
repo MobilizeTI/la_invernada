@@ -205,7 +205,6 @@ class MrpWorkorder(models.Model):
     @api.multi
     def write(self, vals):
         for item in self:
-
             if item.active_move_line_ids and \
                     not item.active_move_line_ids.filtered(lambda a: a.is_raw):
                 for move_line in item.active_move_line_ids:
