@@ -219,11 +219,11 @@ class MrpWorkorder(models.Model):
         if not self.current_quality_check_id.lot_id:
             lot_tmp = self.env['stock.production.lot'].create({
                 'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
-                'product_id': check.component_id.id,
+                'product_id': self.current_quality_check_id.component_id.id,
                 'is_prd_lot': True
             })
-            check.lot_id = lot_tmp.id
-            check.qty_done = self.component_remaining_qty
+            self.current_quality_check_id.lot_id = lot_tmp.id
+            self.current_quality_check_id.qty_done = self.component_remaining_qty
 
         return super(MrpWorkorder, self).open_tablet_view()
 
