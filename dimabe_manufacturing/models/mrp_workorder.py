@@ -230,8 +230,6 @@ class MrpWorkorder(models.Model):
                         'product_id': check.component_id.id,
                         'is_prd_lot': True
                     })
-                    check.lot_id = lot_tmp.id
-                    check.qty_done = self.component_remaining_qty
 
         return super(MrpWorkorder, self).open_tablet_view()
 
