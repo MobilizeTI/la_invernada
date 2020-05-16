@@ -229,6 +229,8 @@ class MrpWorkorder(models.Model):
                 })
                 check.lot_id = lot_tmp.id
                 check.qty_done = self.component_remaining_qty
+                if self.current_quality_check_id.quality_state == 'none':
+                    self.action_next()
         self.action_first_skipped_step()
         return super(MrpWorkorder, self).open_tablet_view()
 
