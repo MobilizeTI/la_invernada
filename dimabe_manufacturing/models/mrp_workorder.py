@@ -217,7 +217,7 @@ class MrpWorkorder(models.Model):
         return res
 
     def open_tablet_view(self):
-        while self.current_quality_check_id:
+        while not self.is_last_step:
             check = self.current_quality_check_id
 
             if not check.component_is_byproduct:
