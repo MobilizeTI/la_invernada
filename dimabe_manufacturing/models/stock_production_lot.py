@@ -209,7 +209,7 @@ class StockProductionLot(models.Model):
 
     location_id = fields.Many2one('stock.location', compute='_compute_lot_location')
 
-    serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed',store=True)
+    serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed', store=True)
 
     available_weight = fields.Float('Kilos Disponible', compute='_compute_available_weight')
 
@@ -227,8 +227,11 @@ class StockProductionLot(models.Model):
             if stock_quant:
                 item.location_id = stock_quant.location_id
             else:
-                location_id = self.env['stock.picking'].search([('name','=',item.name)]).location_dest_id
+                location_id = self.env['stock.picking'].search([('name', '=', item.name)]).location_dest_id
                 item.location_id = location_id
+            if item.is_dried_lot:
+                location_id_dried = self.env['dried.unpelled.history'].search([('out_lot_id', '=', item.id)]).dest_location_id
+                item.location_id = location_id_dried
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
@@ -237,7 +240,7 @@ class StockProductionLot(models.Model):
             item.serial_not_consumed = len(item.stock_production_lot_serial_ids.filtered(
                 lambda a: not a.consumed))
             if len(item.stock_production_lot_serial_ids.filtered(
-                lambda a: not a.consumed)) > 0:
+                    lambda a: not a.consumed)) > 0:
                 item.have_available_serial = True
 
     @api.onchange('serial_not_consumed')
