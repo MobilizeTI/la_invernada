@@ -219,24 +219,24 @@ class MrpWorkorder(models.Model):
     def open_tablet_view(self):
         while self.current_quality_check_id:
             check = self.current_quality_check_id
+
             if not check.component_is_byproduct:
                 check.qty_done = 0
-                raise models.ValidationError(check.quality_state)
                 self.action_skip()
             else:
-                raise models.ValidationError(check.lot_id)
-                lot_tmp = self.env['stock.production.lot'].create({
-                    'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
-                    'product_id': check.component_id.id,
-                    'is_prd_lot': True
-                })
-                check.lot_id = lot_tmp.id
-                check.qty_done = self.component_remaining_qty
-            if check.quality_state == 'none':
-                super(MrpWorkorder, self).action_next()
+                if not check.lot_id:
+                    lot_tmp = self.env['stock.production.lot'].create({
+                        'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
+                        'product_id': check.component_id.id,
+                        'is_prd_lot': True
+                    })
+                    check.lot_id = lot_tmp.id
+                    check.qty_done = self.component_remaining_qty
+                    if check.quality_state == 'none':
+                        self.action_next()
+        self.action_first_skipped_step()
 
-            self.action_first_skipped_step()
-            return super(MrpWorkorder, self).open_tablet_view()
+        return super(MrpWorkorder, self).open_tablet_view()
 
     def action_next(self):
         self.validate_lot_code(self.lot_id.name)
@@ -274,7 +274,7 @@ class MrpWorkorder(models.Model):
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
                                 'lot_produced_id': self.final_lot_id,
                                 'product_uom_id': stock_move[1].product_uom.id,
-                                'location_id': stock_quant.location_id.id,
+                                'location_id': item.location_id.id,
                                 'location_dest_id': virtual_location_production_id.id
                             })
                         ]
@@ -299,7 +299,7 @@ class MrpWorkorder(models.Model):
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
                                 'lot_produced_id': self.final_lot_id,
                                 'product_uom_id': stock_move.product_uom.id,
-                                'location_id': stock_quant.location_id.id,
+                                'location_id': item.location_id.id,
                                 'location_dest_id': virtual_location_production_id.id
                             })
                         ]
