@@ -28,11 +28,11 @@
         [('product_id.default_code','like','MP'),('product_id.default_code','not like','MPS'),('product_id.name','not like','Verde'),('id','!=',2),('serial_not_consumed','!=',0)]
       </field>
     </record>
-
     <menuitem id="stock_report_tree_menu"
               action="dimabe_manufacturing.stock_report"
               name="Informe de Existencia Materia Prima Seca"
               parent="stock_report_menu"
     />
+
   </data>
 </odoo>
