@@ -123,7 +123,7 @@ class StockProductionLotSerial(models.Model):
         related='production_id.bom_id'
     )
 
-    movement = fields.Char('Movimiento', compute='_compute_movement', store=True)
+    movement = fields.Char('Movimiento', compute='_compute_movement')
 
     process_id = fields.Char('Proceso', compute='_compute_process_id', store=True)
 
