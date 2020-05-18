@@ -213,8 +213,9 @@ class StockProductionLot(models.Model):
 
     serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed', store=True)
 
-    available_weight = fields.Float('Kilos Disponible', compute='_compute_available_weight')
+    available_weight = fields.Float('Kilos Disponible', compute='_compute_available_weight',store=True)
 
+    @api.depends('stock_production_lot_serial_ids', 'write_date')
     @api.multi
     def _compute_available_weight(self):
         for item in self:
@@ -243,7 +244,7 @@ class StockProductionLot(models.Model):
                     [('out_lot_id', '=', item.id)]).dest_location_id
                 item.location_id = location_id_dried
 
-    @api.depends('stock_production_lot_serial_ids')
+    @api.depends('stock_production_lot_serial_ids','write_date')
     @api.multi
     def _compute_serial_not_consumed(self):
         for item in self:
