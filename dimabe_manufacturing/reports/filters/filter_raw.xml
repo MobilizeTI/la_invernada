@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    <record id="view_stock_product_search_id" model="ir.ui.view">
+      <field name="name">stock.production.lot</field>
+      <field name="model">stock.production.lot</field>
+      <field name="type">search</field>
+      <field name="inherit_id" ref="stock.search_product_lot_filter"/>
+      <field name="arch" type="xml">
+        <xpath expr="//group[1]/filter[1]" position="after">
+          <filter string="Productor" domain="[]" context="{'group_by':'producer_id'}"/>
+          <filter string="Ubicacion" domain="[]" context="{'group_by':'location_id'}"/>
+          <filter string="Variedad" domain="[]" context="{'group_by':'product_variety'}"/>
+        </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>

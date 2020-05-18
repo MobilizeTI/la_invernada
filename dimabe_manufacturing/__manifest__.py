@@ -70,6 +70,7 @@
         'reports/process/laser_discart_report.xml',
         'reports/process/calibrate_report.xml',
         'reports/stock/calibrate_stock_report.xml',
+        'reports/filters/filter_raw.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
