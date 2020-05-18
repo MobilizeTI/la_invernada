@@ -17,7 +17,7 @@
           <field name="reception_guide_number" string="N° Guia"/>
           <field name="serial_not_consumed" string="Series Disponible"/>
         </tree>
-        <xpath expr="//group[@string='Group By...']/filter[@string='Product']" position="after">
+        <xpath expr="//group[0]/filter[1]" position="after">
           <filter string="Ubicacion"  domain="[]"
                   context="{'group_by':location_id}"/>
           <filter string="Calibre"  domain="[]"
