@@ -205,6 +205,8 @@ class StockProductionLot(models.Model):
         store=True
     )
 
+    harvest = fields.Integer(string='Cosecha',compute='_compute_lot_hardvest')
+
     dried_report_product_name = fields.Char(compute='_compute_lot_oven_use')
 
     location_id = fields.Many2one('stock.location', compute='_compute_lot_location')
@@ -219,6 +221,11 @@ class StockProductionLot(models.Model):
             item.available_weight = sum(item.stock_production_lot_serial_ids.filtered(
                 lambda a: not a.consumed
             ).mapped('real_weight'))
+
+    @api.multi
+    def _compute_lot_hardvest(self):
+        for item in self:
+            item.harvest = item.stock_production_lot_serial_ids.mapped('hardvest')
 
     @api.multi
     def _compute_lot_location(self):
