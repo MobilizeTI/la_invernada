@@ -28,7 +28,7 @@
         [('product_id.default_code','like','MP'),('product_id.default_code','not like','MPS'),('product_id.name','not like','Verde'),('id','!=',2),('serial_not_consumed','!=',0)]
       </field>
     </record>
-    <record id="view_search_id" model="ir.ui.view">
+    <record id="view_stock_product_search_id" model="ir.ui.view">
       <field name="name">stock.production.lot</field>
       <field name="model">stock.production.lot</field>
       <field name="type">search</field>
