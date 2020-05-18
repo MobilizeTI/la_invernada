@@ -38,8 +38,10 @@
       <field name="arch" type="xml">
         <search>
           <field name="producer_id"/>
+          <field name="sale_order_id"/>
           <group expand="1" string="Group By">
-            <filter string="Productor" name="producer_id" context="{'group_by':'producer_id'}"/>
+            <filter string="Productor" name="group_by_producer" context="{'group_by':'producer_id'}"/>
+            <filter string="Pedido" context="{'group_by':'sale_order_id'}"/>
           </group>
         </search>
       </field>

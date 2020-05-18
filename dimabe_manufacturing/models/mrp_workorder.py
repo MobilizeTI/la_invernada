@@ -248,7 +248,6 @@ class MrpWorkorder(models.Model):
                 ('location_id.name', 'like', 'Virtual Locations')
             ])
             if item not in stock_move.active_move_line_ids.mapped('lot_id'):
-
                 stock_move.update({
                     'active_move_line_ids': [
                         (0, 0, {
@@ -264,7 +263,7 @@ class MrpWorkorder(models.Model):
                     ]
                 })
                 self.qty_done = 0
-                super(MrpWorkorder, self).action_skip()
+                super(MrpWorkorder, self).action_next()
             else:
                 for line in stock_move.active_move_line_ids:
                     if line.lot_id.id == item.id:
@@ -272,7 +271,7 @@ class MrpWorkorder(models.Model):
                             'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                 lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight'))
                         })
-                super(MrpWorkorder, self).action_skip()
+                super(MrpWorkorder, self).action_next()
         self.qty_done = 0
 
     @api.multi
