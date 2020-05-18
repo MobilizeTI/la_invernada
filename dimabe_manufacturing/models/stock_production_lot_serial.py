@@ -199,6 +199,7 @@ class StockProductionLotSerial(models.Model):
             else:
                 item.in_weight = 0.0
 
+    @api.depends('reserved_to_production_id', 'production_id')
     @api.multi
     def _compute_process_id(self):
         for item in self:
@@ -209,6 +210,7 @@ class StockProductionLotSerial(models.Model):
             else:
                 item.process_id = None
 
+    @api.depends('reserved_to_production_id', 'production_id')
     @api.multi
     def _compute_movement(self):
         for item in self:
@@ -356,6 +358,7 @@ class StockProductionLotSerial(models.Model):
             for item in self.stock_production_lot_id.serial_without_pallet_ids:
                 if item.id == self.id:
                     item.unlink()
+
     @api.multi
     def print_serial_label(self):
         if 'producer_id' in self.env.context:
