@@ -59,6 +59,7 @@
         'views/dried_oven.xml',
         'views/res_config_settings.xml',
         'reports/stock/raw_report.xml',
+        'reports/stock/raw_service_report.xml',
         'reports/stock/pt_report.xml',
         'reports/stock/match_report.xml',
         'reports/process/packing_ncc_report.xml',
@@ -70,7 +71,7 @@
         'reports/process/laser_discart_report.xml',
         'reports/process/calibrate_report.xml',
         'reports/stock/calibrate_stock_report.xml',
-        'reports/stock/raw_service_report.xml'
+        'reports/filters/manufacturing_pallet_search_view.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
