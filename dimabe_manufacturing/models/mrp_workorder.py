@@ -221,6 +221,7 @@ class MrpWorkorder(models.Model):
             check = self.current_quality_check_id
             if not check.component_is_byproduct:
                 check.qty_done = 0
+                raise models.ValidationError(check.quality_state)
                 self.action_skip()
             else:
                 raise models.ValidationError(check.lot_id)
