@@ -240,8 +240,7 @@ class MrpWorkorder(models.Model):
     def action_next(self):
         self.validate_lot_code(self.lot_id.name)
         super(MrpWorkorder, self).action_next()
-        if self.current_quality_check_id.quality_state != 'none':
-            self.organize_move_line()
+        self.organize_move_line()
         self.qty_done = 0
 
     @api.multi
