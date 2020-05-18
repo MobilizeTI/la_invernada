@@ -1,0 +1,14 @@
+<record id="view_search_id" model="ir.ui.view">
+  <field name="name">sale.order</field>
+  <field name="model">sale.order</field>
+  <field name="type">search</field>
+  <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+  <field name="arch" type="xml">
+    <xpath expr="//group[0]/filter[1]" position="after">
+      <filter string="Ubicacion" domain="[]"
+              context="{'group_by':'location_id'}"/>
+      <filter string="Variedad" domain="[]"
+              context="{'group_by':'product_variety'}"/>
+    </xpath>
+  </field>
+</record>

@@ -17,12 +17,7 @@
           <field name="reception_guide_number" string="N° Guia"/>
           <field name="serial_not_consumed" string="Series Disponible"/>
         </tree>
-        <xpath expr="//group[0]/filter[1]" position="after">
-          <filter string="Ubicacion"  domain="[]"
-                  context="{'group_by':'location_id'}"/>
-          <filter string="Variedad"  domain="[]"
-                  context="{'group_by':'product_variety'}"/>
-        </xpath>
+
       </field>
     </record>
     <record id="dimabe_manufacturing.stock_report" model="ir.actions.act_window">
