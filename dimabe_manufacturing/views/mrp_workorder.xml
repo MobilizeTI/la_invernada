@@ -22,6 +22,9 @@
 
                     </button>
                 </xpath>
+                <xpath expr="//field[@name='final_lot_id']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
                 <xpath expr="//div[@class='o_workorder_data']" position="inside">
                     <group>
                         <field name="show_manual_input"
