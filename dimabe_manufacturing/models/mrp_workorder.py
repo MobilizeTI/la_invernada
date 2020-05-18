@@ -223,17 +223,16 @@ class MrpWorkorder(models.Model):
                 check.qty_done = 0
                 self.action_skip()
             else:
-
-                    raise models.ValidationError(check.lot_id)
-                    lot_tmp = self.env['stock.production.lot'].create({
-                        'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
-                        'product_id': check.component_id.id,
-                        'is_prd_lot': True
-                    })
-                    check.lot_id = lot_tmp.id
-                    check.qty_done = self.component_remaining_qty
-                if check.quality_state == 'none':
-                    super(MrpWorkorder, self).action_next()
+                raise models.ValidationError(check.lot_id)
+                lot_tmp = self.env['stock.production.lot'].create({
+                    'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
+                    'product_id': check.component_id.id,
+                    'is_prd_lot': True
+                })
+                check.lot_id = lot_tmp.id
+                check.qty_done = self.component_remaining_qty
+            if check.quality_state == 'none':
+                super(MrpWorkorder, self).action_next()
 
             self.action_first_skipped_step()
             return super(MrpWorkorder, self).open_tablet_view()
