@@ -205,7 +205,7 @@ class StockProductionLot(models.Model):
         store=True
     )
 
-    harvest = fields.Integer(string='Cosecha',compute='_compute_lot_harvest')
+    harvest = fields.Integer(string='Cosecha', compute='_compute_lot_harvest')
 
     dried_report_product_name = fields.Char(compute='_compute_lot_oven_use')
 
@@ -226,7 +226,7 @@ class StockProductionLot(models.Model):
     def _compute_lot_harvest(self):
         for item in self:
             for serial in item.stock_production_lot_serial_ids:
-                    item.harvest = serial.harvest
+                item.harvest = serial.harvest
 
     @api.multi
     def _compute_lot_location(self):
@@ -238,7 +238,8 @@ class StockProductionLot(models.Model):
                 location_id = self.env['stock.picking'].search([('name', '=', item.name)])
                 item.location_id = location_id.location_dest_id
             if item.is_dried_lot:
-                location_id_dried = self.env['dried.unpelled.history'].search([('out_lot_id', '=', item.id)]).dest_location_id
+                location_id_dried = self.env['dried.unpelled.history'].search(
+                    [('out_lot_id', '=', item.id)]).dest_location_id
                 item.location_id = location_id_dried
 
     @api.depends('stock_production_lot_serial_ids')
