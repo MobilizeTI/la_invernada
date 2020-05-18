@@ -34,7 +34,7 @@
       <field name="type">search</field>
       <field name="inherit_id" ref="stock.search_product_lot_filter"/>
       <field name="arch" type="xml">
-        <xpath expr="//group[@string='Group By...']/filter[@string='Product']" position="after">
+        <xpath expr="//group[1]/filter[1]" position="after">
           <filter string="Productor" domain="[]" context="{'group_by':'producer_id'}"/>
           <filter string="Ubicacion" domain="[]" context="{'group_by':'location_id'}"/>
           <filter string="Variedad" domain="[]" context="{'group_by':'product_variety'}"/>
