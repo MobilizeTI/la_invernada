@@ -226,8 +226,7 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_lot_harvest(self):
         for item in self:
-            for serial in item.stock_production_lot_serial_ids:
-                item.harvest = serial.harvest
+            item.harvest = int(item.stock_production_lot_serial_ids.mapped('harvest'))
 
     @api.multi
     def _compute_lot_location(self):
