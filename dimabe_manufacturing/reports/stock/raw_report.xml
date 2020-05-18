@@ -19,9 +19,9 @@
         </tree>
         <xpath expr="//group[@string='Group By...']/filter[@string='Product']" position="after">
           <filter string="Ubicacion"  domain="[]"
-                  context="{'group_by':'location_id'}"/>
+                  context="{'group_by':location_id}"/>
           <filter string="Calibre"  domain="[]"
-                  context="{'group_by':'product_caliber'}"/>
+                  context="{'group_by':product_caliber}"/>
         </xpath>
       </field>
     </record>
