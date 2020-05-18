@@ -205,7 +205,7 @@ class StockProductionLot(models.Model):
         store=True
     )
 
-    harvest = fields.Integer(string='Cosecha', compute='_compute_lot_harvest',store=True)
+    harvest = fields.Integer(string='Cosecha', compute='_compute_lot_harvest', store=True)
 
     dried_report_product_name = fields.Char(compute='_compute_lot_oven_use')
 
