@@ -224,6 +224,7 @@ class MrpWorkorder(models.Model):
                 self.action_skip()
             else:
                 if not check.lot_id:
+                    raise models.ValidationError(check.lot_id)
                     lot_tmp = self.env['stock.production.lot'].create({
                         'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
                         'product_id': check.component_id.id,
