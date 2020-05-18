@@ -19,7 +19,7 @@
         </tree>
         <xpath expr="//group[0]/filter[1]" position="after">
           <filter string="Ubicacion"  domain="[]"
-                  context="{'group_by':location_id}"/>
+                  context="{'group_by':'location_id'}"/>
           <filter string="Variedad"  domain="[]"
                   context="{'group_by':'product_variety'}"/>
         </xpath>
