@@ -226,7 +226,6 @@ class StockProductionLot(models.Model):
     def _compute_lot_harvest(self):
         for item in self:
             for serial in item.stock_production_lot_serial_ids:
-                if item.harvest == serial.harvest:
                     item.harvest = serial.harvest
 
     @api.multi
