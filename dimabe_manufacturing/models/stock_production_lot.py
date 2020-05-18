@@ -205,7 +205,7 @@ class StockProductionLot(models.Model):
         store=True
     )
 
-    harvest = fields.Integer(string='Cosecha', compute='_compute_lot_harvest')
+    harvest = fields.Integer(string='Cosecha', compute='_compute_lot_harvest',store=True)
 
     dried_report_product_name = fields.Char(compute='_compute_lot_oven_use')
 
@@ -222,6 +222,7 @@ class StockProductionLot(models.Model):
                 lambda a: not a.consumed
             ).mapped('real_weight'))
 
+    @api.depends('stock_production_lot_serial_ids')
     @api.multi
     def _compute_lot_harvest(self):
         for item in self:
