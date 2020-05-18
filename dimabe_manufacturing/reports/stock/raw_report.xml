@@ -29,7 +29,7 @@
       </field>
     </record>
     <record id="view_search_id" model="ir.ui.view">
-      <field name="name">Filtro</field>
+      <field name="name">stock.production.lot</field>
       <field name="model">stock.production.lot</field>
       <field name="type">search</field>
       <field name="inherit_id" ref="stock.search_product_lot_filter"/>
