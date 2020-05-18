@@ -225,7 +225,7 @@ class MrpWorkorder(models.Model):
                 self.action_skip()
             else:
                 if not check.lot_id:
-                    raise models.UserError(check)
+
                     lot_tmp = self.env['stock.production.lot'].create({
                         'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
                         'product_id': check.component_id.id,
@@ -234,6 +234,7 @@ class MrpWorkorder(models.Model):
                     check.lot_id = lot_tmp.id
                     check.qty_done = self.component_remaining_qty
                 if check.quality_state == 'none':
+                    raise models.UserError(check.qty_done)
                     self.action_next()
 
             self.action_first_skipped_step()
