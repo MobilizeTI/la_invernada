@@ -36,10 +36,12 @@
       <field name="name">Pallet Search View</field>
       <field name="model">manufacturing.pallet</field>
       <field name="arch" type="xml">
-        <field name="producer_id"/>
-        <group expand="1" string="Group By">
-          <filter string="Productor" name="producer_id" context="{'group_by':'producer_id'}"/>
-        </group>
+        <search>
+          <field name="producer_id"/>
+          <group expand="1" string="Group By">
+            <filter string="Productor" name="producer_id" context="{'group_by':'producer_id'}"/>
+          </group>
+        </search>
       </field>
     </record>
     <menuitem id="stock_report_pt_menu"
