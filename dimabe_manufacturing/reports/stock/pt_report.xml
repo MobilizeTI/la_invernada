@@ -1,41 +1,51 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <data>
-        <record id="view_stock_report_pt_tree" model="ir.ui.view">
-            <field name="name">Informe de Producto Terminado</field>
-            <field name="model">manufacturing.pallet</field>
-            <field name="priority">20</field>
-            <field name="arch" type="xml">
-                <tree name="Informe de Producto Terminado">
-                    <field name="sale_order_id" string="Pedido"/>
-                    <field name="name" string="Folio Pallet"/>
-                    <field name="lot_id" string="Lote"/>
-                    <field name="create_date" string="Fecha Pallet"/>
-                    <field name="state" string="Estado"/>
-                    <field name="producer_id" widget="many2onebutton" string="Productor"/>
-                    <field name="country" string="Pais"/>
-                    <field name="state_id" string="Comuna"/>
-                    <field name="product_id" string="Producto"/>
-                    <field name="measure"/>
-                    <field name="total_content" />
-                    <field name="total_content_weight" string="Kilos"/>
-                    <field name="available_weight"/>
-                    <field name="sag_code" string="Cod.Sag"/>
-                    <field name="dest_client_id" string="Cliente"/>
-                    <field name="dest_country_id" string="Pais Destino"/>
-                </tree>
-            </field>
-        </record>
-         <record id="dimabe_manufacturing.stock_report_pt" model="ir.actions.act_window">
-            <field name="name">Informe de Producto Terminado</field>
-            <field name="res_model">manufacturing.pallet</field>
-            <field name="view_mode">tree</field>
-            <field name="view_id" ref="view_stock_report_pt_tree"/>
-        </record>
-        <menuitem id="stock_report_pt_menu"
-                  action="dimabe_manufacturing.stock_report_pt"
-                  name="Informe de Existencia de Producto Terminado"
-                  parent="stock_report_menu"
-        />
-    </data>
+  <data>
+    <record id="view_stock_report_pt_tree" model="ir.ui.view">
+      <field name="name">Informe de Producto Terminado</field>
+      <field name="model">manufacturing.pallet</field>
+      <field name="priority">20</field>
+      <field name="arch" type="xml">
+        <tree name="Informe de Producto Terminado">
+          <field name="sale_order_id" string="Pedido"/>
+          <field name="name" string="Folio Pallet"/>
+          <field name="lot_id" string="Lote"/>
+          <field name="create_date" string="Fecha Pallet"/>
+          <field name="state" string="Estado"/>
+          <field name="producer_id" widget="many2onebutton" string="Productor"/>
+          <field name="country" string="Pais"/>
+          <field name="state_id" string="Comuna"/>
+          <field name="product_id" string="Producto"/>
+          <field name="measure"/>
+          <field name="total_content"/>
+          <field name="total_content_weight" string="Kilos"/>
+          <field name="available_weight"/>
+          <field name="sag_code" string="Cod.Sag"/>
+          <field name="dest_client_id" string="Cliente"/>
+          <field name="dest_country_id" string="Pais Destino"/>
+        </tree>
+      </field>
+    </record>
+    <record id="dimabe_manufacturing.stock_report_pt" model="ir.actions.act_window">
+      <field name="name">Informe de Producto Terminado</field>
+      <field name="res_model">manufacturing.pallet</field>
+      <field name="view_mode">tree</field>
+      <field name="view_id" ref="view_stock_report_pt_tree"/>
+    </record>
+    <record id="pallet_search_view" model="ir.ui.view">
+      <field name="name">Pallet Search View</field>
+      <field name="model">manufacturing.pallet</field>
+      <field name="arch" type="xml">
+        <field name="producer_id"/>
+        <group expand="1" string="Group By">
+          <filter string="Productor" name="producer_id" context="{'group_by':'producer_id'}"/>
+        </group>
+      </field>
+    </record>
+    <menuitem id="stock_report_pt_menu"
+              action="dimabe_manufacturing.stock_report_pt"
+              name="Informe de Existencia de Producto Terminado"
+              parent="stock_report_menu"
+    />
+  </data>
 </odoo>

@@ -71,7 +71,6 @@
         'reports/process/laser_discart_report.xml',
         'reports/process/calibrate_report.xml',
         'reports/stock/calibrate_stock_report.xml',
-        'reports/filters/manufacturing_pallet_search_view.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
