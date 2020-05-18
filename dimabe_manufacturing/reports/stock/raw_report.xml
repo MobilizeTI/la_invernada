@@ -17,6 +17,12 @@
           <field name="reception_guide_number" string="N° Guia"/>
           <field name="serial_not_consumed" string="Series Disponible"/>
         </tree>
+        <xpath expr="//group[@string='Group By...']/filter[@string='Product']" position="after">
+          <filter string="Ubicacion"  domain="[]"
+                  context="{'group_by':'location_id'}"/>
+          <filter string="Calibre"  domain="[]"
+                  context="{'group_by':'product_caliber'}"/>
+        </xpath>
       </field>
     </record>
     <record id="dimabe_manufacturing.stock_report" model="ir.actions.act_window">
@@ -25,7 +31,8 @@
       <field name="view_mode">tree,graph,form</field>
       <field name="view_id" ref="view_stock_report_tree"/>
       <field name="domain">
-        [('product_id.default_code','like','MP'),('product_id.default_code','not like','MPS'),('product_id.name','not like','Verde'),('id','!=',2),('serial_not_consumed','!=',0)]
+        [('product_id.default_code','like','MP'),('product_id.default_code','not like','MPS'),('product_id.name','not
+        like','Verde'),('id','!=',2),('serial_not_consumed','!=',0)]
       </field>
     </record>
     <menuitem id="stock_report_tree_menu"
