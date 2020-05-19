@@ -220,10 +220,7 @@ class MrpWorkorder(models.Model):
         while self.current_quality_check_id:
             check = self.current_quality_check_id
 
-            if not check.component_is_byproduct:
-                check.qty_done = 0
-                self.action_skip()
-            else:
+            if check.component_is_byproduct:
                 if not check.lot_id:
                     lot_tmp = self.env['stock.production.lot'].create({
                         'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
