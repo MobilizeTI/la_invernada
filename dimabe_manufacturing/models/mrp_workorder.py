@@ -219,20 +219,30 @@ class MrpWorkorder(models.Model):
 
     def open_tablet_view(self):
         while self.current_quality_check_id:
+            models._logger.error("Paso 1")
             check = self.current_quality_check_id
+            models._logger.error("Paso 2")
             if not check.component_is_byproduct:
                 check.qty_done = 0
+                models._logger.error("Paso 3")
                 self.action_skip()
+                models._logger.error("Paso 4")
             else:
+                models._logger.error("Paso 5")
                 if not check.lot_id:
+                    models._logger.error("Paso 6")
                     lot_tmp = self.env['stock.production.lot'].create({
                         'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
                         'product_id': check.component_id.id,
                         'is_prd_lot': True
                     })
+                    models._logger.error("Paso 7")
                     check.lot_id = lot_tmp.id
+                    models._logger.error("Paso 8")
                     check.qty_done = self.component_remaining_qty
+                    models._logger.error("Paso 9")
                     if check.quality_state == 'none':
+                        models._logger.error("Paso 10")
                         self.action_next()
                 self.action_skip()
         self.action_first_skipped_step()
@@ -245,7 +255,7 @@ class MrpWorkorder(models.Model):
 
     @api.multi
     def organize_move_line(self):
-        models._logger.error('Paso 1')
+
         for move in self.production_id.move_raw_ids:
             for active in move.active_move_line_ids:
                 active.unlink()
