@@ -241,7 +241,6 @@ class MrpWorkorder(models.Model):
     def action_next(self):
         self.validate_lot_code(self.lot_id.name)
         super(MrpWorkorder, self).action_next()
-        self.organize_move_line()
         self.qty_done = 0
 
     @api.multi
@@ -311,6 +310,10 @@ class MrpWorkorder(models.Model):
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight'))
                             })
+
+    def do_finish(self):
+        super(MrpWorkorder, self).do_finish()
+        self.organize_move_line()
 
     def action_skip(self):
         if self.qty_done > 0:
