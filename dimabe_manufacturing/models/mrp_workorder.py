@@ -312,6 +312,10 @@ class MrpWorkorder(models.Model):
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight'))
                             })
 
+    def do_finish(self):
+        super(MrpWorkorder, self).do_finish()
+        self.organize_move_line()
+
     def action_skip(self):
         if self.qty_done > 0:
             raise models.ValidationError('Tiene que validar el kilos de ingresados')
