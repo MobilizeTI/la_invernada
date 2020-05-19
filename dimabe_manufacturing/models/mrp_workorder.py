@@ -235,7 +235,7 @@ class MrpWorkorder(models.Model):
                     if check.quality_state == 'none':
                         self.action_next()
                 self.action_skip()
-        #self.action_first_skipped_step()
+        self.action_first_skipped_step()
         return super(MrpWorkorder, self).open_tablet_view()
 
     def action_next(self):
@@ -245,6 +245,7 @@ class MrpWorkorder(models.Model):
 
     @api.multi
     def organize_move_line(self):
+        models._logger.error('Paso 1')
         for move in self.production_id.move_raw_ids:
             for active in move.active_move_line_ids:
                 active.unlink()
