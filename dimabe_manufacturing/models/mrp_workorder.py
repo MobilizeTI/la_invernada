@@ -249,18 +249,14 @@ class MrpWorkorder(models.Model):
             for active in move.active_move_line_ids:
                 active.unlink()
         for item in self.potential_serial_planned_ids.mapped('stock_production_lot_id'):
-            stock_quant = item.get_stock_quant()
             stock_move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == item.product_id.id)
+            models._logger.error(stock_move)
             virtual_location_production_id = self.env['stock.location'].search([
                 ('usage', '=', 'production'),
                 ('location_id.name', 'like', 'Virtual Locations')
             ])
+            models._logger.error(virtual_location_production_id)
             if len(stock_move) > 1:
-                stock_move[0].update({
-                    'active_move_line_ids': [
-                        (5)
-                    ]
-                })
                 if item not in stock_move[1].active_move_line_ids.mapped('lot_id') and item.location_id:
                     if not item.location_id:
                         raise models.ValidationError("El Lote {} aun en proceso ".format(item.name))
@@ -280,6 +276,7 @@ class MrpWorkorder(models.Model):
                     })
                 else:
                     for stock in stock_move:
+                        models._logger.error(stock_move)
                         for line in stock.active_move_line_ids:
                             if line.lot_id.id == item.id:
                                 line.update({
@@ -290,6 +287,7 @@ class MrpWorkorder(models.Model):
                 if item not in stock_move.active_move_line_ids.mapped('lot_id'):
                     if not item.location_id:
                         raise models.ValidationError("El Lote {} aun en proceso ".format(item.name))
+                    models._logger.error(item.qty_done)
                     stock_move.update({
                         'active_move_line_ids': [
                             (0, 0, {
@@ -306,6 +304,7 @@ class MrpWorkorder(models.Model):
                     })
                 else:
                     for line in stock_move.active_move_line_ids:
+                        models._logger.error(line.create_date)
                         if line.lot_id.id == item.id:
                             line.update({
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
