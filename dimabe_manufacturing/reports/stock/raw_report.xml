@@ -15,6 +15,7 @@
           <field name="location_id" widget="many2onebutton" string="Ubicacion"/>
           <field name="product_id" widget="many2onebutton" string="Producto"/>
           <field name="reception_guide_number" string="N° Guia"/>
+          <field name="harvest"/>
           <field name="serial_not_consumed" string="Series Disponible"/>
         </tree>
       </field>
@@ -25,7 +26,26 @@
       <field name="view_mode">tree,graph,form</field>
       <field name="view_id" ref="view_stock_report_tree"/>
       <field name="domain">
-        [('product_id.default_code','like','MP'),('product_id.default_code','not like','MPS'),('product_id.name','not like','Verde'),('id','!=',2),('serial_not_consumed','!=',0)]
+        [('product_id.default_code','like','MP'),('product_id.default_code','not like','MPS'),('product_id.name','not \
+        like','Verde'),('id','!=',2),('available_weight','!=',0)]
+      </field>
+    </record>
+    <record id="search_raw_report_view" model="ir.ui.view">
+      <field name="name">Filtro Materia Prima Seca</field>
+      <field name="type">search</field>
+      <field name="model">stock.production.lot</field>
+      <field name="inherit_id" ref="stock.search_product_lot_filter" />
+      <field name="arch" type="xml">
+        <search>
+          <field name="producer_id"/>
+          <field name="product_variety"/>
+          <field name="harvest"/>
+          <group expand="1" string="Group By">
+            <filter string="Productor" name="group_by_producer" context="{'group_by':'producer_id'}"/>
+            <filter string="Variedad" name="group_by_variety" context="{'group_by':'product_variety'}"/>
+            <filter string="Cosecha" name="group_by_harvest" context="{'group_by':'harvest'}"/>
+          </group>
+        </search>
       </field>
     </record>
     <menuitem id="stock_report_tree_menu"
@@ -33,5 +53,6 @@
               name="Informe de Existencia Materia Prima Seca"
               parent="stock_report_menu"
     />
+
   </data>
 </odoo>

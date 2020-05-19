@@ -14,7 +14,6 @@
                     <field name="product_caliber" string="Calibre"/>
                     <field name="location_id" widget="many2onebutton" string="Ubicacion"/>
                     <field name="product_id" widget="many2onebutton" string="Producto"/>
-                    <field name="reception_guide_number" string="N° Guia"/>
                     <field name="serial_not_consumed" string="Series Disponible"/>
                 </tree>
             </field>

@@ -58,6 +58,9 @@ class AccountInvoice(models.Model):
         if not self.company_activity_id or not self.partner_activity_id:
             raise models.ValidationError('Debe seleccionar el giro de la compañí y proveedor a utilizar')
 
+        if self.dte_type_id.code is 110 and self.currency_id.name is not 'USD' and not self.exchange_rate:
+            raise models.ValidationError('Para emitir una factura de exportación la moneda debe ser en USD y debe tener una tasa de cambio')
+
         dte = {}
         dte["Encabezado"] = {}
         dte["Encabezado"]["IdDoc"] = {}
@@ -67,9 +70,22 @@ class AccountInvoice(models.Model):
         if self.dte_type_id.code in ('39', 39):
             dte["Encabezado"]["IdDoc"]["IndServicio"] = 3
 
-        if not self.dte_type_id.code in ('39', 39):
+        if not self.dte_type_id.code in ('39', 39, 110):
             #Se debe inicar SOLO SI los valores indicados en el documento son con iva incluido
             dte["Encabezado"]["IdDoc"]["MntBruto"] = 1
+
+        if self.dte_type_id.code is 110:
+            dte["Encabezado"]["OtraMoneda"] = {
+                'TpoMoneda': 'PESO CL',
+                'TpoCambio': self.exchange_rate,
+                'MntExeOtrMnda': round(self.amount_total * self.exchange_rate, 2),
+                'MntTotOtrMnda': round(self.amount_total * self.exchange_rate, 2)
+            }
+            dte["Encabezado"]["Totales"] = {
+                'TpoMoneda': 'DOLAR USA',
+                'MntExe': self.amount_total,
+                'MntTotal': self.amount_total
+            }
 
         #EL CAMPO RUT DE FACTURACIÓN, debe corresponder al RUT de la Empresa
         dte["Encabezado"]["Emisor"] = {"RUTEmisor": self.company_id.invoice_rut.replace(".","")}
@@ -109,7 +125,7 @@ class AccountInvoice(models.Model):
             referencias.append(ref)
         if referencias:
             dte['Referencia'] = referencias
-
+        #raise models.ValidationError(json.dumps(dte))
         self.send_dte(json.dumps(dte))
 
     def send_dte(self, dte):

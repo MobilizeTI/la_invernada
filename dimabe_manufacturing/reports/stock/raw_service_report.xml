@@ -1,11 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
   <data>
-    <record id="view_stock_washed_report_tree" model="ir.ui.view">
-      <field name="name">Informe de Producto Lavado</field>
+    <record id="view_stock_service_report_tree" model="ir.ui.view">
+      <field name="name">Informe de Materia Prima Servicio</field>
       <field name="model">stock.production.lot</field>
       <field name="priority">20</field>
       <field name="arch" type="xml">
-        <tree name="Informe de Producto Lavado">
+        <tree name="Informe de Materia Prima Servicio">
           <field name="producer_id" widget="many2onebutton" string="Productor"/>
           <field name="name" widget="many2onebutton" string="Lote"/>
           <field name="available_weight" string="Kilos"/>
@@ -18,19 +19,19 @@
         </tree>
       </field>
     </record>
-    <record id="dimabe_manufacturing.stock_washed_report" model="ir.actions.act_window">
-      <field name="name">Informe de Producto Lavado</field>
+    <record id="dimabe_manufacturing.stock_service_report" model="ir.actions.act_window">
+      <field name="name">Informe de Materia Prima Servicio</field>
       <field name="res_model">stock.production.lot</field>
       <field name="view_mode">tree,graph,form</field>
-      <field name="view_id" ref="view_stock_washed_report_tree"/>
+      <field name="view_id" ref="view_stock_service_report_tree"/>
       <field name="domain">
-        [('product_id.categ_id.name','like','Lavado'),('product_id.name','not like','Descarte'),('product_id.name','not \
-        like','Vana'),('product_id.name','not like','(S)'),('serial_not_consumed','!=',0)]
+        [('product_id.name','like','(S)'),('id','!=',2),('serial_not_consumed','!=',0)]
       </field>
     </record>
-    <menuitem id="stock_report_washed_tree_menu"
-              action="dimabe_manufacturing.stock_washed_report"
-              name="Informe de Existencia Producto Lavado"
+
+    <menuitem id="stock_service_report_tree_menu"
+              action="dimabe_manufacturing.stock_service_report"
+              name="Informe de Existencia Materia Prima Servico"
               parent="stock_report_menu"
     />
   </data>

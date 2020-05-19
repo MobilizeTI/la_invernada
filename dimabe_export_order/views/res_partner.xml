@@ -18,9 +18,6 @@
                     <field name="client_identifier_id" />
                     <field name="client_identifier_value" />
                     <field name="is_agent" />
-                    <field name="commission"
-                           attrs="{'invisible':[('is_agent','==',False)], 'required':[('is_agent','==',True)]}"
-                    />
                 </field>
             </field>
         </record>

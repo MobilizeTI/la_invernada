@@ -201,18 +201,21 @@ class StockProductionLot(models.Model):
 
     product_caliber = fields.Char(
         'Calibre del Producto',
-        related='product_id.caliber'
+        related='product_id.caliber',
+        store=True
     )
+
+    harvest = fields.Integer(string='Cosecha', compute='_compute_lot_harvest', store=True)
 
     dried_report_product_name = fields.Char(compute='_compute_lot_oven_use')
 
     location_id = fields.Many2one('stock.location', compute='_compute_lot_location')
 
+    serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed')
 
-    serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed',store=True)
+    available_weight = fields.Float('Kilos Disponible', compute='_compute_available_weight', store=True)
 
-    available_weight = fields.Float('Kilos Disponible', compute='_compute_available_weight')
-
+    @api.depends('stock_production_lot_serial_ids', 'write_date')
     @api.multi
     def _compute_available_weight(self):
         for item in self:
@@ -220,11 +223,26 @@ class StockProductionLot(models.Model):
                 lambda a: not a.consumed
             ).mapped('real_weight'))
 
+    @api.depends('stock_production_lot_serial_ids')
+    @api.multi
+    def _compute_lot_harvest(self):
+        for item in self:
+            if item.stock_production_lot_serial_ids:
+                item.harvest = item.stock_production_lot_serial_ids[0].harvest
+
     @api.multi
     def _compute_lot_location(self):
         for item in self:
             stock_quant = item.get_stock_quant()
-            item.location_id = stock_quant.location_id
+            if len(stock_quant) < 1:
+                item.location_id = stock_quant.location_id
+            else:
+                location_id = self.env['stock.picking'].search([('name', '=', item.name)])
+                item.location_id = location_id.location_dest_id
+            if item.is_dried_lot:
+                location_id_dried = self.env['dried.unpelled.history'].search(
+                    [('out_lot_id', '=', item.id)]).dest_location_id
+                item.location_id = location_id_dried
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
@@ -233,7 +251,7 @@ class StockProductionLot(models.Model):
             item.serial_not_consumed = len(item.stock_production_lot_serial_ids.filtered(
                 lambda a: not a.consumed))
             if len(item.stock_production_lot_serial_ids.filtered(
-                lambda a: not a.consumed)) > 0:
+                    lambda a: not a.consumed)) > 0:
                 item.have_available_serial = True
 
     @api.onchange('serial_not_consumed')
