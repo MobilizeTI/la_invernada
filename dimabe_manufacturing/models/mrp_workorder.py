@@ -224,9 +224,7 @@ class MrpWorkorder(models.Model):
             models._logger.error("Paso 2")
             if not check.component_is_byproduct:
                 check.qty_done = 0
-                models._logger.error("Paso 3")
                 self.action_skip()
-                models._logger.error("Paso 4")
             else:
                 models._logger.error("Paso 5")
                 if not check.lot_id:
@@ -245,7 +243,9 @@ class MrpWorkorder(models.Model):
                         models._logger.error("Paso 10")
                         self.action_next()
                 self.action_skip()
+                models._logger.error("Paso 11")
         self.action_first_skipped_step()
+        models._logger.error("Paso 12")
         return super(MrpWorkorder, self).open_tablet_view()
 
     def action_next(self):
