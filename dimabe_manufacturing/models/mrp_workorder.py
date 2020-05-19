@@ -264,6 +264,8 @@ class MrpWorkorder(models.Model):
                     ]
                 })
                 if item not in stock_move[1].active_move_line_ids.mapped('lot_id') and item.location_id:
+                    if not item.location_id:
+                        raise models.ValidationError("El Lote {} aun en proceso ".format(item.name))
                     stock_move[1].update({
                         'active_move_line_ids': [
                             (0, 0, {
@@ -289,6 +291,8 @@ class MrpWorkorder(models.Model):
 
             else:
                 if item not in stock_move.active_move_line_ids.mapped('lot_id'):
+                    if not item.location_id:
+                        raise models.ValidationError("El Lote {} aun en proceso ".format(item.name))
                     stock_move.update({
                         'active_move_line_ids': [
                             (0, 0, {
