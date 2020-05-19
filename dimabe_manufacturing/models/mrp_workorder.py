@@ -119,6 +119,8 @@ class MrpWorkorder(models.Model):
 
     product_qty = fields.Float(related='production_id.product_qty')
 
+    lot_produced_id = fields.Integer('Id Lote a producir')
+
     @api.multi
     def compute_is_match(self):
         for item in self:
@@ -272,7 +274,7 @@ class MrpWorkorder(models.Model):
                                 'lot_id': item.id,
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
-                                'lot_produced_id': final_lot_id,
+                                'lot_produced_id': self.lot_produced_id,
                                 'product_uom_id': stock_move[1].product_uom.id,
                                 'location_id': item.location_id.id,
                                 'location_dest_id': virtual_location_production_id.id
@@ -297,7 +299,7 @@ class MrpWorkorder(models.Model):
                                 'lot_id': item.id,
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
-                                'lot_produced_id': final_lot_id,
+                                'lot_produced_id': self.lot_produced_id,
                                 'product_uom_id': stock_move.product_uom.id,
                                 'location_id': item.location_id.id,
                                 'location_dest_id': virtual_location_production_id.id
@@ -313,9 +315,9 @@ class MrpWorkorder(models.Model):
                             })
 
     def do_finish(self):
-        final_lot_id = self.final_lot_id.id
+        self.lot_produced_id = self.final_lot_id.id
+        self.organize_move_line()
         super(MrpWorkorder, self).do_finish()
-        self.organize_move_line(final_lot_id)
 
     def action_skip(self):
         if self.qty_done > 0:
