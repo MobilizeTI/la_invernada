@@ -245,7 +245,7 @@ class MrpWorkorder(models.Model):
         self.qty_done = 0
 
     @api.multi
-    def organize_move_line(self):
+    def organize_move_line(self,final_lot_id):
         for move in self.production_id.move_raw_ids:
             if self.current_quality_check_id.quality_state != 'none':
                 for active in move.active_move_line_ids:
@@ -272,8 +272,7 @@ class MrpWorkorder(models.Model):
                                 'lot_id': item.id,
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
-                                'lot_produced_id': self.production_finished_move_line_ids.filtered(
-                                    lambda a: a.product_id == self.product_id).lot_id.id,
+                                'lot_produced_id': final_lot_id.id,
                                 'product_uom_id': stock_move[1].product_uom.id,
                                 'location_id': item.location_id.id,
                                 'location_dest_id': virtual_location_production_id.id
@@ -298,8 +297,7 @@ class MrpWorkorder(models.Model):
                                 'lot_id': item.id,
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
-                                'lot_produced_id': self.production_finished_move_line_ids.filtered(
-                                    lambda a: a.product_id == self.product_id).lot_id.id,
+                                'lot_produced_id': final_lot_id.id,
                                 'product_uom_id': stock_move.product_uom.id,
                                 'location_id': item.location_id.id,
                                 'location_dest_id': virtual_location_production_id.id
@@ -315,8 +313,9 @@ class MrpWorkorder(models.Model):
                             })
 
     def do_finish(self):
+        final_lot_id = self.final_lot_id
         super(MrpWorkorder, self).do_finish()
-        self.organize_move_line()
+        self.organize_move_line(final_lot_id)
 
     def action_skip(self):
         if self.qty_done > 0:
