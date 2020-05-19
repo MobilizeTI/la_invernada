@@ -247,7 +247,7 @@ class MrpWorkorder(models.Model):
         self.qty_done = 0
 
     @api.multi
-    def organize_move_line(self,final_lot_id):
+    def organize_move_line(self):
         for move in self.production_id.move_raw_ids:
             if self.current_quality_check_id.quality_state != 'none':
                 for active in move.active_move_line_ids:
