@@ -246,13 +246,11 @@ class MrpWorkorder(models.Model):
     @api.multi
     def organize_move_line(self):
         for move in self.production_id.move_raw_ids:
-            if self.current_quality_check_id.quality_state != 'none':
-                for active in move.active_move_line_ids:
-                    active.unlink()
+            for active in move.active_move_line_ids:
+                active.unlink()
         for item in self.potential_serial_planned_ids.mapped('stock_production_lot_id'):
             stock_quant = item.get_stock_quant()
             stock_move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == item.product_id.id)
-
             virtual_location_production_id = self.env['stock.location'].search([
                 ('usage', '=', 'production'),
                 ('location_id.name', 'like', 'Virtual Locations')
@@ -288,7 +286,6 @@ class MrpWorkorder(models.Model):
                                     'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                         lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight'))
                                 })
-
             else:
                 if item not in stock_move.active_move_line_ids.mapped('lot_id'):
                     if not item.location_id:
