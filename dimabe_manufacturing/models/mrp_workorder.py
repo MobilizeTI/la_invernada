@@ -272,7 +272,7 @@ class MrpWorkorder(models.Model):
                                 'lot_id': item.id,
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
-                                'lot_produced_id': final_lot_id.id,
+                                'lot_produced_id': final_lot_id,
                                 'product_uom_id': stock_move[1].product_uom.id,
                                 'location_id': item.location_id.id,
                                 'location_dest_id': virtual_location_production_id.id
@@ -297,7 +297,7 @@ class MrpWorkorder(models.Model):
                                 'lot_id': item.id,
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
-                                'lot_produced_id': final_lot_id.id,
+                                'lot_produced_id': final_lot_id,
                                 'product_uom_id': stock_move.product_uom.id,
                                 'location_id': item.location_id.id,
                                 'location_dest_id': virtual_location_production_id.id
@@ -313,7 +313,7 @@ class MrpWorkorder(models.Model):
                             })
 
     def do_finish(self):
-        final_lot_id = self.final_lot_id
+        final_lot_id = self.final_lot_id.id
         super(MrpWorkorder, self).do_finish()
         self.organize_move_line(final_lot_id)
 
