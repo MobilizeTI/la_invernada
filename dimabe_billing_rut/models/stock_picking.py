@@ -99,7 +99,7 @@ class StockPicking(models.Model):
             dte["Detalle"].append(ld)
         referencias = []
         for reference in self.references:
-            ref = {'TpoDocRef':reference.document_type_reference or 'SET',
+            ref = {'TpoDocRef':reference.document_type_reference_id.code or 'SET',
                    'FolioRef':reference.folio_reference,
                    'FchRef':reference.document_date.__str__(),
                    'RazonRef':reference.reason}
