@@ -205,7 +205,7 @@ class StockProductionLot(models.Model):
         store=True
     )
 
-    harvest = fields.Integer(string='Cosecha', compute='_compute_lot_harvest',store=True)
+    harvest = fields.Integer(string='Cosecha', compute='_compute_lot_harvest', store=True)
 
     dried_report_product_name = fields.Char(compute='_compute_lot_oven_use')
 
@@ -215,7 +215,7 @@ class StockProductionLot(models.Model):
 
     available_weight = fields.Float('Kilos Disponible', compute='_compute_available_weight', store=True)
 
-    @api.depends('stock_production_lot_serial_ids')
+    @api.depends('stock_production_lot_serial_ids', 'write_date')
     @api.multi
     def _compute_available_weight(self):
         for item in self:
