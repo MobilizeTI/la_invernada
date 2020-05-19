@@ -328,9 +328,7 @@ class StockPicking(models.Model):
     @api.multi
     def _compute_total_commission(self):
         for item in self:
-            if not item.agent_id:
-                raise models.ValidationError('Debe seleccionar un agente')
-            if item.commission > 3:
+            if item.agent_id and item.commission <= 0 and item.commission > 3:
                 raise models.ValidationError('la comisión debe ser mayor que 0 y menor o igual que 3')
             else:
                 item.total_commission = (item.commission / 100) \
@@ -362,7 +360,5 @@ class StockPicking(models.Model):
     @api.constrains('commission')
     def _check_data_typed(self):
         for item in self:
-            if not item.agent_id:
-                raise models.ValidationError('Debe seleccionar un agente')
-            if item.commission > 3:
+            if item.agent_id and item.commission >= 0 and item.commission <= 3:
                 raise models.ValidationError('la comisión debe ser mayor que 0 y menor o igual que 3')
