@@ -62,7 +62,7 @@ class StockPicking(models.Model):
         dte["Encabezado"] = {}
         dte["Encabezado"]["IdDoc"] = {}
         # El Portal completa los datos del Emisor
-        dte["Encabezado"]["IdDoc"] = {"TipoDTE": str(self.dte_type_id.code)}
+        dte["Encabezado"]["IdDoc"] = {"TipoDTE": self.dte_type_id.code}
         #Si es Boleta de debe indicar el tipo de servicio, por defecto de venta de servicios
         if self.dte_type_id.code in ('39', 39):
             dte["Encabezado"]["IdDoc"]["IndServicio"] = 3
