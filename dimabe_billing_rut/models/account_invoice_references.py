@@ -4,6 +4,7 @@ class account_invoice_references(models.Model):
     _name = 'account.invoice.references'
     _description = 'Referencias de un DTE'
 
+    document_type_reference_id = fields.Many2one('dte.type')
     document_type_reference = fields.Selection(
             [
                 ('33', 'Factura Electronica'),

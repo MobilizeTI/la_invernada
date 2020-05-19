@@ -35,7 +35,7 @@
                                 </form>
                                 <tree>
                                     <field name="folio_reference" required="True"/>
-                                    <field name="document_type_reference" required="True" />
+                                    <field name="document_type_reference_id" required="True" />
                                     <field name="code_reference"/>
                                     <field name="reason"/>
                                     <field name="document_date"/>
