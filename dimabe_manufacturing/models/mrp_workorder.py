@@ -119,7 +119,7 @@ class MrpWorkorder(models.Model):
 
     product_qty = fields.Float(related='production_id.product_qty')
 
-    lot_produced_id = fields.Integer('Id Lote a producir')
+    lot_produced_id = fields.Integer('Id Lote a producir',related='final_lot_id.id')
 
     @api.multi
     def compute_is_match(self):
