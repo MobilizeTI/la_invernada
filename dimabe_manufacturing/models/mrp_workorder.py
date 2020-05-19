@@ -247,7 +247,7 @@ class MrpWorkorder(models.Model):
 
     @api.multi
     def organize_move_line(self):
-
+        raise models.ValidationError(self.lot_produced_id)
         for move in self.production_id.move_raw_ids:
             for active in move.active_move_line_ids:
                 active.unlink()
