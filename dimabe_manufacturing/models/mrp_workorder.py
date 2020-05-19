@@ -119,6 +119,8 @@ class MrpWorkorder(models.Model):
 
     product_qty = fields.Float(related='production_id.product_qty')
 
+    lot_produced_id = fields.Integer('Id Lote a producir',related='final_lot_id.id')
+
     @api.multi
     def compute_is_match(self):
         for item in self:
@@ -232,13 +234,13 @@ class MrpWorkorder(models.Model):
                     check.qty_done = self.component_remaining_qty
                     if check.quality_state == 'none':
                         self.action_next()
+                self.action_skip()
         self.action_first_skipped_step()
         return super(MrpWorkorder, self).open_tablet_view()
 
     def action_next(self):
         self.validate_lot_code(self.lot_id.name)
         super(MrpWorkorder, self).action_next()
-        self.organize_move_line()
         self.qty_done = 0
 
     @api.multi
@@ -261,7 +263,7 @@ class MrpWorkorder(models.Model):
                         (5)
                     ]
                 })
-                if item not in stock_move[1].active_move_line_ids.mapped('lot_id'):
+                if item not in stock_move[1].active_move_line_ids.mapped('lot_id') and item.location_id:
                     stock_move[1].update({
                         'active_move_line_ids': [
                             (0, 0, {
@@ -269,7 +271,7 @@ class MrpWorkorder(models.Model):
                                 'lot_id': item.id,
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
-                                'lot_produced_id': self.final_lot_id,
+                                'lot_produced_id': self.lot_produced_id,
                                 'product_uom_id': stock_move[1].product_uom.id,
                                 'location_id': item.location_id.id,
                                 'location_dest_id': virtual_location_production_id.id
@@ -294,7 +296,7 @@ class MrpWorkorder(models.Model):
                                 'lot_id': item.id,
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
-                                'lot_produced_id': self.final_lot_id,
+                                'lot_produced_id': self.lot_produced_id,
                                 'product_uom_id': stock_move.product_uom.id,
                                 'location_id': item.location_id.id,
                                 'location_dest_id': virtual_location_production_id.id
@@ -308,6 +310,11 @@ class MrpWorkorder(models.Model):
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight'))
                             })
+
+    def do_finish(self):
+        self.lot_produced_id = self.final_lot_id.id
+        self.organize_move_line()
+        super(MrpWorkorder, self).do_finish()
 
     def action_skip(self):
         if self.qty_done > 0:

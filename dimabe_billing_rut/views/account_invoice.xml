@@ -7,26 +7,6 @@
             <field name="arch" type="xml">
                 <data>
                     <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
-                        <page string="Referencias">
-                            <field name="references" mode="tree">
-                              <form>
-                                <group>
-                                  <field name="folio_reference" required="True"/>
-                                  <field name="document_type_reference" required="True" />
-                                  <field name="code_reference"/>
-                                  <field name="reason"/>
-                                  <field name="document_date"/>
-                                </group>
-                              </form>
-                              <tree>
-                                <field name="folio_reference" required="True"/>
-                                <field name="document_type_reference" required="True" />
-                                <field name="code_reference"/>
-                                <field name="reason"/>
-                                <field name="document_date"/>
-                              </tree>
-                            </field>
-                        </page>
                         <page name="xdte_tab" string="DTE">
                             <group name="xdte_info" cols="">
                                 <button  type="object" name="send_to_sii" string="Enviar al SII" attrs="{'invisible': ['|',('dte_folio', '!=', False),('state','=','draft')]}" class="oe_highlight"/>
@@ -39,12 +19,31 @@
                                 <field name="dte_type_id" domain="[('code', 'in', [33,34,39,110,56,61,111,112])]" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
                                 <field name="ted" widget="image"  readonly="1"/>
                                 <field name="pdf_url" widget="url" readonly="1" text="Url de Descarga"/>
-                                <field name="dte_xml" widget="binary" filename="dte.xml" />
-                                <field name="dte_pdf" widget="binary" filename="dte.pdf" />
+                                <field name="dte_xml" widget="binary" readonly="1" filename="dte.xml" />
+                                <field name="dte_pdf" widget="binary" readonly="1" filename="dte.pdf" />
+                            </group>
+                            <group string="Referencias">
+                                <field name="references" mode="tree">
+                                <form>
+                                    <group>
+                                    <field name="folio_reference" required="True"/>
+                                    <field name="document_type_reference_id" required="True" />
+                                    <field name="code_reference"/>
+                                    <field name="reason"/>
+                                    <field name="document_date"/>
+                                    </group>
+                                </form>
+                                <tree>
+                                    <field name="folio_reference" required="True"/>
+                                    <field name="document_type_reference_id" required="True" />
+                                    <field name="code_reference"/>
+                                    <field name="reason"/>
+                                    <field name="document_date"/>
+                                </tree>
+                                </field>
                             </group>
                         </page>
                     </xpath>
-
                 </data>
             </field>
         </record>

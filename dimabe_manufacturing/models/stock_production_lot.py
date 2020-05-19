@@ -211,10 +211,11 @@ class StockProductionLot(models.Model):
 
     location_id = fields.Many2one('stock.location', compute='_compute_lot_location')
 
-    serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed', store=True)
+    serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed')
 
-    available_weight = fields.Float('Kilos Disponible', compute='_compute_available_weight')
+    available_weight = fields.Float('Kilos Disponible', compute='_compute_available_weight', store=True)
 
+    @api.depends('stock_production_lot_serial_ids')
     @api.multi
     def _compute_available_weight(self):
         for item in self:

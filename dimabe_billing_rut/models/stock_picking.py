@@ -62,7 +62,7 @@ class StockPicking(models.Model):
         dte["Encabezado"] = {}
         dte["Encabezado"]["IdDoc"] = {}
         # El Portal completa los datos del Emisor
-        dte["Encabezado"]["IdDoc"] = {"TipoDTE": str(self.dte_type_id.code)}
+        dte["Encabezado"]["IdDoc"] = {"TipoDTE": self.dte_type_id.code}
         #Si es Boleta de debe indicar el tipo de servicio, por defecto de venta de servicios
         if self.dte_type_id.code in ('39', 39):
             dte["Encabezado"]["IdDoc"]["IndServicio"] = 3
@@ -99,7 +99,7 @@ class StockPicking(models.Model):
             dte["Detalle"].append(ld)
         referencias = []
         for reference in self.references:
-            ref = {'TpoDocRef':reference.document_type_reference or 'SET',
+            ref = {'TpoDocRef':reference.document_type_reference_id.code or 'SET',
                    'FolioRef':reference.folio_reference,
                    'FchRef':reference.document_date.__str__(),
                    'RazonRef':reference.reason}
