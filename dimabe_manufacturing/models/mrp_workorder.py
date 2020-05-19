@@ -119,7 +119,7 @@ class MrpWorkorder(models.Model):
 
     product_qty = fields.Float(related='production_id.product_qty')
 
-    lot_produced_id = fields.Integer('Id Lote a producir',related='final_lot_id.id')
+    lot_produced_id = fields.Integer('Id Lote a producir')
 
     @api.multi
     def compute_is_match(self):
@@ -247,7 +247,8 @@ class MrpWorkorder(models.Model):
 
     @api.multi
     def organize_move_line(self):
-        raise models.ValidationError(self.lot_produced_id)
+        if self.final_lot_id:
+            self.lot_produced_id = self.final_lot_id.id
         for move in self.production_id.move_raw_ids:
             for active in move.active_move_line_ids:
                 active.unlink()
