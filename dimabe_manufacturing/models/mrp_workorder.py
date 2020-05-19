@@ -234,6 +234,8 @@ class MrpWorkorder(models.Model):
                     if check.quality_state == 'none':
                         self.action_next()
                 else:
+                    models._logger.error(check.component_is_byproduct)
+                    models._logger.error(check.lot_id)
                     check.qty_done = 0
                     self.action_skip()
         self.action_first_skipped_step()
