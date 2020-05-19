@@ -233,6 +233,9 @@ class MrpWorkorder(models.Model):
                     models._logger.error(check.lot_id)
                     if check.quality_state == 'none':
                         self.action_next()
+                else:
+                    check.qty_done = 0
+                    self.action_skip()
         self.action_first_skipped_step()
 
         return super(MrpWorkorder, self).open_tablet_view()
