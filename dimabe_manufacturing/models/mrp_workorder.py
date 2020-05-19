@@ -221,6 +221,9 @@ class MrpWorkorder(models.Model):
             check = self.current_quality_check_id
 
             if not check.component_is_byproduct:
+                check.qty_done = 0
+                self.action_skip()
+            else:
                 if not check.lot_id:
                     lot_tmp = self.env['stock.production.lot'].create({
                         'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
@@ -229,15 +232,9 @@ class MrpWorkorder(models.Model):
                     })
                     check.lot_id = lot_tmp.id
                     check.qty_done = self.component_remaining_qty
-                    models._logger.error(check.component_is_byproduct)
-                    models._logger.error(check.lot_id)
                     if check.quality_state == 'none':
                         self.action_next()
-                else:
-                    models._logger.error(check.component_is_byproduct)
-                    models._logger.error(check.lot_id)
-                    check.qty_done = 0
-                    self.action_skip()
+                self.action_skip()
         self.action_first_skipped_step()
 
         return super(MrpWorkorder, self).open_tablet_view()
@@ -276,7 +273,7 @@ class MrpWorkorder(models.Model):
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
                                 'lot_produced_id': self.production_finished_move_line_ids.filtered(
-                                    lambda a: a.product_id == self.product_id).lot_id.id,
+                                    lambda a: a.product_id == self.product_id).mapped('lot_id'),
                                 'product_uom_id': stock_move[1].product_uom.id,
                                 'location_id': item.location_id.id,
                                 'location_dest_id': virtual_location_production_id.id
@@ -301,8 +298,7 @@ class MrpWorkorder(models.Model):
                                 'lot_id': item.id,
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
-                                'lot_produced_id': self.production_finished_move_line_ids.filtered(
-                                    lambda a: a.product_id == self.product_id).lot_id.id,
+                                'lot_produced_id': self.final_lot_id,
                                 'product_uom_id': stock_move.product_uom.id,
                                 'location_id': item.location_id.id,
                                 'location_dest_id': virtual_location_production_id.id
