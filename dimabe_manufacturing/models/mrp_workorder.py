@@ -267,8 +267,6 @@ class MrpWorkorder(models.Model):
                 if not item.location_id:
                     item.location_id = item.stock_production_lot_serial_ids.mapped('production_id').location_dest_id
                 if not self.lot_produced_id:
-                    raise models.ValidationError('D{}'.format(self.production_finished_move_line_ids.filtered(
-                                    lambda a: a.product_id.id == self.product_id.id).lot_id.id))
                     stock_move.update({
                         'active_move_line_ids': [
                             (0, 0, {
@@ -285,7 +283,6 @@ class MrpWorkorder(models.Model):
                         ]
                     })
                 else:
-                    raise models.ValidationError('A{}'.format(self.lot_produced_id))
                     stock_move.update({
                         'active_move_line_ids': [
                             (0, 0, {
