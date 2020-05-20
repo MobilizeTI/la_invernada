@@ -221,10 +221,10 @@ class StockProductionLot(models.Model):
     def _compute_guide_number(self):
         for item in self:
             if item.reception_guide_number:
-                item.show_guide_number = "%" % item.reception_guide_number
+                item.show_guide_number = str(item.reception_guide_number)
             else:
                 reception = self.env['stock.picking'].search([('name', '=', item.name)])
-                item.location_id = "%" % reception.guide_number
+                item.location_id = str(reception.guide_number)
             if item.is_dried_lot:
                 dried = self.env['dried.unpelled.history'].search(
                     [('out_lot_id', '=', item.id)]).dest_location_id
