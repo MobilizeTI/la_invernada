@@ -220,8 +220,8 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_guide_number(self):
         for item in self:
-            if item.reception_guide_number:
-                item.show_guide_number = item.reception_guide_number
+            if item.stock_picking_id:
+                item.show_guide_number = str(item.stock_picking_id.guide_number)
             else:
                 reception = self.env['stock.picking'].search([('name', '=', item.name)])
                 item.location_id = str(reception.guide_number)
