@@ -282,6 +282,13 @@ class MrpProduction(models.Model):
         })
         return res
 
+    @api.multi
+    def fix_reserved(self):
+        for item in self:
+            for move in item.move_raw_ids:
+                for line in move.active_move_lines:
+                    line.unlink()
+
     # @api.multi
     # def action_cancel(self):
     #
