@@ -286,7 +286,7 @@ class MrpProduction(models.Model):
     def fix_reserved(self):
         for item in self:
             for move in item.move_raw_ids:
-                for line in move.active_move_lines:
+                for line in move.active_move_line_ids:
                     line.unlink()
 
     # @api.multi
