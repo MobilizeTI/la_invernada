@@ -226,7 +226,6 @@ class MrpWorkorder(models.Model):
 
     def open_tablet_view(self):
         while self.current_quality_check_id:
-            models._logger.error('Paso 1 {}'.format(check.name))
             check = self.current_quality_check_id
             models._logger.error('Paso 2 {}'.format(check.name))
             if not check.component_is_byproduct:
