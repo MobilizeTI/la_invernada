@@ -18,7 +18,7 @@
           />
 
           <button name="fix_reserved" type="object"
-                  string="Organizar Movimentos"
+                  string="Limpiar Reservas"
                   confirm="¡Atencion! ¿Se seguro de realizar esta limpieza en los movimientos de stock?"
                   attrs="{'invisible':[('state','=','done')]}"
                   group="base.group_system"
