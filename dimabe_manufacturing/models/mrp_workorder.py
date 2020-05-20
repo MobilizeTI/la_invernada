@@ -254,8 +254,6 @@ class MrpWorkorder(models.Model):
 
     @api.multi
     def organize_move_line(self):
-        if self.final_lot_id:
-            self.lot_produced_id = self.final_lot_id.id
         for move in self.production_id.move_raw_ids:
             for active in move.active_move_line_ids:
                 active.unlink()
@@ -265,39 +263,12 @@ class MrpWorkorder(models.Model):
                 ('usage', '=', 'production'),
                 ('location_id.name', 'like', 'Virtual Locations')
             ])
-            # if len(stock_move) > 1:
-            #     if not item.location_id:
-            #         item.location_id = item.stock_production_lot_serial_ids.mapped('production_id').location_dest_id
-            #     if item not in stock_move[1].active_move_line_ids.mapped('lot_id') and item.location_id:
-            #         stock_move[1].update({
-            #             'active_move_line_ids': [
-            #                 (0, 0, {
-            #                     'product_id': item.product_id.id,
-            #                     'lot_id': item.id,
-            #                     'qty_done': sum(self.potential_serial_planned_ids.filtered(
-            #                         lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
-            #                     'lot_produced_id': self.lot_produced_id,
-            #                     'product_uom_id': stock_move[1].product_uom.id,
-            #                     'location_id': item.location_id.id,
-            #                     'location_dest_id': virtual_location_production_id.id
-            #                 })
-            #             ]
-            #         })
-            #     else:
-            #         for stock in stock_move:
-            #             for line in stock.active_move_line_ids:
-            #                 if line.lot_id.id == item.id:
-            #                     line.update({
-            #                         'qty_done': sum(self.potential_serial_planned_ids.filtered(
-            #                             lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight'))
-            #                     })
-            # else:
             if item not in stock_move.active_move_line_ids.mapped('lot_id'):
                 if not item.location_id:
                     item.location_id = item.stock_production_lot_serial_ids.mapped('production_id').location_dest_id
                 if not self.lot_produced_id:
                     raise models.ValidationError('D{}'.format(self.production_finished_move_line_ids.filtered(
-                                    lambda a: a.product_id.id == self.product_id.id).lot_id).id)
+                                    lambda a: a.product_id.id == self.product_id.id).lot_id.id))
                     stock_move.update({
                         'active_move_line_ids': [
                             (0, 0, {
