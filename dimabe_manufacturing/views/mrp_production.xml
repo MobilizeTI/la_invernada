@@ -20,7 +20,7 @@
           <button name="fix_reserved" type="object"
                   string="Organizar Movimentos"
                   confirm="¡Atencion! ¿Se seguro de realizar esta limpieza en los movimientos de stock?"
-                  attrs="{'invisible':[('state':'=','done')]}"
+                  attrs="{'invisible':[('state','=','done')]}"
                   group="base.group_system"
                   />
         </xpath>
