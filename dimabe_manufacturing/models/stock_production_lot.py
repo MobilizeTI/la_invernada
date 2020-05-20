@@ -227,7 +227,7 @@ class StockProductionLot(models.Model):
                 item.location_id = str(reception.guide_number)
             if item.is_dried_lot:
                 dried = self.env['dried.unpelled.history'].search(
-                    [('out_lot_id', '=', item.id)]).dest_location_id
+                    [('out_lot_id', '=', item.id)])
                 item.location_id = dried.lot_guide_numbers
 
     @api.depends('stock_production_lot_serial_ids')
