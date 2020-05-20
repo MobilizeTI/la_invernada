@@ -215,6 +215,21 @@ class StockProductionLot(models.Model):
 
     available_weight = fields.Float('Kilos Disponible', compute='_compute_available_weight', store=True)
 
+    show_guide_number = fields.Char('Guia',compute='_compute_guide_number')
+
+    @api.multi
+    def _compute_guide_number(self):
+        for item in self:
+            if item.stock_picking_id:
+                item.show_guide_number = str(item.stock_picking_id.guide_number)
+            else:
+                reception = self.env['stock.picking'].search([('name', '=', item.name)])
+                item.show_guide_number = str(reception.guide_number)
+            if item.is_dried_lot:
+                dried = self.env['dried.unpelled.history'].search(
+                    [('out_lot_id', '=', item.id)])
+                item.show_guide_number = dried.lot_guide_numbers
+
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
     def _compute_available_weight(self):
