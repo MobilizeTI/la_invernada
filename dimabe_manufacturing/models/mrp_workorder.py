@@ -255,7 +255,7 @@ class MrpWorkorder(models.Model):
 
     @api.multi
     def organize_move_line(self):
-        raise models.ValidationError(item.production_finished_move_line_ids.filtered(
+        raise models.ValidationError(self.production_finished_move_line_ids.filtered(
                     lambda a: a.product_id == item.product_id.id).lot_id.id)
         if self.final_lot_id:
             self.lot_produced_id = self.final_lot_id.id
