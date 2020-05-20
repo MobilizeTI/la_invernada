@@ -237,7 +237,7 @@ class MrpWorkorder(models.Model):
                 models._logger.error('Paso 5')
             else:
                 models._logger.error('Paso 6')
-                if not check.lot_id:
+                if check.lot_id:
                     models._logger.error('Paso 7')
                     lot_tmp = self.env['stock.production.lot'].create({
                         'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
