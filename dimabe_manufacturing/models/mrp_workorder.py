@@ -275,6 +275,8 @@ class MrpWorkorder(models.Model):
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
                                 'lot_produced_id': self.production_finished_move_line_ids.filtered(
                                     lambda a: a.product_id.id == self.product_id.id).lot_id,
+                                'workorder_id':self.id,
+                                'production_id':self.production_id.id,
                                 'product_uom_id': stock_move.product_uom.id,
                                 'location_id': item.location_id.id,
                                 'location_dest_id': virtual_location_production_id.id
@@ -290,6 +292,8 @@ class MrpWorkorder(models.Model):
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
                                 'lot_produced_id': self.lot_produced_id,
+                                'workorder_id': self.id,
+                                'production_id': self.production_id.id,
                                 'product_uom_id': stock_move.product_uom.id,
                                 'location_id': item.location_id.id,
                                 'location_dest_id': virtual_location_production_id.id
