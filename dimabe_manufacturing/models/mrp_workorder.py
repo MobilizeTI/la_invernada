@@ -295,11 +295,9 @@ class MrpWorkorder(models.Model):
                 if item not in stock_move.active_move_line_ids.mapped('lot_id'):
                     if not item.location_id:
                         item.location_id = item.stock_production_lot_serial_ids.mapped('production_id').location_dest_id
-                    if not self.final_lot_id:
-                        self.write({
-                            'lot_produced_id': self.production_finished_move_line_ids.filtered(
-                                lambda a: a.product_id.id == self.product_id.id).lot_id.id
-                        })
+                    if self.lot_produced_id < 1:
+                        self.lot_produced_id = self.production_finished_move_line_ids.filtered(
+                            lambda a: a.product_id == self.product_id.id).lot_id.id
                     stock_move.update({
                         'active_move_line_ids': [
                             (0, 0, {
@@ -307,11 +305,11 @@ class MrpWorkorder(models.Model):
                                 'lot_id': item.id,
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
-                                'lot_produced_id': self.lot_produced_id,
+                                'lot_produced_id':self.lot_produced_id,
                                 'product_uom_id': stock_move.product_uom.id,
                                 'location_id': item.location_id.id,
                                 'location_dest_id': virtual_location_production_id.id
-                            })
+                             })
                         ]
                     })
                 else:
