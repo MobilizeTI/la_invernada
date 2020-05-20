@@ -227,31 +227,20 @@ class MrpWorkorder(models.Model):
     def open_tablet_view(self):
         while self.current_quality_check_id:
             check = self.current_quality_check_id
-            models._logger.error('Paso 2 {}'.format(check.name))
             if not check.component_is_byproduct:
-                models._logger.error('Paso 3 {}'.format(check.name))
                 check.qty_done = 0
-                models._logger.error('Paso 4 {}'.format(check.name))
                 self.action_skip()
-                models._logger.error('Paso 5 {}'.format(check.name))
             else:
-                models._logger.error('Paso 6 {}'.format(check.name))
-                if check.lot_id:
-                    models._logger.error('Paso 7 {}'.format(check.name))
+                if not check.lot_id:
                     lot_tmp = self.env['stock.production.lot'].create({
                         'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
                         'product_id': check.component_id.id,
                         'is_prd_lot': True
                     })
-                    models._logger.error('Paso 8 {}'.format(check.name))
                     check.lot_id = lot_tmp.id
-                    models._logger.error('Paso 9 {}'.format(check.name))
                     check.qty_done = self.component_remaining_qty
-                    models._logger.error('Paso 10 {}'.format(check.name))
                     if check.quality_state == 'none' and check.qty_done > 0:
-                        models._logger.error('Paso 11 {}'.format(check.name))
                         self.action_next()
-                        models._logger.error('Paso 12 {}'.format(check.name))
 
                     self.action_skip()
         models._logger.error('Paso 13')
