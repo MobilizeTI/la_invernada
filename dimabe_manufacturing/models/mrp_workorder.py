@@ -124,7 +124,7 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_lot_produced(self):
         for item in self:
-            if item.production_finished_move_line_ids:
+            if len(item.production_finished_move_line_ids) > 1:
                 item.lot_produced_id = item.production_finished_move_line_ids.filtered(
                     lambda a: a.product_id == item.product_id.id).lot_id.id
             item.lot_produced_id = item.final_lot_id.id
@@ -255,7 +255,8 @@ class MrpWorkorder(models.Model):
 
     @api.multi
     def organize_move_line(self):
-        raise models.ValidationError(self.lot_produced_id)
+        raise models.ValidationError(item.production_finished_move_line_ids.filtered(
+                    lambda a: a.product_id == item.product_id.id).lot_id.id)
         if self.final_lot_id:
             self.lot_produced_id = self.final_lot_id.id
         for move in self.production_id.move_raw_ids:
@@ -268,9 +269,9 @@ class MrpWorkorder(models.Model):
                 ('location_id.name', 'like', 'Virtual Locations')
             ])
             if len(stock_move) > 1:
+                if not item.location_id:
+                    item.location_id = item.stock_production_lot_serial_ids.mapped('production_id').location_dest_id
                 if item not in stock_move[1].active_move_line_ids.mapped('lot_id') and item.location_id:
-                    if not item.location_id:
-                        raise models.ValidationError("El Lote {} aun en proceso ".format(item.name))
                     stock_move[1].update({
                         'active_move_line_ids': [
                             (0, 0, {
@@ -296,7 +297,7 @@ class MrpWorkorder(models.Model):
             else:
                 if item not in stock_move.active_move_line_ids.mapped('lot_id'):
                     if not item.location_id:
-                        raise models.ValidationError("El Lote {} aun en proceso ".format(item.name))
+                        item.location_id = item.stock_production_lot_serial_ids.mapped('production_id').location_dest_id
                     stock_move.update({
                         'active_move_line_ids': [
                             (0, 0, {
@@ -320,7 +321,9 @@ class MrpWorkorder(models.Model):
                             })
 
     def do_finish(self):
-        self.lot_produced_id = self.final_lot_id.id
+        self.write({
+            'lot_produced_id':self.final_lot_id.id
+        })
         self.organize_move_line()
         super(MrpWorkorder, self).do_finish()
 
