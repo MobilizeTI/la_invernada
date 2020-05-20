@@ -119,15 +119,15 @@ class MrpWorkorder(models.Model):
 
     product_qty = fields.Float(related='production_id.product_qty')
 
-    lot_produced_id = fields.Integer('Lote a producir', compute='_compute_lot_produced')
+    lot_produced_id = fields.Many2one('Lote a producir', compute='_compute_lot_produced')
 
     @api.multi
     def _compute_lot_produced(self):
         for item in self:
             if len(item.production_finished_move_line_ids) > 1:
                 item.lot_produced_id = item.production_finished_move_line_ids.filtered(
-                    lambda a: a.product_id == item.product_id.id).lot_id.id
-            item.lot_produced_id = item.final_lot_id.id
+                    lambda a: a.product_id == item.product_id.id).lot_id
+            item.lot_produced_id = item.final_lot_id
 
     @api.multi
     def compute_is_match(self):
@@ -274,7 +274,7 @@ class MrpWorkorder(models.Model):
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
                                 'lot_produced_id': self.production_finished_move_line_ids.filtered(
-                                    lambda a: a.product_id.id == self.product_id.id).lot_id,
+                                    lambda a: a.product_id.id == self.product_id.id).lot_id.id,
                                 'workorder_id':self.id,
                                 'production_id':self.production_id.id,
                                 'product_uom_id': stock_move.product_uom.id,
@@ -291,7 +291,7 @@ class MrpWorkorder(models.Model):
                                 'lot_id': item.id,
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
-                                'lot_produced_id': self.lot_produced_id,
+                                'lot_produced_id': self.lot_produced_id.id,
                                 'workorder_id': self.id,
                                 'production_id': self.production_id.id,
                                 'product_uom_id': stock_move.product_uom.id,
