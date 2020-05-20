@@ -287,7 +287,9 @@ class MrpProduction(models.Model):
         for item in self:
             for move in item.move_raw_ids:
                 for line in move.active_move_line_ids:
-                    line.unlink()
+                    line.write({
+                        'product_uom_qty':0
+                    })
 
     # @api.multi
     # def action_cancel(self):
