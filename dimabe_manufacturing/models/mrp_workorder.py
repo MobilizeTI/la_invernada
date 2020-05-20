@@ -248,7 +248,6 @@ class MrpWorkorder(models.Model):
 
     def action_next(self):
         self.validate_lot_code(self.lot_id.name)
-
         super(MrpWorkorder, self).action_next()
         self.qty_done = 0
 

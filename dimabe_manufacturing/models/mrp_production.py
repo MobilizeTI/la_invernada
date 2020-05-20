@@ -213,7 +213,6 @@ class MrpProduction(models.Model):
     @api.multi
     def button_mark_done(self):
         self.calculate_done()
-        self.post_inventory()
         res = super(MrpProduction, self).button_mark_done()
         serial_to_reserve_ids = self.workorder_ids.mapped('production_finished_move_line_ids').mapped(
             'lot_id').filtered(
