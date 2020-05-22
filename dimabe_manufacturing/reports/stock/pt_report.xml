@@ -27,14 +27,13 @@
             </field>
         </record>
         <record id="search_raw_report_view" model="ir.ui.view">
-            <field name="name">Filtro Materia Prima Seca</field>
+            <field name="name">Filtro PT</field>
             <field name="type">search</field>
             <field name="model">manufacturing.pallet</field>
             <field name="arch" type="xml">
                 <search>
                     <field name="sale_order_id"/>
                     <field name="producer_id"/>
-                    <field name="harvest"/>
                     <field name="dest_country_id"/>
                     <group expand="1" string="Group By">
                         <filter string="Pedido" name="group_by_sale_order_id" context="{'group_by':'sale_order_id'}"/>
