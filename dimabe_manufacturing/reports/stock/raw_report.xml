@@ -38,10 +38,12 @@
         <search>
           <field name="producer_id"/>
           <field name="product_variety"/>
+          <field name="harvest"/>
           <group expand="1" string="Group By">
             <filter string="Productor" name="group_by_producer" context="{'group_by':'producer_id'}"/>
             <filter string="Variedad" name="group_by_variety" context="{'group_by':'product_variety'}"/>
-          </group>
+            <filter string="Cosecha" name="group_by_harvest" context="{'group_by':'harvest'}"/>
+           </group>
         </search>
       </field>
     </record>
