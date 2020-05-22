@@ -8,7 +8,11 @@
       <field name="arch" type="xml">
         <tree>
             <field name="name" string="Orden de Fabricacion"/>
-            <field name="potential_serial_planned_ids" style="column-count:2;"/>
+          <field name="potential_serial_planned_ids">
+            <tree>
+              <field name="serial_number"/>
+            </tree>
+          </field>
         </tree>
       </field>
     </record>
