@@ -11,11 +11,11 @@
                         <field name="serial_number"/>
                     </tree>
                 </field>
-                <tree name="summary_out_serial_ids">
+                <field name="summary_out_serial_ids">
                     <tree>
                         <field name="serial_number"/>
                     </tree>
-                </tree>
+                </field>
             </field>
         </record>
         <record id="dimabe_manufacturing.process_report_laser" model="ir.actions.act_window">
