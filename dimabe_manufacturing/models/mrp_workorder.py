@@ -274,7 +274,7 @@ class MrpWorkorder(models.Model):
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
                                 'lot_produced_id': self.production_finished_move_line_ids.filtered(
-                                    lambda a: a.product_id.id == self.product_id.id).lot_id,
+                                    lambda a: a.product_id.id == self.product_id.id and a.lot_id).lot_id,
                                 'workorder_id':self.id,
                                 'production_id':self.production_id.id,
                                 'product_uom_id': stock_move.product_uom.id,
@@ -312,7 +312,7 @@ class MrpWorkorder(models.Model):
             'lot_produced_id': self.final_lot_id.id
         })
         super(MrpWorkorder, self).do_finish()
-        #self.organize_move_line()
+        self.organize_move_line()
 
     def action_skip(self):
         super(MrpWorkorder, self).action_skip()
