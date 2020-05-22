@@ -6,19 +6,14 @@
             <field name="model">stock.production.lot.serial</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Proceso NCC">
-                    <field name="production_id_to_view" string="Orden de Fabricacion" widget="many2onebutton"/>
-                    <field name="movement"/>
-                    <field name="product_variety"/>
-                    <field name="producer_id" widget="many2onebutton"/>
-                    <field name="product_id" widget="many2onebutton"/>
-                    <field name="serial_number"/>
-                    <field name="stock_production_lot_id" widget="many2onebutton"/>
-                    <field name="in_weight"/>
-                    <field name="produce_weight"/>
-                    <field name="pallet_id" widget="many2onebutton"/>
-                    <field name="sale_order_id" widget="many2onebutton"/>
-                </tree>
+                <form>
+                    <div>
+                        <group>
+                            <h2>Proceso Envasado Nuez con Cascara</h2>
+                            <tr
+                        </group>
+                    </div>
+                </form>
             </field>
         </record>
         <record id="dimabe_manufacturing.process_report_ncc" model="ir.actions.act_window">
@@ -26,9 +21,7 @@
             <field name="res_model">stock.production.lot.serial</field>
             <field name="view_mode">tree,pivot,form</field>
             <field name="view_id" ref="view_process_report_ncc_tree"/>
-            <field name="domain">
-                ['&amp;','|',('reserved_to_production_id','!=',None),('production_id','!=',None),('in_process_id','=','ENVASADO NCC'),('out_process_id','=','ENVASADO NCC')]
-            </field>
+
         </record>
         <menuitem id="process_ncc_menu"
                   action="dimabe_manufacturing.process_report_ncc"
