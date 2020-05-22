@@ -17,9 +17,6 @@
             <field name="res_model">mrp.workorder</field>
             <field name="view_mode">tree,form,pivot</field>
             <field name="view_id" ref="view_process_report_laser_tree"/>
-            <field name="domain">
-                [('movement','!=','NO DEFINIDO'),('process_id','=','PARTIDO MECÁNICO/LÁSER')]
-            </field>
         </record>
         <menuitem id="process_laser_menu"
                   action="dimabe_manufacturing.process_report_laser"
