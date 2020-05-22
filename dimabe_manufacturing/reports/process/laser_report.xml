@@ -3,21 +3,18 @@
     <data>
         <record id="view_process_report_laser_tree" model="ir.ui.view">
             <field name="name">Informe de Partido Laser</field>
-            <field name="model">stock.production.lot.serial</field>
+            <field name="model">mrp.workorder</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Proceso Partido Laser">
-                    <field name="production_id_to_view" string="Orden de Fabricacion" widget="many2onebutton"/>
-                    <field name="movement"/>
-                    <field name="product_variety"/>
-                    <field name="producer_id" widget="many2onebutton"/>
-                    <field name="product_id" widget="many2onebutton"/>
-                    <field name="serial_number"/>
-                    <field name="stock_production_lot_id" widget="many2onebutton"/>
-                    <field name="in_weight"/>
-                    <field name="produce_weight"/>
-                    <field name="pallet_id" widget="many2onebutton"/>
-                    <field name="sale_order_id" widget="many2onebutton"/>
+                <field name="potential_serial_planned_ids">
+                    <tree>
+                        <field name="serial_number"/>
+                    </tree>
+                </field>
+                <tree name="summary_out_serial_ids">
+                    <tree>
+                        <field name="serial_number"/>
+                    </tree>
                 </tree>
             </field>
         </record>

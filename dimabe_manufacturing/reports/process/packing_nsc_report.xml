@@ -27,7 +27,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_packing_report_nsc_tree"/>
             <field name="domain">
-               ['&amp;','|',('reserved_to_production_id','!=',None),('production_id','!=',None),('in_process_id','=','ENVASADO NSC'),('out_process_id','=','ENVASADO NSC')]
+               ['&amp;','|',('reserved_to_production_id','!=',None),('production_id','!=',None),'|',('in_process_id','=','ENVASADO NSC'),('out_process_id','=','ENVASADO NSC')]
             </field>
         </record>
         <menuitem id="packing_nsc_menu"
