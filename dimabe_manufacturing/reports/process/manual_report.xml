@@ -7,8 +7,8 @@
             <field name="priority">20</field>
             <field name="arch" type="xml">
                 <tree name="Informe de Proceso Partido Manual">
-                    <field name="in_movement" attrs="{'invisible':['out_movement','=','SALIDA']}"/>
-                    <field name="out_movement" attrs="{'invisible':['in_movement','=','ENTRADA']}"/>
+                    <field name="production_id_to_view" string="Orden de Fabricacion" widget="many2onebutton"/>
+                    <field name="movement"/>
                     <field name="product_variety"/>
                     <field name="producer_id" widget="many2onebutton"/>
                     <field name="product_id" widget="many2onebutton"/>
