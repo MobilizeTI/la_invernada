@@ -27,7 +27,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_washed_report_tree"/>
             <field name="domain">
-                [('movement','!=','NO DEFINIDO'),('process_id','=','LAVADO')]
+                ['&amp;','|',('reserved_to_production_id','!=',None),('production_id','!=',None),('process_id','=','LAVADO')]
             </field>
         </record>
         <menuitem id="washed_menu"
