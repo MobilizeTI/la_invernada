@@ -122,11 +122,9 @@ class StockProductionLotSerial(models.Model):
         related='production_id.bom_id'
     )
 
-    in_movement = fields.Char('Movimiento', compute='_compute_in_movement')
+    movement = fields.Char('Movimiento', compute='_compute_movement')
 
-    out_movement = fields.Char('Movimiento', compute='_compute_out_movement')
-
-    process_id = fields.Char('Proceso', compute='_compute_process_id')
+    process_id = fields.Char('Proceso', compute='_compute_process_id',store=True)
 
     in_weight = fields.Float('Kilos Ingresado', compute='_compute_in_weight')
 
@@ -203,28 +201,24 @@ class StockProductionLotSerial(models.Model):
     @api.multi
     def _compute_process_id(self):
         for item in self:
-            if item.reserved_to_production_id:
+            if item.reserved_to_production_id and i:
                 item.process_id = item.reserved_to_production_id.routing_id.name
             elif item.production_id:
                 item.process_id = item.production_id.routing_id.name
             else:
                 item.process_id = None
 
+    @api.depends('reserved_to_production_id', 'production_id')
     @api.multi
-    def _compute_in_movement(self):
+    def _compute_movement(self):
         for item in self:
-            if item.reserved_to_production_id:
+            if item.reserved_to_production_id and not item.production_id:
                 item.movement = 'ENTRADA'
-            else:
-                item.movement = 'NO DEFINIDO'
-
-    @api.multi
-    def _compute_out_movement(self):
-        for item in self:
-            if item.production_id:
+            elif item.production_id and not item.reserved_to_production_id:
                 item.movement = 'SALIDA'
             else:
                 item.movement = 'NO DEFINIDO'
+
 
     @api.multi
     def _inverse_real_weight(self):
