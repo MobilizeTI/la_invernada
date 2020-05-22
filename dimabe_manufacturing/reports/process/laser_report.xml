@@ -27,7 +27,7 @@
             <field name="view_mode">tree,form,pivot</field>
             <field name="view_id" ref="view_process_report_laser_tree"/>
             <field name="domain">
-                ['&amp;','|',('reserved_to_production_id','!=',None),('production_id','!=',None),('process_id','=','PARTIDO MECÁNICO/LÁSER')]
+                ['&amp;','|',('reserved_to_production_id','!=',None),('production_id','!=',None),('in_process_id','=','PARTIDO MECÁNICO/LÁSER'),('out_process_id','=','PARTIDO MECÁNICO/LÁSER')]
             </field>
         </record>
         <menuitem id="process_laser_menu"

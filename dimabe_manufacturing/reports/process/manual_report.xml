@@ -27,7 +27,7 @@
             <field name="view_mode">tree,form,pivot</field>
             <field name="view_id" ref="view_process_report_manual_tree"/>
             <field name="domain">
-                ['&amp;','|',('reserved_to_production_id','!=',None),('production_id','!=',None),('process_id','=','PARTIDO MANUAL')]
+                ['&amp;','|',('reserved_to_production_id','!=',None),('production_id','!=',None),('in_process_id','=','PARTIDO MANUAL'),('out_process_id','=','PARTIDO MANUAL')]
             </field>
         </record>
         <menuitem id="process_manual_menu"
