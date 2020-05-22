@@ -201,7 +201,7 @@ class StockProductionLotSerial(models.Model):
     @api.multi
     def _compute_process_id(self):
         for item in self:
-            if item.reserved_to_production_id:
+            if item.reserved_to_production_id and i:
                 item.process_id = item.reserved_to_production_id.routing_id.name
             elif item.production_id:
                 item.process_id = item.production_id.routing_id.name
