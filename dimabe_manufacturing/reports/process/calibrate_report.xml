@@ -17,7 +17,7 @@
                     <field name="in_weight"/>
                     <field name="produce_weight"/>
                     <field name="pallet_id" widget="many2onebutton"/>
-                    <field name="sale_order_id" widget="many2onebutton"/>
+                    <field name="sale_order_id" attrs="{'invisible':['in_weight','!=',None]}" widget="many2onebutton"/>
                 </tree>
             </field>
         </record>
