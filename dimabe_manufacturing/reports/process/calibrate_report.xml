@@ -7,6 +7,7 @@
             <field name="priority">20</field>
             <field name="arch" type="xml">
                 <tree name="Informe de Proceso Calibrado">
+                    <field name="production_id_to_view" string="Orden de Fabricacion" widget="many2onebutton"/>
                     <field name="movement"/>
                     <field name="product_variety"/>
                     <field name="producer_id" widget="many2onebutton"/>
