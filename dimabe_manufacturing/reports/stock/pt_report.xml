@@ -34,13 +34,11 @@
                 <search>
                     <field name="sale_order_id"/>
                     <field name="producer_id"/>
-                    <field name="product_variety"/>
                     <field name="harvest"/>
                     <field name="dest_country_id"/>
                     <group expand="1" string="Group By">
                         <filter string="Pedido" name="group_by_sale_order_id" context="{'group_by':'sale_order_id'}"/>
                         <filter string="Productor" name="group_by_producer" context="{'group_by':'producer_id'}"/>
-                        <filter string="Variedad" name="group_by_variety" context="{'group_by':'product_variety'}"/>
                         <filter string="Pais Destino" name="group_by_dest_country_id" context="{'group_by':'dest_country_id'}"/>
                     </group>
                 </search>
