@@ -27,7 +27,7 @@
             <field name="view_mode">tree,pivot,form</field>
             <field name="view_id" ref="view_process_report_calibrate_tree"/>
             <field name="domain">
-                ['&amp;','|',('reserved_to_production_id','!=',None),('production_id','!=',None),'|',('reserved_to_production_id.routing_id.name','like','CALIBRADO'),('production_id.routing_id.name','like','CALIBRADO')]
+                ['&amp;','|',('reserved_to_production_id','!=',None),('production_id','!=',None),('process_id','=','CALIBRADO'),('process_')]
             </field>
         </record>
         <menuitem id="process_calibrate_menu"
