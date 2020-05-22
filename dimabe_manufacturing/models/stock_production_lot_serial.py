@@ -210,7 +210,6 @@ class StockProductionLotSerial(models.Model):
             else:
                 item.process_id = None
 
-    @api.depends('reserved_to_production_id', 'production_id')
     @api.multi
     def _compute_in_movement(self):
         for item in self:
@@ -219,7 +218,6 @@ class StockProductionLotSerial(models.Model):
             else:
                 item.movement = 'NO DEFINIDO'
 
-    @api.depends('reserved_to_production_id', 'production_id')
     @api.multi
     def _compute_out_movement(self):
         for item in self:
