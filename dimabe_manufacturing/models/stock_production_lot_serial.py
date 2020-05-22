@@ -124,7 +124,7 @@ class StockProductionLotSerial(models.Model):
 
     movement = fields.Char('Movimiento', compute='_compute_movement')
 
-    process_id = fields.Char('Proceso', compute='_compute_process_id',store=True)
+    process_id = fields.Char('Proceso', compute='_compute_process_id')
 
     in_weight = fields.Float('Kilos Ingresado', compute='_compute_in_weight')
 

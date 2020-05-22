@@ -18,7 +18,7 @@
                 </tree>
             </field>
         </record>
-        <record id="dimabe_manufacturing.stock_calibrate_report" model="ir.actions.act_window">
+        <record id="dimabe_manufacturing.stock_discart_report" model="ir.actions.act_window">
             <field name="name">Informe de Producto Calibrado</field>
             <field name="res_model">stock.production.lot</field>
             <field name="view_mode">tree,graph,form</field>
@@ -27,9 +27,9 @@
                 [('product_id.name','like','Descarte'), ('product_id.name','like','Vana'),('product_id.name','not like','Servicio'),('available_weight','!=',0)]
             </field>
         </record>
-        <menuitem id="stock_report_calibrate_tree_menu"
-                  action="dimabe_manufacturing.stock_calibrate_report"
-                  name="Informe de Existencia Producto Calibrado"
+        <menuitem id="stock_report_discart_tree_menu"
+                  action="dimabe_manufacturing.stock_discart_report"
+                  name="Informe de Existencio de Descarte / Vana"
                   parent="stock_report_menu"
         />
     </data>
