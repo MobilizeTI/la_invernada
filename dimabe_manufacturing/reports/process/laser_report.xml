@@ -20,12 +20,9 @@
         </record>
         <record id="dimabe_manufacturing.process_report_laser" model="ir.actions.act_window">
             <field name="name">Informe de Partido Laser</field>
-            <field name="res_model">stock.production.lot.serial</field>
+            <field name="res_model">mrp.workorder</field>
             <field name="view_mode">tree,form,pivot</field>
             <field name="view_id" ref="view_process_report_laser_tree"/>
-            <field name="domain">
-                ['&amp;','|',('reserved_to_production_id','!=',None),('production_id','!=',None),('in_process_id','=','PARTIDO MECÁNICO/LÁSER'),('out_process_id','=','PARTIDO MECÁNICO/LÁSER')]
-            </field>
         </record>
         <menuitem id="process_laser_menu"
                   action="dimabe_manufacturing.process_report_laser"
