@@ -311,7 +311,6 @@ class MrpWorkorder(models.Model):
         self.write({
             'lot_produced_id': self.final_lot_id.id
         })
-
         super(MrpWorkorder, self).do_finish()
         #self.organize_move_line()
 
