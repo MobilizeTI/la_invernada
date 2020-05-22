@@ -212,9 +212,9 @@ class StockProductionLotSerial(models.Model):
     @api.multi
     def _compute_movement(self):
         for item in self:
-            if item.reserved_to_production_id and not item.production_id:
+            if item.reserved_to_production_id:
                 item.movement = 'ENTRADA'
-            elif item.production_id and not item.reserved_to_production_id:
+            elif item.production_id:
                 item.movement = 'SALIDA'
             else:
                 item.movement = 'NO DEFINIDO'
