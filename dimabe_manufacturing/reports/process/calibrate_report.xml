@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <record id="view_process_report_calibrate_tree" model="ir.ui.view">
-            <field name="name">Informe de Calibrado</field>
+            <field name="name">Informe de Proceso Calibrado</field>
             <field name="model">stock.production.lot.serial</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
@@ -24,7 +24,7 @@
         <record id="dimabe_manufacturing.process_report_calibrate" model="ir.actions.act_window">
             <field name="name">Informe de Proceso Calibrado</field>
             <field name="res_model">stock.production.lot.serial</field>
-            <field name="view_mode">tree,form,pivot</field>
+            <field name="view_mode">tree,pivot,form</field>
             <field name="view_id" ref="view_process_report_calibrate_tree"/>
             <field name="domain">
                 ['&amp;','|',('reserved_to_production_id','!=',None),('production_id','!=',None),('process_id','=','CALIBRADO')]
