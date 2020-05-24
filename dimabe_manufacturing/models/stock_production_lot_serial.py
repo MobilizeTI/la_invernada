@@ -134,7 +134,7 @@ class StockProductionLotSerial(models.Model):
 
     sale_order_id = fields.Many2one('sale.order', 'N° Pedido', compute='_compute_sale_order_id')
 
-    workorder_id = fields.Many2one('mrp.workorder', 'Order Fabricacion', compute='_compute_workorder_id')
+    work_order_id = fields.Many2one('mrp.workorder', 'Order Fabricacion', compute='_compute_workorder_id')
 
     production_id_to_view = fields.Many2one('mrp.production', 'Order de Fabricacion',
                                             compute='_compute_production_id_to_view')
