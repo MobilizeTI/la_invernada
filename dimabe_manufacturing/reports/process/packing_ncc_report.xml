@@ -1,32 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-  <data>
-    <record id="view_process_packing_ncc_tree" model="ir.ui.view">
-      <field name="name">Informe de Materia Prima</field>
-      <field name="model">mrp.workorder</field>
-      <field name="priority">20</field>
-      <field name="arch" type="xml">
-        <tree>
-            <field name="name" string="Orden de Fabricacion"/>
-          <field name="potential_serial_planned_ids">
-            <tree>
-              <field name="serial_number"/>
-            </tree>
-          </field>
-        </tree>
-      </field>
-    </record>
-    <record id="dimabe_manufacturing.stock_report" model="ir.actions.act_window">
-      <field name="name">Informe de Materia prima</field>
-      <field name="res_model">mrp.workorder</field>
-      <field name="view_mode">tree,graph,form</field>
-      <field name="view_id" ref="view_process_packing_ncc_tree"/>
-    </record>
-    <menuitem id="stock_report_tree_menu"
-              action="dimabe_manufacturing.stock_report"
-              name="Informe de Existencia Materia Prima Seca"
-              parent="process_report_menu"
-    />
-
-  </data>
+    <data>
+        <record id="view_process_report_ncc_tree" model="ir.ui.view">
+            <field name="name">Informe de Proceso Envasado NCC</field>
+            <field name="model">stock.production.lot.serial</field>
+            <field name="priority">20</field>
+            <field name="arch" type="xml">
+                <tree name="Informe de Proceso NCC">
+                    <field name="production_id_to_view" string="Orden de Fabricacion" widget="many2onebutton"/>
+                    <field name="movement"/>
+                    <field name="product_variety"/>
+                    <field name="producer_id" widget="many2onebutton"/>
+                    <field name="product_id" widget="many2onebutton"/>
+                    <field name="serial_number"/>
+                    <field name="stock_production_lot_id" widget="many2onebutton"/>
+                    <field name="in_weight"/>
+                    <field name="produce_weight"/>
+                    <field name="pallet_id" widget="many2onebutton"/>
+                    <field name="sale_order_id" widget="many2onebutton"/>
+                </tree>
+            </field>
+        </record>
+        <record id="dimabe_manufacturing.process_report_ncc" model="ir.actions.act_window">
+            <field name="name">Informe de Proceso Envasado NCC</field>
+            <field name="res_model">stock.production.lot.serial</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_process_report_ncc_tree"/>
+            <field name="domain">
+                [('movement','!=','NO DEFINIDO'),('process_id','=','ENVASADO NCC')]
+            </field>
+        </record>
+        <menuitem id="process_ncc_menu"
+                  action="dimabe_manufacturing.process_report_ncc"
+                  name="Informe de Proceso Envasado NCC"
+                  parent="process_report_menu"
+        />
+    </data>
 </odoo>
