@@ -27,6 +27,9 @@
             <field name="res_model">stock.production.lot.serial</field>
             <field name="view_mode">tree,form,pivot</field>
             <field name="view_id" ref="view_process_report_washed_tree"/>
+            <field name="domain">
+                ['|',('workcenter_id_in.code','=','310-PL'),('workcenter_id_out.code','=','310-PL')]
+            </field>
         </record>
         <menuitem id="process_washed_menu"
                   action="dimabe_manufacturing.process_report_washed"
