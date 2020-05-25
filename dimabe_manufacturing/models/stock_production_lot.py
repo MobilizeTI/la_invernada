@@ -230,7 +230,7 @@ class StockProductionLot(models.Model):
                     [('out_lot_id', '=', item.id)])
                 item.show_guide_number = dried.lot_guide_numbers
 
-    @api.depends('stock_production_lot_serial_ids')
+    @api.depends('serial_not_consumed')
     @api.multi
     def _compute_available_weight(self):
         for item in self:
