@@ -196,7 +196,8 @@ class StockProductionLot(models.Model):
 
     product_variety = fields.Char(
         'Variedad del Producto',
-        related='product_id.variety'
+        related='product_id.variety',
+        store=True
     )
 
     product_caliber = fields.Char(
@@ -215,7 +216,7 @@ class StockProductionLot(models.Model):
 
     serial_available = fields.Many2many('stock.production.lot.serial',compute='_compute_serial_available')
 
-    available_weight = fields.Float('Kilos Disponible', compute='_compute_available_weight', store=True)
+    available_weight = fields.Float('Kilos Disponible', compute='_compute_available_weight', store=True,track_visibility='onchange')
 
     show_guide_number = fields.Char('Guia', compute='_compute_guide_number')
 
