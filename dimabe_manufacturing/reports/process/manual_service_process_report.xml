@@ -26,7 +26,7 @@
             <field name="name">Informe de Proceso Partido Manual Calidad Servicio</field>
             <field name="res_model">stock.production.lot.serial</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="view_process_report_manual_service"/>
+            <field name="view_id" ref="view_process_report_manual_service_tree"/>
             <field name="domain">
                 [('workcenter_id.code','=','900-PPMCS')]
             </field>
