@@ -242,7 +242,9 @@ class StockProductionLot(models.Model):
     def _compute_available_weight(self):
         for item in self:
             if len(item.serial_available) > 0:
-                item.available_weight = sum(item.serial_available.mapped('real_weight'))
+                item.update({
+                    'available_weight': sum(item.serial_available.mapped('real_weight'))
+                })
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
