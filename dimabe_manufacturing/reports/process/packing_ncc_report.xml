@@ -38,8 +38,6 @@
                     <field name="reserved_to_production_id"/>
                     <field name="production_id"/>
                     <group expand="1" string="Group By">
-                        <filter string="Entrada" name="group_by_in" context="{'group_by':'reserved_to_production'}"/>
-                        <filter string="Salida" name="group_by_out" context="{'group_by':'production_id'}"/>
                         <filter string="Orden de Fabricacion" name="group_by_production" context="{'group_by':'production_id_to_view'}"/>
                         <filter string="Productor" name="group_by_producer" context="{'group_by':'producer_id'}"/>
                         <filter string="Variedad" name="group_by_variety" context="{'group_by':'product_variety'}"/>
@@ -47,6 +45,8 @@
                         <filter string="Lote" name="group_by_lot" context="{'group_by':'stock_production_lot_id'}"/>
                         <filter string="Pallet" name="group_by_lot" context="{'group_by':'pallet_id'}"/>
                         <filter string="Pedido de Venta" name="group_by_sale_order_id" context="{'group_by':'sale_order_id'}"/>
+                        <filter string="Entrada" name="group_by_in" context="{'group_by':'reserved_to_production'}"/>
+                        <filter string="Salida" name="group_by_out" context="{'group_by':'production_id'}"/>
                     </group>
                 </search>
             </field>
