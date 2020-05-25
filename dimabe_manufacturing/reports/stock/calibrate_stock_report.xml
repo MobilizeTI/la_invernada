@@ -24,7 +24,7 @@
             <field name="view_mode">tree,graph,form</field>
             <field name="view_id" ref="view_stock_calibrate_report_tree"/>
             <field name="domain">
-                [('product_id.name','like','Calibrada'),('available_weight','!=',0)]
+                [('product_id.name','like','Calibrada')]
             </field>
         </record>
         <menuitem id="stock_report_calibrate_tree_menu"
