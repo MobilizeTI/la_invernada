@@ -211,7 +211,10 @@ class StockProductionLot(models.Model):
 
     location_id = fields.Many2one('stock.location', compute='_compute_lot_location')
 
-    serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed')
+    serial_not_consumed_qty = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed')
+
+    serial_available = fields.Many2Many('stock.production.lot.serial', 'Series Disponibles',
+                                        compute='_compute_serial_available')
 
     available_weight = fields.Float('Kilos Disponible', compute='_compute_available_weight', store=True)
 
@@ -231,12 +234,11 @@ class StockProductionLot(models.Model):
                 item.show_guide_number = dried.lot_guide_numbers
 
     @api.multi
-    @api.depends('stock_production_lot_serial_ids')
+    @api.depends('serial_available')
     def _compute_available_weight(self):
         for item in self:
-            available_weight = sum(item.stock_production_lot_serial_ids.filtered(
-                lambda a: not a.consumed
-            ).mapped('real_weight'))
+            available_weight = sum(item.serial_available
+                                   .mapped('real_weight'))
             self.update({
                 'available_weight': available_weight
             })
@@ -584,11 +586,6 @@ class StockProductionLot(models.Model):
         for item in self:
             res = super(StockProductionLot, self).write(values)
             counter = 0
-            item.update({
-                'available_weight': sum(item.stock_production_lot_serial_ids.filtered(
-                    lambda a: not a.consumed
-                ).mapped('real_weight'))
-            })
             if not item.is_standard_weight:
                 for serial in item.stock_production_lot_serial_ids:
                     counter += 1
