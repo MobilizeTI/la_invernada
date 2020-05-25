@@ -585,6 +585,9 @@ class StockProductionLot(models.Model):
         for item in self:
             res = super(StockProductionLot, self).write(values)
             counter = 0
+            item.update({
+                'available_weight':item.available_weight
+            })
             if not item.is_standard_weight:
                 for serial in item.stock_production_lot_serial_ids:
                     counter += 1
