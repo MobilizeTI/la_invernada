@@ -69,7 +69,15 @@
         'reports/process/packing_nsc_report.xml',
         'reports/process/calibrate_process_report.xml',
         'reports/process/washed_process_report.xml',
-        'reports/process/laser_process_report.xml'
+        'reports/process/laser_process_report.xml',
+        'reports/process/report_re_laser_process.xml',
+        'reports/process/packing_ncc_service_report.xml',
+        'reports/process/packing_nsc_service_report.xml',
+        'reports/process/calibrate_process_service_report.xml',
+        'reports/process/washed_process_service_report.xml',
+        'reports/process/laser_service_process_report.xml',
+        'reports/process/re_laser_process_service_report.xml'
+
     ],
     # only loaded in demonstration mode
     'demo': [
