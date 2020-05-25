@@ -221,6 +221,11 @@ class StockProductionLot(models.Model):
     show_guide_number = fields.Char('Guia', compute='_compute_guide_number')
 
     @api.multi
+    def _compute_serial_available(self):
+        for item in self:
+            item.serial_available = item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed)
+
+    @api.multi
     def _compute_guide_number(self):
         for item in self:
             if item.stock_picking_id:
@@ -237,8 +242,7 @@ class StockProductionLot(models.Model):
     @api.depends('serial_available')
     def _compute_available_weight(self):
         for item in self:
-            available_weight = sum(item.serial_available
-                                   .mapped('real_weight'))
+            available_weight = sum(item.serial_available.mapped('real_weight'))
             self.update({
                 'available_weight': available_weight
             })
