@@ -27,7 +27,6 @@
             <field name="res_model">stock.production.lot.serial</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_process_report_ncc_tree"/>
-
         </record>
         <menuitem id="process_ncc_menu"
                   action="dimabe_manufacturing.process_report_ncc"
