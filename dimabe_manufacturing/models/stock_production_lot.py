@@ -238,14 +238,11 @@ class StockProductionLot(models.Model):
                     [('out_lot_id', '=', item.id)])
                 item.show_guide_number = dried.lot_guide_numbers
 
-    @api.multi
-    @api.depends('serial_available')
-    def _compute_available_weight(self):
-        for item in self:
-            if len(item.serial_available) > 0:
-                item.write({
-                    'available_weight': sum(item.serial_available.mapped('real_weight'))
-                })
+    @api.onchange('serial_available')
+    def _on_change_available_weight(self):
+        self.write({
+            'available_weight':sum(self.serial_available.mapped('real_weight'))
+        })
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
