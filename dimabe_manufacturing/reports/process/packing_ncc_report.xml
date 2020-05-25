@@ -8,7 +8,8 @@
             <field name="arch" type="xml">
                 <tree name="Informe de Proceso NCC">
                     <field name="production_id_to_view" string="Orden de Fabricacion" widget="many2onebutton"/>
-                    <field name="movement"/>
+                    <field name="reserved_to_production_id" string="Entrada" widget="many2onebutton"/>
+                    <field name="production_id" string="Salida" widget="many2onebutton"/>
                     <field name="workcenter_id" widget="many2onebutton"/>
                     <field name="product_variety"/>
                     <field name="producer_id" widget="many2onebutton"/>
@@ -49,7 +50,7 @@
         <record id="dimabe_manufacturing.process_report_ncc" model="ir.actions.act_window">
             <field name="name">Informe de Proceso Envasado NCC</field>
             <field name="res_model">stock.production.lot.serial</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,pivot</field>
             <field name="view_id" ref="view_process_report_ncc_tree"/>
             <field name="domain">
                 [('workcenter_id.code','=','320-PENCC')]

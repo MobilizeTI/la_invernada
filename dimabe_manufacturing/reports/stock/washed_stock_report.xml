@@ -21,7 +21,7 @@
     <record id="dimabe_manufacturing.stock_washed_report" model="ir.actions.act_window">
       <field name="name">Informe de Producto Lavado</field>
       <field name="res_model">stock.production.lot</field>
-      <field name="view_mode">tree,graph,form</field>
+      <field name="view_mode">tree,graph,form,pivot</field>
       <field name="view_id" ref="view_stock_washed_report_tree"/>
       <field name="domain">
         [('product_id.categ_id.name','like','Lavado'),('product_id.name','not like','Descarte'),('product_id.name','not like','Vana'),('product_id.name','not like','(S)')]

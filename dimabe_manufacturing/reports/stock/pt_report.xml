@@ -46,7 +46,7 @@
         <record id="dimabe_manufacturing.stock_report_pt" model="ir.actions.act_window">
             <field name="name">Informe de Producto Terminado</field>
             <field name="res_model">manufacturing.pallet</field>
-            <field name="view_mode">tree</field>
+            <field name="view_mode">tree,graph,form,pivot</field>
             <field name="view_id" ref="view_stock_report_pt_tree"/>
         </record>
         <menuitem id="stock_report_pt_menu"
