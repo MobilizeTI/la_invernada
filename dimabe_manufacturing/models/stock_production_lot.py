@@ -224,7 +224,7 @@ class StockProductionLot(models.Model):
     def _compute_serial_available(self):
         for item in self:
             item.serial_available = item.stock_production_lot_serial_ids.filtered(lambda a : not a.consumed)
-            query = 'UPDATE stock_production_lot_serial set available_weight = {} where id = {}'.format(sum(item.serial_available.mapped('real_weight')),item.id)
+            query = 'UPDATE stock_production_lot set available_weight = {} where id = {}'.format(sum(item.serial_available.mapped('real_weight')),item.id)
             cr = self._cr
             cr.execute(query)
 
