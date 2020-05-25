@@ -31,9 +31,9 @@
                 [('workcenter_id.code','=','310-PL')]
             </field>
         </record>
-        <menuitem id="process_nsc_menu"
-                  action="dimabe_manufacturing.process_report_nsc"
-                  name="Informe de Proceso Envasado NSC"
+        <menuitem id="process_washed_menu"
+                  action="dimabe_manufacturing.process_report_washed"
+                  name="Informe de Proceso Lavado"
                   parent="process_report_menu"
         />
 

@@ -31,9 +31,9 @@
                 [('workcenter_id.code','=','300-PC')]
             </field>
         </record>
-        <menuitem id="process_nsc_menu"
-                  action="dimabe_manufacturing.process_report_nsc"
-                  name="Informe de Proceso Envasado NSC"
+        <menuitem id="process_calibrate_menu"
+                  action="dimabe_manufacturing.process_report_calibrate"
+                  name="Informe de Proceso Calibrado"
                   parent="process_report_menu"
         />
 

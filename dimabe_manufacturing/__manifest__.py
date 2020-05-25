@@ -68,7 +68,8 @@
         'reports/process/packing_ncc_report.xml',
         'reports/process/packing_nsc_report.xml',
         'reports/process/calibrate_process_report.xml',
-        'reports/process/washed_process_report.xml'
+        'reports/process/washed_process_report.xml',
+        'reports/process/laser_process_report.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
