@@ -8,7 +8,8 @@
             <field name="arch" type="xml">
                 <tree name="Informe de Proceso Partido Manual Calidad">
                     <field name="production_id_to_view" string="Orden de Fabricacion" widget="many2onebutton"/>
-                    <field name="movement"/>
+                    <field name="reserved_to_production_id" string="Entrada" widget="many2onebutton"/>
+                    <field name="production_id" string="Salida" widget="many2onebutton"/>
                     <field name="workcenter_id" widget="many2onebutton"/>
                     <field name="product_variety"/>
                     <field name="producer_id" widget="many2onebutton"/>
