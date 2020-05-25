@@ -214,9 +214,9 @@ class StockProductionLot(models.Model):
 
     serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed')
 
-    serial_available = fields.Many2many('stock.production.lot.serial','Series Disponible',compute='_compute_serial_available')
+    serial_available = fields.Many2many('stock.production.lot.serial',compute='_compute_serial_available')
 
-    available_weight = fields.Float('Kilos Disponible')
+    available_weight = fields.Float('Kilos Disponible',track_visibility='onchange')
 
     show_guide_number = fields.Char('Guia', compute='_compute_guide_number')
 
@@ -224,9 +224,6 @@ class StockProductionLot(models.Model):
     def _compute_serial_available(self):
         for item in self:
             item.serial_available = item.stock_production_lot_serial_ids.filtered(lambda a : not a.consumed)
-            query = 'UPDATE stock_production_lot set available_weight = {} where id = {}'.format(sum(item.serial_available.mapped('real_weight')),item.id)
-            cr = self._cr
-            cr.execute(query)
 
     @api.multi
     def _compute_guide_number(self):
@@ -241,12 +238,6 @@ class StockProductionLot(models.Model):
                     [('out_lot_id', '=', item.id)])
                 item.show_guide_number = dried.lot_guide_numbers
 
-    @api.onchange('serial_available')
-    def _on_change_available_weight(self):
-        models._logger.error('Serial : {}'.format(sum(self.serial_available.mapped('real_weight'))))
-        self.update({
-            'available_weight':sum(self.serial_available.mapped('real_weight'))
-        })
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
@@ -318,7 +309,7 @@ class StockProductionLot(models.Model):
                 ])
 
                 producers = workorder.mapped('potential_serial_planned_ids.stock_production_lot_id.producer_id')
-                models._logger.error(producers)
+
                 item.producer_ids = self.env['res.partner'].search([
                     '|',
                     ('id', 'in', producers.mapped('id')),
