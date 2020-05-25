@@ -205,7 +205,7 @@ class StockProductionLot(models.Model):
         store=True
     )
 
-    harvest = fields.Integer(string='Cosecha', compute='_compute_lot_harvest',store=True)
+    harvest = fields.Integer(string='Cosecha', compute='_compute_lot_harvest', store=True)
 
     dried_report_product_name = fields.Char(compute='_compute_lot_oven_use')
 
@@ -213,9 +213,9 @@ class StockProductionLot(models.Model):
 
     serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed')
 
-    available_weight = fields.Float('Kilos Disponible', compute='_compute_available_weight',store=True)
+    available_weight = fields.Float('Kilos Disponible', compute='_compute_available_weight', store=True)
 
-    show_guide_number = fields.Char('Guia',compute='_compute_guide_number')
+    show_guide_number = fields.Char('Guia', compute='_compute_guide_number')
 
     @api.multi
     def _compute_guide_number(self):
@@ -230,7 +230,6 @@ class StockProductionLot(models.Model):
                     [('out_lot_id', '=', item.id)])
                 item.show_guide_number = dried.lot_guide_numbers
 
-
     @api.multi
     @api.depends('stock_production_lot_serial_ids')
     def _compute_available_weight(self):
@@ -239,7 +238,7 @@ class StockProductionLot(models.Model):
                 lambda a: not a.consumed
             ).mapped('real_weight'))
             self.update({
-                'available_weight':available_weight
+                'available_weight': available_weight
             })
 
     @api.depends('stock_production_lot_serial_ids')
@@ -586,7 +585,9 @@ class StockProductionLot(models.Model):
             res = super(StockProductionLot, self).write(values)
             counter = 0
             item.update({
-                'available_weight':item.available_weight
+                'available_weight': sum(item.stock_production_lot_serial_ids.filtered(
+                    lambda a: not a.consumed
+                ).mapped('real_weight'))
             })
             if not item.is_standard_weight:
                 for serial in item.stock_production_lot_serial_ids:
