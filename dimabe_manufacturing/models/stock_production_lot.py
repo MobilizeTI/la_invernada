@@ -216,7 +216,7 @@ class StockProductionLot(models.Model):
 
     serial_available = fields.Many2many('stock.production.lot.serial','Series Disponible',compute='_compute_serial_available')
 
-    available_weight = fields.Float('Kilos Disponible',track_visibility='onchange')
+    available_weight = fields.Float('Kilos Disponible')
 
     show_guide_number = fields.Char('Guia', compute='_compute_guide_number')
 
@@ -224,11 +224,9 @@ class StockProductionLot(models.Model):
     def _compute_serial_available(self):
         for item in self:
             item.serial_available = item.stock_production_lot_serial_ids.filtered(lambda a : not a.consumed)
-            item.update(
-                {
-                    'available_weight':sum(item.serial_available.mapped('real_weight'))
-                }
-            )
+            query = 'UPDATE stock_production_lot_serial set available_weight = {} where id = {}'.format(sum(item.serial_available.mapped('real_weight')),item.id)
+            cr = self._cr
+            cr.execute(query)
 
     @api.multi
     def _compute_guide_number(self):
