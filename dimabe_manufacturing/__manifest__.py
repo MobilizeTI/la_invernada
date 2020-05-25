@@ -65,7 +65,10 @@
         'reports/stock/washed_stock_report.xml',
         'reports/stock/calibrate_stock_report.xml',
         'reports/stock/dispatch_vain_stock_report.xml',
-        'reports/process/packing_ncc_report.xml'
+        'reports/process/packing_ncc_report.xml',
+        'reports/process/packing_nsc_report.xml',
+        'reports/process/calibrate_process_report.xml',
+        'reports/process/washed_process_report.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
