@@ -31,9 +31,9 @@
                 [('workcenter_id.code','=','890-PENSCS')]
             </field>
         </record>
-        <menuitem id="process_nsc_menu"
+        <menuitem id="process_nsc_servicio_menu"
                   action="dimabe_manufacturing.process_report_nsc"
-                  name="Informe de Proceso Envasado NSC"
+                  name="Informe de Proceso Envasado NSC Servicio"
                   parent="process_report_menu"
         />
 

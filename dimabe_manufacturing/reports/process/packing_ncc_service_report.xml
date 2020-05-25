@@ -33,7 +33,7 @@
         </record>
         <menuitem id="process_ncc_menu"
                   action="dimabe_manufacturing.process_report_ncc"
-                  name="Informe de Proceso Envasado NCC"
+                  name="Informe de Proceso Envasado NCC Servicio"
                   parent="process_report_menu"
         />
 

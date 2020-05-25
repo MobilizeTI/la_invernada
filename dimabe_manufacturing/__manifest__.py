@@ -76,8 +76,9 @@
         'reports/process/calibrate_process_service_report.xml',
         'reports/process/washed_process_service_report.xml',
         'reports/process/laser_service_process_report.xml',
-        'reports/process/re_laser_process_service_report.xml'
-
+        'reports/process/re_laser_process_service_report.xml',
+        'reports/process/manual_process_report.xml',
+        'reports/process/manual_service_process_report.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

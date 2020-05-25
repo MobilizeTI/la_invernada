@@ -31,9 +31,9 @@
                 [('workcenter_id.code','=','870-PPMS')]
             </field>
         </record>
-        <menuitem id="process_laser_menu"
+        <menuitem id="process_laser_service_menu"
                   action="dimabe_manufacturing.process_report_laser"
-                  name="Informe de Proceso Partido Mecanico/Laser"
+                  name="Informe de Proceso Partido Mecanico/Laser Servicio"
                   parent="process_report_menu"
         />
 
