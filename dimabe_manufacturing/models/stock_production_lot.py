@@ -232,7 +232,6 @@ class StockProductionLot(models.Model):
 
 
     @api.multi
-    @api.onchange('serial_not_consumed')
     @api.depends('stock_production_lot_serial_ids')
     def _compute_available_weight(self):
         for item in self:
