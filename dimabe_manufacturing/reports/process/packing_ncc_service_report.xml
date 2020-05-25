@@ -31,7 +31,7 @@
                 [('workcenter_id.code','=','860-PENCCS')]
             </field>
         </record>
-        <menuitem id="process_ncc_menu"
+        <menuitem id="process_ncc_service_menu"
                   action="dimabe_manufacturing.process_report_ncc"
                   name="Informe de Proceso Envasado NCC Servicio"
                   parent="process_report_menu"
