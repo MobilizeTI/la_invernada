@@ -214,7 +214,7 @@ class StockProductionLot(models.Model):
 
     serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed')
 
-    serial_available = fields.Many2many('stock.production.lot.serial',compute='_compute_serial_available')
+    serial_available = fields.Many2many('stock.production.lot.serial','Series Disponible',compute='_compute_serial_available')
 
     available_weight = fields.Float('Kilos Disponible',track_visibility='onchange')
 
