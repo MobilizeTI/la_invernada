@@ -318,7 +318,7 @@ class StockProductionLot(models.Model):
                 ])
 
                 producers = workorder.mapped('potential_serial_planned_ids.stock_production_lot_id.producer_id')
-
+                models._logger.error(producers)
                 item.producer_ids = self.env['res.partner'].search([
                     '|',
                     ('id', 'in', producers.mapped('id')),
