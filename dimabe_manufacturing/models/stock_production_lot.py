@@ -240,7 +240,8 @@ class StockProductionLot(models.Model):
 
     @api.onchange('serial_available')
     def _on_change_available_weight(self):
-        self.write({
+        models._logger.error('Serial : {}'.format(sum(self.serial_available.mapped('real_weight'))))
+        self.update({
             'available_weight':sum(self.serial_available.mapped('real_weight'))
         })
 
