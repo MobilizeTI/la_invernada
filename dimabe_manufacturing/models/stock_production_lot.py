@@ -238,7 +238,7 @@ class StockProductionLot(models.Model):
                 item.show_guide_number = dried.lot_guide_numbers
 
     @api.multi
-    @api.depends('serial_available')
+    @api.onchange('serial_available')
     def _compute_available_weight(self):
         for item in self:
             if len(item.serial_available) > 0:
@@ -269,11 +269,7 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_serial_not_consumed(self):
         for item in self:
-            item.serial_not_consumed = len(item.stock_production_lot_serial_ids.filtered(
-                lambda a: not a.consumed))
-            if len(item.stock_production_lot_serial_ids.filtered(
-                    lambda a: not a.consumed)) > 0:
-                item.have_available_serial = True
+            item.serial_not_consumed = len(item.serial_available)
 
     @api.onchange('serial_not_consumed')
     def _onchange_have_available_serial(self):
