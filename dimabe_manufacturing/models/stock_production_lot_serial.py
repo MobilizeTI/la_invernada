@@ -124,8 +124,6 @@ class StockProductionLotSerial(models.Model):
 
     movement = fields.Char('Movimiento', compute='_compute_movement')
 
-    process_id = fields.Char('Proceso', compute='_compute_process_id', store=True)
-
     in_weight = fields.Float('Kilos Ingresado', compute='_compute_in_weight')
 
     produce_weight = fields.Float('Kilos Producidos', compute='_compute_produce_weight')
@@ -138,7 +136,7 @@ class StockProductionLotSerial(models.Model):
 
     production_id_to_view = fields.Many2one('mrp.production', 'Order de Fabricacion',
                                             compute='_compute_production_id_to_view')
-    workcenter_id = fields.Many2one('mrp.workcenter',related='work_order_id.workcenter_id')
+    workcenter_id = fields.Many2one('mrp.workcenter',related='work_order_id.workcenter_id',store=True)
 
     @api.multi
     def _compute_production_id_to_view(self):
