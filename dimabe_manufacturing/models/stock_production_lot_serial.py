@@ -20,6 +20,7 @@ class StockProductionLotSerial(models.Model):
     product_variety = fields.Char(
         'Variedad',
         related='stock_production_lot_id.product_variety'
+        ,store=True
     )
 
     product_id = fields.Many2one(
@@ -90,7 +91,7 @@ class StockProductionLotSerial(models.Model):
     harvest = fields.Integer(
         'Año de Cosecha',
         compute='_compute_harvest',
-        # store=True
+        store=True
     )
 
     canning_id = fields.Many2one(
@@ -130,12 +131,12 @@ class StockProductionLotSerial(models.Model):
 
     pallet_name = fields.Char('Folio Pallet', compute='_compute_pallet_name')
 
-    sale_order_id = fields.Many2one('sale.order', 'N° Pedido', compute='_compute_sale_order_id')
+    sale_order_id = fields.Many2one('sale.order', 'N° Pedido', compute='_compute_sale_order_id',store=True)
 
     work_order_id = fields.Many2one('mrp.workorder', 'Order Fabricacion', compute='_compute_workorder_id')
 
     production_id_to_view = fields.Many2one('mrp.production', 'Order de Fabricacion',
-                                            compute='_compute_production_id_to_view')
+                                            compute='_compute_production_id_to_view',store=True)
     workcenter_id = fields.Many2one('mrp.workcenter',compute="_compute_workcenter",store=True)
 
     @api.multi
@@ -143,6 +144,7 @@ class StockProductionLotSerial(models.Model):
         for item in self:
             item.workcenter_id = item.work_order_id.workcenter_id
 
+    @api.depends('production_id','reserved_to_production_id')
     @api.multi
     def _compute_production_id_to_view(self):
         for item in self:
@@ -167,7 +169,7 @@ class StockProductionLotSerial(models.Model):
             else:
                 item.work_order_id = None
 
-
+    @api.depends('production_id', 'reserved_to_production_id')
     @api.multi
     def _compute_sale_order_id(self):
         for item in self:
