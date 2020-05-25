@@ -36,5 +36,6 @@
                   name="Informe de Proceso Envasado NCC"
                   parent="process_report_menu"
         />
+
     </data>
 </odoo>
