@@ -237,7 +237,7 @@ class StockProductionLot(models.Model):
             available_weight = sum(item.stock_production_lot_serial_ids.filtered(
                 lambda a: not a.consumed
             ).mapped('real_weight'))
-            item.update({
+            item.write({
                 'available_weight':available_weight
             })
 
