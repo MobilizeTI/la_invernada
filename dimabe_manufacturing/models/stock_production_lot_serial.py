@@ -160,7 +160,7 @@ class StockProductionLotSerial(models.Model):
         for item in self:
             workorder = self.env['mrp.workorder'].search([])
             for work in workorder:
-                if item.id in work.potential_serial_planned_ids or item.id in work.summary_out_serial_ids:
+                if item in work.potential_serial_planned_ids or item in work.summary_out_serial_ids:
                     item.work_order_id = work
 
     @api.depends('production_id', 'reserved_to_production_id')
