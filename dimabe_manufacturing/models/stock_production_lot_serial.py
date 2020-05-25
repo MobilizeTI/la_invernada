@@ -159,7 +159,7 @@ class StockProductionLotSerial(models.Model):
     def _compute_workorder_id(self):
         for item in self:
             item.work_order_id = self.env['mrp.workorder'].search(
-                ['|', (item.id, 'in', 'potential_serial_planned_ids'), (item.id, 'in', 'summary_out_serial_ids')])
+                ['|', (item, 'in', 'potential_serial_planned_ids'), (item, 'in', 'summary_out_serial_ids')])
 
     @api.depends('production_id', 'reserved_to_production_id')
     @api.multi
