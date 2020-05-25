@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="view_packing_ncc_report_tree" model="ir.ui.view">
+            <field name="name">Informe Proceso de Envasado NCC</field>
+            <field name="model">stock.production.lot.serial</field>
+            <field name="priority">20</field>
+            <field name="arch" type="xml">
+                <tree name="Informe Proceso de Envasado NCC">
+                    <field name="movement"/>
+                    <field name="workcenter_id"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>
