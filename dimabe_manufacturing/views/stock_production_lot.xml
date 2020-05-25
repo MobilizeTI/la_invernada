@@ -75,6 +75,7 @@
                         />
                     </tree>
                 </field>
+                <field name="serial_available"/>
                 <field name="all_pallet_ids"
                        attrs="{'invisible':[('is_standard_weight','=',False)]}"
                 />
