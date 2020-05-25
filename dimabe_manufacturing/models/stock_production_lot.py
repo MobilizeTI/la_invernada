@@ -211,7 +211,7 @@ class StockProductionLot(models.Model):
 
     location_id = fields.Many2one('stock.location', compute='_compute_lot_location')
 
-    serial_not_consumed_qty = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed')
+    serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed')
 
     # serial_available = fields.Many2Many('stock.production.lot.serial', 'Series Disponibles',
     #                                     compute='_compute_serial_available')
