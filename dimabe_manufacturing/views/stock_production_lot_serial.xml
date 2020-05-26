@@ -29,7 +29,7 @@
           <field name="producer_id"/>
           <field name="product_id"/>
           <field name="product_variety"/>
-          <field name="packing_date"/>
+          <field name="packaging_date"/>
           <field name="harvest"/>
           <field name="real_weight" />
         </tree>
