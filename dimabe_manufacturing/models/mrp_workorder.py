@@ -130,7 +130,7 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_producers_id(self):
         for item in self:
-            item.producers_id = fields.potential_serial_planned_ids.mapped('producer_id')
+            item.producers_id = item.potential_serial_planned_ids.mapped('producer_id')
 
     @api.multi
     def _compute_in_weight(self):
