@@ -143,7 +143,6 @@ class StockProductionLotSerial(models.Model):
     @api.multi
     def _compute_workcenter(self):
         for item in self:
-            if item in item.work_order_id.potential_serial_planned_ids or item in item.work_order_id.summary_out_serial_ids:
                 item.workcenter_id_in = item.work_order_id.workcenter_id
 
     @api.depends('production_id', 'reserved_to_production_id')
