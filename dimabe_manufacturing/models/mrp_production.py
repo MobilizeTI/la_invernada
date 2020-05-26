@@ -286,8 +286,8 @@ class MrpProduction(models.Model):
     def fix_reserved(self):
         for item in self:
             for move in item.move_raw_ids:
-                for line in move.active_move_line_ids:
-                    query = 'DELETE FROM stock_move_line where id = {}'.format(line.id)
+                if move.reserved_availability > 0:
+                    query = 'DELETE FROM stock_move_line where move_id = {}'.format(move.id)
                     cr = self._cr
                     cr.execute(query)
 
