@@ -167,7 +167,7 @@ class MrpWorkorder(models.Model):
             'res_model': 'stock.production.lot.serial',
             'view_id': False,
             'type': 'ir.actions.act_window',
-            'views': [[self.env.ref('dimabe_manufacturing.stock_production_lot_serial_process_form_view').id, 'form']]
+            'views': [[self.env.ref('dimabe_manufacturing.stock_production_lot_serial_process_form_view').id, 'form']],
             'context': self.env.context,
             'domain':[('id','in',self.summary_out_serial_ids.mapped("id"))]
         }
