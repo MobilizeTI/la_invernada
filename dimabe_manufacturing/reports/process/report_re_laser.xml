@@ -28,7 +28,7 @@
             <field name="view_mode">tree,form,pivot</field>
             <field name="view_id" ref="view_process_re_laser_tree"/>
             <field name="domain">
-                [('workcenter_serial.code','=','410-PDL')]
+                [('workcenter_id.code','=','410-PDL')]
             </field>
         </record>
         <menuitem id="process_re_laser_menu"
