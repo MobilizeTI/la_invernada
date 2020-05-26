@@ -189,6 +189,7 @@ class StockProductionLotSerial(models.Model):
         for item in self:
             if item.production_id:
                 item.produce_weight = item.real_weight
+                item.in_weight = 0.0
             else:
                 item.produce_weight = 0.0
 
@@ -197,6 +198,7 @@ class StockProductionLotSerial(models.Model):
         for item in self:
             if item.reserved_to_production_id:
                 item.in_weight = item.real_weight
+                item.produce_weight = 0.0
             else:
                 item.in_weight = 0.0
 
