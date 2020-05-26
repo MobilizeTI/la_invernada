@@ -122,6 +122,19 @@ class MrpWorkorder(models.Model):
     lot_produced_id = fields.Integer('Lote a producir', compute='_compute_lot_produced')
 
     @api.multi
+    def show_in_serials(self):
+        self.ensure_one()
+        return {
+            'name': _("Export data"),
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            'res_model': 'stock.production.lot.serial',
+            'view_id': False,
+            'type': 'ir.actions.act_window',
+            'context': self.env.context,
+        }
+
+    @api.multi
     def _compute_lot_produced(self):
         for item in self:
             if len(item.production_finished_move_line_ids) > 1:
