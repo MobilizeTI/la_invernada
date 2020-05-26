@@ -28,7 +28,9 @@
             <field name="res_model">stock.production.lot.serial</field>
             <field name="view_mode">tree,form,pivot</field>
             <field name="view_id" ref="view_process_report_calibrate_tree"/>
-            
+            <field name="domain">
+                [('workcenter_id.code','=','300-PC')]
+            </field>
         </record>
         <menuitem id="process_calibrate_menu"
                   action="dimabe_manufacturing.process_report_calibrate"
