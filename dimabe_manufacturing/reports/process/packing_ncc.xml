@@ -10,6 +10,7 @@
                     <field name="name"/>
                     <button name="show_in_serials" string="Series de Entrada"></button>
                     <button name="show_out_serials" string="Series de Salidas"></button>
+                    <field name="state" invisible="1"/> 
                 </tree>
             </field>
         </record>
