@@ -262,7 +262,8 @@ class StockProductionLot(models.Model):
                     [('out_lot_id', '=', item.id)]).dest_location_id
                 item.location_id = location_id_dried
             if item.is_prd_lot:
-                item.location_id = item.stock_production_lot_serial_ids.mapped('production_id').location_dest_id
+                if item.location_id = item.stock_production_lot_serial_ids.mapped('production_id').state == 'done'
+                    item.location_id = item.stock_production_lot_serial_ids.mapped('production_id').location_dest_id
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
