@@ -3,56 +3,19 @@
     <data>
         <record id="view_process_report_ncc_tree" model="ir.ui.view">
             <field name="name">Informe de Proceso Envasado NCC</field>
-            <field name="model">stock.production.lot.serial</field>
+            <field name="model">mrp.workorder</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
                 <tree name="Informe de Proceso NCC">
-                    <field name="production_id_to_view" string="Orden de Fabricacion" widget="many2onebutton"/>
-                    <field name="reserved_to_production_id" string="Entrada" widget="many2onebutton"/>
-                    <field name="production_id" string="Salida" widget="many2onebutton"/>
-                    <field name="product_variety"/>
-                    <field name="producer_id" widget="many2onebutton"/>
-                    <field name="product_id" widget="many2onebutton"/>
-                    <field name="serial_number"/>
-                    <field name="stock_production_lot_id" widget="many2onebutton"/>
-                    <field name="in_weight"/>
-                    <field name="produce_weight"/>
-                    <field name="pallet_id" widget="many2onebutton"/>
-                    <field name="sale_order_id" widget="many2onebutton"/>
+                    <field name="name"/>
+                    <button name="show_in_serials" string="Series de Entrada">
+                    <button name="show_out_serials" string="Series de Salidas"/>
                 </tree>
-            </field>
-        </record>
-        <record id="search_process_report_ncc" model="ir.ui.view">
-            <field name="name">Filtros NCC</field>
-            <field name="model">stock.production.lot.serial</field>
-            <field name="arch" type="xml">
-                <search>
-                    <field name="production_id_to_view"/>
-                    <field name="product_variety"/>
-                    <field name="producer_id"/>
-                    <field name="product_id"/>
-                    <field name="stock_production_lot_id"/>
-                    <field name="pallet_id"/>
-                    <field name="sale_order_id"/>
-                    <field name="reserved_to_production_id"/>
-                    <field name="production_id"/>
-                    <group expand="1" string="Group By">
-                        <filter string="Entrada" name="group_by_in" context="{'group_by':'reserved_to_production'}"/>
-                        <filter string="Salida" name="group_by_out" context="{'group_by':'production_id'}"/>
-                        <filter string="Orden de Fabricacion" name="group_by_production" context="{'group_by':'production_id_to_view'}"/>
-                        <filter string="Productor" name="group_by_producer" context="{'group_by':'producer_id'}"/>
-                        <filter string="Variedad" name="group_by_variety" context="{'group_by':'product_variety'}"/>
-                        <filter string="Cosecha" name="group_by_harvest" context="{'group_by':'harvest'}"/>
-                        <filter string="Lote" name="group_by_lot" context="{'group_by':'stock_production_lot_id'}"/>
-                        <filter string="Pallet" name="group_by_lot" context="{'group_by':'pallet_id'}"/>
-                        <filter string="Pedido de Venta" name="group_by_sale_order_id" context="{'group_by':'sale_order_id'}"/>
-                    </group>
-                </search>
             </field>
         </record>
         <record id="dimabe_manufacturing.process_report_ncc" model="ir.actions.act_window">
             <field name="name">Informe de Proceso Envasado NCC</field>
-            <field name="res_model">stock.production.lot.serial</field>
+            <field name="res_model">mrp.workorder</field>
             <field name="view_mode">tree,form,pivot</field>
             <field name="view_id" ref="view_process_report_ncc_tree"/>
             <field name="domain">
