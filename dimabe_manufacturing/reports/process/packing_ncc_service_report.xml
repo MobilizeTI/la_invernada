@@ -52,7 +52,7 @@
             <field name="view_mode">tree,form,pivot</field>
             <field name="view_id" ref="view_process_report_ncc_service_tree"/>
             <field name="domain">
-                ['|',('workcenter_id_in.code','=','860-PENCCS'),('workcenter_id_out.code','=','860-PENCCS')]
+                [('workcenter_id.code','=','860-PENCCS')]
             </field>
         </record>
         <menuitem id="process_ncc_service_menu"
