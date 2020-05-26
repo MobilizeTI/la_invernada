@@ -15,8 +15,8 @@
                     <field name="product_id" widget="many2onebutton"/>
                     <field name="serial_number"/>
                     <field name="stock_production_lot_id" widget="many2onebutton"/>
-                    <field name="in_weight" attrs="{'invisible':[('production_id_to_view','!=','reserved_to_production_id')]}"/>
-                    <field name="produce_weight" attrs="{'invisible':[('production_id_to_view','!=','production_id')]}"/>
+                    <field name="in_weight"/>
+                    <field name="produce_weight" />
                     <field name="pallet_id" widget="many2onebutton"/>
                     <field name="sale_order_id" widget="many2onebutton"/>
                 </tree>
