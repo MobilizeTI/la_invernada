@@ -125,6 +125,13 @@ class MrpWorkorder(models.Model):
 
     out_weight = fields.Float('Kilos Ingresados',compute='_compute_out_weight')
 
+    producers_id = fields.Many2many('res.partner','Productores',compute='_compute_producers_id')
+
+    @api.multi
+    def _compute_producers_ids(self):
+        for item in self:
+            item.producers_id = fields.potential_serial_planned_ids.mapped('producer_id')
+
     @api.multi
     def _compute_in_weight(self):
         for item in self:
