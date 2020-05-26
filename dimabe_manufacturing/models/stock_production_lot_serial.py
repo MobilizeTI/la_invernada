@@ -250,7 +250,6 @@ class StockProductionLotSerial(models.Model):
                 item.label_percent = settings_percent / 100
 
     @api.multi
-    # @api.depends('packaging_date')
     def _compute_harvest(self):
         for item in self:
             item.harvest = item.packaging_date.year
