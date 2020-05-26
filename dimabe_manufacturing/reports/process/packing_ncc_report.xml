@@ -56,7 +56,7 @@
             <field name="view_mode">tree,form,pivot</field>
             <field name="view_id" ref="view_process_report_ncc_tree"/>
             <field name="domain">
-                [('workcenter_id.code','=','320-PENCC')]
+                [('workcenter_id','=','320-PENCC')]
             </field>
         </record>
         <menuitem id="process_ncc_menu"
