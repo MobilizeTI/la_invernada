@@ -52,7 +52,7 @@
             <field name="view_mode">tree,form,pivot</field>
             <field name="view_id" ref="view_process_ncc_service_tree"/>
             <field name="domain">
-                [('workcenter_id.code','=','860-PENCCS')]
+                [('workcenter_serial.code','=','860-PENCCS')]
             </field>
         </record>
         <menuitem id="process_ncc_service_menu"
@@ -60,5 +60,6 @@
                   name="Informe de Proceso Envasado NCC Servicio"
                   parent="process_report_menu"
         />
+
     </data>
 </odoo>

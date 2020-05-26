@@ -28,7 +28,7 @@
             <field name="view_mode">tree,form,pivot</field>
             <field name="view_id" ref="view_process_calibrate_service_tree"/>
             <field name="domain">
-                [('workcenter_id.code','=','840-PCS')]
+                [('workcenter_serial.code','=','840-PCS')]
             </field>
         </record>
         <menuitem id="process_calibrate_service_menu"
