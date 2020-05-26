@@ -163,7 +163,7 @@ class StockProductionLotSerial(models.Model):
                     item.work_order_in_id = work
 
     @api.multi
-    def _compute_workorder_id(self):
+    def _compute_workorder_out_id(self):
         for item in self:
             workorder = self.env['mrp.workorder'].search([])
             for work in workorder:
