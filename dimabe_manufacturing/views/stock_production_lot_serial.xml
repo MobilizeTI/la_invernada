@@ -19,12 +19,18 @@
     </record>
 
     <record id="stock_production_lot_serial_process_form_view" model="ir.ui.view">
-      <field name="name">listado series</field>
+      <field name="name">Series</field>
       <field name="model">stock.production.lot.serial</field>
+      <field name="priority">20</field>
       <field name="arch" type="xml">
         <tree>
           <field name="stock_production_lot_id"/>
           <field name="serial_number"/>
+          <field name="producer_id"/>
+          <field name="product_id"/>
+          <field name="product_variety"/>
+          <field name="packing_date"/>
+          <field name="harvest"/>
           <field name="real_weight" />
         </tree>
       </field>
