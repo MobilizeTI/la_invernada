@@ -32,7 +32,7 @@
             </field>
         </record>
         <menuitem id="process_manual_service_menu"
-                  action="dimabe_manufacturing.process_report_manual_service"
+                  action="dimabe_manufacturing.process_manual_service"
                   name="Informe de Proceso Partido Manual Calidad Servicio"
                   parent="process_report_menu"
         />
