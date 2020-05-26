@@ -252,17 +252,15 @@ class StockProductionLot(models.Model):
             stock_quant = item.get_stock_quant()
             if len(stock_quant) < 1:
                 item.location_id = stock_quant.location_id
-            elif not item.stock_picking_id:
+            else:
                 location_id = self.env['stock.picking'].search([('name', '=', item.name)])
                 item.location_id = location_id.location_dest_id
-            elif item.stock_picking_id:
-                item.location = item.stock_picking_id.location_dest_id
-            elif item.is_dried_lot:
+            if item.stock_picking_id:
+                item.location_id = stock_picking_id.location_dest_id
+            if item.is_dried_lot:
                 location_id_dried = self.env['dried.unpelled.history'].search(
                     [('out_lot_id', '=', item.id)]).dest_location_id
                 item.location_id = location_id_dried
-            else:
-                item.location_id = None
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
