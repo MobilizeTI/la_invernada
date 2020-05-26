@@ -251,7 +251,6 @@ class StockProductionLot(models.Model):
         for item in self:
             stock_quant = item.get_stock_quant()
             if len(stock_quant) < 1:
-                raise models.ValidationError(stock_quant)
                 item.location_id = stock_quant.location_id
             else:
                 location_id = self.env['stock.picking'].search([('name', '=', item.name)])
@@ -262,6 +261,8 @@ class StockProductionLot(models.Model):
                 location_id_dried = self.env['dried.unpelled.history'].search(
                     [('out_lot_id', '=', item.id)]).dest_location_id
                 item.location_id = location_id_dried
+            if item.is_prd_lot:
+                item.location_id = item.stock_production_lot_serial.mapped('production_id').location_dest_id
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
