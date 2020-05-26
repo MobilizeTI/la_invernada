@@ -121,6 +121,20 @@ class MrpWorkorder(models.Model):
 
     lot_produced_id = fields.Integer('Lote a producir', compute='_compute_lot_produced')
 
+    in_weight = fields.Float('Kilos Ingresados',compute='_compute_in_weight')
+
+    out_weight = fields.Float('Kilos Ingresados',compute='_compute_out_weight')
+
+    @api.multi
+    def _compute_in_weight(self):
+        for item in self:
+            item.in_weight = sum(item.potential_serial_planned_ids.mapped('real_weight'))
+
+    @api.multi
+    def _compute_out_weight(self):
+        for item in self:
+            item.out_weight = sum(item.summary_out_serial_ids.mapped('real_weight'))
+
     @api.multi
     def show_in_serials(self):
         self.ensure_one()
@@ -133,6 +147,20 @@ class MrpWorkorder(models.Model):
             'type': 'ir.actions.act_window',
             'context': self.env.context,
             'domain':[('id','in',self.potential_serial_planned_ids.mapped("id"))]
+        }
+    
+    @api.multi
+    def show_out_serials(self):
+        self.ensure_one()
+        return {
+            'name': "Series de Entrada",
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            'res_model': 'stock.production.lot.serial',
+            'view_id': False,
+            'type': 'ir.actions.act_window',
+            'context': self.env.context,
+            'domain':[('id','in',self.summary_out_serial_ids.mapped("id"))]
         }
 
     @api.multi
