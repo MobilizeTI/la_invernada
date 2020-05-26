@@ -138,12 +138,8 @@ class StockProductionLotSerial(models.Model):
     production_id_to_view = fields.Many2one('mrp.production', 'Order de Fabricacion',
                                             compute='_compute_production_id_to_view', store=True)
 
-    workcenter_id = fields.Many2one('mrp.workcenter','Centro de Trabajo ',related='work_order_id.workcenter_id')
+    workcenter_id = fields.Many2one('mrp.workcenter','Centro de Trabajo ',related='work_order_id.workcenter_id',store=True)
 
-    @api.multi
-    def _compute_workcenter(self):
-        for item in self:
-                item.workcenter_id_in = item.work_order_id.workcenter_id
 
     @api.depends('production_id', 'reserved_to_production_id')
     @api.multi
