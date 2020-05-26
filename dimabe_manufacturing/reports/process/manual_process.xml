@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-        <record id="view_process_report_nsc_tree" model="ir.ui.view">
-            <field name="name">Informe de Proceso Envasado NSC</field>
+        <record id="view_process_manual_tree" model="ir.ui.view">
+            <field name="name">Informe de Proceso Partido Manual Calidad</field>
             <field name="model">stock.production.lot.serial</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Proceso NSC">
+                <tree name="Informe de Proceso Partido Manual Calidad">
                     <field name="production_id_to_view" string="Orden de Fabricacion" widget="many2onebutton"/>
                     <field name="reserved_to_production_id" string="Entrada" widget="many2onebutton"/>
                     <field name="production_id" string="Salida" widget="many2onebutton"/>
@@ -22,18 +22,18 @@
                 </tree>
             </field>
         </record>
-        <record id="dimabe_manufacturing.process_report_nsc" model="ir.actions.act_window">
-            <field name="name">Informe de Proceso Envasado NSC</field>
+        <record id="dimabe_manufacturing.process_manual" model="ir.actions.act_window">
+            <field name="name">Informe de Proceso Partido Manual Calidad</field>
             <field name="res_model">stock.production.lot.serial</field>
             <field name="view_mode">tree,form,pivot</field>
-            <field name="view_id" ref="view_process_report_nsc_tree"/>
+            <field name="view_id" ref="view_process_manual_tree"/>
             <field name="domain">
-                [('workcenter_id.code','=','420-PENSC')]
+                [('workcenter_id.code','=','500-PPMC')]
             </field>
         </record>
-        <menuitem id="process_nsc_menu"
-                  action="dimabe_manufacturing.process_report_nsc"
-                  name="Informe de Proceso Envasado NSC"
+        <menuitem id="process_manual_menu"
+                  action="dimabe_manufacturing.process_manual"
+                  name="Informe de Proceso Partido Manual Calidad"
                   parent="process_report_menu"
         />
 

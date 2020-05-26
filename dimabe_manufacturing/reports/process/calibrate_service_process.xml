@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="view_process_report_laser_service_tree" model="ir.ui.view">
-            <field name="name">Informe de Proceso Partido Mecanico/Laser Servicio</field>
+        <record id="view_process_calibrate_service_tree" model="ir.ui.view">
+            <field name="name">Informe de Proceso Calibrado Servicio</field>
             <field name="model">stock.production.lot.serial</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Proceso Partido Mecanico/Laser Servicio">
+                <tree name="Informe de Proceso Calibrado Servicio">
                     <field name="production_id_to_view" string="Orden de Fabricacion" widget="many2onebutton"/>
                     <field name="reserved_to_production_id" string="Entrada" widget="many2onebutton"/>
                     <field name="production_id" string="Salida" widget="many2onebutton"/>
@@ -22,20 +22,19 @@
                 </tree>
             </field>
         </record>
-        <record id="dimabe_manufacturing.process_report_laser_service" model="ir.actions.act_window">
-            <field name="name">Informe de Proceso Partido Mecanico/Laser Servicio</field>
+        <record id="dimabe_manufacturing.process_calibrate_service" model="ir.actions.act_window">
+            <field name="name">Informe de Proceso Calibrado</field>
             <field name="res_model">stock.production.lot.serial</field>
             <field name="view_mode">tree,form,pivot</field>
-            <field name="view_id" ref="view_process_report_laser_service_tree"/>
+            <field name="view_id" ref="view_process_calibrate_service_tree"/>
             <field name="domain">
-                [('workcenter_id.code','=','870-PPMS')]
+                [('workcenter_id.code','=','840-PCS')]
             </field>
         </record>
-        <menuitem id="process_laser_service_menu"
-                  action="dimabe_manufacturing.process_report_laser"
-                  name="Informe de Proceso Partido Mecanico/Laser Servicio"
+        <menuitem id="process_calibrate_service_menu"
+                  action="dimabe_manufacturing.process_calibrate_service"
+                  name="Informe de Proceso Calibrado Servicio"
                   parent="process_report_menu"
         />
-
     </data>
 </odoo>

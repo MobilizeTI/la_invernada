@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-        <record id="view_process_report_manual_service_tree" model="ir.ui.view">
-            <field name="name">Informe de Proceso Partido Manual Calidad Servicio</field>
+        <record id="view_process_re_laser_tree" model="ir.ui.view">
+            <field name="name">Informe de Proceso Re/Proceso Descarte Laser</field>
             <field name="model">stock.production.lot.serial</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Proceso Partido Manual Calidad Servicio">
+                <tree name="Informe de Proceso Re/Proceso Descarte Laser">
                     <field name="production_id_to_view" string="Orden de Fabricacion" widget="many2onebutton"/>
                     <field name="reserved_to_production_id" string="Entrada" widget="many2onebutton"/>
                     <field name="production_id" string="Salida" widget="many2onebutton"/>
@@ -22,18 +22,18 @@
                 </tree>
             </field>
         </record>
-        <record id="dimabe_manufacturing.process_report_manual_service" model="ir.actions.act_window">
-            <field name="name">Informe de Proceso Partido Manual Calidad Servicio</field>
+        <record id="dimabe_manufacturing.process_re_laser" model="ir.actions.act_window">
+            <field name="name">Informe de Proceso Re/Proceso Descarte Laser</field>
             <field name="res_model">stock.production.lot.serial</field>
             <field name="view_mode">tree,form,pivot</field>
-            <field name="view_id" ref="view_process_report_manual_service_tree"/>
+            <field name="view_id" ref="view_process_re_laser_tree"/>
             <field name="domain">
-                [('workcenter_id.code','=','900-PPMCS')]
+                [('workcenter_id.code','=','410-PDL')]
             </field>
         </record>
-        <menuitem id="process_manual_service_menu"
-                  action="dimabe_manufacturing.process_report_manual_service"
-                  name="Informe de Proceso Partido Manual Calidad Servicio"
+        <menuitem id="process_re_laser_menu"
+                  action="dimabe_manufacturing.process_re_laser"
+                  name="Informe de Proceso Re/Proceso Descarte Laser"
                   parent="process_report_menu"
         />
 

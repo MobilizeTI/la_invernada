@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-        <record id="view_process_report_re_laser_service_tree" model="ir.ui.view">
-            <field name="name">Informe de Proceso Re-secado Servicio</field>
+        <record id="view_process_washed_tree" model="ir.ui.view">
+            <field name="name">Informe de Proceso Lavado</field>
             <field name="model">stock.production.lot.serial</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Proceso Re-secado Servicio">
+                <tree name="Informe de Proceso Lavado">
                     <field name="production_id_to_view" string="Orden de Fabricacion" widget="many2onebutton"/>
                     <field name="reserved_to_production_id" string="Entrada" widget="many2onebutton"/>
                     <field name="production_id" string="Salida" widget="many2onebutton"/>
@@ -22,18 +22,18 @@
                 </tree>
             </field>
         </record>
-        <record id="dimabe_manufacturing.process_report_re_laser_service" model="ir.actions.act_window">
-            <field name="name">Informe de Proceso Re-secado Servicio</field>
+        <record id="dimabe_manufacturing.process_washed" model="ir.actions.act_window">
+            <field name="name">Informe de Proceso Lavado</field>
             <field name="res_model">stock.production.lot.serial</field>
             <field name="view_mode">tree,form,pivot</field>
-            <field name="view_id" ref="view_process_report_re_laser_service_tree"/>
+            <field name="view_id" ref="view_process_washed_tree"/>
             <field name="domain">
-                [('workcenter_id.code','=','830-PRS')]
+                [('workcenter_id.code','=','310-PL')]
             </field>
         </record>
-        <menuitem id="process_re_laser_service_menu"
-                  action="dimabe_manufacturing.process_report_re_laser"
-                  name="Informe de Proceso Re-secado Servicio"
+        <menuitem id="process_washed_menu"
+                  action="dimabe_manufacturing.process_washed"
+                  name="Informe de Proceso Lavado"
                   parent="process_report_menu"
         />
 
