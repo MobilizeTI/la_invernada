@@ -28,7 +28,7 @@
             <field name="view_mode">tree,form,pivot</field>
             <field name="view_id" ref="view_process_report_washed_service_tree"/>
             <field name="domain">
-                [('workcenter_id','=','850-PLS')]
+                [('workcenter_id.code','=','850-PLS')]
             </field>
         </record>
         <menuitem id="process_washed_service_menu"

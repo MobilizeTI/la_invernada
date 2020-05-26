@@ -28,7 +28,7 @@
             <field name="view_mode">tree,form,pivot</field>
             <field name="view_id" ref="view_process_report_laser_tree"/>
             <field name="domain">
-                [('workcenter_id','=','400-PPM')]
+                [('workcenter_id.code','=','400-PPM')]
             </field>
         </record>
         <menuitem id="process_laser_menu"

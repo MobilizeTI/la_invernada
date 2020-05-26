@@ -28,7 +28,7 @@
             <field name="view_mode">tree,form,pivot</field>
             <field name="view_id" ref="view_process_report_manual_service_tree"/>
             <field name="domain">
-                [('workcenter_id','=','900-PPMCS')]
+                [('workcenter_id.code','=','900-PPMCS')]
             </field>
         </record>
         <menuitem id="process_manual_service_menu"
