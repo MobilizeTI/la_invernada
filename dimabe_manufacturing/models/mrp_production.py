@@ -286,6 +286,8 @@ class MrpProduction(models.Model):
     def fix_reserved(self):
         for item in self:
             for move in item.move_raw_ids:
+                if move.reserved_availability != 0:
+                    raise models.ValidationError(move.id)
                 self.update({
                     'reserved_availability': 0
                 })
