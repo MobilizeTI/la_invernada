@@ -156,9 +156,9 @@ class StockProductionLotSerial(models.Model):
     def _compute_workorder_id(self):
         for item in self:
             if item.reserved_to_production_id:
-                item.work_order_id = self.env['mrp_workorder'].search([('production_id','=',item.reserved_to_production_id.id)])
+                item.work_order_id = self.env['mrp.workorder'].search([('production_id','=',item.reserved_to_production_id.id)])
             if item.production_id:
-                item.work_order_id = self.env['mrp_workorder'].search([('production_id','=',item.production_id.id)])
+                item.work_order_id = self.env['mrp.workorder'].search([('production_id','=',item.production_id.id)])
             else:
                 item.work_order_id = None
 
