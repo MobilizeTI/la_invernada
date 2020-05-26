@@ -50,7 +50,7 @@
             <field name="name">Informe de Proceso Envasado NCC</field>
             <field name="res_model">stock.production.lot.serial</field>
             <field name="view_mode">tree,form,pivot</field>
-            <field name="view_id" ref="view_process_report_ncc_service_tree"/>
+            <field name="view_id" ref="view_process_ncc_service_tree"/>
             <field name="domain">
                 [('workcenter_id.code','=','860-PENCCS')]
             </field>
