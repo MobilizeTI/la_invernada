@@ -138,7 +138,7 @@ class StockProductionLotSerial(models.Model):
     production_id_to_view = fields.Many2one('mrp.production', 'Order de Fabricacion',
                                             compute='_compute_production_id_to_view', store=True)
 
-    workcenter_id = fields.Char('Centro de Trabajo ', compute="_compute_workcenter",store=True)
+    workcenter_id = fields.Char('Centro de Trabajo ', compute="_compute_workcenter")
 
     @api.multi
     def _compute_workcenter(self):
