@@ -20,7 +20,7 @@ class StockProductionLotSerial(models.Model):
     product_variety = fields.Char(
         'Variedad',
         related='stock_production_lot_id.product_variety'
-        , store=True
+        ,store=True
     )
 
     product_id = fields.Many2one(
@@ -131,17 +131,20 @@ class StockProductionLotSerial(models.Model):
 
     pallet_name = fields.Char('Folio Pallet', compute='_compute_pallet_name')
 
-    sale_order_id = fields.Many2one('sale.order', 'N° Pedido', compute='_compute_sale_order_id', store=True)
+    sale_order_id = fields.Many2one('sale.order', 'N° Pedido', compute='_compute_sale_order_id',store=True)
 
-    work_order_id = fields.Many2one('mrp.workorder', 'Order Fabricacion Entrada', compute='_compute_workorder_id')
+    work_order_id = fields.Many2one('mrp.workorder', 'Order Fabricacion', compute='_compute_workorder_id')
 
     production_id_to_view = fields.Many2one('mrp.production', 'Order de Fabricacion',
-                                            compute='_compute_production_id_to_view', store=True)
+                                            compute='_compute_production_id_to_view',store=True)
+    workcenter_id = fields.Many2one('mrp.workcenter',compute="_compute_workcenter",store=True)
 
-    workcenter_serial = fields.Many2one('mrp.workcenter','Centro de Trabajo ',related='work_order_id.workcenter_id',store=True)
+    @api.multi
+    def _compute_workcenter(self):
+        for item in self:
+            item.workcenter_id = item.work_order_id.workcenter_id
 
-    
-    @api.depends('production_id', 'reserved_to_production_id')
+    @api.depends('production_id','reserved_to_production_id')
     @api.multi
     def _compute_production_id_to_view(self):
         for item in self:
@@ -156,9 +159,13 @@ class StockProductionLotSerial(models.Model):
     def _compute_workorder_id(self):
         for item in self:
             if item.reserved_to_production_id:
-                item.work_order_id = self.env['mrp.workorder'].search([('production_id','=',item.reserved_to_production_id.id)])
-            if item.production_id:
-                item.work_order_id = self.env['mrp.workorder'].search([('production_id','=',item.production_id.id)])
+                workorder = self.env['mrp.workorder'].search(
+                    [('production_id', '=', item.reserved_to_production_id.id)])
+                item.work_order_id = workorder
+            elif item.production_id:
+                workorder = self.env['mrp.workorder'].search(
+                    [('production_id', '=', item.production_id.id)])
+                item.work_order_id = workorder
             else:
                 item.work_order_id = None
 
@@ -208,6 +215,7 @@ class StockProductionLotSerial(models.Model):
             else:
                 item.process_id = None
 
+
     @api.depends('reserved_to_production_id', 'production_id')
     @api.multi
     def _compute_movement(self):
@@ -218,6 +226,7 @@ class StockProductionLotSerial(models.Model):
                 item.movement = 'SALIDA'
             else:
                 item.movement = 'NO DEFINIDO'
+
 
     @api.multi
     def _inverse_real_weight(self):
@@ -678,3 +687,4 @@ class StockProductionLotSerial(models.Model):
         if reserved_serials and not production_move.active_move_line_ids:
             for serial in reserved_serials:
                 serial.add_move_line(production_move)
+
