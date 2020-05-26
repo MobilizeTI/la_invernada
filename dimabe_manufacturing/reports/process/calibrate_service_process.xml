@@ -1,40 +1,34 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-        <record id="view_process_calibrate_service_tree" model="ir.ui.view">
-            <field name="name">Informe de Proceso Calibrado Servicio</field>
-            <field name="model">stock.production.lot.serial</field>
+        <record id="view_process_report_ncc_tree" model="ir.ui.view">
+            <field name="name">Informe de Proceso Envasado NCC</field>
+            <field name="model">mrp.workorder</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Proceso Calibrado Servicio">
-                    <field name="production_id_to_view" string="Orden de Fabricacion" widget="many2onebutton"/>
-                    <field name="reserved_to_production_id" string="Entrada" widget="many2onebutton"/>
-                    <field name="production_id" string="Salida" widget="many2onebutton"/>
-                    <field name="product_variety"/>
-                    <field name="producer_id" widget="many2onebutton"/>
-                    <field name="product_id" widget="many2onebutton"/>
-                    <field name="serial_number"/>
-                    <field name="stock_production_lot_id" widget="many2onebutton"/>
+                <tree name="Informe de Proceso NCC">
+                    <field name="production_id"/>
+                    <button name="show_in_serials" type="object" string="Series de Entrada"></button>
+                    <button name="show_out_serials" type="object" string="Series de Salidas"></button>
                     <field name="in_weight"/>
-                    <field name="produce_weight"/>
-                    <field name="pallet_id" widget="many2onebutton"/>
-                    <field name="sale_order_id" widget="many2onebutton"/>
+                    <field name="out_weight"/>
+                    <field name="workcenter_id" widget="many2onebutton"/>
+                    <field name="producers_id" widget="many2many_tags"/>
+                    <field name="state" invisible="1"/> 
                 </tree>
             </field>
         </record>
-        <record id="dimabe_manufacturing.process_calibrate_service" model="ir.actions.act_window">
-            <field name="name">Informe de Proceso Calibrado</field>
-            <field name="res_model">stock.production.lot.serial</field>
+        <record id="dimabe_manufacturing.process_report_ncc" model="ir.actions.act_window">
+            <field name="name">Informe de Proceso Envasado NCC</field>
+            <field name="res_model">mrp.workorder</field>
             <field name="view_mode">tree,form,pivot</field>
-            <field name="view_id" ref="view_process_calibrate_service_tree"/>
-            <field name="domain">
-                [('workcenter_id.code','=','840-PCS')]
-            </field>
+            <field name="view_id" ref="view_process_report_ncc_tree"/>
         </record>
-        <menuitem id="process_calibrate_service_menu"
-                  action="dimabe_manufacturing.process_calibrate_service"
-                  name="Informe de Proceso Calibrado Servicio"
+        <menuitem id="process_ncc_menu"
+                  action="dimabe_manufacturing.process_report_ncc"
+                  name="Informe de Proceso Envasado NCC"
                   parent="process_report_menu"
         />
+
     </data>
 </odoo>
