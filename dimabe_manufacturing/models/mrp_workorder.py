@@ -125,7 +125,7 @@ class MrpWorkorder(models.Model):
     def show_in_serials(self):
         self.ensure_one()
         return {
-            'name': _("Export data"),
+            'name': "Series de Entrada",
             'view_type': 'form',
             'view_mode': 'tree,form',
             'res_model': 'stock.production.lot.serial',
