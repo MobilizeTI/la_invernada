@@ -133,9 +133,7 @@ class StockProductionLotSerial(models.Model):
 
     sale_order_id = fields.Many2one('sale.order', 'N° Pedido', compute='_compute_sale_order_id', store=True)
 
-    work_order_in_id = fields.Many2one('mrp.workorder', 'Order Fabricacion Entrada', compute='_compute_workorder_in_id')
-
-    work_order_out_id = fields.Many2one('mrp.workorder', 'Order Fabricacion Salida', compute='_compute_workorder_out_id')
+    work_order_id = fields.Many2one('mrp.workorder', 'Order Fabricacion Entrada', compute='_compute_workorder_id')
 
     production_id_to_view = fields.Many2one('mrp.production', 'Order de Fabricacion',
                                             compute='_compute_production_id_to_view', store=True)
@@ -155,20 +153,15 @@ class StockProductionLotSerial(models.Model):
                 item.production_id_to_view = None
 
     @api.multi
-    def _compute_workorder_in_id(self):
+    def _compute_workorder_id(self):
         for item in self:
-            workorder = self.env['mrp.workorder'].search([])
-            for work in workorder:
-                if item in work.potential_serial_planned_ids:
-                    item.work_order_in_id = work
+            if item.reserved_to_production_id:
+                item.work_order_id = self.env['mrp_workorder'].search([('production_id','=',item.reserved_to_production_id.id)])
+            if item.production_id:
+                item.work_order_id = self.env['mrp_workorder'].search([('production_id','=',item.production_id.id)])
+            else:
+                item.work_order_id = None
 
-    @api.multi
-    def _compute_workorder_out_id(self):
-        for item in self:
-            workorder = self.env['mrp.workorder'].search([])
-            for work in workorder:
-                if  item in work.summary_out_serial_ids:
-                    item.work_order_out_id = work
 
     @api.depends('production_id', 'reserved_to_production_id')
     @api.multi
