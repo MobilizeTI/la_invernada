@@ -67,7 +67,7 @@
         'reports/stock/dispatch_vain_stock_report.xml',
         'reports/process/packing_ncc_report.xml',
         'reports/process/packing_nsc_report.xml',
-        'reports/process/calibrate_process_report.xml',
+        'reports/process/process_calibrate_report.xml',
         'reports/process/washed_process_report.xml',
         'reports/process/laser_process_report.xml',
         'reports/process/report_re_laser_process.xml',
