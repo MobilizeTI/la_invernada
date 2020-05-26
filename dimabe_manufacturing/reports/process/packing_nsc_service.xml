@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-        <record id="view_process_report_nsc_service_tree" model="ir.ui.view">
+        <record id="view_process_nsc_service_tree" model="ir.ui.view">
             <field name="name">Informe de Proceso Envasado NSC Servicio</field>
             <field name="model">stock.production.lot.serial</field>
             <field name="priority">20</field>
