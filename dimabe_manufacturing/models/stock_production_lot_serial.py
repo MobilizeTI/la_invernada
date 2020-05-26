@@ -162,7 +162,6 @@ class StockProductionLotSerial(models.Model):
             else:
                 item.work_order_id = None
 
-
     @api.depends('production_id', 'reserved_to_production_id')
     @api.multi
     def _compute_sale_order_id(self):
