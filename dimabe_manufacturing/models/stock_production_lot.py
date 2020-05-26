@@ -251,6 +251,7 @@ class StockProductionLot(models.Model):
         for item in self:
             stock_quant = item.get_stock_quant()
             if len(stock_quant) < 1:
+                raise models.ValidationError(stock_quant)
                 item.location_id = stock_quant.location_id
             else:
                 location_id = self.env['stock.picking'].search([('name', '=', item.name)])
