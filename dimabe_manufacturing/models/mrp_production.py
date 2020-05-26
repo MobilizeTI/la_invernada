@@ -286,11 +286,9 @@ class MrpProduction(models.Model):
     def fix_reserved(self):
         for item in self:
             for move in item.move_raw_ids:
-                if move.reserved_availability != 0:
+                if move.reserved_availability > 0:
                     raise models.ValidationError(move.id)
-                self.update({
-                    'reserved_availability': 0
-                })
+                
                 for line in move.active_move_line_ids:
                     query = 'DELETE FROM stock_move_line where id = {}'.format(line.id)
                     cr = self._cr
