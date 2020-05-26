@@ -24,7 +24,7 @@
             <field name="view_mode">tree,form,pivot</field>
             <field name="view_id" ref="view_process_report_calibrate_tree"/>
         </record>
-        <menuitem id="process_ncc_menu"
+        <menuitem id="process_calibrate_menu"
                   action="dimabe_manufacturing.process_report_calibrate"
                   name="Informe de Proceso Calibrado"
                   parent="process_report_menu"
