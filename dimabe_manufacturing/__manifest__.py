@@ -73,7 +73,7 @@
         'reports/process/report_re_laser.xml',
         'reports/process/packing_ncc_service.xml',
         'reports/process/packing_nsc_service.xml',
-        'reports/process/calibrate_process_service.xml',
+        'reports/process/calibrate_service_process.xml',
         'reports/process/washed_process_service.xml',
         'reports/process/laser_service_process.xml',
         'reports/process/re_laser_process_service.xml',
