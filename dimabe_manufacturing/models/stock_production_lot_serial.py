@@ -9,7 +9,7 @@ class StockProductionLotSerial(models.Model):
 
     production_id = fields.Many2one(
         'mrp.production',
-        'Producción'
+        'Salida'
     )
 
     producer_id = fields.Many2one(
@@ -36,7 +36,7 @@ class StockProductionLotSerial(models.Model):
 
     reserved_to_production_id = fields.Many2one(
         'mrp.production',
-        'Para Producción',
+        'Entrada',
         nullable=True
     )
 
