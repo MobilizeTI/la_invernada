@@ -30,7 +30,7 @@
             <field name="view_mode">tree,form,pivot</field>
             <field name="view_id" ref="view_process_report_calibrate_tree"/>
             <field name="domain">
-                ['|',('workcenter_id_out.code','=','300-PC'),('workcenter_id_in.code','=','300-PC')]
+                [('workcenter_id_out.code','=','300-PC'),('workcenter_id_in.code','=','300-PC')]
             </field>
         </record>
         <menuitem id="process_calibrate_menu"
