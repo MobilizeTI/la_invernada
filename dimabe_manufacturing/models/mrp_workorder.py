@@ -132,6 +132,7 @@ class MrpWorkorder(models.Model):
             'view_id': False,
             'type': 'ir.actions.act_window',
             'context': self.env.context,
+            'domain':[('id','in',self.potential_serial_planned_ids.mapped("id"))]
         }
 
     @api.multi
