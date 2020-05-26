@@ -18,7 +18,6 @@
                 </tree>
             </field>
         </record>
-        
         <record id="dimabe_manufacturing.stock_discart_report" model="ir.actions.act_window">
             <field name="name">Informe de Producto Calibrado</field>
             <field name="res_model">stock.production.lot</field>
