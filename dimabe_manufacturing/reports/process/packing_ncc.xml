@@ -28,8 +28,10 @@
             <field name="arch" type="xml">
                 <xpath expr="//search[1]" position="inside">
                     <field name="sale_order_id"/>
+                    <field name="client_id"/>
                     <group expand="1" string="Group By">
                         <filter string="Pedido de Venta" name="group_by_sale" context="{'group_by':'sale_order_id'}"/>
+                        <filter string="Cliente" name="group_by_sale" context="{'group_by':'client_id'}"/>
                     </group>
                 </xpath>
             </field>
