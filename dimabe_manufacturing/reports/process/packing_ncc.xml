@@ -21,6 +21,18 @@
                 </tree>
             </field>
         </record>
+        <record id="mrp_workorder_search" model="ir.ui.view">
+            <field name="name">mrp_workorder.search</field>
+            <field name="model">mrp.workorder</field>
+            <field name="arch" type="xml">
+                <search string="Filtro">
+                    <field name="sale_order_id"/>
+                    <group expand="1" string="Group By">
+                        <filter string="Pedido de Venta" name="group_by_sale" context="{'group_by':'sale_order_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
         <record id="dimabe_manufacturing.process_report_ncc" model="ir.actions.act_window">
             <field name="name">Informe de Proceso Envasado NCC</field>
             <field name="res_model">mrp.workorder</field>
