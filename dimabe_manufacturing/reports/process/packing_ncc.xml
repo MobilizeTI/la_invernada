@@ -14,7 +14,8 @@
                     <field name="out_weight"/>
                     <field name="workcenter_id" widget="many2onebutton"/>
                     <field name="producers_id" widget="many2many_tags"/>
-                    <field name="state" invisible="1"/> 
+                    <field name="sale_order_id" widget="many2many_button"
+                    <field name="state" invisible="1"/>
                 </tree>
             </field>
         </record>
