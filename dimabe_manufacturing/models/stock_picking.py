@@ -92,7 +92,7 @@ class StockPicking(models.Model):
 
     @api.multi
     def calculate_last_serial(self):
-        raise models.UserError("{},{}".format(self.has_mp_field,self.picking_type_code))
+        raise models.UserError(self.env['stock.picking']._fields)
         if len(canning) == 1:
             if self.production_net_weight == self.net_weight:
                 self.production_net_weight = self.net_weight - self.quality_weight
