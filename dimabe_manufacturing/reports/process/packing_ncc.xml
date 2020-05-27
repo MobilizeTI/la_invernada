@@ -31,7 +31,7 @@
                     <group expand="1" string="Group By">
                         <filter string="Pedido de Venta" name="group_by_sale" context="{'group_by':'sale_order_id'}"/>
                     </group>
-                </xpath>>
+                </xpath>
             </field>
         </record>
         <record id="dimabe_manufacturing.process_report_ncc" model="ir.actions.act_window">
