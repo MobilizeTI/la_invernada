@@ -23,7 +23,7 @@
         </record>
         <record id="process_view_search" model="ir.ui.view">
             <field name="name">Filtros NCC</field>
-            <field name="model">stock.production.lot.serial</field>
+            <field name="model">mrp.workorder</field>
             <field name="arch" type="xml">
                 <search>
                     <field name="sale_order_id"/>
