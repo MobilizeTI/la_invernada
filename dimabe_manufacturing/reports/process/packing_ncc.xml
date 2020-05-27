@@ -31,7 +31,7 @@
                     <field name="client_id"/>
                     <field name="production_id"/>
                     <group expand="1" string="Group By">
-                        <filter string="production_id" name="group_workorder_by_production_id" context="{'group_by':'production_id'}"
+                        <filter string="production_id" name="group_workorder_by_production_id" context="{'group_by':'production_id'}"/>
                         <filter string="Pedido de Venta" name="group_by_sale_order_id" context="{'group_by':'sale_order_id'}"/>
                     </group>
                 </search>
