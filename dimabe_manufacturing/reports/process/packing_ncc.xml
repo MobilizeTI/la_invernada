@@ -26,12 +26,12 @@
             <field name="model">mrp.workorder</field>
             <field name="inherit_id" ref="mrp.view_mrp_production_work_order_search" />
             <field name="arch" type="xml">
-                <search string="Filtro">
+                <xpath expr="//search[1]" position="inside">
                     <field name="sale_order_id"/>
                     <group expand="1" string="Group By">
                         <filter string="Pedido de Venta" name="group_by_sale" context="{'group_by':'sale_order_id'}"/>
                     </group>
-                </search>
+                </xpath>>
             </field>
         </record>
         <record id="dimabe_manufacturing.process_report_ncc" model="ir.actions.act_window">
