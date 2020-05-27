@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <record id="view_process_report_washed_service_tree" model="ir.ui.view">
-            <field name="name">Informe de Proceso Calibrado</field>
+            <field name="name">Informe de Proceso Lavado Servicio</field>
             <field name="model">mrp.workorder</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">

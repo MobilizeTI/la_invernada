@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <record id="view_process_report_re_laser_service_tree" model="ir.ui.view">
-            <field name="name">Informe de Proceso Calibrado</field>
+            <field name="name">Informe de Re-Proceso Descarte Láser Servicio</field>
             <field name="model">mrp.workorder</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
@@ -19,7 +19,7 @@
             </field>
         </record>
         <record id="dimabe_manufacturing.process_report_re_laser_service" model="ir.actions.act_window">
-            <field name="name">Informe de Proceso Calibrado</field>
+            <field name="name">Informe de Re-Proceso Descarte Láser Servicio</field>
             <field name="res_model">mrp.workorder</field>
             <field name="view_mode">tree,form,pivot</field>
             <field name="view_id" ref="view_process_report_re_laser_service_tree"/>
@@ -29,7 +29,7 @@
         </record>
         <menuitem id="process_re_laser_menu"
                   action="dimabe_manufacturing.process_report_re_laser_service"
-                  name="Informe de Proceso Calibrado"
+                  name="Informe de Re-Proceso Descarte Láser Servicio"
                   parent="process_report_menu"
         />
 
