@@ -29,7 +29,8 @@ class MrpWorkorder(models.Model):
     sale_order_id = fields.Many2one(
         'sale.order',
         related='production_id.stock_picking_id.sale_id',
-        string='Pedido de Venta'
+        string='Pedido de Venta',
+        store=True
     )
 
     pt_balance = fields.Float(
