@@ -29,7 +29,7 @@
         </record>
         <menuitem id="process_washed_service_menu"
                   action="dimabe_manufacturing.process_report_washed_service"
-                  name="Informe de Proceso Calibrado"
+                  name="Informe de Proceso Lavado Servicio"
                   parent="process_report_menu"
         />
 
