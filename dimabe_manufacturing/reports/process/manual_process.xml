@@ -27,7 +27,7 @@
                 [('workcenter_id.code','=','500-PPMC')]
             </field>
         </record>
-        <menuitem id="process_laser_manual_menu"
+        <menuitem id="process_manual_menu"
                   action="dimabe_manufacturing.process_report_manual"
                   name="Informe de Proceso Partido Manual Calidad"
                   parent="process_report_menu"
