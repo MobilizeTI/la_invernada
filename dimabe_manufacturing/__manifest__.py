@@ -67,7 +67,7 @@
         'reports/stock/discart_report.xml',
         'reports/process/packing_ncc.xml',
         'reports/process/packing_nsc.xml',
-        'reports/process/calibrate_process.xml',
+        'reports/process/calibre_process.xml',
         'reports/process/washed_process.xml',
         'reports/process/laser_process.xml',
         'reports/process/report_re_laser.xml',
