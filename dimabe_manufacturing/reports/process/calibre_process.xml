@@ -2,11 +2,11 @@
 <odoo>
     <data>
         <record id="view_process_report_calibrate_tree" model="ir.ui.view">
-            <field name="name">Informe de Proceso Calibrado</field>
+            <field name="name">Informe de Proceso Calibrado </field>
             <field name="model">mrp.workorder</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Proceso Calibrado">
+                <tree name="Informe de Proceso NCC">
                     <field name="production_id"/>
                     <button name="show_in_serials" type="object" string="Series de Entrada"></button>
                     <button name="show_out_serials" type="object" string="Series de Salidas"></button>
@@ -14,7 +14,7 @@
                     <field name="out_weight"/>
                     <field name="workcenter_id" widget="many2onebutton"/>
                     <field name="producers_id" widget="many2many_tags"/>
-                    <field name="state" invisible="1"/> 
+                    <field name="state" invisible="1"/>
                 </tree>
             </field>
         </record>
@@ -27,12 +27,11 @@
                 [('workcenter_id.code','=','300-PC')]
             </field>
         </record>
-        <menuitem id="process_calibrate_2_menu"
+        <menuitem id="calibrate_process_menu"
                   action="dimabe_manufacturing.process_report_calibrate"
                   name="Informe de Proceso Calibrado"
                   parent="process_report_menu"
         />
-
 
     </data>
 </odoo>
