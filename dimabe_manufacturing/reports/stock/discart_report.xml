@@ -1,11 +1,11 @@
 <odoo>
     <data>
-        <record id="view_stock_match_report_tree" model="ir.ui.view">
-            <field name="name">Informe de Producto Partido</field>
+        <record id="view_stock_discart_report_tree" model="ir.ui.view">
+            <field name="name">Informe de Producto Descarte/Vana</field>
             <field name="model">stock.production.lot</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Producto Partido">
+                <tree name="Informe de Producto Descarte/Vana">
                     <field name="producer_id" widget="many2onebutton" string="Productor"/>
                     <field name="name" widget="many2onebutton" string="Lote"/>
                     <field name="available_weight" string="Kilos"/>
@@ -18,26 +18,8 @@
                 </tree>
             </field>
         </record>
-        <record id="search_raw_report_view" model="ir.ui.view">
-            <field name="name">Filtro Materia Prima Seca</field>
-            <field name="type">search</field>
-            <field name="model">stock.production.lot</field>
-            <field name="inherit_id" ref="stock.search_product_lot_filter"/>
-            <field name="arch" type="xml">
-                <search>
-                    <field name="producer_id"/>
-                    <field name="product_variety"/>
-                    <field name="harvest"/>
-                    <group expand="1" string="Group By">
-                        <filter string="Productor" name="group_by_producer" context="{'group_by':'producer_id'}"/>
-                        <filter string="Variedad" name="group_by_variety" context="{'group_by':'product_variety'}"/>
-                        <filter string="Cosecha" name="group_by_harvest" context="{'group_by':'harvest'}"/>
-                    </group>
-                </search>
-            </field>
-        </record>
-        <record id="dimabe_manufacturing.stock_match_report" model="ir.actions.act_window">
-            <field name="name">Informe de Producto Partido</field>
+        <record id="dimabe_manufacturing.stock_discart_report" model="ir.actions.act_window">
+            <field name="name">Informe de Producto Descarte/Vana</field>
             <field name="res_model">stock.production.lot</field>
             <field name="view_mode">tree,graph,form,pivot</field>
             <field name="view_id" ref="view_stock_match_report_tree"/>
@@ -45,9 +27,9 @@
                 ['|',('product_id.name','like','Descarte'),('product_id.name','like','Vana')]
             </field>
         </record>
-        <menuitem id="stock_report_match_tree_menu"
-                  action="dimabe_manufacturing.stock_match_report"
-                  name="Informe de Existencia Producto Partido"
+        <menuitem id="stock_report_discart_tree_menu"
+                  action="dimabe_manufacturing.stock_discart_report"
+                  name="Informe de Existencia Producto Descarte/Vana"
                   parent="stock_report_menu"
         />
     </data>
