@@ -65,6 +65,7 @@
         'reports/stock/washed_stock_report.xml',
         'reports/stock/calibrate_stock_report.xml',
         'reports/stock/discart_report.xml',
+        'reports/stock/vain_report.xml',
         'reports/process/packing_ncc.xml',
         'reports/process/packing_nsc.xml',
         'reports/process/calibre_process.xml',
