@@ -196,7 +196,8 @@ class StockProductionLot(models.Model):
 
     product_variety = fields.Char(
         'Variedad del Producto',
-        related='product_id.variety'
+        related='product_id.variety',
+        store=True
     )
 
     product_caliber = fields.Char(
@@ -205,7 +206,7 @@ class StockProductionLot(models.Model):
         store=True
     )
 
-    harvest = fields.Integer(string='Cosecha', compute='_compute_lot_harvest',store=True)
+    harvest = fields.Integer(string='Cosecha', compute='_compute_lot_harvest', store=True)
 
     dried_report_product_name = fields.Char(compute='_compute_lot_oven_use')
 
@@ -213,9 +214,16 @@ class StockProductionLot(models.Model):
 
     serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed')
 
-    available_weight = fields.Float('Kilos Disponible', compute='_compute_available_weight', store=True)
+    serial_available = fields.Many2many('stock.production.lot.serial',compute='_compute_serial_available')
 
-    show_guide_number = fields.Char('Guia',compute='_compute_guide_number')
+    available_weight = fields.Float('Kilos Disponible',track_visibility='onchange')
+
+    show_guide_number = fields.Char('Guia', compute='_compute_guide_number')
+
+    @api.multi
+    def _compute_serial_available(self):
+        for item in self:
+            item.serial_available = item.stock_production_lot_serial_ids.filtered(lambda a : not a.consumed)
 
     @api.multi
     def _compute_guide_number(self):
@@ -230,13 +238,6 @@ class StockProductionLot(models.Model):
                     [('out_lot_id', '=', item.id)])
                 item.show_guide_number = dried.lot_guide_numbers
 
-    @api.depends('stock_production_lot_serial_ids')
-    @api.multi
-    def _compute_available_weight(self):
-        for item in self:
-            item.available_weight = sum(item.stock_production_lot_serial_ids.filtered(
-                lambda a: not a.consumed
-            ).mapped('real_weight'))
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
@@ -268,11 +269,7 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_serial_not_consumed(self):
         for item in self:
-            item.serial_not_consumed = len(item.stock_production_lot_serial_ids.filtered(
-                lambda a: not a.consumed))
-            if len(item.stock_production_lot_serial_ids.filtered(
-                    lambda a: not a.consumed)) > 0:
-                item.have_available_serial = True
+            item.serial_not_consumed = len(item.serial_available)
 
     @api.onchange('serial_not_consumed')
     def _onchange_have_available_serial(self):

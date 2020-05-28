@@ -9,7 +9,7 @@ class StockProductionLotSerial(models.Model):
 
     production_id = fields.Many2one(
         'mrp.production',
-        'Producción'
+        'Salida'
     )
 
     producer_id = fields.Many2one(
@@ -20,6 +20,7 @@ class StockProductionLotSerial(models.Model):
     product_variety = fields.Char(
         'Variedad',
         related='stock_production_lot_id.product_variety'
+        ,store=True
     )
 
     product_id = fields.Many2one(
@@ -35,7 +36,7 @@ class StockProductionLotSerial(models.Model):
 
     reserved_to_production_id = fields.Many2one(
         'mrp.production',
-        'Para Producción',
+        'Entrada',
         nullable=True
     )
 
@@ -90,7 +91,7 @@ class StockProductionLotSerial(models.Model):
     harvest = fields.Integer(
         'Año de Cosecha',
         compute='_compute_harvest',
-        # store=True
+        store=True
     )
 
     canning_id = fields.Many2one(
@@ -124,21 +125,22 @@ class StockProductionLotSerial(models.Model):
 
     movement = fields.Char('Movimiento', compute='_compute_movement')
 
-    process_id = fields.Char('Proceso', compute='_compute_process_id', store=True)
-
     in_weight = fields.Float('Kilos Ingresado', compute='_compute_in_weight')
 
     produce_weight = fields.Float('Kilos Producidos', compute='_compute_produce_weight')
 
     pallet_name = fields.Char('Folio Pallet', compute='_compute_pallet_name')
 
-    sale_order_id = fields.Many2one('sale.order', 'N° Pedido', compute='_compute_sale_order_id')
+    sale_order_id = fields.Many2one('sale.order', 'N° Pedido', compute='_compute_sale_order_id',store=True)
 
     work_order_id = fields.Many2one('mrp.workorder', 'Order Fabricacion', compute='_compute_workorder_id')
 
     production_id_to_view = fields.Many2one('mrp.production', 'Order de Fabricacion',
-                                            compute='_compute_production_id_to_view')
+                                            compute='_compute_production_id_to_view',store=True)
+    workcenter_id = fields.Many2one('mrp.workcenter',related="work_order_id.workcenter_id")
 
+
+    @api.depends('production_id','reserved_to_production_id')
     @api.multi
     def _compute_production_id_to_view(self):
         for item in self:
@@ -163,6 +165,7 @@ class StockProductionLotSerial(models.Model):
             else:
                 item.work_order_id = None
 
+    @api.depends('production_id', 'reserved_to_production_id')
     @api.multi
     def _compute_sale_order_id(self):
         for item in self:
@@ -186,6 +189,7 @@ class StockProductionLotSerial(models.Model):
         for item in self:
             if item.production_id:
                 item.produce_weight = item.real_weight
+                item.in_weight = 0.0
             else:
                 item.produce_weight = 0.0
 
@@ -194,6 +198,7 @@ class StockProductionLotSerial(models.Model):
         for item in self:
             if item.reserved_to_production_id:
                 item.in_weight = item.real_weight
+                item.produce_weight = 0.0
             else:
                 item.in_weight = 0.0
 
@@ -208,13 +213,14 @@ class StockProductionLotSerial(models.Model):
             else:
                 item.process_id = None
 
+
     @api.depends('reserved_to_production_id', 'production_id')
     @api.multi
     def _compute_movement(self):
         for item in self:
-            if item.reserved_to_production_id:
+            if item.reserved_to_production_id and not item.production_id:
                 item.movement = 'ENTRADA'
-            elif item.production_id:
+            elif item.production_id and not item.reserved_to_production_id:
                 item.movement = 'SALIDA'
             else:
                 item.movement = 'NO DEFINIDO'
@@ -246,7 +252,6 @@ class StockProductionLotSerial(models.Model):
                 item.label_percent = settings_percent / 100
 
     @api.multi
-    # @api.depends('packaging_date')
     def _compute_harvest(self):
         for item in self:
             item.harvest = item.packaging_date.year
@@ -679,3 +684,4 @@ class StockProductionLotSerial(models.Model):
         if reserved_serials and not production_move.active_move_line_ids:
             for serial in reserved_serials:
                 serial.add_move_line(production_move)
+

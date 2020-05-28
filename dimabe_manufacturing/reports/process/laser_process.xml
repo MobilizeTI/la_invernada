@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="view_process_report_laser_tree" model="ir.ui.view">
+            <field name="name">Informe de Proceso Partido Mecanico/Laser</field>
+            <field name="model">mrp.workorder</field>
+            <field name="priority">20</field>
+            <field name="arch" type="xml">
+                <tree name="Informe de Proceso Partido Mecanico/Laser">
+                    <field name="production_id"/>
+                    <button name="show_in_serials" type="object" string="Series de Entrada"></button>
+                    <button name="show_out_serials" type="object" string="Series de Salidas"></button>
+                    <field name="in_weight"/>
+                    <field name="out_weight"/>
+                    <field name="workcenter_id" widget="many2onebutton"/>
+                    <field name="producers_id" widget="many2many_tags"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="dimabe_manufacturing.process_report_laser" model="ir.actions.act_window">
+            <field name="name">Informe de Proceso Partido Mecanico/Laser</field>
+            <field name="res_model">mrp.workorder</field>
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="view_id" ref="view_process_report_laser_tree"/>
+            <field name="domain">
+                [('workcenter_id.code','=','400-PPM')]
+            </field>
+        </record>
+        <menuitem id="process_laser_menu"
+                  action="dimabe_manufacturing.process_report_laser"
+                  name="Informe de Proceso Mecanico/Laser"
+                  parent="process_report_menu"
+        />
+
+    </data>
+</odoo>

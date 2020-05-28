@@ -29,7 +29,8 @@ class MrpWorkorder(models.Model):
     sale_order_id = fields.Many2one(
         'sale.order',
         related='production_id.stock_picking_id.sale_id',
-        string='Pedido de Venta'
+        string='Pedido de Venta',
+        store=True
     )
 
     pt_balance = fields.Float(
@@ -120,6 +121,57 @@ class MrpWorkorder(models.Model):
     product_qty = fields.Float(related='production_id.product_qty')
 
     lot_produced_id = fields.Integer('Lote a producir', compute='_compute_lot_produced')
+
+    in_weight = fields.Float('Kilos Ingresados',compute='_compute_in_weight',digits=dp.get_precision('Product Unit of Measure'))
+
+    out_weight = fields.Float('Kilos Producido',compute='_compute_out_weight',digits=dp.get_precision('Product Unit of Measure'))
+
+    producers_id = fields.Many2many('res.partner','Productores',compute='_compute_producers_id')
+
+    @api.multi
+    def _compute_producers_id(self):
+        for item in self:
+            item.producers_id = item.potential_serial_planned_ids.mapped('producer_id')
+
+    @api.multi
+    def _compute_in_weight(self):
+        for item in self:
+            item.in_weight = sum(item.potential_serial_planned_ids.mapped('real_weight'))
+
+    @api.multi
+    def _compute_out_weight(self):
+        for item in self:
+            item.out_weight = sum(item.summary_out_serial_ids.mapped('real_weight'))
+
+    @api.multi
+    def show_in_serials(self):
+        self.ensure_one()
+        return {
+            'name': "Series de Entrada",
+            'view_type': 'form',
+            'view_mode': 'tree,graph,form,pivot',
+            'res_model': 'stock.production.lot.serial',
+            'view_id': False,
+            'type': 'ir.actions.act_window',
+            'views': [[self.env.ref('dimabe_manufacturing.stock_production_lot_serial_process_form_view').id, 'tree']],
+            'context': self.env.context,
+            'domain':[('id','in',self.potential_serial_planned_ids.mapped("id"))]
+        }
+    
+    @api.multi
+    def show_out_serials(self):
+        self.ensure_one()
+        return {
+            'name': "Series de Entrada",
+            'view_type': 'form',
+            'view_mode': 'tree,graph,form,pivot',
+            'res_model': 'stock.production.lot.serial',
+            'view_id': False,
+            'type': 'ir.actions.act_window',
+            'views': [[self.env.ref('dimabe_manufacturing.stock_production_lot_serial_process_form_view').id, 'tree']],
+            'context': self.env.context,
+            'domain':[('id','in',self.summary_out_serial_ids.mapped("id"))]
+        }
 
     @api.multi
     def _compute_lot_produced(self):
@@ -264,7 +316,7 @@ class MrpWorkorder(models.Model):
             if item not in stock_move.active_move_line_ids.mapped('lot_id'):
                 if not item.location_id:
                    # item.location_id = item.stock_production_lot_serial_ids.mapped('production_id').location_dest_id
-                    raise models.ValidationError("Lote {} aun esta en proceso".format(item.name))
+                    raise models.ValidationError("Lote {} aun esta en proceso {}".format(item.name,item.location_id))
                 if not self.lot_produced_id:
                     stock_move.update({
                         'active_move_line_ids': [

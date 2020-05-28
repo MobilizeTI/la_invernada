@@ -15,17 +15,17 @@
           <field name="product_id" widget="many2onebutton" string="Producto"/>
           <field name="reception_guide_number" string="N° Guia"/>
           <field name="serial_not_consumed" string="Series Disponible"/>
+          <field name="create_date" string="Fecha"/>
         </tree>
       </field>
     </record>
     <record id="dimabe_manufacturing.stock_washed_report" model="ir.actions.act_window">
       <field name="name">Informe de Producto Lavado</field>
       <field name="res_model">stock.production.lot</field>
-      <field name="view_mode">tree,graph,form</field>
+      <field name="view_mode">tree,graph,form,pivot</field>
       <field name="view_id" ref="view_stock_washed_report_tree"/>
       <field name="domain">
-        [('product_id.categ_id.name','like','Lavado'),('product_id.name','not like','Descarte'),('product_id.name','not \
-        like','Vana'),('product_id.name','not like','(S)'),('serial_not_consumed','!=',0)]
+        [('product_id.categ_id.name','like','Lavado'),('product_id.name','not like','Descarte'),('product_id.name','not like','Vana'),('product_id.name','not like','(S)')]
       </field>
     </record>
     <menuitem id="stock_report_washed_tree_menu"
