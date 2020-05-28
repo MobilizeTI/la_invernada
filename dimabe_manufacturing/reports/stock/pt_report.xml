@@ -23,6 +23,7 @@
                     <field name="sag_code" string="Cod.Sag"/>
                     <field name="dest_client_id" string="Cliente"/>
                     <field name="dest_country_id" string="Pais Destino"/>
+                    <field name="create_date" string="Fecha"/>
                 </tree>
             </field>
         </record>

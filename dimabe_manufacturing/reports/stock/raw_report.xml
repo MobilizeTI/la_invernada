@@ -17,6 +17,7 @@
           <field name="show_guide_number" string="N° Guia"/>
           <field name="harvest"/>
           <field name="serial_not_consumed" string="Series Disponible"/>
+          <field name="create_date" string="Fecha"/>
         </tree>
       </field>
     </record>
