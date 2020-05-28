@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-        <record id="view_process_report_calibrate_tree" model="ir.ui.view">
+        <record id="view_process_report_calibrate_service_tree" model="ir.ui.view">
             <field name="name">Informe de Proceso Calibrado Servicio</field>
             <field name="model">mrp.workorder</field>
             <field name="priority">20</field>
@@ -18,16 +18,16 @@
                 </tree>
             </field>
         </record>
-        <record id="dimabe_manufacturing.process_report_calibrate" model="ir.actions.act_window">
+        <record id="dimabe_manufacturing.process_report_calibrate_service" model="ir.actions.act_window">
             <field name="name">Informe de Proceso Calibrado Servicio</field>
             <field name="res_model">mrp.workorder</field>
             <field name="view_mode">tree,form,pivot</field>
-            <field name="view_id" ref="view_process_report_calibrate_tree"/>
+            <field name="view_id" ref="view_process_report_calibrate_service_tree"/>
             <field name="domain">
                 [('workcenter_id.code','=','840-PCS')]
             </field>
         </record>
-        <menuitem id="process_calibrate_menu"
+        <menuitem id="process_calibrate_service_menu"
                   action="dimabe_manufacturing.process_report_calibrate"
                   name="Informe de Proceso Calibrado Servicio"
                   parent="process_report_menu"
