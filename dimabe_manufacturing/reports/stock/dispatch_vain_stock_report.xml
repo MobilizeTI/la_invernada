@@ -20,13 +20,10 @@
             </field>
         </record>
         <record id="dimabe_manufacturing.stock_discart_report" model="ir.actions.act_window">
-            <field name="name">Informe de Producto Calibrado</field>
+            <field name="name">Informe de Producto Descarte/Vana</field>
             <field name="res_model">stock.production.lot</field>
             <field name="view_mode">tree,graph,form,pivot</field>
             <field name="view_id" ref="view_stock_discart_report_tree"/>
-            <field name="domain">
-                [('product_id.name','like','Descarte'),('product_id.name','like','Vana')]
-            </field>
         </record>
         <menuitem id="stock_report_discart_tree_menu"
                   action="dimabe_manufacturing.stock_discart_report"
