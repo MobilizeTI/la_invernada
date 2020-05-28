@@ -27,7 +27,7 @@
                 [('workcenter_id.code','=','410-PDL')]
             </field>
         </record>
-        <menuitem id="process_calibrate_menu"
+        <menuitem id="process_re_laser_menu"
                   action="dimabe_manufacturing.process_report_calibrate"
                   name="Informe de Re-Proceso Descarte Láser"
                   parent="process_report_menu"

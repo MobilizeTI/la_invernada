@@ -27,7 +27,7 @@
                 [('workcenter_id.code','=','880-PDLS')]
             </field>
         </record>
-        <menuitem id="process_re_laser_menu"
+        <menuitem id="process_re_laser_menu_service"
                   action="dimabe_manufacturing.process_report_re_laser_service"
                   name="Informe de Re-Proceso Descarte Láser Servicio"
                   parent="process_report_menu"
