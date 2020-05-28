@@ -24,7 +24,7 @@
             <field name="view_mode">tree,graph,form,pivot</field>
             <field name="view_id" ref="view_stock_match_report_tree"/>
             <field name="domain">
-                ['&amp;','|',('product_id.name','like','Descarte'),('product_id.name','like','Vana')('product_id.default_code','like','PSE006')]
+                [('product_id.name','like','Descarte'),('product_id.default_code','like','PSE006'),'|',('product_id.name','like','Vana')]
             </field>
         </record>
         <menuitem id="stock_report_discart_tree_menu"
