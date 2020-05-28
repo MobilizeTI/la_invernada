@@ -32,6 +32,7 @@
           <field name="product_variety"/>
           <field name="packaging_date"/>
           <field name="harvest"/>
+          <field name="pallet_id"/>
           <field name="real_weight" />
         </tree>
       </field>

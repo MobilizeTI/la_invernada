@@ -148,7 +148,7 @@ class MrpWorkorder(models.Model):
         self.ensure_one()
         return {
             'name': "Series de Entrada",
-            'view_type': 'form',
+            'view_type': 'tree,graph,form,pivot',
             'view_mode': 'tree,graph,form,pivot',
             'res_model': 'stock.production.lot.serial',
             'view_id': False,
@@ -163,7 +163,7 @@ class MrpWorkorder(models.Model):
         self.ensure_one()
         return {
             'name': "Series de Entrada",
-            'view_type': 'form',
+            'view_type': 'tree,graph,form,pivot',
             'view_mode': 'tree,graph,form,pivot',
             'res_model': 'stock.production.lot.serial',
             'view_id': False,
