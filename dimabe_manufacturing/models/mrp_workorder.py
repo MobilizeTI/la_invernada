@@ -149,7 +149,7 @@ class MrpWorkorder(models.Model):
         return {
             'name': "Series de Entrada",
             'view_type': 'form',
-            'view_mode': 'tree,form',
+            'view_mode': 'tree,graph,form,pivot',
             'res_model': 'stock.production.lot.serial',
             'view_id': False,
             'type': 'ir.actions.act_window',
@@ -164,7 +164,7 @@ class MrpWorkorder(models.Model):
         return {
             'name': "Series de Entrada",
             'view_type': 'form',
-            'view_mode': 'tree,form',
+            'view_mode': 'tree,graph,form,pivot',
             'res_model': 'stock.production.lot.serial',
             'view_id': False,
             'type': 'ir.actions.act_window',
