@@ -17,13 +17,15 @@ class MrpWorkorder(models.Model):
     client_id = fields.Many2one(
         'res.partner',
         related='production_id.client_id',
-        string='Cliente'
+        string='Cliente',
+        store=True
     )
 
     destiny_country_id = fields.Many2one(
         'res.country',
         related='production_id.destiny_country_id',
-        string='País'
+        string='País',
+        store=True
     )
 
     sale_order_id = fields.Many2one(
