@@ -1,7 +1,7 @@
 <odoo>
     <data>
-        <record id="view_stock_discart_report_tree" model="ir.ui.view">
-            <field name="name">Informe de Producto Descarte/Vana</field>
+        <record id="view_stock_vain_report_tree" model="ir.ui.view">
+            <field name="name">Informe de Producto Vana</field>
             <field name="model">stock.production.lot</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
@@ -18,18 +18,18 @@
                 </tree>
             </field>
         </record>
-        <record id="dimabe_manufacturing.stock_discart_report" model="ir.actions.act_window">
-            <field name="name">Informe de Producto Descarte/Vana</field>
+        <record id="dimabe_manufacturing.stock_vain_report" model="ir.actions.act_window">
+            <field name="name">Informe de Producto Vana</field>
             <field name="res_model">stock.production.lot</field>
             <field name="view_mode">tree,graph,form,pivot</field>
-            <field name="view_id" ref="view_stock_match_report_tree"/>
+            <field name="view_id" ref="view_stock_vain_report_tree"/>
             <field name="domain">
-                [('product_id.name','like','Descarte') , ('product_id.default_code','like','PSE006')]
+                [('product_id.name','like','Vana')]
             </field>
         </record>
-        <menuitem id="stock_report_discart_tree_menu"
-                  action="dimabe_manufacturing.stock_discart_report"
-                  name="Informe de Existencia Producto Descarte/Vana"
+        <menuitem id="stock_report_vain_tree_menu"
+                  action="dimabe_manufacturing.stock_vain_report"
+                  name="Informe de Existencia Producto Vana"
                   parent="stock_report_menu"
         />
     </data>
