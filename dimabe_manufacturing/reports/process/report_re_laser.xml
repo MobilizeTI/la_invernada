@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-        <record id="view_process_report_calibrate_tree" model="ir.ui.view">
+        <record id="view_process_report_re_laser_tree" model="ir.ui.view">
             <field name="name">Informe de Re-Proceso Descarte Láser</field>
             <field name="model">mrp.workorder</field>
             <field name="priority">20</field>
@@ -18,17 +18,17 @@
                 </tree>
             </field>
         </record>
-        <record id="dimabe_manufacturing.process_report_calibrate" model="ir.actions.act_window">
+        <record id="dimabe_manufacturing.process_report_re_laser" model="ir.actions.act_window">
             <field name="name">Informe de Re-Proceso Descarte Láser</field>
             <field name="res_model">mrp.workorder</field>
             <field name="view_mode">tree,form,pivot</field>
-            <field name="view_id" ref="view_process_report_calibrate_tree"/>
+            <field name="view_id" ref="view_process_report_re_laser_tree"/>
             <field name="domain">
                 [('workcenter_id.code','=','410-PDL')]
             </field>
         </record>
         <menuitem id="process_re_laser_menu"
-                  action="dimabe_manufacturing.process_report_calibrate"
+                  action="dimabe_manufacturing.process_report_re_laser"
                   name="Informe de Re-Proceso Descarte Láser"
                   parent="process_report_menu"
         />
