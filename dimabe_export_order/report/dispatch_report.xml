@@ -662,7 +662,6 @@
                                                 <td>
                                                     <t t-esc="'%02d:%02d' % (int(d.hour_departure),d.hour_departure % 1 * 60)"/>
                                                 </td>
-
                                             </tr>
                                         </table>
                                     </t>
