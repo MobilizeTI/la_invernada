@@ -303,7 +303,7 @@
                                                             <td><![CDATA[&nbsp;]]></td>
                                                             <td>N° Pedido:</td>
                                                             <td>
-                                                                <span t-field="d.name"/>
+                                                                <span t-field="d.origin"/>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -637,7 +637,7 @@
                                                 <td><![CDATA[&nbsp;]]></td>
                                                 <td>N° Pedido:</td>
                                                 <td>
-                                                    <span t-field="d.name"/>
+                                                    <span t-field="d.origin"/>
                                                 </td>
                                             </tr>
                                             <tr>
