@@ -262,7 +262,7 @@ class StockProductionLotSerial(models.Model):
             item.harvest = item.packaging_date.year
 
     @api.multi
-    @api.depends('packing_date')
+    @api.depends('packaging_date')
     def _compute_harvest_filter(self):
         for item in self:
             item.harvest_filter = item.packaging_date.year
