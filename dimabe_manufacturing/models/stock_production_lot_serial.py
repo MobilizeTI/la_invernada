@@ -265,7 +265,7 @@ class StockProductionLotSerial(models.Model):
     @api.depends('packing_date')
     def _compute_harvest_filter(self):
         for item in self:
-            item.harvest = item.packaging_date.year
+            item.harvest_filter = item.packaging_date.year
 
     @api.multi
     def _compute_best_before_date(self):
