@@ -94,7 +94,7 @@
                   EXPORTED BY (EXPORTADO POR):
                   <span t-esc="res_company.name"/>
                 </div>
-                <div>
+                <div style="font-size:10px;">
                   CONTIENE NUEZ
                 </div>
                 <div style="text-align:center;">
