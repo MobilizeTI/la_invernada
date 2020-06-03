@@ -162,7 +162,7 @@ class MrpWorkorder(models.Model):
     def show_out_serials(self):
         self.ensure_one()
         return {
-            'name': "Series de Entrada",
+            'name': "Series de Salida",
             'view_type': 'form',
             'view_mode': 'tree,graph,form,pivot',
             'res_model': 'stock.production.lot.serial',
