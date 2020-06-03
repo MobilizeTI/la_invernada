@@ -32,6 +32,8 @@
           <field name="product_variety"/>
           <field name="packaging_date"/>
           <field name="harvest"/>
+          <field name="reserved_to_production_id" string="Orden de Fabricacion"/>
+          <field name="sale_order_id"/>
           <field name="pallet_id"/>
           <field name="real_weight" />
         </tree>
@@ -51,6 +53,8 @@
           <field name="product_variety"/>
           <field name="packaging_date"/>
           <field name="harvest"/>
+          <field name="production_id" string="Orden de Fabricacion"/>
+          <field name="sale_order_id"/>
           <field name="pallet_id"/>
           <field name="real_weight" />
         </tree>
