@@ -122,13 +122,16 @@ class MrpWorkorder(models.Model):
 
     lot_produced_id = fields.Integer('Lote a producir', compute='_compute_lot_produced')
 
-    in_weight = fields.Float('Kilos Ingresados',compute='_compute_in_weight',digits=dp.get_precision('Product Unit of Measure'),store=True)
+    in_weight = fields.Float('Kilos Ingresados', compute='_compute_in_weight',
+                             digits=dp.get_precision('Product Unit of Measure'), store=True)
 
-    out_weight = fields.Float('Kilos Producido',compute='_compute_out_weight',digits=dp.get_precision('Product Unit of Measure'),store=True)
+    out_weight = fields.Float('Kilos Producido', compute='_compute_out_weight',
+                              digits=dp.get_precision('Product Unit of Measure'), store=True)
 
-    pt_out_weight = fields.Float('Kilos Producido del PT',compute='compute_pt_out_weight',digits=dp.get_precision('Product Unit of Meausure'),store=True)
+    pt_out_weight = fields.Float('Kilos Producido del PT', compute='_compute_pt_out_weight',
+                                 digits=dp.get_precision('Product Unit of Meausure'), store=True)
 
-    producers_id = fields.Many2many('res.partner','Productores',compute='_compute_producers_id')
+    producers_id = fields.Many2many('res.partner', 'Productores', compute='_compute_producers_id')
 
     @api.multi
     def _compute_producers_id(self):
@@ -151,7 +154,9 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_pt_out_weight(self):
         for item in self:
-            item.pt_out_weight = sum(item.summary_out_serial_ids.filtered(lambda a: a.product_id.id == item.product_id.id).mapped('real_weight'))
+            item.pt_out_weight = sum(
+                item.summary_out_serial_ids.filtered(lambda a: a.product_id.id == item.product_id.id).mapped(
+                    'real_weight'))
 
     @api.multi
     def show_in_serials(self):
@@ -163,11 +168,12 @@ class MrpWorkorder(models.Model):
             'res_model': 'stock.production.lot.serial',
             'view_id': False,
             'type': 'ir.actions.act_window',
-            'views': [[self.env.ref('dimabe_manufacturing.stock_production_lot_serial_process_in_form_view').id, 'tree']],
+            'views': [
+                [self.env.ref('dimabe_manufacturing.stock_production_lot_serial_process_in_form_view').id, 'tree']],
             'context': self.env.context,
-            'domain':[('id','in',self.potential_serial_planned_ids.mapped("id"))]
+            'domain': [('id', 'in', self.potential_serial_planned_ids.mapped("id"))]
         }
-    
+
     @api.multi
     def show_out_serials(self):
         self.ensure_one()
@@ -178,9 +184,10 @@ class MrpWorkorder(models.Model):
             'res_model': 'stock.production.lot.serial',
             'view_id': False,
             'type': 'ir.actions.act_window',
-            'views': [[self.env.ref('dimabe_manufacturing.stock_production_lot_serial_process_out_form_view').id, 'tree']],
+            'views': [
+                [self.env.ref('dimabe_manufacturing.stock_production_lot_serial_process_out_form_view').id, 'tree']],
             'context': self.env.context,
-            'domain':[('id','in',self.summary_out_serial_ids.mapped("id"))]
+            'domain': [('id', 'in', self.summary_out_serial_ids.mapped("id"))]
         }
 
     @api.multi
@@ -325,8 +332,8 @@ class MrpWorkorder(models.Model):
             ])
             if item not in stock_move.active_move_line_ids.mapped('lot_id'):
                 if not item.location_id:
-                   # item.location_id = item.stock_production_lot_serial_ids.mapped('production_id').location_dest_id
-                    raise models.ValidationError("Lote {} aun esta en proceso {}".format(item.name,item.location_id))
+                    # item.location_id = item.stock_production_lot_serial_ids.mapped('production_id').location_dest_id
+                    raise models.ValidationError("Lote {} aun esta en proceso {}".format(item.name, item.location_id))
                 if not self.lot_produced_id:
                     stock_move.update({
                         'active_move_line_ids': [
@@ -337,8 +344,8 @@ class MrpWorkorder(models.Model):
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
                                 'lot_produced_id': self.production_finished_move_line_ids.filtered(
                                     lambda a: a.product_id.id == self.product_id.id and a.lot_id).lot_id,
-                                'workorder_id':self.id,
-                                'production_id':self.production_id.id,
+                                'workorder_id': self.id,
+                                'production_id': self.production_id.id,
                                 'product_uom_id': stock_move.product_uom.id,
                                 'location_id': item.location_id.id,
                                 'location_dest_id': virtual_location_production_id.id
