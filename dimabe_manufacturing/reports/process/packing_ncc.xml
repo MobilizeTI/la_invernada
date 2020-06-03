@@ -21,6 +21,18 @@
                 </tree>
             </field>
         </record>
+        <record>
+            <field name="name">Pivote Proceso</field>
+            <field name="model">mrp.workorder</field>
+            <field name="inherit_id" ref="mrp.workcenter_line_pivot"/>
+            <field name="arch" type="xml">
+                <xpath expr="//pivot[1]" position="inside">
+                    <field name="in_weight"/>
+                    <field name="out_weight"/>
+                    <field name="pt_out_weight"/>
+                </xpath>
+            </field>
+        </record>
         <record id="mrp_workorder_search" model="ir.ui.view">
             <field name="name">mrp_workorder.search</field>
             <field name="model">mrp.workorder</field>

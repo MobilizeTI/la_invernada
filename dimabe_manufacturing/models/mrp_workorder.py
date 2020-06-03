@@ -124,7 +124,9 @@ class MrpWorkorder(models.Model):
 
     in_weight = fields.Float('Kilos Ingresados',compute='_compute_in_weight',digits=dp.get_precision('Product Unit of Measure'),store=True)
 
-    out_weight = fields.Float('Kilos Producido',compute='_compute_out_weight',digits=dp.get_precision('Product Unit of Measure'))
+    out_weight = fields.Float('Kilos Producido',compute='_compute_out_weight',digits=dp.get_precision('Product Unit of Measure'),store=True)
+
+    pt_out_weight = fields.Float('Kilos Producido del PT',compute='compute_pt_out_weight',digits=dp.get_precision('Product Unit of Meausure'),store=True)
 
     producers_id = fields.Many2many('res.partner','Productores',compute='_compute_producers_id')
 
@@ -139,10 +141,17 @@ class MrpWorkorder(models.Model):
         for item in self:
             item.in_weight = sum(item.potential_serial_planned_ids.mapped('real_weight'))
 
+    @api.depends('summary_out_serial_ids')
     @api.multi
     def _compute_out_weight(self):
         for item in self:
             item.out_weight = sum(item.summary_out_serial_ids.mapped('real_weight'))
+
+    @api.depends('summary_out_serial_ids')
+    @api.multi
+    def _compute_pt_out_weight(self):
+        for item in self:
+            item.pt_out_weight = sum(item.summary_out_serial_ids.filtered(lambda a: a.product_id.id == item.product_id.id).mapped('real_weight'))
 
     @api.multi
     def show_in_serials(self):
