@@ -18,7 +18,7 @@
       </field>
     </record>
 
-    <record id="stock_production_lot_serial_process_form_view" model="ir.ui.view">
+    <record id="stock_production_lot_serial_process_in_form_view" model="ir.ui.view">
       <field name="name">Series</field>
       <field name="model">stock.production.lot.serial</field>
       <field name="priority">20</field>
@@ -37,5 +37,25 @@
         </tree>
       </field>
     </record>
+        <record id="stock_production_lot_serial_process_out_form_view" model="ir.ui.view">
+      <field name="name">Series</field>
+      <field name="model">stock.production.lot.serial</field>
+      <field name="priority">20</field>
+      <field name="view_mode">tree,form</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="stock_production_lot_id" widget="many2onebutton"/>
+          <field name="serial_number"/>
+          <field name="producer_id" widget="many2onebutton"/>
+          <field name="product_id" widget="many2onebutton"/>
+          <field name="product_variety"/>
+          <field name="packaging_date"/>
+          <field name="harvest"/>
+          <field name="pallet_id"/>
+          <field name="real_weight" />
+        </tree>
+      </field>
+    </record>
+
   </data>
 </odoo>

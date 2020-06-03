@@ -23,6 +23,9 @@
                   attrs="{'invisible':[('state','=','done')]}"
                   group="base.group_system"
                   />
+          <button name="check_duplicate" string="Verificar Duplicados">
+
+          </button>
         </xpath>
         <button name="action_assign" position="replace">
         </button>
