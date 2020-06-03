@@ -214,16 +214,20 @@ class StockProductionLot(models.Model):
 
     serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed')
 
-    serial_available = fields.Many2many('stock.production.lot.serial',compute='_compute_serial_available')
+    serial_available = fields.Many2many('stock.production.lot.serial', compute='_compute_serial_available')
 
-    available_weight = fields.Float('Kilos Disponible',track_visibility='onchange')
+    available_weight = fields.Float('Kilos Disponible', store=True)
 
     show_guide_number = fields.Char('Guia', compute='_compute_guide_number')
 
     @api.multi
     def _compute_serial_available(self):
         for item in self:
-            item.serial_available = item.stock_production_lot_serial_ids.filtered(lambda a : not a.consumed)
+            item.serial_available = item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed)
+            query = "UPDATE stock_production_lot set available_weight = {} where id = {}".format(
+                sum(item.stock_production_lot_serial_ids.mapped('real_weight')), item.id)
+            cr = self._cr
+            cr.execute(query)
 
     @api.multi
     def _compute_guide_number(self):
@@ -237,7 +241,6 @@ class StockProductionLot(models.Model):
                 dried = self.env['dried.unpelled.history'].search(
                     [('out_lot_id', '=', item.id)])
                 item.show_guide_number = dried.lot_guide_numbers
-
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
