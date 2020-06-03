@@ -122,7 +122,7 @@ class MrpWorkorder(models.Model):
 
     lot_produced_id = fields.Integer('Lote a producir', compute='_compute_lot_produced')
 
-    in_weight = fields.Float('Kilos Ingresados',compute='_compute_in_weight',digits=dp.get_precision('Product Unit of Measure'))
+    in_weight = fields.Float('Kilos Ingresados',compute='_compute_in_weight',digits=dp.get_precision('Product Unit of Measure'),store=True)
 
     out_weight = fields.Float('Kilos Producido',compute='_compute_out_weight',digits=dp.get_precision('Product Unit of Measure'))
 
@@ -133,6 +133,7 @@ class MrpWorkorder(models.Model):
         for item in self:
             item.producers_id = item.potential_serial_planned_ids.mapped('producer_id')
 
+    @api.depends('potential_serial_planned_ids')
     @api.multi
     def _compute_in_weight(self):
         for item in self:

@@ -24,10 +24,9 @@
         <record id="view_pivot_process_ncc" model="ir.ui.view">
             <field name="name">Pivot Proceso NCC</field>
             <field name="model">mrp.workorder</field>
+            <field name="inherit_id" ref="mrp.workcenter_line_pivot"/>
             <field name="arch" type="xml">
-                <graph type="pivot">
-                    <field name="in_weight"/>
-                </graph>
+
             </field>
         </record>
         <record id="mrp_workorder_search" model="ir.ui.view">
