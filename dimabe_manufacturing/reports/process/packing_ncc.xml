@@ -21,7 +21,7 @@
                 </tree>
             </field>
         </record>
-        <record>
+        <record id="process_ncc_pivot" model="ir.ui.view">
             <field name="name">Pivote Proceso</field>
             <field name="model">mrp.workorder</field>
             <field name="inherit_id" ref="mrp.workcenter_line_pivot"/>
