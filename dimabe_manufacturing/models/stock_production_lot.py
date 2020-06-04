@@ -237,7 +237,7 @@ class StockProductionLot(models.Model):
                     serie = len(not_duplicates)
 
                 models._logger.error(item.name + '{}'.format(serie))
-                serial += serie + 1
+                serie += serie + 1
     @api.multi
     def _compute_serial_available(self):
         for item in self:
