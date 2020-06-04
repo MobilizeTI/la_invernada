@@ -221,13 +221,21 @@ class StockProductionLot(models.Model):
     show_guide_number = fields.Char('Guia', compute='_compute_guide_number')
 
     @api.multi
+    def check_duplicate(self):
+        for item in self:
+            not_duplicate = []
+            duplicate = []
+            for serial in item.stock_production_lot_serial_ids.mapped('serial_number'):
+                if serial not in not_duplicate:
+                    not_duplicate.append(serial)
+                else:
+                    duplicate.append(serial)
+
+    @api.multi
     def _compute_serial_available(self):
         for item in self:
             item.serial_available = item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed)
-            query = "UPDATE stock_production_lot set available_weight = {} where id = {}".format(
-                sum(item.stock_production_lot_serial_ids.mapped('real_weight')), item.id)
-            cr = self._cr
-            cr.execute(query)
+
 
     @api.multi
     def _compute_guide_number(self):
@@ -273,6 +281,10 @@ class StockProductionLot(models.Model):
     def _compute_serial_not_consumed(self):
         for item in self:
             item.serial_not_consumed = len(item.serial_available)
+            query = "UPDATE stock_production_lot set available_weight = {} where id = {}".format(
+                sum(item.stock_production_lot_serial_ids.mapped('real_weight')), item.id)
+            cr = self._cr
+            cr.execute(query)
 
     @api.onchange('serial_not_consumed')
     def _onchange_have_available_serial(self):
