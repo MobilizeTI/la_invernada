@@ -230,9 +230,9 @@ class StockProductionLot(models.Model):
                     not_duplicates.append(serial)
                 else:
                     duplicates.append(serial)
+            serie = len(not_duplicates)
             for duplicate in duplicates:
                 serial = self.env['stock.production.lot.serial'].search([('serial_number','=',duplicate)])
-                serie = len(not_duplicates)
                 serie += 1
                 models._logger.error(item.name + '{}'.format(serie))
                 serie += 1
