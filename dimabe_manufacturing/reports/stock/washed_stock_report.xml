@@ -25,7 +25,7 @@
       <field name="view_mode">tree,graph,form,pivot</field>
       <field name="view_id" ref="view_stock_washed_report_tree"/>
       <field name="domain">
-        [('product_id.categ_id.name','like','Lavado'),('product_id.name','not like','Descarte'),('product_id.name','not like','Vana'),('product_id.name','not like','(S)')]
+        [('product_id.default_code','like','PSE016'),('product_id.name','not like','Descarte'),('product_id.name','not like','Vana'),('product_id.name','not like','(S)')]
       </field>
     </record>
     <menuitem id="stock_report_washed_tree_menu"
