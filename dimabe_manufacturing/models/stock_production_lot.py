@@ -609,6 +609,8 @@ class StockProductionLot(models.Model):
                     counter += 1
                     tmp = '00{}'.format(counter)
                     serial.serial_number = item.name + tmp[-3:]
+            if len(item.stock_production_lot_serial_ids) > 999:
+                item.check_duplicate()
             return res
 
     @api.multi
