@@ -230,6 +230,7 @@ class StockProductionLot(models.Model):
                     not_duplicate.append(serial)
                 else:
                     duplicate.append(serial)
+            raise models.ValidationError(duplicate)
 
     @api.multi
     def _compute_serial_available(self):
