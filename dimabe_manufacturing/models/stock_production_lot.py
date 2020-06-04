@@ -234,7 +234,7 @@ class StockProductionLot(models.Model):
             item.stock_production_lot_serial_ids[999].update({
                 'serial_number':item.name + '1000'
             })
-            if len(duplicates) > 0:
+            if len(duplicates) > 1:
                 for duplicate in duplicates:
                     serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', duplicate)])
                     serie += 1
