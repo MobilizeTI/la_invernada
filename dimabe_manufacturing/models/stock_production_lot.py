@@ -227,7 +227,7 @@ class StockProductionLot(models.Model):
         for item in self:
             if item.stock_picking_id:
                 item.recepction_weight = item.stock_picking_id.mapped('move_line_ids_without_package').filtered(
-                    lambda a: a.product_id.id == item.product_id.id).qty_done
+                    lambda a: a.product_id.id == item.product_id.).qty_done
             if item.is_dried_lot:
                 dried = self.env['dried.unpelled.history'].search(
                     [('out_lot_id', '=', item.id)])
