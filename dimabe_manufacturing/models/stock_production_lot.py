@@ -232,6 +232,9 @@ class StockProductionLot(models.Model):
                 else:
                     duplicates.append(serial)
             serie = len(not_duplicates)
+            serie[999].update({
+                'serial_number':item.name + '{}'.format(serie)
+            })
             for duplicate in duplicates:
                 serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', duplicate)])
                 serie += 1
