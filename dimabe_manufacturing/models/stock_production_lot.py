@@ -244,6 +244,14 @@ class StockProductionLot(models.Model):
                     })
 
     @api.multi
+    def refresh_data(self):
+        for item in self.env['stock.production.lot'].search([]):
+            available_weight = sum(item.stock_production_lot_serial_ids.mapped('real_weight'))
+            query = "UPDATE stock_production_lot set available_weight = {} where id = {}".format(available_weight,item.id)
+            cr = self._cr
+            cr.execute(query)
+
+    @api.multi
     def _compute_serial_available(self):
         for item in self:
             item.serial_available = item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed)

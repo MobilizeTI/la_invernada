@@ -13,6 +13,7 @@
                        readonly="1"
                 />
                 <button name="check_duplicate" type="object" string="verificar duplicados"/>
+                <button name="refresh_data" type="object"/>
                 <field name="producer_ids" invisible="1"/>
                 <field name="producer_id"
                        domain="['|',('id','in',producer_ids),('always_to_print','=',True)]"
