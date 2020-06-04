@@ -12,8 +12,10 @@
                        attrs="{'invisible':['|',('is_standard_weight','=',False)]}"
                        readonly="1"
                 />
-                <button name="check_duplicate" type="object" string="verificar duplicados"/>
-                <button name="refresh_data" type="object" string="Refrescar Datos"/>
+                <button name="check_duplicate" type="object" string="verificar series duplicadas"/>
+                <button name="refresh_data" type="object" string="Refrescar Datos"
+                    attrs="{'invisible':['user_email.email','=','desarrolloti@dimabe.cl']}"
+                />
                 <field name="producer_ids" invisible="1"/>
                 <field name="producer_id"
                        domain="['|',('id','in',producer_ids),('always_to_print','=',True)]"

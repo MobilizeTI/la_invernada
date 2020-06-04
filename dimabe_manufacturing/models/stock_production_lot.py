@@ -222,6 +222,9 @@ class StockProductionLot(models.Model):
 
     reception_weight = fields.Float(compute='_compute_reception_weight')
 
+    user_email = fields.Many2one('res.users','Usuario Loggeado',default=lambda self: self.env.user.id)
+
+
     @api.multi
     def _compute_reception_weight(self):
         for item in self:
