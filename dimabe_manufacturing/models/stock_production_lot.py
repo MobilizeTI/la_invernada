@@ -220,6 +220,19 @@ class StockProductionLot(models.Model):
 
     show_guide_number = fields.Char('Guia', compute='_compute_guide_number')
 
+    reception_weight = fields.Float(compute='_compute_reception_weight')
+
+    @api.multi
+    def _compute_reception_weight(self):
+        for item in self:
+            if item.stock_picking_id:
+                item.recepction_weight = item.stock_picking_id.mapped('move_line_ids_without_package').filtered(
+                    lambda a: a.product_id.id == item.product_id.id).qty_done
+            if item.is_dried_lot:
+                dried = self.env['dried.unpelled.history'].search(
+                    [('out_lot_id', '=', item.id)])
+                item.recepction_weight = dried.total_out_weight
+
     @api.multi
     def check_duplicate(self):
         for item in self:
@@ -246,8 +259,10 @@ class StockProductionLot(models.Model):
     @api.multi
     def refresh_data(self):
         for item in self.env['stock.production.lot'].search([]):
-            available_weight = sum(item.stock_production_lot_serial_ids.filtered(lambda a : not a.consumed).mapped('real_weight'))
-            query = "UPDATE stock_production_lot set available_weight = {} where id = {}".format(available_weight,item.id)
+            available_weight = sum(
+                item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
+            query = "UPDATE stock_production_lot set available_weight = {} where id = {}".format(available_weight,
+                                                                                                 item.id)
             cr = self._cr
             cr.execute(query)
 

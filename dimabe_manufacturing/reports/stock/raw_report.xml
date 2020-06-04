@@ -16,7 +16,7 @@
           <field name="product_id" widget="many2onebutton" string="Producto"/>
           <field name="show_guide_number" string="N° Guia"/>
           <field name="harvest"/>
-          <field name="balance" string="Kilos Recepcionados"/>
+          <field name="recepcion_weight" string="Kilos Recepcionados"/>
           <field name="serial_not_consumed" string="Series Disponible"/>
           <field name="create_date" string="Fecha"/>
         </tree>
