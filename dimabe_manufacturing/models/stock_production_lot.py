@@ -235,6 +235,7 @@ class StockProductionLot(models.Model):
                     [('out_lot_id', '=', item.id)]).total_out_weight
                 item.reception_weight = location_id_dried
 
+
     @api.multi
     def check_duplicate(self):
         for item in self:
@@ -264,8 +265,7 @@ class StockProductionLot(models.Model):
         for item in self.env['stock.production.lot'].search([]):
             models._logger.error(item.name)
             available_weight = sum(item.serial_available.mapped('real_weight'))
-            query = 'UPDATE stock_production_lot set available_weight = {} where id =  {}'.format(available_weight,
-                                                                                                  item.id)
+            query = 'UPDATE stock_production_lot set available_weight = {} where id =  {}'.format(available_weight,item.id)
             cr = self._cr
             cr.execute(query)
 
@@ -318,7 +318,10 @@ class StockProductionLot(models.Model):
     def _compute_serial_not_consumed(self):
         for item in self:
             item.serial_not_consumed = len(item.serial_available)
-            self.refresh_data()
+            query = "UPDATE stock_production_lot set available_weight = {} where id = {}".format(
+                sum(item.serial_available.mapped('real_weight')), item.id)
+            cr = self._cr
+            cr.execute(query)
 
     @api.onchange('serial_not_consumed')
     def _onchange_have_available_serial(self):
@@ -407,6 +410,7 @@ class StockProductionLot(models.Model):
     #     self.all_pallet_ids.write({
     #         'producer_id': self.producer_id.id
     #     })
+
     @api.multi
     def _compute_all_pallet_ids(self):
         for item in self:
@@ -637,6 +641,7 @@ class StockProductionLot(models.Model):
                     tmp = '00{}'.format(counter)
                     serial.serial_number = item.name + tmp[-3:]
             if len(item.stock_production_lot_serial_ids) > 999:
+
                 item.check_duplicate()
             return res
 
