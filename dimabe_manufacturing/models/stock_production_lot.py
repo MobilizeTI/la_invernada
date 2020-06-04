@@ -223,7 +223,6 @@ class StockProductionLot(models.Model):
     @api.multi
     def check_duplicate(self):
         for item in self:
-            raise models.ValidationError(item.stock_production_lot_serial_ids[999].serial_number)
             not_duplicates = []
             duplicates = []
             for serial in item.stock_production_lot_serial_ids.mapped('serial_number'):
