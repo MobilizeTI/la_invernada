@@ -232,6 +232,8 @@ class StockProductionLot(models.Model):
                 dried = self.env['dried.unpelled.history'].search(
                     [('out_lot_id', '=', item.id)])
                 item.recepction_weight = dried.total_out_weight
+            else:
+                item.recepction_weight = 0.0
 
     @api.multi
     def check_duplicate(self):
