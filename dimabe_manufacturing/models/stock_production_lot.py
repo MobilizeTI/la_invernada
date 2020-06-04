@@ -232,14 +232,16 @@ class StockProductionLot(models.Model):
                     duplicates.append(serial)
             serie = len(not_duplicates)
             for duplicate in duplicates:
-                serial = self.env['stock.production.lot.serial'].search([('serial_number','=',duplicate)])
+                serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', duplicate)])
                 serie += 1
-                models._logger.error(item.name + '{}'.format(serie))
+                serial[1].update({
+                    'serial_number': item.name + '{}'.format(serie)
+                })
+
     @api.multi
     def _compute_serial_available(self):
         for item in self:
             item.serial_available = item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed)
-
 
     @api.multi
     def _compute_guide_number(self):
