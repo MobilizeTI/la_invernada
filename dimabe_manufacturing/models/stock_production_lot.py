@@ -233,7 +233,7 @@ class StockProductionLot(models.Model):
             for duplicate in duplicates:
                 serial = self.env['stock.production.lot.serial'].search([('serial_number','=',duplicate)])
                 tmp = '000{}'.format(1 + len(not_duplicates))
-                models._logger.error(item.name + tmp[:-4])
+                models._logger.error(item.name + tmp[:-3])
 
     @api.multi
     def _compute_serial_available(self):
