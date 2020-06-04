@@ -224,13 +224,15 @@ class StockProductionLot(models.Model):
     def check_duplicate(self):
         for item in self:
             not_duplicate = []
-            duplicate = []
-            for serial in item.stock_production_lot_serial_ids:
+            duplicates = []
+            for serial in item.stock_production_lot_serial_ids.mapped('serial_number'):
                 if serial not in not_duplicate:
-                    not_duplicate.append(serial)
+                    not_duplicates.append(serial)
                 else:
-                    duplicate.append(serial)
-            raise models.ValidationError(duplicate)
+                    duplicates.append(serial)
+            for duplicate in duplicates:
+                serial = self.env['stock.production.lot.serial'].search([('serial_number','=',duplicate)])
+                models._logger.error(serial)
 
     @api.multi
     def _compute_serial_available(self):
