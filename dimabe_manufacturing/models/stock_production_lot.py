@@ -225,16 +225,15 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_reception_weight(self):
         for item in self:
-            stock_quant = item.get_stock_quant()
             if not item.stock_picking_id:
                 weight = self.env['stock.picking'].search([('name', '=', item.name)])
-                item.recepcion_weight = weight.production_net_weight
+                item.reception_weight = weight.production_net_weight
             if item.stock_picking_id:
-                item.location_id = item.stock_picking_id.production_net_weight
+                item.reception_weight = item.stock_picking_id.production_net_weight
             if item.is_dried_lot:
                 location_id_dried = self.env['dried.unpelled.history'].search(
                     [('out_lot_id', '=', item.id)]).total_out_weight
-                item.location_id = location_id_dried
+                item.reception_weight = location_id_dried
 
 
     @api.multi
