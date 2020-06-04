@@ -2,7 +2,7 @@
 <odoo>
   <data>
     <record id="view_stock_service_report_tree" model="ir.ui.view">
-      <field name="name">Informe de Materia Prima Servicio</field>
+      <field name="name">Informe de Producto Lavado Servicio</field>
       <field name="model">stock.production.lot</field>
       <field name="priority">20</field>
       <field name="arch" type="xml">
@@ -26,7 +26,7 @@
       <field name="view_mode">tree,graph,form,pivot</field>
       <field name="view_id" ref="view_stock_service_report_tree"/>
       <field name="domain">
-        [('product_id.default_code','not like','MP'),('product_id.default_code','like','MPS'),('product_id.name','not like','Verde'),('id','!=',2)]
+        [('product_id.name','like','(S)'),('product_id.name','not like','(V)')]
       </field>
     </record>
 

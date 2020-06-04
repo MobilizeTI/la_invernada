@@ -1,11 +1,11 @@
 <odoo>
     <data>
         <record id="view_stock_discart_report_tree" model="ir.ui.view">
-            <field name="name">Informe de Producto Descarte/Vana</field>
+            <field name="name">Informe de Producto Descarte</field>
             <field name="model">stock.production.lot</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Producto Descarte/Vana">
+                <tree name="Informe de Producto Descarte">
                     <field name="producer_id" widget="many2onebutton" string="Productor"/>
                     <field name="name" widget="many2onebutton" string="Lote"/>
                     <field name="available_weight" string="Kilos"/>
@@ -19,7 +19,7 @@
             </field>
         </record>
         <record id="dimabe_manufacturing.stock_discart_report" model="ir.actions.act_window">
-            <field name="name">Informe de Producto Descarte/Vana</field>
+            <field name="name">Informe de Producto Descarte</field>
             <field name="res_model">stock.production.lot</field>
             <field name="view_mode">tree,graph,form,pivot</field>
             <field name="view_id" ref="view_stock_match_report_tree"/>

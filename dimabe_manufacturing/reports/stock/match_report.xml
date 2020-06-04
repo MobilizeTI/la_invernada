@@ -42,7 +42,7 @@
             <field name="view_mode">tree,graph,form,pivot</field>
             <field name="view_id" ref="view_stock_match_report_tree"/>
             <field name="domain">
-                ['|',('product_id.default_code','like','PSE004'),('product_id.default_code','like','PSE008'),('product_id.name','not like','Descarte')]
+                ['|',('product_id.default_code','like','PSE004'),('product_id.default_code','like','PSE008')]
             </field>
         </record>
         <menuitem id="stock_report_match_tree_menu"
