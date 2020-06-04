@@ -225,7 +225,7 @@ class StockProductionLot(models.Model):
         for item in self:
             not_duplicate = []
             duplicate = []
-            for serial in item.stock_production_lot_serial_ids.mapped('serial_number'):
+            for serial in item.stock_production_lot_serial_ids:
                 if serial not in not_duplicate:
                     not_duplicate.append(serial)
                 else:
