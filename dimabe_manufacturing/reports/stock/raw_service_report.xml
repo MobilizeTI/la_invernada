@@ -9,14 +9,14 @@
         <tree name="Informe de Materia Prima Servicio">
           <field name="producer_id" widget="many2onebutton" string="Productor"/>
           <field name="name" widget="many2onebutton" string="Lote"/>
-          <field name="available_weight" string="Kilos"/>
+          <field name="available_weight" string="Kilos Disponible"/>
           <field name="product_variety" string="Variedad"/>
           <field name="product_caliber" string="Calibre"/>
           <field name="location_id" widget="many2onebutton" string="Ubicacion"/>
           <field name="product_id" widget="many2onebutton" string="Producto"/>
           <field name="show_guide_number" string="N° Guia"/>
           <field name="serial_not_consumed" string="Series Disponible"/>
-          <field name="create_date" string="Fecha"/>
+          <field name="create_date" string="Fecha de Creacion"/>
         </tree>
       </field>
     </record>
@@ -26,7 +26,7 @@
       <field name="view_mode">tree,graph,form,pivot</field>
       <field name="view_id" ref="view_stock_service_report_tree"/>
       <field name="domain">
-        [('product_id.name','like','(S)'),('product_id.name','not like','(V)')]
+        [('product_id.default_code','like','MPS'),('product_id.name','not like','Verde'),('id','!=',2)]
       </field>
     </record>
 

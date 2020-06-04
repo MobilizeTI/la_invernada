@@ -214,16 +214,65 @@ class StockProductionLot(models.Model):
 
     serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed')
 
-    serial_available = fields.Many2many('stock.production.lot.serial',compute='_compute_serial_available')
+    serial_available = fields.Many2many('stock.production.lot.serial', compute='_compute_serial_available')
 
-    available_weight = fields.Float('Kilos Disponible',track_visibility='onchange')
+    available_weight = fields.Float('Kilos Disponible', store=True)
 
     show_guide_number = fields.Char('Guia', compute='_compute_guide_number')
+
+    reception_weight = fields.Float(compute='_compute_reception_weight')
+
+    @api.multi
+    def _compute_reception_weight(self):
+        for item in self:
+            if not item.stock_picking_id:
+                weight = self.env['stock.picking'].search([('name', '=', item.name)])
+                item.reception_weight = weight.production_net_weight
+            if item.stock_picking_id:
+                item.reception_weight = item.stock_picking_id.production_net_weight
+            if item.is_dried_lot:
+                location_id_dried = self.env['dried.unpelled.history'].search(
+                    [('out_lot_id', '=', item.id)]).total_out_weight
+                item.reception_weight = location_id_dried
+
+
+    @api.multi
+    def check_duplicate(self):
+        for item in self:
+            if len(item.stock_production_lot_serial_ids) > 999:
+                not_duplicates = []
+                duplicates = []
+                for serial in item.stock_production_lot_serial_ids.mapped('serial_number'):
+                    if serial not in not_duplicates:
+                        not_duplicates.append(serial)
+                    else:
+                        duplicates.append(serial)
+                serie = len(not_duplicates)
+
+                if len(duplicates) > 1:
+                    item.stock_production_lot_serial_ids[999].update({
+                        'serial_number': item.name + '1000'
+                    })
+                    for duplicate in duplicates:
+                        serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', duplicate)])
+                        serie += 1
+                        serial[1].update({
+                            'serial_number': item.name + '{}'.format(serie)
+                        })
+
+    @api.multi
+    def refresh_data(self):
+        for item in self.env['stock.production.lot'].search([]):
+            models._logger.error(item.name)
+            available_weight = sum(item.serial_available.mapped('real_weight'))
+            query = 'UPDATE stock_production_lot set available_weight = {} where id =  {}'.format(available_weight,item.id)
+            cr = self._cr
+            cr.execute(query)
 
     @api.multi
     def _compute_serial_available(self):
         for item in self:
-            item.serial_available = item.stock_production_lot_serial_ids.filtered(lambda a : not a.consumed)
+            item.serial_available = item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed)
 
     @api.multi
     def _compute_guide_number(self):
@@ -237,7 +286,6 @@ class StockProductionLot(models.Model):
                 dried = self.env['dried.unpelled.history'].search(
                     [('out_lot_id', '=', item.id)])
                 item.show_guide_number = dried.lot_guide_numbers
-
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
@@ -270,6 +318,10 @@ class StockProductionLot(models.Model):
     def _compute_serial_not_consumed(self):
         for item in self:
             item.serial_not_consumed = len(item.serial_available)
+            query = "UPDATE stock_production_lot set available_weight = {} where id = {}".format(
+                sum(item.serial_available.mapped('real_weight')), item.id)
+            cr = self._cr
+            cr.execute(query)
 
     @api.onchange('serial_not_consumed')
     def _onchange_have_available_serial(self):
@@ -588,6 +640,9 @@ class StockProductionLot(models.Model):
                     counter += 1
                     tmp = '00{}'.format(counter)
                     serial.serial_number = item.name + tmp[-3:]
+            if len(item.stock_production_lot_serial_ids) > 999:
+
+                item.check_duplicate()
             return res
 
     @api.multi
@@ -611,7 +666,8 @@ class StockProductionLot(models.Model):
                     'pallet_id': pallet.id,
                     'producer_id': pallet.producer_id.id
                 })
-
+                if len(item.stock_production_lot_serial_ids) > 999:
+                    item.check_duplicate()
             pallet.update({
                 'state': 'close'
             })

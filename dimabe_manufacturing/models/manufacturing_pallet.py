@@ -114,6 +114,7 @@ class ManufacturingPallet(models.Model):
         for item in self:
             item.lot_id = item.lot_serial_ids.mapped('stock_production_lot_id')
 
+    @api.depends('lot_serial_ids')
     @api.multi
     def _compute_available_weight(self):
         for item in self:
