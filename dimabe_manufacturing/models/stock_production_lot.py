@@ -265,9 +265,9 @@ class StockProductionLot(models.Model):
         for item in self.env['stock.production.lot'].search([]):
             models._logger.error(item.name)
             available_weight = sum(item.serial_available.mapped('real_weight'))
-            item.write({
-                'available_weight':available_weight
-            })
+            query = 'UPDATE stock_production_lot set available_weight = {} where id =  {}'.format(available_weight,item.id)
+            cr = self._cr
+            cr.execute(query)
 
     @api.multi
     def _compute_serial_available(self):
