@@ -223,10 +223,10 @@ class StockProductionLot(models.Model):
     @api.multi
     def check_duplicate(self):
         for item in self:
-            not_duplicate = []
+            not_duplicates = []
             duplicates = []
             for serial in item.stock_production_lot_serial_ids.mapped('serial_number'):
-                if serial not in not_duplicate:
+                if serial not in not_duplicates:
                     not_duplicates.append(serial)
                 else:
                     duplicates.append(serial)
