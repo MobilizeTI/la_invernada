@@ -239,25 +239,26 @@ class StockProductionLot(models.Model):
     @api.multi
     def check_duplicate(self):
         for item in self:
-            not_duplicates = []
-            duplicates = []
-            for serial in item.stock_production_lot_serial_ids.mapped('serial_number'):
-                if serial not in not_duplicates:
-                    not_duplicates.append(serial)
-                else:
-                    duplicates.append(serial)
-            serie = len(not_duplicates)
+            if len(item.stock_production_lot_serial_ids) > 999:
+                not_duplicates = []
+                duplicates = []
+                for serial in item.stock_production_lot_serial_ids.mapped('serial_number'):
+                    if serial not in not_duplicates:
+                        not_duplicates.append(serial)
+                    else:
+                        duplicates.append(serial)
+                serie = len(not_duplicates)
 
-            if len(duplicates) > 1:
-                item.stock_production_lot_serial_ids[999].update({
-                    'serial_number': item.name + '1000'
-                })
-                for duplicate in duplicates:
-                    serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', duplicate)])
-                    serie += 1
-                    serial[1].update({
-                        'serial_number': item.name + '{}'.format(serie)
+                if len(duplicates) > 1:
+                    item.stock_production_lot_serial_ids[999].update({
+                        'serial_number': item.name + '1000'
                     })
+                    for duplicate in duplicates:
+                        serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', duplicate)])
+                        serie += 1
+                        serial[1].update({
+                            'serial_number': item.name + '{}'.format(serie)
+                        })
 
     @api.multi
     def refresh_data(self):
@@ -641,6 +642,7 @@ class StockProductionLot(models.Model):
                     tmp = '00{}'.format(counter)
                     serial.serial_number = item.name + tmp[-3:]
             if len(item.stock_production_lot_serial_ids) > 999:
+
                 item.check_duplicate()
             return res
 
