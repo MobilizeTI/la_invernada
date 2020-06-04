@@ -231,7 +231,7 @@ class StockProductionLot(models.Model):
                 else:
                     duplicates.append(serial)
             serie = len(not_duplicates)
-            serie[999].update({
+            item.stock_production_lot_serial_ids[999].update({
                 'serial_number':item.name + '{}'.format(serie)
             })
             for duplicate in duplicates:
