@@ -623,7 +623,8 @@ class StockProductionLot(models.Model):
 
             for counter in range(item.qty_standard_serial):
                 tmp = '00{}'.format(1 + len(item.stock_production_lot_serial_ids))
-
+                if len(item.stock_production_lot_serial_ids) > 999:
+                    tmp = '000{}'.format(1 + len(item.stock_production_lot_serial_ids))
                 item.env['stock.production.lot.serial'].create({
                     'stock_production_lot_id': item.id,
                     'display_weight': item.product_id.weight,
