@@ -264,8 +264,7 @@ class StockProductionLot(models.Model):
     def refresh_data(self):
         for item in self.env['stock.production.lot'].search([]):
             models._logger.error(item.name)
-            available_weight = sum(
-                item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
+            available_weight = sum(item.serial_available.mapped('real_weight'))
             item.write({
                 'available_weight':available_weight
             })
