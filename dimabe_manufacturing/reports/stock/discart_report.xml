@@ -8,13 +8,13 @@
                 <tree name="Informe de Producto Descarte">
                     <field name="producer_id" widget="many2onebutton" string="Productor"/>
                     <field name="name" widget="many2onebutton" string="Lote"/>
-                    <field name="available_weight" string="Kilos"/>
+                    <field name="available_weight" string="Kilos Disponibles"/>
                     <field name="product_variety" string="Variedad"/>
                     <field name="product_caliber" string="Calibre"/>
                     <field name="location_id" widget="many2onebutton" string="Ubicacion"/>
                     <field name="product_id" widget="many2onebutton" string="Producto"/>
                     <field name="serial_not_consumed" string="Series Disponible"/>
-                    <field name="create_date" string="Fecha"/>
+                    <field name="create_date" string="Fecha de Creacion"/>
                 </tree>
             </field>
         </record>
