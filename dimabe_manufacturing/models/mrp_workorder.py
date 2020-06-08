@@ -337,7 +337,7 @@ class MrpWorkorder(models.Model):
                     if check.quality_state == 'none' and check.qty_done > 0:
                         self.action_next()
 
-        self.action_first_skipped_step()
+            self.action_first_skipped_step()
         return super(MrpWorkorder, self).open_tablet_view()
 
 
