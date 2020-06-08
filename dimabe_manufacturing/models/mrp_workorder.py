@@ -325,6 +325,8 @@ class MrpWorkorder(models.Model):
             if not check.component_is_byproduct:
                 check.qty_done = 0
                 self.action_skip()
+                if check.component_id.id == 2794:
+                    raise models.ValidationError(check.lot_id)
             else:
                 if not check.lot_id:
                     lot_tmp = self.env['stock.production.lot'].create({
@@ -332,6 +334,8 @@ class MrpWorkorder(models.Model):
                         'product_id': check.component_id.id,
                         'is_prd_lot': True
                     })
+                    if check.component_id.id == 2794:
+                        raise models.ValidationError(check.lot_id)
                     check.lot_id = lot_tmp.id
                     check.qty_done = self.component_remaining_qty
                     if check.quality_state == 'none':
