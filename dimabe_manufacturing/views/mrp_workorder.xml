@@ -116,6 +116,7 @@
                                 />
                             </tree>
                         </field>
+                        <field name="in_weight" string="Total:"/>
                     </page>
                 </xpath>
                 <xpath expr="//page[3]" position="after">
