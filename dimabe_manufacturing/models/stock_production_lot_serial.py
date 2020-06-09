@@ -356,7 +356,7 @@ class StockProductionLotSerial(models.Model):
             )
         models._logger.error(self.id)
         self.update({
-            'stock_production_lot_id':null
+            'stock_production_lot_id':None
         })
 
     @api.multi
