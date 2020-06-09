@@ -637,10 +637,8 @@ class StockProductionLot(models.Model):
             if not item.is_standard_weight:
                 for serial in item.stock_production_lot_serial_ids:
                     if not serial.serial_number:
-                        if item.item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[
-                            -1].serial_number:
-                            counter = int(item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[
-                                              -1].serial_number) + 1
+                        if item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[-1].serial_number:
+                            counter = int(item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[-1].serial_number) + 1
                         else:
                             counter = 1
                         tmp = '00{}'.format(counter)
