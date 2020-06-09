@@ -134,6 +134,12 @@ class MrpWorkorder(models.Model):
 
     producers_id = fields.Many2many('res.partner', 'Productores', compute='_compute_producers_id')
 
+    pallet_qty = fields.Integer('Cantidad de Pallets',compute='_compute_pallet_qty')
+
+    @api.multi
+    def _compute_pallet_qty(self):
+        for item in self:
+            item.pallet_qty = len(item.manufacturing_pallet_ids)
 
     @api.multi
     def _compute_producers_id(self):

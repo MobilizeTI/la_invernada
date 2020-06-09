@@ -74,6 +74,8 @@
                 <xpath expr="//sheet/group" position="inside">
                     <group>
                         <field name="positioning_state"/>
+                        <field name="in_weight"/>
+                        <field name="out_weight"/>
                     </group>
                 </xpath>
                 <field name="final_lot_id" position="attributes">
@@ -116,12 +118,13 @@
                                 />
                             </tree>
                         </field>
-                        <field name="in_weight" string="Total:"/>
+                        <field name="in_weight"/>
                     </page>
                 </xpath>
                 <xpath expr="//page[3]" position="after">
                     <page string="Pallets">
                         <field name="manufacturing_pallet_ids"/>
+                        <field name="pallet_qty"/>
                     </page>
                 </xpath>
             </field>
