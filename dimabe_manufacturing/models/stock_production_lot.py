@@ -635,12 +635,12 @@ class StockProductionLot(models.Model):
         for item in self:
             res = super(StockProductionLot, self).write(values)
             counter = 0
-            if not item.is_standard_weight:
-                for serial in item.stock_production_lot_serial_ids:
-                    # counter += 1
-                    # tmp = '00{}'.format(counter)
-                    # serial.serial_number = item.name + tmp[-3:]
-                    raise models.ValidationError(serial)
+            # if not item.is_standard_weight:
+            #     for serial in item.stock_production_lot_serial_ids:
+            #         # counter += 1
+            #         # tmp = '00{}'.format(counter)
+            #         # serial.serial_number = item.name + tmp[-3:]
+            #         raise models.ValidationError(serial)
             if len(item.stock_production_lot_serial_ids) > 999:
 
                 item.check_duplicate()
