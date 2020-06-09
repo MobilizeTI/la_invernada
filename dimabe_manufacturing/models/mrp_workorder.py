@@ -125,11 +125,11 @@ class MrpWorkorder(models.Model):
     in_weight = fields.Float('Kilos Ingresados', compute='_compute_in_weight',
                              digits=dp.get_precision('Product Unit of Measure'), store=True)
 
-    out_weight = fields.Float('Kilos Producido', compute='_compute_out_weight',
+    out_weight = fields.Float('Kilos Producidos', compute='_compute_out_weight',
                               digits=dp.get_precision('Product Unit of Measure'), store=True)
 
 
-    pt_out_weight = fields.Float('Kilos Producido del PT', compute='_compute_pt_out_weight',
+    pt_out_weight = fields.Float('Kilos Producidos del PT', compute='_compute_pt_out_weight',
                                  digits=dp.get_precision('Product Unit of Meausure'), store=True)
 
     producers_id = fields.Many2many('res.partner', 'Productores', compute='_compute_producers_id')
