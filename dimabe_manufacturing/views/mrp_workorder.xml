@@ -118,13 +118,13 @@
                                 />
                             </tree>
                         </field>
-                        <field name="in_weight"/>
+                        <strong>Total Ingresado:</strong><field name="in_weight"/>
                     </page>
                 </xpath>
                 <xpath expr="//page[3]" position="after">
                     <page string="Pallets">
                         <field name="manufacturing_pallet_ids"/>
-                        <field name="pallet_qty"/>
+                        <strong>Total de Pallet:</strong><field name="pallet_qty"/>
                     </page>
                 </xpath>
             </field>
