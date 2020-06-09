@@ -235,7 +235,6 @@ class StockProductionLot(models.Model):
                     [('out_lot_id', '=', item.id)]).total_out_weight
                 item.reception_weight = location_id_dried
 
-
     @api.multi
     def check_duplicate(self):
         for item in self:
@@ -265,7 +264,8 @@ class StockProductionLot(models.Model):
         for item in self.env['stock.production.lot'].search([]):
             models._logger.error(item.name)
             available_weight = sum(item.serial_available.mapped('real_weight'))
-            query = 'UPDATE stock_production_lot set available_weight = {} where id =  {}'.format(available_weight,item.id)
+            query = 'UPDATE stock_production_lot set available_weight = {} where id =  {}'.format(available_weight,
+                                                                                                  item.id)
             cr = self._cr
             cr.execute(query)
 
@@ -637,9 +637,10 @@ class StockProductionLot(models.Model):
             if not item.is_standard_weight:
                 for serial in item.stock_production_lot_serial_ids:
                     if not serial.serial_number:
-                        raise models.ValidationError(item.stock_production_lot_serial_ids.filtered(lambda a : a.serial_number))
-                        if item.stock_production_lot_serial_ids[-1].serial_number:
-                            counter = int(item.stock_production_lot_serial_ids[-1].serial_number) + 1
+                        if item.item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[
+                            -1].serial_number:
+                            counter = int(item.item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[
+                                              -1].serial_number) + 1
                         else:
                             counter = 1
                         tmp = '00{}'.format(counter)
