@@ -347,7 +347,6 @@ class StockProductionLotSerial(models.Model):
 
     @api.model
     def unlink(self):
-        raise models.ValidationError(self.serial_number)
         if self.consumed:
             raise models.ValidationError(
                 'este código {} ya fue consumido, no puede ser eliminado'.format(
@@ -355,7 +354,10 @@ class StockProductionLotSerial(models.Model):
                 )
 
             )
-        return super(StockProductionLotSerial, self).unlink()
+        models._logger.error(self.id)
+        self.update({
+            'stock_production_lot_id':null
+        })
 
     @api.multi
     def delete(self):
