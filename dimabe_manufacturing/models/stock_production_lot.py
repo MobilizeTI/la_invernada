@@ -636,15 +636,14 @@ class StockProductionLot(models.Model):
             write_date = self.write_date
             res = super(StockProductionLot, self).write(values)
             if not item.is_standard_weight:
-                if write_date == self.write_date:
-                    for serial in item.stock_production_lot_serial_ids:
-                        if not serial.serial_number:
-                            if item.stock_production_lot_serial_ids[-1].serial_number:
-                                counter = int(item.stock_production_lot_serial_ids[-1].serial_number) + 1
-                            else:
-                                counter = 1
-                            tmp = '00{}'.format(counter)
-                            serial.serial_number = item.name + tmp[-3:]
+                for serial in item.stock_production_lot_serial_ids:
+                    if not serial.serial_number:
+                        if item.stock_production_lot_serial_ids[-1].serial_number:
+                            counter = int(item.stock_production_lot_serial_ids[-1].serial_number) + 1
+                        else:
+                            counter = 1
+                        tmp = '00{}'.format(counter)
+                        serial.serial_number = item.name + tmp[-3:]
             if len(item.stock_production_lot_serial_ids) > 999:
                 item.check_duplicate()
             return res
