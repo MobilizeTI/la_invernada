@@ -122,25 +122,6 @@ class MrpProduction(models.Model):
 
     manufactureable = fields.Many2many('product.product', compute='get_product_route')
 
-    @api.multi
-    def fix_moves(self):
-        for item in self:
-
-            for move in item.move_raw_ids:
-                for line in move.active_move_line_ids:
-                    for lot in move.active_move_line_ids.mapped('lot_id'):
-                        if line.lot_id.id == lot.id:
-                            line = move.active_move_line_ids.filtered(lambda a: a.lot_id.id == lot.id)[0]
-                            line.update(
-                                {
-                                    'qty_done': sum(
-                                        move.active_move_line_ids.filtered(lambda a: a.lot_id.id == lot.id).mapped(
-                                            'qty_done'))
-                                }
-                            )
-                move.update({
-                    'reserved_availability': 0
-                })
 
     @api.multi
     def _compute_pt_balance(self):
@@ -232,7 +213,10 @@ class MrpProduction(models.Model):
     @api.multi
     def button_mark_done(self):
         self.calculate_done()
+        moves_to_do = self.move_raw_ids.filtered(lambda x: x.state not in ('done', 'cancel'))
+        moves_to_do._action_done()
         res = super(MrpProduction, self).button_mark_done()
+
         serial_to_reserve_ids = self.workorder_ids.mapped('production_finished_move_line_ids').mapped(
             'lot_id').filtered(
             lambda a: a.product_id in self.stock_picking_id.move_ids_without_package.mapped('product_id')
@@ -297,6 +281,17 @@ class MrpProduction(models.Model):
             'has_mrp_production': True
         })
         return res
+
+    @api.multi
+    def fix_reserved(self):
+        for item in self:
+            mrp_workorder = self.env['mrp.workorder'].search([('production_id', '=', item.id)])
+            raise models.ValidationError(mrp_workorder)
+            for move in item.move_raw_ids:
+                if move.reserved_availability > 0:
+                    query = 'DELETE FROM stock_move_line where move_id = {}'.format(move.id)
+                    cr = self._cr
+                    cr.execute(query)
 
     # @api.multi
     # def action_cancel(self):

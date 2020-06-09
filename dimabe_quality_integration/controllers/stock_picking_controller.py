@@ -11,7 +11,7 @@ class StockPickingController(http.Controller):
     def get_stock_pickings(self, sinceDate = None):
         date_to_search = sinceDate or (date.today() - timedelta(days=1))
 
-        result = request.env['stock.picking'].search([('write_date', '>=', date_to_search)])
+        result = request.env['stock.picking'].search([])
         data = []
         if result:
             for res in result:
@@ -20,8 +20,8 @@ class StockPickingController(http.Controller):
                 'ProducerName': res.partner_id.name,
                 'VarietyName': res.get_mp_move().product_id.get_variety(),
                 'LotNumber': res.name,
-                'DispatchGuideNumber': res.reception_guide_number,
-                'ReceptionDate': res.scheduled_date,
+                'DispatchGuideNumber': res.guide_number,
+                'ReceptionDate': res.scheduled_date or res.write_date,
                 'ReceptionKgs': res.production_net_weight,
                 'ContainerType': res.get_canning_move().product_id.display_name,
                 'ContainerWeightAverage': res.avg_unitary_weight,
@@ -46,7 +46,7 @@ class StockPickingController(http.Controller):
                 'ProducerName': res.partner_id.name,
                 'VarietyName': res.get_mp_move().product_id.get_variety(),
                 'LotNumber': res.name,
-                'DispatchGuideNumber': res.reception_guide_number,
+                'DispatchGuideNumber': res.guide_number,
                 'ReceptionDate': res.scheduled_date,
                 'ReceptionKgs': res.production_net_weight,
                 'ContainerType': res.get_canning_move().product_id.display_name,

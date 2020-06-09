@@ -9,25 +9,26 @@
         <tree name="Informe de Materia Prima">
           <field name="producer_id" widget="many2onebutton" string="Productor"/>
           <field name="name" widget="many2onebutton" string="Lote"/>
-          <field name="available_weight" string="Kilos"/>
+          <field name="available_weight" string="Kilos Disponible"/>
           <field name="product_variety" string="Variedad"/>
           <field name="product_caliber" string="Calibre"/>
           <field name="location_id" widget="many2onebutton" string="Ubicacion"/>
           <field name="product_id" widget="many2onebutton" string="Producto"/>
-          <field name="reception_guide_number" string="N° Guia"/>
+          <field name="show_guide_number" string="N° Guia"/>
           <field name="harvest"/>
+          <field name="reception_weight" string="Kilos Recepcionados"/>
           <field name="serial_not_consumed" string="Series Disponible"/>
+          <field name="create_date" string="Fecha"/>
         </tree>
       </field>
     </record>
     <record id="dimabe_manufacturing.stock_report" model="ir.actions.act_window">
       <field name="name">Informe de Materia prima</field>
       <field name="res_model">stock.production.lot</field>
-      <field name="view_mode">tree,graph,form</field>
+      <field name="view_mode">tree,graph,form,pivot</field>
       <field name="view_id" ref="view_stock_report_tree"/>
       <field name="domain">
-        [('product_id.default_code','like','MP'),('product_id.default_code','not like','MPS'),('product_id.name','not \
-        like','Verde'),('id','!=',2),('available_weight','!=',0)]
+        [('product_id.default_code','like','MP'),('product_id.default_code','not like','MPS'),('product_id.name','not like','Verde'),('id','!=',2)]
       </field>
     </record>
     <record id="search_raw_report_view" model="ir.ui.view">

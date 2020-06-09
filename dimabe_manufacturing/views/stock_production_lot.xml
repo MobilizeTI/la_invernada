@@ -12,9 +12,12 @@
                        attrs="{'invisible':['|',('is_standard_weight','=',False)]}"
                        readonly="1"
                 />
+                <button name="check_duplicate" type="object" string="verificar duplicados"/>
+                <button name="refresh_data" type="object" string="Refrescar Datos"/>
                 <field name="producer_ids" invisible="1"/>
                 <field name="producer_id"
                        domain="['|',('id','in',producer_ids),('always_to_print','=',True)]"
+                       required="1"
                 />
                 <field name="qty_standard_serial"
                        attrs="{'invisible':['|',('is_standard_weight','=',False),('can_add_serial','=',False)]}"
@@ -74,6 +77,7 @@
                         />
                     </tree>
                 </field>
+
                 <field name="all_pallet_ids"
                        attrs="{'invisible':[('is_standard_weight','=',False)]}"
                 />

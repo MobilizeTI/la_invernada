@@ -97,11 +97,11 @@ class ManufacturingPallet(models.Model):
 
     measure = fields.Char('Medida',related='product_id.measure')
 
-    sale_order_id = fields.Many2one('sale.order',compute='_compute_sale_order_id')
+    sale_order_id = fields.Many2one('sale.order',compute='_compute_sale_order_id',store=True)
 
     dest_client_id = fields.Many2one('res.partner',compute='_compute_dest_client_id')
 
-    dest_country_id = fields.Many2one('res.country',compute='_compute_dest_country_id')
+    dest_country_id = fields.Many2one('res.country',compute='_compute_dest_country_id',store=True)
 
     available_weight = fields.Float('Kilos Disponible',compute='_compute_available_weight',store=True)
 
@@ -114,6 +114,7 @@ class ManufacturingPallet(models.Model):
         for item in self:
             item.lot_id = item.lot_serial_ids.mapped('stock_production_lot_id')
 
+    @api.depends('lot_serial_ids')
     @api.multi
     def _compute_available_weight(self):
         for item in self:
@@ -129,11 +130,13 @@ class ManufacturingPallet(models.Model):
         for item in self:
             item.dest_client_id = item.sale_order_id.partner_id
 
+    @api.depends('sale_order_id')
     @api.multi
-    def _compute_dest_client_id(self):
+    def _compute_dest_country_id(self):
         for item in self:
             item.dest_country_id = item.sale_order_id.partner_id.country_id
 
+    @api.depends('lot_serial_ids')
     @api.multi
     def _compute_sale_order_id(self):
         for item in self:

@@ -43,6 +43,7 @@ class ProductProduct(models.Model):
                 if "Saco 25K" == value:
                     item.measure = '25 Kilos'
 
+
     @api.multi
     def _compute_caliber(self):
         for item in self:
@@ -86,6 +87,7 @@ class ProductProduct(models.Model):
                 item.update({
                     'is_to_manufacturing': True
                 })
+
 
     @api.multi
     def _compute_variety(self):

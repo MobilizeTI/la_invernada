@@ -1,11 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
   <data>
-    <record id="view_stock_washed_report_tree" model="ir.ui.view">
-      <field name="name">Informe de Producto Lavado</field>
+    <record id="view_stock_washed_service_report_tree" model="ir.ui.view">
+      <field name="name">Informe de Producto Lavado Servicio</field>
       <field name="model">stock.production.lot</field>
       <field name="priority">20</field>
       <field name="arch" type="xml">
-        <tree name="Informe de Producto Lavado">
+        <tree name="Informe de Producto Lavado Servicio">
           <field name="producer_id" widget="many2onebutton" string="Productor"/>
           <field name="name" widget="many2onebutton" string="Lote"/>
           <field name="available_weight" string="Kilos Disponibles"/>
@@ -13,24 +14,25 @@
           <field name="product_caliber" string="Calibre"/>
           <field name="location_id" widget="many2onebutton" string="Ubicacion"/>
           <field name="product_id" widget="many2onebutton" string="Producto"/>
-          <field name="reception_guide_number" string="N° Guia"/>
+          <field name="show_guide_number" string="N° Guia"/>
           <field name="serial_not_consumed" string="Series Disponible"/>
-          <field name="create_date" string="Fecha de Creacion"/>
+          <field name="create_date" string="Fecha"/>
         </tree>
       </field>
     </record>
-    <record id="dimabe_manufacturing.stock_washed_report" model="ir.actions.act_window">
-      <field name="name">Informe de Producto Lavado</field>
+    <record id="dimabe_manufacturing.stock_washed_service_report" model="ir.actions.act_window">
+      <field name="name">Informe de Producto Lavado Servicio</field>
       <field name="res_model">stock.production.lot</field>
       <field name="view_mode">tree,graph,form,pivot</field>
-      <field name="view_id" ref="view_stock_washed_report_tree"/>
+      <field name="view_id" ref="view_stock_service_report_tree"/>
       <field name="domain">
-        [('product_id.default_code','like','PSE016'),('product_id.name','not like','Descarte'),('product_id.name','not like','Vana'),('product_id.name','not like','(S)')]
+        [('product_id.default_code','like','PSES016')]
       </field>
     </record>
-    <menuitem id="stock_report_washed_tree_menu"
-              action="dimabe_manufacturing.stock_washed_report"
-              name="Informe de Existencia Producto Lavado"
+
+    <menuitem id="stock_washed_service_report_tree_menu"
+              action="dimabe_manufacturing.stock_washed_service_report"
+              name="Informe de Existencia Producto Lavado Servico"
               parent="stock_report_menu"
     />
   </data>

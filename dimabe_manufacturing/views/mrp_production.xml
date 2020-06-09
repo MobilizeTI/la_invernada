@@ -16,9 +16,14 @@
                   string="Calcular Realizado"
                   attrs="{'invisible':[('state', '!=', 'progress')]}"
           />
-          <button name="fix_moves" type="object"
-                  string="Organizar Movimentos"
-          />
+
+          <button name="fix_reserved" type="object"
+                  string="Limpiar Reservas"
+                  confirm="¡Atencion! ¿Se seguro de realizar esta limpieza en los movimientos de stock?"
+                  attrs="{'invisible':[('state','=','done')]}"
+                  group="base.group_system"
+                  />
+          <button name="check_duplicate" string="Verificar Duplicados" />
         </xpath>
         <button name="action_assign" position="replace">
         </button>
