@@ -633,11 +633,11 @@ class StockProductionLot(models.Model):
     @api.multi
     def write(self, values):
         for item in self:
-            write_date = self.write_date
             res = super(StockProductionLot, self).write(values)
             if not item.is_standard_weight:
                 for serial in item.stock_production_lot_serial_ids:
                     if not serial.serial_number:
+                        raise models.ValidationError(item.stock_production_lot_serial_ids[-1].serial_number)
                         if item.stock_production_lot_serial_ids[-1].serial_number:
                             counter = int(item.stock_production_lot_serial_ids[-1].serial_number) + 1
                         else:
