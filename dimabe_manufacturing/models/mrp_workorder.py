@@ -143,7 +143,7 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_pallet_content(self):
         for item in self:
-            item.pallet_content = sum(item.manufacturing_pallet_ids.mapped('total_content'))
+            item.pallet_content = sum(item.manufacturing_pallet_ids.mapped('total_content_weight'))
 
     @api.multi
     def _compute_pallet_serial(self):
