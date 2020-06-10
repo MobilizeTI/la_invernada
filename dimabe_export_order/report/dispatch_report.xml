@@ -1349,7 +1349,7 @@
                                                t-as="c">
                                                 <tr>
                                                     <td>
-                                                        <span t-field="c.producer_id"></span>
+                                                        <span t-field="c.producer_id"/>
                                                     </td>
                                                 </tr>
                                             </t>
@@ -1362,7 +1362,7 @@
                                         <span t-esc="p.all_pallet_ids[0].lot_serial_ids[0].best_before_date.strftime('%d-%b-%y')"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-esc="sum(p.all_pallet_ids[0].lot_serial_ids.mapped('display_weight'))"/>
+                                        <span t-esc="len(p.stock_production_lot_serial_ids)"/>
                                     </td>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                         <span t-esc="'%.2f' %sum(p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('display_weight'))"/>
@@ -1383,7 +1383,7 @@
 
                                         </td>
                                         <td style="text-align:center;">
-                                            <span t-esc="len(p.mapped('all_pallet_ids').mapped('lot_serial_ids'))"/>
+                                            <span t-esc="len(d.packing_list_ids)"/>
                                         </td>
                                         <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
                                             <span t-esc="'%.2f' %sum(d.packing_list_ids.mapped('display_weight'))"/>
