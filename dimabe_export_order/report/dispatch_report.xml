@@ -1383,7 +1383,7 @@
 
                                         </td>
                                         <td style="text-align:center;">
-                                            <span t-esc="len(d.packing_list_ids)"/>
+                                            <span t-esc="len(p.mapped('all_pallet_ids').mapped('lot_serial_ids'))"/>
                                         </td>
                                         <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
                                             <span t-esc="'%.2f' %sum(d.packing_list_ids.mapped('display_weight'))"/>
