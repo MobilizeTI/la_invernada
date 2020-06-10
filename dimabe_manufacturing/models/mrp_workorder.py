@@ -148,7 +148,7 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_pallet_serial(self):
         for item in self:
-            item.pallet_serial = sum(len(item.manufacturing_pallet_ids.mapped('lot_serial_ids')))
+            item.pallet_serial = len(item.manufacturing_pallet_ids.mapped('lot_serial_ids'))
 
     @api.multi
     def _compute_pallet_qty(self):
