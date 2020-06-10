@@ -1373,8 +1373,11 @@
                                 </tr>
                                 <t t-if="p.id == d.assigned_pallet_ids[-1].id">
                                     <tr>
-                                        <td colspan="8" style="text-align:right;">
+                                        <td colspan="4" style="text-align:right;">
                                             Total
+                                        </td>
+                                        <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom:0px;margin_left:0px;margin_right:0px;">
+                                            <span t-esc="'%.2f' %sum(p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('production_id').mapped('consumed_material_ids').mapped('real_weight'))"/>
                                         </td>
                                         <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
                                             <span t-esc="sum(d.assigned_pallet_ids.mapped('total_content'))"/>
