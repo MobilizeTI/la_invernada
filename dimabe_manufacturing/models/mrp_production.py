@@ -285,8 +285,7 @@ class MrpProduction(models.Model):
     @api.multi
     def fix_reserved(self):
         for item in self:
-            mrp_workorder = self.env['mrp.workorder'].search([('production_id', '=', item.id)])
-            raise models.ValidationError(mrp_workorder)
+
             for move in item.move_raw_ids:
                 if move.reserved_availability > 0:
                     query = 'DELETE FROM stock_move_line where move_id = {}'.format(move.id)
