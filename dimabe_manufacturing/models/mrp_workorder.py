@@ -166,7 +166,7 @@ class MrpWorkorder(models.Model):
     def _compute_pt_out_weight(self):
         for item in self:
             item.pt_out_weight = sum(
-                item.summary_out_serial_ids.filtered(lambda a: a.product_id.id == item.product_id.id).mapped(
+                item.summary_out_serial_ids.filtered(lambda a: 'PT' in a.product_id.default_code).mapped(
                     'real_weight'))
 
 
