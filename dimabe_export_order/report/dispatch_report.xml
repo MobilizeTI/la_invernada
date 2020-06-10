@@ -1337,7 +1337,7 @@
                                                t-as="c">
                                                 <tr>
                                                     <td>
-                                                        <span t-field="c.balance"></span>
+                                                        <span t-esc="sum(p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('production_id').mapped('consumed_material_ids').filtered(lambda a: a.stock_production_lot_id.id == c.id).mapped('real_weight'))"/>
                                                     </td>
                                                 </tr>
                                             </t>
