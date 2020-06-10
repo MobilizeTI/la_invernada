@@ -1379,15 +1379,18 @@
                                         <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom:0px;margin_left:0px;margin_right:0px;">
                                             <span t-esc="'%.2f' %sum(p.mapped('all_pallet_ids').mapped('lot_serial_ids').mapped('production_id').mapped('consumed_material_ids').mapped('real_weight'))"/>
                                         </td>
+                                        <td colspan="3">
+
+                                        </td>
                                         <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
-                                            <span t-esc="sum(d.assigned_pallet_ids.mapped('total_content'))"/>
+                                            <span t-esc="len(d.packing_list_lot_ids.pallet_ids.mapped('lot_serial_ids'))"/>
                                         </td>
                                         <td></td>
                                         <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
-                                            <span t-esc="'%.2f' %sum(d.assigned_pallet_ids.mapped('lot_serial_ids').mapped('display_weight'))"/>
+                                            <span t-esc="'%.2f' %sum(d.packing_list_lot_ids.pallet_ids.mapped('lot_serial_ids').mapped('display_weight'))"/>
                                         </td>
                                         <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
-                                            <span t-esc="'%.2f' %sum(d.assigned_pallet_ids.mapped('lot_serial_ids').mapped('gross_weight'))"/>
+                                            <span t-esc="'%.2f' %sum(d.packing_list_lot_ids.pallet_ids.mapped('lot_serial_ids').mapped('gross_weight'))"/>
                                         </td>
                                     </tr>
                                 </t>
