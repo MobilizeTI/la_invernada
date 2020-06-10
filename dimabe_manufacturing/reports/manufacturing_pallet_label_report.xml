@@ -227,7 +227,12 @@
                                     </div>
                                     <div>
                                         TRACE CODE (CÓDIGO De TRAZABILIDAD):
-                                        <span t-esc="lot_serial_id.production_id.name"/>
+                                        <t t-if="lot_serial_id.production_id.stock_picking_id.name">
+                                            <span t-field="lot_serial_id.production_id.stock_picking_id.origin"/>
+                                        </t>
+                                        <t t-elif="lot_serial_id.production_id.name">
+                                            <span t-field="lot_serial_id.production_id.name"/>
+                                        </t>
                                     </div>
                                     <div>
                                         NET WEIGHT (PESO NETO):

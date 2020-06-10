@@ -127,15 +127,35 @@ class MrpWorkorder(models.Model):
     in_weight = fields.Float('Kilos Ingresados', compute='_compute_in_weight',
                              digits=dp.get_precision('Product Unit of Measure'), store=True)
 
-    out_weight = fields.Float('Kilos Producido', compute='_compute_out_weight',
+    out_weight = fields.Float('Kilos Producidos', compute='_compute_out_weight',
                               digits=dp.get_precision('Product Unit of Measure'), store=True)
 
 
-    pt_out_weight = fields.Float('Kilos Producido del PT', compute='_compute_pt_out_weight',
+    pt_out_weight = fields.Float('Kilos Producidos del PT', compute='_compute_pt_out_weight',
                                  digits=dp.get_precision('Product Unit of Meausure'), store=True)
 
     producers_id = fields.Many2many('res.partner', 'Productores', compute='_compute_producers_id')
 
+    pallet_qty = fields.Integer('Cantidad de Pallets',compute='_compute_pallet_qty')
+
+    pallet_content = fields.Float('Kilos Totales',compute='_compute_pallet_content')
+
+    pallet_serial = fields.Integer('Total de Series',compute='_compute_pallet_serial')
+
+    @api.multi
+    def _compute_pallet_content(self):
+        for item in self:
+            item.pallet_content = sum(item.manufacturing_pallet_ids.mapped('total_content_weight'))
+
+    @api.multi
+    def _compute_pallet_serial(self):
+        for item in self:
+            item.pallet_serial = len(item.manufacturing_pallet_ids.mapped('lot_serial_ids'))
+
+    @api.multi
+    def _compute_pallet_qty(self):
+        for item in self:
+            item.pallet_qty = len(item.manufacturing_pallet_ids)
 
     @api.multi
     def _compute_producers_id(self):
@@ -162,7 +182,7 @@ class MrpWorkorder(models.Model):
     def _compute_pt_out_weight(self):
         for item in self:
             item.pt_out_weight = sum(
-                item.summary_out_serial_ids.filtered(lambda a: a.product_id.id == item.product_id.id).mapped(
+                item.summary_out_serial_ids.filtered(lambda a: 'PT' in a.product_id.default_code).mapped(
                     'real_weight'))
 
 
@@ -324,6 +344,7 @@ class MrpWorkorder(models.Model):
     def open_tablet_view(self):
         while self.current_quality_check_id:
             check = self.current_quality_check_id
+            models._logger.error(check.component_id.default_code)
             if not check.component_is_byproduct:
                 check.qty_done = 0
                 self.action_skip()

@@ -92,3 +92,5 @@ class DteHelper():
         fecha = data.get("fecha", None)
         total = data.get("total", None)
         model.pdf_url = "%s/dte/dte_emitidos/pdf/%s/%s/0/%s/%s/%s" % (url, model.dte_type_id.code, model.dte_folio, rut_emisor, fecha, total)
+
+

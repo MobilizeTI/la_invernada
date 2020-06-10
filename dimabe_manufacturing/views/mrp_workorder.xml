@@ -18,7 +18,8 @@
                 <button name="action_open_manufacturing_order" position="replace">
                 </button>
                 <xpath expr="//div[2]//div[2]//div[1]//button[1]" position="before">
-                    <button name="action_ignore" string="IGNORAR" type="object" attrs="{'invisible': [('is_user_working', '!=', False), ('is_last_step', '=', True), ('skipped_check_ids', '=', []), ('is_last_lot', '!=', False)]}">
+                    <button name="action_ignore" string="IGNORAR" type="object"
+                            attrs="{'invisible': [('is_user_working', '!=', False), ('is_last_step', '=', True), ('skipped_check_ids', '=', []), ('is_last_lot', '!=', False)]}">
 
                     </button>
                 </xpath>
@@ -74,6 +75,8 @@
                 <xpath expr="//sheet/group" position="inside">
                     <group>
                         <field name="positioning_state"/>
+                        <field name="in_weight"/>
+                        <field name="out_weight"/>
                     </group>
                 </xpath>
                 <field name="final_lot_id" position="attributes">
@@ -116,11 +119,22 @@
                                 />
                             </tree>
                         </field>
+                        <strong>Total Ingresado:</strong>
+                        <field name="in_weight"/>
                     </page>
                 </xpath>
                 <xpath expr="//page[3]" position="after">
                     <page string="Pallets">
                         <field name="manufacturing_pallet_ids"/>
+                        <strong>Total de Pallet:</strong>
+                        <field name="pallet_qty"/>
+                        <br/>
+                        <strong>Total de Kilos</strong>
+                        <field name="pallet_content"/>
+                        <br/>
+                        <strong>Total de Series</strong>
+                        <field name="pallet_serial"/>
+                        <br/>
                     </page>
                 </xpath>
             </field>
@@ -188,6 +202,8 @@
                                         <field name="display_weight"/>
                                     </tree>
                                 </field>
+                                <field name="out_weight"/>
+                                <field name="pt_out_weight"/>
                             </group>
                             <group>
                                 <field name="manufacturing_pallet_ids">
