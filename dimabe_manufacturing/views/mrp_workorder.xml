@@ -125,6 +125,8 @@
                     <page string="Pallets">
                         <field name="manufacturing_pallet_ids"/>
                         <strong>Total de Pallet:</strong><field name="pallet_qty"/>
+                        <strong>Total de Kilos</strong><field name="pallet_content"/>
+                        <strong>Total de Series</strong><field name="pallet_serial"/>
                     </page>
                 </xpath>
             </field>

@@ -136,6 +136,20 @@ class MrpWorkorder(models.Model):
 
     pallet_qty = fields.Integer('Cantidad de Pallets',compute='_compute_pallet_qty')
 
+    pallet_content = fields.Float('Kilos Totales',compute='_compute_pallet_content')
+
+    pallet_serial = fields.Integer('Total de Series',compute='_compute_pallet_serial')
+
+    @api.multi
+    def _compute_pallet_content(self):
+        for item in self:
+            item.pallet_content = sum(item.manufacturing_pallet_ids.mapped('total_content'))
+
+    @api.multi
+    def _compute_pallet_serial(self):
+        for item in self:
+            item.pallet_serial = sum(len(item.manufacturing_pallet_ids.mapped('lot_serial_ids')))
+
     @api.multi
     def _compute_pallet_qty(self):
         for item in self:
