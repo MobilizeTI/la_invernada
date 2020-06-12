@@ -222,11 +222,11 @@ class StockProductionLot(models.Model):
 
     reception_weight = fields.Float(compute='_compute_reception_weight')
 
-    sale_order_ids = fields.Many2many('sale.order',compute='_compute_sale_order_ids',store=True)
+    sale_order_ids = fields.Many2many('sale.order',compute='_compute_sale_order_id',store=True)
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
-    def _compute_sale_order_ids(self):
+    def _compute_sale_order_id(self):
         for item in self:
             if item.id != 2:
                 if item.is_prd_lot:
