@@ -222,14 +222,15 @@ class StockProductionLot(models.Model):
 
     reception_weight = fields.Float(compute='_compute_reception_weight')
 
-    production_id = fields.Many2one('mrp_production',compute='_compute_sale_order_id',store=True)
+    production_id = fields.Many2one('mrp_production',compute='_compute_production_id',store=True)
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
-    def _compute_sale_order_id(self):
+    def _compute_production_id(self):
         for item in self:
             if item.is_prd_lot:
-                item.production_id = item.stock_production_lot_serial_ids.mapped('production_id')
+                if item.stock_production_lot_serial_ids.mapped('production_id'):
+                    item.production_id = item.stock_production_lot_serial_ids.mapped('production_id')
 
     @api.multi
     def _compute_reception_weight(self):
