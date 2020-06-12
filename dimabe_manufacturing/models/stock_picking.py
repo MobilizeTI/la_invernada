@@ -61,7 +61,7 @@ class StockPicking(models.Model):
         compute='_compute_packing_list_lot_ids'
     )
 
-    production_sale_order_id = fields.Many2one('sale.order','Pedido')
+    production_id = fields.Many2one('mrp_production','Pedido')
     @api.multi
     def _compute_packing_list_lot_ids(self):
         for item in self:
@@ -90,8 +90,8 @@ class StockPicking(models.Model):
                 domain += [('stock_product_id', '=',
                             item.product_search_id.id)]
             if item.production_sale_order_id:
-                domain += [('sale_order_id','=',
-                            item.production_sale_order_id.id)]
+                domain += [('production_id','=',
+                            item.production_id.id)]
 
             item.potential_lot_serial_ids = self.env['stock.production.lot.serial'].search(
                 domain)
