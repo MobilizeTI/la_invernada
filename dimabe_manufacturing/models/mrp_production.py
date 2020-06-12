@@ -6,6 +6,7 @@ import inspect
 
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
+    _rec_name = 'sale_order_id'
 
     positioning_state = fields.Selection([
         ('pending', 'Pendiente'),

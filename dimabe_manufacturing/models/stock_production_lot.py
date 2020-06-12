@@ -222,8 +222,17 @@ class StockProductionLot(models.Model):
 
     reception_weight = fields.Float(compute='_compute_reception_weight')
 
-    user_email = fields.Many2one('res.users','Usuario Loggeado',default=lambda self: self.env.user.id)
+    sale_order_id = fields.Many2one('sale.order',compute='_compute_sale_order_id',store=True)
 
+    @api.depends('stock_production_lot_serial_ids')
+    @api.multi
+    def _compute_sale_order_id(self):
+        for item in self:
+            if item.id != 2:
+                if item.is_prd_lot:
+                    if item.stock_production_lot_serial_ids.mapped('production_id').mapped('stock_picking_id'):
+                        name = item.stock_production_lot_serial_ids.mapped('production_id').mapped('stock_picking_id')[0].origin
+                        item.sale_order_id = item.env['sale.order'].search([('name','=',name)])
 
     @api.multi
     def _compute_reception_weight(self):
@@ -641,7 +650,8 @@ class StockProductionLot(models.Model):
                 for serial in item.stock_production_lot_serial_ids:
                     if not serial.serial_number:
                         if len(item.stock_production_lot_serial_ids) > 1:
-                            counter = int(item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[-1].serial_number) + 1
+                            counter = int(item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[
+                                              -1].serial_number) + 1
                         else:
                             counter = 1
                         tmp = '00{}'.format(counter)

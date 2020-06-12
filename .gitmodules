@@ -1,0 +1,4 @@
+[submodule "KonosCL/addons-konos"]
+	path = KonosCL/addons-konos
+	url = git@github.com:KonosCL/addons-konos.git
+	branch = 12.0
