@@ -61,7 +61,7 @@ class StockPicking(models.Model):
         compute='_compute_packing_list_lot_ids'
     )
 
-    production_id = fields.Many2one('sale.order', 'Pedido',store=True)
+    sale_order_id = fields.Many2one('sale.order', 'Pedido',store=True)
 
     @api.multi
     def _compute_packing_list_lot_ids(self):
@@ -73,11 +73,11 @@ class StockPicking(models.Model):
         for item in self:
             item.assigned_pallet_ids = item.packing_list_ids.mapped('pallet_id')
 
-    @api.onchange('production_id')
+    @api.onchange('sale_order_id')
     def on_change_production_id(self):
         for item in self:
             item.potential_lot_ids = item.potential_lot_ids.filtered(
-                lambda a: a.production_id.id == item.production_id.id)
+                lambda a: item.sale_order_id in a.sale_order_ids)
 
     @api.multi
     def _compute_potential_lot_serial_ids(self):
