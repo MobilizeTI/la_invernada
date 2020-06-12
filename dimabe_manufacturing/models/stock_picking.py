@@ -77,7 +77,7 @@ class StockPicking(models.Model):
     def on_change_production_id(self):
         for item in self:
             item.potential_lot_ids = item.potential_lot_ids.filtered(
-                lambda a: a.sale_order_ids.id == item.sale_order_id.id )
+                lambda a: a.sale_order_ids.id == item.sale_order_id)
 
     @api.multi
     def _compute_potential_lot_serial_ids(self):
