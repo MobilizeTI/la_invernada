@@ -231,7 +231,7 @@ class StockProductionLot(models.Model):
             if item.is_prd_lot:
                 if item.stock_production_lot_serial_ids.mapped('production_id').mapped('stock_picking_id'):
                     name = item.stock_production_lot_serial_ids.mapped('production_id').mapped('stock_picking_id').origin
-                    item.sale_order_id = item.env['sale.order'].search([('name','=',name)])
+                    item.sale_order_id = item.env['sale.order'].search([('name','=',name)]).id
                 else:
                     item.sale_order_id = None
 
