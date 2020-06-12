@@ -93,9 +93,6 @@ class StockPicking(models.Model):
                 data = self.env['stock.production.lot.serial'].search([('stock_product_id', '=', id_pr)])
                 if not data:
                     item.have_series = False
-            if item.product_search_id:
-                domain += [('stock_product_id', '=',
-                            item.product_search_id.id)]
 
             item.potential_lot_serial_ids = self.env['stock.production.lot.serial'].search(
                 domain)
