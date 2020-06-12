@@ -61,7 +61,7 @@ class StockPicking(models.Model):
         compute='_compute_packing_list_lot_ids'
     )
 
-    production_id = fields.Many2one('mrp.production', 'Pedido')
+    production_id = fields.Many2one('mrp.production', 'Pedido',store=True)
 
     @api.multi
     def _compute_packing_list_lot_ids(self):
