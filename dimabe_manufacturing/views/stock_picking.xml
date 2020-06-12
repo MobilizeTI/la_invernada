@@ -82,7 +82,7 @@
                 <field name="product_search_id"
                        groups="mrp.group_mrp_manager"
                 />
-                <field name="production_sale_order_id"
+                <field name="production_id"
 
                 />
                 <field name="potential_lot_ids"
