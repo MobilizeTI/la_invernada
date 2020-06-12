@@ -230,7 +230,7 @@ class StockProductionLot(models.Model):
         for item in self:
             if item.id != 2:
                 if item.is_prd_lot:
-                    if item.stock_production_lot_serial_ids.mapped('production_id'):
+                    if item.stock_production_lot_serial_ids.mapped('production_id').mapped('stock_picking_id'):
                         name = item.stock_production_lot_serial_ids.mapped('production_id').mapped('stock_picking_id')[0].origin
                         item.sale_order_ids = item.env['sale.order'].search([('name','=',name)])
 
