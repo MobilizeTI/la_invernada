@@ -72,9 +72,14 @@ class StockPicking(models.Model):
         for item in self:
             item.assigned_pallet_ids = item.packing_list_ids.mapped('pallet_id')
 
+    @api.onchange('production_id')
+    def on_change_production_id(self):
+        for item in self:
+            item.potential_lot_ids = item.potential_lot_ids.filtered(lambda a: a.production_id.id == item.production_id)
+
     @api.multi
     @api.depends('product_search_id')
-    @api.onchange('production_id')
+
     def _compute_potential_lot_serial_ids(self):
         for item in self:
             domain = [
@@ -90,9 +95,7 @@ class StockPicking(models.Model):
             if item.product_search_id:
                 domain += [('stock_product_id', '=',
                             item.product_search_id.id)]
-            if item.production_id:
-                domain += [('production_id','=',
-                            item.production_id.id)]
+
 
             item.potential_lot_serial_ids = self.env['stock.production.lot.serial'].search(
                 domain)
