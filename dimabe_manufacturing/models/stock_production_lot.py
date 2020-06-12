@@ -228,12 +228,13 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_sale_order_id(self):
         for item in self:
-            if item.is_prd_lot:
-                if item.stock_production_lot_serial_ids.mapped('production_id').mapped('stock_picking_id'):
-                    name = item.stock_production_lot_serial_ids.mapped('production_id').mapped('stock_picking_id').origin
-                    item.sale_order_id = item.env['sale.order'].search([('name','=',name)]).id
-                else:
-                    item.sale_order_id = None
+            if item.id != 2:
+                if item.is_prd_lot:
+                    if item.stock_production_lot_serial_ids.mapped('production_id').mapped('stock_picking_id'):
+                        name = item.stock_production_lot_serial_ids.mapped('production_id').mapped('stock_picking_id').origin
+                        item.sale_order_id = item.env['sale.order'].search([('name','=',name)]).id
+                    else:
+                        item.sale_order_id = None
 
     @api.multi
     def _compute_reception_weight(self):
