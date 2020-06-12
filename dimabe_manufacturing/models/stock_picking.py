@@ -88,7 +88,7 @@ class StockPicking(models.Model):
                 domain += [('stock_product_id', '=',
                             item.product_search_id.id)]
             if self.env.context['sale_order']:
-                domain = [('sale_order_')]
+                raise models.ValidationError(self.env.context['sale_order'])
 
             item.potential_lot_serial_ids = self.env['stock.production.lot.serial'].search(
                 domain)

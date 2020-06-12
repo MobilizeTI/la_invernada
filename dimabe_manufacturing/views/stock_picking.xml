@@ -82,6 +82,9 @@
                 <field name="product_search_id"
                        groups="mrp.group_mrp_manager"
                 />
+                <field name="sale_search_order"
+                      context="{'sale_order':origin}"
+                />
                 <field name="potential_lot_ids"
                        groups="mrp.group_mrp_manager"
                        attrs="{'invisible':[('state','=','done')]}"
