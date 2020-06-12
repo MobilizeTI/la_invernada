@@ -233,7 +233,7 @@ class StockProductionLot(models.Model):
                     name = item.stock_production_lot_serial_ids.mapped('production_id').mapped('stock_picking_id').origin
                     item.sale_order_id = item.env['sale.order'].search([('name','=',name)])
                 else:
-                item.sale_order_id = None
+                    item.sale_order_id = None
 
     @api.multi
     def _compute_reception_weight(self):
