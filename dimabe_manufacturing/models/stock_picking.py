@@ -75,11 +75,10 @@ class StockPicking(models.Model):
     @api.onchange('production_id')
     def on_change_production_id(self):
         for item in self:
-            item.potential_lot_ids = item.potential_lot_ids.filtered(lambda a: a.production_id.id == item.production_id)
+            item.potential_lot_ids = item.potential_lot_ids.filtered(lambda a: a.production_id.id == item.production_id.id)
 
     @api.multi
     @api.depends('product_search_id')
-
     def _compute_potential_lot_serial_ids(self):
         for item in self:
             domain = [
