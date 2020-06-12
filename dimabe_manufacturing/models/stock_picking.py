@@ -61,7 +61,8 @@ class StockPicking(models.Model):
         compute='_compute_packing_list_lot_ids'
     )
 
-    production_id = fields.Many2one('mrp.production','Pedido')
+    production_id = fields.Many2one('mrp.production', 'Pedido')
+
     @api.multi
     def _compute_packing_list_lot_ids(self):
         for item in self:
@@ -75,7 +76,8 @@ class StockPicking(models.Model):
     @api.onchange('production_id')
     def on_change_production_id(self):
         for item in self:
-            item.potential_lot_ids = item.potential_lot_ids.filtered(lambda a: a.production_id.id == item.production_id.id)
+            item.potential_lot_ids = item.potential_lot_ids.filtered(
+                lambda a: a.production_id.id == item.production_id.id)
 
     @api.multi
     @api.depends('product_search_id')
@@ -95,7 +97,6 @@ class StockPicking(models.Model):
                 domain += [('stock_product_id', '=',
                             item.product_search_id.id)]
 
-
             item.potential_lot_serial_ids = self.env['stock.production.lot.serial'].search(
                 domain)
 
@@ -107,13 +108,13 @@ class StockPicking(models.Model):
                 self.production_net_weight = self.net_weight - self.quality_weight
 
             self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)]).write({
-                    'real_weight': self.avg_unitary_weight
-                })
-            diff = self.production_net_weight - (canning.product_uom_qty*self.avg_unitary_weight)
-            self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)])[-1].write({
-            'real_weight': self.avg_unitary_weight + diff
+                'real_weight': self.avg_unitary_weight
             })
-            
+            diff = self.production_net_weight - (canning.product_uom_qty * self.avg_unitary_weight)
+            self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)])[-1].write({
+                'real_weight': self.avg_unitary_weight + diff
+            })
+
     @api.multi
     def _compute_potential_lot(self):
         for item in self:
