@@ -90,7 +90,7 @@ class StockPicking(models.Model):
             if item.product_search_id:
                 domain += [('stock_product_id', '=',
                             item.product_search_id.id)]
-            if item.production_sale_order_id:
+            if item.production_id:
                 domain += [('production_id','=',
                             item.production_id.id)]
 
