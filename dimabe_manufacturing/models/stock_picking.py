@@ -61,7 +61,7 @@ class StockPicking(models.Model):
         compute='_compute_packing_list_lot_ids'
     )
 
-    production_id = fields.Many2one('mrp_production','Pedido')
+    production_id = fields.Many2one('production_id','Pedido')
     @api.multi
     def _compute_packing_list_lot_ids(self):
         for item in self:
@@ -73,7 +73,7 @@ class StockPicking(models.Model):
             item.assigned_pallet_ids = item.packing_list_ids.mapped('pallet_id')
 
     @api.multi
-    @api.depends('product_search_id','production_sale_order_id')
+    @api.depends('product_search_id','production_id')
     def _compute_potential_lot_serial_ids(self):
         for item in self:
             domain = [
@@ -98,7 +98,7 @@ class StockPicking(models.Model):
 
     @api.multi
     def calculate_last_serial(self):
-        
+
         if len(canning) == 1:
             if self.production_net_weight == self.net_weight:
                 self.production_net_weight = self.net_weight - self.quality_weight
