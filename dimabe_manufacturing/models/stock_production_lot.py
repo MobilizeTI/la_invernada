@@ -228,9 +228,10 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_production_id(self):
         for item in self:
-            if item.is_prd_lot:
-                if item.stock_production_lot_serial_ids.mapped('production_id'):
-                    item.production_id = item.stock_production_lot_serial_ids.mapped('production_id').id
+            if item.id == 2:
+                if item.is_prd_lot:
+                    if item.stock_production_lot_serial_ids.mapped('production_id'):
+                        item.production_id = item.stock_production_lot_serial_ids.mapped('production_id').id
 
     @api.multi
     def _compute_reception_weight(self):
