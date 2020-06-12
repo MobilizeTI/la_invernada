@@ -73,7 +73,8 @@ class StockPicking(models.Model):
             item.assigned_pallet_ids = item.packing_list_ids.mapped('pallet_id')
 
     @api.multi
-    @api.depends('product_search_id','production_id')
+    @api.depends('product_search_id')
+    @api.onchange('production_id')
     def _compute_potential_lot_serial_ids(self):
         for item in self:
             domain = [
