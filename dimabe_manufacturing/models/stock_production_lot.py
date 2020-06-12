@@ -226,7 +226,7 @@ class StockProductionLot(models.Model):
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
-    def _compute_production_id(self):
+    def _compute_sale_order_ids(self):
         for item in self:
             if item.id != 2:
                 if item.is_prd_lot:
