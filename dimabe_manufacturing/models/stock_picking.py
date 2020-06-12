@@ -80,7 +80,6 @@ class StockPicking(models.Model):
                 lambda a: a.production_id.id == item.production_id.id)
 
     @api.multi
-    @api.depends('product_search_id')
     def _compute_potential_lot_serial_ids(self):
         for item in self:
             domain = [
