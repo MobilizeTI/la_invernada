@@ -82,7 +82,7 @@
                 <field name="product_search_id"
                        groups="mrp.group_mrp_manager"
                 />
-                <field name="sale_search_order"
+                <button name="sale_search_order"
                       context="{'sale_order':origin}"
                 />
                 <field name="potential_lot_ids"
