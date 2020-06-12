@@ -60,6 +60,8 @@ class StockPicking(models.Model):
         'stock.production.lot',
         compute='_compute_packing_list_lot_ids'
     )
+
+    production_sale_order_id = fields.Many2one('sale.order','Pedido')
     @api.multi
     def _compute_packing_list_lot_ids(self):
         for item in self:
