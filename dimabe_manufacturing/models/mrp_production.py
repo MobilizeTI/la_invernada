@@ -3,6 +3,7 @@ from odoo.addons import decimal_precision as dp
 from datetime import datetime
 import inspect
 
+
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
 
@@ -120,7 +121,6 @@ class MrpProduction(models.Model):
     materials = fields.Many2many('product.product', compute='get_product_bom')
 
     manufactureable = fields.Many2many('product.product', compute='get_product_route')
-
 
     @api.multi
     def _compute_pt_balance(self):
