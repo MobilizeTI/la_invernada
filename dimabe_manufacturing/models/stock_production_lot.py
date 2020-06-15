@@ -222,7 +222,6 @@ class StockProductionLot(models.Model):
 
     reception_weight = fields.Float(compute='_compute_reception_weight')
 
-
     @api.multi
     def _compute_reception_weight(self):
         for item in self:
