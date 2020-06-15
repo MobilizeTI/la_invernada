@@ -3,7 +3,6 @@ from odoo.addons import decimal_precision as dp
 from datetime import datetime
 import inspect
 
-
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
 
