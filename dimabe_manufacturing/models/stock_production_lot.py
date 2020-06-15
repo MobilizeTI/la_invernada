@@ -222,7 +222,7 @@ class StockProductionLot(models.Model):
 
     reception_weight = fields.Float(compute='_compute_reception_weight')
 
-    sale_order_id = fields.Many2one('sale.order',compute='_compute_sale_order_id',store=True)
+    sale_order_id = fields.Many2one('sale.order', compute='_compute_sale_order_id', store=True)
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
@@ -231,8 +231,9 @@ class StockProductionLot(models.Model):
             if item.id != 2:
                 if item.is_prd_lot:
                     if item.stock_production_lot_serial_ids.mapped('production_id').mapped('stock_picking_id'):
-                        name = item.stock_production_lot_serial_ids.mapped('production_id').mapped('stock_picking_id')[0].origin
-                        item.sale_order_id = item.env['sale.order'].search([('name','=',name)])
+                        name = item.stock_production_lot_serial_ids.mapped('production_id').mapped('stock_picking_id')[
+                            0].origin
+                        item.sale_order_id = item.env['sale.order'].search([('name', '=', name)])
 
     @api.multi
     def _compute_reception_weight(self):
@@ -276,10 +277,10 @@ class StockProductionLot(models.Model):
         for item in self.env['stock.production.lot'].search([]):
             models._logger.error(item.name)
             available_weight = sum(item.serial_available.mapped('real_weight'))
-            # query = 'UPDATE stock_production_lot set available_weight = {} where id =  {}'.format(available_weight,
-            #                                                                                       item.id)
-            # cr = self._cr
-            # cr.execute(query)
+            query = 'UPDATE stock_production_lot set available_weight = {} where id =  {}'.format(available_weight,
+                                                                                                  item.id)
+            cr = self._cr
+            cr.execute(query)
 
     @api.multi
     def _compute_serial_available(self):
@@ -330,10 +331,10 @@ class StockProductionLot(models.Model):
     def _compute_serial_not_consumed(self):
         for item in self:
             item.serial_not_consumed = len(item.serial_available)
-            # query = "UPDATE stock_production_lot set available_weight = {} where id = {}".format(
-            #     sum(item.serial_available.mapped('real_weight')), item.id)
-            # cr = self._cr
-            # cr.execute(query)
+            query = "UPDATE stock_production_lot set available_weight = {} where id = {}".format(
+                sum(item.serial_available.mapped('real_weight')), item.id)
+            cr = self._cr
+            cr.execute(query)
 
     @api.onchange('serial_not_consumed')
     def _onchange_have_available_serial(self):
