@@ -268,9 +268,15 @@ class StockProductionLot(models.Model):
                     for duplicate in duplicates:
                         serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', duplicate)])
                         serie += 1
-                        serial[1].update({
-                            'serial_number': item.name + '{}'.format(serie)
-                        })
+                        models._logger.error(serial)
+                        if len(serial) > 1:
+                            serial[1].update({
+                                'serial_number': item.name + '{}'.format(serie)
+                            })
+                        else:
+                            serial.update({
+                                'serial_number': item.name + '{}'.format(serie)
+                            })
 
     @api.multi
     def refresh_data(self):
