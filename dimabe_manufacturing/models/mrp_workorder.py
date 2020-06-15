@@ -17,13 +17,15 @@ class MrpWorkorder(models.Model):
     client_id = fields.Many2one(
         'res.partner',
         related='production_id.client_id',
-        string='Cliente'
+        string='Cliente',
+        store=True
     )
 
     destiny_country_id = fields.Many2one(
         'res.country',
         related='production_id.destiny_country_id',
-        string='País'
+        string='País',
+        store=True
     )
 
     sale_order_id = fields.Many2one(
@@ -323,6 +325,8 @@ class MrpWorkorder(models.Model):
     def open_tablet_view(self):
         while self.current_quality_check_id:
             check = self.current_quality_check_id
+            models._logger.error(check.component_id.default_code)
+
             if not check.component_is_byproduct:
                 check.qty_done = 0
                 self.action_skip()
@@ -337,7 +341,7 @@ class MrpWorkorder(models.Model):
                     check.qty_done = self.component_remaining_qty
                     if check.quality_state == 'none' and check.qty_done > 0:
                         self.action_next()
-            self.action_skip()
+
         self.action_first_skipped_step()
         return super(MrpWorkorder, self).open_tablet_view()
 
