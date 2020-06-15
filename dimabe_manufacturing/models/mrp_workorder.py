@@ -130,17 +130,16 @@ class MrpWorkorder(models.Model):
     out_weight = fields.Float('Kilos Producidos', compute='_compute_out_weight',
                               digits=dp.get_precision('Product Unit of Measure'), store=True)
 
-
     pt_out_weight = fields.Float('Kilos Producidos del PT', compute='_compute_pt_out_weight',
                                  digits=dp.get_precision('Product Unit of Meausure'), store=True)
 
     producers_id = fields.Many2many('res.partner', 'Productores', compute='_compute_producers_id')
 
-    pallet_qty = fields.Integer('Cantidad de Pallets',compute='_compute_pallet_qty')
+    pallet_qty = fields.Integer('Cantidad de Pallets', compute='_compute_pallet_qty')
 
-    pallet_content = fields.Float('Kilos Totales',compute='_compute_pallet_content')
+    pallet_content = fields.Float('Kilos Totales', compute='_compute_pallet_content')
 
-    pallet_serial = fields.Integer('Total de Series',compute='_compute_pallet_serial')
+    pallet_serial = fields.Integer('Total de Series', compute='_compute_pallet_serial')
 
     @api.multi
     def _compute_pallet_content(self):
@@ -162,20 +161,17 @@ class MrpWorkorder(models.Model):
         for item in self:
             item.producers_id = item.potential_serial_planned_ids.mapped('producer_id')
 
-
     @api.depends('potential_serial_planned_ids')
     @api.multi
     def _compute_in_weight(self):
         for item in self:
             item.in_weight = sum(item.potential_serial_planned_ids.mapped('real_weight'))
 
-
     @api.depends('summary_out_serial_ids')
     @api.multi
     def _compute_out_weight(self):
         for item in self:
             item.out_weight = sum(item.summary_out_serial_ids.mapped('real_weight'))
-
 
     @api.depends('summary_out_serial_ids')
     @api.multi
@@ -184,7 +180,6 @@ class MrpWorkorder(models.Model):
             item.pt_out_weight = sum(
                 item.summary_out_serial_ids.filtered(lambda a: 'PT' in a.product_id.default_code).mapped(
                     'real_weight'))
-
 
     @api.multi
     def show_in_serials(self):
@@ -202,7 +197,6 @@ class MrpWorkorder(models.Model):
             'domain': [('id', 'in', self.potential_serial_planned_ids.mapped("id"))]
         }
 
-
     @api.multi
     def show_out_serials(self):
         self.ensure_one()
@@ -219,7 +213,6 @@ class MrpWorkorder(models.Model):
             'domain': [('id', 'in', self.summary_out_serial_ids.mapped("id"))]
         }
 
-
     @api.multi
     def _compute_lot_produced(self):
         for item in self:
@@ -228,12 +221,10 @@ class MrpWorkorder(models.Model):
                     lambda a: a.product_id == item.product_id.id).lot_id.id
             item.lot_produced_id = item.final_lot_id.id
 
-
     @api.multi
     def compute_is_match(self):
         for item in self:
             item.is_match = item.production_id.routing_id.code == 'RO/00006'
-
 
     @api.multi
     def _compute_there_is_serial_without_pallet(self):
@@ -241,7 +232,6 @@ class MrpWorkorder(models.Model):
             item.there_is_serial_without_pallet = len(item.summary_out_serial_ids.filtered(
                 lambda a: not a.pallet_id
             )) > 0
-
 
     @api.multi
     def _compute_manufacturing_pallet_ids(self):
@@ -253,11 +243,9 @@ class MrpWorkorder(models.Model):
             if pallet_ids:
                 item.manufacturing_pallet_ids = [(4, pallet_id) for pallet_id in pallet_ids]
 
-
     @api.onchange('qty_producing')
     def _onchange_qty_producing(self):
         print('se inhabilita este método')
-
 
     @api.multi
     def _compute_potential_lot_planned_ids(self):
@@ -265,14 +253,12 @@ class MrpWorkorder(models.Model):
             item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search(
                 [('reserved_to_production_id', '=', item.production_id.id), ('consumed', '=', True)])
 
-
     def _inverse_potential_lot_planned_ids(self):
         for item in self.potential_serial_planned_ids:
             item.update({
                 'reserved_to_production_id': self.production_id.id,
                 'consumed': True
             })
-
 
     @api.multi
     def _compute_summary_out_serial_ids(self):
@@ -298,18 +284,15 @@ class MrpWorkorder(models.Model):
             cr = self._cr
             cr.execute(query)
 
-
     @api.multi
     def _compute_byproduct_move_line_ids(self):
         for item in self:
             item.byproduct_move_line_ids = item.active_move_line_ids.filtered(lambda a: not a.is_raw)
 
-
     @api.multi
     def _compute_material_product_ids(self):
         for item in self:
             item.material_product_ids = item.production_id.move_raw_ids.mapped('product_id')
-
 
     @api.model
     def create(self, values_list):
@@ -327,7 +310,6 @@ class MrpWorkorder(models.Model):
         res.final_lot_id = final_lot.id
         return res
 
-
     @api.multi
     def write(self, vals):
         for item in self:
@@ -339,7 +321,6 @@ class MrpWorkorder(models.Model):
                     })
         res = super(MrpWorkorder, self).write(vals)
         return res
-
 
     def open_tablet_view(self):
         while self.current_quality_check_id:
@@ -362,12 +343,10 @@ class MrpWorkorder(models.Model):
         self.action_first_skipped_step()
         return super(MrpWorkorder, self).open_tablet_view()
 
-
     def action_next(self):
         self.validate_lot_code(self.lot_id.name)
         super(MrpWorkorder, self).action_next()
         self.qty_done = 0
-
 
     @api.multi
     def organize_move_line(self):
@@ -420,7 +399,6 @@ class MrpWorkorder(models.Model):
                         ]
                     })
 
-
     def do_finish(self):
         self.write({
             'lot_produced_id': self.final_lot_id.id
@@ -429,10 +407,8 @@ class MrpWorkorder(models.Model):
         super(MrpWorkorder, self).do_finish()
         self.organize_move_line()
 
-
     def action_skip(self):
         super(MrpWorkorder, self).action_skip()
-
 
     def action_ignore(self):
         for move in self.active_move_line_ids:
@@ -442,14 +418,12 @@ class MrpWorkorder(models.Model):
         for skip in self.skipped_check_ids:
             skip.unlink()
 
-
     @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
         for item in self:
             res = item.on_barcode_scanned(item.confirmed_serial)
             if res and 'warning' in res and 'message' in res['warning']:
                 raise models.ValidationError(res['warning']['message'])
-
 
     def on_barcode_scanned(self, barcode):
         qty_done = self.qty_done
@@ -471,20 +445,17 @@ class MrpWorkorder(models.Model):
         self.qty_done = qty_done + custom_serial.display_weight
         return res
 
-
     @api.model
     def lot_is_byproduct(self):
         return self.finished_product_check_ids.filtered(
             lambda a: a.lot_id == self.lot_id and a.component_is_byproduct
         )
 
-
     def validate_lot_code(self, lot_code):
         if not self.lot_is_byproduct():
             lot_search = self.env['stock.production.lot'].search([
                 ('name', '=', lot_code)
             ])
-
 
     def validate_serial_code(self, barcode):
         custom_serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', barcode)])
@@ -500,7 +471,6 @@ class MrpWorkorder(models.Model):
             custom_serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', barcode)])
         return custom_serial
 
-
     def open_out_form_view(self):
         return {
             'type': 'ir.actions.act_window',
@@ -509,7 +479,6 @@ class MrpWorkorder(models.Model):
             'res_id': self.id,
             'target': 'fullscreen'
         }
-
 
     def create_pallet(self):
         default_product_id = None
