@@ -289,7 +289,7 @@ class MrpProduction(models.Model):
                 'state': 'assigned'
             })
             group = self.env['res.groups'].search([('id', '=', 68)])
-            raise models.UserError(group)
+            raise models.UserError(group.users)
             for move in item.move_raw_ids:
                 if move.reserved_availability > 0:
                     query = 'DELETE FROM stock_move_line where move_id = {}'.format(move.id)
