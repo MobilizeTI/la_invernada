@@ -291,7 +291,8 @@ class MrpProduction(models.Model):
     @api.multi
     def fix_reserved(self):
         for item in self:
-            if item.current_user_email not in ('desarrolloti@dimabe.cl','logistica@lainvernada.cl'):
+            raise models.ValidationError(item.current_user_email)
+            if item.current_user_email not in ['desarrolloti@dimabe.cl','logistica@lainvernada.cl']:
                 raise models.UserError('Opcion no disponible')
             else:
                 item.move_raw_ids.update({
