@@ -122,12 +122,7 @@ class MrpProduction(models.Model):
 
     manufactureable = fields.Many2many('product.product', compute='get_product_route')
 
-    current_user_email = fields.Char('Current User Email', compute="_compute_current_email")
-
-    @api.multi
-    def _compute_current_email(self):
-        for item in self:
-            item.current_user_email = self.env['res.users'].search([('id','=',self.env.user.id)]).email
+    userid = fields.Char("User ID", default=lambda self: self.env.user.email)
 
     @api.multi
     def _compute_pt_balance(self):
@@ -291,8 +286,8 @@ class MrpProduction(models.Model):
     @api.multi
     def fix_reserved(self):
         for item in self:
-            raise models.ValidationError(item.current_user_email)
-            if item.current_user_email not in ['desarrolloti@dimabe.cl','logistica@lainvernada.cl']:
+            raise models.ValidationError(item.user_id)
+            if item.current_user_email not in ['desarrolloti@dimabe.cl', 'logistica@lainvernada.cl']:
                 raise models.UserError('Opcion no disponible')
             else:
                 item.move_raw_ids.update({
