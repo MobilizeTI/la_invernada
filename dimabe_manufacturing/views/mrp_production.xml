@@ -20,7 +20,7 @@
                     <button name="fix_reserved" type="object"
                             string="Limpiar Reservas"
                             confirm="¡Atencion! ¿Se seguro de realizar esta limpieza en los movimientos de stock?"
-                            attrs="{'invisible':[('state','=','done'),('current_user_email','in',('desarrolloti@dimabe.cl','logistica@lainvernada.com'))]}"
+                            attrs="{'invisible':[('state','=','done')]}"
                             group="base.group_system"
                     />
                     <button name="check_duplicate" string="Verificar Duplicados"/>
