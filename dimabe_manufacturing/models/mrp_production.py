@@ -127,7 +127,7 @@ class MrpProduction(models.Model):
     @api.multi
     def _compute_current_email(self):
         for item in self:
-            item.current_user_email = self.env['res.users'].search([('id','=',self.env.user.id)])
+            item.current_user_email = self.env['res.users'].search([('id','=',self.env.user.id)]).email
 
     @api.multi
     def _compute_pt_balance(self):
