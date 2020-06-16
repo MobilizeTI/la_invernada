@@ -284,10 +284,12 @@ class MrpProduction(models.Model):
     @api.multi
     def fix_reserved(self):
         for item in self:
-            item.move_raw_ids.update({
-                'is_done': False,
-                'state': 'assigned'
-            })
+            for raw in item.move_raw_ids:
+                if item.state != 'done':
+                    raw.update({
+                        'state': 'draft',
+                        'is_done': False
+                    })
             group = self.env['res.groups'].search([('name', '=', 'Limpiar')])
             user_logon = self.env.user
             if user_logon not in group.users:

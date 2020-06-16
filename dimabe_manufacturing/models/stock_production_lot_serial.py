@@ -354,10 +354,11 @@ class StockProductionLotSerial(models.Model):
                 )
 
             )
-        models._logger.error(self.id)
-        self.update({
-            'stock_production_lot_id':None
-        })
+        group = self.env['res.groups'].search([('name', '=', 'Limpiar')])
+        user_logon = self.env.user
+        if user_logon not in group.users:
+            raise models.ValidationError("Opcion no disponible con sus permisos de usuario")
+        return super(StockProductionLotSerial, self).unlink()
 
     @api.multi
     def delete(self):
