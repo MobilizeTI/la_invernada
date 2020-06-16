@@ -440,12 +440,14 @@
                     <span t-field="o.id"/>
                   </strong>
                 </td>
+              </tr>
+              <tr>
                 <td>
                   <strong style="text-align:right !important;">Jefe de Area:
-                    <span t-field="o.requisition_id.user_id"/>
                   </strong>
+                  <span t-field="o.requisition_id.user_id"/>
                 </td>
-              </tr>
+                </tr>
               <tr>
                 <th style="text-align:right;">Rut:</th>
                 <td colspan="2">
