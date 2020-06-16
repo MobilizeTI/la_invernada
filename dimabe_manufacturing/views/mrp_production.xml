@@ -12,7 +12,6 @@
                     <field name="pt_balance"/>
                 </field>
                 <xpath expr="//header" postition="after">
-                    <field name="userid"/>
                     <button name="calculate_done" type="object"
                             string="Calcular Realizado"
                             attrs="{'invisible':[('state', '!=', 'progress')]}"

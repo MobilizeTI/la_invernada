@@ -122,7 +122,6 @@ class MrpProduction(models.Model):
 
     manufactureable = fields.Many2many('product.product', compute='get_product_route')
 
-    userid = fields.Char("User ID", default=lambda self: self.env.user.email)
 
     @api.multi
     def _compute_pt_balance(self):
