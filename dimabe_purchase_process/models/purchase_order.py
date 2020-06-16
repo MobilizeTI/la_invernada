@@ -59,6 +59,10 @@ class PurchaseOrder(models.Model):
 
     @api.multi
     def button_confirm(self):
+        group = self.env['res.groups'].search([('name','=','Confirme')])
+        user_logon = self.env.user
+        if user_logon not in group.users:
+            raise models.ValidationError('Usted no cuenta con los permisos para realizar este acción')
         res = super(PurchaseOrder, self).button_confirm()
         template_id = self.env.ref('dimabe_purchase_process.po_confirmed_mail_template')
         for order in self:
