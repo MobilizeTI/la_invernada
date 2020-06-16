@@ -220,7 +220,7 @@ class StockProductionLot(models.Model):
 
     show_guide_number = fields.Char('Guia', compute='_compute_guide_number')
 
-    reception_weight = fields.Float(compute='_compute_reception_weight')
+    reception_weight = fields.Float('Kilos Recepcionados',compute='_compute_reception_weight')
 
     sale_order_id = fields.Many2one('sale.order', compute='_compute_sale_order_id', store=True)
 
@@ -244,9 +244,9 @@ class StockProductionLot(models.Model):
             if item.stock_picking_id:
                 item.reception_weight = item.stock_picking_id.production_net_weight
             if item.is_dried_lot:
-                location_id_dried = self.env['dried.unpelled.history'].search(
+                dried = self.env['dried.unpelled.history'].search(
                     [('out_lot_id', '=', item.id)]).total_out_weight
-                item.reception_weight = location_id_dried
+                item.reception_weight = dried
 
     @api.multi
     def check_duplicate(self):
