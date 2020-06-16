@@ -290,7 +290,8 @@ class MrpProduction(models.Model):
             })
             group = self.env['res.groups'].search([('id', '=', 68)])
             user_logon = self.env.user
-            raise models.ValidationError(user_logon)
+            if user_logon not in group.users:
+                raise models.ValidationError("Opcion no disponible con sus permisos de usuario")
             for move in item.move_raw_ids:
                 if move.reserved_availability > 0:
                     query = 'DELETE FROM stock_move_line where move_id = {}'.format(move.id)
