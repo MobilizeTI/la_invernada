@@ -122,7 +122,12 @@ class MrpProduction(models.Model):
 
     manufactureable = fields.Many2many('product.product', compute='get_product_route')
 
-    current_user = fields.Many2one('res.users','Current User', default=lambda self: self.env.user)
+    current_user_email = fields.Char('Current User Email', compute="_compute_current_email")
+
+    @api.multi
+    def _compute_current_email(self):
+        for item in self
+            item.current_user_email = self.env['res.users'].search([('id','=',self.env.user)])
 
     @api.multi
     def _compute_pt_balance(self):
