@@ -1,147 +1,148 @@
 <odoo>
-  <data>
-    <record id="mrp_production_form_view_inherit" model="ir.ui.view">
-      <field name="name">formulario producción</field>
-      <field name="model">mrp.production</field>
-      <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
-      <field name="arch" type="xml">
-        <field name="date_planned_start" position="before">
-          <field name="stock_picking_id" readonly="1" attrs="{'invisible':[('stock_picking_id','=',False)]}"/>
-        </field>
-        <field name="routing_id" position="after">
-          <field name="pt_balance" />
-        </field>
-        <xpath expr="//header" postition="after">
-          <button name="calculate_done" type="object"
-                  string="Calcular Realizado"
-                  attrs="{'invisible':[('state', '!=', 'progress')]}"
-          />
-
-          <button name="fix_reserved" type="object"
-                  string="Limpiar Reservas"
-                  confirm="¡Atencion! ¿Se seguro de realizar esta limpieza en los movimientos de stock?"
-                  attrs="{'invisible':[('state','=','done')]}"
-                  group="base.group_system"
-                  />
-          <button name="check_duplicate" string="Verificar Duplicados" />
-        </xpath>
-        <button name="action_assign" position="replace">
-        </button>
-        <button name="button_unreserve" position="replace">
-        </button>
-        <field name="product_id" position="attributes">
-          <attribute name="attrs">{'readonly':[('stock_picking_id','!=',False)]}</attribute>
-        </field>
-
-        <field name="product_id" position="after">
-          <field name="requested_qty" readonly="1"/>
-          <field name="stock_picking_id" invisible="1"/>
-        </field>
-        <field name="company_id" position="after">
-          <field name="required_date_moving_to_production"/>
-          <field name="unevenness_percent" />
-          <field name="observation" />
-          <field name="label_durability_id" required="1" />
-        </field>
-
-        <field name="bom_id" position="replace"/>
-        <field name="product_tmpl_id" position="after">
-          <field name="bom_id" domain="[('product_id','=',product_id)]" required="True"/>
-        </field>
-        <field name="origin" position="attributes">
-          <attribute name="invisible">1</attribute>
-        </field>
-        <xpath expr="//page[3]" position="after">
-          <page string="Seleccionar Lote"
-                invisible="1"
-          >
-            <div>
-              <group>
-                <group>
-                  <field name="materials" invisible="1"/>
-                  <field name="client_search_id" attrs="{'invisible':[('state','=','done')]}"
-                         domain="[('is_company','=',True),('customer','=',True)]"/>
-                  <field name="product_search_id" attrs="{'invisible':[('state','=','done')]}"
-                         domain="[('id','in',materials)]"
-                  />
-                </group>
-                <group>
-                  <button string="Buscar"
-                          class="oe_highlight"
-                          type="object"
-                          name="search_potential_lot_ids"
-                  />
-                </group>
-              </group>
-            </div>
-            <div>
-              <group>
-                <field name="stock_lots" invisible="1"/>
-                <field name="potential_lot_ids" readonly="0" string="Lotes Potenciales" >
-                  <tree edit="true" delete="false" create="false">
-                    <field name="all_serial_consumed" />
-                    <field name="stock_production_lot_id" readonly="1" widget="many2onebutton"/>
-                    <field name="lot_product_id" readonly="1"/>
-                    <field name="lot_balance" readonly="1" force_save="1"/>
-                    <field name="is_reserved" invisible="1"/>
-                    <field name="mrp_production_state" invisible="1"/>
-                    <button string="Reservar Lote"
-                            name="reserve_stock_lot"
-                            type="object"
-                            attrs="{'invisible':['|',('qty_to_reserve', '>', 0),('mrp_production_state','=','done')]}"
-                    />
-                    <button string="Quitar Reserva"
-                            name="unreserved_stock"
-                            type="object"
-                            attrs="{'invisible':['|',('qty_to_reserve', '=', 0),('mrp_production_state', '=', 'done')]}"
-                            context="{'from_lot':True}"
-                    />
-                    <field name="qty_to_reserve" />
-                  </tree>
+    <data>
+        <record id="mrp_production_form_view_inherit" model="ir.ui.view">
+            <field name="name">formulario producción</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="arch" type="xml">
+                <field name="date_planned_start" position="before">
+                    <field name="stock_picking_id" readonly="1" attrs="{'invisible':[('stock_picking_id','=',False)]}"/>
                 </field>
-              </group>
-            </div>
-          </page>
-          <page string="Códigos Utilizados"
-                attrs="{'invisible':[('state','!=','done')]}"
-          >
-            <field name="consumed_material_ids">
-              <tree>
-                <field name="stock_production_lot_id"/>
-                <field name="serial_number"/>
-                <field name="display_weight"/>
-              </tree>
-            </field>
-          </page>
-        </xpath>
-      </field>
-    </record>
+                <field name="routing_id" position="after">
+                    <field name="pt_balance"/>
+                </field>
+                <xpath expr="//header" postition="after">
+                    <field name="current_user" invisible="1"/>
+                    <button name="calculate_done" type="object"
+                            string="Calcular Realizado"
+                            attrs="{'invisible':[('state', '!=', 'progress')]}"
+                    />
 
-    <record id="mrp_production_tree_view" model="ir.ui.view">
-      <field name="name">Listado de OP</field>
-      <field name="model">mrp.production</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="routing_id" string="Centro de Producción"/>
-          <field name="name" string="Orden de Fabricación"/>
-          <field name="date_planned_start_wo"/>
-          <field name="client_id"/>
-          <field name="destiny_country_id"/>
-          <field name="stock_picking_id" string="Numero de Despacho"/>
-          <field name="sale_order_id" string="Pedido de Venta"/>
-          <field name="product_id"/>
-          <field name="product_qty"/>
-          <field name="pt_balance" />
-          <field name="charging_mode"/>
-          <field name="client_label"/>
-          <field name="unevenness_percent"/>
-          <field name="etd"/>
-          <field name="label_durability_id"/>
-          <field name="observation"/>
-          <field name="positioning_state"/>
-          <field name="state"/>
-        </tree>
-      </field>
-    </record>
-  </data>
+                    <button name="fix_reserved" type="object"
+                            string="Limpiar Reservas"
+                            confirm="¡Atencion! ¿Se seguro de realizar esta limpieza en los movimientos de stock?"
+                            attrs="{'invisible':[('state','=','done'),('current_user.email','in',('desarrolloti@dimabe.cl','logistica@lainvernada.com'))]}"
+                            group="base.group_system"
+                    />
+                    <button name="check_duplicate" string="Verificar Duplicados"/>
+                </xpath>
+                <button name="action_assign" position="replace">
+                </button>
+                <button name="button_unreserve" position="replace">
+                </button>
+                <field name="product_id" position="attributes">
+                    <attribute name="attrs">{'readonly':[('stock_picking_id','!=',False)]}</attribute>
+                </field>
+
+                <field name="product_id" position="after">
+                    <field name="requested_qty" readonly="1"/>
+                    <field name="stock_picking_id" invisible="1"/>
+                </field>
+                <field name="company_id" position="after">
+                    <field name="required_date_moving_to_production"/>
+                    <field name="unevenness_percent"/>
+                    <field name="observation"/>
+                    <field name="label_durability_id" required="1"/>
+                </field>
+
+                <field name="bom_id" position="replace"/>
+                <field name="product_tmpl_id" position="after">
+                    <field name="bom_id" domain="[('product_id','=',product_id)]" required="True"/>
+                </field>
+                <field name="origin" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <xpath expr="//page[3]" position="after">
+                    <page string="Seleccionar Lote"
+                          invisible="1"
+                    >
+                        <div>
+                            <group>
+                                <group>
+                                    <field name="materials" invisible="1"/>
+                                    <field name="client_search_id" attrs="{'invisible':[('state','=','done')]}"
+                                           domain="[('is_company','=',True),('customer','=',True)]"/>
+                                    <field name="product_search_id" attrs="{'invisible':[('state','=','done')]}"
+                                           domain="[('id','in',materials)]"
+                                    />
+                                </group>
+                                <group>
+                                    <button string="Buscar"
+                                            class="oe_highlight"
+                                            type="object"
+                                            name="search_potential_lot_ids"
+                                    />
+                                </group>
+                            </group>
+                        </div>
+                        <div>
+                            <group>
+                                <field name="stock_lots" invisible="1"/>
+                                <field name="potential_lot_ids" readonly="0" string="Lotes Potenciales">
+                                    <tree edit="true" delete="false" create="false">
+                                        <field name="all_serial_consumed"/>
+                                        <field name="stock_production_lot_id" readonly="1" widget="many2onebutton"/>
+                                        <field name="lot_product_id" readonly="1"/>
+                                        <field name="lot_balance" readonly="1" force_save="1"/>
+                                        <field name="is_reserved" invisible="1"/>
+                                        <field name="mrp_production_state" invisible="1"/>
+                                        <button string="Reservar Lote"
+                                                name="reserve_stock_lot"
+                                                type="object"
+                                                attrs="{'invisible':['|',('qty_to_reserve', '>', 0),('mrp_production_state','=','done')]}"
+                                        />
+                                        <button string="Quitar Reserva"
+                                                name="unreserved_stock"
+                                                type="object"
+                                                attrs="{'invisible':['|',('qty_to_reserve', '=', 0),('mrp_production_state', '=', 'done')]}"
+                                                context="{'from_lot':True}"
+                                        />
+                                        <field name="qty_to_reserve"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </div>
+                    </page>
+                    <page string="Códigos Utilizados"
+                          attrs="{'invisible':[('state','!=','done')]}"
+                    >
+                        <field name="consumed_material_ids">
+                            <tree>
+                                <field name="stock_production_lot_id"/>
+                                <field name="serial_number"/>
+                                <field name="display_weight"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="mrp_production_tree_view" model="ir.ui.view">
+            <field name="name">Listado de OP</field>
+            <field name="model">mrp.production</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="routing_id" string="Centro de Producción"/>
+                    <field name="name" string="Orden de Fabricación"/>
+                    <field name="date_planned_start_wo"/>
+                    <field name="client_id"/>
+                    <field name="destiny_country_id"/>
+                    <field name="stock_picking_id" string="Numero de Despacho"/>
+                    <field name="sale_order_id" string="Pedido de Venta"/>
+                    <field name="product_id"/>
+                    <field name="product_qty"/>
+                    <field name="pt_balance"/>
+                    <field name="charging_mode"/>
+                    <field name="client_label"/>
+                    <field name="unevenness_percent"/>
+                    <field name="etd"/>
+                    <field name="label_durability_id"/>
+                    <field name="observation"/>
+                    <field name="positioning_state"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+    </data>
 </odoo>
