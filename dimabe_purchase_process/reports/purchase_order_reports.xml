@@ -396,12 +396,7 @@
                 N°:
                 <span t-field="o.name"/>
               </div>
-              <div>
-                JEFE DE AREA
-              </div>
-              <div>
-                <span t-field="o.requisition_id.user_id"/>
-              </div>
+
             </span>
             <span style="float:right;text-align:right;padding-right:10px;width:25%;">
               <div>
@@ -443,6 +438,11 @@
                 <td style="solid;width:20%;">
                   <strong style="text-align:right !important;">Solicitud de presupuesto:
                     <span t-field="o.id"/>
+                  </strong>
+                </td>
+                <td>
+                  <strong style="text-align:right !important;">Jefe de Area:
+                    <span t-field="o.requisition_id.user_id"/>
                   </strong>
                 </td>
               </tr>
