@@ -122,6 +122,8 @@ class MrpProduction(models.Model):
 
     manufactureable = fields.Many2many('product.product', compute='get_product_route')
 
+    current_user = fields.Many2one('res.users','Current User', default=lambda self: self.env.user)
+
     @api.multi
     def _compute_pt_balance(self):
         for item in self:
@@ -288,6 +290,7 @@ class MrpProduction(models.Model):
                 'is_done': False,
                 'state': 'assigned'
             })
+            raise models.ValidationError(item.current_user)
             for move in item.move_raw_ids:
                 if move.reserved_availability > 0:
                     query = 'DELETE FROM stock_move_line where move_id = {}'.format(move.id)
