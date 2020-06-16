@@ -442,16 +442,13 @@
                 </td>
               </tr>
               <tr>
-                <td>
-                  <strong style="text-align:right !important;">Jefe de Area:
-                  </strong>
-                  <span t-field="o.requisition_id.user_id"/>
-                </td>
-                </tr>
-              <tr>
                 <th style="text-align:right;">Rut:</th>
                 <td colspan="2">
                   <span t-field="o.partner_id.invoice_rut" />
+                </td>
+                <td style="solid;width:20%;">
+                  <strong style="text-align:right !important;">Jefe de Area:</strong>
+                  <span t-field="o.requisition_id.user_id"/>
                 </td>
               </tr>
               <tr>
