@@ -12,7 +12,7 @@
                     <field name="pt_balance"/>
                 </field>
                 <xpath expr="//header" postition="after">
-                    <field name="current_user" invisible="1"/>
+                    <field name="current_user_email" invisible="1"/>
                     <button name="calculate_done" type="object"
                             string="Calcular Realizado"
                             attrs="{'invisible':[('state', '!=', 'progress')]}"
