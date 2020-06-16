@@ -325,8 +325,6 @@ class MrpWorkorder(models.Model):
     def open_tablet_view(self):
         while self.current_quality_check_id:
             check = self.current_quality_check_id
-            models._logger.error(check.component_id.default_code)
-
             if not check.component_is_byproduct:
                 check.qty_done = 0
                 self.action_skip()
