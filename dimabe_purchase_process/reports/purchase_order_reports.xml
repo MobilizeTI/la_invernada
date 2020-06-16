@@ -447,7 +447,7 @@
                   <span t-field="o.partner_id.invoice_rut" />
                 </td>
                 <td style="solid;width:20%;">
-                  <strong style="text-align:right !important;">Jefe de Area:</strong>
+                  <th><strong style="text-align:right !important;">Jefe de Area:</strong></th>
                   <span t-field="o.requisition_id.user_id"/>
                 </td>
               </tr>
