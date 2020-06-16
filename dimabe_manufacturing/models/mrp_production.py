@@ -122,7 +122,6 @@ class MrpProduction(models.Model):
 
     manufactureable = fields.Many2many('product.product', compute='get_product_route')
 
-
     @api.multi
     def _compute_pt_balance(self):
         for item in self:
@@ -285,8 +284,10 @@ class MrpProduction(models.Model):
     @api.multi
     def fix_reserved(self):
         for item in self:
-            mrp_workorder = self.env['mrp.workorder'].search([('production_id', '=', item.id)])
-            raise models.ValidationError(mrp_workorder)
+            item.move_raw_ids.update({
+                'is_done': False,
+                'state': 'assigned'
+            })
             for move in item.move_raw_ids:
                 if move.reserved_availability > 0:
                     query = 'DELETE FROM stock_move_line where move_id = {}'.format(move.id)

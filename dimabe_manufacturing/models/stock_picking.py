@@ -60,6 +60,9 @@ class StockPicking(models.Model):
         'stock.production.lot',
         compute='_compute_packing_list_lot_ids'
     )
+
+    sale_order_id = fields.Many2one('sale.order', 'Pedido')
+
     @api.multi
     def _compute_packing_list_lot_ids(self):
         for item in self:
@@ -70,8 +73,13 @@ class StockPicking(models.Model):
         for item in self:
             item.assigned_pallet_ids = item.packing_list_ids.mapped('pallet_id')
 
+    # @api.onchange('sale_order_id')
+    # def on_change_production_id(self):
+    #     for item in self:
+    #         item.potential_lot_ids = item.potential_lot_ids.filtered(
+    #             lambda a: a.sale_order_id.id == item.sale_order_id.id)
+
     @api.multi
-    @api.depends('product_search_id')
     def _compute_potential_lot_serial_ids(self):
         for item in self:
             domain = [
@@ -84,27 +92,25 @@ class StockPicking(models.Model):
                 data = self.env['stock.production.lot.serial'].search([('stock_product_id', '=', id_pr)])
                 if not data:
                     item.have_series = False
-            if item.product_search_id:
-                domain += [('stock_product_id', '=',
-                            item.product_search_id.id)]
+
             item.potential_lot_serial_ids = self.env['stock.production.lot.serial'].search(
                 domain)
 
     @api.multi
     def calculate_last_serial(self):
-        
+
         if len(canning) == 1:
             if self.production_net_weight == self.net_weight:
                 self.production_net_weight = self.net_weight - self.quality_weight
 
             self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)]).write({
-                    'real_weight': self.avg_unitary_weight
-                })
-            diff = self.production_net_weight - (canning.product_uom_qty*self.avg_unitary_weight)
-            self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)])[-1].write({
-            'real_weight': self.avg_unitary_weight + diff
+                'real_weight': self.avg_unitary_weight
             })
-            
+            diff = self.production_net_weight - (canning.product_uom_qty * self.avg_unitary_weight)
+            self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)])[-1].write({
+                'real_weight': self.avg_unitary_weight + diff
+            })
+
     @api.multi
     def _compute_potential_lot(self):
         for item in self:
@@ -195,8 +201,6 @@ class StockPicking(models.Model):
                           a.product_uom_qty == custom_serial.display_weight and
                           a.qty_done == 0
             )
-
-            # raise models.ValidationError(stock_move_line)
 
             if len(stock_move_line) > 1:
                 stock_move_line[0].write({

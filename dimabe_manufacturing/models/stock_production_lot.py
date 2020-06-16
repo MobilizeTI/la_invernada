@@ -220,7 +220,20 @@ class StockProductionLot(models.Model):
 
     show_guide_number = fields.Char('Guia', compute='_compute_guide_number')
 
-    reception_weight = fields.Float(compute='_compute_reception_weight')
+    reception_weight = fields.Float('Kilos Recepcionados',compute='_compute_reception_weight')
+
+    sale_order_id = fields.Many2one('sale.order', compute='_compute_sale_order_id', store=True)
+
+    @api.depends('stock_production_lot_serial_ids')
+    @api.multi
+    def _compute_sale_order_id(self):
+        for item in self:
+            if item.id != 2:
+                if item.is_prd_lot:
+                    if item.stock_production_lot_serial_ids.mapped('production_id').mapped('stock_picking_id'):
+                        name = item.stock_production_lot_serial_ids.mapped('production_id').mapped('stock_picking_id')[
+                            0].origin
+                        item.sale_order_id = item.env['sale.order'].search([('name', '=', name)])
 
     @api.multi
     def _compute_reception_weight(self):
@@ -231,10 +244,9 @@ class StockProductionLot(models.Model):
             if item.stock_picking_id:
                 item.reception_weight = item.stock_picking_id.production_net_weight
             if item.is_dried_lot:
-                location_id_dried = self.env['dried.unpelled.history'].search(
+                dried = self.env['dried.unpelled.history'].search(
                     [('out_lot_id', '=', item.id)]).total_out_weight
-                item.reception_weight = location_id_dried
-
+                item.reception_weight = dried
 
 
     @api.multi
@@ -257,16 +269,22 @@ class StockProductionLot(models.Model):
                     for duplicate in duplicates:
                         serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', duplicate)])
                         serie += 1
-                        serial[1].update({
-                            'serial_number': item.name + '{}'.format(serie)
-                        })
+                        models._logger.error(serial)
+                        if len(serial) > 1:
+                            serial[1].update({
+                                'serial_number': item.name + '{}'.format(serie)
+                            })
+                        else:
+                            serial.update({
+                                'serial_number': item.name + '{}'.format(serie)
+                            })
 
     @api.multi
     def refresh_data(self):
         for item in self.env['stock.production.lot'].search([]):
-            models._logger.error(item.name)
             available_weight = sum(item.serial_available.mapped('real_weight'))
-            query = 'UPDATE stock_production_lot set available_weight = {} where id =  {}'.format(available_weight,item.id)
+            query = 'UPDATE stock_production_lot set available_weight = {} where id =  {}'.format(available_weight,
+                                                                                                  item.id)
             cr = self._cr
             cr.execute(query)
 
@@ -555,7 +573,6 @@ class StockProductionLot(models.Model):
                 stock_quant.sudo().update({
                     'reserved_quantity': stock_quant.total_reserved
                 })
-
             # serial_to_assign_ids.with_context(stock_picking_id=picking_id).reserve_picking()
 
     @api.multi
@@ -635,14 +652,17 @@ class StockProductionLot(models.Model):
     def write(self, values):
         for item in self:
             res = super(StockProductionLot, self).write(values)
-            counter = 0
             if not item.is_standard_weight:
                 for serial in item.stock_production_lot_serial_ids:
-                    counter += 1
-                    tmp = '00{}'.format(counter)
-                    serial.serial_number = item.name + tmp[-3:]
+                    if not serial.serial_number:
+                        if len(item.stock_production_lot_serial_ids) > 1:
+                            counter = int(item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[
+                                              -1].serial_number) + 1
+                        else:
+                            counter = 1
+                        tmp = '00{}'.format(counter)
+                        serial.serial_number = item.name + tmp[-3:]
             if len(item.stock_production_lot_serial_ids) > 999:
-
                 item.check_duplicate()
             return res
 

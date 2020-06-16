@@ -354,7 +354,10 @@ class StockProductionLotSerial(models.Model):
                 )
 
             )
-        return super(StockProductionLotSerial, self).unlink()
+        models._logger.error(self.id)
+        self.update({
+            'stock_production_lot_id':None
+        })
 
     @api.multi
     def delete(self):
