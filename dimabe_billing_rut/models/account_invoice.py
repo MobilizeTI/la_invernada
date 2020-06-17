@@ -160,4 +160,4 @@ class AccountInvoice(models.Model):
         hash = self.company_id.dte_hash
         auth = requests.auth.HTTPBasicAuth(hash, 'X')
         dtes = requests.get(url + '/api' + apidte)
-        raise models.ValidationError(dtes)
+        raise models.ValidationError(dtes.json())
