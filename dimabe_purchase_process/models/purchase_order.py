@@ -64,7 +64,7 @@ class PurchaseOrder(models.Model):
 
     @api.multi
     def button_confirm(self):
-        group = self.env['res.groups'].search([('name','=','Confirme')])
+        group = self.env['res.groups'].search([('name','=','Post Confirmar')])
         user_logon = self.env.user
         if user_logon not in group.users:
             raise models.ValidationError('Usted no cuenta con los permisos para realizar este acción')
