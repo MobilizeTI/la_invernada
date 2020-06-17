@@ -163,4 +163,4 @@ class AccountInvoice(models.Model):
         auth = requests.auth.HTTPBasicAuth(hash, 'X')
         dtes = requests.get(url + '/api' + apidte,auth=auth)
         data = dtes.json()
-        raise models.ValidationError(data[0])
+        raise models.ValidationError(data[0].value)
