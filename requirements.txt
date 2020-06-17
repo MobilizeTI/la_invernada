@@ -2,4 +2,3 @@ pyjwt
 simplejson
 XlsxWriter
 xlrd
-PIL
