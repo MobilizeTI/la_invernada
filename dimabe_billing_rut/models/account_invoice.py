@@ -147,3 +147,8 @@ class AccountInvoice(models.Model):
         fecha = data.get("fecha", None)
         total = data.get("total", None)
         self.pdf_url = "%s/dte/dte_emitidos/pdf/%s/%s/0/%s/%s/%s" % (url, self.dte_type_id.code, self.dte_folio, rut_emisor, fecha, total)
+
+    @api.multi
+    def get_dte(self):
+        url = self.company_id.dte_url
+        raise models.ValidationError(url)
