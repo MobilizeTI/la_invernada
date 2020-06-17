@@ -157,7 +157,9 @@ class AccountInvoice(models.Model):
     def get_dte(self):
         url = self.company_id.dte_url
         rut_company = self.company_id.invoice_rut.replace(".", "").split("-")[0]
-        apidte = '/dte/dte_recibidos/buscar/{}?fecha_desde=2019-01-01&fecha_hasta=2020-06-01'.format(rut_company)
+        fecha_desde = '2020-01-01'
+        fecha_hasta = date.today()
+        apidte = '/dte/dte_recibidos/buscar/{}?fecha_desde={}&fecha_hasta={}'.format(rut_company,fecha_desde,fecha_hasta)
 
         hash = self.company_id.dte_hash
         auth = requests.auth.HTTPBasicAuth(hash, 'X')
@@ -165,5 +167,5 @@ class AccountInvoice(models.Model):
         data = dtes.json()
         for d in data:
             folio = d.get('folio',None)
-
+            dte = self.env['dte.type'].search([('code','=',d.get)])
             raise models.UserError(dte)
