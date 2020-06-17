@@ -257,7 +257,7 @@ class StockPicking(models.Model):
             cont = 0
             try:
                 qualityimg = 80
-                namefile = os.path.basename(item.data_fname)
+                namefile = os.path.basename(item.datas_fname)
                 splitname = os.path.splitext(item.datas_fname)
                 namefile = splitname[0]
                 extens = splitname[1]
