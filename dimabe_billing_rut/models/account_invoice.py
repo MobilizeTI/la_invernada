@@ -164,5 +164,6 @@ class AccountInvoice(models.Model):
         dtes = requests.get(url + '/api' + apidte,auth=auth)
         data = dtes.json()
         for d in data:
-            dte = self.env['account.invoice.references'].search([('name','like',d.get('giro',None))])
+            folio = d.get('folio',None)
+
             raise models.UserError(dte)
