@@ -164,4 +164,5 @@ class AccountInvoice(models.Model):
         dtes = requests.get(url + '/api' + apidte,auth=auth)
         data = dtes.json()
         for d in data:
-            raise models.UserError(d.get('emisor',None))
+            dte = self.env['dte.type'].search([('code','=',d.get('dte',None))])
+            raise models.UserError(dte)
