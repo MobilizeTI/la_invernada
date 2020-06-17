@@ -159,5 +159,5 @@ class AccountInvoice(models.Model):
         apidte = '/dte/dte_recibidos/buscar/76263274?fecha_desde=2019-01-01&fecha_hasta=2020-06-01'
         hash = self.company_id.dte_hash
         auth = requests.auth.HTTPBasicAuth(hash, 'X')
-        dtes = requests.get(url + '/api' + apidte)
+        dtes = requests.get(url + '/api' + apidte,auth=auth)
         raise models.ValidationError(dtes.json())
