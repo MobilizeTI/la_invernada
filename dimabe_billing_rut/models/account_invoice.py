@@ -165,4 +165,4 @@ class AccountInvoice(models.Model):
         data = dtes.json()
         for d in data:
             dte = self.env['dte.type'].search([('code','=',d.get('dte',None))])
-            raise models.UserError(dte)
+            raise models.UserError(dte.name)
