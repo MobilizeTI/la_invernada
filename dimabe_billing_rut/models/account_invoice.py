@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 import json
 import requests
+import inspect
 from datetime import date
 
 
@@ -161,4 +162,4 @@ class AccountInvoice(models.Model):
         auth = requests.auth.HTTPBasicAuth(hash, 'X')
         dtes = requests.get(url + '/api' + apidte,auth=auth)
         data = dtes.json()
-        raise models.ValidationError(data)
+        raise models.ValidationError(inspect.getsource(data))
