@@ -45,7 +45,6 @@ class PurchaseOrder(models.Model):
     def action_rfq_send(self):
         for item in self:
             group = self.env['res.groups'].search([('name', '=', 'Post Confirmar')])
-            raise models.ValidationError(group.users)
             user_logon = self.env.user
             if user_logon not in group.users:
                 raise models.ValidationError('Usted no cuenta con los permisos para realizar este acción')
