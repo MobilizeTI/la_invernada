@@ -1,6 +1,3 @@
-import glob
-import os
-
 from odoo import models, fields, api, tools
 from datetime import datetime, timedelta
 from PIL import Image
@@ -254,23 +251,16 @@ class StockPicking(models.Model):
     @api.multi
     def generate_report(self):
         for item in self.pictures:
-            cont = 0
-            try:
-                qualityimg = 80
-                namefile = os.path.basename(item.url)
-                splitname = os.path.splitext(item.url)
-                namefile = splitname[0]
-                extens = splitname[1]
-                i = Image.open(item.url)
-                i.save(item.datas_fname + "compress_" + namefile + extens, quality=qualityimg)
-            except ValueError:
-                raise models.ValidationError(ValueError)
-                cont = cont + 1
-            if cont > 0:
-                print("Algunos archivos no se puedieron comprimir")
+            models._logger.error(base64.decode(item.datas))
+            if item.counter >= 9:
+                item.datas = tools.image_resize_image_medium(
+                    item.datas, size=(229, 305)
+                )
             else:
-                print("todos los ficheros fueron comprimidos con exito")
-            return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
+                item.datas = tools.image_resize_image_medium(
+                    item.datas, size=(241, 320)
+                )
+        return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
             .report_action(self.pictures)
 
     @api.multi
