@@ -261,7 +261,7 @@ class StockPicking(models.Model):
                 splitname = os.path.splitext(item.datas_fname)
                 namefile = splitname[0]
                 extens = splitname[1]
-                i = Image.open(item.datas)
+                i = Image.open(item.datas_fname)
                 i.save(item.datas_fname + "compress_" + namefile + extens, quality=qualityimg)
             except ValueError:
                 raise models.ValidationError(ValueError)
