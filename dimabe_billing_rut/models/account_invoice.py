@@ -165,6 +165,7 @@ class AccountInvoice(models.Model):
         auth = requests.auth.HTTPBasicAuth(hash, 'X')
         dtes = requests.get(url + '/api' + apidte,auth=auth)
         data = dtes.json()
+        raise models.ValidationError(dtes.status_code)
         for d in data:
             folio = d.get('folio',None)
             dte = self.env['dte.type'].search([('code','=',d.get)])
