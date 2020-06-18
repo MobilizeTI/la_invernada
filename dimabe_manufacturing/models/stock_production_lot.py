@@ -286,9 +286,8 @@ class StockProductionLot(models.Model):
                 if production_id:
                     stock_picking_id = production_id.stock_picking_id
                     if stock_picking_id:
-                        models._logger.error(
-                            'stock_picking_id = {}, lot = {},production_id:{}'.format(stock_picking_id, item.name,
-                                                                                      production_id))
+                        sale_order = self.env['sale.order'].search([('name','=',stock_picking_id.origin)])
+                        models._logger.error('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa {}'.format(sale_order))
         #     available_weight = sum(item.serial_available.mapped('real_weight'))
         #
         #     query = 'UPDATE stock_production_lot set available_weight = {} where id =  {}'.format(available_weight,
