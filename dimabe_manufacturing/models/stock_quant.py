@@ -1,7 +1,5 @@
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
-from odoo.osv import expression
-from odoo.tools.float_utils import float_compare, float_is_zero
+from odoo import models, api, fields
+from odoo.addons import decimal_precision as dp
 
 class StockQuant(models.Model):
     _inherit = 'stock.quant'
