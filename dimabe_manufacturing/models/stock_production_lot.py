@@ -281,11 +281,15 @@ class StockProductionLot(models.Model):
     @api.multi
     def refresh_data(self):
         for item in self.env['stock.production.lot'].search([]):
-            available_weight = sum(item.serial_available.mapped('real_weight'))
-            query = 'UPDATE stock_production_lot set available_weight = {} where id =  {}'.format(available_weight,
-                                                                                                  item.id)
-            cr = self._cr
-            cr.execute(query)
+            if item.is_prd_lot:
+                production_id = item.stock_production_lot_serial_ids.mapped('production_id')
+                models._logger.error(production_id)
+        #     available_weight = sum(item.serial_available.mapped('real_weight'))
+        #
+        #     query = 'UPDATE stock_production_lot set available_weight = {} where id =  {}'.format(available_weight,
+        #                                                                                           item.id)
+        #     cr = self._cr
+        #     cr.execute(query)
 
     @api.multi
     def _compute_serial_available(self):
