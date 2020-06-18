@@ -530,16 +530,16 @@ class StockProductionLot(models.Model):
         picking_id = None
         if 'stock_picking_id' in self.env.context:
             picking_id = self.env.context['stock_picking_id']
-            models._logger.error(picking_id)
+            models._logger.error('Line 533 {}'.format(picking_id))
             stock_picking = self.env['stock.picking'].search([('id', '=', picking_id)])
-            models._logger.error(stock_picking)
+            models._logger.error('Line 535 {}'.format(stock_picking))
         for item in self:
             serial_to_assign_ids = item.stock_production_lot_serial_ids.filtered(
                 lambda a: not a.consumed and not a.reserved_to_stock_picking_id
             )
-            models._logger.error(serial_to_assign_ids)
+            models._logger.error('Line 540 {}'.format(serial_to_assign_ids))
             lot_id = serial_to_assign_ids.mapped('stock_production_lot_id')
-            models._logger.error(lot_id)
+            models._logger.error('Line 542 {}'.format(lot_id))
             for lot in lot_id:
                 available_total_serial = lot.available_total_serial
                 models._logger.error(available_total_serial)
