@@ -228,12 +228,12 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_sale_order_id(self):
         for item in self:
-            if item.id != 2:
-                if item.is_prd_lot:
-                    if item.stock_production_lot_serial_ids.mapped('production_id').mapped('stock_picking_id'):
-                        name = item.stock_production_lot_serial_ids.mapped('production_id').mapped('stock_picking_id')[
-                            0].origin
-                        item.sale_order_id = item.env['sale.order'].search([('name', '=', name)])
+            if item.is_prd_lot:
+                production_id = item.stock_production_lot_serial_ids.mapped('production_id')
+                if production_id:
+                    stock_picking_id = production_id.stock_picking_id
+                    if stock_picking_id:
+                        item.sale_order_id = self.env['sale.order'].search([('name', '=', stock_picking_id.origin)])
 
     @api.multi
     def _compute_reception_weight(self):
@@ -287,7 +287,7 @@ class StockProductionLot(models.Model):
                     stock_picking_id = production_id.stock_picking_id
                     if stock_picking_id:
                         sale_order = self.env['sale.order'].search([('name','=',stock_picking_id.origin)])
-                        models._logger.error('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa {}'.format(sale_order))
+
         #     available_weight = sum(item.serial_available.mapped('real_weight'))
         #
         #     query = 'UPDATE stock_production_lot set available_weight = {} where id =  {}'.format(available_weight,
