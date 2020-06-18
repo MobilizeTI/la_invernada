@@ -68,8 +68,10 @@ class StockPicking(models.Model):
         for item in self:
             for move in item.move_ids_without_package:
                 move.update({
-                    'reserved_availability': 0
+                    'product_uom_qty': 0
                 })
+                stock_quant = self.env['stock.quant'].search([('lot_id','=',move.lot_id)])
+                stock_quant.write({'reserved_quantity':0})
 
     @api.multi
     def _compute_packing_list_lot_ids(self):
