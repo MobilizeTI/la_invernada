@@ -64,7 +64,7 @@ class StockPicking(models.Model):
     sale_order_id = fields.Many2one('sale.order', 'Pedido')
 
     @api.multi
-    def _clean_reserved(self):
+    def clean_reserved(self):
         for item in self:
             for move in item.move_ids_without_package:
                 if move.reserved_availability > 0:
