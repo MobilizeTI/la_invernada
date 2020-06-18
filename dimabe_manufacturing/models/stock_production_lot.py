@@ -220,7 +220,7 @@ class StockProductionLot(models.Model):
 
     show_guide_number = fields.Char('Guia', compute='_compute_guide_number')
 
-    reception_weight = fields.Float('Kilos Recepcionados',compute='_compute_reception_weight')
+    reception_weight = fields.Float('Kilos Recepcionados', compute='_compute_reception_weight')
 
     sale_order_id = fields.Many2one('sale.order', compute='_compute_sale_order_id', store=True)
 
@@ -286,7 +286,9 @@ class StockProductionLot(models.Model):
                 if production_id:
                     stock_picking_id = production_id.stock_picking_id
                     if stock_picking_id:
-                        models._logger.error(stock_picking_id)
+                        models._logger.error(
+                            'stock_picking_id = {}, lot = {},production_id:{}'.format(stock_picking_id, item.name,
+                                                                                      production_id))
         #     available_weight = sum(item.serial_available.mapped('real_weight'))
         #
         #     query = 'UPDATE stock_production_lot set available_weight = {} where id =  {}'.format(available_weight,
