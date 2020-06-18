@@ -184,12 +184,11 @@ class StockPicking(models.Model):
             raise models.UserError('No existe ningun campo en operaciones detalladas')
         if self.move_line_ids_without_package.filtered(lambda a: a.qty_done == 0):
             raise models.UserError('No ha ingresado la cantidad realizada')
-        else:
-            for serial in self.packing_list_ids:
-                serial.update({
-                    'consumed': True
-            })
         return super(StockPicking, self).button_validate()
+        for serial in self.packing_list_ids:
+            serial.update({
+                'consumed': True
+            })
 
     def validate_barcode(self, barcode):
         custom_serial = self.packing_list_ids.filtered(
