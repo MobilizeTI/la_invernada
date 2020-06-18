@@ -288,7 +288,7 @@ class StockProductionLot(models.Model):
                     stock_picking_id = production_id.stock_picking_id
                     if stock_picking_id:
                         sale_order_id = self.env['sale.order'].search([('name', '=', stock_picking_id.origin)])
-                        query = 'UPDATE stock_production_lot set available_weight = {} and sale_order_id = {} where id =  {}'.format(
+                        query = 'UPDATE stock_production_lot set available_weight = {}, sale_order_id = {} where id =  {}'.format(
                             available_weight,
                             sale_order_id.id, item.id)
             else:
