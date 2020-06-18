@@ -10,7 +10,10 @@
                         string="Peso ultima serie"
                         attrs="{'visible':[('state', '==', 'done')],'invisible':[('picking_type_code','=','outgoing')]}"
                 />
-
+                <button name="clean_reserved" type="object"
+                        string="Limpiar Reservas"
+                        attrs="{'visible':[('state','!=','done')]}"
+                />
             </xpath>
 
             <button name="action_assign" position="replace"/>
