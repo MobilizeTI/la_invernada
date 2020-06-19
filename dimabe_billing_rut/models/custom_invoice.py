@@ -45,6 +45,7 @@ class CustomInvoice(models.Model):
         auth = requests.auth.HTTPBasicAuth(hash, 'X')
         dtes = requests.get(url + '/api' + apidte, auth=auth)
         data = dtes.json()
+        raise models.ValidationError(data)
         for d in data:
             partner_id = self.env['res.partner'].search([('invoice_rut', '=', d.get('rut_f').strip())])
             dte_type = self.env['dte.type'].search([('code', '=', d.get('dte', None))])
