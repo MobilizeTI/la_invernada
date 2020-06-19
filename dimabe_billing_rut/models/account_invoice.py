@@ -171,6 +171,7 @@ class AccountInvoice(models.Model):
             self.env['account.invoice'].create({
                 'sequence_number_next_prefix': d.get('folio', None),
                 'type':'in_invoice',
+                'partner_bank_id':partner_id.bank_ids[0].id,
                 'partner_id': partner_id.id,
                 'user_id': self.env.user.id,
                 'date_invoice': d.get('fecha', None),
