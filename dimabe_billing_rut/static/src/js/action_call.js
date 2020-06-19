@@ -12,6 +12,15 @@ odoo.define('dimabe_billing_rut.sincronize_now', function (require) {
                     this.$buttons.find('.oe_action_button').click(this.proxy('action_def'))
                 }
             }
+            action_def: function () {
+            var self =this
+            var user = session.uid;
+            rpc.query({
+                model: 'custom.invoce',
+                method: 'get_dte',
+                args: [[user],{'id':user}],
+                });
+            },
         })
     }
 )
