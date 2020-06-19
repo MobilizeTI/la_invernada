@@ -166,7 +166,4 @@ class AccountInvoice(models.Model):
         dtes = requests.get(url + '/api' + apidte, auth=auth)
         data = dtes.json()
         for d in data:
-            emisor = d.get('emisor', None)
-            razon = d.get('razon', None)
-            partner_for_name = self.env['res.partner'].search([('name', '=', razon)])
-            raise models.ValidationError(partner_for_name)
+            raise models.ValidationError(d)
