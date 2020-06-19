@@ -9,6 +9,7 @@
                     <field name="date" string="Fecha Emisión"/>
                     <field name="transmitter"/>
                     <field name="dte" widget="many2onebutton"/>
+                    <field name="partner_id"/>
                     <field name="business_name"/>
                     <field name="invoice"/>
                     <field name="branch_office"/>
@@ -27,10 +28,17 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="custom_invoice_tree"/>
         </record>
+        <template xml:space="preserve">
+            <t t-extend="ListView.buttons">
+                <t t-jquery="button.oe_list_add" t-operation="after">
+                    <button type="object" string="Test"></button>
+                </t>
+            </t>
+        </template>
         <menuitem id="menu_custom_invoice"
-                    name="Facturas Recibidas"
-                    parent="menu_account_dte"
-                    action="dimabe_billing_rut.action_custom_invoice_views"
-            />
+                  name="Facturas Recibidas"
+                  parent="menu_account_dte"
+                  action="dimabe_billing_rut.action_custom_invoice_views"
+        />
     </data>
 </odoo>

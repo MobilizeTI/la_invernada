@@ -63,3 +63,6 @@ class CustomInvoice(models.Model):
                 'rut_f': d.get('rut_f', None),
                 'giro': d.get('giro', None),
             })
+
+    def test(self):
+        raise models.ValidationError('Funciona')
