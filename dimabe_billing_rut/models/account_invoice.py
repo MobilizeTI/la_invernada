@@ -153,34 +153,3 @@ class AccountInvoice(models.Model):
         self.pdf_url = "%s/dte/dte_emitidos/pdf/%s/%s/0/%s/%s/%s" % (
             url, self.dte_type_id.code, self.dte_folio, rut_emisor, fecha, total)
 
-    @api.multi
-    def get_dte(self):
-        url = self.company_id.dte_url
-        rut_company = self.company_id.invoice_rut.replace(".", "").split("-")[0]
-        fecha_desde = '2020-01-01'
-        fecha_hasta = date.today()
-        apidte = '/dte/dte_recibidos/buscar/{}?fecha_desde={}&fecha_hasta={}'.format(rut_company, fecha_desde,
-                                                                                     fecha_hasta)
-        hash = self.company_id.dte_hash
-        auth = requests.auth.HTTPBasicAuth(hash, 'X')
-        dtes = requests.get(url + '/api' + apidte, auth=auth)
-        data = dtes.json()
-        for d in data:
-            partner_id = self.env['res.partner'].search([('invoice_rut', '=', d.get('rut_f').strip())])
-            dte_type = self.env['dte.type'].search([('code', '=', d.get('dte', None))])
-            self.env['custom.invoice'].create({
-                'date': d.get('fecha', None),
-                'transmitter': d.get('emisor', None),
-                'partner_id': partner_id.id,
-                'dte': dte_type.id,
-                'business_name': d.get('razon_social', None),
-                'invoice': d.get('folio', None),
-                'branch_office': d.get('sucursal', None),
-                'exempt': False,
-                'net_value': d.get('neto', None),
-                'total_value': d.get('total', None),
-                'dv': d.get('dv', None),
-                'rut_f': d.get('rut_f', None),
-                'giro': d.get('giro', None),
-            })
-
