@@ -19,6 +19,7 @@
                     <field name="dv"/>
                     <field name="rut_f"/>
                     <field name="giro"/>
+                    <button type="object" name="generate_invoice" string="Crear Factura"/>
                 </tree>
             </field>
         </record>

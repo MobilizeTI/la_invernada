@@ -1,8 +1,7 @@
-from odoo import models, fields, api
-import json
-import requests
-import inspect
 from datetime import date
+
+import requests
+from odoo import models, fields, api
 
 
 class CustomInvoice(models.Model):
@@ -33,6 +32,19 @@ class CustomInvoice(models.Model):
     rut_f = fields.Char('Rut Emisor')
 
     giro = fields.Char('Giro')
+
+    account_invoice_id = fields.Many2one('account.invoice', 'Factura Odoo')
+
+    @api.multi
+    def generate_invoice(self):
+        for item in self:
+            invoice = self.env['account.invoice'].create({
+                'partner_id': item.partner_id,
+                'date_invoice': item.date
+            })
+            item.update({
+                'acount_invoice_id': invoice.id
+            })
 
     def get_dte(self):
         company_id = self.env.user.company_id
