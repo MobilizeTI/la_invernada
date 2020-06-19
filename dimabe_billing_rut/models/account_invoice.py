@@ -39,6 +39,8 @@ class AccountInvoice(models.Model):
         default='1',
     )
 
+    custom_invoice_id = fields.Many2one('custom.invoice','Factura Recibida')
+
     @api.onchange('partner_id')
     @api.multi
     def _compute_partner_activity(self):

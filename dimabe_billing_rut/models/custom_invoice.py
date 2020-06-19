@@ -38,16 +38,10 @@ class CustomInvoice(models.Model):
     @api.multi
     def generate_invoice(self):
         for item in self:
-            invoice = self.env['account.invoice'].create({
-                'partner_id': item.partner_id.id,
-                'type':'in_invoice',
-                'date_invoice': item.date
-            })
-            item.update({
-                'account_invoice_id': invoice.id
-            })
             context = {
-                'default_id': invoice.id,
+                'default_custom_invoice_id': item.id,
+                'default_partner_id':item.partner_id.id,
+                'default_date_invoice':item.date
             }
 
             return {
