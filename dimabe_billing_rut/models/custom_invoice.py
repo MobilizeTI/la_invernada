@@ -40,11 +40,26 @@ class CustomInvoice(models.Model):
         for item in self:
             invoice = self.env['account.invoice'].create({
                 'partner_id': item.partner_id.id,
+                'type':'in_invoice',
                 'date_invoice': item.date
             })
             item.update({
                 'account_invoice_id': invoice.id
             })
+            context = {
+                'default_id': invoice.id,
+            }
+
+            return {
+                "type": "ir.actions.act_window",
+                "res_model": "account.invoice",
+                "view_type": "form",
+                "view_mode": "form",
+                "views": [(False, "form")],
+                "view_id ref='account.invoice_form'": '',
+                "target": "current",
+                "context": context
+            }
 
     def get_dte(self):
         company_id = self.env.user.company_id
