@@ -151,7 +151,7 @@ class AccountInvoice(models.Model):
         fecha = data.get("fecha", None)
         total = data.get("total", None)
         self.pdf_url = "%s/dte/dte_emitidos/pdf/%s/%s/0/%s/%s/%s" % (
-        url, self.dte_type_id.code, self.dte_folio, rut_emisor, fecha, total)
+            url, self.dte_type_id.code, self.dte_folio, rut_emisor, fecha, total)
 
     @api.multi
     def get_dte(self):
@@ -159,9 +159,16 @@ class AccountInvoice(models.Model):
         rut_company = self.company_id.invoice_rut.replace(".", "").split("-")[0]
         fecha_desde = '2020-01-01'
         fecha_hasta = date.today()
-        apidte = '/dte/dte_recibidos/buscar/{}?fecha_desde={}&fecha_hasta={}'.format(self.company_id.invoice_rut.replace(".", "").split("-")[0],fecha_desde,fecha_hasta)
-        auth = requests.auth.HTTPBasicAuth(self.company_id.dte_hash, 'X')
-        dtes = requests.get(self.company_id.dte_url + '/api' + apidte,auth=auth)
+        apidte = '/dte/dte_recibidos/buscar/{}?fecha_desde={}&fecha_hasta={}'.format(rut_company, fecha_desde,
+                                                                                     fecha_hasta)
+        hash = self.company_id.dte_hash
+        auth = requests.auth.HTTPBasicAuth(hash, 'X')
+        dtes = requests.get(url + '/api' + apidte, auth=auth)
         data = dtes.json()
         for d in data:
-            raise models.ValidationError('{}'.format(d))
+            emisor = d.get('emisor', None)
+            razon = d.get('razon', None)
+            partner = self.env['res.partner'].search([('invoice_rut','like',emisor)])
+            if not partner:
+                partner = self.env['res.partner'].search([('name','like',razon)])
+            raise models.ValidationError(partner)
