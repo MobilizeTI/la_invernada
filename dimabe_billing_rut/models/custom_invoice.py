@@ -49,7 +49,7 @@ class CustomInvoice(models.Model):
         for d in data:
             invoice = self.env['custom.invoice'].search([('invoice', '=', d.get('folio', None))])
             if invoice:
-                raise models.ValidationError('Error')
+                continue
             partner_id = self.env['res.partner'].search([('invoice_rut', '=', d.get('rut_f').strip())])
             dte_type = self.env['dte.type'].search([('code', '=', d.get('dte', None))])
             self.env['custom.invoice'].create({
