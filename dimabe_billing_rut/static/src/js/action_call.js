@@ -20,6 +20,7 @@ odoo.define('custom_invoice.sincronize_button', function (require) {
                 method: 'get_dte',
                 args: [[user], {'id': user}],
             });
+            this.trigger_up('reload');
         }
     });
 }
