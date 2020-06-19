@@ -164,6 +164,4 @@ class AccountInvoice(models.Model):
         dtes = requests.get(self.company_id.dte_url + '/api' + apidte,auth=auth)
         data = dtes.json()
         for d in data:
-            emisor = d.get('emisor',None)
-            razon = d.get('razon_social',None)
-            raise models.ValidationError('{}{}'.format(emisor,razon))
+            raise models.ValidationError('{}'.format(d))
