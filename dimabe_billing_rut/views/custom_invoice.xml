@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="custom_invoice_tree" model="ir.ui.view">
+            <field name="name">Facturas Emitidas</field>
+            <field name="model">custom.invoice</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="date" string="Fecha Emision"/>
+                    <field name="transmitter"/>
+                    <field name="dte" widget="many2onebutton"/>
+                    <field name="business_name"/>
+                    <field name="invoice"/>
+                    <field name="branch_office"/>
+                    <field name="exempt"/>
+                    <field name="net_value"/>
+                    <field name="total_value"/>
+                    <field name="dv"/>
+                    <field name="rut_f"/>
+                    <field name="giro"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

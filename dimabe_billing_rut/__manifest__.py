@@ -34,6 +34,7 @@
         'views/custom_economic_activity.xml',
         'views/dte_type.xml',
         'views/templates.xml',
+        'views/custom_invoice.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

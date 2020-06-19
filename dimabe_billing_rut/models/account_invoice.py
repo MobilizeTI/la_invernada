@@ -166,14 +166,21 @@ class AccountInvoice(models.Model):
         dtes = requests.get(url + '/api' + apidte, auth=auth)
         data = dtes.json()
         for d in data:
-            rut = d.get('rut_f', None)
-            partner_id = self.env['res.partner'].search([('invoice_rut', 'like', rut.strip())])
-            self.env['account.invoice'].create({
-                'sequence_number_next_prefix': d.get('folio', None),
-                'type': 'in_invoice',
-                'partner_bank_id': partner_id.bank_ids[0].id,
-                'ammount_untaxed':d.get('neto',None),
+            partner_id = self.env['res.partner'].search([('invoice_rut', '=', d.get('rut_f').strip())])
+            dte_type = self.env['dte.type'].search([('code', '=', d.get('dte', None))])
+            self.env['custom.invoice'].create({
+                'date': d.get('fecha', None),
+                'transmitter': d.get('emisor', None),
                 'partner_id': partner_id.id,
-                'user_id': self.env.user.id,
-                'date_invoice': d.get('fecha', None),
+                'dte': dte_type.id,
+                'business_name': d.get('razon_social', None),
+                'invoice': d.get('folio', None),
+                'branch_office': d.get('sucursal', None),
+                'exempt': False,
+                'net_value': d.get('neto', None),
+                'total_value': d.get('total', None),
+                'dv': d.get('dv', None),
+                'rut_f': d.get('rut_f', None),
+                'giro': d.get('giro', None),
             })
+

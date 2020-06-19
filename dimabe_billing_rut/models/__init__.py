@@ -8,4 +8,5 @@ from . import account_invoice
 from . import account_invoice_references
 from . import stock_location
 from . import dte_type
+from . import custom_invoice
 from . import stock_picking
