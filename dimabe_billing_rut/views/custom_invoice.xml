@@ -19,7 +19,8 @@
                     <field name="dv"/>
                     <field name="rut_f"/>
                     <field name="giro"/>
-                    <button type="object" name="generate_invoice" string="Crear Factura"/>
+                    <field name="account_invoice_id" invisible="1"/>
+                    <button type="object" name="generate_invoice" string="Crear Factura" attrs="{'invisible':['account_invoice_id','!=',None]}"/>
                 </tree>
             </field>
         </record>
