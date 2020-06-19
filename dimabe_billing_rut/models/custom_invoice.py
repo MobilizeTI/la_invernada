@@ -35,6 +35,7 @@ class CustomInvoice(models.Model):
     giro = fields.Char('Giro')
 
     def get_dte(self):
+        company = self.env.user.company_id
         url = self.company_id.dte_url
         rut_company = self.company_id.invoice_rut.replace(".", "").split("-")[0]
         fecha_desde = '2020-01-01'
