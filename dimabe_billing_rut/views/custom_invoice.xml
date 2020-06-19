@@ -8,8 +8,8 @@
                 <tree>
                     <field name="date" string="Fecha Emisión"/>
                     <field name="transmitter"/>
-                    <field name="dte" widget="many2onebutton"/>
-                    <field name="partner_id"/>
+                    <field name="dte" />
+                    <field name="partner_id" widget="many2onebutton"/>
                     <field name="business_name"/>
                     <field name="invoice"/>
                     <field name="branch_office"/>

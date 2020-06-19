@@ -43,7 +43,6 @@ class CustomInvoice(models.Model):
                 'default_partner_id':item.partner_id.id,
                 'default_date_invoice':item.date
             }
-
             return {
                 "type": "ir.actions.act_window",
                 "res_model": "account.invoice",
