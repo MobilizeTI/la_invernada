@@ -39,7 +39,7 @@ class CustomInvoice(models.Model):
     def generate_invoice(self):
         for item in self:
             invoice = self.env['account.invoice'].create({
-                'partner_id': item.partner_id,
+                'partner_id': item.partner_id.id,
                 'date_invoice': item.date
             })
             item.update({
