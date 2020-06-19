@@ -151,18 +151,19 @@ class AccountInvoice(models.Model):
         fecha = data.get("fecha", None)
         total = data.get("total", None)
         self.pdf_url = "%s/dte/dte_emitidos/pdf/%s/%s/0/%s/%s/%s" % (
-        url, self.dte_type_id.code, self.dte_folio, rut_emisor, fecha, total)
+            url, self.dte_type_id.code, self.dte_folio, rut_emisor, fecha, total)
 
     @api.multi
     def get_dte(self):
         fecha_desde = '2020-01-01'
         fecha_hasta = date.today()
-        apidte = '/dte/dte_recibidos/buscar/{}?fecha_desde={}&fecha_hasta={}'.format(self.company_id.invoice_rut.replace(".", "").split("-")[0],fecha_desde,fecha_hasta)
+        apidte = '/dte/dte_recibidos/buscar/{}?fecha_desde={}&fecha_hasta={}'.format(
+            self.company_id.invoice_rut.replace(".", "").split("-")[0], fecha_desde, fecha_hasta)
         auth = requests.auth.HTTPBasicAuth(self.company_id.dte_hash, 'X')
-        dtes = requests.get(self.company_id.dte_url + '/api' + apidte,auth=auth)
+        dtes = requests.get(self.company_id.dte_url + '/api' + apidte, auth=auth)
         data = dtes.json()
-        raise models.ValidationError(dtes.status_code)
         for d in data:
-            folio = d.get('folio',None)
-            dte = self.env['dte.type'].search([('code','=',d.get)])
-            raise models.UserError(dte)
+            emisor = self.env['res.partner'].search([('invoice_rut', 'like', d.get('emisor', None))])
+            if not emisor:
+                emisor = self.env['res.partner'].search([('name','like',d.get('razon_social',None))])
+            raise models.ValidationError(emisor)
