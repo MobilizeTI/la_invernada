@@ -43,7 +43,7 @@ class CustomInvoice(models.Model):
                 'date_invoice': item.date
             })
             item.update({
-                'acount_invoice_id': invoice.id
+                'account_invoice_id': invoice.id
             })
 
     def get_dte(self):
