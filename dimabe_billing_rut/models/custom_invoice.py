@@ -56,7 +56,7 @@ class CustomInvoice(models.Model):
                 "view_type": "form",
                 "view_mode": "form",
                 "views": [(False, "form")],
-                "view_id ref='account.invoice_form'": '',
+                "view_id ref='account.invoice_supplier_form'": '',
                 "target": "current",
                 "context": context
             }
