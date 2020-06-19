@@ -166,4 +166,4 @@ class AccountInvoice(models.Model):
         dtes = requests.get(url + '/api' + apidte, auth=auth)
         data = dtes.json()
         for d in data:
-            raise models.ValidationError(type(d))
+            raise models.ValidationError('{}'.format(d))
