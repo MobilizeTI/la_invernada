@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<template id="button_render_js" inherit_id="web.assets_backend">
-    <xpath expr="." position="inside">
-        <script src="/static/src/js/action_call.js" type="text/javascript"/>
-    </xpath>
-</template>
+
 <template xml:space="preserve">
     <t t-extend="ListView.buttons">
       <t t-jquery="button.o_list_button_add" t-operation="after">
