@@ -27,7 +27,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="custom_invoice_tree"/>
         </record>
-        <menuitem id="menu_custom_economic_activity"
+        <menuitem id="menu_custom_invoice"
                     name="Facturas Recibidas"
                     parent="menu_account_dte"
                     action="dimabe_billing_rut.action_custom_invoice_views"
