@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <template id="button_render_js" inherit_id="web.assets_backend">
     <xpath expr="." position="inside">
-        <script src="dimabe_billing_rut/static/src/js/action_call.js" type="text/javascript"/>
+        <script src="/static/src/js/action_call.js" type="text/javascript"/>
     </xpath>
 </template>
 <template xml:space="preserve">
