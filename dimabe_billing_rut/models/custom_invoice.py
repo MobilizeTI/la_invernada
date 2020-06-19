@@ -35,19 +35,17 @@ class CustomInvoice(models.Model):
     giro = fields.Char('Giro')
 
     def get_dte(self):
-        company = self.env.user.company_id
-        raise models.ValidationError(company)
-        url = self.company_id.dte_url
-        rut_company = self.company_id.invoice_rut.replace(".", "").split("-")[0]
+        company_id = self.env.user.company_id
+        url = company_id.dte_url
+        rut_company = company_id.invoice_rut.replace(".", "").split("-")[0]
         fecha_desde = '2020-01-01'
         fecha_hasta = date.today()
         apidte = '/dte/dte_recibidos/buscar/{}?fecha_desde={}&fecha_hasta={}'.format(rut_company, fecha_desde,
                                                                                      fecha_hasta)
-        hash = self.company_id.dte_hash
+        hash = company_id.dte_hash
         auth = requests.auth.HTTPBasicAuth(hash, 'X')
         dtes = requests.get(url + '/api' + apidte, auth=auth)
         data = dtes.json()
-        raise models.ValidationError(data)
         for d in data:
             partner_id = self.env['res.partner'].search([('invoice_rut', '=', d.get('rut_f').strip())])
             dte_type = self.env['dte.type'].search([('code', '=', d.get('dte', None))])
