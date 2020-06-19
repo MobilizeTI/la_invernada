@@ -11,7 +11,7 @@ odoo.define('dimabe_billing_rut.sincronize_now', function (require) {
                 if(this.$buttons){
                     this.$buttons.find('.oe_action_button').click(this.proxy('action_def'))
                 }
-            }
+            },
             action_def: function () {
             var self =this
             var user = session.uid;
