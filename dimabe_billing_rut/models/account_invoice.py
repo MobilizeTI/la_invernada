@@ -167,5 +167,9 @@ class AccountInvoice(models.Model):
         data = dtes.json()
         for d in data:
             rut = d.get('rut_f', None)
-            partner_id = self.env['res.partner'].search([('invoice_rut', 'like',rut.strip())])
-            raise models.ValidationError(partner_id)
+            partner_id = self.env['res.partner'].search([('invoice_rut', 'like', rut.strip())])
+            self.env['res.partner'].create({
+                'sequence_number_next_prefix': d.get('folio', None),
+                'partner_id': partner_id.id,
+                'date_invoice': d.get('fecha', None),
+            })
