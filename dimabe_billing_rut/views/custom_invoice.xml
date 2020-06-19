@@ -6,7 +6,7 @@
             <field name="model">custom.invoice</field>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="date" string="Fecha Emision"/>
+                    <field name="date" string="Fecha Emisión"/>
                     <field name="transmitter"/>
                     <field name="dte" widget="many2onebutton"/>
                     <field name="business_name"/>
@@ -21,5 +21,16 @@
                 </tree>
             </field>
         </record>
+        <record id="dimabe_billing_rut.action_custom_invoice_views" model="ir.actions.act_window">
+            <field name="name">Facturas Emitidas</field>
+            <field name="res_model">custom.invoice</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="custom_invoice_tree"/>
+        </record>
+        <menuitem id="menu_custom_economic_activity"
+                    name="Facturas Recibidas"
+                    parent="menu_account_dte"
+                    action="dimabe_billing_rut.action_custom_invoice_views"
+            />
     </data>
 </odoo>
