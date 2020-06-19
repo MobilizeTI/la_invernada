@@ -167,5 +167,5 @@ class AccountInvoice(models.Model):
         data = dtes.json()
         for d in data:
             rut = d.get('rut_f', None)
-            partner_id = self.env['res.partner'].search([('invoice_rut', '=', rut)])
+            partner_id = self.env['res.partner'].search([('invoice_rut', 'like', rut)])
             raise models.ValidationError(partner_id)
