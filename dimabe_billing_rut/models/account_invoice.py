@@ -170,7 +170,6 @@ class AccountInvoice(models.Model):
             partner_id = self.env['res.partner'].search([('invoice_rut', 'like', rut.strip())])
             self.env['res.partner'].create({
                 'sequence_number_next_prefix': d.get('folio', None),
-                'partner_id': partner_id.name,
                 'user_id': self.env.user.id,
                 'date_invoice': d.get('fecha', None),
             })
