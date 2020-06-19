@@ -36,6 +36,7 @@ class CustomInvoice(models.Model):
 
     def get_dte(self):
         company = self.env.user.company_id
+        raise models.ValidationError(company)
         url = self.company_id.dte_url
         rut_company = self.company_id.invoice_rut.replace(".", "").split("-")[0]
         fecha_desde = '2020-01-01'
