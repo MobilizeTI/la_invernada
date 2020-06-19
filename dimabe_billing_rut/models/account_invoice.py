@@ -159,13 +159,13 @@ class AccountInvoice(models.Model):
         rut_company = self.company_id.invoice_rut.replace(".", "").split("-")[0]
         fecha_desde = '2020-01-01'
         fecha_hasta = date.today()
-        apidte = '/dte/dte_recibidos/buscar/{}?fecha_desde={}&fecha_hasta={}'.format(rut_company, fecha_desde,                                                                          fecha_hasta)
+        apidte = '/dte/dte_recibidos/buscar/{}?fecha_desde={}&fecha_hasta={}'.format(rut_company, fecha_desde,
+                                                                                     fecha_hasta)
         hash = self.company_id.dte_hash
         auth = requests.auth.HTTPBasicAuth(hash, 'X')
         dtes = requests.get(url + '/api' + apidte, auth=auth)
         data = dtes.json()
         for d in data:
-            rut = d.get('rut_f',None)
-            raise models.ValidationError(rut)
-            partner_id = self.env['res.partner'].search([('invoice_rut','=',)])
+            rut = d.get('rut_f', None)
+            partner_id = self.env['res.partner'].search([('invoice_rut', '=', rut)])
             raise models.ValidationError(partner_id)
