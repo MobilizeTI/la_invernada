@@ -170,8 +170,9 @@ class AccountInvoice(models.Model):
             partner_id = self.env['res.partner'].search([('invoice_rut', 'like', rut.strip())])
             self.env['account.invoice'].create({
                 'sequence_number_next_prefix': d.get('folio', None),
-                'type':'in_invoice',
-                'partner_bank_id':partner_id.bank_ids[0].id,
+                'type': 'in_invoice',
+                'partner_bank_id': partner_id.bank_ids[0].id,
+                'ammount_untaxed':d.get('neto',None),
                 'partner_id': partner_id.id,
                 'user_id': self.env.user.id,
                 'date_invoice': d.get('fecha', None),
