@@ -168,7 +168,9 @@ class AccountInvoice(models.Model):
         for d in data:
             emisor = d.get('emisor', None)
             razon = d.get('razon', None)
-            partner = self.env['res.partner'].search([('invoice_rut','like',emisor)])
+            partner = self.env['res.partner'].search([('invoice_rut', 'like', emisor)])
+            partner_for_name = self.env['res.partner'].search([('name', 'like', razon)])
             if not partner:
-                partner = self.env['res.partner'].search([('name','like',razon)])
-            raise models.ValidationError(partner)
+                raise models.ValidationError(partner)
+            else:
+                raise models.ValidationError(partner_for_name)
