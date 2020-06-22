@@ -434,8 +434,10 @@ class MrpWorkorder(models.Model):
             'consumed': True
         })
         lot_id = custom_serial.stock_production_lot_id
+        models._logger.error(lot_id)
         stock_quant = lot_id.get_stock_quant()
-        stock_quant.update(
+        models._logger.error(stock_quant)
+        stock_quant.write(
             {
                 'reserved_quantity': stock_quant.reserved_quantity + custom_serial.display_weight
             }
