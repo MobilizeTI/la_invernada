@@ -40,8 +40,8 @@ class CustomInvoice(models.Model):
         for item in self:
             context = {
                 'default_custom_invoice_id': item.id,
-                'default_partner_id':item.partner_id.id,
-                'default_date_invoice':item.date
+                'default_partner_id': item.partner_id.id,
+                'default_date_invoice': item.date
             }
             return {
                 "type": "ir.actions.act_window",

@@ -433,6 +433,13 @@ class MrpWorkorder(models.Model):
             'reserved_to_production_id': self.production_id.id,
             'consumed': True
         })
+        lot_id = custom_serial.stock_production_lot_id
+        stock_quant = lot_id.get_stock_quant()
+        stock_quant.update(
+            {
+                'reserved_quantity': stock_quant.reserved_quantity + custom_serial.display_weight
+            }
+        )
         self.write({
             'potential_serial_planned_ids': [
                 (4, custom_serial.id)
