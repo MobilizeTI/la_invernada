@@ -68,7 +68,8 @@ class StockPicking(models.Model):
         for item in self:
             move_without_lot = self.env['stock.move.line'].search([('lot_id', '=', None), ('state', '=', 'done')])
             for wlot in move_without_lot:
-                wlot.unlink()
+                if wlot.state != 'done':
+                    wlot.unlink()
             quants = self.env['stock.quant'].search([('lot_id', '=', None)])
             for qwlot in quants:
                 qwlot.unlink()
