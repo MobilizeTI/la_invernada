@@ -66,12 +66,8 @@ class StockPicking(models.Model):
     @api.multi
     def clean_reserved(self):
         for item in self:
-            for move in item.move_ids_without_package:
-                move.update({
-                    'product_uom_qty': 0
-                })
-                stock_quant = self.env['stock.quant'].search([('lot_id','=',move.lot_id)])
-                stock_quant.write({'reserved_quantity':0})
+            quants = self.env['stock.quant'].search([('lot_id','in',item.move_lines_ids.without_package.mapped('lot_id'))])
+            raise models.ValidationError(quants)
 
     @api.multi
     def _compute_packing_list_lot_ids(self):
