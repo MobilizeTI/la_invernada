@@ -495,4 +495,4 @@ class MrpWorkorder(models.Model):
 
     @api.multi
     def export_excel(self):
-        return self.env.ref('report.dimabe_manufacturing.import_excel').report_action()
+        return self.env.ref('mrp_workorder_all').report_action()
