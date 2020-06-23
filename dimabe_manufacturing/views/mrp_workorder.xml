@@ -100,7 +100,6 @@
                     />
                 </xpath>
                 <xpath expr="//page[2]" position="after">
-
                     <page string="Lotes Planificados">
                         <field name="potential_serial_planned_ids" readonly="1">
                             <tree>
