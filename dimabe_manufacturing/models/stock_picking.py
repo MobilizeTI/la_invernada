@@ -66,8 +66,21 @@ class StockPicking(models.Model):
     @api.multi
     def clean_reserved(self):
         for item in self:
-            quants = self.env['stock.quant'].search([('lot_id.id','in',item.move_line_ids_without_package.mapped('lot_id.id'))])
-            raise models.ValidationError(quants)
+            quants = self.env['stock.quant'].search(
+                [('lot_id.id', 'in', item.move_line_ids_without_package.mapped('lot_id.id'))])
+            move_line_ids = []
+            for quant in quants:
+                move_lines = self.env['stock.move.line'].search(
+                    [
+                        ('product_id', '=', quant.product_id.id),
+                        ('location_id', '=', quant.location_id.id),
+                        ('lot_id', '=', quant.lot_id.id),
+                        ('product_qty', '!=', 0)
+                    ]
+                )
+                move_line_ids += move_lines.ids
+                reserved_on_move_lines = sum(move_lines.mapped('product_qty'))
+                raise models.ValidationError('{}{}'.format(move_lines,reserved_on_move_lines))
 
     @api.multi
     def _compute_packing_list_lot_ids(self):
@@ -82,7 +95,9 @@ class StockPicking(models.Model):
     @api.onchange('sale_order_id')
     def on_change_production_id(self):
         for item in self:
-            item.potential_lot_ids = self.env['stock.production.lot'].search([('sale_order_id','=',item.sale_order_id.id),('product_id','=',item.move_ids_without_package.mapped('product_id.id'))])
+            item.potential_lot_ids = self.env['stock.production.lot'].search(
+                [('sale_order_id', '=', item.sale_order_id.id),
+                 ('product_id', '=', item.move_ids_without_package.mapped('product_id.id'))])
 
     @api.multi
     def _compute_potential_lot_serial_ids(self):
