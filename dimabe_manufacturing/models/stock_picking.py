@@ -74,6 +74,7 @@ class StockPicking(models.Model):
                 if line.product_uom_qty == 0:
                     line.unlink()
 
+
     @api.multi
     def _compute_packing_list_lot_ids(self):
         for item in self:
@@ -190,6 +191,7 @@ class StockPicking(models.Model):
             raise models.UserError('No ha ingresado la cantidad realizada')
         moves_to_do = self.move_ids_without_package.filtered(lambda x: x.state not in ('done', 'cancel'))
         moves_to_do._action_done()
+        self.clean_reserved()
         return super(StockPicking, self).button_validate()
         for serial in self.packing_list_ids:
             serial.update({
