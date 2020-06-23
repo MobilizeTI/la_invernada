@@ -1,0 +1,9 @@
+<report
+    id="partner_xlsx"
+    model="mrp.workorder"
+    string="Print to XLSX"
+    report_type="xlsx"
+    name="report.dimabe_manufacturing.import_excel"
+    file="mrp_workorder"
+    attachment_use="False"
+/>
