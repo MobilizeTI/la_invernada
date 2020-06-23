@@ -70,7 +70,7 @@ class StockPicking(models.Model):
                 line.update({
                     'product_uom_qty': 0
                 })
-                if line.product_uom_qty == 0 and line.lot_id.id not in item.packing_list_lot_ids:
+                if line.product_uom_qty == 0 and line.lot_id.id not in item.packing_list_lot_ids.ids:
                     line.unlink()
 
     @api.multi
