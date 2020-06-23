@@ -63,24 +63,10 @@ class StockPicking(models.Model):
 
     sale_order_id = fields.Many2one('sale.order', 'Pedido')
 
-    @api.multi
-    def clean_reserved(self):
-        for item in self:
-            quants = self.env['stock.quant'].search(
-                [('lot_id.id', 'in', item.move_line_ids_without_package.mapped('lot_id.id'))])
-            move_line_ids = []
-            for quant in quants:
-                move_lines = self.env['stock.move.line'].search(
-                    [
-                        ('product_id', '=', quant.product_id.id),
-                        ('location_id', '=', quant.location_id.id),
-                        ('lot_id', '=', quant.lot_id.id),
-                        ('product_qty', '!=', 0)
-                    ]
-                )
-                move_line_ids += move_lines.ids
-                reserved_on_move_lines = sum(move_lines.mapped('product_qty'))
-                raise models.ValidationError('{}{}'.format(move_lines,reserved_on_move_lines))
+    # @api.multi
+    # def clean_reserved(self):
+    #     for item in self:
+    #
 
     @api.multi
     def _compute_packing_list_lot_ids(self):
