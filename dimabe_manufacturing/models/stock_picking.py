@@ -184,7 +184,6 @@ class StockPicking(models.Model):
 
     @api.multi
     def button_validate(self):
-
         if len(self.move_line_ids_without_package) == 0:
             raise models.UserError('No existe ningun campo en operaciones detalladas')
         if self.move_line_ids_without_package.filtered(lambda a: a.qty_done == 0):
