@@ -66,10 +66,10 @@ class StockPicking(models.Model):
     @api.multi
     def clean_reserved(self):
         for item in self:
-            move_without_lot = self.env['stock.move.line'].search([('lot_id', '=', None), ('state', '=', 'done')]).mapped('qty_done')
+            move_without_lot = self.env['stock.move.line'].search([('lot_id', '=', None), ('state', '=', 'done')])
             for wlot in move_without_lot:
                 wlot.unlink()
-            quants = self.env['stock.quant'].search([('lot_id', '=', None)]).mapped('quantity')
+            quants = self.env['stock.quant'].search([('lot_id', '=', None)])
             for qwlot in quants:
                 qwlot.unlink()
 
