@@ -493,6 +493,3 @@ class MrpWorkorder(models.Model):
             'context': {'_default_product_id': default_product_id}
         }
 
-    @api.multi
-    def export_excel(self):
-        return self.env.ref('mrp_workorder_all').report_action()
