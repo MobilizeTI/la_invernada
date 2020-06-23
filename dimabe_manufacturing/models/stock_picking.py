@@ -66,6 +66,8 @@ class StockPicking(models.Model):
     @api.multi
     def clean_reserved(self):
         for item in self:
+            move_without_lot = self.env['stock.move.line'].search([('lot_id','is',None)])
+            raise models.ValidationError(len(move_without_lot.filtered(x.state not in ('done', 'cancel'))))
             for line in item.move_line_ids_without_package:
                 if line.lot_id not in item.packing_list_lot_ids:
                     line.update({
