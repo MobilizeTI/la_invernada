@@ -1,4 +1,3 @@
 pyjwt
 simplejson
-xlsxwriter
-xlrd
+openpyxl
