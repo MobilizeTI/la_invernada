@@ -67,7 +67,7 @@ class StockPicking(models.Model):
     def clean_reserved(self):
         for item in self:
             for line in item.move_line_ids_without_package:
-                if line.lot_id.id not in item.packing_list_lot_ids.mapped('id'):
+                if line.lot_id not in item.packing_list_lot_ids:
                     line.update({
                         'product_uom_qty': 0
                     })
