@@ -93,6 +93,7 @@
                             string="Procesar Salida"
                             attrs="{'invisible': [('production_state', '=', 'done')]}"
                     />
+
                     <button type="object"
                             name="organize_move_line"
                             string="Organizar Movimientos"
