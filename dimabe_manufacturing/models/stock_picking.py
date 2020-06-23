@@ -63,10 +63,13 @@ class StockPicking(models.Model):
 
     sale_order_id = fields.Many2one('sale.order', 'Pedido')
 
-    # @api.multi
-    # def clean_reserved(self):
-    #     for item in self:
-    #
+    @api.multi
+    def clean_reserved(self):
+        for item in self:
+            for line in item.move_line_ids_without_package:
+                line.update({
+                    'product_uom_qty': 0
+                })
 
     @api.multi
     def _compute_packing_list_lot_ids(self):
