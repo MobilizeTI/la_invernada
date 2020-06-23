@@ -68,7 +68,7 @@ class StockPicking(models.Model):
         for item in self:
             move_without_lot = self.env['stock.move.line'].search([('lot_id', '=', None), ('state', '=', 'done')])
             quants = self.env['stock.quant'].search([('lot_id', '=', None)])
-            raise models.ValidationError(move_without_lot)
+            raise models.ValidationError('moves: {}, quants: {}'.format(move_without_lot,quants))
             for line in item.move_line_ids_without_package:
                 if line.lot_id not in item.packing_list_lot_ids:
                     line.update({
