@@ -66,9 +66,13 @@ class StockPicking(models.Model):
     @api.multi
     def clean_reserved(self):
         for item in self:
-            move_without_lot = sum(self.env['stock.move.line'].search([('lot_id', '=', None), ('state', '=', 'done')]).mapped('qty_done'))
-            quants = sum(self.env['stock.quant'].search([('lot_id', '=', None)]).mapped('quantity'))
-            raise models.ValidationError('moves: {}, quants: {}'.format(move_without_lot,quants))
+            move_without_lot = self.env['stock.move.line'].search([('lot_id', '=', None), ('state', '=', 'done')]).mapped('qty_done')
+            for wlot in move_without_lot:
+                wlot.unlink()
+            quants = self.env['stock.quant'].search([('lot_id', '=', None)]).mapped('quantity')
+            for qwlot in quants:
+                qwlot.unlink()
+
             for line in item.move_line_ids_without_package:
                 if line.lot_id not in item.packing_list_lot_ids:
                     line.update({
