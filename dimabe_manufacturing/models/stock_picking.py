@@ -188,6 +188,8 @@ class StockPicking(models.Model):
             raise models.UserError('No existe ningun campo en operaciones detalladas')
         if self.move_line_ids_without_package.filtered(lambda a: a.qty_done == 0):
             raise models.UserError('No ha ingresado la cantidad realizada')
+        moves_to_do = self.move_ids_without_package.filtered(lambda x: x.state not in ('done', 'cancel'))
+        moves_to_do._action_done()
         return super(StockPicking, self).button_validate()
         for serial in self.packing_list_ids:
             serial.update({
