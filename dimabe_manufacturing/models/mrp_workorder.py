@@ -493,9 +493,9 @@ class MrpWorkorder(models.Model):
             'context': {'_default_product_id': default_product_id}
         }
 
+    @api.multi
     def export_excel(self):
-        return self.env.ref('report.dimabe_manufacturing.import_excel') \
-            .report_action(self.pictures)
+        return self.env.ref('report.dimabe_manufacturing.import_excel').report_action()
 
     class PartnerXlsx(models.AbstractModel):
         _name = 'report.module_name.report_name'

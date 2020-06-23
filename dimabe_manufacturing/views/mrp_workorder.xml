@@ -93,13 +93,13 @@
                             string="Procesar Salida"
                             attrs="{'invisible': [('production_state', '=', 'done')]}"
                     />
-                    <button name="export_excel" type="object" string="Exportar"/>
                     <button type="object"
                             name="organize_move_line"
                             string="Organizar Movimientos"
                     />
                 </xpath>
                 <xpath expr="//page[2]" position="after">
+                    <button type="object" name="export_excel" string="Exportar"/>
                     <page string="Lotes Planificados">
                         <field name="potential_serial_planned_ids" readonly="1">
                             <tree>
