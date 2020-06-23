@@ -70,6 +70,8 @@ class StockPicking(models.Model):
                 line.update({
                     'product_uom_qty': 0
                 })
+                if line.product_uom_qty == 0 and line.lot_id.id not in item.packing_list_lot_ids:
+                    line.unlink()
 
     @api.multi
     def _compute_packing_list_lot_ids(self):
