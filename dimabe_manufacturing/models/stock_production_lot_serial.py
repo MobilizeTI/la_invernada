@@ -20,7 +20,7 @@ class StockProductionLotSerial(models.Model):
     product_variety = fields.Char(
         'Variedad',
         related='stock_production_lot_id.product_variety'
-        ,store=True
+        , store=True
     )
 
     product_id = fields.Many2one(
@@ -136,16 +136,15 @@ class StockProductionLotSerial(models.Model):
 
     pallet_name = fields.Char('Folio Pallet', compute='_compute_pallet_name')
 
-    sale_order_id = fields.Many2one('sale.order', 'N° Pedido', compute='_compute_sale_order_id',store=True)
+    sale_order_id = fields.Many2one('sale.order', 'N° Pedido', compute='_compute_sale_order_id', store=True)
 
     work_order_id = fields.Many2one('mrp.workorder', 'Order Fabricacion', compute='_compute_workorder_id')
 
     production_id_to_view = fields.Many2one('mrp.production', 'Order de Fabricacion',
-                                            compute='_compute_production_id_to_view',store=True)
-    workcenter_id = fields.Many2one('mrp.workcenter',related="work_order_id.workcenter_id")
+                                            compute='_compute_production_id_to_view', store=True)
+    workcenter_id = fields.Many2one('mrp.workcenter', related="work_order_id.workcenter_id")
 
-
-    @api.depends('production_id','reserved_to_production_id')
+    @api.depends('production_id', 'reserved_to_production_id')
     @api.multi
     def _compute_production_id_to_view(self):
         for item in self:
@@ -218,7 +217,6 @@ class StockProductionLotSerial(models.Model):
             else:
                 item.process_id = None
 
-
     @api.depends('reserved_to_production_id', 'production_id')
     @api.multi
     def _compute_movement(self):
@@ -229,7 +227,6 @@ class StockProductionLotSerial(models.Model):
                 item.movement = 'SALIDA'
             else:
                 item.movement = 'NO DEFINIDO'
-
 
     @api.multi
     def _inverse_real_weight(self):
@@ -519,9 +516,22 @@ class StockProductionLotSerial(models.Model):
                         ]
                     })
 
-                    stock_quant.sudo().update({
-                        'reserved_quantity': stock_quant.total_reserved
-                    })
+                    if stock_quant.total_reserved:
+                        stock_quant.sudo().update({
+                            'reserved_quantity': stock_quant.total_reserved
+                        })
+                    else:
+                        stock_quant.sudo().update({
+                            'reserved_quantity': sum(item.lot_id.stock_production_lot_serial_ids.filtered(
+                                lambda a: (a.reserved_to_production_id and a.reserved_to_production_id.state not in [
+                                    'done', 'cancel'])
+                                          or (a.reserved_to_stock_picking_id and
+                                              a.reserved_to_stock_picking_id.state not in ['done', 'cancel']
+                                              )
+                            ).mapped('display_weight'))
+                        })
+
+
                 else:
                     move_line = stock_move.move_line_ids.filtered(
                         lambda
@@ -699,4 +709,3 @@ class StockProductionLotSerial(models.Model):
         if reserved_serials and not production_move.active_move_line_ids:
             for serial in reserved_serials:
                 serial.add_move_line(production_move)
-
