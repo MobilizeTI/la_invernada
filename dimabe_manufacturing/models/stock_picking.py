@@ -66,7 +66,7 @@ class StockPicking(models.Model):
     @api.multi
     def clean_reserved(self):
         for item in self:
-            quants = self.env['stock.quant'].search([('lot_id','in',item.move_lines_ids.without_package.mapped('lot_id'))])
+            quants = self.env['stock.quant'].search([('lot_id','in',item.move_line_ids.without_package.mapped('lot_id'))])
             raise models.ValidationError(quants)
 
     @api.multi
