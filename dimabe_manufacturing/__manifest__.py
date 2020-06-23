@@ -80,8 +80,7 @@
         'reports/process/laser_service_process.xml',
         'reports/process/re_laser_process_service.xml',
         'reports/process/manual_process.xml',
-        'reports/process/manual_service_process.xml',
-        'reports/report_xlsx.xml'
+        'reports/process/manual_service_process.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
