@@ -410,5 +410,6 @@ class StockPicking(models.Model):
 
     @api.model
     def validate_same_product_lines(self):
-        if len(self.move_ids_without_package) > len(self.move_ids_without_package.mapped('product_id')):
-            raise models.ValidationError('no puede tener el mismo producto en más de una linea')
+        if self.is_mp_reception:
+            if len(self.move_ids_without_package) > len(self.move_ids_without_package.mapped('product_id')):
+                raise models.ValidationError('no puede tener el mismo producto en más de una linea')

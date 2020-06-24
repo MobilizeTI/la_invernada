@@ -33,7 +33,7 @@
                     <attribute name="groups">dimabe_purchase_process.group_purchase_requisition_user</attribute>
                 </xpath>
                 <xpath expr="//button[@name='action_view_invoice'][1]" position="attributes">
-                    <attribute name="groups">dimabe_purchase_process.group_purchase_approval_user</attribute>
+                    <attribute name="groups">dimabe_purchase_process.group_purchase_invoice_create</attribute>
                     <attribute name="attrs">{'invisible': ['|', '|', ('state', 'not in', ('purchase', 'done','purchase sent')), ('invoice_status', 'not in', ('no', 'invoiced')), ('order_line', '=', [])]}</attribute>
                 </xpath>
                 <xpath expr="//button[@name='action_view_invoice'][2]" position="attributes">
