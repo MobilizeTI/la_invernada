@@ -12,7 +12,7 @@
                 />
                 <button name="clean_reserved" type="object"
                         string="Limpiar Reservas"
-                        attrs="{'visible':[('state','!=','done')]}"
+                        attrs="{'visible':[('state','!=','done'),('picking_type_code','=','outgoing')]}"
                 />
                 <
             </xpath>
