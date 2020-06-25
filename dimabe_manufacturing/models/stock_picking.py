@@ -194,14 +194,11 @@ class StockPicking(models.Model):
             raise models.UserError('No existe ningun campo en operaciones detalladas')
         if self.move_line_ids_without_package.filtered(lambda a: a.qty_done == 0):
             raise models.UserError('No ha ingresado la cantidad realizada')
-        moves_to_do = self.move_ids_without_package.filtered(lambda x: x.state not in ('done', 'cancel'))
-        moves_to_do._action_done()
-        precision_digits = self.env['decimal.precision'].precision_get('Product Unit of Measure')
         for move_line in self.move_line_ids:
-            models._logger.error(float_is_zero(move_line.qty_done, precision_digits=precision_digits))
-            models._logger.error(float_is_zero(move_line.product_uom_qty, precision_digits=precision_digits))
-            moves_to_do._action_done()
-        #return super(StockPicking, self).button_validate()
+            if self.picking_type_id.warehouse_id.id == 17:
+                move_line._action_done()
+        if self.picking_type_id.warehouse_id.id != 17:
+            return super(StockPicking, self).button_validate()
         for serial in self.packing_list_ids:
             serial.update({
                 'consumed': True
