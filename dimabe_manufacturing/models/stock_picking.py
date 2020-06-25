@@ -199,6 +199,7 @@ class StockPicking(models.Model):
         self.clean_reserved()
         for item in self.move_line_ids:
             models._logger.error(item.qty_done)
+            models._logger.error(item.id)
             models._logger.error(item.product_qty)
 
         return super(StockPicking, self).button_validate()
