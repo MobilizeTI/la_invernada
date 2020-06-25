@@ -31,10 +31,8 @@ class AccountInvoice(models.Model):
     def action_invoice_open(self):
 
         if self.id:
-            models._logger(self.origin)
-            origin = self.env['account.invoice'].search([('number', '=', self.origin)])
-            models._logger(origin)
-            if origin:
+            if self.origin:
+                origin = self.env['account.invoice'].search([('number', '=', self.origin)])
                 if origin.exchange_rate and (not self.exchange_rate or self.exchange_rate == 0):
                     self.exchange_rate = origin.exchange_rate
             if not self.exchange_rate or self.exchange_rate == 0:
