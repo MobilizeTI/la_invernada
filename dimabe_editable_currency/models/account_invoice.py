@@ -31,7 +31,9 @@ class AccountInvoice(models.Model):
     def action_invoice_open(self):
 
         if self.id:
-            raise models.ValidationError(self.origin)
+            origin = self.env['account.invoice'].search([('name', '=', self.origin)])
+            if origin.exchange_rate:
+                self.exchange_rate = origin.exchange_rate
             if not self.exchange_rate or self.exchange_rate == 0:
                 raise models.ValidationError('debe existir una taza de cambio')
 
