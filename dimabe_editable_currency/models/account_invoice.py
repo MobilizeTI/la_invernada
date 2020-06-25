@@ -32,7 +32,7 @@ class AccountInvoice(models.Model):
 
         if self.id:
             origin = self.env['account.invoice'].search([('number', '=', self.origin)])
-            if origin.exchange_rate:
+            if origin.exchange_rate and not self.exchange_rate or self.exchange_rate == 0:
                 self.exchange_rate = origin.exchange_rate
             if not self.exchange_rate or self.exchange_rate == 0:
                 raise models.ValidationError('debe existir una tasa de cambio')
