@@ -32,6 +32,7 @@ class AccountInvoice(models.Model):
 
         if self.id:
             origin = self.env['account.invoice'].search([('name', '=', self.origin)])
+            raise models.ValidationError(origin)
             if origin.exchange_rate:
                 self.exchange_rate = origin.exchange_rate
             if not self.exchange_rate or self.exchange_rate == 0:
