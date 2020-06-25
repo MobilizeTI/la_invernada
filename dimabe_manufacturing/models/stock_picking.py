@@ -199,7 +199,7 @@ class StockPicking(models.Model):
         precision_digits = self.env['decimal.precision'].precision_get('Product Unit of Measure')
         for move_line in self.move_line_ids:
             models._logger.error(float_is_zero(move_line.qty_done, precision_digits=precision_digits))
-            models._logger.error(float_is_zero(move_line.product_qty, precision_digits=precision_digits))
+            models._logger.error(float_is_zero(move_line.product_uom_qty, precision_digits=precision_digits))
         return super(StockPicking, self).button_validate()
         for serial in self.packing_list_ids:
             serial.update({

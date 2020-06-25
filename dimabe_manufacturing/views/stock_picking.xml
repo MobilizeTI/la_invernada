@@ -14,6 +14,7 @@
                         string="Limpiar Reservas"
                         attrs="{'visible':[('state','!=','done')]}"
                 />
+                <
             </xpath>
 
             <button name="action_assign" position="replace"/>
