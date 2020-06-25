@@ -200,7 +200,8 @@ class StockPicking(models.Model):
         for move_line in self.move_line_ids:
             models._logger.error(float_is_zero(move_line.qty_done, precision_digits=precision_digits))
             models._logger.error(float_is_zero(move_line.product_uom_qty, precision_digits=precision_digits))
-        return super(StockPicking, self).button_validate()
+            moves_to_do._action_done()
+        #return super(StockPicking, self).button_validate()
         for serial in self.packing_list_ids:
             serial.update({
                 'consumed': True
