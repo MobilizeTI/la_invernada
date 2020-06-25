@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import models, api, fields
 from odoo.addons import decimal_precision as dp
 
 class StockQuant(models.Model):
