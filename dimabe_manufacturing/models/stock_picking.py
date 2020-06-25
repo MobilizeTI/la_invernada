@@ -196,9 +196,10 @@ class StockPicking(models.Model):
             raise models.UserError('No ha ingresado la cantidad realizada')
         moves_to_do = self.move_ids_without_package.filtered(lambda x: x.state not in ('done', 'cancel'))
         moves_to_do._action_done()
+        precision_digits = self.env['decimal.precision'].precision_get('Product Unit of Measure')
         for move_line in self.move_line_ids:
-            models._logger.error(float_is_zero(move_line.qty_done, precision_digits=dp))
-            models._logger.error(float_is_zero(move_line.product_qty, precision_digits=dp))
+            models._logger.error(float_is_zero(move_line.qty_done, precision_digits=precision_digits))
+            models._logger.error(float_is_zero(move_line.product_qty, precision_digits=precision_digits))
         return super(StockPicking, self).button_validate()
         for serial in self.packing_list_ids:
             serial.update({
