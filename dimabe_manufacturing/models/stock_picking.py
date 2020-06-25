@@ -197,7 +197,10 @@ class StockPicking(models.Model):
         moves_to_do = self.move_ids_without_package.filtered(lambda x: x.state not in ('done', 'cancel'))
         moves_to_do._action_done()
         self.clean_reserved()
-        precision_digits = self.env['decimal.precision'].precision_get('Product Unit of Measure')
+        for item in self.move_line_ids:
+            models._logger.error(item.qty)
+            models._logger.error(item.product_qty)
+
         return super(StockPicking, self).button_validate()
         for serial in self.packing_list_ids:
             serial.update({
