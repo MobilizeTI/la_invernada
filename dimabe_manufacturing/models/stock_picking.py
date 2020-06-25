@@ -197,6 +197,7 @@ class StockPicking(models.Model):
         for move_line in self.move_line_ids:
             if self.picking_type_id.warehouse_id.id == 17:
                 move_line._action_done()
+                return super(StockPicking, self).button_validate()
         if self.picking_type_id.warehouse_id.id != 17:
             return super(StockPicking, self).button_validate()
         for serial in self.packing_list_ids:
