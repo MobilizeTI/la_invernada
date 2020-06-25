@@ -198,9 +198,9 @@ class StockPicking(models.Model):
         moves_to_do._action_done()
         self.clean_reserved()
         for item in self.move_line_ids:
-            models._logger.error(item.qty_done)
-            models._logger.error(item.id)
-            models._logger.error(item.product_qty)
+            item.update({
+                'product_qty':item.qty_done
+            })
 
         return super(StockPicking, self).button_validate()
         for serial in self.packing_list_ids:
