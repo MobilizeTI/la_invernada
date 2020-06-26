@@ -65,42 +65,46 @@ class CustomInvoice(models.Model):
         hash = company_id.dte_hash
         auth = requests.auth.HTTPBasicAuth(hash, 'X')
         dtes = requests.get(url + '/api' + apidte, auth=auth)
+        if dtes.status_code != 200:
+            raise Exception('Error al Temporal: ' + emitir.json())
         data = dtes.json()
-        for d in data:
-            invoice = self.env['custom.invoice'].search([('invoice', '=', d.get('folio', None))])
-            if invoice:
-                continue
-            partner_id = self.env['res.partner'].search([('invoice_rut', '=', d.get('rut_f').strip())])
-            dte_type = self.env['dte.type'].search([('code', '=', d.get('dte', None))])
-            if partner_id:
-                self.env['custom.invoice'].create({
-                    'date': d.get('fecha', None),
-                    'transmitter': d.get('emisor', None),
-                    'partner_id': partner_id.id,
-                    'dte': dte_type.id,
-                    'business_name': d.get('razon_social', None),
-                    'invoice': d.get('folio', None),
-                    'branch_office': d.get('sucursal', None),
-                    'exempt': False,
-                    'net_value': d.get('neto', None),
-                    'total_value': d.get('total', None),
-                    'dv': d.get('dv', None),
-                    'rut_f': d.get('rut_f', None),
-                    'giro': d.get('giro', None),
-                })
-            else:
-                self.env['custom.invoice'].create({
-                    'date': d.get('fecha', None),
-                    'transmitter': d.get('emisor', None),
-                    'partner_id': None,
-                    'dte': dte_type.id,
-                    'business_name': d.get('razon_social', None),
-                    'invoice': d.get('folio', None),
-                    'branch_office': d.get('sucursal', None),
-                    'exempt': False,
-                    'net_value': d.get('neto', None),
-                    'total_value': d.get('total', None),
-                    'dv': d.get('dv', None),
-                    'rut_f': d.get('rut_f', None),
-                    'giro': d.get('giro', None),
-                })
+        if len(data) != 0:
+            for d in data:
+                invoice = self.env['custom.invoice'].search([('invoice', '=', d.get('folio', None))])
+                if invoice:
+                    continue
+                partner_id = self.env['res.partner'].search([('invoice_rut', '=', d.get('rut_f').strip())])
+                dte_type = self.env['dte.type'].search([('code', '=', d.get('dte', None))])
+
+                if partner_id:
+                    self.env['custom.invoice'].create({
+                        'date': d.get('fecha', None),
+                        'transmitter': d.get('emisor', None),
+                        'partner_id': partner_id.id,
+                        'dte': dte_type.id,
+                        'business_name': d.get('razon_social', None),
+                        'invoice': d.get('folio', None),
+                        'branch_office': d.get('sucursal', None),
+                        'exempt': False,
+                        'net_value': d.get('neto', None),
+                        'total_value': d.get('total', None),
+                        'dv': d.get('dv', None),
+                        'rut_f': d.get('rut_f', None),
+                        'giro': d.get('giro', None),
+                    })
+                else:
+                    self.env['custom.invoice'].create({
+                        'date': d.get('fecha', None),
+                        'transmitter': d.get('emisor', None),
+                        'partner_id': None,
+                        'dte': dte_type.id,
+                        'business_name': d.get('razon_social', None),
+                        'invoice': d.get('folio', None),
+                        'branch_office': d.get('sucursal', None),
+                        'exempt': False,
+                        'net_value': d.get('neto', None),
+                        'total_value': d.get('total', None),
+                        'dv': d.get('dv', None),
+                        'rut_f': d.get('rut_f', None),
+                        'giro': d.get('giro', None),
+                    })
