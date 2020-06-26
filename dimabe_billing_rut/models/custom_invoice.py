@@ -66,7 +66,7 @@ class CustomInvoice(models.Model):
         auth = requests.auth.HTTPBasicAuth(hash, 'X')
         dtes = requests.get(url + '/api' + apidte, auth=auth)
         if dtes.status_code != 200:
-            raise Exception('Error al Temporal: ' + emitir.json())
+            raise Exception('Error al Temporal: ' + dtes.json())
         data = dtes.json()
         if len(data) != 0:
             for d in data:
