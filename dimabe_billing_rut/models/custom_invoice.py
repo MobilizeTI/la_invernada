@@ -57,6 +57,7 @@ class CustomInvoice(models.Model):
     def get_dte(self):
         company_id = self.env.user.company_id
         url = company_id.dte_url
+        models._logger.error(company_id.name)
         rut_company = company_id.invoice_rut.replace(".", "").split("-")[0]
         fecha_desde = '2020-01-01'
         fecha_hasta = date.today()
