@@ -45,7 +45,7 @@
             <filter string="Productor" name="group_by_producer" context="{'group_by':'producer_id'}"/>
             <filter string="Variedad" name="group_by_variety" context="{'group_by':'product_variety'}"/>
             <filter string="Cosecha" name="group_by_harvest" context="{'group_by':'harvest'}"/>
-           </group>
+          </group>
         </search>
       </field>
     </record>

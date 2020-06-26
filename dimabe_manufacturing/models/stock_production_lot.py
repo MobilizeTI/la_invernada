@@ -248,6 +248,7 @@ class StockProductionLot(models.Model):
                     [('out_lot_id', '=', item.id)]).total_out_weight
                 item.reception_weight = dried
 
+
     @api.multi
     def check_duplicate(self):
         for item in self:
