@@ -65,7 +65,7 @@ class CustomInvoice(models.Model):
         hash = company_id.dte_hash
         auth = requests.auth.HTTPBasicAuth(hash, 'X')
         dtes = requests.get(url + '/api' + apidte, auth=auth)
-        models._logger.error(requests.session.debug)
+        models._logger.error(company_id.name)
         if dtes.status_code != 200:
             raise models.UserError('Error al Temporal: ' + dtes.json())
         data = dtes.json()
