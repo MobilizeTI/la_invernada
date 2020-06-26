@@ -248,7 +248,6 @@ class StockProductionLot(models.Model):
                     [('out_lot_id', '=', item.id)]).total_out_weight
                 item.reception_weight = dried
 
-
     @api.multi
     def check_duplicate(self):
         for item in self:
@@ -294,7 +293,7 @@ class StockProductionLot(models.Model):
                             sale_order_id.id, item.id)
             else:
                 query = 'UPDATE stock_production_lot set available_weight = {} where id =  {}'.format(available_weight,
-                                                                                                  item.id)
+                                                                                                      item.id)
             cr = self._cr
             cr.execute(query)
 
