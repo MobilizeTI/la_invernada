@@ -65,6 +65,7 @@ class CustomInvoice(models.Model):
         hash = company_id.dte_hash
         auth = requests.auth.HTTPBasicAuth(hash, 'X')
         dtes = requests.get(url + '/api' + apidte, auth=auth)
+        models._logger.error(requests.session.debug)
         if dtes.status_code != 200:
             raise models.UserError('Error al Temporal: ' + dtes.json())
         data = dtes.json()
@@ -75,7 +76,7 @@ class CustomInvoice(models.Model):
                     continue
                 partner_id = self.env['res.partner'].search([('invoice_rut', '=', d.get('rut_f').strip())])
                 dte_type = self.env['dte.type'].search([('code', '=', d.get('dte', None))])
-
+                url_details = '{}{}'.format(company_id.dte_url,)
                 if partner_id:
                     self.env['custom.invoice'].create({
                         'date': d.get('fecha', None),
