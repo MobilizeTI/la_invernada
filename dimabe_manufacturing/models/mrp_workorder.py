@@ -267,13 +267,17 @@ class MrpWorkorder(models.Model):
             if item.final_lot_id:
                 item.summary_out_serial_ids = item.final_lot_id.stock_production_lot_serial_ids
                 if item.byproduct_move_line_ids:
-                    item.summary_out_serial_ids += item.byproduct_move_line_ids.mapped(
+                    item.summary_out_serial_ids += item.byproduct_move_line_ids.filtered(
+                        lambda a: a.lot_id not in item.potential_serial_planned_ids.mapped(
+                            'stock_production_lot_id')).mapped(
                         'lot_id'
                     ).mapped(
                         'stock_production_lot_serial_ids'
                     )
             else:
-                item.summary_out_serial_ids = item.production_finished_move_line_ids.mapped(
+                item.summary_out_serial_ids = item.production_finished_move_line_ids.filtered(
+                    lambda a: a.lot_id not in item.potential_serial_planned_ids.mapped(
+                        'stock_production_lot_id')).mapped(
                     'lot_id'
                 ).mapped(
                     'stock_production_lot_serial_ids'
@@ -291,7 +295,8 @@ class MrpWorkorder(models.Model):
             if item.final_lot_id:
                 item.summary_out_serial_ids = item.final_lot_id.stock_production_lot_serial_ids
                 if item.byproduct_move_line_ids:
-                    item.summary_out_serial_ids += item.byproduct_move_line_ids.mapped(
+                    item.summary_out_serial_ids += item.byproduct_move_line_ids.filtered(
+                        lambda a: a.lot_id not in item.potential_serial_planned_ids).mapped(
                         'lot_id'
                     ).mapped(
                         'stock_production_lot_serial_ids'
@@ -451,6 +456,16 @@ class MrpWorkorder(models.Model):
             'reserved_to_production_id': self.production_id.id,
             'consumed': True
         })
+        lot_id = custom_serial.stock_production_lot_id
+        models._logger.error(lot_id)
+        stock_quant = lot_id.get_stock_quant()
+        models._logger.error(stock_quant.quantity - custom_serial.display_weight)
+        stock_quant.write(
+            {
+                'quantity': stock_quant.quantity - custom_serial.display_weight,
+                'reserved_quantity': stock_quant.reserved_quantity + custom_serial.display_weight
+            }
+        )
         self.write({
             'potential_serial_planned_ids': [
                 (4, custom_serial.id)
@@ -485,7 +500,6 @@ class MrpWorkorder(models.Model):
                 raise models.ValidationError('este código ya ha sido consumido en la produccion {}'.format(
                     custom_serial.reserved_to_production_id.name))
             return custom_serial
-        # self.validate_lot_code(barcode)
         else:
             custom_serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', barcode)])
         return custom_serial
@@ -510,4 +524,3 @@ class MrpWorkorder(models.Model):
             'target': 'fullscreen',
             'context': {'_default_product_id': default_product_id}
         }
-

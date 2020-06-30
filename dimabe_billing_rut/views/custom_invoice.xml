@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="custom_invoice_tree" model="ir.ui.view">
+            <field name="name">Facturas Emitidas</field>
+            <field name="model">custom.invoice</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="date" string="Fecha Emisión"/>
+                    <field name="transmitter"/>
+                    <field name="dte" />
+                    <field name="partner_id" widget="many2onebutton"/>
+                    <field name="business_name"/>
+                    <field name="invoice"/>
+                    <field name="branch_office"/>
+                    <field name="exempt"/>
+                    <field name="net_value"/>
+                    <field name="total_value"/>
+                    <field name="dv"/>
+                    <field name="rut_f"/>
+                    <field name="giro"/>
+                    <button type="object" name="generate_invoice" string="Crear Factura" attrs="{'invisible':['account_invoice_id','!=',None]}"/>
+                </tree>
+            </field>
+        </record>
+        <record id="dimabe_billing_rut.action_custom_invoice_views" model="ir.actions.act_window">
+            <field name="name">Facturas Emitidas</field>
+            <field name="res_model">custom.invoice</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="custom_invoice_tree"/>
+        </record>
+        <template id="button_render_js" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script src="dimabe_billing_rut/static/src/js/action_call.js" type="text/javascript"/>
+            </xpath>
+        </template>
+        <menuitem id="menu_custom_invoice"
+                  name="Facturas Recibidas"
+                  parent="menu_account_dte"
+                  action="dimabe_billing_rut.action_custom_invoice_views"
+        />
+    </data>
+</odoo>
