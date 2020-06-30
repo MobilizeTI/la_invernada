@@ -426,7 +426,6 @@ class MrpWorkorder(models.Model):
         super(MrpWorkorder, self).do_finish()
         self.organize_move_line()
 
-
     def action_skip(self):
         super(MrpWorkorder, self).action_skip()
 
@@ -520,4 +519,3 @@ class MrpWorkorder(models.Model):
             'target': 'fullscreen',
             'context': {'_default_product_id': default_product_id}
         }
-
