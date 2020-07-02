@@ -44,10 +44,6 @@ class PurchaseOrder(models.Model):
     @api.multi
     def action_rfq_send(self):
         for item in self:
-            group = self.env['res.groups'].search([('name', '=', 'Post Confirmar')])
-            user_logon = self.env.user
-            if user_logon not in group.users:
-                raise models.ValidationError('Usted no cuenta con los permisos para realizar este acción')
             if not item.boss_approval_id:
                 models._logger.error(item.state)
                 item.update({
@@ -63,10 +59,6 @@ class PurchaseOrder(models.Model):
 
     @api.multi
     def button_confirm(self):
-        group = self.env['res.groups'].search([('name', '=', 'Post Confirmar')])
-        user_logon = self.env.user
-        if user_logon not in group.users:
-            raise models.ValidationError('Usted no cuenta con los permisos para realizar este acción')
         res = super(PurchaseOrder, self).button_confirm()
         template_id = self.env.ref('dimabe_purchase_process.po_confirmed_mail_template')
         for order in self:
