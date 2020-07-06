@@ -182,6 +182,10 @@ class StockPicking(models.Model):
 
     @api.multi
     def button_validate(self):
+        for serial in self.packing_list_ids:
+            serial.update({
+                'consumed': True
+            })
         if len(self.move_line_ids_without_package) == 0:
             raise models.UserError('No existe ningun campo en operaciones detalladas')
         if self.move_line_ids_without_package.filtered(lambda a: a.qty_done == 0):
@@ -192,10 +196,7 @@ class StockPicking(models.Model):
                 return super(StockPicking, self).button_validate()
         if self.picking_type_id.warehouse_id.id != 17:
             return super(StockPicking, self).button_validate()
-        for serial in self.packing_list_ids:
-            serial.update({
-                'consumed': True
-            })
+
 
     def validate_barcode(self, barcode):
         custom_serial = self.packing_list_ids.filtered(
