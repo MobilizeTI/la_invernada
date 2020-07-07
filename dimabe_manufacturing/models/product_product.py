@@ -109,9 +109,11 @@ class ProductProduct(models.Model):
                  'product_tmpl_id.cost_method', 'product_tmpl_id.standard_price', 'product_tmpl_id.property_valuation',
                  'product_tmpl_id.categ_id.property_valuation')
     def _compute_stock_value(self):
-        stock_moves = self.env['stock.move'].search([('product_id','=',2729),('date','<=','2020-06-30'),('state','=','done')])
+        stock_moves = self.env['stock.move'].search([('product_id','=',2729)
+                                                        ,('date','<=','2020-06-30 23:59:59')
+                                                        ,('state','=','done')])
         #raise models.ValidationError(sum(stock_moves.mapped('value')))
-        raise models.ValidationError(self.env.context.get('to_date'))
+
         StockMove = self.env['stock.move']
         models._logger.error('Paso 1: {}'.format(StockMove))
         to_date = self.env.context.get('to_date')
