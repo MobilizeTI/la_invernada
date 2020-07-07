@@ -151,7 +151,7 @@ class ProductProduct(models.Model):
 
         StockMove.check_access_rights('read')
         query = StockMove._where_calc(domain)
-        raise models.ValidationError(query)
+        raise models.ValidationError(query.get_sql())
         StockMove._apply_ir_rules(query, 'read')
         from_clause, where_clause, params = query.get_sql()
         query_str = """
