@@ -109,9 +109,10 @@ class ProductProduct(models.Model):
     @api.depends('stock_move_ids.product_qty', 'stock_move_ids.state', 'stock_move_ids.remaining_value', 'product_tmpl_id.cost_method', 'product_tmpl_id.standard_price', 'product_tmpl_id.property_valuation', 'product_tmpl_id.categ_id.property_valuation')
     def compute_stock_value(self):
         StockMove = self.env['stock.move']
-        to_date = self.env.context.get('to_date')
-        raise models.UserError(StockMove)
+        to_date = '2020-06-30 23:59:59'
+
         real_time_product_ids = [product.id for product in self if product.product_tmpl_id.valuation == 'real_time']
+        raise models.ValidationError(real_time_product_ids)
         if real_time_product_ids:
             self.env['account.move.line'].check_access_rights('read')
             fifo_automated_values = {}
