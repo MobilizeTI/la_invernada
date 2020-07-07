@@ -133,6 +133,7 @@ class ProductProduct(models.Model):
             self.env.cr.execute(query, params=params)
 
             res = self.env.cr.fetchall()
+            models._logger.error('{}'.format(res))
             for row in res:
                 fifo_automated_values[(row[0], row[1])] = (row[2], row[3], list(row[4]))
 
