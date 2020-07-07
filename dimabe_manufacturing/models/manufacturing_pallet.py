@@ -151,7 +151,7 @@ class ManufacturingPallet(models.Model):
         if self.lot_serial_ids.mapped('production_id').mapped('sale_order_id'):
             res.sale_order_id = self.lot_serial_ids.mapped('production_id').mapped('sale_order_id')
         has_sale_order = len(self.lot_serial_ids.mapped('production_id').mapped('sale_order_id')) > 0
-        models._logger.error(self.lot_serial_ids.mapped('production_id').mapped('sale_order_id'))
+        models._logger.error(self.lot_serial_ids.mapped('production_id'))
         if has_sale_order:
             query = "UPDATE manufacturing_pallet set sale_order_id = {} where id = {}".format(
                 self.lot_serial_ids.mapped('production_id').mapped('sale_order_id'), self.id)
