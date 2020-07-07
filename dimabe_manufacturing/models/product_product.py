@@ -175,7 +175,7 @@ class ProductProduct(models.Model):
                 product.stock_value = price_used * qty_available
                 product.qty_at_date = qty_available
                 if product.id == 2729:
-                    models.UserError(
+                    raise models.UserError(
                         'Product Qty Available : {}, Price used : {} , Product Stock Value {} , Product Qty At Date {}'.format(
                             product.qty_available, price_used, product.stock_value, product.qty_at_date))
             elif product.cost_method == 'fifo':
