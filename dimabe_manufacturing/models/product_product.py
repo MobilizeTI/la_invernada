@@ -177,8 +177,6 @@ class ProductProduct(models.Model):
                 if to_date:
                     if product.product_tmpl_id.valuation == 'manual_periodic':
                         product.stock_value = product_values[product.id]
-                        if product.id == 2729:
-                            raise models.ValidationError(product.with_context(company_owned=True, owner_id=False))
                         product.qty_at_date = product.with_context(company_owned=True, owner_id=False).qty_available
                         product.stock_fifo_manual_move_ids = StockMove.browse(product_move_ids[product.id])
                     elif product.product_tmpl_id.valuation == 'real_time':
