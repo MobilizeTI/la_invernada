@@ -114,7 +114,7 @@ class ProductProduct(models.Model):
                                                         , ('state', '=', 'done')
                                                         , ('company_id', '=', 1)
                                                      ])
-        raise models.ValidationError(stock_moves._dict_)
+        raise models.ValidationError(sum(stock_moves.mapped('product_qty')))
 
         StockMove = self.env['stock.move']
         models._logger.error('Paso 1: {}'.format(StockMove))
