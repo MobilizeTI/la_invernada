@@ -95,19 +95,19 @@ class ManufacturingPallet(models.Model):
 
     is_reserved = fields.Boolean('¿Esta reservado?')
 
-    measure = fields.Char('Medida',related='product_id.measure')
+    measure = fields.Char('Medida', related='product_id.measure')
 
-    sale_order_id = fields.Many2one('sale.order',compute='_compute_sale_order_id',store=True)
+    sale_order_id = fields.Many2one('sale.order', compute='_compute_sale_order_id', store=True)
 
-    dest_client_id = fields.Many2one('res.partner',compute='_compute_dest_client_id')
+    dest_client_id = fields.Many2one('res.partner', compute='_compute_dest_client_id')
 
-    dest_country_id = fields.Many2one('res.country',compute='_compute_dest_country_id',store=True)
+    dest_country_id = fields.Many2one('res.country', compute='_compute_dest_country_id', store=True)
 
-    available_weight = fields.Float('Kilos Disponible',compute='_compute_available_weight',store=True)
+    available_weight = fields.Float('Kilos Disponible', compute='_compute_available_weight', store=True)
 
-    serial_not_consumed = fields.Integer('Cantidad',compute='_compute_serial_not_consumed')
+    serial_not_consumed = fields.Integer('Cantidad', compute='_compute_serial_not_consumed')
 
-    lot_id = fields.Many2one('stock.production.lot',compute='_compute_lot_id')
+    lot_id = fields.Many2one('stock.production.lot', compute='_compute_lot_id')
 
     @api.multi
     def _compute_lot_id(self):
@@ -150,6 +150,13 @@ class ManufacturingPallet(models.Model):
 
         if self.lot_serial_ids.mapped('production_id').mapped('sale_order_id'):
             res.sale_order_id = self.lot_serial_ids.mapped('production_id').mapped('sale_order_id')
+        has_sale_order = len(self.lot_serial_ids.mapped('production_id').mapped('sale_order_id')) > 0
+        models._logger.error(has_sale_order)
+        if has_sale_order:
+            query = "UPDATE manufacturing_pallet set sale_order_id = {} where id = {}".format(
+                self.lot_serial_ids.mapped('production_id').mapped('sale_order_id'), self.id)
+            cr = self._cr
+            cr.execute(query)
 
         return res
 
@@ -270,7 +277,7 @@ class ManufacturingPallet(models.Model):
         stock_picking_id = None
         if 'dispatch_id' in self.env.context:
             stock_picking_id = self.env.context['dispatch_id']
-            stock_picking = self.env['stock.picking'].search([('id','=',stock_picking_id)])
+            stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
         for item in self:
             stock_move = stock_picking.move_lines.filtered(
                 lambda a: a.product_id == self.product_id
@@ -311,48 +318,46 @@ class ManufacturingPallet(models.Model):
                 stock_quant = lot_id.get_stock_quant()
                 if not move_line:
                     move_line_create = self.env['stock.move.line'].create({
-                        'product_id':item.product_id.id,
-                        'lot_id':lot_id.id,
-                        'product_uom_qty':item.total_content_weight,
-                        'product_uom_id':stock_move.product_uom.id,
-                        'location_id':stock_quant.location_id.id,
-                        'location_dest_id':stock_picking.partner_id.property_stock_customer.id
+                        'product_id': item.product_id.id,
+                        'lot_id': lot_id.id,
+                        'product_uom_qty': item.total_content_weight,
+                        'product_uom_id': stock_move.product_uom.id,
+                        'location_id': stock_quant.location_id.id,
+                        'location_dest_id': stock_picking.partner_id.property_stock_customer.id
                     })
                     stock_move.sudo().update({
-                        'move_line_ids':[
-                            (4,move_line_create.id)
+                        'move_line_ids': [
+                            (4, move_line_create.id)
                         ]
                     })
                     stock_picking.update({
-                        'move_line_ids':[
-                            (4,move_line_create.id)
+                        'move_line_ids': [
+                            (4, move_line_create.id)
                         ]
                     })
                 else:
-                        picking_move_line = stock_picking.move_line_ids.filtered(
-                            lambda a: a.id == move_line.id
-                        )
+                    picking_move_line = stock_picking.move_line_ids.filtered(
+                        lambda a: a.id == move_line.id
+                    )
 
+                    for ml in move_line:
 
+                        if ml.qty_done > 0:
+                            raise models.ValidationError('este producto ya ha sido validado')
 
-                        for ml in move_line:
+                        ml.update({'product_uom_qty': ml.product_uom_qty + item.total_content_weight})
 
-                            if ml.qty_done > 0:
-                                raise models.ValidationError('este producto ya ha sido validado')
-
-                            ml.update({'product_uom_qty': ml.product_uom_qty + item.total_content_weight })
-
-                            picking_move_line.filtered(lambda a: a.id == ml.id).update({
-                                'product_uom_qty': ml.product_uom_qty
-                            })
-                        stock_quant.sudo().update({
-                             'reserved_quantity': stock_quant.total_reserved
+                        picking_move_line.filtered(lambda a: a.id == ml.id).update({
+                            'product_uom_qty': ml.product_uom_qty
                         })
+                    stock_quant.sudo().update({
+                        'reserved_quantity': stock_quant.total_reserved
+                    })
             item.lot_available_serial_ids.update({
-                'reserved_to_stock_picking_id' : stock_picking_id
+                'reserved_to_stock_picking_id': stock_picking_id
             })
             item.update({
-                 'is_reserved':True
+                'is_reserved': True
             })
 
     @api.multi
@@ -364,4 +369,3 @@ class ManufacturingPallet(models.Model):
                 item.lot_serial_ids.filtered(
                     lambda a: a.reserved_to_stock_picking_id.id == stock_picking_id
                 ).unreserved_picking()
-
