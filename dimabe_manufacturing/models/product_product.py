@@ -111,8 +111,6 @@ class ProductProduct(models.Model):
         StockMove = self.env['stock.move']
         models._logger.error('Paso 1: {}'.format(StockMove))
         product_test = self.env['product.template'].search([('id','=',569)])
-        raise models.UserError('Product Name : {} Product valuation : {}'.format(product_test.name,product_test.valuation))
-
         to_date = '2020-06-30 23:59:59'
         models._logger.error('{}'.format(to_date))
         real_time_product_ids = [product.id for product in self if product.product_tmpl_id.valuation == 'real_time']
