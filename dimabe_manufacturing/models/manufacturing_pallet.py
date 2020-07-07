@@ -125,7 +125,7 @@ class ManufacturingPallet(models.Model):
         for item in self:
             item.serial_not_consumed = len(item.lot_serial_ids.filtered(lambda a: not a.consumed))
             query = "UPDATE manufacturing_pallet set sale_order_id = {} where id = {}".format(
-                self.lot_serial_ids.mapped('production_id').mapped('sale_order_id'), self.id)
+                item.lot_serial_ids.mapped('production_id').mapped('sale_order_id'), item.id)
             cr = self._cr
             cr.execute(query)
 
