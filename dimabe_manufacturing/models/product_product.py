@@ -1,6 +1,7 @@
 from odoo import fields, models, api
 from odoo.tools.float_utils import float_round
 
+
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
@@ -42,7 +43,6 @@ class ProductProduct(models.Model):
                     item.measure = '10 Kilos'
                 if "Saco 25K" == value:
                     item.measure = '25 Kilos'
-
 
     @api.multi
     def _compute_caliber(self):
@@ -88,7 +88,6 @@ class ProductProduct(models.Model):
                     'is_to_manufacturing': True
                 })
 
-
     @api.multi
     def _compute_variety(self):
         for item in self:
@@ -106,7 +105,9 @@ class ProductProduct(models.Model):
         return [('id', 'in', product_ids)]
 
     @api.multi
-    @api.depends('stock_move_ids.product_qty', 'stock_move_ids.state', 'stock_move_ids.remaining_value', 'product_tmpl_id.cost_method', 'product_tmpl_id.standard_price', 'product_tmpl_id.property_valuation', 'product_tmpl_id.categ_id.property_valuation')
+    @api.depends('stock_move_ids.product_qty', 'stock_move_ids.state', 'stock_move_ids.remaining_value',
+                 'product_tmpl_id.cost_method', 'product_tmpl_id.standard_price', 'product_tmpl_id.property_valuation',
+                 'product_tmpl_id.categ_id.property_valuation')
     def _compute_stock_value(self):
         StockMove = self.env['stock.move']
         models._logger.error('Paso 1: {}'.format(StockMove))
@@ -173,6 +174,10 @@ class ProductProduct(models.Model):
                     )
                 product.stock_value = price_used * qty_available
                 product.qty_at_date = qty_available
+                if product.id == 2729:
+                    models.UserError(
+                        'Product Qty Available : {}, Price used : {} , Product Stock Value {} , Product Qty At Date {}'.format(
+                            product.qty_available, product.price_used, product.stock_value, product.qty_at_date))
             elif product.cost_method == 'fifo':
                 if to_date:
                     if product.product_tmpl_id.valuation == 'manual_periodic':
@@ -181,7 +186,8 @@ class ProductProduct(models.Model):
                         product.stock_fifo_manual_move_ids = StockMove.browse(product_move_ids[product.id])
                     elif product.product_tmpl_id.valuation == 'real_time':
                         valuation_account_id = product.categ_id.property_stock_valuation_account_id.id
-                        value, quantity, aml_ids = fifo_automated_values.get((product.id, valuation_account_id)) or (0, 0, [])
+                        value, quantity, aml_ids = fifo_automated_values.get((product.id, valuation_account_id)) or (
+                            0, 0, [])
                         product.stock_value = value
                         product.qty_at_date = quantity
                         product.stock_fifo_real_time_aml_ids = self.env['account.move.line'].browse(aml_ids)
@@ -192,5 +198,6 @@ class ProductProduct(models.Model):
                         product.stock_fifo_manual_move_ids = StockMove.browse(product_move_ids[product.id])
                     elif product.product_tmpl_id.valuation == 'real_time':
                         valuation_account_id = product.categ_id.property_stock_valuation_account_id.id
-                        value, quantity, aml_ids = fifo_automated_values.get((product.id, valuation_account_id)) or (0, 0, [])
+                        value, quantity, aml_ids = fifo_automated_values.get((product.id, valuation_account_id)) or (
+                            0, 0, [])
                         product.stock_fifo_real_time_aml_ids = self.env['account.move.line'].browse(aml_ids)
