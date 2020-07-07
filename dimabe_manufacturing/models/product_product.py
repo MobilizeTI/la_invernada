@@ -177,7 +177,7 @@ class ProductProduct(models.Model):
                 if product.id == 2729:
                     models.UserError(
                         'Product Qty Available : {}, Price used : {} , Product Stock Value {} , Product Qty At Date {}'.format(
-                            product.qty_available, product.price_used, product.stock_value, product.qty_at_date))
+                            product.qty_available, price_used, product.stock_value, product.qty_at_date))
             elif product.cost_method == 'fifo':
                 if to_date:
                     if product.product_tmpl_id.valuation == 'manual_periodic':
