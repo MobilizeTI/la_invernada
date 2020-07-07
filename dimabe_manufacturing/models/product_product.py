@@ -110,7 +110,7 @@ class ProductProduct(models.Model):
                  'product_tmpl_id.categ_id.property_valuation')
     def _compute_stock_value(self):
         stock_moves = self.env['stock.move'].search([('product_id','=',2729),('date','<=','2020-06-30')])
-        raise models.ValidationError(sum(stock_moves.mapped('value')))
+        #raise models.ValidationError(sum(stock_moves.mapped('value')))
         StockMove = self.env['stock.move']
         models._logger.error('Paso 1: {}'.format(StockMove))
         to_date = self.env.context.get('to_date')
@@ -153,7 +153,7 @@ class ProductProduct(models.Model):
 
         StockMove.check_access_rights('read')
         query = StockMove._where_calc(domain)
-
+        raise models.ValidationError(query.get_sql())
         StockMove._apply_ir_rules(query, 'read')
         from_clause, where_clause, params = query.get_sql()
         query_str = """
