@@ -114,8 +114,6 @@ class ProductProduct(models.Model):
                                                         , ('state', '=', 'done')
                                                         , ('company_id', '=', 1)
                                                      ])
-        raise models.ValidationError(stock_moves.mapped('id'))
-
         StockMove = self.env['stock.move']
         models._logger.error('Paso 1: {}'.format(StockMove))
         to_date = self.env.context.get('to_date')
