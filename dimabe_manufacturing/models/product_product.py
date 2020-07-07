@@ -111,7 +111,7 @@ class ProductProduct(models.Model):
         StockMove = self.env['stock.move']
         models._logger.error('Paso 1: {}'.format(StockMove))
         product_test = self.env['product.product'].search([('id','=',2729)])
-        raise models.UserError('Product Name : {} Product valuation : '.format(product_test.display_name))
+        raise models.UserError('Product Name : {} Product valuation : '.format(product_test.display_name,product_test.product_tmpl_id.valuation))
 
         to_date = '2020-06-30 23:59:59'
         models._logger.error('{}'.format(to_date))
