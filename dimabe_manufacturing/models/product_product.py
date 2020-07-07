@@ -110,7 +110,7 @@ class ProductProduct(models.Model):
     def _compute_stock_value(self):
         StockMove = self.env['stock.move']
         models._logger.error('Paso 1: {}'.format(StockMove))
-
+        to_date = self.env.context.get('to_date')
         models._logger.error('{}'.format(to_date))
         real_time_product_ids = [product.id for product in self if product.product_tmpl_id.valuation == 'real_time']
         models._logger.error('{}'.format(real_time_product_ids))
@@ -177,6 +177,8 @@ class ProductProduct(models.Model):
                 if to_date:
                     if product.product_tmpl_id.valuation == 'manual_periodic':
                         product.stock_value = product_values[product.id]
+                        if product.id == 2729:
+                            raise models.ValidationError(product.with_context(company_owned=True, owner_id=False))
                         product.qty_at_date = product.with_context(company_owned=True, owner_id=False).qty_available
                         product.stock_fifo_manual_move_ids = StockMove.browse(product_move_ids[product.id])
                     elif product.product_tmpl_id.valuation == 'real_time':
