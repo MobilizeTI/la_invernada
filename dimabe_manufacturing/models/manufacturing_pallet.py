@@ -124,6 +124,10 @@ class ManufacturingPallet(models.Model):
     def _compute_serial_not_consumed(self):
         for item in self:
             item.serial_not_consumed = len(item.lot_serial_ids.filtered(lambda a: not a.consumed))
+            query = "UPDATE manufacturing_pallet set sale_order_id = {} where id = {}".format(
+                self.lot_serial_ids.mapped('production_id').mapped('sale_order_id'), self.id)
+            cr = self._cr
+            cr.execute(query)
 
     @api.multi
     def _compute_dest_client_id(self):
@@ -150,8 +154,6 @@ class ManufacturingPallet(models.Model):
 
         if self.lot_serial_ids.mapped('production_id').mapped('sale_order_id'):
             res.sale_order_id = self.lot_serial_ids.mapped('production_id').mapped('sale_order_id')
-        has_sale_order = len(self.lot_serial_ids.mapped('production_id').mapped('sale_order_id')) > 0
-        models._logger.error(self.lot_serial_ids.mapped('production_id'))
         if has_sale_order:
             query = "UPDATE manufacturing_pallet set sale_order_id = {} where id = {}".format(
                 self.lot_serial_ids.mapped('production_id').mapped('sale_order_id'), self.id)
