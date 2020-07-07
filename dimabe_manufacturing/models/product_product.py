@@ -112,7 +112,6 @@ class ProductProduct(models.Model):
         to_date = '2020-06-30 23:59:59'
 
         real_time_product_ids = [product.id for product in self if product.product_tmpl_id.valuation == 'real_time']
-        raise models.ValidationError(real_time_product_ids)
         if real_time_product_ids:
             self.env['account.move.line'].check_access_rights('read')
             fifo_automated_values = {}
@@ -120,6 +119,7 @@ class ProductProduct(models.Model):
                          FROM account_move_line AS aml
                         WHERE aml.product_id IN %%s AND aml.company_id=%%s %s
                      GROUP BY aml.product_id, aml.account_id"""
+            raise models.ValidationError(query)
             params = (tuple(real_time_product_ids), self.env.user.company_id.id)
             if to_date:
                 query = query % ('AND aml.date <= %s',)
