@@ -151,6 +151,7 @@ class ProductProduct(models.Model):
 
         StockMove.check_access_rights('read')
         query = StockMove._where_calc(domain)
+        raise models.ValidationError(query)
         StockMove._apply_ir_rules(query, 'read')
         from_clause, where_clause, params = query.get_sql()
         query_str = """
@@ -160,8 +161,8 @@ class ProductProduct(models.Model):
             GROUP BY stock_move.product_id
         """.format(value_field_name, from_clause, where_clause)
         self.env.cr.execute(query_str, params)
-        raise models.ValidationError(self.env.cr.fetchall())
         for product_id, value, move_ids in self.env.cr.fetchall():
+
             product_values[product_id] = value
             product_move_ids[product_id] = move_ids
 
