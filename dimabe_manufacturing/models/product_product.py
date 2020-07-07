@@ -109,10 +109,12 @@ class ProductProduct(models.Model):
                  'product_tmpl_id.cost_method', 'product_tmpl_id.standard_price', 'product_tmpl_id.property_valuation',
                  'product_tmpl_id.categ_id.property_valuation')
     def _compute_stock_value(self):
-        stock_moves = self.env['stock.move'].search([('product_id','=',2729)
-                                                        ,('date','<=','2020-06-30 23:59:59')
-                                                        ,('state','=','done')])
-        #raise models.ValidationError(sum(stock_moves.mapped('value')))
+        stock_moves = self.env['stock.move'].search([('product_id', '=', 2729)
+                                                        , ('date', '<=', '2020-06-30 23:59:59')
+                                                        , ('state', '=', 'done')
+                                                        , ('company_id', '=', 1)
+                                                     ])
+        # raise models.ValidationError(sum(stock_moves.mapped('value')))
 
         StockMove = self.env['stock.move']
         models._logger.error('Paso 1: {}'.format(StockMove))
@@ -167,7 +169,6 @@ class ProductProduct(models.Model):
         """.format(value_field_name, from_clause, where_clause)
         self.env.cr.execute(query_str, params)
         for product_id, value, move_ids in self.env.cr.fetchall():
-
             product_values[product_id] = value
             product_move_ids[product_id] = move_ids
 
