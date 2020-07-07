@@ -4,11 +4,11 @@
         <field name="name">Hes Email Template</field>
         <field name="model_id" ref="dimabe_reception_check.model_purchase_order"/>
         <field name="email_from">info@lainvernada.com</field>
-        <field name="email_to">${object.partner_id.email}</field>
+        <field name="email_to">ptoro@lainvernda.com;fahumada@lainvernada.com</field>
         <field name="subject">Hes de Presupuesto ${object.name}</field>
         <field name="body_html">
             <![CDATA[
-                <p>Estimado ${(object.partner_id.name)},<br/><br/>
+                <p>Estimado,<br/><br/>
                 se informa a usted que el número HES correspondiente a la PO ${object.name} es:
                 <strong>${object.hes_number}</strong>
                 <br/>
