@@ -160,7 +160,7 @@ class ProductProduct(models.Model):
             GROUP BY stock_move.product_id
         """.format(value_field_name, from_clause, where_clause)
         self.env.cr.execute(query_str, params)
-        raise models.ValidationError(self.env.cr.execute(query_str, params))
+        raise models.ValidationError(self.env.cr.fetchall())
         for product_id, value, move_ids in self.env.cr.fetchall():
             product_values[product_id] = value
             product_move_ids[product_id] = move_ids
