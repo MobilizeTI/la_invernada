@@ -109,9 +109,11 @@ class ProductProduct(models.Model):
     @api.depends('stock_move_ids.product_qty', 'stock_move_ids.state', 'stock_move_ids.remaining_value', 'product_tmpl_id.cost_method', 'product_tmpl_id.standard_price', 'product_tmpl_id.property_valuation', 'product_tmpl_id.categ_id.property_valuation')
     def _compute_stock_value(self):
         StockMove = self.env['stock.move']
+        models._logger.error('Paso 1: {}'.format(StockMove))
         to_date = '2020-06-30 23:59:59'
-
+        models._logger.error('{}'.format(to_date))
         real_time_product_ids = [product.id for product in self if product.product_tmpl_id.valuation == 'real_time']
+        models._logger.error('{}'.format(real_time_product_ids))
         if real_time_product_ids:
             self.env['account.move.line'].check_access_rights('read')
             fifo_automated_values = {}
@@ -119,13 +121,15 @@ class ProductProduct(models.Model):
                          FROM account_move_line AS aml
                         WHERE aml.product_id IN %%s AND aml.company_id=%%s %s
                      GROUP BY aml.product_id, aml.account_id"""
-            raise models.ValidationError(query)
+            models._logger.error('{}'.format(query))
             params = (tuple(real_time_product_ids), self.env.user.company_id.id)
+            models._logger.error('{}'.format(params))
             if to_date:
                 query = query % ('AND aml.date <= %s',)
                 params = params + (to_date,)
             else:
                 query = query % ('',)
+            models._logger.error('{}'.format(query))
             self.env.cr.execute(query, params=params)
 
             res = self.env.cr.fetchall()
