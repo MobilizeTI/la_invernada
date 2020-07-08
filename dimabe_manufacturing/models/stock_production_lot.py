@@ -685,9 +685,15 @@ class StockProductionLot(models.Model):
 
             if not item.producer_id:
                 raise models.ValidationError('debe seleccionar un productor')
-            pallet = self.env['manufacturing.pallet'].create({
-                'producer_id': item.producer_id.id
-            })
+            if not self.env['mrp.workorder'].search([('final_lot_id', '=', item.id)]):
+                pallet = self.env['manufacturing.pallet'].create({
+                    'producer_id': item.producer_id.id,
+                    'sale_order_id': self.env['mrp.workorder'].search([('final_lot_id', '=', item.id)]).sale_order_id
+                })
+            else:
+                pallet = self.env['manufacturing.pallet'].create({
+                    'producer_id': item.producer_id.id
+                })
 
             for counter in range(item.qty_standard_serial):
                 tmp = '00{}'.format(1 + len(item.stock_production_lot_serial_ids))
