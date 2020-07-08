@@ -8,3 +8,7 @@ class StockMove(models.Model):
     #     res = super(StockMove, self)._action_assign()
     #     raise models.ValidationError(self)
     #     return res
+
+
+    @api.multi
+    def
