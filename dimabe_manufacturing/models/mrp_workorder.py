@@ -510,7 +510,7 @@ class MrpWorkorder(models.Model):
                 else:
                     location_dest_id = production_move.location_dest_id.get_putaway_strategy(
                         self.product_id).id or production_move.location_dest_id.id
-                    models._logger.error(move_line.product_uom)
+                    models._logger.error(production_move.product_uom.id)
                     move_line.create({'move_id': production_move.id,
                                       'product_id': production_move.product_id.id,
                                       'lot_id': self.final_lot_id.id,
