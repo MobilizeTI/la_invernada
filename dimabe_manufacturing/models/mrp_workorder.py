@@ -383,6 +383,7 @@ class MrpWorkorder(models.Model):
                 ('usage', '=', 'production'),
                 ('location_id.name', 'like', 'Virtual Locations')
             ])
+            models._logger.error(stock_move.product_uom)
             if item not in stock_move.active_move_line_ids.mapped('lot_id'):
                 if not item.location_id:
                     # item.location_id = item.stock_production_lot_serial_ids.mapped('production_id').location_dest_id
