@@ -469,6 +469,8 @@ class MrpWorkorder(models.Model):
 
         # Transfer quantities from temporary to final move lots or make them final
         for move_line in self.active_move_line_ids:
+            if not move.product_uom:
+                raise models.UserError(move.id)
             # Check if move_line already exists
             if move_line.qty_done <= 0:  # rounding...
                 move_line.sudo().unlink()
