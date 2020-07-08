@@ -430,77 +430,11 @@ class MrpWorkorder(models.Model):
         self.write({
             'lot_produced_id': self.final_lot_id.id
         })
-
+        if not self.production_id.move_raw_ids.filtered(lambda a : not a.product_uom):
+            raise models.ValidationError('{}'.format(self.production_id.move_raw_ids.filtered(lambda a : not a.product_uom)))
         super(MrpWorkorder, self).do_finish()
         self.organize_move_line()
 
-    def _update_active_move_line(self):
-        """ This function is only used when the check is regiter a
-        component. It will update the active move lines in order to set
-        the lot and the quantity used. Tge active move lines created
-        are matched with the real move lines during the
-        record_production call.
-        Behavior is different when the product is a raw material or a
-        finished product.
-        - Raw material: try to use the already existing move lines.
-        - Finished product: always create a new active move lines since
-        they were not automatically generated before.
-        If the move line already exists for this check then update it.
-        """
-        # Get the move lines associated with our component
-        moves = self.env['stock.move']
-        if self.current_quality_check_id.component_is_byproduct:
-            moves |= self.production_id.move_finished_ids.filtered(
-                lambda m: m.state not in ('done', 'cancel') and m.product_id == self.component_id)
-        else:
-            moves = self.move_raw_ids.filtered(
-                lambda m: m.state not in ('done', 'cancel') and m.product_id == self.component_id)
-        move = moves[:1]
-        if not move:
-            raise models.UserError(
-                ('No valid stock move found for product %s.\n\n'
-                 'Stock moves linked to raw materials were probably canceled. '
-                 'In order to solve the issue, use the "Update" button next to the "Quantity To Produce" '
-                 'in the manufacturing order to regenerate the necessary moves.'
-                 ) % (self.component_id.display_name)
-            )
-
-        lines_without_lots = self.active_move_line_ids.filtered(lambda l: l.move_id in moves and not l.lot_id)
-        # Compute the theoretical quantity for the current production
-        self.component_remaining_qty -= float_round(self.qty_done, precision_rounding=move.product_uom.rounding)
-        # Assign move line to quality check if necessary
-        raise models.ValidationError('{},{}'.format(move.id, move.product_uom))
-        if not self.move_line_id:
-            if self.component_tracking == 'none' or self.current_quality_check_id.component_is_byproduct or not lines_without_lots:
-
-                self.move_line_id = self.env['stock.move.line'].create({
-                    'move_id': move.id,
-                    'product_id': move.product_id.id,
-                    'lot_id': False,
-                    'product_uom_qty': 0.0,
-                    'product_uom_id': move.product_uom.id,
-                    'qty_done': float_round(self.qty_done, precision_rounding=move.product_uom.rounding),
-                    'workorder_id': self.id,
-                    'done_wo': False,
-                    'location_id': move.location_id.id,
-                    'location_dest_id': move.location_dest_id.id,
-                })
-                self.active_move_line_ids += self.move_line_id
-            else:
-                self.move_line_id = lines_without_lots[0]
-            # We need to write the lot now since 'component_remaining_qty' depends on it.
-            self.move_line_id.write({'lot_id': self.lot_id.id, 'qty_done': float_round(self.qty_done,
-                                                                                       precision_rounding=move.product_uom.rounding)})
-            # If tracked by lot, put the remaining quantity in (only) one move line
-            if move.product_id.tracking == 'lot' and not self.current_quality_check_id.component_is_byproduct:
-                lines_without_lots[1::].unlink()
-                if self.component_remaining_qty > 0:
-                    self.move_line_id.copy(default={'lot_id': False, 'qty_done': self.component_remaining_qty})
-
-        # Write the lot and qty to the move line
-        else:
-            self.move_line_id.write({'lot_id': self.lot_id.id, 'qty_done': float_round(self.qty_done,
-                                                                                       precision_rounding=move.product_uom.rounding)})
 
     def action_skip(self):
         super(MrpWorkorder, self).action_skip()
