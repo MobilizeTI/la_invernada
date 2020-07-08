@@ -284,6 +284,7 @@ class StockProductionLot(models.Model):
             with_problems = []
             if item.available_weight != item.balance:
                 with_problems.append(item.name)
+            raise models.ValidationError(with_problems)
             # available_weight = sum(item.serial_available.mapped('real_weight'))
             # if item.is_prd_lot:
             #     production_id = item.stock_production_lot_serial_ids.mapped('production_id')
