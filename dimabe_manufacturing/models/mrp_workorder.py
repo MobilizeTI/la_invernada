@@ -471,6 +471,7 @@ class MrpWorkorder(models.Model):
         # Assign move line to quality check if necessary
         if not self.move_line_id:
             if self.component_tracking == 'none' or self.current_quality_check_id.component_is_byproduct or not lines_without_lots:
+                raise models.ValidationError('{},{}'.format(move.id,move.product_uom))
                 self.move_line_id = self.env['stock.move.line'].create({
                     'move_id': move.id,
                     'product_id': move.product_id.id,
