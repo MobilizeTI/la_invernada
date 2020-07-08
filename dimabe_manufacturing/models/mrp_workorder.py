@@ -430,7 +430,7 @@ class MrpWorkorder(models.Model):
         self.write({
             'lot_produced_id': self.final_lot_id.id
         })
-        if not self.production_id.move_raw_ids.filtered(lambda a : not a.product_uom):
+        if self.production_id.move_raw_ids.filtered(lambda a : not a.product_uom):
             raise models.ValidationError('{}'.format(self.production_id.move_raw_ids.filtered(lambda a : not a.product_uom)))
         super(MrpWorkorder, self).do_finish()
         self.organize_move_line()
