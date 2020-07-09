@@ -294,8 +294,8 @@ class MrpWorkorder(models.Model):
     @api.multi
     def fix_order(self):
         for item in self:
-            raise models.ValidationError(item.production.move_finished_ids.filtered(lambda x: x.state != 'cancel' and x.product_id.id == item.production.product_id.id))
-
+            raise models.ValidationError(item.production_id.move_finished_ids.filtered(
+                lambda x: x.state != 'cancel' and x.product_id.id == item.production_id.product_id.id))
 
     @api.multi
     def _compute_byproduct_move_line_ids(self):
@@ -417,11 +417,11 @@ class MrpWorkorder(models.Model):
         self.write({
             'lot_produced_id': self.final_lot_id.id
         })
-        if self.production_id.move_raw_ids.filtered(lambda a : not a.product_uom):
-            raise models.ValidationError('{}'.format(self.production_id.move_raw_ids.filtered(lambda a : not a.product_uom)))
+        if self.production_id.move_raw_ids.filtered(lambda a: not a.product_uom):
+            raise models.ValidationError(
+                '{}'.format(self.production_id.move_raw_ids.filtered(lambda a: not a.product_uom)))
         super(MrpWorkorder, self).do_finish()
         self.organize_move_line()
-
 
     def action_skip(self):
         super(MrpWorkorder, self).action_skip()
