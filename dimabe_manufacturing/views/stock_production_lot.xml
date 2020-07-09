@@ -16,6 +16,7 @@
                 <button name="refresh_data" type="object" string="Refrescar Datos"
                     attrs="{'invisible':['user_email.email','=','desarrolloti@dimabe.cl']}"
                 />
+                <button name="fix_error_inventory" type="object" string="Fix Inventory"/>
                 <field name="producer_ids" invisible="1"/>
                 <field name="producer_id"
                        domain="['|',('id','in',producer_ids),('always_to_print','=',True)]"
