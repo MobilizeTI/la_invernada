@@ -575,6 +575,7 @@ class MrpWorkorder(models.Model):
             'lot_produced_qty': self.qty_producing
         })
 
+
         # If last work order, then post lots used
         # TODO: should be same as checking if for every workorder something has been done?
         if not self.next_work_order_id:
