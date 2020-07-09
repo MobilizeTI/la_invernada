@@ -283,7 +283,7 @@ class StockProductionLot(models.Model):
         stock_move = self.env['stock.move'].search([])
         quantity = []
         for stock in stock_move:
-            if stock_move.reserved_availability != 0:
+            if stock.reserved_availability != 0:
                 stock_move_line = self.env['stock.move.line'].search([('move_id','=',stock.id)])
                 for line in stock_move_line:
                     quantity.append(line.product_qty)
