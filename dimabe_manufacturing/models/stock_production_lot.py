@@ -282,13 +282,23 @@ class StockProductionLot(models.Model):
     def fix_error_inventory(self):
         product_with_lot = self.env['product.product'].search([('tracking', '=', 'lot')]).mapped('id')
         move_line_with_error = self.env['stock.move.line'].search(
-            [('product_id', 'in', product_with_lot), ('lot_id', '=', None),('state','=','done')]).mapped('qty_done')
+            [('product_id', 'in', product_with_lot), ('lot_id', '=', None), ('state', '=', 'done')])
+        move_in_production = []
+        move_in_stock_picking = []
+        for move in move_line_with_error:
+            if move.production_id:
+                move_in_production.append(move.production_id.name)
+            elif move.picking_id:
+                move_in_stock_picking.append(move.picking_id.name)
+            else:
+                continue
         stock_quant_with_error = self.env['stock.quant'].search(
             [('product_id', 'in', product_with_lot), ('lot_id', '=', None)]).mapped('quantity')
         lot_without_name = self.env['stock.production.lot'].search([('name', '=', '')]).mapped('balance')
         raise models.UserError(
-            'Move_Line :{}, Stock_Quant: {}, Lot Without Name : {}'.format(move_line_with_error, stock_quant_with_error,
-                                                                      lot_without_name))
+            'Move_Line_in_Production :{}, Move_Line_in_Stock_Picking: {}, Lot Without Name : {}'.format(
+                move_in_production, move_in_stock_picking,
+                lot_without_name))
 
     @api.multi
     def _compute_serial_available(self):
