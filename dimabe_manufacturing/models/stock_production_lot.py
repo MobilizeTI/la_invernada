@@ -282,7 +282,7 @@ class StockProductionLot(models.Model):
     def fix_error_inventory(self):
         lot_with_reserved = []
         for lot in self.env['stock.production.lot'].search([]):
-            for line in self.env['stock.move.line'].search([]):
+            for line in self.env['stock.quant'].search([]):
                 if lot.product_qty == line.product_qty:
                     lot_with_reserved.append(lot.name)
         raise models.ValidationError(lot_with_reserved)
