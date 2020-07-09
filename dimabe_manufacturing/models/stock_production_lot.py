@@ -283,7 +283,7 @@ class StockProductionLot(models.Model):
         lot_with_problem = []
         for item in self.env['stock.production.lot'].search([]):
             if item.product_qty != item.available_weight:
-                lot_with_problem.append(item)
+                lot_with_problem.append(item.create_date)
         raise models.ValidationError('{},{}'.format(lot_with_problem,len(lot_with_problem)))
 
     @api.multi
