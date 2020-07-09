@@ -282,7 +282,7 @@ class StockProductionLot(models.Model):
     def fix_error_inventory(self):
         product_with_lot = self.env['product.product'].search([('tracking', '=', 'lot')]).mapped('id')
         stock_quant_with_error = self.env['stock.quant'].search(
-            [('product_id', 'in', product_with_lot), ('lot_id', '=', None)]).mapped('id')
+            [('product_id', 'in', product_with_lot), ('lot_id', '=', None)])
         lot_without_name = self.env['stock.production.lot'].search([('name', '=', '')])
         for quant in stock_quant_with_error:
             if quant.quantity > 0:
