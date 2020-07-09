@@ -8,6 +8,7 @@
       <field name="arch" type="xml">
         <tree name="All Quants">
             <field name="lot_id" />
+            <field name="product_id"/>
             <field name="reserved_quantity"/>
             <field name="quantity"/>
         </tree>
