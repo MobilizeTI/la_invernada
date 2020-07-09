@@ -294,7 +294,7 @@ class MrpWorkorder(models.Model):
     @api.multi
     def fix_order(self):
         for item in self:
-            raise models.ValidationError(item.production_id.is_locked)
+            raise models.ValidationError(item.production.move_finished_ids.filtered(lambda x: x.state != 'cancel' and x.product_id.id == item.production.product_id.id))
 
 
     @api.multi
