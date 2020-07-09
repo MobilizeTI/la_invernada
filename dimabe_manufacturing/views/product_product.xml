@@ -6,7 +6,6 @@
         <field name="arch" type="xml">
             <xpath expr="//group[@name='weight']/group[@name='weight']/div[1]" position="after">
                 <field name="is_standard_weight" />
-                <field name="valu"/>
             </xpath>
             <xpath expr="//field[@name='weight']" position="attributes">
                 <attribute name="attrs">{'invisible':[('is_standard_weight','!=', True)]}</attribute>
