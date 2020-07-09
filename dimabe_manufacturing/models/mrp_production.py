@@ -284,6 +284,7 @@ class MrpProduction(models.Model):
     @api.multi
     def fix_reserved(self):
         for item in self:
+            raise models.ValidationError(item.check_to_done)
             for raw in item.move_raw_ids:
                 if item.state != 'done':
                     raw.update({
@@ -306,48 +307,3 @@ class MrpProduction(models.Model):
                     cr = self._cr
                     cr.execute(query)
 
-    # @api.multi
-    # def action_cancel(self):
-    #
-    #     for lot in self.potential_lot_ids:
-    #         stock_move = self.move_raw_ids.filtered(
-    #             lambda a: a.product_id == lot.stock_production_lot_id.product_id
-    #         )
-    #
-    #         move_line = stock_move.active_move_line_ids.filtered(
-    #             lambda a: a.lot_id.id == lot.id and a.product_qty == lot.qty_to_reserve
-    #                       and a.qty_done == 0
-    #         )
-    #         stock_quant = lot.get_stock_quant()
-    #
-    #         for serial in lot.stock_production_lot_id.stock_production_lot_serial_ids:
-    #             serial.update({
-    #                 'reserved_to_production_id': None
-    #             })
-    #
-    #         stock_quant.sudo().update({
-    #             'reserved_quantity': 0
-    #         })
-    #         if item.stock_picking_id:
-    #             item.stock_picking_id.update({
-    #                 'has_mrp_production': False
-    #             })
-    #             if move_line:
-    #                 move_line[0].write({'move_id': None, 'product_uom_qty': 0})
-    #             res = super(MrpProduction, self).action_cancel()
-    #         else:
-    #             res = super(MrpProduction,self).action_cancel()
-
-
-    #
-    #
-    # @api.multi
-    # def button_plan(self):
-    #     for order in self:
-    #         order.move_raw_ids.mapped('active_move_line_ids').mapped('lot_id').mapped(
-    #             'stock_production_lot_serial_ids').filtered(lambda a: not a.consumed).update({
-    #             'reserved_to_production_id': self.id
-
-    #         res = super(MrpProduction, order).button_plan()
-    #
-    #         return res
