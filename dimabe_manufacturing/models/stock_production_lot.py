@@ -285,20 +285,18 @@ class StockProductionLot(models.Model):
             [('product_id', 'in', product_with_lot), ('lot_id', '=', None), ('state', '=', 'done')])
         move_in_production = []
         move_in_stock_picking = []
+        move_workorder = []
         for move in move_line_with_error:
-            if move.production_id:
-                move_in_production.append(move.production_id.name)
-            elif move.picking_id:
-                move_in_stock_picking.append(move.picking_id.name)
-            else:
-                continue
+            move_in_production.append(move.production_id.name)
+            move_in_stock_picking.append(move.picking_id.name)
+            move_workorder.append(move.workorder_id.name)
         stock_quant_with_error = self.env['stock.quant'].search(
             [('product_id', 'in', product_with_lot), ('lot_id', '=', None)]).mapped('quantity')
         lot_without_name = self.env['stock.production.lot'].search([('name', '=', '')]).mapped('balance')
         raise models.UserError(
-            'Move_Line_in_Production :{}, Move_Line_in_Stock_Picking: {}, Lot Without Name : {}'.format(
+            'Move_Line_in_Production :{}, Move_Line_in_Stock_Picking: {}, Move_Line_Workorder : {}'.format(
                 move_in_production, move_in_stock_picking,
-                lot_without_name))
+                move_workorder))
 
     @api.multi
     def _compute_serial_available(self):
