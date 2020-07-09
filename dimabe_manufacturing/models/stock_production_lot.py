@@ -283,7 +283,7 @@ class StockProductionLot(models.Model):
         lot_with_reserved = []
         for lot in self.env['stock.production.lot'].search([]):
             for line in self.env['stock.quant'].search([]):
-                if lot.product_qty == line.product_qty:
+                if lot.product_qty == line.quantity:
                     lot_with_reserved.append(lot.name)
         raise models.ValidationError(lot_with_reserved)
 
