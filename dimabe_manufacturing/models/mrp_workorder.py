@@ -581,7 +581,6 @@ class MrpWorkorder(models.Model):
         if not self.next_work_order_id:
             production_move = self.production_id.move_finished_ids.filtered(
                                 lambda x: (x.product_id.id == self.production_id.product_id.id) and (x.state not in ('done', 'cancel')))
-            raise models.ValidationError(production_move)
             if production_move.product_id.tracking != 'none':
                 move_line = production_move.move_line_ids.filtered(lambda x: x.lot_id.id == self.final_lot_id.id)
                 if move_line:
