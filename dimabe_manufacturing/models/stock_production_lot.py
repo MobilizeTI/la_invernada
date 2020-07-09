@@ -283,19 +283,19 @@ class StockProductionLot(models.Model):
         product_with_lot = self.env['product.product'].search([('tracking', '=', 'lot')]).mapped('id')
         move_line_with_error = self.env['stock.move.line'].search(
             [('product_id', 'in', product_with_lot), ('lot_id', '=', None), ('state', '=', 'done')])
-        move_in_production = []
-        move_in_stock_picking = []
+        move_in_location_id = []
+        move_in_location_dest_id = []
         move_workorder = []
         for move in move_line_with_error:
-            move_in_production.append(move.production_id.name)
-            move_in_stock_picking.append(move.picking_id.name)
+            move_in_location_id.append(move.location_id.name)
+            move_in_location_dest_id.append(move.location_dest_id.name)
             move_workorder.append(move.workorder_id.name)
         stock_quant_with_error = self.env['stock.quant'].search(
             [('product_id', 'in', product_with_lot), ('lot_id', '=', None)]).mapped('quantity')
         lot_without_name = self.env['stock.production.lot'].search([('name', '=', '')]).mapped('balance')
         raise models.UserError(
             'Move_Line_in_Production :{}, Move_Line_in_Stock_Picking: {}, Move_Line_Workorder : {}'.format(
-                move_in_production, move_in_stock_picking,
+                move_in_location_id, move_in_location_dest_id,
                 move_workorder))
 
     @api.multi
