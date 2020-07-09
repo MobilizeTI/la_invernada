@@ -280,12 +280,14 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def fix_error_inventory(self):
-        lot_with_problem = []
-        for item in self.env['stock.production.lot'].search([]):
-            quant_total = sum(self.env['stock.quant'].search([('lot_id','=',item.id)]).mapped('balance'))
-            if quant_total != item.available_weight and item.available_weight == 0 and item.product_id == 2723:
-                lot_with_problem.append(item.name)
-        raise models.ValidationError('{},{}'.format(lot_with_problem,len(lot_with_problem)))
+        stock_move = self.env['stock.move'].search([])
+        quantity = []
+        for stock in stock_move:
+            if stock_move.reserved_availability != 0:
+                stock_move_line = self.env['stock.move.line'].search([('move_id','=',stock.id)])
+                for line in stock_move_line:
+                    quantity.append(line.product_qty)
+        raise models.ValidationError(sum(quantity))
 
     @api.multi
     def _compute_serial_available(self):
