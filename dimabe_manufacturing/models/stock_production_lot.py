@@ -282,14 +282,10 @@ class StockProductionLot(models.Model):
     def fix_error_inventory(self):
         product_with_lot = self.env['product.product'].search([('tracking', '=', 'lot')]).mapped('id')
         move_line_with_error = self.env['stock.move.line'].search(
-            [('product_id', 'in', product_with_lot), ('lot_id', '=', None), ('state', '=', 'done')])
+            [('product_id', 'in', product_with_lot), ('lot_id', '=', None), ('state', '=', 'done')]).mapped('create_date')
         move_in_location_id = []
         move_in_location_dest_id = []
         move_workorder = []
-        for move in move_line_with_error:
-            move_in_location_id.append(move.location_id.name)
-            move_in_location_dest_id.append(move.location_dest_id.name)
-            move_workorder.append(move.workorder_id.name)
         stock_quant_with_error = self.env['stock.quant'].search(
             [('product_id', 'in', product_with_lot), ('lot_id', '=', None)]).mapped('quantity')
         lot_without_name = self.env['stock.production.lot'].search([('name', '=', '')]).mapped('balance')
