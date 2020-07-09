@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="view_stock_quant_tree" model="ir.ui.view">
+      <field name="name">Informe de Materia Prima</field>
+      <field name="model">stock.quant</field>
+      <field name="priority">20</field>
+      <field name="arch" type="xml">
+        <tree name="All Quants">
+            <field name="lot_id" />
+            <field name="reserved_quantity"/>
+            <field name="quantity"/>
+        </tree>
+      </field>
+    </record>
+    <record id="dimabe_manufacturing.stock_quants" model="ir.actions.act_window">
+      <field name="name">All Quants</field>
+      <field name="res_model">stock.quant</field>
+      <field name="view_mode">tree,graph,form,pivot</field>
+      <field name="view_id" ref="view_stock_quant_tree"/>
+    </record>
+
+    <menuitem id="stock_quant_tree_menu"
+              action="dimabe_manufacturing.stock_quants"
+              name="Quants"
+              parent="stock_report_menu"
+    />
+
+  </data>
+</odoo>
