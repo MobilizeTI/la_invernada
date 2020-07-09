@@ -293,7 +293,7 @@ class MrpWorkorder(models.Model):
 
     @api.multi
     def fix_order(self):
-        for production in self:
+        for production in self.production_id:
 
             done_moves = production.move_finished_ids.filtered(
                 lambda x: x.state != 'cancel' and x.product_id.id == production.product_id.id)
