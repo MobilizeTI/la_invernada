@@ -282,7 +282,7 @@ class StockProductionLot(models.Model):
     def fix_error_inventory(self):
         lot_with_problem = []
         for item in self.env['stock.production.lot'].search([]):
-            if item.balance != item.available_weight and item.available_weight == 0:
+            if item.balance != item.available_weight and item.available_weight == 0 and item.balance is not None:
                 lot_with_problem.append(item.name)
         raise models.ValidationError('{},{}'.format(lot_with_problem,len(lot_with_problem)))
 
