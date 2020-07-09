@@ -283,16 +283,14 @@ class StockProductionLot(models.Model):
         product_with_lot = self.env['product.product'].search([('tracking', '=', 'lot')]).mapped('id')
         move_line_with_error = self.env['stock.move.line'].search(
             [('product_id', 'in', product_with_lot), ('lot_id', '=', None), ('state', '=', 'done')]).mapped('create_date')
-        move_in_location_id = []
-        move_in_location_dest_id = []
-        move_workorder = []
+
         stock_quant_with_error = self.env['stock.quant'].search(
             [('product_id', 'in', product_with_lot), ('lot_id', '=', None)]).mapped('quantity')
         lot_without_name = self.env['stock.production.lot'].search([('name', '=', '')]).mapped('balance')
         raise models.UserError(
-            'Move_Line_in_Production :{}, Move_Line_in_Stock_Picking: {}, Move_Line_Workorder : {}'.format(
-                move_in_location_id, move_in_location_dest_id,
-                move_workorder))
+            'Move_Line :{}, Stock_quant: {}, lot : {}'.format(
+                move_line_with_error, stock_quant_with_error,
+                lot_without_name))
 
     @api.multi
     def _compute_serial_available(self):
