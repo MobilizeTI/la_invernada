@@ -284,7 +284,6 @@ class MrpProduction(models.Model):
     @api.multi
     def fix_reserved(self):
         for item in self:
-            raise models.ValidationError(item.check_to_done)
             for raw in item.move_raw_ids:
                 if item.state != 'done':
                     raw.update({
