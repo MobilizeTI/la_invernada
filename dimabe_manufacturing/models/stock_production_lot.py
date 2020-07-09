@@ -288,12 +288,13 @@ class StockProductionLot(models.Model):
             if stock.reserved_availability != 0:
                 stock_move_line = self.env['stock.move.line'].search([('move_id','=',stock.id)])
                 for line in stock_move_line:
-                    quants = self.env['stock.quant'].search([('lot_id','=',line.lot_id)])
-                    for quant in quants:
-                        if quant.reserved_quantity != 0:
-                            quant_reserved.append(quant.reserved_quantity)
-                            quant_lot_id.append(quant.lot_id.name)
-                    quantity.append(line.product_qty)
+                    if line.picking_id is None:
+                        quants = self.env['stock.quant'].search([('lot_id','=',line.lot_id)])
+                        for quant in quants:
+                            if quant.reserved_quantity != 0:
+                                quant_reserved.append(quant.reserved_quantity)
+                                quant_lot_id.append(quant.lot_id.name)
+                        quantity.append(line.product_qty)
         raise models.ValidationError('{},{},{}'.format(sum(quantity),quant_reserved,quant_lot_id))
 
     @api.multi
