@@ -528,10 +528,10 @@ class MrpWorkorder(models.Model):
 
         self.ensure_one()
         if self.qty_producing <= 0:
-            raise UserError(_('Please set the quantity you are currently producing. It should be different from zero.'))
+            raise models.ValidationError(('Please set the quantity you are currently producing. It should be different from zero.'))
 
         if (self.production_id.product_id.tracking != 'none') and not self.final_lot_id and self.move_raw_ids:
-            raise UserError(_('You should provide a lot/serial number for the final product.'))
+            raise models.ValidationError(('You should provide a lot/serial number for the final product.'))
 
         # Update quantities done on each raw material line
         # For each untracked component without any 'temporary' move lines,
@@ -556,7 +556,7 @@ class MrpWorkorder(models.Model):
                 move_line.sudo().unlink()
                 continue
             if move_line.product_id.tracking != 'none' and not move_line.lot_id:
-                raise UserError(_('You should provide a lot/serial number for a component.'))
+                raise models.ValidationError(('You should provide a lot/serial number for a component.'))
             # Search other move_line where it could be added:
             lots = self.move_line_ids.filtered(lambda x: (x.lot_id.id == move_line.lot_id.id) and (not x.lot_produced_id) and (not x.done_move) and (x.product_id == move_line.product_id))
             if lots:
