@@ -251,7 +251,6 @@ class StockPicking(models.Model):
     @api.multi
     def generate_report(self):
         for item in self.pictures:
-            models._logger.error(base64.decodebytes(item.db_datas))
             if item.counter >= 9:
                 item.datas = tools.image_resize_image_medium(
                     item.datas, size=(229, 305)
