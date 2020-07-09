@@ -284,7 +284,9 @@ class StockProductionLot(models.Model):
         stock_quant_with_error = self.env['stock.quant'].search(
             [('product_id', 'in', product_with_lot), ('lot_id', '=', None)]).mapped('id')
         lot_without_name = self.env['stock.production.lot'].search([('name', '=', '')])
-        raise models.UserError(stock_quant_with_error)
+        for quant in stock_quant_with_error:
+            if quant.quantity > 0:
+                quant.unlink()
 
     @api.multi
     def _compute_serial_available(self):
