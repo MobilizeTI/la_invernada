@@ -281,16 +281,13 @@ class StockProductionLot(models.Model):
     @api.multi
     def fix_error_inventory(self):
         product_with_lot = self.env['product.product'].search([('tracking', '=', 'lot')]).mapped('id')
-        move_line_with_error = self.env['stock.move.line'].search(
-            [('product_id', 'in', product_with_lot), ('lot_id', '=', None), ('state', '=', 'done')]).mapped('id')
-
         stock_quant_with_error = self.env['stock.quant'].search(
             [('product_id', 'in', product_with_lot), ('lot_id', '=', None)]).mapped('id')
         lot_without_name = self.env['stock.production.lot'].search([('name', '=', '')]).mapped('balance')
-        raise models.UserError(
-            'Move_Line :{}, Stock_quant: {}, lot : {}'.format(
-                move_line_with_error, stock_quant_with_error,
-                lot_without_name))
+        for quant in stock_quant_with_error:
+            quant.unlink()
+        for lot in lot_without_name:
+            lot.unlink()
 
     @api.multi
     def _compute_serial_available(self):
