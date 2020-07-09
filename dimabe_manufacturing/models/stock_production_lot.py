@@ -281,7 +281,6 @@ class StockProductionLot(models.Model):
     @api.multi
     def fix_error_inventory(self):
         product_with_lot = self.env['product.product'].search([('tracking', '=', 'lot')]).mapped('id')
-        raise models.ValidationError(len(product_with_lot))
         move_line_with_error = self.env['stock.move.line'].search(
             [('product_id', 'in', product_with_lot), ('lot_id', '=', None)])
         stock_quant_with_error = self.env['stock.quant'].search(
