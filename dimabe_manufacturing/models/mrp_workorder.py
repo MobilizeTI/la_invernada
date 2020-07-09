@@ -299,10 +299,7 @@ class MrpWorkorder(models.Model):
                 lambda x: x.state != 'cancel' and x.product_id.id == production.product_id.id)
             qty_produced = sum(done_moves.mapped('quantity_done'))
             wo_done = True
-            raise models.ValidationError(float_compare(
-                qty_produced, production.product_qty, precision_rounding=production.product_uom_id.rounding
-            )
-                                         != -1)
+            raise models.ValidationError(qty_produced)
             if any([x.state not in ('done', 'cancel') for x in production.workorder_ids]):
                 wo_done = False
             production.check_to_done = (
