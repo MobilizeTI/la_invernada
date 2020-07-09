@@ -293,9 +293,29 @@ class MrpWorkorder(models.Model):
 
     @api.multi
     def fix_order(self):
-        for item in self:
-            raise models.ValidationError(item.production_id.move_finished_ids.filtered(
-                lambda x: x.state != 'cancel' and x.product_id.id == item.production_id.product_id.id))
+        for production in self:
+            raise models.ValidationError(float_compare(
+                qty_produced, production.product_qty, precision_rounding=production.product_uom_id.rounding
+            )
+                                         != -1)
+            done_moves = production.move_finished_ids.filtered(
+                lambda x: x.state != 'cancel' and x.product_id.id == production.product_id.id)
+            qty_produced = sum(done_moves.mapped('quantity_done'))
+            wo_done = True
+            if any([x.state not in ('done', 'cancel') for x in production.workorder_ids]):
+                wo_done = False
+            production.check_to_done = (
+                    production.is_locked
+                    and done_moves
+                    and float_compare(
+                qty_produced, production.product_qty, precision_rounding=production.product_uom_id.rounding
+            )
+                    != -1
+                    and (production.state not in ("done", "cancel"))
+                    and wo_done
+            )
+            production.qty_produced = qty_produced
+        return True
 
     @api.multi
     def _compute_byproduct_move_line_ids(self):
