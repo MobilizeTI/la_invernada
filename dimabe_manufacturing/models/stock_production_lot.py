@@ -280,14 +280,15 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def compare_quant_available_weight(self):
-        quants = self.env['stock.quant']
-        lots = self.env['stock.production.lot']
+        quants = self.env['stock.quant'].search([])
+        lots = self.env['stock.production.lot'].search([])
         quants_with_problems = []
         for lot in lots:
             quant_lot = quants.filtered(lambda a: a.lot_id.id == lot.id)
-            if len(quant_lot) > 1:
+            if len(quant_lot) == 1:
                 if quant_lot.quantity != lot.available_weight and lot.available_weight:
                     quants_with_problems.append(lot.name)
+
         raise models.ValidationError(quants_with_problems)
 
     @api.multi
