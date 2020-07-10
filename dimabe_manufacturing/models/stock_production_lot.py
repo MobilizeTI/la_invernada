@@ -283,8 +283,9 @@ class StockProductionLot(models.Model):
         moves_with_problems = []
         for move in self.env['stock.move.line'].search([('product_id','=',2723)]):
             if move.product_uom_qty > 0:
-                moves_with_problems.append(move.id)
-        raise models.ValidationError(len(moves_with_problems))
+                move.write({
+                    'state':'cancel'
+                })
 
 
 
