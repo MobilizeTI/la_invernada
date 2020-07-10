@@ -281,14 +281,15 @@ class StockProductionLot(models.Model):
     @api.multi
     def fix_error_inventory(self):
         moves_with_problems = []
-        for move in self.env['stock.move.line'].search([('product_id','=',2723)]):
+        move_state = self.env['stock.move'].search(
+            [('move_id', 'in', self.env['stock.move.line'].search([('product_id', '=', 2723)]).mapped('move_id'))]).mapped('state')
+        raise models.ValidationError(move_state)
+        for move in self.env['stock.move.line'].search([('product_id', '=', 2723)]):
             if move.product_uom_qty > 0:
                 move.write({
-                    'state':'cancel'
+                    'state': 'cancel'
                 })
                 move.unlink()
-
-
 
     @api.multi
     def _compute_serial_available(self):
