@@ -289,9 +289,9 @@ class StockProductionLot(models.Model):
         for wlot in quants_lot.filtered(lambda a : not a.lot_id):
             wlot.unlink()
         for quant in quants_lot:
-            if quant.reserved_quantity == quant.quantity and quant.lot_id.available_weight != 0:
+            if quant.reserved_quantity == quant.quantity:
                 reserved = quant.reserved_quantity
-                quant.update({
+                quant.write({
                     'reserved_quantity': 0,
                     'balance': quant.quantity - reserved
                 })
