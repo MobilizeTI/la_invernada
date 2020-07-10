@@ -11,6 +11,8 @@
             <field name="product_id"/>
             <field name="reserved_quantity"/>
             <field name="quantity"/>
+            <field name="lot_balance"/>
+            <field name="balance"/>
         </tree>
       </field>
     </record>

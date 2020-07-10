@@ -288,11 +288,10 @@ class StockProductionLot(models.Model):
         stock_with_reserved = []
         for quant in quants_lot:
             if quant.reserved_quantity == quant.quantity and quant.lot_id.available_weight != 0:
-                quant.update({
-                    'reserved_quantity': 0,
-                })
+                reserved = quant.reserved_quantity
                 quant.write({
-                    'balance': quant.quantity - quant.reserved_quantity
+                    'reserved_quantity': 0,
+                    'balance': quant.quantity - reserved
                 })
         for stock in stock_move_lines:
             stock_with_reserved.append(stock)
