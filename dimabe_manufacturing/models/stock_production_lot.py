@@ -288,6 +288,7 @@ class StockProductionLot(models.Model):
         for stock in moves:
             for move in stock.active_move_line_ids:
                 if move.product_uom_qty > 0:
+                    models._logger.error(move.production_id.name)
                     move.write({
                         'state': 'cancel',
                         'product_uom_qty': 0
