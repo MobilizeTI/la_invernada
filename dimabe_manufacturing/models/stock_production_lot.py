@@ -279,13 +279,20 @@ class StockProductionLot(models.Model):
                             })
 
     @api.multi
+    @api.multi
     def compare_quant_available_weight(self):
         quants = self.env['stock.quant'].search([])
         lots = self.env['stock.production.lot'].search([])
         for lot in lots:
-            quant_lot = quants.filtered(lambda a : a.location_id.name == 'Stock')
+            quant_lot = quants.filtered(lambda a: a.location_id.name == 'Stock')
             lot_reception = self.env['stock.picking'].search([('name', '=', lot.name)])
             if lot_reception:
+                lot_reception.update({
+                    'state': 'done'
+                })
+                lot_reception.move_line_ids_without_package.update({
+                    'state': 'done'
+                })
                 quant_lot.write({
                     'reserved_available': 0,
                     'quantity': lot.available_weight + lot_reception.quality_weight
