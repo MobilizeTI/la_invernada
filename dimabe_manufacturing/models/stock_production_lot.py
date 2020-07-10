@@ -287,7 +287,6 @@ class StockProductionLot(models.Model):
         move_state.update({
             'state':'draft'
         })
-        raise models.ValidationError('hola')
         for stock in move_state:
             for move in stock.active_move_line_ids:
                 if move.product_uom_qty > 0:
