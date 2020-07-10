@@ -281,18 +281,19 @@ class StockProductionLot(models.Model):
     @api.multi
     def fix_error_inventory(self):
         product_loteable = self.env['product.product'].search([('tracking', '=', 'lot')]).mapped('id')
-        quants_lot = self.env['stock.quant'].search([('product_id', 'in', product_loteable)])
-        quants_lots = []
-        quants_reserved_quantity = []
+        quants_lot = self.env['stock.quant'].search([('product_id', 'in', product_loteable)]).mapped('lot_id').mapped(
+            'id')
+        stock_move_lines = self.env['stock.move.line'].search(
+            [('product_id', 'in', product_loteable), ('lot_id', 'in', quants_lot), ('product_qty', '!=', 0),
+             ('location_dest_id', '=', 7)])
+        stock_with_reserved = []
         for quant in quants_lot:
             if quant.reserved_quantity == quant.quantity and quant.lot_id.available_weight != 0:
-                quants_lots.append(quant.lot_id.name)
-                models._logger.error('Backup quant lots : {}'.format(quants_lots))
-                quants_reserved_quantity.append('Backup quant reserved : {}'.format(quant.reserved_quantity))
-                models._logger.error(quants_reserved_quantity)
                 quant.update({
                     'reserved_quantity': 0
                 })
+        for stock in stock_move_lines:
+            stock_with_reserved.append(stock)
 
     @api.multi
     def _compute_serial_available(self):
