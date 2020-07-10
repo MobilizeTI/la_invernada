@@ -280,11 +280,13 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def fix_error_inventory(self):
-        serial_with_production_without_close = []
-        for item in self.env['stock.production.lot.serial'].search([]):
-            if item.consumed and item.stock_production_lot_id.product_id.id == 2723:
-                serial_with_production_without_close.append(item.id)
-        raise models.ValidationError(serial_with_production_without_close)
+        moves_with_problems = []
+        for move in self.env['stock.move.line'].search([('product_id.tracking','=','lot')]):
+            if move.product_qty > 0:
+                moves_with_problems.append(move.id)
+        raise models.ValidationError(moves_with_problems)
+
+
 
     @api.multi
     def _compute_serial_available(self):
