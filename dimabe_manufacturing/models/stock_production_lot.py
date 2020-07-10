@@ -282,7 +282,7 @@ class StockProductionLot(models.Model):
     def fix_error_inventory(self):
         moves_with_problems = []
         move_state = self.env['stock.move'].search(
-            [('id', 'in', self.env['stock.move.line'].search([('product_id', '=', 2723)]).mapped('move_id'))]).mapped('state')
+            [('id', 'in', self.env['stock.move.line'].search([('product_id', '=', 2723)]).mapped('move_id').mapped('id'))]).mapped('state')
         raise models.ValidationError(move_state)
         for move in self.env['stock.move.line'].search([('product_id', '=', 2723)]):
             if move.product_uom_qty > 0:
