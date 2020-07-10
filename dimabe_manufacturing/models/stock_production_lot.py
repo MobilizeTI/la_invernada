@@ -286,6 +286,8 @@ class StockProductionLot(models.Model):
             [('product_id', 'in', product_loteable), ('product_qty', '!=', 0),
              ('qty_done', '=', 0)])
         stock_with_reserved = []
+        for wlot in quants_lot.filtered(lambda a : not a.lot_id):
+            wlot.unlink()
         for quant in quants_lot:
             if quant.reserved_quantity == quant.quantity and quant.lot_id.available_weight != 0:
                 reserved = quant.reserved_quantity
