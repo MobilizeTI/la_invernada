@@ -281,10 +281,10 @@ class StockProductionLot(models.Model):
     @api.multi
     def fix_error_inventory(self):
         moves_with_problems = []
-        for move in self.env['stock.move.line'].search([('product_id.tracking','=','lot')]):
-            if move.product_qty > 0:
+        for move in self.env['stock.move.line'].search([('product_id','=',2723)]):
+            if move.product_uom_qty > 0:
                 moves_with_problems.append(move.id)
-        raise models.ValidationError(moves_with_problems)
+        raise models.ValidationError(len(moves_with_problems))
 
 
 
