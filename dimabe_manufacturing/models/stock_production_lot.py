@@ -294,6 +294,7 @@ class StockProductionLot(models.Model):
                 })
         for stock in stock_move_lines:
             stock_with_reserved.append(stock)
+            raise models.ValidationError(stock_with_reserved)
 
     @api.multi
     def _compute_serial_available(self):
