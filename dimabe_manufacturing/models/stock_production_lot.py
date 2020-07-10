@@ -284,29 +284,15 @@ class StockProductionLot(models.Model):
         move_state = self.env['stock.move'].search(
             [('id', 'in',
               self.env['stock.move.line'].search([('product_id', '=', 2723)]).mapped('move_id').mapped('id'))])
-        move_state.update({
-            'state':'draft'
-        })
         for stock in move_state:
             for move in stock.active_move_line_ids:
                 if move.product_uom_qty > 0:
                     move.write({
-                        'state': 'cancel'
+                        'state': 'cancel',
+                        'product_uom_qty':0,
+                        'product_qty':0
                     })
-                    move.unlink()
-                    stock.write({
-                        'state': 'done'
-                    })
-        else:
-            for move in stock.active_move_line_ids:
-                if move.product_uom_qty > 0:
-                    move.write({
-                        'state': 'cancel'
-                    })
-                    move.unlink()
-                    stock.write({
-                        'state': 'done'
-                    })
+
 
     @api.multi
     def _compute_serial_available(self):
