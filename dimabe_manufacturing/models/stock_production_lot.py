@@ -286,6 +286,7 @@ class StockProductionLot(models.Model):
             quant_lot = lot.get_stock_quant()
             models._logger.error('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa {}'.format(quant_lot))
             quant_lot.write({
+                'reserved_available': 0,
                 'quantity': lot.available_weight
             })
 
