@@ -286,6 +286,7 @@ class StockProductionLot(models.Model):
                 move.write({
                     'state':'cancel'
                 })
+                move.unlink()
 
 
 
