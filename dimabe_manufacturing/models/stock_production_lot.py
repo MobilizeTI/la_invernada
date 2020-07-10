@@ -285,7 +285,7 @@ class StockProductionLot(models.Model):
         for lot in lots:
             if 'PT' in lot.product_id.default_code:
                 quant_lot = lot.get_stock_quant()
-                quant_lot.update({
+                quant_lot.write({
                     'quantity': lot.available_weight
                 })
 
