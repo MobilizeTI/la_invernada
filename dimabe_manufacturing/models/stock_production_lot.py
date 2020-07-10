@@ -298,6 +298,16 @@ class StockProductionLot(models.Model):
                         stock.write({
                             'state': 'done'
                         })
+            else:
+                for move in stock.active_move_line_ids:
+                    if move.product_uom_qty > 0:
+                        move.write({
+                            'state': 'cancel'
+                        })
+                        move.unlink()
+                        stock.write({
+                            'state': 'done'
+                        })
 
     @api.multi
     def _compute_serial_available(self):
