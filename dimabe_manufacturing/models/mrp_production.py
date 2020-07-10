@@ -299,8 +299,11 @@ class MrpProduction(models.Model):
                 'state': 'assigned'
             })
             group = self.env['res.groups'].search([('id', '=', 68)])
-            for move in item.move_raw_ids:
-                if move.reserved_availability > 0:
+            for move in item.move_raw_ids.mapped('active_move_line_ids'):
+                if move.product_qty > 0:
+                    move.write({
+                        'state':'draft'
+                    })
                     move.unlink()
                     quants = self.env['stock.quant'].search([('lot_id', '=', move.lot_id)])
                     for quant in quants:
