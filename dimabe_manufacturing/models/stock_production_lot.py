@@ -281,7 +281,7 @@ class StockProductionLot(models.Model):
     @api.multi
     def fix_error_inventory(self):
         product_loteable = self.env['product.product'].search([('tracking', '=', 'lot')]).mapped('id')
-        quants_lot = self.env['stock.quant'].search([('product_id', 'in', product_loteable), ('lot_id', '!=', None)])
+        quants_lot = self.env['stock.quant'].search([('product_id', 'in', product_loteable), ('lot_id', '=', None)])
         for quant in quants_lot:
             quant.unlink()
 
