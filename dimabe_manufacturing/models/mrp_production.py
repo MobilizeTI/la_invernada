@@ -299,16 +299,8 @@ class MrpProduction(models.Model):
                 'state': 'assigned'
             })
             group = self.env['res.groups'].search([('id', '=', 68)])
-            for move in item.move_raw_ids.mapped('active_move_line_ids'):
-                if move.product_qty > 0:
-                    move.write({
-                        'state':'draft'
-                    })
-                    move.unlink()
-                    quants = self.env['stock.quant'].search([('lot_id', '=', move.lot_id)])
-                    for quant in quants:
-                        reserved_quant = sum(quant.mapped('reserved_quantity'))
-                        quant.write({
-                            'quantity' : quant.quantity + reserved_quant,
-                            'reserved_quantity': 0
-                        })
+            for move in item.move_raw_ids:
+                if move.reserved_availability > 0:
+                    query = 'DELETE FROM stock_move_line where move_id = {}'.format(move.id)
+                    cr = self._cr
+                    cr.execute(query)
