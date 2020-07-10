@@ -284,11 +284,17 @@ class StockProductionLot(models.Model):
         lots = self.env['stock.production.lot'].search([])
         for lot in lots:
             quant_lot = lot.get_stock_quant()
-            models._logger.error('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa {}'.format(quant_lot))
-            quant_lot.write({
-                'reserved_available': 0,
-                'quantity': lot.available_weight
-            })
+            lot_reception = self.env['stock.picking'].search([('name', '=', lot.name)])
+            if lot_reception:
+                quant_lot.write({
+                    'reserved_available': 0,
+                    'quantity': lot.available_weight + lot_reception.quality_weight
+                })
+            else:
+                quant_lot.write({
+                    'reserved_available': 0,
+                    'quantity': lot.available_weight
+                })
 
     @api.multi
     def fix_error_inventory(self):
