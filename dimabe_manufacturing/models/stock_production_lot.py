@@ -283,7 +283,7 @@ class StockProductionLot(models.Model):
         serial_with_production_without_close = []
         for item in self.env['stock.production.lot.serial'].search([]):
             if item.reserved_to_production_id.state != 'done' and item.stock_production_lot_id.product_id.id == 2723:
-                serial_with_production_without_close.append(item.reserved_to_production_id)
+                serial_with_production_without_close.append(item.id)
         raise models.ValidationError(serial_with_production_without_close)
 
     @api.multi
