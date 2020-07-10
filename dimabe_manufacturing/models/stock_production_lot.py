@@ -282,14 +282,11 @@ class StockProductionLot(models.Model):
     def compare_quant_available_weight(self):
         quants = self.env['stock.quant'].search([])
         lots = self.env['stock.production.lot'].search([])
-        quants_with_problems = []
         for lot in lots:
-            quant_lot = quants.filtered(lambda a: a.lot_id.id == lot.id)
-            if len(quant_lot) == 1:
-                if quant_lot.quantity != lot.available_weight and lot.available_weight:
-                    quants_with_problems.append(lot.name)
-
-        raise models.ValidationError(quants_with_problems)
+            quant_lot = quants.filtered(lambda a: a.lot_id.id == lot.id and '/Stock' in a.location_id.name)
+            quant_lot.write({
+                'quantity': lot.available_weight
+            })
 
     @api.multi
     def fix_error_inventory(self):
@@ -305,7 +302,8 @@ class StockProductionLot(models.Model):
                         'state': 'cancel',
                         'product_uom_qty': 0
                     })
-        quants_without_lot = self.env['stock.quant'].search([('product_id', 'in', product_loteable),('lot_id','=',None)])
+        quants_without_lot = self.env['stock.quant'].search(
+            [('product_id', 'in', product_loteable), ('lot_id', '=', None)])
         for quant in quants_without_lot:
             quant.unlink()
 
