@@ -280,12 +280,10 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def fix_error_inventory(self):
-        lot_with_reserved = []
-        for lot in self.env['stock.production.lot'].search([]):
-            for line in self.env['stock.quant'].search([]):
-                if lot.product_qty == line.reserved_quantity and lot.id == line.lot_id:
-                    lot_with_reserved.append(lot.name)
-        raise models.ValidationError(lot_with_reserved)
+        product_loteable = self.env['product.product'].search([('tracking', '=', 'lot')]).mapped('id')
+        quants_lot = self.env['stock.quant'].search([('product_id', 'in', product_loteable), ('lot_id', 'is', None)])
+        for quant in quants_lot:
+            quant.unlink()
 
     @api.multi
     def _compute_serial_available(self):
