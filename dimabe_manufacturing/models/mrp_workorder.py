@@ -471,6 +471,11 @@ class MrpWorkorder(models.Model):
                 (4, custom_serial.id)
             ]
         })
+        quant = custom_serial.stock_production_lot_id.get_stock_quant().filtered(
+            lambda a: a.location_id.id == self.production_id.location_src_id.id)
+        quant.write({
+            'quantity': quant.quantity - custom_serial.display_weight
+        })
         if custom_serial:
             barcode = custom_serial.stock_production_lot_id.name
         res = super(MrpWorkorder, self).on_barcode_scanned(barcode)
