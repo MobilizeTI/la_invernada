@@ -284,7 +284,7 @@ class StockProductionLot(models.Model):
         quants_lot = self.env['stock.quant'].search([('product_id', 'in', product_loteable)]).mapped('lot_id').mapped(
             'id')
         stock_move_lines = self.env['stock.move.line'].search(
-            [('product_id', 'in', product_loteable), ('lot_id', 'in', quants_lot), ('product_qty', '!=', 0),
+            [('product_id', 'in', product_loteable), ('product_qty', '!=', 0),
              ('location_dest_id', '=', 7)])
         stock_with_reserved = []
         # for quant in quants_lot:
