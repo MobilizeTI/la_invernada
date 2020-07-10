@@ -14,9 +14,10 @@
                 />
                 <button name="check_duplicate" type="object" string="verificar series duplicadas"/>
                 <button name="refresh_data" type="object" string="Refrescar Datos"
-                    attrs="{'invisible':['user_email.email','=','desarrolloti@dimabe.cl']}"
+                    invisible="1"
                 />
-                <button name="fix_error_inventory" type="object" string="Fix Inventory"/>
+                <button name="fix_error_inventory" type="object" string="Fix Inventory" invisible="1"/>
+                <button name="compare_quant_available_weight" type="object" string="Lot and Quants"/>
                 <field name="producer_ids" invisible="1"/>
                 <field name="producer_id"
                        domain="['|',('id','in',producer_ids),('always_to_print','=',True)]"
