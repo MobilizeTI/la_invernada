@@ -279,6 +279,18 @@ class StockProductionLot(models.Model):
                             })
 
     @api.multi
+    def compare_quant_available_weight(self):
+        quants = self.env['stock.quant']
+        lots = self.env['stock.production.lot']
+        quants_with_problems = []
+        for lot in lots:
+            quant_lot = quants.filtered(lambda a: a.lot_id.id == lot.id)
+            if len(quant_lot) > 1:
+                if quant_lot.quantity != lot.available_weight and lot.available_weight:
+                    quants_with_problems.append(lot.name)
+        raise models.ValidationError(quants_with_problems)
+
+    @api.multi
     def fix_error_inventory(self):
         product_loteable = self.env['product.product'].search([('tracking', '=', 'lot')]).mapped('id')
         moves = self.env['stock.move'].search(
