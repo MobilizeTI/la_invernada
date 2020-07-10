@@ -285,6 +285,7 @@ class StockProductionLot(models.Model):
             [('id', 'in',
               self.env['stock.move.line'].search([('product_id', '=', 2723)]).mapped('move_id').mapped('id'))])
         for stock in move_state:
+            models._logger.error('{}'.format(stock.state))
             if stock.state == 'done':
                 stock.write({
                     'state': 'draft'
