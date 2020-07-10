@@ -280,24 +280,11 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def fix_error_inventory(self):
-        product_loteable = self.env['product.product'].search([('tracking', '=', 'lot')]).mapped('id')
-        quants_lot = self.env['stock.quant'].search([('product_id', 'in', product_loteable)])
-        stock_move_lines = self.env['stock.move.line'].search(
-            [('product_id', 'in', product_loteable), ('product_qty', '!=', 0),
-             ('qty_done', '=', 0)])
-        stock_with_reserved = []
-        for wlot in quants_lot.filtered(lambda a : not a.lot_id):
-            wlot.unlink()
-        for quant in quants_lot:
-            if quant.reserved_quantity == quant.quantity:
-                reserved = quant.reserved_quantity
-                quant.write({
-                    'reserved_quantity': 0,
-                    'balance': quant.quantity - reserved
-                })
-        # for stock in stock_move_lines:
-        #     stock_with_reserved.append(stock)
-        #     raise models.ValidationError(stock_with_reserved)
+        serial_with_production_without_close = []
+        for item in self.env['stock.production.lot.serial'].search([]):
+            if item.reserved_to_production_id.state != 'done' and item.stock_production_lot_id.product_id.id == 2723:
+                serial_with_production_without_close.append(item.display_weight)
+        raise models.ValidationError(sum(serial_with_production_without_close))
 
     @api.multi
     def _compute_serial_available(self):
