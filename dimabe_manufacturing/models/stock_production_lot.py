@@ -289,7 +289,7 @@ class StockProductionLot(models.Model):
                 if move.product_uom_qty > 0:
                     move.write({
                         'state': 'cancel',
-                        'product_qty':0
+                        'product_uom_qty':0
                     })
 
 
