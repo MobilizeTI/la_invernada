@@ -287,11 +287,11 @@ class StockProductionLot(models.Model):
             [('product_id', 'in', product_loteable), ('lot_id', 'in', quants_lot), ('product_qty', '!=', 0),
              ('location_dest_id', '=', 7)])
         stock_with_reserved = []
-        for quant in quants_lot:
-            if quant.reserved_quantity == quant.quantity and quant.lot_id.available_weight != 0:
-                quant.update({
-                    'reserved_quantity': 0
-                })
+        # for quant in quants_lot:
+        #     if quant.reserved_quantity == quant.quantity and quant.lot_id.available_weight != 0:
+        #         quant.update({
+        #             'reserved_quantity': 0
+        #         })
         for stock in stock_move_lines:
             stock_with_reserved.append(stock)
             raise models.ValidationError(stock_with_reserved)
