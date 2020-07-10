@@ -283,7 +283,7 @@ class StockProductionLot(models.Model):
         quants = self.env['stock.quant'].search([])
         lots = self.env['stock.production.lot'].search([])
         for lot in lots:
-            quant_lot = quants.filtered(lambda a: a.lot_id.id == lot.id and '/Stock' in a.location_id.name)
+            quant_lot = lot.get_stock_quant()
             quant_lot.update({
                 'quantity': lot.available_weight
             })
