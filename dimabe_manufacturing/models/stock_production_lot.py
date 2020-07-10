@@ -283,11 +283,11 @@ class StockProductionLot(models.Model):
         quants = self.env['stock.quant'].search([])
         lots = self.env['stock.production.lot'].search([])
         for lot in lots:
-            if 'PT' in lot.product_id.default_code:
-                quant_lot = lot.get_stock_quant()
-                quant_lot.write({
-                    'quantity': lot.available_weight
-                })
+            quant_lot = lot.get_stock_quant()
+            models._logger.error('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa {}'.format(quant_lot))
+            quant_lot.write({
+                'quantity': lot.available_weight
+            })
 
     @api.multi
     def fix_error_inventory(self):
