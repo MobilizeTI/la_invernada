@@ -81,7 +81,7 @@
         'reports/process/re_laser_process_service.xml',
         'reports/process/manual_process.xml',
         'reports/process/manual_service_process.xml',
-        'reports/stock/stock_quant_list.xml'
+        'reports/stock/match_report_service.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
