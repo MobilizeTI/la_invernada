@@ -285,7 +285,7 @@ class StockProductionLot(models.Model):
             'id')
         stock_move_lines = self.env['stock.move.line'].search(
             [('product_id', 'in', product_loteable), ('product_qty', '!=', 0),
-             ('location_dest_id', '=', 7)])
+             ('qty_done', '=', 0)])
         stock_with_reserved = []
         # for quant in quants_lot:
         #     if quant.reserved_quantity == quant.quantity and quant.lot_id.available_weight != 0:
