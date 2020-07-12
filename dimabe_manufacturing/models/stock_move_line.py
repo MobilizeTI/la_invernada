@@ -25,6 +25,10 @@ class StockMoveLine(models.Model):
 
     def _action_done(self):
         for item in self:
-            item.update({
-                'state':'done'
-            })
+            if item.location_dest_id.id == 7:
+                item.update({
+                    'state': 'done'
+                })
+            else:
+                res = super(StockMoveLine, self)._action_done()
+                return res
