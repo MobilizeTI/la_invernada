@@ -22,3 +22,9 @@ class StockMoveLine(models.Model):
         for item in self:
             if item.lot_id:
                 item.count_stock_production_lot_serial = len(item.lot_id.stock_production_lot_serial_ids)
+
+    def _action_done(self):
+        for item in self:
+            item.update({
+                'state':'done'
+            })
