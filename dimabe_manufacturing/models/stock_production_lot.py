@@ -284,17 +284,18 @@ class StockProductionLot(models.Model):
         quants = self.env['stock.quant'].search([])
         lots = self.env['stock.production.lot'].search([])
         for lot in lots:
-            quant_lot = quants.filtered(lambda a: a.location_id.name == 'Stock')
+            quant_lot = quants.filtered(lambda a: a.location_id.name == 'Stock' and a.lot_id.id == lot.id)
             lot_reception = self.env['stock.picking'].search([('name', '=', lot.name)])
             if lot_reception:
-                total = lot.available_weight + lot_reception.quality_weight
-                query = 'UPDATE stock_quant set reserved_quantity = 0 , quantity = {} where id = {}'.format(
-                    total, quant_lot.id)
+                query = 'UPDATE stock_quant set reserved_quantity = 0, quantity = {} where id = {}'.format(
+                    (lot.available_weight + lot_reception.quality_weight), quant_lot.id
+                )
                 cr = self._cr
                 cr.execute(query)
             else:
-                query = 'UPDATE stock_quant set reserved_quantity = 0 , quantity = {} where id = {}'.format(
-                    lot.available_weight,quant_lot.id
+                query = 'UPDATE stock_quant set reserved_quantity = 0, quantity = {} where id = {}'.format(
+                    lot.available_weight
+                    , quant_lot.id
                 )
                 cr = self._cr
                 cr.execute(query)
