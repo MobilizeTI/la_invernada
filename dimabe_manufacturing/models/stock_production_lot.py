@@ -294,12 +294,12 @@ class StockProductionLot(models.Model):
                     'state': 'done'
                 })
                 quant_lot.write({
-                    'reserved_available': 0,
+                    'reserved_quantity': 0,
                     'quantity': lot.available_weight + lot_reception.quality_weight
                 })
             else:
                 quant_lot.write({
-                    'reserved_available': 0,
+                    'reserved_quantity': 0,
                     'quantity': lot.available_weight
                 })
 
