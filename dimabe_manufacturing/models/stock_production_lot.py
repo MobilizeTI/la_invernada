@@ -306,17 +306,6 @@ class StockProductionLot(models.Model):
     @api.multi
     def fix_error_inventory(self):
         product_loteable = self.env['product.product'].search([('tracking', '=', 'lot')]).mapped('id')
-        moves = self.env['stock.move'].search(
-            [('id', 'in',
-              self.env['stock.move.line'].search([('product_id', 'in', product_loteable)]).mapped('move_id').mapped(
-                  'id'))])
-        for stock in moves:
-            for move in stock.active_move_line_ids:
-                if move.product_uom_qty > 0 and 'PT' not in move.product_id.default_code:
-                    move.write({
-                        'state': 'cancel',
-                        'product_uom_qty': 0
-                    })
         quants_without_lot = self.env['stock.quant'].search(
             [('product_id', 'in', product_loteable), ('lot_id', '=', None)])
         for quant in quants_without_lot:
