@@ -70,9 +70,13 @@ class StockPicking(models.Model):
     def get_partner(self):
         for item in self:
             if item.picking_type_code == 'incoming':
-                return [('is_company', '=', True), ('supplier', '=', True)]
+                suppliers = self.env['res.partner'].search([('is_company', '=', True), ('supplier', '=', True)]).mapped(
+                    'id')
+                return [('id', 'in', suppliers)]
             elif item.picking_type_code == 'outcoming':
-                return  [('is_company', '=', True), ('customer', '=', True)]
+                customers = self.env['res.partner'].search([('is_company', '=', True), ('customer', '=', True)]).mapped(
+                    'id')
+                return [('id','in',customers)]
 
     @api.multi
     def clean_reserved(self):
