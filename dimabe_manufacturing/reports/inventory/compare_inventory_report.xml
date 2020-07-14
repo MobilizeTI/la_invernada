@@ -20,10 +20,10 @@
                 [('tracking','=','lot')]
             </field>
         </record>
-<!--        <menuitem id="compare_inventory_menu_item"-->
-<!--                  action="dimabe_manufacturing.compare_inventory_action"-->
-<!--                  name="Informe comparativo de inventario"-->
-<!--                  parent="stock.menu_warehouse_report"-->
-<!--        />-->
+        <menuitem id="compare_inventory_menu_item"
+                  action="dimabe_manufacturing.compare_inventory_action"
+                  name="Informe comparativo de inventario"
+                  parent="stock.menu_warehouse_report"
+        />
     </data>
 </odoo>
