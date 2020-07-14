@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record id="compare_inventory_report_tree" model="ir.ui.view">
-        <field name="name">Informe comparativo de inventario</field>
-        <field name="model">product.product</field>
-        <field name="priority">20</field>
-        <field name="arch" type="xml">
-            <field name="total_weight"></field>
-        </field>
-    </record>
-    <record id="dimabe_manufacturing.compare_inventory_action" model="ir.actions.act_window">
-        <field name="name">Informe comparativo de inventario</field>
-        <field name="res_model">product.product</field>
-        <field name="view_mode">tree,pivot,graph,form</field>
-        <field name="view_id" red="compare_inventory_report_tree"/>
-        <field name="domain">
-            [('tracking','=','lot')]
-        </field>
-    </record>
-    <menuitem id="compare_inventory_menu_item"
-              action="dimabe_manufacturing.compare_inventory_action"
-              name="Informe comparativo de inventario"
-              parent="stock.menu_warehouse_report"
-    />
+    <data>
+        <record id="compare_inventory_report_tree" model="ir.ui.view">
+            <field name="name">Informe comparativo de inventario</field>
+            <field name="model">product.product</field>
+            <field name="priority">20</field>
+            <field name="arch" type="xml">
+                <field name="total_weight"></field>
+            </field>
+        </record>
+        <record id="dimabe_manufacturing.compare_inventory_action" model="ir.actions.act_window">
+            <field name="name">Informe comparativo de inventario</field>
+            <field name="res_model">product.product</field>
+            <field name="view_mode">tree,pivot,graph,form</field>
+            <field name="view_id" red="compare_inventory_report_tree"/>
+            <field name="domain">
+                [('tracking','=','lot')]
+            </field>
+        </record>
+        <menuitem id="compare_inventory_menu_item"
+                  action="dimabe_manufacturing.compare_inventory_action"
+                  name="Informe comparativo de inventario"
+                  parent="stock.menu_warehouse_report"
+        />
+    </data>
 </odoo>
