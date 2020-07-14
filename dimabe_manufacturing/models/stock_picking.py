@@ -65,16 +65,22 @@ class StockPicking(models.Model):
 
     companys_ids = fields.Many2many('res.partner', compute='get_partner')
 
-    @api.multi
-    def get_partner(self):
+    @api.onchange('incoming')
+    def onchange_basket(self):
         for item in self:
             if item.picking_type_code == 'incoming':
-                suppliers = self.env['res.partner'].search([('is_company', '=', True), ('supplier', '=', True)]).mapped('id')
-                item.companys_ids = suppliers
-            elif item.picking_type_code == 'outcoming':
-                customers = self.env['res.partner'].search([('is_company', '=', True), ('customer', '=', True)]).mapped(
-                    'id')
-                item.companys_ids = customers
+                res = {
+                    'domain': {
+                        'partner_id': [('is_company', '=', True), ('supplier', '=', True)],
+                    }
+                }
+            else:
+                res = {
+                    'domain': {
+                        'partner_id': [('is_company', '=', True), ('customer_id', '=', True)],
+                    }
+                }
+        return res
 
     @api.multi
     def clean_reserved(self):
