@@ -15,7 +15,10 @@
             <field name="name">Informe comparativo de inventario</field>
             <field name="res_model">product.product</field>
             <field name="view_mode">tree,graph,form,pivot</field>
-            <field name="view_id" red="compare_inventory_report_tree"/>
+            <field name="view_id" ref="compare_inventory_report_tree"/>
+            <field name="domain">
+                [('tracking','=','lot')]
+            </field>
         </record>
 <!--        <menuitem id="compare_inventory_menu_item"-->
 <!--                  action="dimabe_manufacturing.compare_inventory_action"-->
