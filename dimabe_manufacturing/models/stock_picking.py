@@ -69,7 +69,7 @@ class StockPicking(models.Model):
     def get_partner(self):
         for item in self:
             if item.picking_type_code == 'incoming':
-                suppliers = self.env['res.partner'].search([('is_company', '=', True), ('supplier', '=', True)])
+                suppliers = self.env['res.partner'].search([('is_company', '=', True), ('supplier', '=', True)]).mapped('id')
                 item.companys_ids = suppliers
             elif item.picking_type_code == 'outcoming':
                 customers = self.env['res.partner'].search([('is_company', '=', True), ('customer', '=', True)]).mapped(
