@@ -62,10 +62,7 @@ class StockPicking(models.Model):
     )
 
     sale_order_id = fields.Many2one('sale.order', 'Pedido')
-
-    companys_ids = fields.Many2many('res.partner', compute='get_partner')
-
-    @api.onchange('incoming')
+    @api.onchange('picking_type_code')
     def onchange_basket(self):
         for item in self:
             if item.picking_type_code == 'incoming':
