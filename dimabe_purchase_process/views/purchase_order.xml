@@ -12,6 +12,12 @@
                     <attribute name="string">Proveedor</attribute>
                     <attribute name="attrs">{'readonly':"[('state', 'in', ('purchase', 'to approve','done', 'cancel','purchase sent'))]"}</attribute>
                 </xpath>
+                <xpath expr="//field[@name='currency_id']" position="attributes">
+                    <attribute name="attrs">{'readonly':"[('state', 'in', ('purchase', 'to approve','done', 'cancel','purchase sent'))]"}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_order']" position="attributes">
+                    <attribute name="attrs">{'readonly':"[('state', 'in', ('purchase', 'to approve','done', 'cancel','purchase sent'))]"}</attribute>
+                </xpath>
                 <xpath expr="//field[@name='requisition_id']" position="attributes">
                     <attribute name="readonly">1</attribute>
                 </xpath>
