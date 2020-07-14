@@ -68,8 +68,10 @@ class StockPicking(models.Model):
 
     @api.multi
     def _get_partner(self):
-        models._logger.error(self.picking_type_code)
-        self.parent_id = self.env['res.partner'].search([])
+        if self.picking_type_code == 'incoming':
+            self.partner_id = self.env['res.partner'].search([('is_company', '=', True), ('supplier', '=', True)])
+        elif self.picking_type_code == 'outcoming':
+            self.partner_id = self.env['res.partner'].search([('is_company', '=', True), ('customer', '=', True)])
 
     @api.multi
     def clean_reserved(self):
@@ -116,7 +118,7 @@ class StockPicking(models.Model):
 
     @api.multi
     def calculate_last_serial(self):
-        raise models.ValidationError(self.picking_type_code)
+
         if len(canning) == 1:
             if self.production_net_weight == self.net_weight:
                 self.production_net_weight = self.net_weight - self.quality_weight
