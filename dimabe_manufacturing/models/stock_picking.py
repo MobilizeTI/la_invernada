@@ -17,7 +17,7 @@ class StockPicking(models.Model):
         related='shipping_id.required_loading_date'
     )
 
-    partner_id = fields.Many2one('res.partner', compute='_get_parents')
+    partner_id = fields.Many2one('res.partner', compute='get_partner')
 
     variety = fields.Many2many(related="product_id.attribute_value_ids")
 
@@ -67,7 +67,7 @@ class StockPicking(models.Model):
     sale_order_id = fields.Many2one('sale.order', 'Pedido')
 
     @api.multi
-    def _get_partner(self):
+    def get_partner(self):
         if self.picking_type_code == 'incoming':
             self.partner_id = self.env['res.partner'].search([('is_company', '=', True), ('supplier', '=', True)])
         elif self.picking_type_code == 'outcoming':
