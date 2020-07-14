@@ -19,8 +19,7 @@
             <field name="view_mode">tree,graph,form,pivot</field>
             <field name="view_id" ref="compare_inventory_report_tree"/>
             <field name="domain">
-                [('tracking','=','lot'),('categ_id.name','not like','Merma'), /
-                ('categ_id.parent_id.name','not like','Insumo')]
+                [('tracking','=','lot'),('categ_id.name','not like','Merma'),('categ_id.parent_id.name','not like','Insumo')]
             </field>
         </record>
         <menuitem id="compare_inventory_menu_item"
