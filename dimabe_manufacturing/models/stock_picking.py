@@ -2,6 +2,7 @@ from odoo import models, api, fields
 from odoo.addons import decimal_precision as dp
 from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 
+
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
@@ -15,6 +16,8 @@ class StockPicking(models.Model):
     required_loading_date = fields.Date(
         related='shipping_id.required_loading_date'
     )
+
+    partner_id = fields.Many2one('res.partner', domain='_get_parents')
 
     variety = fields.Many2many(related="product_id.attribute_value_ids")
 
@@ -63,10 +66,9 @@ class StockPicking(models.Model):
 
     sale_order_id = fields.Many2one('sale.order', 'Pedido')
 
-    @api.model
-    @api.depends('picking_type_id')
-    def change(self):
-        models._logger.error(self.product_id.name)
+    @api.multi
+    def _get_partner(self):
+        self.parent_id = self.env['res.partner'].search([])
 
     @api.multi
     def clean_reserved(self):
@@ -201,7 +203,6 @@ class StockPicking(models.Model):
                 return super(StockPicking, self).button_validate()
         if self.picking_type_id.warehouse_id.id != 17:
             return super(StockPicking, self).button_validate()
-
 
     def validate_barcode(self, barcode):
         custom_serial = self.packing_list_ids.filtered(
