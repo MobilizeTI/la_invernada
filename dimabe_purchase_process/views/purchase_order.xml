@@ -14,7 +14,7 @@
                         sent'))]
                     </attribute>
                 </xpath>
-                <xpath expr="//field[@name='current_id']" position="attributes">
+                <xpath expr="//field[@name='currency_id']" position="attributes">
                     <attribute name="readonly">[('state', 'in', ('purchase', 'to approve','done', 'cancel','purchase
                         sent'))]
                     </attribute>
