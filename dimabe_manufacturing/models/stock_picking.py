@@ -16,9 +16,6 @@ class StockPicking(models.Model):
     required_loading_date = fields.Date(
         related='shipping_id.required_loading_date'
     )
-
-    partner_id = fields.Many2one('res.partner', domain='get_partner')
-
     variety = fields.Many2many(related="product_id.attribute_value_ids")
 
     country_id = fields.Char(related='partner_id.country_id.name')
@@ -66,17 +63,18 @@ class StockPicking(models.Model):
 
     sale_order_id = fields.Many2one('sale.order', 'Pedido')
 
+    companys_ids = fields.Many2many('res.partner', compute='get_partner', store=True)
+
     @api.multi
     def get_partner(self):
         for item in self:
             if item.picking_type_code == 'incoming':
-                suppliers = self.env['res.partner'].search([('is_company', '=', True), ('supplier', '=', True)]).mapped(
-                    'id')
-                return [('id', 'in', suppliers)]
+                suppliers = self.env['res.partner'].search([('is_company', '=', True), ('supplier', '=', True)])
+                item.companys_ids = suppliers
             elif item.picking_type_code == 'outcoming':
                 customers = self.env['res.partner'].search([('is_company', '=', True), ('customer', '=', True)]).mapped(
                     'id')
-                return [('id','in',customers)]
+                item.companys_ids = customers
 
     @api.multi
     def clean_reserved(self):
