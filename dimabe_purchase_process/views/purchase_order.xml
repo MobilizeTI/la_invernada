@@ -10,7 +10,7 @@
                 </field>
                 <xpath expr="//field[@name='partner_id']" position="attributes">
                     <attribute name="string">Proveedor</attribute>
-                    <attribute name="attrs">{'readonly':[('state', 'in', ('purchase', 'to approve','done', 'cancel','purchase sent')]}</attribute>
+                    <attribute name="attrs">{'readonly':"[('state', 'in', ('purchase', 'to approve','done', 'cancel','purchase sent')]"}</attribute>
                 </xpath>
                 <xpath expr="//field[@name='requisition_id']" position="attributes">
                     <attribute name="readonly">1</attribute>
