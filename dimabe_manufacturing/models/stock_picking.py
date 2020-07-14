@@ -63,6 +63,10 @@ class StockPicking(models.Model):
 
     sale_order_id = fields.Many2one('sale.order', 'Pedido')
 
+    @api.model
+    def change(self):
+        models._logger.error(self.product_id.name)
+
     @api.multi
     def clean_reserved(self):
         for item in self:
