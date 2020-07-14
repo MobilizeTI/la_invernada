@@ -35,6 +35,8 @@ class ProductProduct(models.Model):
 
     measure = fields.Char('Medida', compute='_compute_measure')
 
+    total_weight = fields.Float('Total Kilos Disponibles',compute='_compute_total_weight')
+
     @api.multi
     def _compute_measure(self):
         for item in self:
@@ -101,5 +103,11 @@ class ProductProduct(models.Model):
             product_ids = self.env['product.product'].search([
                 ('attribute_value_ids', '=', attribute_value_ids.mapped('id'))
             ]).mapped('id')
-
         return [('id', 'in', product_ids)]
+
+    @api.multi
+    def _compute_total_weight(self):
+        for item in self:
+            if item.tracking == 'lot':
+                lots = self.env['stock.production.lot'].search([('product_id','=',item.id)])
+                item.total_weight = sum(lots.mapped('available_weight'))
