@@ -64,6 +64,7 @@ class StockPicking(models.Model):
     sale_order_id = fields.Many2one('sale.order', 'Pedido')
 
     @api.model
+    @api.depends('picking_type_id')
     def change(self):
         models._logger.error(self.product_id.name)
 
