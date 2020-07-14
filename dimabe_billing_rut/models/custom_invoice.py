@@ -77,7 +77,6 @@ class CustomInvoice(models.Model):
                     continue
                 partner_id = self.env['res.partner'].search([('invoice_rut', '=', d.get('rut_f').strip())])
                 dte_type = self.env['dte.type'].search([('code', '=', d.get('dte', None))])
-                url_details = '{}{}'.format(company_id.dte_url,)
                 if partner_id:
                     self.env['custom.invoice'].create({
                         'date': d.get('fecha', None),
