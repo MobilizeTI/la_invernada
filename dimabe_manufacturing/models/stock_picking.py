@@ -63,7 +63,7 @@ class StockPicking(models.Model):
 
     sale_order_id = fields.Many2one('sale.order', 'Pedido')
 
-    companys_ids = fields.Many2many('res.partner', compute='get_partner', store=True)
+    companys_ids = fields.Many2many('res.partner', compute='get_partner')
 
     @api.multi
     def get_partner(self):
