@@ -284,7 +284,7 @@ class StockProductionLot(models.Model):
         quants = self.env['stock.quant'].search([])
         lots = self.env['stock.production.lot'].search([])
         for lot in lots:
-            quant_lot = quants.filtered(lambda a: a.location_id.name == 'Stock')
+            quant_lot = quants.filtered(lambda a: a.location_id.name == 'Stock' and a.lot_id.id == lot.id)
             lot_reception = self.env['stock.picking'].search([('name', '=', lot.name)])
             if lot_reception:
                 quant_lot.write({
