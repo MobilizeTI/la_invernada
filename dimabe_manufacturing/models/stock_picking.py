@@ -74,7 +74,7 @@ class StockPicking(models.Model):
             else:
                 res = {
                     'domain': {
-                        'partner_id': [('is_company', '=', True), ('customer_id', '=', True)],
+                        'partner_id': [('is_company', '=', True), ('customer', '=', True)],
                     }
                 }
         return res
