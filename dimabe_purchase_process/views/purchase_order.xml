@@ -10,6 +10,14 @@
                 </field>
                 <xpath expr="//field[@name='partner_id']" position="attributes">
                     <attribute name="string">Proveedor</attribute>
+                    <attribute name="readonly">[('state', 'in', ('purchase', 'to approve','done', 'cancel','purchase
+                        sent'))]
+                    </attribute>
+                </xpath>
+                <xpath expr="//field[@name='current_id']" position="attributes">
+                    <attribute name="readonly">[('state', 'in', ('purchase', 'to approve','done', 'cancel','purchase
+                        sent'))]
+                    </attribute>
                 </xpath>
                 <xpath expr="//field[@name='requisition_id']" position="attributes">
                     <attribute name="readonly">1</attribute>
@@ -34,14 +42,18 @@
                 </xpath>
                 <xpath expr="//button[@name='action_view_invoice'][1]" position="attributes">
                     <attribute name="groups">dimabe_purchase_process.group_purchase_invoice_create</attribute>
-                    <attribute name="attrs">{'invisible': ['|', '|', ('state', 'not in', ('purchase', 'done','purchase sent')), ('invoice_status', 'not in', ('no', 'invoiced')), ('order_line', '=', [])]}</attribute>
+                    <attribute name="attrs">{'invisible': ['|', '|', ('state', 'not in', ('purchase', 'done','purchase
+                        sent')), ('invoice_status', 'not in', ('no', 'invoiced')), ('order_line', '=', [])]}
+                    </attribute>
                 </xpath>
                 <xpath expr="//button[@name='action_view_invoice'][2]" position="attributes">
                     <attribute name="groups">dimabe_purchase_process.group_purchase_approval_user</attribute>
                 </xpath>
                 <button name="action_view_picking" position="attributes">
                     <attribute name="groups">dimabe_purchase_process.group_purchase_budget_user</attribute>
-                    <attribute name="attrs">{'invisible': ['|', '|', ('state', 'not in', ('purchase', 'done','purchase sent')), ('invoice_status', 'not in', ('no', 'invoiced')), ('order_line', '=', [])]}</attribute>
+                    <attribute name="attrs">{'invisible': ['|', '|', ('state', 'not in', ('purchase', 'done','purchase
+                        sent')), ('invoice_status', 'not in', ('no', 'invoiced')), ('order_line', '=', [])]}
+                    </attribute>
                 </button>
                 <button name="button_cancel" position="attributes">
                     <attribute name="string">Rechazar</attribute>
