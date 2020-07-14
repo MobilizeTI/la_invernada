@@ -6,7 +6,9 @@
             <field name="model">product.product</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <field name="total_weight"></field>
+                <tree>
+                    <field name="total_weight"/>
+                </tree>
             </field>
         </record>
         <record id="dimabe_manufacturing.compare_inventory_action" model="ir.actions.act_window">
