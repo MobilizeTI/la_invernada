@@ -17,7 +17,7 @@ class StockPicking(models.Model):
         related='shipping_id.required_loading_date'
     )
 
-    partner_id = fields.Many2one('res.partner', domain='_get_parents')
+    partner_id = fields.Many2one('res.partner', compute='_get_parents')
 
     variety = fields.Many2many(related="product_id.attribute_value_ids")
 
