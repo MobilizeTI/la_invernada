@@ -141,11 +141,6 @@ class StockPicking(models.Model):
             item.packing_list_ids = reserved_serial_ids
 
     @api.multi
-    @api.depend('picking_type_id')
-    def change_domain(self):
-        models._logger.error(self.picking_type_id)
-
-    @api.multi
     def return_action(self):
         context = {
             'default_product_id': self.product_id.id,
