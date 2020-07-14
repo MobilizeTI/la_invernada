@@ -14,7 +14,7 @@
         <record id="dimabe_manufacturing.compare_inventory_action" model="ir.actions.act_window">
             <field name="name">Informe comparativo de inventario</field>
             <field name="res_model">product.product</field>
-            <field name="view_mode">tree,pivot,graph,form</field>
+            <field name="view_mode">tree,graph,form,pivot</field>
             <field name="view_id" red="compare_inventory_report_tree"/>
             <field name="domain">
                 [('tracking','=','lot')]
