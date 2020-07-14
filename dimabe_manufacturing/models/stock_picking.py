@@ -68,6 +68,7 @@ class StockPicking(models.Model):
 
     @api.multi
     def _get_partner(self):
+        models._logger.error(self.picking_type_code)
         self.parent_id = self.env['res.partner'].search([])
 
     @api.multi
