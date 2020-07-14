@@ -17,7 +17,7 @@
                     invisible="1"
                 />
                 <button name="fix_error_inventory" type="object" string="Fix Inventory" invisible="1"/>
-                <button name="compare_quant_available_weight" type="object" string="Lot and Quants"/>
+                <button name="compare_quant_available_weight" type="object" string="Lot and Quants" invisible="1"/>
                 <field name="producer_ids" invisible="1"/>
                 <field name="producer_id"
                        domain="['|',('id','in',producer_ids),('always_to_print','=',True)]"
