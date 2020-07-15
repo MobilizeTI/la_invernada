@@ -35,7 +35,7 @@
         'views/dte_type.xml',
         'views/templates.xml',
         'views/custom_invoice.xml',
-        'views/custom_settlement.xml',
+        'views/custom_settlement.py.xml',
         'data/reports/balance_sheet_clp.xml'
     ],
     # only loaded in demonstration mode

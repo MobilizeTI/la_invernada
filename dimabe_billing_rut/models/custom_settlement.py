@@ -1,4 +1,4 @@
-from odoo import models, fields, _winapi
+from odoo import models, fields, api
 
 
 class CustomSettlement(models.Model):
