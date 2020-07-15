@@ -10,4 +10,3 @@ from . import stock_location
 from . import dte_type
 from . import custom_invoice
 from . import stock_picking
-from . import account_financial_report
