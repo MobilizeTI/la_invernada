@@ -3,4 +3,5 @@ access_dimabe_account_invoice_references,dimabe_billing_rut.account_invoice_refe
 accces_dimabe_custom_invoices,dimabe_billing_rut.custom_invoice,model_custom_invoice,,1,1,1,1
 access_dimabe_custom_economic_activity,dimabe_billing_rut.custom_economic_activity,model_custom_economic_activity,,1,1,1,1
 access_dimabe_dte_type,dimabe_billing_rut.dte_type,model_dte_type,,1,1,1,1
-access_dimabe_custom_fired,dimabe_billing_rut.custom_settlement,model_custom_fired,,1,1,1,1
+access_dimabe_custom_fired,dimabe_billing_rut.custom_fired,model_custom_fired,,1,1,1,1
+access_dimabe_custom_settlement,dimabe_billing_rut.custom_settlement,model_custom_settlement,,1,1,1,1
