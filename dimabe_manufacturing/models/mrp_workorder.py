@@ -294,11 +294,10 @@ class MrpWorkorder(models.Model):
     @api.multi
     def fix_order(self):
         for item in self:
-            for move in self.production_finished_move_line_ids:
-                if move.workorder_id.id != item.id:
-                    move.write({
-                        'workorder_id': item.id
-                    })
+            for move in item.active_move_line_ids:
+                move.write({
+                    'qty_done': sum(move.lot_id.mapped('stock_production_lot_serial_ids').mapped('display_weight'))
+                })
 
     @api.multi
     def _compute_byproduct_move_line_ids(self):
