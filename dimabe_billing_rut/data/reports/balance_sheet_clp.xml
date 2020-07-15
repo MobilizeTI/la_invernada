@@ -16,7 +16,7 @@
         <field name="code">model.test()</field>
     </record>
 
-    <menuitem name="test_item" action="action_upd_printed_invoices" parent="account.menu_finance_reports" string="Test"/>
+    <menuitem id="test_item" action="action_upd_printed_invoices" parent="account.menu_finance_reports" name="Test"/>
 
     <report id="action_inform" model="account.financial.html.report"
             report_type="qweb-html"
