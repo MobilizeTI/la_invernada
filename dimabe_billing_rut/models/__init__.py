@@ -10,3 +10,5 @@ from . import stock_location
 from . import dte_type
 from . import custom_invoice
 from . import stock_picking
+from . import custom_fired
+from . import custom_settlement
