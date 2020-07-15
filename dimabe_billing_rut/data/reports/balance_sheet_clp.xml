@@ -8,6 +8,16 @@
             </div>
         </t>
     </template>
+    <record model="ir.actions.server" id="action_upd_printed_invoices">
+        <field name="name">Invoice Upd 'printed' Server Action</field>
+        <field name="model_id" ref="account_financial_html_report"/>
+        <field name="type">ir.actions.server</field>
+        <field name="state">code</field>
+        <field name="code">model.test()</field>
+    </record>
+
+    <menuitem name="test_item" action="action_upd_printed_invoices" parent="account.menu_finance_reports" string="Test"/>
+
     <report id="action_inform" model="account.financial.html.report"
             report_type="qweb-html"
             name="dimabe_billing_rut.balance_sheet_clp" string="Balance de Situacion en CLP"/>
