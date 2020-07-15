@@ -109,3 +109,7 @@ class CustomInvoice(models.Model):
                         'rut_f': d.get('rut_f', None),
                         'giro': d.get('giro', None),
                     })
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
