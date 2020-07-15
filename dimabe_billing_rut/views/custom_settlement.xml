@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="custom_settlement_tree" model="ir.ui.view">
+        <field name="name">Finiquito</field>
+        <field name="model">custom.settlement</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="contract_id"/>
+                <field name="fired_id"/>
+                <field name="date_start_contract"/>
+                <field name="date_of_notification"/>
+            </tree>
+        </field>
+    </record>
+    <record id="dimabe_billing_rut.action_custom_settlement_view" model="ir.actions.act_window">
+        <field name="name">Finiquitos</field>
+        <field name="res_model">custom.settlement</field>
+        <field name="view_mode">tree,form,graph</field>
+        <field name="view_id" ref="custom_settlement_tree"/>
+    </record>
+    <menuitem id="custom_settlement_item" name="Finiquitos" action="dimabe_billing_rut.action_custom_settlement_view" parent="hr_payroll.menu_hr_payroll_root"/>
+</odoo>
