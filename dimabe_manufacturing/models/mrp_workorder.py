@@ -296,7 +296,7 @@ class MrpWorkorder(models.Model):
         for item in self:
             for active in item.active_move_line_ids:
                 active.write({
-                    'qty_done':sum(active.lot_id.mapped('stock_production_lot_serial_ids').mapped('display_weight'))
+                    'qty_done': sum(active.lot_id.mapped('stock_production_lot_serial_ids').mapped('display_weight'))
                 })
 
     @api.multi
