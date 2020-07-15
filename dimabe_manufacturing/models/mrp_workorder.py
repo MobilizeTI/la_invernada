@@ -297,7 +297,7 @@ class MrpWorkorder(models.Model):
             for move in self.production_finished_move_line_ids:
                 if move.workorder_id.id != item.id:
                     move.write({
-                        'workorder_id':item.id
+                        'workorder_id': item.id
                     })
 
     @api.multi
