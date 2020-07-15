@@ -25,7 +25,7 @@
             <field name="view_mode">tree,graph,form,pivot</field>
             <field name="view_id" ref="view_stock_calibrate_report_tree"/>
             <field name="domain">
-                [('product_id.name','like','Calibrada')]
+                [('product_id.default_code','like','PSE006'),('product_id.name','not like','Vana')]
             </field>
         </record>
         <menuitem id="stock_report_calibrate_tree_menu"

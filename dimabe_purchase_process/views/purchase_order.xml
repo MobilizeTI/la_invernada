@@ -10,6 +10,25 @@
                 </field>
                 <xpath expr="//field[@name='partner_id']" position="attributes">
                     <attribute name="string">Proveedor</attribute>
+                    <attribute name="attrs">{'readonly':"[('state', 'in', ('purchase', 'to approve','done', 'cancel','purchase sent'))]"}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='currency_id']" position="attributes">
+                    <attribute name="attrs">{'readonly':"[('state', 'in', ('purchase', 'to approve','done', 'cancel','purchase sent'))]"}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_order']" position="attributes">
+                    <attribute name="attrs">{'readonly':"[('state', 'in', ('purchase', 'to approve','done', 'cancel','purchase sent'))]"}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="attributes">
+                    <attribute name="attrs">{'readonly':"[('state', 'in', ('purchase', 'to approve','done', 'cancel','purchase sent'))]"}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='picking_type_id']" position="attributes">
+                    <attribute name="attrs">{'readonly':"[('state', 'in', ('purchase', 'to approve','done', 'cancel','purchase sent'))]"}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='incoterm_id']" position="attributes">
+                    <attribute name="attrs">{'readonly':"[('state', 'in', ('done','purchase sent'))]"}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='fiscal_position_id']" position="attributes">
+                    <attribute name="attrs">{'readonly': "['|', ('invoice_status','=', 'invoiced'), ('state', 'in',('purchase sent','done'))]"}</attribute>
                 </xpath>
                 <xpath expr="//field[@name='requisition_id']" position="attributes">
                     <attribute name="readonly">1</attribute>
