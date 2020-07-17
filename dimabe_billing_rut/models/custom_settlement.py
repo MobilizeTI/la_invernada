@@ -1,10 +1,11 @@
 from odoo import models, fields, api
 import datetime
+from datetime import datetime, date, time
 
 
 class CustomSettlement(models.Model):
     _name = 'custom.settlement'
-    employee_id = fields.Many2one('hr.employee')
+    employee_id = fields.Many2one('hr.employee','Empleado',required=True)
 
     contract_id = fields.Many2one('hr.contract', 'Contrato', related='employee_id.contract_id')
 
@@ -21,4 +22,7 @@ class CustomSettlement(models.Model):
     @api.multi
     def test(self):
         for item in self:
-            raise models.UserError(type(item.date_start_contract))
+            date_start = datetime.strptime(item.date_start_contract,"%Y-%m-%d")
+            raise models.ValidationError(date_start.year)
+
+
