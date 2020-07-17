@@ -34,7 +34,7 @@
                 <header>
                     <button type="object" name="test" string="Test" class="oe_highlight"/>
                 </header>
-                <group width="50%%">
+                <group style="width:40%%">
                     <h1 class="d-none d-md-block">
                         <field name="employee_id" domain="[('active','=',True)]"/>
                     </h1>
