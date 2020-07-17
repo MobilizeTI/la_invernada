@@ -87,7 +87,7 @@ class CustomSettlement(models.Model):
     def compute_vacations(self):
         for item in self:
             if item.vacation_days > 0:
-                item.compensation_vacations = item.wage * item.vacation_day
+                item.compensation_vacations = item.wage * item.vacation_days
 
     @api.multi
     def test(self):
