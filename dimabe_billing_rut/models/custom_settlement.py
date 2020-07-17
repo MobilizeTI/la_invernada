@@ -23,6 +23,11 @@ class CustomSettlement(models.Model):
     def test(self):
         for item in self:
             difference = datetime.now().year - item.date_start_contract.year
+            if difference > 0:
+                item.period_of_service = difference
+            else:
+                difference_moth = (datetime.now().moth - item.date_start_contract.moth) / 100
+                item.period_of_service = difference_moth
             raise models.ValidationError(difference)
 
 
