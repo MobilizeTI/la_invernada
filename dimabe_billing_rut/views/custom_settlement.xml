@@ -78,6 +78,11 @@
                             <field name="compensation_vacations"/>
                         </group>
                     </group>
+                    <group>
+                        <h2>
+                            Total:<field name="settlement"/>
+                        </h2>
+                    </group>
                 </sheet>
             </form>
         </field>

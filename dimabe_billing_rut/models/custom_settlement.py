@@ -44,11 +44,11 @@ class CustomSettlement(models.Model):
         ('Yes', 'Si'),
         ('No', 'No'),
         ('Edit', 'Editar')
-    ], default='Yes')
+    ])
 
-    snack_bonus = fields.Float('Colacion')
+    snack_bonus = fields.Float('Colacion', related='contract_id.colacion')
 
-    mobilization_bonus = fields.Float('Movilizacion')
+    mobilization_bonus = fields.Float('Movilizacion', related='contract_id.movilizacion')
 
     pending_remuneration_payment = fields.Monetary('Remuneraciones Pendientes')
 
@@ -56,9 +56,7 @@ class CustomSettlement(models.Model):
 
     compensation_years = fields.Monetary('indemnización Años de Servicio', compute='compute_years')
 
-    compensation_vacations = fields.Monetary('indemnización Vacaciones', compute='compute_vacations')
-
-    salary = fields.Monetary('Sueldo Liquido')
+    compensation_vacations = fields.Monetary('indemnización Vacaciones')#, compute='compute_vacations'#)
 
     settlement = fields.Monetary('Finiquito')
 
@@ -90,11 +88,11 @@ class CustomSettlement(models.Model):
             else:
                 item.reward_value = 0
 
-    @api.multi
-    def compute_vacations(self):
-        for item in self:
-            if item.vacation_days > 0:
-                item.compensation_vacations = item.wage * item.vacation_days
+    # @api.multi
+    # def compute_vacations(self):
+    #     for item in self:
+    #         if item.vacation_days > 0:
+    #             item.compensation_vacations = item.wage * item.vacation_days
 
     @api.multi
     @api.onchange('date_settlement')
@@ -103,7 +101,7 @@ class CustomSettlement(models.Model):
             period = relativedelta(item.date_settlement, item.date_start_contract)
             if period.days < 30:
                 item.compensation_warning = (
-                            (item.wage + item.snack_bonus + item.mobilization_bonus) + item.reward_value)
+                        (item.wage + item.snack_bonus + item.mobilization_bonus) + item.reward_value)
 
     @api.multi
     @api.onchange('date_settlement')
@@ -112,6 +110,14 @@ class CustomSettlement(models.Model):
             period = relativedelta(item.date_settlement, item.date_start_contract)
             item.compensation_years = ((item.wage + item.snack_bonus + item.mobilization_bonus)
                                        + item.reward_value) * period.years
+
+    @api.multi
+    @api.onchange('date_settlement', 'pending_remuneration_payment', 'reward_selection')
+    def compute_settlement(self):
+        for item in self:
+            period = relativedelta(item.date_settlement, item.date_start_contract)
+            item.settlement = (
+                                          item.wage + item.reward_value) + item.pending_remuneration_payment + item.snack_bonus + item.mobilization_bonus + item.compensation_vacations + item.compensation_warning + item.compensation_years
 
     @api.multi
     def test(self):
