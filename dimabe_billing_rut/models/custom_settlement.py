@@ -2,6 +2,7 @@ from odoo import models, fields, api
 import datetime
 from datetime import datetime, date, time
 from dateutil.relativedelta import *
+from dateutil import rrule
 
 
 class CustomSettlement(models.Model):
@@ -91,4 +92,5 @@ class CustomSettlement(models.Model):
 
     @api.multi
     def test(self):
-        raise models.ValidationError(self.wage * 0.25)
+        rule = rrule.rrule(rrule.WEEKLY,dtstart=self.date_start_contract,until=self.date_settlement)
+        raise models.ValidationError(rule)
