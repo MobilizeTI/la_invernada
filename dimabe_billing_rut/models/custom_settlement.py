@@ -22,7 +22,6 @@ class CustomSettlement(models.Model):
     @api.multi
     def test(self):
         for item in self:
-            date_start = datetime.strptime(item.date_start_contract,"%Y-%m-%d")
-            raise models.ValidationError(date_start.year)
+            raise models.ValidationError(item.date_start_contract.year)
 
 
