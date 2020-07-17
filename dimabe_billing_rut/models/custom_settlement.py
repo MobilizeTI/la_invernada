@@ -50,7 +50,7 @@ class CustomSettlement(models.Model):
 
     pending_remuneration_payment = fields.Monetary('Remuneraciones Pendientes')
 
-    compensation_warning =fields.Monetary('indemnización Aviso Previo')
+    compensation_warning = fields.Monetary('indemnización Aviso Previo')
 
     compensation_years = fields.Monetary('indemnización Años de Servicio')
 
@@ -68,7 +68,7 @@ class CustomSettlement(models.Model):
     def compute_vacation_day(self):
         for item in self:
             period = relativedelta(item.date_settlement, item.date_start_contract)
-            item.vacation_days = (period.months * 1.25 + period.days / 30 * 1.25)
+            item.vacation_days = (15 * period.years + ((period.months * 1.25 + period.days / 30 * 1.25)))
 
     @api.multi
     def compute_reward(self):
