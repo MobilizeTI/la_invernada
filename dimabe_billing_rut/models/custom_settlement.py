@@ -95,5 +95,5 @@ class CustomSettlement(models.Model):
 
     @api.multi
     def test(self):
-        salary = self.env['hr.payslip.input'].search([('contract_id.id','=',self.contract_id.id),('name','like','LIQUIDO')])
+        salary = self.env['hr.payslip.line'].search([('employee_id.id','=',self.employee_id.id),('name','like','LIQUIDO')])
         raise models.UserError(salary)
