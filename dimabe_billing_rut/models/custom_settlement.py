@@ -22,6 +22,17 @@ class CustomSettlement(models.Model):
 
     vacation_day = fields.Float('Dias de Vacaciones', compute='compute_vacation_day', readonly=True)
 
+    day_takes = fields.Float('Dias Tomados')
+
+    days_pending = fields.Float('Dias Pendiente')
+
+    type_contract = fields.Selection([
+        ('Fijo', 'Fijo'),
+        ('Variable', 'Variable')
+    ])
+
+    wage = fields.Monetary('Sueldo Base',related='contract_id.wage')
+
     @api.multi
     @api.onchange('date_settlement')
     def compute_period(self):
@@ -34,4 +45,4 @@ class CustomSettlement(models.Model):
     def compute_vacation_day(self):
         for item in self:
             period = relativedelta(item.date_settlement, item.date_start_contract)
-            item.vacaction_day = (period.months * 1,25 + period.days/30 * 1,25)
+            item.vacaction_day = (period.months * 1, 25 + period.days / 30 * 1, 25)

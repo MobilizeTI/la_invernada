@@ -51,6 +51,7 @@
                     <field name="date_settlement"/>
                     <field name="period_of_service"/>
                     <field name="vacation_day"/>
+                    <field name="wage"/>
                 </group>
             </form>
         </field>
