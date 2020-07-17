@@ -61,14 +61,14 @@ class CustomSettlement(models.Model):
     def compute_period(self):
         for item in self:
             period = relativedelta(item.date_settlement, item.date_start_contract)
-            item.period_of_service = '{} años , {} meses , {} dias'.format(period.years, period.months, period.days)
+            item.period_of_service = '{} años , {} meses , {} dias'.format(period.years, period.months, (period.days + 1))
 
     @api.multi
     @api.onchange('date_settlement')
     def compute_vacation_day(self):
         for item in self:
             period = relativedelta(item.date_settlement, item.date_start_contract)
-            item.vacation_days = (15 * period.years + ((period.months * 1.25 + period.days / 30 * 1.25)))
+            item.vacation_days = (15 * period.years + (period.months * 1.25 + (period.days + 1) / 30 * 1.25))
 
     @api.multi
     def compute_reward(self):
