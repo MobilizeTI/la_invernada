@@ -67,4 +67,4 @@ class CustomSettlement(models.Model):
 
     @api.multi
     def test(self):
-        raise models.ValidationError(type(self.wage))
+        raise models.ValidationError(self.wage * 0.25)
