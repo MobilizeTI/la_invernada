@@ -6,7 +6,7 @@ class CustomFired(models.Model):
 
     name = fields.Char('Nombre', required=True)
 
-    description = fields.Char('Descripcion', required=True)
+    description = fields.Text('Descripcion', required=True)
 
     article = fields.Selection([
         ('159','Articulo 159'),
