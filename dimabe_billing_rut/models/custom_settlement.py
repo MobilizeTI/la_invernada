@@ -44,9 +44,9 @@ class CustomSettlement(models.Model):
         ('Edit', 'Editar')
     ], default='Yes')
 
-    snack_bonus = fields.Float('Colacion',related='contract_id.colacion')
+    snack_bonus = fields.Float('Colacion')
 
-    mobilization_bonus = fields.Float('Movilizacion',related='contract_id.movilizacion')
+    mobilization_bonus = fields.Float('Movilizacion')
 
     pending_remuneration_payment = fields.Monetary('Remuneraciones Pendientes')
 
