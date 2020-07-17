@@ -115,7 +115,6 @@ class CustomSettlement(models.Model):
     @api.depends('date_settlement', 'pending_remuneration_payment', 'reward_selection')
     def compute_settlement(self):
         for item in self:
-            period = relativedelta(item.date_settlement, item.date_start_contract)
             item.settlement = (item.wage + item.reward_value) + item.pending_remuneration_payment + \
                               (item.snack_bonus + item.mobilization_bonus) \
                               + (item.compensation_vacations + item.compensation_warning + item.compensation_years)
