@@ -7,7 +7,7 @@ class CustomSettlement(models.Model):
     employee_id = fields.Many2one('hr.employee')
 
 
-    contract_id = fields.Many2one('hr.contract', 'Contrato',related='contract_id.id')
+    contract_id = fields.Many2one('hr.contract', 'Contrato',related='employee_id.contract_id')
 
     fired_id = fields.Many2one('custom.fired', 'Causal de Despido')
 
