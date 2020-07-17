@@ -33,16 +33,15 @@ class CustomSettlement(models.Model):
 
     currency_id = fields.Many2one('res.currency', string='Moneda')
 
-    wage = fields.Monetary('Sueldo Base',related='contract_id.wage',currency_field='currency_id')
+    wage = fields.Monetary('Sueldo Base', related='contract_id.wage', currency_field='currency_id')
 
-    reward_value = fields.Monetary('Gratificacion',compute='compute_reward')
+    reward_value = fields.Monetary('Gratificacion', compute='compute_reward')
 
     reward_selection = fields.Selection([
-        ('Yes','Si'),
-        ('No','No'),
-        ('Edit','Editar')
-    ])
-
+        ('Yes', 'Si'),
+        ('No', 'No'),
+        ('Edit', 'Editar')
+    ], default='Yes')
 
     @api.multi
     @api.onchange('date_settlement')
@@ -58,12 +57,18 @@ class CustomSettlement(models.Model):
             period = relativedelta(item.date_settlement, item.date_start_contract)
             item.vacation_days = (period.months * 1.25 + period.days / 30 * 1.25)
 
-
     @api.multi
-    @api.onchange('reward_selection')
     def compute_reward(self):
         for item in self:
             item.reward_value = item.wage * 0.25
+
+    @api.onchange('reward_selection')
+    def onchange_reward_selection(self):
+        for item in self:
+            if item.reward_selection == 'Yes' or item.reward_selection == 'Edit':
+                item.reward_value = item.wage * 0.25
+            else:
+                item.reward_value = 0
 
     @api.multi
     def test(self):
