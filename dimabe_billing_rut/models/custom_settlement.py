@@ -98,8 +98,8 @@ class CustomSettlement(models.Model):
     @api.onchange('date_settlement')
     def compute_warning(self):
         for item in self:
-            period = relativedelta(item.date_settlement, item.date_start_contract)
-            if period.days < 30:
+            warning = item.date_settlement - item.date_of_notification
+            if warning.days < 30:
                 item.compensation_warning = (
                         (item.wage + item.snack_bonus + item.mobilization_bonus) + item.reward_value)
 
@@ -112,12 +112,13 @@ class CustomSettlement(models.Model):
                                        + item.reward_value) * period.years
 
     @api.multi
-    @api.onchange('date_settlement', 'pending_remuneration_payment', 'reward_selection')
+    @api.depends('date_settlement', 'pending_remuneration_payment', 'reward_selection')
     def compute_settlement(self):
         for item in self:
             period = relativedelta(item.date_settlement, item.date_start_contract)
-            item.settlement = (
-                                          item.wage + item.reward_value) + item.pending_remuneration_payment + item.snack_bonus + item.mobilization_bonus + item.compensation_vacations + item.compensation_warning + item.compensation_years
+            item.settlement = (item.wage + item.reward_value) + item.pending_remuneration_payment + \
+                              (item.snack_bonus + item.mobilization_bonus) \
+                              + (item.compensation_vacations + item.compensation_warning + item.compensation_years)
 
     @api.multi
     def test(self):
