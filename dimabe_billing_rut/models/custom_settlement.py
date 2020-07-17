@@ -94,6 +94,7 @@ class CustomSettlement(models.Model):
                 item.compensation_vacations = item.wage * item.vacation_days
 
     @api.multi
+    @api.onchange('date_settlement')
     def compute_warning(self):
         for item in self:
             period = relativedelta(item.date_settlement, item.date_start_contract)
@@ -101,6 +102,7 @@ class CustomSettlement(models.Model):
                 item.compensation_warning = (item.wage + item.reward_value)
 
     @api.multi
+    @api.onchange('date_settlement')
     def compute_years(self):
         for item in self:
             period = relativedelta(item.date_settlement, item.date_start_contract)
