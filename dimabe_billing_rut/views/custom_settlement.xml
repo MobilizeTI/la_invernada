@@ -35,17 +35,22 @@
                     <button type="object" name="test" string="Test" class="oe_highlight"/>
                 </header>
                 <sheet>
-                    <group style="width:40%%">
-                        <h1 class="d-none d-md-block">
-                            <field name="employee_id" domain="[('active','=',True)]"/>
-                        </h1>
-                    </group>
-                    <group>
-                        <h3 class="d-none d-md-block">
-                            <field name="contract_id"/>
-                            <field name="fired_id"/>
-                        </h3>
-                    </group>
+                    <div class="oe_title">
+                        <group style="width:40%%">
+                            <h1 class="d-none d-md-block">
+                                <field name="employee_id" domain="[('active','=',True)]"/>
+                            </h1>
+                        </group>
+                    </div>
+                    <separator/>
+                    <div class="oe_inline">
+                        <group>
+                            <h3 class="d-none d-md-block">
+                                <field name="contract_id"/>
+                                <field name="fired_id"/>
+                            </h3>
+                        </group>
+                    </div>
                     <group>
                         <group string="Años de Servicio">
                             <field name="date_start_contract"/>
