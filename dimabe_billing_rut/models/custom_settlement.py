@@ -21,7 +21,8 @@ class CustomSettlement(models.Model):
     period_of_service = fields.Char('Periodo de servicio', compute='compute_period', readonly=True)
 
     @api.multi
+    @api.onchange('date_settlement')
     def compute_period(self):
         for item in self:
-            period = relativedelta(date.today(), item.date_start_contract)
-            item.period_of_service = '{} años , {} meses ,{} dias'.format(period.years, period.months, period.days)
+            period = relativedelta(item.date_settlement, item.date_start_contract)
+            item.period_of_service = '{} años , {} meses , {} dias'.format(period.years, period.months, period.days)
