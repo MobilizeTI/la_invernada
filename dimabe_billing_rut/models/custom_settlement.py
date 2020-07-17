@@ -60,7 +60,7 @@ class CustomSettlement(models.Model):
 
 
     @api.multi
-    @api.onchange('wage')
+    @api.onchange('reward_selection')
     def compute_reward(self):
         for item in self:
             if item.reward_selection == 'Si' or item.reward_selection == 'Editar':
