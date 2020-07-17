@@ -34,4 +34,4 @@ class CustomSettlement(models.Model):
     def compute_vacation_day(self):
         for item in self:
             period = relativedelta(item.date_settlement, item.date_start_contract)
-            item.vacaction_day = (period.months * 1,25 + 24/30 * 1,25)
+            item.vacaction_day = (period.months * 1,25 + period.days/30 * 1,25)
