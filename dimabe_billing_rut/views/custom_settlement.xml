@@ -42,10 +42,8 @@
                 <group>
                     <h3 class="d-none d-md-block">
                         <field name="contract_id"/>
-                    </h3>
-                    <h4 class="d-none d-md-block">
                         <field name="fired_id"/>
-                    </h4>
+                    </h3>
                 </group>
                 <group>
                     <field name="date_start_contract"/>
