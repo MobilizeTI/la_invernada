@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 import datetime
 from datetime import datetime, date, time
+from dateutil.relativedelta import *
 
 
 class CustomSettlement(models.Model):
@@ -22,6 +23,6 @@ class CustomSettlement(models.Model):
     @api.multi
     def compute_period(self):
         for item in self:
-            period = date.today() - item.date_start_contract
+            period = relativedelta(date.today(),item.date_start_contract)
             item.period_of_service = '{}'.format(period)
 
