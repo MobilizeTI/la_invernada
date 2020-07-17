@@ -6,7 +6,7 @@ from dateutil.relativedelta import *
 
 class CustomSettlement(models.Model):
     _name = 'custom.settlement'
-    employee_id = fields.Many2one('hr.employee','Empleado',required=True)
+    employee_id = fields.Many2one('hr.employee', 'Empleado', required=True)
 
     contract_id = fields.Many2one('hr.contract', 'Contrato', related='employee_id.contract_id')
 
@@ -18,11 +18,10 @@ class CustomSettlement(models.Model):
 
     date_settlement = fields.Date('Fecha finiquito')
 
-    period_of_service = fields.Char('Periodo de servicio',compute='compute_period',readonly=True)
+    period_of_service = fields.Char('Periodo de servicio', compute='compute_period', readonly=True)
 
     @api.multi
     def compute_period(self):
         for item in self:
-            period = relativedelta(date.today(),item.date_start_contract)
-            item.period_of_service = '{}'.format(period)
-
+            period = relativedelta(date.today(), item.date_start_contract)
+            item.period_of_service = '{} años , {} meses ,{} dias'.format(period.years, period.months, period.days)
