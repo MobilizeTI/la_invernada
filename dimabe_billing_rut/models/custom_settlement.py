@@ -8,6 +8,7 @@ from dateutil import rrule
 class CustomSettlement(models.Model):
     _name = 'custom.settlement'
     _rec_name = 'employee_id'
+
     employee_id = fields.Many2one('hr.employee', 'Empleado', required=True)
 
     contract_id = fields.Many2one('hr.contract', 'Contrato', related='employee_id.contract_id')
@@ -51,9 +52,9 @@ class CustomSettlement(models.Model):
 
     pending_remuneration_payment = fields.Monetary('Remuneraciones Pendientes')
 
-    compensation_warning = fields.Monetary('indemnización Aviso Previo')
+    compensation_warning = fields.Monetary('indemnización Aviso Previo',compute='compute_warning')
 
-    compensation_years = fields.Monetary('indemnización Años de Servicio')
+    compensation_years = fields.Monetary('indemnización Años de Servicio',compute='compute_years')
 
     compensation_vacations = fields.Monetary('indemnización Vacaciones',compute='compute_vacations')
 
@@ -92,6 +93,18 @@ class CustomSettlement(models.Model):
             if item.vacation_days > 0:
                 item.compensation_vacations = item.wage * item.vacation_days
 
+    @api.multi
+    def compute_warning(self):
+        for item in self:
+            period = relativedelta(item.date_settlement, item.date_start_contract)
+            if period.days < 30:
+                item.compensation_warning = (item.wage + item.reward_value)
+
+    @api.multi
+    def compute_years(self):
+        for item in self:
+            period = relativedelta(item.date_settlement, item.date_start_contract)
+            item.compensation_years = (item.wage + item.reward_value) * period.years
 
     @api.multi
     def test(self):
