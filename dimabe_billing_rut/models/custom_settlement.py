@@ -26,8 +26,8 @@ class CustomSettlement(models.Model):
             if difference > 0:
                 item.period_of_service = difference
             else:
-                difference_moth = (datetime.now().moth - item.date_start_contract.moth) / 100
-                item.period_of_service = difference_moth
+                difference_month = (datetime.now().month - item.date_start_contract.month) / 100
+                item.period_of_service = difference_month
             raise models.ValidationError(difference)
 
 
