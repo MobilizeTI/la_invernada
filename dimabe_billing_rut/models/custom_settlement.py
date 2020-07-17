@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+import datetime
 
 
 class CustomSettlement(models.Model):
@@ -11,3 +12,18 @@ class CustomSettlement(models.Model):
     date_start_contract = fields.Date('Fecha de inicio', related='contract_id.date_start')
 
     date_of_notification = fields.Date('Fecha de Notificacion de despido')
+
+    date_settlement = fields.Date('Fecha finiquito')
+
+    period_of_service = fields.Float('Periodo de servicio')
+
+    @api.multi
+    def test(self):
+        for item in self:
+            date = datetime.datetime.strftime(item.date_start_contract,"%Y-%m-%d")
+            raise models.ValidationError(date.month)
+
+
+
+
+

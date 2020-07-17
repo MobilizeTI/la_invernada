@@ -8,4 +8,10 @@ class CustomFired(models.Model):
 
     description = fields.Char('Descripcion', required=True)
 
+    article = fields.Selection([
+        ('159','Articulo 159'),
+        ('160','Articulo 160'),
+        ('161','Articulo 161')
+    ])
+
 
