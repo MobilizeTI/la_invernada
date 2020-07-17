@@ -57,6 +57,8 @@ class CustomSettlement(models.Model):
 
     compensation_vacations = fields.Monetary('indemnización Vacaciones',compute='compute_vacations')
 
+    salary = fields.Monetary('Sueldo Liquido')
+
     @api.multi
     @api.onchange('date_settlement')
     def compute_period(self):
@@ -90,7 +92,8 @@ class CustomSettlement(models.Model):
             if item.vacation_days > 0:
                 item.compensation_vacations = item.wage * item.vacation_days
 
+
     @api.multi
     def test(self):
-        rule = rrule.rrule(rrule.WEEKLY,dtstart=self.date_start_contract,until=self.date_settlement)
-        raise models.ValidationError(rule.count())
+        salary = self.env['hr.payslip.input'].search([('contract_id.id','=',self.contract_id.id),('name','like','LIQUIDO')])
+        raise models.UserError(salary)
