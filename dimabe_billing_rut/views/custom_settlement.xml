@@ -34,23 +34,25 @@
                 <header>
                     <button type="object" name="test" string="Test" class="oe_highlight"/>
                 </header>
-                <notebook>
-                    <group style="width:40%%">
-                        <h1 class="d-none d-md-block">
-                            <field name="employee_id" domain="[('active','=',True)]"/>
-                        </h1>
-                    </group>
-                    <group>
-                        <h3 class="d-none d-md-block">
-                            <field name="contract_id"/>
-                        </h3>
-                    </group>
-                    <group>
-                        <h4 class="d-none d-md-block">
-                            <field name="fired_id"/>
-                        </h4>
-                    </group>
-                </notebook>
+                <group style="width:40%%">
+                    <h1 class="d-none d-md-block">
+                        <field name="employee_id" domain="[('active','=',True)]"/>
+                    </h1>
+                </group>
+                <group>
+                    <h3 class="d-none d-md-block">
+                        <field name="contract_id"/>
+                    </h3>
+                    <h4 class="d-none d-md-block">
+                        <field name="fired_id"/>
+                    </h4>
+                </group>
+                <group>
+                    <field name="date_start_contract"/>
+                    <field name="date_of_notification"/>
+                    <field name="date_settlement"/>
+                    <field name="period_of_service"/>
+                </group>
             </form>
         </field>
     </record>
