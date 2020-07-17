@@ -64,7 +64,9 @@ class CustomSettlement(models.Model):
     def compute_reward(self):
         for item in self:
             if item.reward_selection == 'Si' or item.reward_selection == 'Editar':
+                raise models.UserError(item.wage * 0.25)
                 item.reward_value = item.wage * 0.25
             else:
+                raise models.UserError(0)
                 item.reward_value = 0
 
