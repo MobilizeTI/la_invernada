@@ -25,9 +25,11 @@ class CustomSettlement(models.Model):
             difference = datetime.now().year - item.date_start_contract.year
             if difference > 0:
                 item.period_of_service = difference
+                raise models.ValidationError(difference)
             else:
                 difference_month = (datetime.now().month - item.date_start_contract.month) / 100
                 item.period_of_service = difference_month
-            raise models.ValidationError(difference)
+                raise models.ValidationError(difference_month)
+
 
 
