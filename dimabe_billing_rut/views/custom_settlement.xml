@@ -7,7 +7,7 @@
         <field name="padding">5</field>
         <field name="company_id" eval="False" />
     </record>
-    <record id="custom_settlement_action" model="ir.actions_act_window">
+    <record id="custom_settlement_action" model="ir.actions.act_window">
         <field name="name">Finiquito</field>
         <field name="res_model">custom.settlement</field>
         <field name="view_mode">tree,graph,form,pivot</field>
