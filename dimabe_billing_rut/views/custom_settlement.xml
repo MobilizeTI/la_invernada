@@ -46,15 +46,17 @@
                             <field name="fired_id"/>
                         </h3>
                     </group>
-                    <group string="Años de Servicio">
-                        <field name="date_start_contract"/>
-                        <field name="date_of_notification"/>
-                        <field name="date_settlement"/>
-                        <field name="period_of_service"/>
-                    </group>
-                    <group string="Vacaciones">
-                        <field name="vacation_days"/>
-                        <field name="day_takes"/>
+                    <group>
+                        <group string="Años de Servicio">
+                            <field name="date_start_contract"/>
+                            <field name="date_of_notification"/>
+                            <field name="date_settlement"/>
+                            <field name="period_of_service"/>
+                        </group>
+                        <group string="Vacaciones">
+                            <field name="vacation_days"/>
+                            <field name="day_takes"/>
+                        </group>
                     </group>
                     <group string="Contratos">
                         <field name="type_contract"/>
