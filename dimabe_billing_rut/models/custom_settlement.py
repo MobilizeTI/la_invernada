@@ -22,6 +22,7 @@ class CustomSettlement(models.Model):
     @api.multi
     def test(self):
         for item in self:
-            raise models.ValidationError(item.date_start_contract.year)
+            difference = datetime.now().year - item.date_start_contract.year
+            raise models.ValidationError(difference)
 
 
