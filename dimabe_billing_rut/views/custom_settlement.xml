@@ -5,7 +5,7 @@
         <field name="code">custom.settlement</field>
         <field name="prefix">800</field>
         <field name="padding">5</field>
-        <field name="company_id" eval="False" />
+        <field name="company_id" eval="False"/>
     </record>
     <record id="custom_settlement_action" model="ir.actions.act_window">
         <field name="name">Finiquito</field>
@@ -21,7 +21,7 @@
                 <field name="fired_id"/>
                 <field name="date_start_contract"/>
                 <field name="date_of_notification"/>
-                <field name="date_settlement" />
+                <field name="date_settlement"/>
                 <field name="period_of_service"/>
             </tree>
         </field>
@@ -34,27 +34,28 @@
                 <header>
                     <button type="object" name="test" string="Test" class="oe_highlight"/>
                 </header>
-                <group>
+                <group width="50%%">
                     <h1 class="d-none d-md-block">
                         <field name="employee_id" domain="[('active','=',True)]"/>
                     </h1>
+                    <group>
+                        <h3 class="d-none d-md-block">
+                            <field name="contract_id"/>
+                        </h3>
+                    </group>
+                    <group>
+                        <h4 class="d-none d-md-block">
+                            <field name="fired_id"/>
+                        </h4>
+                    </group>
                 </group>
-                <group>
-                    <h3 class="d-none d-md-block">
-                        <field name="contract_id" />
-                    </h3>
-                </group>
-                <group>
-                    <h4 class="d-none d-md-block">
-                        <field name="fired_id"/>
-                    </h4>
-                </group>
+
             </form>
         </field>
     </record>
-      <menuitem name="Finiquito"
-            id="dimabe_billing_rut.custom_settlement"
-            parent="hr_payroll.menu_hr_payroll_root"
-            action="custom_settlement_action"
-  />
+    <menuitem name="Finiquito"
+              id="dimabe_billing_rut.custom_settlement"
+              parent="hr_payroll.menu_hr_payroll_root"
+              action="custom_settlement_action"
+    />
 </odoo>
