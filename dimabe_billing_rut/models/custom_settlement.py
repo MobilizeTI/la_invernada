@@ -20,7 +20,7 @@ class CustomSettlement(models.Model):
 
     period_of_service = fields.Char('Periodo de servicio', compute='compute_period', readonly=True)
 
-    vacation_day = fields.Float('Dias de Vacaciones', compute='compute_vacation_day', readonly=True)
+    vacation_days = fields.Float('Dias de Vacaciones', compute='compute_vacation_day', readonly=True)
 
     day_takes = fields.Float('Dias Tomados')
 
