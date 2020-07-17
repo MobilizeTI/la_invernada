@@ -54,7 +54,7 @@ class CustomSettlement(models.Model):
 
     compensation_years = fields.Monetary('indemnización Años de Servicio')
 
-    compensation_vacations = fields.Monetary('indemnización Vacaciones',compute='compute_vacactions')
+    compensation_vacations = fields.Monetary('indemnización Vacaciones',compute='compute_vacations')
 
     @api.multi
     @api.onchange('date_settlement')
