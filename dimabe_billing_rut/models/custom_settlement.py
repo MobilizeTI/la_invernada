@@ -35,7 +35,7 @@ class CustomSettlement(models.Model):
 
     wage = fields.Monetary('Sueldo Base',related='contract_id.wage',currency_field='currency_id')
 
-    reward_value = fields.Float('Gratificacion')
+    reward_value = fields.Monetary('Gratificacion',compute='compute_reward')
 
     reward_selection = fields.Selection([
         ('Si','Si'),
@@ -57,3 +57,14 @@ class CustomSettlement(models.Model):
         for item in self:
             period = relativedelta(item.date_settlement, item.date_start_contract)
             item.vacation_days = (period.months * 1.25 + period.days / 30 * 1.25)
+
+
+    @api.multi
+    @api.onchange('wage')
+    def compute_reward(self):
+        for item in self:
+            if item.reward_selection == 'Si' or item.reward_selection == 'Editar':
+                item.reward_value = item.wage * 0.25
+            else:
+                item.reward_value = 0
+
