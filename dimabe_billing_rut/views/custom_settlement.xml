@@ -38,6 +38,9 @@
                     <h1 class="d-none d-md-block">
                         <field name="employee_id" domain="[('active','=',True)]"/>
                     </h1>
+                    <h3 class="d-none d-md-block">
+                        <field name="contract_id" />
+                    </h3>
                 </group>
             </form>
         </field>

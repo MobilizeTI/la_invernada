@@ -4,10 +4,10 @@ import datetime
 
 class CustomSettlement(models.Model):
     _name = 'custom.settlement'
-
-    contract_id = fields.Many2one('hr.contract', 'Contrato')
-
     employee_id = fields.Many2one('hr.employee')
+
+
+    contract_id = fields.Many2one('hr.contract', 'Contrato',related='contract_id.id')
 
     fired_id = fields.Many2one('custom.fired', 'Causal de Despido')
 
