@@ -20,9 +20,18 @@ class CustomSettlement(models.Model):
 
     period_of_service = fields.Char('Periodo de servicio', compute='compute_period', readonly=True)
 
+    vacation_day = fields.Float('Dias de Vacaciones',compute='compute_vacation_day')
+
     @api.multi
     @api.onchange('date_settlement')
     def compute_period(self):
         for item in self:
             period = relativedelta(item.date_settlement, item.date_start_contract)
             item.period_of_service = '{} años , {} meses , {} dias'.format(period.years, period.months, period.days)
+
+    @api.multi
+    @api.onchange('date_settlement')
+    def compute_vacation_day(self):
+        for item in self:
+            period = relativedelta(item.date_settlement, item.date_start_contract)
+            item.vacaction_day = period.years
