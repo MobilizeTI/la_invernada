@@ -65,3 +65,6 @@ class CustomSettlement(models.Model):
         for item in self:
             item.reward_value = item.wage * 0.25
 
+    @api.multi
+    def test(self):
+        raise models.ValidationError(type(self.wage))
