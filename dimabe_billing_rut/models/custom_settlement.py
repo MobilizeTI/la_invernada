@@ -93,4 +93,4 @@ class CustomSettlement(models.Model):
     @api.multi
     def test(self):
         rule = rrule.rrule(rrule.WEEKLY,dtstart=self.date_start_contract,until=self.date_settlement)
-        raise models.ValidationError(rule)
+        raise models.ValidationError(rule.count())
