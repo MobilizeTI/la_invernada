@@ -34,6 +34,11 @@
                 <header>
                     <button type="object" name="test" string="Test" class="oe_highlight"/>
                 </header>
+                <group>
+                    <h1 class="d-none d-md-block">
+                        <field name="employee_id" domain="[('active','=',True)]"/>
+                    </h1>
+                </group>
             </form>
         </field>
     </record>

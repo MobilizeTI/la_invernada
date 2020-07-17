@@ -7,6 +7,8 @@ class CustomSettlement(models.Model):
 
     contract_id = fields.Many2one('hr.contract', 'Contrato')
 
+    employee_id = fields.Many2one('hr.employee')
+
     fired_id = fields.Many2one('custom.fired', 'Causal de Despido')
 
     date_start_contract = fields.Date('Fecha de inicio', related='contract_id.date_start')
