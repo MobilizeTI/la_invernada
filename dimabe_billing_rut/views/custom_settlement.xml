@@ -58,11 +58,20 @@
                             <field name="day_takes"/>
                         </group>
                     </group>
-                    <group string="Contratos">
-                        <field name="type_contract"/>
-                        <field name="wage"/>
-                        <field name="reward_selection"/>
-                        <field name="reward_value" attrs="{'readonly':[('reward_selection','!=','Editar')]}"/>
+                    <group>
+                        <group string="Contrato">
+                            <field name="type_contract"/>
+                            <field name="wage"/>
+                            <field name="reward_selection"/>
+                            <field name="reward_value" attrs="{'readonly':[('reward_selection','!=','Editar')]}"/>
+                            <field name="snack_bonus"/>
+                            <field name="mobilization_bonus"/>
+                        </group>
+                        <group string="Remuneraciones">
+                            <field name="compensation_warning"/>
+                            <field name="compensation_years"/>
+                            <field name="compensation_vacations"/>
+                        </group>
                     </group>
                 </sheet>
             </form>

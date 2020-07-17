@@ -6,6 +6,7 @@ from dateutil.relativedelta import *
 
 class CustomSettlement(models.Model):
     _name = 'custom.settlement'
+    _rec_name = 'employee_id'
     employee_id = fields.Many2one('hr.employee', 'Empleado', required=True)
 
     contract_id = fields.Many2one('hr.contract', 'Contrato', related='employee_id.contract_id')
@@ -42,6 +43,18 @@ class CustomSettlement(models.Model):
         ('No', 'No'),
         ('Edit', 'Editar')
     ], default='Yes')
+
+    snack_bonus = fields.Float('Colacion',related='contract_id.colacion')
+
+    mobilization_bonus = fields.Float('Movilizacion',related='contract_id.movilizacion')
+
+    pending_remuneration_payment = fields.Monetary('Remuneraciones Pendientes')
+
+    compensation_warning =fields.Monetary('indemnización Aviso Previo')
+
+    compensation_years = fields.Monetary('indemnización Años de Servicio')
+
+    compensation_vacations = fields.Monetary('indemnización Vacaciones')
 
     @api.multi
     @api.onchange('date_settlement')
