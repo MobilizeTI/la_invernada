@@ -99,7 +99,7 @@ class CustomSettlement(models.Model):
     def compute_warning(self):
         for item in self:
             warning = item.date_settlement - item.date_of_notification
-            if warning.days < 30:
+            if warning < 30:
                 item.compensation_warning = (
                         (item.wage + item.snack_bonus + item.mobilization_bonus) + item.reward_value)
 
