@@ -22,6 +22,6 @@ class CustomSettlement(models.Model):
     @api.multi
     def compute_period(self):
         for item in self:
-            period = datetime.now() - item.date_start_contract
+            period = date.now() - item.date_start_contract
             item.period_of_service = '{}'.format(period)
 
