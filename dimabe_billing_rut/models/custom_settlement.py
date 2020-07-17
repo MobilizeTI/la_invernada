@@ -31,7 +31,9 @@ class CustomSettlement(models.Model):
         ('Variable', 'Variable')
     ])
 
-    wage = fields.Monetary('Sueldo Base',related='contract_id.wage')
+    currency_id = fields.Many2one('res.currency', string='Moneda')
+
+    wage = fields.Monetary('Sueldo Base',related='contract_id.wage',currency_field='currency_id')
 
     @api.multi
     @api.onchange('date_settlement')
