@@ -17,19 +17,16 @@ class CustomSettlement(models.Model):
 
     date_settlement = fields.Date('Fecha finiquito')
 
-    period_of_service = fields.Float('Periodo de servicio')
+    period_of_service = fields.Float('Periodo de servicio',compute='compute_period')
 
     @api.multi
-    def test(self):
+    def compute_period(self):
         for item in self:
             difference = datetime.now().year - item.date_start_contract.year
             if difference > 0:
                 item.period_of_service = difference
-                raise models.ValidationError(difference)
             else:
-                difference_month = (datetime.now().month - item.date_start_contract.month) / 100
+                difference_month = (datetime.now().month - item.date_start_contract.month) / 12
                 item.period_of_service = difference_month
-                raise models.ValidationError(difference_month)
-
 
 
