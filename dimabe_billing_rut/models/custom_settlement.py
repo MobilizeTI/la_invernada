@@ -52,20 +52,23 @@ class CustomSettlement(models.Model):
 
     pending_remuneration_payment = fields.Monetary('Remuneraciones Pendientes')
 
-    compensation_warning = fields.Monetary('indemnización Aviso Previo',compute='compute_warning')
+    compensation_warning = fields.Monetary('indemnización Aviso Previo', compute='compute_warning')
 
-    compensation_years = fields.Monetary('indemnización Años de Servicio',compute='compute_years')
+    compensation_years = fields.Monetary('indemnización Años de Servicio', compute='compute_years')
 
-    compensation_vacations = fields.Monetary('indemnización Vacaciones',compute='compute_vacations')
+    compensation_vacations = fields.Monetary('indemnización Vacaciones', compute='compute_vacations')
 
     salary = fields.Monetary('Sueldo Liquido')
+
+    settlement = fields.Monetary('Finiquito')
 
     @api.multi
     @api.onchange('date_settlement')
     def compute_period(self):
         for item in self:
             period = relativedelta(item.date_settlement, item.date_start_contract)
-            item.period_of_service = '{} años , {} meses , {} dias'.format(period.years, period.months, (period.days + 1))
+            item.period_of_service = '{} años , {} meses , {} dias'.format(period.years, period.months,
+                                                                           (period.days + 1))
 
     @api.multi
     @api.onchange('date_settlement')
@@ -99,16 +102,19 @@ class CustomSettlement(models.Model):
         for item in self:
             period = relativedelta(item.date_settlement, item.date_start_contract)
             if period.days < 30:
-                item.compensation_warning = (item.wage + item.reward_value)
+                item.compensation_warning = (
+                            (item.wage + item.snack_bonus + item.mobilization_bonus) + item.reward_value)
 
     @api.multi
     @api.onchange('date_settlement')
     def compute_years(self):
         for item in self:
             period = relativedelta(item.date_settlement, item.date_start_contract)
-            item.compensation_years = (item.wage + item.reward_value) * period.years
+            item.compensation_years = ((item.wage + item.snack_bonus + item.mobilization_bonus)
+                                       + item.reward_value) * period.years
 
     @api.multi
     def test(self):
-        salary = self.env['hr.payslip.line'].search([('employee_id.id','=',self.employee_id.id),('name','like','LIQUIDO')])
+        salary = self.env['hr.payslip.line'].search(
+            [('employee_id.id', '=', self.employee_id.id), ('name', 'like', 'LIQUIDO')])
         raise models.UserError(salary)
