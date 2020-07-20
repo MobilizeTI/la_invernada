@@ -41,7 +41,7 @@
         </record>
         <menuitem name="Feriados"
                   id="dimabe_billing_rut.custom_holidays"
-                  parent="l10n_cl_hr.menu_cl_hr_payroll_master_data"
+                  parent="hr_payroll.menu_hr_payroll_root"
                   action="custom_holidays_action"
         />
     </data>
