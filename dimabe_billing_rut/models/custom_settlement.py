@@ -13,6 +13,8 @@ class CustomSettlement(models.Model):
 
     fired_id = fields.Many2one('custom.fired', 'Causal de Despido', required=True)
 
+    article_causal = fields.Char('Articulo',related='fired_id.article')
+
     date_start_contract = fields.Date('Fecha de inicio', related='contract_id.date_start')
 
     date_of_notification = fields.Date('Fecha de Notificacion de despido', default=date.today())

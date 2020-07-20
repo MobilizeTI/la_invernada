@@ -76,8 +76,9 @@
                         </group>
                         <group string="Remuneraciones">
                             <field name="compensation_warning"/>
-                            <field name="compensation_years"/>
-                            <field name="compensation_vacations"/>
+                            <field name="article_causal" invisible="1"/>
+                            <field name="compensation_years" attrs="{'invisible': [('article_causal','!=','161')]}"/>
+                            <field name="compensation_vacations" attrs="{'invisible': [('article_causal','!=','161')]}"/>
                         </group>
                     </group>
                     <group>
