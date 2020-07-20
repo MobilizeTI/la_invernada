@@ -33,6 +33,7 @@
             <form>
                 <header>
                     <button type="object" name="test" string="Test" class="oe_highlight"/>
+                    <button type="object" name="calculate_settlement" string="Calcular Finiquito" class="oe_highlight"/>
                 </header>
                 <sheet>
                     <div class="oe_title">

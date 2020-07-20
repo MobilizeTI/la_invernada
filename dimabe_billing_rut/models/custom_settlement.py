@@ -2,6 +2,7 @@ from odoo import models, fields, api
 from datetime import date
 from dateutil.relativedelta import *
 
+
 class CustomSettlement(models.Model):
     _name = 'custom.settlement'
     _rec_name = 'employee_id'
@@ -10,19 +11,19 @@ class CustomSettlement(models.Model):
 
     contract_id = fields.Many2one('hr.contract', 'Contrato', related='employee_id.contract_id')
 
-    fired_id = fields.Many2one('custom.fired', 'Causal de Despido',required=True)
+    fired_id = fields.Many2one('custom.fired', 'Causal de Despido', required=True)
 
     date_start_contract = fields.Date('Fecha de inicio', related='contract_id.date_start')
 
-    date_of_notification = fields.Date('Fecha de Notificacion de despido',default=date.today())
+    date_of_notification = fields.Date('Fecha de Notificacion de despido', default=date.today())
 
-    date_settlement = fields.Date('Fecha finiquito',required=True)
+    date_settlement = fields.Date('Fecha finiquito', required=True)
 
     period_of_service = fields.Char('Periodo de servicio', compute='compute_period', readonly=True)
 
     vacation_days = fields.Float('Dias de Vacaciones', compute='compute_vacation_day', readonly=True)
 
-    day_takes = fields.Float('Dias Tomados',default=0.0)
+    day_takes = fields.Float('Dias Tomados', default=0.0)
     days_pending = fields.Float('Dias Pendiente')
 
     type_contract = fields.Selection([
@@ -40,7 +41,7 @@ class CustomSettlement(models.Model):
         ('Yes', 'Si'),
         ('No', 'No'),
         ('Edit', 'Editar')
-    ])
+    ], default='Yes')
 
     snack_bonus = fields.Float('Colacion')
 
@@ -52,7 +53,7 @@ class CustomSettlement(models.Model):
 
     compensation_years = fields.Monetary('indemnización Años de Servicio', compute='compute_years')
 
-    compensation_vacations = fields.Monetary('indemnización Vacaciones')#, compute='compute_vacations'#)
+    compensation_vacations = fields.Monetary('indemnización Vacaciones')  # , compute='compute_vacations'#)
 
     settlement = fields.Monetary('Finiquito')
 
@@ -63,6 +64,7 @@ class CustomSettlement(models.Model):
             period = relativedelta(item.date_settlement, item.date_start_contract)
             item.period_of_service = '{} años , {} meses , {} dias'.format(period.years, period.months,
                                                                            (period.days + 1))
+
     @api.multi
     @api.onchange('date_settlement')
     def compute_vacation_day(self):
@@ -95,18 +97,17 @@ class CustomSettlement(models.Model):
     @api.onchange('date_settlement')
     def compute_warning(self):
         for item in self:
-            period = relativedelta(item.date_settlement, item.date_start_contract)
-            if period.days < 30:
-                item.compensation_warning = (
-                        (item.wage + item.snack_bonus + item.mobilization_bonus) + item.reward_value)
+            warning = abs(self.date_of_notification - self.date_settlement).days
+            if warning < 30:
+                item.compensation_warning = ((item.wage + item.reward_value) + (item.snack_bonus + item.mobilization_bonus))
 
     @api.multi
     @api.onchange('date_settlement')
     def compute_years(self):
         for item in self:
             period = relativedelta(item.date_settlement, item.date_start_contract)
-            item.compensation_years = ((item.wage + item.snack_bonus + item.mobilization_bonus)
-                                       + item.reward_value) * period.years
+            self.compensation_years = ((item.wage + item.reward_value) + (
+                        item.snack_bonus + self.mobilization_bonus)) * period.years
 
     @api.multi
     @api.depends('date_settlement', 'pending_remuneration_payment', 'reward_selection')
@@ -119,5 +120,5 @@ class CustomSettlement(models.Model):
 
     @api.multi
     def test(self):
-        test = abs(self.date_of_notification-self.date_settlement).days
+        test = ''
         raise models.UserError(test)
