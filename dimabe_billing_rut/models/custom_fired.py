@@ -3,7 +3,6 @@ from odoo import models, fields, api
 
 class CustomFired(models.Model):
     _name = 'custom.fired'
-    _rec_name = '[article],[name]'
 
     name = fields.Char('Nombre', required=True)
 
