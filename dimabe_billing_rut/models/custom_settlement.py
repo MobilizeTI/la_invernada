@@ -119,6 +119,5 @@ class CustomSettlement(models.Model):
 
     @api.multi
     def test(self):
-        salary = self.env['hr.payslip.line'].search(
-            [('employee_id.id', '=', self.employee_id.id), ('name', 'like', 'LIQUIDO')])
-        raise models.UserError(salary)
+        test = abs(self.date_of_notification-self.date_settlement).days
+        raise models.UserError(test)
