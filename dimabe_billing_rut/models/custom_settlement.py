@@ -23,7 +23,7 @@ class CustomSettlement(models.Model):
     vacation_days = fields.Float('Dias de Vacaciones', compute='compute_vacation_day', readonly=True)
 
     day_takes = fields.Float('Dias Tomados',default=0.0)
-    days_pending = fields.Float('Dias Pendiente',compute='compute_days_pending')
+    days_pending = fields.Float('Dias Pendiente')
 
     type_contract = fields.Selection([
         ('Fijo', 'Fijo'),
