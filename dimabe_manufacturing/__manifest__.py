@@ -84,6 +84,7 @@
         'reports/stock/match_report_service.xml',
         'reports/stock/stock_quant_list.xml',
         'reports/inventory/compare_inventory_report.xml'
+        'reports/stock/match_report_service.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

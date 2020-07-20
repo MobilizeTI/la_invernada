@@ -284,39 +284,22 @@ class StockProductionLot(models.Model):
         quants = self.env['stock.quant'].search([])
         lots = self.env['stock.production.lot'].search([])
         for lot in lots:
-            quant_lot = quants.filtered(lambda a: a.location_id.name == 'Stock')
+            quant_lot = quants.filtered(lambda a: a.location_id.name == 'Stock' and a.lot_id.id == lot.id)
             lot_reception = self.env['stock.picking'].search([('name', '=', lot.name)])
             if lot_reception:
-                lot_reception.update({
-                    'state': 'done'
-                })
-                lot_reception.move_line_ids_without_package.update({
-                    'state': 'done'
-                })
                 quant_lot.write({
-                    'reserved_available': 0,
+                    'reserved_quantity': 0,
                     'quantity': lot.available_weight + lot_reception.quality_weight
                 })
             else:
                 quant_lot.write({
-                    'reserved_available': 0,
+                    'reserved_quantity': 0,
                     'quantity': lot.available_weight
                 })
 
     @api.multi
     def fix_error_inventory(self):
         product_loteable = self.env['product.product'].search([('tracking', '=', 'lot')]).mapped('id')
-        moves = self.env['stock.move'].search(
-            [('id', 'in',
-              self.env['stock.move.line'].search([('product_id', 'in', product_loteable)]).mapped('move_id').mapped(
-                  'id'))])
-        for stock in moves:
-            for move in stock.active_move_line_ids:
-                if move.product_uom_qty > 0 and 'PT' not in move.product_id.default_code:
-                    move.write({
-                        'state': 'cancel',
-                        'product_uom_qty': 0
-                    })
         quants_without_lot = self.env['stock.quant'].search(
             [('product_id', 'in', product_loteable), ('lot_id', '=', None)])
         for quant in quants_without_lot:

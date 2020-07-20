@@ -34,7 +34,6 @@
                   string="Validar"
                   name="generate_hes"
                   class="oe_highlight"
-                  attrs="{'invisible':[('state', '!=', 'purchase')]}"
           />
         </xpath>
       </field>
