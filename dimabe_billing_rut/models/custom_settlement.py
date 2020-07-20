@@ -26,7 +26,7 @@ class CustomSettlement(models.Model):
     vacation_days = fields.Float('Dias de Vacaciones', compute='compute_vacation_day', readonly=True)
 
     day_takes = fields.Float('Dias Tomados', default=0.0)
-    days_pending = fields.Float('Dias Pendiente')
+    days_pending = fields.Float('Dias Pendiente',compute='compute_days_pending')
 
     type_contract = fields.Selection([
         ('Fijo', 'Fijo'),
@@ -58,6 +58,12 @@ class CustomSettlement(models.Model):
     compensation_vacations = fields.Monetary('indemnización Vacaciones')  # , compute='compute_vacations'#)
 
     settlement = fields.Monetary('Finiquito')
+
+    @api.multi
+    @api.onchange('day_takes')
+    def compute_days_pending(self):
+        for item in self:
+            item.days_pending = item.vacation_days - item.day_takes
 
     @api.multi
     @api.onchange('date_settlement')
