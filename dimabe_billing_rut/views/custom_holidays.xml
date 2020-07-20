@@ -38,8 +38,8 @@
             </form>
         </field>
     </record>
-    <menuitem name="Finiquito"
-              id="dimabe_billing_rut.custom_settlement"
+    <menuitem name="Feriados"
+              id="dimabe_billing_rut.custom_holidays"
               parent="l10n_cl_hr.menu_cl_hr_payroll_master_data"
               action="custom_settlement_action"
     />
