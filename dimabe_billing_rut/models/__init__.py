@@ -12,3 +12,4 @@ from . import rut_helper
 from . import stock_location
 from . import stock_picking
 from . import custom_settlement
+from . import custom_holidays

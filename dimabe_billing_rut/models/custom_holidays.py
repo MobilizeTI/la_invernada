@@ -1,5 +1,6 @@
-from odoo import models,fields,api
+from odoo import models, fields, api
 from odoo.models import UserError
+
 
 class CustomHolidays(models.Model):
     _name = 'custom.holidays'
@@ -8,4 +9,6 @@ class CustomHolidays(models.Model):
 
     date = fields.Date('Fecha')
 
-    type = fields.Selection([('Civil','Civil')])
+    type = fields.Selection([('Civil', 'Civil'), ('Religioso', 'Religioso')])
+
+    inalienable = fields.Boolean('Irrenunciable')
