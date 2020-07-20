@@ -86,12 +86,6 @@ class CustomSettlement(models.Model):
         for item in self:
             if item.reward_selection == 'Yes' or item.reward_selection == 'Edit':
                 item.reward_value = item.wage * 0.25
-
-    @api.onchange('reward_selection')
-    def onchange_reward_selection(self):
-        for item in self:
-            if item.reward_selection == 'Yes' or item.reward_selection == 'Edit':
-                item.reward_value = item.wage * 0.25
             else:
                 item.reward_value = 0
 
@@ -99,8 +93,11 @@ class CustomSettlement(models.Model):
     @api.onchange('days_pending')
     def compute_vacations(self):
         for item in self:
-            if item.vacation_days > 0:
-                item.compensation_vacations = item.wage * item.vacation_days
+            if self.article_causal != '161':
+                if item.vacation_days > 0:
+                    item.compensation_vacations = (item.wage + item.reward_value) * item.vacation_days
+            else:
+                item.compensation_vacations = 0.0
 
     @api.multi
     @api.onchange('date_of_notification')
