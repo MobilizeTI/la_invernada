@@ -61,6 +61,7 @@
                         <group string="Vacaciones">
                             <field name="vacation_days"/>
                             <field name="day_takes"/>
+                            <field name="days_pending"/>
                         </group>
                     </group>
                     <group>
@@ -68,7 +69,7 @@
                             <field name="type_contract"/>
                             <field name="wage"/>
                             <field name="reward_selection"/>
-                            <field name="reward_value" attrs="{'readonly':[('reward_selection','!=','Editar')]}"/>
+                            <field name="reward_value" attrs="{'readonly':[('reward_selection','!=','Edit')]}"/>
                             <field name="snack_bonus"/>
                             <field name="mobilization_bonus"/>
                         </group>

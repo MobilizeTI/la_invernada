@@ -1,9 +1,6 @@
 from odoo import models, fields, api
-import datetime
-from datetime import datetime, date, time
+from datetime import date
 from dateutil.relativedelta import *
-from dateutil import rrule
-
 
 class CustomSettlement(models.Model):
     _name = 'custom.settlement'
@@ -13,21 +10,20 @@ class CustomSettlement(models.Model):
 
     contract_id = fields.Many2one('hr.contract', 'Contrato', related='employee_id.contract_id')
 
-    fired_id = fields.Many2one('custom.fired', 'Causal de Despido')
+    fired_id = fields.Many2one('custom.fired', 'Causal de Despido',required=True)
 
     date_start_contract = fields.Date('Fecha de inicio', related='contract_id.date_start')
 
-    date_of_notification = fields.Date('Fecha de Notificacion de despido')
+    date_of_notification = fields.Date('Fecha de Notificacion de despido',default=date.today())
 
-    date_settlement = fields.Date('Fecha finiquito')
+    date_settlement = fields.Date('Fecha finiquito',required=True)
 
     period_of_service = fields.Char('Periodo de servicio', compute='compute_period', readonly=True)
 
     vacation_days = fields.Float('Dias de Vacaciones', compute='compute_vacation_day', readonly=True)
 
-    day_takes = fields.Float('Dias Tomados')
-
-    days_pending = fields.Float('Dias Pendiente')
+    day_takes = fields.Float('Dias Tomados',default=0.0)
+    days_pending = fields.Float('Dias Pendiente',compute='compute_days_pending')
 
     type_contract = fields.Selection([
         ('Fijo', 'Fijo'),
@@ -67,7 +63,6 @@ class CustomSettlement(models.Model):
             period = relativedelta(item.date_settlement, item.date_start_contract)
             item.period_of_service = '{} años , {} meses , {} dias'.format(period.years, period.months,
                                                                            (period.days + 1))
-
     @api.multi
     @api.onchange('date_settlement')
     def compute_vacation_day(self):
@@ -76,9 +71,11 @@ class CustomSettlement(models.Model):
             item.vacation_days = (15 * period.years + (period.months * 1.25 + (period.days + 1) / 30 * 1.25))
 
     @api.multi
+    @api.onchange('reward_selection')
     def compute_reward(self):
         for item in self:
-            item.reward_value = item.wage * 0.25
+            if item.reward_selection == 'Yes' or item.reward_selection == 'Edit':
+                item.reward_value = item.wage * 0.25
 
     @api.onchange('reward_selection')
     def onchange_reward_selection(self):
@@ -113,7 +110,7 @@ class CustomSettlement(models.Model):
 
     @api.multi
     @api.depends('date_settlement', 'pending_remuneration_payment', 'reward_selection')
-    def compute_settlement(self):
+    def calculate_settlement(self):
         for item in self:
             period = relativedelta(item.date_settlement, item.date_start_contract)
             item.settlement = (item.wage + item.reward_value) + item.pending_remuneration_payment + \
