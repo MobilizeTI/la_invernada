@@ -82,7 +82,7 @@
         'reports/process/manual_process.xml',
         'reports/process/manual_service_process.xml',
         'reports/stock/match_report_service.xml',
-        'reports/inventory/compare_inventory_report.xml'
+        'reports/inventory/compare_inventory_report.xml',
         'reports/stock/match_report_service.xml'
     ],
     # only loaded in demonstration mode
