@@ -55,7 +55,7 @@ class CustomSettlement(models.Model):
 
     compensation_years = fields.Monetary('indemnización Años de Servicio', compute='compute_years')
 
-    compensation_vacations = fields.Monetary('indemnización Vacaciones')  # , compute='compute_vacations'#)
+    compensation_vacations = fields.Monetary('indemnización Vacaciones',compute='compute_vacations')
 
     settlement = fields.Monetary('Finiquito')
 
@@ -95,11 +95,12 @@ class CustomSettlement(models.Model):
             else:
                 item.reward_value = 0
 
-    # @api.multi
-    # def compute_vacations(self):
-    #     for item in self:
-    #         if item.vacation_days > 0:
-    #             item.compensation_vacations = item.wage * item.vacation_days
+    @api.multi
+    @api.onchange('days_pending')
+    def compute_vacations(self):
+        for item in self:
+            if item.vacation_days > 0:
+                item.compensation_vacations = item.wage * item.vacation_days
 
     @api.multi
     @api.onchange('date_of_notification')
