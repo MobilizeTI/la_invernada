@@ -130,7 +130,8 @@ class CustomSettlement(models.Model):
     @api.multi
     def test(self):
         sundays = self.get_weekends()
-        raise models.UserError(sundays)
+        for s in sundays:
+            models._logger.error('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.{}'.format(s))
 
     def get_weekends(self):
         days = round(self.vacation_days)
