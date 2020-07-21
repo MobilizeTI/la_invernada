@@ -292,7 +292,9 @@ class MrpProduction(models.Model):
                 'is_done': False,
                 'state': 'assigned'
             })
-            item.check_to_done = True
+            item.write({
+                'check_to_done':False
+            })
             group = self.env['res.groups'].search([('id', '=', 68)])
             for move in item.move_raw_ids:
                 if move.reserved_availability > 0 or any(x.qty_done == 0 for x in move.active_move_line_ids):
