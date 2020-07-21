@@ -129,6 +129,14 @@ class CustomSettlement(models.Model):
 
     @api.multi
     def test(self):
+        sundays = self.get_weekends(self)
+        raise models.UserError(sundays)
+
+    def get_weekends(self):
         days = round(self.vacation_days)
         date_after = self.date_settlement + timedelta(days=days)
-        raise models.UserError(date_after)
+        date_settlement = self.date_settlement
+        date_settlement += timedelta(days=6 - date_settlement.weekday())
+        while date_settlement < date_after:
+            yield date_settlement
+            date_settlement = timedelta(days=7)
