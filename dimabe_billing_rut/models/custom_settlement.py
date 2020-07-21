@@ -95,8 +95,8 @@ class CustomSettlement(models.Model):
     @api.multi
     def compute_vacations(self):
         for item in self:
-            if self.article_causal != '161':
-                if item.vacation_days > 0:
+            if item.article_causal != '161':
+                if item.days_pending > 0:
                     daily = (item.wage + item.reward_value) / 30
                     item.compensation_vacations = item.days_pending * daily
             else:
