@@ -151,5 +151,6 @@ class CustomSettlement(models.Model):
         date_settlement = self.date_settlement + timedelta(days=1)
         sunday = pd.date_range(start=date_settlement, end=date_after, freq='W-SAT').strftime('%m/%d/%Y').tolist()
         saturdays = pd.date_range(start=date_settlement, end=date_after, freq='W-SUN').strftime('%m/%d/%Y').tolist()
+        holiday = self.env['custom.holidays'].search([('date', '>', date_settlement), ('date', '<', date_after)])
         weeekend = sorted(sorted(saturdays) + sorted(sunday))
-        return len(weeekend)
+        return len(weeekend) + len(weeekend)
