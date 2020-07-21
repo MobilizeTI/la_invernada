@@ -29,7 +29,7 @@ class CustomSettlement(models.Model):
     day_takes = fields.Float('Dias Tomados', default=0.0)
     days_pending = fields.Float('Dias Pendiente', compute='compute_days_pending')
 
-    non_working_days = fields.Integer('Dias Inhabiles',compute='compute_no_working_days')
+    non_working_days = fields.Integer('Dias Inhabiles', compute='compute_no_working_days')
 
     type_contract = fields.Selection([
         ('Fijo', 'Fijo'),
@@ -88,7 +88,7 @@ class CustomSettlement(models.Model):
     def compute_reward(self):
         for item in self:
             if item.reward_selection == 'Yes' or item.reward_selection == 'Edit':
-                item.reward_value = item.wage * 0.25
+                item.reward_value = round(item.wage * 0.25)
             else:
                 item.reward_value = 0
 
@@ -110,16 +110,16 @@ class CustomSettlement(models.Model):
             if item.date_settlement:
                 warning = abs(self.date_of_notification - self.date_settlement).days
                 if warning < 30:
-                    item.compensation_warning = (
-                            (item.wage + item.reward_value) + (item.snack_bonus + item.mobilization_bonus))
+                    item.compensation_warning = round(
+                        (item.wage + item.reward_value) + (item.snack_bonus + item.mobilization_bonus))
 
     @api.multi
     @api.onchange('date_settlement')
     def compute_years(self):
         for item in self:
             period = relativedelta(item.date_settlement, item.date_start_contract)
-            self.compensation_years = ((item.wage + item.reward_value) + (
-                    item.snack_bonus + self.mobilization_bonus)) * period.years
+            item.compensation_years = round((item.wage + item.reward_value) + (
+                    item.snack_bonus + item.mobilization_bonus)) * period.years
 
     @api.multi
     @api.onchange('date_settlement')
