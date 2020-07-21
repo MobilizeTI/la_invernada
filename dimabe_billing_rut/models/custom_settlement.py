@@ -14,6 +14,8 @@ class CustomSettlement(models.Model):
 
     fired_id = fields.Many2one('custom.fired', 'Causal de Despido', required=True)
 
+    state = fields.Selection([('draft', 'Borrador'), ('done', 'Realizado')], default='draft')
+
     article_causal = fields.Selection('Articulo', related='fired_id.article')
 
     date_start_contract = fields.Date('Fecha de inicio', related='contract_id.date_start')
@@ -131,7 +133,7 @@ class CustomSettlement(models.Model):
                               (item.snack_bonus + item.mobilization_bonus) \
                               + (item.compensation_vacations + item.compensation_warning + item.compensation_years)
             item.contract_id.write({
-                'state':'cancel'
+                'state': 'cancel'
             })
 
     @api.multi
