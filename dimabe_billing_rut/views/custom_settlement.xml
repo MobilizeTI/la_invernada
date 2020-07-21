@@ -35,24 +35,23 @@
                     <button type="object" name="test" string="Test" invisible="1" class="oe_highlight"/>
                     <button type="object" name="button_done" string="Realizar" class="oe_highlight"/>
                     <button type="object" name="calculate_settlement" string="Calcular Finiquito" class="oe_highlight"/>
-                    <field name="state" widget="statusbar" />
+                    <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
-                        <group>
-                            <h1 class="d-none d-md-block">
+                        <h1 class="d-none d-md-block">
+                            <group>
                                 <field name="employee_id" domain="[('active','=',True)]"/>
-                            </h1>
-                        </group>
+                            </group>
+                        </h1>
                     </div>
                     <separator/>
                     <div class="oe_inline">
-                        <group>
-                            <h3 class="d-none d-md-block">
+                        <h3 class="d-none d-md-block">
+                            <group>
                                 <field name="contract_id"/>
-
-                            </h3>
-                        </group>
+                            </group>
+                        </h3>
                     </div>
                     <group>
                         <field name="fired_id"/>
@@ -67,7 +66,7 @@
                         <group string="Vacaciones">
                             <field name="vacation_days"/>
                             <field name="day_takes"/>
-                            <field name="non_working_days" />
+                            <field name="non_working_days"/>
                             <field name="days_pending"/>
                         </group>
                     </group>
@@ -84,12 +83,14 @@
                             <field name="compensation_warning"/>
                             <field name="article_causal" invisible="1"/>
                             <field name="compensation_years" attrs="{'invisible': [('article_causal','!=','161')]}"/>
-                            <field name="compensation_vacations" attrs="{'invisible': [('article_causal','!=','161')]}"/>
+                            <field name="compensation_vacations"
+                                   attrs="{'invisible': [('article_causal','!=','161')]}"/>
                         </group>
                     </group>
                     <group>
                         <h2>
-                            Total:<field name="settlement"/>
+                            Total:
+                            <field name="settlement"/>
                         </h2>
                     </group>
                 </sheet>

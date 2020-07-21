@@ -14,26 +14,27 @@ class CustomSettlement(models.Model):
 
     fired_id = fields.Many2one('custom.fired', 'Causal de Despido', required=True)
 
-    state = fields.Selection([('draft', 'Borrador'), ('done', 'Realizado')], default='draft')
+    state = fields.Selection('Estado',[('draft', 'Borrador'), ('done', 'Realizado')], default='draft')
 
     article_causal = fields.Selection('Articulo', related='fired_id.article')
 
-    date_start_contract = fields.Date('Fecha de inicio', related='contract_id.date_start')
+    date_start_contract = fields.Date('Fecha de inicio de contrato', related='contract_id.date_start')
 
-    date_of_notification = fields.Date('Fecha de Notificacion de despido', default=date.today())
+    date_of_notification = fields.Date('Fecha de notificacion de despido', default=date.today())
 
     date_settlement = fields.Date('Fecha finiquito', required=True)
 
     period_of_service = fields.Char('Periodo de servicio', compute='compute_period', readonly=True)
 
-    vacation_days = fields.Float('Dias de Vacaciones', compute='compute_vacation_day', readonly=True)
+    vacation_days = fields.Float('Dias de Vacaciones por periodo de servicio', compute='compute_vacation_day',
+                                 readonly=True)
 
     day_takes = fields.Float('Dias Tomados', default=0.0)
     days_pending = fields.Float('Dias Pendiente', compute='compute_days_pending')
 
     non_working_days = fields.Integer('Dias Inhabiles', compute='compute_no_working_days')
 
-    type_contract = fields.Selection([
+    type_contract = fields.Selection('Tipo de contrato',[
         ('Fijo', 'Fijo'),
         ('Variable', 'Variable')
     ])
@@ -42,9 +43,9 @@ class CustomSettlement(models.Model):
 
     wage = fields.Monetary('Sueldo Base', related='contract_id.wage', currency_field='currency_id')
 
-    reward_value = fields.Monetary('Gratificacion', compute='compute_reward')
+    reward_value = fields.Monetary('Valor', compute='compute_reward')
 
-    reward_selection = fields.Selection([
+    reward_selection = fields.Selection('Gratificacion',[
         ('Yes', 'Si'),
         ('No', 'No'),
         ('Edit', 'Editar')
@@ -56,11 +57,11 @@ class CustomSettlement(models.Model):
 
     pending_remuneration_payment = fields.Monetary('Remuneraciones Pendientes')
 
-    compensation_warning = fields.Monetary('indemnización Aviso Previo', compute='compute_warning')
+    compensation_warning = fields.Monetary('Indemnización Aviso Previo', compute='compute_warning')
 
-    compensation_years = fields.Monetary('indemnización Años de Servicio', compute='compute_years')
+    compensation_years = fields.Monetary('Indemnización Años de Servicio', compute='compute_years')
 
-    compensation_vacations = fields.Monetary('indemnización Vacaciones', compute='compute_vacations')
+    compensation_vacations = fields.Monetary('Indemnización Vacaciones', compute='compute_vacations')
 
     settlement = fields.Monetary('Finiquito')
 
@@ -133,12 +134,11 @@ class CustomSettlement(models.Model):
                               (item.snack_bonus + item.mobilization_bonus) \
                               + (item.compensation_vacations + item.compensation_warning + item.compensation_years)
 
-
     @api.multi
     def button_done(self):
         for item in self:
             item.write({
-                'state':'done'
+                'state': 'done'
             })
             item.contract_id.write({
                 'state': 'cancel'
