@@ -1,6 +1,7 @@
 from odoo import models, fields, api
-from datetime import date , timedelta
+from datetime import date, timedelta
 from dateutil.relativedelta import *
+import pandas as pd
 
 
 class CustomSettlement(models.Model):
@@ -13,7 +14,7 @@ class CustomSettlement(models.Model):
 
     fired_id = fields.Many2one('custom.fired', 'Causal de Despido', required=True)
 
-    article_causal = fields.Selection('Articulo',related='fired_id.article')
+    article_causal = fields.Selection('Articulo', related='fired_id.article')
 
     date_start_contract = fields.Date('Fecha de inicio', related='contract_id.date_start')
 
@@ -26,7 +27,7 @@ class CustomSettlement(models.Model):
     vacation_days = fields.Float('Dias de Vacaciones', compute='compute_vacation_day', readonly=True)
 
     day_takes = fields.Float('Dias Tomados', default=0.0)
-    days_pending = fields.Float('Dias Pendiente',compute='compute_days_pending')
+    days_pending = fields.Float('Dias Pendiente', compute='compute_days_pending')
 
     type_contract = fields.Selection([
         ('Fijo', 'Fijo'),
@@ -55,7 +56,7 @@ class CustomSettlement(models.Model):
 
     compensation_years = fields.Monetary('indemnización Años de Servicio', compute='compute_years')
 
-    compensation_vacations = fields.Monetary('indemnización Vacaciones',compute='compute_vacations')
+    compensation_vacations = fields.Monetary('indemnización Vacaciones', compute='compute_vacations')
 
     settlement = fields.Monetary('Finiquito')
 
@@ -108,7 +109,7 @@ class CustomSettlement(models.Model):
                 warning = abs(self.date_of_notification - self.date_settlement).days
                 if warning < 30:
                     item.compensation_warning = (
-                                (item.wage + item.reward_value) + (item.snack_bonus + item.mobilization_bonus))
+                            (item.wage + item.reward_value) + (item.snack_bonus + item.mobilization_bonus))
 
     @api.multi
     @api.onchange('date_settlement')
@@ -116,7 +117,7 @@ class CustomSettlement(models.Model):
         for item in self:
             period = relativedelta(item.date_settlement, item.date_start_contract)
             self.compensation_years = ((item.wage + item.reward_value) + (
-                        item.snack_bonus + self.mobilization_bonus)) * period.years
+                    item.snack_bonus + self.mobilization_bonus)) * period.years
 
     @api.multi
     @api.depends('date_settlement', 'pending_remuneration_payment', 'reward_selection')
@@ -137,7 +138,4 @@ class CustomSettlement(models.Model):
         days = round(self.vacation_days)
         date_after = self.date_settlement + timedelta(days=days)
         date_settlement = self.date_settlement
-        date_settlement += timedelta(days=6 - date_settlement.weekday())
-        while date_settlement < date_after:
-            yield date_settlement
-            date_settlement = timedelta(days=7)
+        return pd.date_range(start=date_settlement, end=date_after, freq='W-SUN').strftime('%m/%d/%Y').tolist()
