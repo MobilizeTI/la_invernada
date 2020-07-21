@@ -143,8 +143,8 @@ class CustomSettlement(models.Model):
 
     def get_weekend(self):
         days = round(self.vacation_days)
-        date_after = self.date_settlement + timedelta(days=(days + 1))
-        date_settlement = self.date_settlement
+        date_after = self.date_settlement + timedelta(days=days)
+        date_settlement = self.date_settlement + timedelta(days=1)
         sunday = pd.date_range(start=date_settlement, end=date_after, freq='W-SUN').strftime('%m/%d/%Y').tolist()
         saturdays = pd.date_range(start=date_settlement, end=date_after, freq='W-SUN').strftime('%m/%d/%Y').tolist()
         weeekend = sorted(sorted(saturdays) + sorted(sunday))
