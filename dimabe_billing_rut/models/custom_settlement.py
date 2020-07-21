@@ -140,6 +140,7 @@ class CustomSettlement(models.Model):
         days = round(self.vacation_days)
         date_after = self.date_settlement + timedelta(days=days)
         date_settlement = self.date_settlement + timedelta(days=1)
+        raise models.ValidationError(date_settlement)
         holiday = self.env['custom.holidays'].search([('date', '>', date_settlement), ('date', '<', date_after)])
         raise models.UserError(len(holiday))
 
