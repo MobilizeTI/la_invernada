@@ -293,7 +293,7 @@ class MrpProduction(models.Model):
                 'state': 'assigned'
             })
             item.write({
-                'check_to_done':False
+                'check_to_done': True
             })
             group = self.env['res.groups'].search([('id', '=', 68)])
             for move in item.move_raw_ids:
@@ -301,4 +301,3 @@ class MrpProduction(models.Model):
                     query = 'DELETE FROM stock_move_line where move_id = {}'.format(move.id)
                     cr = self._cr
                     cr.execute(query)
-
