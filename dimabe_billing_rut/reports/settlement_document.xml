@@ -16,5 +16,5 @@
             </div>
         </t>
     </template>
-    <report id="action_settlement" model="custom.sttlement" menu="True" string="Finiquito (Documento)" report_type="qweb-pdf" name="dimabe_billing_rut.settlement_document" />
+    <report id="action_settlement" model="custom.settlement" menu="True" string="Finiquito (Documento)" report_type="qweb-pdf" name="dimabe_billing_rut.settlement_document" />
 </odoo>
