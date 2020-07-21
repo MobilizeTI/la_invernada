@@ -133,13 +133,13 @@ class CustomSettlement(models.Model):
         sundays = self.get_sunday()
         saturdays = self.get_saturdays()
         weekend = sorted(sorted(sundays) + sorted(saturdays))
-        raise models.UserError(weekend)
+        raise models.UserError(len(weekend))
 
     def get_sunday(self):
         days = round(self.vacation_days)
         date_after = self.date_settlement + timedelta(days=days)
         date_settlement = self.date_settlement
-        return pd.date_range(start=date_settlement, end=date_after, freq='W-SAT').strftime('%m/%d/%Y').tolist()
+        return pd.date_range(start=date_settlement, end=date_after, freq='W-SUN').strftime('%m/%d/%Y').tolist()
 
     def get_saturdays(self):
         days = round(self.vacation_days)
