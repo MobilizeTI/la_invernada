@@ -139,7 +139,11 @@ class CustomSettlement(models.Model):
     @api.multi
     def test(self):
         weekend = self.get_weekend()
-        raise models.UserError(round(self.vacation_days))
+        days = round(self.vacation_days)
+        date_after = self.date_settlement + timedelta(days=days)
+        date_settlement = self.date_settlement + timedelta(days=1)
+        holiday = self.env['custom.holidays'].search([('date', '>', date_settlement), ('date', '<', date_after)])
+        raise models.UserError(len(holiday))
 
     def get_weekend(self):
         days = round(self.vacation_days)
