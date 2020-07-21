@@ -130,6 +130,9 @@ class CustomSettlement(models.Model):
             item.settlement = (item.wage + item.reward_value) + item.pending_remuneration_payment + \
                               (item.snack_bonus + item.mobilization_bonus) \
                               + (item.compensation_vacations + item.compensation_warning + item.compensation_years)
+            item.contract_id.write({
+                'state':'cancel'
+            })
 
     @api.multi
     def test(self):
@@ -141,13 +144,14 @@ class CustomSettlement(models.Model):
         raise models.UserError(len(holiday))
 
     def get_weekend(self):
-        days = round(self.vacation_days)
-        date_after = self.date_settlement + timedelta(days=days)
-        date_settlement = self.date_settlement + timedelta(days=1)
-        saturdays = pd.date_range(start=date_settlement, end=date_after, freq='W-SAT').strftime('%m/%d/%Y').tolist()
-        models._logger.error(saturdays)
-        sundays = pd.date_range(start=date_settlement, end=date_after, freq='W-SUN').strftime('%m/%d/%Y').tolist()
-        models._logger.error(sundays)
-        holiday = self.env['custom.holidays'].search([('date', '>', date_settlement), ('date', '<', date_after)])
-        weeekend = sorted(sorted(saturdays) + sorted(sundays))
-        return len(weeekend) + len(holiday)
+        if self.date_settlement:
+            days = round(self.vacation_days)
+            date_after = self.date_settlement + timedelta(days=days)
+            date_settlement = self.date_settlement + timedelta(days=1)
+            saturdays = pd.date_range(start=date_settlement, end=date_after, freq='W-SAT').strftime('%m/%d/%Y').tolist()
+            models._logger.error(saturdays)
+            sundays = pd.date_range(start=date_settlement, end=date_after, freq='W-SUN').strftime('%m/%d/%Y').tolist()
+            models._logger.error(sundays)
+            holiday = self.env['custom.holidays'].search([('date', '>', date_settlement), ('date', '<', date_after)])
+            weeekend = sorted(sorted(saturdays) + sorted(sundays))
+            return len(weeekend) + len(holiday)
