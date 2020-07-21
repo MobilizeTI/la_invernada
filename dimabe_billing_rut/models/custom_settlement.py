@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from datetime import date
+from datetime import date , timedelta
 from dateutil.relativedelta import *
 
 
@@ -95,7 +95,8 @@ class CustomSettlement(models.Model):
         for item in self:
             if self.article_causal != '161':
                 if item.vacation_days > 0:
-                    item.compensation_vacations = (item.wage + item.reward_value) * item.vacation_days
+                    days = round(item.vacation_days)
+                    date_after = item.date_settlement + timedelta(days=days)
             else:
                 item.compensation_vacations = 0.0
 
@@ -128,5 +129,6 @@ class CustomSettlement(models.Model):
 
     @api.multi
     def test(self):
-        test = ''
-        raise models.UserError(test)
+        days = round(self.vacation_days)
+        date_after = self.date_settlement + timedelta(days=days)
+        raise models.UserError(date_after)
