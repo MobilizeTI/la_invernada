@@ -14,7 +14,7 @@ class CustomSettlement(models.Model):
 
     fired_id = fields.Many2one('custom.fired', 'Causal de Despido', required=True)
 
-    state = fields.Selection('Estado',[('draft', 'Borrador'), ('done', 'Realizado')], default='draft')
+    state = fields.Selection([('draft', 'Borrador'), ('done', 'Realizado')], string='Estado', default='draft')
 
     article_causal = fields.Selection('Articulo', related='fired_id.article')
 
@@ -34,10 +34,10 @@ class CustomSettlement(models.Model):
 
     non_working_days = fields.Integer('Dias Inhabiles', compute='compute_no_working_days')
 
-    type_contract = fields.Selection('Tipo de contrato',[
+    type_contract = fields.Selection([
         ('Fijo', 'Fijo'),
         ('Variable', 'Variable')
-    ])
+    ], string='Tipo de contrato', default='Fijo')
 
     currency_id = fields.Many2one('res.currency', string='Moneda')
 
@@ -45,11 +45,11 @@ class CustomSettlement(models.Model):
 
     reward_value = fields.Monetary('Valor', compute='compute_reward')
 
-    reward_selection = fields.Selection('Gratificacion',[
+    reward_selection = fields.Selection([
         ('Yes', 'Si'),
         ('No', 'No'),
         ('Edit', 'Editar')
-    ], default='Yes')
+    ],string='Gratificacion', default='Yes')
 
     snack_bonus = fields.Float('Colacion')
 
