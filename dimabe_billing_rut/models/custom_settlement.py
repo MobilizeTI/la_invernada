@@ -29,6 +29,8 @@ class CustomSettlement(models.Model):
     day_takes = fields.Float('Dias Tomados', default=0.0)
     days_pending = fields.Float('Dias Pendiente', compute='compute_days_pending')
 
+    non_working_days = fields.Interger('Dias Inhabiles',compute='compute_no_working_days')
+
     type_contract = fields.Selection([
         ('Fijo', 'Fijo'),
         ('Variable', 'Variable')
@@ -118,6 +120,12 @@ class CustomSettlement(models.Model):
             period = relativedelta(item.date_settlement, item.date_start_contract)
             self.compensation_years = ((item.wage + item.reward_value) + (
                     item.snack_bonus + self.mobilization_bonus)) * period.years
+
+    @api.multi
+    @api.onchange('date_settlement')
+    def compute_no_working_days(self):
+        for item in self:
+            item.non_working_days = item.get_weekend()
 
     @api.multi
     @api.depends('date_settlement', 'pending_remuneration_payment', 'reward_selection')
