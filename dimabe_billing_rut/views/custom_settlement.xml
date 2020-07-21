@@ -55,7 +55,7 @@
                         </group>
                     </div>
                     <group>
-
+                        <field name="fired_id"/>
                     </group>
                     <group>
                         <group string="Años de Servicio">
