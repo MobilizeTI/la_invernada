@@ -96,7 +96,7 @@ class CustomSettlement(models.Model):
     def compute_vacations(self):
         for item in self:
             daily = (item.wage + item.reward_value) / 30
-            item.compensation_vacations = item.days_pending * daily
+            item.compensation_vacations = round(item.days_pending * daily)
 
     @api.multi
     @api.onchange('date_of_notification')
