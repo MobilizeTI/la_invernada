@@ -93,7 +93,6 @@ class CustomSettlement(models.Model):
                 item.reward_value = 0
 
     @api.multi
-    @api.onchange('days_pending')
     def compute_vacations(self):
         for item in self:
             if self.article_causal != '161':
