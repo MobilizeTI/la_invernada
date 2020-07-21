@@ -103,9 +103,11 @@ class CustomSettlement(models.Model):
     @api.onchange('date_of_notification')
     def compute_warning(self):
         for item in self:
-            warning = abs(self.date_of_notification - self.date_settlement).days
-            if warning < 30:
-                item.compensation_warning = ((item.wage + item.reward_value) + (item.snack_bonus + item.mobilization_bonus))
+            if item.date_settlement:
+                warning = abs(self.date_of_notification - self.date_settlement).days
+                if warning < 30:
+                    item.compensation_warning = (
+                                (item.wage + item.reward_value) + (item.snack_bonus + item.mobilization_bonus))
 
     @api.multi
     @api.onchange('date_settlement')
