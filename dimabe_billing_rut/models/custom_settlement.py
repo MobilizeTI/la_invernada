@@ -66,7 +66,7 @@ class CustomSettlement(models.Model):
     @api.onchange('day_takes')
     def compute_days_pending(self):
         for item in self:
-            item.days_pending = item.vacation_days - item.day_takes
+            item.days_pending = round(item.vacation_days) - item.day_takes
 
     @api.multi
     @api.onchange('date_settlement')
