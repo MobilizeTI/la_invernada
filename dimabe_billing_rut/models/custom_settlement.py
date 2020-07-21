@@ -98,8 +98,8 @@ class CustomSettlement(models.Model):
         for item in self:
             if self.article_causal != '161':
                 if item.vacation_days > 0:
-                    days = round(item.vacation_days)
-                    date_after = item.date_settlement + timedelta(days=days)
+                    daily = (item.wage + item.reward_value) / 30
+                    item.compensation_vacations = item.days_pending * daily
             else:
                 item.compensation_vacations = 0.0
 
@@ -155,4 +155,4 @@ class CustomSettlement(models.Model):
         models._logger.error(sundays)
         holiday = self.env['custom.holidays'].search([('date', '>', date_settlement), ('date', '<', date_after)])
         weeekend = sorted(sorted(saturdays) + sorted(sundays))
-        return len(weeekend)
+        return len(weeekend) + len(holiday)
