@@ -284,10 +284,10 @@ class MrpWorkorder(models.Model):
                 ).mapped(
                     'stock_production_lot_serial_ids'
                 )
-            query = "UPDATE mrp_workorder set out_weight = {},pt_out_weight = {} where id = {}".format(
-                sum(item.summary_out_serial_ids.mapped('real_weight')), sum(
-                    item.summary_out_serial_ids.filtered(lambda a: a.product_id.id == item.product_id.id).mapped(
-                        'real_weight')), item.id)
+            # query = "UPDATE mrp_workorder set out_weight = {},pt_out_weight = {} where id = {}".format(
+            #     sum(item.summary_out_serial_ids.mapped('real_weight')), sum(
+            #         item.summary_out_serial_ids.filtered(lambda a: a.product_id.id == item.product_id.id).mapped(
+            #             'real_weight')), item.id)
             cr = self._cr
             cr.execute(query)
 
