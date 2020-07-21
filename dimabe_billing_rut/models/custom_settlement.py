@@ -132,11 +132,8 @@ class CustomSettlement(models.Model):
     def test(self):
         sundays = self.get_sunday()
         saturdays = self.get_saturdays()
-        weekend = []
-        for day in zip(sundays,saturdays):
-            weekend.append(day)
-        for s in sundays:
-            models._logger.error('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.{}'.format(len(weekend)))
+        weekend = sorted(sorted(sundays) + sorted(saturdays))
+        raise models.UserError(weekend)
 
     def get_sunday(self):
         days = round(self.vacation_days)
