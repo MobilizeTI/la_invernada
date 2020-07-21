@@ -138,4 +138,4 @@ class CustomSettlement(models.Model):
         days = round(self.vacation_days)
         date_after = self.date_settlement + timedelta(days=days)
         date_settlement = self.date_settlement
-        return pd.date_range(start=date_settlement, end=date_after, freq='W-SUN').strftime('%m/%d/%Y').tolist()
+        return pd.date_range(start=date_settlement, end=date_after, freq='W-SAT').strftime('%m/%d/%Y').tolist()
