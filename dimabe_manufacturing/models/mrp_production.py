@@ -284,7 +284,6 @@ class MrpProduction(models.Model):
     @api.multi
     def fix_reserved(self):
         for item in self:
-            
             group = self.env['res.groups'].search([('name', '=', 'Limpiar')])
             user_logon = self.env.user
             if user_logon not in group.users:
@@ -293,9 +292,11 @@ class MrpProduction(models.Model):
                 'is_done': False,
                 'state': 'assigned'
             })
+            item.check_to_done = True
             group = self.env['res.groups'].search([('id', '=', 68)])
             for move in item.move_raw_ids:
                 if move.reserved_availability > 0 or any(x.qty_done == 0 for x in move.active_move_line_ids):
                     query = 'DELETE FROM stock_move_line where move_id = {}'.format(move.id)
                     cr = self._cr
                     cr.execute(query)
+
