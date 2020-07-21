@@ -49,7 +49,7 @@ class CustomSettlement(models.Model):
         ('Yes', 'Si'),
         ('No', 'No'),
         ('Edit', 'Editar')
-    ],string='Gratificacion', default='Yes')
+    ], string='Gratificacion', default='Yes')
 
     snack_bonus = fields.Float('Colacion')
 
@@ -141,7 +141,8 @@ class CustomSettlement(models.Model):
                 'state': 'done'
             })
             item.contract_id.write({
-                'state': 'cancel'
+                'state': 'cancel',
+                'active': False
             })
 
     @api.multi
