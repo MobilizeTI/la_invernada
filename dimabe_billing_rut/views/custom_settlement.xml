@@ -62,6 +62,7 @@
                         <group string="Vacaciones">
                             <field name="vacation_days"/>
                             <field name="day_takes"/>
+                            <field name="non_working_days" />
                             <field name="days_pending"/>
                         </group>
                     </group>
