@@ -288,8 +288,8 @@ class MrpWorkorder(models.Model):
             #     sum(item.summary_out_serial_ids.mapped('real_weight')), sum(
             #         item.summary_out_serial_ids.filtered(lambda a: a.product_id.id == item.product_id.id).mapped(
             #             'real_weight')), item.id)
-            cr = self._cr
-            cr.execute(query)
+            # cr = self._cr
+            # cr.execute(query)
 
     @api.multi
     def fix_order(self):
