@@ -132,6 +132,14 @@ class CustomSettlement(models.Model):
             item.settlement = (item.wage + item.reward_value) + item.pending_remuneration_payment + \
                               (item.snack_bonus + item.mobilization_bonus) \
                               + (item.compensation_vacations + item.compensation_warning + item.compensation_years)
+
+
+    @api.multi
+    def button_done(self):
+        for item in self:
+            item.write({
+                'state':'done'
+            })
             item.contract_id.write({
                 'state': 'cancel'
             })

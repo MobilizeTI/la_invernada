@@ -32,7 +32,8 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button type="object" name="test" string="Test" class="oe_highlight"/>
+                    <button type="object" name="test" string="Test" invisible="1" class="oe_highlight"/>
+                    <button type="object" name="button_done" string="Realizar" class="oe_highlight"/>
                     <button type="object" name="calculate_settlement" string="Calcular Finiquito" class="oe_highlight"/>
                     <field name="state" widget="statusbar" />
                 </header>
