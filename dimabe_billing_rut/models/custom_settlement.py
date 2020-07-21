@@ -29,7 +29,7 @@ class CustomSettlement(models.Model):
     day_takes = fields.Float('Dias Tomados', default=0.0)
     days_pending = fields.Float('Dias Pendiente', compute='compute_days_pending')
 
-    non_working_days = fields.Interger('Dias Inhabiles',compute='compute_no_working_days')
+    non_working_days = fields.Integer('Dias Inhabiles',compute='compute_no_working_days')
 
     type_contract = fields.Selection([
         ('Fijo', 'Fijo'),
