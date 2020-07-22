@@ -6,13 +6,10 @@
                 <t t-foreach="docs" t-as="d">
                     <div class="width:100%;">
                         <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
-                                 style="height:75px;"
-                            />
+                                 style="height:75px;"/>
                     </div>
                     <div>
-                        <span>
-                            En <span t-field="d.date_settlement"/>
-                        </span>
+                        <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
                     </div>
                 </t>
             </div>
