@@ -216,7 +216,7 @@ class StockProductionLot(models.Model):
 
     serial_available = fields.Many2many('stock.production.lot.serial', compute='_compute_serial_available')
 
-    available_kg = fields.Float('Kilos Disponibles',compute='_compute_available_kg')
+    available_kg = fields.Float('Kilos Disponibles', compute='_compute_available_kg', store=True)
 
     available_weight = fields.Float('Kilos Disponibles')
 
@@ -229,7 +229,8 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_available_kg(self):
         for item in self:
-            item.available_kg = sum(item.stock_production_lot_serial_ids.filtered(lambda a : not a.consumed).mapped('real_weight'))
+            item.available_kg = sum(
+                item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
@@ -690,6 +691,9 @@ class StockProductionLot(models.Model):
                             counter = 1
                         tmp = '00{}'.format(counter)
                         serial.serial_number = item.name + tmp[-3:]
+            if len(item.stock_production_lot_serial_ids) > 0:
+                item.available_kg = sum(item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
+                    'real_weight'))
             if len(item.stock_production_lot_serial_ids) > 999:
                 item.check_duplicate()
             return res
