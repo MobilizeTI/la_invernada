@@ -18,9 +18,9 @@
                         de
                         <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')"/>
                         entre
-                        <span t-esc="d.company_id.name"/>
+                        <span t-esc="d.contract_id.company_id.name"/>
                         con R.U.T
-                        <span t-esc="d.company_id.rut"/>
+                        <span t-esc="d.contract_id.company_id.rut"/>
                     </div>
                 </t>
             </div>
