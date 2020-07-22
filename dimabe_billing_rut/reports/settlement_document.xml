@@ -29,7 +29,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <span t-field="d.employee_id.company_id.street"/><span t-field="d.city"/>
+                                    <span t-field="d.employee_id.company_id.street"/><span t-field="d.employee_id.company_id.city"/>
                                 </td>
                             </tr>
                         </table>
