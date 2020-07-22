@@ -15,6 +15,12 @@
                         <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d')"/>
                         de
                         <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%B')" t-lang="d.create_uid.lang"/>
+                        de
+                        <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')"/>
+                        entre
+                        <span t-esc="d.company_id.name"/>
+                        con R.U.T
+                        <span t-esc="d.company_id.rut"/>
                     </div>
                 </t>
             </div>
