@@ -9,7 +9,7 @@
                                  style="height:75px;"/>
                     </div>
                     <div>
-                        <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+                        <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d')"/>
                     </div>
                 </t>
             </div>
