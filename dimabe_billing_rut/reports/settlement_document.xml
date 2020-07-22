@@ -20,7 +20,7 @@
                         entre
                         <span t-esc="d.contract_id.company_id.name"/>
                         con R.U.T
-                        <span t-esc="d.contract_id.company_id.rut"/>
+                        <span t-esc="d.contract_id.company_id.invoice_rut"/>
                     </div>
                 </t>
             </div>
