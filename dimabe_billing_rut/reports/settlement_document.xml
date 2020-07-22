@@ -7,7 +7,7 @@
                     <div style="width:33.3%;display: inline-block;text-align: center;">
                         <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)" style="width:30%;"/>
                     </div>
-                    <div style="width:45%;display:inline-block;">
+                    <div style="width:33.3%;display:inline-block;">
                         <table style="font-size:10px;">
                             <tr>
                                 <td>Declaracion,Transacción,Renuncia,Desistimiento de Acciones</td>
