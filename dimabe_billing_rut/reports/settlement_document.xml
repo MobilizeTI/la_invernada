@@ -4,27 +4,29 @@
         <t t-call="web.html_container">
             <div class="page" style="margin-top:0px;">
                 <t t-foreach="docs" t-as="d">
-                    <div>
-                        En
-                        <span t-field="res_company.city"/>
-                        a
-                        <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d')"/>
-                        de
-                        <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%B')" t-lang="d.create_uid.lang"/>
-                        de
-                        <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')"/>
-                        entre
-                        <span t-esc="d.contract_id.company_id.name"/>
-                        con R.U.T
-                        <span t-esc="d.contract_id.company_id.invoice_rut"/>
-                        domiciliada en
-                        <span t-esc="d.contract_id.company_id.street"/>
-
+                    <div style="width:33.3%;display:inline-block;">
+                        <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                             style="height:75px;"
+                        />
+                    </div>
+                    <div style="width:33.3%;display:inline-block;">
+                        <table>
+                            <tr>
+                                <td>Declaracion,Transacción,Renuncia,Desistimiento de Acciones</td>
+                            </tr>
+                            <tr>
+                                <td>Pago y Finiquito</td>
+                            </tr>
+                            <td>
+                                <td><span t-field="d.employee_id.company_id"/></td>
+                            </td>
+                        </table>
                     </div>
                 </t>
             </div>
         </t>
     </template>
     <report id="action_settlement" model="custom.settlement" menu="True" string="Finiquito (Documento)"
-            report_type="qweb-pdf" name="dimabe_billing_rut.settlement_document"/>
+            report_type="qweb-pdf" paperformat="paper_format_letter_custom"
+            name="dimabe_billing_rut.settlement_document"/>
 </odoo>
