@@ -27,6 +27,6 @@
         </t>
     </template>
     <report id="action_settlement" model="custom.settlement" menu="True" string="Finiquito (Documento)"
-            report_type="qweb-pdf" paperformat="paper_format_letter_custom"
+            report_type="qweb-pdf"
             name="dimabe_billing_rut.settlement_document"/>
 </odoo>
