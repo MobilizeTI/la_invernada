@@ -41,7 +41,7 @@
                     <div class="oe_title">
                         <h1 class="d-none d-md-block">
                             <group>
-                                <field name="employee_id" domain="[('state','in',('open','pending'))]"/>
+                                <field name="employee_id" />
                             </group>
                         </h1>
                     </div>
