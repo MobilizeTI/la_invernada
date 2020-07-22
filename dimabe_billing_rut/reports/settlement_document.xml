@@ -17,16 +17,44 @@
                             <tr>
                                 <td>Pago y Finiquito</td>
                             </tr>
-                            <td>
-                                <td><span t-field="d.employee_id.company_id"/></td>
-                            </td>
+                            <tr>
+                                <td>
+                                    <span t-field="d.employee_id.company_id"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span t-field="d.employee_id.company_id.invoice_rut"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span t-field="d.employee_id.company_id.street"/><span t-field="d.city"/>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </t>
             </div>
         </t>
     </template>
+    <record id="paper_format_letter_custom" model="report.paperformat">
+        <field name="name">Carta Custom</field>
+        <field name="default" eval="False"/>
+        <field name="format">Letter</field>
+        <field name="orientation">Portrait</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">15</field>
+        <field name="margin_right">15</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="footer_line" eval="False"/>
+        <field name="dpi">90</field>
+    </record>
     <report id="action_settlement" model="custom.settlement" menu="True" string="Finiquito (Documento)"
-            report_type="qweb-pdf"
+            report_type="qweb-pdf" paperformat="paper_format_letter_custom"
             name="dimabe_billing_rut.settlement_document"/>
 </odoo>
