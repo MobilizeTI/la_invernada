@@ -218,6 +218,8 @@ class StockProductionLot(models.Model):
 
     available_kg = fields.Float('Kilos Disponibles',compute='_compute_available_kg')
 
+    available_weight = fields.Float('Kilos Disponibles')
+
     show_guide_number = fields.Char('Guia', compute='_compute_guide_number')
 
     reception_weight = fields.Float('Kilos Recepcionados', compute='_compute_reception_weight')
