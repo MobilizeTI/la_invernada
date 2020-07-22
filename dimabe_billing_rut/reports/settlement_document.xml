@@ -14,7 +14,7 @@
                         a
                         <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d')"/>
                         de
-                        <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%B')" t-lang="es_ES"/>
+                        <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%B')" t-lang="d.create_uid.lang"/>
                     </div>
                 </t>
             </div>
