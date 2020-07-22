@@ -357,15 +357,10 @@ class StockProductionLot(models.Model):
                 if item.stock_production_lot_serial_ids.mapped('production_id').state == 'done':
                     item.location_id = item.stock_production_lot_serial_ids.mapped('production_id').location_dest_id
 
-    @api.depends('stock_production_lot_serial_ids')
     @api.multi
     def _compute_serial_not_consumed(self):
         for item in self:
             item.serial_not_consumed = len(item.serial_available)
-            query = "UPDATE stock_production_lot set available_weight = {} where id = {}".format(
-                sum(item.serial_available.mapped('real_weight')), item.id)
-            cr = self._cr
-            cr.execute(query)
 
     @api.onchange('serial_not_consumed')
     def _onchange_have_available_serial(self):
