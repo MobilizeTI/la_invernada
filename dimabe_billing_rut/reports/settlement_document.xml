@@ -14,7 +14,7 @@
                         a
                         <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d')"/>
                         de
-                        <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%B')"/>
+                        <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%B')" t-lang="es_ES"/>
                     </div>
                 </t>
             </div>
