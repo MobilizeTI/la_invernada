@@ -229,7 +229,7 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_available_kg(self):
         for item in self:
-            item.available_kg = sum(item.stock_production_lot_serial_ids.mapped('real_weight'))
+            item.available_kg = sum(item.stock_production_lot_serial_ids.filtered(lambda a : not a.consumed).mapped('real_weight'))
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
