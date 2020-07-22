@@ -6,14 +6,20 @@
                 <t t-foreach="docs" t-as="d">
                     <div class="width:100%;">
                         <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
-                                 style="height:75px;"/>
+                             style="height:75px;"/>
                     </div>
                     <div>
+                        En
+                        <span t-field="res_company.city"/>
+                        a
                         <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d')"/>
+                        de
+                        <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%B')"/>
                     </div>
                 </t>
             </div>
         </t>
     </template>
-    <report id="action_settlement" model="custom.settlement" menu="True" string="Finiquito (Documento)" report_type="qweb-pdf" name="dimabe_billing_rut.settlement_document" />
+    <report id="action_settlement" model="custom.settlement" menu="True" string="Finiquito (Documento)"
+            report_type="qweb-pdf" name="dimabe_billing_rut.settlement_document"/>
 </odoo>
