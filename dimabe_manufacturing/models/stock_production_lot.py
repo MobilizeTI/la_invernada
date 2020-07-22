@@ -297,12 +297,14 @@ class StockProductionLot(models.Model):
             if lot_reception:
                 quant_lot.write({
                     'reserved_quantity': 0,
-                    'quantity': lot.available_weight + lot_reception.quality_weight
+                    'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
+                        'real_weight')) + lot_reception.quality_weight
                 })
             else:
                 quant_lot.write({
                     'reserved_quantity': 0,
-                    'quantity': lot.available_weight
+                    'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
+                        'real_weight'))
                 })
 
     @api.multi
@@ -692,8 +694,10 @@ class StockProductionLot(models.Model):
                         tmp = '00{}'.format(counter)
                         serial.serial_number = item.name + tmp[-3:]
             if len(item.stock_production_lot_serial_ids) > 0:
-                item.available_kg = sum(item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
-                    'real_weight'))
+                item.write({
+                    'available_kg': sum(
+                        item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
+                })
             if len(item.stock_production_lot_serial_ids) > 999:
                 item.check_duplicate()
             return res
@@ -724,6 +728,10 @@ class StockProductionLot(models.Model):
                     'belongs_to_prd_lot': True,
                     'pallet_id': pallet.id,
                     'producer_id': pallet.producer_id.id
+                })
+                item.write({
+                    'available_kg': sum(
+                        item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
                 })
                 if len(item.stock_production_lot_serial_ids) > 999:
                     item.check_duplicate()
