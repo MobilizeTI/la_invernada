@@ -458,7 +458,7 @@ class MrpWorkorder(models.Model):
             'quantity': quant.quantity - custom_serial.display_weight
         })
         custom_serial.stock_production_lot_id.update({
-            'available_weight': custom_serial.stock_production_lot_id.available_weight - custom_serial.display_weight
+            'available_weight': custom_serial.stock_production_lot_id.available_kg - custom_serial.display_weight
         })
         if custom_serial:
             barcode = custom_serial.stock_production_lot_id.name
