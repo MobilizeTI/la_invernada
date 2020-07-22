@@ -216,13 +216,18 @@ class StockProductionLot(models.Model):
 
     serial_available = fields.Many2many('stock.production.lot.serial', compute='_compute_serial_available')
 
-    available_weight = fields.Float('Kilos Disponible')
+    available_kg = fields.Float('Kilos Disponibles',compute='_compute_available_kg')
 
     show_guide_number = fields.Char('Guia', compute='_compute_guide_number')
 
     reception_weight = fields.Float('Kilos Recepcionados', compute='_compute_reception_weight')
 
     sale_order_id = fields.Many2one('sale.order', compute='_compute_sale_order_id', store=True)
+
+    @api.multi
+    def _compute_available_kg(self):
+        for item in self:
+            item.available_kg = sum(item.stock_production_lot_serial_ids.mapped('real_weight'))
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
