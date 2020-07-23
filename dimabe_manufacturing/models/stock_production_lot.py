@@ -278,11 +278,11 @@ class StockProductionLot(models.Model):
                         serie += 1
                         models._logger.error(serial)
                         if len(serial) > 1:
-                            serial[1].update({
+                            serial[1].write({
                                 'serial_number': item.name + '{}'.format(serie)
                             })
                         else:
-                            serial.update({
+                            serial.write({
                                 'serial_number': item.name + '{}'.format(serie)
                             })
 

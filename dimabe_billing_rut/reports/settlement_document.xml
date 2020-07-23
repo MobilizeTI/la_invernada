@@ -32,9 +32,10 @@
                             </tr>
                         </table>
                     </div>
+                    <div style="height:20px;"></div>
                     <div>
-                        <table>
-                            <tr>
+                        <table style="font-size:12px;">
+                            <tr style="">
                                 <td><span t-field="d.employee_id.company_id.city"/></td>
                             </tr>
                             <tr style="border-top:1px;">
