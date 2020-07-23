@@ -268,6 +268,7 @@ class StockProductionLot(models.Model):
                     else:
                         duplicates.append(serial)
                 serie = len(not_duplicates)
+                raise models.ValidationError(serie)
 
                 if len(duplicates) > 1:
                     item.stock_production_lot_serial_ids[999].update({
@@ -276,7 +277,6 @@ class StockProductionLot(models.Model):
                     for duplicate in duplicates:
                         serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', duplicate)])
                         serie += 1
-                        models._logger.error(serie)
                         if len(serial) > 1:
                             for s in serial:
                                 s.write({
