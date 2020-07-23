@@ -118,7 +118,7 @@
                                 <td>
                                     <table style="font-size:10px;">
                                         <tr>
-                                            <td style="text-align: center">Rut</td>
+                                            <td style="text-align: center"><span t-field="d.employee_id.identification_id"/></td>
                                         </tr>
                                         <tr>
                                             <td style="padding-right: 40px;padding-left: 40px;border-top: 1px black dotted;">
@@ -126,6 +126,18 @@
                                             </td>
                                         </tr>
                                     </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div>
+                        <table>
+                            <tr>
+                                <td>
+                                    Direccion:
+                                </td>
+                                <td>
+                                    <span t-field="d.employee_id.address_home_id"/>
                                 </td>
                             </tr>
                         </table>
