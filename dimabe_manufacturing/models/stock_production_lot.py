@@ -262,6 +262,7 @@ class StockProductionLot(models.Model):
             item.stock_production_lot_serial_ids.write({
                 'serial_number': ''
             })
+            counter = 0
             for serial in item.stock_production_lot_serial_ids:
                 if not serial.serial_number:
                     if len(item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)) > 1:
