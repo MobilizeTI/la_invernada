@@ -270,25 +270,22 @@ class StockProductionLot(models.Model):
                 serie = len(not_duplicates)
 
                 if len(duplicates) > 1:
-                    if len(item.stock_production_lot_serial_ids) > 1:
-                        counter = int(item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[
-                                          -1].serial_number) + 1
-                    else:
-                        counter = 1
-                    tmp = '000{}'.format(counter)
-                    serial.serial_number = item.name + tmp[-4:]
-                    item.stock_production_lot_serial_ids[999].update({
-                        'serial_number': item.name + '1000'
-                    })
                     for duplicate in duplicates:
                         serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', duplicate)])
                         serie += 1
                         if len(serial) > 1:
                             for s in serial:
-                                s.write({
-                                    'serial_number': item.name + '{}'.format(serie)
+                                if len(item.stock_production_lot_serial_ids) > 1:
+                                    counter = int(
+                                        item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[
+                                            -1].serial_number) + 1
+                                else:
+                                    counter = 1
+                                tmp = '000{}'.format(counter)
+                                serial.serial_number = item.name + tmp[-4:]
+                                item.stock_production_lot_serial_ids[999].update({
+                                    'serial_number': item.name + '1000'
                                 })
-                                serie += 1
                         else:
                             serial.write({
                                 'serial_number': item.name + '{}'.format(serie)
