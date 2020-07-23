@@ -259,9 +259,6 @@ class StockProductionLot(models.Model):
     @api.multi
     def check_duplicate(self):
         for item in self:
-            item.stock_production_lot_serial_ids.write({
-                'serial_number': ''
-            })
             counter = 0
             for serial in item.stock_production_lot_serial_ids:
                 if not serial.serial_number:
