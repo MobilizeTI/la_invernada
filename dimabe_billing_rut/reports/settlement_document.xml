@@ -35,7 +35,7 @@
                         </table>
                     </div>
                     <div style="height:40px;"></div>
-                    <div>
+                    <div style="width:100%;">
                         <div style="display:inline-block;">
                             <table style="font-size:12px;width:10%;">
                                 <tr style="text-align:center;">
@@ -62,7 +62,7 @@
                         </div>
                     </div>
                     <br/>
-                    <div>
+                    <div style="width:100%;">
                         <div>
                             <table style="font-size:12px;width:10%;">
                                 <tr>
