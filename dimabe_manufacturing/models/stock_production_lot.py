@@ -259,22 +259,34 @@ class StockProductionLot(models.Model):
     @api.multi
     def check_duplicate(self):
         for item in self:
-            counter = 0
-            for serial in item.stock_production_lot_serial_ids:
-                if not serial.serial_number:
-                    if len(item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)) > 1:
-                        counter = int(item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[-1].serial_number) + 1
-                else:
-                    counter = 1
+            if len(item.stock_production_lot_serial_ids) > 999:
+                not_duplicates = []
+                duplicates = []
+                for serial in item.stock_production_lot_serial_ids.mapped('serial_number'):
+                    if serial not in not_duplicates:
+                        not_duplicates.append(serial)
+                    else:
+                        duplicates.append(serial)
+                serie = len(not_duplicates)
 
-                counter += 1
-                if counter > 999:
-                    tmp = '000{}'.format(counter)
-                    serial.serial_number = item.name + tmp[-4:]
-                else:
-                    tmp = '00{}'.format(counter)
-                    serial.serial_number = item.name + tmp[-3:]
+                if len(duplicates) > 1:
+                    item.stock_production_lot_serial_ids[999].update({
+                        'serial_number': item.name + '1000'
+                    })
+                    for duplicate in duplicates:
+                        serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', duplicate)])
+                        serie += 1
+                        models._logger.error(serial)
+                        if len(serial) > 1:
+                            serial[1].update({
+                                'serial_number': item.name + '{}'.format(serie)
+                            })
+                        else:
+                            serial.update({
+                                'serial_number': item.name + '{}'.format(serie)
+                            })
 
+    @api.multi
     @api.multi
     def compare_quant_available_weight(self):
         quants = self.env['stock.quant'].search([])
