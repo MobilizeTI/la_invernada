@@ -265,7 +265,7 @@ class StockProductionLot(models.Model):
             for serial in item.stock_production_lot_serial_ids:
                 if not serial.serial_number:
                     if len(item.stock_production_lot_serial_ids) > 1:
-                        counter = int(item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[-1].serial_number) + 1
+                        counter = int(item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[-2].serial_number) + 1
                 else:
                     counter = 1
 
@@ -277,7 +277,6 @@ class StockProductionLot(models.Model):
                     tmp = '00{}'.format(counter)
                     serial.serial_number = item.name + tmp[-3:]
 
-    @api.multi
     @api.multi
     def compare_quant_available_weight(self):
         quants = self.env['stock.quant'].search([])
