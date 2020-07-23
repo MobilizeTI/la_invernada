@@ -279,6 +279,7 @@ class StockProductionLot(models.Model):
                         models._logger.error(serie)
                         if len(serial) > 1:
                             for s in serial:
+                                serie += 1
                                 s.write({
                                     'serial_number': item.name + '{}'.format(serie)
                                 })
