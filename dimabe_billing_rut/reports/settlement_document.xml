@@ -36,7 +36,7 @@
                     </div>
                     <div style="height:40px;"></div>
                     <div>
-                        <div style="display:inline-block">
+                        <div style="display:inline-block;">
                             <table style="font-size:12px;width:10%;">
                                 <tr style="text-align:center;">
                                     <td>
@@ -48,7 +48,7 @@
                                 </tr>
                             </table>
                         </div>
-                        <div style="display:inline-block">
+                        <div style="display:inline-block;">
                             <table style="font-size:12px;width:10%;">
                                 <tr style="text-align:center;">
                                     <td>
@@ -61,6 +61,7 @@
                             </table>
                         </div>
                     </div>
+                    <br/>
                     <div>
                         <div>
                             <table style="font-size:12px;width:10%;">
