@@ -4,7 +4,7 @@
         <t t-call="web.html_container">
             <div class="page" style="margin-top:0px;">
                 <t t-foreach="docs" t-as="d">
-                    <div style="width:33.3%;display: inline-block;text-align: center;">
+                    <div style="width:33.3%;display: inline-block;margin:auto;">
                         <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)" style="width:60%;"/>
                     </div>
                     <div style="width:33.3%;display:inline-block;">
