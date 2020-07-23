@@ -265,29 +265,27 @@ class StockProductionLot(models.Model):
                 for serial in item.stock_production_lot_serial_ids.mapped('serial_number'):
                     if serial not in not_duplicates:
                         not_duplicates.append(serial)
+                        models._logger.error(not_duplicates)
                     else:
                         duplicates.append(serial)
+                        models._logger.error(duplicate)
                 serie = len(not_duplicates)
+                models._logger.error(serie)
 
                 if len(duplicates) > 1:
                     item.stock_production_lot_serial_ids[999].update({
                         'serial_number': item.name + '1000'
                     })
                     for duplicate in duplicates:
-
+                        models._logger.error(duplicate)
                         serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', duplicate)])
+                        models._logger.error(serial)
                         serie += 1
+                        models._logger.error(serie)
                         if len(serial) > 1:
-                            for s in serial:
-                                if len(item.stock_production_lot_serial_ids) > 1:
-                                    counter = int(
-                                        item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[
-                                            -1].serial_number) + 1
-                                else:
-                                    counter = 1
-                                tmp = '000{}'.format(counter)
-                                s.serial_number = item.name + tmp[-4:]
-
+                            serial[1].write({
+                                'serial_number': item.name + '{}'.format(serie)
+                            })
                         else:
                             serial.write({
                                 'serial_number': item.name + '{}'.format(serie)
