@@ -148,13 +148,22 @@
                     <div>
                         <table>
                             <tr>
-                                <td>
+                                <td style="font-size:10px;">
                                     OBJETO : don/a
                                     <span t-field="d.employee_id"/>
                                     , en e en adelante e indistintamente el EX TRABAJADOR , declare expresamente haber
                                     prestado servicios en calidad de trabajador dependiente y subordinado en caracter de
                                     unico y exclusivo empleador a
-                                    <span t-field="d.employee_id.company_id"/>
+                                    <span t-field="d.employee_id.company_id"/>,
+                                    durante el periodo comprendido entre
+                                    <span t-field="d.date_start_contract"/>
+                                    y dia
+                                    <span t-field="d.date_settlement"/>
+                                    fecha en que se puso termino al contrato de trabajo
+                                    por aplicacion de la causal numero
+                                    <span t-field="d.fired_id.article"/>
+                                    del Código del Trabajo,es decir
+                                    <span t-field="d.fired_id"/>
                                 </td>
                             </tr>
                         </table>
