@@ -48,7 +48,7 @@
                                 <td>
                                     <table>
                                         <tr>
-                                            <td><span t-field="d.employee_id.company_id.city"></td>
+                                            <td><span t-field="d.employee_id.company_id.city" /></td>
                                         </tr>
                                         <tr>
                                             <td style="border-top:1px black solid;">Nombre</td>
