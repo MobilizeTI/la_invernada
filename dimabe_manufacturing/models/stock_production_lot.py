@@ -411,7 +411,6 @@ class StockProductionLot(models.Model):
                     ('id', 'in', producers.mapped('id')),
                     ('always_to_print', '=', True)
                 ])
-
             elif item.is_dried_lot:
                 dried_data = self.env['unpelled.dried'].search([
                     ('out_lot_id', '=', item.id)
