@@ -268,7 +268,7 @@ class StockProductionLot(models.Model):
                         models._logger.error(not_duplicates)
                     else:
                         duplicates.append(serial)
-                        models._logger.error(duplicate)
+                        models._logger.error(duplicates)
                 serie = len(not_duplicates)
                 models._logger.error(serie)
 
