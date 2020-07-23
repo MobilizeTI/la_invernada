@@ -5,7 +5,8 @@
             <div class="page" style="margin-top:0px;">
                 <t t-foreach="docs" t-as="d">
                     <div style="width:33.3%;display: inline-block;">
-                        <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)" style="width:60%;margin:0 auto;"/>
+                        <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                             style="width:60%;margin:0 auto;"/>
                     </div>
                     <div style="width:33.3%;display:inline-block;">
                         <table style="font-size:10px;border:3px solid;">
@@ -27,29 +28,39 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <span t-field="d.employee_id.company_id.street"/> <span t-field="d.employee_id.company_id.city"/>
+                                    <span t-field="d.employee_id.company_id.street"/>
+                                    <span t-field="d.employee_id.company_id.city"/>
                                 </td>
                             </tr>
                         </table>
                     </div>
                     <div style="height:40px;"></div>
                     <div>
-                        <table style="font-size:12px;width:10%;">
-                            <tr style="text-align:center;">
-                                <td><span t-field="d.employee_id.company_id.city"/></td>
-                            </tr>
-                            <tr style="text-align:center;">
-                                <td style="border-top: 1px solid black;">Lugar de suscripción</td>
-                            </tr>
-                        </table>
-                        <table style="font-size:12px;width:10%;">
-                            <tr style="text-align:center;">
-                                <td><span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/> </td>
-                            </tr>
-                            <tr style="text-align:center;">
-                                <td style="border-top: 1px solid black;">Fecha de Suscripción</td>
-                            </tr>
-                        </table>
+                        <div style="display:inline-block">
+                            <table style="font-size:12px;width:10%;">
+                                <tr style="text-align:center;">
+                                    <td>
+                                        <span t-field="d.employee_id.company_id.city"/>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center;">
+                                    <td style="border-top: 1px solid black;">Lugar de suscripción</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div>
+                            <table style="font-size:12px;width:10%;">
+                                <tr style="text-align:center;">
+                                    <td>
+
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center;">
+                                    <td style="border-top: 1px solid black;">Fecha de suscripcion</td>
+                                </tr>
+                            </table>
+                        </div>
+
                     </div>
                 </t>
             </div>
