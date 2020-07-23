@@ -271,7 +271,6 @@ class StockProductionLot(models.Model):
                         models._logger.error(duplicates)
                 serie = len(not_duplicates)
                 models._logger.error(serie)
-
                 if len(duplicates) > 1:
                     item.stock_production_lot_serial_ids[999].update({
                         'serial_number': item.name + '1000'
