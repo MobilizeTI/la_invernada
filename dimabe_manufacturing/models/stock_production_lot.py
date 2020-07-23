@@ -273,14 +273,19 @@ class StockProductionLot(models.Model):
                     item.stock_production_lot_serial_ids[999].update({
                         'serial_number': item.name + '1000'
                     })
-
                     for duplicate in duplicates:
                         serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', duplicate)])
                         serie += 1
-                        models._logger.error(serial)
-                        serial.write({
-                            'serial_number': item.name + '{}'.format(serie)
-                        })
+                        models._logger.error(serie)
+                        models._logger.error(serial.serial_number)
+                        if len(serial) > 1:
+                            serial[1].write({
+                                'serial_number': item.name + '{}'.format(serie)
+                            })
+                        else:
+                            serial.write({
+                                'serial_number': item.name + '{}'.format(serie)
+                            })
 
     @api.multi
     @api.multi
