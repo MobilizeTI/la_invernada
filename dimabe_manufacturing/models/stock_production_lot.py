@@ -287,6 +287,13 @@ class StockProductionLot(models.Model):
                             })
 
     @api.multi
+    def check_before_pallet(self):
+        for item in self:
+            pallet_id = 0
+            for pallet in item.all_pallet_ids:
+                pallet_id = pallet.id
+
+
     @api.multi
     def compare_quant_available_weight(self):
         quants = self.env['stock.quant'].search([])
