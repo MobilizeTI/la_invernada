@@ -262,15 +262,21 @@ class StockProductionLot(models.Model):
             item.stock_production_lot_serial_ids.write({
                 'serial_number': ''
             })
-            counter = 1
-            for serie in item.stock_production_lot_serial_ids:
+            for serial in item.stock_production_lot_serial_ids:
+                if not serial.serial_number:
+                    if len(item.stock_production_lot_serial_ids) > 1:
+                        counter = int(item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[
+                                        -1].serial_number) + 1
+                else:
+                    counter = 1
+
                 counter += 1
                 if counter > 999:
                     tmp = '000{}'.format(counter)
-                    serie.serial_number = item.name + tmp[-4:]
+                    serial.serial_number = item.name + tmp[-4:]
                 else:
                     tmp = '00{}'.format(counter)
-                    serie.serial_number = item.name + tmp[-3:]
+                    serial.serial_number = item.name + tmp[-3:]
 
     @api.multi
     @api.multi
