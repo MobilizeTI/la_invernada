@@ -34,12 +34,20 @@
                     </div>
                     <div style="height:40px;"></div>
                     <div>
-                        <table style="font-size:12px;">
+                        <table style="font-size:12px;width:10%;">
                             <tr style="text-align:center;">
                                 <td><span t-field="d.employee_id.company_id.city"/></td>
                             </tr>
                             <tr style="text-align:center;">
                                 <td style="border-top: 1px solid black;">Lugar de suscripción</td>
+                            </tr>
+                        </table>
+                        <table style="font-size:12px;width:10%;">
+                            <tr style="text-align:center;">
+                                <td><span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/> </td>
+                            </tr>
+                            <tr style="text-align:center;">
+                                <td style="border-top: 1px solid black;">Fecha de Suscripción</td>
                             </tr>
                         </table>
                     </div>
