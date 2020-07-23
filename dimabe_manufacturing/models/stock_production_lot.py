@@ -259,30 +259,18 @@ class StockProductionLot(models.Model):
     @api.multi
     def check_duplicate(self):
         for item in self:
-            if len(item.stock_production_lot_serial_ids) > 999:
-                not_duplicates = []
-                duplicates = []
-                for serial in item.stock_production_lot_serial_ids.mapped('serial_number'):
-                    if serial not in not_duplicates:
-                        not_duplicates.append(serial)
-                    else:
-                        duplicates.append(serial)
-                serie = len(not_duplicates)
-                if len(duplicates) > 1:
-                    item.stock_production_lot_serial_ids[999].update({
-                        'serial_number': item.name + '1000'
-                    })
-                    for duplicate in duplicates:
-                        serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', duplicate)])
-                        serie += 1
-                        if len(serial) > 1:
-                            serial[1].write({
-                                'serial_number': item.name + '{}'.format(serie)
-                            })
-                        else:
-                            serial.write({
-                                'serial_number': item.name + '{}'.format(serie)
-                            })
+            item.stock_production_lot_serial_ids.write({
+                'serial_number': ''
+            })
+            counter = 1
+            for serie in item.stock_production_lot_serial_ids:
+                counter += 1
+                if counter > 999:
+                    tmp = '000{}'.format(counter)
+                    serie.serial_number = item.name + tmp[-4:]
+                else:
+                    tmp = '00{}'.format(counter)
+                    serie.serial_number = item.name + tmp[-3:]
 
     @api.multi
     @api.multi
