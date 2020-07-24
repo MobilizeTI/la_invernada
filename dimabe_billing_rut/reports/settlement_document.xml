@@ -226,52 +226,52 @@
                         <div>
                             <table style="align:center;">
                                 <tr style="border:1px solid black;">
-                                    <td>&nbsp;</td>
+                                    <td><![CDATA[&nbsp;]]></td>
 
                                 </tr>
                                 <tr style="border:1px solid black;">
                                     <td>HABERES</td>
                                     <td>$</td>
-                                    <td></td>
+                                    <td><![CDATA[&nbsp;]]></td>
                                 </tr>
                                 <tr style="border:1px solid black;">
                                     <td>Dias Trabajados Mes xxxx (xx dias)
                                     </td>
                                     <td>$</td>
-                                    <td></td>
+                                    <td><![CDATA[&nbsp;]]></td>
                                 </tr>
                                 <tr style="border:1px solid black;">
                                     <td>
                                         Gratificacion Legal
                                     </td>
                                     <td>$</td>
-                                    <td></td>
+                                    <td><![CDATA[&nbsp;]]></td>
                                 </tr >
                                 <tr style="border:1px solid black;">
                                     <td>
                                         Horas Extraordinarios (xxx horas)
                                     </td>
                                     <td>$</td>
-                                    <td></td>
+                                    <td><![CDATA[&nbsp;]]></td>
                                 </tr>
                                 <tr style="border:1px solid black;">
                                     <td>Indemnización por feriado legal y proporcional (xx dias)</td>
                                     <td>$</td>
-                                    <td></td>
+                                    <td><![CDATA[&nbsp;]]></td>
                                 </tr>
                                 <tr style="border:1px solid black;">
                                     <td>
                                         Indemnizaciones años de servicio (xx años)
                                     </td>
                                     <td>$</td>
-                                    <td></td>
+                                    <td><![CDATA[&nbsp;]]></td>
                                 </tr>
                                 <tr style="border:1px solid black;">
                                     <td>
                                         Indemnización Sustitutiva del mes de aviso:
                                     </td>
                                     <td>$</td>
-                                    <td></td>
+                                    <td><![CDATA[&nbsp;]]></td>
                                 </tr>
                             </table>
                         </div>
