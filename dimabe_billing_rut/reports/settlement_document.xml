@@ -46,7 +46,7 @@
                     <div>
                         <table style="width: 100%;font-size:10px;">
                             <tr style="width: 33.3%;">
-                                <td>
+                                <td style="width: 33.3%;">
                                     <table style="font-size:10px;">
                                         <tr>
                                             <td style="text-align: center;">
@@ -80,8 +80,8 @@
                     <br/>
                     <div>
                         <table style="width: 100%;">
-                            <tr style="width: 33.3%;">
-                                <td>
+                            <tr>
+                                <td style="width: 33.3%;">
                                     <table style="font-size:10px;">
                                         <tr>
                                             <td style="text-align: center;">
