@@ -11,7 +11,7 @@
                     <field name="display_name"/>
                     <field name="total_weight"/>
                     <field name="qty_available"/>
-                    <field name="amount" sum="Total Amount"/>
+
                 </tree>
             </field>
         </record>

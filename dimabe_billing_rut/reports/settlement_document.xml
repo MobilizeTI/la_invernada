@@ -231,40 +231,40 @@
                                     <td style="border-top:1px solid black;border-right:1px solid black;"><![CDATA[&nbsp;]]></td>
                                 </tr>
                                 <tr>
-                                    <td style="border-bottom:1px solid black;border-left:1px solid black;">HABERES</td>
+                                    <td style="border-top:1px solid black;border-left:1px solid black;">HABERES</td>
                                     <td style="border-top:1px solid black;"><![CDATA[&nbsp;]]></td>
                                     <td style="border-top:1px solid black;border-right:1px solid black;"><![CDATA[&nbsp;]]></td>
                                 </tr>
                                 <tr>
-                                    <td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;">
+                                    <td style="border-top:1px solid black;border-left:1px solid black;">
                                         Dias Trabajados Mes xxxx (xx dias)
                                     </td>
                                     <td>$</td>
                                     <td><![CDATA[&nbsp;]]></td>
                                 </tr>
                                 <tr style="border:1px solid black;">
-                                    <td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;">
+                                    <td style="border-top:1px solid black;border-left:1px solid black;">
                                         Gratificacion Legal
                                     </td>
                                     <td>$</td>
                                     <td><![CDATA[&nbsp;]]></td>
                                 </tr>
                                 <tr style="border:1px solid black;">
-                                    <td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;">
+                                    <td style="border-top:1px solid black;border-left:1px solid black;">
                                         Horas Extraordinarios (xxx horas)
                                     </td>
                                     <td>$</td>
                                     <td><![CDATA[&nbsp;]]></td>
                                 </tr>
                                 <tr style="border:1px solid black;">
-                                    <td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;">
+                                    <td style="border-top:1px solid black;border-left:1px solid black;">
                                         Indemnización por feriado legal y proporcional (xx dias)
                                     </td>
                                     <td>$</td>
                                     <td><![CDATA[&nbsp;]]></td>
                                 </tr>
                                 <tr style="border:1px solid black;">
-                                    <td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;">
+                                    <td style="border-top:1px solid black;border-left:1px solid black;">
                                         Indemnizaciones años de servicio (xx años)
                                     </td>
                                     <td>$</td>
