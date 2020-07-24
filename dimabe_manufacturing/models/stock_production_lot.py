@@ -292,7 +292,7 @@ class StockProductionLot(models.Model):
             lots = self.env['stock.production.lot'].search([('is_prd_lot','=',True)]).mapped('id')
             quants = []
             for lot in lots:
-                quant = self.env['stock.quant'].search([('lot_id','=',lot.id)])
+                quant = self.env['stock.quant'].search([('lot_id','=',lot)])
                 if len(quant) == 1:
                     quants.append(quant.id)
             raise models.ValidationError('Cantidad : {} , Ids {}'.format(len(quants),quants))
