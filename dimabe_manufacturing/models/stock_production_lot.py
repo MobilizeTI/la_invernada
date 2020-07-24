@@ -295,6 +295,7 @@ class StockProductionLot(models.Model):
                 quant = self.env['stock.quant'].search([('lot_id','=',lot.id)])
                 if len(quant) == 1:
                     quants.append(quant.id)
+            raise models.ValidationError('Cantidad : {} , Ids {}'.format(len(quants),quants))
 
 
     @api.multi
