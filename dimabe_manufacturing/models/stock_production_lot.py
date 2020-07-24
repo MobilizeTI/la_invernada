@@ -287,6 +287,17 @@ class StockProductionLot(models.Model):
                             })
 
     @api.multi
+    def check_problem_in_dispatch(self):
+        for item in self:
+            lots = self.env['stock.production.lot'].search([('is_prd_lot','=',True)]).mapped('id')
+            quants = []
+            for lot in lots:
+                quant = self.env['stock.quant'].search([('lot_id','=',lot.id)])
+                if len(quant) == 1:
+                    quants.append(quant.id)
+
+
+    @api.multi
     def check_before_pallet(self):
         for item in self:
             pallet_id = 0
