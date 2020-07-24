@@ -224,36 +224,54 @@
                         </table>
                         <div style="height:30px;"></div>
                         <div>
-                            <table>
-                                <tr>
-                                    <td>HABERES</td>
+                            <table style="align:center;">
+                                <tr style="border:1px solid black;">
+                                    <td>&nbsp;</td>
+
                                 </tr>
-                                <tr>
+                                <tr style="border:1px solid black;">
+                                    <td>HABERES</td>
+                                    <td>$</td>
+                                    <td></td>
+                                </tr>
+                                <tr style="border:1px solid black;">
                                     <td>Dias Trabajados Mes xxxx (xx dias)
                                     </td>
+                                    <td>$</td>
+                                    <td></td>
                                 </tr>
-                                <tr>
+                                <tr style="border:1px solid black;">
                                     <td>
                                         Gratificacion Legal
                                     </td>
-                                </tr>
-                                <tr>
+                                    <td>$</td>
+                                    <td></td>
+                                </tr >
+                                <tr style="border:1px solid black;">
                                     <td>
                                         Horas Extraordinarios (xxx horas)
                                     </td>
+                                    <td>$</td>
+                                    <td></td>
                                 </tr>
-                                <tr>
+                                <tr style="border:1px solid black;">
                                     <td>Indemnización por feriado legal y proporcional (xx dias)</td>
+                                    <td>$</td>
+                                    <td></td>
                                 </tr>
-                                <tr>
+                                <tr style="border:1px solid black;">
                                     <td>
                                         Indemnizaciones años de servicio (xx años)
                                     </td>
+                                    <td>$</td>
+                                    <td></td>
                                 </tr>
-                                <tr>
+                                <tr style="border:1px solid black;">
                                     <td>
                                         Indemnización Sustitutiva del mes de aviso:
                                     </td>
+                                    <td>$</td>
+                                    <td></td>
                                 </tr>
                             </table>
                         </div>
