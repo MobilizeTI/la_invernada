@@ -226,11 +226,12 @@
                         <div>
                             <table style="align:center;">
                                 <tr>
-                                    <td style="border:1px solid black;"><![CDATA[&nbsp;]]></td>
-
+                                    <td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;"><![CDATA[&nbsp;]]></td>
+                                    <td style="border-top:1px solid black;border-bottom:1px solid black;"><![CDATA[&nbsp;]]></td>
+                                    <td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;"><![CDATA[&nbsp;]]></td>
                                 </tr>
                                 <tr>
-                                    <td style="border:1px solid black;">HABERES</td>
+                                    <td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;">HABERES</td>
                                 </tr>
                                 <tr>
                                     <td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;">
