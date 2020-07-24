@@ -147,9 +147,9 @@
                         </table>
                     </div>
                     <div>
-                        <table>
+                        <table style="font-size:10px;text-align: justify;">
                             <tr>
-                                <td style="font-size:10px;text-align: justify;">
+                                <td >
                                     <strong>OBJETO</strong>
                                     : don/a
                                     <span t-field="d.employee_id"/>
