@@ -699,6 +699,11 @@ class StockProductionLot(models.Model):
                                 item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
                                     'real_weight'))
                         })
+            item.write({
+                'available_kg': sum(
+                    item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
+                        'real_weight'))
+            })
             if len(item.stock_production_lot_serial_ids) > 999:
                 item.check_duplicate()
             return res
