@@ -217,7 +217,7 @@
                                         <tr>
                                             <td>
                                                 <strong>
-                                                    <span t-field="settlement"/>
+                                                    <span t-field="d.settlement"/>
                                                 </strong>
                                             </td>
                                         </tr>
