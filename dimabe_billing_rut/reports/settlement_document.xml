@@ -160,8 +160,8 @@
                                     y dia
                                     <span t-field="d.date_settlement"/>
                                     fecha en que se puso termino al contrato de trabajo
-                                    por aplicacion de la causal numero
-                                    <span t-field="d.fired_id.article"/>
+                                    por aplicacion de la causal de
+                                    <span t-field="d.fired_id.article"/> numero <span t-esc="d.fired_id.article"/>
                                     del Código del Trabajo,es decir
                                     <span t-field="d.fired_id"/>
                                 </td>
