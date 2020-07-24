@@ -247,7 +247,11 @@
                                         Gratificacion Legal
                                     </td>
                                     <td style="border-top:1px solid black;">$</td>
-                                    <td style="border-top:1px solid black;border-right:1px solid black;"><![CDATA[&nbsp;]]></td>
+                                    <td style="border-top:1px solid black;border-right:1px solid black;">
+                                        <t t-if="d.reward_selection == 'Yes'">
+                                            <span t-field="d.reward_value"/>
+                                        </t>
+                                    </td>
                                 </tr>
                                 <tr style="border:1px solid black;">
                                     <td style="border-top:1px solid black;border-left:1px solid black;">
@@ -261,21 +265,27 @@
                                         Indemnización por feriado legal y proporcional (xx dias)
                                     </td>
                                     <td style="border-top:1px solid black;">$</td>
-                                    <td style="border-top:1px solid black;border-right:1px solid black;"><![CDATA[&nbsp;]]></td>
+                                    <td style="border-top:1px solid black;border-right:1px solid black;">
+                                        <span t-field="d.compensation_vacations"/>
+                                    </td>
                                 </tr>
                                 <tr style="border:1px solid black;">
                                     <td style="border-top:1px solid black;border-left:1px solid black;">
                                         Indemnizaciones años de servicio (xx años)
                                     </td>
                                     <td style="border-top:1px solid black;">$</td>
-                                    <td style="border-top:1px solid black;border-right:1px solid black;"><![CDATA[&nbsp;]]></td>
+                                    <td style="border-top:1px solid black;border-right:1px solid black;">
+                                        <span t-field="d.compensation_years"/>
+                                    </td>
                                 </tr>
                                 <tr style="border:1px solid black;">
                                     <td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;">
                                         Indemnización Sustitutiva del mes de aviso:
                                     </td>
                                     <td style="border-top:1px solid black;border-bottom:1px solid black;">$</td>
-                                    <td style="border-top:1px solid black; border-bottom:1px solid black;border-right:1px solid black;"><![CDATA[&nbsp;]]></td>
+                                    <td style="border-top:1px solid black; border-bottom:1px solid black;border-right:1px solid black;">
+                                        <psna t-field="d.compensation_warning"/>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
