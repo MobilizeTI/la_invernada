@@ -198,21 +198,42 @@ class StockPicking(models.Model):
         return res
 
     @api.multi
-    def button_validate(self):
-        for serial in self.packing_list_ids:
-            serial.update({
-                'consumed': True
+    def generate_standard_pallet(self):
+        for item in self:
+            if not item.producer_id:
+                raise models.ValidationError('debe seleccionar un productor')
+            if not self.env['mrp.workorder'].search([('final_lot_id', '=', item.id)]):
+                pallet = self.env['manufacturing.pallet'].create({
+                    'producer_id': item.producer_id.id,
+                    'sale_order_id': self.env['mrp.workorder'].search([('final_lot_id', '=', item.id)]).sale_order_id
+                })
+            else:
+                pallet = self.env['manufacturing.pallet'].create({
+                    'producer_id': item.producer_id.id
+                })
+
+            for counter in range(item.qty_standard_serial):
+                tmp = '00{}'.format(1 + len(item.stock_production_lot_serial_ids))
+
+                item.env['stock.production.lot.serial'].create({
+                    'stock_production_lot_id': item.id,
+                    'display_weight': item.product_id.weight,
+                    'serial_number': item.name + tmp[-3:],
+                    'belongs_to_prd_lot': True,
+                    'pallet_id': pallet.id,
+                    'producer_id': pallet.producer_id.id
+                })
+                available_kg = sum(
+                    item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
+                query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg,
+                                                                                                 item.id)
+                cr = self._cr
+                cr.execute(query)
+                if len(item.stock_production_lot_serial_ids) > 999:
+                    item.check_duplicate()
+            pallet.update({
+                'state': 'close'
             })
-        if len(self.move_line_ids_without_package) == 0:
-            raise models.UserError('No existe ningun campo en operaciones detalladas')
-        if self.move_line_ids_without_package.filtered(lambda a: a.qty_done == 0):
-            raise models.UserError('No ha ingresado la cantidad realizada')
-        for move_line in self.move_line_ids:
-            if self.picking_type_id.warehouse_id.id == 17 and self.picking_type_code != 'outgoing':
-                move_line._action_done()
-                return super(StockPicking, self).button_validate()
-        if self.picking_type_id.warehouse_id.id != 17:
-            return super(StockPicking, self).button_validate()
 
     def validate_barcode(self, barcode):
         custom_serial = self.packing_list_ids.filtered(
