@@ -226,21 +226,25 @@
                         <div style="margin: 0 auto !important;">
                             <table style="border-spacing: 0px 0px;font-size:12px;">
                                 <tr>
-                                    <td style="border-top:1px solid black;border-left:1px solid black;"><![CDATA[&nbsp;]]></td>
+                                    <td style="border-top:1px solid black;border-left:1px solid black;">
+                                        <![CDATA[&nbsp;]]></td>
                                     <td style="border-top:1px solid black;"><![CDATA[&nbsp;]]></td>
-                                    <td style="border-top:1px solid black;border-right:1px solid black;"><![CDATA[&nbsp;]]></td>
+                                    <td style="border-top:1px solid black;border-right:1px solid black;">
+                                        <![CDATA[&nbsp;]]></td>
                                 </tr>
                                 <tr>
                                     <td style="border-top:1px solid black;border-left:1px solid black;">HABERES</td>
                                     <td style="border-top:1px solid black;"><![CDATA[&nbsp;]]></td>
-                                    <td style="border-top:1px solid black;border-right:1px solid black;"><![CDATA[&nbsp;]]></td>
+                                    <td style="border-top:1px solid black;border-right:1px solid black;">
+                                        <![CDATA[&nbsp;]]></td>
                                 </tr>
                                 <tr>
                                     <td style="border-top:1px solid black;border-left:1px solid black;">
                                         Dias Trabajados Mes xxxx (xx dias)
                                     </td>
                                     <td style="border-top:1px solid black;">$</td>
-                                    <td style="border-top:1px solid black;border-right:1px solid black;"><![CDATA[&nbsp;]]></td>
+                                    <td style="border-top:1px solid black;border-right:1px solid black;">
+                                        <![CDATA[&nbsp;]]></td>
                                 </tr>
                                 <tr style="border:1px solid black;">
                                     <td style="border-top:1px solid black;border-left:1px solid black;">
@@ -258,7 +262,8 @@
                                         Horas Extraordinarios (xxx horas)
                                     </td>
                                     <td style="border-top:1px solid black;">$</td>
-                                    <td style="border-top:1px solid black;border-right:1px solid black;"><![CDATA[&nbsp;]]></td>
+                                    <td style="border-top:1px solid black;border-right:1px solid black;">
+                                        <![CDATA[&nbsp;]]></td>
                                 </tr>
                                 <tr style="border:1px solid black;">
                                     <td style="border-top:1px solid black;border-left:1px solid black;">
@@ -289,6 +294,24 @@
                                 </tr>
                             </table>
                         </div>
+                        <table style="font-size:10px;text-align: justify;">
+                            <tr>
+                                <td>
+                                    Las partes convienen que la suma anteriormente indicada será percibibida por el
+                                    <strong>EX TRABAJADOR</strong>
+                                    como única y total indemnización por cualquier
+                                    derecho que hubiera podido corresponderle y por cualquier concepto que le fuere
+                                    indemnizable, sea en virtud del contrato de trabajo que lo unió con
+                                    el <strong>EX EMPLEADOR</strong> u originada en el término de la relación laboral
+                                    que existió entre
+                                    las partes o de cualquiera otra naturaleza. De esta forma, el
+                                    <strong>EX TRABAJADOR</strong>
+                                    deja testimonio de que se encuentra íntegramente pagada y extinguida toda y
+                                    cualquier obligación pasada, actual o futura que el
+                                    <strong>EX EMPLEADOR</strong>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </t>
             </div>
