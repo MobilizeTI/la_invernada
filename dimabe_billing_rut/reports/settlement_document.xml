@@ -213,7 +213,7 @@
                                     Con motivo del presente finiquito y transacción el EX TRABAJADOR declara
                                     recibir en este acto de parte de su <strong>EX EMPLEADOR</strong>, previo descuentos
                                     que se indican y que se aceptan expresamente, la suma líquida total de $
-                                    <table>
+                                    <table style="font-size:10px;text-align: justify;">
                                         <tr>
                                             <td>
                                                 <strong>
@@ -223,6 +223,9 @@
                                         </tr>
                                     </table>
                                 </td>
+                            </tr>
+                            <tr>
+                                <td>por los siguiente conceptos:</td>
                             </tr>
                         </table>
                     </div>
