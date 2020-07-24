@@ -46,7 +46,7 @@
                         <table style="width: 100%;font-size:10px;">
                             <tr style="width: 33.3%;">
                                 <td>
-                                    <table>
+                                    <table style="font-size:10px;">
                                         <tr>
                                             <td style="text-align: center;">
                                                 <span t-field="d.employee_id.company_id.city"/>
@@ -60,7 +60,7 @@
                                     </table>
                                 </td>
                                 <td>
-                                    <table>
+                                    <table style="font-size:10px;">
                                         <tr>
                                             <td style="text-align: center">
                                                 <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/>
@@ -149,9 +149,9 @@
                         <table>
                             <tr>
                                 <td style="font-size:10px;text-align: justify;">
-                                    OBJETO : don/a
+                                    <strong>OBJETO</strong> : don/a
                                     <span t-field="d.employee_id"/>
-                                    , en e en adelante e indistintamente el EX TRABAJADOR , declare expresamente haber
+                                    , en e en adelante e indistintamente el <strong>EX TRABAJADOR</strong> , declare expresamente haber
                                     prestado servicios en calidad de trabajador dependiente y subordinado en caracter de
                                     unico y exclusivo empleador a
                                     <span t-field="d.employee_id.company_id"/>,
