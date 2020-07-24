@@ -203,6 +203,13 @@ class StockPicking(models.Model):
             serial.update({
                 'consumed': True
             })
+        for lot in self.packing_list_lot_ids:
+            available_kg = sum(
+                lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
+            query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg,
+                                                                                             lot.id)
+            cr = self._cr
+            cr.execute(query)
         if len(self.move_line_ids_without_package) == 0:
             raise models.UserError('No existe ningun campo en operaciones detalladas')
         if self.move_line_ids_without_package.filtered(lambda a: a.qty_done == 0):

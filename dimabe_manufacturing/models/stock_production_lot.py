@@ -289,14 +289,13 @@ class StockProductionLot(models.Model):
     @api.multi
     def check_problem_in_dispatch(self):
         for item in self:
-            lots = self.env['stock.production.lot'].search([('is_prd_lot','=',True)]).mapped('id')
+            lots = self.env['stock.production.lot'].search([('is_prd_lot', '=', True)]).mapped('id')
             quants = []
             for lot in lots:
-                quant = self.env['stock.quant'].search([('lot_id','=',lot)])
+                quant = self.env['stock.quant'].search([('lot_id', '=', lot)])
                 if len(quant) == 1:
                     quants.append(quant.id)
-            raise models.ValidationError('Cantidad : {} , Ids {}'.format(len(quants),quants))
-
+            raise models.ValidationError('Cantidad : {} , Ids {}'.format(len(quants), quants))
 
     @api.multi
     def check_before_pallet(self):
@@ -304,7 +303,6 @@ class StockProductionLot(models.Model):
             pallet_id = 0
             for pallet in item.all_pallet_ids:
                 pallet_id = pallet.id
-
 
     @api.multi
     def compare_quant_available_weight(self):
@@ -711,11 +709,12 @@ class StockProductionLot(models.Model):
                                 item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
                                     'real_weight'))
                         })
-            item.write({
-                'available_kg': sum(
-                    item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
-                        'real_weight'))
-            })
+            available_kg = sum(
+                item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
+            query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg,
+                                                                                             item.id)
+            cr = self._cr
+            cr.execute(query)
             if len(item.stock_production_lot_serial_ids) > 999:
                 item.check_duplicate()
             return res
@@ -747,10 +746,12 @@ class StockProductionLot(models.Model):
                     'pallet_id': pallet.id,
                     'producer_id': pallet.producer_id.id
                 })
-                item.write({
-                    'available_kg': sum(
-                        item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
-                })
+                available_kg = sum(
+                    item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
+                query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg,
+                                                                                                 item.id)
+                cr = self._cr
+                cr.execute(query)
                 if len(item.stock_production_lot_serial_ids) > 999:
                     item.check_duplicate()
             pallet.update({
