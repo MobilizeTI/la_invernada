@@ -12,7 +12,7 @@
                                          style="height:75px;"
                                     />
                                 </td>
-                                <td style="width: 33.3%;position:absolute;right:0px;">
+                                <td style="width: 40%;position:absolute;right:0px;">
                                     <table style="font-size:10px;border:1px solid;">
                                         <tr>
                                             <td>Declaracion,Transacción,Renuncia,Desistimiento de Acciones</td>
@@ -124,7 +124,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td style="padding-right: 40px;padding-left: 40px;border-top: 1px black dotted;">
+                                            <td style="padding-right: 40px;padding-left: 40px;border-top: 1px black solid;">
                                                 N° de Identificacion
                                             </td>
                                         </tr>
@@ -150,9 +150,11 @@
                         <table>
                             <tr>
                                 <td style="font-size:10px;text-align: justify;">
-                                    <strong>OBJETO</strong> : don/a
+                                    <strong>OBJETO</strong>
+                                    : don/a
                                     <span t-field="d.employee_id"/>
-                                    , en e en adelante e indistintamente el <strong>EX TRABAJADOR</strong> , declare expresamente haber
+                                    , en e en adelante e indistintamente el <strong>EX TRABAJADOR</strong> , declare
+                                    expresamente haber
                                     prestado servicios en calidad de trabajador dependiente y subordinado en caracter de
                                     unico y exclusivo empleador a
                                     <span t-field="d.employee_id.company_id"/>,
@@ -162,10 +164,19 @@
                                     <span t-field="d.date_settlement"/>
                                     fecha en que se puso termino al contrato de trabajo
                                     por aplicacion de la causal de
-                                    <span t-field="d.fired_id.article"/> numero <span t-esc="d.fired_id.article"/>
+                                    Articulo numero
+                                    <span t-esc="d.fired_id.article"/>
                                     del Código del Trabajo,es decir
                                     <span t-field="d.fired_id"/>
                                 </td>
+                            </tr>
+                            <tr>
+                                Respecto de la aplicacion de la causal invocada para el termino de su contrato, en
+                                    este acto el
+                                    <strong>EX TRABAJADOR</strong>
+                                    declara expresamente la procedencia de su aplicacion por parte de su
+                                    <strong>EX EMPLEADOR</strong>
+                                    ,aceptándola expresamente.
                             </tr>
                         </table>
                     </div>
