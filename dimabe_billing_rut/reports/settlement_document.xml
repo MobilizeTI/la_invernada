@@ -223,7 +223,7 @@
                             </tr>
                         </table>
                         <div style="height:30px;"></div>
-                        <div style="align:center !important;">
+                        <div style="margin: 0 auto !important;">
                             <table style="border-spacing: 0px 0px;font-size:12px;">
                                 <tr>
                                     <td style="border-top:1px solid black;border-left:1px solid black;"><![CDATA[&nbsp;]]></td>
