@@ -294,7 +294,8 @@ class MrpWorkorder(models.Model):
     @api.multi
     def fix_order(self):
         for item in self:
-            raise models.ValidationError(sum(item.production_finished_move_line_ids.mapped('lot_id').mapped('stock_production_lot_serial_ids').mapped('real_weight')))
+            raise models.ValidationError(sum(item.production_finished_move_line_ids.mapped('lot_id').mapped(
+                'stock_production_lot_serial_ids').mapped('real_weight')))
             for move in item.active_move_line_ids:
                 move.write({
                     'qty_done': sum(move.lot_id.mapped('stock_production_lot_serial_ids').mapped('display_weight'))
@@ -458,10 +459,11 @@ class MrpWorkorder(models.Model):
         quant.write({
             'quantity': quant.quantity - custom_serial.display_weight
         })
-        custom_serial.stock_production_lot_id.write({
+        custom_serial.stock_production_lot_id.update({
             'available_kg': sum(
-                                custom_serial.stock_production_lot_id.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
-                                    'real_weight'))
+                custom_serial.stock_production_lot_id.stock_production_lot_serial_ids.filtered(
+                    lambda a: not a.consumed).mapped(
+                    'real_weight'))
         })
         if custom_serial:
             barcode = custom_serial.stock_production_lot_id.name
