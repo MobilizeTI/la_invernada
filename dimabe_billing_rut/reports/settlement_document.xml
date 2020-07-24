@@ -186,15 +186,42 @@
                             <tr>
                                 <td>
                                     <strong>DECLARACION:</strong>
-                                El <strong>EX TRABAJADOR</strong> expresa en este acto durante todo el tiempo que prestó
-                                servicios, recibió fiel y oportunamente del
-                                <strong>EX EMPLEADOR</strong>
-                                el total de las remuneraciones y demás prestaciones laborales convenidas y/o legalmente
-                                procedentes. A mayor abundamiento, deja expresa y especial constancia
-                                que durante todo el período que duró la relación laboral entre las partes, en todo
-                                momento su <strong>EX EMPLEADOR</strong> ejerció las facultades de mando y dirección
-                                que la ley le confiere y reconoce, respetando íntegramente sus derechos laborales, ya
-                                hubieren sido de orden individual o colectivo. Declara, asimismo, que en modo
+                                    El <strong>EX TRABAJADOR</strong> expresa en este acto durante todo el tiempo que
+                                    prestó
+                                    servicios, recibió fiel y oportunamente del
+                                    <strong>EX EMPLEADOR</strong>
+                                    el total de las remuneraciones y demás prestaciones laborales convenidas y/o
+                                    legalmente
+                                    procedentes. A mayor abundamiento, deja expresa y especial constancia
+                                    que durante todo el período que duró la relación laboral entre las partes, en todo
+                                    momento su <strong>EX EMPLEADOR</strong> ejerció las facultades de mando y dirección
+                                    que la ley le confiere y reconoce, respetando íntegramente sus derechos laborales,
+                                    ya
+                                    hubieren sido de orden individual o colectivo. Declara, asimismo, que en modo
+                                    uno su <strong>EX EMPLEADOR</strong> incurrió en actos, conductas u omisiones que
+                                    hubieren
+                                    significado o importado un impedimento, restricción o limitación de los derechos ya
+                                    referidos.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>PAGO:</strong>
+                                    Con motivo del presente finiquito y transacción el EX TRABAJADOR declara
+                                    recibir en este acto de parte de su <strong>EX EMPLEADOR</strong>, previo descuentos
+                                    que se indican y que se aceptan expresamente, la suma líquida total de $
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <strong>
+                                                    <span t-field="settlement"/>
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </td>
                             </tr>
                         </table>
