@@ -110,4 +110,4 @@ class ProductProduct(models.Model):
         for item in self:
             if item.tracking == 'lot':
                 lots = self.env['stock.production.lot'].search([('product_id','=',item.id)])
-                item.total_weight = sum(lots.mapped('available_weight'))
+                item.total_weight = sum(lots.mapped('available_kg'))
