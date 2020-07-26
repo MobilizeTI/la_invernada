@@ -4,30 +4,386 @@
         <t t-call="web.html_container">
             <div class="page" style="margin-top:0px;">
                 <t t-foreach="docs" t-as="d">
-                    <div style="width:33.3%;display: inline-block;text-align: center;">
-                        <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)" style="width:60%;"/>
+                    <div style="width: 100%;">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 20.3%;">
+                                    <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                                         style="height:75px;"
+                                    />
+                                </td>
+                                <td style="width: 40%;position:absolute;right:0px;">
+                                    <table style="font-size:10px;border:1px solid;">
+                                        <tr>
+                                            <td>Declaracion,Transacción,Renuncia,Desistimiento de Acciones</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Pago y Finiquito</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span t-field="d.employee_id.company_id"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span t-field="d.employee_id.company_id.invoice_rut"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span t-field="d.employee_id.company_id.street"/>
+                                                <span t-field="d.employee_id.company_id.city"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
-                    <div style="width:33.3%;display:inline-block;">
-                        <table style="font-size:10px;">
-                            <tr>
-                                <td>Declaracion,Transacción,Renuncia,Desistimiento de Acciones</td>
+                    <br/>
+                    <div style="height:50px;"></div>
+                    <div>
+                        <table style="width: 100%;font-size:11px;">
+                            <tr style="width: 33.3%;">
+                                <td style="width: 33.3%;">
+                                    <table style="font-size:11px;">
+                                        <tr>
+                                            <td style="text-align: center;">
+                                                <span t-field="d.employee_id.company_id.city"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-left: 50px;padding-right: 50px;border-top: 1px black solid;">
+                                                Lugar de suscripción
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td>
+                                    <table style="font-size:11px;">
+                                        <tr>
+                                            <td style="text-align: center">
+                                                <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-left: 50px;padding-right: 50px;border-top: 1px black solid;">
+                                                Fecha de suscripción
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
                             </tr>
+                        </table>
+                    </div>
+                    <br/>
+                    <div>
+                        <table style="width: 100%;">
                             <tr>
-                                <td>Pago y Finiquito</td>
+                                <td style="width: 33.3%;">
+                                    <table style="font-size:11px;">
+                                        <tr>
+                                            <td style="text-align: center;">
+                                                <span t-field="d.employee_id.firstname"/>
+                                                <span t-field="d.employee_id.middle_name"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-left: 50px;padding-right: 50px;border-top: 1px black solid;">
+                                                Nombre
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td>
+                                    <table style="font-size:11px;">
+                                        <tr>
+                                            <td style="text-align: center">
+                                                <span t-field="d.employee_id.last_name"/>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <span t-field="d.employee_id.mothers_name"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-left: 50px;padding-right: 50px;border-top: 1px black solid;">
+                                                Apellido Paterno
+                                            </td>
+                                            <td style="padding-left: 50px;padding-right: 50px;border-top: 1px black solid;">
+                                                Apellido Materno
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td>
+                                    <table style="font-size:11px;">
+                                        <tr>
+                                            <td style="text-align: center">
+                                                <span t-field="d.employee_id.identification_id"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 40px;padding-left: 40px;border-top: 1px black solid;">
+                                                N° de Identificacion
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
                             </tr>
+                        </table>
+                    </div>
+                    <div style="height:20px;"/>
+                    <div>
+                        <table style="font-size:11px;">
                             <tr>
                                 <td>
-                                    <span t-field="d.employee_id.company_id"/>
+                                    Direccion:
+                                </td>
+                                <td>
+                                    <span t-field="d.employee_id.address_home_id"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div>
+                        <table style="font-size:11px;text-align: justify;">
+                            <tr>
+                                <td>
+                                    <strong>OBJETO</strong>
+                                    : don/a
+                                    <span t-field="d.employee_id"/>
+                                    , en e en adelante e indistintamente el <strong>EX TRABAJADOR</strong> , declare
+                                    expresamente haber
+                                    prestado servicios en calidad de trabajador dependiente y subordinado en caracter de
+                                    unico y exclusivo empleador a
+                                    <span t-field="d.employee_id.company_id"/>,
+                                    durante el periodo comprendido entre
+                                    <span t-field="d.date_start_contract"/>
+                                    y dia
+                                    <span t-field="d.date_settlement"/>
+                                    fecha en que se puso termino al contrato de trabajo
+                                    por aplicacion de la causal de
+                                    Articulo numero
+                                    <span t-esc="d.fired_id.article"/>
+                                    del Código del Trabajo,es decir
+                                    <span t-field="d.fired_id"/>.
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <span t-field="d.employee_id.company_id.invoice_rut"/>
+                                    Respecto de la aplicacion de la causal invocada para el termino de su contrato, en
+                                    este acto el
+                                    <strong>EX TRABAJADOR</strong>
+                                    declara expresamente la procedencia de su aplicacion por parte de su
+                                    <strong>EX EMPLEADOR</strong>
+                                    , aceptándola expresamente.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>DECLARACION:</strong>
+                                    El <strong>EX TRABAJADOR</strong> expresa en este acto durante todo el tiempo que
+                                    prestó
+                                    servicios, recibió fiel y oportunamente del
+                                    <strong>EX EMPLEADOR</strong>
+                                    el total de las remuneraciones y demás prestaciones laborales convenidas y/o
+                                    legalmente
+                                    procedentes. A mayor abundamiento, deja expresa y especial constancia
+                                    que durante todo el período que duró la relación laboral entre las partes, en todo
+                                    momento su <strong>EX EMPLEADOR</strong> ejerció las facultades de mando y dirección
+                                    que la ley le confiere y reconoce, respetando íntegramente sus derechos laborales,
+                                    ya
+                                    hubieren sido de orden individual o colectivo. Declara, asimismo, que en modo
+                                    uno su <strong>EX EMPLEADOR</strong> incurrió en actos, conductas u omisiones que
+                                    hubieren
+                                    significado o importado un impedimento, restricción o limitación de los derechos ya
+                                    referidos.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>PAGO:</strong>
+                                    Con motivo del presente finiquito y transacción el EX TRABAJADOR declara
+                                    recibir en este acto de parte de su <strong>EX EMPLEADOR</strong>, previo descuentos
+                                    que se indican y que se aceptan expresamente, la suma líquida total de $
+                                    <strong>
+                                        <span t-field="d.settlement"/>
+                                    </strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>por los siguiente conceptos:</td>
+                            </tr>
+                        </table>
+                        <div style="height:30px;"></div>
+                        <div style="margin: 0 auto !important;">
+                            <table style="border-spacing: 0px 0px;font-size:12px;">
+                                <tr>
+                                    <td style="border-top:1px solid black;border-left:1px solid black;">
+                                        <![CDATA[&nbsp;]]></td>
+                                    <td style="border-top:1px solid black;"><![CDATA[&nbsp;]]></td>
+                                    <td style="border-top:1px solid black;border-right:1px solid black;">
+                                        <![CDATA[&nbsp;]]></td>
+                                </tr>
+                                <tr>
+                                    <td style="border-top:1px solid black;border-left:1px solid black;">HABERES</td>
+                                    <td style="border-top:1px solid black;"><![CDATA[&nbsp;]]></td>
+                                    <td style="border-top:1px solid black;border-right:1px solid black;">
+                                        <![CDATA[&nbsp;]]></td>
+                                </tr>
+                                <tr>
+                                    <td style="border-top:1px solid black;border-left:1px solid black;">
+                                        Dias Trabajados Mes xxxx (xx dias)
+                                    </td>
+                                    <td style="border-top:1px solid black;">$</td>
+                                    <td style="border-top:1px solid black;border-right:1px solid black;">
+                                        <![CDATA[&nbsp;]]></td>
+                                </tr>
+                                <tr style="border:1px solid black;">
+                                    <td style="border-top:1px solid black;border-left:1px solid black;">
+                                        Gratificacion Legal
+                                    </td>
+                                    <td style="border-top:1px solid black;">$</td>
+                                    <td style="border-top:1px solid black;border-right:1px solid black;">
+                                        <t t-if="d.reward_selection == 'Yes'">
+                                            <span t-field="d.reward_value"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr style="border:1px solid black;">
+                                    <td style="border-top:1px solid black;border-left:1px solid black;">
+                                        Horas Extraordinarios (xxx horas)
+                                    </td>
+                                    <td style="border-top:1px solid black;">$</td>
+                                    <td style="border-top:1px solid black;border-right:1px solid black;">
+                                        <![CDATA[&nbsp;]]></td>
+                                </tr>
+                                <tr style="border:1px solid black;">
+                                    <td style="border-top:1px solid black;border-left:1px solid black;">
+                                        Indemnización por feriado legal y proporcional (xx dias)
+                                    </td>
+                                    <td style="border-top:1px solid black;">$</td>
+                                    <td style="border-top:1px solid black;border-right:1px solid black;">
+                                        <span t-field="d.compensation_vacations"/>
+                                    </td>
+                                </tr>
+                                <tr style="border:1px solid black;">
+                                    <td style="border-top:1px solid black;border-left:1px solid black;">
+                                        Indemnizaciones años de servicio (xx años)
+                                    </td>
+                                    <td style="border-top:1px solid black;">$</td>
+                                    <td style="border-top:1px solid black;border-right:1px solid black;">
+                                        <span t-field="d.compensation_years"/>
+                                    </td>
+                                </tr>
+                                <tr style="border:1px solid black;">
+                                    <td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;">
+                                        Indemnización Sustitutiva del mes de aviso:
+                                    </td>
+                                    <td style="border-top:1px solid black;border-bottom:1px solid black;">$</td>
+                                    <td style="border-top:1px solid black; border-bottom:1px solid black;border-right:1px solid black;">
+                                        <psna t-field="d.compensation_warning"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div style="height:30px;"></div>
+                        <table style="font-size:11px;text-align: justify;">
+                            <tr>
+                                <td>
+                                    Las partes convienen que la suma anteriormente indicada será percibibida por el
+                                    <strong>EX TRABAJADOR</strong>
+                                    como única y total indemnización por cualquier
+                                    derecho que hubiera podido corresponderle y por cualquier concepto que le fuere
+                                    indemnizable, sea en virtud del contrato de trabajo que lo unió con
+                                    el <strong>EX EMPLEADOR</strong> u originada en el término de la relación laboral
+                                    que existió entre
+                                    las partes o de cualquiera otra naturaleza. De esta forma, el
+                                    <strong>EX TRABAJADOR</strong>
+                                    deja testimonio de que se encuentra íntegramente pagada y extinguida toda y
+                                    cualquier obligación pasada, actual o futura que el
+                                    <strong>EX EMPLEADOR</strong>
+                                    tenga o hubiere tenido en su favor, con motivo de la prestación de los servicios,
+                                    del contrato de trabajo indicado en la cláusula primera de este instrumento, de su
+                                    respectiva terminación o por cualquier otra causa o razón, sea de carácter legal,
+                                    convencional o de cualquier otra índole.
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <span t-field="d.employee_id.company_id.street"/> <span t-field="d.employee_id.company_id.city"/>
+                                    <strong>TRANSACCION:</strong>
+                                    las partes convienen en otorgar al presente instrumento la calidad o
+                                    naturaleza de una transacción al tenor de lo dispuesto en el artículo 2446 del
+                                    Código Civil, con el objeto expreso y determinado de evitar un eventual litigio o
+                                    controversia entre las partes, derivado del término del contrato de trabajo que unió
+                                    al <strong>EX TRABAJADOR</strong> con el <strong>EX EMPLEADOR</strong>, para todos
+                                    los efectos legales, judiciales y
+                                    contractuales correspondientes, elevando dicho carácter a la condición de esencial
+                                    para la celebración de la presente convención. Por último, las partes convienen en
+                                    otorgar al presente instrumento la facultad de producir efecto de cosa juzgada en
+                                    última instancia, como lo señala el artículo 2460 del Código Civil.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>CONFIDENCIALIDAD:</strong> el <strong>EX TRABAJADOR</strong> se obliga a
+                                    mantener en absoluta reserva y
+                                    secreto respecto de terceros, toda la información que tenga
+                                    relación con la actividad del EX EMPLEADOR o de sus clientes, contratistas,
+                                    subcontratistas o proveedores. Para todos los efectos de la presente
+                                    cláusula, las partes declaran que todo documento e información relativa al giro del
+                                    EX EMPLEADOR o de sus clientes, contratistas, subcontratistas o proveedores, que se
+                                    encuentre en posesión del <strong>EX EMPLEADOR</strong> , sea de su propiedad o que,
+                                    siendo de
+                                    propiedad de algún tercero, el <strong>EX EMPLEADOR</strong>
+                                    haya recibido, tiene carácter de confidencial a menos que el <strong>EX
+                                    EMPLEADOR</strong> instruya
+                                    otra cosa expresamente. Esta obligación se mantendrá vigente y producirá sus efectos
+                                    hasta tres (3) años después de suscrito el presente finiquito. Asimismo,
+                                    el <strong>EX TRABAJADOR</strong> se obliga en este acto a devolver al
+                                    <strong>EX EMPLEADOR</strong> todos los documentos, planos, escritos, software,
+                                    informes y documentos
+                                    que haya recibido del <strong>EX EMPLEADOR</strong>, o que, siendo de propiedad de
+                                    algún tercero, el
+                                    EX EMPLEADOR haya recibido. Por último, el <strong>EX TRABAJADOR</strong> será
+                                    legalmente responsable
+                                    de los daños y perjuicios
+                                    que su infracción cause al <strong>EX EMPLEADOR</strong>, sin perjuicio de la
+                                    responsabilidad penal
+                                    en que pudiere incurrir. La inobservancia de esta cláusula, además de las sanciones
+                                    laborales que procedan, dará lugar a las acciones criminales que se establecen en el
+                                    artículo Nº 284 del Código Penal y las demás que procedan de acuerdo a la
+                                    legislación vigente.
+                                </td>
+                            </tr>
+                        </table>
+                        <table>
+                            <tr>
+                                <td>
+                                    <strong>RENUNCIA:</strong> declara el <strong>EX TRABAJADOR</strong> que su <strong>EX EMPLEADOR</strong>, nada le adeuda,
+                                    especialmente por conceptos de sueldo, reajustes, horas
+                                    extraordinarias, gratificaciones legales o contractuales, feriado, bonificaciones,
+                                    imposiciones legales, indemnizaciones legales procedentes ni por otro oncepto
+                                    alguno, sea de origen legal, contractual o voluntario, motivo por el cual en total y
+                                    perfecto conocimiento de sus derechos laborales, le otorga a su <strong>EX EMPLEADOR</strong> el más
+                                    amplio, completo y total finiquito, renunciando desde ya al ejercicio de cualquier
+                                    acción derivada de cualquier derecho que pudiere corresponderle, emanado del
+                                    contrato de trabajo que los unió, de la terminación de los servicios, vulneracion de
+                                    derechos fundamentales o de cualquier otra naturaleza, y ante un órgano judicial o
+                                    administrativo. Igualmente, en este acto el <strong>EX TRABAJADOR</strong> otorga y hace extensivo
+                                    este finiquito, de igual forma y con todas las renuncias contenidas en las cláusulas
+                                    de este instrumento, a los clientes, contratistas, subcontratistas o proveedores de
+                                    su <strong>EX EMPLEADOR</strong>, respecto de los cuales pudiere haber existido o pesado algún tipo
+                                    de responsabilidad, ya sea subsidiaria, solidaria, simplemente conjunta o de
+                                    cualquier otra naturaleza, establecida por el Código del Trabajo, la ley Nº 16.744 u
+                                    otras leyes.
                                 </td>
                             </tr>
                         </table>

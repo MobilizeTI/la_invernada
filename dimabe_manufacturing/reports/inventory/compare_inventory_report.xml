@@ -10,6 +10,8 @@
                     <field name="categ_id"/>
                     <field name="display_name"/>
                     <field name="total_weight"/>
+                    <field name="qty_available"/>
+
                 </tree>
             </field>
         </record>
@@ -19,7 +21,7 @@
             <field name="view_mode">tree,graph,form,pivot</field>
             <field name="view_id" ref="compare_inventory_report_tree"/>
             <field name="domain">
-                [('tracking','=','lot'),('categ_id.name','not like','Merma'),('categ_id.parent_id.name','not like','Insumo')]
+                [('tracking','=','lot'),('categ_id.name','in',('Seca','Desp. y Secado','Calibrado','Envasado NCC','Envasado NSC','Lavado','Partido Mecánico/Láser','Partido Manual Calidad','Envasado Granel'))]
             </field>
         </record>
         <menuitem id="compare_inventory_menu_item"

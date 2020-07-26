@@ -294,6 +294,8 @@ class MrpWorkorder(models.Model):
     @api.multi
     def fix_order(self):
         for item in self:
+            raise models.ValidationError(sum(item.production_finished_move_line_ids.mapped('lot_id').mapped(
+                'stock_production_lot_serial_ids').mapped('real_weight')))
             for move in item.active_move_line_ids:
                 move.write({
                     'qty_done': sum(move.lot_id.mapped('stock_production_lot_serial_ids').mapped('display_weight'))

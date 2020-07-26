@@ -287,6 +287,23 @@ class StockProductionLot(models.Model):
                             })
 
     @api.multi
+    def check_problem_in_dispatch(self):
+        for item in self:
+            lots = self.env['stock.production.lot'].search([('is_prd_lot', '=', True)]).mapped('id')
+            quants = []
+            for lot in lots:
+                quant = self.env['stock.quant'].search([('lot_id', '=', lot)])
+                if len(quant) == 1:
+                    quants.append(quant.id)
+            raise models.ValidationError('Cantidad : {} , Ids {}'.format(len(quants), quants))
+
+    @api.multi
+    def check_before_pallet(self):
+        for item in self:
+            pallet_id = 0
+            for pallet in item.all_pallet_ids:
+                pallet_id = pallet.id
+
     @api.multi
     def compare_quant_available_weight(self):
         quants = self.env['stock.quant'].search([])
@@ -413,7 +430,6 @@ class StockProductionLot(models.Model):
                     ('id', 'in', producers.mapped('id')),
                     ('always_to_print', '=', True)
                 ])
-
             elif item.is_dried_lot:
                 dried_data = self.env['unpelled.dried'].search([
                     ('out_lot_id', '=', item.id)
