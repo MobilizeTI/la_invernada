@@ -174,14 +174,7 @@
                         </table>
                         <div style="height:30px;"></div>
                         <div>
-                            <table style="margin: 0 auto !important;border-spacing: 0px 0px;font-size:12px;">
-                                <tr>
-                                    <td style="border-top:1px solid black;border-left:1px solid black;">
-                                        <![CDATA[&nbsp;]]></td>
-                                    <td style="border-top:1px solid black;"><![CDATA[&nbsp;]]></td>
-                                    <td style="border-top:1px solid black;border-right:1px solid black;">
-                                        <![CDATA[&nbsp;]]></td>
-                                </tr>
+                            <table style="margin: 0 auto !important;border-spacing: 0px 0px;font-size:12px;width:70%;">
                                 <tr>
                                     <td style="border-top:1px solid black;border-left:1px solid black;text-align:center;">
                                         HABERES</td>
