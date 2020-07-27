@@ -308,7 +308,8 @@
                                         <![CDATA[&nbsp;]]></td>
                                 </tr>
                                 <tr>
-                                    <td style="border-top:1px solid black;border-bottom:1px solid black;;border-left:1px solid black;">Otros
+                                    <td style="border-top:1px solid black;border-bottom:1px solid black;;border-left:1px solid black;">
+                                        Otros
                                         (prestámos, atrasos, etc)</td>
                                     <td style="border-top:1px solid black;">$</td>
                                     <td style="border-top:1px solid black ;border-bottom:1px solid black;border-right:1px solid black;">
@@ -447,16 +448,31 @@
                                 <td></td>
                             </tr>
                             <tr>
-                                <td style="border-top:1px solid black;">
-                                    P.P <span t-field="res_company.name"/>
+                                <td>
+                                    <table>
+                                        <tr>
+                                            <td style="border-bottom:1px solid black;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                P.P <span t-field="res_company.name"/>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </td>
                                 <td>
                                 </td>
                                 <td style="border-top:1px solid black;">
-                                    <span t-field="d.employee_id.firstname"/> <span
-                                        t-field="d.employee_id.middle_name"/>
-                                    <span t-field="d.employee_id.last_name"/> <span
-                                        t-field="d.employee_id.mothers_name"/>
+                                    <table>
+                                        <tr>
+                                            <td style="border-bottom:1px solid black;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span t-field="d.employee_id" />
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </td>
                             </tr>
                         </table>
