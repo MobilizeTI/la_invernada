@@ -449,7 +449,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <table>
+                                    <table style="font-size:11px;text-align: justify;">
                                         <tr>
                                             <td style="border-bottom:1px solid black;"></td>
                                         </tr>
@@ -462,8 +462,8 @@
                                 </td>
                                 <td>
                                 </td>
-                                <td style="border-top:1px solid black;">
-                                    <table>
+                                <td>
+                                    <table style="font-size:11px;text-align: justify;">
                                         <tr>
                                             <td style="border-bottom:1px solid black;"></td>
                                         </tr>
