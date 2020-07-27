@@ -271,7 +271,7 @@
                                     </td>
                                     <td style="border-top:1px solid black;">$</td>
                                     <td style="border-top:1px solid black;border-right:1px solid black;">
-                                        <span t-field="d.compensation_vacations"/>
+                                        <span t-esc="d.compensation_vacations"/>
                                     </td>
                                 </tr>
                                 <tr style="border:1px solid black;">
@@ -280,7 +280,7 @@
                                     </td>
                                     <td style="border-top:1px solid black;">$</td>
                                     <td style="border-top:1px solid black;border-right:1px solid black;">
-                                        <span t-field="d.compensation_years"/>
+                                        <span t-esc="d.compensation_years"/>
                                     </td>
                                 </tr>
                                 <tr style="border:1px solid black;">
@@ -289,7 +289,7 @@
                                     </td>
                                     <td style="border-top:1px solid black;border-bottom:1px solid black;">$</td>
                                     <td style="border-top:1px solid black; border-bottom:1px solid black;border-right:1px solid black;">
-                                        <psna t-field="d.compensation_warning"/>
+                                        <psna t-esc="d.compensation_warning"/>
                                     </td>
                                 </tr>
                             </table>
