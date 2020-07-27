@@ -204,7 +204,7 @@
                                     <td style="border-top:1px solid black;">$</td>
                                     <td style="border-top:1px solid black;border-right:1px solid black;">
                                         <t t-if="d.reward_selection == 'Yes'">
-                                            <span t-esc="d.reward_value"/>
+                                            <t t-esc="'{0:,.0f}'.format(int(d.reward_value)).replace(',', '.')" />
                                         </t>
                                     </td>
                                 </tr>
@@ -223,7 +223,7 @@
                                     </td>
                                     <td style="border-top:1px solid black;">$</td>
                                     <td style="border-top:1px solid black;border-right:1px solid black;">
-                                        <span t-esc="d.compensation_vacations"/>
+                                        <t t-esc="'{0:,.0f}'.format(int(d.compensation_vacations)).replace(',', '.')" />
                                     </td>
                                 </tr>
                                 <tr style="border:1px solid black;">
@@ -232,7 +232,7 @@
                                     </td>
                                     <td style="border-top:1px solid black;">$</td>
                                     <td style="border-top:1px solid black;border-right:1px solid black;">
-                                        <span t-esc="d.compensation_years"/>
+                                        <t t-esc="'{0:,.0f}'.format(int(d.compensation_years)).replace(',', '.')" />
                                     </td>
                                 </tr>
                                 <tr style="border:1px solid black;">
@@ -241,7 +241,7 @@
                                     </td>
                                     <td style="border-top:1px solid black;border-bottom:1px solid black;">$</td>
                                     <td style="border-top:1px solid black; border-right:1px solid black;">
-                                        <span t-esc="d.compensation_warning"/>
+                                        <t t-esc="'{0:,.0f}'.format(int(d.compensation_warning)).replace(',', '.')" />
                                     </td>
                                 </tr>
                                 <tr>
