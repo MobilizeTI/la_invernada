@@ -96,7 +96,7 @@
                             </tr>
                         </table>
                     </div>
-                    <div>
+                    <>
                         <table style="font-size:11px;text-align: justify;">
                             <tr>
                                 <td>
@@ -387,44 +387,20 @@
                                 </td>
                             </tr>
                         </table>
-                        <table style="font-size:11px;text-align: justify;">
+                        <table style="width:100%;font-size:11px;text-align: center;">
                             <tr>
-                                <td>EJEMPLARES: para constancia, firman las partes en tres (3) ejemplares del mismo
-                                    tenor, quedando uno (1) en poder de cada parte, previa ratificación </td>
-                            </tr>
-                            <tr>
-                                <td><![CDATA[&nbsp;]]></td>
-                            </tr>
-                            <tr>
+                                <td style="border-bottom: 1px solid black;">
+                                </td>
                                 <td></td>
+                                <td></td>
+                                <td style="border-bottom:1px solid black; ">
+                                </td>
                             </tr>
                             <tr>
-                                <td>
-                                    <table style="font-size:11px;text-align: justify;">
-                                        <tr>
-                                            <td style="border-bottom:1px solid black;"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                P.P <span t-field="res_company.name"/>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td>
-                                </td>
-                                <td>
-                                    <table style="font-size:11px;text-align: justify;">
-                                        <tr>
-                                            <td style="border-bottom:1px solid black;"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <span t-field="d.employee_id"/>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
+                                <td>P.P <span t-field="res_company.name"/> </td>
+                                <td></td>
+                                <td></td>
+                                <td><span t-field="d.employee_id" /></td>
                             </tr>
                         </table>
                     </div>
