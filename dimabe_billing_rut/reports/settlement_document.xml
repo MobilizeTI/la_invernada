@@ -164,7 +164,7 @@
                                     recibir en este acto de parte de su <strong>EX EMPLEADOR</strong>, previo descuentos
                                     que se indican y que se aceptan expresamente, la suma líquida total de $
                                     <strong>
-                                        <t t-esc="'{0:,.2f}'.format(d.settlement)"/>
+                                        <t t-esc="'{0:.}'.format(d.settlement)"/>
                                     </strong>
                                 </td>
                             </tr>
