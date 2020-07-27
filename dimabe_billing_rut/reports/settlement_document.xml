@@ -45,8 +45,8 @@
                     <div style="height:50px;"></div>
                     <div>
                         <table style="width: 100%;font-size:11px;">
-                            <tr style="width: 33.3%;">
-                                <td style="width: 33.3%;">
+                            <tr>
+                                <td>
                                     <table style="font-size:11px;">
                                         <tr>
                                             <td style="text-align: center;">
@@ -268,7 +268,8 @@
                                 </tr>
                                 <tr style="border:1px solid black;">
                                     <td style="border-top:1px solid black;border-left:1px solid black;">
-                                        Indemnización por feriado legal y proporcional (xx dias)
+                                        Indemnización por feriado legal y proporcional (<span
+                                            t-field="d.vacation_days"/> dias)
                                     </td>
                                     <td style="border-top:1px solid black;">$</td>
                                     <td style="border-top:1px solid black;border-right:1px solid black;">
@@ -469,7 +470,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <span t-field="d.employee_id" />
+                                                <span t-field="d.employee_id"/>
                                             </td>
                                         </tr>
                                     </table>
