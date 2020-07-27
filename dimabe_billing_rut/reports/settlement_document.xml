@@ -233,7 +233,8 @@
                                         <![CDATA[&nbsp;]]></td>
                                 </tr>
                                 <tr>
-                                    <td style="border-top:1px solid black;border-left:1px solid black;text-align:center;">HABERES</td>
+                                    <td style="border-top:1px solid black;border-left:1px solid black;text-align:center;">
+                                        HABERES</td>
                                     <td style="border-top:1px solid black;"><![CDATA[&nbsp;]]></td>
                                     <td style="border-top:1px solid black;border-right:1px solid black;">
                                         <![CDATA[&nbsp;]]></td>
@@ -293,7 +294,8 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="border-top:1px solid black;border-left:1px solid black;text-align:center;">DESCUENTOS</td>
+                                    <td style="border-top:1px solid black;border-left:1px solid black;text-align:center;">
+                                        DESCUENTOS</td>
                                     <td style="border-top:1px solid black;"><![CDATA[&nbsp;]]></td>
                                     <td style="border-top:1px solid black;border-right:1px solid black;">
                                         <![CDATA[&nbsp;]]></td>
@@ -359,7 +361,8 @@
                                     relación con la actividad del EX EMPLEADOR o de sus clientes, contratistas,
                                     subcontratistas o proveedores. Para todos los efectos de la presente
                                     cláusula, las partes declaran que todo documento e información relativa al giro del
-                                    EX EMPLEADOR o de sus clientes, contratistas, subcontratistas o proveedores, que se
+                                    <strong>EX EMPLEADOR</strong> o de sus clientes, contratistas, subcontratistas o
+                                    proveedores, que se
                                     encuentre en posesión del <strong>EX EMPLEADOR</strong> , sea de su propiedad o que,
                                     siendo de
                                     propiedad de algún tercero, el <strong>EX EMPLEADOR</strong>
@@ -417,6 +420,35 @@
                                     <strong>DESISTIMIENTO:</strong> las partes acuerdan expresamente que, en el evento
                                     de que el
                                     <strong>EX TRABAJADOR</strong> a esta fecha ya hubiere iniciado acciones legales o
+                                    interpuesto algún reclamo administrativo, de cualquier naturaleza que fuere o en
+                                    contra del <strong>EX EMPLEADOR</strong>, de uno cualquiera de los clientes,
+                                    contratistas o
+                                    subcontratistas de su <strong>EX EMPLEADOR</strong>, que pudieren tener algún tipo o
+                                    clase de
+                                    responsabilidad, sea subsidiaria o de cualquier otra naturaleza, sea en virtud del
+                                    Código del Trabajo, de la Ley N° 16.744 o de otras leyes, por medio del presente
+                                    instrumento el <strong>EX TRABAJADOR</strong> viene también en desistirse de las
+                                    acciones o reclamos
+                                    que directa o indirectamente pudieren emanar de los hechos a que se refiere el
+                                    presente instrumento y que hubiere interpuesto en contra de las personas naturales o
+                                    jurídicas referidas en la presente cláusula.
+                                </td>
+                            </tr>
+                        </table>
+                        <table>
+                            <tr>
+                                <td>EJEMPLARES: para constancia, firman las partes en tres (3) ejemplares del mismo
+                                    tenor, quedando uno (1) en poder de cada parte, previa ratificación </td>
+                            </tr>
+                            <tr>
+                                <td><![CDATA[&nbsp;]]></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td style="border-top:1px solid black;">
+                                    P.P <span t-field="res_company.name"/>
                                 </td>
                             </tr>
                         </table>
