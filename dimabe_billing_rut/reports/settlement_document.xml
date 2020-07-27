@@ -184,7 +184,7 @@
                                 </tr>
                                 <tr>
                                     <td style="border-top:1px solid black;border-left:1px solid black;">
-                                        Dias Trabajados Mes <span t-field="d.date_settlement.strftime('%B')" /> (xx dias)
+                                        Dias Trabajados Mes  (xx dias)
                                     </td>
                                     <td style="border-top:1px solid black;">$</td>
                                     <td style="border-top:1px solid black;border-right:1px solid black;">
