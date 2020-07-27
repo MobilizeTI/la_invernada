@@ -233,7 +233,7 @@
                                         <![CDATA[&nbsp;]]></td>
                                 </tr>
                                 <tr>
-                                    <td style="border-top:1px solid black;border-left:1px solid black;">HABERES</td>
+                                    <td style="border-top:1px solid black;border-left:1px solid black;text-align:center;">HABERES</td>
                                     <td style="border-top:1px solid black;"><![CDATA[&nbsp;]]></td>
                                     <td style="border-top:1px solid black;border-right:1px solid black;">
                                         <![CDATA[&nbsp;]]></td>
@@ -288,12 +288,12 @@
                                         Indemnización Sustitutiva del mes de aviso:
                                     </td>
                                     <td style="border-top:1px solid black;border-bottom:1px solid black;">$</td>
-                                    <td style="border-top:1px solid black; border-bottom:1px solid black;border-right:1px solid black;">
+                                    <td style="border-top:1px solid black; border-right:1px solid black;">
                                         <psna t-esc="d.compensation_warning"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="border-top:1px solid black;border-left:1px solid black;">DESCUENTOS</td>
+                                    <td style="border-top:1px solid black;border-left:1px solid black;text-align:center;">DESCUENTOS</td>
                                     <td style="border-top:1px solid black;"><![CDATA[&nbsp;]]></td>
                                     <td style="border-top:1px solid black;border-right:1px solid black;">
                                         <![CDATA[&nbsp;]]></td>
@@ -309,7 +309,7 @@
                                     <td style="border-top:1px solid black;border-left:1px solid black;">Otros
                                         (prestámos, atrasos, etc)</td>
                                     <td style="border-top:1px solid black;">$</td>
-                                    <td style="border-top:1px solid black;border-right:1px solid black;">
+                                    <td style="border-top:1px solid black ;border-bottom:1px solid black;border-right:1px solid black;">
                                         <![CDATA[&nbsp;]]></td>
                                 </tr>
                             </table>
