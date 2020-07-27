@@ -240,7 +240,7 @@
                                         Indemnización Sustitutiva del mes de aviso:
                                     </td>
                                     <td style="border-top:1px solid black;border-bottom:1px solid black;">$</td>
-                                    <td style="border-top:1px solid black; border-right:1px solid black;">
+                                    <td style="border-top:1px solid black;border-bottom:1px solid black; border-right:1px solid black;">
                                         <t t-esc="'{0:,.0f}'.format(int(d.compensation_warning)).replace(',', '.')" />
                                     </td>
                                 </tr>
