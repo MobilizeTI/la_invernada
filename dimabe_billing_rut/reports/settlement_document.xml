@@ -435,7 +435,7 @@
                                 </td>
                             </tr>
                         </table>
-                        <table>
+                        <table style="font-size:11px;text-align: justify;">
                             <tr>
                                 <td>EJEMPLARES: para constancia, firman las partes en tres (3) ejemplares del mismo
                                     tenor, quedando uno (1) en poder de cada parte, previa ratificación </td>
@@ -449,6 +449,14 @@
                             <tr>
                                 <td style="border-top:1px solid black;">
                                     P.P <span t-field="res_company.name"/>
+                                </td>
+                                <td>
+                                </td>
+                                <td style="border-top:1px solid black;">
+                                    <span t-field="d.employee_id.first_name"/> <span
+                                        t-field="d.employee_id.middle_name"/>
+                                    <span t-field="d.employee_id.last_name"/> <span
+                                        t-field="d.employee_id.mothers_name"/>
                                 </td>
                             </tr>
                         </table>
