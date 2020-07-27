@@ -253,7 +253,7 @@
                                     <td style="border-top:1px solid black;">$</td>
                                     <td style="border-top:1px solid black;border-right:1px solid black;">
                                         <t t-if="d.reward_selection == 'Yes'">
-                                            <span t-field="d.reward_value"/>
+                                            <span t-esc="d.reward_value"/>
                                         </t>
                                     </td>
                                 </tr>
