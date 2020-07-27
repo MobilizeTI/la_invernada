@@ -2,6 +2,7 @@ from odoo import models, fields, api
 from datetime import date, timedelta
 from dateutil.relativedelta import *
 import pandas as pd
+from odoo.addons import decimal_precision as dp
 
 
 class CustomSettlement(models.Model):
@@ -41,9 +42,10 @@ class CustomSettlement(models.Model):
 
     currency_id = fields.Many2one('res.currency', string='Moneda')
 
-    wage = fields.Monetary('Sueldo Base', related='contract_id.wage', currency_field='currency_id')
+    wage = fields.Monetary('Sueldo Base', related='contract_id.wage', currency_field='currency_id',
+                           digits=dp.get_precision('Payroll'))
 
-    reward_value = fields.Monetary('Valor', compute='compute_reward')
+    reward_value = fields.Monetary('Valor', compute='compute_reward', digits=dp.get_precision('Payroll'))
 
     reward_selection = fields.Selection([
         ('Yes', 'Si'),
@@ -51,19 +53,22 @@ class CustomSettlement(models.Model):
         ('Edit', 'Editar')
     ], string='Gratificacion', default='Yes')
 
-    snack_bonus = fields.Float('Colacion')
+    snack_bonus = fields.Float('Colacion', digits=dp.get_precision('Payroll'))
 
-    mobilization_bonus = fields.Float('Movilizacion')
+    mobilization_bonus = fields.Float('Movilizacion', digits=dp.get_precision('Payroll'))
 
-    pending_remuneration_payment = fields.Monetary('Remuneraciones Pendientes')
+    pending_remuneration_payment = fields.Monetary('Remuneraciones Pendientes', digits=dp.get_precision('Payroll'))
 
-    compensation_warning = fields.Monetary('Indemnización Aviso Previo', compute='compute_warning')
+    compensation_warning = fields.Monetary('Indemnización Aviso Previo', compute='compute_warning',
+                                           digits=dp.get_precision('Payroll'))
 
-    compensation_years = fields.Monetary('Indemnización Años de Servicio', compute='compute_years')
+    compensation_years = fields.Monetary('Indemnización Años de Servicio', compute='compute_years',
+                                         digits=dp.get_precision('Payroll'))
 
-    compensation_vacations = fields.Monetary('Indemnización Vacaciones', compute='compute_vacations')
+    compensation_vacations = fields.Monetary('Indemnización Vacaciones', compute='compute_vacations',
+                                             digits=dp.get_precision('Payroll'))
 
-    settlement = fields.Monetary('Finiquito')
+    settlement = fields.Monetary('Finiquito', digits=dp.get_precision('Payroll'))
 
     @api.multi
     @api.onchange('day_takes')
