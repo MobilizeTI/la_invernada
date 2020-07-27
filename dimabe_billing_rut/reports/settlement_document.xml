@@ -47,10 +47,12 @@
                         <table style="width:100%;font-size:11px;text-align: center;" CELLSPACING="20">
                             <tr>
                                 <td style="border-bottom: 1px solid black;">
+                                    <span t-field="res_company.city"/>
                                 </td>
                                 <td></td>
                                 <td></td>
                                 <td style="border-bottom:1px solid black; ">
+                                    <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/>
                                 </td>
                             </tr>
                             <tr>
@@ -61,12 +63,17 @@
                             </tr>
                             <tr>
                                 <td style="border-bottom: 1px solid black;">
+                                    <span t-field="d.employee_id.firstname"/>
+                                    <span t-field="d.employee_id.middle_name"/>
                                 </td>
                                 <td style="border-bottom:1px solid black; ">
+                                    <span t-field="d.employee_id.last_name"/>
                                 </td>
                                 <td style="border-bottom:1px solid black; ">
+                                    <span t-field="d.employee_id.mothers_name"/>
                                 </td>
                                 <td style="border-bottom:1px solid black; ">
+                                    <span t-field="d.employee_id.identification_id"/>
                                 </td>
                             </tr>
                             <tr>
