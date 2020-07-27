@@ -70,6 +70,15 @@ class CustomSettlement(models.Model):
 
     settlement = fields.Monetary('Finiquito', digits=dp.get_precision('Payroll'))
 
+    years = fields.Integer('Años',compute='compute_value_show')
+
+
+    @api.multi
+    def compute_value_show(self):
+        for item in self:
+            period = relativedelta(item.date_settlement,item.date_start_contract)
+            item.years = period.years
+
     @api.multi
     @api.onchange('day_takes')
     def compute_days_pending(self):

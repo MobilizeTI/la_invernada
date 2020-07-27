@@ -184,7 +184,7 @@
                                 </tr>
                                 <tr>
                                     <td style="border-top:1px solid black;border-left:1px solid black;">
-                                        Dias Trabajados Mes xxxx (xx dias)
+                                        Dias Trabajados Mes <span t-field="d.date_settlement.strftime('%B')" /> (xx dias)
                                     </td>
                                     <td style="border-top:1px solid black;">$</td>
                                     <td style="border-top:1px solid black;border-right:1px solid black;">
@@ -221,7 +221,7 @@
                                 </tr>
                                 <tr style="border:1px solid black;">
                                     <td style="border-top:1px solid black;border-left:1px solid black;">
-                                        Indemnizaciones años de servicio (xx años)
+                                        Indemnizaciones años de servicio (<span t-field="d.years" /> años)
                                     </td>
                                     <td style="border-top:1px solid black;">$</td>
                                     <td style="border-top:1px solid black;border-right:1px solid black;">
