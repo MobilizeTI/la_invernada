@@ -219,7 +219,7 @@
                                 <tr style="border:1px solid black;">
                                     <td style="border-top:1px solid black;border-left:1px solid black;">
                                         Indemnización por feriado legal y proporcional (<span
-                                            t-field="d.days_pending"/> dias)
+                                            t-esc="'{:, }'.format(d.compensation_vacations)"/> dias)
                                     </td>
                                     <td style="border-top:1px solid black;">$</td>
                                     <td style="border-top:1px solid black;border-right:1px solid black;">
