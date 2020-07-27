@@ -292,6 +292,26 @@
                                         <psna t-esc="d.compensation_warning"/>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td style="border-top:1px solid black;border-left:1px solid black;">DESCUENTOS</td>
+                                    <td style="border-top:1px solid black;"><![CDATA[&nbsp;]]></td>
+                                    <td style="border-top:1px solid black;border-right:1px solid black;">
+                                        <![CDATA[&nbsp;]]></td>
+                                </tr>
+                                <tr>
+                                    <td style="border-top:1px solid black;border-left:1px solid black;">Anticipo de
+                                        Sueldo</td>
+                                    <td style="border-top:1px solid black;">$</td>
+                                    <td style="border-top:1px solid black;border-right:1px solid black;">
+                                        <![CDATA[&nbsp;]]></td>
+                                </tr>
+                                <tr>
+                                    <td style="border-top:1px solid black;border-left:1px solid black;">Otros
+                                        (prestámos, atrasos, etc)</td>
+                                    <td style="border-top:1px solid black;">$</td>
+                                    <td style="border-top:1px solid black;border-right:1px solid black;">
+                                        <![CDATA[&nbsp;]]></td>
+                                </tr>
                             </table>
                         </div>
                         <div style="height:30px;"></div>
@@ -364,7 +384,7 @@
                                 </td>
                             </tr>
                         </table>
-                        <p style="page-break-after:always;">   </p>
+                        <p style="page-break-after:always;"></p>
                         <div style="height:30px;"></div>
                         <table style="font-size:11px;text-align: justify;">
                             <tr>
