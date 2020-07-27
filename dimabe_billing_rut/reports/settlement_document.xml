@@ -402,7 +402,7 @@
                                     <td>P.P <span t-field="res_company.name"/></td>
                                     <td></td>
                                     <td></td>
-                                    <td><span t-field="d.employee_id" /></td>
+                                    <td><span t-field="d.employee_id"/></td>
                                 </tr>
                             </table>
                         </div>
