@@ -12,7 +12,7 @@
         <field name="res_model">custom.settlement</field>
         <field name="view_mode">tree,graph,form,pivot</field>
         <field name="domain">
-            [('company_id.id','=','current_user.company_id.id')]
+            [('company_id','=','current_user.company_id.id')]
         </field>
     </record>
     <record id="custom_settlement_tree" model="ir.ui.view">
