@@ -124,4 +124,5 @@ class ProductProduct(models.Model):
                     ('name', 'in', dispatch)
                 ]
             )
-            raise models.ValidationError(sale_orders)
+
+            raise models.ValidationError(sale_orders.mapped('invoice_status'))
