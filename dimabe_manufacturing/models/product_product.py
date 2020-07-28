@@ -116,6 +116,7 @@ class ProductProduct(models.Model):
     def test(self):
         for item in self:
             dispatch = self.env['stock.move.line'].search(
-                [('product_id', '=', item.id), ('picking_id', '!=', None),('picking_id.picking_type_code','=','outgoing')]).mapped('picking_id').mapped(
-                'picking_type_code')
+                [('product_id', '=', item.id), ('picking_id', '!=', None),
+                 ('picking_id.picking_type_code', '=', 'outgoing')]).mapped('picking_id').mapped(
+                'origin')
             raise models.ValidationError(dispatch)
