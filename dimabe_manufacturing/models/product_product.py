@@ -115,4 +115,5 @@ class ProductProduct(models.Model):
     @api.multi
     def test(self):
         for item in self:
-            raise models.ValidationError(item)
+            dispatch = self.env['stock.move.line'].search([]).mapped('product_id')
+            raise models.ValidationError(dispatch)
