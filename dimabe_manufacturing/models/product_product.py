@@ -115,14 +115,15 @@ class ProductProduct(models.Model):
     @api.multi
     def test(self):
         for item in self:
+            products = self.env['product.product'].search([('default_code', 'like', 'PT')]).mapped('id')
             dispatch = self.env['stock.move.line'].search(
-                [('product_id', '=', item.id), ('picking_id', '!=', None),
-                 ('picking_id.picking_type_code', '=', 'outgoing')]).mapped('picking_id').mapped(
+                [('product_id', '=', products), ('picking_id', '!=', None),
+                 ('picking_id.picking_type_code', '=', 'outgoing'), ('picking_id.state', '!=', 'done')]).mapped(
+                'picking_id').mapped(
                 'origin')
             sale_orders = self.env['sale.order'].search(
                 [
                     ('name', 'in', dispatch)
                 ]
             )
-
-            raise models.ValidationError(sale_orders.mapped('invoice_status'))
+            raise models.ValidationError(dispatch)
