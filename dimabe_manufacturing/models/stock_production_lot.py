@@ -311,22 +311,24 @@ class StockProductionLot(models.Model):
         for lot in lots:
             quant_lot = quants.filtered(lambda a: a.location_id.name == 'Stock' and a.lot_id.id == lot.id)
             lot_reception = self.env['stock.picking'].search([('name', '=', lot.name)])
-            if lot_reception:
-                available_kg = sum(
-                    lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
-                        'real_weight')) + lot_reception.quality_weight
-                query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg,
-                                                                                                 quant_lot.id)
-                cr = self._cr
-                cr.execute(query)
-            else:
-                available_kg = sum(
-                    lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
-                        'real_weight'))
-                query = "UPDATE stock_production_lot set available_kg = {} , reserved_quantity = 0.0 where id = {}".format(available_kg,
-                                                                                                 quant_lot.id)
-                cr = self._cr
-                cr.execute(query)
+            if quant_lot:
+                if lot_reception:
+                    available_kg = sum(
+                        lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
+                            'real_weight')) + lot_reception.quality_weight
+                    query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg,
+                                                                                                     quant_lot.id)
+                    cr = self._cr
+                    cr.execute(query)
+                else:
+                    available_kg = sum(
+                        lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
+                            'real_weight'))
+                    query = "UPDATE stock_production_lot set available_kg = {} , reserved_quantity = 0.0 where id = {}".format(
+                        available_kg,
+                        quant_lot.id)
+                    cr = self._cr
+                    cr.execute(query)
 
     @api.multi
     def fix_error_inventory(self):
