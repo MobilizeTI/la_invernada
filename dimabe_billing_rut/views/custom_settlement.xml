@@ -11,9 +11,6 @@
         <field name="name">Finiquito</field>
         <field name="res_model">custom.settlement</field>
         <field name="view_mode">tree,graph,form,pivot</field>
-        <field name="domain_force">
-            [('company_id','=','current_user.company_id.id')]
-        </field>
     </record>
     <record id="custom_settlement_tree" model="ir.ui.view">
         <field name="name">Requistro de Finiquitos</field>
@@ -35,7 +32,7 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button type="object" name="test" string="Test" invisible="1" class="oe_highlight"/>
+                    <button type="object" name="test" string="Test" class="oe_highlight"/>
                     <button type="object" name="button_done" string="Realizar" class="oe_highlight"/>
                     <button type="object" name="calculate_settlement" string="Calcular Finiquito" class="oe_highlight"/>
                     <field name="state" widget="statusbar"/>
