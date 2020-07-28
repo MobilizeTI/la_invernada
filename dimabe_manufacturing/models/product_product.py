@@ -118,9 +118,7 @@ class ProductProduct(models.Model):
             products = self.env['product.product'].search([('default_code', 'like', 'PT')]).mapped('id')
             dispatch = self.env['stock.move.line'].search(
                 [('product_id', '=', products), ('picking_id', '!=', None),
-                 ('picking_id.picking_type_code', '=', 'outgoing'), ('picking_id.state', '!=', 'done')]).mapped(
-                'picking_id').mapped(
-                'origin')
+                 ('picking_id.picking_type_code', '=', 'outgoing'), ('picking_id.state', '!=', 'done')])
             sale_orders = self.env['sale.order'].search(
                 [
                     ('name', 'in', dispatch)
