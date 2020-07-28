@@ -119,4 +119,9 @@ class ProductProduct(models.Model):
                 [('product_id', '=', item.id), ('picking_id', '!=', None),
                  ('picking_id.picking_type_code', '=', 'outgoing')]).mapped('picking_id').mapped(
                 'origin')
+            sale_orders = self.env['sale.order'].search(
+                [
+                    ('name', 'in', dispatch)
+                ]
+            )
             raise models.ValidationError(dispatch)
