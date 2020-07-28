@@ -316,7 +316,7 @@ class StockProductionLot(models.Model):
                     available_kg = sum(
                         lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
                             'real_weight')) + lot_reception.quality_weight
-                    query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg,
+                    query = "UPDATE stock_quant set quantity = {} , reserved_quantity = 0.0 where id = {}".format(available_kg,
                                                                                                      quant_lot.id)
                     cr = self._cr
                     cr.execute(query)
@@ -324,7 +324,7 @@ class StockProductionLot(models.Model):
                     available_kg = sum(
                         lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
                             'real_weight'))
-                    query = "UPDATE stock_production_lot set available_kg = {} , reserved_quantity = 0.0 where id = {}".format(
+                    query = "UPDATE stock_quant set quantity = {} , reserved_quantity = 0.0 where id = {}".format(
                         available_kg,
                         quant_lot.id)
                     cr = self._cr
