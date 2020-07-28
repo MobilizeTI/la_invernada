@@ -11,7 +11,7 @@ class CustomSettlement(models.Model):
 
     employee_id = fields.Many2one('hr.employee', 'Empleado', required=True)
 
-    company_id = fields.Many2one('res.company','Compania',related='employee_id.company_id',store=True)
+    company_id = fields.Many2one('res.company', 'Compania', related='employee_id.company_id', store=True)
 
     contract_id = fields.Many2one('hr.contract', 'Contrato', related='employee_id.contract_id')
 
@@ -72,14 +72,14 @@ class CustomSettlement(models.Model):
 
     settlement = fields.Monetary('Finiquito', digits=dp.get_precision('Payroll'))
 
-    years = fields.Integer('Años',compute='compute_value_show')
+    years = fields.Integer('Años', compute='compute_value_show')
 
-    current_user = fields.Many2one('res.users','Current User', default=lambda self: self.env.user)
+    current_user = fields.Many2one('res.users', 'Current User', default=lambda self: self.env.user)
 
     @api.multi
     def compute_value_show(self):
         for item in self:
-            period = relativedelta(item.date_settlement,item.date_start_contract)
+            period = relativedelta(item.date_settlement, item.date_start_contract)
             item.years = period.years
 
     @api.multi
@@ -164,8 +164,7 @@ class CustomSettlement(models.Model):
 
     @api.multi
     def test(self):
-
-        raise models.UserError('{},{}'.format(self.company_id,self.current_user.company_id))
+        raise models.UserError('{},{}'.format(self.company_id, self.current_user.company_id))
 
     def get_weekend(self):
         if self.date_settlement:

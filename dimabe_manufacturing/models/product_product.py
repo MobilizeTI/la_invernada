@@ -111,3 +111,10 @@ class ProductProduct(models.Model):
             if item.tracking == 'lot':
                 lots = self.env['stock.production.lot'].search([('product_id','=',item.id)])
                 item.total_weight = sum(lots.mapped('available_kg'))
+
+
+    @api.multi
+    def test(self):
+        for item in self:
+            dispatch = self.env['stock.move.line'].search([('product_id.id','=',self.id)])
+            raise models.ValidationError(dispatch)
