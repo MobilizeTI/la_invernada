@@ -124,4 +124,4 @@ class ProductProduct(models.Model):
                     ('name', 'in', dispatch)
                 ]
             )
-            raise models.ValidationError(dispatch)
+            raise models.ValidationError(sale_orders)
