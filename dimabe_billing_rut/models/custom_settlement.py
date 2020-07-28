@@ -165,7 +165,7 @@ class CustomSettlement(models.Model):
     @api.multi
     def test(self):
 
-        raise models.UserError('{},{}'.format(self.company_id,self.current_user))
+        raise models.UserError('{},{}'.format(self.company_id,self.current_user.company_id))
 
     def get_weekend(self):
         if self.date_settlement:
