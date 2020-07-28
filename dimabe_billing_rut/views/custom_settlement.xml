@@ -82,6 +82,7 @@
                             <field name="mobilization_bonus"/>
                         </group>
                         <group string="Remuneraciones">
+                            <field name="pending_remuneration_payment"/>
                             <field name="compensation_warning"/>
                             <field name="article_causal" invisible="1"/>
                             <field name="compensation_years" attrs="{'invisible': [('article_causal','!=','161')]}"/>
