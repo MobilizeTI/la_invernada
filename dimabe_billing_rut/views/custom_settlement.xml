@@ -11,7 +11,7 @@
         <field name="name">Finiquito</field>
         <field name="res_model">custom.settlement</field>
         <field name="view_mode">tree,graph,form,pivot</field>
-        <field name="domain">
+        <field name="domain_force">
             [('company_id','=','current_user.company_id.id')]
         </field>
     </record>
