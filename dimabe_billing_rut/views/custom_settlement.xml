@@ -11,6 +11,9 @@
         <field name="name">Finiquito</field>
         <field name="res_model">custom.settlement</field>
         <field name="view_mode">tree,graph,form,pivot</field>
+        <field name="domain">
+            [('company_id.id','=','current_user.company_id.id')]
+        </field>
     </record>
     <record id="custom_settlement_tree" model="ir.ui.view">
         <field name="name">Requistro de Finiquitos</field>
@@ -42,6 +45,8 @@
                         <h1 class="d-none d-md-block">
                             <group>
                                 <field name="employee_id" />
+                                <field name="company_id" invisible="1"/>
+                                <field name="current_user" invisible="1"/>
                             </group>
                         </h1>
                     </div>

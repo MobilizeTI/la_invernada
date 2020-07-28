@@ -11,6 +11,8 @@ class CustomSettlement(models.Model):
 
     employee_id = fields.Many2one('hr.employee', 'Empleado', required=True)
 
+    company_id = fields.Many2one('res.company','Compania',related='employee_id.company_id')
+
     contract_id = fields.Many2one('hr.contract', 'Contrato', related='employee_id.contract_id')
 
     fired_id = fields.Many2one('custom.fired', 'Causal de Despido', required=True)
@@ -72,6 +74,7 @@ class CustomSettlement(models.Model):
 
     years = fields.Integer('Años',compute='compute_value_show')
 
+    current_user = fields.Many2one('res.users','Current User', default=lambda self: self.env.user.id)
 
     @api.multi
     def compute_value_show(self):
