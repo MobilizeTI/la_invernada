@@ -119,9 +119,9 @@ class ProductProduct(models.Model):
             dispatch = self.env['stock.move.line'].search(
                 [('product_id', '=', products), ('picking_id', '!=', None),
                  ('picking_id.picking_type_code', '=', 'outgoing'), ('picking_id.state', '!=', 'done')])
-            sale_orders = self.env['sale.order'].search(
-                [
-                    ('name', 'in', dispatch)
-                ]
-            )
+            # sale_orders = self.env['sale.order'].search(
+            #     [
+            #         ('name', 'in', dispatch)
+            #     ]
+            # )
             raise models.ValidationError(sum(dispatch.mapped('product_qty')))
