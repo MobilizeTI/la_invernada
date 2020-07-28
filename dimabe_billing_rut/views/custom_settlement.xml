@@ -11,9 +11,6 @@
         <field name="name">Finiquito</field>
         <field name="res_model">custom.settlement</field>
         <field name="view_mode">tree,graph,form,pivot</field>
-        <field name="domain">
-            [('company_id','=','create_uid.company_id.id')]
-        </field>
     </record>
     <record id="custom_settlement_tree" model="ir.ui.view">
         <field name="name">Requistro de Finiquitos</field>
