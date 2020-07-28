@@ -312,17 +312,21 @@ class StockProductionLot(models.Model):
             quant_lot = quants.filtered(lambda a: a.location_id.name == 'Stock' and a.lot_id.id == lot.id)
             lot_reception = self.env['stock.picking'].search([('name', '=', lot.name)])
             if lot_reception:
-                quant_lot.write({
-                    'reserved_quantity': 0,
-                    'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
+                available_kg = sum(
+                    lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
                         'real_weight')) + lot_reception.quality_weight
-                })
+                query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg,
+                                                                                                 quant_lot.id)
+                cr = self._cr
+                cr.execute(query)
             else:
-                quant_lot.write({
-                    'reserved_quantity': 0,
-                    'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
+                available_kg = sum(
+                    lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
                         'real_weight'))
-                })
+                query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg,
+                                                                                                 quant_lot.id)
+                cr = self._cr
+                cr.execute(query)
 
     @api.multi
     def fix_error_inventory(self):
