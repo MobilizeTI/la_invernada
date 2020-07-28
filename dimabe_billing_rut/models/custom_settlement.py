@@ -74,7 +74,7 @@ class CustomSettlement(models.Model):
 
     years = fields.Integer('Años',compute='compute_value_show')
 
-    current_user = fields.Many2one('res.users','Current User', default=lambda self: self.env.user.id)
+    current_user = fields.Many2one('res.users','Current User', default=lambda self: self.env.user)
 
     @api.multi
     def compute_value_show(self):
