@@ -13,4 +13,4 @@ from . import stock_location
 from . import stock_picking
 from . import custom_settlement
 from . import custom_holidays
-from . import hr_indicadores
+from . import hr_payslip
