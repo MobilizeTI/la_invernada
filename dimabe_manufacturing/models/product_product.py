@@ -37,6 +37,8 @@ class ProductProduct(models.Model):
 
     total_weight = fields.Float('Total Kilos Disponibles', compute='_compute_total_weight')
 
+    dispatch_weight = fields.Float('Kilos Despachados',compute='_compute_dispatch_weight')
+
     @api.multi
     def _compute_measure(self):
         for item in self:
@@ -113,10 +115,9 @@ class ProductProduct(models.Model):
                 item.total_weight = sum(lots.mapped('available_kg'))
 
     @api.multi
-    def test(self):
+    def _compute_dispatch_weight(self):
         for item in self:
-            products = self.env['product.product'].search([('default_code', 'like', 'PT')]).mapped('id')
-            serial_without_dispatch = self.env['stock.production.lot.serial'].search(
-                [('stock_production_lot_id.product_id', 'in', products),
-                 ('reserved_to_stock_picking_id.state', '!=', 'done')])
-            raise models.ValidationError(len(serial_without_dispatch))
+            serial = self.env['stock.production.lot.serial'].search(
+                [('stock_production_lot_id.product_id', '=', item.id)])
+            total = sum(serial.mapped('display_weight'))
+            item.dispatch_weight = total

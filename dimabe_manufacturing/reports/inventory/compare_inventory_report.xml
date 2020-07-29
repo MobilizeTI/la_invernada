@@ -10,8 +10,8 @@
                     <field name="categ_id"/>
                     <field name="display_name"/>
                     <field name="total_weight"/>
+                    <field name="dispatch_weight"/>
                     <field name="qty_available"/>
-
                 </tree>
             </field>
         </record>
