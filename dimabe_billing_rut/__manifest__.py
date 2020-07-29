@@ -19,8 +19,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'stock', 'account', 'hr_payroll',
-                'hr_payroll_account'],
+    'depends': ['base', 'stock', 'account','hr'],
 
     # always loaded
     'data': [
