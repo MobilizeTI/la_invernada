@@ -116,12 +116,7 @@ class ProductProduct(models.Model):
     def test(self):
         for item in self:
             products = self.env['product.product'].search([('default_code', 'like', 'PT')]).mapped('id')
-            dispatch = self.env['stock.move.line'].search(
-                [('product_id', '=', products), ('picking_id', '!=', None),
-                 ('picking_id.picking_type_code', '=', 'outgoing'), ('picking_id.state', '!=', 'done')])
-            # sale_orders = self.env['sale.order'].search(
-            #     [
-            #         ('name', 'in', dispatch)
-            #     ]
-            # )
-            raise models.ValidationError(sum(dispatch.mapped('product_qty')))
+            serial_without_dispatch = self.env['stock.production.lot.serial'].search(
+                [('stock_production_lot_id.product_id', 'in', products),
+                 ('reserved_to_stock_picking_id.state', '!=', 'done')])
+            raise models.ValidationError(serial_without_dispatch)
