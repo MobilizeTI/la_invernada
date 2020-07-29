@@ -8,6 +8,7 @@ from . import custom_invoice
 from . import dte_type
 from . import res_company
 from . import res_partner
+from . import hr_indicadores
 from . import rut_helper
 from . import stock_location
 from . import stock_picking

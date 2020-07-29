@@ -36,6 +36,7 @@
         'views/templates.xml',
         'views/custom_invoice.xml',
         'views/custom_settlement.xml',
+        'views/hr_indicadores.xml',
         'views/custom_holidays.xml',
         'reports/settlement_document.xml',
         'data/reports/balance_sheet_clp.xml'
