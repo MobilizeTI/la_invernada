@@ -119,4 +119,4 @@ class ProductProduct(models.Model):
             serial_without_dispatch = self.env['stock.production.lot.serial'].search(
                 [('stock_production_lot_id.product_id', 'in', products),
                  ('reserved_to_stock_picking_id.state', '!=', 'done')])
-            raise models.ValidationError(serial_without_dispatch)
+            raise models.ValidationError(len(serial_without_dispatch))
