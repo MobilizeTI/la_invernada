@@ -6,4 +6,4 @@ class HrPayslip(models.Model):
     @api.multi
     def test(self):
         for item in self:
-            raise models.ValidationError(item.contract_id)
+            raise models.ValidationError(item.contract_id.employee_id)
