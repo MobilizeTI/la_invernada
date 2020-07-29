@@ -8,4 +8,4 @@ class HrPayslip(models.Model):
         for item in self:
             employee_id = item.contract_id.employee_id
             leaves = self.env['hr.leave'].search([('employee_id','=',employee_id.id)])
-            raise models.ValidationError(leaves.numbers_of_days_display)
+            raise models.ValidationError(leaves.number_of_days_display)
