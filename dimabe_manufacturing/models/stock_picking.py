@@ -84,7 +84,7 @@ class StockPicking(models.Model):
     def fix_dispatch(self):
         for item in self:
             picking_done = self.env['stock.picking'].search([('state','=','done'),('picking_type_code','=','outgoing')])
-            raise models.ValidationError(len(picking_done))
+            raise models.ValidationError(picking_done.mapped('packing_list_lot_ids'))
 
 
     @api.multi
