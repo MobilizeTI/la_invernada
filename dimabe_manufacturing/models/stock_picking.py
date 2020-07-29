@@ -81,6 +81,13 @@ class StockPicking(models.Model):
         return res
 
     @api.multi
+    def fix_dispatch(self):
+        for item in self:
+            picking_done = self.env['stock.picking'].search([('state','=','done'),('picking_type_code','=','outgoing')])
+            raise models.ValidationError(len(picking_done))
+
+
+    @api.multi
     def clean_reserved(self):
         for item in self:
             for line in item.move_line_ids_without_package:
