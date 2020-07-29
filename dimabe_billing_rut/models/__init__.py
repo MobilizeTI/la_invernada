@@ -11,5 +11,6 @@ from . import res_partner
 from . import rut_helper
 from . import stock_location
 from . import stock_picking
+from . import hr_indicadores
 from . import custom_settlement
 from . import custom_holidays
