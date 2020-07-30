@@ -87,6 +87,7 @@ class StockPicking(models.Model):
                 [('state', '=', 'done'), ('picking_type_code', '=', 'outgoing'), ])
             for picking in picking_done:
                 for lot in picking.packing_list_lot_ids:
+                    stock_move_line = self.env['stock.move.line'].search([('picking_id','=',picking.id)]).mapped('lot_id')
                     lot.write(
                         {
                             'available_kg': sum(

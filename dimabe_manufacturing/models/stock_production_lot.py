@@ -227,6 +227,18 @@ class StockProductionLot(models.Model):
     sale_order_id = fields.Many2one('sale.order', compute='_compute_sale_order_id', store=True)
 
     @api.multi
+    def fix_error(self):
+        for item in self:
+            picking_done = self.env['stock.picking'].search(
+                [('picking_type_code', '=', 'outgoing'), ])
+            for picking in picking_done:
+                stock_move_line = self.env['stock.move.line'].search([('picking_id', '=', picking.id)]).mapped('lot_id')
+                for move in stock_move_line:
+                    move.stock_production_lot_serial_ids.write({
+                        'reserved_to_stock_picking_id':picking.id
+                    })
+
+    @api.multi
     def _compute_available_kg(self):
         for item in self:
             item.available_kg = sum(
@@ -316,8 +328,9 @@ class StockProductionLot(models.Model):
                     available_kg = sum(
                         lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
                             'real_weight')) + lot_reception.quality_weight
-                    query = "UPDATE stock_quant set quantity = {} , reserved_quantity = 0.0 where id = {}".format(available_kg,
-                                                                                                     quant_lot.id)
+                    query = "UPDATE stock_quant set quantity = {} , reserved_quantity = 0.0 where id = {}".format(
+                        available_kg,
+                        quant_lot.id)
                     cr = self._cr
                     cr.execute(query)
                 else:
