@@ -285,7 +285,6 @@ class MrpWorkorder(models.Model):
                     'stock_production_lot_serial_ids'
                 )
 
-
     @api.multi
     def fix_order(self):
         for item in self:
@@ -331,13 +330,15 @@ class MrpWorkorder(models.Model):
                     move_line.update({
                         'is_raw': True
                     })
-            query = "UPDATE mrp_workorder set out_weight = {},pt_out_weight = {} where id = {}".format(
-                sum(item.summary_out_serial_ids.mapped('real_weight')), sum(
-                    item.summary_out_serial_ids.filtered(lambda a: a.product_id.id == item.product_id.id).mapped(
-                        'real_weight')), item.id)
-            cr = self._cr
-            cr.execute(query)
         res = super(MrpWorkorder, self).write(vals)
+        out_weight = sum(item.summary_out_serial_ids.mapped('display_weight'))
+        pt_weight = sum(
+            item.summary_out_serial_ids.filtered(lambda a: a.product_id.id == item.product_id.id).mapped(
+                'real_weight'))
+        query = "UPDATE mrp_workorder set out_weight = {},pt_out_weight = {} where id = {}".format(
+            out_weight, pt_weight, item.id)
+        cr = self._cr
+        cr.execute(query)
         return res
 
     def open_tablet_view(self):
