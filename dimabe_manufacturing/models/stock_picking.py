@@ -83,15 +83,22 @@ class StockPicking(models.Model):
     @api.multi
     def fix_dispatch(self):
         for item in self:
-            picking_done = self.env['stock.picking'].search([('state','=','done'),('picking_type_code','=','outgoing'),])
+            picking_done = self.env['stock.picking'].search(
+                [('state', '=', 'done'), ('picking_type_code', '=', 'outgoing'), ])
             for picking in picking_done:
                 for lot in picking.packing_list_lot_ids:
-                    lot.stock_production_lot_serial_ids.write(
+                    lot.write(
                         {
-                            'consumed':True
+                            'available_kg': sum(
+                                lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
+                                    'display_weight'))
                         }
                     )
-
+                    lot.stock_production_lot_serial_ids.write(
+                        {
+                            'consumed': True
+                        }
+                    )
 
     @api.multi
     def clean_reserved(self):
