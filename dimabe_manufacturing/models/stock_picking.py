@@ -220,7 +220,7 @@ class StockPicking(models.Model):
     @api.multi
     def button_validate(self):
         for serial in self.packing_list_ids:
-            serial.update({
+            serial.write({
                 'consumed': True
             })
         for lot in self.packing_list_lot_ids:
