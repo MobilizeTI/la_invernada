@@ -457,7 +457,7 @@ class MrpWorkorder(models.Model):
         available_kg = sum(custom_serial.stock_production_lot_id.stock_production_lot_serial_ids.filtered(
             lambda a: not a.consumed
         ).mapped('real_weight'))
-        if available_kg > 0:
+        if available_kg > 0 and custom_serial.stock_production_lot_id.id :
             query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg,
                                                                                              custom_serial.stock_production_lot_id.id)
             cr = self._cr
