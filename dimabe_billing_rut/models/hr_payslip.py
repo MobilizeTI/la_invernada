@@ -7,5 +7,5 @@ class HrPayslip(models.Model):
     def test(self):
         for item in self:
             employee_id = item.contract_id.employee_id
-            leaves = self.env['hr.leave'].search([('employee_id','=',employee_id.id)])
-            raise models.ValidationError(sum(leaves.number_of_days_display))
+            leaves = self.env['hr.leave'].search([('employee_id','=',employee_id.id)]).mapped('number_of_days_display')
+            raise models.ValidationError(sum(leaves))
