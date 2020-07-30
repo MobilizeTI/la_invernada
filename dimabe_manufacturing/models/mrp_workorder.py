@@ -284,12 +284,6 @@ class MrpWorkorder(models.Model):
                 ).mapped(
                     'stock_production_lot_serial_ids'
                 )
-            query = "UPDATE mrp_workorder set out_weight = {},pt_out_weight = {} where id = {}".format(
-                sum(item.summary_out_serial_ids.mapped('real_weight')), sum(
-                    item.summary_out_serial_ids.filtered(lambda a: a.product_id.id == item.product_id.id).mapped(
-                        'real_weight')), item.id)
-            cr = self._cr
-            cr.execute(query)
 
     @api.multi
     def fix_order(self):
@@ -337,6 +331,7 @@ class MrpWorkorder(models.Model):
                         'is_raw': True
                     })
         res = super(MrpWorkorder, self).write(vals)
+
         return res
 
     def open_tablet_view(self):
@@ -462,10 +457,11 @@ class MrpWorkorder(models.Model):
         available_kg = sum(custom_serial.stock_production_lot_id.stock_production_lot_serial_ids.filtered(
             lambda a: not a.consumed
         ).mapped('real_weight'))
-        query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg,
-                                                                                         custom_serial.stock_production_lot_id.id)
-        cr = self._cr
-        cr.execute(query)
+        if available_kg > 0 and custom_serial.stock_production_lot_id.id :
+            query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg,
+                                                                                             custom_serial.stock_production_lot_id.id)
+            cr = self._cr
+            cr.execute(query)
         if custom_serial:
             barcode = custom_serial.stock_production_lot_id.name
         res = super(MrpWorkorder, self).on_barcode_scanned(barcode)
@@ -500,6 +496,15 @@ class MrpWorkorder(models.Model):
         return custom_serial
 
     def open_out_form_view(self):
+        for item in self:
+            out_weight = sum(item.summary_out_serial_ids.mapped('display_weight'))
+            pt_weight = sum(
+                item.summary_out_serial_ids.filtered(lambda a: a.product_id.id == item.product_id.id).mapped(
+                    'real_weight'))
+            query = "UPDATE mrp_workorder set out_weight = {},pt_out_weight = {} where id = {}".format(
+                out_weight, pt_weight, self.id)
+            cr = self._cr
+            cr.execute(query)
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'mrp.workorder',
