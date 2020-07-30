@@ -331,14 +331,7 @@ class MrpWorkorder(models.Model):
                         'is_raw': True
                     })
         res = super(MrpWorkorder, self).write(vals)
-        out_weight = sum(item.summary_out_serial_ids.mapped('display_weight'))
-        pt_weight = sum(
-            item.summary_out_serial_ids.filtered(lambda a: a.product_id.id == item.product_id.id).mapped(
-                'real_weight'))
-        query = "UPDATE mrp_workorder set out_weight = {},pt_out_weight = {} where id = {}".format(
-            out_weight, pt_weight, self.id)
-        cr = self._cr
-        cr.execute(query)
+
         return res
 
     def open_tablet_view(self):
@@ -502,6 +495,15 @@ class MrpWorkorder(models.Model):
         return custom_serial
 
     def open_out_form_view(self):
+        for item in self:
+            out_weight = sum(item.summary_out_serial_ids.mapped('display_weight'))
+            pt_weight = sum(
+                item.summary_out_serial_ids.filtered(lambda a: a.product_id.id == item.product_id.id).mapped(
+                    'real_weight'))
+            query = "UPDATE mrp_workorder set out_weight = {},pt_out_weight = {} where id = {}".format(
+                out_weight, pt_weight, self.id)
+            cr = self._cr
+            cr.execute(query)
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'mrp.workorder',
