@@ -10,14 +10,13 @@ class HrPayslip(models.Model):
 
     salary_id = fields.Many2one('hr.salary.rule', 'Agregar Entrada')
 
-    @api.model
-    def domain(self):
+    @api.onchange('struct_id')
+    def onchange_domain(self):
         res = {
             'domain': {
-                'salary_id': [('name', 'not in',self.input_line_ids.mapped('name'))],
+                'salary_id': [('name', 'not in', self.input_line_ids.mapped('name'))],
             }
         }
-
         return res
 
     @api.multi
