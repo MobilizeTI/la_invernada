@@ -162,6 +162,16 @@ class CustomSettlement(models.Model):
                 'number_of_days')
             item.day_takes = sum(vacation)
 
+    @api.onchange('date_settlement')
+    def onchange_method(self):
+        for item in self:
+            payslip = self.env['hr.payslip'].search(
+                [('date_from', '>', item.date_start_contract), ('date_from', '<', item.date_settlement),
+                 ('contract_id', '=', item.contract_id.id)])
+            vacation = payslip.mapped('worked_days_line_ids').filtered(lambda a: 'Vacaciones' in a.name).mapped(
+                'number_of_days')
+            item.day_takes = sum(vacation)
+
     @api.multi
     def button_done(self):
         for item in self:
