@@ -62,15 +62,22 @@ class HrPayslip(models.Model):
                             'payslip_id': item.id,
                             'unpaid': leave.holiday_status_id.unpaid
                         })
-                if leave.holiday_status_id.name == 'Vacaciones':
+                if leave.holiday_status_id.name == 'Vacaciones' and leaves:
                     item.write({
                         'vacations_days': sum(
                             item.worked_days_line_ids.filtered(lambda a: a.name == 'Vacaciones').mapped(
                                 'number_of_days'))
                     })
-            item.write({
-                'absence_days':sum(leaves.mapped('number_of_days'))
-            })
+            if sum(leaves.mapped('number_of_days')) > 0 and not leaves:
+                item.write({
+                    'absence_days': 0,
+                    'have_absence': False
+                })
+            else:
+                item.write({
+                    'absence_days': sum(leaves.mapped('number_of_days')),
+                    'have_absence':True
+                })
 
     def generate_code(self, name, id):
         res = re.sub(r'[AEIOUÜÁÉÍÓÚ]', '', name, flags=re.IGNORECASE)
