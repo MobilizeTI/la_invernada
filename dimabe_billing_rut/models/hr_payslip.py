@@ -15,7 +15,7 @@ class HrPayslip(models.Model):
         for item in self:
             if item.input_id:
                 item.write({
-                    'input_line_ids': [4, item.input_id.id]
+                    'input_line_ids': [4, item.input_id]
                 })
 
     @api.multi
