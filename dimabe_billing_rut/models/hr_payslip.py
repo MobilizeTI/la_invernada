@@ -18,7 +18,7 @@ class HrPayslip(models.Model):
                 if leave.holiday_status_id.name in item.worked_days_line_ids.mapped('name'):
                     item.worked_days_line_ids.filtered(lambda a: a.name == leave.holiday_status_id.name).write(
                         {
-                            'number_of_days': leaves.number_of_days
+                            'number_of_days': leave.number_of_days
                         }
                     )
                 else:
