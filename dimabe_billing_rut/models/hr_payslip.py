@@ -8,24 +8,17 @@ import re
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
-    input_id = fields.Many2one('hr.payslip.input', 'Agregar Entrada')
-
-    @api.onchange('employee_id')
-    def onchange_employee(self):
-        for item in self:
-            res = {
-                'domain': {
-                    'input_id': [('id', 'not in', item.input_line_ids.mapped('id')), ('contract_id', '=', item.contract_id)],
-                }
-            }
-        return res
+    input_id = fields.Many2one('hr.salary.rule', 'Agregar Entrada')
 
     @api.multi
     def add(self):
         for item in self:
             if item.input_id:
-                item.write({
-                    'input_line_ids': [(4, item.input_id.id)]
+                self.env['hr.salary.rule'].create({
+                    'name': item.input_id.name,
+                    'code': item.input_id.code,
+                    'contract_id': item.contract_id.id,
+                    'payslip_id': item.payslip_id.id
                 })
 
     @api.multi
