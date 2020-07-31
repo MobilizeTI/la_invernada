@@ -164,7 +164,9 @@ class CustomSettlement(models.Model):
 
     @api.multi
     def test(self):
-        raise models.UserError('{},{}'.format(self.company_id, self.current_user.company_id))
+        payslip = self.env['hr.payslip'].search(
+            [('date_from', '>', self.date_start_contract), ('date_from', '<', self.date_settlement)])
+        raise models.ValidationError(payslip)
 
     def get_weekend(self):
         if self.date_settlement:
