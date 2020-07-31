@@ -8,12 +8,12 @@ import re
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
-    input_id = fields.Many2one('hr.salary.rule', 'Agregar Entrada')
+    salary_id = fields.Many2one('hr.salary.rule', 'Agregar Entrada')
 
     @api.multi
     def add(self):
         for item in self:
-            if item.input_id:
+            if item.salary_id:
                 self.env['hr.salary.rule'].create({
                     'name': item.input_id.name,
                     'code': item.input_id.code,
