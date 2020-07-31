@@ -153,7 +153,7 @@ class CustomSettlement(models.Model):
 
     @api.multi
     @api.depends('date_settlement')
-    def _compute_(self):
+    def compute_days_takes(self):
         for item in self:
             payslip = self.env['hr.payslip'].search(
                 [('date_from', '>', item.date_start_contract), ('date_from', '<', item.date_settlement),
