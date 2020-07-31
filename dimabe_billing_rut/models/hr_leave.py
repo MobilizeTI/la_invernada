@@ -10,7 +10,7 @@ class HrLeave (models.Model):
         for holiday in self:
             days = holiday.request_date_from - request_date_to
             raise models.ValidationError(days)
-            holiday.number_of_days_display =
+            holiday.number_of_days_display = days
     
 
 
