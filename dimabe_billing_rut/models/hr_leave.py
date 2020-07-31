@@ -10,8 +10,8 @@ class HrLeave (models.Model):
     @api.multi
     def action_draft(self):
         days =self.request_date_to - self.request_date_from
-        saturdays = pd.date_range(start=request_date_from, end=request_date_to, freq='W-SAT').strftime('%m/%d/%Y').tolist()
-        sundays = pd.date_range(start=request_date_from, end=request_date_to, freq='W-SUN').strftime('%m/%d/%Y').tolist()
+        saturdays = pd.date_range(start=self.request_date_from, end=self.request_date_to, freq='W-SAT').strftime('%m/%d/%Y').tolist()
+        sundays = pd.date_range(start=self.request_date_from, end=self.request_date_to, freq='W-SUN').strftime('%m/%d/%Y').tolist()
 
         raise models.ValidationError(days - (len(saturdays) + len(sundays)) )
 
