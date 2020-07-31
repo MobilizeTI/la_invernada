@@ -15,7 +15,7 @@ class HrPayslip(models.Model):
         for item in self:
             res = {
                 'domain': {
-                    'input_id': [('id', 'not in', item.input_line_ids), ('contract_id', '=', item.contract_id)],
+                    'input_id': [('id', 'not in', item.input_line_ids.mapped('id')), ('contract_id', '=', item.contract_id)],
                 }
             }
         return res
