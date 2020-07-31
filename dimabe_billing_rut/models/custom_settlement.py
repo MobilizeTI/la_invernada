@@ -32,7 +32,7 @@ class CustomSettlement(models.Model):
     vacation_days = fields.Float('Dias de Vacaciones por periodo de servicio', compute='compute_vacation_day',
                                  readonly=True)
 
-    day_takes = fields.Float('Dias Tomados', default=0.0)
+    day_takes = fields.Float('Dias Tomados', compute='compute_days_takes', default=0.0)
     days_pending = fields.Float('Dias Pendiente', compute='compute_days_pending')
 
     non_working_days = fields.Integer('Dias Inhabiles', compute='compute_no_working_days')
@@ -150,6 +150,17 @@ class CustomSettlement(models.Model):
             item.settlement = (item.wage + item.reward_value) + item.pending_remuneration_payment + \
                               (item.snack_bonus + item.mobilization_bonus) \
                               + (item.compensation_vacations + item.compensation_warning + item.compensation_years)
+
+    @api.multi
+    @api.depends('date_settlement')
+    def _compute_(self):
+        for item in self:
+            payslip = self.env['hr.payslip'].search(
+                [('date_from', '>', item.date_start_contract), ('date_from', '<', item.date_settlement),
+                 ('contract_id', '=', item.contract_id.id)])
+            vacation = payslip.mapped('worked_days_line_ids').filtered(lambda a: 'Vacaciones' in a.name).mapped(
+                'number_of_days')
+            item.day_takes = sum(vacation)
 
     @api.multi
     def button_done(self):
