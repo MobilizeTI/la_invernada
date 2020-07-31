@@ -15,8 +15,8 @@ class HrPayslip(models.Model):
         for item in self:
             if item.salary_id:
                 self.env['hr.salary.rule'].create({
-                    'name': item.input_id.name,
-                    'code': item.input_id.code,
+                    'name': item.salary_id.name,
+                    'code': item.salary_id.code,
                     'contract_id': item.contract_id.id,
                     'payslip_id': item.payslip_id.id
                 })
