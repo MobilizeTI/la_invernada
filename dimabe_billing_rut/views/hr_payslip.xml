@@ -12,6 +12,7 @@
                 </xpath>
                 <xpath expr="//field[@name='input_line_ids']" position="after">
                     <field name="input_id"/>
+                    <button name="add" type="object" string="Agregar" />
                 </xpath>
             </field>
         </record>
