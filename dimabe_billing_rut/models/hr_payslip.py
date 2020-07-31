@@ -15,6 +15,7 @@ class HrPayslip(models.Model):
                 [('employee_id', '=', employee_id.id), ('state', '=', 'validate')]).mapped('number_of_days')
             self.env['hr.payslip.worked_days'].create({
                 'contract_id': item.contract_id.id,
+                'description':'Ausencias',
                 'code':'ABSC100',
                 'number_of_days':sum(leaves),
                 'payslip_id':item.id
