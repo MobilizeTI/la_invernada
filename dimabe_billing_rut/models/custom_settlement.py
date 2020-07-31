@@ -167,7 +167,9 @@ class CustomSettlement(models.Model):
         payslip = self.env['hr.payslip'].search(
             [('date_from', '>', self.date_start_contract), ('date_from', '<', self.date_settlement),
              ('contract_id', '=', self.contract_id.id)])
-        raise models.ValidationError(payslip)
+        vacation = payslip.mapped('worked_days_line_ids').filtered(lambda a: 'Vacaciones' in a.name).mapped(
+            'number_of_days')
+        raise models.ValidationError(sum(vacation))
 
     def get_weekend(self):
         if self.date_settlement:
