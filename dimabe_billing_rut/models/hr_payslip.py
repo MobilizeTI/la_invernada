@@ -16,6 +16,7 @@ class HrPayslip(models.Model):
                 [('employee_id', '=', employee_id.id), ('state', '=', 'validate')])
             for leave in leaves:
                 res = re.sub(r'[AEIOUÜÁÉÍÓÚ]','',leave.holiday_status_id.name,flags=re.IGNORECASE)
+                res = res.replace(' ','').upper()
                 raise models.ValidationError(res)
 
 
