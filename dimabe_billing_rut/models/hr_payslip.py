@@ -8,6 +8,10 @@ import re
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
+    input_id = fields.Many2one('hr.payslip.input','Agregar Entrada')
+
+
+
     @api.multi
     def get_leave(self):
         for item in self:

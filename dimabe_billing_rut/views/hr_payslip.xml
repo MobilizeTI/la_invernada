@@ -10,6 +10,9 @@
                     <button type="object" name="get_leave" string="Obtener Ausencias">
                     </button>
                 </xpath>
+                <xpath expr="//field[@name='input_line_ids']" position="after">
+                    <field name="input_id"/>
+                </xpath>
             </field>
         </record>
     </data>
