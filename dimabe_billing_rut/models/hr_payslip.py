@@ -10,6 +10,16 @@ class HrPayslip(models.Model):
 
     input_id = fields.Many2one('hr.payslip.input', 'Agregar Entrada')
 
+    @api.onchange('employee_id')
+    def onchange_employee(self):
+        for item in self:
+            res = {
+                'domain': {
+                    'input_id': [('id', 'not in', item.input_line_ids), ('contract_id', '=', item.contract_id)],
+                }
+            }
+        return res
+
     @api.multi
     def add(self):
         for item in self:
