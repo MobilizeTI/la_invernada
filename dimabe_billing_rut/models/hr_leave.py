@@ -6,7 +6,7 @@ class HrLeave (models.Model):
 
     @api.multi
     def action_draft(self):
-        days = self.request_date_from - self.request_date_to
+        days =self.request_date_to - self.request_date_from
         raise models.ValidationError(days)
 
     # @api.multi
