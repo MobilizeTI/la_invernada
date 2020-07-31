@@ -15,12 +15,10 @@ class HrPayslip(models.Model):
             leaves = self.env['hr.leave'].search(
                 [('employee_id', '=', employee_id.id), ('state', '=', 'validate')])
             for leave in leaves:
-                res = re.sub(r'[AEIOUÜÁÉÍÓÚ]','',leave.holiday_status_id.name,flags=re.IGNORECASE)
-                res = res.replace(' ','').upper()
-                raise models.ValidationError(res)
-
-
-
-
-
-
+                self.env['hr.payslip.worked_days'].create({
+                    'name': leave.holiday_status_id.name,
+                    'number_of_days': leave.number_of_days,
+                    'code':'',
+                    'contract_id': item.contract_id.id,
+                    'payslip_id': item.id
+                })
