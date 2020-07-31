@@ -65,7 +65,7 @@ class HrPayslip(models.Model):
                 if leave.holiday_status_id.name == 'Vacaciones' and leaves:
                     item.write({
                         'vacations_days': sum(
-                            item.worked_days_line_ids.filtered(lambda a: a.name == 'Vacaciones').mapped(
+                            item.worked_days_line_ids.filtered(lambda a:  'Vacaciones' in a.name).mapped(
                                 'number_of_days'))
                     })
             if sum(leaves.mapped('number_of_days')) > 0 and not leaves:
@@ -75,7 +75,7 @@ class HrPayslip(models.Model):
                 })
             else:
                 item.write({
-                    'absence_days': sum(leaves.mapped('number_of_days')),
+                    'absence_days': sum(leaves.filtered(lambda a: 'Vacaciones' not in a.name).mapped('number_of_days')),
                     'have_absence':True
                 })
 
