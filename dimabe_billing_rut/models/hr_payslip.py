@@ -1,4 +1,7 @@
 from odoo import models,api,fields
+from dateutil.relativedelta import *
+import pandas as pd
+from odoo.addons import decimal_precision as dp
 
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
