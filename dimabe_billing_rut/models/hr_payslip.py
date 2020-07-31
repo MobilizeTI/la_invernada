@@ -29,6 +29,7 @@ class HrPayslip(models.Model):
                     'contract_id': item.contract_id.id,
                     'payslip_id': item.id
                 })
+            item.salary = None
 
     @api.multi
     def get_leave(self):
