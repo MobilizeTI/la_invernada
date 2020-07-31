@@ -29,7 +29,7 @@ class HrPayslip(models.Model):
                     'contract_id': item.contract_id.id,
                     'payslip_id': item.id
                 })
-            item.salary = None
+            item.salary_id = None
 
     @api.multi
     def get_leave(self):
@@ -52,5 +52,6 @@ class HrPayslip(models.Model):
                             'number_of_days': leave.number_of_days,
                             'code': '',
                             'contract_id': item.contract_id.id,
-                            'payslip_id': item.id
+                            'payslip_id': item.id,
+                            'unpaid':leave.holiday_status_id.unpaid
                         })
