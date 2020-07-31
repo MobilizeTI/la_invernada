@@ -47,11 +47,17 @@ class HrPayslip(models.Model):
                             'number_of_days': days.number_of_days + leave.number_of_days
                         })
                     else:
+                        code = self.generate_code(leave.holiday_status_id.name)
                         self.env['hr.payslip.worked_days'].create({
                             'name': leave.holiday_status_id.name,
                             'number_of_days': leave.number_of_days,
-                            'code': '',
+                            'code': code,
                             'contract_id': item.contract_id.id,
                             'payslip_id': item.id,
                             'unpaid': leave.holiday_status_id.unpaid
                         })
+
+    def generate_code(self, name):
+        res = re.sub(r'[AEIOUÜÁÉÍÓÚ]', '', name, flags=re.IGNORECASE)
+        res = res[0:3]
+        return res
