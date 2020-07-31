@@ -8,9 +8,14 @@ class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
     @api.multi
-    def test(self):
+    def get_leave(self):
         for item in self:
             employee_id = item.contract_id.employee_id
             leaves = self.env['hr.leave'].search(
                 [('employee_id', '=', employee_id.id), ('state', '=', 'validate')]).mapped('number_of_days')
-            raise models.ValidationError(sum(leaves))
+            self.env['hr.payslip.worked_days'].create({
+                'contract_id': item.contract_id.id,
+                'code':'ABSC100',
+                'number_of_days':sum(leaves),
+                'payslip_id':item.id
+            })
