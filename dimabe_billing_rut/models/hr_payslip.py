@@ -10,6 +10,12 @@ class HrPayslip(models.Model):
 
     salary_id = fields.Many2one('hr.salary.rule', 'Agregar Entrada')
 
+    have_absence = fields.Boolean('¿Tiene Ausencias?')
+
+    absence_days = fields.Float('Dias Ausencias')
+
+    vacations_days = fields.Float('Dias Vacaciones')
+
     @api.onchange('struct_id')
     def onchange_domain(self):
         res = {
@@ -56,6 +62,15 @@ class HrPayslip(models.Model):
                             'payslip_id': item.id,
                             'unpaid': leave.holiday_status_id.unpaid
                         })
+                if leave.holiday_status_id.name == 'Vacaciones':
+                    item.write({
+                        'vacations_days': sum(
+                            item.worked_days_line_ids.filtered(lambda a: a.name == 'Vacaciones').mapped(
+                                'number_of_days'))
+                    })
+            item.write({
+                'absence_days':sum(leaves.mapped('number_of_days'))
+            })
 
     def generate_code(self, name, id):
         res = re.sub(r'[AEIOUÜÁÉÍÓÚ]', '', name, flags=re.IGNORECASE)
