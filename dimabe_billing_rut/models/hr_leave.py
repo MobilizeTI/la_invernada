@@ -5,6 +5,11 @@ class HrLeave (models.Model):
     _inherit = 'hr.leave'
 
     @api.multi
+    def action_draft(self):
+        days = holiday.request_date_from - request_date_to
+        raise models.ValidationError(days)
+
+    @api.multi
     @api.depends('number_of_days')
     def _compute_number_of_days_display(self):
         for holiday in self:
