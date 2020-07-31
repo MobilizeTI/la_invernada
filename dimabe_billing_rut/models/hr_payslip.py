@@ -18,7 +18,7 @@ class HrPayslip(models.Model):
                     'name': item.salary_id.name,
                     'code': item.salary_id.code,
                     'contract_id': item.contract_id.id,
-                    'payslip_id': item.payslip_id.id
+                    'payslip_id': item.id
                 })
 
     @api.multi
