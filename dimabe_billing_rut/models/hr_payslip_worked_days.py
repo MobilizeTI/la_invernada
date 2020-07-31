@@ -1,7 +1,7 @@
 from odoo import fields, models, api
 
 
-class ModelName (models.Model):
+class HrPaySlipWorkedDay (models.Model):
     _inherit = 'hr.payslip.worked_days'
     _description = 'Description'
 

@@ -53,5 +53,5 @@ class HrPayslip(models.Model):
                             'code': '',
                             'contract_id': item.contract_id.id,
                             'payslip_id': item.id,
-                            'unpaid':leave.holiday_status_id.unpaid
+                            'unpaid': leave.holiday_status_id.unpaid
                         })

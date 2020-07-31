@@ -15,3 +15,4 @@ from . import custom_settlement
 from . import custom_holidays
 from . import hr_payslip
 from . import hr_leave
+from . import hr_payslip_worked_days
