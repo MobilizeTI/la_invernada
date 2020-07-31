@@ -57,7 +57,12 @@ class HrPayslip(models.Model):
                             'unpaid': leave.holiday_status_id.unpaid
                         })
 
-    def generate_code(self, name):
+    def generate_code(self, name,id):
         res = re.sub(r'[AEIOUÜÁÉÍÓÚ]', '', name, flags=re.IGNORECASE)
-        res = res[0:3]
+        identy = ''
+        if id > 10:
+            identy = '{}0'.format(id)
+        else:
+            identy = '{}00'.format(id)
+        res = res[0:3].upper() + identy
         return res
