@@ -11,7 +11,7 @@
                     </button>
                 </xpath>
                 <xpath expr="//field[@name='input_line_ids']" position="after">
-                    <field name="input_id"/>
+                    <field name="input_id" domain = "[('id','not in','input_line_ids')]"/>
                     <button name="add" type="object" string="Agregar" />
                 </xpath>
             </field>
