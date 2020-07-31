@@ -13,7 +13,7 @@ class HrLeave (models.Model):
         saturdays = pd.date_range(start=self.request_date_from, end=self.request_date_to, freq='W-SAT').strftime('%m/%d/%Y').tolist()
         sundays = pd.date_range(start=self.request_date_from, end=self.request_date_to, freq='W-SUN').strftime('%m/%d/%Y').tolist()
 
-        raise models.ValidationError(days - (len(saturdays) + len(sundays)) )
+        raise models.ValidationError(days.days - (len(saturdays) + len(sundays)) )
 
     # @api.multi
     # @api.depends('number_of_days')
