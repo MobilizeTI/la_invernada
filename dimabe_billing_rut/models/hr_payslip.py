@@ -15,16 +15,19 @@ class HrPayslip(models.Model):
             leaves = self.env['hr.leave'].search(
                 [('employee_id', '=', employee_id.id), ('state', '=', 'validate')])
             for leave in leaves:
-                if leave.holiday_status_id.name in item.worked_days_line_ids.mapped('name'):
-                    days = item.worked_days_line_ids.filtered(lambda a: a.name == leave.holiday_status_id.name)
-                    days.write({
-                        'number_of_days': days.number_of_days + leave.number_of_days
-                    })
-                else:
-                    self.env['hr.payslip.worked_days'].create({
-                        'name': leave.holiday_status_id.name,
-                        'number_of_days': leave.number_of_days,
-                        'code': '',
-                        'contract_id': item.contract_id.id,
-                        'payslip_id': item.id
-                    })
+                if item.worked_days_line_ids.filtered(
+                        lambda a: a.name == leave.holiday_status_id.name).number_of_days != sum(
+                        leaves.mapped('number_of_days')):
+                    if leave.holiday_status_id.name in item.worked_days_line_ids.mapped('name'):
+                        days = item.worked_days_line_ids.filtered(lambda a: a.name == leave.holiday_status_id.name)
+                        days.write({
+                            'number_of_days': days.number_of_days + leave.number_of_days
+                        })
+                    else:
+                        self.env['hr.payslip.worked_days'].create({
+                            'name': leave.holiday_status_id.name,
+                            'number_of_days': leave.number_of_days,
+                            'code': '',
+                            'contract_id': item.contract_id.id,
+                            'payslip_id': item.id
+                        })
