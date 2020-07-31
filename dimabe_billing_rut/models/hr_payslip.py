@@ -47,7 +47,7 @@ class HrPayslip(models.Model):
                             'number_of_days': days.number_of_days + leave.number_of_days
                         })
                     else:
-                        code = self.generate_code(leave.holiday_status_id.name)
+                        code = self.generate_code(leave.holiday_status_id.name,leave.holiday_status_id.id)
                         self.env['hr.payslip.worked_days'].create({
                             'name': leave.holiday_status_id.name,
                             'number_of_days': leave.number_of_days,
