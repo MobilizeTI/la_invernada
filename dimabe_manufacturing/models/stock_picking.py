@@ -220,6 +220,8 @@ class StockPicking(models.Model):
                 if self.picking_type_id.warehouse_id.id == 17 and self.picking_type_code != 'outgoing':
                     move_line._action_done()
                     return super(StockPicking, self).button_validate()
+        res = super(StockPicking,self).button_validate()
+        return res
 
     def validate_barcode(self, barcode):
         custom_serial = self.packing_list_ids.filtered(
