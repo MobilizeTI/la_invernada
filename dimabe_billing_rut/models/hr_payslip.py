@@ -10,11 +10,13 @@ class HrPayslip(models.Model):
 
     salary_id = fields.Many2one('hr.salary.rule', 'Agregar Entrada')
 
-    have_absence = fields.Boolean('¿Tiene Ausencias?')
+    have_absence = fields.Boolean('¿Tiene Ausencias?', default=False)
 
-    absence_days = fields.Float('Dias Ausencias')
+    absence_days = fields.Float('Dias Ausencias', default=0)
 
-    vacations_days = fields.Float('Dias Vacaciones')
+    vacations_days = fields.Float('Dias Vacaciones', default=0)
+
+    vacation_paid = fields.Boolean('Vacaciones Pagadas')
 
     @api.onchange('struct_id')
     def onchange_domain(self):
@@ -63,11 +65,20 @@ class HrPayslip(models.Model):
                             'unpaid': leave.holiday_status_id.unpaid
                         })
                 if leave.holiday_status_id.name == 'Vacaciones' and leaves:
-                    item.write({
-                        'vacations_days': sum(
-                            item.worked_days_line_ids.filtered(lambda a:  'Vacaciones' in a.name).mapped(
-                                'number_of_days'))
-                    })
+                    if leave.holiday_status_id.unpaid:
+                        item.write({
+                            'vacations_days': sum(
+                                item.worked_days_line_ids.filtered(lambda a: 'Vacaciones' in a.name).mapped(
+                                    'number_of_days')),
+                            'vacation_paid': False
+                        })
+                    else:
+                        item.write({
+                            'vacations_days': sum(
+                                item.worked_days_line_ids.filtered(lambda a: 'Vacaciones' in a.name).mapped(
+                                    'number_of_days')),
+                            'vacation_paid': False
+                        })
             if sum(leaves.mapped('number_of_days')) > 0 and not leaves:
                 item.write({
                     'absence_days': 0,
@@ -76,7 +87,7 @@ class HrPayslip(models.Model):
             else:
                 item.write({
                     'absence_days': sum(leaves.filtered(lambda a: 'Vacaciones' not in a.name).mapped('number_of_days')),
-                    'have_absence':True
+                    'have_absence': True
                 })
 
     def generate_code(self, name, id):
