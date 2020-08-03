@@ -45,14 +45,13 @@ class HrPayslip(models.Model):
             employee_id = item.contract_id.employee_id
             leaves = self.env['hr.leave'].search(
                 [('employee_id', '=', employee_id.id), ('state', '=', 'validate'),
-                 ('request_date_from', '>', item.date_from),('request_date_from','<',item.date_to)])
-            raise models.ValidationError(leaves)
+                 ('date_from', '>', item.date_from), ('date_to', '<', item.date_to)])
             for leave in leaves:
                 if item.worked_days_line_ids.filtered(
                         lambda a: a.name == leave.holiday_status_id.name).number_of_days != sum(
                     leaves.mapped('number_of_days')):
                     models._logger.error('Aqui')
-                    if leave.holiday_status_id.name in item.worked_days_line_ids.mapped('name') :
+                    if leave.holiday_status_id.name in item.worked_days_line_ids.mapped('name'):
 
                         days = item.worked_days_line_ids.filtered(lambda a: a.name == leave.holiday_status_id.name)
                         days.write({
@@ -79,7 +78,7 @@ class HrPayslip(models.Model):
                             'vacation_paid': False
                         })
                     else:
-                        models._logger.error('Aqui Esta' )
+                        models._logger.error('Aqui Esta')
                         item.write({
                             'vacations_days': sum(
                                 item.worked_days_line_ids.filtered(lambda a: 'Vacaciones' in a.name).mapped(
