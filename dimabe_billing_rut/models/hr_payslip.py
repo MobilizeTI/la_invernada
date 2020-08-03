@@ -44,7 +44,8 @@ class HrPayslip(models.Model):
         for item in self:
             employee_id = item.contract_id.employee_id
             leaves = self.env['hr.leave'].search(
-                [('employee_id', '=', employee_id.id), ('state', '=', 'validate')])
+                [('employee_id', '=', employee_id.id), ('state', '=', 'validate'),
+                 ('request_date_from', '>', item.date_from), ('request_date_to','<',item.date_from)])
             for leave in leaves:
                 if item.worked_days_line_ids.filtered(
                         lambda a: a.name == leave.holiday_status_id.name).number_of_days != sum(
@@ -86,7 +87,8 @@ class HrPayslip(models.Model):
                 })
             else:
                 item.write({
-                    'absence_days': sum(leaves.filtered(lambda a: 'Vacaciones' not in a.holiday_status_id.name).mapped('number_of_days')),
+                    'absence_days': sum(leaves.filtered(lambda a: 'Vacaciones' not in a.holiday_status_id.name).mapped(
+                        'number_of_days')),
                     'have_absence': True
                 })
 
