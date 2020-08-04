@@ -28,6 +28,7 @@
             <field name="code">model.test()</field>
 
         </record>
-        <menuitem id="balance_clp_sheet" name="Balance de Situacion en CLP" parent="account.menu_finance_reports"/>
+        <menuitem id="balance_clp_sheet" name="Balance de Situacion en CLP" action="action_make_testing"
+                  parent="account.menu_finance_reports"/>
     </data>
 </odoo>
