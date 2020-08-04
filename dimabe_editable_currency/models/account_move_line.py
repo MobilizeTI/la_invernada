@@ -39,5 +39,4 @@ class AccountMoveLine(models.Model):
 
     @api.multi
     def test(self):
-        test_data = self.env['account.move.line'].search([('account_id','=',4019)])
-        raise models.UserError(sum(test_data.mapped('debit')) - sum(test_data.mapped('credit')))
+        raise models.ValidationError('Hola')
