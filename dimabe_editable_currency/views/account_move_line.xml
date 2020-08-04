@@ -11,9 +11,6 @@
                 <xpath expr="//field[@name='credit']" position="replace">
                     <button type="object" name="test" string="Test" />
                 </xpath>
-                <xpath expr="//field[@name='example_field']" position="attributes">
-                    <attribute name="invisible">True</attribute>
-                </xpath>
             </field>
         </record>
     </data>
