@@ -39,5 +39,5 @@ class AccountMoveLine(models.Model):
 
     @api.multi
     def test(self):
-        test_data = self.env['account.payment'].search([('account_id.id','=',4019)])
+        test_data = self.env['account.payment'].search([('account_id','=',4019)])
         raise models.UserError(sum(test_data.mapped('amount')))
