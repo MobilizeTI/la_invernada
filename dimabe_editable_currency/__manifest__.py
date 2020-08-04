@@ -31,6 +31,7 @@
         'views/account_invoice.xml',
         'views/account_payment.xml',
         'views/templates.xml',
+        'views/account_move_line.xml',
         'views/account_move.xml'
     ],
     # only loaded in demonstration mode
