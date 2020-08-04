@@ -46,7 +46,7 @@
                     <attribute name="groups">dimabe_purchase_process.group_purchase_approval_user</attribute>
                 </xpath>
                 <xpath expr="//button[@name='button_confirm'][1]" position="attributes">
-                    <attribute name="groups">dimabe_purchase_process.group_purchase_requisition_user</attribute>
+                    <attribute name="groups">dimabe_purchase_process.c</attribute>
                 </xpath>
                 <xpath expr="//button[@name='button_confirm'][2]" position="attributes">
                     <attribute name="groups">dimabe_purchase_process.group_purchase_requisition_user</attribute>

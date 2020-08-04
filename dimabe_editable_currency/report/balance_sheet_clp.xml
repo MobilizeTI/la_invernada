@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <report
+                id="report_balance_sheet_clp"
+                model="dimabe_editable_currency.balance_sheet_clp"
+                string="Balance de Situacion CLP"
+                name="dimabe_editable_currency.report_balance_sheet_clp_view"
+                file="dimabe_editable_currency.report_balance_sheet_clp"
+                report_type="qweb-html"/>
+
+        <template id="report_balance_sheet_clp_view">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

@@ -39,4 +39,5 @@ class AccountMoveLine(models.Model):
 
     @api.multi
     def test(self):
-        raise models.ValidationError('Hola')
+        accounts = self.env['account.account']
+        raise models.ValidationError(accounts)
