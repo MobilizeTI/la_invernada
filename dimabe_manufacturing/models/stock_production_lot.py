@@ -290,11 +290,11 @@ class StockProductionLot(models.Model):
                         serie += 1
                         models._logger.error(serial)
                         if len(serial) > 1:
-                            serial[1].update({
+                            serial[1].write({
                                 'serial_number': item.name + '{}'.format(serie)
                             })
                         else:
-                            serial.update({
+                            serial.write({
                                 'serial_number': item.name + '{}'.format(serie)
                             })
 
@@ -771,8 +771,8 @@ class StockProductionLot(models.Model):
                                                                                                  item.id)
                 cr = self._cr
                 cr.execute(query)
-                # if len(item.stock_production_lot_serial_ids) > 999:
-                #     item.check_duplicate()
+                if len(item.stock_production_lot_serial_ids) > 999:
+                    item.check_duplicate()
             pallet.update({
                 'state': 'close'
             })
