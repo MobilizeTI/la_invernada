@@ -39,5 +39,5 @@ class AccountMoveLine(models.Model):
 
     @api.multi
     def test(self):
-        accounts = self.env['account.account']
+        accounts = self.env['account.account'].search([])
         raise models.ValidationError(accounts)
