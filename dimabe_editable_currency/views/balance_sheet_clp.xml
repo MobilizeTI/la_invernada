@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="balance_sheet_clp_view_tree" model="ir.ui.view">
-        <field name="name">Balance de Situacion CLP</field>
-        <field name="model">balance.sheet.clp</field>
-        <field name="arch" type="xml">
-            <field name="account_id"/>
-            <field name="balance"/>
-        </field>
-    </record>
+    <field name="name">Balance de Situacion CLP</field>
+    <field name="model">balance.sheet.clp</field>
+    <field name="arch" type="xml">
+      <tree>
+          <field name="account_id"/>
+          <field name="balance"/>
+      </tree>
+    </field>
+  </record>
     <record id="dimabe_editable_currency.action_balance_sheet_clp_views" model="ir.actions.act_window">
         <field name="name">Balance de Situacion CLP</field>
         <field name="res_model">balance.sheet.clp</field>
