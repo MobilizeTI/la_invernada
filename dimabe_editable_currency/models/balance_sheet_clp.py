@@ -23,9 +23,15 @@ class ModelName(models.Model):
                 'id')
             for ac in accounts:
                 ac_move_line = self.env['account.move.line'].search([('account_id', '=', ac)])
-                self.env['balance.sheet.clp'].create({
-                    'account_id': ac,
-                    'from': ac_move_line[0].create_date,
-                    'to': ac_move_line[-1].create_date,
-                    'balance': sum(ac_move_line.mapped('debit')) - sum(ac_move_line.mapped('credit'))
-                })
+                if ac_move_line:
+                    self.env['balance.sheet.clp'].create({
+                        'account_id': ac,
+                        'from': ac_move_line[0].create_date,
+                        'to': ac_move_line[-1].create_date,
+                        'balance': sum(ac_move_line.mapped('debit')) - sum(ac_move_line.mapped('credit'))
+                    })
+                else:
+                    self.env['balance.sheet.clp'].create({
+                        'account_id': ac,
+                        'balance': sum(ac_move_line.mapped('debit')) - sum(ac_move_line.mapped('credit'))
+                    })
