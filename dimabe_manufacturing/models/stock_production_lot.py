@@ -340,6 +340,8 @@ class StockProductionLot(models.Model):
                     query = "UPDATE stock_quant set quantity = {} , reserved_quantity = 0.0 where id = {}".format(
                         available_kg,
                         quant_lot.id)
+                    if lot.name == '201900401':
+                        raise models.ValidationError(query)
                     cr = self._cr
                     cr.execute(query)
 
