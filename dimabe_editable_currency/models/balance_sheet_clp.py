@@ -16,4 +16,6 @@ class ModelName(models.Model):
     def get_data(self):
         for item in self:
             accounts = self.env['account.account'].search([])
-            raise models.ValidationError(accounts)
+            for ac in accounts:
+                ac_move_line = self.env['account.move.line'].search([('account_id','=',ac.id)])
+                raise models.ValidationError(ac_move_line)
