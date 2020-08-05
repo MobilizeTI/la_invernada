@@ -19,7 +19,7 @@ class ModelName(models.Model):
             for ac in accounts:
                 ac_move_line = self.env['account.move.line'].search([('account_id', '=', ac.id)])
                 result = sum(ac_move_line.mapped('debit')) - sum(ac_move_line.mapped('credit'))
-                raise models.ValidationError(result)
+                raise models.ValidationError(ac_move_line)
                 self.env['balance.sheet.clp'].create({
                     'account_id': ac.id,
                     'balance': sum(ac_move_line.mapped('debit')) - sum(ac_move_line.mapped('credit'))
