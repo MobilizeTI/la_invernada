@@ -18,7 +18,7 @@
     </record>
     <menuitem id="menu_balance_sheet_clp"
               name="Balance de situacion CLP"
-              parent="menu_account_dte"
+              parent="account_reports.account_reports_audit_reports_menu"
               action="dimabe_editable_currency.action_balance_sheet_clp_views"
     />
     <template id="button_render_js" inherit_id="web.assets_backend">
