@@ -18,5 +18,5 @@ class ModelName(models.Model):
             accounts = self.env['account.account'].search([('company_id', '=', self.env.user.company_id.id)]).mapped(
                 'id')
             for ac in accounts:
-                ac_move_line = self.env['account.move.line'].search([('account_id.id', '=', ac)])
+                ac_move_line = self.env['account.move.line'].search([])
                 raise models.ValidationError(len(ac_move_line))
