@@ -15,7 +15,7 @@ class ModelName(models.Model):
     @api.multi
     def get_data(self):
         for item in self:
-            accounts = self.env['account.account'].search([])
+            accounts = self.env['account.account'].search([]).mapped('id')
             for ac in accounts:
-                ac_move_line = self.env['account.move.line'].search([('account_id','=',ac.id)])
+                ac_move_line = self.env['account.move.line'].search([('account_id','=',ac)])
                 raise models.ValidationError(ac_move_line)
