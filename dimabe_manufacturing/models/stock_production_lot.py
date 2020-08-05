@@ -752,8 +752,8 @@ class StockProductionLot(models.Model):
                                                                                                  item.id)
                 cr = self._cr
                 cr.execute(query)
-                if len(item.stock_production_lot_serial_ids) > 999:
-                    item.check_duplicate()
+                # if len(item.stock_production_lot_serial_ids) > 999:
+                #     item.check_duplicate()
             pallet.update({
                 'state': 'close'
             })
