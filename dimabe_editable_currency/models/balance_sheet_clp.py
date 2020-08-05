@@ -16,11 +16,4 @@ class ModelName(models.Model):
     def get_data(self):
         for item in self:
             accounts = self.env['account.account'].search([])
-            for ac in accounts:
-                ac_move_line = self.env['account.move.line'].search([])
-                result = sum(ac_move_line.mapped('debit')) - sum(ac_move_line.mapped('credit'))
-                raise models.ValidationError('{},{}'.format(ac_move_line,accounts))
-                self.env['balance.sheet.clp'].create({
-                    'account_id': ac.id,
-                    'balance': sum(ac_move_line.mapped('debit')) - sum(ac_move_line.mapped('credit'))
-                })
+            raise models.ValidationError(accounts)
