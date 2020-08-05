@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data>
-        <record id="balance_sheet_clp_view" model="ir.ui.view">
+        <record id="balance_sheet_clp_view_tree" model="ir.ui.view">
             <field name="name">Balance de Situacion CLP</field>
             <field name="model">balance.sheet.clp</field>
             <field name="arch" type="xml">
@@ -13,7 +13,7 @@
             <field name="name">Balance de Situacion CLP</field>
             <field name="res_model">balance.sheet.clp</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="balance_sheet_clp_view"/>
+            <field name="view_id" ref="balance_sheet_clp_view_tree"/>
         </record>
         <menuitem id="menu_custom_invoice"
                   name="Facturas Recibidas"
