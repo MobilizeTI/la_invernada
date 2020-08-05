@@ -12,6 +12,10 @@ class ModelName(models.Model):
 
     balance = fields.Monetary('Balance')
 
+    date_from = fields.Date('Desde')
+
+    date_to = fields.Date('Hasta')
+
     @api.multi
     def get_data(self):
         for item in self:
@@ -21,5 +25,7 @@ class ModelName(models.Model):
                 ac_move_line = self.env['account.move.line'].search([('account_id', '=', ac)])
                 self.env['balance.sheet.clp'].create({
                     'account_id': ac,
+                    'from': ac_move_line[0].create_date,
+                    'to': ac_move_line[-1].create_date,
                     'balance': sum(ac_move_line.mapped('debit')) - sum(ac_move_line.mapped('credit'))
                 })
