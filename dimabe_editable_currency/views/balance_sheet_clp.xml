@@ -22,6 +22,11 @@
                   parent="account_reports.account_reports_audit_reports_menu"
                   action="dimabe_editable_currency.action_balance_sheet_clp_views"
         />
+        <template id="button_render_js" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script src="dimabe_editable_currency/static/src/js/action_get_data.js" type="text/javascript"/>
+            </xpath>
+        </template>
     </data>
 
 </odoo>
