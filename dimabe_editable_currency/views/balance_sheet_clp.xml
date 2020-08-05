@@ -12,15 +12,13 @@
             </field>
         </record>
         <record id="balance_sheet_clp_view_form" model="ir.ui.view">
-            <field name="name">balance_sheet_clp.form</field>
+            <field name="name">balance_sheet_clp_form</field>
             <field name="model">balance.sheet.clp</field>
             <field name="arch" type="xml">
                 <form>
                     <sheet>
-                        <div class="oe_title">
-                            <h1>
-                                <button name="get_data" type="object" string="Get Data"/>
-                            </h1>
+                        <div>
+                            <button name="get_data" type="object" string="Get Data"/>
                         </div>
                     </sheet>
                 </form>
