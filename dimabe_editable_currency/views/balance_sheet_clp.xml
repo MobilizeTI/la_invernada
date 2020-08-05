@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
-        <record id="balance_sheet_clp_view_tree" model="ir.ui.view">
-            <field name="name">Balance de Situacion CLP</field>
-            <field name="model">balance.sheet.clp</field>
-            <field name="arch" type="xml">
-                <field name="account_id"/>
-                <field name="balance"/>
-            </field>
-        </record>
-        <record id="dimabe_editable_currency.action_balance_sheet_clp_views" model="ir.actions.act_window">
-            <field name="name">Balance de Situacion CLP</field>
-            <field name="res_model">balance.sheet.clp</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="balance_sheet_clp_view_tree"/>
-        </record>
-        <menuitem id="menu_custom_invoice"
-                  name="Facturas Recibidas"
-                  parent="account.menu_finance_reports"
-                  action="dimabe_editable_currency.action_balance_sheet_clp_views"
-        />
-        <template id="button_render_js" inherit_id="web.assets_backend">
-            <xpath expr="." position="inside">
-                <script src="dimabe_editable_currency/static/src/js/action_get_data.js" type="text/javascript"/>
-            </xpath>
-        </template>
-    </data>
+    <record id="balance_sheet_clp_view_tree" model="ir.ui.view">
+        <field name="name">Balance de Situacion CLP</field>
+        <field name="model">balance.sheet.clp</field>
+        <field name="arch" type="xml">
+            <field name="account_id"/>
+            <field name="balance"/>
+        </field>
+    </record>
+    <record id="dimabe_editable_currency.action_balance_sheet_clp_views" model="ir.actions.act_window">
+        <field name="name">Balance de Situacion CLP</field>
+        <field name="res_model">balance.sheet.clp</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="balance_sheet_clp_view_tree"/>
+    </record>
+    <menuitem id="menu_custom_invoice"
+              name="Facturas Recibidas"
+              parent="account.menu_finance_reports"
+              action="dimabe_editable_currency.action_balance_sheet_clp_views"
+    />
+    <template id="button_render_js" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script src="dimabe_editable_currency/static/src/js/action_get_data.js" type="text/javascript"/>
+        </xpath>
+    </template>
+
 </odoo>
