@@ -16,8 +16,8 @@
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="balance_sheet_clp_view_tree"/>
     </record>
-    <menuitem id="menu_custom_invoice"
-              name="Facturas Recibidas"
+    <menuitem id="menu_balance_sheet_clp"
+              name="Balance de situacion CLP"
               parent="account.menu_finance_reports"
               action="dimabe_editable_currency.action_balance_sheet_clp_views"
     />
