@@ -8,7 +8,7 @@
                 <tree>
                     <field name="account_id"/>
                     <field name="balance"/>
-                    <field sum="balance" sum="Balance" />
+                    <field name="balance" sum="Balance" />
                 </tree>
             </field>
         </record>
