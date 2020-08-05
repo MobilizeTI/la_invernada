@@ -17,5 +17,5 @@ class ModelName(models.Model):
         for item in self:
             accounts = self.env['account.account'].search([]).mapped('id')
             for ac in accounts:
-                ac_move_line = self.env['account.move.line'].search([('account_id','=',ac)])
+                ac_move_line = self.env['account.move.line'].search([])
                 raise models.ValidationError(ac_move_line)
