@@ -106,7 +106,7 @@
             </field>
         </record>
 
-        <menuitem name="Balance Situacion CLP" id="balance_sheet_clp_menu" parent="account.menu_finance_reports"
+        <menuitem name="Balance Situacion CLP" id="balance_sheet_clp_menu_view" parent="account.menu_finance_reports"
                   action="balance_sheet_clp_act_window"/>
 
     </data>
