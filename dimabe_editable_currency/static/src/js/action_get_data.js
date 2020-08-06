@@ -1,4 +1,4 @@
-odoo.define('balance_sheet_clp.sincronize_button', function (require) {
+odoo.define('balance_sheet_clp.get_data', function (require) {
     "use strict";
     var core = require('web.core');
     var ListController = require('web.ListController');
