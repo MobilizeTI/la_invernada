@@ -67,4 +67,6 @@ class ModelName(models.Model):
 
             response = json.loads(res.text)
 
-            raise models.ValidationError(response)
+            for data in response:
+                if data['currency'] == 'USD':
+                    raise models.ValidationError(data['value'])
