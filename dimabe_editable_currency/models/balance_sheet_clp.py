@@ -21,6 +21,7 @@ class ModelName(models.Model):
     @api.multi
     def get_data(self):
         for item in self:
+            raise models.UserError('Hola')
             accounts = self.env['account.account'].search([('company_id', '=', self.env.user.company_id.id)])
             for ac in accounts:
                 ac_move_line = self.env['account.move.line'].search([('account_id.id', '=', ac.id)])
