@@ -32,9 +32,9 @@
             <field name="view_mode">tree,form,graph</field>
             <field name="view_id" ref="balance_sheet_clp_view_tree"/>
         </record>
-        <record id="action_server_leave_filter" model="ir.actions.server">
+        <record id="action_charge" model="ir.actions.server">
 
-            <field name="name">Leave Filter</field>
+            <field name="name">Cargar Informe</field>
 
             <field name="model_id" ref="dimabe_editable_currency.model_balance_sheet_clp"/>
 
