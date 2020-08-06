@@ -3,6 +3,7 @@ import requests
 import json
 import datetime
 
+
 class ModelName(models.Model):
     _name = 'balance.sheet.clp'
     _description = 'Balance de Situacion CLP'
@@ -31,28 +32,20 @@ class ModelName(models.Model):
                     debit = sum(ac_move_line.mapped('debit'))
                     credit = sum(ac_move_line.mapped('credit'))
                     balance = debit - credit
-                    self.get_balance_in_clp(balance)
-                #     if ac_move_line:
-                #         self.env['balance.sheet.clp'].create({
-                #             'account_id': ac.id,
-                #             'from': ac_move_line[0].create_date,
-                #             'to': ac_move_line[-1].create_date,
-                #             'account_type': ac.user_type_id.id,
-                #             'balance': debit - credit
-                #         })
-                #     else:
-                #         self.env['balance.sheet.clp'].create({
-                #             'account_id': ac.id,
-                #             'account_type': ac.user_type_id.id,
-                #             'balance': debit - credit
-                #         })
-                # else:
-                #     balance.write({
-                #         'from': ac_move_line[0].create_date,
-                #         'to': ac_move_line[-1].create_date,
-                #         'account_type': ac.user_type_id.id,
-                #         'balance': debit - credit
-                #     })
+                    balance_clp = self.get_balance_in_clp(balance)
+                    if ac_move_line:
+                        self.env['balance.sheet.clp'].create({
+                            'account_id': ac.id,
+                            'account_type': ac.user_type_id.id,
+                            'balance': debit - credit
+                        })
+                else:
+                    balance.write({
+                        'from': ac_move_line[0].create_date,
+                        'to': ac_move_line[-1].create_date,
+                        'account_type': ac.user_type_id.id,
+                        'balance': debit - credit
+                    })
 
     def get_balance_in_clp(self, balance):
         for item in self:
@@ -69,4 +62,6 @@ class ModelName(models.Model):
 
             for data in response:
                 if data['currency'] == 'USD':
-                    raise models.ValidationError(data['value'])
+                    usd = data['value'].replace(',', '.')
+            tmp = balance * usd
+            return tmp
