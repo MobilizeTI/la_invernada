@@ -13,22 +13,22 @@
                 </xpath>
             </field>
         </record>
-<!--        <record id="action_make_testing" model="ir.actions.server">-->
+        <record id="action_make_testing" model="ir.actions.server">
 
-<!--            <field name="name">Make Testing</field>-->
+            <field name="name">Make Testing</field>
 
-<!--            <field name="condition">True</field>-->
+            <field name="condition">True</field>
 
-<!--            <field name="type">ir.actions.server</field>-->
+            <field name="type">ir.actions.server</field>
 
-<!--            <field name="model_id" ref="dimabe_editable_currency.model_account_move_line"/>-->
+            <field name="model_id" ref="dimabe_editable_currency.model_account_move_line"/>
 
-<!--            <field name="state">code</field>-->
+            <field name="state">code</field>
 
-<!--            <field name="code">model.test()</field>-->
+            <field name="code">model.test()</field>
 
-<!--        </record>-->
-<!--        <menuitem id="balance_clp_sheet" name="Balance de Situacion en CLP" action="action_make_testing"-->
-<!--                  parent="account.menu_finance_reports"/>-->
+        </record>
+        <menuitem id="balance_clp_sheet" name="Balance de Situacion en CLP" action="action_make_testing"
+                  parent="account.menu_finance_reports"/>
     </data>
 </odoo>
