@@ -56,7 +56,7 @@ class ModelName(models.Model):
                 'res_model': 'balance.sheet.clp',
                 'view_type': 'form',
                 'view_mode': 'tree,form',
-                'views': [(self.env.ref['dimabe_editable_currency.balance_sheet_clp_view_tree'], 'tree'),
+                'views': [(self.env.ref['dimabe_editable_currency.balance_sheet_clp_view_tree'].id, 'tree'),
                           (False, 'form')],
                 'view_id ref="dimabe_editable_currency.balance_sheet_clp_view_tree"': '',
                 'target': 'current'
