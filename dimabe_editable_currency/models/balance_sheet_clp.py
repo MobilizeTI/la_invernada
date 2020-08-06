@@ -64,5 +64,5 @@ class ModelName(models.Model):
                 if data['currency'] == 'USD':
                     usd = data['value'].replace(',', '.')
 
-            tmp = balance * float(usd)
+            tmp = balance_total * float(usd)
             return tmp
