@@ -1,4 +1,6 @@
 from odoo import fields, models, api
+import requests
+import json
 
 
 class ModelName(models.Model):
@@ -29,6 +31,8 @@ class ModelName(models.Model):
                 if not balance:
                     debit = sum(ac_move_line.mapped('debit'))
                     credit = sum(ac_move_line.mapped('credit'))
+                    balance = debit - credit
+                    self.get_balance_in_clp(balance)
                     if ac_move_line:
 
                         self.env['balance.sheet.clp'].create({
@@ -51,3 +55,17 @@ class ModelName(models.Model):
                         'account_type': ac.user_type_id.id,
                         'balance': debit - credit
                     })
+
+    def get_balance_in_clp(self,balance):
+        for item in self:
+            res = requests.request(
+                'GET',
+                'https://services.dimabe.cl/api/currencies?date={}'.format(date.strftime('%Y-%m-%d')),
+                headers={
+                    'apikey': '790AEC76-9D15-4ABF-9709-E0E3DC45ABBC'
+                }
+            )
+
+            response = json.loads(res.text)
+
+            raise models.ValidationError(response)
