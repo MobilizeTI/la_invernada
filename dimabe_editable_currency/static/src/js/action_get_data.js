@@ -25,12 +25,11 @@ odoo.define('balance_sheet_clp.get_data', function (require) {
                         name: _t('action_balance'),
                         type: 'ir.actions.act_window',
                         res_model: 'balance.sheet.clp',
-                        views: [[false, 'form']],
-                        view_mode: 'form',
-                        target: 'new',
+                        view_mode: 'tree',
+
                     })
                 });
-                return { 'type': 'ir.actions.client','tag': 'reload', }
+                window.location;
             }
         });
     }
