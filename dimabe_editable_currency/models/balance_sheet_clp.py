@@ -27,19 +27,34 @@ class ModelName(models.Model):
             accounts = self.env['account.account'].search([('company_id', '=', self.env.user.company_id.id)])
             for ac in accounts:
                 balance = self.env['balance.sheet.clp'].search([('account_id.id', '=', ac.id)])
+                date = datetime.date.today()
+                res = requests.request(
+                    'GET',
+                    'https://services.dimabe.cl/api/currencies?date={}'.format(date.strftime('%Y-%m-%d')),
+                    headers={
+                        'apikey': '790AEC76-9D15-4ABF-9709-E0E3DC45ABBC'
+                    }
+                )
+                ac_move_line = self.env['account.move.line'].search([('account_id', '=', id)])
+                debit = sum(ac_move_line.mapped('debit'))
+                credit = sum(ac_move_line.mapped('credit'))
+                response = json.loads(res.text)
+
+                for data in response:
+                    if data['currency'] == 'USD':
+                        usd = data['value'].replace(',', '.')
+
+                tmp = (debit - credit) * float(usd)
                 if not balance:
-                    balance_clp = self.get_balance_in_clp(ac.id)
                     self.env['balance.sheet.clp'].create({
                         'account_id': ac.id,
                         'account_type': ac.user_type_id.id,
-                        'balance': balance_clp
+                        'balance': tmp
                     })
                 else:
                     balance.write({
-                        'from': ac_move_line[0].create_date,
-                        'to': ac_move_line[-1].create_date,
                         'account_type': ac.user_type_id.id,
-                        'balance': balance_clp
+                        'balance': tmp
                     })
 
     def get_balance_in_clp(self, id=0):
