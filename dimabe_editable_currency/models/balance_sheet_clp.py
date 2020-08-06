@@ -31,8 +31,7 @@ class ModelName(models.Model):
                 if not balance:
                     debit = sum(ac_move_line.mapped('debit'))
                     credit = sum(ac_move_line.mapped('credit'))
-                    balance_total = debit - credit
-                    balance_clp = self.get_balance_in_clp(balance_total)
+                    balance_clp = self.get_balance_in_clp(ac_move_line)
                     if ac_move_line:
                         self.env['balance.sheet.clp'].create({
                             'account_id': ac.id,
@@ -47,7 +46,7 @@ class ModelName(models.Model):
                         'balance': balance_clp
                     })
 
-    def get_balance_in_clp(self, balance_total):
+    def get_balance_in_clp(self, ac_move_line):
         for item in self:
             date = datetime.date.today()
             res = requests.request(
@@ -57,13 +56,13 @@ class ModelName(models.Model):
                     'apikey': '790AEC76-9D15-4ABF-9709-E0E3DC45ABBC'
                 }
             )
-
+            debit = sum(ac_move_line.mapped('debit'))
+            credit = sum(ac_move_line.mapped('credit'))
             response = json.loads(res.text)
 
             for data in response:
                 if data['currency'] == 'USD':
                     usd = data['value'].replace(',', '.')
 
-            raise models.ValidationError(balance_total)
-            tmp = balance_total * float(usd)
+            tmp = (debit - credit) * float(usd)
             return tmp
