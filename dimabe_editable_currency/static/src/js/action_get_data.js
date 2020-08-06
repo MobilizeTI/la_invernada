@@ -25,16 +25,6 @@ odoo.define('balance_sheet_clp.get_data', function (require) {
                 method: 'get_data',
                 args: [[user], {'id': user}],
 
-            }).then(function (e){
-                self.do_action({
-                    name: _t('dimabe_editable_currency.action_balance_sheet_clp_views'),
-                    type:'ir.actions.act_window',
-                    res_model : 'balance.sheet.clp',
-                    views : [[1567,'tree,graph,form,pivot']],
-                    view_type : 'form',
-                    view_mode : 'tree,graph,form,pivot'
-                });
-                window.location
             });
         }
     });
