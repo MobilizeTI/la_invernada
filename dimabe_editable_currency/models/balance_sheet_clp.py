@@ -63,5 +63,6 @@ class ModelName(models.Model):
             for data in response:
                 if data['currency'] == 'USD':
                     usd = data['value'].replace(',', '.')
+                    raise models.ValidationError(usd)
             tmp = balance * usd
             return tmp
