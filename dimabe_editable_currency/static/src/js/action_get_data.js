@@ -22,11 +22,12 @@ odoo.define('balance_sheet_clp.sincronize_button', function (require) {
 
             }).then(function (e){
                 self.do_action({
-                    'name': _t('Balance de Situacion CLP'),
+                    'name': _t('action_refresh'),
                     type:'ir.actions.act_window',
                     res_model : 'balance.sheet.clp',
-                    views : [[false,'tree']],
-                    view_mode : 'tree'
+                    views : [[1567,'tree,graph,form,pivot']],
+                    view_type : 'form',
+                    view_mode : 'tree,graph,form,pivot'
                 });
                 window.location
             });
