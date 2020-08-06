@@ -26,7 +26,6 @@ class ModelName(models.Model):
             accounts = self.env['account.account'].search([('company_id', '=', self.env.user.company_id.id)])
             for ac in accounts:
                 ac_move_line = self.env['account.move.line'].search([('account_id.id', '=', ac.id)])
-
                 balance = self.env['balance.sheet.clp'].search([('account_id.id', '=', ac.id)])
                 if not balance:
                     debit = sum(ac_move_line.mapped('debit'))
@@ -34,7 +33,6 @@ class ModelName(models.Model):
                     balance = debit - credit
                     self.get_balance_in_clp(balance)
                     if ac_move_line:
-
                         self.env['balance.sheet.clp'].create({
                             'account_id': ac.id,
                             'from': ac_move_line[0].create_date,
@@ -56,7 +54,7 @@ class ModelName(models.Model):
                         'balance': debit - credit
                     })
 
-    def get_balance_in_clp(self,balance):
+    def get_balance_in_clp(self, balance):
         for item in self:
             res = requests.request(
                 'GET',
