@@ -39,6 +39,8 @@ class ProductProduct(models.Model):
 
     dispatch_weight = fields.Float('Kilos Despachados', compute='_compute_dispatch_weight')
 
+    supply_id = fields.Many2one('product.product','Producto')
+
     @api.multi
     def _compute_measure(self):
         for item in self:
