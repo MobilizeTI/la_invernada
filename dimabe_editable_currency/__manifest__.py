@@ -40,6 +40,6 @@
         'demo/demo.xml'
     ],
     'qweb': [
-        "static/src/xml/custom_invoice_button.xml",
+        "static/src/xml/button_get_data.xml",
     ],
 }
