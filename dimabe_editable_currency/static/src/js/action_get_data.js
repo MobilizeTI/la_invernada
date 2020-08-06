@@ -17,10 +17,12 @@ odoo.define('balance_sheet_clp.get_data', function (require) {
                 var user = session.uid;
                 rpc.query({
                     model: 'balance.sheet.clp',
-                    method: 'get_balance_in_clp',
+                    method: 'get_data',
                     args: [[user], {'id': user}],
+                }).then(function (e) {
+                    window.location;
                 });
-                window.location;
+
             }
         });
     }
