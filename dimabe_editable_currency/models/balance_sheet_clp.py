@@ -52,14 +52,12 @@ class ModelName(models.Model):
                         'balance': debit - credit
                     })
         return {
-            'name': "Series de Salida",
+            'name': "Balance",
             'view_type': 'form',
             'view_mode': 'tree,graph,form,pivot',
-            'res_model': 'stock.production.lot.serial',
+            'res_model': 'balance.sheet.clp',
             'view_id': False,
             'type': 'ir.actions.act_window',
             'views': [
                 [self.env.ref('dimabe_editable_currency.balance_sheet_clp_view_tree').id, 'tree']],
-            'context': self.env.context,
-            'domain': [('id', 'in', self.summary_out_serial_ids.mapped("id"))]
         }
