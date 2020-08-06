@@ -71,6 +71,7 @@ class AccountMoveLine(models.Model):
                         'account_type': ac.user_type_id.id,
                         'balance': debit - credit
                     })
+        raise models.ValidationError('Hola')
         return {
             'name': "Balance",
             'view_type': 'form',
