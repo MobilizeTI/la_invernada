@@ -42,7 +42,7 @@ class ModelName(models.Model):
                         'balance': balance_clp
                     })
 
-    def get_balance_in_clp(self, id):
+    def get_balance_in_clp(self, id=0):
         for item in self:
             date = datetime.date.today()
             res = requests.request(
