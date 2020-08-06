@@ -24,27 +24,30 @@ class ModelName(models.Model):
             accounts = self.env['account.account'].search([('company_id', '=', self.env.user.company_id.id)])
             for ac in accounts:
                 ac_move_line = self.env['account.move.line'].search([('account_id.id', '=', ac.id)])
-                models._logger.error(ac_move_line)
+
                 balance = self.env['balance.sheet.clp'].search([('account_id.id', '=', ac.id)])
                 if not balance:
+                    debit = sum(ac_move_line.mapped('debit'))
+                    credit = sum(ac_move_line.mapped('credit'))
                     if len(ac_move_line) > 0:
+
                         self.env['balance.sheet.clp'].create({
                             'account_id': ac.id,
                             'from': ac_move_line[0].create_date,
                             'to': ac_move_line[-1].create_date,
                             'account_type': ac.user_type_id.id,
-                            'balance': sum(ac_move_line.mapped('debit')) - sum(ac_move_line.mapped('credit'))
+                            'balance': debit - credit
                         })
                     else:
                         self.env['balance.sheet.clp'].create({
                             'account_id': ac,
                             'account_type': ac.user_type_id.id,
-                            'balance': sum(ac_move_line.mapped('debit')) - sum(ac_move_line.mapped('credit'))
+                            'balance': debit - credit
                         })
                 else:
                     balance.write({
                         'from': ac_move_line[0].create_date,
                         'to': ac_move_line[-1].create_date,
                         'account_type': ac.user_type_id.id,
-                        'balance': sum(ac_move_line.mapped('debit')) - sum(ac_move_line.mapped('credit'))
+                        'balance': debit - credit
                     })
