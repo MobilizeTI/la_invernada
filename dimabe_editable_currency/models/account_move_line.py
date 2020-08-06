@@ -72,13 +72,13 @@ class AccountMoveLine(models.Model):
                         'balance': debit - credit
                     })
 
-        return {
-            'name': "Balance",
-            'view_type': 'tree',
-            'view_mode': 'tree,graph,form,pivot',
-            'res_model': 'balance.sheet.clp',
-            'view_id': False,
-            'type': 'ir.actions.act_window',
-            'views': [
-                [self.env.ref('dimabe_editable_currency.balance_sheet_clp_view_tree').id, 'tree']],
-        }
+            return {
+                'name': "Balance",
+                'view_type': 'tree',
+                'view_mode': 'tree,graph,form,pivot',
+                'res_model': 'balance.sheet.clp',
+                'view_id': False,
+                'type': 'ir.actions.act_window',
+                'views': [
+                    [self.env.ref('dimabe_editable_currency.balance_sheet_clp_view_tree').id, 'tree']],
+            }
