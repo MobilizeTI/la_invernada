@@ -37,14 +37,14 @@ class ModelName(models.Model):
                         self.env['balance.sheet.clp'].create({
                             'account_id': ac.id,
                             'account_type': ac.user_type_id.id,
-                            'balance': debit - credit
+                            'balance': balance_clp
                         })
                 else:
                     balance.write({
                         'from': ac_move_line[0].create_date,
                         'to': ac_move_line[-1].create_date,
                         'account_type': ac.user_type_id.id,
-                        'balance': debit - credit
+                        'balance': balance_clp
                     })
 
     def get_balance_in_clp(self, balance):
