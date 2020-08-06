@@ -17,25 +17,26 @@ odoo.define('balance_sheet_clp.get_data', function (require) {
                     this.$buttons.find('.oe_action_button').click(this.proxy('action_def'));
                 }
             },
-            action_def: function () {
-                var self = this
-                var user = session.uid;
-                rpc.query({
-                    model: 'balance.sheet.clp',
-                    method: 'get_data',
-                    args: [[user], {'id': user}],
-
+            receive_invoice: function () {
+            var self = this
+            var user = session.uid;
+            rpc.query({
+                model: 'balance.sheet.clp',
+                method: 'get_data',
+                args: [[user],{'id':user}],
                 }).then(function (e) {
                     self.do_action({
-                        name: _t('action_balance'),
+                        name: _t('action'),
                         type: 'ir.actions.act_window',
                         res_model: 'balance.sheet.clp',
                         views: [[false, 'form']],
                         view_mode: 'form',
                         target: 'new',
-                    })
+                    });
+                    window.location
                 });
-            }
+            },
+
         });
     }
 )
