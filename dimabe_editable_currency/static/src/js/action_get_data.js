@@ -31,7 +31,6 @@ odoo.define('balance_sheet_clp.get_data', function (require) {
             //     });
             //     window.location
             // });
-            this.trigger_up('reload');
         }
     });
 }
