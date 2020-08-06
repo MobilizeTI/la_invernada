@@ -7,7 +7,7 @@ odoo.define('balance_sheet_clp.get_data', function (require) {
     var _t = core._t;
     var model_obj = new instance.web.Model('ir.model.data');
     var view_id = false;
-    model_obj.call('get_object_reference',['balance.sheet.clp','Balance de Situacion CLP']).then( function(result){
+    model_obj.call('get_object_reference',['balance.sheet.clp','balance_sheet_clp_view_tree']).then( function(result){
     view_id = result[1];
     });
     ListController.include({
@@ -20,7 +20,6 @@ odoo.define('balance_sheet_clp.get_data', function (require) {
         action_def: function () {
             var self = this
             var user = session.uid;
-            console.log(view_id)
             rpc.query({
                 model: 'balance.sheet.clp',
                 method: 'get_data',
