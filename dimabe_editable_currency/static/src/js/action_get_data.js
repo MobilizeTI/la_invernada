@@ -19,18 +19,18 @@ odoo.define('balance_sheet_clp.get_data', function (require) {
                 model: 'balance.sheet.clp',
                 method: 'get_data',
                 args: [[user], {'id': user}],
-            })
-            // }).then(function (e){
-            //     self.do_action({
-            //         'name': _t('action_refresh'),
-            //         type:'ir.actions.act_window',
-            //         res_model : 'balance.sheet.clp',
-            //         views : [[1567,'tree,graph,form,pivot']],
-            //         view_type : 'form',
-            //         view_mode : 'tree,graph,form,pivot'
-            //     });
-            //     window.location
-            // });
+
+            }).then(function (e){
+                self.do_action({
+                    'name': _t('action_refresh'),
+                    type:'ir.actions.act_window',
+                    res_model : 'balance.sheet.clp',
+                    views : [[1567,'tree,graph,form,pivot']],
+                    view_type : 'form',
+                    view_mode : 'tree,graph,form,pivot'
+                });
+                window.location
+            });
         }
     });
 }
