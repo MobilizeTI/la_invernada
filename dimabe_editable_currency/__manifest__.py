@@ -39,4 +39,7 @@
     'demo': [
         'demo/demo.xml'
     ],
+    'qweb': [
+        "static/src/xml/custom_invoice_button.xml",
+    ],
 }
