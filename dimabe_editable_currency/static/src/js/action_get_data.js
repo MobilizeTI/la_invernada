@@ -26,7 +26,7 @@ odoo.define('balance_sheet_clp.get_data', function (require) {
                         type: 'ir.actions.act_window',
                         res_model: 'balance.sheet.clp',
                         view_mode: 'tree',
-                        views : 'tree,form'
+                        views : ['tree,form']
                     })
                 });
                 window.location;
