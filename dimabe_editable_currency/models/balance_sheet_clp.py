@@ -29,7 +29,7 @@ class ModelName(models.Model):
                 if not balance:
                     debit = sum(ac_move_line.mapped('debit'))
                     credit = sum(ac_move_line.mapped('credit'))
-                    if len(ac_move_line) > 0:
+                    if ac_move_line:
 
                         self.env['balance.sheet.clp'].create({
                             'account_id': ac.id,
