@@ -22,7 +22,7 @@ odoo.define('balance_sheet_clp.get_data', function (require) {
 
             }).then(function (e){
                 self.do_action({
-                    'name': _t('Balance de Situacion CLP'),
+                    name: _t('Balance de Situacion CLP'),
                     type:'ir.actions.act_window',
                     res_model : 'balance.sheet.clp',
                     views : [[1567,'tree,graph,form,pivot']],
