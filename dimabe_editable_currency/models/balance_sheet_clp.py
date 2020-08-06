@@ -12,9 +12,9 @@ class ModelName(models.Model):
 
     balance = fields.Monetary('Balance')
 
-    from_date = fields.DateTime('Desde')
+    from_date = fields.datetime('Desde')
 
-    to_date = fields.DateTime('Hasta')
+    to_date = fields.datetime('Hasta')
 
     @api.multi
     def get_data(self):
