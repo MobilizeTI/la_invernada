@@ -40,7 +40,7 @@ class ModelName(models.Model):
                         })
                     else:
                         self.env['balance.sheet.clp'].create({
-                            'account_id': ac,
+                            'account_id': ac.id,
                             'account_type': ac.user_type_id.id,
                             'balance': debit - credit
                         })
