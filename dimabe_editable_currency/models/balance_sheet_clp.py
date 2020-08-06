@@ -52,13 +52,13 @@ class ModelName(models.Model):
                         'account_type': ac.user_type_id.id,
                         'balance': debit - credit
                     })
-        return {
-            'name': "Balance",
-            'view_type': 'form',
-            'view_mode': 'tree,graph,form,pivot',
-            'res_model': 'balance.sheet.clp',
-            'view_id': False,
-            'type': 'ir.actions.act_window',
-            'views': [
-                [self.env.ref('dimabe_editable_currency.balance_sheet_clp_view_tree').id, 'tree']],
-        }
+            return {
+                'name': "Balance",
+                'view_type': 'form',
+                'view_mode': 'tree,graph,form,pivot',
+                'res_model': 'balance.sheet.clp',
+                'view_id': False,
+                'type': 'ir.actions.act_window',
+                'views': [
+                    [self.env.ref('dimabe_editable_currency.balance_sheet_clp_view_tree').id, 'tree']],
+            }
