@@ -27,7 +27,7 @@ class ModelName(models.Model):
                 models._logger.error(ac_move_line)
                 balance = self.env['balance.sheet.clp'].search([('account_id.id', '=', ac.id)])
                 if not balance:
-                    if ac_move_line:
+                    if len(ac_move_line) > 0:
                         self.env['balance.sheet.clp'].create({
                             'account_id': ac.id,
                             'from': ac_move_line[0].create_date,
