@@ -9,7 +9,7 @@
                     <field name="account_id"/>
                     <field name="balance"/>
                     <field name="account_type"/>
-                    <field name="balance" sum="Balance" />
+                    <field name="balance" sum="Balance"/>
                 </tree>
             </field>
         </record>
@@ -32,10 +32,21 @@
             <field name="view_mode">tree,form,graph</field>
             <field name="view_id" ref="balance_sheet_clp_view_tree"/>
         </record>
+        <record id="action_server_leave_filter" model="ir.actions.server">
+
+            <field name="name">Leave Filter</field>
+
+            <field name="model_id" ref="balance_sheet_clp"/>
+
+            <field name="state">code</field>
+
+            <field name="code">model.get_data()</field>
+
+        </record>
         <menuitem id="balance_sheet_clp_menu_item"
                   name="Balance de situacion CLP"
                   parent="account_reports.account_reports_audit_reports_menu"
-                  action="dimabe_editable_currency.action_balance_sheet_clp_views"
+                  action="action_server_leave_filter"
         />
         <template id="button_render_js" inherit_id="web.assets_backend">
             <xpath expr="." position="inside">
