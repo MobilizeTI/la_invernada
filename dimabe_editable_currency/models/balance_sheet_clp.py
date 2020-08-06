@@ -24,6 +24,7 @@ class ModelName(models.Model):
             accounts = self.env['account.account'].search([('company_id', '=', self.env.user.company_id.id)])
             for ac in accounts:
                 ac_move_line = self.env['account.move.line'].search([('account_id.id', '=', ac.id)])
+                models._logger.error(ac_move_line)
                 balance = self.env['balance.sheet.clp'].search([('account_id.id', '=', ac.id)])
                 if not balance:
                     if ac_move_line:
