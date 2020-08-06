@@ -1,7 +1,7 @@
 from odoo import fields, models, api
 import requests
 import json
-
+import datetime
 
 class ModelName(models.Model):
     _name = 'balance.sheet.clp'
@@ -56,6 +56,7 @@ class ModelName(models.Model):
 
     def get_balance_in_clp(self, balance):
         for item in self:
+            date = datetime.date.today()
             res = requests.request(
                 'GET',
                 'https://services.dimabe.cl/api/currencies?date={}'.format(date.strftime('%Y-%m-%d')),
