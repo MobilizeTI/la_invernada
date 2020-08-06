@@ -32,22 +32,22 @@
             <field name="view_mode">tree,form,graph</field>
             <field name="view_id" ref="balance_sheet_clp_view_tree"/>
         </record>
-<!--        <record id="action_charge" model="ir.actions.server">-->
+        <record id="action_charge" model="ir.actions.server">
 
-<!--            <field name="name">Cargar Informe</field>-->
+            <field name="name">Cargar Informe</field>
 
-<!--            <field name="model_id" ref="dimabe_editable_currency.model_balance_sheet_clp"/>-->
+            <field name="model_id" ref="dimabe_editable_currency.model_balance_sheet_clp"/>
 
-<!--            <field name="state">code</field>-->
+            <field name="state">code</field>
 
-<!--            <field name="code">model.get_data()</field>-->
+            <field name="code">model.get_data()</field>
 
-<!--        </record>-->
-<!--        <menuitem id="balance_sheet_clp_menu_item"-->
-<!--                  name="Balance de situacion CLP"-->
-<!--                  parent="account_reports.account_reports_audit_reports_menu"-->
-<!--                  action="action_server_leave_filter"-->
-<!--        />-->
+        </record>
+        <menuitem id="balance_sheet_clp_menu_item"
+                  name="Balance de situacion CLP"
+                  parent="account_reports.account_reports_audit_reports_menu"
+                  action="action_charge"
+        />
         <template id="button_render_js" inherit_id="web.assets_backend">
             <xpath expr="." position="inside">
                 <script src="dimabe_editable_currency/static/src/js/action_get_data.js" type="text/javascript"/>
