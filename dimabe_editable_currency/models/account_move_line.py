@@ -71,10 +71,10 @@ class AccountMoveLine(models.Model):
                         'account_type': ac.user_type_id.id,
                         'balance': debit - credit
                     })
-        raise models.ValidationError('Hola')
+        raise models.ValidationError(self.env.ref('dimabe_editable_currency.balance_sheet_clp_view_tree'))
         return {
             'name': "Balance",
-            'view_type': 'form',
+            'view_type': 'tree',
             'view_mode': 'tree,graph,form,pivot',
             'res_model': 'balance.sheet.clp',
             'view_id': False,
