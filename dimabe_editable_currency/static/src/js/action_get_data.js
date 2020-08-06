@@ -19,15 +19,6 @@ odoo.define('balance_sheet_clp.get_data', function (require) {
                     model: 'balance.sheet.clp',
                     method: 'get_data',
                     args: [[user], {'id': user}],
-
-                }).then(function (e) {
-                    self.do_action({
-                        name: _t('action_balance'),
-                        type: 'ir.actions.act_window',
-                        res_model: 'balance.sheet.clp',
-                        view_mode: 'tree',
-                        views : ['tree,form']
-                    })
                 });
                 window.location;
             }

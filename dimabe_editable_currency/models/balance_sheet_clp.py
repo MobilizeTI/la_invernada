@@ -51,3 +51,15 @@ class ModelName(models.Model):
                         'account_type': ac.user_type_id.id,
                         'balance': debit - credit
                     })
+        return {
+            'name': "Series de Salida",
+            'view_type': 'form',
+            'view_mode': 'tree,graph,form,pivot',
+            'res_model': 'stock.production.lot.serial',
+            'view_id': False,
+            'type': 'ir.actions.act_window',
+            'views': [
+                [self.env.ref('dimabe_editable_currency.balance_sheet_clp_view_tree').id, 'tree']],
+            'context': self.env.context,
+            'domain': [('id', 'in', self.summary_out_serial_ids.mapped("id"))]
+        }
