@@ -52,7 +52,7 @@ class ModelName(models.Model):
                     'apikey': '790AEC76-9D15-4ABF-9709-E0E3DC45ABBC'
                 }
             )
-            ac_move_line = self.env['account.move.line'].search([('account_id.id', '=', id)])
+            ac_move_line = self.env['account.move.line'].search([('account_id', '=', id)])
             debit = sum(ac_move_line.mapped('debit'))
             credit = sum(ac_move_line.mapped('credit'))
             response = json.loads(res.text)
