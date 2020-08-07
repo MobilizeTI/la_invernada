@@ -21,15 +21,6 @@ odoo.define('balance_sheet_clp.get_data', function (require) {
                     args: [[user], {'id': user}],
                 });
 
-            },
-            action_update: function () {
-                var self = this
-                var user = session.uid;
-                rpc.query({
-                    model: 'balance.sheet.clp',
-                    method: 'update_data',
-                    args: [[user], {'id': user}],
-                });
             }
         });
     }
