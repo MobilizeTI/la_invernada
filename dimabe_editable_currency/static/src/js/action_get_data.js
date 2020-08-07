@@ -9,10 +9,11 @@ odoo.define('balance_sheet_clp.get_data', function (require) {
             renderButtons: function ($node) {
                 this._super.apply(this, arguments);
                 if (this.$buttons) {
-                    this.$buttons.find('#get_data').click(this.proxy('action_def'));
+                    this.$buttons.find('#get_data').click(this.proxy('action_get'));
+                    this.$buttons.find('#update_data').click(this.proxy('action_update'))
                 }
             },
-            action_def: function () {
+            action_get: function () {
                 var self = this
                 var user = session.uid;
                 rpc.query({
@@ -21,6 +22,15 @@ odoo.define('balance_sheet_clp.get_data', function (require) {
                     args: [[user], {'id': user}],
                 });
 
+            },
+            action_update: function () {
+                var self = this
+                var user = session.uid;
+                rpc.query({
+                    model: 'balance.sheet.clp',
+                    method: 'update_data',
+                    args: [[user], {'id': user}],
+                });
             }
         });
     }
