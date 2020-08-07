@@ -458,6 +458,7 @@ class MrpWorkorder(models.Model):
             'available_kg': sum(
                 custom_serial.stock_production_lot_id.stock_production_lot_serial_ids.mapped('real_weight'))
         })
+        models._logger.error('Aqui')
         if custom_serial:
             barcode = custom_serial.stock_production_lot_id.name
         res = super(MrpWorkorder, self).on_barcode_scanned(barcode)
