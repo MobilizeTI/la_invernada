@@ -51,6 +51,7 @@ class ModelName(models.Model):
                             'account_type': ac.user_type_id.id,
                             'balance': tmp
                         })
+                        continue
                     else:
                         balance.write({
                             'account_type': ac.user_type_id.id,
