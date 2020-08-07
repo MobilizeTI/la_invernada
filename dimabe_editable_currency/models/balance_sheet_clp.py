@@ -39,21 +39,21 @@ class ModelName(models.Model):
                 debit = sum(ac_move_line.mapped('debit'))
                 credit = sum(ac_move_line.mapped('credit'))
                 response = json.loads(res.text)
+                if res.status_code == 200:
+                    for data in response:
+                        if data['currency'] == 'USD':
+                            usd = data['value'].replace(',', '.')
 
-                for data in response:
-                    if data['currency'] == 'USD':
-                        usd = data['value'].replace(',', '.')
-
-                tmp = (debit - credit) * float(usd)
-                if not balance:
-                    self.env['balance.sheet.clp'].create({
-                        'account_id': ac.id,
-                        'account_type': ac.user_type_id.id,
-                        'balance': tmp
-                    })
-                else:
-                    balance.write({
-                        'account_type': ac.user_type_id.id,
-                        'balance': tmp
-                    })
+                    tmp = (debit - credit) * float(usd)
+                    if not balance:
+                        self.env['balance.sheet.clp'].create({
+                            'account_id': ac.id,
+                            'account_type': ac.user_type_id.id,
+                            'balance': tmp
+                        })
+                    else:
+                        balance.write({
+                            'account_type': ac.user_type_id.id,
+                            'balance': tmp
+                        })
 
