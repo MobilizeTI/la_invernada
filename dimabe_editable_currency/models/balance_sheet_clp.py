@@ -26,7 +26,7 @@ class ModelName(models.Model):
         for item in self:
             accounts = self.env['account.account'].search([('company_id', '=', self.env.user.company_id.id)])
             for ac in accounts:
-                balance = self.env['balance.sheet.clp'].search([('account_id.id', '=', ac.id)])
+                balance = self.env['balance.sheet.clp'].search([('account_id', '=', ac.id)])
                 date = datetime.date.today()
                 res = requests.request(
                     'GET',
