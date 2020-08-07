@@ -31,7 +31,6 @@
         'views/account_invoice.xml',
         'views/account_payment.xml',
         'views/templates.xml',
-        'views/account_move_line.xml',
         'views/balance_sheet_clp.xml',
         'views/account_move.xml'
     ],
