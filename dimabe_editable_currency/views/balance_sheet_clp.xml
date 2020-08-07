@@ -7,9 +7,8 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="account_id"/>
-                    <field name="balance"/>
-                    <field name="account_type"/>
                     <field name="balance" sum="Balance"/>
+                    <field name="account_type"/>
                 </tree>
             </field>
         </record>
