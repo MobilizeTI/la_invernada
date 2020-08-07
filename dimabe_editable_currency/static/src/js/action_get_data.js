@@ -9,7 +9,7 @@ odoo.define('balance_sheet_clp.get_data', function (require) {
             renderButtons: function ($node) {
                 this._super.apply(this, arguments);
                 if (this.$buttons) {
-                    this.$buttons.find('.oe_action_button').click(this.proxy('action_def'));
+                    this.$buttons.find('#get_data').click(this.proxy('action_def'));
                 }
             },
             action_def: function () {
