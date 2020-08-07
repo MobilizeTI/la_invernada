@@ -3,9 +3,7 @@
 <template xml:space="preserve">
     <t t-extend="ListView.buttons">
       <t t-jquery="button.o_list_button_add" t-operation="replace">
-        <button t-if="widget.modelName == 'balance.sheet.clp'" id="get_data" class="btn btn-primary oe_action_button"
-                type="button">Crear Informe</button>
-          <button t-if="widget.modelName == 'balance.sheet.clp'" id="update_data"
+          <button t-if="widget.modelName == 'balance.sheet.clp'"
                   class="btn btn-primary oe_action_button" type="button">Actualizar valor del dolar</button>
       </t>
     </t>
