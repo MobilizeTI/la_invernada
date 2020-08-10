@@ -32,7 +32,7 @@ class ModelName(models.Model):
         for item in self:
             accounts = self.env['account.account'].search([('company_id', '=', self.env.user.company_id.id)])
             date = datetime.date.today()
-            account_invoice = self.env['account.invoice'].search([('account_id', '=', accounts.mapped('id'))])
+            account_invoice = self.env['account.invoice'].search([('account_id', 'in', accounts.mapped('id'))])
             raise models.ValidationError(account_invoice)
             for ac in accounts:
                 ac_move_line = self.env['account.move.line'].search([('account_id', '=', ac.id)])
