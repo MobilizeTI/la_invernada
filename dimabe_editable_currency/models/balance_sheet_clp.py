@@ -23,6 +23,8 @@ class ModelName(models.Model):
 
     is_balance = fields.Boolean('Es Balance')
 
+    breakdown_ids = fields.Many2many('Desglose')
+
     usd_value_in_clp = fields.Float('Valor del Dolar')
 
     @api.multi
@@ -61,15 +63,23 @@ class ModelName(models.Model):
                             'account_id': ac.id,
                             'account_type': ac.user_type_id.id,
                             'balance': tmp,
+                            'breakdown_ids': ac_move_line,
                             'is_balance':True
                         })
-        return {
-            'type': 'ir.actions.act_window',
-            'name': ('String'),
-            'res_model': 'model.name',
-            'view_type': 'tree',
-            'view_mode': 'form',
-            'view_id': self.env.ref('dimabe_editable_currency.balance_sheet_clp_view_tree').id,
-            'target': 'current',
-            'nodestroy': True,
-        }
+
+    @api.multi
+    def go_to_breakdown(self):
+        for item in self:
+            self.ensure_one()
+            return {
+                'name': "Series de Salida",
+                'view_type': 'form',
+                'view_mode': 'tree,graph,form,pivot',
+                'res_model': 'stock.production.lot.serial',
+                'view_id': False,
+                'type': 'ir.actions.act_window',
+                'views': [
+                    [self.env.ref('account.view_move_line_tree').id,
+                     'tree']],
+                'domain': [('id', 'in', item.breakdown_ids.mapped("id"))]
+            }
