@@ -33,25 +33,32 @@ class ModelName(models.Model):
             accounts = self.env['account.account'].search([('company_id', '=', self.env.user.company_id.id)])
             date = datetime.date.today()
             account_invoice = self.env['account.invoice'].search([('account_id', 'in', accounts.mapped('id'))])
-            raise models.ValidationError(account_invoice.mapped('exchange_rate'))
+
             for ac in accounts:
                 ac_move_line = self.env['account.move.line'].search([('account_id', '=', ac.id)])
-                debit = sum(ac_move_line.mapped('debit'))
-                credit = sum(ac_move_line.mapped('credit'))
-
+                invoices = self.env['account.invoice'].search([('account_id','=',ac.id)])
+                debit = []
+                credit = []
+                for inv in invoices:
+                    d = ac_move_line.filtered(lambda a: a.invoice == inv.id).mapped('debit')
+                    models._logger.error(d)
+                    c = ac_move_line.filtered(lambda a: a.invoice == inv.id).mapped('credit')
+                    models._logger.error(c)
+                    debit.append(d)
+                    credit.append(c)
                 balance = self.env['balance.sheet.clp'].search([('account_id', '=', ac.id)])
                 if balance:
                     if len(balance) == 2:
                             balance[-1].unlink()
                     else:
                         balance.write({
-                            'balance': tmp
+                            'balance': sum(debit) - sum(credit)
                         })
                 else:
                     self.env['balance.sheet.clp'].create({
                         'account_id': ac.id,
                         'account_type': ac.user_type_id.id,
-                        'balance': tmp,
+                        'balance': sum(debit) - sum(credit),
                         'is_balance': True
                     })
 
