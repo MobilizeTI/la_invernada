@@ -35,20 +35,20 @@ class ModelName(models.Model):
             )
             for ac in accounts:
                 raise models.UserError(res.status_code)
-                    ac_move_line = self.env['account.move.line'].search([('account_id', '=', ac.id)])
-                    debit = sum(ac_move_line.mapped('debit'))
-                    credit = sum(ac_move_line.mapped('credit'))
-                    response = json.loads(res.text)
+                ac_move_line = self.env['account.move.line'].search([('account_id', '=', ac.id)])
+                debit = sum(ac_move_line.mapped('debit'))
+                credit = sum(ac_move_line.mapped('credit'))
+                response = json.loads(res.text)
+                raise models.UserError(res.status_code)
+                if res.status_code == 200:
                     raise models.UserError(res.status_code)
-                    if res.status_code == 200:
-                        raise models.UserError(res.status_code)
-                        for data in response:
-                            if data['currency'] == 'USD':
-                                usd = data['value'].replace(',', '.')
+                    for data in response:
+                        if data['currency'] == 'USD':
+                            usd = data['value'].replace(',', '.')
 
-                        tmp = (debit - credit) * float(usd)
-                        self.env['balance.sheet.clp'].create({
-                                'account_id': ac.id,
-                                'account_type': ac.user_type_id.id,
-                                'balance': tmp
-                        })
+                    tmp = (debit - credit) * float(usd)
+                    self.env['balance.sheet.clp'].create({
+                        'account_id': ac.id,
+                        'account_type': ac.user_type_id.id,
+                        'balance': tmp
+                    })
