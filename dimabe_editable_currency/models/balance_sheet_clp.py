@@ -21,8 +21,11 @@ class ModelName(models.Model):
 
     account_to_date = fields.Datetime('Hasta')
 
+    is_balance = fields.Boolean('Es Balance')
+
+
     @api.multi
-    def get_data(self):
+    def get_balance_clp(self):
         for item in self:
             accounts = self.env['account.account'].search([('company_id', '=', self.env.user.company_id.id)])
             date = datetime.date.today()
@@ -56,5 +59,10 @@ class ModelName(models.Model):
                         self.env['balance.sheet.clp'].create({
                             'account_id': ac.id,
                             'account_type': ac.user_type_id.id,
-                            'balance': tmp
+                            'balance': tmp,
+                            'is_balance':True
                         })
+
+    @api.multi
+    def get_report_eight(self):
+        for item in self:
