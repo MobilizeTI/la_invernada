@@ -23,6 +23,7 @@ class ModelName(models.Model):
 
     is_balance = fields.Boolean('Es Balance')
 
+    usd_value_in_clp = fields.Float('Valor del Dolar')
 
     @api.multi
     def get_balance_clp(self):
