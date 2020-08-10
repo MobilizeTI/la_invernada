@@ -23,7 +23,7 @@ class ModelName(models.Model):
 
     is_balance = fields.Boolean('Es Balance')
 
-    breakdown_ids = fields.Many2many('account.move.line','account_id','Desglose')
+    breakdown_ids = fields.Many2many('account.move.line')
 
     usd_value_in_clp = fields.Float('Valor del Dolar')
 
@@ -64,7 +64,7 @@ class ModelName(models.Model):
                             'account_type': ac.user_type_id.id,
                             'balance': tmp,
                             'breakdown_ids': ac_move_line,
-                            'is_balance':True
+                            'is_balance': True
                         })
 
     @api.multi
