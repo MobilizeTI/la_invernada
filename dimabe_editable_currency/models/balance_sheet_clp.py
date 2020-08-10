@@ -34,7 +34,6 @@ class ModelName(models.Model):
                 }
             )
             for ac in accounts:
-                raise models.UserError(res.status_code)
                 ac_move_line = self.env['account.move.line'].search([('account_id', '=', ac.id)])
                 debit = sum(ac_move_line.mapped('debit'))
                 credit = sum(ac_move_line.mapped('credit'))
