@@ -23,7 +23,7 @@ class ModelName(models.Model):
 
     is_balance = fields.Boolean('Es Balance')
 
-    breakdown_ids = fields.Many2many('account.move.line','Desglose')
+    breakdown_ids = fields.Many2many('account.move.line','account_id','Desglose')
 
     usd_value_in_clp = fields.Float('Valor del Dolar')
 
