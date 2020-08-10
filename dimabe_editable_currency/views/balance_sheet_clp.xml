@@ -9,6 +9,7 @@
                     <field name="account_id"/>
                     <field name="balance" sum="Balance"/>
                     <field name="account_type"/>
+                    <button type="object" name="go_to_breakdown" string="Desglose"/>
                 </tree>
             </field>
         </record>
