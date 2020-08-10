@@ -66,6 +66,7 @@ class ModelName(models.Model):
                             'breakdown_ids': ac_move_line,
                             'is_balance': True
                         })
+            self.get_balance_clp()
 
     @api.multi
     def go_to_breakdown(self):
