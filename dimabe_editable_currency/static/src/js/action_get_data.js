@@ -25,7 +25,7 @@ odoo.define('balance_sheet_clp.get_data', function (require) {
                         view_type: 'form',
                         view_mode: 'tree,graph,form,pivot',
                         res_model: 'account.move.line',
-                        view_id: False,
+                        view_id: false,
                         type: 'ir.actions.act_window',
                         views: [
                             [self.env.ref('balance_sheet_clp_view_tree').id,
