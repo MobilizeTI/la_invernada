@@ -29,7 +29,7 @@
         <record id="dimabe_editable_currency.action_balance_sheet_clp_views" model="ir.actions.act_window">
             <field name="name">Balance de Situacion CLP</field>
             <field name="res_model">balance.sheet.clp</field>
-            <field name="view_mode">tree,form,graph</field>
+            <field name="view_mode">tree,graph,pivot</field>
             <field name="view_id" ref="balance_sheet_clp_view_tree"/>
             <field name="domain">
                 [('is_balance','=',True)]
