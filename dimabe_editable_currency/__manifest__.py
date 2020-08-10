@@ -32,8 +32,7 @@
         'views/account_payment.xml',
         'views/templates.xml',
         'views/balance_sheet_clp.xml',
-        'views/account_move.xml',
-        'views/dolar_usd_clp.xml'
+        'views/account_move.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

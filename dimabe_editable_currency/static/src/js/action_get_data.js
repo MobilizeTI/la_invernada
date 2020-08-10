@@ -21,14 +21,14 @@ odoo.define('balance_sheet_clp.get_data', function (require) {
                     args: [[user], {'id': user}],
                 }).then(function (e) {
                     self.do_action({
-                        name : 'action_refresh_balance',
-                        type : 'ir.actions.act_windows',
-                        res_model : 'balance_sheet_clp',
-                        views : [[false,'form']],
-                        view_mode : 'form',
-                        target : 'new'
+                        name: 'action_refresh_balance',
+                        type: 'ir.actions.act_windows',
+                        res_model: 'balance_sheet_clp',
+                        views: [[false, 'form']],
+                        view_mode: 'form',
+                        target: 'new'
                     });
-                    window.location;
+                    location.reload();
                 });
 
             }
