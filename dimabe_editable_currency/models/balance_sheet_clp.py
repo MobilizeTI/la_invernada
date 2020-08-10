@@ -76,7 +76,7 @@ class ModelName(models.Model):
     def go_to_breakdown(self):
         for item in self:
             return {
-                'name': "Series de Salida",
+                'name': "Desglose",
                 'view_type': 'form',
                 'view_mode': 'tree,graph,form,pivot',
                 'res_model': 'account.move.line',

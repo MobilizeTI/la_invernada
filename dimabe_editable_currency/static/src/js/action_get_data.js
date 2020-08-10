@@ -21,14 +21,16 @@ odoo.define('balance_sheet_clp.get_data', function (require) {
                     args: [[user], {'id': user}],
                 }).then(function (e) {
                     self.do_action({
-                        name: 'action_refresh_balance',
-                        type: 'ir.actions.act_windows',
-                        res_model: 'balance_sheet_clp',
-                        views: [[false, 'form']],
-                        view_mode: 'form',
-                        target: 'new'
+                        name: "Desglose",
+                        view_type: 'form',
+                        view_mode: 'tree,graph,form,pivot',
+                        res_model: 'account.move.line',
+                        view_id: False,
+                        type: 'ir.actions.act_window',
+                        views: [
+                            [self.env.ref('balance_sheet_clp_view_tree').id,
+                                'tree']]
                     });
-                    location.reload();
                 });
 
             }
