@@ -63,6 +63,3 @@ class ModelName(models.Model):
                             'is_balance':True
                         })
 
-    @api.multi
-    def get_report_eight(self):
-        for item in self:
