@@ -71,11 +71,12 @@ class ModelName(models.Model):
     def go_to_breakdown(self):
         for item in self:
             self.ensure_one()
+
             return {
                 'name': "Series de Salida",
                 'view_type': 'form',
                 'view_mode': 'tree,graph,form,pivot',
-                'res_model': 'stock.production.lot.serial',
+                'res_model': 'account.move.line',
                 'view_id': False,
                 'type': 'ir.actions.act_window',
                 'views': [
