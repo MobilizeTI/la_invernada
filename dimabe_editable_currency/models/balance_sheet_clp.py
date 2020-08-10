@@ -23,7 +23,7 @@ class ModelName(models.Model):
 
     is_balance = fields.Boolean('Es Balance')
 
-    breakdown_balance_ids = fields.Many2many('account.move.line', string='Desglose')
+    breakdown_balance_ids = fields.Many2many('account.move.line', compute='compute_breakdown')
 
     usd_value_in_clp = fields.Float('Valor del Dolar')
 
@@ -56,17 +56,21 @@ class ModelName(models.Model):
                             balance[-1].unlink()
                         else:
                             balance.write({
-                                'balance': tmp,
-                                'breakdown_balance_ids':ac_move_line.mapped('id')
+                                'balance': tmp
                             })
                     else:
                         self.env['balance.sheet.clp'].create({
                             'account_id': ac.id,
                             'account_type': ac.user_type_id.id,
                             'balance': tmp,
-                            'breakdown_balance_ids': ac_move_line.mapped('id'),
                             'is_balance': True
                         })
+
+    @api.multi
+    @api.depends('account_id')
+    def compute_breakdown(self):
+        for item in self:
+            item.breakdown_balance_ids = self.env['account.move.line'].search([('account_id', '=', item.account_id.id)])
 
     @api.multi
     def go_to_breakdown(self):
