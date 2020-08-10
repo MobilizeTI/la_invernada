@@ -8,6 +8,7 @@
                 <tree>
                     <field name="account_id"/>
                     <field name="balance" sum="Balance" widget="monetary"/>
+                    <field name="balance_usd" />
                     <field name="account_type"/>
                     <button type="object" name="go_to_breakdown" string="Desglose"/>
                 </tree>

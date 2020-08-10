@@ -13,7 +13,9 @@ class ModelName(models.Model):
 
     account_id = fields.Many2one('account.account', 'Cuenta')
 
-    balance = fields.Monetary('Balance')
+    balance = fields.Monetary('Balance CLP')
+
+    balance_usd = fields.Monetary('Balance USD')
 
     account_type = fields.Many2one('account.account.type')
 
