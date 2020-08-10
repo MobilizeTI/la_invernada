@@ -71,7 +71,7 @@ class ModelName(models.Model):
     @api.multi
     def go_to_breakdown(self):
         for item in self:
-            raise models.ValidationError(item.breakdown_ids)
+            raise models.ValidationError(item.breakdown_balance_ids)
             return {
                 'name': "Series de Salida",
                 'view_type': 'form',
