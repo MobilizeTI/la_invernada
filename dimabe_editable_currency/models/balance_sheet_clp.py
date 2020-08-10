@@ -52,7 +52,7 @@ class ModelName(models.Model):
                             balance[-1].unlink()
                     else:
                         balance.write({
-                            'balance': sum(debit) - sum(credit)
+                            'balance': debit - credit
                         })
                 else:
                     self.env['balance.sheet.clp'].create({
