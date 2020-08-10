@@ -45,15 +45,16 @@ class ModelName(models.Model):
 
                     tmp = (debit - credit) * float(usd)
                     balance = self.env['balance.sheet.clp'].search([('account_id', '=', ac.id)])
-                    if len(balance) > 1:
+                    if balance:
                         if len(balance) == 2:
                             balance[-1].unlink()
                         else:
                             balance.write({
                                 'balance': tmp
                             })
-                    self.env['balance.sheet.clp'].create({
-                        'account_id': ac.id,
-                        'account_type': ac.user_type_id.id,
-                        'balance': tmp
-                    })
+                    else:
+                        self.env['balance.sheet.clp'].create({
+                            'account_id': ac.id,
+                            'account_type': ac.user_type_id.id,
+                            'balance': tmp
+                        })
