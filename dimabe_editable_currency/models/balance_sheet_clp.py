@@ -24,7 +24,6 @@ class ModelName(models.Model):
     @api.multi
     def get_data(self):
         for item in self:
-            balances = self.env['balance.sheet.clp'].search([])
             accounts = self.env['account.account'].search([('company_id', '=', self.env.user.company_id.id)])
             date = datetime.date.today()
             res = requests.request(
@@ -36,7 +35,6 @@ class ModelName(models.Model):
             )
             for ac in accounts:
                 raise models.UserError(res.status_code)
-                if len(balances) < 0:
                     ac_move_line = self.env['account.move.line'].search([('account_id', '=', ac.id)])
                     debit = sum(ac_move_line.mapped('debit'))
                     credit = sum(ac_move_line.mapped('credit'))
