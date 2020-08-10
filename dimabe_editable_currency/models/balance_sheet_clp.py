@@ -40,6 +40,7 @@ class ModelName(models.Model):
                     debit = sum(ac_move_line.mapped('debit'))
                     credit = sum(ac_move_line.mapped('credit'))
                     response = json.loads(res.text)
+                    raise models.UserError(res.status_code)
                     if res.status_code == 200:
                         raise models.UserError(res.status_code)
                         for data in response:
