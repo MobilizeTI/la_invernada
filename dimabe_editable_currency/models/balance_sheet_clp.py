@@ -68,7 +68,7 @@ class ModelName(models.Model):
             'res_model': 'model.name',
             'view_type': 'tree',
             'view_mode': 'form',
-            'view_id': self.env.ref['balance_sheet_clp_view_tree'].id,
+            'view_id': self.env.ref('dimabe_editable_currency.balance_sheet_clp_view_tree').id,
             'target': 'current',
             'nodestroy': True,
         }
