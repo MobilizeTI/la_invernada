@@ -58,7 +58,7 @@ class ModelName(models.Model):
                     self.env['balance.sheet.clp'].create({
                         'account_id': ac.id,
                         'account_type': ac.user_type_id.id,
-                        'balance': sum(debit) - sum(credit),
+                        'balance': debit - credit,
                         'is_balance': True
                     })
 
