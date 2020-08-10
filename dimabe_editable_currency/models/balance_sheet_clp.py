@@ -23,7 +23,7 @@ class ModelName(models.Model):
 
     is_balance = fields.Boolean('Es Balance')
 
-    breakdown_ids = fields.Many2many('account.move.line', string='Desglose')
+    breakdown_balance_ids = fields.Many2many('account.move.line', string='Desglose')
 
     usd_value_in_clp = fields.Float('Valor del Dolar')
 
@@ -56,14 +56,15 @@ class ModelName(models.Model):
                             balance[-1].unlink()
                         else:
                             balance.write({
-                                'balance': tmp
+                                'balance': tmp,
+                                'breakdown_balance_ids':ac_move_line.mapped('id')
                             })
                     else:
                         self.env['balance.sheet.clp'].create({
                             'account_id': ac.id,
                             'account_type': ac.user_type_id.id,
                             'balance': tmp,
-                            'breakdown_ids': ac_move_line,
+                            'breakdown_balance_ids': ac_move_line.mapped('id'),
                             'is_balance': True
                         })
 
