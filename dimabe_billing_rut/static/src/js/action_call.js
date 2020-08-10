@@ -9,7 +9,7 @@ odoo.define('custom_invoice.sincronize_button', function (require) {
         renderButtons: function ($node) {
             this._super.apply(this, arguments);
             if (this.$buttons) {
-                this.$buttons.find('.oe_action_button').click(this.proxy('action_def'));
+                this.$buttons.find('#invoicedte').click(this.proxy('action_def'));
             }
         },
         action_def: function () {
