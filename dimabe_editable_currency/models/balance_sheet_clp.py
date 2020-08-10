@@ -62,4 +62,13 @@ class ModelName(models.Model):
                             'balance': tmp,
                             'is_balance':True
                         })
-
+        return {
+            'type': 'ir.actions.act_window',
+            'name': ('String'),
+            'res_model': 'model.name',
+            'view_type': 'tree',
+            'view_mode': 'form',
+            'view_id': self.env.ref['balance_sheet_clp_view_tree'].id,
+            'target': 'current',
+            'nodestroy': True,
+        }
