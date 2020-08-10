@@ -44,8 +44,14 @@ class ModelName(models.Model):
                             usd = data['value'].replace(',', '.')
 
                     tmp = (debit - credit) * float(usd)
-                    balance = self.env['balance.sheet.clp'].search([('account_id','=',ac.id)])
-                    raise models.ValidationError(balance)
+                    balance = self.env['balance.sheet.clp'].search([('account_id', '=', ac.id)])
+                    if len(balance) > 1:
+                        if len(balance) == 2:
+                            balance[-1].unlink()
+                        else:
+                            balance.write({
+                                'balance': tmp
+                            })
                     self.env['balance.sheet.clp'].create({
                         'account_id': ac.id,
                         'account_type': ac.user_type_id.id,
