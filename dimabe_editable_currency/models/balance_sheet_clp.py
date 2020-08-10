@@ -75,7 +75,6 @@ class ModelName(models.Model):
     @api.multi
     def go_to_breakdown(self):
         for item in self:
-            raise models.ValidationError(item.breakdown_balance_ids)
             return {
                 'name': "Series de Salida",
                 'view_type': 'form',
@@ -86,5 +85,5 @@ class ModelName(models.Model):
                 'views': [
                     [self.env.ref('account.view_move_line_tree').id,
                      'tree']],
-                'domain': [('id', 'in', item.breakdown_ids.mapped("id"))]
+                'domain': [('id', 'in', item.breakdown_balance_ids.mapped("id"))]
             }
