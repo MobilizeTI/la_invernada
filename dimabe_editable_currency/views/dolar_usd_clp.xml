@@ -7,7 +7,7 @@
             <field name="interval_number">1</field>
             <field name="interval_type">day</field>
             <field name="numbercall">-1</field>
-            <field name="model_id" ref="dimabe_editable_currency.balance_sheet_clp"/>
+            <field name="model_id" ref="editable_currency.balance_sheet_clp"/>
             <field name="state">code</field>
             <field name="code">model.get_data()</field>
         </record>
