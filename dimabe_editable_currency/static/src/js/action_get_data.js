@@ -20,17 +20,7 @@ odoo.define('balance_sheet_clp.get_data', function (require) {
                     method: 'get_balance_clp',
                     args: [[user], {'id': user}],
                 }).then(function (e) {
-                    self.do_action({
-                        name: "Desglose",
-                        view_type: 'form',
-                        view_mode: 'tree,graph,form,pivot',
-                        res_model: 'account.move.line',
-                        view_id: false,
-                        type: 'ir.actions.act_window',
-                        views: [
-                            [self.env.ref('balance_sheet_clp_view_tree').id,
-                                'tree']]
-                    });
+                    self.do_action('dimabe_editable_currency.action_balance_sheet_clp_views');
                 });
 
             }
