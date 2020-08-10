@@ -23,7 +23,7 @@ odoo.define('balance_sheet_clp.get_data', function (require) {
                     self.do_action({
                         name : 'action_refresh_balance',
                         type : 'ir.actions.act_windows',
-                        res_model : 'balance.sheet.clp',
+                        res_model : 'balance_sheet_clp',
                         views : [[false,'form']],
                         view_mode : 'form',
                         target : 'new'
