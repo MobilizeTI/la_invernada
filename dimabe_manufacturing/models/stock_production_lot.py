@@ -730,12 +730,12 @@ class StockProductionLot(models.Model):
                                 item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
                                     'real_weight'))
                         })
-            available_kg = sum(
-                item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
-            query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg,
-                                                                                             item.id)
-            cr = self._cr
-            cr.execute(query)
+            # available_kg = sum(
+            #     item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
+            # query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg,
+            #                                                                                  item.id)
+            # cr = self._cr
+            # cr.execute(query)
             if len(item.stock_production_lot_serial_ids) > 999:
                 item.check_duplicate()
             return res
