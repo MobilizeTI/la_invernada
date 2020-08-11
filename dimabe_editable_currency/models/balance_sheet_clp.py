@@ -42,6 +42,7 @@ class ModelName(models.Model):
                 debit = []
                 credit = []
                 for inv in invoices:
+                    models._logger.error(inv)
                     d = ac_move_line.filtered(lambda a: a.invoice_id.id == inv.id).mapped('debit')
 
                     c = ac_move_line.filtered(lambda a: a.invoice_id.id == inv.id).mapped('credit')
