@@ -105,11 +105,11 @@ class StockPicking(models.Model):
     @api.multi
     def clean_reserved(self):
         for item in self:
-            for line in item.move_line_ids_without_package:
-                if line.lot_id not in item.packing_list_lot_ids:
-                    line.update({
-                        'product_uom_qty': 0
-                    })
+            for move in item.move_line_ids_without_package:
+                if move.lot_id.id not in item.packing_list_lot_ids.mapped('id'):
+                    query = 'DELETE FROM stock_move_line where id = {}'.format('id')
+                    cr = self._cr
+                    cr.execute(query)
 
     @api.multi
     def _compute_packing_list_lot_ids(self):
