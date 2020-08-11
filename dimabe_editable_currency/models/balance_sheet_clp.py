@@ -48,8 +48,8 @@ class ModelName(models.Model):
                     models._logger.error(c)
                     debit.append(d)
                     credit.append(c)
-                    if inv.id == invoices[-1].id:
-                        raise models.ValidationError('{},{}'.format(debit,credit))
+
+                raise models.ValidationError('{},{}'.format(debit, credit))
                 balance = self.env['balance.sheet.clp'].search([('account_id', '=', ac.id)])
                 if balance:
                     if len(balance) == 2:
