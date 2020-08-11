@@ -43,15 +43,17 @@ class ModelName(models.Model):
                 credit = []
                 for inv in invoices:
                     d = ac_move_line.filtered(lambda a: a.invoice_id.id == inv.id).mapped('debit')
-                    models._logger.error(d)
+
                     c = ac_move_line.filtered(lambda a: a.invoice_id.id == inv.id).mapped('credit')
                     models._logger.error(c)
                     debit.append(d)
                     credit.append(c)
+                    if inv.id == invoices[-1].id:
+                        raise models.ValidationError('{},{}'.format(debit,credit))
                 balance = self.env['balance.sheet.clp'].search([('account_id', '=', ac.id)])
                 if balance:
                     if len(balance) == 2:
-                            balance[-1].unlink()
+                        balance[-1].unlink()
                     else:
                         balance.write({
                             'balance': debit - credit
