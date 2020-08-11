@@ -331,7 +331,6 @@ class MrpWorkorder(models.Model):
                         'is_raw': True
                     })
         res = super(MrpWorkorder, self).write(vals)
-
         return res
 
     def open_tablet_view(self):
