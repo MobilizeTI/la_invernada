@@ -449,15 +449,15 @@ class MrpWorkorder(models.Model):
                 (4, custom_serial.id)
             ]
         })
-        quant = custom_serial.stock_production_lot_id.get_stock_quant().filtered(
-            lambda a: a.location_id.id == self.production_id.location_src_id.id)
-        quant.write({
-            'quantity': quant.quantity - custom_serial.display_weight
-        })
-        custom_serial.stock_production_lot_id.write({
-            'available_kg': sum(
-                custom_serial.stock_production_lot_id.stock_production_lot_serial_ids.mapped('real_weight'))
-        })
+        # quant = custom_serial.stock_production_lot_id.get_stock_quant().filtered(
+        #     lambda a: a.location_id.id == self.production_id.location_src_id.id)
+        # quant.write({
+        #     'quantity': quant.quantity - custom_serial.display_weight
+        # })
+        # custom_serial.stock_production_lot_id.write({
+        #     'available_kg': sum(
+        #         custom_serial.stock_production_lot_id.stock_production_lot_serial_ids.mapped('real_weight'))
+        # })
         models._logger.error('Aqui')
         if custom_serial:
             barcode = custom_serial.stock_production_lot_id.name
