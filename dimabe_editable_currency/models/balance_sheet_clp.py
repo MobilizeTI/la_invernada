@@ -35,22 +35,10 @@ class ModelName(models.Model):
             accounts = self.env['account.account'].search([('company_id', '=', self.env.user.company_id.id)])
             date = datetime.date.today()
             account_invoice = self.env['account.invoice'].search([('account_id', 'in', accounts.mapped('id'))])
-
             for ac in accounts:
-                ac_move_line = self.env['account.move.line'].search([('account_id', '=', ac.id)])
-                invoices = self.env['account.invoice'].search([('account_id','=',ac.id)])
-                debit = []
-                credit = []
-                for inv in invoices:
-                    models._logger.error(inv)
-                    d = ac_move_line.filtered(lambda a: a.invoice_id.id == inv.id).mapped('debit')
+                ac_move_line = self.env['account.move.line'].search([('account_id','=',ac.id)])
+                for ac_line in ac_move_line:
 
-                    c = ac_move_line.filtered(lambda a: a.invoice_id.id == inv.id).mapped('credit')
-                    models._logger.error(c)
-                    debit.append(d)
-                    credit.append(c)
-
-                raise models.ValidationError('{},{}'.format(debit, credit))
                 balance = self.env['balance.sheet.clp'].search([('account_id', '=', ac.id)])
                 if balance:
                     if len(balance) == 2:
