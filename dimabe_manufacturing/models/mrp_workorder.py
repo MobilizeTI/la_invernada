@@ -336,6 +336,7 @@ class MrpWorkorder(models.Model):
         for item in self:
             if item.active_move_line_ids and \
                     not item.active_move_line_ids.filtered(lambda a: a.is_raw):
+                raise models.UserError('ODK')
                 for move_line in item.active_move_line_ids:
                     move_line.update({
                         'is_raw': True
