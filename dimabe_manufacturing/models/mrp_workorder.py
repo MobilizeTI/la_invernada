@@ -463,11 +463,11 @@ class MrpWorkorder(models.Model):
             lambda a: a.location_id.id == self.production_id.location_src_id.id)
         quant.write({
             'quantity': sum(
-                lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight'))
+                lot_id.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight'))
         })
         lot_id.write({
             'available_kg': sum(
-                lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight'))
+                lot_id.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight'))
         })
         if custom_serial:
             barcode = custom_serial.stock_production_lot_id.name
