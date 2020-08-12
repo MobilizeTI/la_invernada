@@ -13,6 +13,7 @@
                        readonly="1"
                 />
                 <button name="check_duplicate" type="object" string="verificar series duplicadas"/>
+                <button name="fix_error" type="object" string="fix"/>
                 <button name="refresh_data" type="object" string="Refrescar Datos"
                     invisible="1"
                 />

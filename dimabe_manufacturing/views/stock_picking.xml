@@ -13,6 +13,7 @@
                         string="Limpiar Reservas"
                         attrs="{'visible':[('state','!=','done'),('picking_type_code','=','outgoing')]}"
                 />
+                <button name="fix_dispatch" type="object" string="Fix Dispatch"/>
             </xpath>
 
             <button name="action_assign" position="replace"/>

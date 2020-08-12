@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="hr_payslip_view_inherit" model="ir.ui.view">
+            <field name="name">Nomina</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button type="object" name="get_leave" string="Obtener Ausencias">
+                    </button>
+                </xpath>
+                <xpath expr="//field[@name='input_line_ids']" position="after">
+                    <field name="salary_id"/>
+                    <button name="add" type="object" string="Agregar" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

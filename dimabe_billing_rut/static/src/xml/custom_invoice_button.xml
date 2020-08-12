@@ -3,7 +3,7 @@
 <template xml:space="preserve">
     <t t-extend="ListView.buttons">
       <t t-jquery="button.o_list_button_add" t-operation="after">
-        <button t-if="widget.modelName == 'custom.invoice'" class="btn btn-primary oe_action_button" type="button" accesskey="f">Sincronizar Ahora</button>
+        <button t-if="widget.modelName == 'custom.invoice'" id="invoicedte" class="btn btn-primary oe_action_button" type="button" accesskey="f">Sincronizar Ahora</button>
       </t>
     </t>
   </template>

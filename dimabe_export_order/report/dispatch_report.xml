@@ -1446,7 +1446,7 @@
     />
 
     <report id="action_inform" model="stock.picking" paperformat="paper_format_letter_horizontal"
-            report_type="qweb-pdf"
+            report_type="qweb-html"
             name="dimabe_export_order.traceability_report" string="Informe de Tracabilidad"/>
 
     <report id="action_dispatch_weight_dispatch" string="Ticket Pesaje Despacho" model="stock.picking"

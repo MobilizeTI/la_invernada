@@ -27,14 +27,18 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/account_invoice.xml',
         'views/account_payment.xml',
         'views/templates.xml',
+        'views/balance_sheet_clp.xml',
         'views/account_move.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml'
+    ],
+    'qweb': [
+        "static/src/xml/button_get_data.xml",
     ],
 }

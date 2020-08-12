@@ -2,6 +2,7 @@ from odoo import models, fields, api
 from datetime import date, timedelta
 from dateutil.relativedelta import *
 import pandas as pd
+from odoo.addons import decimal_precision as dp
 
 
 class CustomSettlement(models.Model):
@@ -9,6 +10,8 @@ class CustomSettlement(models.Model):
     _rec_name = 'employee_id'
 
     employee_id = fields.Many2one('hr.employee', 'Empleado', required=True)
+
+    company_id = fields.Many2one('res.company', 'Compania', related='employee_id.company_id', store=True)
 
     contract_id = fields.Many2one('hr.contract', 'Contrato', related='employee_id.contract_id')
 
@@ -29,7 +32,7 @@ class CustomSettlement(models.Model):
     vacation_days = fields.Float('Dias de Vacaciones por periodo de servicio', compute='compute_vacation_day',
                                  readonly=True)
 
-    day_takes = fields.Float('Dias Tomados', default=0.0)
+    day_takes = fields.Float('Dias Tomados', compute='compute_days_takes', default=0.0)
     days_pending = fields.Float('Dias Pendiente', compute='compute_days_pending')
 
     non_working_days = fields.Integer('Dias Inhabiles', compute='compute_no_working_days')
@@ -41,9 +44,10 @@ class CustomSettlement(models.Model):
 
     currency_id = fields.Many2one('res.currency', string='Moneda')
 
-    wage = fields.Monetary('Sueldo Base', related='contract_id.wage', currency_field='currency_id')
+    wage = fields.Monetary('Sueldo Base', related='contract_id.wage', currency_field='currency_id',
+                           digits=dp.get_precision('Payroll'))
 
-    reward_value = fields.Monetary('Valor', compute='compute_reward')
+    reward_value = fields.Monetary('Valor', compute='compute_reward', digits=dp.get_precision('Payroll'))
 
     reward_selection = fields.Selection([
         ('Yes', 'Si'),
@@ -51,19 +55,32 @@ class CustomSettlement(models.Model):
         ('Edit', 'Editar')
     ], string='Gratificacion', default='Yes')
 
-    snack_bonus = fields.Float('Colacion')
+    snack_bonus = fields.Float('Colacion', digits=dp.get_precision('Payroll'))
 
-    mobilization_bonus = fields.Float('Movilizacion')
+    mobilization_bonus = fields.Float('Movilizacion', digits=dp.get_precision('Payroll'))
 
-    pending_remuneration_payment = fields.Monetary('Remuneraciones Pendientes')
+    pending_remuneration_payment = fields.Monetary('Remuneraciones Pendientes', digits=dp.get_precision('Payroll'))
 
-    compensation_warning = fields.Monetary('Indemnización Aviso Previo', compute='compute_warning')
+    compensation_warning = fields.Monetary('Indemnización Aviso Previo', compute='compute_warning',
+                                           digits=dp.get_precision('Payroll'))
 
-    compensation_years = fields.Monetary('Indemnización Años de Servicio', compute='compute_years')
+    compensation_years = fields.Monetary('Indemnización Años de Servicio', compute='compute_years',
+                                         digits=dp.get_precision('Payroll'))
 
-    compensation_vacations = fields.Monetary('Indemnización Vacaciones', compute='compute_vacations')
+    compensation_vacations = fields.Monetary('Indemnización Vacaciones', compute='compute_vacations',
+                                             digits=dp.get_precision('Payroll'))
 
-    settlement = fields.Monetary('Finiquito')
+    settlement = fields.Monetary('Finiquito', digits=dp.get_precision('Payroll'))
+
+    years = fields.Integer('Años', compute='compute_value_show')
+
+    current_user = fields.Many2one('res.users', 'Current User', default=lambda self: self.env.user)
+
+    @api.multi
+    def compute_value_show(self):
+        for item in self:
+            period = relativedelta(item.date_settlement, item.date_start_contract)
+            item.years = period.years
 
     @api.multi
     @api.onchange('day_takes')
@@ -135,6 +152,27 @@ class CustomSettlement(models.Model):
                               + (item.compensation_vacations + item.compensation_warning + item.compensation_years)
 
     @api.multi
+    @api.depends('date_settlement')
+    def compute_days_takes(self):
+        for item in self:
+            payslip = self.env['hr.payslip'].search(
+                [('date_from', '>', item.date_start_contract), ('date_from', '<', item.date_settlement),
+                 ('contract_id', '=', item.contract_id.id)])
+            vacation = payslip.mapped('worked_days_line_ids').filtered(lambda a: 'Vacaciones' in a.name).mapped(
+                'number_of_days')
+            item.day_takes = sum(vacation)
+
+    @api.onchange('date_settlement')
+    def onchange_method(self):
+        for item in self:
+            payslip = self.env['hr.payslip'].search(
+                [('date_from', '>', item.date_start_contract), ('date_from', '<', item.date_settlement),
+                 ('contract_id', '=', item.contract_id.id)])
+            vacation = payslip.mapped('worked_days_line_ids').filtered(lambda a: 'Vacaciones' in a.name).mapped(
+                'number_of_days')
+            item.day_takes = sum(vacation)
+
+    @api.multi
     def button_done(self):
         for item in self:
             item.write({
@@ -147,13 +185,12 @@ class CustomSettlement(models.Model):
 
     @api.multi
     def test(self):
-        weekend = self.get_weekend()
-        days = round(self.vacation_days)
-        date_after = self.date_settlement + timedelta(days=days)
-        date_settlement = self.date_settlement + timedelta(days=1)
-        raise models.ValidationError(date_settlement)
-        holiday = self.env['custom.holidays'].search([('date', '>', date_settlement), ('date', '<', date_after)])
-        raise models.UserError(len(holiday))
+        payslip = self.env['hr.payslip'].search(
+            [('date_from', '>', self.date_start_contract), ('date_from', '<', self.date_settlement),
+             ('contract_id', '=', self.contract_id.id)])
+        vacation = payslip.mapped('worked_days_line_ids').filtered(lambda a: 'Vacaciones' in a.name).mapped(
+            'number_of_days')
+        raise models.ValidationError(sum(vacation))
 
     def get_weekend(self):
         if self.date_settlement:

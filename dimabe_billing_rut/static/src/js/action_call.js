@@ -9,7 +9,7 @@ odoo.define('custom_invoice.sincronize_button', function (require) {
         renderButtons: function ($node) {
             this._super.apply(this, arguments);
             if (this.$buttons) {
-                this.$buttons.find('.oe_action_button').click(this.proxy('action_def'));
+                this.$buttons.find('#invoicedte').click(this.proxy('action_def'));
             }
         },
         action_def: function () {
@@ -19,9 +19,9 @@ odoo.define('custom_invoice.sincronize_button', function (require) {
                 model: 'custom.invoice',
                 method: 'get_dte',
                 args: [[user], {'id': user}],
+            }).then(function (e) {
+                self.do_action('dimabe_billing_rut.action_custom_invoice_views')
             });
-            location.reload();
-            this.trigger_up('reload');
         }
     });
 }

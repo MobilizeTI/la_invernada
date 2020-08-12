@@ -19,7 +19,8 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'stock', 'account'],
+    'depends': ['base', 'stock', 'account', 'hr_payroll',
+                'hr_payroll_account'],
 
     # always loaded
     'data': [
@@ -36,6 +37,7 @@
         'views/templates.xml',
         'views/custom_invoice.xml',
         'views/custom_settlement.xml',
+        'views/hr_payslip.xml',
         'views/custom_holidays.xml',
         'reports/settlement_document.xml',
         'data/reports/balance_sheet_clp.xml'

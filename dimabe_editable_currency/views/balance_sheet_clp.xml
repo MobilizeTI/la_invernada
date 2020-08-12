@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="balance_sheet_clp_view_tree" model="ir.ui.view">
+            <field name="name">Balance de Situacion CLP</field>
+            <field name="model">balance.sheet.clp</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="account_id"/>
+                    <field name="balance" sum="Balance" widget="monetary"/>
+                    <field name="balance_usd" />
+                    <field name="account_type"/>
+                    <button type="object" name="go_to_breakdown" string="Desglose"/>
+                </tree>
+            </field>
+        </record>
+        <record id="balance_sheet_clp_view_form" model="ir.ui.view">
+            <field name="name">balance_sheet_clp_form</field>
+            <field name="model">balance.sheet.clp</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div>
+                            <button name="get_data" type="object" string="Get Data"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="dimabe_editable_currency.action_balance_sheet_clp_views" model="ir.actions.act_window">
+            <field name="name">Balance de Situacion CLP</field>
+            <field name="res_model">balance.sheet.clp</field>
+            <field name="view_mode">tree,graph,pivot</field>
+            <field name="view_id" ref="balance_sheet_clp_view_tree"/>
+            <field name="domain">
+                [('is_balance','=',True)]
+            </field>
+        </record>
+        <menuitem id="balance_sheet_clp_menu_item"
+                  name="Balance de situacion CLP"
+                  parent="account.account_reports_legal_statements_menu"
+                  action="dimabe_editable_currency.action_balance_sheet_clp_views"
+        />
+        <template id="button_render_js" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script src="dimabe_editable_currency/static/src/js/action_get_data.js" type="text/javascript"/>
+            </xpath>
+        </template>
+    </data>
+
+</odoo>

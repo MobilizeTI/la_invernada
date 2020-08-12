@@ -32,7 +32,7 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button type="object" name="test" string="Test" invisible="1" class="oe_highlight"/>
+                    <button type="object" name="test" invisible="1" string="Test" class="oe_highlight"/>
                     <button type="object" name="button_done" string="Realizar" class="oe_highlight"/>
                     <button type="object" name="calculate_settlement" string="Calcular Finiquito" class="oe_highlight"/>
                     <field name="state" widget="statusbar"/>
@@ -42,6 +42,8 @@
                         <h1 class="d-none d-md-block">
                             <group>
                                 <field name="employee_id" />
+                                <field name="company_id" invisible="1"/>
+                                <field name="current_user" invisible="1"/>
                             </group>
                         </h1>
                     </div>
@@ -80,6 +82,7 @@
                             <field name="mobilization_bonus"/>
                         </group>
                         <group string="Remuneraciones">
+                            <field name="pending_remuneration_payment"/>
                             <field name="compensation_warning"/>
                             <field name="article_causal" invisible="1"/>
                             <field name="compensation_years" attrs="{'invisible': [('article_causal','!=','161')]}"/>

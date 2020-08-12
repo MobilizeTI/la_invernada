@@ -478,6 +478,8 @@ class StockProductionLotSerial(models.Model):
                 raise models.ValidationError('No se encontró el picking al que reservar el stock')
 
             for item in self:
+                if item.consumed:
+                    raise models.ValidationError('Esta serie fue consumida')
                 item.update({
                     'reserved_to_stock_picking_id': stock_picking.id
                 })

@@ -31,11 +31,11 @@ class StockPickingController(http.Controller):
                 'Warehouse': res.location_dest_id.name,
                 'QualityWeight': res.quality_weight,
                 'ContainerQuantity': res.get_canning_move().quantity_done,
-                'ArticleCode': res.get_mp_move().product_id.default_code, 
+                'ArticleCode': res.get_mp_move().product_id.default_code,
                 'ArticleDescription': res.get_mp_move().product_id.display_name,
                 'OdooUpdated': res.write_date
             })
-        return data 
+        return data
 
     @http.route('/api/stock_picking', type='json', methods=['GET'], auth='token', cors='*')
     def get_stock_picking(self, lot):
@@ -57,7 +57,7 @@ class StockPickingController(http.Controller):
                 'Warehouse': res.location_dest_id.name,
                 'QualityWeight': res.quality_weight,
                 'ContainerQuantity': res.get_canning_move().quantity_done,
-                'ArticleCode': res.get_mp_move().product_id.default_code, 
+                'ArticleCode': res.get_mp_move().product_id.default_code,
                 'ArticleDescription': res.get_mp_move().product_id.display_name
             }
         else:
@@ -77,7 +77,7 @@ class StockPickingController(http.Controller):
                     'Season': res.finish_date.year,
                     'Warehouse': res.picking_type_id.name,
                     'ContainerQuantity': res.out_serial_count,
-                    'ArticleCode': res.out_product_id.id, 
+                    'ArticleCode': res.out_product_id.id,
                     'ArticleDescription': res.out_product_id.name
                 }
             else:

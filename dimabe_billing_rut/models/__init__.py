@@ -13,3 +13,7 @@ from . import stock_location
 from . import stock_picking
 from . import custom_settlement
 from . import custom_holidays
+from . import hr_payslip
+from . import hr_leave
+from . import hr_payslip_worked_days
+from . import hr_leave_type

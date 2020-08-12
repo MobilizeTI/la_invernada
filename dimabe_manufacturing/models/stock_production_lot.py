@@ -227,6 +227,18 @@ class StockProductionLot(models.Model):
     sale_order_id = fields.Many2one('sale.order', compute='_compute_sale_order_id', store=True)
 
     @api.multi
+    def fix_error(self):
+        for item in self:
+            picking_done = self.env['stock.picking'].search(
+                [('picking_type_code', '=', 'outgoing'), ])
+            for picking in picking_done:
+                stock_move_line = self.env['stock.move.line'].search([('picking_id', '=', picking.id)]).mapped('lot_id')
+                for move in stock_move_line:
+                    move.stock_production_lot_serial_ids.write({
+                        'reserved_to_stock_picking_id':picking.id
+                    })
+
+    @api.multi
     def _compute_available_kg(self):
         for item in self:
             item.available_kg = sum(
@@ -278,11 +290,11 @@ class StockProductionLot(models.Model):
                         serie += 1
                         models._logger.error(serial)
                         if len(serial) > 1:
-                            serial[1].update({
+                            serial[1].write({
                                 'serial_number': item.name + '{}'.format(serie)
                             })
                         else:
-                            serial.update({
+                            serial.write({
                                 'serial_number': item.name + '{}'.format(serie)
                             })
 
@@ -311,18 +323,27 @@ class StockProductionLot(models.Model):
         for lot in lots:
             quant_lot = quants.filtered(lambda a: a.location_id.name == 'Stock' and a.lot_id.id == lot.id)
             lot_reception = self.env['stock.picking'].search([('name', '=', lot.name)])
-            if lot_reception:
-                quant_lot.write({
-                    'reserved_quantity': 0,
-                    'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
-                        'real_weight')) + lot_reception.quality_weight
-                })
-            else:
-                quant_lot.write({
-                    'reserved_quantity': 0,
-                    'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
-                        'real_weight'))
-                })
+            if quant_lot:
+                if lot_reception:
+                    available_kg = sum(
+                        lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
+                            'real_weight')) + lot_reception.quality_weight
+                    query = "UPDATE stock_quant set quantity = {} , reserved_quantity = 0.0 where id = {}".format(
+                        available_kg,
+                        quant_lot.id)
+                    cr = self._cr
+                    cr.execute(query)
+                else:
+                    available_kg = sum(
+                        lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
+                            'real_weight'))
+                    query = "UPDATE stock_quant set quantity = {} , reserved_quantity = 0.0 where id = {}".format(
+                        available_kg,
+                        quant_lot.id)
+                    if lot.name == '201900401':
+                        raise models.ValidationError(query)
+                    cr = self._cr
+                    cr.execute(query)
 
     @api.multi
     def fix_error_inventory(self):
@@ -709,14 +730,9 @@ class StockProductionLot(models.Model):
                                 item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
                                     'real_weight'))
                         })
-            available_kg = sum(
-                item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
-            query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg,
-                                                                                             item.id)
-            cr = self._cr
-            cr.execute(query)
-            if len(item.stock_production_lot_serial_ids) > 999:
-                item.check_duplicate()
+            else:
+                if len(item.stock_production_lot_serial_ids) > 999:
+                    item.check_duplicate()
             return res
 
     @api.multi

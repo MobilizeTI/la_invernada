@@ -1,2 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_editable_currency_editable_currency,editable_currency.editable_currency,model_editable_currency_editable_currency,,1,0,0,0
+access_dimabe_editable_currency_balance_sheet_clp,editable_currency.balance_sheet_clp,model_balance_sheet_clp,,1,1,1,1

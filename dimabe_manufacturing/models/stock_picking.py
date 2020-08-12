@@ -83,71 +83,80 @@ class StockPicking(models.Model):
     @api.multi
     def clean_reserved(self):
         for item in self:
-            for line in item.move_line_ids_without_package:
-                if line.lot_id not in item.packing_list_lot_ids:
-                    line.update({
-                        'product_uom_qty': 0
-                    })
+            for move in item.move_line_ids_without_package:
+                if move.lot_id.id not in item.packing_list_lot_ids.mapped('id'):
+                    query = 'DELETE FROM stock_move_line where id = {}'.format('id')
+                    cr = self._cr
+                    cr.execute(query)
 
     @api.multi
     def _compute_packing_list_lot_ids(self):
         for item in self:
-            item.packing_list_lot_ids = item.packing_list_ids.mapped('stock_production_lot_id')
+            if item.packing_list_ids and item.picking_type_code == 'outgoing':
+                item.packing_list_lot_ids = item.packing_list_ids.mapped('stock_production_lot_id')
+            else:
+                item.packing_list_lot_ids = []
 
     @api.multi
     def _compute_assigned_pallet_ids(self):
         for item in self:
-            item.assigned_pallet_ids = item.packing_list_ids.mapped('pallet_id')
+            if item.packing_list_ids and item.picking_type_code == 'outgoing':
+                item.assigned_pallet_ids = item.packing_list_ids.mapped('pallet_id')
+            else:
+                item.assigned_pallet_ids = []
 
     @api.onchange('sale_order_id')
     def on_change_production_id(self):
         for item in self:
-            item.potential_lot_ids = self.env['stock.production.lot'].search(
-                [('sale_order_id', '=', item.sale_order_id.id),
-                 ('product_id', '=', item.move_ids_without_package.mapped('product_id.id'))])
+            if item.picking_type_code == 'outgoing':
+                item.potential_lot_ids = self.env['stock.production.lot'].search(
+                    [('sale_order_id', '=', item.sale_order_id.id),
+                     ('product_id', '=', item.move_ids_without_package.mapped('product_id.id'))])
 
     @api.multi
     def _compute_potential_lot_serial_ids(self):
         for item in self:
-            domain = [
-                ('stock_product_id', 'in',
-                 item.move_ids_without_package.mapped('product_id.id')),
-                ('consumed', '=', False),
-                ('reserved_to_stock_picking_id', '=', False)
-            ]
-            for id_pr in item.move_ids_without_package.mapped('product_id.id'):
-                data = self.env['stock.production.lot.serial'].search([('stock_product_id', '=', id_pr)])
-                if not data:
-                    item.have_series = False
+            if item.picking_type_code == 'outgoing':
+                domain = [
+                    ('stock_product_id', 'in',
+                     item.move_ids_without_package.mapped('product_id.id')),
+                    ('consumed', '=', False),
+                    ('reserved_to_stock_picking_id', '=', False)
+                ]
+                for id_pr in item.move_ids_without_package.mapped('product_id.id'):
+                    data = self.env['stock.production.lot.serial'].search([('stock_product_id', '=', id_pr)])
+                    if not data:
+                        item.have_series = False
 
-            item.potential_lot_serial_ids = self.env['stock.production.lot.serial'].search(
-                domain)
+                item.potential_lot_serial_ids = self.env['stock.production.lot.serial'].search(
+                    domain)
 
     @api.multi
     def calculate_last_serial(self):
+        if self.picking_type_code == 'incoming':
+            if len(canning) == 1:
+                if self.production_net_weight == self.net_weight:
+                    self.production_net_weight = self.net_weight - self.quality_weight
 
-        if len(canning) == 1:
-            if self.production_net_weight == self.net_weight:
-                self.production_net_weight = self.net_weight - self.quality_weight
-
-            self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)]).write({
-                'real_weight': self.avg_unitary_weight
-            })
-            diff = self.production_net_weight - (canning.product_uom_qty * self.avg_unitary_weight)
-            self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)])[-1].write({
-                'real_weight': self.avg_unitary_weight + diff
-            })
+                self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)]).write({
+                    'real_weight': self.avg_unitary_weight
+                })
+                diff = self.production_net_weight - (canning.product_uom_qty * self.avg_unitary_weight)
+                self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)])[-1].write(
+                    {
+                        'real_weight': self.avg_unitary_weight + diff
+                    })
 
     @api.multi
     def _compute_potential_lot(self):
         for item in self:
-            domain = [
-                ('product_id', 'in', item.move_ids_without_package.mapped('product_id.id')),
-                ('available_total_serial', '>', 0)
-            ]
-
-            lot = self.env['stock.production.lot'].search(domain)
-            item.potential_lot_ids = lot
+            if item.picking_type_code == 'outgoing':
+                domain = [
+                    ('product_id', 'in', item.move_ids_without_package.mapped('product_id.id')),
+                    ('available_total_serial', '>', 0)
+                ]
+                lot = self.env['stock.production.lot'].search(domain)
+                item.potential_lot_ids = lot
 
     @api.multi
     def _compute_packing_list_ids(self):
@@ -167,7 +176,6 @@ class StockPicking(models.Model):
             'default_client_search_id': self.partner_id.id,
             'default_requested_qty': self.quantity_requested
         }
-
         return {
             "type": "ir.actions.act_window",
             "res_model": "mrp.production",
@@ -197,19 +205,17 @@ class StockPicking(models.Model):
                     })
         return res
 
-
     @api.multi
     def button_validate(self):
         if self.picking_type_code == 'outgoing':
             for serial in self.packing_list_ids:
-                serial.update({
+                serial.write({
                     'consumed': True
                 })
             for lot in self.packing_list_lot_ids:
                 available_kg = sum(
                     lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
-                query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg,
-                                                                                                 lot.id)
+                query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg, lot.id)
                 cr = self._cr
                 cr.execute(query)
             if len(self.move_line_ids_without_package) == 0:
@@ -220,8 +226,8 @@ class StockPicking(models.Model):
                 if self.picking_type_id.warehouse_id.id == 17 and self.picking_type_code != 'outgoing':
                     move_line._action_done()
                     return super(StockPicking, self).button_validate()
-        res = super(StockPicking,self).button_validate()
-        return res
+        else:
+            return super(StockPicking, self).button_validate()
 
     def validate_barcode(self, barcode):
         custom_serial = self.packing_list_ids.filtered(
