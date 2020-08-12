@@ -159,13 +159,11 @@ class StockProductionLotSerial(models.Model):
     def _compute_workorder_id(self):
         for item in self:
             if item.reserved_to_production_id:
-                workorder = self.env['mrp.workorder'].search(
+                item.work_order_id = self.env['mrp.workorder'].search(
                     [('production_id', '=', item.reserved_to_production_id.id)])
-                item.work_order_id = workorder
             elif item.production_id:
-                workorder = self.env['mrp.workorder'].search(
+                item.work_order_id = self.env['mrp.workorder'].search(
                     [('production_id', '=', item.production_id.id)])
-                item.work_order_id = workorder
             else:
                 item.work_order_id = None
 
@@ -183,10 +181,11 @@ class StockProductionLotSerial(models.Model):
     @api.multi
     def _compute_pallet_name(self):
         for item in self:
-            if item.pallet_id:
-                item.pallet_name = item.pallet_id.name
-            else:
-                item.pallet_name = 'Sin Pallet'
+            if item.stock_production_lot_id.product_id.is_standard_weight:
+                if item.pallet_id:
+                    item.pallet_name = item.pallet_id.name
+                else:
+                    item.pallet_name = 'Sin Pallet'
 
     @api.multi
     def _compute_produce_weight(self):
@@ -334,7 +333,6 @@ class StockProductionLotSerial(models.Model):
     @api.multi
     def write(self, vals):
         res = super(StockProductionLotSerial, self).write(vals)
-
         for item in self:
             if item.display_weight == 0 and item.gross_weight == 0:
                 raise models.ValidationError('debe agregar un peso a la serie')
@@ -379,93 +377,6 @@ class StockProductionLotSerial(models.Model):
         self.ensure_one()
         base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
         return base_url
-
-    @api.multi
-    def reserve_serial(self):
-        if 'mrp_production_id' in self.env.context:
-            production = self.env['mrp.production'].search([('id', '=', self.env.context['mrp_production_id'])])
-            from_lot = self.env.context['from_lot']
-            if not production:
-                raise models.ValidationError('No se encontró la orden de producción a la que reservar el producto')
-            for item in self:
-                if from_lot:
-                    item.update({
-                        'reserved_to_production_id': production.id
-                    })
-
-                    item.stock_production_lot_id.update({
-                        'qty_to_reserve': item.stock_production_lot_id.balance
-                    })
-                else:
-                    item.update({
-                        'reserved_to_production_id': production.id
-                    })
-
-                    stock_move = production.move_raw_ids.filtered(
-                        lambda a: a.product_id == item.stock_production_lot_id.product_id
-                    )
-
-                    stock_quant = item.stock_production_lot_id.get_stock_quant()
-
-                    stock_quant.sudo().update({
-                        'reserved_quantity': stock_quant.total_reserved
-                    })
-
-                    for stock in stock_move:
-                        item.add_move_line(stock)
-        else:
-            raise models.ValidationError('no se pudo identificar producción')
-
-    @api.model
-    def add_move_line(self, stock_move):
-        stock_quant = self.stock_production_lot_id.get_stock_quant()
-        virtual_location_production_id = self.env['stock.location'].search([
-            ('usage', '=', 'production'),
-            ('location_id.name', 'like', 'Virtual Locations')
-        ])
-        stock_move.sudo().update({
-            'active_move_line_ids': [
-                (0, 0, {
-                    'product_id': self.stock_production_lot_id.product_id.id,
-                    'lot_id': self.stock_production_lot_id.id,
-                    'product_uom_qty': self.display_weight,
-                    'product_uom_id': stock_move.product_uom.id,
-                    'location_id': stock_quant.location_id.id,
-                    'location_dest_id': virtual_location_production_id.id
-                })
-            ]
-        })
-
-    @api.multi
-    def unreserved_serial(self):
-        for item in self:
-
-            if item.consumed:
-                raise models.ValidationError('el código {} ya ha sido consumido'.format(
-                    item.name
-                ))
-
-            stock_move = item.reserved_to_production_id.move_raw_ids.filtered(
-                lambda a: a.product_id == item.stock_production_lot_id.product_id
-            )
-
-            move_line = stock_move.active_move_line_ids.filtered(
-                lambda a: a.lot_id.id == item.stock_production_lot_id.id
-                          and a.qty_done == 0
-            )
-
-            stock_quant = item.stock_production_lot_id.get_stock_quant()
-
-            item.update({
-                'reserved_to_production_id': None
-            })
-
-            stock_quant.sudo().update({
-                'reserved_quantity': stock_quant.total_reserved
-            })
-
-            if move_line:
-                move_line[0].update({'product_uom_qty': move_line[0].product_uom_qty - item.display_weight})
 
     @api.multi
     def reserve_picking(self):
@@ -646,68 +557,3 @@ class StockProductionLotSerial(models.Model):
                 item.stock_production_lot_id.update({
                     'available_total_serial': item.stock_production_lot_id.available_total_serial - item.display_weight
                 })
-
-    def remove_and_reduce(self):
-        if self.consumed:
-            raise models.ValidationError('esta serie ya fue consumida')
-
-        wo = self.env['mrp.workorder'].search([
-            ('production_id', '=', self.reserved_to_production_id.id)
-        ])
-
-        if not wo:
-            raise models.ValidationError('no se encontró orden de trabajo a reducir')
-
-        if len(wo) > 1:
-            raise models.ValidationError('existen {} ordenes asociadas a esta producción')
-
-        moves = wo.move_raw_ids.filtered(
-            lambda m: m.state not in ('done', 'cancel') and m.product_id == self.product_id)
-
-        qty_producing = (wo.qty_producing * sum(moves.mapped('unit_factor'))) - self.display_weight
-
-        wo.write({
-            'qty_producing': qty_producing / sum(moves.mapped('unit_factor')),
-        })
-
-        self.reserved_to_production_id.write({
-            'product_qty': qty_producing / sum(moves.mapped('unit_factor'))
-        })
-
-        done_qty = sum(wo.check_ids.filtered(
-            lambda a: a.component_id == self.product_id and a.quality_state == 'pass'
-        ).mapped('qty_done'))
-
-        if done_qty >= qty_producing / sum(moves.mapped('unit_factor')):
-            pending_checks = wo.check_ids.filtered(
-                lambda a: a.component_id == self.product_id and a.quality_state == 'none'
-            )
-
-            if pending_checks:
-
-                line = wo.active_move_line_ids.filtered(
-                    lambda a: a.product_id == self.product_id and not a.lot_id
-                )
-
-                pending_checks.sudo().unlink()
-                line.unlink()
-
-                if wo.current_quality_check_id in pending_checks:
-                    wo._change_quality_check(increment=1, children=1)
-
-        production_move = self.reserved_to_production_id.move_raw_ids.filtered(
-            lambda a: a.product_id == self.product_id
-        )
-
-        production_move.product_uom_qty = qty_producing
-
-        reserved_serials = self.env['stock.production.lot.serial'].search([
-            ('reserved_to_production_id', '=', self.reserved_to_production_id.id),
-            ('id', '!=', self.id)
-        ])
-
-        self.unreserved_serial()
-
-        if reserved_serials and not production_move.active_move_line_ids:
-            for serial in reserved_serials:
-                serial.add_move_line(production_move)
