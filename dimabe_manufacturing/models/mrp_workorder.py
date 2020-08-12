@@ -346,10 +346,10 @@ class MrpWorkorder(models.Model):
                     quant = lot_id.get_stock_quant().filtered(
                         lambda a: a.location_id.id == self.production_id.location_src_id.id)
                     quant.write({
-                        'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed))
+                        'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight'))
                     })
                     lot.write({
-                        'available_kg': sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed))
+                        'available_kg': sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight'))
                     })
         res = super(MrpWorkorder, self).write(vals)
         return res
