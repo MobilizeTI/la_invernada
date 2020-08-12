@@ -31,7 +31,7 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
-        #'views/mrp_workorder.xml',
+        'views/mrp_workorder.xml',
         'views/stock_production_lot_serial.xml',
         'views/stock_production_lot.xml',
         'views/mrp_production.xml',
