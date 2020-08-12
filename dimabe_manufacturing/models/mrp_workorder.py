@@ -446,9 +446,27 @@ class MrpWorkorder(models.Model):
     @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
         for item in self:
-            res = item.on_barcode_scanned(item.confirmed_serial)
-            if res and 'warning' in res and 'message' in res['warning']:
-                raise models.ValidationError(res['warning']['message'])
+            serial = self.env['stock.production.lot.serial'].search([('serial_number','=',item.serial_number)])
+            serial.write({
+                'reserved_to_production_id': self.production_id.id,
+                'consumed': True
+            })
+            self.write({
+                'potential_serial_planned_ids': [
+                    (4, serial.id)
+                ]
+            })
+            lot_id = self.env['stock.production.lot'].search([('id', '=', serial.stock_production_lot_id.id)])
+            quant = self.env['stock.quant'].search(
+                [('lot_id', '=', lot_id.id), ('location_id', '=', self.production_id.location_src_id.id)])
+            quant.write({
+                'quantity': sum(
+                    lot_id.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight'))
+            })
+            lot_id.write({
+                'available_kg': sum(
+                    lot_id.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight'))
+            })
 
     def on_barcode_scanned(self, barcode):
         qty_done = self.qty_done
