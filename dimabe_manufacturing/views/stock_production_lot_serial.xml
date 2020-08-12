@@ -62,13 +62,11 @@
             </field>
         </record>
         <record id="stock_production_lot_serial_action" model="ir.actions.act_window">
-            <field name="name">Series</field>
-            <field name="type">ir.actions.act_window</field>
+            <field name="name">Pedidos</field>
             <field name="res_model">stock.production.lot.serial</field>
+            <field name="view_id" ref="stock_production_lot_serial_process_in_form_view"/>
             <field name="view_mode">tree,form</field>
         </record>
-        <!-- This Menu Item must have a parent and an action -->
-        <menuitem id="stock_production_lot_serial_menu" name="Series" parent="stock_report_menu"
-                  action="stock_production_lot_serial_action" group="base.group_no_one"/>
+        <menuitem id="stock_production_lot_serial_menu" name="Series" parent="stock_report_menu" action="stock_production_lot_serial_action" group="base.group_no_one"/>
     </data>
 </odoo>
