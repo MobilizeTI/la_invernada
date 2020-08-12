@@ -478,7 +478,6 @@ class MrpWorkorder(models.Model):
         res = super(MrpWorkorder, self).on_barcode_scanned(barcode)
         if res:
             return res
-        self.env.invalidate_all()
         self.qty_done = qty_done + custom_serial.display_weight
         return res
 
