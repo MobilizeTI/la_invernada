@@ -147,42 +147,63 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_pallet_content(self):
         for item in self:
-            item.pallet_content = sum(item.manufacturing_pallet_ids.mapped('total_content_weight'))
+            if item.manufacturing_pallet_ids:
+                item.pallet_content = sum(item.manufacturing_pallet_ids.mapped('total_content_weight'))
+            else:
+                item.pallet_content = 0.0
 
     @api.multi
     def _compute_pallet_serial(self):
         for item in self:
-            item.pallet_serial = len(item.manufacturing_pallet_ids.mapped('lot_serial_ids'))
+            if item.manufacturing_pallet_ids:
+                item.pallet_serial = len(item.manufacturing_pallet_ids.mapped('lot_serial_ids'))
+            else:
+                item.pallet_serial = 0.0
 
     @api.multi
     def _compute_pallet_qty(self):
         for item in self:
-            item.pallet_qty = len(item.manufacturing_pallet_ids)
+            if item.manufacturing_pallet_ids:
+                item.pallet_qty = len(item.manufacturing_pallet_ids)
+            else:
+                item.pallet_qty = 0.0
 
     @api.multi
     def _compute_producers_id(self):
         for item in self:
-            item.producers_id = item.potential_serial_planned_ids.mapped('producer_id')
+            if item.potential_serial_planned_ids:
+                item.producers_id = item.potential_serial_planned_ids.mapped('producer_id')
+            else:
+                item.producers_id = item.potential_serial_planned_ids.mapped('producer_id')
 
     @api.depends('potential_serial_planned_ids')
     @api.multi
     def _compute_in_weight(self):
         for item in self:
-            item.in_weight = sum(item.potential_serial_planned_ids.mapped('real_weight'))
+            if item.potential_serial_planned_ids:
+                item.in_weight = sum(item.potential_serial_planned_ids.mapped('real_weight'))
+            else:
+                item.in_weight = 0.0
 
     @api.depends('summary_out_serial_ids')
     @api.multi
     def _compute_out_weight(self):
         for item in self:
-            item.out_weight = sum(item.summary_out_serial_ids.mapped('real_weight'))
+            if item.summary_out_serial_ids:
+                item.out_weight = sum(item.summary_out_serial_ids.mapped('real_weight'))
+            else:
+                item.out_weight = 0.0
 
     @api.depends('summary_out_serial_ids')
     @api.multi
     def _compute_pt_out_weight(self):
         for item in self:
-            item.pt_out_weight = sum(
-                item.summary_out_serial_ids.filtered(lambda a: 'PT' in a.product_id.default_code).mapped(
-                    'real_weight'))
+            if item.summary_out_serial_ids:
+                item.pt_out_weight = sum(
+                    item.summary_out_serial_ids.filtered(lambda a: 'PT' in a.product_id.default_code).mapped(
+                        'real_weight'))
+            else:
+                item.pt_out_weight = 0.0
 
     @api.multi
     def show_in_serials(self):
@@ -233,8 +254,7 @@ class MrpWorkorder(models.Model):
     def _compute_there_is_serial_without_pallet(self):
         for item in self:
             item.there_is_serial_without_pallet = len(item.summary_out_serial_ids.filtered(
-                lambda a: not a.pallet_id
-            )) > 0
+                lambda a: not a.pallet_id)) > 0
 
     @api.multi
     def _compute_manufacturing_pallet_ids(self):
@@ -284,16 +304,6 @@ class MrpWorkorder(models.Model):
                 ).mapped(
                     'stock_production_lot_serial_ids'
                 )
-
-    @api.multi
-    def fix_order(self):
-        for item in self:
-            raise models.ValidationError(sum(item.production_finished_move_line_ids.mapped('lot_id').mapped(
-                'stock_production_lot_serial_ids').mapped('real_weight')))
-            for move in item.active_move_line_ids:
-                move.write({
-                    'qty_done': sum(move.lot_id.mapped('stock_production_lot_serial_ids').mapped('display_weight'))
-                })
 
     @api.multi
     def _compute_byproduct_move_line_ids(self):
