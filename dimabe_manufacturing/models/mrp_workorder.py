@@ -491,15 +491,15 @@ class MrpWorkorder(models.Model):
 
     def validate_serial_code(self, barcode):
         custom_serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', barcode)])
-        if custom_serial:
-            if custom_serial.product_id != self.component_id:
-                raise models.ValidationError('El producto ingresado no corresponde al producto solicitado')
-            if custom_serial.consumed:
-                raise models.ValidationError('este código ya ha sido consumido en la produccion {}'.format(
-                    custom_serial.reserved_to_production_id.name))
-            return custom_serial
-        else:
-            custom_serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', barcode)])
+        # if custom_serial:
+        #     if custom_serial.product_id != self.component_id:
+        #         raise models.ValidationError('El producto ingresado no corresponde al producto solicitado')
+        #     if custom_serial.consumed:
+        #         raise models.ValidationError('este código ya ha sido consumido en la produccion {}'.format(
+        #             custom_serial.reserved_to_production_id.name))
+        #     return custom_serial
+        # else:
+        #     custom_serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', barcode)])
         return custom_serial
 
     def open_out_form_view(self):
