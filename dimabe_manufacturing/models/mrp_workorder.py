@@ -340,17 +340,6 @@ class MrpWorkorder(models.Model):
                     move_line.update({
                         'is_raw': True
                     })
-            if item.potential_serial_planned_ids:
-                for lot in item.potential_serial_planned_ids.mapped('stock_production_lot_id'):
-                    lot_id = self.env['stock.production.lot'].search([('id', '=', lot.id)])
-                    quant = lot_id.get_stock_quant().filtered(
-                        lambda a: a.location_id.id == self.production_id.location_src_id.id)
-                    quant.write({
-                        'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight'))
-                    })
-                    lot.write({
-                        'available_kg': sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight'))
-                    })
         res = super(MrpWorkorder, self).write(vals)
         return res
 
@@ -468,6 +457,17 @@ class MrpWorkorder(models.Model):
             'potential_serial_planned_ids': [
                 (4, custom_serial.id)
             ]
+        })
+        lot_id = self.env['stock.production.lot'].search([('id', '=', custom_serial.stock_production_lot_id.id)])
+        quant = lot_id.get_stock_quant().filtered(
+            lambda a: a.location_id.id == self.production_id.location_src_id.id)
+        quant.write({
+            'quantity': sum(
+                lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight'))
+        })
+        lot_id.write({
+            'available_kg': sum(
+                lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight'))
         })
         if custom_serial:
             barcode = custom_serial.stock_production_lot_id.name
