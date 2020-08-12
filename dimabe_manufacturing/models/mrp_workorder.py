@@ -485,7 +485,8 @@ class MrpWorkorder(models.Model):
     @api.multi
     def fix_env(self):
         for item in self.env['ir.model'].search([]):
-            self.env['{}'.format(item.model)].invalidate_cache()
+            if item.model != 'balance.sheet.clp':
+                self.env['{}'.format(item.model)].invalidate_cache()
         self.env['ir.model'].invalidate_cache()
 
 
