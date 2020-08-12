@@ -341,7 +341,7 @@ class MrpWorkorder(models.Model):
                         'is_raw': True
                     })
             if item.potential_serial_planned_ids:
-                for lot in item.potential_lot_serial_ids.mapped('stock_production_lot_id'):
+                for lot in item.potential_serial_planned_ids.mapped('stock_production_lot_id'):
                     lot_id = self.env['stock.production.lot'].search([('id', '=', lot.id)])
                     quant = lot_id.get_stock_quant().filtered(
                         lambda a: a.location_id.id == self.production_id.location_src_id.id)
