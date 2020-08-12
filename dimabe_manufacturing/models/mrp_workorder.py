@@ -488,8 +488,6 @@ class MrpWorkorder(models.Model):
                 self.env['{}'.format(item.model)].invalidate_cache()
         self.env['ir.model'].invalidate_cache()
 
-
-
     @api.model
     def lot_is_byproduct(self):
         return self.finished_product_check_ids.filtered(
