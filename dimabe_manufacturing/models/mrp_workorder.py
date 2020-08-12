@@ -276,12 +276,12 @@ class MrpWorkorder(models.Model):
             item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search(
                 [('reserved_to_production_id', '=', item.production_id.id), ('consumed', '=', True)])
 
-    def _inverse_potential_lot_planned_ids(self):
-        for item in self.potential_serial_planned_ids:
-            item.update({
-                'reserved_to_production_id': self.production_id.id,
-                'consumed': True
-            })
+    # def _inverse_potential_lot_planned_ids(self):
+    #     for item in self.potential_serial_planned_ids:
+    #         item.update({
+    #             'reserved_to_production_id': self.production_id.id,
+    #             'consumed': True
+    #         })
 
     @api.multi
     def _compute_summary_out_serial_ids(self):
@@ -491,15 +491,15 @@ class MrpWorkorder(models.Model):
 
     def validate_serial_code(self, barcode):
         custom_serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', barcode)])
-        # if custom_serial:
-        #     if custom_serial.product_id != self.component_id:
-        #         raise models.ValidationError('El producto ingresado no corresponde al producto solicitado')
-        #     if custom_serial.consumed:
-        #         raise models.ValidationError('este código ya ha sido consumido en la produccion {}'.format(
-        #             custom_serial.reserved_to_production_id.name))
-        #     return custom_serial
-        # else:
-        #     custom_serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', barcode)])
+        if custom_serial:
+            if custom_serial.product_id != self.component_id:
+                raise models.ValidationError('El producto ingresado no corresponde al producto solicitado')
+            if custom_serial.consumed:
+                raise models.ValidationError('este código ya ha sido consumido en la produccion {}'.format(
+                    custom_serial.reserved_to_production_id.name))
+            return custom_serial
+        else:
+            custom_serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', barcode)])
         return custom_serial
 
     def open_out_form_view(self):
