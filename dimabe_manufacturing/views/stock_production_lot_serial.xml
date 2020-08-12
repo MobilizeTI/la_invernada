@@ -1,6 +1,5 @@
 <odoo>
     <data>
-
         <record model="ir.actions.act_window" id="stock_production_lot_serial_act_window">
             <field name="name">lot serial window</field>
             <field name="res_model">stock.production.lot.serial</field>
@@ -67,6 +66,6 @@
             <field name="view_id" ref="stock_production_lot_serial_process_in_form_view"/>
             <field name="view_mode">tree,form</field>
         </record>
-        <menuitem id="stock_production_lot_serial_menu" name="Series" parent="stock_report_menu" action="stock_production_lot_serial_action" group="base.group_no_one"/>
+        <menuitem id="stock_production_lot_serial_menu" name="Series" parent="stock_report_menu" action="stock_production_lot_serial_action" groups="base.group_no_one"/>
     </data>
 </odoo>
