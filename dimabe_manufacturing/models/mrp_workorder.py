@@ -253,18 +253,20 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_there_is_serial_without_pallet(self):
         for item in self:
-            item.there_is_serial_without_pallet = len(item.summary_out_serial_ids.filtered(
-                lambda a: not a.pallet_id)) > 0
+            if item.summary_out_serial_ids:
+                item.there_is_serial_without_pallet = len(item.summary_out_serial_ids.filtered(
+                    lambda a: not a.pallet_id)) > 0
 
     @api.multi
     def _compute_manufacturing_pallet_ids(self):
         for item in self:
-            pallet_ids = []
-            for pallet_id in item.summary_out_serial_ids.mapped('pallet_id'):
-                if pallet_id.id not in pallet_ids:
-                    pallet_ids.append(pallet_id.id)
-            if pallet_ids:
-                item.manufacturing_pallet_ids = [(4, pallet_id) for pallet_id in pallet_ids]
+            if item.summary_out_serial_ids:
+                pallet_ids = []
+                for pallet_id in item.summary_out_serial_ids.mapped('pallet_id'):
+                    if pallet_id.id not in pallet_ids:
+                        pallet_ids.append(pallet_id.id)
+                if pallet_ids:
+                    item.manufacturing_pallet_ids = [(4, pallet_id) for pallet_id in pallet_ids]
 
     @api.onchange('qty_producing')
     def _onchange_qty_producing(self):
@@ -308,12 +310,14 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_byproduct_move_line_ids(self):
         for item in self:
-            item.byproduct_move_line_ids = item.active_move_line_ids.filtered(lambda a: not a.is_raw)
+            if not item.byproduct_move_line_ids:
+                item.byproduct_move_line_ids = item.active_move_line_ids.filtered(lambda a: not a.is_raw)
 
     @api.multi
     def _compute_material_product_ids(self):
         for item in self:
-            item.material_product_ids = item.production_id.move_raw_ids.mapped('product_id')
+            if not item.material_product_ids:
+                item.material_product_ids = item.production_id.move_raw_ids.mapped('product_id')
 
     @api.model
     def create(self, values_list):
@@ -336,7 +340,6 @@ class MrpWorkorder(models.Model):
         for item in self:
             if item.active_move_line_ids and \
                     not item.active_move_line_ids.filtered(lambda a: a.is_raw):
-                raise models.UserError('ODK')
                 for move_line in item.active_move_line_ids:
                     move_line.update({
                         'is_raw': True
