@@ -98,10 +98,10 @@ class MrpWorkorder(models.Model):
         string='subproductos'
     )
 
-    potential_serial_planned_ids = fields.Many2many(
+    potential_serial_planned_ids = fields.One2many(
         'stock.production.lot.serial',
         compute='_compute_potential_lot_planned_ids',
-        # inverse='_inverse_potential_lot_planned_ids'
+        inverse='_inverse_potential_lot_planned_ids'
     )
 
     confirmed_serial = fields.Char('Codigo de Barra')
@@ -275,13 +275,13 @@ class MrpWorkorder(models.Model):
         for item in self:
             item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search(
                 [('reserved_to_production_id', '=', item.production_id.id), ('consumed', '=', True)])
-    #
-    # # def _inverse_potential_lot_planned_ids(self):
-    # #     for item in self.potential_serial_planned_ids:
-    # #         item.update({
-    # #             'reserved_to_production_id': self.production_id.id,
-    # #             'consumed': True
-    # #         })
+
+    def _inverse_potential_lot_planned_ids(self):
+        for item in self.potential_serial_planned_ids:
+            item.update({
+                'reserved_to_production_id': self.production_id.id,
+                'consumed': True
+            })
 
     @api.multi
     def _compute_summary_out_serial_ids(self):
