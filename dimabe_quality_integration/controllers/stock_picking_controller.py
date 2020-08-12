@@ -14,7 +14,7 @@ class StockPickingController(http.Controller):
         data = []
         if result:
             for res in result:
-                if res.parent_id.id:
+                if res.partner_id.id:
                     data.append({
                         'ProducerCode': res.partner_id.id,
                         'ProducerName': res.partner_id.name,
