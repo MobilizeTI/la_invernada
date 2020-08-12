@@ -334,12 +334,12 @@ class StockProductionLotSerial(models.Model):
     @api.multi
     def write(self, vals):
         res = super(StockProductionLotSerial, self).write(vals)
-        #
-        # for item in self:
-        #     if item.display_weight == 0 and item.gross_weight == 0:
-        #         raise models.ValidationError('debe agregar un peso a la serie')
-        #     if not item.canning_id and item.bom_id:
-        #         item.set_bom_canning()
+
+        for item in self:
+            if item.display_weight == 0 and item.gross_weight == 0:
+                raise models.ValidationError('debe agregar un peso a la serie')
+            if not item.canning_id and item.bom_id:
+                item.set_bom_canning()
         return res
 
     @api.model

@@ -715,29 +715,24 @@ class StockProductionLot(models.Model):
     def write(self, values):
         for item in self:
             res = super(StockProductionLot, self).write(values)
-            # if not item.is_standard_weight:
-            #     for serial in item.stock_production_lot_serial_ids:
-            #         if not serial.serial_number:
-            #             if len(item.stock_production_lot_serial_ids) > 1:
-            #                 counter = int(item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[
-            #                                   -1].serial_number) + 1
-            #             else:
-            #                 counter = 1
-            #             tmp = '00{}'.format(counter)
-            #             serial.serial_number = item.name + tmp[-3:]
-            #             item.write({
-            #                 'available_kg': sum(
-            #                     item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
-            #                         'real_weight'))
-            #             })
-            # # available_kg = sum(
-            # #     item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
-            # # query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg,
-            # #                                                                                  item.id)
-            # # cr = self._cr
-            # # cr.execute(query)
-            # if len(item.stock_production_lot_serial_ids) > 999:
-            #     item.check_duplicate()
+            if not item.is_standard_weight:
+                for serial in item.stock_production_lot_serial_ids:
+                    if not serial.serial_number:
+                        if len(item.stock_production_lot_serial_ids) > 1:
+                            counter = int(item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[
+                                              -1].serial_number) + 1
+                        else:
+                            counter = 1
+                        tmp = '00{}'.format(counter)
+                        serial.serial_number = item.name + tmp[-3:]
+                        item.write({
+                            'available_kg': sum(
+                                item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
+                                    'real_weight'))
+                        })
+            else:
+                if len(item.stock_production_lot_serial_ids) > 999:
+                    item.check_duplicate()
             return res
 
     @api.multi
