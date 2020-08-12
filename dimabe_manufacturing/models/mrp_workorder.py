@@ -482,10 +482,15 @@ class MrpWorkorder(models.Model):
         self.qty_done = qty_done + custom_serial.display_weight
         return res
 
-
     @api.multi
     def fix_env(self):
         self.env['mrp.workorder'].invalidate_cache()
+        self.env['stock.production.lot.serial'].invalidate_cache()
+        self.env['stock.production.lot'].invalidate_cache()
+        self.env['manufacturing.pallet'].invalidate_cache()
+        self.env['stock.picking'].invalidate_cache()
+
+
 
     @api.model
     def lot_is_byproduct(self):
