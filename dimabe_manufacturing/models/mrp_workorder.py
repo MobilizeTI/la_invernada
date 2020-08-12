@@ -484,11 +484,9 @@ class MrpWorkorder(models.Model):
 
     @api.multi
     def fix_env(self):
-        self.env['mrp.workorder'].invalidate_cache()
-        self.env['stock.production.lot.serial'].invalidate_cache()
-        self.env['stock.production.lot'].invalidate_cache()
-        self.env['manufacturing.pallet'].invalidate_cache()
-        self.env['stock.picking'].invalidate_cache()
+        for item in self.env['ir.model'].search([]):
+            self.env['{}'.format(item.model)].invalidate_cache()
+        self.env['ir.model'].invalidate_cache()
 
 
 
