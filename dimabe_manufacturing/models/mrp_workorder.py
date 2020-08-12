@@ -442,9 +442,10 @@ class MrpWorkorder(models.Model):
     @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
         for item in self:
-            res = item.on_barcode_scanned(item.confirmed_serial)
-            if res and 'warning' in res and 'message' in res['warning']:
-                raise models.ValidationError(res['warning']['message'])
+            raise models.ValidationError(self.out_weight)
+            # res = item.on_barcode_scanned(item.confirmed_serial)
+            # if res and 'warning' in res and 'message' in res['warning']:
+            #     raise models.ValidationError(res['warning']['message'])
 
     def on_barcode_scanned(self, barcode):
         qty_done = self.qty_done
