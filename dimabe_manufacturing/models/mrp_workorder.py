@@ -446,7 +446,7 @@ class MrpWorkorder(models.Model):
     @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
         for item in self:
-            serial = self.env['stock.production.lot.serial'].search([('serial_number','=',item.serial_number)])
+            serial = self.env['stock.production.lot.serial'].search([('serial_number','=',item.confirmed_serial)])
             serial.write({
                 'reserved_to_production_id': self.production_id.id,
                 'consumed': True
