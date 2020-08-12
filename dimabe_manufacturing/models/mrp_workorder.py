@@ -485,7 +485,7 @@ class MrpWorkorder(models.Model):
 
     @api.multi
     def fix_env(self):
-        self.env.invalidate_all()
+        self.env['go.rule'].invalidate_cache()
 
     @api.model
     def lot_is_byproduct(self):
