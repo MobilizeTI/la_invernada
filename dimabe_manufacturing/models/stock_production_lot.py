@@ -277,42 +277,6 @@ class StockProductionLot(models.Model):
                             serial.write({
                                 'serial_number': item.name + '{}'.format(serie)
                             })
-    # @api.multi
-    # def compare_quant_available_weight(self):
-    #     quants = self.env['stock.quant'].search([])
-    #     lots = self.env['stock.production.lot'].search([])
-    #     for lot in lots:
-    #         quant_lot = quants.filtered(lambda a: a.location_id.name == 'Stock' and a.lot_id.id == lot.id)
-    #         lot_reception = self.env['stock.picking'].search([('name', '=', lot.name)])
-    #         if quant_lot:
-    #             if lot_reception:
-    #                 available_kg = sum(
-    #                     lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
-    #                         'real_weight')) + lot_reception.quality_weight
-    #                 query = "UPDATE stock_quant set quantity = {} , reserved_quantity = 0.0 where id = {}".format(
-    #                     available_kg,
-    #                     quant_lot.id)
-    #                 cr = self._cr
-    #                 cr.execute(query)
-    #             else:
-    #                 available_kg = sum(
-    #                     lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
-    #                         'real_weight'))
-    #                 query = "UPDATE stock_quant set quantity = {} , reserved_quantity = 0.0 where id = {}".format(
-    #                     available_kg,
-    #                     quant_lot.id)
-    #                 if lot.name == '201900401':
-    #                     raise models.ValidationError(query)
-    #                 cr = self._cr
-    #                 cr.execute(query)
-
-    # @api.multi
-    # def fix_error_inventory(self):
-    #     product_loteable = self.env['product.product'].search([('tracking', '=', 'lot')]).mapped('id')
-    #     quants_without_lot = self.env['stock.quant'].search(
-    #         [('product_id', 'in', product_loteable), ('lot_id', '=', None)])
-    #     for quant in quants_without_lot:
-    #         quant.unlink()
 
     @api.multi
     def _compute_guide_number(self):
@@ -371,8 +335,6 @@ class StockProductionLot(models.Model):
                 item.serial_without_pallet_ids = item.stock_production_lot_serial_ids.filtered(
                     lambda a: not a.pallet_id
                 )
-            else:
-                item.serial_without_pallet_ids = []
 
     @api.multi
     def _compute_is_dimabe_team(self):
@@ -387,68 +349,11 @@ class StockProductionLot(models.Model):
                     'label_durability_id': self.label_durability_id.id
                 })
 
-    # @api.multi
-    # def _compute_producer_ids(self):
-    #
-    #     for item in self:
-    #         if item.is_prd_lot:
-    #             workorder = self.env['mrp.workorder'].search([
-    #                 '|',
-    #                 ('final_lot_id', '=', item.id),
-    #                 ('production_finished_move_line_ids.lot_id', '=', item.id)
-    #             ])
-    #
-    #             producers = workorder.mapped('potential_serial_planned_ids.stock_production_lot_id.producer_id')
-    #
-    #             item.producer_ids = self.env['res.partner'].search([
-    #                 '|',
-    #                 ('id', 'in', producers.mapped('id')),
-    #                 ('always_to_print', '=', True)
-    #             ])
-    #         elif item.is_dried_lot:
-    #             dried_data = self.env['unpelled.dried'].search([
-    #                 ('out_lot_id', '=', item.id)
-    #             ])
-    #             if not dried_data:
-    #                 dried_data = self.env['dried.unpelled.history'].search([
-    #                     ('out_lot_id', '=', item.id)
-    #                 ])
-    #             if dried_data:
-    #                 item.producer_ids = self.env['res.partner'].search([
-    #                     '|',
-    #                     ('id', '=', dried_data.in_lot_ids.mapped('stock_picking_id.partner_id.id')),
-    #                     ('always_to_print', '=', True)
-    #                 ])
-    #
-    #         else:
-    #             item.producer_ids = self.env['res.partner'].search([
-    #                 '|',
-    #                 ('supplier', '=', True),
-    #                 ('always_to_print', '=', True)
-    #
-    #             ])
-    #         if item.producer_ids:
-    #             item.producer_ids = item.producer_ids.filtered(
-    #                 lambda a: a.company_type == 'company' or a.always_to_print
-    #             )
-    # @api.onchange('producer_id')
-    # def _onchange_producer_id(self):
-    #
-    #     self.stock_production_lot_serial_ids.write({
-    #         'producer_id': self.producer_id.id
-    #     })
-    #
-    #     self.all_pallet_ids.write({
-    #         'producer_id': self.producer_id.id
-    #     })
-
     @api.multi
     def _compute_all_pallet_ids(self):
         for item in self:
             if item.product_id.is_standard_weight:
                 item.all_pallet_ids = item.stock_production_lot_serial_ids.mapped('pallet_id')
-            else:
-                item.all_pallet_ids = []
 
     @api.multi
     def _compute_count_serial(self):
