@@ -476,9 +476,9 @@ class MrpWorkorder(models.Model):
         })
         if custom_serial:
             barcode = custom_serial.stock_production_lot_id.name
-        res = super(MrpWorkorder, self).on_barcode_scanned(barcode)
-        if res:
-            return res
+        # res = super(MrpWorkorder, self).on_barcode_scanned(barcode)
+        # if res:
+        #     return res
         self.qty_done = qty_done + custom_serial.display_weight
         return res
 
