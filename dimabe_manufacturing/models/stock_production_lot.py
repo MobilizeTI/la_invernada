@@ -431,7 +431,6 @@ class StockProductionLot(models.Model):
     #             item.producer_ids = item.producer_ids.filtered(
     #                 lambda a: a.company_type == 'company' or a.always_to_print
     #             )
-
     # @api.onchange('producer_id')
     # def _onchange_producer_id(self):
     #
