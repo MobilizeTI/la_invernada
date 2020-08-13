@@ -214,8 +214,6 @@ class StockProductionLot(models.Model):
 
     serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed')
 
-    serial_available = fields.Many2many('stock.production.lot.serial', compute='_compute_serial_available')
-
     available_kg = fields.Float('Kilos Disponibles', store=True)
 
     available_weight = fields.Float('Datos Disponibles')
@@ -316,11 +314,6 @@ class StockProductionLot(models.Model):
     #         [('product_id', 'in', product_loteable), ('lot_id', '=', None)])
     #     for quant in quants_without_lot:
     #         quant.unlink()
-
-    @api.multi
-    def _compute_serial_available(self):
-        for item in self:
-            item.serial_available = item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed)
 
     @api.multi
     def _compute_guide_number(self):

@@ -443,6 +443,13 @@ class MrpWorkorder(models.Model):
         for skip in self.skipped_check_ids:
             skip.unlink()
 
+    def action_confirmed(self):
+        for item in self:
+            models._logger.error(len(self))
+            res = item.on_barcode_scanned(item.confirmed_serial)
+            if res and 'warning' in res and 'message' in res['warning']:
+                raise models.ValidationError(res['warning']['message'])
+
     @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
         for item in self:
