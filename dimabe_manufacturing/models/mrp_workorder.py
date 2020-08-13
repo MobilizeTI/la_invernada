@@ -451,11 +451,6 @@ class MrpWorkorder(models.Model):
             'reserved_to_production_id': self.production_id.id,
             'consumed': True
         })
-        self.write({
-            'potential_serial_planned_ids': [
-                (4, custom_serial.id)
-            ]
-        })
         quant = self.env['stock.quant'].search(
             [('lot_id', '=', custom_serial.stock_production_lot_id.id),
              ('location_id', '=', self.production_id.location_src_id.id)])
