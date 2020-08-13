@@ -149,24 +149,18 @@ class MrpWorkorder(models.Model):
         for item in self:
             if item.manufacturing_pallet_ids:
                 item.pallet_content = sum(item.manufacturing_pallet_ids.mapped('total_content_weight'))
-            else:
-                item.pallet_content = 0.0
 
     @api.multi
     def _compute_pallet_serial(self):
         for item in self:
             if item.manufacturing_pallet_ids:
                 item.pallet_serial = len(item.manufacturing_pallet_ids.mapped('lot_serial_ids'))
-            else:
-                item.pallet_serial = 0.0
 
     @api.multi
     def _compute_pallet_qty(self):
         for item in self:
             if item.manufacturing_pallet_ids:
                 item.pallet_qty = len(item.manufacturing_pallet_ids)
-            else:
-                item.pallet_qty = 0.0
 
     @api.multi
     def _compute_producers_id(self):
@@ -182,8 +176,6 @@ class MrpWorkorder(models.Model):
         for item in self:
             if item.potential_serial_planned_ids:
                 item.in_weight = sum(item.potential_serial_planned_ids.mapped('real_weight'))
-            else:
-                item.in_weight = 0.0
 
     @api.depends('summary_out_serial_ids')
     @api.multi
@@ -191,8 +183,6 @@ class MrpWorkorder(models.Model):
         for item in self:
             if item.summary_out_serial_ids:
                 item.out_weight = sum(item.summary_out_serial_ids.mapped('real_weight'))
-            else:
-                item.out_weight = 0.0
 
     @api.depends('summary_out_serial_ids')
     @api.multi
@@ -202,8 +192,6 @@ class MrpWorkorder(models.Model):
                 item.pt_out_weight = sum(
                     item.summary_out_serial_ids.filtered(lambda a: 'PT' in a.product_id.default_code).mapped(
                         'real_weight'))
-            else:
-                item.pt_out_weight = 0.0
 
     @api.multi
     def show_in_serials(self):
@@ -514,21 +502,13 @@ class MrpWorkorder(models.Model):
 
     def open_out_form_view(self):
         for item in self:
-            out_weight = sum(item.summary_out_serial_ids.mapped('display_weight'))
-            pt_weight = sum(
-                item.summary_out_serial_ids.filtered(lambda a: a.product_id.id == item.product_id.id).mapped(
-                    'real_weight'))
-            query = "UPDATE mrp_workorder set out_weight = {},pt_out_weight = {} where id = {}".format(
-                out_weight, pt_weight, self.id)
-            cr = self._cr
-            cr.execute(query)
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'mrp.workorder',
-            'views': [[self.env.ref('dimabe_manufacturing.mrp_workorder_out_form_view').id, 'form']],
-            'res_id': self.id,
-            'target': 'fullscreen'
-        }
+            return {
+                'type': 'ir.actions.act_window',
+                'res_model': 'mrp.workorder',
+                'views': [[self.env.ref('dimabe_manufacturing.mrp_workorder_out_form_view').id, 'form']],
+                'res_id': self.id,
+                'target': 'fullscreen'
+            }
 
     def create_pallet(self):
         default_product_id = None
