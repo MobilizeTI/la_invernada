@@ -35,6 +35,7 @@
                             attrs="{'invisible':['|',('show_manual_input','=',False),('is_last_step','=',True)]}"
                         />
                     </group>
+                    <button name="confirmed_serial_keyboard" type="object" string="Confirmar"/>
                 </xpath>
                 <xpath expr="//div[@class='workorder_pdf']" position="before">
                     <field name="production_id" invisible="1"/>
