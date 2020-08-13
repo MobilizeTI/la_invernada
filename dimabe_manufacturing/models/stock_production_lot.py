@@ -23,7 +23,7 @@ class StockProductionLot(models.Model):
 
     producer_ids = fields.One2many(
         'res.partner',
-        compute='_compute_producer_ids'
+        # compute='_compute_producer_ids'
     )
 
     product_variety = fields.Char(
@@ -400,50 +400,50 @@ class StockProductionLot(models.Model):
                     'label_durability_id': self.label_durability_id.id
                 })
 
-    @api.multi
-    def _compute_producer_ids(self):
-
-        for item in self:
-            if item.is_prd_lot:
-                workorder = self.env['mrp.workorder'].search([
-                    '|',
-                    ('final_lot_id', '=', item.id),
-                    ('production_finished_move_line_ids.lot_id', '=', item.id)
-                ])
-
-                producers = workorder.mapped('potential_serial_planned_ids.stock_production_lot_id.producer_id')
-
-                item.producer_ids = self.env['res.partner'].search([
-                    '|',
-                    ('id', 'in', producers.mapped('id')),
-                    ('always_to_print', '=', True)
-                ])
-            elif item.is_dried_lot:
-                dried_data = self.env['unpelled.dried'].search([
-                    ('out_lot_id', '=', item.id)
-                ])
-                if not dried_data:
-                    dried_data = self.env['dried.unpelled.history'].search([
-                        ('out_lot_id', '=', item.id)
-                    ])
-                if dried_data:
-                    item.producer_ids = self.env['res.partner'].search([
-                        '|',
-                        ('id', '=', dried_data.in_lot_ids.mapped('stock_picking_id.partner_id.id')),
-                        ('always_to_print', '=', True)
-                    ])
-
-            else:
-                item.producer_ids = self.env['res.partner'].search([
-                    '|',
-                    ('supplier', '=', True),
-                    ('always_to_print', '=', True)
-
-                ])
-            if item.producer_ids:
-                item.producer_ids = item.producer_ids.filtered(
-                    lambda a: a.company_type == 'company' or a.always_to_print
-                )
+    # @api.multi
+    # def _compute_producer_ids(self):
+    #
+    #     for item in self:
+    #         if item.is_prd_lot:
+    #             workorder = self.env['mrp.workorder'].search([
+    #                 '|',
+    #                 ('final_lot_id', '=', item.id),
+    #                 ('production_finished_move_line_ids.lot_id', '=', item.id)
+    #             ])
+    #
+    #             producers = workorder.mapped('potential_serial_planned_ids.stock_production_lot_id.producer_id')
+    #
+    #             item.producer_ids = self.env['res.partner'].search([
+    #                 '|',
+    #                 ('id', 'in', producers.mapped('id')),
+    #                 ('always_to_print', '=', True)
+    #             ])
+    #         elif item.is_dried_lot:
+    #             dried_data = self.env['unpelled.dried'].search([
+    #                 ('out_lot_id', '=', item.id)
+    #             ])
+    #             if not dried_data:
+    #                 dried_data = self.env['dried.unpelled.history'].search([
+    #                     ('out_lot_id', '=', item.id)
+    #                 ])
+    #             if dried_data:
+    #                 item.producer_ids = self.env['res.partner'].search([
+    #                     '|',
+    #                     ('id', '=', dried_data.in_lot_ids.mapped('stock_picking_id.partner_id.id')),
+    #                     ('always_to_print', '=', True)
+    #                 ])
+    #
+    #         else:
+    #             item.producer_ids = self.env['res.partner'].search([
+    #                 '|',
+    #                 ('supplier', '=', True),
+    #                 ('always_to_print', '=', True)
+    #
+    #             ])
+    #         if item.producer_ids:
+    #             item.producer_ids = item.producer_ids.filtered(
+    #                 lambda a: a.company_type == 'company' or a.always_to_print
+    #             )
 
     # @api.onchange('producer_id')
     # def _onchange_producer_id(self):
