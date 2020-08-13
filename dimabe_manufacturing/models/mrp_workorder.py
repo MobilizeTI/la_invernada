@@ -442,7 +442,7 @@ class MrpWorkorder(models.Model):
         for skip in self.skipped_check_ids:
             skip.unlink()
 
-    @api.onchange('confirmed_serial')
+    @api.depends('confirmed_serial')
     def confirmed_serial_keyboard(self):
         self.ensure_one()
         models._logger.error('Antes : {}'.format(self.confirmed_serial))
