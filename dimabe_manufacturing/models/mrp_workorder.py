@@ -431,7 +431,7 @@ class MrpWorkorder(models.Model):
     def confirmed_serial_keyboard(self):
         self.ensure_one()
         qty_done = self.qty_done
-        custom_serial = self.validate_serial_code(barcode)
+        custom_serial = self.validate_serial_code(self.confirmed_serial)
         custom_serial.write({
             'reserved_to_production_id': self.production_id.id,
             'consumed': True
