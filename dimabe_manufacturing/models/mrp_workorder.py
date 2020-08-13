@@ -480,7 +480,7 @@ class MrpWorkorder(models.Model):
         # if res:
         #     return res
         self.qty_done = qty_done + custom_serial.display_weight
-        return res
+        # return res
 
     @api.multi
     def fix_env(self):
