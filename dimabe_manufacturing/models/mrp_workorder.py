@@ -451,13 +451,6 @@ class MrpWorkorder(models.Model):
         self.update_inventory(custom_serial.stock_production_lot_id.name)
         return res
 
-    @api.multi
-    def fix_env(self):
-        for item in self.env['ir.model'].search([]):
-            if item.model != 'balance.sheet.clp':
-                self.env['{}'.format(item.model)].invalidate_cache()
-        self.env['ir.model'].invalidate_cache()
-
     @api.model
     def lot_is_byproduct(self):
         return self.finished_product_check_ids.filtered(
