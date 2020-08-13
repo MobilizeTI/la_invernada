@@ -409,7 +409,9 @@ class MrpWorkorder(models.Model):
 
     def do_confirmed(self):
         for item in self:
-            return super(MrpWorkorder,self).on_barcode_scanned(self.confirmed_serial)
+            models._logger.error('Antes')
+            return super(MrpWorkorder, self).on_barcode_scanned(self.confirmed_serial)
+            models._logger.error('Despues')
 
     def do_finish(self):
         self.write({
