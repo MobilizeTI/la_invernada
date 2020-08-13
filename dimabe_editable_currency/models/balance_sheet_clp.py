@@ -29,31 +29,31 @@ class ModelName(models.Model):
 
     usd_value_in_clp = fields.Float('Valor del Dolar')
 
-    @api.multi
-    def get_balance_clp(self):
-        for item in self:
-            accounts = self.env['account.account'].search([('company_id', '=', self.env.user.company_id.id)])
-            date = datetime.date.today()
-            account_invoice = self.env['account.invoice'].search([('account_id', 'in', accounts.mapped('id'))])
-            for ac in accounts:
-                ac_move_line = self.env['account.move.line'].search([('account_id','=',ac.id)])
-                for ac_line in ac_move_line:
-
-                balance = self.env['balance.sheet.clp'].search([('account_id', '=', ac.id)])
-                if balance:
-                    if len(balance) == 2:
-                        balance[-1].unlink()
-                    else:
-                        balance.write({
-                            'balance': debit - credit
-                        })
-                else:
-                    self.env['balance.sheet.clp'].create({
-                        'account_id': ac.id,
-                        'account_type': ac.user_type_id.id,
-                        'balance': debit - credit,
-                        'is_balance': True
-                    })
+    # @api.multi
+    # def get_balance_clp(self):
+    #     for item in self:
+    #         accounts = self.env['account.account'].search([('company_id', '=', self.env.user.company_id.id)])
+    #         date = datetime.date.today()
+    #         account_invoice = self.env['account.invoice'].search([('account_id', 'in', accounts.mapped('id'))])
+    #         for ac in accounts:
+    #             ac_move_line = self.env['account.move.line'].search([('account_id','=',ac.id)])
+    #             for ac_line in ac_move_line:
+    #
+    #             balance = self.env['balance.sheet.clp'].search([('account_id', '=', ac.id)])
+    #             if balance:
+    #                 if len(balance) == 2:
+    #                     balance[-1].unlink()
+    #                 else:
+    #                     balance.write({
+    #                         'balance': debit - credit
+    #                     })
+    #             else:
+    #                 self.env['balance.sheet.clp'].create({
+    #                     'account_id': ac.id,
+    #                     'account_type': ac.user_type_id.id,
+    #                     'balance': debit - credit,
+    #                     'is_balance': True
+    #                 })
 
     @api.multi
     @api.depends('account_id')
