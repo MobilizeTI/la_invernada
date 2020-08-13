@@ -167,8 +167,6 @@ class MrpWorkorder(models.Model):
         for item in self:
             if item.potential_serial_planned_ids:
                 item.producers_id = item.potential_serial_planned_ids.mapped('producer_id')
-            else:
-                item.producers_id = item.potential_serial_planned_ids.mapped('producer_id')
 
     @api.depends('potential_serial_planned_ids')
     @api.multi
