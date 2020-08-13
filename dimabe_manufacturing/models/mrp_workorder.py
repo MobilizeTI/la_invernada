@@ -368,7 +368,6 @@ class MrpWorkorder(models.Model):
         return super(MrpWorkorder, self).open_tablet_view()
 
     def action_next(self):
-        self.validate_lot_code(self.lot_id.name)
         super(MrpWorkorder, self).action_next()
         self.qty_done = 0
 
@@ -458,11 +457,11 @@ class MrpWorkorder(models.Model):
             'reserved_to_production_id': self.production_id.id,
             'consumed': True
         })
-        # self.write({
-        #     'potential_serial_planned_ids': [
-        #         (4, custom_serial.id)
-        #     ]
-        # })
+        self.write({
+            'potential_serial_planned_ids': [
+                (4, custom_serial.id)
+            ]
+        })
         quant = self.env['stock.quant'].search(
             [('lot_id', '=', custom_serial.stock_production_lot_id.id),
              ('location_id', '=', self.production_id.location_src_id.id)])
@@ -478,11 +477,11 @@ class MrpWorkorder(models.Model):
         })
         if custom_serial:
             barcode = custom_serial.stock_production_lot_id.name
-        # res = super(MrpWorkorder, self).on_barcode_scanned(barcode)
-        # if res:
-        #     return res
+        res = super(MrpWorkorder, self).on_barcode_scanned(barcode)
+        if res:
+            return res
         self.qty_done = qty_done + custom_serial.display_weight
-        # return res
+        return res
 
     @api.multi
     def fix_env(self):
@@ -496,12 +495,6 @@ class MrpWorkorder(models.Model):
         return self.finished_product_check_ids.filtered(
             lambda a: a.lot_id == self.lot_id and a.component_is_byproduct
         )
-
-    def validate_lot_code(self, lot_code):
-        if not self.lot_is_byproduct():
-            lot_search = self.env['stock.production.lot'].search([
-                ('name', '=', lot_code)
-            ])
 
     def validate_serial_code(self, barcode):
         custom_serial = self.env['stock.production.lot.serial'].search(
