@@ -407,12 +407,6 @@ class MrpWorkorder(models.Model):
                         ]
                     })
 
-    def do_confirmed(self):
-        for item in self:
-            models._logger.error('Antes')
-            return super(MrpWorkorder, self).on_barcode_scanned(self.confirmed_serial)
-            models._logger.error('Despues')
-
     def do_finish(self):
         self.write({
             'lot_produced_id': self.final_lot_id.id
@@ -457,20 +451,8 @@ class MrpWorkorder(models.Model):
         if res:
             return res
         self.qty_done = qty_done + custom_serial.display_weight
+        self.update_inventory(custom_serial.stock_production_lot_id.name)
         return res
-        quant = self.env['stock.quant'].search(
-            [('lot_id', '=', custom_serial.stock_production_lot_id.id),
-             ('location_id', '=', self.production_id.location_src_id.id)])
-        quant.write({
-            'quantity': sum(
-                custom_serial.stock_production_lot_id.stock_production_lot_serial_ids.filtered(
-                    lambda a: not a.consumed).mapped('display_weight'))
-        })
-        custom_serial.stock_production_lot_id.write({
-            'available_kg': sum(
-                custom_serial.stock_production_lot_id.stock_production_lot_serial_ids.filtered(
-                    lambda a: not a.consumed).mapped('display_weight'))
-        })
 
     @api.multi
     def fix_env(self):
@@ -518,3 +500,13 @@ class MrpWorkorder(models.Model):
             'target': 'fullscreen',
             'context': {'_default_product_id': default_product_id}
         }
+
+    def update_inventory(self, lot_name):
+        lot = self.env['stock.production.lot'].search([('name', '=', lot_name)])
+        lot.write({
+            'available_kg': sum(lot.stock_production_lot_serial_ids.mapped('real_weight'))
+        })
+        quant = self.env['stock.quant'].search([('lot_id', '=', lot.id)])
+        quant.write({
+            'quantity': sum(lot.stock_production_lot_serial_ids.mapped('real_weight'))
+        })
