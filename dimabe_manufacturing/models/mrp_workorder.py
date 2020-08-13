@@ -500,8 +500,6 @@ class MrpWorkorder(models.Model):
                 raise models.ValidationError('este código ya ha sido consumido en la produccion {}'.format(
                     custom_serial.reserved_to_production_id.name))
             return custom_serial
-        else:
-            custom_serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', barcode)])
         return custom_serial
 
     def open_out_form_view(self):
