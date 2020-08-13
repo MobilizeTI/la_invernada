@@ -674,7 +674,7 @@ class StockProductionLot(models.Model):
     def write(self, values):
         for item in self:
             res = super(StockProductionLot, self).write(values)
-            if not item.is_standard_weight:
+            if not item.product_id.is_standard_weight:
                 for serial in item.stock_production_lot_serial_ids:
                     if not serial.serial_number:
                         if len(item.stock_production_lot_serial_ids) > 1:
@@ -721,12 +721,6 @@ class StockProductionLot(models.Model):
                     'pallet_id': pallet.id,
                     'producer_id': pallet.producer_id.id
                 })
-                available_kg = sum(
-                    item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
-                query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg,
-                                                                                                 item.id)
-                cr = self._cr
-                cr.execute(query)
                 # if len(item.stock_production_lot_serial_ids) > 999:
                 #     item.check_duplicate()
             pallet.update({
