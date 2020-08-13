@@ -696,9 +696,9 @@ class StockProductionLot(models.Model):
                                 item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
                                     'real_weight'))
                         })
-            else:
-                if len(item.stock_production_lot_serial_ids) > 999:
-                    item.check_duplicate()
+            # else:
+            #     if len(item.stock_production_lot_serial_ids) > 999:
+            #         item.check_duplicate()
             return res
 
     @api.multi
