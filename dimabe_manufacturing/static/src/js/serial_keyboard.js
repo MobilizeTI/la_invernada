@@ -8,7 +8,7 @@ odoo.define('serial_keyboard.confirmed', function (require) {
         ListController.include({
             renderButtons: function ($node) {
                 this._super.apply(this, arguments);
-                let barcode = $('#confirmed_serial').click(this.proxy('action_data'))();
+                let barcode = $('#confirmed_serial').click(this.proxy('action_data'));
             },
             action_data: function () {
                 var self = this
