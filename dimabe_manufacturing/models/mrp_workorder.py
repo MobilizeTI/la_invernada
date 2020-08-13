@@ -354,6 +354,9 @@ class MrpWorkorder(models.Model):
         return super(MrpWorkorder, self).open_tablet_view()
 
     def action_next(self):
+        self.write({
+            'in_weight': sum(self.potential_serial_planned_ids.mapped('real_weight'))
+        })
         super(MrpWorkorder, self).action_next()
         self.qty_done = 0
 
@@ -418,6 +421,9 @@ class MrpWorkorder(models.Model):
         self.organize_move_line()
 
     def action_skip(self):
+        self.write({
+            'in_weight': sum(self.potential_serial_planned_ids.mapped('real_weight'))
+        })
         super(MrpWorkorder, self).action_skip()
 
     def action_ignore(self):
