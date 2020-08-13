@@ -149,31 +149,23 @@ class MrpWorkorder(models.Model):
         for item in self:
             if item.manufacturing_pallet_ids:
                 item.pallet_content = sum(item.manufacturing_pallet_ids.mapped('total_content_weight'))
-            else:
-                item.pallet_content = 0.0
 
     @api.multi
     def _compute_pallet_serial(self):
         for item in self:
             if item.manufacturing_pallet_ids:
                 item.pallet_serial = len(item.manufacturing_pallet_ids.mapped('lot_serial_ids'))
-            else:
-                item.pallet_serial = 0.0
 
     @api.multi
     def _compute_pallet_qty(self):
         for item in self:
             if item.manufacturing_pallet_ids:
                 item.pallet_qty = len(item.manufacturing_pallet_ids)
-            else:
-                item.pallet_qty = 0.0
 
     @api.multi
     def _compute_producers_id(self):
         for item in self:
             if item.potential_serial_planned_ids:
-                item.producers_id = item.potential_serial_planned_ids.mapped('producer_id')
-            else:
                 item.producers_id = item.potential_serial_planned_ids.mapped('producer_id')
 
     @api.depends('potential_serial_planned_ids')
@@ -182,8 +174,6 @@ class MrpWorkorder(models.Model):
         for item in self:
             if item.potential_serial_planned_ids:
                 item.in_weight = sum(item.potential_serial_planned_ids.mapped('real_weight'))
-            else:
-                item.in_weight = 0.0
 
     @api.depends('summary_out_serial_ids')
     @api.multi
@@ -191,8 +181,6 @@ class MrpWorkorder(models.Model):
         for item in self:
             if item.summary_out_serial_ids:
                 item.out_weight = sum(item.summary_out_serial_ids.mapped('real_weight'))
-            else:
-                item.out_weight = 0.0
 
     @api.depends('summary_out_serial_ids')
     @api.multi
@@ -202,8 +190,6 @@ class MrpWorkorder(models.Model):
                 item.pt_out_weight = sum(
                     item.summary_out_serial_ids.filtered(lambda a: 'PT' in a.product_id.default_code).mapped(
                         'real_weight'))
-            else:
-                item.pt_out_weight = 0.0
 
     @api.multi
     def show_in_serials(self):
@@ -237,13 +223,13 @@ class MrpWorkorder(models.Model):
             'domain': [('id', 'in', self.summary_out_serial_ids.mapped("id"))]
         }
 
-    @api.multi
-    def _compute_lot_produced(self):
-        for item in self:
-            if len(item.production_finished_move_line_ids) > 1:
-                item.lot_produced_id = item.production_finished_move_line_ids.filtered(
-                    lambda a: a.product_id == item.product_id.id).lot_id.id
-            item.lot_produced_id = item.final_lot_id.id
+    # @api.multi
+    # def _compute_lot_produced(self):
+    #     for item in self:
+    #         if len(item.production_finished_move_line_ids) > 1:
+    #             item.lot_produced_id = item.production_finished_move_line_ids.filtered(
+    #                 lambda a: a.product_id == item.product_id.id).lot_id.id
+    #         item.lot_produced_id = item.final_lot_id.id
 
     @api.multi
     def compute_is_match(self):
@@ -253,18 +239,20 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_there_is_serial_without_pallet(self):
         for item in self:
-            item.there_is_serial_without_pallet = len(item.summary_out_serial_ids.filtered(
-                lambda a: not a.pallet_id)) > 0
+            if item.summary_out_serial_ids:
+                item.there_is_serial_without_pallet = len(item.summary_out_serial_ids.filtered(
+                    lambda a: not a.pallet_id)) > 0
 
     @api.multi
     def _compute_manufacturing_pallet_ids(self):
         for item in self:
-            pallet_ids = []
-            for pallet_id in item.summary_out_serial_ids.mapped('pallet_id'):
-                if pallet_id.id not in pallet_ids:
-                    pallet_ids.append(pallet_id.id)
-            if pallet_ids:
-                item.manufacturing_pallet_ids = [(4, pallet_id) for pallet_id in pallet_ids]
+            if item.summary_out_serial_ids:
+                pallet_ids = []
+                for pallet_id in item.summary_out_serial_ids.mapped('pallet_id'):
+                    if pallet_id.id not in pallet_ids:
+                        pallet_ids.append(pallet_id.id)
+                if pallet_ids:
+                    item.manufacturing_pallet_ids = [(4, pallet_id) for pallet_id in pallet_ids]
 
     @api.onchange('qty_producing')
     def _onchange_qty_producing(self):
@@ -308,12 +296,14 @@ class MrpWorkorder(models.Model):
     @api.multi
     def _compute_byproduct_move_line_ids(self):
         for item in self:
-            item.byproduct_move_line_ids = item.active_move_line_ids.filtered(lambda a: not a.is_raw)
+            if not item.byproduct_move_line_ids:
+                item.byproduct_move_line_ids = item.active_move_line_ids.filtered(lambda a: not a.is_raw)
 
     @api.multi
     def _compute_material_product_ids(self):
         for item in self:
-            item.material_product_ids = item.production_id.move_raw_ids.mapped('product_id')
+            if not item.material_product_ids:
+                item.material_product_ids = item.production_id.move_raw_ids.mapped('product_id')
 
     @api.model
     def create(self, values_list):
@@ -340,17 +330,6 @@ class MrpWorkorder(models.Model):
                     move_line.update({
                         'is_raw': True
                     })
-            if item.potential_serial_planned_ids:
-                for lot in item.potential_serial_planned_ids.mapped('stock_production_lot_id'):
-                    lot_id = self.env['stock.production.lot'].search([('id', '=', lot.id)])
-                    quant = lot_id.get_stock_quant().filtered(
-                        lambda a: a.location_id.id == self.production_id.location_src_id.id)
-                    quant.write({
-                        'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight'))
-                    })
-                    lot.write({
-                        'available_kg': sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight'))
-                    })
         res = super(MrpWorkorder, self).write(vals)
         return res
 
@@ -375,7 +354,6 @@ class MrpWorkorder(models.Model):
         return super(MrpWorkorder, self).open_tablet_view()
 
     def action_next(self):
-        self.validate_lot_code(self.lot_id.name)
         super(MrpWorkorder, self).action_next()
         self.qty_done = 0
 
@@ -450,31 +428,21 @@ class MrpWorkorder(models.Model):
         for skip in self.skipped_check_ids:
             skip.unlink()
 
-    @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
-        for item in self:
-            res = item.on_barcode_scanned(item.confirmed_serial)
-            if res and 'warning' in res and 'message' in res['warning']:
-                raise models.ValidationError(res['warning']['message'])
-
-    def on_barcode_scanned(self, barcode):
+        self.ensure_one()
         qty_done = self.qty_done
-        custom_serial = self.validate_serial_code(barcode)
+        custom_serial = self.validate_serial_code(self.confirmed_serial)
         custom_serial.write({
             'reserved_to_production_id': self.production_id.id,
             'consumed': True
         })
-        self.write({
-            'potential_serial_planned_ids': [
-                (4, custom_serial.id)
-            ]
-        })
         if custom_serial:
             barcode = custom_serial.stock_production_lot_id.name
-        res = super(MrpWorkorder, self).on_barcode_scanned(barcode)
+        res = super(MrpWorkorder, self).on_barcode_scanned(self.confirmed_serial)
         if res:
             return res
         self.qty_done = qty_done + custom_serial.display_weight
+        self.update_inventory(custom_serial.stock_production_lot_id.name)
         return res
 
     @api.model
@@ -483,14 +451,9 @@ class MrpWorkorder(models.Model):
             lambda a: a.lot_id == self.lot_id and a.component_is_byproduct
         )
 
-    def validate_lot_code(self, lot_code):
-        if not self.lot_is_byproduct():
-            lot_search = self.env['stock.production.lot'].search([
-                ('name', '=', lot_code)
-            ])
-
     def validate_serial_code(self, barcode):
-        custom_serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', barcode)])
+        custom_serial = self.env['stock.production.lot.serial'].search(
+            [('serial_number', '=', barcode)])
         if custom_serial:
             if custom_serial.product_id != self.component_id:
                 raise models.ValidationError('El producto ingresado no corresponde al producto solicitado')
@@ -498,27 +461,23 @@ class MrpWorkorder(models.Model):
                 raise models.ValidationError('este código ya ha sido consumido en la produccion {}'.format(
                     custom_serial.reserved_to_production_id.name))
             return custom_serial
-        else:
-            custom_serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', barcode)])
         return custom_serial
 
     def open_out_form_view(self):
         for item in self:
-            out_weight = sum(item.summary_out_serial_ids.mapped('display_weight'))
-            pt_weight = sum(
-                item.summary_out_serial_ids.filtered(lambda a: a.product_id.id == item.product_id.id).mapped(
-                    'real_weight'))
-            query = "UPDATE mrp_workorder set out_weight = {},pt_out_weight = {} where id = {}".format(
-                out_weight, pt_weight, self.id)
-            cr = self._cr
-            cr.execute(query)
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'mrp.workorder',
-            'views': [[self.env.ref('dimabe_manufacturing.mrp_workorder_out_form_view').id, 'form']],
-            'res_id': self.id,
-            'target': 'fullscreen'
-        }
+            item.write({
+                'out_weight': sum(item.summary_out_serial_ids.mapped('real_weight')),
+                'pt_out_weight': sum(
+                    item.summary_out_serial_ids.filtered(lambda a: a.product_id == self.product_id.id).mapped(
+                        'real_weight'))
+            })
+            return {
+                'type': 'ir.actions.act_window',
+                'res_model': 'mrp.workorder',
+                'views': [[self.env.ref('dimabe_manufacturing.mrp_workorder_out_form_view').id, 'form']],
+                'res_id': self.id,
+                'target': 'fullscreen'
+            }
 
     def create_pallet(self):
         default_product_id = None
@@ -531,3 +490,16 @@ class MrpWorkorder(models.Model):
             'target': 'fullscreen',
             'context': {'_default_product_id': default_product_id}
         }
+
+    def update_inventory(self, lot_name):
+        lot = self.env['stock.production.lot'].search([('name', '=', lot_name)])
+        lot.write({
+            'available_kg': sum(lot.stock_production_lot_serial_ids.mapped('real_weight'))
+        })
+        self.write({
+            'in_weight': sum(self.potential_serial_planned_ids.mapped('real_weight'))
+        })
+        quant = self.env['stock.quant'].search([('lot_id', '=', lot.id)])
+        quant.write({
+            'quantity': sum(lot.stock_production_lot_serial_ids.mapped('real_weight'))
+        })
