@@ -32,9 +32,10 @@
                                attrs="{'invisible':[('is_last_step','=',True)]}"
                         />
                         <field name="confirmed_serial"
-                               attrs="{'invisible':['|',('show_manual_input','=',False),('is_last_step','=',True)]}"
+                            attrs="{'invisible':['|',('show_manual_input','=',False),('is_last_step','=',True)]}"
                         />
                     </group>
+                    <button name="confirmed_serial_keyboard" type="object" string="Confirmar"/>
                 </xpath>
                 <xpath expr="//div[@class='workorder_pdf']" position="before">
                     <field name="production_id" invisible="1"/>
@@ -93,7 +94,7 @@
                             string="Procesar Salida"
                             attrs="{'invisible': [('production_state', '=', 'done')]}"
                     />
-                    <button name="fix_order" type="object" string="Fix Order"/>
+                    <button name="fix_env" type="object" string="Fix Env" groups="base.group_no_one"/>
                     <button type="object"
                             name="organize_move_line"
                             string="Organizar Movimientos"
@@ -263,6 +264,5 @@
                 </tree>
             </field>
         </record>
-
     </data>
 </odoo>
