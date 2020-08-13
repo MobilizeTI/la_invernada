@@ -465,6 +465,12 @@ class MrpWorkorder(models.Model):
 
     def open_out_form_view(self):
         for item in self:
+            item.write({
+                'out_weight': sum(item.summary_out_serial_ids.mapped('real_weight')),
+                'pt_out_weight': sum(
+                    item.summary_out_serial_ids.filtered(lambda a: a.product_id == self.product_id.id).mapped(
+                        'real_weight'))
+            })
             return {
                 'type': 'ir.actions.act_window',
                 'res_model': 'mrp.workorder',
@@ -489,6 +495,9 @@ class MrpWorkorder(models.Model):
         lot = self.env['stock.production.lot'].search([('name', '=', lot_name)])
         lot.write({
             'available_kg': sum(lot.stock_production_lot_serial_ids.mapped('real_weight'))
+        })
+        self.write({
+            'in_weight': sum(self.potential_serial_planned_ids.mapped('real_weight'))
         })
         quant = self.env['stock.quant'].search([('lot_id', '=', lot.id)])
         quant.write({
