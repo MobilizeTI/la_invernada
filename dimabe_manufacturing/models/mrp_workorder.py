@@ -409,6 +409,10 @@ class MrpWorkorder(models.Model):
                         ]
                     })
 
+    def do_confirmed(self):
+        for item in self:
+            return super(MrpWorkorder,self).on_barcode_scanned(self.confirmed_serial)
+
     def do_finish(self):
         self.write({
             'lot_produced_id': self.final_lot_id.id

@@ -34,6 +34,8 @@
                         <field name="confirmed_serial"
                                attrs="{'invisible':['|',('show_manual_input','=',False),('is_last_step','=',True)]}"
                         />
+                        <br/>
+                        <button name="do_confirmed" type="object" string="Confirmar"/>
                     </group>
                 </xpath>
                 <xpath expr="//div[@class='workorder_pdf']" position="before">
