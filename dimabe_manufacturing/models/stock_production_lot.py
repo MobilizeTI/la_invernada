@@ -366,11 +366,6 @@ class StockProductionLot(models.Model):
         for item in self:
             item.serial_not_consumed = len(item.serial_available)
 
-    @api.onchange('serial_not_consumed')
-    def _onchange_have_available_serial(self):
-        for item in self:
-            item.have_available_serial = True
-
     @api.multi
     def _compute_can_add_serial(self):
         for item in self:
