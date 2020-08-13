@@ -117,7 +117,7 @@ class MrpWorkorder(models.Model):
         #compute='_compute_there_is_serial_without_pallet'
     )
 
-    is_match = fields.Boolean('Es Partido',# compute='compute_is_match')
+    is_match = fields.Boolean('Es Partido')
 
     product_variety = fields.Char(related='product_id.variety')
 
@@ -125,24 +125,24 @@ class MrpWorkorder(models.Model):
 
     product_qty = fields.Float(related='production_id.product_qty')
 
-    lot_produced_id = fields.Integer('Lote a producir', #compute='_compute_lot_produced')
+    lot_produced_id = fields.Integer('Lote a producir')
 
-    in_weight = fields.Float('Kilos Ingresados', #compute='_compute_in_weight',
-                             digits=dp.get_precision('Product Unit of Measure'), store=True)
+    in_weight = fields.Float('Kilos Ingresados' ,digits=dp.get_precision('Product Unit of Measure'), store=True)
 
-    out_weight = fields.Float('Kilos Producidos', #compute='_compute_out_weight',
-                              digits=dp.get_precision('Product Unit of Measure'), store=True)
 
-    pt_out_weight = fields.Float('Kilos Producidos del PT',# compute='_compute_pt_out_weight',
-                                 digits=dp.get_precision('Product Unit of Meausure'), store=True)
+    out_weight = fields.Float('Kilos Producidos',digits=dp.get_precision('Product Unit of Measure'), store=True)
 
-    producers_id = fields.Many2many('res.partner', 'Productores', #compute='_compute_producers_id')
 
-    pallet_qty = fields.Integer('Cantidad de Pallets', #compute='_compute_pallet_qty')
+    pt_out_weight = fields.Float('Kilos Producidos del PT',digits=dp.get_precision('Product Unit of Measure'), store=True)
 
-    pallet_content = fields.Float('Kilos Totales', #compute='_compute_pallet_content')
 
-    pallet_serial = fields.Integer('Total de Series',#compute='_compute_pallet_seri al')
+    producers_id = fields.Many2many('res.partner', 'Productores')
+
+    pallet_qty = fields.Integer('Cantidad de Pallets')
+
+    pallet_content = fields.Float('Kilos Totales')
+
+    pallet_serial = fields.Integer('Total de Series')
     #
     # @api.multi
     # def _compute_pallet_content(self):
