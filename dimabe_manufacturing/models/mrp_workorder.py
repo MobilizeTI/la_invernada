@@ -430,12 +430,6 @@ class MrpWorkorder(models.Model):
 
     def confirmed_serial_keyboard(self):
         self.ensure_one()
-        self.on_barcode_scanned(self.confirmed_serial)
-        # if res and 'warning' in res and 'message' in res['warning']:
-        #     raise models.ValidationError(res['warning']['message'])
-
-    def on_barcode_scanned(self, barcode):
-        self.ensure_one()
         qty_done = self.qty_done
         custom_serial = self.validate_serial_code(barcode)
         custom_serial.write({
