@@ -264,10 +264,5 @@
                 </tree>
             </field>
         </record>
-        <template id="button_render_js" inherit_id="web.assets_backend">
-            <xpath expr="." position="inside">
-                <script src="dimabe_manufacturing/static/src/js/serial_keyboard.js" type="text/javascript"/>
-            </xpath>
-        </template>
     </data>
 </odoo>
