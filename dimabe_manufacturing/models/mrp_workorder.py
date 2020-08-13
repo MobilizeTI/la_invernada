@@ -83,18 +83,18 @@ class MrpWorkorder(models.Model):
 
     summary_out_serial_ids = fields.One2many(
         'stock.production.lot.serial',
-        compute='_compute_summary_out_serial_ids',
+        #compute='_compute_summary_out_serial_ids',
         string='Resumen de Salidas'
     )
 
     material_product_ids = fields.One2many(
         'product.product',
-        compute='_compute_material_product_ids'
+        #compute='_compute_material_product_ids'
     )
 
     byproduct_move_line_ids = fields.One2many(
         'stock.move.line',
-        compute='_compute_byproduct_move_line_ids',
+        #compute='_compute_byproduct_move_line_ids',
         string='subproductos'
     )
 
@@ -108,16 +108,16 @@ class MrpWorkorder(models.Model):
 
     manufacturing_pallet_ids = fields.One2many(
         'manufacturing.pallet',
-        compute='_compute_manufacturing_pallet_ids',
+        #compute='_compute_manufacturing_pallet_ids',
         string='Pallets'
     )
 
     there_is_serial_without_pallet = fields.Boolean(
         'Hay Series sin pallet',
-        compute='_compute_there_is_serial_without_pallet'
+        #compute='_compute_there_is_serial_without_pallet'
     )
 
-    is_match = fields.Boolean('Es Partido', compute='compute_is_match')
+    is_match = fields.Boolean('Es Partido',# compute='compute_is_match')
 
     product_variety = fields.Char(related='product_id.variety')
 
@@ -125,140 +125,140 @@ class MrpWorkorder(models.Model):
 
     product_qty = fields.Float(related='production_id.product_qty')
 
-    lot_produced_id = fields.Integer('Lote a producir', compute='_compute_lot_produced')
+    lot_produced_id = fields.Integer('Lote a producir', #compute='_compute_lot_produced')
 
-    in_weight = fields.Float('Kilos Ingresados', compute='_compute_in_weight',
+    in_weight = fields.Float('Kilos Ingresados', #compute='_compute_in_weight',
                              digits=dp.get_precision('Product Unit of Measure'), store=True)
 
-    out_weight = fields.Float('Kilos Producidos', compute='_compute_out_weight',
+    out_weight = fields.Float('Kilos Producidos', #compute='_compute_out_weight',
                               digits=dp.get_precision('Product Unit of Measure'), store=True)
 
-    pt_out_weight = fields.Float('Kilos Producidos del PT', compute='_compute_pt_out_weight',
+    pt_out_weight = fields.Float('Kilos Producidos del PT',# compute='_compute_pt_out_weight',
                                  digits=dp.get_precision('Product Unit of Meausure'), store=True)
 
-    producers_id = fields.Many2many('res.partner', 'Productores', compute='_compute_producers_id')
+    producers_id = fields.Many2many('res.partner', 'Productores', #compute='_compute_producers_id')
 
-    pallet_qty = fields.Integer('Cantidad de Pallets', compute='_compute_pallet_qty')
+    pallet_qty = fields.Integer('Cantidad de Pallets', #compute='_compute_pallet_qty')
 
-    pallet_content = fields.Float('Kilos Totales', compute='_compute_pallet_content')
+    pallet_content = fields.Float('Kilos Totales', #compute='_compute_pallet_content')
 
-    pallet_serial = fields.Integer('Total de Series', compute='_compute_pallet_serial')
-
-    @api.multi
-    def _compute_pallet_content(self):
-        for item in self:
-            if item.manufacturing_pallet_ids:
-                item.pallet_content = sum(item.manufacturing_pallet_ids.mapped('total_content_weight'))
-
-    @api.multi
-    def _compute_pallet_serial(self):
-        for item in self:
-            if item.manufacturing_pallet_ids:
-                item.pallet_serial = len(item.manufacturing_pallet_ids.mapped('lot_serial_ids'))
-
-    @api.multi
-    def _compute_pallet_qty(self):
-        for item in self:
-            if item.manufacturing_pallet_ids:
-                item.pallet_qty = len(item.manufacturing_pallet_ids)
-
-    @api.multi
-    def _compute_producers_id(self):
-        for item in self:
-            if item.potential_serial_planned_ids:
-                item.producers_id = item.potential_serial_planned_ids.mapped('producer_id')
-            else:
-                item.producers_id = item.potential_serial_planned_ids.mapped('producer_id')
-
-    @api.depends('potential_serial_planned_ids')
-    @api.multi
-    def _compute_in_weight(self):
-        for item in self:
-            if item.potential_serial_planned_ids:
-                item.in_weight = sum(item.potential_serial_planned_ids.mapped('real_weight'))
-
-    @api.depends('summary_out_serial_ids')
-    @api.multi
-    def _compute_out_weight(self):
-        for item in self:
-            if item.summary_out_serial_ids:
-                item.out_weight = sum(item.summary_out_serial_ids.mapped('real_weight'))
-
-    @api.depends('summary_out_serial_ids')
-    @api.multi
-    def _compute_pt_out_weight(self):
-        for item in self:
-            if item.summary_out_serial_ids:
-                item.pt_out_weight = sum(
-                    item.summary_out_serial_ids.filtered(lambda a: 'PT' in a.product_id.default_code).mapped(
-                        'real_weight'))
-
-    @api.multi
-    def show_in_serials(self):
-        self.ensure_one()
-        return {
-            'name': "Series de Entrada",
-            'view_type': 'form',
-            'view_mode': 'tree,graph,form,pivot',
-            'res_model': 'stock.production.lot.serial',
-            'view_id': False,
-            'type': 'ir.actions.act_window',
-            'views': [
-                [self.env.ref('dimabe_manufacturing.stock_production_lot_serial_process_in_form_view').id, 'tree']],
-            'context': self.env.context,
-            'domain': [('id', 'in', self.potential_serial_planned_ids.mapped("id"))]
-        }
-
-    @api.multi
-    def show_out_serials(self):
-        self.ensure_one()
-        return {
-            'name': "Series de Salida",
-            'view_type': 'form',
-            'view_mode': 'tree,graph,form,pivot',
-            'res_model': 'stock.production.lot.serial',
-            'view_id': False,
-            'type': 'ir.actions.act_window',
-            'views': [
-                [self.env.ref('dimabe_manufacturing.stock_production_lot_serial_process_out_form_view').id, 'tree']],
-            'context': self.env.context,
-            'domain': [('id', 'in', self.summary_out_serial_ids.mapped("id"))]
-        }
-
+    pallet_serial = fields.Integer('Total de Series',#compute='_compute_pallet_seri al')
+    #
     # @api.multi
-    # def _compute_lot_produced(self):
+    # def _compute_pallet_content(self):
     #     for item in self:
-    #         if len(item.production_finished_move_line_ids) > 1:
-    #             item.lot_produced_id = item.production_finished_move_line_ids.filtered(
-    #                 lambda a: a.product_id == item.product_id.id).lot_id.id
-    #         item.lot_produced_id = item.final_lot_id.id
-
-    @api.multi
-    def compute_is_match(self):
-        for item in self:
-            item.is_match = item.production_id.routing_id.code == 'RO/00006'
-
-    @api.multi
-    def _compute_there_is_serial_without_pallet(self):
-        for item in self:
-            if item.summary_out_serial_ids:
-                item.there_is_serial_without_pallet = len(item.summary_out_serial_ids.filtered(
-                    lambda a: not a.pallet_id)) > 0
-
-    @api.multi
-    def _compute_manufacturing_pallet_ids(self):
-        for item in self:
-            if item.summary_out_serial_ids:
-                pallet_ids = []
-                for pallet_id in item.summary_out_serial_ids.mapped('pallet_id'):
-                    if pallet_id.id not in pallet_ids:
-                        pallet_ids.append(pallet_id.id)
-                if pallet_ids:
-                    item.manufacturing_pallet_ids = [(4, pallet_id) for pallet_id in pallet_ids]
-
-    @api.onchange('qty_producing')
-    def _onchange_qty_producing(self):
-        print('se inhabilita este método')
+    #         if item.manufacturing_pallet_ids:
+    #             item.pallet_content = sum(item.manufacturing_pallet_ids.mapped('total_content_weight'))
+    #
+    # @api.multi
+    # def _compute_pallet_serial(self):
+    #     for item in self:
+    #         if item.manufacturing_pallet_ids:
+    #             item.pallet_serial = len(item.manufacturing_pallet_ids.mapped('lot_serial_ids'))
+    #
+    # @api.multi
+    # def _compute_pallet_qty(self):
+    #     for item in self:
+    #         if item.manufacturing_pallet_ids:
+    #             item.pallet_qty = len(item.manufacturing_pallet_ids)
+    #
+    # @api.multi
+    # def _compute_producers_id(self):
+    #     for item in self:
+    #         if item.potential_serial_planned_ids:
+    #             item.producers_id = item.potential_serial_planned_ids.mapped('producer_id')
+    #         else:
+    #             item.producers_id = item.potential_serial_planned_ids.mapped('producer_id')
+    #
+    # @api.depends('potential_serial_planned_ids')
+    # @api.multi
+    # def _compute_in_weight(self):
+    #     for item in self:
+    #         if item.potential_serial_planned_ids:
+    #             item.in_weight = sum(item.potential_serial_planned_ids.mapped('real_weight'))
+    #
+    # @api.depends('summary_out_serial_ids')
+    # @api.multi
+    # def _compute_out_weight(self):
+    #     for item in self:
+    #         if item.summary_out_serial_ids:
+    #             item.out_weight = sum(item.summary_out_serial_ids.mapped('real_weight'))
+    #
+    # @api.depends('summary_out_serial_ids')
+    # @api.multi
+    # def _compute_pt_out_weight(self):
+    #     for item in self:
+    #         if item.summary_out_serial_ids:
+    #             item.pt_out_weight = sum(
+    #                 item.summary_out_serial_ids.filtered(lambda a: 'PT' in a.product_id.default_code).mapped(
+    #                     'real_weight'))
+    #
+    # @api.multi
+    # def show_in_serials(self):
+    #     self.ensure_one()
+    #     return {
+    #         'name': "Series de Entrada",
+    #         'view_type': 'form',
+    #         'view_mode': 'tree,graph,form,pivot',
+    #         'res_model': 'stock.production.lot.serial',
+    #         'view_id': False,
+    #         'type': 'ir.actions.act_window',
+    #         'views': [
+    #             [self.env.ref('dimabe_manufacturing.stock_production_lot_serial_process_in_form_view').id, 'tree']],
+    #         'context': self.env.context,
+    #         'domain': [('id', 'in', self.potential_serial_planned_ids.mapped("id"))]
+    #     }
+    #
+    # @api.multi
+    # def show_out_serials(self):
+    #     self.ensure_one()
+    #     return {
+    #         'name': "Series de Salida",
+    #         'view_type': 'form',
+    #         'view_mode': 'tree,graph,form,pivot',
+    #         'res_model': 'stock.production.lot.serial',
+    #         'view_id': False,
+    #         'type': 'ir.actions.act_window',
+    #         'views': [
+    #             [self.env.ref('dimabe_manufacturing.stock_production_lot_serial_process_out_form_view').id, 'tree']],
+    #         'context': self.env.context,
+    #         'domain': [('id', 'in', self.summary_out_serial_ids.mapped("id"))]
+    #     }
+    #
+    # # @api.multi
+    # # def _compute_lot_produced(self):
+    # #     for item in self:
+    # #         if len(item.production_finished_move_line_ids) > 1:
+    # #             item.lot_produced_id = item.production_finished_move_line_ids.filtered(
+    # #                 lambda a: a.product_id == item.product_id.id).lot_id.id
+    # #         item.lot_produced_id = item.final_lot_id.id
+    #
+    # @api.multi
+    # def compute_is_match(self):
+    #     for item in self:
+    #         item.is_match = item.production_id.routing_id.code == 'RO/00006'
+    #
+    # @api.multi
+    # def _compute_there_is_serial_without_pallet(self):
+    #     for item in self:
+    #         if item.summary_out_serial_ids:
+    #             item.there_is_serial_without_pallet = len(item.summary_out_serial_ids.filtered(
+    #                 lambda a: not a.pallet_id)) > 0
+    #
+    # @api.multi
+    # def _compute_manufacturing_pallet_ids(self):
+    #     for item in self:
+    #         if item.summary_out_serial_ids:
+    #             pallet_ids = []
+    #             for pallet_id in item.summary_out_serial_ids.mapped('pallet_id'):
+    #                 if pallet_id.id not in pallet_ids:
+    #                     pallet_ids.append(pallet_id.id)
+    #             if pallet_ids:
+    #                 item.manufacturing_pallet_ids = [(4, pallet_id) for pallet_id in pallet_ids]
+    #
+    # @api.onchange('qty_producing')
+    # def _onchange_qty_producing(self):
+    #     print('se inhabilita este método')
 
     @api.multi
     def _compute_potential_lot_planned_ids(self):
@@ -272,40 +272,40 @@ class MrpWorkorder(models.Model):
                 'reserved_to_production_id': self.production_id.id,
                 'consumed': True
             })
-
-    @api.multi
-    def _compute_summary_out_serial_ids(self):
-        for item in self:
-            if item.final_lot_id:
-                item.summary_out_serial_ids = item.final_lot_id.stock_production_lot_serial_ids
-                if item.byproduct_move_line_ids:
-                    item.summary_out_serial_ids += item.byproduct_move_line_ids.filtered(
-                        lambda a: a.lot_id not in item.potential_serial_planned_ids.mapped(
-                            'stock_production_lot_id')).mapped(
-                        'lot_id'
-                    ).mapped(
-                        'stock_production_lot_serial_ids'
-                    )
-            else:
-                item.summary_out_serial_ids = item.production_finished_move_line_ids.filtered(
-                    lambda a: a.lot_id not in item.potential_serial_planned_ids.mapped(
-                        'stock_production_lot_id')).mapped(
-                    'lot_id'
-                ).mapped(
-                    'stock_production_lot_serial_ids'
-                )
-
-    @api.multi
-    def _compute_byproduct_move_line_ids(self):
-        for item in self:
-            if not item.byproduct_move_line_ids:
-                item.byproduct_move_line_ids = item.active_move_line_ids.filtered(lambda a: not a.is_raw)
-
-    @api.multi
-    def _compute_material_product_ids(self):
-        for item in self:
-            if not item.material_product_ids:
-                item.material_product_ids = item.production_id.move_raw_ids.mapped('product_id')
+    #
+    # @api.multi
+    # def _compute_summary_out_serial_ids(self):
+    #     for item in self:
+    #         if item.final_lot_id:
+    #             item.summary_out_serial_ids = item.final_lot_id.stock_production_lot_serial_ids
+    #             if item.byproduct_move_line_ids:
+    #                 item.summary_out_serial_ids += item.byproduct_move_line_ids.filtered(
+    #                     lambda a: a.lot_id not in item.potential_serial_planned_ids.mapped(
+    #                         'stock_production_lot_id')).mapped(
+    #                     'lot_id'
+    #                 ).mapped(
+    #                     'stock_production_lot_serial_ids'
+    #                 )
+    #         else:
+    #             item.summary_out_serial_ids = item.production_finished_move_line_ids.filtered(
+    #                 lambda a: a.lot_id not in item.potential_serial_planned_ids.mapped(
+    #                     'stock_production_lot_id')).mapped(
+    #                 'lot_id'
+    #             ).mapped(
+    #                 'stock_production_lot_serial_ids'
+    #             )
+    #
+    # @api.multi
+    # def _compute_byproduct_move_line_ids(self):
+    #     for item in self:
+    #         if not item.byproduct_move_line_ids:
+    #             item.byproduct_move_line_ids = item.active_move_line_ids.filtered(lambda a: not a.is_raw)
+    #
+    # @api.multi
+    # def _compute_material_product_ids(self):
+    #     for item in self:
+    #         if not item.material_product_ids:
+    #             item.material_product_ids = item.production_id.move_raw_ids.mapped('product_id')
 
     @api.model
     def create(self, values_list):
