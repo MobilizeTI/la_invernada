@@ -431,11 +431,10 @@ class MrpWorkorder(models.Model):
     @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
         self.ensure_one()
-        models._logger.error('Antes : {}'.format(self.confirmed_serial))
         res = self.on_barcode_scanned(self.confirmed_serial)
-        models._logger.error(self.confirmed_serial)
-        if res and 'warning' in res and 'message' in res['warning']:
-            raise models.ValidationError(res['warning']['message'])
+        return res
+        # if res and 'warning' in res and 'message' in res['warning']:
+        #     raise models.ValidationError(res['warning']['message'])
 
     def on_barcode_scanned(self, barcode):
         self.ensure_one()
