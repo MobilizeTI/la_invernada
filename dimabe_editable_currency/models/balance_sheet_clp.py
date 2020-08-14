@@ -8,6 +8,10 @@ class ModelName(models.Model):
     _name = 'balance.sheet.clp'
     _description = 'Balance de Situacion CLP'
 
+    _sql_constraints = [
+        ('account_uniq', 'UNIQUE(account_id)', 'los datos de la cuenta ya se encuentra en el sistema.')
+    ]
+
     currency_id = fields.Many2one('res.currency', 'Moneda',
                                   default=lambda self: self.env['res.currency'].search([('name', '=', 'CLP')]))
 
@@ -33,8 +37,9 @@ class ModelName(models.Model):
     def get_balance_clp(self):
         for item in self:
             account_ids = self.env['account.account'].search([('company_id', '=', self.env.user.company_id.id)])
-            raise models.ValidationError(
-                'Nombres :{} , Cantidad : {}'.format(account_ids.mapped('name'), len(account_ids)))
+            for account in account_ids:
+                ac_move_line = self.env['account.move.line'].search([('account_id','=',account.id)])
+                models._logger.error(ac_move_line)
 
     @api.multi
     @api.depends('account_id')
