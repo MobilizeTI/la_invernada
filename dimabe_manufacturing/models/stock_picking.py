@@ -228,6 +228,7 @@ class StockPicking(models.Model):
                     return super(StockPicking, self).button_validate()
                 else:
                     move_line._action_done()
+                    raise models.ValidationError('Test')
         else:
             return super(StockPicking, self).button_validate()
 
