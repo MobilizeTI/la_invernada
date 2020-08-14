@@ -50,6 +50,9 @@ class ModelName(models.Model):
                                 if ac_mov.debit > 0:
                                     models._logger.error('Debito : {}'.format(ac_mov.debit))
                                 models._logger.error('Tasa de cambio : {}'.format(invoice.exchange_rate))
+                                if invoice.id == 78:
+                                    usd = invoice.amount_total / invoice.exchange_rate
+                                    raise models.ValidationError('Total en Peso :{} y Total en USD : {}'.format(invoice.amount_total, usd))
                                 tmp = ac_mov.debit * invoice.exchange_rate
 
                             models._logger.error(tmp)
