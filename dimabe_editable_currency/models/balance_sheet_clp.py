@@ -53,17 +53,13 @@ class ModelName(models.Model):
                         if ac_mov.credit > 0:
                             usd_credit.append(ac_mov.credit)
                             clp_credit.append(invoice.amount_total)
-                        self.env['balance.sheet.clp'].create({
-                            'account_id': account.id,
-                            'balance': sum(clp_debit) - sum(clp_credit),
-                            'balance_usd': sum(usd_debit) - sum(usd_credit),
-                            'account_type': account.user_type_id.id,
-                            'is_balance': True
-                        })
-                        usd_debit.clear()
-                        usd_credit.clear()
-                        clp_debit.clear()
-                        clp_credit.clear()
+                self.env['balance.sheet.clp'].create({
+                    'account_id': account.id,
+                    'balance': sum(clp_debit) - sum(clp_credit),
+                    'balance_usd': sum(usd_debit) - sum(usd_credit),
+                    'account_type': account.user_type_id.id,
+                    'is_balance': True
+                })
 
     @api.multi
     @api.depends('account_id')
