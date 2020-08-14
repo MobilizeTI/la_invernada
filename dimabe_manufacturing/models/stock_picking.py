@@ -228,7 +228,13 @@ class StockPicking(models.Model):
                     return super(StockPicking, self).button_validate()
                 else:
                     move_line.write({
-                        'state':'done'
+                        'state':'done',
+                        'qty_done':0
+                    })
+                    move_line.move_id.write({
+                        'state':'done',
+                        'product_uom_qty':0,
+                        'quantity_done': 0
                     })
                     self.write({
                         'state':'done'
