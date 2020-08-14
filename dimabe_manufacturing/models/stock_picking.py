@@ -240,8 +240,6 @@ class StockPicking(models.Model):
                     })
                     move_line.move_id.write({
                         'state': 'done',
-                        'product_uom_qty': 0,
-                        'quantity_done': 0
                     })
                     self.write({
                         'state': 'done'
