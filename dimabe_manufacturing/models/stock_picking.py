@@ -226,6 +226,8 @@ class StockPicking(models.Model):
                 if self.picking_type_id.warehouse_id.id == 17 and self.picking_type_code != 'outgoing':
                     move_line._action_done()
                     return super(StockPicking, self).button_validate()
+                else:
+                    return super(StockPicking,self).button_validate()
         else:
             return super(StockPicking, self).button_validate()
 
