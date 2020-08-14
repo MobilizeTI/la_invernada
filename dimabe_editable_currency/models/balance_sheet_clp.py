@@ -39,7 +39,8 @@ class ModelName(models.Model):
             account_ids = self.env['account.account'].search([('company_id', '=', self.env.user.company_id.id)])
             for account in account_ids:
                 ac_move_line = self.env['account.move.line'].search([('account_id','=',account.id)])
-                models._logger.error(ac_move_line)
+                if ac_move_line:
+                    models._logger.error(ac_move_line.mapped('invoice_id'))
 
     @api.multi
     @api.depends('account_id')
