@@ -222,13 +222,15 @@ class StockPicking(models.Model):
                 raise models.UserError('No existe ningun campo en operaciones detalladas')
             if self.move_line_ids_without_package.filtered(lambda a: a.qty_done == 0):
                 raise models.UserError('No ha ingresado la cantidad realizada')
-            for move_line in self.move_line_ids:
+            for move_line in self.move_line_ids_without_package:
                 if self.picking_type_id.warehouse_id.id == 17 and self.picking_type_code != 'outgoing':
                     move_line._action_done()
                     return super(StockPicking, self).button_validate()
                 else:
                     move_line._action_done()
-                    raise models.ValidationError('Test')
+                    self.write({
+                        'state':'done'
+                    })
         else:
             return super(StockPicking, self).button_validate()
 
