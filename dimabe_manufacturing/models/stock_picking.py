@@ -221,7 +221,7 @@ class StockPicking(models.Model):
                 quant = self.env['stock.quant'].search([('lot_id', '=', lot.id), ('location_id', '=',
                                                                                   lot.stock_production_lot_serial_ids.mapped(
                                                                                       'production_id').mapped(
-                                                                                      'location_src_id'))])
+                                                                                      'location_src_id').id)])
                 quant.write({
                     'quantity': available_kg
                 })
