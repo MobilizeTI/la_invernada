@@ -45,7 +45,10 @@ class ModelName(models.Model):
                             for invoice in ac_move_line.mapped('invoice_id'):
                                 models._logger.error('Cuenta {}'.format(ac_mov.account_id.name))
                                 models._logger.error('Linea {}'.format(ac_mov.display_name))
-                                models._logger.error('Debito : {}'.format(ac_mov.debit))
+                                if ac_mov.debit > 0:
+                                    models._logger.error('Credito {}'.format(ac_mov.credit))
+                                if ac_mov.credit > 0:
+                                    models._logger.error('Debito : {}'.format(ac_mov.debit))
                                 models._logger.error('Tasa de cambio : {}'.format(invoice.exchange_rate))
                                 tmp = ac_mov.debit * invoice.exchange_rate
 
