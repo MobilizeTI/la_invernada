@@ -41,10 +41,13 @@ class ModelName(models.Model):
                 ac_move_line = self.env['account.move.line'].search([('account_id','=',account.id)])
                 if ac_move_line:
                     for ac_mov in ac_move_line:
-                        for invoice in ac_move_line.mapped('invoice_id'):
-                            models._logger.error('Debito : {}'.format(ac_mov.debit))
-                            models._logger.error('Tasa de cambio : {}'.format(invoice.exchange_rate))
-                            tmp = ac_mov.debit * invoice.exchange_rate
+                        if ac_mov.invoice_id:
+                            for invoice in ac_move_line.mapped('invoice_id'):
+                                models._logger.error('Cuenta {}'.format(ac_mov.account_id.name))
+                                models._logger.error('Linea {}'.format(ac_mov.reference))
+                                models._logger.error('Debito : {}'.format(ac_mov.debit))
+                                models._logger.error('Tasa de cambio : {}'.format(invoice.exchange_rate))
+                                tmp = ac_mov.debit * invoice.exchange_rate
 
                             models._logger.error(tmp)
 
