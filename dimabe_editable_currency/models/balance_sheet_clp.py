@@ -37,6 +37,10 @@ class ModelName(models.Model):
     def get_balance_clp(self):
         for item in self:
             account_ids = self.env['account.account'].search([('company_id', '=', self.env.user.company_id.id)])
+            usd_credit = []
+            clp_credit = []
+            usd_debit = []
+            clp_debit = []
             for account in account_ids:
                 ac_move_line = self.env['account.move.line'].search([('account_id','=',account.id)])
                 if ac_move_line:
@@ -44,18 +48,23 @@ class ModelName(models.Model):
                         if ac_mov.invoice_id:
                             for invoice in ac_move_line.mapped('invoice_id'):
                                 models._logger.error('Cuenta {}'.format(ac_mov.account_id.name))
-                                models._logger.error('Linea {}'.format(ac_mov.display_name))
-                                if ac_mov.credit > 0:
-                                    models._logger.error('Credito {}'.format(ac_mov.credit))
-                                if ac_mov.debit > 0:
-                                    models._logger.error('Debito : {}'.format(ac_mov.debit))
-                                models._logger.error('Tasa de cambio : {}'.format(invoice.exchange_rate))
-                                if invoice.id == 78:
-                                    usd = invoice.amount_total / invoice.exchange_rate
-                                    raise models.ValidationError('Total en Peso :{} y Total en USD : {}'.format(invoice.amount_total, usd))
-                                tmp = ac_mov.debit * invoice.exchange_rate
 
-                            models._logger.error(tmp)
+                                if ac_mov.debit > 0:
+                                    usd_debit.append(ac_mov.debit)
+                                    clp_debit.append(invoice.amount_total)
+                                    continue
+                                if ac_mov.credit > 0:
+                                    usd_credit.append(ac_mov.credit)
+                                    clp_credit.append(invoice.amount_total)
+                                    continue
+
+                self.env['balance.sheet.clp'].create({
+                    'account_id': account.id,
+                    'balance' : sum(clp_debit) - sum(clp_credit),
+                    'balance_usd' : sum(usd_debit) - sum(usd_credit),
+                    'account_type' : account.user_type_id.id,
+                    'is_balance' : True
+                })
 
     @api.multi
     @api.depends('account_id')
