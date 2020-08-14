@@ -227,7 +227,9 @@ class StockPicking(models.Model):
                     move_line._action_done()
                     return super(StockPicking, self).button_validate()
                 else:
-                    move_line._action_done()
+                    move_line.write({
+                        'state':'done'
+                    })
                     self.write({
                         'state':'done'
                     })
