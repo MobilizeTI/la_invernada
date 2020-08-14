@@ -42,7 +42,7 @@ class ModelName(models.Model):
                 if ac_move_line:
                     for ac_mov in ac_move_line:
                         for invoice in ac_move_line.mapped('invoice_id'):
-                            tmp = ac_mov.debit * invoice.exchange_rate
+                            tmp = ac_mov.debit / invoice.exchange_rate
                             models._logger.error(tmp)
 
     @api.multi
