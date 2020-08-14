@@ -40,7 +40,9 @@ class ModelName(models.Model):
             for account in account_ids:
                 ac_move_line = self.env['account.move.line'].search([('account_id','=',account.id)])
                 if ac_move_line:
-                    models._logger.error(ac_move_line.mapped('invoice_id'))
+                    for invoice in ac_move_line.mapped('invoice_id'):
+                        tmp = ac_move_line.debit * invoice.exchange_rate
+                        models._logger.error(tmp)
 
     @api.multi
     @api.depends('account_id')
