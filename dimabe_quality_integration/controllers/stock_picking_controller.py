@@ -1,5 +1,6 @@
 from odoo import http, models
 from odoo.http import request
+import logging
 from datetime import date, timedelta
 import werkzeug
 
@@ -9,6 +10,8 @@ class StockPickingController(http.Controller):
     @http.route('/api/stock_pickings', type='json', methods=['GET'], auth='token', cors='*')
     def get_stock_pickings(self, sinceDate=None):
         date_to_search = sinceDate or (date.today() - timedelta(days=7))
+
+        _logger = logging.getLogger(__name__)
         result = request.env['stock.picking'].search([('write_date', '>', date_to_search)])
         data = []
         if result:
@@ -19,6 +22,7 @@ class StockPickingController(http.Controller):
                         kgs = int(res.production_net_weight)
                     else:
                         kgs = res.production_net_weight
+                    _logger.error(kgs)
                     data.append({
                         'ProducerCode': res.partner_id.id,
                         'ProducerName': res.partner_id.name,
