@@ -61,7 +61,6 @@
                 </xpath>
             </field>
         </record>
-
         <record id="mrp_production_workorder_form_view_inherit" model="ir.ui.view">
             <field name="name">formulario order de trabajo</field>
             <field name="model">mrp.workorder</field>

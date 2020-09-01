@@ -222,62 +222,65 @@ class StockPicking(models.Model):
                                                                                   lot.stock_production_lot_serial_ids.mapped(
                                                                                       'production_id').mapped(
                                                                                       'location_src_id'))])
+
                 quant.write({
                     'quantity': available_kg
                 })
-            if len(self.move_line_ids_without_package) == 0:
+                if len(self.move_line_ids_without_package) == 0:
                 raise models.UserError('No existe ningun campo en operaciones detalladas')
-            if self.move_line_ids_without_package.filtered(lambda a: a.qty_done == 0):
-                raise models.UserError('No ha ingresado la cantidad realizada')
-            for move_line in self.move_line_ids_without_package:
-                if self.picking_type_id.warehouse_id.id == 17 and self.picking_type_code != 'outgoing':
-                    move_line._action_done()
-                    return super(StockPicking, self).button_validate()
-                else:
-                    move_line.write({
-                        'state': 'done',
-                        'qty_done': 0
-                    })
-                    move_line.move_id.write({
-                        'state': 'done',
-                    })
-                    self.write({
-                        'state': 'done'
-                    })
-        else:
-            return super(StockPicking, self).button_validate()
-
-    def validate_barcode(self, barcode):
-        custom_serial = self.packing_list_ids.filtered(
-            lambda a: a.serial_number == barcode
-        )
-        if not custom_serial:
-            raise models.ValidationError('el código {} no corresponde a este despacho'.format(barcode))
-        return custom_serial
-
-    def on_barcode_scanned(self, barcode):
-
-        for item in self:
-            custom_serial = item.validate_barcode(barcode)
-            if custom_serial.consumed:
-                raise models.ValidationError('el código {} ya fue consumido'.format(barcode))
-
-            stock_move_line = self.move_line_ids_without_package.filtered(
-                lambda a: a.product_id == custom_serial.stock_production_lot_id.product_id and
-                          a.lot_id == custom_serial.stock_production_lot_id and
-                          a.product_uom_qty == custom_serial.display_weight and
-                          a.qty_done == 0
-            )
-
-            if len(stock_move_line) > 1:
-                stock_move_line[0].write({
-                    'qty_done': custom_serial.display_weight
-                })
+        if self.move_line_ids_without_package.filtered(lambda a: a.qty_done == 0):
+            raise models.UserError('No ha ingresado la cantidad realizada')
+        for move_line in self.move_line_ids_without_package:
+            if self.picking_type_id.warehouse_id.id == 17 and self.picking_type_code != 'outgoing':
+                move_line._action_done()
+                return super(StockPicking, self).button_validate()
             else:
-                stock_move_line.write({
-                    'qty_done': custom_serial.display_weight
+                move_line.write({
+                    'state': 'done',
+                    'qty_done': 0
+                })
+                move_line.move_id.write({
+                    'state': 'done',
+                })
+                self.write({
+                    'state': 'done'
                 })
 
-            custom_serial.sudo().write({
-                'consumed': True
+    else:
+    return super(StockPicking, self).button_validate()
+
+
+def validate_barcode(self, barcode):
+    custom_serial = self.packing_list_ids.filtered(
+        lambda a: a.serial_number == barcode
+    )
+    if not custom_serial:
+        raise models.ValidationError('el código {} no corresponde a este despacho'.format(barcode))
+    return custom_serial
+
+
+def on_barcode_scanned(self, barcode):
+    for item in self:
+        custom_serial = item.validate_barcode(barcode)
+        if custom_serial.consumed:
+            raise models.ValidationError('el código {} ya fue consumido'.format(barcode))
+
+        stock_move_line = self.move_line_ids_without_package.filtered(
+            lambda a: a.product_id == custom_serial.stock_production_lot_id.product_id and
+                      a.lot_id == custom_serial.stock_production_lot_id and
+                      a.product_uom_qty == custom_serial.display_weight and
+                      a.qty_done == 0
+        )
+
+        if len(stock_move_line) > 1:
+            stock_move_line[0].write({
+                'qty_done': custom_serial.display_weight
             })
+        else:
+            stock_move_line.write({
+                'qty_done': custom_serial.display_weight
+            })
+
+        custom_serial.sudo().write({
+            'consumed': True
+        })
