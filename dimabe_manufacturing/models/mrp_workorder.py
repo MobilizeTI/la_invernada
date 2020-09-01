@@ -223,13 +223,13 @@ class MrpWorkorder(models.Model):
             'domain': [('id', 'in', self.summary_out_serial_ids.mapped("id"))]
         }
 
-    # @api.multi
-    # def _compute_lot_produced(self):
-    #     for item in self:
-    #         if len(item.production_finished_move_line_ids) > 1:
-    #             item.lot_produced_id = item.production_finished_move_line_ids.filtered(
-    #                 lambda a: a.product_id == item.product_id.id).lot_id.id
-    #         item.lot_produced_id = item.final_lot_id.id
+    @api.multi
+    def _compute_lot_produced(self):
+        for item in self:
+            if len(item.production_finished_move_line_ids) > 1:
+                item.lot_produced_id = item.production_finished_move_line_ids.filtered(
+                    lambda a: a.product_id == item.product_id.id).lot_id.id
+            item.lot_produced_id = item.final_lot_id.id
 
     @api.multi
     def compute_is_match(self):
@@ -508,8 +508,4 @@ class MrpWorkorder(models.Model):
         quant = self.env['stock.quant'].search([('lot_id', '=', lot.id)])
         quant.write({
             'quantity': sum(lot.stock_production_lot_serial_ids.mapped('real_weight'))
-<<<<<<< HEAD
         })
-=======
-        })
->>>>>>> 29915eec60445685edc6c8ba9d0b6c4d0b838c31

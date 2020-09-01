@@ -12,7 +12,7 @@ class StockPickingController(http.Controller):
         date_to_search = sinceDate or (date.today() - timedelta(days=7))
 
         _logger = logging.getLogger(__name__)
-        result = request.env['stock.picking'].search([('write_date', '>', date_to_search)])
+        result = request.env['stock.picking'].search([])
         data = []
         if result:
             for res in result:
@@ -20,8 +20,6 @@ class StockPickingController(http.Controller):
                     kgs = 0
                     if res.production_net_weight.is_integer():
                         kgs = int(res.production_net_weight)
-                    _logger.error(kgs)
-                    _logger.error(res.production_net_weight)
                     data.append({
                         'ProducerCode': res.partner_id.id,
                         'ProducerName': res.partner_id.name,
@@ -29,7 +27,7 @@ class StockPickingController(http.Controller):
                         'LotNumber': res.name,
                         'DispatchGuideNumber': res.guide_number,
                         'ReceptionDate': res.scheduled_date or res.write_date,
-                        'ReceptionKgs': res.production_net_weight,
+                        'ReceptionKgs': kgs if kgs > 0 else res.production_net_weight,
                         'ContainerType': res.get_canning_move().product_id.display_name,
                         'ContainerWeightAverage': res.avg_unitary_weight,
                         'ContainerWeight': res.get_canning_move().product_id.weight,
