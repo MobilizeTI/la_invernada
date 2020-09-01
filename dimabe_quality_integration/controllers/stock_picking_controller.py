@@ -21,6 +21,7 @@ class StockPickingController(http.Controller):
                     if res.production_net_weight.is_integer():
                         kgs = int(res.production_net_weight)
                     _logger.error(kgs)
+                    _logger.error(res.production_net_weight)
                     data.append({
                         'ProducerCode': res.partner_id.id,
                         'ProducerName': res.partner_id.name,
@@ -28,7 +29,7 @@ class StockPickingController(http.Controller):
                         'LotNumber': res.name,
                         'DispatchGuideNumber': res.guide_number,
                         'ReceptionDate': res.scheduled_date or res.write_date,
-                        'ReceptionKgs': kgs if kgs > 0 else res.production_net_weight,
+                        'ReceptionKgs': res.production_net_weight,
                         'ContainerType': res.get_canning_move().product_id.display_name,
                         'ContainerWeightAverage': res.avg_unitary_weight,
                         'ContainerWeight': res.get_canning_move().product_id.weight,
