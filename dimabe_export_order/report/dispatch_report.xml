@@ -808,13 +808,17 @@
             <div class="page">
                 <t t-foreach="docs.sorted(key=lambda x: x.counter)" t-as="o">
                     <t t-if="o.counter == 3 or o.counter == 6 or o.counter == 9">
-                        <img style="width:229px;height:305px;" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
-                        />
+                        <div style="width:229px;height:305px;">
+                            <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
+                            />
+                        </div>
                         <br/>
                     </t>
                     <t t-else="">
-                        <img style="width:229px;height:305px;" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
-                        />
+                        <div style="width:229px;height:305px;">
+                            <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
+                            />
+                        </div>
                     </t>
                     <t t-if="docs[-1].id == o.id">
                         <span style="style='page-break-before:avoid;'"/>
