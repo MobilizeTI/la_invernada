@@ -255,11 +255,11 @@ class StockPicking(models.Model):
         if not self.have_picture_report:
             for item in self.pictures:
                 if item.counter >= 9:
-                    item.datas = tools.image_resize_image_big(
+                    item.datas = tools.image_resize_image_medium(
                         item.datas, size=(229, 305)
                     )
                 else:
-                    item.datas = tools.image_resize_image_big(
+                    item.datas = tools.image_resize_image_medium(
                         item.datas, size=(241, 320)
                     )
 
