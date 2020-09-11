@@ -813,7 +813,7 @@
                         <br/>
                     </t>
                     <t t-else="">
-                        <img t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
+                        <img style="width:229px;height:305px;" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
                         />
                     </t>
                     <t t-if="docs[-1].id == o.id">
