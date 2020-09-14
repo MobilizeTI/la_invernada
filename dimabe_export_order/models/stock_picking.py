@@ -253,15 +253,15 @@ class StockPicking(models.Model):
     @api.multi
     def generate_report(self):
 
-        # for item in self.pictures:
-        #     if item.counter >= 9:
-        #         item.datas = tools.image_resize_image_big(
-        #             item.datas
-        #         )
-        #     else:
-        #         item.datas = tools.image_resize_image_big(
-        #             item.datas
-        #         )
+        for item in self.pictures:
+            if item.counter >= 9:
+                item.datas = tools.image_resize_image_big(
+                    item.datas,size=(3648,2736)
+                )
+            else:
+                item.datas = tools.image_resize_image_big(
+                    item.datas
+                )
 
         self.write({
             'have_picture_report': True
