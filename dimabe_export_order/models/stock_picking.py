@@ -256,11 +256,11 @@ class StockPicking(models.Model):
         for item in self.pictures:
             if item.counter >= 9:
                 item.datas = tools.image_resize_image_big(
-                    item.datas,size=(1,1)
+                    item.datas,size=(100000000000000000,100000000000000)
                 )
             else:
                 item.datas = tools.image_resize_image_big(
-                    item.datas,size=(1,1)
+                    item.datas,size=(10000000000000000000000,1000000000000000000000)
                 )
 
         self.write({
