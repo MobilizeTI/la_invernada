@@ -252,20 +252,20 @@ class StockPicking(models.Model):
 
     @api.multi
     def generate_report(self):
-        if not self.have_picture_report:
-            for item in self.pictures:
-                if item.counter >= 9:
-                    item.datas = tools.image_resize_image_medium(
-                        item.datas, size=(250, 350)
-                    )
-                else:
-                    item.datas = tools.image_resize_image_medium(
-                        item.datas, size=(260, 360)
-                    )
-
-            self.write({
-                'have_picture_report': True
-            })
+        # if not self.have_picture_report:
+        #     for item in self.pictures:
+        #         if item.counter >= 9:
+        #             item.datas = tools.image_resize_image_medium(
+        #                 item.datas, size=(250, 350)
+        #             )
+        #         else:
+        #             item.datas = tools.image_resize_image_medium(
+        #                 item.datas, size=(260, 360)
+        #             )
+        #
+        #     self.write({
+        #         'have_picture_report': True
+        #     })
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
             .report_action(self.pictures)
 
