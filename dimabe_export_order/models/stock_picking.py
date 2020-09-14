@@ -4,6 +4,7 @@ from PIL import Image
 import io
 import base64
 import codecs
+import file
 
 
 class StockPicking(models.Model):
@@ -254,13 +255,15 @@ class StockPicking(models.Model):
     def generate_report(self):
 
         for item in self.pictures:
+            file = open(item.datas)
+            raise models.ValidationError(file)
             if item.counter >= 9:
                 item.datas = tools.image_resize_image_big(
                     item.datas,size=(3648,2736)
                 )
             else:
                 item.datas = tools.image_resize_image_big(
-                    item.datas
+                    item.datas,size=(3648,2736)
                 )
 
         self.write({
