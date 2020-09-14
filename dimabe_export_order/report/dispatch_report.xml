@@ -808,12 +808,12 @@
             <div class="page">
                 <t t-foreach="docs.sorted(key=lambda x: x.counter)" t-as="o">
                     <t t-if="o.counter == 3 or o.counter == 6 or o.counter == 9">
-                        <img style="width:200px;height:350px;" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
+                        <img style="width:250px;height:300px;" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
                         />
-                        <br/>
+                        <br style="line-height:0px;"/>
                     </t>
                     <t t-else="">
-                        <img style="width:200px;height:350px;" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
+                        <img style="width:200px;height:300px;" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
                         />
                     </t>
                     <t t-if="docs[-1].id == o.id">
