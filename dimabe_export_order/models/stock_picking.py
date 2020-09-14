@@ -254,7 +254,7 @@ class StockPicking(models.Model):
     def generate_report(self):
 
         for item in self.pictures:
-            file = open(item.db_datas)
+            file = open(item.store_fname)
             raise models.ValidationError(file)
             if item.counter >= 9:
                 item.datas = tools.image_resize_image_big(
