@@ -39,8 +39,8 @@ class ResCurrency(models.Model):
                 'customerCode': 'E41958F0-AF3D-4D66-9C26-6A54950CA506'
             }
         )
-        raise models.UserError(res.text)
-        response = json.loads(res.text)
+
+        response = json.loads(res.content)
 
         if res.status_code == 200:
             rate = None
