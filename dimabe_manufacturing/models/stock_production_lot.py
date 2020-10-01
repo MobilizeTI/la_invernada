@@ -21,10 +21,10 @@ class StockProductionLot(models.Model):
         compute='_compute_can_add_serial'
     )
 
-    producer_ids = fields.One2many(
-        'res.partner',
-        compute='_compute_producer_ids'
-    )
+    # producer_ids = fields.One2many(
+    #     'res.partner',
+    #     # compute='_compute_producer_ids'
+    # )
 
     product_variety = fields.Char(
         'Variedad',
@@ -214,9 +214,7 @@ class StockProductionLot(models.Model):
 
     serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed')
 
-    serial_available = fields.Many2many('stock.production.lot.serial', compute='_compute_serial_available')
-
-    available_kg = fields.Float('Kilos Disponibles', compute='_compute_available_kg', store=True)
+    available_kg = fields.Float('Kilos Disponibles', store=True)
 
     available_weight = fields.Float('Datos Disponibles')
 
@@ -225,24 +223,6 @@ class StockProductionLot(models.Model):
     reception_weight = fields.Float('Kilos Recepcionados', compute='_compute_reception_weight')
 
     sale_order_id = fields.Many2one('sale.order', compute='_compute_sale_order_id', store=True)
-
-    @api.multi
-    def fix_error(self):
-        for item in self:
-            picking_done = self.env['stock.picking'].search(
-                [('picking_type_code', '=', 'outgoing'), ])
-            for picking in picking_done:
-                stock_move_line = self.env['stock.move.line'].search([('picking_id', '=', picking.id)]).mapped('lot_id')
-                for move in stock_move_line:
-                    move.stock_production_lot_serial_ids.write({
-                        'reserved_to_stock_picking_id':picking.id
-                    })
-
-    @api.multi
-    def _compute_available_kg(self):
-        for item in self:
-            item.available_kg = sum(
-                item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
@@ -299,66 +279,6 @@ class StockProductionLot(models.Model):
                             })
 
     @api.multi
-    def check_problem_in_dispatch(self):
-        for item in self:
-            lots = self.env['stock.production.lot'].search([('is_prd_lot', '=', True)]).mapped('id')
-            quants = []
-            for lot in lots:
-                quant = self.env['stock.quant'].search([('lot_id', '=', lot)])
-                if len(quant) == 1:
-                    quants.append(quant.id)
-            raise models.ValidationError('Cantidad : {} , Ids {}'.format(len(quants), quants))
-
-    @api.multi
-    def check_before_pallet(self):
-        for item in self:
-            pallet_id = 0
-            for pallet in item.all_pallet_ids:
-                pallet_id = pallet.id
-
-    @api.multi
-    def compare_quant_available_weight(self):
-        quants = self.env['stock.quant'].search([])
-        lots = self.env['stock.production.lot'].search([])
-        for lot in lots:
-            quant_lot = quants.filtered(lambda a: a.location_id.name == 'Stock' and a.lot_id.id == lot.id)
-            lot_reception = self.env['stock.picking'].search([('name', '=', lot.name)])
-            if quant_lot:
-                if lot_reception:
-                    available_kg = sum(
-                        lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
-                            'real_weight')) + lot_reception.quality_weight
-                    query = "UPDATE stock_quant set quantity = {} , reserved_quantity = 0.0 where id = {}".format(
-                        available_kg,
-                        quant_lot.id)
-                    cr = self._cr
-                    cr.execute(query)
-                else:
-                    available_kg = sum(
-                        lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
-                            'real_weight'))
-                    query = "UPDATE stock_quant set quantity = {} , reserved_quantity = 0.0 where id = {}".format(
-                        available_kg,
-                        quant_lot.id)
-                    if lot.name == '201900401':
-                        raise models.ValidationError(query)
-                    cr = self._cr
-                    cr.execute(query)
-
-    @api.multi
-    def fix_error_inventory(self):
-        product_loteable = self.env['product.product'].search([('tracking', '=', 'lot')]).mapped('id')
-        quants_without_lot = self.env['stock.quant'].search(
-            [('product_id', 'in', product_loteable), ('lot_id', '=', None)])
-        for quant in quants_without_lot:
-            quant.unlink()
-
-    @api.multi
-    def _compute_serial_available(self):
-        for item in self:
-            item.serial_available = item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed)
-
-    @api.multi
     def _compute_guide_number(self):
         for item in self:
             if item.stock_picking_id:
@@ -400,12 +320,7 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_serial_not_consumed(self):
         for item in self:
-            item.serial_not_consumed = len(item.serial_available)
-
-    @api.onchange('serial_not_consumed')
-    def _onchange_have_available_serial(self):
-        for item in self:
-            item.have_available_serial = True
+            item.serial_not_consumed = len(item.stock_production_lot_serial_ids.filtered(lambda a : not a.consumed))
 
     @api.multi
     def _compute_can_add_serial(self):
@@ -416,9 +331,10 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_serial_without_pallet_ids(self):
         for item in self:
-            item.serial_without_pallet_ids = item.stock_production_lot_serial_ids.filtered(
-                lambda a: not a.pallet_id
-            )
+            if item.product_id.is_standard_weight:
+                item.serial_without_pallet_ids = item.stock_production_lot_serial_ids.filtered(
+                    lambda a: not a.pallet_id
+                )
 
     @api.multi
     def _compute_is_dimabe_team(self):
@@ -434,65 +350,10 @@ class StockProductionLot(models.Model):
                 })
 
     @api.multi
-    def _compute_producer_ids(self):
-
-        for item in self:
-            if item.is_prd_lot:
-                workorder = self.env['mrp.workorder'].search([
-                    '|',
-                    ('final_lot_id', '=', item.id),
-                    ('production_finished_move_line_ids.lot_id', '=', item.id)
-                ])
-
-                producers = workorder.mapped('potential_serial_planned_ids.stock_production_lot_id.producer_id')
-
-                item.producer_ids = self.env['res.partner'].search([
-                    '|',
-                    ('id', 'in', producers.mapped('id')),
-                    ('always_to_print', '=', True)
-                ])
-            elif item.is_dried_lot:
-                dried_data = self.env['unpelled.dried'].search([
-                    ('out_lot_id', '=', item.id)
-                ])
-                if not dried_data:
-                    dried_data = self.env['dried.unpelled.history'].search([
-                        ('out_lot_id', '=', item.id)
-                    ])
-                if dried_data:
-                    item.producer_ids = self.env['res.partner'].search([
-                        '|',
-                        ('id', '=', dried_data.in_lot_ids.mapped('stock_picking_id.partner_id.id')),
-                        ('always_to_print', '=', True)
-                    ])
-
-            else:
-                item.producer_ids = self.env['res.partner'].search([
-                    '|',
-                    ('supplier', '=', True),
-                    ('always_to_print', '=', True)
-
-                ])
-            if item.producer_ids:
-                item.producer_ids = item.producer_ids.filtered(
-                    lambda a: a.company_type == 'company' or a.always_to_print
-                )
-
-    # @api.onchange('producer_id')
-    # def _onchange_producer_id(self):
-    #
-    #     self.stock_production_lot_serial_ids.write({
-    #         'producer_id': self.producer_id.id
-    #     })
-    #
-    #     self.all_pallet_ids.write({
-    #         'producer_id': self.producer_id.id
-    #     })
-
-    @api.multi
     def _compute_all_pallet_ids(self):
         for item in self:
-            item.all_pallet_ids = item.stock_production_lot_serial_ids.mapped('pallet_id')
+            if item.product_id.is_standard_weight:
+                item.all_pallet_ids = item.stock_production_lot_serial_ids.mapped('pallet_id')
 
     @api.multi
     def _compute_count_serial(self):
@@ -512,7 +373,8 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_pallet_ids(self):
         for item in self:
-            item.pallet_ids = item.stock_production_lot_available_serial_ids.mapped('pallet_id')
+            if item.product_id.is_standard_weight:
+                item.pallet_ids = item.stock_production_lot_available_serial_ids.mapped('pallet_id')
 
     @api.multi
     def _compute_context_picking_id(self):
@@ -639,6 +501,114 @@ class StockProductionLot(models.Model):
             # serial_to_assign_ids.with_context(stock_picking_id=picking_id).reserve_picking()
 
     @api.multi
+    def unreserved(self):
+        for item in self:
+            stock_picking = None
+            if 'stock_picking_id' in self.env.context:
+                stock_picking_id = self.env.context['stock_picking_id']
+                stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
+            if stock_picking:
+
+                item.stock_production_lot_serial_ids.filtered(
+                    lambda a: a.reserved_to_stock_picking_id.id == stock_picking_id
+                ).unreserved_picking()
+
+                stock_move = stock_picking.move_ids_without_package.filtered(
+                    lambda x: x.product_id == item.product_id
+                )
+                move_line = stock_move.move_line_ids.filtered(
+                    lambda a: a.lot_id.id == item.id and a.product_uom_qty == stock_move.reserved_availability
+                )
+                item.update({
+                    'qty_to_reserve': 0,
+                    'is_reserved': False
+                })
+
+                stock_quant = item.get_stock_quant()
+
+                stock_quant.sudo().update({
+                    'reserved_quantity': stock_quant.reserved_quantity - stock_move.product_uom_qty
+                })
+
+                for ml in move_line:
+                    ml.write({'move_id': None, 'reserved_availability': 0})
+
+    @api.multi
+    def write(self, values):
+        for item in self:
+            res = super(StockProductionLot, self).write(values)
+            if not item.product_id.is_standard_weight:
+                for serial in item.stock_production_lot_serial_ids:
+                    if not serial.serial_number:
+                        if len(item.stock_production_lot_serial_ids) > 1:
+                            counter = int(item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[
+                                              -1].serial_number) + 1
+                        else:
+                            counter = 1
+                        tmp = '00{}'.format(counter)
+                        serial.serial_number = item.name + tmp[-3:]
+                        item.write({
+                            'available_kg': sum(
+                                item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
+                                    'real_weight'))
+                        })
+            # else:
+            #     if len(item.stock_production_lot_serial_ids) > 999:
+            #         item.check_duplicate()
+            return res
+
+    @api.multi
+    def generate_standard_pallet(self):
+        for item in self:
+
+            if not item.producer_id:
+                raise models.ValidationError('debe seleccionar un productor')
+            if not self.env['mrp.workorder'].search([('final_lot_id', '=', item.id)]):
+                pallet = self.env['manufacturing.pallet'].create({
+                    'producer_id': item.producer_id.id,
+                    'sale_order_id': self.env['mrp.workorder'].search([('final_lot_id', '=', item.id)]).sale_order_id
+                })
+            else:
+                pallet = self.env['manufacturing.pallet'].create({
+                    'producer_id': item.producer_id.id
+                })
+
+            for counter in range(item.qty_standard_serial):
+                tmp = '00{}'.format(1 + len(item.stock_production_lot_serial_ids))
+
+                item.env['stock.production.lot.serial'].create({
+                    'stock_production_lot_id': item.id,
+                    'display_weight': item.product_id.weight,
+                    'serial_number': item.name + tmp[-3:],
+                    'belongs_to_prd_lot': True,
+                    'pallet_id': pallet.id,
+                    'producer_id': pallet.producer_id.id
+                })
+                # if len(item.stock_production_lot_serial_ids) > 999:
+                #     item.check_duplicate()
+            pallet.update({
+                'state': 'close'
+            })
+
+    @api.model
+    def get_stock_quant(self):
+        return self.quant_ids.filtered(
+            lambda a: a.location_id.name == 'Stock'
+        )
+
+    def show_available_serial(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'stock.production.lot',
+            'res_id': self.id,
+            'view_type': 'form',
+            'view_mode': 'form',
+            'views': [(self.env.ref('dimabe_manufacturing.available_lot_form_view').id, 'form')],
+            'target': 'new',
+            'context': self.env.context
+        }
+
+    @api.multi
     def reserved(self):
         print('')
         # for item in self:
@@ -677,117 +647,3 @@ class StockProductionLot(models.Model):
         #                         (4, move_line.id)
         #                     ]
         #                 })
-
-    @api.multi
-    def unreserved(self):
-        for item in self:
-            stock_picking = None
-            if 'stock_picking_id' in self.env.context:
-                stock_picking_id = self.env.context['stock_picking_id']
-                stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
-            if stock_picking:
-
-                item.stock_production_lot_serial_ids.filtered(
-                    lambda a: a.reserved_to_stock_picking_id.id == stock_picking_id
-                ).unreserved_picking()
-
-                stock_move = stock_picking.move_ids_without_package.filtered(
-                    lambda x: x.product_id == item.product_id
-                )
-                move_line = stock_move.move_line_ids.filtered(
-                    lambda a: a.lot_id.id == item.id and a.product_uom_qty == stock_move.reserved_availability
-                )
-                item.update({
-                    'qty_to_reserve': 0,
-                    'is_reserved': False
-                })
-
-                stock_quant = item.get_stock_quant()
-
-                stock_quant.sudo().update({
-                    'reserved_quantity': stock_quant.reserved_quantity - stock_move.product_uom_qty
-                })
-
-                for ml in move_line:
-                    ml.write({'move_id': None, 'reserved_availability': 0})
-
-    @api.multi
-    def write(self, values):
-        for item in self:
-            res = super(StockProductionLot, self).write(values)
-            if not item.is_standard_weight:
-                for serial in item.stock_production_lot_serial_ids:
-                    if not serial.serial_number:
-                        if len(item.stock_production_lot_serial_ids) > 1:
-                            counter = int(item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[
-                                              -1].serial_number) + 1
-                        else:
-                            counter = 1
-                        tmp = '00{}'.format(counter)
-                        serial.serial_number = item.name + tmp[-3:]
-                        item.write({
-                            'available_kg': sum(
-                                item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
-                                    'real_weight'))
-                        })
-            else:
-                if len(item.stock_production_lot_serial_ids) > 999:
-                    item.check_duplicate()
-            return res
-
-    @api.multi
-    def generate_standard_pallet(self):
-        for item in self:
-
-            if not item.producer_id:
-                raise models.ValidationError('debe seleccionar un productor')
-            if not self.env['mrp.workorder'].search([('final_lot_id', '=', item.id)]):
-                pallet = self.env['manufacturing.pallet'].create({
-                    'producer_id': item.producer_id.id,
-                    'sale_order_id': self.env['mrp.workorder'].search([('final_lot_id', '=', item.id)]).sale_order_id
-                })
-            else:
-                pallet = self.env['manufacturing.pallet'].create({
-                    'producer_id': item.producer_id.id
-                })
-
-            for counter in range(item.qty_standard_serial):
-                tmp = '00{}'.format(1 + len(item.stock_production_lot_serial_ids))
-
-                item.env['stock.production.lot.serial'].create({
-                    'stock_production_lot_id': item.id,
-                    'display_weight': item.product_id.weight,
-                    'serial_number': item.name + tmp[-3:],
-                    'belongs_to_prd_lot': True,
-                    'pallet_id': pallet.id,
-                    'producer_id': pallet.producer_id.id
-                })
-                available_kg = sum(
-                    item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
-                query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg,
-                                                                                                 item.id)
-                cr = self._cr
-                cr.execute(query)
-                # if len(item.stock_production_lot_serial_ids) > 999:
-                #     item.check_duplicate()
-            pallet.update({
-                'state': 'close'
-            })
-
-    @api.model
-    def get_stock_quant(self):
-        return self.quant_ids.filtered(
-            lambda a: a.location_id.name == 'Stock'
-        )
-
-    def show_available_serial(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'stock.production.lot',
-            'res_id': self.id,
-            'view_type': 'form',
-            'view_mode': 'form',
-            'views': [(self.env.ref('dimabe_manufacturing.available_lot_form_view').id, 'form')],
-            'target': 'new',
-            'context': self.env.context
-        }

@@ -8,6 +8,10 @@ class ModelName(models.Model):
     _name = 'balance.sheet.clp'
     _description = 'Balance de Situacion CLP'
 
+    _sql_constraints = [
+        ('account_uniq', 'UNIQUE(account_id)', 'los datos de la cuenta ya se encuentra en el sistema.')
+    ]
+
     currency_id = fields.Many2one('res.currency', 'Moneda',
                                   default=lambda self: self.env['res.currency'].search([('name', '=', 'CLP')]))
 
@@ -32,40 +36,30 @@ class ModelName(models.Model):
     @api.multi
     def get_balance_clp(self):
         for item in self:
-            accounts = self.env['account.account'].search([('company_id', '=', self.env.user.company_id.id)])
-            date = datetime.date.today()
-            account_invoice = self.env['account.invoice'].search([('account_id', 'in', accounts.mapped('id'))])
+            account_ids = self.env['account.account'].search([('company_id', '=', self.env.user.company_id.id)])
+            usd_credit = []
+            clp_credit = []
+            usd_debit = []
+            clp_debit = []
+            for account in account_ids:
+                ac_move_line = self.env['account.move.line'].search([('account_id', '=', account.id)])
+                for ac_mov in ac_move_line:
+                    for invoice in ac_move_line.mapped('invoice_id'):
+                        models._logger.error('Cuenta {}'.format(ac_mov.account_id.name))
 
-            for ac in accounts:
-                ac_move_line = self.env['account.move.line'].search([('account_id', '=', ac.id)])
-                invoices = self.env['account.invoice'].search([('account_id','=',ac.id)])
-                debit = []
-                credit = []
-                for inv in invoices:
-                    models._logger.error(inv)
-                    d = ac_move_line.filtered(lambda a: a.invoice_id.id == inv.id).mapped('debit')
-
-                    c = ac_move_line.filtered(lambda a: a.invoice_id.id == inv.id).mapped('credit')
-                    models._logger.error(c)
-                    debit.append(d)
-                    credit.append(c)
-
-                raise models.ValidationError('{},{}'.format(debit, credit))
-                balance = self.env['balance.sheet.clp'].search([('account_id', '=', ac.id)])
-                if balance:
-                    if len(balance) == 2:
-                        balance[-1].unlink()
-                    else:
-                        balance.write({
-                            'balance': debit - credit
-                        })
-                else:
-                    self.env['balance.sheet.clp'].create({
-                        'account_id': ac.id,
-                        'account_type': ac.user_type_id.id,
-                        'balance': debit - credit,
-                        'is_balance': True
-                    })
+                        if ac_mov.debit > 0:
+                            usd_debit.append(ac_mov.debit)
+                            clp_debit.append(invoice.amount_total)
+                        if ac_mov.credit > 0:
+                            usd_credit.append(ac_mov.credit)
+                            clp_credit.append(invoice.amount_total)
+                self.env['balance.sheet.clp'].create({
+                    'account_id': account.id,
+                    'balance': sum(clp_debit) - sum(clp_credit),
+                    'balance_usd': sum(usd_debit) - sum(usd_credit),
+                    'account_type': account.user_type_id.id,
+                    'is_balance': True
+                })
 
     @api.multi
     @api.depends('account_id')

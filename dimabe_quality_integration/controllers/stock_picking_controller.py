@@ -10,8 +10,6 @@ class StockPickingController(http.Controller):
     @http.route('/api/stock_pickings', type='json', methods=['GET'], auth='token', cors='*')
     def get_stock_pickings(self, sinceDate=None):
         date_to_search = sinceDate or (date.today() - timedelta(days=7))
-
-        _logger = logging.getLogger(__name__)
         result = request.env['stock.picking'].search([('write_date','>', date_to_search)])
         data = []
         if result:

@@ -12,19 +12,10 @@
                        attrs="{'invisible':['|',('is_standard_weight','=',False)]}"
                        readonly="1"
                 />
-                <button name="check_duplicate" type="object" string="verificar series duplicadas"/>
-                <button name="fix_error" type="object" string="fix"/>
-                <button name="refresh_data" type="object" string="Refrescar Datos"
-                    invisible="1"
-                />
-                <button name="check_problem_in_dispatch" type="object" string="fix" />
-                <button name="fix_error_inventory" type="object" string="Fix Inventory" invisible="1"/>
-                <button name="compare_quant_available_weight" type="object" string="Lot and Quants" invisible="1"/>
-                <field name="producer_ids" invisible="1"/>
-                <field name="producer_id"
-                       domain="['|',('id','in',producer_ids),('always_to_print','=',True)]"
-                       required="1"
-                />
+                <button name="check_duplicate" type="object" string="verificar series duplicadas" groups="base.group_no_one"/>
+<!--                <field name="producer_ids" invisible="1"/>-->
+                <field name="producer_id" required="1"/>
+<!--                       domain="['|',('id','in',producer_ids),('always_to_print','=',True)]"-->
                 <field name="qty_standard_serial"
                        attrs="{'invisible':['|',('is_standard_weight','=',False),('can_add_serial','=',False)]}"
                 />
