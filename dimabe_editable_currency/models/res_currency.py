@@ -31,7 +31,7 @@ class ResCurrency(models.Model):
         return to_currency.round(to_amount) if round else to_amount
 
     def get_rate_by_date(self, date):
-        res = requests.get(
+        res = requests.request(
             'http://GET',
             'https://services.dimabe.cl/api/currencies?date={}'.format(date.strftime('%Y-%m-%d')),
             headers={
