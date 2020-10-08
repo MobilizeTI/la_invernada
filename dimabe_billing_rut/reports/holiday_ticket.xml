@@ -14,7 +14,7 @@
                     <table style="border-style:solid;">
                         <table>
                             <tr>
-                                <td><span t-field="o.created_at"/> </td>
+                                <td><span t-field="o.create_date"/> </td>
                             </tr>
                         </table>
                     </table>
