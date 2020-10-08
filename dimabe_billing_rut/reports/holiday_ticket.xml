@@ -17,6 +17,14 @@
                                 <td>Fecha:</td>
                                 <td style="border-bottom:1px;"><span t-field="o.create_date"/> </td>
                             </tr>
+                            <tr>
+                                <td>Nombre del Empleado:</td>
+                                <td style="border-bottom:1px;"><span t-field="o.employee_id"/></td>
+                            </tr>
+                            <tr>
+                                <td>Cargo del Empleado:</td>
+                                <td style="border-bottom:1px;"><span t-field="o.employee_id.job_id"/></td>
+                            </tr>
                         </table>
                     </table>
                 </t>
