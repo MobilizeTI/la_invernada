@@ -8,6 +8,16 @@
                     <h3 align="center">
                         <span t-field="o.employee_id.address_id.name"/>
                     </h3>
+                    <h4 align="center">
+                        Solicitud de Vacaciones
+                    </h4>
+                    <table style="border-style:solid;">
+                        <table>
+                            <tr>
+                                <td><span t-field="o.created_at"/> </td>
+                            </tr>
+                        </table>
+                    </table>
                 </t>
             </div>
         </t>
