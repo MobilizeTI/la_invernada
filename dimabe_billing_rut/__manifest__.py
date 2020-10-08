@@ -40,6 +40,7 @@
         'views/hr_payslip.xml',
         'views/custom_holidays.xml',
         'reports/settlement_document.xml',
+        'reports/holiday_ticket',
         'data/reports/balance_sheet_clp.xml'
     ],
     # only loaded in demonstration mode
