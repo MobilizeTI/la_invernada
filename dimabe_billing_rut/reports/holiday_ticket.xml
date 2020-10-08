@@ -5,13 +5,13 @@
             <div class="page">
                 <t t-foreach="docs" t-as="o">
                     <img t-att-src="'data:image/png;base64,%s' % to_text(o.employee_id.address_id.image)" style="height:75px;display:block;margin:0 auto;"/>
-                    <h3 align="center">
+                    <h2 align="center">
                         <span t-field="o.employee_id.address_id.name"/>
-                    </h3>
-                    <h4 align="center">
+                    </h2>
+                    <h3 align="center">
                         Solicitud de Vacaciones
-                    </h4>
-                    <table>
+                    </h3>
+                    <div style="border-style:solid;">
                         <table>
                             <tr>
                                 <td>Fecha:</td>
@@ -26,7 +26,7 @@
                                 <td style="border-bottom:1px;"><span t-field="o.employee_id.job_id"/></td>
                             </tr>
                         </table>
-                    </table>
+                    </div>
                 </t>
             </div>
         </t>
