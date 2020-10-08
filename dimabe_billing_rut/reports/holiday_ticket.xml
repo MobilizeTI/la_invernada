@@ -11,10 +11,11 @@
                     <h4 align="center">
                         Solicitud de Vacaciones
                     </h4>
-                    <table style="border-style:solid;">
+                    <table>
                         <table>
                             <tr>
-                                <td><span t-field="o.create_date"/> </td>
+                                <td>Fecha:</td>
+                                <td style="border-bottom:1px;"><span t-field="o.create_date"/> </td>
                             </tr>
                         </table>
                     </table>
