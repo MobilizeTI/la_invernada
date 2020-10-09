@@ -40,7 +40,7 @@ class ResCurrency(models.Model):
             }
         )
 
-        response = json.loads(res.content)
+        response = json.loads(res.text)
 
         if res.status_code == 200:
             rate = None
