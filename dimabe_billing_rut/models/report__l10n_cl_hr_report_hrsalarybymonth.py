@@ -21,6 +21,7 @@ group by emp.id, emp.name, emp.middle_name, emp.last_name, emp.mothers_name, emp
 order by r.analytic_account_id, last_name''', (last_month, last_year,))
 
         id_data = self.env.cr.fetchall()
+        models._logger.error(id_data)
         if id_data is None:
             emp_salary.append(0.00)
             emp_salary.append(0.00)
@@ -67,6 +68,76 @@ order by r.analytic_account_id, last_name''', (last_month, last_year,))
                     last_year)
                 emp_salary = self.get_salary(
                     id_data[cont][0], emp_salary, 'HAB', last_month, last_year)
+
+                cont = cont + 1
+                salary_list.append(emp_salary)
+
+                emp_salary = []
+
+        return salary_list
+
+    def get_employee(self, form):
+        emp_salary = []
+        salary_list = []
+        last_year = form['end_date'][0:4]
+        last_month = form['end_date'][5:7]
+        cont = 0
+
+        self.env.cr.execute(
+            '''select emp.id, emp.identification_id, emp.firstname, emp.middle_name, emp.last_name, emp.mothers_name,emp.address_id, r.analytic_account_id
+from hr_payslip as p left join hr_employee as emp on emp.id = p.employee_id
+left join hr_contract as r on r.id = p.contract_id
+where p.state = 'done'  and (to_char(p.date_to,'mm')=%s)
+and (to_char(p.date_to,'yyyy')=%s)
+group by emp.id, emp.name, emp.middle_name, emp.last_name, emp.mothers_name, emp.identification_id, r.analytic_account_id
+order by r.analytic_account_id, last_name''', (last_month, last_year))
+
+        id_data = self.env.cr.fetchall()
+        models._logger.error(id_data)
+        if id_data is None:
+            emp_salary.append(0.00)
+            emp_salary.append(0.00)
+            emp_salary.append(0.00)
+            emp_salary.append(0.00)
+            emp_salary.append(0.00)
+        else:
+            for index in id_data:
+                emp_salary.append(self.get_centro_costo(id_data[cont][6]))
+                emp_salary.append(id_data[cont][1])
+                emp_salary.append(id_data[cont][2])
+                emp_salary.append(id_data[cont][3])
+                emp_salary.append(id_data[cont][4])
+                emp_salary.append(id_data[cont][5])
+
+                emp_salary = self.get_worked_days(
+                    form, id_data[cont][0], emp_salary, last_month, last_year)
+                emp_salary = self.get_salary(
+                    id_data[cont][0], emp_salary, 'PREV', last_month,
+                    last_year)
+                emp_salary = self.get_salary(
+                    id_data[cont][0], emp_salary, 'SALUD', last_month,
+                    last_year)
+                emp_salary = self.get_salary(
+                    id_data[cont][0], emp_salary, 'IMPUNI', last_month,
+                    last_year)
+                emp_salary = self.get_salary(
+                    id_data[cont][0], emp_salary, 'SECE', last_month,
+                    last_year)
+                emp_salary = self.get_salary(
+                    id_data[cont][0], emp_salary, 'ADISA', last_month,
+                    last_year)
+                emp_salary = self.get_salary(
+                    id_data[cont][0], emp_salary, 'TODELE', last_month,
+                    last_year)
+                emp_salary = self.get_salary(
+                    id_data[cont][0], emp_salary, 'SMT', last_month,
+                    last_year)
+                emp_salary = self.get_salary(
+                    id_data[cont][0], emp_salary, 'TDE', last_month,
+                    last_year)
+                emp_salary = self.get_salary(
+                    id_data[cont][0], emp_salary, 'LIQ', last_month,
+                    last_year)
 
                 cont = cont + 1
                 salary_list.append(emp_salary)
