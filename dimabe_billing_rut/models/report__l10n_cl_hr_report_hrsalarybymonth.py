@@ -12,7 +12,7 @@ class report_hr_salary_employee_bymonth(models.AbstractModel):
         cont = 0
 
         self.env.cr.execute(
-            '''select emp.id, emp.identification_id, emp.firstname, emp.middle_name, emp.last_name, emp.mothers_name, r.analytic_account_id,emp.address_id
+            '''select emp.id, emp.identification_id, emp.firstname, emp.middle_name, emp.last_name, emp.mothers_name,emp.address_id, r.analytic_account_id,emp.address_id
 from hr_payslip as p left join hr_employee as emp on emp.id = p.employee_id
 left join hr_contract as r on r.id = p.contract_id
 where p.state = 'done'  and (to_char(p.date_to,'mm')=%s)
@@ -31,6 +31,7 @@ order by r.analytic_account_id, last_name''', (last_month, last_year,))
             for index in id_data:
                 # 0 CENTRO DE COSTO 1 RUT 2 PRIMER 3 SEGUNDO 4 APELLIDO 5 SEGUNDO APELLIDO
                 emp_salary.append(self.get_centro_costo(id_data[cont][6]))
+                emp_salary.append(self.env['res.partner'].search('id','=',id_data[6]))
                 emp_salary.append(id_data[cont][1])
                 emp_salary.append(id_data[cont][2])
                 emp_salary.append(id_data[cont][3])
