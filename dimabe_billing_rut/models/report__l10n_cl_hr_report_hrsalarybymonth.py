@@ -33,7 +33,7 @@ order by r.analytic_account_id, last_name''', (last_month, last_year,))
                 models._logger.error(id_data)
                 # 0 CENTRO DE COSTO 1 RUT 2 PRIMER 3 SEGUNDO 4 APELLIDO 5 SEGUNDO APELLIDO
                 emp_salary.append(self.get_centro_costo(id_data[cont][6]))
-                emp_salary.append(self.env['res.partner'].search('id','=',id_data[6]))
+                emp_salary.append(self.env['res.partner'].search('id','=',id_data[cont][6]))
                 emp_salary.append(id_data[cont][1])
                 emp_salary.append(id_data[cont][2])
                 emp_salary.append(id_data[cont][3])
