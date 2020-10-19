@@ -17,3 +17,4 @@ from . import hr_payslip
 from . import hr_leave
 from . import hr_payslip_worked_days
 from . import hr_leave_type
+from . import report__l10n_cl_hr_report_hrsalarybymonth
