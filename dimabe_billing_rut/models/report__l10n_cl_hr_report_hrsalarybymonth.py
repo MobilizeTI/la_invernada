@@ -2,7 +2,7 @@ from odoo import models, fields, api
 
 
 class report_hr_salary_employee_bymonth(models.AbstractModel):
-    _inherit = 'report.l10n_cl_hr'
+    _inherit = 'report.l10n_cl_hr.report_hrsalarybymonth'
 
     def get_employee2(self, form):
         emp_salary = []
