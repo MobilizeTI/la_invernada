@@ -144,4 +144,4 @@ order by r.analytic_account_id, last_name''', (last_month, last_year))
 
                 emp_salary = []
 
-        return salary_list
+        return id_data
