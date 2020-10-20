@@ -453,7 +453,7 @@ class MrpWorkorder(models.Model):
         lot.write({
             'available_kg': sum(lot.stock_production_lot_serial_ids.filtered(lambda a : not a.consumed).mapped('real_weight'))
         })
-        if len(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed)):
+        if len(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed)) == 0:
             lot.write({
                 'available_kg': 0
             })
