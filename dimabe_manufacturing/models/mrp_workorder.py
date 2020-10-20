@@ -445,10 +445,8 @@ class MrpWorkorder(models.Model):
         })
         lot = self.env['stock.production.lot'].search([('name', '=', custom_serial.stock_production_lot_id.name)])
         available_kg = sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
-        raise models.ValidationError(available_kg)
         lot.write({
-            'available_kg': sum(
-                lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
+            'available_kg': available_kg
         })
         if custom_serial:
             barcode = custom_serial.stock_production_lot_id.name
