@@ -107,8 +107,8 @@ class StockPickingController(http.Controller):
         if sale_order:
             date = request.env['mail.message'].search([('res_id','=',sale_order.picking_ids.mapped('id'))]).filtered(lambda a: a.tracking_value_ids.mapped('new_value_char') == 'Realizado').date            
             data.append({
-                'ContainerNumber':sale_order.picking_ids.mapped('container_number')
-                'DispatchDate':date
+                'ContainerNumber':sale_order.picking_ids.mapped('container_number'),
+                'DispatchDate':date,
                 'ClientName':sale_order.partner_id.name,
                 'ClientEmail':sale_order.partner_id.email
             })
