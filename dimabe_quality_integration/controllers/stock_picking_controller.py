@@ -107,7 +107,7 @@ class StockPickingController(http.Controller):
         if sale_order:
             mesagge= request.env['mail.message'].sudo().search([('res_id','=',sale_order.picking_ids.mapped('id'))])
             for mes in message:
-                if message.tracking_value_ids.filtered(lambda a: a.new_value_char == 'Realizado')
+                if message.tracking_value_ids.filtered(lambda a: a.new_value_char == 'Realizado'):
                     date = message.date
                 else:
                     continue
