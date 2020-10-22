@@ -113,8 +113,8 @@ class StockPickingController(http.Controller):
                 else:
                     continue
             data.append({
-                'ContainerNumber':sale_order.picking_ids.mapped('container_number'),
-                'DispatchDate':date,
+                'Container':sale_order.picking_ids.mapped('container_number'),
+                'DispatchedAt':date,
                 'ClientName':sale_order.partner_id.name,
                 'ClientEmail':sale_order.partner_id.email
             })
