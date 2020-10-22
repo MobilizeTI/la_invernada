@@ -118,4 +118,4 @@ class StockPickingController(http.Controller):
                 'ClientName':sale_order.partner_id.name,
                 'ClientEmail':sale_order.partner_id.email
             })
-        return mesagge
+        return mesagge.tracking_value_ids.filtered(lambda a: a.new_value_char == 'Realizado')
