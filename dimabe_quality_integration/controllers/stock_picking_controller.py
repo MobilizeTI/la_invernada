@@ -21,7 +21,7 @@ class StockPickingController(http.Controller):
                     data.append({
                         'ProducerCode': res.partner_id.id,
                         'ProducerName': res.partner_id.name,
-                        'VarietyName': res.get_mp_move().product_id.get_variety() if res.get_mp_move().product_id.get_variety() else res.move_line_ids_without_package.filtered(lambda a: 'MP' in a.product_id.barcode).lot_id.product_variety,
+                        'VarietyName': res.move_line_ids_without_package.filtered(lambda a: a.lot_id).product_id.get_varierty(),
                         'LotNumber': res.name,
                         'DispatchGuideNumber': res.guide_number,
                         'ReceptionDate': res.scheduled_date or res.write_date,
