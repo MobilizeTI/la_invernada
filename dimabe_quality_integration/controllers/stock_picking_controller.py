@@ -21,7 +21,7 @@ class StockPickingController(http.Controller):
                     data.append({
                         'ProducerCode': res.partner_id.id,
                         'ProducerName': res.partner_id.name,
-                        'VarietyName': res.move_ids_without_package.filtered(lambda a: not str.lower(a.product_id.categ_id.name) like 'envase').product_id.get_variety(),
+                        'VarietyName': res.move_ids_without_package.filtered(lambda a: 'envase' not in str.lower(a.product_id.categ_id.name)).product_id.get_variety(),
                         'LotNumber': res.name,
                         'DispatchGuideNumber': res.guide_number,
                         'ReceptionDate': res.scheduled_date or res.write_date,
