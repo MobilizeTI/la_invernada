@@ -118,4 +118,4 @@ class StockPickingController(http.Controller):
                 'ClientName':sale_order.partner_id.name,
                 'ClientEmail':sale_order.partner_id.email
             })
-        return data
+        return message
