@@ -109,13 +109,15 @@ class StockPickingController(http.Controller):
             date = []
             picking_data = []
             mesagge= request.env['mail.message'].sudo().search([('res_id','in',sale_order.picking_ids.mapped('id'))])
-            for mes in mesagge:
-                stock_picking = request.env['stock.picking'].search([('id','=',mes.res_id)])
-                picking_data.append({
-                    'Container' : stock_picking.container_number,
-                    'Date':mes.date
+            stock_picking = request.env['stock.picking'].search([('id','in',message.mapped('res_id'))])
+            for item in stock_picking:
+                picking_date({
+                    'Container': item.container_number,
                 })
+            for mes in mesagge:
                 if mes.tracking_value_ids.filtered(lambda a: a.new_value_char == 'Realizado'):
+                    for value in picking_data:
+                        value.update({'Date':mes.date})
                     date.append(mes.date)
                 else:
                     continue
