@@ -112,12 +112,14 @@ class StockPickingController(http.Controller):
             stock_picking = request.env['stock.picking'].search([('id','in',mesagge.mapped('res_id'))])
             for item in stock_picking:
                 picking_data.append({
+                    'Picking_id':item.id,
                     'Container': item.container_number,
                 })
             for mes in mesagge:
                 if mes.tracking_value_ids.filtered(lambda a: a.new_value_char == 'Realizado'):
                     for value in picking_data:
-                        value.update({'Date':mes.date})
+                        if mes.res_id == value['Picking_id']:
+                            value.update({'Date':mes.date})
                     date.append(mes.date)
                 else:
                     continue
