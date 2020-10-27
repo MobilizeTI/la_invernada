@@ -22,7 +22,7 @@ class StockPickingController(http.Controller):
                     data.append({
                         'ProducerCode': res.partner_id.id,
                         'ProducerName': res.partner_id.name,
-                        'VarietyName': res.move_ids_without_package.filtered(lambda a: 'MP' in a.name or 'PSE' in a.name or 'PT' in a.name).product_id.get_variety(),
+                        'VarietyName': res.move_ids_without_package.filtered(lambda a: 'MP' in a.product_id.barcode or 'PSE' in a.product_id.barcode or 'PT' in a.product_id.barcode).product_id.get_variety(),
                         'LotNumber': res.name,
                         'DispatchGuideNumber': res.guide_number,
                         'ReceptionDate': res.scheduled_date or res.write_date,
