@@ -16,7 +16,7 @@ class StockPickingController(http.Controller):
         if result:
             for res in result:
                 if res.partner_id.id:
-                    if  'recepciones' in str.lower(res.picking_type_id.name):
+                    if 'recepciones' in str.lower(res.picking_type_id.name):
                         kgs = 0
                         if res.production_net_weight.is_integer():
                             kgs = int(res.production_net_weight)
@@ -40,7 +40,7 @@ class StockPickingController(http.Controller):
                             'ArticleDescription': res.get_mp_move().product_id.display_name,
                             'OdooUpdated': res.write_date
                         })
-        return data
+        return result
 
     @http.route('/api/stock_picking', type='json', methods=['GET'], auth='token', cors='*')
     def get_stock_picking(self, lot):
