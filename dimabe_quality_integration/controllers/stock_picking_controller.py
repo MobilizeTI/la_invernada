@@ -16,7 +16,7 @@ class StockPickingController(http.Controller):
         if result:
             for res in result:
                 if res.partner_id.id:
-                    if res.picking_type_code == 'incoming':
+                    if  'recepciones' in str.lower(res.picking_type_id.name):
                         kgs = 0
                         if res.production_net_weight.is_integer():
                             kgs = int(res.production_net_weight)
