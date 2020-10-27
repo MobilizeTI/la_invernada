@@ -50,7 +50,7 @@ class StockPickingController(http.Controller):
             return {
                 'ProducerCode': res.partner_id.id,
                 'ProducerName': res.partner_id.name,
-                'VarietyName': res.move_ids_without_package.filtered(lambda a: 'MP' in a.product_id.default_code or 'PSE' in a.product_id.default_code or 'PT' in a.product_id.default_code).product_id.get_variety(),
+                'VarietyName': res.move_ids_without_package[0].product_id.get_variety(),
                 'LotNumber': res.name,
                 'DispatchGuideNumber': res.guide_number,
                 'ReceptionDate': res.scheduled_date,
@@ -63,8 +63,8 @@ class StockPickingController(http.Controller):
                 'Warehouse': res.location_dest_id.name,
                 'QualityWeight': res.quality_weight,
                 'ContainerQuantity': res.get_canning_move().quantity_done,
-                'ArticleCode': res.move_ids_without_package.filtered(lambda a: 'MP' in a.product_id.default_code or 'PSE' in a.product_id.default_code or 'PT' in a.product_id.default_code).product_id.default_code,
-                'ArticleDescription': res.move_ids_without_package.filtered(lambda a: 'MP' in a.product_id.default_code or 'PSE' in a.product_id.default_code or 'PT' in a.product_id.default_code).product_id.display_name
+                'ArticleCode': res.move_ids_without_package[0].product_id.default_code,
+                'ArticleDescription': res.move_ids_without_package[0].product_id.display_name
             }
         else:
             res = request.env['dried.unpelled.history'].search([('out_lot_id.name', '=', lot)])
