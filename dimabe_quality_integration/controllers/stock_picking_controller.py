@@ -63,8 +63,8 @@ class StockPickingController(http.Controller):
                 'Warehouse': res.location_dest_id.name,
                 'QualityWeight': res.quality_weight,
                 'ContainerQuantity': res.get_canning_move().quantity_done,
-                'ArticleCode': res.get_mp_move().product_id.default_code,
-                'ArticleDescription': res.get_mp_move().product_id.display_name
+                'ArticleCode': res.move_ids_without_package.filtered(lambda a: 'MP' in a.product_id.default_code or 'PSE' in a.product_id.default_code or 'PT' in a.product_id.default_code).product_id.default_code,
+                'ArticleDescription': res.move_ids_without_package.filtered(lambda a: 'MP' in a.product_id.default_code or 'PSE' in a.product_id.default_code or 'PT' in a.product_id.default_code).product_id.display_name
             }
         else:
             res = request.env['dried.unpelled.history'].search([('out_lot_id.name', '=', lot)])
