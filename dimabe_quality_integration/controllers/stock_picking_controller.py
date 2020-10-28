@@ -101,37 +101,37 @@ class StockPickingController(http.Controller):
             'data': data
         }
 
-    @http.route('/api/data_by_order', type='json', methods=['POST'], auth='token', cors='*')
-    def get_data_by_order(self, sale_order):
-        sale_order = request.env['sale.order'].search([('name', '=', sale_order)])
+    @http.route('/api/data_by_order',type='json',methods=['POST'],auth='token',cors='*')
+    def get_data_by_order(self,sale_order):
+        sale_order = request.env['sale.order'].search([('name','=',sale_order)])
 
         data = []
 
         if sale_order:
             date = []
             picking_data = []
-            mesagge = request.env['mail.message'].sudo().search([('res_id', 'in', sale_order.picking_ids.mapped('id'))])
-            stock_picking = request.env['stock.picking'].search([('id', 'in', mesagge.mapped('res_id'))])
+            mesagge= request.env['mail.message'].sudo().search([('res_id','in',sale_order.picking_ids.mapped('id'))])
+            stock_picking = request.env['stock.picking'].search([('id','in',mesagge.mapped('res_id'))])
             for item in stock_picking:
                 if item.state == 'done':
                     picking_data.append({
-                        'Picking_id': item.id,
+                        'Picking_id':item.id,
                         'Container': item.container_number,
                     })
             for mes in mesagge:
                 if mes.tracking_value_ids.filtered(lambda a: a.new_value_char == 'Realizado'):
                     for value in picking_data:
                         if mes.res_id == value['Picking_id']:
-                            value.update({'Date': mes.date})
+                            value.update({'Date':mes.date})
                     date.append(mes.date)
                 else:
                     continue
             data.append({
                 'Data': picking_data,
                 'DispatchedAt': date,
-                'ClientName': sale_order.partner_id.name,
-                'ClientEmail': sale_order.partner_id.email
+                'ClientName':sale_order.partner_id.name,
+                'ClientEmail':sale_order.partner_id.email
             })
         return data
 
-
+    
