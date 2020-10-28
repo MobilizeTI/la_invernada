@@ -10,7 +10,6 @@ class StockPickingController(http.Controller):
     @http.route('/api/stock_pickings', type='json', methods=['GET'], auth='token', cors='*')
     def get_stock_pickings(self, sinceDate=None):
         date_to_search = sinceDate or (date.today() - timedelta(days=7))
-        # result = request.env['stock.picking'].search([('write_date','>', date_to_search)])
         result = request.env['stock.picking'].search([])
         data = []
         if result:
@@ -20,9 +19,6 @@ class StockPickingController(http.Controller):
                         if 'recepciones' in str.lower(res.picking_type_id.name):
                             code = ""
                             for i in res.move_ids_without_package[0].product_id.default_code:
-                                if code.isalpha() == True:
-                                    code = ""
-                            if code in ('MP', 'PT', 'PSE'):
                                 kgs = 0
                                 if res.production_net_weight.is_integer():
                                     kgs = int(res.production_net_weight)
@@ -106,35 +102,63 @@ class StockPickingController(http.Controller):
             'data': data
         }
 
+<<<<<<< HEAD
     @http.route('/api/data_by_order', type='json', methods=['POST'], auth='token', cors='*')
     def get_data_by_order(self, sale_order):
         sale_order = request.env['sale.order'].search([('name', '=', sale_order)])
+=======
+    @http.route('/api/data_by_order',type='json',methods=['POST'],auth='token',cors='*')
+    def get_data_by_order(self,sale_order):
+        sale_order = request.env['sale.order'].search([('name','=',sale_order)])
+>>>>>>> 2a5d3878b4691c531c7017958b3bd55edba66561
 
         data = []
 
         if sale_order:
             date = []
             picking_data = []
+<<<<<<< HEAD
             mesagge = request.env['mail.message'].sudo().search([('res_id', 'in', sale_order.picking_ids.mapped('id'))])
             stock_picking = request.env['stock.picking'].search([('id', 'in', mesagge.mapped('res_id'))])
             for item in stock_picking:
                 if item.state == 'done':
                     picking_data.append({
                         'Picking_id': item.id,
+=======
+            mesagge= request.env['mail.message'].sudo().search([('res_id','in',sale_order.picking_ids.mapped('id'))])
+            stock_picking = request.env['stock.picking'].search([('id','in',mesagge.mapped('res_id'))])
+            for item in stock_picking:
+                if item.state == 'done':
+                    picking_data.append({
+                        'Picking_id':item.id,
+>>>>>>> 2a5d3878b4691c531c7017958b3bd55edba66561
                         'Container': item.container_number,
                     })
             for mes in mesagge:
                 if mes.tracking_value_ids.filtered(lambda a: a.new_value_char == 'Realizado'):
                     for value in picking_data:
                         if mes.res_id == value['Picking_id']:
+<<<<<<< HEAD
                             value.update({'Date': mes.date})
+=======
+                            value.update({'Date':mes.date})
+>>>>>>> 2a5d3878b4691c531c7017958b3bd55edba66561
                     date.append(mes.date)
                 else:
                     continue
             data.append({
                 'Data': picking_data,
                 'DispatchedAt': date,
+<<<<<<< HEAD
                 'ClientName': sale_order.partner_id.name,
                 'ClientEmail': sale_order.partner_id.email
             })
         return data
+=======
+                'ClientName':sale_order.partner_id.name,
+                'ClientEmail':sale_order.partner_id.email
+            })
+        return data
+
+    
+>>>>>>> 2a5d3878b4691c531c7017958b3bd55edba66561
