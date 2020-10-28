@@ -39,7 +39,7 @@ class StockPickingController(http.Controller):
                                     'Warehouse': res.location_dest_id.name,
                                     'QualityWeight': res.quality_weight,
                                     'ContainerQuantity': res.get_canning_move().quantity_done,
-                                    'ArticleCode': res.get_mp_move().product_id.default_code,
+                                    'ArticleCode': res.move_ids_without_package[0].product_id.default_code,
                                     'ArticleDescription': res.move_ids_without_package[0].product_id.display_name,
                                     'OdooUpdated': res.write_date
                                 })
