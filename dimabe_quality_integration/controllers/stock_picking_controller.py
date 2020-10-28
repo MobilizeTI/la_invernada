@@ -5,7 +5,6 @@ from datetime import date, timedelta
 import werkzeug
 import re
 
-
 class StockPickingController(http.Controller):
 
     @http.route('/api/stock_pickings', type='json', methods=['GET'], auth='token', cors='*')
