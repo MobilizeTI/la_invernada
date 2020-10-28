@@ -3,6 +3,7 @@ from odoo.http import request
 import logging
 from datetime import date, timedelta
 import werkzeug
+import re
 
 
 class StockPickingController(http.Controller):
@@ -17,6 +18,7 @@ class StockPickingController(http.Controller):
                 if res.partner_id.id:
                     if res.picking_type_id:
                         if 'recepciones' in str.lower(res.picking_type_id.name):
+                            code = re.sub('[^a-zA-Z]+', '', res.move_ids_without_package[0].product_id.default_code)
                             kgs = 0
                             if res.production_net_weight.is_integer():
                                 kgs = int(res.production_net_weight)
@@ -37,10 +39,10 @@ class StockPickingController(http.Controller):
                                 'QualityWeight': res.quality_weight,
                                 'ContainerQuantity': res.get_canning_move().quantity_done,
                                 'ArticleCode': res.get_mp_move().product_id.default_code,
-                                'ArticleDescription': res.get_mp_move().product_id.display_name,
+                                'ArticleDescription': res.move_ids_without_package[0].product_id.display_name,
                                 'OdooUpdated': res.write_date
                             })
-        return data
+        return code
 
     @http.route('/api/stock_picking', type='json', methods=['GET'], auth='token', cors='*')
     def get_stock_picking(self, lot):
