@@ -9,9 +9,9 @@
                 <xpath expr="//div[@name='wage']" position="after">
                     <page string="Caja de compensacion">
                         <group name="Caja de Compensacion">
-                        <field name="compensation_saving_id"/>
-                        <field name="saving_value"/>
-                    </group>
+                            <field name="compensation_saving_id"/>
+                            <field name="saving_value"/>
+                        </group>
                     </page>
                 </xpath>
             </field>
