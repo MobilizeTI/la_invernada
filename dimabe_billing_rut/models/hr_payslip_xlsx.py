@@ -166,7 +166,8 @@ class HrPaySlipXlsx(models.AbstractModel):
                             'COLACION', merge_format_data, payslip)
             self.get_values(sheet, "BL" + str(row) + ":" + "BM" + str(row),
                             'COLACION', merge_format_data, payslip)
-
+            self.get_values(sheet, "BN" + str(row) + ":" + "BO" + str(row),
+                            'COLACION', merge_format_data, payslip)
             row += 1
         bold = workbook.add_format({'bold': True})
 
