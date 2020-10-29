@@ -12,5 +12,5 @@ class HrPaySlipXlsx(models.AbstractModel):
         indicadores_id = payslip.mapped('indicadores_id').mapped('name')
         sheet = workbook.add_worksheet('Libro de Remuneraciones')
         sheet.write(0,1,"Informe: Libro de Remuneraciones")
-        sheet.write(0,2,"{}".format(indicadores_id))
+        sheet.write(0,2,"Mes a procesar :{}".format(indicadores_id[-1]))
         bold = workbook.add_format({'bold': True})
