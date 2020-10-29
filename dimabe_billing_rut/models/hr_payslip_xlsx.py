@@ -58,9 +58,9 @@ class HrPaySlipXlsx(models.AbstractModel):
             sheet.merge_range("A"+str(row)+":"+"D"+str(row),employee.display_name,merge_format_data)
             sheet.merge_range("E"+str(row)+":"+"F"+str(row),employee.identification_id,merge_format_data)
             payslip =payslips.filtered(lambda a: a.employee_id.id == employee.id and a.indicadores_id.id == indicadores_id[-1].id)
-            get_values(self,sheet,"G"+str(row)+":"+"H"+str(row),'SUELDO BASE',merge_format_data,payslip)
-            get_values(self,sheet,"I"+str(row)+":"+"J"+str(row),'GRATIFICACION LEGAL',merge_format_data,payslip)
-            get_values(self,sheet,"K"+str(row)+":"+"L"+str(row),'HORAS EXTRA ART 32',merge_format_data,payslip)    
+            self.get_values(self,sheet,"G"+str(row)+":"+"H"+str(row),'SUELDO BASE',merge_format_data,payslip)
+            self.get_values(self,sheet,"I"+str(row)+":"+"J"+str(row),'GRATIFICACION LEGAL',merge_format_data,payslip)
+            self.get_values(self,sheet,"K"+str(row)+":"+"L"+str(row),'HORAS EXTRA ART 32',merge_format_data,payslip)    
             row += 1
         bold = workbook.add_format({'bold': True})
 
