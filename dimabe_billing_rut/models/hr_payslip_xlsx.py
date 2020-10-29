@@ -49,5 +49,5 @@ class HrPaySlipXlsx(models.AbstractModel):
 
         bold = workbook.add_format({'bold': True})
 
-    def merge_and_data(self,sheet,to_merge,data,format):
-        sheet.merge_range(to_merge,data,merge_format_data)
+    def merge_and_data(self,sheet,to_merge,data,merge_format):
+        sheet.merge_range(to_merge,data,merge_format)
