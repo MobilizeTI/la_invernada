@@ -109,5 +109,6 @@ class HrPayslip(models.Model):
         return res
 
     def generate_remuneration_book(self):
+        payslips = self.env['hr.payslip'].search([])
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
-            .report_action(self.pictures)
+            .report_action(payslips)
