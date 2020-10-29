@@ -58,14 +58,14 @@ class HrPaySlipXlsx(models.AbstractModel):
             sheet.merge_range("A"+str(row)+":"+"D"+str(row),employee.display_name,merge_format_data)
             sheet.merge_range("E"+str(row)+":"+"F"+str(row),employee.identification_id,merge_format_data)
             payslip =payslips.filtered(lambda a: a.employee_id.id == employee.id and a.indicadores_id.id == indicadores_id[-1].id)
-            if len(payslip.mapped('line_ids').filtered(lambda a: a.name == 'SUELDO BASE')) > 1:
-                sheet.merge_range("G"+str(row)+":"+"H"+str(row),payslip.mapped('line_ids').filtered(lambda a: a.name == 'SUELDO BASE')[0].total,merge_format_data)
-            else:
-                sheet.merge_range("G"+str(row)+":"+"H"+str(row),payslip.mapped('line_ids').filtered(lambda a: a.name == 'SUELDO BASE').total,merge_format_data)
-            if len(payslip.mapped('line_ids').filtered(lambda a: a.name == 'GRATIFICACION LEGAL')) > 1:
-                sheet.merge_range("I"+str(row)+":"+"J"+str(row),payslip.mapped('line_ids').filtered(lambda a: a.name == 'GRATIFICACION LEGAL')[0].total,merge_format_data)
-            else:
-                sheet.merge_range("I"+str(row)+":"+"J"+str(row),payslip.mapped('line_ids').filtered(lambda a: a.name == 'GRATIFICACION LEGAL').total,merge_format_data)    
+            get_values(self,sheet,"G"+str(row)+":"+"H"+str(row),'SUELDO BASE',merge_format_data,payslip)
+            get_values(self,sheet,"I"+str(row)+":"+"J"+str(row),'GRATIFICACION LEGAL',merge_format_data,payslip)
+            get_values(self,sheet,"K"+str(row)+":"+"L"+str(row),'HORAS EXTRA ART 32',merge_format_data,payslip)    
             row += 1
         bold = workbook.add_format({'bold': True})
-        
+
+    def get_values(self,sheet,set_in,to_search,format_data,payslip):
+        if len(payslip.mapped('line_ids').filtered(lambda a: a.name == to_search)) > 1:
+            return sheet.merge_range(set_in,payslip.mapped('line_ids').filtered(lambda a: a.name == to_search)[0].total,format_data)
+        else:
+            return sheet.merge_range(set_in,payslip.mapped('line_ids').filtered(lambda a: a.name == to_search).total,format_data)
