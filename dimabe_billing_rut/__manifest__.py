@@ -42,7 +42,6 @@
         'reports/settlement_document.xml',
         'reports/holiday_ticket.xml',
         'data/reports/balance_sheet_clp.xml',
-        'views/hr_contract.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
