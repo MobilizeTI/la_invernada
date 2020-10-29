@@ -23,6 +23,7 @@
             <field name="arch" type="xml">
                 <form>
                     <field name="employee_id"/>
+                    <field name="state"/>
                 </form>
             </field>
         </record>
