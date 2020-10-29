@@ -30,42 +30,65 @@ class HrPaySlipXlsx(models.AbstractModel):
             names[-1]), merge_format)
         employees = self.env['hr.employee'].search([('address_id', '=', 423)])
         headers = ['Nombre', 'Rut', 'Dias Trabajados', 'Sueldo Base', 'Grat. Legal', 'Horas Extras', 'Bonos Imponibles', 'Aguinaldo Fiestas Patrias', 'Aguinaldo Navidad', 'Horas de Descuento', 'Total Imponible', 'Colacion', 'Movilizacion', 'Asig. Familiar', 'Asig. Varias', 'Total No Imponible',
-                  'Total Haberes', 'AFP', 'Salud', 'Seg. Cesantia', 'Impto. Unico', 'Otros AFP', 'Anticipos', 'Anticipo Aguinaldo', 'Credito Social', 'Ahorro AFP', 'Ahorro APV', 'Ahorro CCAF', 'Seg. de Vida CCAF', 'Ptmo. Empresa', 'Retencion Judicial', 'Total Descuentos', 'Liquido A Pagar']
-        
-        
+                   'Total Haberes', 'AFP', 'Salud', 'Seg. Cesantia', 'Impto. Unico', 'Otros AFP', 'Anticipos', 'Anticipo Aguinaldo', 'Credito Social', 'Ahorro AFP', 'Ahorro APV', 'Ahorro CCAF', 'Seg. de Vida CCAF', 'Ptmo. Empresa', 'Retencion Judicial', 'Total Descuentos', 'Liquido A Pagar']
+
         column_head = 1
         row = 8
         column = 8
-        
+
         for employee in employees:
 
             if employee.id == employees[0].id:
-                sheet.merge_range("A"+str(row - 1)+":"+"D"+str(row - 1),'Nombre:',merge_format)
-                sheet.merge_range("E"+str(row - 1)+":"+"F"+str(row - 1),'RUT:',merge_format)
-                sheet.merge_range("G"+str(row - 1)+":"+"H"+str(row - 1),'Sueldo Base:',merge_format)
-                sheet.merge_range("I"+str(row - 1)+":"+"J"+str(row - 1),'Grat Legal:',merge_format)
-                sheet.merge_range("K"+str(row - 1)+":"+"L"+str(row - 1),'Horas Extra:',merge_format)
-                sheet.merge_range("M"+str(row - 1)+":"+"N"+str(row - 1),'Bono Imponible:',merge_format)
-                sheet.merge_range("O"+str(row - 1)+":"+"Q"+str(row - 1),'Aguinaldo Fiestas Pratias:',merge_format)
-                sheet.merge_range("R"+str(row - 1)+":"+"S"+str(row - 1),'Aguinaldo Navidad:',merge_format)
-                sheet.merge_range("T"+str(row - 1)+":"+"U"+str(row - 1),'Horas de Descuento:',merge_format)
-                sheet.merge_range("V"+str(row - 1)+":"+"W"+str(row - 1),'Total Imponible:',merge_format)
-                sheet.merge_range("X"+str(row - 1)+":"+"Y"+str(row - 1),'Colacion',merge_format)
-                sheet.merge_range("Z"+str(row - 1)+":"+"AA"+str(row - 1),'Movilizacion:',merge_format)
-                sheet.merge_range("AB"+str(row - 1)+":"+"AC"+str(row - 1),'Asig Familiar:',merge_format)
-                sheet.merge_range("AD"+str(row - 1)+":"+"AE"+str(row - 1),'Asig Varias:',merge_format)
+                sheet.merge_range("A"+str(row - 1)+":"+"D" +
+                                  str(row - 1), 'Nombre:', merge_format)
+                sheet.merge_range("E"+str(row - 1)+":"+"F" +
+                                  str(row - 1), 'RUT:', merge_format)
+                sheet.merge_range("G"+str(row - 1)+":"+"H" +
+                                  str(row - 1), 'Sueldo Base:', merge_format)
+                sheet.merge_range("I"+str(row - 1)+":"+"J" +
+                                  str(row - 1), 'Grat Legal:', merge_format)
+                sheet.merge_range("K"+str(row - 1)+":"+"L" +
+                                  str(row - 1), 'Horas Extra:', merge_format)
+                sheet.merge_range("M"+str(row - 1)+":"+"N" +
+                                  str(row - 1), 'Bono Imponible:', merge_format)
+                sheet.merge_range("O"+str(row - 1)+":"+"Q"+str(row - 1),
+                                  'Aguinaldo Fiestas Pratias:', merge_format)
+                sheet.merge_range("R"+str(row - 1)+":"+"S" +
+                                  str(row - 1), 'Aguinaldo Navidad:', merge_format)
+                sheet.merge_range(
+                    "T"+str(row - 1)+":"+"U"+str(row - 1), 'Horas de Descuento:', merge_format)
+                sheet.merge_range("V"+str(row - 1)+":"+"W" +
+                                  str(row - 1), 'Total Imponible:', merge_format)
+                sheet.merge_range("X"+str(row - 1)+":"+"Y" +
+                                  str(row - 1), 'Colacion', merge_format)
+                sheet.merge_range("Z"+str(row - 1)+":"+"AA" +
+                                  str(row - 1), 'Movilizacion:', merge_format)
+                sheet.merge_range("AB"+str(row - 1)+":"+"AC" +
+                                  str(row - 1), 'Asig Familiar:', merge_format)
+                sheet.merge_range("AD"+str(row - 1)+":"+"AE" +
+                                  str(row - 1), 'Asig Varias:', merge_format)
 
-            sheet.merge_range("A"+str(row)+":"+"D"+str(row),employee.display_name,merge_format_data)
-            sheet.merge_range("E"+str(row)+":"+"F"+str(row),employee.identification_id,merge_format_data)
-            payslip =payslips.filtered(lambda a: a.employee_id.id == employee.id and a.indicadores_id.id == indicadores_id[-1].id)
-            self.get_values(sheet,"G"+str(row)+":"+"H"+str(row),'SUELDO BASE',merge_format_data,payslip)
-            self.get_values(sheet,"I"+str(row)+":"+"J"+str(row),'GRATIFICACION LEGAL',merge_format_data,payslip)
-            self.get_values(sheet,"K"+str(row)+":"+"L"+str(row),'HORAS EXTRA ART 32',merge_format_data,payslip)    
+            sheet.merge_range("A"+str(row)+":"+"D"+str(row),
+                              employee.display_name, merge_format_data)
+            sheet.merge_range("E"+str(row)+":"+"F"+str(row),
+                              employee.identification_id, merge_format_data)
+            payslip = payslips.filtered(
+                lambda a: a.employee_id.id == employee.id and a.indicadores_id.id == indicadores_id[-1].id)
+            self.get_values(sheet, "G"+str(row)+":"+"H"+str(row),
+                            'SUELDO BASE', merge_format_data, payslip)
+            self.get_values(sheet, "I"+str(row)+":"+"J"+str(row),
+                            'GRATIFICACION LEGAL', merge_format_data, payslip)
+            self.get_values(sheet, "K"+str(row)+":"+"L"+str(row),
+                            'HORAS EXTRA ART 32', merge_format_data, payslip)
+            self.get_bonus(sheet,"M"+str(row)+":"+"N"+str(row),merge_format_data,payslip)
             row += 1
         bold = workbook.add_format({'bold': True})
 
-    def get_values(self,sheet,set_in,to_search,format_data,payslip):
+    def get_values(self, sheet, set_in, to_search, format_data, payslip):
         if len(payslip.mapped('line_ids').filtered(lambda a: a.name == to_search)) > 1:
-            return sheet.merge_range(set_in,payslip.mapped('line_ids').filtered(lambda a: a.name == to_search)[0].total,format_data)
+            return sheet.merge_range(set_in, payslip.mapped('line_ids').filtered(lambda a: a.name == to_search)[0].total, format_data)
         else:
-            return sheet.merge_range(set_in,payslip.mapped('line_ids').filtered(lambda a: a.name == to_search).total,format_data)
+            return sheet.merge_range(set_in, payslip.mapped('line_ids').filtered(lambda a: a.name == to_search).total, format_data)
+
+    def get_bonus(self, sheet, set_in, format_data, payslip):
+        return sheet.merge_range(set_in, sum(payslip.mapped('line_ids').filtered(lambda a: 'BONO' in a.name and a.category_id.name == 'Imponible').mapped('total')), format_data)
