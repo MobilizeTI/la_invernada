@@ -48,7 +48,7 @@ class HrPaySlipXlsx(models.AbstractModel):
             if employee.id == employees[0].id:
                 sheet.merge_range(str(x)+str(row - 1)+":"+str(y)+str(row - 1),'Nombre:',merge_format)
                 sheet.merge_range("E"+str(row - 1)+":"+"F"+str(row - 1),'RUT:',merge_format)
-            to_merge = "A"+str(row)+":"+"D"+str(row)
+            to_merge = str(x)+str(row)+":"+str(y)+str(row)
             sheet.merge_range(to_merge,employee.name,merge_format_data)
             row += 1
 
