@@ -18,6 +18,11 @@ class HrPaySlipXlsx(models.AbstractModel):
             'align': 'center',
             'valign': 'vcenter',
         })
+        merge_format_data = workbook.add_format({
+            'border': 1,
+            'align': 'center',
+            'valign': 'vcenter',
+        })
         sheet.merge_range(
             "B2:E2", "Informe: Libro de Remuneraciones", merge_format)
         sheet.merge_range("B3:E3", "Mes a procesar : {}".format(
@@ -30,14 +35,21 @@ class HrPaySlipXlsx(models.AbstractModel):
         column_head = 1
         row = 8
         column = 8
+        letter_a = "A" 
+        letter_b = "D"
+        
+        
         for head in headers :
             sheet.write(6,column_head,head)
             column_head += 1
         for employee in employees:
+            x = chr(ord(letter_a) + 3)
+            y = chr(ord(letter_a) + 3)
             if employee.id == employees[0].id:
-                sheet.merge_range("A"+str(row - 1)+":"+"D"+str(row - 1),'Nombre:',merge_format)
+                sheet.merge_range(x+str(row - 1)+":"+y+str(row - 1),'Nombre:',merge_format)
+                sheet.merge_range("E"+str(row - 1)+":"+"D"+str(row - 1),'RUT:',merge_format)
             to_merge = "A"+str(row)+":"+"D"+str(row)
-            sheet.merge_range(to_merge,employee.name,merge_format)
+            sheet.merge_range(to_merge,employee.name,merge_format_data)
             row += 1
 
         bold = workbook.add_format({'bold': True})
