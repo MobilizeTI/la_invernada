@@ -94,11 +94,11 @@ class HrPaySlipXlsx(models.AbstractModel):
                                   str(row - 1), 'Seg. de Vida CCAF:', merge_format)
                 sheet.merge_range("BH" + str(row - 1) + ":" + "BI" +
                                   str(row - 1), 'Ptmo. Empresa:', merge_format)
-                sheet.merge_range("AT" + str(row - 1) + ":" + "AU" +
+                sheet.merge_range("BJ" + str(row - 1) + ":" + "BK" +
                                   str(row - 1), 'Retencion Judicial:', merge_format)
-                sheet.merge_range("AT" + str(row - 1) + ":" + "AU" +
+                sheet.merge_range("BL" + str(row - 1) + ":" + "BM" +
                                   str(row - 1), 'Total Descuentos:', merge_format)
-                sheet.merge_range("AT" + str(row - 1) + ":" + "AU" +
+                sheet.merge_range("BN" + str(row - 1) + ":" + "BO" +
                                   str(row - 1), 'Liquido A Pagar:', merge_format)
 
 
