@@ -117,6 +117,6 @@ class HrPayslip(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'hr.payslip',
-            'views': [[self.env.ref('dimabe_manufacturing.mrp_workorder_out_form_view').id, 'form']],
+            'views': [[self.env.ref('dimabe_billing_rut.hr_payslip_remuneration_book').id, 'form']],
             'target': 'new'
         }
