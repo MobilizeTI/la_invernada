@@ -1,3 +1,4 @@
+from odoo import models
 
 class HrPaySlipXlsx(models.AbstractModel):
     _name = 'report.dimabe_billing_rut.remunerations_book'
@@ -5,7 +6,7 @@ class HrPaySlipXlsx(models.AbstractModel):
 
     def generate_xlsx_report(self, workbook, data):
         payslip = self.env['hr.payslip'].search([('state','=','done')])
-        for obj in partners:
+        for obj in payslip:
             report_name = obj.name
             # One sheet by partner
             sheet = workbook.add_worksheet(report_name[:31])
