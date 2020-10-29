@@ -64,6 +64,44 @@ class HrPaySlipXlsx(models.AbstractModel):
                                   str(row - 1), 'Asig Familiar:', merge_format)
                 sheet.merge_range("AD" + str(row - 1) + ":" + "AE" +
                                   str(row - 1), 'Asig Varias:', merge_format)
+                sheet.merge_range("AF" + str(row - 1) + ":" + "AG" +
+                                  str(row - 1), 'Total No Imponible:', merge_format)
+                sheet.merge_range("AH" + str(row - 1) + ":" + "AI" +
+                                  str(row - 1), 'Total Haberes:', merge_format)
+                sheet.merge_range("AJ" + str(row - 1) + ":" + "AK" +
+                                  str(row - 1), 'AFP:', merge_format)
+                sheet.merge_range("AL" + str(row - 1) + ":" + "AM" +
+                                  str(row - 1), 'Salud:', merge_format)
+                sheet.merge_range("AN" + str(row - 1) + ":" + "AO" +
+                                  str(row - 1), 'Seg. Cesantia:', merge_format)
+                sheet.merge_range("AP" + str(row - 1) + ":" + "AQ" +
+                                  str(row - 1), 'Impto. Unico:', merge_format)
+                sheet.merge_range("AR" + str(row - 1) + ":" + "AS" +
+                                  str(row - 1), 'Otros AFP:', merge_format)
+                sheet.merge_range("AT" + str(row - 1) + ":" + "AU" +
+                                  str(row - 1), 'Anticipos:', merge_format)
+                sheet.merge_range("AV" + str(row - 1) + ":" + "AW" +
+                                  str(row - 1), 'Anticipo Aguinaldo:', merge_format)
+                sheet.merge_range("AX" + str(row - 1) + ":" + "AY" +
+                                  str(row - 1), 'Credito Social:', merge_format)
+                sheet.merge_range("AZ" + str(row - 1) + ":" + "BA" +
+                                  str(row - 1), 'Ahorro AFP:', merge_format)
+                sheet.merge_range("BB" + str(row - 1) + ":" + "BC" +
+                                  str(row - 1), 'Ahorro APV:', merge_format)
+                sheet.merge_range("BD" + str(row - 1) + ":" + "BE" +
+                                  str(row - 1), 'Ahorro CCAF:', merge_format)
+                sheet.merge_range("BF" + str(row - 1) + ":" + "BG" +
+                                  str(row - 1), 'Seg. de Vida CCAF:', merge_format)
+                sheet.merge_range("BH" + str(row - 1) + ":" + "BI" +
+                                  str(row - 1), 'Ptmo. Empresa:', merge_format)
+                sheet.merge_range("AT" + str(row - 1) + ":" + "AU" +
+                                  str(row - 1), 'Retencion Judicial:', merge_format)
+                sheet.merge_range("AT" + str(row - 1) + ":" + "AU" +
+                                  str(row - 1), 'Total Descuentos:', merge_format)
+                sheet.merge_range("AT" + str(row - 1) + ":" + "AU" +
+                                  str(row - 1), 'Liquido A Pagar:', merge_format)
+
+
 
             sheet.merge_range("A" + str(row) + ":" + "D" + str(row),
                               employee.display_name, merge_format_data)
