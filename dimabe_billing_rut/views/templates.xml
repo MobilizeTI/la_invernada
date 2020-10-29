@@ -12,7 +12,7 @@
 
             <field name="state">code</field>
 
-            <field name="code">model.generate_remuneration_book()</field>
+            <field name="code">model.open_generate_remuneration_book()</field>
 
         </record>
         <menuitem id='menu_testing' name='Libro de Remuneraciones por Compañia' sequence="100"
