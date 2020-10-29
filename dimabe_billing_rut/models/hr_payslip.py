@@ -109,9 +109,5 @@ class HrPayslip(models.Model):
         return res
 
     def generate_remuneration_book(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'hr.payslip',
-            'views': [[self.env.ref('dimabe_billing_rut.hr_payslip_remuneration_book').id, 'form']],
-            'res_id': self.id,
-        }
+        return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
+            .report_action(self.pictures)
