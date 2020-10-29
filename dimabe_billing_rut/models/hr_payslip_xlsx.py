@@ -36,7 +36,6 @@ class HrPaySlipXlsx(models.AbstractModel):
             sheet.merge_range("B{}:D{}".format(row, column),
                               employee.display_name, merge_format)
             sheet.write(0, 0, len(employees))
-            sheet.
             row += 1
 
         bold = workbook.add_format({'bold': True})
