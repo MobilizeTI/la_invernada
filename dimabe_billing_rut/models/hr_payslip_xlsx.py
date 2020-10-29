@@ -20,6 +20,6 @@ class HrPaySlipXlsx(models.AbstractModel):
             'valign': 'vcenter',
             })
 
-        sheet.merge_range("B1:E1")
+        sheet.merge_range("B1:E1",merge_format)
         sheet.write(1, 1, "Mes a procesar :{}".format(indicadores_id[-1]))
         bold = workbook.add_format({'bold': True})
