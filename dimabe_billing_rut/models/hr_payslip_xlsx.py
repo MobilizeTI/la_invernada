@@ -18,6 +18,6 @@ class HrPaySlipXlsx(models.AbstractModel):
             'align': 'center',
             'valign': 'vcenter',
             })
-        sheet.merge_range("B1:E1","Informe: Libro de Remuneraciones",merge_format)
-        sheet.write(1, 1, "Mes a procesar :{}".format(indicadores_id[-1]))
+        sheet.merge_range("B2:E2","Informe: Libro de Remuneraciones",merge_format)
+        sheet.merge_range("B3:E3","Mes a procesar :{}".format(indicadores_id[-1]),merge_format)
         bold = workbook.add_format({'bold': True})
