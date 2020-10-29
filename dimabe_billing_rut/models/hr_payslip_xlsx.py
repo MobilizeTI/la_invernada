@@ -26,13 +26,14 @@ class HrPaySlipXlsx(models.AbstractModel):
         headers = ['Nombre', 'Rut', 'Dias Trabajados', 'Sueldo Base', 'Grat. Legal', 'Horas Extras', 'Bonos Imponibles', 'Aguinaldo Fiestas Patrias', 'Aguinaldo Navidad', 'Horas de Descuento', 'Total Imponible', 'Colacion', 'Movilizacion', 'Asig. Familiar', 'Asig. Varias', 'Total No Imponible',
                   'Total Haberes', 'AFP', 'Salud', 'Seg. Cesantia', 'Impto. Unico', 'Otros AFP', 'Anticipos', 'Anticipo Aguinaldo', 'Credito Social', 'Ahorro AFP', 'Ahorro APV', 'Ahorro CCAF', 'Seg. de Vida CCAF', 'Ptmo. Empresa', 'Retencion Judicial', 'Total Descuentos', 'Liquido A Pagar']
         
-        row = 8
-        column = 8
+        
         column_head = 1
         for head in headers :
             sheet.write(6,column_head,head)
             column_head += 1
         for employee in employees:
+            row = 8
+            column = 8
             sheet.merge_range("A{}:D{}".format(row, column),
                               employee.display_name, merge_format)
             sheet.write(0, 0, len(employees))
