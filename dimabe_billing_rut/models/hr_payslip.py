@@ -112,3 +112,11 @@ class HrPayslip(models.Model):
         payslips = self.env['hr.payslip'].search([])
         return self.env.ref('dimabe_billing_rut.action_remuneration_book') \
             .report_action(payslips)
+
+    def open_generate_remuneration_book(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'hr.payslip',
+            'views': [[self.env.ref('dimabe_manufacturing.mrp_workorder_out_form_view').id, 'form']],
+            'target': 'new'
+        }
