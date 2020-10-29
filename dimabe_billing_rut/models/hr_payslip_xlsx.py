@@ -46,7 +46,7 @@ class HrPaySlipXlsx(models.AbstractModel):
             sheet.merge_range("A"+str(row)+":"+"D"+str(row),employee.display_name,merge_format_data)
             sheet.merge_range("E"+str(row)+":"+"F"+str(row),employee.identification_id,merge_format_data)
             payslip =payslips.filtered(lambda a: a.employee_id.id == employee.id and a.indicadores_id.id == indicadores_id[-1].id)
-            sheet.merge_range("E"+str(row)+":"+"F"+str(row),payslip.mapped('line_ids').filtered(lambda a: a.name == 'SUELDO BASE').total,merge_format_data)          
+            sheet.merge_range("E"+str(row)+":"+"F"+str(row),payslip.mapped('line_ids').filtered(lambda a: a.name == 'SUELDO BASE').mapped('total'),merge_format_data)          
             row += 1
         bold = workbook.add_format({'bold': True})
         
