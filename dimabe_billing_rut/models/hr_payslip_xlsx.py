@@ -35,7 +35,7 @@ class HrPaySlipXlsx(models.AbstractModel):
             column_head += 1
         for employee in employees:
             to_merge = "A{}:D{}".format(row, column)
-            sheet.write(row -1, column - 1, employee.display_name)
+            sheet.write(row -1,0, employee.display_name)
             sheet.write(0, 0, len(employees))
             row += 1
 
