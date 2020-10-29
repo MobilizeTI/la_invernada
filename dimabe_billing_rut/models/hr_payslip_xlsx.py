@@ -46,14 +46,14 @@ class HrPaySlipXlsx(models.AbstractModel):
                 sheet.merge_range("I"+str(row - 1)+":"+"J"+str(row - 1),'Grat Legal:',merge_format)
                 sheet.merge_range("K"+str(row - 1)+":"+"L"+str(row - 1),'Horas Extra:',merge_format)
                 sheet.merge_range("M"+str(row - 1)+":"+"N"+str(row - 1),'Bono Imponible:',merge_format)
-                sheet.merge_range("O"+str(row - 1)+":"+"P"+str(row - 1),'Aguinaldo Fiestas Pratias:',merge_format)
-                sheet.merge_range("Q"+str(row - 1)+":"+"R"+str(row - 1),'Aguinaldo Navidad:',merge_format)
-                sheet.merge_range("S"+str(row - 1)+":"+"T"+str(row - 1),'Horas de Descuento:',merge_format)
-                sheet.merge_range("U"+str(row - 1)+":"+"V"+str(row - 1),'Total Imponible:',merge_format)
-                sheet.merge_range("W"+str(row - 1)+":"+"X"+str(row - 1),'Colacion',merge_format)
-                sheet.merge_range("Y"+str(row - 1)+":"+"Z"+str(row - 1),'Movilizacion:',merge_format)
-                sheet.merge_range("AA"+str(row - 1)+":"+"AB"+str(row - 1),'Asig Familiar:',merge_format)
-                sheet.merge_range("AC"+str(row - 1)+":"+"AD"+str(row - 1),'Asig Varias:',merge_format)
+                sheet.merge_range("O"+str(row - 1)+":"+"Q"+str(row - 1),'Aguinaldo Fiestas Pratias:',merge_format)
+                sheet.merge_range("R"+str(row - 1)+":"+"S"+str(row - 1),'Aguinaldo Navidad:',merge_format)
+                sheet.merge_range("T"+str(row - 1)+":"+"U"+str(row - 1),'Horas de Descuento:',merge_format)
+                sheet.merge_range("V"+str(row - 1)+":"+"W"+str(row - 1),'Total Imponible:',merge_format)
+                sheet.merge_range("X"+str(row - 1)+":"+"Y"+str(row - 1),'Colacion',merge_format)
+                sheet.merge_range("Z"+str(row - 1)+":"+"AA"+str(row - 1),'Movilizacion:',merge_format)
+                sheet.merge_range("AB"+str(row - 1)+":"+"AC"+str(row - 1),'Asig Familiar:',merge_format)
+                sheet.merge_range("AD"+str(row - 1)+":"+"AE"+str(row - 1),'Asig Varias:',merge_format)
 
             sheet.merge_range("A"+str(row)+":"+"D"+str(row),employee.display_name,merge_format_data)
             sheet.merge_range("E"+str(row)+":"+"F"+str(row),employee.identification_id,merge_format_data)
@@ -61,7 +61,11 @@ class HrPaySlipXlsx(models.AbstractModel):
             if len(payslip.mapped('line_ids').filtered(lambda a: a.name == 'SUELDO BASE')) > 1:
                 sheet.merge_range("G"+str(row)+":"+"H"+str(row),payslip.mapped('line_ids').filtered(lambda a: a.name == 'SUELDO BASE')[0].total,merge_format_data)
             else:
-                sheet.merge_range("G"+str(row)+":"+"H"+str(row),payslip.mapped('line_ids').filtered(lambda a: a.name == 'SUELDO BASE').total,merge_format_data)          
+                sheet.merge_range("G"+str(row)+":"+"H"+str(row),payslip.mapped('line_ids').filtered(lambda a: a.name == 'SUELDO BASE').total,merge_format_data)
+            if len(payslip.mapped('line_ids').filtered(lambda a: a.name == 'GRATIFICACION LEGAL')) > 1:
+                sheet.merge_range("G"+str(row)+":"+"H"+str(row),payslip.mapped('line_ids').filtered(lambda a: a.name == 'GRATIFICACION LEGAL')[0].total,merge_format_data)
+            else:
+                sheet.merge_range("G"+str(row)+":"+"H"+str(row),payslip.mapped('line_ids').filtered(lambda a: a.name == 'GRATIFICACION LEGAL').total,merge_format_data)    
             row += 1
         bold = workbook.add_format({'bold': True})
         
