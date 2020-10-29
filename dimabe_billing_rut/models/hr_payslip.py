@@ -109,20 +109,4 @@ class HrPayslip(models.Model):
         return res
 
     def generate_remuneration_book(self):
-        return {
-
-            'type': 'ir.actions.act_window',
-
-            'name': "Hola",
-
-            'view_type': 'form',
-
-            'view_mode': 'tree,form',
-
-            'domain': [],
-
-            'res_model': 'hr.payslip',
-
-            'nodestroy': True,
-
-        }
+        raise models.ValidationError('Hola')
