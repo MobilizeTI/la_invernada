@@ -17,15 +17,5 @@
                 </xpath>
             </field>
         </record>
-        <record id="hr_payslip_remuneration_book" model="ir.ui.view">
-            <field name="name">Libro de Remuneraciones</field>
-            <field name="model">hr.payslip</field>
-            <field name="arch" type="xml">
-                <form>
-                    <field name="employee_id"/>
-                    <field name="state"/>
-                </form>
-            </field>
-        </record>
     </data>
 </odoo>
