@@ -36,7 +36,7 @@ class HrPaySlipXlsx(models.AbstractModel):
         row = 8
         column = 8
         letter_a = "A" 
-        letter_b = "D"
+        letter_b = "E"
         
         
         for head in headers :
