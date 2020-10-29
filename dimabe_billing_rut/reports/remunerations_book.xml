@@ -5,7 +5,7 @@
             <div class="page">
                 <table>
                     <thead>
-                        <th>
+                        <th style="font-size:10px;">
                             <td>RUT</td>
                             <td>Dias Trabajados</td>
                             <td>Sueldo Base</td>
