@@ -69,7 +69,7 @@
     <report
             id="hr_payslip_xlsx"
             model="hr.payslip"
-            string="Print to XLSX"
+            string="Libro de Remuneraciones"
             report_type="xlsx"
             name="dimabe_billing_rut.remunerations_book"
             file="hr_payslip"
