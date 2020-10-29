@@ -81,6 +81,8 @@ class HrPaySlipXlsx(models.AbstractModel):
             self.get_values(sheet, "K"+str(row)+":"+"L"+str(row),
                             'HORAS EXTRA ART 32', merge_format_data, payslip)
             self.get_bonus(sheet,"M"+str(row)+":"+"N"+str(row),merge_format_data,payslip)
+            self.get_values(sheet, "O"+str(row)+":"+"Q"+str(row),
+                            'AGUINALDO', merge_format_data, payslip)
             row += 1
         bold = workbook.add_format({'bold': True})
 
