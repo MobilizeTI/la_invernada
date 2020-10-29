@@ -1,3 +1,4 @@
+import xlsxwriter
 from odoo import models
 
 class HrPaySlipXlsx(models.AbstractModel):
@@ -9,4 +10,5 @@ class HrPaySlipXlsx(models.AbstractModel):
         report_name = "Libro de Remuneraciones"
         # One sheet by partner
         sheet = workbook.add_worksheet('Libro de Remuneraciones')
+        sheet.write(0,1,"Informe: Libro de Remuneraciones")
         bold = workbook.add_format({'bold': True})
