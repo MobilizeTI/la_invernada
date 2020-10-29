@@ -113,7 +113,7 @@ class HrPayslip(models.Model):
 
             'type': 'ir.actions.act_window',
 
-            'name': name,
+            'name': "Hola",
 
             'view_type': 'form',
 
