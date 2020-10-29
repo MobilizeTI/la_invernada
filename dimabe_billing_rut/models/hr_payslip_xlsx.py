@@ -12,7 +12,7 @@ class HrPaySlipXlsx(models.AbstractModel):
         # One sheet by partner
         indicadores_id = payslips.mapped('indicadores_id')
         names = indicadores_id.mapped('name')
-        sheet = workbook.add_worksheet('Libro de Remuneraciones')
+        sheet = workbook.add_worksheet(self.env['res.partner'].search([('id','=',423)]).display_name)
         merge_format = workbook.add_format({
             'bold': 1,
             'border': 1,
