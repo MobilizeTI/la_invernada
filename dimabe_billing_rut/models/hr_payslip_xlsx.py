@@ -28,9 +28,9 @@ class HrPaySlipXlsx(models.AbstractModel):
         
         row = 8
         column = 8
-        column_head = 6
+        column_head = 1
         for head in headers :
-            sheet.write(8,column_head,head)
+            sheet.write(6,column_head,head)
             column_head += 1
         for employee in employees:
             sheet.merge_range("B{}:D{}".format(row, column),
