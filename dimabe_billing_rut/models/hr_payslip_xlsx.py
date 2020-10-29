@@ -83,6 +83,14 @@ class HrPaySlipXlsx(models.AbstractModel):
             self.get_bonus(sheet,"M"+str(row)+":"+"N"+str(row),merge_format_data,payslip)
             self.get_values(sheet, "O"+str(row)+":"+"Q"+str(row),
                             'AGUINALDO', merge_format_data, payslip)
+            self.get_values(sheet, "R"+str(row)+":"+"S"+str(row),
+                            'AGUINALDO', merge_format_data, payslip)
+            self.get_values(sheet, "T"+str(row)+":"+"U"+str(row),
+                            'TOTAL IMPONIBLE', merge_format_data, payslip)
+            self.get_values(sheet, "V"+str(row)+":"+"W"+str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "X"+str(row)+":"+"Y"+str(row),
+                            'MOVILIZACION', merge_format_data, payslip)
             row += 1
         bold = workbook.add_format({'bold': True})
 
