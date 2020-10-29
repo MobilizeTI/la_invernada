@@ -109,4 +109,9 @@ class HrPayslip(models.Model):
         return res
 
     def generate_remuneration_book(self):
-        raise models.ValidationError('Hola')
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'hr.payslip',
+            'views': [[self.env.ref('dimabe_billing_rut.hr_payslip_remuneration_book').id, 'form']],
+            'res_id': self.id,
+        }
