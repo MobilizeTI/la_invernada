@@ -43,11 +43,11 @@ class HrPaySlipXlsx(models.AbstractModel):
             sheet.write(6,column_head,head)
             column_head += 1
         for employee in employees:
-            x = chr(ord(letter_a) + 3)
-            y = chr(ord(letter_a) + 3)
+            x = chr(ord(letter_a) + 2)
+            y = chr(ord(letter_a) + 2)
             if employee.id == employees[0].id:
-                sheet.merge_range(x+str(row - 1)+":"+y+str(row - 1),'Nombre:',merge_format)
-                sheet.merge_range("E"+str(row - 1)+":"+"D"+str(row - 1),'RUT:',merge_format)
+                sheet.merge_range(str(x)+str(row - 1)+":"+str(y)+str(row - 1),'Nombre:',merge_format)
+                sheet.merge_range("E"+str(row - 1)+":"+"F"+str(row - 1),'RUT:',merge_format)
             to_merge = "A"+str(row)+":"+"D"+str(row)
             sheet.merge_range(to_merge,employee.name,merge_format_data)
             row += 1
