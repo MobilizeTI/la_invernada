@@ -119,8 +119,6 @@ class HrPayslip(models.Model):
 
             'view_mode': 'tree,form',
 
-            'context': context,
-
             'domain': [],
 
             'res_model': 'hr.payslip',
