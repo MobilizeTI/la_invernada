@@ -63,9 +63,9 @@ class HrPaySlipXlsx(models.AbstractModel):
             else:
                 sheet.merge_range("G"+str(row)+":"+"H"+str(row),payslip.mapped('line_ids').filtered(lambda a: a.name == 'SUELDO BASE').total,merge_format_data)
             if len(payslip.mapped('line_ids').filtered(lambda a: a.name == 'GRATIFICACION LEGAL')) > 1:
-                sheet.merge_range("G"+str(row)+":"+"H"+str(row),payslip.mapped('line_ids').filtered(lambda a: a.name == 'GRATIFICACION LEGAL')[0].total,merge_format_data)
+                sheet.merge_range("I"+str(row)+":"+"J"+str(row),payslip.mapped('line_ids').filtered(lambda a: a.name == 'GRATIFICACION LEGAL')[0].total,merge_format_data)
             else:
-                sheet.merge_range("G"+str(row)+":"+"H"+str(row),payslip.mapped('line_ids').filtered(lambda a: a.name == 'GRATIFICACION LEGAL').total,merge_format_data)    
+                sheet.merge_range("I"+str(row)+":"+"J"+str(row),payslip.mapped('line_ids').filtered(lambda a: a.name == 'GRATIFICACION LEGAL').total,merge_format_data)    
             row += 1
         bold = workbook.add_format({'bold': True})
         
