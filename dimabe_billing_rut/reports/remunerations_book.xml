@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="remunations_book_report">
+        <t t-call="web.html_container">
+            <div class="page">
+                <t t-call="docs" t-as="o">
+
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <record id="paper_format_letter_custom" model="report.paperformat">
+        <field name="name">Carta Custom</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">15</field>
+        <field name="margin_right">15</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="footer_line" eval="False"/>
+        <field name="dpi">90</field>
+    </record>
+    <report id="action_holiday_ticket" string="Vale de vacaciones" model="hr.leave" report_type="qweb-pdf"
+            name="dimabe_billing_rut.holiday_ticket" menu="True" paperformat="paper_format_letter_custom"/>
+</odoo>
