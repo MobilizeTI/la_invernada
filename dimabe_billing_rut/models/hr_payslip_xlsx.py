@@ -49,7 +49,9 @@ class HrPaySlipXlsx(models.AbstractModel):
                 sheet.merge_range("M" + str(row - 1) + ":" + "N" +
                                   str(row - 1), 'Bono Imponible:', merge_format)
                 if 'Septiembre' in indicadores_id[-1].name:
-                    sheet = self.is_september(sheet,row,merge_format)
+                    sheet = self.title_format(sheet,row,merge_format,'Aguinaldo Fiestas Patrias:')
+                elif 'Diciembre' in indicadores_id[-1].name:
+                    sheet = self.title_format(sheet,row,merge_format,'Aguinaldo Navidad:')
             sheet.merge_range("A" + str(row) + ":" + "D" + str(row),
                               employee.display_name, merge_format_data)
             sheet.merge_range("E" + str(row) + ":" + "F" + str(row),
@@ -135,9 +137,9 @@ class HrPaySlipXlsx(models.AbstractModel):
         return sheet.merge_range(set_in, sum(payslip.mapped('line_ids').filtered(
             lambda a: 'BONO' in a.name and a.category_id.name == 'Imponible').mapped('total')), format_data)
 
-    def is_september(self, sheet,row,merge_format):
+    def title_format(self, sheet,row,merge_format,title):
         sheet.merge_range("O" + str(row - 1) + ":" + "Q" + str(row - 1),
-                          'Aguinaldo Fiestas Pratias:', merge_format)
+                          title, merge_format)
         sheet.merge_range(
             "R" + str(row - 1) + ":" + "S" + str(row - 1), 'Horas de Descuento:', merge_format)
         sheet.merge_range("T" + str(row - 1) + ":" + "U" +
@@ -160,30 +162,30 @@ class HrPaySlipXlsx(models.AbstractModel):
                           str(row - 1), 'Salud:', merge_format)
         sheet.merge_range("AL" + str(row - 1) + ":" + "AM" +
                           str(row - 1), 'Seg. Cesantia:', merge_format)
-        sheet.merge_range("AO" + str(row - 1) + ":" + "AP" +
+        sheet.merge_range("AN" + str(row - 1) + ":" + "AO" +
                           str(row - 1), 'Impto. Unico:', merge_format)
-        sheet.merge_range("AQ" + str(row - 1) + ":" + "AR" +
+        sheet.merge_range("AP" + str(row - 1) + ":" + "AQ" +
                           str(row - 1), 'Otros AFP:', merge_format)
-        sheet.merge_range("AS" + str(row - 1) + ":" + "AT" +
+        sheet.merge_range("AR" + str(row - 1) + ":" + "AS" +
                           str(row - 1), 'Anticipos:', merge_format)
-        sheet.merge_range("AU" + str(row - 1) + ":" + "AV" +
+        sheet.merge_range("AT" + str(row - 1) + ":" + "AU" +
                           str(row - 1), 'Anticipo Aguinaldo:', merge_format)
-        sheet.merge_range("AW" + str(row - 1) + ":" + "AX" +
+        sheet.merge_range("AV" + str(row - 1) + ":" + "AW" +
                           str(row - 1), 'Credito Social:', merge_format)
-        sheet.merge_range("AY" + str(row - 1) + ":" + "AZ" +
+        sheet.merge_range("AX" + str(row - 1) + ":" + "AY" +
                           str(row - 1), 'Ahorro AFP:', merge_format)
-        sheet.merge_range("BA" + str(row - 1) + ":" + "BB" +
+        sheet.merge_range("AZ" + str(row - 1) + ":" + "BA" +
                           str(row - 1), 'Ahorro APV:', merge_format)
-        sheet.merge_range("BC" + str(row - 1) + ":" + "BD" +
+        sheet.merge_range("BB" + str(row - 1) + ":" + "BC" +
                           str(row - 1), 'Ahorro CCAF:', merge_format)
-        sheet.merge_range("BE" + str(row - 1) + ":" + "BF" +
+        sheet.merge_range("BD" + str(row - 1) + ":" + "BE" +
                           str(row - 1), 'Seg. de Vida CCAF:', merge_format)
-        sheet.merge_range("BG" + str(row - 1) + ":" + "BH" +
+        sheet.merge_range("BF" + str(row - 1) + ":" + "BG" +
                           str(row - 1), 'Ptmo. Empresa:', merge_format)
-        sheet.merge_range("BI" + str(row - 1) + ":" + "BJ" +
+        sheet.merge_range("BH" + str(row - 1) + ":" + "BI" +
                           str(row - 1), 'Retencion Judicial:', merge_format)
-        sheet.merge_range("BK" + str(row - 1) + ":" + "BL" +
+        sheet.merge_range("BJ" + str(row - 1) + ":" + "BK" +
                           str(row - 1), 'Total Descuentos:', merge_format)
-        sheet.merge_range("BM" + str(row - 1) + ":" + "BN" +
+        sheet.merge_range("BL" + str(row - 1) + ":" + "BM" +
                           str(row - 1), 'Liquido A Pagar:', merge_format)
         return sheet
