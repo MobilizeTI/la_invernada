@@ -250,8 +250,6 @@ class HrPaySlipXlsx(models.AbstractModel):
                             'COLACION', merge_format_data, payslip)
             return sheet
         else:
-            self.get_values(sheet, "O" + str(row) + ":" + "Q" + str(row),
-                            'AGUINALDO', merge_format_data, payslip)
             self.get_values(sheet, "O" + str(row) + ":" + "P" + str(row),
                             'HORAS DESCUENTO', merge_format_data, payslip)
             self.get_values(sheet, "Q" + str(row) + ":" + "R" + str(row),
