@@ -71,6 +71,8 @@ class HrPaySlipXlsx(models.AbstractModel):
                             'AGUINALDO', merge_format_data, payslip)
             if 'Septiembre' in indicadores_id[-1].name or 'Diciembre' in indicadores_id[-1].name:
                 sheet = self.data_format(sheet,row,merge_format,payslip,is_bonus=True)
+            else:
+                sheet = self.data_format(sheet,row,merge_format,payslip)
             row += 1
         bold = workbook.add_format({'bold': True})
 
