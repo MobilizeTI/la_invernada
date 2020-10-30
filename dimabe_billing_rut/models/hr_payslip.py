@@ -119,6 +119,7 @@ class HrPayslip(models.Model):
         book = xlwt.Workbook(encoding='utf-8')
         sheet = book.add_sheet(u'Sheet1')
         sheet.write(1, 1, '2')
+        raise models.ValidationError(stream.getvalue())
         book.save(stream)
         raise models.ValidationError(stream.getvalue())
 
