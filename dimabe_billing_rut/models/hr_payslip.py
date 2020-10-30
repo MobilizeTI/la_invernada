@@ -6,7 +6,8 @@ import xlsxwriter
 import xlwt
 from xlsxwriter.workbook import Workbook
 import base64
-from io import StringIO
+
+import io
 import re
 
 
@@ -115,23 +116,13 @@ class HrPayslip(models.Model):
 
     @api.multi
     def generate_excel_report(self):
-        book = xlsxwriter.Workbook('Test.xlsx')
-        sheet = book.add_worksheet()
-        format_for_data = book.add_format({
-            'border': 1,
-            'align': 'center',
-            'valign': 'center'
-        })
-        format_for_title = book.add_format({
-            'bold': 1,
-            'border': 1,
-            'align': 'center',
-            'valign': 'vcenter'
-        })
-
-        book.close()
-
-        raise models.ValidationError(book.in_memory)
+        stream = io.BytesIO()
+        book = xlwt.Workbook(encoding='utf-8')
+        sheet = book.add_sheet(u'Sheet1')
+        sheet.write(1, 1, 'Hola')
+        book.save(stream)
+        self.your_binary_field = base64.encodestring(stream.getvalue())
+        self.your_file_name = self.name
 
 # def generate_remuneration_book(self):
 #     filename = 'Libro de Remuneraciones.xlsx'
