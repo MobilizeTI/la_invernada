@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="wizard_excel_report_tree" model="ir.ui.view">
+            <field name="name">Excels</field>
+            <field name="model">wizard.excel.report</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="file_name" />
+                </tree>
+            </field>
+        </record>
+        <record id="dimabe_billing_rut.action_wizard_excel_report_views" model="ir.actions.act_window">
+            <field name="name">Facturas Emitidas</field>
+            <field name="res_model">custom.invoice</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="wizard_excel_report_tree"/>
+        </record>
+        <menuitem id="menu_item_excel"
+                  name="Libros"
+                  parent="l10n_cl_hr.menu_cl_hr_payroll_reports"
+                  action="dimabe_billing_rut.action_wizard_excel_report_views"
+        />
+    </data>
+</odoo>
