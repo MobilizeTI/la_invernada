@@ -72,7 +72,7 @@
             string="Libro de Remuneraciones por Compañia"
             report_type="xlsx"
             name="dimabe_billing_rut.remunerations_book"
-            file="hr_payslip"
+            file="Libro de Remuneraciones por Compañia"
             attachment_use="False"
     />
 </odoo>

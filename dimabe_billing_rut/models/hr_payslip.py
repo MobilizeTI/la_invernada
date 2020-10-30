@@ -108,6 +108,11 @@ class HrPayslip(models.Model):
         res = res[0:3].upper() + identy
         return res
 
+    def generate_remuneration_book(self):
+        for item in self:
+            return self.env.ref('dimabe_billing_rut.hr_payslip_xlsx') \
+                .report_action(self)
+
     def open_generate_remuneration_book(self):
         return {
             'type': 'ir.actions.act_window',
