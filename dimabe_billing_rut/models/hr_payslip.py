@@ -115,14 +115,25 @@ class HrPayslip(models.Model):
         return res
 
     @api.multi
+    @api.multi
     def generate_excel_report(self):
-        stream = io.BytesIO()
-        book = xlwt.Workbook(encoding='utf-8')
-        sheet = book.add_sheet(u'Sheet1')
-        sheet.write(1, 1, 'Hola')
-        book.save(stream)
-        self.your_binary_field = base64.encodestring(stream.getvalue())
-        self.your_file_name = self.name
+        filename = 'filename.xls'
+        workbook = xlwt.Workbook(encoding="UTF-8")
+        worksheet = workbook.add_sheet('Sheet 1')
+        style = xlwt.easyxf('font: bold True, name Arial;')
+        worksheet.write_merge(0, 1, 0, 3, 'your data that you want to show into excelsheet', style)
+        fp = io.BytesIO()
+        workbook.save(fp)
+        record_id = self.env['wizard.excel.report'].create({'excel_file': base64.encodestring(fp.getvalue()),
+                                                            'file_name': filename}, )
+        fp.close()
+        return {'view_mode': 'form',
+                'res_id': record_id,
+                'res_model': 'wizard.excel.report',
+                'view_type': 'form',
+                'type': 'ir.actions.act_window',
+                'target': 'new',
+                }
 
 # def generate_remuneration_book(self):
 #     filename = 'Libro de Remuneraciones.xlsx'
