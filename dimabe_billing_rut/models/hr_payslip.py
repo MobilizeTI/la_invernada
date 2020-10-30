@@ -108,9 +108,6 @@ class HrPayslip(models.Model):
         res = res[0:3].upper() + identy
         return res
 
-    def generate_remuneration_book(self):
-
-
     def open_generate_remuneration_book(self):
         return {
             'type': 'ir.actions.act_window',
