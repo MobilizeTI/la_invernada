@@ -158,7 +158,7 @@ class HrPayslip(models.Model):
         bold = workbook.add_format({'bold': True})
         style = xlwt.easyxf('font: bold True, name Arial;')
         fp = StringIO()
-        workbook.save(fp)
+        workbook.close()
         record_id = self.env['wizard.excel.report'].create({'excel_file': base64.encodestring(fp.getvalue()),
                                                             'file_name': filename}, )
         fp.close()
