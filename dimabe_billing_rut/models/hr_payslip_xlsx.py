@@ -47,7 +47,6 @@ class HrPaySlipXlsx(models.AbstractModel):
         bold = workbook.add_format({'bold': True})
 
     def set_data(self, employee, employees, sheet, merge_format, merge_format_data, payslips, row, indicadores_id):
-
         if employee.id == employees[0].id:
             sheet.merge_range("A" + str(row - 1) + ":" + "D" +
                               str(row - 1), 'Nombre:', merge_format)
@@ -67,9 +66,6 @@ class HrPaySlipXlsx(models.AbstractModel):
                 sheet = self.title_format(sheet, row, merge_format, 'Aguinaldo Navidad:')
             else:
                 sheet = self.title_format(sheet, row, merge_format)
-        if not payslips.filtered(
-            lambda a: a.employee_id.id == employee.id and a.indicadores_id.id == indicadores_id[-1].id):
-            return sheet
         sheet.merge_range("A" + str(row) + ":" + "D" + str(row),
                                   employee.display_name, merge_format_data)
         sheet.merge_range("E" + str(row) + ":" + "F" + str(row),
