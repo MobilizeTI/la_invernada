@@ -67,8 +67,6 @@ class HrPaySlipXlsx(models.AbstractModel):
             self.get_values(sheet, "K" + str(row) + ":" + "L" + str(row),
                             'HORAS EXTRA ART 32', merge_format_data, payslip)
             self.get_bonus(sheet, "M" + str(row) + ":" + "N" + str(row), merge_format_data, payslip)
-            self.get_values(sheet, "O" + str(row) + ":" + "Q" + str(row),
-                            'AGUINALDO', merge_format_data, payslip)
             if 'Septiembre' in indicadores_id[-1].name or 'Diciembre' in indicadores_id[-1].name:
                 sheet = self.data_format(sheet,row,merge_format,payslip,is_bonus=True)
             else:
