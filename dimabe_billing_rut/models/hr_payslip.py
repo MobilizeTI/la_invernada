@@ -127,10 +127,9 @@ class HrPayslip(models.Model):
         record_id = self.env['wizard.excel.report'].create({'excel_file': base64.encodestring(fp.getvalue()),
                                                             'file_name': filename}, )
         fp.close()
-        return {'view_mode': 'form',
-                'res_id': record_id,
+        return {'view_mode': 'tree',
                 'res_model': 'wizard.excel.report',
-                'view_type': 'form',
+                'view_type': 'tree,form',
                 'type': 'ir.actions.act_window',
                 'target': 'new',
                 }
