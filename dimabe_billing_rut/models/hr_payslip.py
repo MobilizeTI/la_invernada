@@ -6,7 +6,7 @@ import xlsxwriter
 import xlwt
 from xlsxwriter.workbook import Workbook
 import base64
-import StringIO
+from io import StringIO
 import re
 
 
