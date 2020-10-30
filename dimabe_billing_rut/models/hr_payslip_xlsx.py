@@ -67,7 +67,8 @@ class HrPaySlipXlsx(models.AbstractModel):
             self.get_bonus(sheet, "M" + str(row) + ":" + "N" + str(row), merge_format_data, payslip)
             self.get_values(sheet, "O" + str(row) + ":" + "Q" + str(row),
                             'AGUINALDO', merge_format_data, payslip)
-
+            if 'Septiembre' in indicadores_id[-1].name or 'Diciembre' in indicadores_id[-1].name:
+                sheet = self.data_format(sheet,row,merge_format,payslip)
             row += 1
         bold = workbook.add_format({'bold': True})
 
@@ -141,55 +142,107 @@ class HrPaySlipXlsx(models.AbstractModel):
                           str(row - 1), 'Liquido A Pagar:', merge_format)
         return sheet
 
-    def data_format(self,sheet,row,merge_format_data,payslip):
-        self.get_values(sheet, "O" + str(row) + ":" + "Q" + str(row),
-                        'AGUINALDO', merge_format_data, payslip)
-        self.get_values(sheet, "R" + str(row) + ":" + "S" + str(row),
-                        'HORAS DESCUENTO', merge_format_data, payslip)
-        self.get_values(sheet, "T" + str(row) + ":" + "U" + str(row),
-                        'TOTAL IMPONIBLE', merge_format_data, payslip)
-        self.get_values(sheet, "V" + str(row) + ":" + "W" + str(row),
-                        'COLACION', merge_format_data, payslip)
-        self.get_values(sheet, "X" + str(row) + ":" + "Y" + str(row),
-                        'MOVILACION', merge_format_data, payslip)
-        self.get_values(sheet, "Z" + str(row) + ":" + "AA" + str(row),
-                        'COLACION', merge_format_data, payslip)
-        self.get_values(sheet, "AB" + str(row) + ":" + "AC" + str(row),
-                        'COLACION', merge_format_data, payslip)
-        self.get_values(sheet, "AD" + str(row) + ":" + "AE" + str(row),
-                        'COLACION', merge_format_data, payslip)
-        self.get_values(sheet, "AF" + str(row) + ":" + "AG" + str(row),
-                        'COLACION', merge_format_data, payslip)
-        self.get_values(sheet, "AH" + str(row) + ":" + "AI" + str(row),
-                        'COLACION', merge_format_data, payslip)
-        self.get_values(sheet, "AJ" + str(row) + ":" + "AK" + str(row),
-                        'COLACION', merge_format_data, payslip)
-        self.get_values(sheet, "AL" + str(row) + ":" + "AM" + str(row),
-                        'COLACION', merge_format_data, payslip)
-        self.get_values(sheet, "AN" + str(row) + ":" + "AO" + str(row),
-                        'COLACION', merge_format_data, payslip)
-        self.get_values(sheet, "AP" + str(row) + ":" + "AQ" + str(row),
-                        'COLACION', merge_format_data, payslip)
-        self.get_values(sheet, "AR" + str(row) + ":" + "AS" + str(row),
-                        'COLACION', merge_format_data, payslip)
-        self.get_values(sheet, "AT" + str(row) + ":" + "AU" + str(row),
-                        'COLACION', merge_format_data, payslip)
-        self.get_values(sheet, "AV" + str(row) + ":" + "AW" + str(row),
-                        'COLACION', merge_format_data, payslip)
-        self.get_values(sheet, "AX" + str(row) + ":" + "AY" + str(row),
-                        'COLACION', merge_format_data, payslip)
-        self.get_values(sheet, "AZ" + str(row) + ":" + "BA" + str(row),
-                        'COLACION', merge_format_data, payslip)
-        self.get_values(sheet, "BB" + str(row) + ":" + "BC" + str(row),
-                        'COLACION', merge_format_data, payslip)
-        self.get_values(sheet, "BD" + str(row) + ":" + "BE" + str(row),
-                        'COLACION', merge_format_data, payslip)
-        self.get_values(sheet, "BF" + str(row) + ":" + "BG" + str(row),
-                        'COLACION', merge_format_data, payslip)
-        self.get_values(sheet, "BH" + str(row) + ":" + "BI" + str(row),
-                        'COLACION', merge_format_data, payslip)
-        self.get_values(sheet, "BJ" + str(row) + ":" + "BK" + str(row),
-                        'COLACION', merge_format_data, payslip)
-        self.get_values(sheet, "BL" + str(row) + ":" + "BM" + str(row),
-                        'COLACION', merge_format_data, payslip)
+    def data_format(self,sheet,row,merge_format_data,payslip,is_bonus=False):
+        if is_bonus:
+            self.get_values(sheet, "O" + str(row) + ":" + "Q" + str(row),
+                            'AGUINALDO', merge_format_data, payslip)
+            self.get_values(sheet, "R" + str(row) + ":" + "S" + str(row),
+                            'HORAS DESCUENTO', merge_format_data, payslip)
+            self.get_values(sheet, "T" + str(row) + ":" + "U" + str(row),
+                            'TOTAL IMPONIBLE', merge_format_data, payslip)
+            self.get_values(sheet, "V" + str(row) + ":" + "W" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "X" + str(row) + ":" + "Y" + str(row),
+                            'MOVILACION', merge_format_data, payslip)
+            self.get_values(sheet, "Z" + str(row) + ":" + "AA" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AB" + str(row) + ":" + "AC" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AD" + str(row) + ":" + "AE" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AF" + str(row) + ":" + "AG" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AH" + str(row) + ":" + "AI" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AJ" + str(row) + ":" + "AK" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AL" + str(row) + ":" + "AM" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AN" + str(row) + ":" + "AO" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AP" + str(row) + ":" + "AQ" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AR" + str(row) + ":" + "AS" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AT" + str(row) + ":" + "AU" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AV" + str(row) + ":" + "AW" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AX" + str(row) + ":" + "AY" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AZ" + str(row) + ":" + "BA" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "BB" + str(row) + ":" + "BC" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "BD" + str(row) + ":" + "BE" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "BF" + str(row) + ":" + "BG" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "BH" + str(row) + ":" + "BI" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "BJ" + str(row) + ":" + "BK" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "BL" + str(row) + ":" + "BM" + str(row),
+                            'COLACION', merge_format_data, payslip)
+        else:
+            self.get_values(sheet, "O" + str(row) + ":" + "Q" + str(row),
+                            'AGUINALDO', merge_format_data, payslip)
+            self.get_values(sheet, "O" + str(row) + ":" + "P" + str(row),
+                            'HORAS DESCUENTO', merge_format_data, payslip)
+            self.get_values(sheet, "Q" + str(row) + ":" + "R" + str(row),
+                            'TOTAL IMPONIBLE', merge_format_data, payslip)
+            self.get_values(sheet, "S" + str(row) + ":" + "T" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "U" + str(row) + ":" + "V" + str(row),
+                            'MOVILACION', merge_format_data, payslip)
+            self.get_values(sheet, "W" + str(row) + ":" + "X" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "Y" + str(row) + ":" + "Z" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AA" + str(row) + ":" + "AB" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AC" + str(row) + ":" + "AD" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AE" + str(row) + ":" + "AF" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AG" + str(row) + ":" + "AH" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AI" + str(row) + ":" + "AJ" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AK" + str(row) + ":" + "AL" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AM" + str(row) + ":" + "AN" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AO" + str(row) + ":" + "AP" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AQ" + str(row) + ":" + "AR" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AS" + str(row) + ":" + "AT" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AU" + str(row) + ":" + "AV" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AW" + str(row) + ":" + "AX" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AY" + str(row) + ":" + "AZ" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "BA" + str(row) + ":" + "BB" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "BC" + str(row) + ":" + "BD" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "BE" + str(row) + ":" + "BF" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "BG" + str(row) + ":" + "BH" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "BI" + str(row) + ":" + "BJ" + str(row),
+                            'COLACION', merge_format_data, payslip)
         return sheet
