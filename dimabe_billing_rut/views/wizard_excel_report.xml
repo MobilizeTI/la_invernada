@@ -12,7 +12,7 @@
         </record>
         <record id="dimabe_billing_rut.action_wizard_excel_report_views" model="ir.actions.act_window">
             <field name="name">Facturas Emitidas</field>
-            <field name="res_model">custom.invoice</field>
+            <field name="res_model">wizard.excel.report</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="wizard_excel_report_tree"/>
         </record>
