@@ -194,6 +194,7 @@ class HrPaySlipXlsx(models.AbstractModel):
                             'COLACION', merge_format_data, payslip)
             self.get_values(sheet, "BL" + str(row) + ":" + "BM" + str(row),
                             'COLACION', merge_format_data, payslip)
+            return sheet
         else:
             self.get_values(sheet, "O" + str(row) + ":" + "Q" + str(row),
                             'AGUINALDO', merge_format_data, payslip)
@@ -245,4 +246,4 @@ class HrPaySlipXlsx(models.AbstractModel):
                             'COLACION', merge_format_data, payslip)
             self.get_values(sheet, "BI" + str(row) + ":" + "BJ" + str(row),
                             'COLACION', merge_format_data, payslip)
-        return sheet
+            return sheet
