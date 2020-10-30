@@ -37,9 +37,6 @@ class HrPaySlipXlsx(models.AbstractModel):
         column = 8
 
         for employee in employees_service:
-            if not payslips.filtered(
-            lambda a: a.employee_id.id == employee.id and a.indicadores_id.id == indicadores_id[-1].id):
-                continue
             self.set_data(employee, employees_service, sheet_service, merge_format, merge_format_data, payslips, row_service,
                           indicadores_id)
             row_service += 1
