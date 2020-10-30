@@ -52,6 +52,8 @@ class HrPaySlipXlsx(models.AbstractModel):
                     sheet = self.title_format(sheet,row,merge_format,'Aguinaldo Fiestas Patrias:')
                 elif 'Diciembre' in indicadores_id[-1].name:
                     sheet = self.title_format(sheet,row,merge_format,'Aguinaldo Navidad:')
+                else:
+                    sheet = self.title_format(sheet,row,merge_format)
             sheet.merge_range("A" + str(row) + ":" + "D" + str(row),
                               employee.display_name, merge_format_data)
             sheet.merge_range("E" + str(row) + ":" + "F" + str(row),
