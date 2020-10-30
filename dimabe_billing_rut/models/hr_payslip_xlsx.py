@@ -7,7 +7,7 @@ class HrPaySlipXlsx(models.AbstractModel):
     _inherit = 'report.report_xlsx.abstract'
 
     def generate_xlsx_report(self, workbook, data, partners):
-        payslips = self.env['hr.payslip'].search([])
+        payslips = self.env['hr.payslip'].search([('company_id','=',2)])
         report_name = "Libro de Remuneraciones"
         # One sheet_service by partner
         indicadores_id = payslips.mapped('indicadores_id')
