@@ -257,35 +257,35 @@ class HrPaySlipXlsx(models.AbstractModel):
             self.get_values(sheet, "U" + str(row) + ":" + "V" + str(row),
                             'MOVILACION', merge_format_data, payslip)
             self.get_values(sheet, "W" + str(row) + ":" + "X" + str(row),
-                            'COLACION', merge_format_data, payslip)
+                            'ASIGNACION FAMILIAR', merge_format_data, payslip)
             self.get_values(sheet, "Y" + str(row) + ":" + "Z" + str(row),
                             'COLACION', merge_format_data, payslip)
             self.get_values(sheet, "AA" + str(row) + ":" + "AB" + str(row),
-                            'COLACION', merge_format_data, payslip)
+                            'TOTAL NO IMPONIBLE', merge_format_data, payslip)
             self.get_values(sheet, "AC" + str(row) + ":" + "AD" + str(row),
-                            'COLACION', merge_format_data, payslip)
+                            'TOTAL HABERES', merge_format_data, payslip)
             self.get_values(sheet, "AE" + str(row) + ":" + "AF" + str(row),
-                            'COLACION', merge_format_data, payslip)
+                            'PREVISION', merge_format_data, payslip)
             self.get_values(sheet, "AG" + str(row) + ":" + "AH" + str(row),
-                            'COLACION', merge_format_data, payslip)
+                            'SALUD', merge_format_data, payslip)
             self.get_values(sheet, "AI" + str(row) + ":" + "AJ" + str(row),
-                            'COLACION', merge_format_data, payslip)
+                            'SEGURO CESANTIA', merge_format_data, payslip)
             self.get_values(sheet, "AK" + str(row) + ":" + "AL" + str(row),
-                            'COLACION', merge_format_data, payslip)
+                            'IMPUESTO UNICO', merge_format_data, payslip)
             self.get_values(sheet, "AM" + str(row) + ":" + "AN" + str(row),
                             'COLACION', merge_format_data, payslip)
             self.get_values(sheet, "AO" + str(row) + ":" + "AP" + str(row),
-                            'COLACION', merge_format_data, payslip)
+                            'ANTICIPO DE SUELDO', merge_format_data, payslip)
             self.get_values(sheet, "AQ" + str(row) + ":" + "AR" + str(row),
-                            'COLACION', merge_format_data, payslip)
+                            'ANTICIPO DE AGUINALDO', merge_format_data, payslip)
             self.get_values(sheet, "AS" + str(row) + ":" + "AT" + str(row),
                             'COLACION', merge_format_data, payslip)
             self.get_values(sheet, "AU" + str(row) + ":" + "AV" + str(row),
                             'COLACION', merge_format_data, payslip)
             self.get_values(sheet, "AW" + str(row) + ":" + "AX" + str(row),
-                            'COLACION', merge_format_data, payslip)
+                            'APORTE AL AHORRO VOLUNTARIO', merge_format_data, payslip)
             self.get_values(sheet, "AY" + str(row) + ":" + "AZ" + str(row),
-                            'COLACION', merge_format_data, payslip)
+                            'PRESTAMOS EMPRESA', merge_format_data, payslip)
             self.get_values(sheet, "BA" + str(row) + ":" + "BB" + str(row),
                             'COLACION', merge_format_data, payslip)
             self.get_values(sheet, "BC" + str(row) + ":" + "BD" + str(row),
@@ -293,7 +293,7 @@ class HrPaySlipXlsx(models.AbstractModel):
             self.get_values(sheet, "BE" + str(row) + ":" + "BF" + str(row),
                             'COLACION', merge_format_data, payslip)
             self.get_values(sheet, "BG" + str(row) + ":" + "BH" + str(row),
-                            'COLACION', merge_format_data, payslip)
+                            'TOTAL DESCUENTOS', merge_format_data, payslip)
             self.get_values(sheet, "BI" + str(row) + ":" + "BJ" + str(row),
-                            'COLACION', merge_format_data, payslip)
+                            'ALCANCE LIQUIDO', merge_format_data, payslip)
             return sheet
