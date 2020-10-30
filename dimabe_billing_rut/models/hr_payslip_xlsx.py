@@ -6,7 +6,7 @@ class HrPaySlipXlsx(models.AbstractModel):
     _name = 'report.dimabe_billing_rut.remunerations_book'
     _inherit = 'report.report_xlsx.abstract'
 
-    def generate_xlsx_report(self,company_id, workbook, data, partners):
+    def generate_xlsx_report(self, company_id, workbook, data, partners):
         payslips = self.env['hr.payslip'].search([])
         report_name = "Libro de Remuneraciones"
         # One sheet by partner
@@ -48,8 +48,8 @@ class HrPaySlipXlsx(models.AbstractModel):
                                   str(row - 1), 'Horas Extra:', merge_format)
                 sheet.merge_range("M" + str(row - 1) + ":" + "N" +
                                   str(row - 1), 'Bono Imponible:', merge_format)
-                if 'Septiembre' in indicadores_id[-1].name
-                    sheet = self.is_september(sheet)
+                if 'Septiembre' in indicadores_id[-1].name:
+                    sheet = self.is_september(sheet,row,merge_format)
             sheet.merge_range("A" + str(row) + ":" + "D" + str(row),
                               employee.display_name, merge_format_data)
             sheet.merge_range("E" + str(row) + ":" + "F" + str(row),
@@ -135,7 +135,7 @@ class HrPaySlipXlsx(models.AbstractModel):
         return sheet.merge_range(set_in, sum(payslip.mapped('line_ids').filtered(
             lambda a: 'BONO' in a.name and a.category_id.name == 'Imponible').mapped('total')), format_data)
 
-    def is_september(self,sheet):
+    def is_september(self, sheet,row,merge_format):
         sheet.merge_range("O" + str(row - 1) + ":" + "Q" + str(row - 1),
                           'Aguinaldo Fiestas Pratias:', merge_format)
         sheet.merge_range(
