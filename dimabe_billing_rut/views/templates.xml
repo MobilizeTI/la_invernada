@@ -4,8 +4,6 @@
 
             <field name="name">Libro de Remuneraciones por Compañia</field>
 
-            <field name="condition">True</field>
-
             <field name="type">ir.actions.server</field>
 
             <field name="model_id" ref="model_hr_payslip"/>
@@ -15,7 +13,7 @@
             <field name="code">model.generate_remuneration_book()</field>
 
         </record>
-        <menuitem id='menu_remuneration_book' name='Libro de Remuneraciones' sequence="100" parent="l10n_cl_hr.menu_cl_hr_payroll_reports"
+        <menuitem id='menu_remuneration_book' name='Libro de Remuneraciones por Compañia' sequence="100" parent="l10n_cl_hr.menu_cl_hr_payroll_reports"
                   action="action_remuneration_book"/>
         <!-- <template id="listing"> -->
         <!--   <ul> -->
