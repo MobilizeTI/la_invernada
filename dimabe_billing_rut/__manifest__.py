@@ -43,7 +43,6 @@
         'reports/holiday_ticket.xml',
         'data/reports/balance_sheet_clp.xml',
         'reports/remunerations_book.xml',
-        'views/wizard_excel_report.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
