@@ -295,7 +295,7 @@ class HrPaySlipXlsx(models.AbstractModel):
             self.get_values(sheet, "AW" + str(row) + ":" + "AX" + str(row),
                             'APORTE AL AHORRO VOLUNTARIO', merge_format_data, payslip)
             self.get_values(sheet, "AY" + str(row) + ":" + "AZ" + str(row),
-                            'PRESTAMOS EMPRESA', merge_format_data, payslip)
+                            'AHORRO CAJA DE COMPENSACION', merge_format_data, payslip)
             self.get_values(sheet, "BA" + str(row) + ":" + "BB" + str(row),
                             'COLACION', merge_format_data, payslip)
             self.get_values(sheet, "BC" + str(row) + ":" + "BD" + str(row),
