@@ -1,6 +1,7 @@
 pyjwt
 simplejson
 XlsxWriter
+xlwt
 xlrd
 python-dateutil
 pandas
