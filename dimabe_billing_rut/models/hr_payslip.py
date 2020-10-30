@@ -167,7 +167,6 @@ class HrPayslip(models.Model):
                 'res_model': 'wizard.excel.report',
                 'view_type': 'form',
                 'type': 'ir.actions.act_window',
-                'context': context,
                 'target': 'new',
                 }
 
