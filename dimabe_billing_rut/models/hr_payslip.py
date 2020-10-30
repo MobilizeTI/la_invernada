@@ -123,7 +123,7 @@ class HrPayslip(models.Model):
         style = xlwt.easyxf('font: bold True, name Arial;')
         worksheet.write_merge(0, 1, 0, 3, 'your data that you want to show into excelsheet', style)
         fp = io.BytesIO()
-        workbook.save(fp)
+
         record_id = self.env['wizard.excel.report'].create({'excel_file': base64.encodestring(fp.getvalue()),
                                                         'file_name': filename}, )
         filename = 'Libro de Remuneraciones.xlsx'
@@ -169,7 +169,7 @@ class HrPayslip(models.Model):
             row_export += 1
         bold = workbook.add_format({'bold': True})
         style = xlwt.easyxf('font: bold True, name Arial;')
-        workbook.close()
+        workbook.save(fp)
         record_id = self.env['wizard.excel.report'].create({'excel_file': base64.encodestring(fp.getvalue()),
                                                             'file_name': filename}, )
         fp.close()
