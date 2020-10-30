@@ -9,7 +9,7 @@
                 <xpath expr="//header" position="inside">
                     <button type="object" name="get_leave" string="Obtener Ausencias">
                     </button>
-                    <button type="object" name="generate_remuneration_book" string="Generar"></button>
+                    <button type="object" name="generate_excel_report" string="Generar"></button>
                 </xpath>
                 <xpath expr="//field[@name='input_line_ids']" position="after">
                     <field name="salary_id"/>
