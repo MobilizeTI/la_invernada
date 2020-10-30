@@ -131,7 +131,7 @@ class HrPayslip(models.Model):
 
         book.close()
 
-        raise models.ValidationError(book)
+        raise models.ValidationError(book.in_memory)
 
 # def generate_remuneration_book(self):
 #     filename = 'Libro de Remuneraciones.xlsx'
