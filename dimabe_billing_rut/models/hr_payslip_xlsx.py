@@ -61,28 +61,28 @@ class HrPaySlipXlsx(models.AbstractModel):
             sheet.merge_range("M" + str(row - 1) + ":" + "N" +
                               str(row - 1), 'Bono Imponible:', merge_format)
             if 'Septiembre' in indicadores_id[-1].name:
-                sheet_service = self.title_format(sheet, row, merge_format, 'Aguinaldo Fiestas Patrias:')
+                sheet = self.title_format(sheet, row, merge_format, 'Aguinaldo Fiestas Patrias:')
             elif 'Diciembre' in indicadores_id[-1].name:
-                sheet_service = self.title_format(sheet, row, merge_format, 'Aguinaldo Navidad:')
+                sheet = self.title_format(sheet, row, merge_format, 'Aguinaldo Navidad:')
             else:
-                sheet_service = self.title_format(sheet, row, merge_format)
-        sheet_service.merge_range("A" + str(row) + ":" + "D" + str(row),
+                sheet = self.title_format(sheet, row, merge_format)
+        sheet.merge_range("A" + str(row) + ":" + "D" + str(row),
                                   employee.display_name, merge_format_data)
-        sheet_service.merge_range("E" + str(row) + ":" + "F" + str(row),
+        sheet.merge_range("E" + str(row) + ":" + "F" + str(row),
                                   employee.identification_id, merge_format_data)
         payslip = payslips.filtered(
             lambda a: a.employee_id.id == employee.id and a.indicadores_id.id == indicadores_id[-1].id)
-        self.get_values(sheet_service, "G" + str(row) + ":" + "H" + str(row),
+        self.get_values(sheet, "G" + str(row) + ":" + "H" + str(row),
                         'SUELDO BASE', merge_format_data, payslip)
-        self.get_values(sheet_service, "I" + str(row) + ":" + "J" + str(row),
+        self.get_values(sheet, "I" + str(row) + ":" + "J" + str(row),
                         'GRATIFICACION LEGAL', merge_format_data, payslip)
-        self.get_values(sheet_service, "K" + str(row) + ":" + "L" + str(row),
+        self.get_values(sheet, "K" + str(row) + ":" + "L" + str(row),
                         'HORAS EXTRA ART 32', merge_format_data, payslip)
-        self.get_bonus(sheet_service, "M" + str(row) + ":" + "N" + str(row), merge_format_data, payslip)
+        self.get_bonus(sheet, "M" + str(row) + ":" + "N" + str(row), merge_format_data, payslip)
         if 'Septiembre' in indicadores_id[-1].name or 'Diciembre' in indicadores_id[-1].name:
-            sheet_service = self.data_format(sheet_service, row, merge_format, payslip, is_bonus=True)
+            sheet_service = self.data_format(sheet, row, merge_format, payslip, is_bonus=True)
         else:
-            sheet_service = self.data_format(sheet_service, row, merge_format, payslip)
+            sheet_service = self.data_format(sheet, row, merge_format, payslip)
 
     def get_values(self, sheet, set_in, to_search, format_data, payslip):
         if not payslip.mapped('line_ids').filtered(lambda a: a.name == to_search):
