@@ -70,6 +70,7 @@ class HrPaySlipXlsx(models.AbstractModel):
                                   employee.display_name, merge_format_data)
         sheet.merge_range("E" + str(row) + ":" + "F" + str(row),
                                   employee.identification_id, merge_format_data)
+
         payslip = payslips.filtered(
             lambda a: a.employee_id.id == employee.id and a.indicadores_id.id == indicadores_id[-1].id)
         self.get_values(sheet, "G" + str(row) + ":" + "H" + str(row),
