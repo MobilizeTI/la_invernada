@@ -51,5 +51,6 @@
     ],
     'qweb': [
         "static/src/xml/custom_invoice_button.xml",
+        "static/src/xml/action_manager.xml"
     ],
 }
