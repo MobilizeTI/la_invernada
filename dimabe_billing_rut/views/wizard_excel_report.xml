@@ -20,8 +20,6 @@
 
                     <field name="end_date"/>
 
-                    <field name="indicadores_id"/>
-
                 </group>
 
                 <footer>
