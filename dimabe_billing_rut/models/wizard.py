@@ -63,6 +63,7 @@ class ExcelWizard(models.TransientModel):
 
         output.seek(0)
 
+        raise models.ValidationError(output)
         response.stream.write(output.read())
 
         output.close()
