@@ -1,25 +1,59 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <odoo>
-    <data>
-        <record id="wizard_excel_report_tree" model="ir.ui.view">
-            <field name="name">Excels</field>
-            <field name="model">wizard.excel.report</field>
-            <field name="arch" type="xml">
-                <tree>
-                    <field name="file_name" />
-                </tree>
-            </field>
-        </record>
-        <record id="dimabe_billing_rut.action_wizard_excel_report_views" model="ir.actions.act_window">
-            <field name="name">Facturas Emitidas</field>
-            <field name="res_model">wizard.excel.report</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="wizard_excel_report_tree"/>
-        </record>
-        <menuitem id="menu_item_excel"
-                  name="Libros"
-                  parent="l10n_cl_hr.menu_cl_hr_payroll_reports"
-                  action="dimabe_billing_rut.action_wizard_excel_report_views"
-        />
-    </data>
+
+    <record id="example_xlsx_report_view" model="ir.ui.view">
+
+        <field name="name">Example xlsx Report</field>
+
+        <field name="model">hr.payslip.xlsx.report.wizard</field>
+
+        <field name="arch" type="xml">
+
+            <form string="Report Options">
+
+                <separator string="Excel Report"/>
+
+                <group col="4">
+
+                    <field name="start_date"/>
+
+                    <field name="end_date"/>
+
+                </group>
+
+                <footer>
+
+                    <button name="print_xlsx" string="PRINT" type="object"
+
+                              default_focus="1" class="oe_highlight"/>
+
+                    <button string="Cancel" class="btn btn-default" special="cancel"/>
+
+                </footer>
+
+            </form>
+
+        </field>
+
+    </record>
+
+    <record id="action_xlsx_report" model="ir.actions.act_window">
+
+        <field name="name">Excel</field>
+
+        <field name="res_model">hr.payslip.xlsx.report.wizard</field>
+
+        <field name="type">ir.actions.act_window</field>
+
+        <field name="view_mode">form</field>
+
+        <field name="target">new</field>
+
+    </record>
+
+    <menuitem id="excel_report" name="Excel Report"
+
+               parent="stock.menu_warehouse_report" action="action_xlsx_report"/>
+
 </odoo>

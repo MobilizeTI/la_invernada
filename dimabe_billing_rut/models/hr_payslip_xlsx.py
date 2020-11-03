@@ -37,11 +37,13 @@ class HrPaySlipXlsx(models.AbstractModel):
         column = 8
 
         for employee in employees_service:
-            self.set_data(employee, employees_service, sheet_service, merge_format, merge_format_data, payslips, row_service,
+            self.set_data(employee, employees_service, sheet_service, merge_format, merge_format_data, payslips,
+                          row_service,
                           indicadores_id)
             row_service += 1
         for employee in employees_export:
-            self.set_data(employee, employees_export, sheet_export, merge_format, merge_format_data, payslips, row_export,
+            self.set_data(employee, employees_export, sheet_export, merge_format, merge_format_data, payslips,
+                          row_export,
                           indicadores_id)
             row_export += 1
         bold = workbook.add_format({'bold': True})
@@ -67,11 +69,13 @@ class HrPaySlipXlsx(models.AbstractModel):
             else:
                 sheet = self.title_format(sheet, row, merge_format)
         sheet.merge_range("A" + str(row) + ":" + "D" + str(row),
-                                  employee.display_name, merge_format_data)
+                          employee.display_name, merge_format_data)
         sheet.merge_range("E" + str(row) + ":" + "F" + str(row),
-                                  employee.identification_id, merge_format_data)
+                          employee.identification_id, merge_format_data)
+
         payslip = payslips.filtered(
-            lambda a: a.employee_id.id == employee.id and a.indicadores_id.id == indicadores_id[-1].id)
+            lambda a: a.employee_id.id == employee.id and a.indicadores_id.id == indicadores_id[
+                -1].id and a.state == 'done')
         self.get_values(sheet, "G" + str(row) + ":" + "H" + str(row),
                         'SUELDO BASE', merge_format_data, payslip)
         self.get_values(sheet, "I" + str(row) + ":" + "J" + str(row),
