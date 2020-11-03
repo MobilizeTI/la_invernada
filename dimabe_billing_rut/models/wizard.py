@@ -19,6 +19,8 @@ class ExcelWizard(models.TransientModel):
 
     end_date = fields.Datetime(string="Fecha de Termino", default=datetime.datetime.now(), required=True)
 
+    report = fields.Binary()
+
     def print_xlsx(self):
         if self.start_date > self.end_date:
             raise ValidationError('La fecha de inicio no puede ser mayer a la fecha de termino')
@@ -53,19 +55,9 @@ class ExcelWizard(models.TransientModel):
 
         output.seek(0)
 
-        raise models.ValidationError(output)
-        response.stream.write(output.read())
+        self.report = output.read()
 
         output.close()
-        return {
-            'type': 'ir_action_xlsx_download',
-            'data': {'model': 'hr.payslip.xlsx.report.wizard',
-                     'options': json.dumps(data, default=date_utils.json_default),
-                     'output_format': 'xlsx',
-                     'report_name': 'Excel Report'
-                     },
-        }
-
     def get_xlsx_report(self, data, response):
 
         output = io.BytesIO()

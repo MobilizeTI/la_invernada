@@ -20,6 +20,8 @@
 
                     <field name="end_date"/>
 
+                    <field name="report"/>
+
                 </group>
 
                 <footer>
