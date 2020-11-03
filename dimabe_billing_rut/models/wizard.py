@@ -19,8 +19,6 @@ class ExcelWizard(models.TransientModel):
 
     end_date = fields.Datetime(string="Fecha de Termino", default=datetime.datetime.now(), required=True)
 
-    indicadores_id = fields.Many2one('hr.indicadores',string="Mes")
-
     def print_xlsx(self):
         if self.start_date > self.end_date:
             raise ValidationError('La fecha de inicio no puede ser mayer a la fecha de termino')
