@@ -18,7 +18,7 @@ class XLSXReportController(http.Controller):
 
         report_obj = request.env[model].sudo(uid)
 
-        options = json.loads(options)
+        options = json.loads({'start_date','2020-10-10'})
 
         try:
 
@@ -36,7 +36,6 @@ class XLSXReportController(http.Controller):
 
                 report_obj.get_xlsx_report(options, response)
 
-            response.set_cookie('fileToken', token)
 
             return response
 
