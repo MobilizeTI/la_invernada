@@ -3,7 +3,7 @@ from odoo.tools.misc import xlwt
 import io
 import xlsxwriter
 import base64
-from string import ascii_uppercase
+from string import uppercase
 import itertools
 
 
@@ -68,7 +68,7 @@ class WizardHrPaySlip(models.TransientModel):
         payslips = self.env['hr.payslip'].search([('indicadores_id', '=', indicadores_id.id)])
         list = []
         for size in itertools.count(1):
-            for s in itertools.product(ascii_uppercase, repeat=size):
+            for s in itertools.product(uppercase, repeat=size):
                 list.append("".join(s))
                 if list[-1] == 'ZZ':
                     break
