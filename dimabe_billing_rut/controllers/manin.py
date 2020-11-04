@@ -10,7 +10,7 @@ from odoo.tools import html_escape
 
 class XLSXReportController(http.Controller):
 
-    @http.route('/xlsx_reports', type='http', auth='user', methods=['POST'], csrf=False)
+    @http.route('/api/xlsx_report', type='json', methods=['GET'], auth='token', cors='*')
 
     def get_report_xlsx(self, model, options, output_format, token, report_name, **kw):
 
