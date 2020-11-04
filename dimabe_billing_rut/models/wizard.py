@@ -71,7 +71,7 @@ class WizardHrPaySlip(models.TransientModel):
 
         employees = self.env['hr.employee'].search([('address_id', '=', self.company_id.partner_id.id)])
         row = 8
-        indicadores_id = self.env['hr.indicadores'].search([('name', '=', '{} {}'.format(self.month, self.years),('state','=','done'))])
+        indicadores_id = self.env['hr.indicadores'].search([('name', '=', '{} {}'.format(self.month, self.years)),('state','=','done')])
         payslips = self.env['hr.payslip'].search([('indicadores_id', '=',indicadores_id.id)])
 
         for emp in employees:
