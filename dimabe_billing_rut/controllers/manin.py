@@ -7,6 +7,7 @@ from odoo.http import content_disposition, request
 from odoo.addons.web.controllers.main import _serialize_exception
 
 from odoo.tools import html_escape
+from odoo.tools import date_utils
 
 class XLSXReportController(http.Controller):
 
@@ -17,8 +18,12 @@ class XLSXReportController(http.Controller):
         uid = request.session.uid
 
         report_obj = request.env[model].sudo(uid)
+        data = {
+            'start_date': self.start_date,
+            'end_date': self.end_date
+        }
 
-        options = json.loads({'start_date','2020-10-10'})
+        options = json.loads(json.dumps(data, default=date_utils.json_default))
 
         try:
 
