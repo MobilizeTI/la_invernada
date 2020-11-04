@@ -35,13 +35,9 @@ class WizardHrPaySlip(models.TransientModel):
     def print_report_xlsx(self):
         file_name = 'temp'
         workbook = xlsxwriter.Workbook(file_name, {'in_memory': True})
-        worksheet = workbook.add_worksheet()
-        row = 0
-        col = 0
-        for e in self._get_data():
-            worksheet.write(row, col, e.name)
-            col += 1
-        row += 1
+        companies = self.env['res.company'].search([]).mapped('partner_id').mapped('id')
+        for com in companies:
+            worksheet = workbook.add_worksheet(self.env['res.partner'].search([('id','=',com)]).name)
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
