@@ -12,7 +12,7 @@ class XLSXReportController(http.Controller):
 
     @http.route('/api/xlsx_report', type='json', methods=['GET'], auth='token', cors='*')
 
-    def get_report_xlsx(self, model, options, output_format, report_name, **kw):
+    def get_report_xlsx(self, model, output_format, report_name, **kw):
 
         uid = request.session.uid
 
