@@ -3,6 +3,7 @@ from odoo.tools.misc import xlwt
 import io
 import xlsxwriter
 import base64
+from string import ascii_letters
 
 
 class WizardHrPaySlip(models.TransientModel):
@@ -63,7 +64,7 @@ class WizardHrPaySlip(models.TransientModel):
         row = 8
 
         payslips = self.env['hr.payslip'].search([('indicadores_id', '=',indicadores_id.id)])
-        raise models.ValidationError(map(chr, range(97, 123)))
+        raise models.ValidationError(ascii_letters)
         for emp in employees:
 
             row += 1
