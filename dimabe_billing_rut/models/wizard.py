@@ -35,9 +35,25 @@ class WizardHrPaySlip(models.TransientModel):
     def print_report_xlsx(self):
         file_name = 'temp'
         workbook = xlsxwriter.Workbook(file_name, {'in_memory': True})
-        companies = self.env['res.company'].search([]).mapped('partner_id').mapped('id')
-        for com in companies:
-            worksheet = workbook.add_worksheet(self.env['res.partner'].search([('id','=',com)]).name)
+        sheet_service = workbook.add_worksheet(self.env['res.partner'].search([('id', '=', 423)]).display_name)
+        sheet_export = workbook.add_worksheet(self.env['res.partner'].search([('id', '=', 1)]).display_name)
+        merge_format_title = workbook.add_format({
+            'bold': 1,
+            'border': 1,
+            'align': 'center',
+            'valign': 'vcenter',
+        })
+        merge_format_string = workbook.add_format({
+            'border': 1,
+            'align': 'center',
+            'valign': 'vcenter',
+        })
+        merge_format_number = workbook.add_format({
+            'border': 1,
+            'align': 'center',
+            'valign': 'vcenter',
+            'num_format': '$#'
+        })
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
