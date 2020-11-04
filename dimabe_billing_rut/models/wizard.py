@@ -66,7 +66,7 @@ class WizardHrPaySlip(models.TransientModel):
         payslips = self.env['hr.payslip'].search([])
         indicadores_id = payslips.mapped('indicadores_id')
         for emp in employees:
-            self.set_data(emp, employees,workbook, merge_format_title, merge_format_string,merge_format_number, payslips,
+            self.set_data(emp, employees,worksheet, merge_format_title, merge_format_string,merge_format_number, payslips,
                           row,
                           indicadores_id)
         workbook.close()
