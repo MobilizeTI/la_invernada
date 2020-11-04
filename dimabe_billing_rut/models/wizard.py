@@ -74,21 +74,7 @@ class WizardHrPaySlip(models.TransientModel):
         #         if list[-1] == 'BJ':
         #             break
         for emp in employees:
-
-            if not payslips.filtered(lambda a: a.employee_id.id == emp.id):
-                continue
-            else:
-                if len(employees) > 0:
-                    if emp.id == employees[0].id:
-                        self.set_title(employee=emp, employees=employees, sheet=worksheet,
-                                       merge_format=merge_format_title,
-                                       merge_format_string=merge_format_string, merge_format_number=merge_format_number,
-                                       payslips=payslips, row=row, indicadores_id=indicadores_id)
-                else:
-                    self.set_title(employee=emp, employees=employees, sheet=worksheet, merge_format=merge_format_title,
-                                   merge_format_string=merge_format_string, merge_format_number=merge_format_number,
-                                   payslips=payslips, row=row, indicadores_id=indicadores_id)
-                self.set_data(employee=emp, employees=employees, sheet=worksheet, merge_format=merge_format_title,
+            self.set_data(employee=emp, employees=employees, sheet=worksheet, merge_format=merge_format_title,
                               merge_format_string=merge_format_string, merge_format_number=merge_format_number,
                               payslips=payslips, row=row, indicadores_id=indicadores_id)
             row += 1
@@ -124,6 +110,9 @@ class WizardHrPaySlip(models.TransientModel):
 
     def set_data(self, employee, employees, sheet, merge_format, merge_format_string, merge_format_number, payslips,
                  row, indicadores_id):
+        self.set_title(employee=employee, employees=employees, sheet=sheet, merge_format=merge_format,
+                       merge_format_string=merge_format_string, merge_format_number=merge_format_number,
+                       payslips=payslips, row=row, indicadores_id=indicadores_id)
         sheet.merge_range("A" + str(row) + ":" + "D" + str(row),
                           employee.display_name, merge_format_string)
         sheet.merge_range("E" + str(row) + ":" + "F" + str(row),
