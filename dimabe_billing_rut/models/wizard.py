@@ -8,9 +8,7 @@ class WizardHrPaySlip(models.TransientModel):
     _name = "wizard.hr.payslip"
     _description = 'XLSX Report'
 
-    date_from = fields.Date(string='Start Date')
-
-    date_to = fields.Date(string='End Date')
+    company_id = fields.Many2one('res.company','Compañia')
 
     report = fields.Binary(default =lambda self: self.env['wizard.hr.payslip'].search([])[-1].report)
 
@@ -35,8 +33,8 @@ class WizardHrPaySlip(models.TransientModel):
     def print_report_xlsx(self):
         file_name = 'temp'
         workbook = xlsxwriter.Workbook(file_name, {'in_memory': True})
-        sheet_service = workbook.add_worksheet(self.env['res.partner'].search([('id', '=', 423)]).display_name)
-        sheet_export = workbook.add_worksheet(self.env['res.partner'].search([('id', '=', 1)]).display_name)
+        worksheet = workbook.add_worksheet(self.company_id.name)
+
         merge_format_title = workbook.add_format({
             'bold': 1,
             'border': 1,
@@ -58,6 +56,8 @@ class WizardHrPaySlip(models.TransientModel):
             "B2:E2", "Informe: Libro de Remuneraciones", merge_format_title)
         sheet_service.merge_range("B3:E3", "Mes a procesar : {}".format(
             'Octubre 2020'), merge_format_title)
+
+
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())

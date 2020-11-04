@@ -7,13 +7,7 @@
             <form>
                 <group>
                     <group>
-                        <field name="date_from"/>
-                    </group>
-                    <group>
-                        <field name="date_to"/>
-                    </group>
-                    <group>
-                        <field name="report" readonly="1"/>
+                        <field name="company_id"/>
                     </group>
                 </group>
                 <footer>
