@@ -3,7 +3,7 @@ from odoo.tools.misc import xlwt
 import io
 import xlsxwriter
 import base64
-from string import ascii_letters
+import string
 
 
 class WizardHrPaySlip(models.TransientModel):
@@ -53,20 +53,22 @@ class WizardHrPaySlip(models.TransientModel):
         worksheet.merge_range(
             "B2:E2", "Informe: Libro de Remuneraciones", merge_format_title)
         worksheet.merge_range("B3:E3", "Mes a procesar : {}".format(
-            '{} {}'.format(self.month,self.years)), merge_format_title)
+            '{} {}'.format(self.month, self.years)), merge_format_title)
         worksheet.merge_range('B4:E4', "Compañia : {}".format(
             self.company_id.name
         ), merge_format_title)
 
         employees = self.env['hr.employee'].search([('address_id', '=', self.company_id.partner_id.id)])
         if len(employees) == 0:
-            raise models.ValidationError('No existen empleados creados con este empresa,por favor verificar la direccion de trabajado del empleado')
+            raise models.ValidationError(
+                'No existen empleados creados con este empresa,por favor verificar la direccion de trabajado del empleado')
         row = 8
 
-        payslips = self.env['hr.payslip'].search([('indicadores_id', '=',indicadores_id.id)])
-        raise models.ValidationError(ascii_letters)
+        payslips = self.env['hr.payslip'].search([('indicadores_id', '=', indicadores_id.id)])
         for emp in employees:
-
+            if emp.id == employees[0].id:
+                self.set_title(data="Nombre:", format=merge_format_title,sheet = worksheet,
+                               row="A{}:D{}".format(str(row - 1), str(row - 1)))
             row += 1
         workbook.close()
         with open(file_name, "rb") as file:
@@ -76,3 +78,5 @@ class WizardHrPaySlip(models.TransientModel):
             "type": "ir.actions.do_nothing",
         }
 
+    def set_title(self, data, row, format, sheet):
+        sheet.merge_range(row, data, format)
