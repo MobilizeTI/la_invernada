@@ -3,6 +3,7 @@ from odoo.tools.misc import xlwt
 import io
 import xlsxwriter
 import base64
+import datetime
 from string import ascii_uppercase
 import itertools
 
@@ -21,7 +22,7 @@ class WizardHrPaySlip(models.TransientModel):
          ('Agosto', 'Agosto'), ('Septiembre', 'Septiembre'), ('Octubre', 'Octubre'), ('Noviembre', 'Noviembre'),
          ('Diciembre', 'Diciembre'), ], string="Mes")
 
-    years = fields.Selection([('2019', '2019'), ('2020', '2020'), ('2021', '2021')], string="Año")
+    years = fields.Integer(string="Años",default=int(datetime.datetime.now().year))
 
     all = fields.Boolean('Todos las compañias')
 
@@ -66,12 +67,12 @@ class WizardHrPaySlip(models.TransientModel):
         letter = 0
         row = 8
         payslips = self.env['hr.payslip'].search([('indicadores_id', '=', indicadores_id.id)])
-        list = []
-        for size in itertools.count(1):
-            for s in itertools.product(ascii_uppercase, repeat=size):
-                list.append("".join(s))
-                if list[-1] == 'BJ':
-                    break
+        # list = []
+        # for size in itertools.count(1):
+        #     for s in itertools.product(ascii_uppercase, repeat=size):
+        #         list.append("".join(s))
+        #         if list[-1] == 'BJ':
+        #             break
         for emp in employees:
 
             if not payslips.filtered(lambda a: a.employee_id.id == emp.id):
