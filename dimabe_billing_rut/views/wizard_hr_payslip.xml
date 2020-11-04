@@ -12,6 +12,9 @@
                     <group>
                         <field name="date_to"/>
                     </group>
+                    <group>
+                        <field name="report"/>
+                    </group>
                 </group>
                 <footer>
                     <button name="print_report_xlsx" string="Generar XLSX" type="object" default_focus="1"
