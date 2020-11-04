@@ -47,3 +47,6 @@ class WizardHrPaySlip(models.TransientModel):
             file_base64 = base64.b64encode(file.read())
         self.report = file_name + '.xlsx'
         self.write({'report': file_base64 })
+        return {
+            "type": "ir.actions.do_nothing",
+        }
