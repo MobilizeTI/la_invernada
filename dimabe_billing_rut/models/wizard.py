@@ -102,9 +102,9 @@ class WizardHrPaySlip(models.TransientModel):
                               str(row - 1), 'Horas Extra:', merge_format)
             sheet.merge_range("M" + str(row - 1) + ":" + "N" +
                               str(row - 1), 'Bono Imponible:', merge_format)
-            if 'Septiembre' in indicadores_id[-1].name:
+            if 'Septiembre' in indicadores_id.name:
                 sheet = self.title_format(sheet, row, merge_format, 'Aguinaldo Fiestas Patrias:')
-            elif 'Diciembre' in indicadores_id[-1].name:
+            elif 'Diciembre' in indicadores_id.name:
                 sheet = self.title_format(sheet, row, merge_format, 'Aguinaldo Navidad:')
             else:
                 sheet = self.title_format(sheet, row, merge_format)
