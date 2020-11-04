@@ -55,6 +55,6 @@ class WizardHrPaySlip(models.TransientModel):
 
         # Here report name is the name that’ll be printed for this report#
 
-        return self.env.ref('dimabe_billing_rut.remunerations_book').report_action(self)
+        return self.env.ref('report.dimabe_billing_rut.remunerations_book').report_action(self)
 
         return self.env.ref('').report_action(self)
