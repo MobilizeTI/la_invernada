@@ -39,11 +39,9 @@ class WizardHrPaySlip(models.TransientModel):
         row = 0
         col = 0
         for e in self._get_data():
-            worksheet.write(row, col, e)
+            worksheet.write(row, col, e.name)
             col += 1
         row += 1
-        for vals in self.carrier_line_ids:
-            worksheet.write(row, 0, vals.reference)
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
