@@ -66,7 +66,7 @@ class WizardHrPaySlip(models.TransientModel):
         payslips = self.env['hr.payslip'].search([])
         indicadores_id = payslips.mapped('indicadores_id')
         for emp in employees:
-            self.set_data(employees, emp,workbook, merge_format_title, merge_format_string,merge_format_number, payslips,
+            self.set_data(emp, employees,workbook, merge_format_title, merge_format_string,merge_format_number, payslips,
                           row,
                           indicadores_id)
         workbook.close()
@@ -98,24 +98,24 @@ class WizardHrPaySlip(models.TransientModel):
             else:
                 sheet = self.title_format(sheet, row, merge_format)
         sheet.merge_range("A" + str(row) + ":" + "D" + str(row),
-                          employee.display_name, merge_format_data)
+                          employee.display_name, merge_format_string)
         sheet.merge_range("E" + str(row) + ":" + "F" + str(row),
-                          employee.identification_id, merge_format_data)
+                          employee.identification_id, merge_format_string)
 
         payslip = payslips.filtered(
             lambda a: a.employee_id.id == employee.id and a.indicadores_id.id == indicadores_id[
                 -1].id and a.state == 'done')
         self.get_values(sheet, "G" + str(row) + ":" + "H" + str(row),
-                        'SUELDO BASE', merge_format_data, payslip)
+                        'SUELDO BASE', merge_format_number, payslip)
         self.get_values(sheet, "I" + str(row) + ":" + "J" + str(row),
-                        'GRATIFICACION LEGAL', merge_format_data, payslip)
+                        'GRATIFICACION LEGAL', merge_format_number, payslip)
         self.get_values(sheet, "K" + str(row) + ":" + "L" + str(row),
-                        'HORAS EXTRA ART 32', merge_format_data, payslip)
-        self.get_bonus(sheet, "M" + str(row) + ":" + "N" + str(row), merge_format_data, payslip)
+                        'HORAS EXTRA ART 32', merge_format_number, payslip)
+        self.get_bonus(sheet, "M" + str(row) + ":" + "N" + str(row), merge_format_number, payslip)
         if 'Septiembre' in indicadores_id[-1].name or 'Diciembre' in indicadores_id[-1].name:
-            sheet_service = self.data_format(sheet, row, merge_format, payslip, is_bonus=True)
+            sheet_service = self.data_format(sheet, row, merge_format_number, payslip, is_bonus=True)
         else:
-            sheet_service = self.data_format(sheet, row, merge_format, payslip)
+            sheet_service = self.data_format(sheet, row, merge_format_number, payslip)
 
     def get_values(self, sheet, set_in, to_search, format_data, payslip):
         if not payslip.mapped('line_ids').filtered(lambda a: a.name == to_search):
