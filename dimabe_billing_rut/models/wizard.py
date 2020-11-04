@@ -106,7 +106,7 @@ class WizardHrPaySlip(models.TransientModel):
 
         payslip = payslips.filtered(
             lambda a: a.employee_id.id == employee.id and a.indicadores_id.id == indicadores_id[
-                -1].id and a.state == 'done')
+                -1].id)
         self.get_values(sheet, "G" + str(row) + ":" + "H" + str(row),
                         'SUELDO BASE', merge_format_number, payslip)
         self.get_values(sheet, "I" + str(row) + ":" + "J" + str(row),
