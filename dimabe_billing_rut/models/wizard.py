@@ -15,11 +15,11 @@ class WizardHrPaySlip(models.TransientModel):
 
     month = fields.Selection(
         [('Enero', 'Enero'), ('Febrero', 'Febrero'), ('Marzo', 'Marzo'), ('Abril', 'Abril'), ('Mayo', 'Mayo'),
-         ('Junio', 'Junio'), ('Julio','Julio'),
-         ('Agosto','Agosto'), ('Septiembre','Septiembre'), ('Octubre','Octubre'), ('Noviembre','Noviembre'),
-         ('Diciembre','Diciembre'),],string="Mes")
+         ('Junio', 'Junio'), ('Julio', 'Julio'),
+         ('Agosto', 'Agosto'), ('Septiembre', 'Septiembre'), ('Octubre', 'Octubre'), ('Noviembre', 'Noviembre'),
+         ('Diciembre', 'Diciembre'), ], string="Mes")
 
-    years = fields.Selection([('2019','2019'),('2020','2020'),('2021','2021')],string="Año")
+    years = fields.Selection([('2019', '2019'), ('2020', '2020'), ('2021', '2021')], string="Año")
 
     def _get_data(self):
         current_date = fields.Date.today()
@@ -71,8 +71,9 @@ class WizardHrPaySlip(models.TransientModel):
 
         employees = self.env['hr.employee'].search([('address_id', '=', self.company_id.partner_id.id)])
         row = 8
-        payslips = self.env['hr.payslip'].search([('name','=','{} {}'.format(self.month,self.years))])
-        indicadores_id = payslips.mapped('indicadores_id')
+        indicadores_id = self.env['hr.indicadores'].search([('name', '=', '{} {}'.format(self.month, self.years))])
+        payslips = self.env['hr.payslip'].search([('indicadores_id', '=',indicadores_id.id)])
+
         for emp in employees:
             self.set_data(emp, employees, worksheet, merge_format_title, merge_format_string, merge_format_number,
                           payslips,
