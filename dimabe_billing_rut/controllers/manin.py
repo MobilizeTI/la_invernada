@@ -1,7 +1,11 @@
 import json
 
 from odoo import http
-
+import datetime
+import time
+import json
+import datetime
+import io
 from odoo.http import content_disposition, request
 
 from odoo.addons.web.controllers.main import _serialize_exception
@@ -19,8 +23,8 @@ class XLSXReportController(http.Controller):
 
         report_obj = request.env[model].sudo(uid)
         data = {
-            'start_date': self.start_date,
-            'end_date': self.end_date
+            'start_date': time.strftime('%Y-%m-01'),
+            'end_date': datetime.datetime.now()
         }
 
         options = json.loads(json.dumps(data, default=date_utils.json_default))
