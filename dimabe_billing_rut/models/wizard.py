@@ -51,4 +51,10 @@ class WizardHrPaySlip(models.TransientModel):
         stream = io.BytesIO()
         workbook.save(stream)
 
+        WizardHrPaySlip('report.module_name.report_name.xlsx', 'model_name')
+
+        # Here report name is the name that’ll be printed for this report#
+
         return self.env.ref('dimabe_billing_rut.hr_payslip_xlsx').report_action(self)
+
+        return self.env.ref('').report_action(self)
