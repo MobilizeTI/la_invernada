@@ -51,7 +51,7 @@ class WizardHrPaySlip(models.TransientModel):
         stream = io.BytesIO()
         workbook.save(stream)
 
-        WizardHrPaySlip('report.module_name.report_name.xlsx', 'model_name')
+        WizardHrPaySlip('wizard_hr_payslip')
 
         # Here report name is the name that’ll be printed for this report#
 
