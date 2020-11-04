@@ -16,7 +16,7 @@ class WizardHrPaySlip(models.TransientModel):
 
         domain += [('date_from','>=',current_date,current_date,"<=",self.date_to)]
 
-        res = self.env['hr.payslip'].search(domain)
+        res = self.env['hr.payslip'].search()
 
         docargs = []
 
