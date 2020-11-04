@@ -94,7 +94,6 @@ class WizardHrPaySlip(models.TransientModel):
             #     self.set_data(employee=emp, employees=employees, sheet=worksheet, merge_format=merge_format_title,
             #                   merge_format_string=merge_format_string, merge_format_number=merge_format_number,
             #                   payslips=payslips, row=row, indicadores_id=indicadores_id)
-            row += 1
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
