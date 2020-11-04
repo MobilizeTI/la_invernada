@@ -52,7 +52,7 @@ class ExcelWizard(models.TransientModel):
 
         sheet.merge_range('G6:H6', data['end_date'], txt)
 
-        workbook.save(output)
+        workbook.close()
 
         self.report = base64.encodestring(output.getvalue())
 
