@@ -66,13 +66,20 @@ class WizardHrPaySlip(models.TransientModel):
 
         payslips = self.env['hr.payslip'].search([('indicadores_id', '=', indicadores_id.id)])
         for emp in employees:
-            self.set_title(employee=emp, employees=employees, sheet=worksheet, merge_format=merge_format_title,
-                              merge_format_string=merge_format_string, merge_format_number=merge_format_number,
-                              payslips=payslips, row=row, indicadores_id=indicadores_id)
+
             if not payslips.filtered(lambda a: a.employee_id.id == emp.id):
                 continue
             else:
-
+                if len(employees) > 0:
+                    if emp.id == employees[0].id:
+                        self.set_title(employee=emp, employees=employees, sheet=worksheet,
+                                       merge_format=merge_format_title,
+                                       merge_format_string=merge_format_string, merge_format_number=merge_format_number,
+                                       payslips=payslips, row=row, indicadores_id=indicadores_id)
+                else:
+                    self.set_title(employee=emp, employees=employees, sheet=worksheet, merge_format=merge_format_title,
+                                   merge_format_string=merge_format_string, merge_format_number=merge_format_number,
+                                   payslips=payslips, row=row, indicadores_id=indicadores_id)
                 self.set_data(employee=emp, employees=employees, sheet=worksheet, merge_format=merge_format_title,
                               merge_format_string=merge_format_string, merge_format_number=merge_format_number,
                               payslips=payslips, row=row, indicadores_id=indicadores_id)
