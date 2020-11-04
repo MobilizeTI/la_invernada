@@ -4,18 +4,21 @@
         <field name="name">Libro de Remuneraciones</field>
         <field name="model">wizard.hr.payslip</field>
         <field name="arch" type="xml">
-            <group>
+            <form>
                 <group>
-                    <field name="date_from"/>
+                    <group>
+                        <field name="date_from"/>
+                    </group>
+                    <group>
+                        <field name="date_to"/>
+                    </group>
                 </group>
-                <group>
-                    <field name="date_to"/>
-                </group>
-            </group>
-            <footer>
-                <button name="print_report_xlsx" string="Generar XLSX" type="object" default_focus="1" class="oe_highlight"/>
-                <button string="Cancel" class="btn btn-secondary" special="cancel"/>
-            </footer>
+                <footer>
+                    <button name="print_report_xlsx" string="Generar XLSX" type="object" default_focus="1"
+                            class="oe_highlight"/>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel"/>
+                </footer>
+            </form>
         </field>
     </record>
     <record id="action_payslip_menu" model="ir.actions.act_window">
@@ -27,7 +30,7 @@
         <field name="target">new</field>
     </record>
     <menuitem name="Libro de Remuneraciones por Compañia"
-        parent="l10n_cl_hr.menu_cl_hr_payroll_reports"
+              parent="l10n_cl_hr.menu_cl_hr_payroll_reports"
               action="action_payslip_menu"
               id="remuneration_book_item"
     />
