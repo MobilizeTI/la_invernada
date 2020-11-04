@@ -70,7 +70,7 @@ class WizardHrPaySlip(models.TransientModel):
         for size in itertools.count(1):
             for s in itertools.product(ascii_uppercase, repeat=size):
                 list.append("".join(s))
-                if list[-1] == 'ZZ':
+                if list[-1] == 'BJ':
                     break
         for emp in employees:
             worksheet.merge_range('{}:{}'.format(list[letter]+str(number),list[letter + 3]+str(number)),'Hola')
