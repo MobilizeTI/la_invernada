@@ -26,7 +26,7 @@ class WizardHrPaySlip(models.TransientModel):
         )
 
     @api.multi
-    def print_report_xls(self):
+    def print_report_xlsx(self):
         workbook = xlwt.Workbook()
 
         companies = self.env['res.company'].search([]).mapped('partner_id').mapped('id')
