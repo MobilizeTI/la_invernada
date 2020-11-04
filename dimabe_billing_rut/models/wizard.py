@@ -13,6 +13,14 @@ class WizardHrPaySlip(models.TransientModel):
 
     report = fields.Binary(default=lambda self: self.env['wizard.hr.payslip'].search([])[-1].report)
 
+    month = fields.Selection(
+        [('Enero', 'Enero'), ('Febrero', 'Febrero'), ('Marzo', 'Marzo'), ('Abril', 'Abril'), ('Mayo', 'Mayo'),
+         ('Junio', 'Junio'), ('Julio','Julio'),
+         ('Agosto','Agosto'), ('Septiembre','Septiembre'), ('Octubre','Octubre'), ('Noviembre','Noviembre'),
+         ('Diciembre','Diciembre'),])
+
+    years = fields.Selection([('2019','2019'),('2020','2020'),('2021','2021')])
+
     def _get_data(self):
         current_date = fields.Date.today()
 
@@ -61,12 +69,13 @@ class WizardHrPaySlip(models.TransientModel):
             self.company_id.name
         ), merge_format_title)
 
-        employees = self.env['hr.employee'].search([('address_id', '=',self.company_id.partner_id.id)])
+        employees = self.env['hr.employee'].search([('address_id', '=', self.company_id.partner_id.id)])
         row = 8
         payslips = self.env['hr.payslip'].search([])
         indicadores_id = payslips.mapped('indicadores_id')
         for emp in employees:
-            self.set_data(emp, employees,worksheet, merge_format_title, merge_format_string,merge_format_number, payslips,
+            self.set_data(emp, employees, worksheet, merge_format_title, merge_format_string, merge_format_number,
+                          payslips,
                           row,
                           indicadores_id)
             row += 1
@@ -78,7 +87,8 @@ class WizardHrPaySlip(models.TransientModel):
             "type": "ir.actions.do_nothing",
         }
 
-    def set_data(self, employee, employees, sheet, merge_format, merge_format_string,merge_format_number, payslips, row, indicadores_id):
+    def set_data(self, employee, employees, sheet, merge_format, merge_format_string, merge_format_number, payslips,
+                 row, indicadores_id):
         if employee.id == employees[0].id:
             sheet.merge_range("A" + str(row - 1) + ":" + "D" +
                               str(row - 1), 'Nombre:', merge_format)
