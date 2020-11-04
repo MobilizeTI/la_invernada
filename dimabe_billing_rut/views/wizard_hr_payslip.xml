@@ -9,7 +9,7 @@
                     <group>
                         <field name="company_id"/>
                         <field name="month"/>
-                        <field name="year"/>
+                        <field name="years"/>
                     </group>
                     <group>
                         <field name="report" readonly="1"/>
