@@ -12,7 +12,7 @@ class WizardHrPaySlip(models.TransientModel):
 
     date_to = fields.Date(string='End Date')
 
-    report = fields.Binary()
+    report = fields.Binary(default =lambda self: self.env['wizard.hr.payslip'].search([])[-1].report)
 
     def _get_data(self):
         current_date = fields.Date.today()
