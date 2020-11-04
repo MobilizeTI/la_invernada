@@ -123,7 +123,7 @@ class WizardHrPaySlip(models.TransientModel):
         self.get_values(sheet, "K" + str(row) + ":" + "L" + str(row),
                         'HORAS EXTRA ART 32', merge_format_number, payslip)
         self.get_bonus(sheet, "M" + str(row) + ":" + "N" + str(row), merge_format_number, payslip)
-        if 'Septiembre' in indicadores_id[-1].name or 'Diciembre' in indicadores_id[-1].name:
+        if 'Septiembre' in indicadores_id.name or 'Diciembre' in indicadores_id.name:
             sheet_service = self.data_format(sheet, row, merge_format_number, payslip, is_bonus=True)
         else:
             sheet_service = self.data_format(sheet, row, merge_format_number, payslip)
