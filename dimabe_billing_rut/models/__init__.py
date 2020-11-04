@@ -18,5 +18,5 @@ from . import hr_leave
 from . import hr_payslip_worked_days
 from . import hr_leave_type
 from . import hr_contract
-from . import hr_payslip_xlsx
+#from . import hr_payslip_xlsx
 from . import wizard
