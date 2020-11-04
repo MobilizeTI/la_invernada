@@ -25,6 +25,8 @@ class WizardHrPaySlip(models.TransientModel):
             {'key': ""}
         )
 
+        return res
+
     @api.multi
     def print_report_xlsx(self):
         workbook = xlwt.Workbook()
