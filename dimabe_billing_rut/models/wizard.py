@@ -66,9 +66,13 @@ class WizardHrPaySlip(models.TransientModel):
 
         payslips = self.env['hr.payslip'].search([('indicadores_id', '=', indicadores_id.id)])
         for emp in employees:
+            self.set_title(employee=emp, employees=employees, sheet=worksheet, merge_format=merge_format_title,
+                              merge_format_string=merge_format_string, merge_format_number=merge_format_number,
+                              payslips=payslips, row=row, indicadores_id=indicadores_id)
             if not payslips.filtered(lambda a: a.employee_id.id == emp.id):
                 continue
             else:
+
                 self.set_data(employee=emp, employees=employees, sheet=worksheet, merge_format=merge_format_title,
                               merge_format_string=merge_format_string, merge_format_number=merge_format_number,
                               payslips=payslips, row=row, indicadores_id=indicadores_id)
@@ -81,27 +85,30 @@ class WizardHrPaySlip(models.TransientModel):
             "type": "ir.actions.do_nothing",
         }
 
+    def set_title(self, employee, employees, sheet, merge_format, merge_format_string, merge_format_number, payslips,
+                 row, indicadores_id):
+        sheet.merge_range("A" + str(row - 1) + ":" + "D" +
+                          str(row - 1), 'Nombre:', merge_format)
+        sheet.merge_range("E" + str(row - 1) + ":" + "F" +
+                          str(row - 1), 'RUT:', merge_format)
+        sheet.merge_range("G" + str(row - 1) + ":" + "H" +
+                          str(row - 1), 'Sueldo Base:', merge_format)
+        sheet.merge_range("I" + str(row - 1) + ":" + "J" +
+                          str(row - 1), 'Grat Legal:', merge_format)
+        sheet.merge_range("K" + str(row - 1) + ":" + "L" +
+                          str(row - 1), 'Horas Extra:', merge_format)
+        sheet.merge_range("M" + str(row - 1) + ":" + "N" +
+                          str(row - 1), 'Bono Imponible:', merge_format)
+        if 'Septiembre' in indicadores_id[-1].name:
+            sheet = self.title_format(sheet, row, merge_format, 'Aguinaldo Fiestas Patrias:')
+        elif 'Diciembre' in indicadores_id[-1].name:
+            sheet = self.title_format(sheet, row, merge_format, 'Aguinaldo Navidad:')
+        else:
+            sheet = self.title_format(sheet, row, merge_format)
+
+
     def set_data(self, employee, employees, sheet, merge_format, merge_format_string, merge_format_number, payslips,
                  row, indicadores_id):
-        if employee.id == employees[0].id:
-            sheet.merge_range("A" + str(row - 1) + ":" + "D" +
-                              str(row - 1), 'Nombre:', merge_format)
-            sheet.merge_range("E" + str(row - 1) + ":" + "F" +
-                              str(row - 1), 'RUT:', merge_format)
-            sheet.merge_range("G" + str(row - 1) + ":" + "H" +
-                              str(row - 1), 'Sueldo Base:', merge_format)
-            sheet.merge_range("I" + str(row - 1) + ":" + "J" +
-                              str(row - 1), 'Grat Legal:', merge_format)
-            sheet.merge_range("K" + str(row - 1) + ":" + "L" +
-                              str(row - 1), 'Horas Extra:', merge_format)
-            sheet.merge_range("M" + str(row - 1) + ":" + "N" +
-                              str(row - 1), 'Bono Imponible:', merge_format)
-            if 'Septiembre' in indicadores_id[-1].name:
-                sheet = self.title_format(sheet, row, merge_format, 'Aguinaldo Fiestas Patrias:')
-            elif 'Diciembre' in indicadores_id[-1].name:
-                sheet = self.title_format(sheet, row, merge_format, 'Aguinaldo Navidad:')
-            else:
-                sheet = self.title_format(sheet, row, merge_format)
         sheet.merge_range("A" + str(row) + ":" + "D" + str(row),
                           employee.display_name, merge_format_string)
         sheet.merge_range("E" + str(row) + ":" + "F" + str(row),
