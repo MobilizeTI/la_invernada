@@ -54,6 +54,10 @@ class WizardHrPaySlip(models.TransientModel):
             'valign': 'vcenter',
             'num_format': '$#'
         })
+        sheet_service.merge_range(
+            "B2:E2", "Informe: Libro de Remuneraciones", merge_format_title)
+        sheet_service.merge_range("B3:E3", "Mes a procesar : {}".format(
+            'Octubre 2020'), merge_format_title)
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
