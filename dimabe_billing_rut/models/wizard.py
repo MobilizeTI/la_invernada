@@ -3,7 +3,7 @@ from odoo.tools.misc import xlwt
 import io
 import xlsxwriter
 import base64
-from string import uppercase
+from string import ascii_uppercase
 import itertools
 
 
