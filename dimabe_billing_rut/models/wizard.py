@@ -379,3 +379,7 @@ class WizardHrPaySlip(models.TransientModel):
             self.get_values(sheet, "BS" + str(row) + ":" + "BT" + str(row),
                             'ALCANCE LIQUIDO', merge_format_data, payslip)
             return sheet
+
+
+    def button_download(self):
+        return self.report
