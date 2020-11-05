@@ -97,7 +97,7 @@ class WizardHrPaySlip(models.TransientModel):
         sheet.merge_range("I" + str(row - 1) + ":" + "J" +
                           str(row - 1), 'Grat Legal:', merge_format)
         sheet.merge_range("K" + str(row - 1) + ":" + "L" +
-                          str(row - 1), 'Ctda Horas Trabajadas:', merge_format)
+                          str(row - 1), 'Ctda Dias Trabajados:', merge_format)
         sheet.merge_range("M" + str(row - 1) + ":" + "N" +
                           str(row - 1), 'Ctda Horas Extra:', merge_format)
         sheet.merge_range("O" + str(row - 1) + ":" + "P" +
@@ -134,6 +134,7 @@ class WizardHrPaySlip(models.TransientModel):
                         'SUELDO BASE', merge_format_number, payslip)
         self.get_values(sheet, "I" + str(row) + ":" + "J" + str(row),
                         'GRATIFICACION LEGAL', merge_format_number, payslip)
+        sheet.merge_range("K" + str(row) + ":" + "L" + str(row),payslip.worked_days_line_ids.filtered(lambda a: a.code == 'WORK100').number_of_days,merge_format_string)
         self.get_values(sheet, "K" + str(row) + ":" + "L" + str(row),
                         'HORAS EXTRA ART 32', merge_format_number, payslip)
         self.get_bonus(sheet, "M" + str(row) + ":" + "N" + str(row), merge_format_number, payslip)
