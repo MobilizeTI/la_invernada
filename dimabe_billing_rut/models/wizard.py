@@ -65,24 +65,37 @@ class WizardHrPaySlip(models.TransientModel):
             raise models.ValidationError(
                 'No existen empleados creados con este empresa,por favor verificar la direccion de trabajado del empleado')
         letter = 0
-        row = 8
+        number = 8
         payslips = self.env['hr.payslip'].search([('indicadores_id', '=', indicadores_id.id)])
-        # list = []
-        # for size in itertools.count(1):
-        #     for s in itertools.product(ascii_uppercase, repeat=size):
-        #         list.append("".join(s))
-        #         if list[-1] == 'BJ':
-        #             break
-        self.set_title(employee=employees[0], employees=employees, sheet=worksheet, merge_format=merge_format_title,
-                       merge_format_string=merge_format_string, merge_format_number=merge_format_number,
-                       payslips=payslips, row=row, indicadores_id=indicadores_id)
+        from string import ascii_uppercase
+
+        letters = list(ascii_uppercase)
+        num_cols = 100
+
+        excel_cols = []
+        for i in range(0, num_cols - 1):
+            n = i // 26
+            m = n // 26
+            i -= n * 26
+            n -= m * 26
+            col = letters[m - 1] + letters[n - 1] + letters[i] if m > 0 else letters[n - 1] + letters[i] if n > 0 else \
+            letters[i]
+            excel_cols.append(col)
+        # self.set_title(employee=employees[0], employees=employees, sheet=worksheet, merge_format=merge_format_title,
+        #                merge_format_string=merge_format_string, merge_format_number=merge_format_number,
+        #                payslips=payslips, row=row, indicadores_id=indicadores_id)
         for emp in employees:
-            if not payslips.filtered(lambda a: a.employee_id.id == emp.id):
-                continue
-            self.set_data(employee=emp, employees=employees, sheet=worksheet, merge_format=merge_format_title,
-                              merge_format_string=merge_format_string, merge_format_number=merge_format_number,
-                              payslips=payslips, row=row, indicadores_id=indicadores_id)
-            row += 1
+            cell_1 = excel_cols[letter]+str(number)
+            cell_2 = excel_cols[letter + 3]+str(number)
+            worksheet.merge_range('{}:{}'.format(cell_1, cell_2),'Hola',merge_format_title)
+            letter += 1
+            number += 1
+            # if not payslips.filtered(lambda a: a.employee_id.id == emp.id):
+            #     continue
+            # self.set_data(employee=emp, employees=employees, sheet=worksheet, merge_format=merge_format_title,
+            #                   merge_format_string=merge_format_string, merge_format_number=merge_format_number,
+            #                   payslips=payslips, row=row, indicadores_id=indicadores_id)
+            # row += 1
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
