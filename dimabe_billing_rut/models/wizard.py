@@ -72,7 +72,7 @@ class WizardHrPaySlip(models.TransientModel):
                        merge_format_string=merge_format_string, merge_format_number=merge_format_number,
                        payslips=payslips, row=row, indicadores_id=indicadores_id)
         for emp in employees:
-            if not payslips.filtered(lambda a: a.employee_id.id == emp.id):
+            if not payslips.filtered(lambda a: a.employee_id.id == emp.id and a.state == 'done'):
                 continue
             self.set_data(employee=emp, employees=employees, sheet=worksheet, merge_format=merge_format_title,
                               merge_format_string=merge_format_string, merge_format_number=merge_format_number,
