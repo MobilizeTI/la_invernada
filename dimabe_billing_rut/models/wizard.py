@@ -65,38 +65,19 @@ class WizardHrPaySlip(models.TransientModel):
             raise models.ValidationError(
                 'No existen empleados creados con este empresa,por favor verificar la direccion de trabajado del empleado')
         letter = 0
-        number = 8
+        row = 8
         payslips = self.env['hr.payslip'].search([('indicadores_id', '=', indicadores_id.id)])
-        from string import ascii_uppercase
 
-        letters = list(ascii_uppercase)
-        num_cols = 10000
-
-        excel_cols = []
-        for i in range(0, num_cols - 1):
-            n = i // 26
-            m = n // 26
-            i -= n * 26
-            n -= m * 26
-            col = letters[m - 1] + letters[n - 1] + letters[i] if m > 0 else letters[n - 1] + letters[i] if n > 0 else \
-            letters[i]
-            excel_cols.append(col)
-        # self.set_title(employee=employees[0], employees=employees, sheet=worksheet, merge_format=merge_format_title,
-        #                merge_format_string=merge_format_string, merge_format_number=merge_format_number,
-        #                payslips=payslips, row=row, indicadores_id=indicadores_id)
-        names = self.env['hr.payroll.structure'].search([('name','=','Codigo de Trabajo Nuevo')]).mapped('rule_ids').mapped('name')
+        self.set_title(employee=employees[0], employees=employees, sheet=worksheet, merge_format=merge_format_title,
+                       merge_format_string=merge_format_string, merge_format_number=merge_format_number,
+                       payslips=payslips, row=row, indicadores_id=indicadores_id)
         for emp in employees:
-            cell_1 = excel_cols[letter]+str(number)
-            cell_2 = excel_cols[letter + 3]+str(number)
-            for name in names:
-                worksheet.merge_range('{}:{}'.format(cell_1, cell_2),name, merge_format_title)
-            letter += 1
-            # if not payslips.filtered(lambda a: a.employee_id.id == emp.id):
-            #     continue
-            # self.set_data(employee=emp, employees=employees, sheet=worksheet, merge_format=merge_format_title,
-            #                   merge_format_string=merge_format_string, merge_format_number=merge_format_number,
-            #                   payslips=payslips, row=row, indicadores_id=indicadores_id)
-            # row += 1
+            if not payslips.filtered(lambda a: a.employee_id.id == emp.id):
+                continue
+            self.set_data(employee=emp, employees=employees, sheet=worksheet, merge_format=merge_format_title,
+                              merge_format_string=merge_format_string, merge_format_number=merge_format_number,
+                              payslips=payslips, row=row, indicadores_id=indicadores_id)
+            row += 1
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
@@ -116,9 +97,17 @@ class WizardHrPaySlip(models.TransientModel):
         sheet.merge_range("I" + str(row - 1) + ":" + "J" +
                           str(row - 1), 'Grat Legal:', merge_format)
         sheet.merge_range("K" + str(row - 1) + ":" + "L" +
-                          str(row - 1), 'Horas Extra:', merge_format)
+                          str(row - 1), 'Ctda Horas Trabajadas:', merge_format)
         sheet.merge_range("M" + str(row - 1) + ":" + "N" +
-                          str(row - 1), 'Bono Imponible:', merge_format)
+                          str(row - 1), 'Ctda Horas Extra:', merge_format)
+        sheet.merge_range("O" + str(row - 1) + ":" + "P" +
+                          str(row - 1), 'Horas Extra:', merge_format)
+        sheet.merge_range("Q" + str(row - 1) + ":" + "R" +
+                          str(row - 1), 'Bono de Produccion:', merge_format)
+        sheet.merge_range("S" + str(row - 1) + ":" + "T" +
+                          str(row - 1), 'Bono de Responsabilidad:', merge_format)
+        sheet.merge_range("U" + str(row - 1) + ":" + "V" +
+                          str(row - 1), 'Bono de Permanencia:', merge_format)
         if 'Septiembre' in indicadores_id[-1].name:
             sheet = self.title_format(sheet, row, merge_format, 'Aguinaldo Fiestas Patrias:')
         elif 'Diciembre' in indicadores_id[-1].name:
@@ -172,104 +161,104 @@ class WizardHrPaySlip(models.TransientModel):
 
     def title_format(self, sheet, row, merge_format, title=''):
         if title != '':
-            sheet.merge_range("O" + str(row - 1) + ":" + "Q" + str(row - 1),
+            sheet.merge_range("W" + str(row - 1) + ":" + "X" + str(row - 1),
                               title, merge_format)
             sheet.merge_range(
-                "R" + str(row - 1) + ":" + "S" + str(row - 1), 'Horas de Descuento:', merge_format)
-            sheet.merge_range("T" + str(row - 1) + ":" + "U" +
+                "Y" + str(row - 1) + ":" + "Z" + str(row - 1), 'Horas de Descuento:', merge_format)
+            sheet.merge_range("AA" + str(row - 1) + ":" + "AB" +
                               str(row - 1), 'Total Imponible:', merge_format)
-            sheet.merge_range("V" + str(row - 1) + ":" + "W" +
+            sheet.merge_range("AC" + str(row - 1) + ":" + "AD" +
                               str(row - 1), 'Colacion', merge_format)
-            sheet.merge_range("X" + str(row - 1) + ":" + "Y" +
+            sheet.merge_range("AE" + str(row - 1) + ":" + "AF" +
                               str(row - 1), 'Movilizacion:', merge_format)
-            sheet.merge_range("Z" + str(row - 1) + ":" + "AA" +
+            sheet.merge_range("AG" + str(row - 1) + ":" + "AH" +
                               str(row - 1), 'Asig Familiar:', merge_format)
-            sheet.merge_range("AB" + str(row - 1) + ":" + "AC" +
+            sheet.merge_range("AI" + str(row - 1) + ":" + "AJ" +
                               str(row - 1), 'Asig Varias:', merge_format)
-            sheet.merge_range("AD" + str(row - 1) + ":" + "AE" +
+            sheet.merge_range("AK" + str(row - 1) + ":" + "AL" +
                               str(row - 1), 'Total No Imponible:', merge_format)
-            sheet.merge_range("AF" + str(row - 1) + ":" + "AG" +
+            sheet.merge_range("AM" + str(row - 1) + ":" + "AN" +
                               str(row - 1), 'Total Haberes:', merge_format)
-            sheet.merge_range("AH" + str(row - 1) + ":" + "AI" +
+            sheet.merge_range("AO" + str(row - 1) + ":" + "AP" +
                               str(row - 1), 'AFP:', merge_format)
-            sheet.merge_range("AJ" + str(row - 1) + ":" + "AK" +
+            sheet.merge_range("AQ" + str(row - 1) + ":" + "AR" +
                               str(row - 1), 'Salud:', merge_format)
-            sheet.merge_range("AL" + str(row - 1) + ":" + "AM" +
+            sheet.merge_range("AS" + str(row - 1) + ":" + "AT" +
                               str(row - 1), 'Seg. Cesantia:', merge_format)
-            sheet.merge_range("AN" + str(row - 1) + ":" + "AO" +
+            sheet.merge_range("AU" + str(row - 1) + ":" + "AV" +
                               str(row - 1), 'Impto. Unico:', merge_format)
-            sheet.merge_range("AP" + str(row - 1) + ":" + "AQ" +
+            sheet.merge_range("AW" + str(row - 1) + ":" + "AX" +
                               str(row - 1), 'Otros AFP:', merge_format)
-            sheet.merge_range("AR" + str(row - 1) + ":" + "AS" +
+            sheet.merge_range("AY" + str(row - 1) + ":" + "AZ" +
                               str(row - 1), 'Anticipos:', merge_format)
-            sheet.merge_range("AT" + str(row - 1) + ":" + "AU" +
+            sheet.merge_range("BA" + str(row - 1) + ":" + "BB" +
                               str(row - 1), 'Anticipo Aguinaldo:', merge_format)
-            sheet.merge_range("AV" + str(row - 1) + ":" + "AW" +
+            sheet.merge_range("BC" + str(row - 1) + ":" + "BD" +
                               str(row - 1), 'Credito Social:', merge_format)
-            sheet.merge_range("AX" + str(row - 1) + ":" + "AY" +
+            sheet.merge_range("BE" + str(row - 1) + ":" + "BF" +
                               str(row - 1), 'Ahorro AFP:', merge_format)
-            sheet.merge_range("AZ" + str(row - 1) + ":" + "BA" +
+            sheet.merge_range("BG" + str(row - 1) + ":" + "BH" +
                               str(row - 1), 'Ahorro APV:', merge_format)
-            sheet.merge_range("BB" + str(row - 1) + ":" + "BC" +
+            sheet.merge_range("BI" + str(row - 1) + ":" + "BJ" +
                               str(row - 1), 'Ahorro CCAF:', merge_format)
-            sheet.merge_range("BD" + str(row - 1) + ":" + "BE" +
+            sheet.merge_range("BM" + str(row - 1) + ":" + "BN" +
                               str(row - 1), 'Seg. de Vida CCAF:', merge_format)
-            sheet.merge_range("BF" + str(row - 1) + ":" + "BG" +
+            sheet.merge_range("BO" + str(row - 1) + ":" + "BP" +
                               str(row - 1), 'Ptmo. Empresa:', merge_format)
-            sheet.merge_range("BH" + str(row - 1) + ":" + "BI" +
+            sheet.merge_range("BQ" + str(row - 1) + ":" + "BR" +
                               str(row - 1), 'Retencion Judicial:', merge_format)
-            sheet.merge_range("BJ" + str(row - 1) + ":" + "BK" +
+            sheet.merge_range("BS" + str(row - 1) + ":" + "BT" +
                               str(row - 1), 'Total Descuentos:', merge_format)
-            sheet.merge_range("BL" + str(row - 1) + ":" + "BM" +
+            sheet.merge_range("BV" + str(row - 1) + ":" + "BX" +
                               str(row - 1), 'Liquido A Pagar:', merge_format)
         else:
             sheet.merge_range(
-                "O" + str(row - 1) + ":" + "P" + str(row - 1), 'Horas de Descuento:', merge_format)
-            sheet.merge_range("Q" + str(row - 1) + ":" + "R" +
-                              str(row - 1), 'Total Imponible:', merge_format)
-            sheet.merge_range("S" + str(row - 1) + ":" + "T" +
-                              str(row - 1), 'Colacion', merge_format)
-            sheet.merge_range("U" + str(row - 1) + ":" + "V" +
-                              str(row - 1), 'Movilizacion:', merge_format)
-            sheet.merge_range("W" + str(row - 1) + ":" + "X" +
-                              str(row - 1), 'Asig Familiar:', merge_format)
+                "W" + str(row - 1) + ":" + "X" + str(row - 1), 'Horas de Descuento:', merge_format)
             sheet.merge_range("Y" + str(row - 1) + ":" + "Z" +
-                              str(row - 1), 'Asig Varias:', merge_format)
+                              str(row - 1), 'Total Imponible:', merge_format)
             sheet.merge_range("AA" + str(row - 1) + ":" + "AB" +
-                              str(row - 1), 'Total No Imponible:', merge_format)
+                              str(row - 1), 'Colacion', merge_format)
             sheet.merge_range("AC" + str(row - 1) + ":" + "AD" +
-                              str(row - 1), 'Total Haberes:', merge_format)
+                              str(row - 1), 'Movilizacion:', merge_format)
             sheet.merge_range("AE" + str(row - 1) + ":" + "AF" +
-                              str(row - 1), 'AFP:', merge_format)
+                              str(row - 1), 'Asig Familiar:', merge_format)
             sheet.merge_range("AG" + str(row - 1) + ":" + "AH" +
-                              str(row - 1), 'Salud:', merge_format)
+                              str(row - 1), 'Asig Varias:', merge_format)
             sheet.merge_range("AI" + str(row - 1) + ":" + "AJ" +
-                              str(row - 1), 'Seg. Cesantia:', merge_format)
+                              str(row - 1), 'Total No Imponible:', merge_format)
             sheet.merge_range("AK" + str(row - 1) + ":" + "AL" +
-                              str(row - 1), 'Impto. Unico:', merge_format)
+                              str(row - 1), 'Total Haberes:', merge_format)
             sheet.merge_range("AM" + str(row - 1) + ":" + "AN" +
-                              str(row - 1), 'Otros AFP:', merge_format)
+                              str(row - 1), 'AFP:', merge_format)
             sheet.merge_range("AO" + str(row - 1) + ":" + "AP" +
-                              str(row - 1), 'Anticipos:', merge_format)
+                              str(row - 1), 'Salud:', merge_format)
             sheet.merge_range("AQ" + str(row - 1) + ":" + "AR" +
-                              str(row - 1), 'Anticipo Aguinaldo:', merge_format)
+                              str(row - 1), 'Seg. Cesantia:', merge_format)
             sheet.merge_range("AS" + str(row - 1) + ":" + "AT" +
-                              str(row - 1), 'Credito Social:', merge_format)
+                              str(row - 1), 'Impto. Unico:', merge_format)
             sheet.merge_range("AU" + str(row - 1) + ":" + "AV" +
-                              str(row - 1), 'Ahorro AFP:', merge_format)
+                              str(row - 1), 'Otros AFP:', merge_format)
             sheet.merge_range("AW" + str(row - 1) + ":" + "AX" +
-                              str(row - 1), 'Ahorro APV:', merge_format)
+                              str(row - 1), 'Anticipos:', merge_format)
             sheet.merge_range("AY" + str(row - 1) + ":" + "AZ" +
-                              str(row - 1), 'Ahorro CCAF:', merge_format)
+                              str(row - 1), 'Anticipo Aguinaldo:', merge_format)
             sheet.merge_range("BA" + str(row - 1) + ":" + "BB" +
-                              str(row - 1), 'Seg. de Vida CCAF:', merge_format)
+                              str(row - 1), 'Credito Social:', merge_format)
             sheet.merge_range("BC" + str(row - 1) + ":" + "BD" +
-                              str(row - 1), 'Ptmo. Empresa:', merge_format)
+                              str(row - 1), 'Ahorro AFP:', merge_format)
             sheet.merge_range("BE" + str(row - 1) + ":" + "BF" +
-                              str(row - 1), 'Retencion Judicial:', merge_format)
+                              str(row - 1), 'Ahorro APV:', merge_format)
             sheet.merge_range("BG" + str(row - 1) + ":" + "BH" +
-                              str(row - 1), 'Total Descuentos:', merge_format)
+                              str(row - 1), 'Ahorro CCAF:', merge_format)
             sheet.merge_range("BI" + str(row - 1) + ":" + "BJ" +
+                              str(row - 1), 'Seg. de Vida CCAF:', merge_format)
+            sheet.merge_range("BK" + str(row - 1) + ":" + "BL" +
+                              str(row - 1), 'Ptmo. Empresa:', merge_format)
+            sheet.merge_range("BM" + str(row - 1) + ":" + "BN" +
+                              str(row - 1), 'Retencion Judicial:', merge_format)
+            sheet.merge_range("BO" + str(row - 1) + ":" + "BP" +
+                              str(row - 1), 'Total Descuentos:', merge_format)
+            sheet.merge_range("BQ" + str(row - 1) + ":" + "BR" +
                               str(row - 1), 'Liquido A Pagar:', merge_format)
         return sheet
 
