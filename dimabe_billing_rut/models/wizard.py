@@ -161,6 +161,7 @@ class WizardHrPaySlip(models.TransientModel):
 
     def title_format(self, sheet, row, merge_format, title=''):
         if title != '':
+            sheet.set_column(1, row, 25)
             sheet.merge_range("W" + str(row - 1) + ":" + "X" + str(row - 1),
                               title, merge_format)
             sheet.merge_range(
