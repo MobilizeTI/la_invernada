@@ -84,10 +84,12 @@ class WizardHrPaySlip(models.TransientModel):
         # self.set_title(employee=employees[0], employees=employees, sheet=worksheet, merge_format=merge_format_title,
         #                merge_format_string=merge_format_string, merge_format_number=merge_format_number,
         #                payslips=payslips, row=row, indicadores_id=indicadores_id)
+        names = self.env['hr.payroll.structure'].search([('name','=','Codigo de Trabajo Nuevo')]).mapped('rule_ids').mapped('name')
         for emp in employees:
             cell_1 = excel_cols[letter]+str(number)
             cell_2 = excel_cols[letter + 3]+str(number)
-            worksheet.merge_range('{}:{}'.format(cell_1, cell_2),'Hola',merge_format_title)
+            for name in names:
+                worksheet.merge_range('{}:{}'.format(cell_1, cell_2),name, merge_format_title)
             letter += 1
             # if not payslips.filtered(lambda a: a.employee_id.id == emp.id):
             #     continue
