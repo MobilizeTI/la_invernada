@@ -140,8 +140,13 @@ class WizardHrPaySlip(models.TransientModel):
                           merge_format_string)
         self.get_values(sheet, "O" + str(row) + ":" + "P" + str(row),
                         'HORAS EXTRA ART 32', merge_format_number, payslip)
-
-        self.get_bonus(sheet, "Q" + str(row) + ":" + "R" + str(row), merge_format_number, payslip)
+        sheet.merge_range("Q"+str(row)+":"+"R"+str(row),payslip[0].mapped('line_ids').filtered(lambda a: a.name == "BONO DE PRODUCCION").total,merge_format_string)
+        sheet.merge_range("S" + str(row) + ":" + "T" + str(row),
+                          payslip[0].mapped('line_ids').filtered(lambda a: a.name == "BONO DE RESPONSABILIDAD").total,
+                          merge_format_string)
+        sheet.merge_range("U" + str(row) + ":" + "V" + str(row),
+                          payslip[0].mapped('line_ids').filtered(lambda a: a.name == "BONO DE PERMANENCIA").total,
+                          merge_format_string)
         if 'Septiembre' in indicadores_id[-1].name or 'Diciembre' in indicadores_id[-1].name:
             sheet_service = self.data_format(sheet, row, merge_format_number, payslip, is_bonus=True)
         else:
@@ -161,8 +166,7 @@ class WizardHrPaySlip(models.TransientModel):
                                      format_data)
 
     def get_bonus(self, sheet, set_in, format_data, payslip):
-        return sheet.merge_range(set_in, sum(payslip.mapped('line_ids').filtered(
-            lambda a: 'BONO' in a.name and a.category_id.name == 'Imponible').mapped('total')), format_data)
+        sheet.merge_range()
 
     def title_format(self, sheet, row, merge_format, title=''):
         if title != '':
