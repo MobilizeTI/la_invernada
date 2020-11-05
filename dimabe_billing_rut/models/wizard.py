@@ -323,7 +323,7 @@ class WizardHrPaySlip(models.TransientModel):
             self.get_values(sheet, "BO" + str(row) + ":" + "BP" + str(row),
                             'PRESTAMOS EMPRESA', merge_format_data, payslip)
             self.get_values(sheet, "BQ" + str(row) + ":" + "BR" + str(row),
-                            'COLACION', merge_format_data, payslip)
+                            'RETENCION JUDICIAL', merge_format_data, payslip)
             self.get_values(sheet, "BS" + str(row) + ":" + "BT" + str(row),
                             'TOTAL DESCUENTOS', merge_format_data, payslip)
             self.get_values(sheet, "BU" + str(row) + ":" + "BV" + str(row),
@@ -341,7 +341,7 @@ class WizardHrPaySlip(models.TransientModel):
             self.get_values(sheet, "AG" + str(row) + ":" + "AH" + str(row),
                             'ASIGNACION FAMILIAR', merge_format_data, payslip)
             self.get_values(sheet, "AI" + str(row) + ":" + "AJ" + str(row),
-                            'COLACION', merge_format_data, payslip)
+                            'ASIGNACION VARIAS', merge_format_data, payslip)
             self.get_values(sheet, "AK" + str(row) + ":" + "AL" + str(row),
                             'TOTAL NO IMPONIBLE', merge_format_data, payslip)
             self.get_values(sheet, "AM" + str(row) + ":" + "AN" + str(row),
@@ -355,7 +355,7 @@ class WizardHrPaySlip(models.TransientModel):
             self.get_values(sheet, "AU" + str(row) + ":" + "AV" + str(row),
                             'IMPUESTO UNICO', merge_format_data, payslip)
             self.get_values(sheet, "AW" + str(row) + ":" + "AX" + str(row),
-                            'COLACION', merge_format_data, payslip)
+                            'OTROS AFP', merge_format_data, payslip)
             self.get_values(sheet, "AY" + str(row) + ":" + "AZ" + str(row),
                             'ANTICIPO DE SUELDO', merge_format_data, payslip)
             self.get_values(sheet, "BA" + str(row) + ":" + "BB" + str(row),
@@ -363,7 +363,7 @@ class WizardHrPaySlip(models.TransientModel):
             self.get_values(sheet, "BC" + str(row) + ":" + "BD" + str(row),
                             'CREDITO SOCIAL', merge_format_data, payslip)
             self.get_values(sheet, "BE" + str(row) + ":" + "BF" + str(row),
-                            'COLACION', merge_format_data, payslip)
+                            'AHORRO AFP', merge_format_data, payslip)
             self.get_values(sheet, "BG" + str(row) + ":" + "BH" + str(row),
                             'APORTE AL AHORRO VOLUNTARIO', merge_format_data, payslip)
             self.get_values(sheet, "BI" + str(row) + ":" + "BJ" + str(row),
@@ -371,9 +371,9 @@ class WizardHrPaySlip(models.TransientModel):
             self.get_values(sheet, "BK" + str(row) + ":" + "BL" + str(row),
                             'SEGURO VIDA CAJA DE COMPENSACION', merge_format_data, payslip)
             self.get_values(sheet, "BM" + str(row) + ":" + "BN" + str(row),
-                            'COLACION', merge_format_data, payslip)
-            self.get_values(sheet, "BO" + str(row) + ":" + "BP" + str(row),
                             'PRESTAMOS EMPRESA', merge_format_data, payslip)
+            self.get_values(sheet, "BO" + str(row) + ":" + "BP" + str(row),
+                            'RETENCION JUDICIAL', merge_format_data, payslip)
             self.get_values(sheet, "BQ" + str(row) + ":" + "BR" + str(row),
                             'TOTAL DESCUENTOS', merge_format_data, payslip)
             self.get_values(sheet, "BS" + str(row) + ":" + "BT" + str(row),
