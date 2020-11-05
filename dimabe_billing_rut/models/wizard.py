@@ -169,7 +169,7 @@ class WizardHrPaySlip(models.TransientModel):
                               payslip.mapped('line_ids').filtered(lambda a: a.name == "BONO DE PERMANENCIA").total,
                               merge_format_number)
         if sum(payslip.mapped('line_ids').filtered(
-                              lambda a: 'BONO' in a.name and a.category_id.name == 'Imponible').mapped('total')) == 0:
+                lambda a: 'BONO' in a.name and a.category_id.name == 'Imponible').mapped('total')) == 0:
             sheet.merge_range("W" + str(row) + ":" + "X" + str(row),
                               '',
                               merge_format_number)
@@ -184,7 +184,7 @@ class WizardHrPaySlip(models.TransientModel):
             sheet_service = self.data_format(sheet, row, merge_format_number, payslip)
 
     def get_values(self, sheet, set_in, to_search, format_data, payslip):
-        if not payslip.mapped('line_ids').filtered(lambda a: a.name == to_search):
+        if not payslip.mapped('line_ids').filtered(lambda a: a.name == to_search).total:
             return sheet.merge_range(set_in,
                                      '',
                                      format_data)
