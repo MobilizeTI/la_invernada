@@ -129,26 +129,26 @@ class WizardHrPaySlip(models.TransientModel):
 
         payslip = payslips.filtered(
             lambda a: a.employee_id.id == employee.id and a.indicadores_id.id == indicadores_id[
-                -1].id)
+                -1].id and a.state == 'done')
         self.get_values(sheet, "G" + str(row) + ":" + "H" + str(row),
                         'SUELDO BASE', merge_format_number, payslip)
         self.get_values(sheet, "I" + str(row) + ":" + "J" + str(row),
                         'GRATIFICACION LEGAL', merge_format_number, payslip)
-        sheet.merge_range("K" + str(row) + ":" + "L" + str(row),payslip[0].worked_days_line_ids.filtered(lambda a: a.code == 'WORK100').number_of_days,merge_format_string)
+        sheet.merge_range("K" + str(row) + ":" + "L" + str(row),payslip.worked_days_line_ids.filtered(lambda a: a.code == 'WORK100').number_of_days,merge_format_string)
         sheet.merge_range("M" + str(row) + ":" + "N" + str(row),
                           payslip[0].input_line_ids.filtered(lambda a: a.code == 'HEX50').amount,
                           merge_format_string)
         self.get_values(sheet, "O" + str(row) + ":" + "P" + str(row),
                         'HORAS EXTRA ART 32', merge_format_number, payslip)
-        sheet.merge_range("Q"+str(row)+":"+"R"+str(row),payslip[0].mapped('line_ids').filtered(lambda a: a.name == "BONO DE PRODUCCION").total,merge_format_number)
+        sheet.merge_range("Q"+str(row)+":"+"R"+str(row),payslip.mapped('line_ids').filtered(lambda a: a.name == "BONO DE PRODUCCION").total,merge_format_number)
         sheet.merge_range("S" + str(row) + ":" + "T" + str(row),
-                          payslip[0].mapped('line_ids').filtered(lambda a: a.name == "BONO DE RESPONSABILIDAD").total,
+                          payslip.mapped('line_ids').filtered(lambda a: a.name == "BONO DE RESPONSABILIDAD").total,
                           merge_format_number)
         sheet.merge_range("U" + str(row) + ":" + "V" + str(row),
-                          payslip[0].mapped('line_ids').filtered(lambda a: a.name == "BONO DE PERMANENCIA").total,
+                          payslip.mapped('line_ids').filtered(lambda a: a.name == "BONO DE PERMANENCIA").total,
                           merge_format_number)
-        sheet.merge_range("W"+str(row)+":"+"V"+str(row),
-                          sum(payslip[0].mapped('line_ids').filtered(lambda a: 'BONO' in a.name and a.category_id.name == 'Imponible').mapped('total')),merge_format_number)
+        sheet.merge_range("W"+str(row)+":"+"X"+str(row),
+                          sum(payslip.mapped('line_ids').filtered(lambda a: 'BONO' in a.name and a.category_id.name == 'Imponible').mapped('total')),merge_format_number)
         if 'Septiembre' in indicadores_id[-1].name or 'Diciembre' in indicadores_id[-1].name:
             sheet_service = self.data_format(sheet, row, merge_format_number, payslip, is_bonus=True)
         else:
