@@ -13,7 +13,7 @@
                     </group>
                     <group>
                         <field name="report" readonly="1"/>
-                        <button type="object" name="Descargar"/>
+                        <button type="object" name="button_download" string="Descargar"/>
                     </group>
                 </group>
                 <footer>
