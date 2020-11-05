@@ -70,7 +70,7 @@ class WizardHrPaySlip(models.TransientModel):
         from string import ascii_uppercase
 
         letters = list(ascii_uppercase)
-        num_cols = 100
+        num_cols = 10000
 
         excel_cols = []
         for i in range(0, num_cols - 1):
@@ -81,8 +81,6 @@ class WizardHrPaySlip(models.TransientModel):
             col = letters[m - 1] + letters[n - 1] + letters[i] if m > 0 else letters[n - 1] + letters[i] if n > 0 else \
             letters[i]
             excel_cols.append(col)
-
-        raise models.ValidationError(excel_cols)
         # self.set_title(employee=employees[0], employees=employees, sheet=worksheet, merge_format=merge_format_title,
         #                merge_format_string=merge_format_string, merge_format_number=merge_format_number,
         #                payslips=payslips, row=row, indicadores_id=indicadores_id)
