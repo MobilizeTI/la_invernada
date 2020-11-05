@@ -148,7 +148,7 @@ class WizardHrPaySlip(models.TransientModel):
                           payslip[0].mapped('line_ids').filtered(lambda a: a.name == "BONO DE PERMANENCIA").total,
                           merge_format_number)
         sheet.merge_range("W"+str(row)+":"+"V"+str(row),
-                          sum(payslip[0].mapped('line_id').filtered(lambda a: 'BONO' in a.name and a.category_id.name == 'Imponible').mapped('total')),merge_format_number)
+                          sum(payslip[0].mapped('line_ids').filtered(lambda a: 'BONO' in a.name and a.category_id.name == 'Imponible').mapped('total')),merge_format_number)
         if 'Septiembre' in indicadores_id[-1].name or 'Diciembre' in indicadores_id[-1].name:
             sheet_service = self.data_format(sheet, row, merge_format_number, payslip, is_bonus=True)
         else:
