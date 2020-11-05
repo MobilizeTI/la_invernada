@@ -89,7 +89,6 @@ class WizardHrPaySlip(models.TransientModel):
             cell_2 = excel_cols[letter + 3]+str(number)
             worksheet.merge_range('{}:{}'.format(cell_1, cell_2),'Hola',merge_format_title)
             letter += 1
-            number += 1
             # if not payslips.filtered(lambda a: a.employee_id.id == emp.id):
             #     continue
             # self.set_data(employee=emp, employees=employees, sheet=worksheet, merge_format=merge_format_title,
