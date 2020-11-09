@@ -78,7 +78,11 @@ class WizardHrPaySlip(models.TransientModel):
             self.set_data(employee=emp, employees=employees, sheet=worksheet, merge_format=merge_format_title,
                           merge_format_string=merge_format_string, merge_format_number=merge_format_number,
                           payslips=payslips, row=row, indicadores_id=indicadores_id)
+            if emp.id == employees[-1].id:
+                self.set_total(worksheet,"G{}:H{}".format(str(row + 1),str(row + 1)),"SUELDO BASE",merge_format_number,payslips)
             row += 1
+
+
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
@@ -86,6 +90,7 @@ class WizardHrPaySlip(models.TransientModel):
         return {
             "type": "ir.actions.do_nothing",
         }
+
 
     def set_title(self, employee, employees, sheet, merge_format, merge_format_string, merge_format_number, payslips,
                   row, indicadores_id):
@@ -407,5 +412,5 @@ class WizardHrPaySlip(models.TransientModel):
                             'ALCANCE LIQUIDO', merge_format_data, payslip)
             return sheet
 
-    def button_download(self):
-        return self.report
+    def set_total(self,sheet,set_in,to_search,format_data,payslips):
+        return sheet.merge_range(set_in,sum(payslips.mapped('line_ids').filtered(lambda a: a.name == to_search).mapped('total')))
