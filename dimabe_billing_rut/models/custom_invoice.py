@@ -3,7 +3,6 @@ from datetime import date
 import requests
 from odoo import models, fields, api
 
-
 class CustomInvoice(models.Model):
     _name = 'custom.invoice'
 
