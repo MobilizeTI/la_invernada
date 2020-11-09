@@ -243,6 +243,7 @@ class StockPicking(models.Model):
                     })
                     self.write({
                         'state': 'done'
+                        'datetime'
                     })
         else:
             return super(StockPicking, self).button_validate()

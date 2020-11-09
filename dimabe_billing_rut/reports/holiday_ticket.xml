@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="holiday_ticket">
+        <t t-call="web.html_container">
+            <div class="page">
+                <t t-foreach="docs" t-as="o">
+                    <img t-att-src="'data:image/png;base64,%s' % to_text(o.employee_id.address_id.image)" style="height:75px;display:block;margin:0 auto;"/>
+                    <h2 align="center">
+                        <span t-field="o.employee_id.address_id.name"/>
+                    </h2>
+                    <h3 align="center">
+                        Solicitud de Vacaciones
+                    </h3>
+                    <div style="border-style:solid;">
+                        <table>
+                            <tr>
+                                <td>Fecha:</td>
+                                <td style="border-bottom: 1px dotted black;"><span t-field="o.create_date"/> </td>
+                            </tr>
+                            <tr>
+                                <td>Nombre del Empleado:</td>
+                                <td style="border-bottom: 1px dotted black;"><span t-field="o.employee_id"/></td>
+                            </tr>
+                            <tr>
+                                <td>Cargo del Empleado:</td>
+                                <td style="border-bottom: 1px dotted black;"><span t-field="o.employee_id.job_id"/></td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+    <record id="paper_format_letter_custom" model="report.paperformat">
+        <field name="name">Carta Custom</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">15</field>
+        <field name="margin_right">15</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="footer_line" eval="False"/>
+        <field name="dpi">90</field>
+    </record>
+    <report id="action_holiday_ticket" string="Vale de vacaciones" model="hr.leave" report_type="qweb-pdf"
+            name="dimabe_billing_rut.holiday_ticket" menu="True" paperformat="paper_format_letter_custom"/>
+</odoo>

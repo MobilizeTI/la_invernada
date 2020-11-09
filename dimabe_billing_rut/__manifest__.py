@@ -40,7 +40,10 @@
         'views/hr_payslip.xml',
         'views/custom_holidays.xml',
         'reports/settlement_document.xml',
-        'data/reports/balance_sheet_clp.xml'
+        'reports/holiday_ticket.xml',
+        'data/reports/balance_sheet_clp.xml',
+        'reports/remunerations_book.xml',
+        'views/wizard_hr_payslip.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
@@ -48,5 +51,6 @@
     ],
     'qweb': [
         "static/src/xml/custom_invoice_button.xml",
+        "static/src/xml/action_manager.xml"
     ],
 }

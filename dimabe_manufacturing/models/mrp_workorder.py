@@ -454,7 +454,6 @@ class MrpWorkorder(models.Model):
         if res:
             return res
         self.qty_done = qty_done + custom_serial.display_weight
-
         self.write({
             'in_weight': sum(self.potential_serial_planned_ids.mapped('real_weight'))
         })

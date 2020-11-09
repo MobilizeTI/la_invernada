@@ -3,7 +3,7 @@ from odoo.http import request
 import logging
 from datetime import date, timedelta
 import werkzeug
-
+import re
 
 class StockPickingController(http.Controller):
 
@@ -18,29 +18,31 @@ class StockPickingController(http.Controller):
                 if res.partner_id.id:
                     if res.picking_type_id:
                         if 'recepciones' in str.lower(res.picking_type_id.name):
-                            kgs = 0
-                            if res.production_net_weight.is_integer():
-                                kgs = int(res.production_net_weight)
-                            data.append({
-                                'ProducerCode': res.partner_id.id,
-                                'ProducerName': res.partner_id.name,
-                                'VarietyName': res.move_ids_without_package[0].product_id.get_variety(),
-                                'LotNumber': res.name,
-                                'DispatchGuideNumber': res.guide_number,
-                                'ReceptionDate': res.scheduled_date or res.write_date,
-                                'ReceptionKgs': kgs if kgs > 0 else res.production_net_weight,
-                                'ContainerType': res.get_canning_move().product_id.display_name,
-                                'ContainerWeightAverage': res.avg_unitary_weight,
-                                'ContainerWeight': res.get_canning_move().product_id.weight,
-                                'Season': res.scheduled_date.year,
-                                'Tare': res.tare_weight,
-                                'Warehouse': res.location_dest_id.name,
-                                'QualityWeight': res.quality_weight,
-                                'ContainerQuantity': res.get_canning_move().quantity_done,
-                                'ArticleCode': res.move_ids_without_package[0].product_id.default_code,
-                                'ArticleDescription': res.move_ids_without_package[0].product_id.display_name,
-                                'OdooUpdated': res.write_date
-                            })
+                            code = re.sub('[^a-zA-Z]+', '', res.move_ids_without_package[0].product_id.default_code)
+                            if code in ('MP','PT','PSE'):
+                                kgs = 0
+                                if res.production_net_weight.is_integer():
+                                    kgs = int(res.production_net_weight)
+                                data.append({
+                                    'ProducerCode': res.partner_id.id,
+                                    'ProducerName': res.partner_id.name,
+                                    'VarietyName': res.move_ids_without_package[0].product_id.get_variety(),
+                                    'LotNumber': res.name,
+                                    'DispatchGuideNumber': res.guide_number,
+                                    'ReceptionDate': res.scheduled_date or res.write_date,
+                                    'ReceptionKgs': kgs if kgs > 0 else res.production_net_weight,
+                                    'ContainerType': res.get_canning_move().product_id.display_name,
+                                    'ContainerWeightAverage': res.avg_unitary_weight,
+                                    'ContainerWeight': res.get_canning_move().product_id.weight,
+                                    'Season': res.scheduled_date.year,
+                                    'Tare': res.tare_weight,
+                                    'Warehouse': res.location_dest_id.name,
+                                    'QualityWeight': res.quality_weight,
+                                    'ContainerQuantity': res.get_canning_move().quantity_done,
+                                    'ArticleCode': res.move_ids_without_package[0].product_id.default_code,
+                                    'ArticleDescription': res.move_ids_without_package[0].product_id.display_name,
+                                    'OdooUpdated': res.write_date
+                                })
         return data
 
     @http.route('/api/stock_picking', type='json', methods=['GET'], auth='token', cors='*')
@@ -101,12 +103,11 @@ class StockPickingController(http.Controller):
             'data': data
         }
 
-    @http.route('/api/data_by_order',type='json',methods=['POST'],auth='token',cors='*')
-    def get_data_by_order(self,sale_order):
-        sale_order = request.env['sale.order'].search([('name','=',sale_order)])
 
+    @http.route('/api/data_by_order', type='json', methods=['POST'], auth='token', cors='*')
+    def get_data_by_order(self, sale_order):
+        sale_order = request.env['sale.order'].search([('name', '=', sale_order)])
         data = []
-
         if sale_order:
             date = []
             picking_data = []
@@ -133,5 +134,3 @@ class StockPickingController(http.Controller):
                 'ClientEmail':sale_order.partner_id.email
             })
         return data
-
-    
