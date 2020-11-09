@@ -80,7 +80,6 @@ class WizardHrPaySlip(models.TransientModel):
                           payslips=payslips, row=row, indicadores_id=indicadores_id)
             row += 1
 
-
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
@@ -88,7 +87,6 @@ class WizardHrPaySlip(models.TransientModel):
         return {
             "type": "ir.actions.do_nothing",
         }
-
 
     def set_title(self, employee, employees, sheet, merge_format, merge_format_string, merge_format_number, payslips,
                   row, indicadores_id):
@@ -133,8 +131,7 @@ class WizardHrPaySlip(models.TransientModel):
                           employee.identification_id, merge_format_string)
 
         payslip = payslips.filtered(
-            lambda a: a.employee_id.id == employee.id and a.indicadores_id.id == indicadores_id[
-                -1].id and a.state == 'done')
+            lambda a: a.employee_id.id == employee.id and a.state == 'done')
         self.get_values(sheet, "G" + str(row) + ":" + "H" + str(row),
                         'SUELDO BASE', merge_format_number, payslip)
         self.get_values(sheet, "I" + str(row) + ":" + "J" + str(row),
@@ -410,5 +407,6 @@ class WizardHrPaySlip(models.TransientModel):
                             'ALCANCE LIQUIDO', merge_format_data, payslip)
             return sheet
 
-    def set_total(self,sheet,set_in,to_search,format_data,payslips):
-        return sheet.merge_range(set_in,sum(payslips.mapped('line_ids').filtered(lambda a: a.name == to_search).mapped('total')))
+    def set_total(self, sheet, set_in, to_search, format_data, payslips):
+        return sheet.merge_range(set_in, sum(
+            payslips.mapped('line_ids').filtered(lambda a: a.name == to_search).mapped('total')))
