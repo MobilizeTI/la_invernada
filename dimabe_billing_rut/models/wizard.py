@@ -61,7 +61,7 @@ class WizardHrPaySlip(models.TransientModel):
             self.company_id.name
         ), merge_format_title)
 
-        employees = self.env['hr.employee'].search([('address_id', '=', self.company_id.partner_id.id)])
+        employees = self.env['hr.employee'].search([('address_id', '=', self.company_id.id)])
         if len(employees) == 0:
             raise models.ValidationError(
                 'No existen empleados creados con este empresa,por favor verificar la direccion de trabajado del empleado')
