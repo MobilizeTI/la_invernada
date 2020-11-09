@@ -69,7 +69,6 @@ class WizardHrPaySlip(models.TransientModel):
         row = 8
 
         payslips = self.env['hr.payslip'].search([('indicadores_id', '=', indicadores_id.id)])
-        raise models.ValidationError('{},{}'.format(payslips,employees))
         self.set_title(employee=employees[0], employees=employees, sheet=worksheet, merge_format=merge_format_title,
                        merge_format_string=merge_format_string, merge_format_number=merge_format_number,
                        payslips=payslips, row=row, indicadores_id=indicadores_id)
