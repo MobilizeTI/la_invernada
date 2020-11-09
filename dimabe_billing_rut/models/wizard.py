@@ -12,7 +12,7 @@ class WizardHrPaySlip(models.TransientModel):
     _name = "wizard.hr.payslip"
     _description = 'XLSX Report'
 
-    company_id = fields.Many2one('res.company', 'Compañia')
+    company_id = fields.Many2one('res.partner', domain=[('id', 'in', ('423', '1', '1000', '79'))])
 
     report = fields.Binary(string='Descarge aqui =>',
                            default=lambda self: self.env['wizard.hr.payslip'].search([])[-1].report)
