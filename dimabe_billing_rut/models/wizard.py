@@ -72,9 +72,9 @@ class WizardHrPaySlip(models.TransientModel):
         self.set_title(employee=employees[0], employees=employees, sheet=worksheet, merge_format=merge_format_title,
                        merge_format_string=merge_format_string, merge_format_number=merge_format_number,
                        payslips=payslips, row=row, indicadores_id=indicadores_id)
-        models._logger.error(payslips.mapped('state'))
-        models._logger.error(employees)
         for emp in employees:
+            if not payslips.filtered(lambda a: a.employee_id.id == emp.id and a.state == 'done'):
+                continue
             self.set_data(employee=emp, employees=employees, sheet=worksheet, merge_format=merge_format_title,
                           merge_format_string=merge_format_string, merge_format_number=merge_format_number,
                           payslips=payslips, row=row, indicadores_id=indicadores_id)
@@ -132,7 +132,6 @@ class WizardHrPaySlip(models.TransientModel):
 
         payslip = payslips.filtered(
             lambda a: a.employee_id.id == employee.id and a.state == 'done')
-        raise models.ValidationError(payslip)
         self.get_values(sheet, "G" + str(row) + ":" + "H" + str(row),
                         'SUELDO BASE', merge_format_number, payslip)
         self.get_values(sheet, "I" + str(row) + ":" + "J" + str(row),
