@@ -6,4 +6,3 @@ access_dimabe_dte_type,dimabe_billing_rut.dte_type,model_dte_type,,1,1,1,1
 access_dimabe_custom_fired,dimabe_billing_rut.custom_fired,model_custom_fired,,1,1,1,1
 access_dimabe_custom_settlement,dimabe_billing_rut.custom_settlement,model_custom_settlement,,1,1,1,1
 access_dimabe_custom_holiday,dimabe_billing_rut.custom_holidays,model_custom_holidays,,1,1,1,1
-access_dimabe_wizard_excel_report,dimabe_billing_rut.wizard_excel_report,model_wizard_excel_report,,1,1,1,1
