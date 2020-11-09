@@ -15,7 +15,7 @@ class WizardHrPaySlip(models.TransientModel):
     company_id = fields.Many2one('res.company', 'Compañia')
 
     report = fields.Binary(string='Descarge aqui =>',
-                           )
+                           default=lambda self: self.env['wizard.hr.payslip'].search([])[-1].report)
 
     month = fields.Selection(
         [('Enero', 'Enero'), ('Febrero', 'Febrero'), ('Marzo', 'Marzo'), ('Abril', 'Abril'), ('Mayo', 'Mayo'),
