@@ -29,17 +29,6 @@ class WizardHrPaySlip(models.TransientModel):
 
     all = fields.Boolean('Todos las compañias')
 
-    delimiter = {
-        'comma': ',',
-        'dot_coma': ';',
-        'tab': '\t',
-    }
-    quotechar = {
-        'colon': '"',
-        'semicolon': "'",
-        'none': '',
-    }
-
     date_from = fields.Date('Fecha Inicial', required=True, default=lambda self: time.strftime('%Y-%m-01'))
     date_to = fields.Date('Fecha Final', required=True, default=lambda self: str(
         datetime.now() + relativedelta.relativedelta(months=+1, day=1, days=-1))[:10])
