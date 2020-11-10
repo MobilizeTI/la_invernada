@@ -14,6 +14,17 @@ class WizardHrPaySlip(models.TransientModel):
     _name = "wizard.hr.payslip"
     _description = 'XLSX Report'
 
+    delimiter = {
+        'comma':  ',',
+        'dot_coma':  ';',
+        'tab':  '\t',
+    }
+    quotechar = {
+        'colon':  '"',
+        'semicolon':  "'",
+        'none':  '',
+    }
+
     company_id = fields.Many2one('res.partner', domain=[('id', 'in', ('423', '1', '1000', '79'))])
 
     report = fields.Binary(string='Descarge aqui =>',
