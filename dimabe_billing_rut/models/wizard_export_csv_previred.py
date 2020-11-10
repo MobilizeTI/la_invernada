@@ -10,7 +10,6 @@ from odoo import models, api, fields
 class WizardExportCsvPrevired(models.TransientModel):
     _inherit = 'wizard.export.csv.previred'
 
-
     @api.multi
     def action_generate_csv(self):
         employees = self.env['hr.employee'].search([])
