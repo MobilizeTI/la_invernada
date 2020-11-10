@@ -427,6 +427,44 @@ class WizardHrPaySlip(models.TransientModel):
             rut_array = payslip.employee_id.identification_id.split('-')
             rut = rut_array[0].replace('.','')
             dv = rut_array[1]
-            data_employee = [rut]
+            data_employee = [rut,self._acortar_str(rut,11)]
 
         raise models.ValidationError(data_employee)
+
+        @api.model
+    def _acortar_str(self, texto, size=1):
+        c = 0
+        cadena = ""
+        while c < size and c < len(texto):
+            cadena += texto[c]
+            c += 1
+        return cadena
+
+
+    @api.model
+    def _arregla_str(self, texto, size=1):
+        c = 0
+        cadena = ""
+        special_chars = [
+         ['á', 'a'],
+         ['é', 'e'],
+         ['í', 'i'],
+         ['ó', 'o'],
+         ['ú', 'u'],
+         ['ñ', 'n'],
+         ['Á', 'A'],
+         ['É', 'E'],
+         ['Í', 'I'],
+         ['Ó', 'O'],
+         ['Ú', 'U'],
+         ['Ñ', 'N']]
+
+        while c < size and c < len(texto):
+            cadena += texto[c]
+            c += 1
+        for char in special_chars:
+            try:
+                cadena = cadena.replace(char[0], char[1])
+            except:
+                pass
+        return cadena
