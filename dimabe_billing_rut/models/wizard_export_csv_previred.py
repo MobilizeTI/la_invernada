@@ -17,6 +17,7 @@ class WizardExportCsvPrevired(models.TransientModel):
          ('Diciembre', 'Diciembre'), ], string="Mes")
 
     years = fields.Integer(string="Años", default=int(datetime.datetime.now().year))
+
     @api.multi
     def action_generate_csv(self):
         employees = self.env['hr.employee'].search([])
