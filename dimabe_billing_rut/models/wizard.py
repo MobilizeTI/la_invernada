@@ -637,8 +637,6 @@ class WizardHrPaySlip(models.TransientModel):
                              sexo_data.get(payslip.employee_id.gender, "") if payslip.employee_id.gender else "",
                              self.get_nacionalidad(payslip.employee_id.country_id.id),
                              self.get_tipo_pago(payslip.employee_id),
-                             date_start_format,
-                             date_stop_format,
                              # 11
                              self.get_regimen_provisional(payslip.contract_id),
                              # 12
