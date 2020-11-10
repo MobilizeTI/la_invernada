@@ -607,11 +607,6 @@ class WizardHrPaySlip(models.TransientModel):
         indicadores_id = self.env['hr.indicadores'].search([('name', '=', '{} {}'.format(self.month, self.years))])
         payslip_recs = payslip_model.search([('indicadores_id', '=', indicadores_id.id),
                                              ])
-
-        date_start = self.date_from
-        date_stop = self.date_to
-        date_start_format = date_start.strftime("%m%Y")
-        date_stop_format = date_stop.strftime("%m%Y")
         line_employee = []
         rut = ""
         rut_dv = ""
