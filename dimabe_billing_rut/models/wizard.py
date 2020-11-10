@@ -625,7 +625,7 @@ class WizardHrPaySlip(models.TransientModel):
     def action_generate_csv(self):
         employee_model = self.env['hr.employee']
         payslip_model = self.env['hr.payslip']
-        payslip_line_model = self.env['hr.payslip.line']
+        payslip_line_model = self.env['hr.payslip.line']       
         sexo_data = {'male': "M",
                      'female': "F",
                      }
@@ -635,17 +635,11 @@ class WizardHrPaySlip(models.TransientModel):
         if self.delimiter_option == 'none':
             writer = csv.writer(output, delimiter=self.delimiter[self.delimiter_field_option], quoting=csv.QUOTE_NONE)
         else:
-            writer = csv.writer(output, delimiter=self.delimiter[self.delimiter_field_option],
-                                quotechar=self.quotechar[self.delimiter_option], quoting=csv.QUOTE_NONE)
-        # Debemos colocar que tome todo el mes y no solo el día exacto TODO
-        indicadores_id = self.env['hr.indicadores'].search([('name', '=', '{} {}'.format(self.month, self.years))])
-        payslip_recs = payslip_model.search([('indicadores_id', '=', indicadores_id.id),
+            writer = csv.writer(output, delimiter=self.delimiter[self.delimiter_field_option], quotechar=self.quotechar[self.delimiter_option], quoting=csv.QUOTE_NONE)
+        #Debemos colocar que tome todo el mes y no solo el día exacto TODO
+        payslip_recs = payslip_model.search([('date_from','=',self.date_from),
                                              ])
-        line_employee = []
-        rut = ""
-        rut_dv = ""
-        rut_emp = ""
-        rut_emp_dv = ""
+
         date_start = self.date_from
         date_stop = self.date_to
         date_start_format = date_start.strftime("%m%Y")
@@ -658,7 +652,7 @@ class WizardHrPaySlip(models.TransientModel):
 
         try:
             rut_emp, rut_emp_dv = self.env.user.company_id.vat.split("-")
-            rut_emp = rut_emp.replace('.', '')
+            rut_emp = rut_emp.replace('.','')
         except:
             pass
 
