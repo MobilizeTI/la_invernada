@@ -933,3 +933,6 @@ class WizardHrPaySlip(models.TransientModel):
             self.write({'file_data': base64.encodebytes(output.getvalue().encode()),
                         'file_name': "Previred_%s.txt" % (self.date_to),
                         })
+            return {
+                "type": "ir.actions.do_nothing",
+            }
