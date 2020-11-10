@@ -43,8 +43,8 @@
         'reports/holiday_ticket.xml',
         'data/reports/balance_sheet_clp.xml',
         'reports/remunerations_book.xml',
-        'views/wizard_export_csv_previred_view.xml'
-        #'views/wizard_hr_payslip.xml'
+        'views/wizard_export_csv_previred_view.xml',
+        'views/wizard_hr_payslip.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

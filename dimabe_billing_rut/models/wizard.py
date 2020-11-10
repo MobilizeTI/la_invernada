@@ -20,7 +20,7 @@ class WizardHrPaySlip(models.TransientModel):
          ('Agosto', 'Agosto'), ('Septiembre', 'Septiembre'), ('Octubre', 'Octubre'), ('Noviembre', 'Noviembre'),
          ('Diciembre', 'Diciembre'), ], string="Mes")
 
-    years = fields.String(string="Años", default=str(datetime.datetime.now().year))
+    years = fields.Integer(string="Años", default=int(datetime.datetime.now().year))
 
     all = fields.Boolean('Todos las compañias')
 
