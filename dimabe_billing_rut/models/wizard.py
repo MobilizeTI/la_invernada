@@ -416,11 +416,6 @@ class WizardHrPaySlip(models.TransientModel):
         indicadores_id = self.env['hr.indicadores'].search([('name', '=', '{} {}'.format(self.month,self.years))])
         payslips = self.env['hr.payslip'].search([('indicadores_id', '=', indicadores_id.id)])
         output = io.StringIO()
-        if self.delimiter_option == 'none':
-            writer = csv.writer(output, delimiter=self.delimiter[self.delimiter_option], quoting=csv.QUOTE_NONE)
-        else:
-            writer = csv.writer(output, delimiter=self.delimiter[self.delimiter_field_option],
-                                quotechar=self.quotechar[self.delimiter_option], quoting=csv.QUOTE_NONE)
         try:
             rut_array = self.env.user.company_id.vat.split('-')
             rut = rut_array[0].replace('.', '')
