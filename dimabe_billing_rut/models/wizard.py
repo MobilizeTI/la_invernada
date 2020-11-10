@@ -431,7 +431,7 @@ class WizardHrPaySlip(models.TransientModel):
 
         raise models.ValidationError(data_employee)
 
-        @api.model
+    @api.model
     def _acortar_str(self, texto, size=1):
         c = 0
         cadena = ""
