@@ -417,15 +417,16 @@ class WizardHrPaySlip(models.TransientModel):
         payslips = self.env['hr.payslip'].search([('indicadores_id', '=', indicadores_id.id)])
         output = io.StringIO()
         try:
-            rut_array = self.env.user.company_id.vat.split('-')
-            rut = rut_array[0].replace('.', '')
-            dv = rut_array[1]
+            rut_array_company = self.env.user.company_id.vat.split('-')
+            rut_company = rut_array_company[0].replace('.', '')
+            dv_company = rut_array_company[1]
         except:
             pass
 
         for payslip in payslips:
-            rut_array = payslips.employee_id.identication_id.split('-')
-            rut = rut.replace('.','')
+            rut_array = payslip.employee_id.identication_id.split('-')
+            rut = rut_array[0].replace('.','')
+            dv = rut_array[1]
             data_employee = [rut,self._acortar_str(rut,11)]
 
         raise models.ValidationError(data_employee)
