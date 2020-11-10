@@ -625,22 +625,22 @@ class WizardHrPaySlip(models.TransientModel):
             rut_dv = ""
             rut, rut_dv = payslip.employee_id.identification_id.split("-")
             rut = rut.replace('.', '')
-            line_employee = [self._acortar_str(rut, 11),
-                             self._acortar_str(rut_dv, 1),
-                             self._arregla_str(payslip.employee_id.last_name.upper(),
+            line_employee = ['RUT:',self._acortar_str(rut, 11),
+                             'DV:',self._acortar_str(rut_dv, 1),
+                             "AP.PATERNO:",self._arregla_str(payslip.employee_id.last_name.upper(),
                                                30) if payslip.employee_id.last_name else "",
-                             self._arregla_str(payslip.employee_id.mothers_name.upper(),
+                             "AP.MATERNO:",self._arregla_str(payslip.employee_id.mothers_name.upper(),
                                                30) if payslip.employee_id.mothers_name else "",
-                             "%s %s" % (self._arregla_str(payslip.employee_id.firstname.upper(), 15),
+                             'NOMBRE :',"%s %s" % (self._arregla_str(payslip.employee_id.firstname.upper(), 15),
                                         self._arregla_str(payslip.employee_id.middle_name.upper(),
                                                           15) if payslip.employee_id.middle_name else ''),
-                             sexo_data.get(payslip.employee_id.gender, "") if payslip.employee_id.gender else "",
-                             self.get_nacionalidad(payslip.employee_id.country_id.id),
-                             self.get_tipo_pago(payslip.employee_id),
+                             "SEXO:",sexo_data.get(payslip.employee_id.gender, "") if payslip.employee_id.gender else "",
+                             "NACIONALIDAD:",self.get_nacionalidad(payslip.employee_id.country_id.id),
+                             "TIPO DE PAGO",self.get_tipo_pago(payslip.employee_id),
                              # 11
-                             self.get_regimen_provisional(payslip.contract_id),
+                             "REGIMEL PREVISIONAL :",self.get_regimen_provisional(payslip.contract_id),
                              # 12
-                             "0",
+                             1 if payslip.contract_id.contract_id.pension else 0,
                              # payslip.employee_id.type_id.id_type,
                              # 13
                              int(self.get_dias_trabajados(payslip and payslip[0] or False)) if int(self.get_dias_trabajados(payslip and payslip[0] or False)) > 0 else 0,
