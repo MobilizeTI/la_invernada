@@ -10,19 +10,12 @@ from odoo import models, api, fields
 class WizardExportCsvPrevired(models.TransientModel):
     _inherit = 'wizard.export.csv.previred'
 
-    month = fields.Selection(
-        [('Enero', 'Enero'), ('Febrero', 'Febrero'), ('Marzo', 'Marzo'), ('Abril', 'Abril'), ('Mayo', 'Mayo'),
-         ('Junio', 'Junio'), ('Julio', 'Julio'),
-         ('Agosto', 'Agosto'), ('Septiembre', 'Septiembre'), ('Octubre', 'Octubre'), ('Noviembre', 'Noviembre'),
-         ('Diciembre', 'Diciembre'), ], string="Mes")
-
-    years = fields.Integer(string="Años", default=int(datetime.datetime.now().year))
 
     @api.multi
     def action_generate_csv(self):
         employees = self.env['hr.employee'].search([])
-        payslip = self.env['hr.payslip'].search(
-            [('indicadores_id', '=', '{}{}'.format(str(self.month), str(self.year)))])
+        indicadores_id = self.env['hr.indicadores'].search([('name','=','Octubre 2020')])
+        payslip = self.env['hr.payslip'].search([('indicadores_id','=',indicadores_id.id)])
         raise models.ValidationError(payslip)
         output = io.StringIO()
         if self.delimiter_option == 'none':
