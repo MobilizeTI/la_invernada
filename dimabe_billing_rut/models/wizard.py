@@ -2,8 +2,11 @@ import base64
 import datetime
 import io
 import logging
+import time
+from datetime import datetime
 
 import xlsxwriter
+from dateutil import relativedelta
 from odoo import api, fields, models
 
 
@@ -26,7 +29,35 @@ class WizardHrPaySlip(models.TransientModel):
 
     all = fields.Boolean('Todos las compañias')
 
-    @api.multi
+    delimiter = {
+        'comma':  ',',
+        'dot_coma':  ';',
+        'tab':  '\t',
+    }
+    quotechar = {
+        'colon':  '"',
+        'semicolon':  "'",
+        'none':  '',
+    }
+
+    date_from = fields.Date('Fecha Inicial', required=True, default=lambda self: time.strftime('%Y-%m-01'))
+    date_to = fields.Date('Fecha Final', required=True, default=lambda self: str(
+        datetime.now() + relativedelta.relativedelta(months=+1, day=1, days=-1))[:10])
+    file_data = fields.Binary('Archivo Generado')
+    file_name = fields.Char('Nombre de archivo')
+    delimiter_option = fields.Selection([
+        ('colon', 'Comillas Dobles(")'),
+        ('semicolon', "Comillas Simples(')"),
+        ('none', "Ninguno"),
+    ], string='Separador de Texto', default='colon', required=True)
+    delimiter_field_option = fields.Selection([
+        ('comma', 'Coma(,)'),
+        ('dot_coma', "Punto y coma(;)"),
+        ('tab', "Tabulador"),
+    ], string='Separador de Campos', default='dot_coma', required=True) \
+
+                             @ api.multi
+
     def print_report_xlsx(self):
         file_name = 'temp'
         workbook = xlsxwriter.Workbook(file_name, {'in_memory': True})
@@ -625,25 +656,26 @@ class WizardHrPaySlip(models.TransientModel):
             rut_dv = ""
             rut, rut_dv = payslip.employee_id.identification_id.split("-")
             rut = rut.replace('.', '')
-            line_employee = ['RUT:',self._acortar_str(rut, 11),
-                             'DV:',self._acortar_str(rut_dv, 1),
-                             "AP.PATERNO:",self._arregla_str(payslip.employee_id.last_name.upper(),
+            line_employee = [self._acortar_str(rut, 11),
+                             self._acortar_str(rut_dv, 1),
+                             self._arregla_str(payslip.employee_id.last_name.upper(),
                                                30) if payslip.employee_id.last_name else "",
-                             "AP.MATERNO:",self._arregla_str(payslip.employee_id.mothers_name.upper(),
+                             self._arregla_str(payslip.employee_id.mothers_name.upper(),
                                                30) if payslip.employee_id.mothers_name else "",
-                             'NOMBRE :',"%s %s" % (self._arregla_str(payslip.employee_id.firstname.upper(), 15),
+                             "%s %s" % (self._arregla_str(payslip.employee_id.firstname.upper(), 15),
                                         self._arregla_str(payslip.employee_id.middle_name.upper(),
                                                           15) if payslip.employee_id.middle_name else ''),
-                             "SEXO:",sexo_data.get(payslip.employee_id.gender, "") if payslip.employee_id.gender else "",
-                             "NACIONALIDAD:",self.get_nacionalidad(payslip.employee_id.country_id.id),
-                             "TIPO DE PAGO",self.get_tipo_pago(payslip.employee_id),
+                             sexo_data.get(payslip.employee_id.gender, "") if payslip.employee_id.gender else "",
+                             self.get_nacionalidad(payslip.employee_id.country_id.id),
+                             self.get_tipo_pago(payslip.employee_id),
                              # 11
-                             "REGIMEL PREVISIONAL :",self.get_regimen_provisional(payslip.contract_id),
+                             self.get_regimen_provisional(payslip.contract_id),
                              # 12
                              1 if payslip.contract_id.contract_id.pension else 0,
                              # payslip.employee_id.type_id.id_type,
                              # 13
-                             int(self.get_dias_trabajados(payslip and payslip[0] or False)) if int(self.get_dias_trabajados(payslip and payslip[0] or False)) > 0 else 0,
+                             int(self.get_dias_trabajados(payslip and payslip[0] or False)) if int(
+                                 self.get_dias_trabajados(payslip and payslip[0] or False)) > 0 else 0,
                              # 14
                              self.get_tipo_linea(payslip and payslip[0] or False),
                              # 15
