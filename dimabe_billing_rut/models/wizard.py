@@ -1,11 +1,8 @@
-from odoo import api, fields, models
-from odoo.tools.misc import xlwt
-import io
-import xlsxwriter
 import base64
 import datetime
-from string import ascii_uppercase
-import itertools
+
+import xlsxwriter
+from odoo import api, fields, models
 
 
 class WizardHrPaySlip(models.TransientModel):
