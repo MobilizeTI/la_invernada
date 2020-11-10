@@ -4,7 +4,6 @@ import io
 import logging
 import time
 from datetime import datetime
-
 import xlsxwriter
 from dateutil import relativedelta
 from odoo import api, fields, models
@@ -25,7 +24,7 @@ class WizardHrPaySlip(models.TransientModel):
          ('Agosto', 'Agosto'), ('Septiembre', 'Septiembre'), ('Octubre', 'Octubre'), ('Noviembre', 'Noviembre'),
          ('Diciembre', 'Diciembre'), ], string="Mes")
 
-    years = fields.Integer(string="Años", default=int(datetime.datetime.now().year))
+    years = fields.Integer(string="Años", default=int(datetime.now().year))
 
     all = fields.Boolean('Todos las compañias')
 
