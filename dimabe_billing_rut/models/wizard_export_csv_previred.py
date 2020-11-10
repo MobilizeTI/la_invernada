@@ -1,15 +1,11 @@
-import io
-import csv
 import base64
+import csv
+import io
 import logging
-import time
 from datetime import datetime
-from dateutil import relativedelta
 
 from odoo import models, api, fields
-import odoo.addons.decimal_precision as dp
-from odoo.tools.translate import _
-from odoo.tools import DEFAULT_SERVER_DATE_FORMAT as DF
+
 
 class WizardExportCsvPrevired(models.TransientModel):
     _inherit = 'wizard.export.csv.previred'
@@ -19,13 +15,11 @@ class WizardExportCsvPrevired(models.TransientModel):
          ('Junio', 'Junio'), ('Julio', 'Julio'),
          ('Agosto', 'Agosto'), ('Septiembre', 'Septiembre'), ('Octubre', 'Octubre'), ('Noviembre', 'Noviembre'),
          ('Diciembre', 'Diciembre'), ], string="Mes")
-
-    years = fields.Text(string="Años", default=str(datetime.datetime.now().year))
-
     @api.multi
     def action_generate_csv(self):
         employees = self.env['hr.employee'].search([])
-        payslip = self.env['hr.payslip'].search([('indicadores_id','=','{}{}'.format(str(self.month),str(self.year)))])
+        payslip = self.env['hr.payslip'].search(
+            [('indicadores_id', '=', '{}{}'.format(str(self.month), str(self.year)))])
         raise models.ValidationError(payslip)
         output = io.StringIO()
         if self.delimiter_option == 'none':
@@ -35,7 +29,7 @@ class WizardExportCsvPrevired(models.TransientModel):
                                 quotechar=self.quotechar[self.delimiter_option], quoting=csv.QUOTE_NONE)
             try:
                 rut_array = self.env.user.company_id.vat.split('-')
-                rut = rut_array[0].replace('.','')
+                rut = rut_array[0].replace('.', '')
                 dv = rut_array[1]
             except:
                 pass
