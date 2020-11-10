@@ -604,7 +604,7 @@ class WizardHrPaySlip(models.TransientModel):
         country_company = self.env.user.company_id.country_id
         output = io.StringIO()
         # Debemos colocar que tome todo el mes y no solo el día exacto TODO
-        indicadores_id = self.env['hr.indicadores'].search([('name', '=', '{} {}'.format(self.moth, self.years))])
+        indicadores_id = self.env['hr.indicadores'].search([('name', '=', '{} {}'.format(self.month, self.years))])
         payslip_recs = payslip_model.search([('indicadores_id', '=', indicadores_id.id),
                                              ])
 
