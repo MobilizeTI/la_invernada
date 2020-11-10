@@ -621,47 +621,12 @@ class WizardHrPaySlip(models.TransientModel):
                 pass
         return cadena
 
-    @api.multi
-    def action_generate_csv(self):
-        employee_model = self.env['hr.employee']
-        payslip_model = self.env['hr.payslip']
-        payslip_line_model = self.env['hr.payslip.line']       
-        sexo_data = {'male': "M",
-                     'female': "F",
-                     }
-        _logger = logging.getLogger(__name__)
-        country_company = self.env.user.company_id.country_id
-        output = io.StringIO()
-        if self.delimiter_option == 'none':
-            writer = csv.writer(output, delimiter=self.delimiter[self.delimiter_field_option], quoting=csv.QUOTE_NONE)
-        else:
-            writer = csv.writer(output, delimiter=self.delimiter[self.delimiter_field_option], quotechar=self.quotechar[self.delimiter_option], quoting=csv.QUOTE_NONE)
-        #Debemos colocar que tome todo el mes y no solo el día exacto TODO
-        payslip_recs = payslip_model.search([('date_from','=',self.date_from),
-                                             ])
-
-        date_start = self.date_from
-        date_stop = self.date_to
-        date_start_format = date_start.strftime("%m%Y")
-        date_stop_format = date_stop.strftime("%m%Y")
-        line_employee = []
-        rut = ""
-        rut_dv = ""
-        rut_emp = ""
-        rut_emp_dv = ""
-
-        try:
-            rut_emp, rut_emp_dv = self.env.user.company_id.vat.split("-")
-            rut_emp = rut_emp.replace('.','')
-        except:
-            pass
-
         for payslip in payslip_recs:
-            payslip_line_recs = payslip_line_model.search([('slip_id', '=', payslip.id)])
+            payslip_line_recs = payslip_line_model.search([('slip_id','=',payslip.id)])
             rut = ""
             rut_dv = ""
             rut, rut_dv = payslip.employee_id.identification_id.split("-")
-            rut = rut.replace('.', '')
+            rut = rut.replace('.','')
             line_employee = [self._acortar_str(rut, 11), 
                              self._acortar_str(rut_dv, 1),
                              self._arregla_str(payslip.employee_id.last_name.upper(), 30)  if payslip.employee_id.last_name else "", 
@@ -686,7 +651,7 @@ class WizardHrPaySlip(models.TransientModel):
                              #16 Fecha inicio movimiento personal (dia-mes-año)
                              #Si declara mov. personal 1, 3, 4, 5, 6, 7, 8 y 11 Fecha Desde
                              #es obligatoria y debe estar dentro del periodo de remun
-                             payslip.date_from.strftime("%d/%m/%Y"), 
+                             payslip.date_from.strftime("%d/%m/%Y") , 
                              #payslip.date_from if payslip.date_from else '00/00/0000', 
                              #17 Fecha fin movimiento personal (dia-mes-año)
                              payslip.date_to.strftime("%d/%m/%Y"), 
@@ -906,9 +871,8 @@ class WizardHrPaySlip(models.TransientModel):
                              int(self.get_cost_center(payslip.contract_id)),
                              ]
             writer.writerow([str(l) for l in line_employee])
-            self.write({'file_data': base64.encodebytes(output.getvalue().encode()),
-                        'file_name': "Previred_%s.txt" % (self.date_to),
-                        })
-            return {
-                "type": "ir.actions.do_nothing",
-            }
+        self.write({'file_data': base64.encodebytes(output.getvalue().encode()),
+                    'file_name': "Previred_%s.txt" % (self.date_to),
+                    })
+                
+        return self.show_view(u'Previred Generado')
