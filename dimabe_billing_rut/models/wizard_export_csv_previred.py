@@ -40,8 +40,6 @@ class WizardExportCsvPrevired(models.TransientModel):
                 dv = rut_array[1]
             except:
                 pass
-        
-        
 
     @api.multi
     def action_generate_csv_2(self):
