@@ -11,7 +11,6 @@ import odoo.addons.decimal_precision as dp
 from odoo.tools.translate import _
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT as DF
 
-
 class WizardExportCsvPrevired(models.TransientModel):
     _inherit = 'wizard.export.csv.previred'
 
