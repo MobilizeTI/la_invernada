@@ -15,10 +15,38 @@ from odoo.tools import DEFAULT_SERVER_DATE_FORMAT as DF
 class WizardExportCsvPrevired(models.TransientModel):
     _inherit = 'wizard.export.csv.previred'
 
+    month = fields.Selection(
+        [('Enero', 'Enero'), ('Febrero', 'Febrero'), ('Marzo', 'Marzo'), ('Abril', 'Abril'), ('Mayo', 'Mayo'),
+         ('Junio', 'Junio'), ('Julio', 'Julio'),
+         ('Agosto', 'Agosto'), ('Septiembre', 'Septiembre'), ('Octubre', 'Octubre'), ('Noviembre', 'Noviembre'),
+         ('Diciembre', 'Diciembre'), ], string="Mes")
+
+    years = fields.String(string="Años", default=str(datetime.datetime.now().year))
+
     @api.multi
     def action_generate_csv(self):
+        employees = self.env['hr.employee'].search([])
+        payslip = self.env['hr.payslip'].search([('indicadores_id','=','{}{}'.format(str(self.month),str(self.year)))])
+        raise models.ValidationError(payslip)
+        output = io.StringIO()
+        if self.delimiter_option == 'none':
+            writer = csv.writer(output, delimiter=self.delimiter[self.delimiter_option], quoting=csv.QUOTE_NONE)
+        else:
+            writer = csv.writer(output, delimiter=self.delimiter[self.delimiter_field_option],
+                                quotechar=self.quotechar[self.delimiter_option], quoting=csv.QUOTE_NONE)
+            try:
+                rut_array = self.env.user.company_id.vat.split('-')
+                rut = rut_array[0].replace('.','')
+                dv = rut_array[1]
+            except:
+                pass
+        
+        
+
+    @api.multi
+    def action_generate_csv_2(self):
         employee_model = self.env['hr.employee']
-        payslip_model = self.env['hr.payslip'].search([('state','=','done')])
+        payslip_model = self.env['hr.payslip'].search([('state', '=', 'done')])
         payslip_line_model = self.env['hr.payslip.line']
         sexo_data = {'male': "M",
                      'female': "F",
@@ -273,7 +301,7 @@ class WizardExportCsvPrevired(models.TransientModel):
                              # 84 Renta Imponible CCAF
                              int(self.get_imponible_afp(payslip and payslip[0] or False,
                                                         self.get_payslip_lines_value_2(payslip, 'TOTIM'))) if (
-                                         self.get_dias_trabajados(payslip and payslip[0] or False) > 0) else "00",
+                                     self.get_dias_trabajados(payslip and payslip[0] or False) > 0) else "00",
                              # 85 Creditos Personales CCAF TODO
                              self.get_payslip_lines_value_2(payslip, 'PCCAF') if self.get_payslip_lines_value_2(payslip,
                                                                                                                 'PCCAF') else "0",
