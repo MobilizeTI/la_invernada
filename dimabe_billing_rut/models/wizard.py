@@ -657,7 +657,7 @@ class WizardHrPaySlip(models.TransientModel):
                              # 11
                              self.get_regimen_provisional(payslip.contract_id),
                              # 12
-                             1 if payslip.contract_id.contract_id.pension else 0,
+                             1 if payslip.pension else 0,
                              # payslip.employee_id.type_id.id_type,
                              # 13
                              int(self.get_dias_trabajados(payslip and payslip[0] or False)) if int(
