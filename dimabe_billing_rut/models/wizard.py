@@ -646,6 +646,15 @@ class WizardHrPaySlip(models.TransientModel):
         rut_dv = ""
         rut_emp = ""
         rut_emp_dv = ""
+        date_start = self.date_from
+        date_stop = self.date_to
+        date_start_format = date_start.strftime("%m%Y")
+        date_stop_format = date_stop.strftime("%m%Y")
+        line_employee = []
+        rut = ""
+        rut_dv = ""
+        rut_emp = ""
+        rut_emp_dv = ""
 
         try:
             rut_emp, rut_emp_dv = self.env.user.company_id.vat.split("-")
