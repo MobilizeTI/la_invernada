@@ -1,8 +1,7 @@
 import base64
 import datetime
 import io
-import csv
-import logging
+
 import xlsxwriter
 from odoo import api, fields, models
 
@@ -413,7 +412,7 @@ class WizardHrPaySlip(models.TransientModel):
     @api.multi
     def action_generate_csv(self):
         employees = self.env['hr.employee'].search([])
-        indicadores_id = self.env['hr.indicadores'].search([('name', '=', '{} {}'.format(self.month,self.years))])
+        indicadores_id = self.env['hr.indicadores'].search([('name', '=', '{} {}'.format(self.month, self.years))])
         payslips = self.env['hr.payslip'].search([('indicadores_id', '=', indicadores_id.id)])
         output = io.StringIO()
         try:
@@ -422,49 +421,52 @@ class WizardHrPaySlip(models.TransientModel):
             dv_company = rut_array_company[1]
         except:
             pass
-
+        data_employee = []
         for payslip in payslips:
             rut_array = payslip.employee_id.identification_id.split('-')
-            rut = rut_array[0].replace('.','')
+            rut = rut_array[0].replace('.', '')
             dv = rut_array[1]
-            data_employee = [rut,self._acortar_str(rut,11)]
+            data_employee = [self._acortar_str(rut, 11),
+                             self._acortar_str(dv, 1),
+                             self._arregla_str(payslip.employee_id.last_name.upper(),
+                                               30) if payslip.employee_id.last_name else "",
+            ]
 
-        raise models.ValidationError(data_employee)
+            raise models.ValidationError(data_employee)
 
-    @api.model
-    def _acortar_str(self, texto, size=1):
-        c = 0
-        cadena = ""
-        while c < size and c < len(texto):
-            cadena += texto[c]
-            c += 1
-        return cadena
+        @api.model
+        def _acortar_str(self, texto, size=1):
+            c = 0
+            cadena = ""
+            while c < size and c < len(texto):
+                cadena += texto[c]
+                c += 1
+            return cadena
 
+        @api.model
+        def _arregla_str(self, texto, size=1):
+            c = 0
+            cadena = ""
+            special_chars = [
+                ['á', 'a'],
+                ['é', 'e'],
+                ['í', 'i'],
+                ['ó', 'o'],
+                ['ú', 'u'],
+                ['ñ', 'n'],
+                ['Á', 'A'],
+                ['É', 'E'],
+                ['Í', 'I'],
+                ['Ó', 'O'],
+                ['Ú', 'U'],
+                ['Ñ', 'N']]
 
-    @api.model
-    def _arregla_str(self, texto, size=1):
-        c = 0
-        cadena = ""
-        special_chars = [
-         ['á', 'a'],
-         ['é', 'e'],
-         ['í', 'i'],
-         ['ó', 'o'],
-         ['ú', 'u'],
-         ['ñ', 'n'],
-         ['Á', 'A'],
-         ['É', 'E'],
-         ['Í', 'I'],
-         ['Ó', 'O'],
-         ['Ú', 'U'],
-         ['Ñ', 'N']]
-
-        while c < size and c < len(texto):
-            cadena += texto[c]
-            c += 1
-        for char in special_chars:
-            try:
-                cadena = cadena.replace(char[0], char[1])
-            except:
-                pass
-        return cadena
+            while c < size and c < len(texto):
+                cadena += texto[c]
+                c += 1
+            for char in special_chars:
+                try:
+                    cadena = cadena.replace(char[0], char[1])
+                except:
+                    pass
+            return cadena
