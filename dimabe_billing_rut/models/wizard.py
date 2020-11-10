@@ -1,8 +1,8 @@
 import base64
 import datetime
 import io
-import csv
 import logging
+
 import xlsxwriter
 from odoo import api, fields, models
 
@@ -604,7 +604,8 @@ class WizardHrPaySlip(models.TransientModel):
         country_company = self.env.user.company_id.country_id
         output = io.StringIO()
         # Debemos colocar que tome todo el mes y no solo el día exacto TODO
-        payslip_recs = payslip_model.search([('date_from', '=', self.date_from),
+        indicadores_id = self.env['hr.indicadores'].search([('name', '=', '{} {}'.format(self.moth, self.years))])
+        payslip_recs = payslip_model.search([('indicadores_id', '=', indicadores_id.id),
                                              ])
 
         date_start = self.date_from
@@ -845,7 +846,7 @@ class WizardHrPaySlip(models.TransientModel):
                              # 84 Renta Imponible CCAF
                              int(self.get_imponible_afp(payslip and payslip[0] or False,
                                                         self.get_payslip_lines_value_2(payslip, 'TOTIM'))) if (
-                                         self.get_dias_trabajados(payslip and payslip[0] or False) > 0) else "00",
+                                     self.get_dias_trabajados(payslip and payslip[0] or False) > 0) else "00",
                              # 85 Creditos Personales CCAF TODO
                              self.get_payslip_lines_value_2(payslip, 'PCCAF') if self.get_payslip_lines_value_2(payslip,
                                                                                                                 'PCCAF') else "0",
