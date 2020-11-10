@@ -424,7 +424,7 @@ class WizardHrPaySlip(models.TransientModel):
             pass
 
         for payslip in payslips:
-            rut_array = payslip.employee_id.identication_id.split('-')
+            rut_array = payslip.employee_id.identification_id.split('-')
             rut = rut_array[0].replace('.','')
             dv = rut_array[1]
             data_employee = [rut,self._acortar_str(rut,11)]
