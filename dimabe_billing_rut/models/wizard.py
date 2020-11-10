@@ -407,3 +407,22 @@ class WizardHrPaySlip(models.TransientModel):
     def set_total(self, sheet, set_in, to_search, format_data, payslips):
         return sheet.merge_range(set_in, sum(
             payslips.mapped('line_ids').filtered(lambda a: a.name == to_search).mapped('total')))
+
+    @api.multi
+    def action_generate_csv(self):
+        employees = self.env['hr.employee'].search([])
+        indicadores_id = self.env['hr.indicadores'].search([('name', '=', '{} {}'.format(self.month,self.years))])
+        payslip = self.env['hr.payslip'].search([('indicadores_id', '=', indicadores_id.id)])
+        raise models.ValidationError(payslip)
+        output = io.StringIO()
+        if self.delimiter_option == 'none':
+            writer = csv.writer(output, delimiter=self.delimiter[self.delimiter_option], quoting=csv.QUOTE_NONE)
+        else:
+            writer = csv.writer(output, delimiter=self.delimiter[self.delimiter_field_option],
+                                quotechar=self.quotechar[self.delimiter_option], quoting=csv.QUOTE_NONE)
+            try:
+                rut_array = self.env.user.company_id.vat.split('-')
+                rut = rut_array[0].replace('.', '')
+                dv = rut_array[1]
+            except:
+                pass
