@@ -10,6 +10,8 @@
                         <field name="company_id"/>
                         <field name="month"/>
                         <field name="years"/>
+                        <field name="file_data" filename="file_name" readonly="1" />
+						<field name="file_name" invisible="1" />
                     </group>
                     <group>
                         <field name="report" readonly="1"/>
