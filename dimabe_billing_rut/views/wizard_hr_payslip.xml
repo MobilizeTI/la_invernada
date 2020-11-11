@@ -4,45 +4,38 @@
         <field name="name">Libro de Remuneraciones</field>
         <field name="model">wizard.hr.payslip</field>
         <field name="arch" type="xml">
-            <notebook>
-                <page string="Libro de Remuneraciones">
+            <form>
+                <group>
                     <group>
-                        <group>
-                            <field name="company_id"/>
-                            <field name="month"/>
-                            <field name="years"/>
-                            <field name="report" filename="report_name" readonly="1"/>
-                            <field name="report_name" invisible="1"/>
-                            <button name="print_report_xlsx" string="Generar XLSX" type="object" default_focus="1"
-                                    class="oe_highlight"/>
-                            <button string="Cancel" class="btn btn-secondary" special="cancel"/>
-                        </group>
+                        <field name="company_id"/>
+                        <field name="month"/>
+                        <field name="years"/>
+                        <field name="report" filename="report_name" readonly="1"/>
+                        <field name="report_name" invisible="1"/>
+                        <button name="print_report_xlsx" string="Generar XLSX" type="object" default_focus="1"
+                                class="oe_highlight"/>
+                        <button string="Cancel" class="btn btn-secondary" special="cancel"/>
                     </group>
-                    <footer>
-
-                    </footer>
-                </page>
-            </notebook>
+                </group>
+            </form>
         </field>
     </record>
     <record id="wizard_hr_payslip_report_previred_view" model="ir.ui.view">
         <field name="name">Archivo Previred</field>
         <field name="model">wizard.hr.payslip</field>
         <field name="arch" type="xml">
-            <notebook>
-                <page string="Archivo Previred">
+            <form>
+                <group>
                     <group>
-                        <group>
-                            <field name="file_data" filename="file_name" readonly="1"/>
-                            <field name="file_name" invisible="1"/>
-                            <field name="date_from"/>
-                            <field name="date_to"/>
-                            <button name="action_generate_csv" string="Generar CSV" type="object" class="oe_highlight"/>
-                            <button string="Cancel" class="btn btn-secondary" special="cancel"/>
-                        </group>
+                        <field name="file_data" filename="file_name" readonly="1"/>
+                        <field name="file_name" invisible="1"/>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                        <button name="action_generate_csv" string="Generar CSV" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="btn btn-secondary" special="cancel"/>
                     </group>
-                </page>
-            </notebook>
+                </group>
+            </form>
         </field>
     </record>
     <record id="action_payslip_menu" model="ir.actions.act_window">
@@ -53,7 +46,7 @@
         <field name="view_id" ref="wizard_hr_payslip_report_view"/>
         <field name="target">new</field>
     </record>
-        <record id="action_payslip_previred_menu" model="ir.actions.act_window">
+    <record id="action_payslip_previred_menu" model="ir.actions.act_window">
         <field name="name">Archivo Previred</field>
         <field name="res_model">wizard.hr.payslip</field>
         <field name="view_type">form</field>
