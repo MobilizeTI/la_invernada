@@ -42,7 +42,6 @@
                         </group>
                     </group>
                 </page>
-
             </notebook>
         </field>
     </record>
@@ -72,7 +71,4 @@
               action="action_payslip_previred_menu"
               id="previred_item"
     />
-    <record model="ir.ui.menu" id="l10n_cl_hr.wizard_export_csv_menu">
-        <field name="action" eval="False"/>
-    </record>
 </odoo>
