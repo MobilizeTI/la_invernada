@@ -708,7 +708,7 @@ class WizardHrPaySlip(models.TransientModel):
                              #25 Solicitud Trabajador Joven TODO SUBSIDIO JOVEN
                              "N",
                              #26
-                             payslip.contract_id.afp_id.codigo,
+                             payslip.contract_id.afp_id.codigo if payslip.contract_id.afp_id.codigo else "00",
                              #27
                              int(self.get_imponible_afp_2(payslip and payslip[0] or False, self.get_payslip_lines_value_2(payslip,'TOTIM'), self.get_payslip_lines_value_2(payslip,'IMPLIC'))),
                              #AFP SIS APV 0 0 0 0 0 0
