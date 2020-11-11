@@ -910,7 +910,7 @@ class WizardHrPaySlip(models.TransientModel):
                              ]
             writer.writerow([str(l) for l in line_employee])
         self.write({'file_data': base64.encodebytes(output.getvalue().encode()),
-                    'file_name': "Previred_%s.txt" % (self.date_to),
+                    'file_name': "Previred_{}{}".format(self.date_to,self.company_id.display_name),
                     })
 
         return {
