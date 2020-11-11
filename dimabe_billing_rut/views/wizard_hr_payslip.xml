@@ -29,6 +29,7 @@
             <form>
                 <group>
                     <group>
+                        <field name="company_id"/>
                         <field name="file_data" filename="file_name" readonly="1"/>
                         <field name="file_name" invisible="1"/>
                         <field name="date_from"/>

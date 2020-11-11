@@ -21,7 +21,6 @@
         <menuitem
             id="custom_parameter_menu"
             string="Tramos"
-            parent=
             sequence="10" />
     </data>
 </odoo>
