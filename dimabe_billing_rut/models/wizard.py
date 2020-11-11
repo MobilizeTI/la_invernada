@@ -56,6 +56,8 @@ class WizardHrPaySlip(models.TransientModel):
         ('tab', "Tabulador"),
     ], string='Separador de Campos', default='dot_coma', required=True)
 
+    report_name = fields.Char('')
+
     @api.multi
     def print_report_xlsx(self):
         file_name = 'temp'
@@ -112,7 +114,7 @@ class WizardHrPaySlip(models.TransientModel):
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
-        self.write({'report': file_base64})
+        self.write({'report': file_base64,'report_name':'Libro de Remuneraciones {}'.format(indicadores_id.name)})
         return {
             "type": "ir.actions.do_nothing",
         }
