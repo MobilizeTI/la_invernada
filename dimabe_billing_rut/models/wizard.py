@@ -624,7 +624,7 @@ class WizardHrPaySlip(models.TransientModel):
     @api.multi
     def action_generate_csv(self):
         employee_model = self.env['hr.employee']
-        payslip_model = self.env['hr.payslip']
+        payslip_model = self.env['hr.payslip'].search([('state','=','done')])
         payslip_line_model = self.env['hr.payslip.line']       
         sexo_data = {'male': "M",
                      'female': "F",
