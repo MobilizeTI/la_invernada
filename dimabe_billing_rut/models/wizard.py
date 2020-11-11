@@ -625,8 +625,8 @@ class WizardHrPaySlip(models.TransientModel):
 
     @api.multi
     def action_generate_csv(self):
-        employee_model = self.env['hr.employee'].search([('address_id','=',self.company_id.id)])
-        payslip_model = self.env['hr.payslip'].search([('state','=','done')])
+        employee_model = self.env['hr.employee']
+        payslip_model = self.env['hr.payslip']
         payslip_line_model = self.env['hr.payslip.line']       
         sexo_data = {'male': "M",
                      'female': "F",
@@ -639,7 +639,7 @@ class WizardHrPaySlip(models.TransientModel):
         else:
             writer = csv.writer(output, delimiter=self.delimiter[self.delimiter_field_option], quotechar=self.quotechar[self.delimiter_option], quoting=csv.QUOTE_NONE)
         #Debemos colocar que tome todo el mes y no solo el día exacto TODO
-        payslip_recs = payslip_model.search([('date_from','=',self.date_from),
+        payslip_recs = payslip_model.search([('date_from','=',self.date_from),('state','=','done'),('employee_id.address_id','=',self.company_id.id)
                                              ])
 
         date_start = self.date_from
