@@ -36,7 +36,7 @@ class WizardHrPaySlip(models.TransientModel):
          ('Agosto', 'Agosto'), ('Septiembre', 'Septiembre'), ('Octubre', 'Octubre'), ('Noviembre', 'Noviembre'),
          ('Diciembre', 'Diciembre'), ], string="Mes")
 
-    years = fields.floateger(string="Años", default=float(datetime.now().year))
+    years = fields.Integer(string="Años", default=int(datetime.now().year))
 
     all = fields.Boolean('Todos las compañias')
 
@@ -59,7 +59,7 @@ class WizardHrPaySlip(models.TransientModel):
     report_name = fields.Char('')
 
     @api.multi
-    def prfloat_report_xlsx(self):
+    def print_report_xlsx(self):
         file_name = 'temp'
         workbook = xlsxwriter.Workbook(file_name, {'in_memory': True})
         worksheet = workbook.add_worksheet(self.company_id.name)
