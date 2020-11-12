@@ -3,7 +3,7 @@
     <data>
         <record id="custom_parameter_tree" model="ir.ui.view">
             <field name="name">Tramos</field>
-            <field name="model">custom.parameter</field>
+            <field name="model">custom.data</field>
             <field name="arch" type="xml">
                 <tree>
                     <field name="name"/>
@@ -11,9 +11,9 @@
                 </tree>
             </field>
         </record>
-        <record id="customer_parameter_form" model="ir.ui.view">
-            <field name="name">customer_parameter.form</field>
-            <field name="model">customer_parameter</field>
+        <record id="customer_data_form" model="ir.ui.view">
+            <field name="name">customer_data.form</field>
+            <field name="model">customer.data</field>
             <field name="arch" type="xml">
                 <form string="">
                     <header>
