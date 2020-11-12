@@ -534,6 +534,7 @@ class WizardHrPaySlip(models.TransientModel):
         valor = 0
         lineas = self.env['hr.payslip.line']
         detalle = lineas.search([('slip_id', '=', obj.id), ('code', '=', regla)])
+        raise models.ValidationError(type(detalle.amount))
         valor = detalle.amount
         return valor
 
@@ -948,7 +949,8 @@ class WizardHrPaySlip(models.TransientModel):
                              # yo pensaba rut_emp_dv,
                              "",
                              # 105 Centro de Costos, Sucursal, Agencia
-                             str(float(self.get_cost_center(payslip.contract_id))).split('.')[0],
+                             "0"
+                             #str(float(self.get_cost_center(payslip.contract_id))).split('.')[0],
                              ]
             writer.writerow([str(l) for l in line_employee])
         self.write({'file_data': base64.encodebytes(output.getvalue().encode()),
