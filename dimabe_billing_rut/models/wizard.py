@@ -697,7 +697,7 @@ class WizardHrPaySlip(models.TransientModel):
                              "0",
                              # payslip.employee_id.type_id.id_type,
                              # 13
-                             float(self.get_dias_trabajados(payslip and payslip[0] or False)),
+                             str(float(self.get_dias_trabajados(payslip and payslip[0] or False))).split('.')[0],
                              # 14
                              self.get_tipo_linea(payslip and payslip[0] or False),
                              # 15
