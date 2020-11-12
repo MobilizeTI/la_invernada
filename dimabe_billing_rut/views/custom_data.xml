@@ -19,18 +19,22 @@
                     <header>
                     </header>
                     <sheet>
-                        <field name="name"/>
-                        <field name="value"/>
+                        <group>
+                            <field name="name"/>
+                            <field name="value"/>
+                            <field name="comment"/>
+                        </group>
                     </sheet>
                 </form>
             </field>
         </record>
         <record id="custom_parameter_action" model="ir.actions.act_window">
-            <field name="name">custom_parameter.action</field>
+            <field name="name">Tramos</field>
             <field name="res_model">custom.data</field>
             <field name="view_type">form</field>
             <field name='view_id' ref="custom_parameter_tree"/>
             <field name="view_mode">tree,form</field>
+            <field name="domain">[('commet','like','Tramo')]</field>
         </record>
         <menuitem
             id="custom_parameter_menu"
