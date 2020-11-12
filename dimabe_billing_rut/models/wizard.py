@@ -578,19 +578,20 @@ class WizardHrPaySlip(models.TransientModel):
     @api.model
     def get_imponible_seguro_cesantia(self, payslip, TOTIM, LIC):
         LIC_2 = float(LIC)
+        TOTIM_2 = float(TOTIM)
         if LIC_2 > 0:
             TOTIM = LIC
         if payslip.contract_id.pension is True:
             return 0
         elif payslip.contract_id.type_id.name == 'Sueldo Empresarial':
             return 0
-        elif TOTIM >= round(payslip.indicadores_id.tope_imponible_seguro_cesantia * payslip.indicadores_id.uf):
+        elif TOTIM_2 >= round(payslip.indicadores_id.tope_imponible_seguro_cesantia * payslip.indicadores_id.uf):
             data = str(
                 float(round(payslip.indicadores_id.tope_imponible_seguro_cesantia * payslip.indicadores_id.uf))).split(
                 '.')
             return data[0]
         else:
-            data = str(float(round(TOTIM))).split('.')
+            data = str(float(round(TOTIM_2))).split('.')
             return data[0]
 
     @api.model
