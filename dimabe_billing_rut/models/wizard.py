@@ -597,11 +597,12 @@ class WizardHrPaySlip(models.TransientModel):
     @api.model
     def get_imponible_salud(self, payslip, TOTIM):
         result = 0
-        if TOTIM >= round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf):
+        TOTAL = float(TOTIM)
+        if TOTAL >= round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf):
             data = str(float(round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf))).split('.')
             return data[0]
         else:
-            data = str(float(round(TOTIM))).split('.')
+            data = str(float(round(TOTAL))).split('.')
             return data[0]
 
     @api.model
