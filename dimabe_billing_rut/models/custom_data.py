@@ -1,7 +1,7 @@
 from odoo import models, fields
 
 
-class CustomData(models.Models):
+class CustomData(models.Model):
     _name = 'custom.data'
 
     name = fields.Char('Nombre')
