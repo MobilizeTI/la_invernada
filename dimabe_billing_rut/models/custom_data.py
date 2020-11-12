@@ -6,6 +6,6 @@ class CustomData(models.Model):
 
     name = fields.Char('Nombre')
 
-    value = fields.Char('Valor')
+    value = fields.Float('Valor')
 
     comment = fields.Char('Comentario')
