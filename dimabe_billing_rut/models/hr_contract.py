@@ -1,11 +1,7 @@
-from odoo import fields, models, api
+from odoo import fields, models
 
 
-class ModelName (models.Model):
+class HrContract(models.Model):
     _inherit = 'hr.contract'
 
-    compensation_saving_id = fields.Many2one('hr.ccaf','Caja de Compensasion')
-
-    saving_value = fields.Float('Valor de Ahorro')
-
-    
+    data_id = fields.Many2one('custom.data', 'Tramo Asignacion Familiar')
