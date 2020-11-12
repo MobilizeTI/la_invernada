@@ -573,7 +573,8 @@ class WizardHrPaySlip(models.TransientModel):
 
     @api.model
     def get_imponible_seguro_cesantia(self, payslip, TOTIM, LIC):
-        if LIC > 0:
+        LIC_2 = float(LIC)
+        if LIC_2 > 0:
             TOTIM = LIC
         if payslip.contract_id.pension is True:
             return 0
