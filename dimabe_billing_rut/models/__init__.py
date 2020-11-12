@@ -20,4 +20,3 @@ from . import hr_leave_type
 from . import hr_contract
 from . import wizard
 from . import custom_parameter
-#from . import wizard_export_csv_previred
