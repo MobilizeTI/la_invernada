@@ -721,7 +721,7 @@ class WizardHrPaySlip(models.TransientModel):
                              float(self.get_imponible_afp_2(payslip and payslip[0] or False, self.get_payslip_lines_value_2(payslip,'TOTIM'), self.get_payslip_lines_value_2(payslip,'IMPLIC'))),
                              #AFP SIS APV 0 0 0 0 0 0
                              #28 
-                             float(self.get_payslip_lines_value_2(payslip,'PREV')),
+                            str(float(self.get_payslip_lines_value_2(payslip,'PREV'))).split('.')[0],
                              float(self.get_payslip_lines_value_2(payslip,'SIS')),
                              #30 Cuenta de Ahorro Voluntario AFP
                              "0",
