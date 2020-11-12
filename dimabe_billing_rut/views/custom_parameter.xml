@@ -11,6 +11,20 @@
                 </tree>
             </field>
         </record>
+        <record id="customer_parameter_form" model="ir.ui.view">
+            <field name="name">customer_parameter.form</field>
+            <field name="model">customer_parameter</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <header>
+                    </header>
+                    <sheet>
+                        <field name="name"/>
+                        <field name="value"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
         <record id="custome_parameter_action" model="ir.actions.act_window">
             <field name="name">custome_parameter.action</field>
             <field name="res_model">custome_parameter</field>
@@ -21,6 +35,7 @@
         <menuitem
             id="custom_parameter_menu"
             string="Tramos"
+            parent="hr_payroll.menu_hr_payroll_configuration"
             sequence="10" />
     </data>
 </odoo>
