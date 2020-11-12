@@ -540,12 +540,13 @@ class WizardHrPaySlip(models.TransientModel):
 
     @api.model
     def get_imponible_afp(self, payslip, TOTIM):
+        TOTIM_2 = float(TOTIM)
         if payslip.contract_id.pension is True:
             return '0'
-        elif TOTIM >= round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf):
+        elif TOTIM_2 >= round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf):
             return round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf)
         else:
-            return round(TOTIM)
+            return round(TOTIM_2)
 
     @api.model
     def get_imponible_afp_2(self, payslip, TOTIM, LIC):
