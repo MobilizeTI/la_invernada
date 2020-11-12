@@ -11,9 +11,9 @@
                 </tree>
             </field>
         </record>
-        <record id="customer_data_form" model="ir.ui.view">
-            <field name="name">customer_data.form</field>
-            <field name="model">customer.data</field>
+        <record id="custom_data_form" model="ir.ui.view">
+            <field name="name">custom_data.form</field>
+            <field name="model">custom.data</field>
             <field name="arch" type="xml">
                 <form string="">
                     <header>
@@ -26,8 +26,8 @@
             </field>
         </record>
         <record id="custome_parameter_action" model="ir.actions.act_window">
-            <field name="name">custome_parameter.action</field>
-            <field name="res_model">custome_parameter</field>
+            <field name="name">custom_parameter.action</field>
+            <field name="res_model">custom_data</field>
             <field name="view_type">form</field>
             <field name='view_id' ref="custom_parameter_tree"/>
             <field name="view_mode">tree,form</field>
