@@ -549,6 +549,7 @@ class WizardHrPaySlip(models.TransientModel):
 
     @api.model
     def get_imponible_afp_2(self, payslip, TOTIM, LIC):
+        LIC_2 = float(LIC)
         if LIC > 0:
             TOTIM = LIC
         if payslip.contract_id.pension is True:
