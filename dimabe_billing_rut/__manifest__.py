@@ -44,7 +44,7 @@
         'data/reports/balance_sheet_clp.xml',
         'reports/remunerations_book.xml',
         'views/wizard_hr_payslip.xml',
-        'views/custom_parameter.xml'
+        'views/custom_data.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
