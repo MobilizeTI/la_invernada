@@ -510,15 +510,18 @@ class WizardHrPaySlip(models.TransientModel):
     @api.model
     def get_tramo_asignacion_familiar(self, payslip, valor):
         try:
-            if payslip.contract_id.carga_familiar != 0 and payslip.indicadores_id.asignacion_familiar_tercer >= payslip.contract_id.wage and payslip.contract_id.pension is False:
-                if payslip.indicadores_id.asignacion_familiar_primer >= valor:
-                    return 'A'
+            if payslip.contract_id.data_id.name:
+                return payslip.contract_id.data_id.name.split(' ')[1]
+            else:
+                if payslip.contract_id.carga_familiar != 0 and payslip.indicadores_id.asignacion_familiar_tercer >= payslip.contract_id.wage and payslip.contract_id.pension is False:
+                    if payslip.indicadores_id.asignacion_familiar_primer >= valor:
+                        return 'A'
                 elif payslip.indicadores_id.asignacion_familiar_segundo >= valor:
                     return 'B'
                 elif payslip.indicadores_id.asignacion_familiar_tercer >= valor:
                     return 'C'
-            else:
-                return 'D'
+                else:
+                    return 'D'
         except:
             return 'D'
 
