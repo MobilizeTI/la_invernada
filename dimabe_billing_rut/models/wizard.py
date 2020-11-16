@@ -914,7 +914,7 @@ class WizardHrPaySlip(models.TransientModel):
                              # 86 Descuento Dental CCAF
                              "0",
                              # 87 Descuentos por Leasing TODO
-                             "0",
+                             self.get_payslip_lines_value_2(payslip,'CCAF') if self.get_payslip_lines_value_2(payslip,'CCAF') else "0"
                              # 88 Descuentos por seguro de vida TODO
                              "0",
                              # 89 Otros descuentos CCAF
