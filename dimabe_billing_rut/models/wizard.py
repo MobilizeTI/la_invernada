@@ -783,7 +783,8 @@ class WizardHrPaySlip(models.TransientModel):
                                                                                                   'APV') else "0",
                              # 43 Cotización APVI 9(8) Monto en $ de la Cotización APVI
                              str(float(self.get_payslip_lines_value_2(payslip, 'APV'))).split('.')[
-                                 0] if self.get_payslip_lines_value_2(payslip, 'APV') else "0",
+                                 0] if str(float(self.get_payslip_lines_value_2(payslip, 'APV'))).split('.')[
+                                 0] else "0",
                              # 44 Cotizacion Depositos
 
                              # 45 Codigo Institucion Autorizada APVC
