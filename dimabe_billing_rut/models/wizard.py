@@ -125,6 +125,7 @@ class WizardHrPaySlip(models.TransientModel):
         employees = self.env['hr.employee']
         if self.all:
             employees_search = employees.search([('address_id', 'in', ('423', '1', '1000', '79'))])
+            raise models.ValidationError('{},{}'.format(len(employees_search),type(employees_search)))
         else:
             employees_search = employees.search([('address_id', '=', self.company_id.id)])
         if len(employees_search) == 0:
