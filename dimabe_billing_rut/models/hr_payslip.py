@@ -118,7 +118,7 @@ class HrPayslip(models.Model):
     def compute_sheet(self):
         super(HrPayslip,self).compute_sheet()
         hr_payslip = self.env['hr.payslip'].search([('employee_id','=',self.employee_id.id)])
-        worked_days = hr_payslip.mapped('worked_days_line_ids').filtered(lambda a: a.code == 'WORK100' and a.number_of_days > 0)
+        worked_days = hr_payslip.mapped('worked_days_line_ids').filtered(lambda a: a.code == 'WORK100' and a.number_of_days == 30)
         wages = worked_days.mapped('payslip_id').mapped('line_ids').filtered(lambda a : a.code == 'TOTIM').mapped('total')
         raise models.ValidationError(wages)
         self.line_ids.filtered(lambda a : a.code == 'SIS').write({
