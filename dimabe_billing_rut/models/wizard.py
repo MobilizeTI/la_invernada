@@ -98,21 +98,21 @@ class WizardHrPaySlip(models.TransientModel):
             worksheet_service.merge_range("B3:E3", "Mes a procesar : {}".format(
                 '{} {}'.format(self.month, self.years)), merge_format_title)
             worksheet_service.merge_range('B4:E4', "Compañia : {}".format(
-                self.company_id.name
+                self.env['res.partner'].search([('id', '=', 423)]).name
             ), merge_format_title)
             worksheet_export.merge_range(
                 "B2:E2", "Informe: Libro de Remuneraciones", merge_format_title)
             worksheet_export.merge_range("B3:E3", "Mes a procesar : {}".format(
                 '{} {}'.format(self.month, self.years)), merge_format_title)
             worksheet_export.merge_range('B4:E4', "Compañia : {}".format(
-                self.company_id.name
+                self.env['res.partner'].search([('id', '=', 1)]).name
             ), merge_format_title)
             worksheet_private.merge_range(
                 "B2:E2", "Informe: Libro de Remuneraciones", merge_format_title)
             worksheet_private.merge_range("B3:E3", "Mes a procesar : {}".format(
                 '{} {}'.format(self.month, self.years)), merge_format_title)
             worksheet_private.merge_range('B4:E4', "Compañia : {}".format(
-                self.company_id.name
+                self.env['res.partner'].search([('id', '=', 1000)]).name
             ), merge_format_title)
         else:
             worksheet.merge_range(
