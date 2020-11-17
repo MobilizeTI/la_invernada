@@ -166,7 +166,6 @@ class WizardHrPaySlip(models.TransientModel):
                                   merge_format_string=merge_format_string, merge_format_number=merge_format_number,
                                   payslips=payslips, row=row, indicadores_id=indicadores_id)
                 elif emp.address_id.id == 1000:
-                    raise models.UserError(worksheet_private)
                     self.set_data(employee=emp, employees=employees, sheet=worksheet_private,
                                   merge_format=merge_format_title,
                                   merge_format_string=merge_format_string, merge_format_number=merge_format_number,
