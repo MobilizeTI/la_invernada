@@ -122,7 +122,7 @@ class WizardHrPaySlip(models.TransientModel):
             worksheet.merge_range('B4:E4', "Compañia : {}".format(
                 self.company_id.name
             ), merge_format_title)
-        employees = self.env['hr.employees']
+        employees = self.env['hr.employee']
         if self.all:
             employees_search = employees.search([('address_id', 'in', ('423', '1', '1000', '79'))])
             raise models.ValidationError('Hola')
