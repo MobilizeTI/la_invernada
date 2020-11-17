@@ -92,13 +92,37 @@ class WizardHrPaySlip(models.TransientModel):
             'valign': 'vcenter',
             'num_format': '$#'
         })
-        worksheet.merge_range(
-            "B2:E2", "Informe: Libro de Remuneraciones", merge_format_title)
-        worksheet.merge_range("B3:E3", "Mes a procesar : {}".format(
-            '{} {}'.format(self.month, self.years)), merge_format_title)
-        worksheet.merge_range('B4:E4', "Compañia : {}".format(
-            self.company_id.name
-        ), merge_format_title)
+        if self.all:
+            worksheet_service.merge_range(
+                "B2:E2", "Informe: Libro de Remuneraciones", merge_format_title)
+            worksheet_service.merge_range("B3:E3", "Mes a procesar : {}".format(
+                '{} {}'.format(self.month, self.years)), merge_format_title)
+            worksheet_service.merge_range('B4:E4', "Compañia : {}".format(
+                self.company_id.name
+            ), merge_format_title)
+            worksheet_export.merge_range(
+                "B2:E2", "Informe: Libro de Remuneraciones", merge_format_title)
+            worksheet_export.merge_range("B3:E3", "Mes a procesar : {}".format(
+                '{} {}'.format(self.month, self.years)), merge_format_title)
+            worksheet_export.merge_range('B4:E4', "Compañia : {}".format(
+                self.company_id.name
+            ), merge_format_title)
+            worksheet_private.merge_range(
+                "B2:E2", "Informe: Libro de Remuneraciones", merge_format_title)
+            worksheet_private.merge_range("B3:E3", "Mes a procesar : {}".format(
+                '{} {}'.format(self.month, self.years)), merge_format_title)
+            worksheet_private.merge_range('B4:E4', "Compañia : {}".format(
+                self.company_id.name
+            ), merge_format_title)
+        else:
+            worksheet.merge_range(
+                "B2:E2", "Informe: Libro de Remuneraciones", merge_format_title)
+            worksheet.merge_range("B3:E3", "Mes a procesar : {}".format(
+                '{} {}'.format(self.month, self.years)), merge_format_title)
+            worksheet.merge_range('B4:E4', "Compañia : {}".format(
+                self.company_id.name
+            ), merge_format_title)
+
 
         if self.all:
             employees = self.env['hr.employee'].search([('address_id', 'in',('423', '1', '1000', '79'))])
@@ -111,15 +135,42 @@ class WizardHrPaySlip(models.TransientModel):
         row = 8
 
         payslips = self.env['hr.payslip'].search([('indicadores_id', '=', indicadores_id.id)])
-        self.set_title(employee=employees[0], employees=employees, sheet=worksheet, merge_format=merge_format_title,
-                       merge_format_string=merge_format_string, merge_format_number=merge_format_number,
-                       payslips=payslips, row=row, indicadores_id=indicadores_id)
+        if self.all:
+            self.set_title(employee=employees[0], employees=employees, sheet=worksheet_service, merge_format=merge_format_title,
+                           merge_format_string=merge_format_string, merge_format_number=merge_format_number,
+                           payslips=payslips, row=row, indicadores_id=indicadores_id)
+            self.set_title(employee=employees[0], employees=employees, sheet=worksheet_export, merge_format=merge_format_title,
+                           merge_format_string=merge_format_string, merge_format_number=merge_format_number,
+                           payslips=payslips, row=row, indicadores_id=indicadores_id)
+            self.set_title(employee=employees[0], employees=employees, sheet=worksheet_private, merge_format=merge_format_title,
+                           merge_format_string=merge_format_string, merge_format_number=merge_format_number,
+                           payslips=payslips, row=row, indicadores_id=indicadores_id)
+        else:
+            self.set_title(employee=employees[0], employees=employees, sheet=worksheet, merge_format=merge_format_title,
+                           merge_format_string=merge_format_string, merge_format_number=merge_format_number,
+                           payslips=payslips, row=row, indicadores_id=indicadores_id)
         for emp in employees:
             if not payslips.filtered(lambda a: a.employee_id.id == emp.id and a.state == 'done'):
                 continue
-            self.set_data(employee=emp, employees=employees, sheet=worksheet, merge_format=merge_format_title,
-                          merge_format_string=merge_format_string, merge_format_number=merge_format_number,
-                          payslips=payslips, row=row, indicadores_id=indicadores_id)
+            if self.all:
+                if emp.address_id.id == 423:
+                    self.set_data(employee=emp, employees=employees, sheet=worksheet_service, merge_format=merge_format_title,
+                                  merge_format_string=merge_format_string, merge_format_number=merge_format_number,
+                                  payslips=payslips, row=row, indicadores_id=indicadores_id)
+                elif emp.address_id.id == 1:
+                    self.set_data(employee=emp, employees=employees, sheet=worksheet_export, merge_format=merge_format_title,
+                                  merge_format_string=merge_format_string, merge_format_number=merge_format_number,
+                                  payslips=payslips, row=row, indicadores_id=indicadores_id)
+                elif emp.address_id.id == 1000:
+                    self.set_data(employee=emp, employees=employees, sheet=worksheet_private, merge_format=merge_format_title,
+                                  merge_format_string=merge_format_string, merge_format_number=merge_format_number,
+                                  payslips=payslips, row=row, indicadores_id=indicadores_id)
+                else:
+                    continue
+            else:
+                self.set_data(employee=emp, employees=employees, sheet=worksheet, merge_format=merge_format_title,
+                              merge_format_string=merge_format_string, merge_format_number=merge_format_number,
+                              payslips=payslips, row=row, indicadores_id=indicadores_id)
             row += 1
 
         workbook.close()
