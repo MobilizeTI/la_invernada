@@ -150,7 +150,8 @@ class WizardHrPaySlip(models.TransientModel):
                            merge_format_string=merge_format_string, merge_format_number=merge_format_number,
                            payslips=payslips, row=row, indicadores_id=indicadores_id)
         else:
-            self.set_title(employee=employees_search[0], employees=employees_search, sheet=worksheet, merge_format=merge_format_title,
+            self.set_title(employee=employees_search[0], employees=employees_search, sheet=worksheet,
+                           merge_format=merge_format_title,
                            merge_format_string=merge_format_string, merge_format_number=merge_format_number,
                            payslips=payslips, row=row, indicadores_id=indicadores_id)
         for emp in employees_search:
