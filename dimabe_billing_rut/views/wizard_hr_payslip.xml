@@ -7,10 +7,10 @@
 			<form>
 				<group>
 					<group>
-						<field name="company_id" />
+						<field name="all" />
+						<field name="company_id" atrrs="{'invisible':[('all','=',True)]}" />
 						<field name="month" />
 						<field name="years" />
-						<field name="all" />
 						<field name="report" filename="report_name" readonly="1" />
 						<field name="report_name" invisible="1" />
 					</group>
