@@ -66,9 +66,9 @@ class WizardHrPaySlip(models.TransientModel):
         file_name = 'temp'
         workbook = xlsxwriter.Workbook(file_name, {'in_memory': True})
         if self.all:
-            worksheet_service = workbook.add_worksheet(self.env['res.partner'].search([('id','=',423)]).name)
-            worksheet_export = workbook.add_worksheet(self.env['res.partner'].search([('id','=',1)]).name)
-            worksheet_private = workbook.add_worksheet(self.env['res.partner'].search([('id','=',1000)]).name)
+            worksheet_service = workbook.add_worksheet(self.env['res.partner'].search([('id', '=', 423)]).name)
+            worksheet_export = workbook.add_worksheet(self.env['res.partner'].search([('id', '=', 1)]).name)
+            worksheet_private = workbook.add_worksheet(self.env['res.partner'].search([('id', '=', 1000)]).name)
         else:
             worksheet = workbook.add_worksheet(self.company_id.name)
         indicadores_id = self.env['hr.indicadores'].search(
@@ -122,13 +122,13 @@ class WizardHrPaySlip(models.TransientModel):
             worksheet.merge_range('B4:E4', "Compañia : {}".format(
                 self.company_id.name
             ), merge_format_title)
-
-
+        employees = self.env['hr.employees']
         if self.all:
-            employees = self.env['hr.employee'].search([('address_id', 'in',('423', '1', '1000', '79'))])
+            employees_search = employees.search([('address_id', 'in', ('423', '1', '1000', '79'))])
+            raise models.ValidationError('Hola')
         else:
-            employees = self.env['hr.employee'].search([('address_id', '=', self.company_id.id)])
-        if len(employees) == 0:
+            employees_search = employees.search([('address_id', '=', self.company_id.id)])
+        if len(employees_search) == 0:
             raise models.ValidationError(
                 'No existen empleados creados con este empresa,por favor verificar la direccion de trabajado del empleado')
         letter = 0
@@ -136,33 +136,39 @@ class WizardHrPaySlip(models.TransientModel):
 
         payslips = self.env['hr.payslip'].search([('indicadores_id', '=', indicadores_id.id)])
         if self.all:
-            self.set_title(employee=employees[0], employees=employees, sheet=worksheet_service, merge_format=merge_format_title,
+            self.set_title(employee=employees_search[0], employees=employees_search, sheet=worksheet_service,
+                           merge_format=merge_format_title,
                            merge_format_string=merge_format_string, merge_format_number=merge_format_number,
                            payslips=payslips, row=row, indicadores_id=indicadores_id)
-            self.set_title(employee=employees[0], employees=employees, sheet=worksheet_export, merge_format=merge_format_title,
+            self.set_title(employee=employees_search[0], employees=employees_search, sheet=worksheet_export,
+                           merge_format=merge_format_title,
                            merge_format_string=merge_format_string, merge_format_number=merge_format_number,
                            payslips=payslips, row=row, indicadores_id=indicadores_id)
-            self.set_title(employee=employees[0], employees=employees, sheet=worksheet_private, merge_format=merge_format_title,
+            self.set_title(employee=employees_search[0], employees=employees_search, sheet=worksheet_private,
+                           merge_format=merge_format_title,
                            merge_format_string=merge_format_string, merge_format_number=merge_format_number,
                            payslips=payslips, row=row, indicadores_id=indicadores_id)
         else:
-            self.set_title(employee=employees[0], employees=employees, sheet=worksheet, merge_format=merge_format_title,
+            self.set_title(employee=employees_search[0], employees=employees_search, sheet=worksheet, merge_format=merge_format_title,
                            merge_format_string=merge_format_string, merge_format_number=merge_format_number,
                            payslips=payslips, row=row, indicadores_id=indicadores_id)
-        for emp in employees:
+        for emp in employees_search:
             if not payslips.filtered(lambda a: a.employee_id.id == emp.id and a.state == 'done'):
                 continue
             if self.all:
                 if emp.address_id.id == 423:
-                    self.set_data(employee=emp, employees=employees, sheet=worksheet_service, merge_format=merge_format_title,
+                    self.set_data(employee=emp, employees=employees, sheet=worksheet_service,
+                                  merge_format=merge_format_title,
                                   merge_format_string=merge_format_string, merge_format_number=merge_format_number,
                                   payslips=payslips, row=row, indicadores_id=indicadores_id)
                 elif emp.address_id.id == 1:
-                    self.set_data(employee=emp, employees=employees, sheet=worksheet_export, merge_format=merge_format_title,
+                    self.set_data(employee=emp, employees=employees, sheet=worksheet_export,
+                                  merge_format=merge_format_title,
                                   merge_format_string=merge_format_string, merge_format_number=merge_format_number,
                                   payslips=payslips, row=row, indicadores_id=indicadores_id)
                 elif emp.address_id.id == 1000:
-                    self.set_data(employee=emp, employees=employees, sheet=worksheet_private, merge_format=merge_format_title,
+                    self.set_data(employee=emp, employees=employees, sheet=worksheet_private,
+                                  merge_format=merge_format_title,
                                   merge_format_string=merge_format_string, merge_format_number=merge_format_number,
                                   payslips=payslips, row=row, indicadores_id=indicadores_id)
                 else:
@@ -973,9 +979,10 @@ class WizardHrPaySlip(models.TransientModel):
                              # 86 Descuento Dental CCAF
                              "0",
                              # 87 Descuentos por Leasing TODO
-                             self.get_payslip_lines_value_2(payslip,'CCAF') if self.get_payslip_lines_value_2(payslip,'CCAF') else "0"
+                             self.get_payslip_lines_value_2(payslip, 'CCAF') if self.get_payslip_lines_value_2(payslip,
+                                                                                                               'CCAF') else "0"
                              # 88 Descuentos por seguro de vida TODO
-                             "0",
+                                                                                                                            "0",
                              # 89 Otros descuentos CCAF
                              "0",
                              # 90 Cotizacion a CCAF de no afiliados a Isapres
@@ -1020,7 +1027,7 @@ class WizardHrPaySlip(models.TransientModel):
                              "",
                              # 105 Centro de Costos, Sucursal, Agencia
                              "0"
-                             #str(float(self.get_cost_center(payslip.contract_id))).split('.')[0],
+                             # str(float(self.get_cost_center(payslip.contract_id))).split('.')[0],
                              ]
             writer.writerow([str(l) for l in line_employee])
         self.write({'file_data': base64.encodebytes(output.getvalue().encode()),
