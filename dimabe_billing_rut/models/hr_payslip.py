@@ -117,4 +117,7 @@ class HrPayslip(models.Model):
     @api.multi
     def compute_sheet(self):
         super(HrPayslip,self).compute_sheet()
-        raise models.ValidationError("hOLA")
+        self.line_ids.filtered(lambda a : a.code == 'SIS').write({
+            'total':1,
+            'amount':1
+        })
