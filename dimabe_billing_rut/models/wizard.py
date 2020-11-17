@@ -161,19 +161,19 @@ class WizardHrPaySlip(models.TransientModel):
                     self.set_data(employee=emp, employees=employees, sheet=worksheet_service,
                                   merge_format=merge_format_title,
                                   merge_format_string=merge_format_string, merge_format_number=merge_format_number,
-                                  payslips=payslips, row=row, indicadores_id=indicadores_id)
+                                  payslips=payslips, row=row_service, indicadores_id=indicadores_id)
                     row_service += 1
                 elif emp.address_id.id == 1:
                     self.set_data(employee=emp, employees=employees, sheet=worksheet_export,
                                   merge_format=merge_format_title,
                                   merge_format_string=merge_format_string, merge_format_number=merge_format_number,
-                                  payslips=payslips, row=row, indicadores_id=indicadores_id)
+                                  payslips=payslips, row=row_export, indicadores_id=indicadores_id)
                     row_export += 1
                 elif emp.address_id.id == 1000:
                     self.set_data(employee=emp, employees=employees, sheet=worksheet_private,
                                   merge_format=merge_format_title,
                                   merge_format_string=merge_format_string, merge_format_number=merge_format_number,
-                                  payslips=payslips, row=row, indicadores_id=indicadores_id)
+                                  payslips=payslips, row=row_private, indicadores_id=indicadores_id)
                     row_private += 1
                 else:
                     continue
