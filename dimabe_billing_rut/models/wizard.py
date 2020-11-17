@@ -132,7 +132,9 @@ class WizardHrPaySlip(models.TransientModel):
                 'No existen empleados creados con este empresa,por favor verificar la direccion de trabajado del empleado')
         letter = 0
         row = 8
-
+        row_service = 8
+        row_export = 8
+        row_private = 8
         payslips = self.env['hr.payslip'].search([('indicadores_id', '=', indicadores_id.id)])
         if self.all:
             self.set_title(employee=employees_search[0], employees=employees_search, sheet=worksheet_service,
@@ -160,23 +162,26 @@ class WizardHrPaySlip(models.TransientModel):
                                   merge_format=merge_format_title,
                                   merge_format_string=merge_format_string, merge_format_number=merge_format_number,
                                   payslips=payslips, row=row, indicadores_id=indicadores_id)
+                    row_service += 1
                 elif emp.address_id.id == 1:
                     self.set_data(employee=emp, employees=employees, sheet=worksheet_export,
                                   merge_format=merge_format_title,
                                   merge_format_string=merge_format_string, merge_format_number=merge_format_number,
                                   payslips=payslips, row=row, indicadores_id=indicadores_id)
+                    row_export += 1
                 elif emp.address_id.id == 1000:
                     self.set_data(employee=emp, employees=employees, sheet=worksheet_private,
                                   merge_format=merge_format_title,
                                   merge_format_string=merge_format_string, merge_format_number=merge_format_number,
                                   payslips=payslips, row=row, indicadores_id=indicadores_id)
+                    row_private += 1
                 else:
                     continue
             else:
                 self.set_data(employee=emp, employees=employees, sheet=worksheet, merge_format=merge_format_title,
                               merge_format_string=merge_format_string, merge_format_number=merge_format_number,
                               payslips=payslips, row=row, indicadores_id=indicadores_id)
-            row += 1
+                row += 1
 
         workbook.close()
         with open(file_name, "rb") as file:
