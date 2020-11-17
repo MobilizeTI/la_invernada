@@ -219,6 +219,7 @@ class WizardHrPaySlip(models.TransientModel):
 
     def set_data(self, employee, employees, sheet, merge_format, merge_format_string, merge_format_number, payslips,
                  row, indicadores_id):
+        raise models.ValidationError(len(employees))
         if employee.id == employees[0].id:
             self.set_title(employee=employee, employees=employees, sheet=sheet, merge_format=merge_format,
                            merge_format_string=merge_format_string, merge_format_number=merge_format_number,
