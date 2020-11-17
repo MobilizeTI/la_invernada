@@ -23,12 +23,8 @@
 		</field>
 	</record>
 	<record id="wizard_hr_payslip_report_previred_view" model="ir.ui.view">
-		<field name="name">
-			Archivo Previred
-		</field>
-		<field name="model">
-			wizard.hr.payslip
-		</field>
+		<field name="name">Archivo Previred</field>
+		<field name="model">wizard.hr.payslip</field>
 		<field name="arch" type="xml">
 			<form>
 				<group>
