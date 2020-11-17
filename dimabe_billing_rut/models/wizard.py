@@ -65,7 +65,12 @@ class WizardHrPaySlip(models.TransientModel):
     def print_report_xlsx(self):
         file_name = 'temp'
         workbook = xlsxwriter.Workbook(file_name, {'in_memory': True})
-        worksheet = workbook.add_worksheet(self.company_id.name)
+        if self.all:
+            worksheet_service = workbook.add_worksheet(self.env['res.partner'].search([('id','=',423)]).name)
+            worksheet_export = workbook.add_worksheet(self.env['res.partner'].search([('id','=',1)]).name)
+            worksheet_private = workbook.add_worksheet(self.env['res.partner'].search([('id','=',1000)]).name)
+        else:
+            worksheet = workbook.add_worksheet(self.company_id.name)
         indicadores_id = self.env['hr.indicadores'].search(
             [('name', '=', '{} {}'.format(self.month, self.years)), ('state', '=', 'done')])
         if not indicadores_id:
@@ -95,7 +100,10 @@ class WizardHrPaySlip(models.TransientModel):
             self.company_id.name
         ), merge_format_title)
 
-        employees = self.env['hr.employee'].search([('address_id', '=', self.company_id.id)])
+        if self.all:
+            employees = self.env['hr.employee'].search([('address_id', 'in',('423', '1', '1000', '79'))])
+        else:
+            employees = self.env['hr.employee'].search([('address_id', '=', self.company_id.id)])
         if len(employees) == 0:
             raise models.ValidationError(
                 'No existen empleados creados con este empresa,por favor verificar la direccion de trabajado del empleado')
