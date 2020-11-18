@@ -126,7 +126,7 @@ class HrPayslip(models.Model):
             hr_final = hr.replace('contract','self.contract_id')
             hr_totim = hr_final.replace('TOTIM', str(totimp))
             result = 0
-            exec(hr_final)
+            exec(hr_totim)
             raise models.ValidationError(result)
 
 
