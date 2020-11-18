@@ -122,5 +122,25 @@ class HrPayslip(models.Model):
         wages = worked_days.mapped('payslip_id').mapped('line_ids').filtered(lambda a : a.code == 'TOTIM').mapped('total')[0]
         totim = round((wages / 30))
         license = self.worked_days_line_ids.filtered(lambda a : a.code == 'SBS220').number_of_days
-        sis_sbs = round((totim * license))
+        sis_rate = self.get_sis_values(self.contract_id.afp_id.name,self)
+        raise models.ValidationError(sis_rate)
+        sis_sbs = round((totim * license)) 
         raise models.ValidationError(sis_sbs)
+
+    def get_sis_values(self,afp,payslip):
+        if afp == 'CAPITAL':
+            return payslip.indicadores_id.tasa_sis_capital
+        elif afp == 'CUPRUM':
+            return payslip.indicadores_id.tasa_sis_cuprum
+        elif afp == 'HABITAT':
+            return = payslip.indicadores_id.tasa_sis_habitat
+        elif afp == 'MODELO':
+            return = payslip.indicadores_id.tasa_sis_modelo
+        elif afp == 'PLANVITAL':
+            return = payslip.indicadores_id.tasa_sis_planvital
+        elif afp == 'PROVIDA':
+            return payslip.indicadores_id.tasa_sis_provida
+        elif afp == 'UNO':
+            return payslip.indicadores_id.tasa_sis_uno
+        else:
+            return 0
