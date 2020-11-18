@@ -120,7 +120,7 @@ class HrPayslip(models.Model):
         if self.worked_days_line_ids.filtered(lambda a : a.code == 'SBS220'):
             hr_payrule = str(self.env['hr.salary.rule'].search([('code','=','SIS')]).amount_python_compute)
             hr_payrule_2 = hr_payrule.replace('payslip','self')
-            hr = hr_payrule_2.replace('inputs', 'self.input_line_ids.filtered(lambda a: a.code == "HEX50")')
+            hr = hr_payrule_2.replace('inputs.HEX50', 'self.input_line_ids.filtered(lambda a: a.code == "HEX50")')
             hr_final = hr.replace('contract','self.contract_id')
             result = 0
             exec(hr_final)
