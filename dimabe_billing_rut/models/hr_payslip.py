@@ -122,7 +122,7 @@ class HrPayslip(models.Model):
         models._logger.error(hr_payslip.mapped('name'))
         worked_days = hr_payslip.mapped('worked_days_line_ids').filtered(lambda a: a.code == 'WORK100' and a.number_of_days == 30)
         models._logger.error('Worked day')
-        models._logger.error(worked_days.mapped('number_of_days'))
+        models._logger.error(worked_days.mapped('create_date'))
         wages = worked_days.mapped('payslip_id').mapped('line_ids').filtered(lambda a : a.code == 'TOTIM').mapped('total')[-1]
         models._logger.error('Wages')
         models._logger.error(worked_days.mapped('payslip_id').mapped('line_ids').filtered(lambda a : a.code == 'TOTIM').mapped('total'))
