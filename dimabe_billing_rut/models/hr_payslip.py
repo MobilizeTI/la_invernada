@@ -122,11 +122,12 @@ class HrPayslip(models.Model):
         wages = worked_days.mapped('payslip_id').mapped('line_ids').filtered(lambda a : a.code == 'TOTIM').mapped('total')[0]
         totim = round((wages / 30))
         license = self.worked_days_line_ids.filtered(lambda a : a.code == 'SBS220').number_of_days
-        sis_rate = self.get_sis_values(self.contract_id.afp_id.name,self)
+        sis_rate = self.get_sis_values(self.contract_id.afp_id.name,self.id)
         sis_sbs = round((totim * license)) 
         raise models.ValidationError(sis_rate)
 
-    def get_sis_values(self,afp,payslip):
+    def get_sis_values(self,afp,payslip_id):
+        payslip = self.env['hr.payslip'].search([('id','=',payslip_id)])
         if afp == 'CAPITAL':
             return payslip.indicadores_id.tasa_sis_capital
         elif afp == 'CUPRUM':
