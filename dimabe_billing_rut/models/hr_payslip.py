@@ -118,12 +118,26 @@ class HrPayslip(models.Model):
     def compute_sheet(self):
         super(HrPayslip,self).compute_sheet()
         hr_payslip = self.env['hr.payslip'].search([('employee_id','=',self.employee_id.id)])
+        models._logger.error('Payslip')
+        models._logger.error(hr_payslip)
         worked_days = hr_payslip.mapped('worked_days_line_ids').filtered(lambda a: a.code == 'WORK100' and a.number_of_days == 30)
+        models._logger.error('Worked day')
+        models._logger.error(worked_days)
         wages = worked_days.mapped('payslip_id').mapped('line_ids').filtered(lambda a : a.code == 'TOTIM').mapped('total')[-1]
+        models._logger.error('Wages')
+        models._logger.error(wages)
         totim = round((wages / 30))
+        models._logger.error('TotIM')
+        models._logger.error(totim)
         license = self.worked_days_line_ids.filtered(lambda a : a.code == 'SBS220').number_of_days
+        models._logger.error('Licencie')
+        models._logger.error(license)
         sis_rate = self.get_sis_values(self.contract_id.afp_id.name,self.id)
+        models._logger.error("sis_rate")
+        models._logger.error(sis_rate)
         sis_sbs = round((round((totim * license)) * sis_rate))
+        models._logger.error("sis_sbs")
+        models._logger.error(sis_sbs)
         self.line_ids.filtered(lambda a : a.code == 'SIS').write({
             'total':sis_sbs,
             'amount':sis_sbs
