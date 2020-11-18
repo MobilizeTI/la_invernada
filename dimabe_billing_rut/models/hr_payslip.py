@@ -134,11 +134,11 @@ class HrPayslip(models.Model):
         elif afp == 'CUPRUM':
             return payslip.indicadores_id.tasa_sis_cuprum
         elif afp == 'HABITAT':
-            return = payslip.indicadores_id.tasa_sis_habitat
+            return payslip.indicadores_id.tasa_sis_habitat
         elif afp == 'MODELO':
-            return = payslip.indicadores_id.tasa_sis_modelo
+            return payslip.indicadores_id.tasa_sis_modelo
         elif afp == 'PLANVITAL':
-            return = payslip.indicadores_id.tasa_sis_planvital
+            return payslip.indicadores_id.tasa_sis_planvital
         elif afp == 'PROVIDA':
             return payslip.indicadores_id.tasa_sis_provida
         elif afp == 'UNO':
