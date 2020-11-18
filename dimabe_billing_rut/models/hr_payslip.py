@@ -121,7 +121,7 @@ class HrPayslip(models.Model):
             hr_payrule = str(self.env['hr.salary.rule'].search([('code','=','SIS')]).amount_python_compute)
             result = 0
             exec(hr_payrule)
-            raise models.ValidationError(hr_payrule)
+            raise models.ValidationError(result)
 
 
     def get_sis_values(self,afp,payslip_id):
