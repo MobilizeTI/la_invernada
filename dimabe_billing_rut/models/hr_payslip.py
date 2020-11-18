@@ -123,7 +123,7 @@ class HrPayslip(models.Model):
             hr = hr_payrule_2.replace('input', 'self.input_line_ids')
             hr_final = hr.replace('contract','self.contract_id')
             result = 0
-            exec(hr_payrule)
+            exec(hr_final)
             raise models.ValidationError(result)
 
 
