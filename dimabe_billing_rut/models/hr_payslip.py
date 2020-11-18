@@ -127,7 +127,7 @@ class HrPayslip(models.Model):
             hr_totim = hr_final.replace('TOTIM', str(totimp))
             result = 0
             exec(hr_totim)
-            raise models.ValidationError(exec(hr_totim))
+            raise models.ValidationError(eval(hr_totim))
 
 
     def get_sis_values(self,afp,payslip_id):
