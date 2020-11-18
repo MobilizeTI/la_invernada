@@ -24,6 +24,8 @@ class HrPayslip(models.Model):
 
     vacation_paid = fields.Boolean('Vacaciones Pagadas')
 
+    total_imp = fields.Float('Total Imp. Anterior')
+
     @api.onchange('struct_id')
     def onchange_domain(self):
         res = {
@@ -117,17 +119,11 @@ class HrPayslip(models.Model):
     @api.multi
     def compute_sheet(self):
         super(HrPayslip,self).compute_sheet()
-        if self.worked_days_line_ids.filtered(lambda a : a.code == 'SBS220'):
-            hr_payslip = self.env['hr.payslip'].search([('employee_id','=',self.employee_id.id)])[-1]
-            totimp = hr_payslip.mapped('line_ids').filtered(lambda a: a.code == 'TOTIM').total
-            hr_payrule = str(self.env['hr.salary.rule'].search([('code','=','SIS')]).amount_python_compute)
-            hr_payrule_2 = hr_payrule.replace('payslip','self')
-            hr = hr_payrule_2.replace('inputs.HEX50', 'self.input_line_ids.filtered(lambda a: a.code == "HEX50")')
-            hr_final = hr.replace('contract','self.contract_id')
-            hr_totim = hr_final.replace('TOTIM', str(totimp))
-            result = 0
-            exec(hr_totim)
-            raise models.ValidationError(eval(hr_totim))
+        if self.worked_days_line_ids.filtered(lambda a : a.code == 'SBS220') and self.line_ids.filtered(lambda a: a.code == 'TOTIM').total == 0:
+            payslips = self.env['hr.payslip'].search([('employee_id','=',self.employee_id.id)])
+            worked_days = payslips.mapped('worked_day_line_ids').filtered(lambda a :a.code == 'WORK100').filtered(lambda a: a.number_of_days == 30)
+            raise models.ValidationError(worked_days)
+            
 
 
     def get_sis_values(self,afp,payslip_id):
