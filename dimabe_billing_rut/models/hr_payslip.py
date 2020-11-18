@@ -122,7 +122,7 @@ class HrPayslip(models.Model):
         if self.worked_days_line_ids.filtered(lambda a : a.code == 'SBS220') and self.line_ids.filtered(lambda a: a.code == 'TOTIM').total == 0:
             payslips = self.env['hr.payslip'].search([('employee_id','=',self.employee_id.id)])
             worked_days = payslips.mapped('worked_days_line_ids').filtered(lambda a :a.code == 'WORK100').filtered(lambda a: a.number_of_days == 30)[-1]
-            totim = worked_days.payslip.mapped('line_ids').filtered(lambda a: a.code == 'TOTIM').total
+            totim = worked_days.payslip_id.mapped('line_ids').filtered(lambda a: a.code == 'TOTIM').total
             self.write({
                 'total_imp':totim
             })
