@@ -123,9 +123,8 @@ class HrPayslip(models.Model):
         totim = round((wages / 30))
         license = self.worked_days_line_ids.filtered(lambda a : a.code == 'SBS220').number_of_days
         sis_rate = self.get_sis_values(self.contract_id.afp_id.name,self)
-        raise models.ValidationError(sis_rate)
         sis_sbs = round((totim * license)) 
-        raise models.ValidationError(sis_sbs)
+        raise models.ValidationError(sis_rate)
 
     def get_sis_values(self,afp,payslip):
         if afp == 'CAPITAL':
