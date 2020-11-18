@@ -118,17 +118,8 @@ class HrPayslip(models.Model):
     def compute_sheet(self):
         super(HrPayslip,self).compute_sheet()
         if self.worked_days_line_ids.filtered(lambda a : a.code == 'SBS220'):
-            hr_payslip = self.env['hr.payslip'].search([('employee_id','=',self.employee_id.id)])
-            worked_days = hr_payslip.mapped('worked_days_line_ids').filtered(lambda a: a.code == 'WORK100' and a.number_of_days == 30)
-            wages = worked_days.mapped('payslip_id').mapped('line_ids').filtered(lambda a : a.code == 'TOTIM').mapped('total')[0]
-            totim = round((wages / 30))
-            license = self.worked_days_line_ids.filtered(lambda a : a.code == 'SBS220').number_of_days
-            sis_rate = self.get_sis_values(self.contract_id.afp_id.name,self.id)
-            sis_sbs = round((round((totim * license)) * sis_rate))
-            self.line_ids.filtered(lambda a : a.code == 'SIS').write({
-                'total':sis_sbs,
-                'amount':sis_sbs
-            })
+            hr_payrule = self.env['hr.salary.rule'].search([('code','=','SIS')]).amount_python_compute
+            raise models.ValidationError(hr_payrule)
 
 
     def get_sis_values(self,afp,payslip_id):
