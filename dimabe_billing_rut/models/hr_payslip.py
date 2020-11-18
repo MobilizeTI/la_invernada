@@ -118,7 +118,9 @@ class HrPayslip(models.Model):
     def compute_sheet(self):
         super(HrPayslip,self).compute_sheet()
         if self.worked_days_line_ids.filtered(lambda a : a.code == 'SBS220'):
-            hr_payrule = self.env['hr.salary.rule'].search([('code','=','SIS')]).amount_python_compute
+            hr_payrule = str(self.env['hr.salary.rule'].search([('code','=','SIS')]).amount_python_compute)
+            result = 0
+            exec(hr_payrule)
             raise models.ValidationError(hr_payrule)
 
 
