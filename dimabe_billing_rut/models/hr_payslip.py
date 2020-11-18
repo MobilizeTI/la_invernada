@@ -121,7 +121,7 @@ class HrPayslip(models.Model):
         super(HrPayslip,self).compute_sheet()
         if self.worked_days_line_ids.filtered(lambda a : a.code == 'SBS220') and self.line_ids.filtered(lambda a: a.code == 'TOTIM').total == 0:
             payslips = self.env['hr.payslip'].search([('employee_id','=',self.employee_id.id)])
-            worked_days = payslips.mapped('worked_day_line_ids').filtered(lambda a :a.code == 'WORK100').filtered(lambda a: a.number_of_days == 30)
+            worked_days = payslips.mapped('worked_days_line_ids').filtered(lambda a :a.code == 'WORK100').filtered(lambda a: a.number_of_days == 30)
             raise models.ValidationError(worked_days)
             
 
