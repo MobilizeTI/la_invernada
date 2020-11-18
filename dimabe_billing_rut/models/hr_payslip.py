@@ -128,6 +128,7 @@ class HrPayslip(models.Model):
 
     def get_sis_values(self,afp,payslip_id):
         payslip = self.env['hr.payslip'].search([('id','=',payslip_id)])
+        raise models.UserError(payslip)
         if afp == 'CAPITAL':
             return payslip.indicadores_id.tasa_sis_capital
         elif afp == 'CUPRUM':
