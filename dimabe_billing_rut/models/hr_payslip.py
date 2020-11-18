@@ -120,5 +120,8 @@ class HrPayslip(models.Model):
         hr_payslip = self.env['hr.payslip'].search([('employee_id','=',self.employee_id.id)])
         worked_days = hr_payslip.mapped('worked_days_line_ids').filtered(lambda a: a.code == 'WORK100' and a.number_of_days == 30)
         wages = worked_days.mapped('payslip_id').mapped('line_ids').filtered(lambda a : a.code == 'TOTIM').mapped('total')[0]
-        totim = (wages / 30)
+        totim = round((wages / 30))
+        license = self.worked_days_line_ids.filtered(lambda a : a.code == 'SBS220').number_of_days
+        raise models.ValidationError(license)
+        sis_sbs = round(totim )
         raise models.ValidationError(totim)
