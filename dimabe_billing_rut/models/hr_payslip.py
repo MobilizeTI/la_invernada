@@ -126,7 +126,7 @@ class HrPayslip(models.Model):
         wages = worked_days.mapped('payslip_id').mapped('line_ids').filtered(lambda a : a.code == 'TOTIM').mapped('total')[-1]
         models._logger.error('Wages')
         models._logger.error(worked_days.mapped('payslip_id').mapped('line_ids').filtered(lambda a : a.code == 'TOTIM').mapped('total'))
-        models._logger.error(wages.ma)
+        models._logger.error(wages)
         totim = round((wages / 30))
         models._logger.error('TotIM')
         models._logger.error(totim)
