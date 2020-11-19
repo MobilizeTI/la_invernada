@@ -132,7 +132,7 @@ class HrPayslip(models.Model):
                 'amount':value
             })
         else : 
-            day_value = wage / 30
+            day_value = self.line_ids.filtered(lambda a: a.code == 'SUELDO').total / 30
             licencies_days = self.worked_days_line_ids.filtered(lambda a: a.code == 'SBS220').number_of_days
             sis_value = self.get_sis_values(self.contract_id.afp_id.name,self.id)
             value = ((day_value * licencies_days) * sis_value) / 100
