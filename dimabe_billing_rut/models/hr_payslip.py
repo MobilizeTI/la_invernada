@@ -122,12 +122,26 @@ class HrPayslip(models.Model):
         if self.worked_days_line_ids.filtered(lambda a : a.code == 'SBS220') and self.line_ids.filtered(lambda a: a.code == 'TOTIM').total == 0:
             payslips = self.env['hr.payslip'].search([('employee_id','=',self.employee_id.id)])
             worked_days = payslips.mapped('worked_days_line_ids').filtered(lambda a :a.code == 'WORK100').filtered(lambda a: a.number_of_days == 30)[-1]
-            totim = worked_days.payslip_id.mapped('line_ids').filtered(lambda a: a.code == 'TOTIM').total
-            self.write({
-                'total_imp':totim
+            wage = worked_days.payslip_id.mapped('line_ids').filtered(lambda a: a.code == 'SUELDO').total
+            day_value = wage / 30
+            licencies_days = self.worked_days_line_ids.filtered(lambda a: a.code == 'SBS220').number_of_days
+            sis_value = self.get_sis_values(self.contract_id.afp_id.name,self.id)
+            value = ((day_value * licencies_days) * sis_value) / 100
+            self.line_ids.filtered(lambda a: a.code == 'SIS').write({
+                'total':value,
+                'amount':value
             })
-            
+        else : 
+            day_value = wage / 30
+            licencies_days = self.worked_days_line_ids.filtered(lambda a: a.code == 'SBS220').number_of_days
+            sis_value = self.get_sis_values(self.contract_id.afp_id.name,self.id)
+            value = ((day_value * licencies_days) * sis_value) / 100
+            self.line_ids.filtered(lambda a: a.code == 'SIS').write({
+                'total':value,
+                'amount':value
+            })
 
+    
 
     def get_sis_values(self,afp,payslip_id):
         payslip = self.env['hr.payslip'].search([('id','=',payslip_id)])
