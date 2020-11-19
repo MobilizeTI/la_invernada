@@ -131,6 +131,12 @@ class HrPayslip(models.Model):
                 'total':value,
                 'amount':value
             })
+            afc_percentaje = 3 if self.contract_id.type_id.name == 'Plazo Fijo' or self.contract_id.type_id.name == 'Operario de Produccion' else 2.4
+            afc_value = ((day_value * licencies_days) * afc_percentaje) / 100 
+            self.line_ids.filtered(lambda a: a.code == 'SECEEMP').write({
+                'total':afc_value,
+                'amount':afc_value
+            }) 
             return res
         elif self.worked_days_line_ids.filtered(lambda a: a.code == 'SBS220'): 
             day_value = self.line_ids.filtered(lambda a: a.code == 'SUELDO').total / 30
@@ -141,6 +147,12 @@ class HrPayslip(models.Model):
                 'total':value,
                 'amount':value
             })
+            afc_percentaje = 3 if self.contract_id.type_id.name == 'Plazo Fijo' or self.contract_id.type_id.name == 'Operario de Produccion' else 2.4
+            afc_value = ((day_value * licencies_days) * afc_percentaje) / 100 
+            self.line_ids.filtered(lambda a: a.code == 'SECEEMP').write({
+                'total':afc_value,
+                'amount':afc_value
+            }) 
             return res
         else:
             return res
