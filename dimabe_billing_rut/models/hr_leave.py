@@ -18,7 +18,7 @@ class HrLeave (models.Model):
                 '%m/%d/%Y').tolist()
             holiday.number_of_days_display = days.days - (len(saturdays) + len(sundays))
 
-    @api.onchange('date_from', 'date_to', 'employee_id')
+    @api.onchange('date_from', 'date_to', 'employee_id','request_unit_half')
     def _onchange_leave_dates(self):
         if self.date_from and self.date_to:
             days = self.request_date_to - self.request_date_from
@@ -29,7 +29,7 @@ class HrLeave (models.Model):
                                     freq='W-SUN').strftime(
                 '%m/%d/%Y').tolist()
             self.number_of_days =  days.days - (len(saturdays) + len(sundays))
-        elif self.request.unit_half:
+        elif self.request_unit_half:
             self.number_of_days = 0.5
         else:
             self.number_of_days = 0
