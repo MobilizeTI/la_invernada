@@ -29,6 +29,8 @@ class HrLeave (models.Model):
                                     freq='W-SUN').strftime(
                 '%m/%d/%Y').tolist()
             self.number_of_days =  days.days - (len(saturdays) + len(sundays))
+        elif self.request.unit_half:
+            self.number_of_days = 0.5
         else:
             self.number_of_days = 0
     
