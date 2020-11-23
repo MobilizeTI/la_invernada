@@ -16,7 +16,7 @@ class HrLeave (models.Model):
                 '%m/%d/%Y').tolist()
             sundays = pd.date_range(start=holiday.request_date_from, end=holiday.request_date_to, freq='W-SUN').strftime(
                 '%m/%d/%Y').tolist()
-            holiday.number_of_days_display = days.days - (len(saturdays) + len(sundays))
+            holiday.number_of_days_display = days.days - (len(saturdays) + len(sundays)) + 1
 
     @api.onchange('date_from', 'date_to', 'employee_id','request_unit_half')
     def _onchange_leave_dates(self):
@@ -32,7 +32,7 @@ class HrLeave (models.Model):
         elif self.request_unit_half:
             self.number_of_days = 0.5
         else:
-            self.number_of_days = 0
+            self.number_of_days = 0 + 1
     
 
 
