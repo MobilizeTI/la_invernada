@@ -11,6 +11,8 @@ class HrLeave (models.Model):
     @api.depends('number_of_days')
     def _compute_number_of_days_display(self):
         for holiday in self:
+            if holiday.request_date_from > holiday.request_date_to:
+                raise models.ValidationError("La fecha de finalizacion no puede ser menor a la fecha de inicio ") 
             if holiday.holiday_status_id.id == 22:
                 days = holiday.request_date_to - holiday.request_date_from
                 holiday.number_of_days_display = days.days  + 1
