@@ -600,11 +600,11 @@ class WizardHrPaySlip(models.TransientModel):
             return '0'
 
     def get_payslip_lines_value_2(self, obj, regla):
-        raise models.ValidationError(obj)
         valor = 0
         lineas = self.env['hr.payslip.line']
         detalle = lineas.search([('slip_id', '=', obj.id), ('code', '=', regla)])
         data = str(detalle.amount).split('.')[0]
+        raise models.ValidationError(data)
         valor = data
         return valor
 
