@@ -28,7 +28,7 @@ class HrLeave (models.Model):
             sundays = pd.date_range(start=self.request_date_from, end=self.request_date_to,
                                     freq='W-SUN').strftime(
                 '%m/%d/%Y').tolist()
-            if self.
+            self.number_of_days =  days.days - (len(saturdays) + len(sundays)) + 1
         elif self.request_unit_half:
             self.number_of_days = 0.5
         else:
