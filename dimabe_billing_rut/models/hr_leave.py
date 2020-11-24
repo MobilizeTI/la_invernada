@@ -11,28 +11,20 @@ class HrLeave (models.Model):
     @api.depends('number_of_days')
     def _compute_number_of_days_display(self):
         for holiday in self:
-            days = holiday.request_date_to - holiday.request_date_from
-            saturdays = pd.date_range(start=holiday.request_date_from, end=holiday.request_date_to, freq='W-SAT').strftime(
-                '%m/%d/%Y').tolist()
-            sundays = pd.date_range(start=holiday.request_date_from, end=holiday.request_date_to, freq='W-SUN').strftime(
-                '%m/%d/%Y').tolist()
-            holiday.number_of_days_display = days.days - (len(saturdays) + len(sundays)) + 1
+            if holiday.holiday_status_id.id == 22:
+                days = holiday.request_date_to - holiday.request_date_from
+                holiday.number_of_days_display = days.days  + 1 
 
     @api.onchange('date_from', 'date_to', 'employee_id','request_unit_half')
     def _onchange_leave_dates(self):
         if self.date_from and self.date_to:
-            days = self.request_date_to - self.request_date_from
-            saturdays = pd.date_range(start=self.request_date_from, end=self.request_date_to,
-                                      freq='W-SAT').strftime(
-                '%m/%d/%Y').tolist()
-            sundays = pd.date_range(start=self.request_date_from, end=self.request_date_to,
-                                    freq='W-SUN').strftime(
-                '%m/%d/%Y').tolist()
-            self.number_of_days =  days.days - (len(saturdays) + len(sundays)) + 1
+            if self.holiday_status_id.id == 22:
+                days = self.request_date_to - self.request_date_from
+                self.number_of_days =  days.days + 1
         elif self.request_unit_half:
             self.number_of_days = 0.5
         else:
-            self.number_of_days = 0 + 1
+            self.number_of_days = 0
     
 
 
