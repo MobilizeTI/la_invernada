@@ -972,8 +972,8 @@ class WizardHrPaySlip(models.TransientModel):
                              # TODO ES HACER PANTALLA CON DATOS EMPRESA
                              payslip.indicadores_id.ccaf_id.codigo if payslip.indicadores_id.ccaf_id.codigo else "00",
                              # 84 Renta Imponible CCAF
-                             str(float(self.get_imponible_afp(payslip and payslip[0] or False,
-                                                              self.get_payslip_lines_value_2(payslip, 'TOTIM')))).split(
+                             str(float(str(float(self.get_payslip_lines_value_2(payslip, 'TOTIM'))).split('.')[
+                                 0] if self.get_payslip_lines_value_2(payslip, 'TOTIM') else "0",).split(
                                  '.')[0] if (self.get_dias_trabajados(payslip and payslip[0] or False) > 0) else "00",
                              # 85 Creditos Personales CCAF TODO
                              self.get_payslip_lines_value_2(payslip, 'PCCAF') if self.get_payslip_lines_value_2(payslip,
