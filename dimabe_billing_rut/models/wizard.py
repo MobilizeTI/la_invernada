@@ -604,7 +604,7 @@ class WizardHrPaySlip(models.TransientModel):
         lineas = self.env['hr.payslip.line']
         detalle = lineas.search([('slip_id', '=', obj.id), ('code', '=', regla)])
         data = str(detalle.amount).split('.')[0]
-        raise models.ValidationError(data)
+        
         valor = data
         return valor
 
@@ -755,6 +755,7 @@ class WizardHrPaySlip(models.TransientModel):
             rut_dv = ""
             rut, rut_dv = payslip.employee_id.identification_id.split("-")
             rut = rut.replace('.', '')
+            raise models.ValidationError(payslip.contract_id.apv_id.codigo)
             line_employee = [self._acortar_str(rut, 11),
                              self._acortar_str(rut_dv, 1),
                              self._arregla_str(payslip.employee_id.last_name.upper(),
