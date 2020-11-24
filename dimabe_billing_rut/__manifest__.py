@@ -45,7 +45,8 @@
         'reports/remunerations_book.xml',
         'views/wizard_hr_payslip.xml',
         'views/custom_data.xml',
-        'views/hr_contract.xml'
+        'views/hr_contract.xml',
+        'views/hr_leave.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
