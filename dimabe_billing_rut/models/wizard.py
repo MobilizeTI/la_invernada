@@ -842,7 +842,7 @@ class WizardHrPaySlip(models.TransientModel):
                              # 3- Datos Ahorro Previsional Voluntario Individual
                              # 40 Código de la Institución APVI
                              payslip.contract_id.apv_id.codigo if self.get_payslip_lines_value_2(payslip,
-                                                                                                 'APV') > 0 else "0",
+                                                                                                 'APV') != "0" else "0",
                              # 41 Numero de Contrato APVI Strinng
                              "0",
                              # 42 Forma de Pago Ahorro
