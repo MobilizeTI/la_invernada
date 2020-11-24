@@ -13,7 +13,10 @@ class HrLeave (models.Model):
         for holiday in self:
             if holiday.holiday_status_id.id == 22:
                 days = holiday.request_date_to - holiday.request_date_from
-                holiday.number_of_days_display = days.days  + 1 
+                holiday.number_of_days_display = days.days  + 1
+            elif self.request_date_from_period:
+                self.number_of_days = 0.5
+
 
     @api.onchange('date_from', 'date_to', 'employee_id','request_date_from_period')
     def _onchange_leave_dates(self):
