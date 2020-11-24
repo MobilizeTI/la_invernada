@@ -793,14 +793,14 @@ class WizardHrPaySlip(models.TransientModel):
                              # es obligatoria y debe estar dentro del periodo de remun
                              # payslip.date_to if payslip.date_to else '00-00-0000',
                              self.get_tramo_asignacion_familiar(payslip,
-                                                                self.get_payslip_lines_value_2(payslip, 'TOTIM')),
+                                                                self.get_payslip_lines_value_2(payslip, 'TOTIM')) if not payslip.contract_id.data_id else payslip.data_id.name.split(' ')[1] ,
                              # 19 NCargas Simples
                              payslip.contract_id.carga_familiar,
                              payslip.contract_id.carga_familiar_maternal,
                              payslip.contract_id.carga_familiar_invalida,
                              # 22 Asignacion Familiar
                              self.get_payslip_lines_value_2(payslip, 'ASIGFAM') if self.get_payslip_lines_value_2(
-                                 payslip, 'ASIGFAM') else payslip.contract_id.data_id.name.spilt(' ')[1],
+                                 payslip, 'ASIGFAM'),
                              # ASIGNACION FAMILIAR RETROACTIVA
                              "0",
                              # Refloategro Cargas Familiares
