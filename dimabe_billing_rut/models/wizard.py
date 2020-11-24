@@ -755,7 +755,7 @@ class WizardHrPaySlip(models.TransientModel):
             rut_dv = ""
             rut, rut_dv = payslip.employee_id.identification_id.split("-")
             rut = rut.replace('.', '')
-            raise models.ValidationError(payslip.contract_id.apv_id.codigo)
+            raise models.ValidationError(self.get_payslip_lines_value_2(payslip,'APV')
             line_employee = [self._acortar_str(rut, 11),
                              self._acortar_str(rut_dv, 1),
                              self._arregla_str(payslip.employee_id.last_name.upper(),
