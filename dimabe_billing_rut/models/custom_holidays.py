@@ -9,6 +9,6 @@ class CustomHolidays(models.Model):
 
     date = fields.Date('Fecha')
 
-    type = fields.Selection(string="Tipo",[('Civil', 'Civil'), ('Religioso', 'Religioso')])
+    type = fields.Selection([('Civil', 'Civil'), ('Religioso', 'Religioso')])
 
     inalienable = fields.Boolean('Irrenunciable')
