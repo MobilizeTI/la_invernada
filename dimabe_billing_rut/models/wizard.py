@@ -755,7 +755,6 @@ class WizardHrPaySlip(models.TransientModel):
             rut_dv = ""
             rut, rut_dv = payslip.employee_id.identification_id.split("-")
             rut = rut.replace('.', '')
-            raise models.ValidationError(self.get_payslip_lines_value_2(payslip,'APV'))
             line_employee = [self._acortar_str(rut, 11),
                              self._acortar_str(rut_dv, 1),
                              self._arregla_str(payslip.employee_id.last_name.upper(),
@@ -843,7 +842,7 @@ class WizardHrPaySlip(models.TransientModel):
                              # 3- Datos Ahorro Previsional Voluntario Individual
                              # 40 Código de la Institución APVI
                              payslip.contract_id.apv_id.codigo if self.get_payslip_lines_value_2(payslip,
-                                                                                                 'APV') else "0",
+                                                                                                 'APV') > 0 else "0",
                              # 41 Numero de Contrato APVI Strinng
                              "0",
                              # 42 Forma de Pago Ahorro
