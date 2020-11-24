@@ -800,7 +800,7 @@ class WizardHrPaySlip(models.TransientModel):
                              payslip.contract_id.carga_familiar_invalida,
                              # 22 Asignacion Familiar
                              self.get_payslip_lines_value_2(payslip, 'ASIGFAM') if self.get_payslip_lines_value_2(
-                                 payslip, 'ASIGFAM'),
+                                 payslip, 'ASIGFAM') else "0",
                              # ASIGNACION FAMILIAR RETROACTIVA
                              "0",
                              # Refloategro Cargas Familiares
