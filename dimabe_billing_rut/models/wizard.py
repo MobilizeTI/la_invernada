@@ -855,7 +855,7 @@ class WizardHrPaySlip(models.TransientModel):
                                  0] if str(float(self.get_payslip_lines_value_2(payslip, 'APV'))).split('.')[
                                  0] else "0",
                              # 44 Cotizacion Depositos
-
+                            " "
                              # 45 Codigo Institucion Autorizada APVC
                              "0",
                              # 46 Numero de Contrato APVC TODO
