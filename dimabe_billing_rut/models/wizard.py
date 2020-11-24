@@ -643,6 +643,8 @@ class WizardHrPaySlip(models.TransientModel):
         elif TOTIM_2 >= round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf):
             return round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf)
         else:
+            if payslip.id == 338:
+                raise models.ValidationError(TOTIM_2)
             return round(TOTIM_2)
 
     @api.model
