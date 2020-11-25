@@ -459,7 +459,7 @@ class MrpWorkorder(models.Model):
         })
         quant = self.env['stock.quant'].search([('lot_id', '=', lot.id)])
         quant.write({
-            'quantity': sum(lot.stock_production_lot_serial_ids.mapped('real_weight'))
+            'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
         })
         return res
 
