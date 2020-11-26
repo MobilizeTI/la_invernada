@@ -459,7 +459,7 @@ class MrpWorkorder(models.Model):
         })
         quant = self.env['stock.quant'].search([('lot_id', '=', lot.id)])
         quant.write({
-            'quantity': sum(lot.stock_production_lot_serial_ids.mapped('real_weight'))
+            'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
         })
         return res
 
@@ -478,6 +478,8 @@ class MrpWorkorder(models.Model):
             if custom_serial.consumed:
                 raise models.ValidationError('este código ya ha sido consumido en la produccion {}'.format(
                     custom_serial.reserved_to_production_id.name))
+            if custom_serial.production_id.state != 'done':
+                raise models.ValidationError
             return custom_serial
         return custom_serial
 
