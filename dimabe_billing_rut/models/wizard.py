@@ -46,8 +46,8 @@ class WizardHrPaySlip(models.TransientModel):
         datetime.now() + relativedelta.relativedelta(months=+1, day=1, days=-1))[:10])
     file_data = fields.Binary('Archivo Generado')
                               #default=lambda self: self.env['wizard.hr.payslip'].search([])[-1].file_data)
-    file_name = fields.Char('Nombre de archivo',
-                            default=lambda self: self.env['wizard.hr.payslip'].search([])[-1].file_name)
+    file_name = fields.Char('Nombre de archivo')
+                            #default=lambda self: self.env['wizard.hr.payslip'].search([])[-1].file_name)
     delimiter_option = fields.Selection([
         ('colon', 'Comillas Dobles(")'),
         ('semicolon', "Comillas Simples(')"),
