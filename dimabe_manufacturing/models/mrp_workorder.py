@@ -478,8 +478,6 @@ class MrpWorkorder(models.Model):
             if custom_serial.consumed:
                 raise models.ValidationError('este código ya ha sido consumido en la produccion {}'.format(
                     custom_serial.reserved_to_production_id.name))
-            if custom_serial.production_id.state != 'done':
-                raise models.ValidationError
             return custom_serial
         return custom_serial
 
