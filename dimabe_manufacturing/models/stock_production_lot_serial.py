@@ -219,7 +219,6 @@ class StockProductionLotSerial(models.Model):
             item.stock_production_lot_id.write({
                 'available_kg': sum(item.stock_production_lot_id.filtered(lambda a: not a.consumed).mapped('real_weight'))
             })
-            self.env['stock.quant'].search([('lot_id','=')])
 
     @api.depends('reserved_to_production_id', 'production_id')
     @api.multi
