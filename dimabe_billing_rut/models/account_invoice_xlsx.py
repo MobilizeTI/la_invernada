@@ -39,11 +39,7 @@ class AccountInvoiceXlsx(models.Model):
                     {'company_name': com.display_name, 'company_id': com.id, 'worksheet': worksheet})
             for wk in array_worksheet:
                 sheet = wk['worksheet']
-                sheet.set_column('F:F', 40)
-                sheet.set_column('L:L', 20)
-                sheet.set_column('A:A', 6)
-                sheet.set_column('C:C', 10)
-                sheet.set_row(9, 6)
+                sheet = self.set_size(sheet)
                 merge_format_string = workbook.add_format({
                     'border': 0,
                     'align': 'center',
@@ -75,7 +71,12 @@ class AccountInvoiceXlsx(models.Model):
                     "%d/%m/%Y"), self.to_date.strftime("%d/%m/%Y")), merge_format_string)
                 sheet.merge_range(
                     'A9:L9', 'Moneda : Peso Chileno', merge_format_string)
-                sheet = self.set_title(sheet,merge_format_title)
+                sheet = self.set_title(sheet, merge_format_title)
+
+                invoice = self.env['account.invoice'].search([('company_id','=',company.id)])
+                row = 12
+                for inv in invoice:
+                    sheet.write('C{}'.format(str(row)),inv.number,merge_format_string)
             workbook.close()
             with open(file_name, "rb") as file:
                 file_base64 = base64.b64encode(file.read())
@@ -97,4 +98,13 @@ class AccountInvoiceXlsx(models.Model):
         sheet.write('J11', 'iIVA', format)
         sheet.write('K11', 'IVA NO RECUPERABLE', format)
         sheet.write('L11', 'Total', format)
+        return sheet
+
+    def set_size(self, sheet):
+        sheet.set_column('F:F', 40)
+        sheet.set_column('L:L', 20)
+        sheet.set_column('A:A', 6)
+        sheet.set_column('C:C', 10)
+        sheet.set_column('G:G',3)
+        sheet.set_row(9, 6)
         return sheet
