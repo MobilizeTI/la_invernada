@@ -38,6 +38,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.set_column('F:F', 40)
                 sheet.set_column('L:L', 20)
                 sheet.set_column('A:A', 6)
+                sheet.set_row(10,3)
                 merge_format_string = workbook.add_format({
                     'border': 0,
                     'align': 'center',
@@ -60,8 +61,8 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.write('K7','Fecha:',merge_format_string)
                 sheet.write('L7',today.strftime("%d-%m-%Y"),merge_format_string)
 
-                sheet.merge_range('A9:L9','Desde : {} Hasta : {}'.format(self.from_date.strftime("%d/%m/%Y"),self.to_date.strftime("%d/%m/%Y")),merge_format_string)
-
+                sheet.merge_range('A8:L8','Desde : {} Hasta : {}'.format(self.from_date.strftime("%d/%m/%Y"),self.to_date.strftime("%d/%m/%Y")),merge_format_string)
+                sheet.merge_range('A9:L9','Moneda : Peso Chileno',merge_format_string)
                 sheet.write('A11', 'Cod.SII', merge_format_title)
             workbook.close()
             with open(file_name, "rb") as file:
