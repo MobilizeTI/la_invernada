@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="wizard_export_account_move" model="ir.ui.view">
+        <field name="name">Libro de Ventas</field>
+        <field name="model">account.invoice.xlsx</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="both"/>
+                    <field name="report_file" filename="report_name"/>
+                    <field name="report_name" invisible="1" />
+                </group>
+                <footer>
+                    <button type="object" string="Generar" name="generate_book"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_export_account_move" model="ir.actions.act_window">
+        <field name="name">Libro de Remuneraciones</field>
+		<field name="res_model">account.invoice.xlsx</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">form</field>
+		<field name="view_id" ref="wizard_export_account_move" />
+		<field name="target">new</field>
+    </record>
+    <menuitem name="Libro de Ventas" parent="account.menu_finance_reports" action="action_export_account_move"/>
+</odoo>
