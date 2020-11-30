@@ -55,7 +55,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.merge_range('A6:L6', 'Libro de Compras Ordenado Por fecha	',merge_format_string)
                 sheet.write('K7','Fecha:',merge_format_string)
                 sheet.write('L7',today.strftime("%d-%m-%Y"),merge_format_string)
-                sheet.write('A1', 'Cod.SII', format)
+                sheet.write('A1', 'Cod.SII', merge_format_title)
             workbook.close()
             with open(file_name, "rb") as file:
                 file_base64 = base64.b64encode(file.read())
