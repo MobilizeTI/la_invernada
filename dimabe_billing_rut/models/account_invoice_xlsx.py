@@ -28,7 +28,7 @@ class AccountInvoiceXlsx(models.Model):
                 worksheet = workbook.add_worksheet(com.display_name)
                 array_worksheet.append({'company_name':com.display_name,'worksheet':worksheet})
 
-            raise models.ValidationError(array_worksheet[0].values())
+            raise models.ValidationError(array_worksheet[-1].values())
             return {
                 "type": "ir.actions.do_nothing",
             }
