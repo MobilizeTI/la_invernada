@@ -7,8 +7,8 @@
             <form>
                 <group>
                     <field name="both"/>
-                    <field name="report_file" filename="report_name"/>
-                    <field name="report_name" invisible="1" readonly="1"/>
+                    <field name="report_file" readonly="1" filename="report_name"/>
+                    <field name="report_name" invisible="1" />
                 </group>
                 <footer>
                     <button type="object" string="Generar" name="generate_book"/>
@@ -17,7 +17,7 @@
         </field>
     </record>
     <record id="action_export_account_move" model="ir.actions.act_window">
-        <field name="name">Libro de Remuneraciones</field>
+        <field name="name">Libro de Ventas</field>
 		<field name="res_model">account.invoice.xlsx</field>
 		<field name="view_type">form</field>
 		<field name="view_mode">form</field>
