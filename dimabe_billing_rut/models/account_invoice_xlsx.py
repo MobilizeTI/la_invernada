@@ -14,7 +14,7 @@ class AccountInvoiceXlsx(models.Model):
 
     report_file = fields.Binary("Libro de Compra")
 
-    report_name = fields.Char("Reporte")
+    report_name = fields.Char("Reporte",default=lambda self: self.env['account.invoice.xlsx'].search([])[-1])
 
     both = fields.Boolean("Ambas")
 
