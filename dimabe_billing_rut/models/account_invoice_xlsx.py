@@ -39,7 +39,7 @@ class AccountInvoiceXlsx(models.Model):
                 region = self.env['region.address'].search([('id','=',1)])
                 sheet.merge_range('A1:C1',wk['company_name'],merge_format_string)
                 sheet.merge_range('A2:C2',company.invoice_rut,merge_format_string)
-                sheet.merge_range('A3:C3','{},Region {}'.format(company.city,region.name,capitalize()),merge_format_string)
+                sheet.merge_range('A3:C3','{},Region {}'.format(company.city,region.name.capitalize()),merge_format_string)
             workbook.close()
             with open(file_name, "rb") as file:
                 file_base64 = base64.b64encode(file.read())
