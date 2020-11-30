@@ -21,9 +21,10 @@ class AccountInvoiceXlsx(models.Model):
     @api.multi
     def generate_book(self):
         for item in self:
+            file_name = 'temp'
             array_worksheet = []
             companies = self.env['res.company'].search([],order='id asc')
-            workbook = xlsxwriter.Workbook(self.report_name,{'in_memory':True})
+            workbook = xlsxwriter.Workbook(file_name,{'in_memory':True})
             for com in companies:
                 worksheet = workbook.add_worksheet(com.display_name)
                 array_worksheet.append({'company_name':com.display_name,'worksheet':worksheet})
@@ -35,6 +36,10 @@ class AccountInvoiceXlsx(models.Model):
                     'valign': 'vcenter',
                 })
                 sheet.merge_range('A1:C1',wk['company_name'],merge_format_string)
+            workbook.close()
+            with open(file_name, "rb") as file:
+                file_base64 = base64.b64encode(file.read())
+            self.write({'report_file': file_base64, 'report_name': 'Libro de Ventas'})
             return {
                 "type": "ir.actions.do_nothing",
             }
