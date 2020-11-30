@@ -23,6 +23,7 @@ class AccountInvoiceXlsx(models.Model):
         for item in self:
             file_name = 'temp'
             array_worksheet = []
+            today = datetime.date.today()
             companies = self.env['res.company'].search([('add_to_sale_book','=',True)],order='id asc')
             workbook = xlsxwriter.Workbook(file_name,{'in_memory':True})
             for com in companies:
@@ -50,7 +51,7 @@ class AccountInvoiceXlsx(models.Model):
                                   merge_format_title)
                 sheet.merge_range('A6:L6', 'Libro de Compras Ordenado Por fecha	',merge_format_string)
                 sheet.write('K7','Fecha:',merge_format_string)
-                sheet.write('L7',datetime.date.today().strftime('%d-%m-%Y'),merge_format_string)
+                sheet.write('L7',today.strftime("%b-%d-%Y"),merge_format_string)
             workbook.close()
             with open(file_name, "rb") as file:
                 file_base64 = base64.b64encode(file.read())
