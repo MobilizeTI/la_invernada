@@ -5,7 +5,7 @@ import datetime
 import io
 import logging
 import time
-from datetime import datetime
+from datetime import datetime,date
 import xlsxwriter
 from dateutil import relativedelta
 
@@ -23,7 +23,7 @@ class AccountInvoiceXlsx(models.Model):
         for item in self:
             file_name = 'temp'
             array_worksheet = []
-            today = datetime.date.today()
+            today = date.today()
             companies = self.env['res.company'].search([('add_to_sale_book','=',True)],order='id asc')
             workbook = xlsxwriter.Workbook(file_name,{'in_memory':True})
             for com in companies:
