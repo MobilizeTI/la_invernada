@@ -27,8 +27,14 @@ class AccountInvoiceXlsx(models.Model):
             for com in companies:
                 worksheet = workbook.add_worksheet(com.display_name)
                 array_worksheet.append({'company_name':com.display_name,'worksheet':worksheet})
-
-            raise models.ValidationError(array_worksheet[-1].values())
+            for wk in array_worksheet:
+                sheet = wk['worksheet']
+                merge_format_string = workbook.add_format({
+                    'border': 0,
+                    'align': 'center',
+                    'valign': 'vcenter',
+                })
+                sheet.merge_range('A1:C1',wk['company_name'],merge_format_string)
             return {
                 "type": "ir.actions.do_nothing",
             }
