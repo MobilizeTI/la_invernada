@@ -7,3 +7,4 @@ access_dimabe_custom_fired,dimabe_billing_rut.custom_fired,model_custom_fired,,1
 access_dimabe_custom_settlement,dimabe_billing_rut.custom_settlement,model_custom_settlement,,1,1,1,1
 access_dimabe_custom_holiday,dimabe_billing_rut.custom_holidays,model_custom_holidays,,1,1,1,1
 access_dimabe_custom_data,dimabe_billing_rut.custom_data,model_custom_data,,1,1,1,1
+access_dimabe_account_invoice_xlsx,dimabe_billing_rut.account_invoice_xlsx,model_account_invoice_xlsx,,1,1,1,1
