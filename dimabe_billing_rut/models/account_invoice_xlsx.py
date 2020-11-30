@@ -77,6 +77,7 @@ class AccountInvoiceXlsx(models.Model):
                 row = 12
                 for inv in invoice:
                     sheet.write('C{}'.format(str(row)),inv.number,merge_format_string)
+                    row += 1
             workbook.close()
             with open(file_name, "rb") as file:
                 file_base64 = base64.b64encode(file.read())
