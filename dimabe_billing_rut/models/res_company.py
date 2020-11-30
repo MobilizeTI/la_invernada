@@ -33,6 +33,7 @@ class ResCompany(models.Model):
                                     default='')
 
 
+    add_to_sale_book = fields.Boolean()
 
     @api.model
     def create(self, values_list):

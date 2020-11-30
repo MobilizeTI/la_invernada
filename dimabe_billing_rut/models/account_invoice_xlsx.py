@@ -23,7 +23,7 @@ class AccountInvoiceXlsx(models.Model):
         for item in self:
             file_name = 'temp'
             array_worksheet = []
-            companies = self.env['res.company'].search([],order='id asc')
+            companies = self.env['res.company'].search([('add_to_sale_book','=',True)],order='id asc')
             workbook = xlsxwriter.Workbook(file_name,{'in_memory':True})
             for com in companies:
                 worksheet = workbook.add_worksheet(com.display_name)
