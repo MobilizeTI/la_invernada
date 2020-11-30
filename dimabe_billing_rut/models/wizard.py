@@ -74,6 +74,12 @@ class WizardHrPaySlip(models.TransientModel):
         indicadores_id = self.env['hr.indicadores'].search(
             [('name', '=', '{} {}'.format(self.month, self.years)), ('state', '=', 'done')])
         if not indicadores_id:
+            merge_format_title = workbook.add_format({
+                'bold': 1,
+                'border': 1,
+                'align': 'center',
+                'valign': 'vcenter',
+            })
             raise models.ValidationError('No existen datos de este mes')
         merge_format_title = workbook.add_format({
             'bold': 1,

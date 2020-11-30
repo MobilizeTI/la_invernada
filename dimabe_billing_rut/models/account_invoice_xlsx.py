@@ -35,11 +35,22 @@ class AccountInvoiceXlsx(models.Model):
                     'align': 'center',
                     'valign': 'vcenter',
                 })
-                company = self.env['res.partner'].search([('id','=',wk['company_id'])])
+                merge_format_title = workbook.add_format({
+                    'bold': 1,
+                    'border': 1,
+                    'align': 'center',
+                    'valign': 'vcenter',
+                })
+                company = self.env['res.company'].search([('id','=',wk['company_id'])])
                 region = self.env['region.address'].search([('id','=',1)])
                 sheet.merge_range('A1:C1',wk['company_name'],merge_format_string)
-                sheet.merge_range('A2:C2',company.invoice_rut,merge_format_string)
-                sheet.merge_range('A3:C3','{},Region {}'.format(company.city,region.name.capitalize()),merge_format_string)
+                sheet.merge_range('A2:C2',company.vat,merge_format_string)
+                sheet.merge_range('A3:C3','{}, Region {}'.format(company.city,region.name.capitalize()),merge_format_string)
+                sheet.merge_range('A5:L5', 'Libro de Compras',
+                                  merge_format_title)
+                sheet.merge_range('A6:L6', 'Libro de Compras Ordenado Por fecha	',merge_format_string)
+                sheet.write('K7','Fecha:',merge_format_string)
+                sheet.write('L7',datetime.date.today(),merge_format_string)
             workbook.close()
             with open(file_name, "rb") as file:
                 file_base64 = base64.b64encode(file.read())
