@@ -49,6 +49,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.merge_range('A3:C3','{}, Region {}'.format(company.city,region.name.capitalize()),merge_format_string)
                 sheet.merge_range('A5:L5', 'Libro de Compras',
                                   merge_format_title)
+                sheet.set_column('F:F',30)
                 sheet.merge_range('A6:L6', 'Libro de Compras Ordenado Por fecha	',merge_format_string)
                 sheet.write('K7','Fecha:',merge_format_string)
                 sheet.write('L7',today.strftime("%d-%m-%Y"),merge_format_string)
