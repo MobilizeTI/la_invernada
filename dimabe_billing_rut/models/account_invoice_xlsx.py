@@ -64,6 +64,8 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.merge_range('A8:L8','Desde : {} Hasta : {}'.format(self.from_date.strftime("%d/%m/%Y"),self.to_date.strftime("%d/%m/%Y")),merge_format_string)
                 sheet.merge_range('A9:L9','Moneda : Peso Chileno',merge_format_string)
                 sheet.write('A11', 'Cod.SII', merge_format_title)
+                sheet.write('B11','Folio',merge_format_title)
+                sheet.write('C11','Cor.Interno',merge_format_title)
             workbook.close()
             with open(file_name, "rb") as file:
                 file_base64 = base64.b64encode(file.read())
