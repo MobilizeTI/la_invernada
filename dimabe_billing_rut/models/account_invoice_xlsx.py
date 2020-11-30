@@ -63,7 +63,3 @@ class AccountInvoiceXlsx(models.Model):
             return {
                 "type": "ir.actions.do_nothing",
             }
-
-    def set_columns_width(self,sheet):
-
-    def set_title(self,sheet,format):
