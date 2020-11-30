@@ -27,7 +27,7 @@ class AccountInvoiceXlsx(models.Model):
             for com in companies:
                 worksheet = workbook.add_worksheet(com.display_name)
                 array_worksheet.append({'company_name':com.display_name,'worksheet':worksheet})
-            raise models.ValidationError(array_worksheet)
+            raise models.ValidationError(array_worksheet.filtered(lambda a: 'LA INVERNADA' in a.company_name))
             return {
                 "type": "ir.actions.do_nothing",
             }
