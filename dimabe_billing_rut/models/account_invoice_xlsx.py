@@ -31,6 +31,7 @@ class AccountInvoiceXlsx(models.Model):
                 array_worksheet.append({'company_name':com.display_name,'company_id':com.id,'worksheet':worksheet})
             for wk in array_worksheet:
                 sheet = wk['worksheet']
+                self.set_columns_width(sheet)
                 merge_format_string = workbook.add_format({
                     'border': 0,
                     'align': 'center',
@@ -42,6 +43,7 @@ class AccountInvoiceXlsx(models.Model):
                     'align': 'center',
                     'valign': 'vcenter',
                 })
+                self.set_title(sheet, merge_format_title)
                 company = self.env['res.company'].search([('id','=',wk['company_id'])])
                 region = self.env['region.address'].search([('id','=',1)])
                 sheet.merge_range('A1:C1',wk['company_name'],merge_format_string)
@@ -49,11 +51,10 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.merge_range('A3:C3','{}, Region {}'.format(company.city,region.name.capitalize()),merge_format_string)
                 sheet.merge_range('A5:L5', 'Libro de Compras',
                                   merge_format_title)
-                sheet.set_column('F:F',40)
                 sheet.merge_range('A6:L6', 'Libro de Compras Ordenado Por fecha	',merge_format_string)
                 sheet.write('K7','Fecha:',merge_format_string)
                 sheet.write('L7',today.strftime("%d-%m-%Y"),merge_format_string)
-                sheet.set_column('L:L', 20)
+
             workbook.close()
             with open(file_name, "rb") as file:
                 file_base64 = base64.b64encode(file.read())
@@ -61,3 +62,11 @@ class AccountInvoiceXlsx(models.Model):
             return {
                 "type": "ir.actions.do_nothing",
             }
+
+    def set_columns_width(self,sheet):
+        sheet.set_column('F:F', 40)
+        sheet.set_column('L:L', 20)
+        sheet.set_column('A:A', 10)
+
+    def set_title(self,sheet,format):
+        sheet.write('A1','Cod.SII',format)
