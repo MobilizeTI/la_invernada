@@ -21,7 +21,7 @@ class AccountInvoiceXlsx(models.Model):
     @api.multi
     def generate_book(self):
         for item in self:
-            array_worksheet = {}
+            array_worksheet = []
             companies = self.env['res.company'].search([])
             workbook = xlsxwriter.Workbook(self.report_name,{'in_memory':True})
             for com in companies:
