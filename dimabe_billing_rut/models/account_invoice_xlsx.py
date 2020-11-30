@@ -27,7 +27,8 @@ class AccountInvoiceXlsx(models.Model):
             for com in companies:
                 worksheet = workbook.add_worksheet(com.display_name)
                 array_worksheet.append({'company_name':com.display_name,'worksheet':worksheet})
-            raise models.ValidationError(worksheet_company for wk in array_worksheet if 'EXPORT' in wk['company_name'])
+            array = worksheet_company for wk in array_worksheet if 'EXPORT' in wk['company_name']
+            raise models.ValidationError(array)
             return {
                 "type": "ir.actions.do_nothing",
             }
