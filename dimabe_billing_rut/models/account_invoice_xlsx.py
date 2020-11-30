@@ -22,7 +22,7 @@ class AccountInvoiceXlsx(models.Model):
     def generate_book(self):
         for item in self:
             array_worksheet = []
-            companies = self.env['res.company'].search([],order='id desc')
+            companies = self.env['res.company'].search([],order='id asc')
             workbook = xlsxwriter.Workbook(self.report_name,{'in_memory':True})
             for com in companies:
                 worksheet = workbook.add_worksheet(com.display_name)
