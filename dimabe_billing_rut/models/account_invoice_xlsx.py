@@ -38,6 +38,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.set_column('F:F', 40)
                 sheet.set_column('L:L', 20)
                 sheet.set_column('A:A', 6)
+                sheet.set_column('C:C',10)
                 sheet.set_row(9,6)
                 merge_format_string = workbook.add_format({
                     'border': 0,
