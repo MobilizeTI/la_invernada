@@ -9,6 +9,8 @@
                     <field name="both"/>
                     <field name="report_file" readonly="1" filename="report_name"/>
                     <field name="report_name" invisible="1" />
+                    <field name="from_date"/>
+                    <field name="to_date"/>
                 </group>
                 <footer>
                     <button type="object" string="Generar" name="generate_book"/>

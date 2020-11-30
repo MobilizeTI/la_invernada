@@ -16,6 +16,10 @@ class AccountInvoiceXlsx(models.Model):
 
     report_name = fields.Char("Reporte")
 
+    from_date = fields.Date('Desde')
+
+    to_date = fields.Date('Hasta')
+
     both = fields.Boolean("Ambas")
 
     @api.multi
@@ -33,7 +37,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet = wk['worksheet']
                 sheet.set_column('F:F', 40)
                 sheet.set_column('L:L', 20)
-                sheet.set_column('A:A', 4)
+                sheet.set_column('A:A', 6)
                 merge_format_string = workbook.add_format({
                     'border': 0,
                     'align': 'center',
