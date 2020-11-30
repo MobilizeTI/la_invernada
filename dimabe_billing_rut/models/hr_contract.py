@@ -6,7 +6,7 @@ class HrContract(models.Model):
 
     data_id = fields.Many2one('custom.data', 'Tramo Asignacion Familiar')
 
-    company_id = fields.Many2one(
+    company_logon_id = fields.Many2one(
         'res.company',
         string='company',
         defualt=lambda self: self.env.user.company_id)
