@@ -36,7 +36,7 @@ class AccountInvoiceXlsx(models.Model):
                     'valign': 'vcenter',
                 })
                 company = self.env['res.partner'].search([('id','=',wk['company_id'])])
-                raise models.ValidationError("Company : {}".format(company.region_address_id.name))
+                raise models.ValidationError("Company : {}".format(company.region_address_id))
                 sheet.merge_range('A1:C1',wk['company_name'],merge_format_string)
                 sheet.merge_range('A2:C2',company.invoice_rut,merge_format_string)
                 sheet.merge_range('A3:C3','{},{}'.format(company.city),merge_format_string)
