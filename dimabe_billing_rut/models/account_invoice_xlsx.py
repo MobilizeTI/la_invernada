@@ -94,7 +94,8 @@ class AccountInvoiceXlsx(models.Model):
                     sheet.write('J{}'.format(str(row)),round(inv.amount_tax_signed),merge_format_number)
                     sheet.write_formula('L{}'.format(str(row)),'=SUM(H{}:J{})'.format(str(row),str(row)),merge_format_number)
                     row += 1
-
+                total = row +1
+                raise models.ValidationError(total)
                 sheet.write('G{}'.format(str((row + 1))),str(len(invoice)),merge_format_title)
             workbook.close()
             with open(file_name, "rb") as file:
