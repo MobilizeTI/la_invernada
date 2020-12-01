@@ -16,12 +16,12 @@ class AccountInvoiceXlsx(models.Model):
     purchase_file = fields.Binary(
         "Libro de Compra", default=lambda self: self.env['account.invoice.xlsx'].search([])[-1].purchase_file)
 
-    purchase_report_name = fields.Char("Reporte Compra")
+    purchase_report_name = fields.Char("Reporte Compra",default=lambda self: self.env['account.invoice.xlsx'].search([])[-1].purchase_report_name)
 
     sale_file  = fields.Binary(
-        "Libro de Venta")
+        "Libro de Venta",default=lambda self: self.env['account.invoice.xlsx'].search([])[-1].sale_file)
 
-    sale_report_name = fields.Char("Reporte Venta")
+    sale_report_name = fields.Char("Reporte Venta",default=lambda self: self.env['account.invoice.xlsx'].search([])[-1].sale_report_name)
 
     from_date = fields.Date('Desde')
 
@@ -120,8 +120,8 @@ class AccountInvoiceXlsx(models.Model):
             workbook.close()
             with open(file_name, "rb") as file:
                 file_base64 = base64.b64encode(file.read())
-            self.write({'report_file': file_base64,
-                        'report_name': 'Libro de Venta {}'.format(self.env.user.company_id.display_name)})
+            self.write({'sale_file': file_base64,
+                        'sale_report_name': 'Libro de Venta {}'.format(self.env.user.company_id.display_name)})
             return {
                 "type": "ir.actions.do_nothing",
             }
@@ -216,8 +216,8 @@ class AccountInvoiceXlsx(models.Model):
             workbook.close()
             with open(file_name, "rb") as file:
                 file_base64 = base64.b64encode(file.read())
-            self.write({'report_file': file_base64,
-                        'report_name': 'Libro de Compra {}'.format(self.env.user.company_id.display_name)})
+            self.write({'purchase_file': file_base64,
+                        'purchase_report_name': 'Libro de Compra {}'.format(self.env.user.company_id.display_name)})
             return {
                 "type": "ir.actions.do_nothing",
             }
