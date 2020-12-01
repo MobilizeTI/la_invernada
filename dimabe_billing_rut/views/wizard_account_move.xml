@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="wizard_export_account_move" model="ir.ui.view">
-        <field name="name">Libro de Ventas</field>
+        <field name="name">Libro de Compras</field>
         <field name="model">account.invoice.xlsx</field>
         <field name="arch" type="xml">
             <form>
@@ -13,7 +13,7 @@
                     <field name="to_date"/>
                 </group>
                 <footer>
-                    <button type="object" string="Generar" name="generate_book"/>
+                    <button type="object" string="Generar" name="generate_purchase_book"/>
                 </footer>
             </form>
         </field>
@@ -26,5 +26,5 @@
 		<field name="view_id" ref="wizard_export_account_move" />
 		<field name="target">new</field>
     </record>
-    <menuitem name="Libro de Ventas" parent="account.menu_finance_reports" id="account-menu-item" action="action_export_account_move"/>
+    <menuitem name="Libro de Compras" parent="account.menu_finance_reports" id="account-menu-item" action="action_export_account_move"/>
 </odoo>
