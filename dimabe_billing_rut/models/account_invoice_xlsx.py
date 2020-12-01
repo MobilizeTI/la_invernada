@@ -45,11 +45,12 @@ class AccountInvoiceXlsx(models.Model):
                     'align': 'center',
                     'valign': 'vcenter',
                 })
-                merge_format_title = workbook.add_format({
+                merge_format_number = workbook.add_format({
                     'bold': 1,
                     'border': 1,
                     'align': 'center',
                     'valign': 'vcenter',
+                    'num_format': '#.###'
                 })
                 merge_format_title = workbook.add_format({
                     'border': 0,
