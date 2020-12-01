@@ -61,7 +61,7 @@ class AccountInvoiceXlsx(models.Model):
                     'border': 1,
                     'bold':1,
                     'align':'center',
-                    'valign':'vcenter',
+                    'valign':'vcenter'
                     'num_format':'0,000'
                 })
                 company = self.env['res.company'].search(
@@ -116,7 +116,7 @@ class AccountInvoiceXlsx(models.Model):
                 "type": "ir.actions.do_nothing",
             }
 
-    @api.multi
+     @api.multi
     def generate_purchase_book(self):
         for item in self:
             file_name = 'temp'
@@ -203,7 +203,7 @@ class AccountInvoiceXlsx(models.Model):
             with open(file_name, "rb") as file:
                 file_base64 = base64.b64encode(file.read())
             self.write({'report_file': file_base64,
-                        'report_name': 'Libro de Ventas {}'.format(company)})
+                        'report_name': 'Libro de Ventas'})
             return {
                 "type": "ir.actions.do_nothing",
             }
