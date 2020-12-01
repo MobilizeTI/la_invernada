@@ -80,6 +80,9 @@ class AccountInvoiceXlsx(models.Model):
                     sheet.write('D{}'.format(str(row)),inv.date_invoice,merge_format_string)
                     sheet.write('E{}'.format(str(row)),inv.partner_id.vat,merge_format_string)
                     sheet.write('F{}'.format(str(row)),inv.partner_id.display_name,merge_format_string)
+                    sheet.write('H{}'.format(str(row)),inv.amount_untaxed_invoice_signed,merge_format_string)
+                    sheet.write('I{}'.format(str(row)),inv.amount_total_signed,merge_format_string)
+                    sheet.write('J{}'.format(str(row)),inv.amount_tax_signed,merge_format_string)
                     row += 1
             workbook.close()
             with open(file_name, "rb") as file:
