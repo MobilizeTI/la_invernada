@@ -107,5 +107,6 @@ class AccountInvoiceXlsx(models.Model):
         sheet.set_column('A:A', 6)
         sheet.set_column('C:C', 10)
         sheet.set_column('G:G',3)
+        sheet.set_column('C:C',15.89)
         sheet.set_row(9, 6)
         return sheet
