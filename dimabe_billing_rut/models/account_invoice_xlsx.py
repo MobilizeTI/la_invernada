@@ -91,6 +91,7 @@ class AccountInvoiceXlsx(models.Model):
                     sheet.write('H{}'.format(str(row)),round(inv.amount_untaxed_invoice_signed),merge_format_string)
                     sheet.write('I{}'.format(str(row)),round(inv.amount_total_signed),merge_format_string)
                     sheet.write('J{}'.format(str(row)),round(inv.amount_tax_signed),merge_format_string)
+                    sheet.write_formula('L{}'.format(str(row)),'=SUM(H{}:J{})'.format(str(row),str(row)))
                     row += 1
             workbook.close()
             with open(file_name, "rb") as file:
