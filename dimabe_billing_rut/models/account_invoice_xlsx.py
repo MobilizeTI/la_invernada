@@ -113,7 +113,7 @@ class AccountInvoiceXlsx(models.Model):
         sheet.write('D11', 'Fecha', format)
         sheet.write('E11', 'RUT', format)
         sheet.write('F11', 'Nombre de Proevedor', format)
-        sheet.write('G11',''.format)
+        sheet.write('G11','',format)
         sheet.write('H11', 'EXENTO', format)
         sheet.write('I11', 'NETO', format)
         sheet.write('J11', 'IVA', format)
