@@ -134,7 +134,7 @@ class AccountInvoiceXlsx(models.Model):
             array_worksheet = []
             today = date.today()
             companies = self.env['res.company'].search(
-                [('add_to_sale_book', '=', True)], order='id asc')
+                [('id','=',self.env.user.company_id.id)], order='id asc')
             workbook = xlsxwriter.Workbook(file_name, {'in_memory': True})
             for com in companies:
                 worksheet = workbook.add_worksheet(com.display_name)
@@ -240,6 +240,8 @@ class AccountInvoiceXlsx(models.Model):
     def set_size(self, sheet):
         sheet.set_column('F:F', 40)
         sheet.set_column('B:B',10)
+        sheet.set_column('H:H',11)
+        sheet.set_column('J:J',11)
         sheet.set_column('I:I',10.44)
         sheet.set_column('L:L', 20)
         sheet.set_column('A:A', 6)
