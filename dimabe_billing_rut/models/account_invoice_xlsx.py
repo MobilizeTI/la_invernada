@@ -41,7 +41,7 @@ class AccountInvoiceXlsx(models.Model):
                 [('add_to_sale_book', '=', True)], order='id asc')
             workbook = xlsxwriter.Workbook(file_name, {'in_memory': True})
             for com in companies:
-                invoice = self.env['account.invoice'].search([('company_id.id','=',company.id),('type','=','out_invoice'),('state','=','paid'),('date_invoice','>',self.from_date),('date_invoice','<',self.to_date)])
+                invoice = self.env['account.invoice'].search([('type','=','out_invoice'),('state','=','paid'),('date_invoice','>',self.from_date),('date_invoice','<',self.to_date)])
                 if not invoice:
                     continue
                 worksheet = workbook.add_worksheet(com.display_name)
@@ -96,7 +96,7 @@ class AccountInvoiceXlsx(models.Model):
                     'A9:L9', 'Moneda : Peso Chileno', merge_format_string)
                 sheet = self.set_title(sheet, merge_format_title)
 
-                invoice = self.env['account.invoice'].search([('company_id.id','=',company.id),('type','=','out_invoice'),('state','=','paid'),('date_invoice','>',self.from_date),('date_invoice','<',self.to_date)])
+                invoice = self.env['account.invoice'].search([(('type','=','out_invoice'),('state','=','paid'),('date_invoice','>',self.from_date),('date_invoice','<',self.to_date)])
                 row = 13
                 
                 for inv in invoice:
