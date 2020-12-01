@@ -51,6 +51,12 @@ class AccountInvoiceXlsx(models.Model):
                     'align': 'center',
                     'valign': 'vcenter',
                 })
+                merge_format_title = workbook.add_format({
+                    'border': 0,
+                    'align':'center',
+                    'valign':'vcenter'
+
+                })
                 company = self.env['res.company'].search(
                     [('id', '=', wk['company_id'])])
                 region = self.env['region.address'].search([('id', '=', 1)])
@@ -78,11 +84,11 @@ class AccountInvoiceXlsx(models.Model):
                 for inv in invoice:
                     sheet.write('C{}'.format(str(row)),inv.number,merge_format_string)
                     sheet.write('D{}'.format(str(row)),inv.date_invoice,merge_format_string)
-                    sheet.write('E{}'.format(str(row)),inv.partner_id.vat,merge_format_string)
+                    sheet.write('E{}'.format(str(row)),inv.partner_id.invoice_rut,merge_format_string)
                     sheet.write('F{}'.format(str(row)),inv.partner_id.display_name,merge_format_string)
-                    sheet.write('H{}'.format(str(row)),inv.amount_untaxed_invoice_signed,merge_format_string)
-                    sheet.write('I{}'.format(str(row)),inv.amount_total_signed,merge_format_string)
-                    sheet.write('J{}'.format(str(row)),inv.amount_tax_signed,merge_format_string)
+                    sheet.write('H{}'.format(str(row)),round(inv.amount_untaxed_invoice_signed),merge_format_string)
+                    sheet.write('I{}'.format(str(row)),round(inv.amount_total_signed),merge_format_string)
+                    sheet.write('J{}'.format(str(row)),round(inv.amount_tax_signed),merge_format_string)
                     row += 1
             workbook.close()
             with open(file_name, "rb") as file:
@@ -102,7 +108,7 @@ class AccountInvoiceXlsx(models.Model):
         sheet.write('F11', 'Nombre de Proevedor', format)
         sheet.write('H11', 'EXENTO', format)
         sheet.write('I11', 'NETO', format)
-        sheet.write('J11', 'iIVA', format)
+        sheet.write('J11', 'IVA', format)
         sheet.write('K11', 'IVA NO RECUPERABLE', format)
         sheet.write('L11', 'Total', format)
         return sheet
