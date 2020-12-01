@@ -185,7 +185,7 @@ class AccountInvoiceXlsx(models.Model):
                 for inv in invoice:
                     sheet.write('B{}'.format(str(row)),inv.reference,merge_format_string)
                     sheet.write('C{}'.format(str(row)),inv.number,merge_format_string)
-                    sheet.write('D{}'.format(str(row)),inv.date_invoice,merge_format_string)
+                    sheet.write('D{}'.format(str(row)),inv.date_invoice.strftime("%d/%m/%Y"),merge_format_string)
                     sheet.write('E{}'.format(str(row)),inv.partner_id.invoice_rut,merge_format_string)
                     sheet.write('F{}'.format(str(row)),inv.partner_id.display_name,merge_format_string)
                     sheet.write('H{}'.format(str(row)),round(inv.amount_untaxed_invoice_signed),merge_format_number)
