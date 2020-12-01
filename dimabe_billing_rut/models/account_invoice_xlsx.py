@@ -14,7 +14,7 @@ class AccountInvoiceXlsx(models.Model):
     _name = 'account.invoice.xlsx'
 
     purchase_file = fields.Binary(
-        "Libro de Compra", default=lambda self: self.env['account.invoice.xlsx'].search([])[-1].report_file)
+        "Libro de Compra", default=lambda self: self.env['account.invoice.xlsx'].search([])[-1].purchase_file)
 
     purchase_report_name = fields.Char("Reporte Compra")
 
