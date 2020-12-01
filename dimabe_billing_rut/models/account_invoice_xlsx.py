@@ -61,7 +61,7 @@ class AccountInvoiceXlsx(models.Model):
                     'border': 1,
                     'bold':1,
                     'align':'center',
-                    'valign':'vcenter'
+                    'valign':'vcenter',
                     'num_format':'0,000'
                 })
                 company = self.env['res.company'].search(
