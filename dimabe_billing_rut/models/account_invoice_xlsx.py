@@ -41,9 +41,6 @@ class AccountInvoiceXlsx(models.Model):
                 [('id','=',self.env.user.company_id.id)], order='id asc')
             workbook = xlsxwriter.Workbook(file_name, {'in_memory': True})
             for com in companies:
-                invoice = self.env['account.invoice'].search([('type','=','out_invoice'),('state','=','paid'),('date_invoice','>',self.from_date),('date_invoice','<',self.to_date)])
-                if not invoice:
-                    continue
                 worksheet = workbook.add_worksheet(com.display_name)
                 array_worksheet.append(
                     {'company_name': com.display_name, 'company_id': com.id, 'worksheet': worksheet})
