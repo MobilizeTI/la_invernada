@@ -13,16 +13,23 @@ from dateutil import relativedelta
 class AccountInvoiceXlsx(models.Model):
     _name = 'account.invoice.xlsx'
 
-    report_file = fields.Binary(
+    purchase_file = fields.Binary(
         "Libro de Compra", default=lambda self: self.env['account.invoice.xlsx'].search([])[-1].report_file)
 
-    report_name = fields.Char("Reporte")
+    purchase_report_name = fields.Char("Reporte Compra")
+
+    sale_file  = fields.Binary(
+        "Libro de Venta")
+
+    sale_report_name = fields.Char("Reporte Venta")
 
     from_date = fields.Date('Desde')
 
     to_date = fields.Date('Hasta')
 
     both = fields.Boolean("Ambas")
+
+    
 
     @api.multi
     def generate_sale_book(self):
