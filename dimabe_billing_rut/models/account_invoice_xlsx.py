@@ -115,10 +115,12 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.write_formula('K{}'.format(str(total)),'=SUM(K13:K{})'.format(row),merge_format_total)
                 sheet.write_formula('L{}'.format(str(total)),'=SUM(L13:L{})'.format(row),merge_format_total)
             workbook.close()
+            company_name =self.env.user.company_id.display_name.split(' ').pop(-1).join([str(elem) for elem in s])
+            raise models.UserError(company_name)
             with open(file_name, "rb") as file:
                 file_base64 = base64.b64encode(file.read())
             self.write({'sale_file': file_base64,
-                        'sale_report_name': 'Libro de Venta {}.xlsx'.format(self.env.user.company_id.display_name)})
+                        'sale_report_name': 'Libro de Venta {}.xlsx'.format()})
             return {
                 "type": "ir.actions.do_nothing",
             }
