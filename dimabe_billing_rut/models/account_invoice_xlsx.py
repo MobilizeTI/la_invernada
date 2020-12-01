@@ -38,7 +38,7 @@ class AccountInvoiceXlsx(models.Model):
             array_worksheet = []
             today = date.today()
             companies = self.env['res.company'].search(
-                [('add_to_sale_book', '=', True)], order='id asc')
+                [('id','=',self.env.user.company_id.id)], order='id asc')
             workbook = xlsxwriter.Workbook(file_name, {'in_memory': True})
             for com in companies:
                 invoice = self.env['account.invoice'].search([('type','=','out_invoice'),('state','=','paid'),('date_invoice','>',self.from_date),('date_invoice','<',self.to_date)])
