@@ -81,7 +81,7 @@ class AccountInvoiceXlsx(models.Model):
 
                 invoice = self.env['account.invoice'].search([('company_id.id','=',company.id),('type','=','in_invoice'),('state','=','paid'),('date_invoice','>',self.from_date),('date_invoice','<',self.to_date)])
                 row = 12
-                raise models.UserError(invoice.mapped('date_invoice'))
+                
                 for inv in invoice:
                     sheet.write('C{}'.format(str(row)),inv.number,merge_format_string)
                     sheet.write('D{}'.format(str(row)),inv.date_invoice,merge_format_string)
