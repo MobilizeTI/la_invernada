@@ -56,7 +56,13 @@ class AccountInvoiceXlsx(models.Model):
                     'bold':1,
                     'align':'center',
                     'valign':'vcenter'
-
+                })
+                merge_format_total = workbook.add_format({
+                    'border': 1,
+                    'bold':1,
+                    'align':'center',
+                    'valign':'vcenter'
+                    'num_format':'0,000'
                 })
                 company = self.env['res.company'].search(
                     [('id', '=', wk['company_id'])])
@@ -81,7 +87,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet = self.set_title(sheet, merge_format_title)
 
                 invoice = self.env['account.invoice'].search([('company_id.id','=',company.id),('type','=','in_invoice'),('state','=','paid'),('date_invoice','>',self.from_date),('date_invoice','<',self.to_date)])
-                row = 12
+                row = 13
                 
                 for inv in invoice:
                     sheet.write('B{}'.format(str(row)),inv.reference,merge_format_string)
@@ -95,8 +101,12 @@ class AccountInvoiceXlsx(models.Model):
                     sheet.write_formula('L{}'.format(str(row)),'=SUM(H{}:J{})'.format(str(row),str(row)),merge_format_number)
                     row += 1
                 total = row +1
-                sheet.write('G{}'.format(str(total)),str(len(invoice)),merge_format_title)
-                sheet.write_formula('H{}'.format(str(total)),'=SUM(H12:H{})'.format(row),merge_format_title)
+                sheet.write('G{}'.format(str(total)),str(len(invoice)),merge_format_total)
+                sheet.write_formula('H{}'.format(str(total)),'=SUM(H13:H{})'.format(row),merge_format_total)
+                sheet.write_formula('I{}'.format(str(total)),'=SUM(I13:I{})'.format(row),merge_format_total)
+                sheet.write_formula('J{}'.format(str(total)),'=SUM(J13:J{})'.format(row),merge_format_total)
+                sheet.write_formula('K{}'.format(str(total)),'=SUM(K13:K{})'.format(row),merge_format_total)
+                sheet.write_formula('L{}'.format(str(total)),'=SUM(L13:L{})'.format(row),merge_format_total)
             workbook.close()
             with open(file_name, "rb") as file:
                 file_base64 = base64.b64encode(file.read())
