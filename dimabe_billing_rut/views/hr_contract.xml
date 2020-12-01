@@ -11,5 +11,9 @@
                 </xpath>
             </field>
         </record>
+        <record id="action_private_rol_action" model="ir.actions.act_windows.view">
+            <field name="act_window_id" ref="hr_contract.action_hr_contract	"/>
+            <field name="view_id" ref=""
+        </record>
     </data>
 </odoo>

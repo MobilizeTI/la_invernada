@@ -73,7 +73,7 @@ class AccountInvoiceXlsx(models.Model):
                     'A9:L9', 'Moneda : Peso Chileno', merge_format_string)
                 sheet = self.set_title(sheet, merge_format_title)
 
-                invoice = self.env['account.invoice'].search([('company_id.id','=',company.id)])
+                invoice = self.env['account.invoice'].search([('company_id.id','=',company.id),('type','=','in_invoice')])
                 row = 12
                 for inv in invoice:
                     sheet.write('C{}'.format(str(row)),inv.number,merge_format_string)
