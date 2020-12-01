@@ -47,7 +47,6 @@ class AccountInvoiceXlsx(models.Model):
                 })
                 merge_format_number = workbook.add_format({
                     'bold': 0,
-                    'border': 1,
                     'align': 'center',
                     'valign': 'vcenter',
                     'num_format': '0,000'
@@ -125,7 +124,7 @@ class AccountInvoiceXlsx(models.Model):
         sheet.set_column('E:E',12)
         sheet.set_column('C:C', 11)
         sheet.set_column('K:K',20)
-        sheet.set_column('G:G',3)
+        sheet.set_column('G:G',1.89)
         sheet.set_column('C:C',15.89)
         sheet.set_column('F:F',45)
         sheet.set_row(9, 6)
