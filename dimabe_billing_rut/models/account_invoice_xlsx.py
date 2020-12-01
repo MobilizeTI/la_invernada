@@ -118,7 +118,7 @@ class AccountInvoiceXlsx(models.Model):
             with open(file_name, "rb") as file:
                 file_base64 = base64.b64encode(file.read())
             self.write({'sale_file': file_base64,
-                        'sale_report_name': 'Libro de Venta {}'.format(self.env.user.company_id.display_name)})
+                        'sale_report_name': 'Libro de Venta {}.xlsx'.format(self.env.user.company_id.display_name)})
             return {
                 "type": "ir.actions.do_nothing",
             }
