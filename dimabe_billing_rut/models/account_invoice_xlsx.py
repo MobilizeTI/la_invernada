@@ -122,6 +122,7 @@ class AccountInvoiceXlsx(models.Model):
         sheet.set_column('D:D',10)
         sheet.set_column('E:E',12)
         sheet.set_column('C:C', 11)
+        sheet.set_column('K:K',20)
         sheet.set_column('G:G',3)
         sheet.set_column('C:C',15.89)
         sheet.set_column('F:F',45)
