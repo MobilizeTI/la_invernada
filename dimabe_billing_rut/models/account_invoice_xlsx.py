@@ -116,7 +116,8 @@ class AccountInvoiceXlsx(models.Model):
                 "type": "ir.actions.do_nothing",
             }
 
-     @api.multi
+    
+    @api.multi
     def generate_purchase_book(self):
         for item in self:
             file_name = 'temp'
