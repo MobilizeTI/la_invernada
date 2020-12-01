@@ -88,10 +88,10 @@ class AccountInvoiceXlsx(models.Model):
                     sheet.write('D{}'.format(str(row)),inv.date_invoice,merge_format_string)
                     sheet.write('E{}'.format(str(row)),inv.partner_id.invoice_rut,merge_format_string)
                     sheet.write('F{}'.format(str(row)),inv.partner_id.display_name,merge_format_string)
-                    sheet.write('H{}'.format(str(row)),round(inv.amount_untaxed_invoice_signed),merge_format_string)
-                    sheet.write('I{}'.format(str(row)),round(inv.amount_total_signed),merge_format_string)
-                    sheet.write('J{}'.format(str(row)),round(inv.amount_tax_signed),merge_format_string)
-                    sheet.write_formula('L{}'.format(str(row)),'=SUM(H{}:J{})'.format(str(row),str(row)))
+                    sheet.write('H{}'.format(str(row)),round(inv.amount_untaxed_invoice_signed),merge_format_number)
+                    sheet.write('I{}'.format(str(row)),round(inv.amount_total_signed),merge_format_number)
+                    sheet.write('J{}'.format(str(row)),round(inv.amount_tax_signed),merge_format_number)
+                    sheet.write_formula('L{}'.format(str(row)),'=SUM(H{}:J{})'.format(str(row),str(row)),merge_format_number)
                     row += 1
             workbook.close()
             with open(file_name, "rb") as file:
