@@ -50,7 +50,7 @@ class AccountInvoiceXlsx(models.Model):
                     'border': 1,
                     'align': 'center',
                     'valign': 'vcenter',
-                    'num_format': '#.###'
+                    'num_format': '0.000'
                 })
                 merge_format_title = workbook.add_format({
                     'border': 0,
