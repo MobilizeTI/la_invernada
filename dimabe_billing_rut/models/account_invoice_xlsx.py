@@ -77,6 +77,9 @@ class AccountInvoiceXlsx(models.Model):
                 row = 12
                 for inv in invoice:
                     sheet.write('C{}'.format(str(row)),inv.number,merge_format_string)
+                    sheet.write('D{}'.format(str(row)),inv.date_invoice,merge_format_string)
+                    sheet.write('E{}'.format(str(row)),inv.partner_id.vat,merge_format_string)
+                    sheet.write('F{}'.format(str(row)),inv.partner_id.display,merge_format_string)
                     row += 1
             workbook.close()
             with open(file_name, "rb") as file:
