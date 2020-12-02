@@ -206,11 +206,11 @@ class AccountInvoiceXlsx(models.Model):
                     days = self.diff_dates(inv.date_invoice,today)
                     models._logger.error('Day :{} , Today : {}, Date Invoice {}'.format(days,today.strftime('%d/%m/%Y'),inv.date_invoice.strftime("%d/%m/%Y")))
                     if days > 90:
-                        sheet.write('K{}'.format(str(row)), round(inv.amount_total_signed), merge_format_number)
+                        sheet.write('K{}'.format(str(row)), round(inv.amount_tax), merge_format_number)
                         sheet.write('J{}'.format(str(row)), '0', merge_format_number)
                     else:
                         sheet.write('K{}'.format(str(row)), '0', merge_format_number)
-                        sheet.write('J{}'.format(str(row)), round(inv.amount_total_signed), merge_format_number)
+                        sheet.write('J{}'.format(str(row)), round(inv.amount_tax), merge_format_number)
                     sheet.write_formula('L{}'.format(str(row)),'=SUM(H{}:J{})'.format(str(row),str(row)),merge_format_number)
                     row += 1
                 total = row +1
