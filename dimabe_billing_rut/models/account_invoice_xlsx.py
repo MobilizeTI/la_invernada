@@ -204,7 +204,13 @@ class AccountInvoiceXlsx(models.Model):
                     sheet.write('H{}'.format(str(row)),round(inv.amount_untaxed_invoice_signed),merge_format_number)
                     sheet.write('I{}'.format(str(row)),round(inv.amount_total_signed),merge_format_number)
                     days = self.diff_dates(today,inv.date_invoice)
-                    raise models.ValidationError(days)
+                    if days > 90:
+                        sheet.write('K{}'.format(str(row)), round(inv.amount_total_signed), merge_format_number)
+                        sheet.write('J{}'.format(str(row)), '0', merge_format_number)
+                    else:
+                        sheet.write('K{}'.format(str(row)), '0', merge_format_number)
+                        sheet.write('J{}'.format(str(row)), round(inv.amount_total_signed), merge_format_number)
+
                     sheet.write_formula('L{}'.format(str(row)),'=SUM(H{}:J{})'.format(str(row),str(row)),merge_format_number)
                     row += 1
                 total = row +1
