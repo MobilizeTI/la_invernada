@@ -193,7 +193,10 @@ class AccountInvoiceXlsx(models.Model):
                 row = 13
                 
                 for inv in invoice:
-                    sheet.write('B{}'.format(str(row)),inv.reference,merge_format_string)
+                    if inv.reference.is_numberic():
+                        sheet.write('B{}'.format(str(row)), inv.reference, merge_format_number)
+                    else:
+                        sheet.write('B{}'.format(str(row)), inv.reference, merge_format_string)
                     sheet.write('C{}'.format(str(row)),inv.number,merge_format_string)
                     sheet.write('D{}'.format(str(row)),inv.date_invoice.strftime("%d/%m/%Y"),merge_format_string)
                     rut = inv.partner_id.invoice_rut
