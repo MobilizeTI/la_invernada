@@ -103,7 +103,7 @@ class AccountInvoiceXlsx(models.Model):
                     rut = inv.partner_id.invoice_rut
                     if not rut:
                         rut = ''
-                    sheet.write('E{}'.format(str(row)),inv.partner_id.invoice_rut,merge_format_string)
+                    sheet.write('E{}'.format(str(row)),rut,merge_format_string)
                     sheet.write('F{}'.format(str(row)),inv.partner_id.display_name,merge_format_string)
                     sheet.write('H{}'.format(str(row)),round(inv.amount_untaxed_invoice_signed),merge_format_number)
                     sheet.write('I{}'.format(str(row)),round(inv.amount_total_signed),merge_format_number)
