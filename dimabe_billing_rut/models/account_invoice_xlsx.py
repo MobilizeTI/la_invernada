@@ -175,19 +175,20 @@ class AccountInvoiceXlsx(models.Model):
                     sheet.write_formula('L{}'.format(str(row)), '=SUM(H{}:J{})'.format(str(row), str(row)),
                                         merge_format_number)
                     row += 1
+                total_refund = row + 1
                 sheet.merge_range('A{}:F{}'.format((row + 1), (row + 1)),
                                   'Total NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)',
                                   merge_format_total_text)
-                sheet.write('G{}'.format(str(total)), str(len(invoice)), merge_format_total)
-                sheet.write_formula('H{}'.format(str(total)), '=SUM(H{}:H{})'.format((row - len(invoice_refund)), row),
+                sheet.write('G{}'.format(str(total_refund)), str(len(invoice)), merge_format_total)
+                sheet.write_formula('H{}'.format(str(total_refund)), '=SUM(H{}:H{})'.format((row - len(invoice_refund)), row),
                                     merge_format_total)
-                sheet.write_formula('I{}'.format(str(total)), '=SUM(I{}:I{})'.format((row - len(invoice_refund)), row),
+                sheet.write_formula('I{}'.format(str(total_refund)), '=SUM(I{}:I{})'.format((row - len(invoice_refund)), row),
                                     merge_format_total)
-                sheet.write_formula('J{}'.format(str(total)), '=SUM(J{}:J{})'.format((row - len(invoice_refund)), row),
+                sheet.write_formula('J{}'.format(str(total_refund)), '=SUM(J{}:J{})'.format((row - len(invoice_refund)), row),
                                     merge_format_total)
-                sheet.write_formula('K{}'.format(str(total)), '=SUM(K{}:K{})'.format((row - len(invoice_refund)), row),
+                sheet.write_formula('K{}'.format(str(total_refund)), '=SUM(K{}:K{})'.format((row - len(invoice_refund)), row),
                                     merge_format_total)
-                sheet.write_formula('L{}'.format(str(total)), '=SUM(L{}:L{})'.format((row - len(invoice_refund)), row),
+                sheet.write_formula('L{}'.format(str(total_refund)), '=SUM(L{}:L{})'.format((row - len(invoice_refund)), row),
                                     merge_format_total)
             workbook.close()
             with open(file_name, "rb") as file:
