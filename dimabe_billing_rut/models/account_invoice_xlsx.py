@@ -231,22 +231,22 @@ class AccountInvoiceXlsx(models.Model):
                                   'Total Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
                                   merge_format_total_text)
                 sheet.write('G{}'.format(str(total)), str(len(invoice)), merge_format_total)
-                sheet.write_formula('H{}'.format(str(total)), '=SUM(H{}:H{})'.format((len(invoice) - row), row),
+                sheet.write_formula('H{}'.format(str(total)), '=SUM(H{}:H{})'.format((row - len(invoice)), row),
                                     merge_format_total)
-                sheet.write_formula('I{}'.format(str(total)), '=SUM(I{}:I{})'.format((len(invoice) - row), row),
-                                    merge_format_total)
-                sheet.write_formula('J{}'.format(str(total)), '=SUM(J{}:J{})'.format((len(invoice) - row), row),
-                                    merge_format_total)
-                sheet.write_formula('K{}'.format(str(total)), '=SUM(K{}:K{})'.format((len(invoice) - row), row),
-                                    merge_format_total)
-                sheet.write_formula('L{}'.format(str(total)), '=SUM(L{}:L{})'.format((len(invoice) - row), row),
-                                    merge_format_total)
+                sheet.write_formula('I{}'.format(str(total)), '=SUM(I{}:I{})'.format((row - len(invoice), row),
+                                    merge_format_total))
+                sheet.write_formula('J{}'.format(str(total)), '=SUM(J{}:J{})'.format((row - len(invoice), row),
+                                    merge_format_total))
+                sheet.write_formula('K{}'.format(str(total)), '=SUM(K{}:K{})'.format((row - len(invoice), row),
+                                    merge_format_total))
+                sheet.write_formula('L{}'.format(str(total)), '=SUM(L{}:L{})'.format((row - len(invoice), row),
+                                    merge_format_total))
                 invoice_refund = self.env['account.invoice'].search(
                     [('company_id.id', '=', company.id), ('type', '=', 'in_refund'), ('state', '=', 'paid'),
                      ('date_invoice', '>', self.from_date), ('date_invoice', '<', self.to_date)])
-                row += 2
-                sheet.merge_range('A{}:F{}'.format(row, row),
-                                  'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
+                row += 3
+                sheet.merge_range('A{}:F{}'.format((row - len(invoice)), row),
+                                  'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)',
                                   merge_format_string)
 
                 for ref in invoice_refund:
