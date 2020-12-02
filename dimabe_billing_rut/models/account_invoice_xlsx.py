@@ -248,7 +248,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.merge_range('A{}:F{}'.format(row , row),
                                   'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)',
                                   merge_format_string)
-
+                row += 1
                 for ref in invoice_refund:
                     sheet.write('B{}'.format(str(row)), ref.reference, merge_format_string)
                     sheet.write('C{}'.format(str(row)), ref.number, merge_format_string)
