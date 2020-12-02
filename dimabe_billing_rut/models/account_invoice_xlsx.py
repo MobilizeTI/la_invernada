@@ -247,10 +247,13 @@ class AccountInvoiceXlsx(models.Model):
                 row += 3
                 sheet.merge_range('A{}:F{}'.format(row , row),
                                   'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)',
-                                  merge_format_string)
+                                  merge_format_total_text)
                 row += 1
                 for ref in invoice_refund:
-                    sheet.write('B{}'.format(str(row)), ref.reference, merge_format_string)
+                    ref_value = ref.reference
+                    if not ref_value:
+                        ref_value = ''
+                    sheet.write('B{}'.format(str(row)), ref_value, merge_format_string)
                     sheet.write('C{}'.format(str(row)), ref.number, merge_format_string)
                     sheet.write('D{}'.format(str(row)), ref.date_invoice.strftime("%d/%m/%Y"), merge_format_string)
                     rut = ref.partner_id.invoice_rut
