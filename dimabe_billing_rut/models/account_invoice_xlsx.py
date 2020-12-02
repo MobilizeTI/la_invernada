@@ -171,6 +171,12 @@ class AccountInvoiceXlsx(models.Model):
                     'valign': 'vcenter',
                     'num_format': '0,000'
                 })
+                merge_format_total_text = workbook.add_format({
+                    'border': 1,
+                    'bold': 1,
+                    'align': 'left',
+                    'valign': 'vcenter'
+                })
                 company = self.env['res.company'].search(
                     [('id', '=', wk['company_id'])])
                 region = self.env['region.address'].search([('id', '=', 1)])
@@ -238,7 +244,7 @@ class AccountInvoiceXlsx(models.Model):
                 invoice_refund = self.env['account.invoice'].search(
                     [('company_id.id', '=', company.id), ('type', '=', 'in_refund'), ('state', '=', 'paid'),
                      ('date_invoice', '>', self.from_date), ('date_invoice', '<', self.to_date)])
-                row += 1
+                row += 2
                 sheet.merge_range('A{}:F{}'.format(row, row),
                                   'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
                                   merge_format_string)
