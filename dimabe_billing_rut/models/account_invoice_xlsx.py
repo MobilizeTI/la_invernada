@@ -73,6 +73,12 @@ class AccountInvoiceXlsx(models.Model):
                     'valign': 'vcenter',
                     'num_format': '0,000'
                 })
+                merge_format_total_text = workbook.add_format({
+                    'border': 1,
+                    'bold': 1,
+                    'align': 'left',
+                    'valign': 'vcenter'
+                })
                 company = self.env['res.company'].search(
                     [('id', '=', wk['company_id'])])
                 region = self.env['region.address'].search([('id', '=', 1)])
@@ -81,7 +87,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.merge_range('A2:C2', company.vat, merge_format_string)
                 sheet.merge_range('A3:C3', '{}, Region {}'.format(
                     company.city, region.name.capitalize()), merge_format_string)
-                sheet.merge_range('A5:L5', 'Libro de Compras',
+                sheet.merge_range('A5:L5', 'Libro de Ventas',
                                   merge_format_title)
                 sheet.merge_range(
                     'A6:L6', 'Libro de Compras Ordenado Por fecha	', merge_format_string)
@@ -96,10 +102,11 @@ class AccountInvoiceXlsx(models.Model):
                 sheet = self.set_title(sheet, merge_format_title)
 
                 invoice = self.env['account.invoice'].search(
-                    [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
-                     ('date_invoice', '<', self.to_date)])
-                row = 13
-
+                    [('company_id.id', '=', company.id), ('type', '=', 'out_invoice'), ('state', '=', 'paid'),
+                     ('date_invoice', '>', self.from_date), ('date_invoice', '<', self.to_date)])
+                row = 14
+                sheet.merge_range('A13:F13', 'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
+                                  merge_format_total_text)
                 for inv in invoice:
                     sheet.write('B{}'.format(str(row)), inv.reference, merge_format_string)
                     sheet.write('C{}'.format(str(row)), inv.number, merge_format_string)
@@ -111,22 +118,82 @@ class AccountInvoiceXlsx(models.Model):
                     sheet.write('F{}'.format(str(row)), inv.partner_id.display_name, merge_format_string)
                     sheet.write('H{}'.format(str(row)), round(inv.amount_untaxed_invoice_signed), merge_format_number)
                     sheet.write('I{}'.format(str(row)), round(inv.amount_total_signed), merge_format_number)
-                    sheet.write('J{}'.format(str(row)), round(inv.amount_tax_signed), merge_format_number)
+                    days = self.diff_dates(inv.date_invoice, today)
+                    if days > 90:
+                        sheet.write('K{}'.format(str(row)), round(inv.amount_tax), merge_format_number)
+                        sheet.write('J{}'.format(str(row)), '0', merge_format_number)
+                    else:
+                        sheet.write('K{}'.format(str(row)), '0', merge_format_number)
+                        sheet.write('J{}'.format(str(row)), round(inv.amount_tax), merge_format_number)
                     sheet.write_formula('L{}'.format(str(row)), '=SUM(H{}:J{})'.format(str(row), str(row)),
                                         merge_format_number)
                     row += 1
                 total = row + 1
+                sheet.merge_range('A{}:F{}'.format((row + 1), (row + 1)),
+                                  'Total Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
+                                  merge_format_total_text)
                 sheet.write('G{}'.format(str(total)), str(len(invoice)), merge_format_total)
-                sheet.write_formula('H{}'.format(str(total)), '=SUM(H13:H{})'.format(row), merge_format_total)
-                sheet.write_formula('I{}'.format(str(total)), '=SUM(I13:I{})'.format(row), merge_format_total)
-                sheet.write_formula('J{}'.format(str(total)), '=SUM(J13:J{})'.format(row), merge_format_total)
-                sheet.write_formula('K{}'.format(str(total)), '=SUM(K13:K{})'.format(row), merge_format_total)
-                sheet.write_formula('L{}'.format(str(total)), '=SUM(L13:L{})'.format(row), merge_format_total)
+                sheet.write_formula('H{}'.format(str(total)), '=SUM(H{}:H{})'.format((row - len(invoice)), row),
+                                    merge_format_total)
+                sheet.write_formula('I{}'.format(str(total)), '=SUM(I{}:I{})'.format((row - len(invoice)), row),
+                                    merge_format_total)
+                sheet.write_formula('J{}'.format(str(total)), '=SUM(J{}:J{})'.format((row - len(invoice)), row),
+                                    merge_format_total)
+                sheet.write_formula('K{}'.format(str(total)), '=SUM(K{}:K{})'.format((row - len(invoice)), row),
+                                    merge_format_total)
+                sheet.write_formula('L{}'.format(str(total)), '=SUM(L{}:L{})'.format((row - len(invoice)), row),
+                                    merge_format_total)
+                invoice_refund = self.env['account.invoice'].search(
+                    [('company_id.id', '=', company.id), ('type', '=', 'out_refund'), ('state', '=', 'paid'),
+                     ('date_invoice', '>', self.from_date), ('date_invoice', '<', self.to_date)])
+                row += 3
+                sheet.merge_range('A{}:F{}'.format(row, row),
+                                  'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)',
+                                  merge_format_total_text)
+                row += 1
+                for ref in invoice_refund:
+                    ref_value = ref.reference
+                    if not ref_value:
+                        ref_value = ''
+                    sheet.write('B{}'.format(str(row)), ref_value, merge_format_string)
+                    sheet.write('C{}'.format(str(row)), ref.number, merge_format_string)
+                    sheet.write('D{}'.format(str(row)), ref.date_invoice.strftime("%d/%m/%Y"), merge_format_string)
+                    rut = ref.partner_id.invoice_rut
+                    if not rut:
+                        rut = ''
+                    sheet.write('E{}'.format(str(row)), rut, merge_format_string)
+                    sheet.write('F{}'.format(str(row)), ref.partner_id.display_name, merge_format_string)
+                    sheet.write('H{}'.format(str(row)), round(ref.amount_untaxed_invoice_signed), merge_format_number)
+                    sheet.write('I{}'.format(str(row)), round(ref.amount_total_signed), merge_format_number)
+                    days = self.diff_dates(ref.date_invoice, today)
+                    if days > 90:
+                        sheet.write('K{}'.format(str(row)), round(ref.amount_tax), merge_format_number)
+                        sheet.write('J{}'.format(str(row)), '0', merge_format_number)
+                    else:
+                        sheet.write('K{}'.format(str(row)), '0', merge_format_number)
+                        sheet.write('J{}'.format(str(row)), round(ref.amount_tax), merge_format_number)
+                    sheet.write_formula('L{}'.format(str(row)), '=SUM(H{}:J{})'.format(str(row), str(row)),
+                                        merge_format_number)
+                    row += 1
+                sheet.merge_range('A{}:F{}'.format((row + 1), (row + 1)),
+                                  'Total NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)',
+                                  merge_format_total_text)
+                sheet.write('G{}'.format(str(total)), str(len(invoice)), merge_format_total)
+                sheet.write_formula('H{}'.format(str(total)), '=SUM(H{}:H{})'.format((row - len(invoice_refund)), row),
+                                    merge_format_total)
+                sheet.write_formula('I{}'.format(str(total)), '=SUM(I{}:I{})'.format((row - len(invoice_refund)), row),
+                                    merge_format_total)
+                sheet.write_formula('J{}'.format(str(total)), '=SUM(J{}:J{})'.format((row - len(invoice_refund)), row),
+                                    merge_format_total)
+                sheet.write_formula('K{}'.format(str(total)), '=SUM(K{}:K{})'.format((row - len(invoice_refund)), row),
+                                    merge_format_total)
+                sheet.write_formula('L{}'.format(str(total)), '=SUM(L{}:L{})'.format((row - len(invoice_refund)), row),
+                                    merge_format_total)
             workbook.close()
             with open(file_name, "rb") as file:
                 file_base64 = base64.b64encode(file.read())
-            self.write({'sale_file': file_base64,
-                        'sale_report_name': 'Libro de Venta.xlsx'})
+            self.write({'purchase_file': file_base64,
+                        'purchase_report_name': 'Libro de Compra.xlsx'})
             return {
                 "type": "ir.actions.do_nothing",
             }
