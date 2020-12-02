@@ -203,7 +203,8 @@ class AccountInvoiceXlsx(models.Model):
                     sheet.write('F{}'.format(str(row)),inv.partner_id.display_name,merge_format_string)
                     sheet.write('H{}'.format(str(row)),round(inv.amount_untaxed_invoice_signed),merge_format_number)
                     sheet.write('I{}'.format(str(row)),round(inv.amount_total_signed),merge_format_number)
-                    sheet.write('J{}'.format(str(row)),round(inv.amount_tax_signed),merge_format_number)
+                    days = self.diff_dates(today,inv.date_invoice)
+                    raise models.ValidationError(days)
                     sheet.write_formula('L{}'.format(str(row)),'=SUM(H{}:J{})'.format(str(row),str(row)),merge_format_number)
                     row += 1
                 total = row +1
@@ -254,3 +255,6 @@ class AccountInvoiceXlsx(models.Model):
         sheet.set_column('F:F',45)
         sheet.set_row(9, 6)
         return sheet
+
+    def diff_dates(self,date1, date2):
+        return abs(date2 - date1).days
