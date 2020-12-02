@@ -299,10 +299,10 @@ class AccountInvoiceXlsx(models.Model):
 
     def set_size(self, sheet):
         sheet.set_column('F:F', 40)
-        sheet.set_column('B:B', 10)
+        sheet.set_column('B:B', 17.56)
         sheet.set_column('H:H', 11)
         sheet.set_column('J:J', 11)
-        sheet.set_column('I:I', 10.44)
+        sheet.set_column('I:I', 12.56)
         sheet.set_column('L:L', 20)
         sheet.set_column('A:A', 6)
         sheet.set_column('D:D', 10)
