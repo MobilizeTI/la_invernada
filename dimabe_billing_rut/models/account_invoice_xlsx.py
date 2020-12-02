@@ -204,7 +204,7 @@ class AccountInvoiceXlsx(models.Model):
                      ('date_invoice', '>', self.from_date), ('date_invoice', '<', self.to_date)])
                 row = 14
                 sheet.merge_range('A13:F13', 'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
-                                  merge_format_string)
+                                  merge_format_total_text)
                 for inv in invoice:
                     sheet.write('B{}'.format(str(row)), inv.reference, merge_format_string)
                     sheet.write('C{}'.format(str(row)), inv.number, merge_format_string)
@@ -229,7 +229,7 @@ class AccountInvoiceXlsx(models.Model):
                 total = row + 1
                 sheet.merge_range('A{}:F{}'.format((row + 1), (row + 1)),
                                   'Total Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
-                                  merge_format_title)
+                                  merge_format_total_text)
                 sheet.write('G{}'.format(str(total)), str(len(invoice)), merge_format_total)
                 sheet.write_formula('H{}'.format(str(total)), '=SUM(H{}:H{})'.format((len(invoice) - row), row),
                                     merge_format_total)
@@ -248,6 +248,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.merge_range('A{}:F{}'.format(row, row),
                                   'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
                                   merge_format_string)
+
                 for ref in invoice_refund:
                     sheet.write('B{}'.format(str(row)), ref.reference, merge_format_string)
                     sheet.write('C{}'.format(str(row)), ref.number, merge_format_string)
