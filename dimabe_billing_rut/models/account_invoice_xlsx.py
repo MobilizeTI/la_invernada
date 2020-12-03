@@ -284,7 +284,7 @@ class AccountInvoiceXlsx(models.Model):
             "%d/%m/%Y"), self.to_date.strftime("%d/%m/%Y")), formats['string'])
         sheet.merge_range(
             'A9:L9', 'Moneda : Peso Chileno', formats['string'])
-        sheet = self.set_title(sheet, formats['title'])
+        sheet = self.set_title(sheet, formats['title'],book)
         return sheet
 
     def set_formats(self, workbook):
@@ -343,13 +343,16 @@ class AccountInvoiceXlsx(models.Model):
                             formats['total'])
         return sheet
 
-    def set_title(self, sheet, format):
+    def set_title(self, sheet, format,book=0):
         sheet.write('A11', 'Cod.SII', format)
         sheet.write('B11', 'Folio', format)
         sheet.write('C11', 'Cor.Interno', format)
         sheet.write('D11', 'Fecha', format)
         sheet.write('E11', 'RUT', format)
-        sheet.write('F11', 'Nombre de Proevedor', format)
+        if book == 0:
+            sheet.write('F11', 'Nombre de Cliente', format)
+        else:
+            sheet.write('F11', 'Nombre de Proveedor', format)
         sheet.write('G11', ' ', format)
         sheet.write('H11', 'EXENTO', format)
         sheet.write('I11', 'NETO', format)
