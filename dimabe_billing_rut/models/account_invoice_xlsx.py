@@ -55,18 +55,22 @@ class AccountInvoiceXlsx(models.Model):
                 for inv in invoices:
                     sheet = self.set_data_invoice(sheet, row, inv, formats)
                     if inv.id == invoices[-1].id:
-                        row += 2
+                        row += 3
                     else:
                         row += 1
+
                 sheet = self.set_total(sheet, row, invoices, formats)
                 row += 1
                 exempts = self.env['account.invoice'].search(
                     [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 34)])
+                sheet.merge_range('A{}:F{}'.format((row - 1), (row - 1)),
+                                  'Factura de compra electronica. (FACTURA COMPRA EXENTA ELECTRONICA)',
+                                  formats['text_total'])
                 for ex in exempts:
                     sheet = self.set_data_invoice(sheet, row, ex, formats)
                     if ex.id == exempts[-1].id:
-                        row += 2
+                        row += 3
                     else:
                         row += 1
                 sheet = self.set_total(sheet, row, exempts, formats)
@@ -74,6 +78,9 @@ class AccountInvoiceXlsx(models.Model):
                 credit_notes = self.env['account.invoice'].search(
                     [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 61)])
+                sheet.merge_range('A{}:F{}'.format((row - 1), (row - 1)),
+                                  'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)',
+                                  formats['text_total'])
                 for note_cre in credit_notes:
                     sheet = self.set_data_invoice(sheet, row, note_cre, formats)
                     if note_cre.id == credit_notes[-1].id:
@@ -85,10 +92,13 @@ class AccountInvoiceXlsx(models.Model):
                 debit_notes = self.env['account.invoice'].search(
                     [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 56)])
+                sheet.merge_range('A{}:F{}'.format((row - 1), (row - 1)),
+                                  'NOTA DE DEBITO ELECTRONICA (NOTA DE DEBITO COMPRA ELECTRONICA)',
+                                  formats['text_total'])
                 for note_deb in debit_notes:
                     sheet = self.set_data_invoice(sheet, row, note_deb, formats)
                     if note_deb.id == debit_notes[-1].id:
-                        row += 2
+                        row += 3
                     else:
                         row += 1
                 sheet = self.set_total(sheet, row, debit_notes, formats)
