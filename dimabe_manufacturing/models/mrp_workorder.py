@@ -351,7 +351,7 @@ class MrpWorkorder(models.Model):
         #             if check.quality_state == 'none' and check.qty_done > 0:
         #                 self.action_next()
         # self.action_first_skipped_step()
-        for check in self.checks_ids:
+        for check in self.check_ids:
             if not check.component_is_byproduct:
                 check.qty_done = 0
                 self.action_skip()
