@@ -297,7 +297,7 @@ class AccountInvoiceXlsx(models.Model):
             'bold': 0,
             'align': 'center',
             'valign': 'vcenter',
-            'num_format': '0.000'
+            'num_format': '#,##0'
         })
         merge_format_title = workbook.add_format({
             'border': 1,
@@ -310,7 +310,7 @@ class AccountInvoiceXlsx(models.Model):
             'bold': 1,
             'align': 'center',
             'valign': 'vcenter',
-            'num_format': '0.000'
+            'num_format': '#,##0'
         })
         merge_format_total_text = workbook.add_format({
             'border': 1,
