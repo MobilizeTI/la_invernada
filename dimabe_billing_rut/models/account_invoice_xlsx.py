@@ -369,7 +369,7 @@ class AccountInvoiceXlsx(models.Model):
             sheet.write('H{}'.format(str(row)),taxes.price_subtotal, formats['number'])
         else:
             sheet.write('H{}'.format(str(row)), '0', formats['number'])
-        sheet.write('I{}'.format(str(row)), round(inv.amount_total_signed), formats['number'])
+        sheet.write('I{}'.format(str(row)), round(inv.amount_untaxed_signed), formats['number'])
         days = self.diff_dates(inv.date_invoice, date.today())
         if days > 90:
             sheet.write('K{}'.format(str(row)), round(inv.amount_tax), formats['number'])
