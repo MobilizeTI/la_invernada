@@ -347,6 +347,7 @@ class MrpWorkorder(models.Model):
                     'state':'confirmed',
                     'location_dest_id':self.production_id.location_dest_id.id,
                     'location_id':7,
+                    'workorder_id':self.id,
                     'is_raw':False
                 })
         return super(MrpWorkorder, self).open_tablet_view()
