@@ -160,6 +160,7 @@ class AccountInvoiceXlsx(models.Model):
         return sheet
 
     def set_data_invoice(self,sheet,row,inv,formats):
+        sheet.write('A{}'.format(str(row)), inv.dte_type_id.code, formats['string'])
         sheet.write('B{}'.format(str(row)), inv.reference, formats['string'])
         sheet.write('C{}'.format(str(row)), inv.number, formats['string'])
         sheet.write('D{}'.format(str(row)), inv.date_invoice.strftime("%d/%m/%Y"),formats['string'])
@@ -168,7 +169,11 @@ class AccountInvoiceXlsx(models.Model):
             rut = ''
         sheet.write('E{}'.format(str(row)), rut, formats['string'])
         sheet.write('F{}'.format(str(row)), inv.partner_id.display_name, formats['string'])
-        sheet.write('H{}'.format(str(row)), round(inv.amount_untaxed_invoice_signed), formats['number'])
+        taxes = inv.mapped('invoice_line_ids').mapped('invoice_line_tax_ids').filtered(lambda a: a.name == 'Exento')
+        if taxes:
+            sheet.write('H{}'.format(str(row)), taxes.price_subtotal, formats['number'])
+        else:
+            sheet.write('H{}'.format(str(row)), '0', formats['number'])
         sheet.write('I{}'.format(str(row)), round(inv.amount_total_signed), formats['number'])
         days = self.diff_dates(inv.date_invoice, date.today())
         if days > 90:
