@@ -268,6 +268,7 @@ class AccountInvoiceXlsx(models.Model):
         else:
             sheet.write('K{}'.format(str(row)), '0', formats['number'])
             sheet.write('J{}'.format(str(row)), round(inv.amount_tax), formats['number'])
+        sheet.write_formula('L{}'.format(str(row)),'=SUM(H{}:J{})'.format(row,row))
         return sheet
 
     def diff_dates(self, date1, date2):
