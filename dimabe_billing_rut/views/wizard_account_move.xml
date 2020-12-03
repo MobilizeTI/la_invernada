@@ -28,5 +28,5 @@
 		<field name="view_id" ref="wizard_export_account_move" />
 		<field name="target">new</field>
     </record>
-    <menuitem name="Libro Legales" parent="account.menu_finance_reports" id="account-menu-item" action="action_export_account_move"/>
+    <menuitem name="Libros Legales" parent="account.menu_finance_reports" id="account-menu-item" action="action_export_account_move"/>
 </odoo>
