@@ -297,7 +297,7 @@ class AccountInvoiceXlsx(models.Model):
             'bold': 0,
             'align': 'center',
             'valign': 'vcenter',
-            'num_format': '0,000'
+            'num_format': '0.000'
         })
         merge_format_title = workbook.add_format({
             'border': 1,
@@ -310,7 +310,7 @@ class AccountInvoiceXlsx(models.Model):
             'bold': 1,
             'align': 'center',
             'valign': 'vcenter',
-            'num_format': '0,000'
+            'num_format': '0.000'
         })
         merge_format_total_text = workbook.add_format({
             'border': 1,
@@ -331,16 +331,31 @@ class AccountInvoiceXlsx(models.Model):
                           string,
                           formats['text_total'])
         sheet.write('G{}'.format(str(row)), str(len(invoices)), formats['total'])
-        sheet.write_formula('H{}'.format(str(row)), '=SUM(H{}:H{})'.format(begin, end),
-                            formats['total'])
-        sheet.write_formula('I{}'.format(str(row)), '=SUM(I{}:I{})'.format(begin, end),
-                            formats['total'])
-        sheet.write_formula('J{}'.format(str(row)), '=SUM(J{}:J{})'.format(begin, end),
-                            formats['total'])
-        sheet.write_formula('K{}'.format(str(row)), '=SUM(K{}:K{})'.format(begin, end),
-                            formats['total'])
-        sheet.write_formula('L{}'.format(str(row)), '=SUM(L{}:L{})'.format(begin, end),
-                            formats['total'])
+        if len(invoices) > 0:
+            sheet.write_formula('H{}'.format(str(row)), '=SUM(H{}:H{})'.format(begin, end),
+                                formats['total'])
+        else:
+            sheet.write('H{}'.format(str(row)),'0',formats['total'])
+        if len(invoices) > 0:
+            sheet.write_formula('I{}'.format(str(row)), '=SUM(I{}:I{})'.format(begin, end),
+                                formats['total'])
+        else:
+            sheet.write('I{}'.format(str(row)),'0',formats['total'])
+        if len(invoices) > 0:
+            sheet.write_formula('J{}'.format(str(row)), '=SUM(J{}:J{})'.format(begin, end),
+                                formats['total'])
+        else:
+            sheet.write('J{}'.format(str(row)),'0',formats['total'])
+        if len(invoices) > 0:
+            sheet.write_formula('K{}'.format(str(row)), '=SUM(K{}:K{})'.format(begin, end),
+                                formats['total'])
+        else:
+            sheet.write('K{}'.format(str(row)),'0',formats['total'])
+        if len(invoices) > 0:
+            sheet.write_formula('L{}'.format(str(row)), '=SUM(L{}:L{})'.format(begin, end),
+                                formats['total'])
+        else:
+            sheet.write('L{}'.format(str(row)),'0',formats['total'])
         return sheet
 
     def set_title(self, sheet, format,book=0):
