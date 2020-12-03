@@ -52,10 +52,11 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.merge_range('A{}:F{}'.format((row -1),(row -1)), 'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
                                   formats['text_total'])
                 for inv in invoices:
-                    sheet.write('B{}'.format(str(row)), inv.reference, formats['string'])
-                    sheet.write('C{}'.format(str(row)), inv.number, formats['string'])
-                    sheet.write('D{}'.format(str(row)), inv.date_invoice.strftime("%d/%m/%Y"), formats['string'])
-
+                    sheet = self.set_data_invoice(sheet,row,inv,formats)
+                    if inv.id == invoices[-1].id:
+                        row += 2
+                    else:
+                        row += 1
 
         workbook.close()
         with open(file_name, "rb") as file:
@@ -156,4 +157,24 @@ class AccountInvoiceXlsx(models.Model):
         sheet.write('J11', 'IVA', format)
         sheet.write('K11', 'IVA NO RECUPERABLE', format)
         sheet.write('L11', 'Total', format)
+        return sheet
+
+    def set_data_invoice(self,sheet,row,inv,formats):
+        sheet.write('B{}'.format(str(row)), inv.reference, formats['string'])
+        sheet.write('C{}'.format(str(row)), inv.number, formats['string'])
+        sheet.write('D{}'.format(str(row)), inv.date_invoice.strftime("%d/%m/%Y"),formats['string'])
+        rut = inv.partner_id.invoice_rut
+        if not rut:
+            rut = ''
+        sheet.write('E{}'.format(str(row)), rut, formats['string'])
+        sheet.write('F{}'.format(str(row)), inv.partner_id.display_name, formats['string'])
+        sheet.write('H{}'.format(str(row)), round(inv.amount_untaxed_invoice_signed), formats['number'])
+        sheet.write('I{}'.format(str(row)), round(inv.amount_total_signed), formats['number'])
+        days = self.diff_dates(inv.date_invoice, date.today)
+        if days > 90:
+            sheet.write('K{}'.format(str(row)), round(inv.amount_tax),formats['number'])
+            sheet.write('J{}'.format(str(row)), '0', formats['number'])
+        else:
+            sheet.write('K{}'.format(str(row)), '0', formats['number'])
+            sheet.write('J{}'.format(str(row)), round(inv.amount_tax), formats['number'])
         return sheet
