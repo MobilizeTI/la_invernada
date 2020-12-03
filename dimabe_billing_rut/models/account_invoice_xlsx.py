@@ -46,7 +46,7 @@ class AccountInvoiceXlsx(models.Model):
                 region = self.env['region.address'].search([('id', '=', 1)])
                 sheet = self.set_data_company(wk['company_object'], sheet, formats, region, 0)
                 invoices = self.env['account.invoice'].search(
-                    [('type', '=', 'in_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
+                    [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date),('dte_type_id.code','=',33)])
                 row = 14
                 sheet.merge_range('A{}:F{}'.format((row -1),(row -1)), 'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
