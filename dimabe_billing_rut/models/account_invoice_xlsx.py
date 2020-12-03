@@ -52,7 +52,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.merge_range('A{}:F{}'.format((row), (row)),
                                   'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
                                   formats['text_total'])
-                row += 1
+                row += 2
                 for inv in invoices:
                     sheet = self.set_data_invoice(sheet, row, inv, formats)
                     if inv.id == invoices[-1].id:
@@ -61,7 +61,7 @@ class AccountInvoiceXlsx(models.Model):
                         row += 1
 
                 sheet = self.set_total(sheet, row, invoices, formats)
-                row += 1
+                row += 2
                 exempts = self.env['account.invoice'].search(
                     [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 34)])
@@ -106,7 +106,7 @@ class AccountInvoiceXlsx(models.Model):
                     else:
                         row += 1
                 sheet = self.set_total(sheet, row, debit_notes, formats)
-                row += 1
+                row += 2
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
