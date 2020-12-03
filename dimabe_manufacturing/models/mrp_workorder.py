@@ -333,7 +333,7 @@ class MrpWorkorder(models.Model):
         return res
 
     def open_tablet_view(self):
-        if self.have_subproduct:
+        if not self.have_subproduct:
             for sub in self.production_id.bom_id.sub_products:
                 lot_tmp = self.env['stock.production.lot'].create({
                     'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
