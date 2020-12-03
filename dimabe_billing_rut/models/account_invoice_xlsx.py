@@ -90,7 +90,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.merge_range('A5:L5', 'Libro de Ventas',
                                   merge_format_title)
                 sheet.merge_range(
-                    'A6:L6', 'Libro de Compras Ordenado Por fecha	', merge_format_string)
+                    'A6:L6', 'Libro de Compras Ordenado Por fecha', merge_format_string)
                 sheet.write('K7', 'Fecha:', merge_format_string)
                 sheet.write('L7', today.strftime(
                     "%d-%m-%Y"), merge_format_string)
