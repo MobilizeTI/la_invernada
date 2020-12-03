@@ -48,7 +48,7 @@ class AccountInvoiceXlsx(models.Model):
                 region = self.env['region.address'].search([('id', '=', 1)])
                 sheet = self.set_data_company(wk['company_object'], sheet, formats, region, 0)
                 invoices = self.env['account.invoice'].search(
-                    [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
+                    [('type', 'in', ('out_invoice','out_refund')), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 33)])
                 row = 14
                 sheet.merge_range('A{}:F{}'.format((row), (row)),
@@ -70,7 +70,7 @@ class AccountInvoiceXlsx(models.Model):
                 begin = 0
                 end = 0
                 exempts = self.env['account.invoice'].search(
-                    [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
+                    [('type', 'in', ('out_invoice','out_refund')), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 34)])
                 sheet.merge_range('A{}:F{}'.format((row), (row)),
                                   'Factura de compra electronica. (FACTURA COMPRA EXENTA ELECTRONICA)',
@@ -90,7 +90,7 @@ class AccountInvoiceXlsx(models.Model):
                 begin = 0
                 end = 0
                 credit_notes = self.env['account.invoice'].search(
-                    [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
+                    [('type', 'in', ('out_invoice','out_refund')), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 61)])
                 sheet.merge_range('A{}:F{}'.format((row), (row)),
                                   'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)',
@@ -110,7 +110,116 @@ class AccountInvoiceXlsx(models.Model):
                 begin = 0
                 end = 0
                 debit_notes = self.env['account.invoice'].search(
-                    [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
+                    [('type', 'in', ('out_invoice','out_refund')), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
+                     ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 56)])
+                sheet.merge_range('A{}:F{}'.format((row), (row)),
+                                  'NOTA DE DEBITO ELECTRONICA (NOTA DE DEBITO COMPRA ELECTRONICA)',
+                                  formats['text_total'])
+                row += 2
+                begin = row
+                for note_deb in debit_notes:
+                    sheet = self.set_data_invoice(sheet, row, note_deb, formats)
+                    if note_deb.id == debit_notes[-1].id:
+                        end = row
+                        row += 3
+                    else:
+                        row += 1
+                sheet = self.set_total(sheet, begin, end, row, debit_notes, formats,
+                                       'Total NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)')
+                row += 2
+        workbook.close()
+        with open(file_name, "rb") as file:
+            file_base64 = base64.b64encode(file.read())
+        self.write({'sale_file': file_base64,
+                    'sale_report_name': 'Libro de Ventas.xlsx'})
+        return {
+            "type": "ir.actions.do_nothing",
+        }
+
+    @api.multi
+    def generate_purchase_book(self):
+        for item in self:
+            file_name = 'temp'
+            array_worksheet = []
+            companies = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)])
+            workbook = xlsxwriter.Workbook(file_name, {'in_memory': True, 'strings_to_numbers': True})
+            begin = 0
+            end = 0
+            for com in companies:
+                worksheet = workbook.add_worksheet(com.display_name)
+                array_worksheet.append({
+                    'company_object': com, 'worksheet': worksheet
+                })
+            for wk in array_worksheet:
+                sheet = wk['worksheet']
+                sheet = self.set_size(sheet)
+                formats = self.set_formats(workbook)
+                region = self.env['region.address'].search([('id', '=', 1)])
+                sheet = self.set_data_company(wk['company_object'], sheet, formats, region, 1)
+                invoices = self.env['account.invoice'].search(
+                    [('type', 'in', ('in_invoice','in_refund')), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
+                     ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 33)])
+                row = 14
+                sheet.merge_range('A{}:F{}'.format((row), (row)),
+                                  'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
+                                  formats['text_total'])
+                row += 1
+                begin = row
+                for inv in invoices:
+                    sheet = self.set_data_invoice(sheet, row, inv, formats)
+                    if inv.id == invoices[-1].id:
+                        end = row
+                        row += 2
+                    else:
+                        row += 1
+
+                sheet = self.set_total(sheet, begin, end, row, invoices, formats,
+                                       'Total Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)')
+                row += 2
+                begin = 0
+                end = 0
+                exempts = self.env['account.invoice'].search(
+                    [('type', '=', 'in_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
+                     ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 34)])
+                sheet.merge_range('A{}:F{}'.format((row), (row)),
+                                  'Factura de compra electronica. (FACTURA COMPRA EXENTA ELECTRONICA)',
+                                  formats['text_total'])
+                row += 2
+                begin = row
+                for ex in exempts:
+                    sheet = self.set_data_invoice(sheet, row, ex, formats)
+                    if ex.id == exempts[-1].id:
+                        end = row
+                        row += 3
+                    else:
+                        row += 1
+                sheet = self.set_total(sheet, begin, end, row, exempts, formats,
+                                       'Total Factura de compra electronica. (FACTURA COMPRA EXENTA ELECTRONICA)')
+                row += 2
+                begin = 0
+                end = 0
+                credit_notes = self.env['account.invoice'].search(
+                    [('type', 'in', ('in_invoice','in_refund')), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
+                     ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 61)])
+                sheet.merge_range('A{}:F{}'.format((row), (row)),
+                                  'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)',
+                                  formats['text_total'])
+                row += 2
+                begin = row
+                for note_cre in credit_notes:
+                    sheet = self.set_data_invoice(sheet, row, note_cre, formats)
+                    if note_cre.id == credit_notes[-1].id:
+                        end = row
+                        row += 3
+                    else:
+                        row += 1
+                sheet = self.set_total(sheet, begin, end, row, credit_notes, formats,
+                                       'Total NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)')
+                row += 2
+                begin = 0
+                end = 0
+                debit_notes = self.env['account.invoice'].search(
+                    [('type', 'in', ('in_invoice','in_refund')), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 56)])
                 sheet.merge_range('A{}:F{}'.format((row), (row)),
                                   'NOTA DE DEBITO ELECTRONICA (NOTA DE DEBITO COMPRA ELECTRONICA)',
