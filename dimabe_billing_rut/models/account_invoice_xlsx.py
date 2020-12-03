@@ -52,7 +52,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.merge_range('A{}:F{}'.format((row), (row)),
                                   'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
                                   formats['text_total'])
-                row +=1
+                row += 1
                 for inv in invoices:
                     sheet = self.set_data_invoice(sheet, row, inv, formats)
                     if inv.id == invoices[-1].id:
@@ -68,7 +68,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.merge_range('A{}:F{}'.format((row), (row)),
                                   'Factura de compra electronica. (FACTURA COMPRA EXENTA ELECTRONICA)',
                                   formats['text_total'])
-                row += 1
+                row += 2
                 for ex in exempts:
                     sheet = self.set_data_invoice(sheet, row, ex, formats)
                     if ex.id == exempts[-1].id:
@@ -76,29 +76,29 @@ class AccountInvoiceXlsx(models.Model):
                     else:
                         row += 1
                 sheet = self.set_total(sheet, row, exempts, formats)
-                row += 1
+                row += 2
                 credit_notes = self.env['account.invoice'].search(
                     [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 61)])
                 sheet.merge_range('A{}:F{}'.format((row), (row)),
                                   'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)',
                                   formats['text_total'])
-                row += 1
+                row += 2
                 for note_cre in credit_notes:
                     sheet = self.set_data_invoice(sheet, row, note_cre, formats)
                     if note_cre.id == credit_notes[-1].id:
-                        row += 2
+                        row += 3
                     else:
                         row += 1
                 sheet = self.set_total(sheet, row, credit_notes, formats)
-                row += 1
+                row += 2
                 debit_notes = self.env['account.invoice'].search(
                     [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 56)])
                 sheet.merge_range('A{}:F{}'.format((row), (row)),
                                   'NOTA DE DEBITO ELECTRONICA (NOTA DE DEBITO COMPRA ELECTRONICA)',
                                   formats['text_total'])
-                row += 1
+                row += 2
                 for note_deb in debit_notes:
                     sheet = self.set_data_invoice(sheet, row, note_deb, formats)
                     if note_deb.id == debit_notes[-1].id:
