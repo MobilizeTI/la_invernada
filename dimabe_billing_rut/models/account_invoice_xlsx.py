@@ -52,6 +52,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.merge_range('A{}:F{}'.format((row - 1), (row - 1)),
                                   'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
                                   formats['text_total'])
+                row +=1
                 for inv in invoices:
                     sheet = self.set_data_invoice(sheet, row, inv, formats)
                     if inv.id == invoices[-1].id:
@@ -67,6 +68,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.merge_range('A{}:F{}'.format((row - 1), (row - 1)),
                                   'Factura de compra electronica. (FACTURA COMPRA EXENTA ELECTRONICA)',
                                   formats['text_total'])
+                row += 1
                 for ex in exempts:
                     sheet = self.set_data_invoice(sheet, row, ex, formats)
                     if ex.id == exempts[-1].id:
@@ -81,6 +83,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.merge_range('A{}:F{}'.format((row - 1), (row - 1)),
                                   'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)',
                                   formats['text_total'])
+                row += 1
                 for note_cre in credit_notes:
                     sheet = self.set_data_invoice(sheet, row, note_cre, formats)
                     if note_cre.id == credit_notes[-1].id:
@@ -95,6 +98,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.merge_range('A{}:F{}'.format((row - 1), (row - 1)),
                                   'NOTA DE DEBITO ELECTRONICA (NOTA DE DEBITO COMPRA ELECTRONICA)',
                                   formats['text_total'])
+                row += 1
                 for note_deb in debit_notes:
                     sheet = self.set_data_invoice(sheet, row, note_deb, formats)
                     if note_deb.id == debit_notes[-1].id:
