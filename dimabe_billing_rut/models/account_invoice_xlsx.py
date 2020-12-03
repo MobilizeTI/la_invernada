@@ -58,7 +58,41 @@ class AccountInvoiceXlsx(models.Model):
                         row += 2
                     else:
                         row += 1
-
+                sheet = self.set_total(sheet, row, invoices, formats)
+                row += 1
+                exempts = self.env['account.invoice'].search(
+                    [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
+                     ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 34)])
+                for ex in exempts:
+                    sheet = self.set_data_invoice(sheet, row, ex, formats)
+                    if ex.id == exempts[-1].id:
+                        row += 2
+                    else:
+                        row += 1
+                sheet = self.set_total(sheet, row, exempts, formats)
+                row += 1
+                credit_notes = self.env['account.invoice'].search(
+                    [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
+                     ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 61)])
+                for note_cre in credit_notes:
+                    sheet = self.set_data_invoice(sheet, row, note_cre, formats)
+                    if note_cre.id == credit_notes[-1].id:
+                        row += 2
+                    else:
+                        row += 1
+                sheet = self.set_total(sheet, row, credit_notes, formats)
+                row += 1
+                debit_notes = self.env['account.invoice'].search(
+                    [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
+                     ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 56)])
+                for note_deb in debit_notes:
+                    sheet = self.set_data_invoice(sheet, row, note_deb, formats)
+                    if note_deb.id == debit_notes[-1].id:
+                        row += 2
+                    else:
+                        row += 1
+                sheet = self.set_total(sheet, row, debit_notes, formats)
+                row += 1
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
@@ -157,6 +191,7 @@ class AccountInvoiceXlsx(models.Model):
                             formats['total'])
         sheet.write_formula('L{}'.format(str(row)), '=SUM(L{}:L{})'.format((row - len(invoices)), row),
                             formats['total'])
+        return sheet
 
     def set_title(self, sheet, format):
         sheet.write('A11', 'Cod.SII', format)
