@@ -349,6 +349,7 @@ class MrpWorkorder(models.Model):
                     'location_dest_id':self.production_id.location_dest_id.id,
                     'location_id':7,
                     'workorder_id':self.id,
+                    'done_wo':False,
                     'is_raw':False
                 })
         return super(MrpWorkorder, self).open_tablet_view()
