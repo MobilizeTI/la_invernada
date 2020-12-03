@@ -343,6 +343,7 @@ class MrpWorkorder(models.Model):
                 self.env['stock.move.line'].create({
                     'name': self.name,
                     'product_id': sub.product_id.id,
+                    'product_uom_id':sub.product_id.uom_id.id,
                     'lot_id': lot_tmp.id,
                     'state':'confirmed',
                     'location_dest_id':self.production_id.location_dest_id.id,
