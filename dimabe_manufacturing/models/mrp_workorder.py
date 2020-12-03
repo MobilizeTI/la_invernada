@@ -352,9 +352,9 @@ class MrpWorkorder(models.Model):
                     'done_wo':False,
                     'is_raw':False
                 })
-                self.write({
-                    'have_subproduct':True
-                })
+            self.write({
+                'have_subproduct': True
+            })
         return super(MrpWorkorder, self).open_tablet_view()
 
     def action_next(self):
