@@ -59,8 +59,8 @@ class AccountInvoiceXlsx(models.Model):
                 for inv in invoices:
                     sheet = self.set_data_invoice(sheet, row, inv, formats)
                     if inv.id == invoices[-1].id:
-                        row += 2
                         end = row
+                        row += 2
                     else:
                         row += 1
 
@@ -80,8 +80,8 @@ class AccountInvoiceXlsx(models.Model):
                 for ex in exempts:
                     sheet = self.set_data_invoice(sheet, row, ex, formats)
                     if ex.id == exempts[-1].id:
-                        row += 3
                         end = row
+                        row += 3
                     else:
                         row += 1
                 sheet = self.set_total(sheet, begin, end, row, exempts, formats,
@@ -100,8 +100,8 @@ class AccountInvoiceXlsx(models.Model):
                 for note_cre in credit_notes:
                     sheet = self.set_data_invoice(sheet, row, note_cre, formats)
                     if note_cre.id == credit_notes[-1].id:
-                        row += 3
                         end = row
+                        row += 3
                     else:
                         row += 1
                 sheet = self.set_total(sheet, begin, end, row, credit_notes, formats,
@@ -120,8 +120,8 @@ class AccountInvoiceXlsx(models.Model):
                 for note_deb in debit_notes:
                     sheet = self.set_data_invoice(sheet, row, note_deb, formats)
                     if note_deb.id == debit_notes[-1].id:
-                        row += 3
                         end = row
+                        row += 3
                     else:
                         row += 1
                 sheet = self.set_total(sheet, begin, end, row, debit_notes, formats,
