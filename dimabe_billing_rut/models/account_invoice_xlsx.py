@@ -42,7 +42,7 @@ class AccountInvoiceXlsx(models.Model):
                 })
             for wk in array_worksheet:
                 sheet = wk['worksheet']
-                sheet = set.set_size(sheet)
+                sheet = self.set_size(sheet)
                 formats = self.set_formats(workbook)
                 region = self.env['region.address'].search([('id', '=', 1)])
                 sheet.merge_range('A1:C1', wk['company_object'].display_name, formats['string'])
