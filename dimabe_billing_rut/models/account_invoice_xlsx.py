@@ -52,15 +52,15 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.merge_range('A{}:F{}'.format((row), (row)),
                                   'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
                                   formats['text_total'])
-                row += 2
+                row += 1
                 for inv in invoices:
                     sheet = self.set_data_invoice(sheet, row, inv, formats)
                     if inv.id == invoices[-1].id:
-                        row += 3
+                        row += 2
                     else:
                         row += 1
 
-                sheet = self.set_total(sheet, row, invoices, formats)
+                sheet = self.set_total(sheet, row, invoices, formats,'Total Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)')
                 row += 2
                 exempts = self.env['account.invoice'].search(
                     [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
@@ -75,7 +75,7 @@ class AccountInvoiceXlsx(models.Model):
                         row += 3
                     else:
                         row += 1
-                sheet = self.set_total(sheet, row, exempts, formats)
+                sheet = self.set_total(sheet, row, exempts, formats,'Total Factura de compra electronica. (FACTURA COMPRA EXENTA ELECTRONICA)')
                 row += 2
                 credit_notes = self.env['account.invoice'].search(
                     [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
@@ -90,7 +90,7 @@ class AccountInvoiceXlsx(models.Model):
                         row += 3
                     else:
                         row += 1
-                sheet = self.set_total(sheet, row, credit_notes, formats)
+                sheet = self.set_total(sheet, row, credit_notes, formats,'Total NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)')
                 row += 2
                 debit_notes = self.env['account.invoice'].search(
                     [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
@@ -193,7 +193,10 @@ class AccountInvoiceXlsx(models.Model):
             'text_total': merge_format_total_text
         }
 
-    def set_total(self, sheet, row, invoices, formats):
+    def set_total(self, sheet, row, invoices, formats,string=''):
+        sheet.merge_range('A{}:F{}'.format((row), (row)),
+                          string,
+                          formats['text_total'])
         sheet.write('G{}'.format(str(row)), str(len(invoices)), formats['total'])
         sheet.write_formula('H{}'.format(str(row)), '=SUM(H{}:H{})'.format(((row - 2) - len(invoices)), row),
                             formats['total'])
