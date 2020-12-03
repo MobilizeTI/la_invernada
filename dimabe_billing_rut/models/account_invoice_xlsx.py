@@ -49,7 +49,7 @@ class AccountInvoiceXlsx(models.Model):
                     [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 33)])
                 row = 14
-                sheet.merge_range('A{}:F{}'.format((row - 1), (row - 1)),
+                sheet.merge_range('A{}:F{}'.format((row), (row)),
                                   'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
                                   formats['text_total'])
                 row +=1
@@ -65,7 +65,7 @@ class AccountInvoiceXlsx(models.Model):
                 exempts = self.env['account.invoice'].search(
                     [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 34)])
-                sheet.merge_range('A{}:F{}'.format((row - 1), (row - 1)),
+                sheet.merge_range('A{}:F{}'.format((row), (row)),
                                   'Factura de compra electronica. (FACTURA COMPRA EXENTA ELECTRONICA)',
                                   formats['text_total'])
                 row += 1
@@ -80,7 +80,7 @@ class AccountInvoiceXlsx(models.Model):
                 credit_notes = self.env['account.invoice'].search(
                     [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 61)])
-                sheet.merge_range('A{}:F{}'.format((row - 1), (row - 1)),
+                sheet.merge_range('A{}:F{}'.format((row), (row)),
                                   'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)',
                                   formats['text_total'])
                 row += 1
@@ -95,7 +95,7 @@ class AccountInvoiceXlsx(models.Model):
                 debit_notes = self.env['account.invoice'].search(
                     [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 56)])
-                sheet.merge_range('A{}:F{}'.format((row - 1), (row - 1)),
+                sheet.merge_range('A{}:F{}'.format((row), (row)),
                                   'NOTA DE DEBITO ELECTRONICA (NOTA DE DEBITO COMPRA ELECTRONICA)',
                                   formats['text_total'])
                 row += 1
@@ -195,15 +195,15 @@ class AccountInvoiceXlsx(models.Model):
 
     def set_total(self, sheet, row, invoices, formats):
         sheet.write('G{}'.format(str(row)), str(len(invoices)), formats['total'])
-        sheet.write_formula('H{}'.format(str(row)), '=SUM(H{}:H{})'.format((row - len(invoices)), row),
+        sheet.write_formula('H{}'.format(str(row)), '=SUM(H{}:H{})'.format(((row - 2) - len(invoices)), row),
                             formats['total'])
-        sheet.write_formula('I{}'.format(str(row)), '=SUM(I{}:I{})'.format((row - len(invoices)), row),
+        sheet.write_formula('I{}'.format(str(row)), '=SUM(I{}:I{})'.format(((row - 2) - len(invoices)), row),
                             formats['total'])
-        sheet.write_formula('J{}'.format(str(row)), '=SUM(J{}:J{})'.format((row - len(invoices)), row),
+        sheet.write_formula('J{}'.format(str(row)), '=SUM(J{}:J{})'.format(((row - 2) - len(invoices)), row),
                             formats['total'])
-        sheet.write_formula('K{}'.format(str(row)), '=SUM(K{}:K{})'.format((row - len(invoices)), row),
+        sheet.write_formula('K{}'.format(str(row)), '=SUM(K{}:K{})'.format(((row - 2) - len(invoices)), row),
                             formats['total'])
-        sheet.write_formula('L{}'.format(str(row)), '=SUM(L{}:L{})'.format((row - len(invoices)), row),
+        sheet.write_formula('L{}'.format(str(row)), '=SUM(L{}:L{})'.format(((row - 2) - len(invoices)), row),
                             formats['total'])
         return sheet
 
