@@ -46,11 +46,15 @@ class AccountInvoiceXlsx(models.Model):
                 formats = self.set_formats(workbook)
                 region = self.env['region.address'].search([('id', '=', 1)])
                 sheet.merge_range('A1:C1', wk['company_object'].display_name, formats['string'])
+                sheet.merge_range('A2:C2',wk['company_object'].invoice_rut,formats['string'])
+                sheet.merge_range('A3:C3','{},Region {}'.format(wk['company_object'].city,region.name.capitalize()),formats['string'])
+                sheet.merge_range('A5:L5','Libro de Ventas',formats['string'])
+                sheet.merge_range('A6:L6','Libro de Ventas Ordenado por fecha',formats['string'])
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
-        self.write({'purchase_file': file_base64,
-                    'purchase_report_name': 'Libro de Compra.xlsx'})
+        self.write({'sale_file': file_base64,
+                    'sale_report_name': 'Libro de Ventas.xlsx'})
         return {
             "type": "ir.actions.do_nothing",
         }
