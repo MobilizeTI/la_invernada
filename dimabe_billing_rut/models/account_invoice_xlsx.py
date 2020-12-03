@@ -1,6 +1,6 @@
 import base64
 from datetime import date
-
+import datetime
 import xlsxwriter
 from odoo import fields, models, api
 
@@ -170,7 +170,7 @@ class AccountInvoiceXlsx(models.Model):
         sheet.write('F{}'.format(str(row)), inv.partner_id.display_name, formats['string'])
         sheet.write('H{}'.format(str(row)), round(inv.amount_untaxed_invoice_signed), formats['number'])
         sheet.write('I{}'.format(str(row)), round(inv.amount_total_signed), formats['number'])
-        days = self.diff_dates(inv.date_invoice, date.today)
+        days = self.diff_dates(inv.date_invoice, date.today())
         if days > 90:
             sheet.write('K{}'.format(str(row)), round(inv.amount_tax),formats['number'])
             sheet.write('J{}'.format(str(row)), '0', formats['number'])
