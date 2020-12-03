@@ -1,6 +1,6 @@
 import base64
 from datetime import date
-import datetime
+
 import xlsxwriter
 from odoo import fields, models, api
 
@@ -47,12 +47,13 @@ class AccountInvoiceXlsx(models.Model):
                 sheet = self.set_data_company(wk['company_object'], sheet, formats, region, 0)
                 invoices = self.env['account.invoice'].search(
                     [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
-                     ('date_invoice', '<', self.to_date),('dte_type_id.code','=',33)])
+                     ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 33)])
                 row = 14
-                sheet.merge_range('A{}:F{}'.format((row -1),(row -1)), 'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
+                sheet.merge_range('A{}:F{}'.format((row - 1), (row - 1)),
+                                  'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
                                   formats['text_total'])
                 for inv in invoices:
-                    sheet = self.set_data_invoice(sheet,row,inv,formats)
+                    sheet = self.set_data_invoice(sheet, row, inv, formats)
                     if inv.id == invoices[-1].id:
                         row += 2
                     else:
@@ -144,6 +145,19 @@ class AccountInvoiceXlsx(models.Model):
             'text_total': merge_format_total_text
         }
 
+    def set_total(self, sheet, row, invoices, formats):
+        sheet.write('G{}'.format(str(row)), str(len(invoices)), formats['total'])
+        sheet.write_formula('H{}'.format(str(row)), '=SUM(H{}:H{})'.format((row - len(invoices)), row),
+                            formats['total'])
+        sheet.write_formula('I{}'.format(str(row)), '=SUM(I{}:I{})'.format((row - len(invoices)), row),
+                            formats['total'])
+        sheet.write_formula('J{}'.format(str(row)), '=SUM(J{}:J{})'.format((row - len(invoices)), row),
+                            formats['total'])
+        sheet.write_formula('K{}'.format(str(row)), '=SUM(K{}:K{})'.format((row - len(invoices)), row),
+                            formats['total'])
+        sheet.write_formula('L{}'.format(str(row)), '=SUM(L{}:L{})'.format((row - len(invoices)), row),
+                            formats['total'])
+
     def set_title(self, sheet, format):
         sheet.write('A11', 'Cod.SII', format)
         sheet.write('B11', 'Folio', format)
@@ -159,11 +173,11 @@ class AccountInvoiceXlsx(models.Model):
         sheet.write('L11', 'Total', format)
         return sheet
 
-    def set_data_invoice(self,sheet,row,inv,formats):
+    def set_data_invoice(self, sheet, row, inv, formats):
         sheet.write('A{}'.format(str(row)), inv.dte_type_id.code, formats['string'])
         sheet.write('B{}'.format(str(row)), inv.reference, formats['string'])
         sheet.write('C{}'.format(str(row)), inv.number, formats['string'])
-        sheet.write('D{}'.format(str(row)), inv.date_invoice.strftime("%d/%m/%Y"),formats['string'])
+        sheet.write('D{}'.format(str(row)), inv.date_invoice.strftime("%d/%m/%Y"), formats['string'])
         rut = inv.partner_id.invoice_rut
         if not rut:
             rut = ''
@@ -177,7 +191,7 @@ class AccountInvoiceXlsx(models.Model):
         sheet.write('I{}'.format(str(row)), round(inv.amount_total_signed), formats['number'])
         days = self.diff_dates(inv.date_invoice, date.today())
         if days > 90:
-            sheet.write('K{}'.format(str(row)), round(inv.amount_tax),formats['number'])
+            sheet.write('K{}'.format(str(row)), round(inv.amount_tax), formats['number'])
             sheet.write('J{}'.format(str(row)), '0', formats['number'])
         else:
             sheet.write('K{}'.format(str(row)), '0', formats['number'])
