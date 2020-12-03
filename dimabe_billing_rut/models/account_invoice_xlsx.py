@@ -366,7 +366,7 @@ class AccountInvoiceXlsx(models.Model):
         sheet.write('F{}'.format(str(row)), inv.partner_id.display_name, formats['string'])
         taxes = inv.mapped('invoice_line_ids').filtered(lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name'))
         if taxes:
-            sheet.write('H{}'.format(str(row)),sum(taxes.price_subtotal), formats['number'])
+            sheet.write('H{}'.format(str(row)),taxes.price_subtotal, formats['number'])
         else:
             sheet.write('H{}'.format(str(row)), '0', formats['number'])
         sheet.write('I{}'.format(str(row)), round(inv.amount_total_signed), formats['number'])
