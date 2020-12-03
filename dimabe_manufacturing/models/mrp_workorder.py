@@ -358,7 +358,7 @@ class MrpWorkorder(models.Model):
                     'product_id': check.component_id.id,
                     'is_prd_lot': True
                 })
-                self.action_move_line_ids.filtered(lambda a: a.product_id.id == check.component_id.id).write({
+                self.active_move_line_ids.filtered(lambda a: a.product_id.id == check.component_id.id).write({
                     'lot_id': lot_tmp.id
                 })
                 check.lot_id = lot_tmp.id
