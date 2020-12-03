@@ -1,8 +1,5 @@
 from odoo import fields, models, api
 from odoo.addons import decimal_precision as dp
-import xlsxwriter
-from odoo.tools import float_compare, float_round
-from odoo.addons import decimal_precision as dp
 
 
 class MrpWorkorder(models.Model):
@@ -143,6 +140,8 @@ class MrpWorkorder(models.Model):
     pallet_content = fields.Float('Kilos Totales', compute='_compute_pallet_content')
 
     pallet_serial = fields.Integer('Total de Series', compute='_compute_pallet_serial')
+
+    have_subproduct = fields.Boolean('Tiene subproductos')
 
     @api.multi
     def _compute_pallet_content(self):
@@ -334,36 +333,22 @@ class MrpWorkorder(models.Model):
         return res
 
     def open_tablet_view(self):
-        # while self.current_quality_check_id:
-        #     check = self.current_quality_check_id
-        #     if not check.component_is_byproduct:
-        #         check.qty_done = 0
-        #         self.action_skip()
-        #     else:
-        #         if not check.lot_id:
-        #             lot_tmp = self.env['stock.production.lot'].create({
-        #                 'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
-        #                 'product_id': check.component_id.id,
-        #                 'is_prd_lot': True
-        #             })
-        #             check.lot_id = lot_tmp.id
-        #             check.qty_done = self.component_remaining_qty
-        #             if check.quality_state == 'none' and check.qty_done > 0:
-        #                 self.action_next()
-        # self.action_first_skipped_step()
-        for check in self.check_ids:
-            if not check.lot_id:
+        if self.have_subproduct:
+            for sub in self.production_id.bom_id.sub_products:
                 lot_tmp = self.env['stock.production.lot'].create({
                     'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
-                    'product_id': check.component_id.id,
+                    'product_id': sub.product_id.id,
                     'is_prd_lot': True
                 })
-                self.active_move_line_ids.filtered(lambda a: a.product_id.id == check.component_id.id).write({
-                    'lot_id': lot_tmp.id
+                self.env['stock.move.line'].create({
+                    'name': self.name,
+                    'product_id': sub.product_id.id,
+                    'lot_id': lot_tmp.id,
+                    'state':'confirmed',
+                    'location_dest_id':self.production_id.location_dest_id.id,
+                    'location_id':7,
+                    'is_raw':False
                 })
-                check.lot_id = lot_tmp.id
-                check_qty_done = self.component_remaining_qty
-        #self.action_first_skipped_step()
         return super(MrpWorkorder, self).open_tablet_view()
 
     def action_next(self):
@@ -472,7 +457,8 @@ class MrpWorkorder(models.Model):
         })
         quant = self.env['stock.quant'].search([('lot_id', '=', lot.id)])
         quant.write({
-            'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
+            'quantity': sum(
+                lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
         })
         return res
 
