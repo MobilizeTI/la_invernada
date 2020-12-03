@@ -34,6 +34,7 @@ class AccountInvoiceXlsx(models.Model):
             array_worksheet = []
             companies = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)])
             workbook = xlsxwriter.Workbook(file_name, {'in_memory': True, 'strings_to_numbers': True})
+            company_name = ''
             begin = 0
             end = 0
             for com in companies:
@@ -127,11 +128,12 @@ class AccountInvoiceXlsx(models.Model):
                 sheet = self.set_total(sheet, begin, end, row, debit_notes, formats,
                                        'Total NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)')
                 row += 2
+                company_name = wk['company_object'].display_name.replace('.','')
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
         self.write({'sale_file': file_base64,
-                    'sale_report_name': 'Libro de Ventas {}.xlsx'.format(date.today().strftime("%d/%m/%Y"))})
+                    'sale_report_name': 'Libro de Ventas {} {}.xlsx'.format(company_name,date.today().strftime("%d/%m/%Y"))})
         return {
             "type": "ir.actions.do_nothing",
         }
@@ -143,6 +145,7 @@ class AccountInvoiceXlsx(models.Model):
             array_worksheet = []
             companies = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)])
             workbook = xlsxwriter.Workbook(file_name, {'in_memory': True, 'strings_to_numbers': True})
+            company_name = ''
             begin = 0
             end = 0
             for com in companies:
@@ -236,11 +239,12 @@ class AccountInvoiceXlsx(models.Model):
                 sheet = self.set_total(sheet, begin, end, row, debit_notes, formats,
                                        'Total NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)')
                 row += 2
+                company_name = wk['company_object'].display_name.replace('.','')
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
         self.write({'purchase_file': file_base64,
-                    'purchase_report_name': 'Libro de Compra {}.xlsx'.format(date.today().strftime("%d/%m/%Y"))})
+                    'purchase_report_name': 'Libro de Compra {} {}.xlsx'.format(company_name,date.today().strftime("%d/%m/%Y"))})
         return {
             "type": "ir.actions.do_nothing",
         }
