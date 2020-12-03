@@ -278,8 +278,8 @@ class AccountInvoiceXlsx(models.Model):
         else:
             sheet.merge_range('A5:L5', 'Libro de Compras', formats['string'])
             sheet.merge_range('A6:L6', 'Libro de Compras Ordenado por fecha', formats['string'])
-        sheet.merge_range('K7', 'Fecha', formats['string'])
-        sheet.merge_range('L7', date.today().strftime('%Y-%m-%d'), formats['string'])
+        sheet.write('K7', 'Fecha', formats['string'])
+        sheet.write('L7', date.today().strftime('%Y-%m-%d'), formats['string'])
         sheet.merge_range('A8:L8', 'Desde : {} Hasta : {}'.format(self.from_date.strftime(
             "%d/%m/%Y"), self.to_date.strftime("%d/%m/%Y")), formats['string'])
         sheet.merge_range(
