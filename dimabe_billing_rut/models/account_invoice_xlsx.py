@@ -178,3 +178,6 @@ class AccountInvoiceXlsx(models.Model):
             sheet.write('K{}'.format(str(row)), '0', formats['number'])
             sheet.write('J{}'.format(str(row)), round(inv.amount_tax), formats['number'])
         return sheet
+
+    def diff_dates(self, date1, date2):
+        return abs(date2 - date1).days
