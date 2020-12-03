@@ -60,8 +60,7 @@ class AccountInvoiceXlsx(models.Model):
                     else:
                         row += 1
 
-                sheet = self.set_total(sheet, row, invoices, formats,
-                                       'Total Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)')
+                sheet = self.set_total(sheet, row, invoices, formats,'Total Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)')
                 row += 2
                 exempts = self.env['account.invoice'].search(
                     [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
@@ -76,8 +75,7 @@ class AccountInvoiceXlsx(models.Model):
                         row += 3
                     else:
                         row += 1
-                sheet = self.set_total(sheet, row, exempts, formats,
-                                       'Total Factura de compra electronica. (FACTURA COMPRA EXENTA ELECTRONICA)')
+                sheet = self.set_total(sheet, row, exempts, formats,'Total Factura de compra electronica. (FACTURA COMPRA EXENTA ELECTRONICA)')
                 row += 2
                 credit_notes = self.env['account.invoice'].search(
                     [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
@@ -92,8 +90,7 @@ class AccountInvoiceXlsx(models.Model):
                         row += 3
                     else:
                         row += 1
-                sheet = self.set_total(sheet, row, credit_notes, formats,
-                                       'Total NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)')
+                sheet = self.set_total(sheet, row, credit_notes, formats,'Total NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)')
                 row += 2
                 debit_notes = self.env['account.invoice'].search(
                     [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
@@ -108,8 +105,7 @@ class AccountInvoiceXlsx(models.Model):
                         row += 3
                     else:
                         row += 1
-                sheet = self.set_total(sheet, row, debit_notes, formats,
-                                       'Total NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)')
+                sheet = self.set_total(sheet, row, debit_notes, formats,'Total NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)')
                 row += 2
         workbook.close()
         with open(file_name, "rb") as file:
@@ -197,23 +193,20 @@ class AccountInvoiceXlsx(models.Model):
             'text_total': merge_format_total_text
         }
 
-    def set_total(self, sheet, row, invoices, formats, string=''):
+    def set_total(self, sheet, row, invoices, formats,string=''):
         sheet.merge_range('A{}:F{}'.format((row), (row)),
                           string,
                           formats['text_total'])
-        sheet.write('G{}'.format(str(row)), str(len(invoices)), formats['text_total'])
-        taxes = invoices.mapped('invoice_line_ids').mapped('invoice_line_tax_ids').filtered(lambda a: a.name == 'Exento').mapped('price_subtotal')
-        if taxes:
-            sheet.write('H{}'.format(str(row)),str(sum(taxes)), formats['number'])
-        else:
-            sheet.write('H{}'.format(str(row)), '0', formats['number'])
-        sheet.write('I{}'.format(str(row)),str(round(sum(invoices.mapped('amount_total_signed')))),
+        sheet.write('G{}'.format(str(row)), str(len(invoices)), formats['total'])
+        sheet.write_formula('H{}'.format(str(row)), '=SUM(H{}:H{})'.format(((row - 3) - len(invoices)), row),
                             formats['total'])
-        sheet.write('J{}'.format(str(row)),str(round(sum(invoices.mapped('amount_total_signed')))),
+        sheet.write_formula('I{}'.format(str(row)), '=SUM(I{}:I{})'.format(((row - 3) - len(invoices)), row),
                             formats['total'])
-        sheet.write_formula('K{}'.format(str(row)), '=SUM(K{}:K{})'.format(((row - 2) - len(invoices)), row),
+        sheet.write_formula('J{}'.format(str(row)), '=SUM(J{}:J{})'.format(((row - 3) - len(invoices)), row),
                             formats['total'])
-        sheet.write_formula('L{}'.format(str(row)), '=SUM(L{}:L{})'.format(((row - 2) - len(invoices)), row),
+        sheet.write_formula('K{}'.format(str(row)), '=SUM(K{}:K{})'.format(((row - 3) - len(invoices)), row),
+                            formats['total'])
+        sheet.write_formula('L{}'.format(str(row)), '=SUM(L{}:L{})'.format(((row - 3) - len(invoices)), row),
                             formats['total'])
         return sheet
 
