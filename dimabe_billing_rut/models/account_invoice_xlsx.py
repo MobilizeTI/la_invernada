@@ -131,7 +131,7 @@ class AccountInvoiceXlsx(models.Model):
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
         self.write({'sale_file': file_base64,
-                    'sale_report_name': 'Libro de Ventas.xlsx'})
+                    'sale_report_name': 'Libro de Ventas {}.xlsx'.format(date.today().strftime("%d/%m/%Y"))})
         return {
             "type": "ir.actions.do_nothing",
         }
@@ -240,7 +240,7 @@ class AccountInvoiceXlsx(models.Model):
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
         self.write({'purchase_file': file_base64,
-                    'purchase_report_name': 'Libro de Ventas.xlsx'})
+                    'purchase_report_name': 'Libro de Compra {}.xlsx'.format(date.today().strftime("%d/%m/%Y"))})
         return {
             "type": "ir.actions.do_nothing",
         }

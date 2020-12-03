@@ -10,8 +10,8 @@
                     <field name="sale_file" readonly="1" filename="sale_report_name"/>
                     <field name="sale_report_name" invisible="1"/>
                     <field name="purchase_report_name" invisible="1" />
-                    <field name="from_date"/>
-                    <field name="to_date"/>
+                    <field name="from_date" required="1"/>
+                    <field name="to_date" required="1"/>
                 </group>
                 <footer>
                     <button type="object" string="Generar Libro de Compra" name="generate_purchase_book"/>
