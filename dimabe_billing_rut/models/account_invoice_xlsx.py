@@ -34,6 +34,8 @@ class AccountInvoiceXlsx(models.Model):
             array_worksheet = []
             companies = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)])
             workbook = xlsxwriter.Workbook(file_name, {'in_memory': True, 'strings_to_numbers': True})
+            begin = 0
+            end = 0
             for com in companies:
                 worksheet = workbook.add_worksheet(com.display_name)
                 array_worksheet.append({
@@ -53,15 +55,19 @@ class AccountInvoiceXlsx(models.Model):
                                   'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
                                   formats['text_total'])
                 row += 1
+                begin = row
                 for inv in invoices:
                     sheet = self.set_data_invoice(sheet, row, inv, formats)
                     if inv.id == invoices[-1].id:
                         row += 2
+                        end = row
                     else:
                         row += 1
 
-                sheet = self.set_total(sheet, row, invoices, formats,'Total Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)')
+                sheet = self.set_total(sheet, begin,end, invoices, formats,'Total Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)')
                 row += 2
+                begin = 0
+                end = 0
                 exempts = self.env['account.invoice'].search(
                     [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 34)])
@@ -69,14 +75,18 @@ class AccountInvoiceXlsx(models.Model):
                                   'Factura de compra electronica. (FACTURA COMPRA EXENTA ELECTRONICA)',
                                   formats['text_total'])
                 row += 2
+                begin = row
                 for ex in exempts:
                     sheet = self.set_data_invoice(sheet, row, ex, formats)
                     if ex.id == exempts[-1].id:
                         row += 3
+                        end = row
                     else:
                         row += 1
-                sheet = self.set_total(sheet, row, exempts, formats,'Total Factura de compra electronica. (FACTURA COMPRA EXENTA ELECTRONICA)')
+                sheet = self.set_total(sheet, begin,end, exempts, formats,'Total Factura de compra electronica. (FACTURA COMPRA EXENTA ELECTRONICA)')
                 row += 2
+                begin = 0
+                end = 0
                 credit_notes = self.env['account.invoice'].search(
                     [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 61)])
@@ -84,14 +94,18 @@ class AccountInvoiceXlsx(models.Model):
                                   'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)',
                                   formats['text_total'])
                 row += 2
+                begin = row
                 for note_cre in credit_notes:
                     sheet = self.set_data_invoice(sheet, row, note_cre, formats)
                     if note_cre.id == credit_notes[-1].id:
                         row += 3
+                        end = row
                     else:
                         row += 1
-                sheet = self.set_total(sheet, row, credit_notes, formats,'Total NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)')
+                sheet = self.set_total(sheet, begin , end, credit_notes, formats,'Total NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)')
                 row += 2
+                begin = 0
+                end = 0
                 debit_notes = self.env['account.invoice'].search(
                     [('type', '=', 'out_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 56)])
@@ -99,13 +113,15 @@ class AccountInvoiceXlsx(models.Model):
                                   'NOTA DE DEBITO ELECTRONICA (NOTA DE DEBITO COMPRA ELECTRONICA)',
                                   formats['text_total'])
                 row += 2
+                begin = row
                 for note_deb in debit_notes:
                     sheet = self.set_data_invoice(sheet, row, note_deb, formats)
                     if note_deb.id == debit_notes[-1].id:
                         row += 3
+                        end = row
                     else:
                         row += 1
-                sheet = self.set_total(sheet, row, debit_notes, formats,'Total NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)')
+                sheet = self.set_total(sheet, begin , end, debit_notes, formats,'Total NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)')
                 row += 2
         workbook.close()
         with open(file_name, "rb") as file:
@@ -193,7 +209,7 @@ class AccountInvoiceXlsx(models.Model):
             'text_total': merge_format_total_text
         }
 
-    def set_total(self, sheet, row, invoices, formats,string=''):
+    def set_total(self, sheet, begin,end, invoices, formats,string=''):
         sheet.merge_range('A{}:F{}'.format((row), (row)),
                           string,
                           formats['text_total'])
