@@ -586,8 +586,7 @@ class StockProductionLot(models.Model):
                 for serial in item.stock_production_lot_serial_ids:
                     if not serial.serial_number:
                         if len(values['stock_production_lot_serial_ids']) > 1:
-                            counter = int(item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[
-                                              -1].serial_number) + 1
+                            counter = int(values['stock_production_lot_serial_ids']) + 1
                         else:
                             counter = 1
                         tmp = '00{}'.format(counter)
