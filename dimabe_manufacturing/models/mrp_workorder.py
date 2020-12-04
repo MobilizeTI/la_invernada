@@ -333,23 +333,6 @@ class MrpWorkorder(models.Model):
         return res
 
     def open_tablet_view(self):
-        # while self.current_quality_check_id:
-        #     check = self.current_quality_check_id
-        #     if not check.component_is_byproduct:
-        #         check.qty_done = 0
-        #         self.action_skip()
-        #     else:
-        #         if not check.lot_id:
-        #             lot_tmp = self.env['stock.production.lot'].create({
-        #                 'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
-        #                 'product_id': check.component_id.id,
-        #                 'is_prd_lot': True
-        #             })
-        #             check.lot_id = lot_tmp.id
-        #             check.qty_done = self.component_remaining_qty
-        #             if check.quality_state == 'none' and check.qty_done > 0:
-        #                 self.action_next()
-        # self.action_first_skipped_step()
         for check in self.check_ids:
             if not check.component_is_byproduct:
                 check.qty_done = 0
@@ -364,7 +347,7 @@ class MrpWorkorder(models.Model):
                     check.lot_id = lot_tmp.id
                     check.qty_done = self.component_remaining_qty
                     self.active_move_line_ids.filtered(lambda a : a.lot_id.id == lot_tmp.id).write({
-                        'is_raw':False
+                        'is_raw': False
                     })
                     if check.quality_state == 'none' and check.qty_done > 0:
                         self.action_next()

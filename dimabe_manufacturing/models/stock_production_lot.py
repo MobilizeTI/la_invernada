@@ -584,6 +584,7 @@ class StockProductionLot(models.Model):
             res = super(StockProductionLot, self).write(values)
             if not item.product_id.is_standard_weight:
                 for serial in item.stock_production_lot_serial_ids:
+                    raise models.ValidationError(values)
                     if not serial.serial_number:
                         if len(item.stock_production_lot_serial_ids) > 1:
                             counter = int(item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[
