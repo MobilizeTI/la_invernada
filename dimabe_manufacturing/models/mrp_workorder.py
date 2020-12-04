@@ -363,6 +363,9 @@ class MrpWorkorder(models.Model):
                     })
                     check.lot_id = lot_tmp.id
                     check.qty_done = self.component_remaining_qty
+                    self.active_move_line_ids.filtered(lambda a : a.lot_id.id == lot_tmp.id).write({
+                        'is_raw':False
+                    })
                     if check.quality_state == 'none' and check.qty_done > 0:
                         self.action_next()
         self.action_first_skipped_step()
