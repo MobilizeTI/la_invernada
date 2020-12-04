@@ -380,7 +380,7 @@ class MrpWorkorder(models.Model):
                 if not item.location_id:
                     raise models.ValidationError("Lote {} aun esta en proceso {}".format(item.name, item.location_id))
                 if not self.lot_produced_id:
-                    stock_move.update({
+                    stock_move[0].update({
                         'active_move_line_ids': [
                             (0, 0, {
                                 'product_id': item.product_id.id,
@@ -388,7 +388,7 @@ class MrpWorkorder(models.Model):
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
                                 'lot_produced_id': self.production_finished_move_line_ids.filtered(
-                                    lambda a: a.product_id.id == self.product_id.id and a.lot_id).lot_id,
+                                    lambda a: a.product_id.id == self.product_id.id and a.lot_id)[0].lot_id,
                                 'workorder_id': self.id,
                                 'production_id': self.production_id.id,
                                 'product_uom_id': stock_move.product_uom.id,
@@ -397,6 +397,11 @@ class MrpWorkorder(models.Model):
                             })
                         ]
                     })
+                    for act in self.active_move_line_ids:
+                        act.write({
+                            'qty_done':sum(act.lot_id.stock_production_lot_serial_ids.mapped('real_weight')),
+                            'state':'done'
+                        })
                 else:
                     stock_move.update({
                         'active_move_line_ids': [
