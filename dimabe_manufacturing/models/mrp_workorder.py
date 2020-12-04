@@ -351,7 +351,7 @@ class MrpWorkorder(models.Model):
         #                 self.action_next()
         # self.action_first_skipped_step()
         for check in self.check_ids:
-            if self.current_quality_check_id:
+            if check.id == self.current_quality_check_id.id:
                 check = self.current_quality_check_id
                 if not check.component_is_byproduct:
                     check.qty_done = 0
