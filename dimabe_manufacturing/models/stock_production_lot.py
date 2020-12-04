@@ -585,8 +585,12 @@ class StockProductionLot(models.Model):
             if not item.product_id.is_standard_weight:
                 for serial in item.stock_production_lot_serial_ids:
                     if not serial.serial_number:
-                        if len(values['stock_production_lot_serial_ids']) > 1:
-                            counter = int(values['stock_production_lot_serial_ids']) + 1
+                        if len(item.stock_production_lot_serial_ids) > 1:
+                            item.stock_production_lot_serial_ids[0].write({
+                                'serial_number': item.name + '001'
+                            })
+                            counter = int(item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[
+                                              -1].serial_number) + 1
                         else:
                             counter = 1
                         tmp = '00{}'.format(counter)
@@ -596,9 +600,9 @@ class StockProductionLot(models.Model):
                                 item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
                                     'real_weight'))
                         })
-            # else:
-            #     if len(item.stock_production_lot_serial_ids) > 999:
-            #         item.check_duplicate()
+            else:
+                if len(item.stock_production_lot_serial_ids) > 999:
+                    item.check_duplicate()
             return res
 
     @api.multi
