@@ -474,7 +474,8 @@ class MrpWorkorder(models.Model):
             return res
         self.qty_done = qty_done + custom_serial.display_weight
         self.write({
-            'in_weight': sum(self.potential_serial_planned_ids.mapped('real_weight'))
+            'in_weight': sum(self.potential_serial_planned_ids.mapped('real_weight')),
+            'lot_id':custom_serial.stock_production_lot_id.id
         })
         quant = self.env['stock.quant'].search([('lot_id', '=', lot.id)])
         quant.write({
