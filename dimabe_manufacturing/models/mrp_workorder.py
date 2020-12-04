@@ -333,29 +333,43 @@ class MrpWorkorder(models.Model):
         return res
 
     def open_tablet_view(self):
-        if not self.have_subproduct:
-            for sub in self.production_id.bom_id.sub_products:
-                lot_tmp = self.env['stock.production.lot'].create({
-                    'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
-                    'product_id': sub.product_id.id,
-                    'is_prd_lot': True
-                })
-                self.env['stock.move.line'].create({
-                    'name': self.name,
-                    'product_id': sub.product_id.id,
-                    'product_uom_id':sub.product_id.uom_id.id,
-                    'lot_id': lot_tmp.id,
-                    'state':'confirmed',
-                    'location_dest_id':self.production_id.location_dest_id.id,
-                    'location_id':7,
-                    'workorder_id':self.id,
-                    'done_wo':False,
-                    'is_raw':False
-                })
-            self.write({
-                'have_subproduct': True
-            })
+        # while self.current_quality_check_id:
+        #     check = self.current_quality_check_id
+        #     if not check.component_is_byproduct:
+        #         check.qty_done = 0
+        #         self.action_skip()
+        #     else:
+        #         if not check.lot_id:
+        #             lot_tmp = self.env['stock.production.lot'].create({
+        #                 'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
+        #                 'product_id': check.component_id.id,
+        #                 'is_prd_lot': True
+        #             })
+        #             check.lot_id = lot_tmp.id
+        #             check.qty_done = self.component_remaining_qty
+        #             if check.quality_state == 'none' and check.qty_done > 0:
+        #                 self.action_next()
+        # self.action_first_skipped_step()
+        for check in self.check_ids:
+            if self.current_quality_check_id:
+                check = self.current_quality_check_id
+                if not check.component_is_byproduct:
+                    check.qty_done = 0
+                    self.action_skip()
+                else:
+                    if not check.lot_id:
+                        lot_tmp = self.env['stock.production.lot'].create({
+                            'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
+                            'product_id': check.component_id.id,
+                            'is_prd_lot': True
+                        })
+                        check.lot_id = lot_tmp.id
+                        check.qty_done = self.component_remaining_qty
+                        if check.quality_state == 'none' and check.qty_done > 0:
+                            self.action_next()
+            self.action_first_skipped_step()
         return super(MrpWorkorder, self).open_tablet_view()
+
 
     def action_next(self):
         self.write({
@@ -397,11 +411,6 @@ class MrpWorkorder(models.Model):
                             })
                         ]
                     })
-                    for act in self.active_move_line_ids:
-                        act.write({
-                            'qty_done':sum(act.lot_id.stock_production_lot_serial_ids.mapped('real_weight')),
-                            'state':'done'
-                        })
                 else:
                     stock_move.update({
                         'active_move_line_ids': [
