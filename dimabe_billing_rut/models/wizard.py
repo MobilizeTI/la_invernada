@@ -1001,7 +1001,6 @@ class WizardHrPaySlip(models.TransientModel):
                              # 9- Datos Mutualidad
                              # 95 Codigo de Sucursal (Uso Futuro)
                              "0",
-                             " ",
                              # 96 Codigo Mutualidad
                              payslip.indicadores_id.mutualidad_id.codigo if payslip.indicadores_id.mutualidad_id.codigo else "00",
                              # 97 Renta Imponible Mutual TODO Si afiliado hacer
