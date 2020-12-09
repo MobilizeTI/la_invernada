@@ -730,7 +730,7 @@ class WizardHrPaySlip(models.TransientModel):
         payslip_recs = payslip_model.search([('date_from', '=', self.date_from), ('state', '=', 'done'),
                                              ('employee_id.address_id', '=', self.company_id.id)
                                              ])
-
+        models._logger.error(payslip_recs)
         date_start = self.date_from
         date_stop = self.date_to
         date_start_format = date_start.strftime("%m%Y")
@@ -748,6 +748,7 @@ class WizardHrPaySlip(models.TransientModel):
             pass
 
         for payslip in payslip_recs:
+            models._logger.error(payslip_recs)
             payslip_line_recs = payslip_line_model.search([('slip_id', '=', payslip.id)])
             rut = ""
             rut_dv = ""
