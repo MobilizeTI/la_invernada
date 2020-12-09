@@ -44,10 +44,8 @@ class WizardHrPaySlip(models.TransientModel):
     date_from = fields.Date('Fecha Inicial', required=True, default=lambda self: time.strftime('%Y-%m-01'))
     date_to = fields.Date('Fecha Final', required=True, default=lambda self: str(
         datetime.now() + relativedelta.relativedelta(months=+1, day=1, days=-1))[:10])
-    file_data = fields.Binary('Archivo Generado',
-                              default=lambda self: self.env['wizard.hr.payslip'].search([])[-1].file_data)
-    file_name = fields.Char('Nombre de archivo',
-                            default=lambda self: self.env['wizard.hr.payslip'].search([])[-1].file_name)
+    file_data = fields.Binary('Archivo Generado')
+    file_name = fields.Char('Nombre de archivo')
     delimiter_option = fields.Selection([
         ('colon', 'Comillas Dobles(")'),
         ('semicolon', "Comillas Simples(')"),
@@ -1032,8 +1030,9 @@ class WizardHrPaySlip(models.TransientModel):
                              # str(float(self.get_cost_center(payslip.contract_id))).split('.')[0],
                              ]
             writer.writerow([str(l) for l in line_employee])
+            company_name = self.company_id.display_name.replace('.', '')
         self.write({'file_data': base64.encodebytes(output.getvalue().encode()),
-                    'file_name': "Previred_{}{}.txt".format(self.date_to, self.company_id.display_name),
+                    'file_name': "Previred_{}{}.txt".format(self.date_to, company_name),
                     })
 
         return {
