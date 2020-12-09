@@ -714,6 +714,7 @@ class WizardHrPaySlip(models.TransientModel):
     def action_generate_csv(self):
         employee_model = self.env['hr.employee']
         payslip_model = self.env['hr.payslip']
+        models._logger.error('paso')
         payslip_line_model = self.env['hr.payslip.line']
         sexo_data = {'male': "M",
                      'female': "F",
