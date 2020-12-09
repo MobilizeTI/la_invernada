@@ -984,7 +984,7 @@ class WizardHrPaySlip(models.TransientModel):
                              self.get_payslip_lines_value_2(payslip, 'CCAF') if self.get_payslip_lines_value_2(payslip,
                                                                                                                'CCAF') else "0"
                              # 88 Descuentos por seguro de vida TODO
-                                                                                                                            "0",
+                                "0",                                                                      "0",
                              # 89 Otros descuentos CCAF
                              "0",
                              # 90 Cotizacion a CCAF de no afiliados a Isapres
