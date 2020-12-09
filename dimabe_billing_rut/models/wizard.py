@@ -1000,6 +1000,7 @@ class WizardHrPaySlip(models.TransientModel):
                              "0",
                              # 9- Datos Mutualidad
                              # 95 Codigo de Sucursal (Uso Futuro)
+                             "0",
                              " ",
                              # 96 Codigo Mutualidad
                              payslip.indicadores_id.mutualidad_id.codigo if payslip.indicadores_id.mutualidad_id.codigo else "00",
