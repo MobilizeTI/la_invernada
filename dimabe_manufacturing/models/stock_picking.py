@@ -242,6 +242,10 @@ class StockPicking(models.Model):
                     move_line.move_id.write({
                         'state': 'done',
                     })
+                    stock_quant = self.env['stock.quant'].search([('product_id','=',move_line.product_id.id)])
+                    stock_quant.write({
+                        'quantity':stock_quant.quantity - move_line.qty_done
+                    })
                     self.write({
                         'state': 'done',
                         'datetime':datetime.datetime.now()
