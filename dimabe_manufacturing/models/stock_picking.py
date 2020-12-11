@@ -235,6 +235,12 @@ class StockPicking(models.Model):
                     move_line._action_done()
                     return super(StockPicking, self).button_validate()
                 else:
+                    stock_quant = self.env['stock.quant'].search(
+                        [('product_id', '=', move_line.product_id.id), ('location_id', '=', self.location_id.id)])
+                    raise models.ValidationError(stock_quant.quantity - move_line.qty_done)
+                    stock_quant.write({
+                        'quantity': (stock_quant.quantity - move_line.qty_done)
+                    })
                     move_line.write({
                         'state': 'done',
                         'qty_done': 0
@@ -242,11 +248,7 @@ class StockPicking(models.Model):
                     move_line.move_id.write({
                         'state': 'done',
                     })
-                    stock_quant = self.env['stock.quant'].search([('product_id','=',move_line.product_id.id),('location_id','=',self.location_id.id)])
-                    raise models.ValidationError(stock_quant.quantity - move_line.qty_done)
-                    stock_quant.write({
-                        'quantity':(stock_quant.quantity - move_line.qty_done)
-                    })
+
                     self.write({
                         'state': 'done',
                         'datetime':datetime.datetime.now()
