@@ -237,7 +237,6 @@ class StockPicking(models.Model):
                 else:
                     stock_quant = self.env['stock.quant'].search(
                         [('product_id', '=', move_line.product_id.id), ('location_id', '=', self.location_id.id)])
-                    raise models.ValidationError(stock_quant.quantity - move_line.qty_done)
                     stock_quant.write({
                         'quantity': (stock_quant.quantity - move_line.qty_done)
                     })
