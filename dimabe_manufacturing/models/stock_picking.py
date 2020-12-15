@@ -238,7 +238,7 @@ class StockPicking(models.Model):
                     if move_line.product_id.product_tmpl_id.tracking == 'lot':
                         stock_quant = self.env['stock.quant'].search(
                             [('product_id', '=', move_line.product_id.id), ('location_id', '=', self.location_id.id),
-                             ('lot_id', '=', move.lot_id.id)])
+                             ('lot_id', '=', move_line.lot_id.id)])
                     else:
                         stock_quant = self.env['stock.quant'].search(
                             [('product_id', '=', move_line.product_id.id), ('location_id', '=', self.location_id.id)])
