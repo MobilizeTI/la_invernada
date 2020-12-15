@@ -44,10 +44,8 @@ class WizardHrPaySlip(models.TransientModel):
     date_from = fields.Date('Fecha Inicial', required=True, default=lambda self: time.strftime('%Y-%m-01'))
     date_to = fields.Date('Fecha Final', required=True, default=lambda self: str(
         datetime.now() + relativedelta.relativedelta(months=+1, day=1, days=-1))[:10])
-    file_data = fields.Binary('Archivo Generado',
-                              default=lambda self: self.env['wizard.hr.payslip'].search([])[-1].file_data)
-    file_name = fields.Char('Nombre de archivo',
-                            default=lambda self: self.env['wizard.hr.payslip'].search([])[-1].file_name)
+    file_data = fields.Binary('Archivo Generado',default=lambda self: self.env['wizard.hr.payslip'].search([])[-1].file_data)
+    file_name = fields.Char('Nombre de archivo',default=lambda self: self.env['wizard.hr.payslip'].search([])[-1].file_name)
     delimiter_option = fields.Selection([
         ('colon', 'Comillas Dobles(")'),
         ('semicolon', "Comillas Simples(')"),
@@ -722,6 +720,7 @@ class WizardHrPaySlip(models.TransientModel):
     def action_generate_csv(self):
         employee_model = self.env['hr.employee']
         payslip_model = self.env['hr.payslip']
+        models._logger.error('paso')
         payslip_line_model = self.env['hr.payslip.line']
         sexo_data = {'male': "M",
                      'female': "F",
@@ -738,7 +737,7 @@ class WizardHrPaySlip(models.TransientModel):
         payslip_recs = payslip_model.search([('date_from', '=', self.date_from), ('state', '=', 'done'),
                                              ('employee_id.address_id', '=', self.company_id.id)
                                              ])
-
+        models._logger.error(payslip_recs)
         date_start = self.date_from
         date_stop = self.date_to
         date_start_format = date_start.strftime("%m%Y")
@@ -756,6 +755,7 @@ class WizardHrPaySlip(models.TransientModel):
             pass
 
         for payslip in payslip_recs:
+            models._logger.error(payslip_recs)
             payslip_line_recs = payslip_line_model.search([('slip_id', '=', payslip.id)])
             rut = ""
             rut_dv = ""
@@ -978,8 +978,8 @@ class WizardHrPaySlip(models.TransientModel):
                              # TODO ES HACER PANTALLA CON DATOS EMPRESA
                              payslip.indicadores_id.ccaf_id.codigo if payslip.indicadores_id.ccaf_id.codigo else "00",
                              # 84 Renta Imponible CCAF
-                             str(float(self.get_payslip_lines_value_2(payslip, 'ISL'))).split('.')[
-                                 0] if self.get_payslip_lines_value_2(payslip, 'ISL').split(
+                             str(float(self.get_payslip_lines_value_2(payslip, 'TOTIM'))).split('.')[
+                                 0] if self.get_payslip_lines_value_2(payslip, 'TOTIM').split(
                                  '.')[0] else "00",
                              # 85 Creditos Personales CCAF TODO
                              self.get_payslip_lines_value_2(payslip, 'PCCAF') if self.get_payslip_lines_value_2(payslip,
@@ -990,7 +990,7 @@ class WizardHrPaySlip(models.TransientModel):
                              self.get_payslip_lines_value_2(payslip, 'CCAF') if self.get_payslip_lines_value_2(payslip,
                                                                                                                'CCAF') else "0"
                              # 88 Descuentos por seguro de vida TODO
-                                                                                                                            "0",
+                                "0",                                                                      "0",
                              # 89 Otros descuentos CCAF
                              "0",
                              # 90 Cotizacion a CCAF de no afiliados a Isapres
@@ -1006,7 +1006,7 @@ class WizardHrPaySlip(models.TransientModel):
                              "0",
                              # 9- Datos Mutualidad
                              # 95 Codigo de Sucursal (Uso Futuro)
-                             " ",
+                             "0",
                              # 96 Codigo Mutualidad
                              payslip.indicadores_id.mutualidad_id.codigo if payslip.indicadores_id.mutualidad_id.codigo else "00",
                              # 97 Renta Imponible Mutual TODO Si afiliado hacer
@@ -1038,8 +1038,9 @@ class WizardHrPaySlip(models.TransientModel):
                              # str(float(self.get_cost_center(payslip.contract_id))).split('.')[0],
                              ]
             writer.writerow([str(l) for l in line_employee])
+            models._logger.error('Llega aqui')
         self.write({'file_data': base64.encodebytes(output.getvalue().encode()),
-                    'file_name': "Previred_{}{}.txt".format(self.date_to, self.company_id.display_name),
+                    'file_name': "Previred_{}{}.txt".format(self.date_to, self.company_id.display_name.replace('.','')),
                     })
 
         return {

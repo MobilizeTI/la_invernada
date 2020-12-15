@@ -208,6 +208,17 @@ class StockProductionLotSerial(models.Model):
                 item.produce_weight = 0.0
             else:
                 item.in_weight = 0.0
+                
+    @api.multi
+    def undo_consumed(self):
+        for item in self:
+            item.write({
+                'reserved_to_production_id': None,
+                'consumed':False
+            })
+            item.stock_production_lot_id.write({
+                'available_kg': sum(item.stock_production_lot_id.filtered(lambda a: not a.consumed).mapped('real_weight'))
+            })
 
     @api.depends('reserved_to_production_id', 'production_id')
     @api.multi

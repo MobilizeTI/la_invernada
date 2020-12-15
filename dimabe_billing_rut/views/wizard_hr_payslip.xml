@@ -61,7 +61,7 @@
 	</record>
 	<menuitem name="Libro de Remuneraciones por Compañia" parent="l10n_cl_hr.menu_cl_hr_payroll_reports" action="action_payslip_menu" id="remuneration_book_item" />
 	<menuitem name="Previred" parent="l10n_cl_hr.menu_cl_hr_payroll_indicators" action="action_payslip_previred_menu" id="previred_item" />
-	<record model="ir.ui.menu" id="l10n_cl_hr.wizard_export_csv_menu">
+	<!-- <record model="ir.ui.menu" id="l10n_cl_hr.wizard_export_csv_menu">
 		<field name="action" eval="False" />
-	</record>
+	</record> -->
 </odoo>

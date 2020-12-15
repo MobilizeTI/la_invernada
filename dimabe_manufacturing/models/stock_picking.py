@@ -2,7 +2,7 @@ from odoo import models, api, fields
 from odoo.addons import decimal_precision as dp
 import datetime
 from odoo.tools.float_utils import float_compare, float_is_zero, float_round
-
+import datetime
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
@@ -209,7 +209,38 @@ class StockPicking(models.Model):
     @api.multi
     def button_validate(self):
         if self.picking_type_code == 'outgoing':
-            return super(StockPicking, self).button_validate()
+            for serial in self.packing_list_ids:
+                serial.write({
+                    'consumed': True
+                })
+            for lot in self.packing_list_lot_ids:
+                available_kg = sum(
+                    lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
+                query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg, lot.id)
+                cr = self._cr
+                cr.execute(query)
+            if len(self.move_line_ids_without_package) == 0:
+                raise models.UserError('No existe ningun campo en operaciones detalladas')
+            if self.move_line_ids_without_package.filtered(lambda a: a.qty_done == 0):
+                raise models.UserError('No ha ingresado la cantidad realizada')
+            for move_line in self.move_line_ids_without_package:
+                if self.picking_type_id.warehouse_id.id == 17 and self.picking_type_code != 'outgoing':
+                    move_line._action_done()
+                    return super(StockPicking, self).button_validate()
+                else:
+                    move_line.write({
+                        'state': 'done',
+                        'product_uom_qty':0
+                        'qty_done': move_line.product_uom_qty
+                    })
+                    move_line.move_id.write({
+                        'state': 'done',
+                    })
+                    self.write({
+                        'state': 'done',
+                        'date_done':datetime.datetime.now()
+                    })
+
 
     def validate_barcode(self, barcode):
         custom_serial = self.packing_list_ids.filtered(
