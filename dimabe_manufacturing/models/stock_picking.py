@@ -206,62 +206,62 @@ class StockPicking(models.Model):
                     })
         return res
 
-    @api.multi
-    def button_validate(self):
-        if self.picking_type_code == 'outgoing':
-            for serial in self.packing_list_ids:
-                serial.write({
-                    'consumed': True
-                })
-            for lot in self.packing_list_lot_ids:
-                available_kg = sum(
-                    lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
-                query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg, lot.id)
-                cr = self._cr
-                cr.execute(query)
-                quant = self.env['stock.quant'].search([('lot_id', '=', lot.id), ('location_id', '=',
-                                                                                  lot.stock_production_lot_serial_ids.mapped(
-                                                                                      'production_id').mapped(
-                                                                                      'location_src_id').id)])
-                quant.write({
-                    'quantity': available_kg
-                })
-            if len(self.move_line_ids_without_package) == 0:
-                raise models.UserError('No existe ningun campo en operaciones detalladas')
-            if self.move_line_ids_without_package.filtered(lambda a: a.qty_done == 0):
-                raise models.UserError('No ha ingresado la cantidad realizada')
-            for move_line in self.move_line_ids_without_package:
-                if self.picking_type_id.warehouse_id.id == 17 and self.picking_type_code != 'outgoing':
-                    move_line._action_done()
-                    return super(StockPicking, self).button_validate()
-                else:
-                    if move_line.product_id.product_tmpl_id.tracking == 'lot':
-                        stock_quant = self.env['stock.quant'].search(
-                            [('product_id', '=', move_line.product_id.id), ('location_id', '=', self.location_id.id),
-                             ('lot_id', '=', move_line.lot_id.id)])
-                    else:
-                        stock_quant = self.env['stock.quant'].search(
-                            [('product_id', '=', move_line.product_id.id), ('location_id', '=', self.location_id.id)])
-                    stock_quant.write({
-                        'quantity': (stock_quant.quantity - move_line.qty_done)
-                    })
-                    move_line.write({
-                        'state': 'done',
-                        'qty_done': move_line.product_uom_qty,
-                    })
-                    move_line.write({
-                        'product_uom_qty': 0
-                    })
-                    move_line.move_id.write({
-                        'state': 'done',
-                    })
-
-                    self.write({
-                        'state': 'done',
-                        'datetime': datetime.datetime.now()
-                    })
-        else:
-            return super(StockPicking, self).button_validate()
+    # @api.multi
+    # def button_validate(self):
+    #     if self.picking_type_code == 'outgoing':
+    #         for serial in self.packing_list_ids:
+    #             serial.write({
+    #                 'consumed': True
+    #             })
+    #         for lot in self.packing_list_lot_ids:
+    #             available_kg = sum(
+    #                 lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
+    #             query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg, lot.id)
+    #             cr = self._cr
+    #             cr.execute(query)
+    #             quant = self.env['stock.quant'].search([('lot_id', '=', lot.id), ('location_id', '=',
+    #                                                                               lot.stock_production_lot_serial_ids.mapped(
+    #                                                                                   'production_id').mapped(
+    #                                                                                   'location_src_id').id)])
+    #             quant.write({
+    #                 'quantity': available_kg
+    #             })
+    #         if len(self.move_line_ids_without_package) == 0:
+    #             raise models.UserError('No existe ningun campo en operaciones detalladas')
+    #         if self.move_line_ids_without_package.filtered(lambda a: a.qty_done == 0):
+    #             raise models.UserError('No ha ingresado la cantidad realizada')
+    #         for move_line in self.move_line_ids_without_package:
+    #             if self.picking_type_id.warehouse_id.id == 17 and self.picking_type_code != 'outgoing':
+    #                 move_line._action_done()
+    #                 return super(StockPicking, self).button_validate()
+    #             else:
+    #                 if move_line.product_id.product_tmpl_id.tracking == 'lot':
+    #                     stock_quant = self.env['stock.quant'].search(
+    #                         [('product_id', '=', move_line.product_id.id), ('location_id', '=', self.location_id.id),
+    #                          ('lot_id', '=', move_line.lot_id.id)])
+    #                 else:
+    #                     stock_quant = self.env['stock.quant'].search(
+    #                         [('product_id', '=', move_line.product_id.id), ('location_id', '=', self.location_id.id)])
+    #                 stock_quant.write({
+    #                     'quantity': (stock_quant.quantity - move_line.qty_done)
+    #                 })
+    #                 move_line.write({
+    #                     'state': 'done',
+    #                     'qty_done': move_line.product_uom_qty,
+    #                 })
+    #                 move_line.write({
+    #                     'product_uom_qty': 0
+    #                 })
+    #                 move_line.move_id.write({
+    #                     'state': 'done',
+    #                 })
+    #
+    #                 self.write({
+    #                     'state': 'done',
+    #                     'datetime': datetime.datetime.now()
+    #                 })
+    #     else:
+    #         return super(StockPicking, self).button_validate()
 
     def validate_barcode(self, barcode):
         custom_serial = self.packing_list_ids.filtered(
