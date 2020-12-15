@@ -378,7 +378,7 @@ class MrpWorkorder(models.Model):
                 if not item.location_id:
                     raise models.ValidationError("Lote {} aun esta en proceso {}".format(item.name, item.location_id))
                 if not self.lot_produced_id:
-                    stock_move[0].update({
+                    stock_move.update({
                         'active_move_line_ids': [
                             (0, 0, {
                                 'product_id': item.product_id.id,
