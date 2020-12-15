@@ -237,7 +237,8 @@ class StockPicking(models.Model):
                 else:
                     if move_line.product_id.product_tmpl_id.tracking == 'lot':
                         stock_quant = self.env['stock.quant'].search(
-                            [('product_id', '=', move_line.product_id.id), ('location_id', '=', self.location_id.id),('lot_id','=',move.lot_id.id)])
+                            [('product_id', '=', move_line.product_id.id), ('location_id', '=', self.location_id.id),
+                             ('lot_id', '=', move.lot_id.id)])
                     else:
                         stock_quant = self.env['stock.quant'].search(
                             [('product_id', '=', move_line.product_id.id), ('location_id', '=', self.location_id.id)])
@@ -246,7 +247,10 @@ class StockPicking(models.Model):
                     })
                     move_line.write({
                         'state': 'done',
-                        'qty_done': move_line.reser
+                        'qty_done': move_line.product_uom_qty,
+                    })
+                    move_line.write({
+                        'product_uom_qty': 0
                     })
                     move_line.move_id.write({
                         'state': 'done',
@@ -254,7 +258,7 @@ class StockPicking(models.Model):
 
                     self.write({
                         'state': 'done',
-                        'datetime':datetime.datetime.now()
+                        'datetime': datetime.datetime.now()
                     })
         else:
             return super(StockPicking, self).button_validate()
