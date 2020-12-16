@@ -236,6 +236,7 @@ class StockPicking(models.Model):
                     move_line.move_id.write({
                         'state': 'done',
                     })
+                    raise models.UserError(all(float_is_zero(move_line.qty_done, precision_digits=precision_digits) for move_line in self.move_line_ids.filtered(lambda m: m.state not in ('done', 'cancel'))))
                     return super(StockPicking, self).button_validate()
 
                     #self.write({
