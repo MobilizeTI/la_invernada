@@ -236,9 +236,8 @@ class StockPicking(models.Model):
                     move_line.move_id.write({
                         'state': 'done',
                     })
-                    raise models.UserError(len(self.move_line_ids))
-                    return super(StockPicking, self).button_validate()
-
+                    super(StockPicking, self).action_done()
+                    return super(StockPicking,self).button_validate()
                     #self.write({
                     #    'state': 'done',
                     #    'date_done': datetime.datetime.now()
