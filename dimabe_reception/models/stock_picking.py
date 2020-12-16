@@ -322,7 +322,6 @@ class StockPicking(models.Model):
 
     @api.multi
     def button_validate(self):
-        raise models.ValidationError(self.picking_type_code)
         if self.picking_type_code == 'incoming':
             for stock_picking in self:
                 message = ''

@@ -208,6 +208,7 @@ class StockPicking(models.Model):
 
     @api.multi
     def button_validate(self):
+        raise models.ValidationError(self.picking_type_code)
         if self.picking_type_code == 'outgoing':
             for serial in self.packing_list_ids:
                 serial.write({
