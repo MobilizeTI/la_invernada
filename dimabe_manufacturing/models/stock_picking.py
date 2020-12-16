@@ -208,7 +208,6 @@ class StockPicking(models.Model):
 
     @api.multi
     def button_validate(self):
-        raise models.ValidationError(self.picking_type_code)
         if self.picking_type_code == 'outgoing':
             for serial in self.packing_list_ids:
                 serial.write({
@@ -239,12 +238,12 @@ class StockPicking(models.Model):
                     })
                     return super(StockPicking, self).button_validate()
 
-                    
                     #self.write({
                     #    'state': 'done',
                     #    'date_done': datetime.datetime.now()
                     #})
-
+        else:
+            return super(StockPicking, self).button_validate()
 
     def validate_barcode(self, barcode):
         custom_serial = self.packing_list_ids.filtered(
