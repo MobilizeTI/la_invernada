@@ -237,6 +237,8 @@ class StockPicking(models.Model):
                         'state': 'done',
                     })
                     return super(StockPicking, self).button_validate()
+
+                    
                     #self.write({
                     #    'state': 'done',
                     #    'date_done': datetime.datetime.now()
