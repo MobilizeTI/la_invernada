@@ -230,7 +230,7 @@ class StockPicking(models.Model):
                 else:
                     move_line.write({
                         'state': 'done',
-                        'product_uom_qty':0
+                        'product_uom_qty':0,
                         'qty_done': move_line.product_uom_qty
                     })
                     move_line.move_id.write({
