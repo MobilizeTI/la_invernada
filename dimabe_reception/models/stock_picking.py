@@ -361,6 +361,9 @@ class StockPicking(models.Model):
                         })
 
             return res
+        else:
+            return super(StockPicking, self).button_validate()
+
 
     @api.model
     def validate_mp_reception(self):
