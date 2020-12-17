@@ -79,7 +79,7 @@ class AccountInvoice(models.Model):
                 "EnterpriseActeco": "519",
                 "EnterpriseAddressOrigin": self.env.user.company_id.street,
                 "EnterpriseCity": self.env.user.company_id.city,
-                "EnterpriseCommune": self.env.user.company_id.state,
+                "EnterpriseCommune": "direccion test",
                 "EnterpriseName":self.env.user.company_id.partner_id,
                 "EnterpriseTurn": "Ejemplo"
             },
