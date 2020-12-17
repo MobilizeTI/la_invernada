@@ -69,11 +69,7 @@ class AccountInvoice(models.Model):
 
     @api.model
     def send_invoice(self):
-        raise models.ValidationError('{} {} {} {} {} {} {} {} '.format(
-            self.create_date,self.date_due,self.env.user.company_id.invoice_rut,
-            self.env.user.company_id.street,self.env.user.company_id.partner_id,
-            self.partner_id.invoice_rut,self.amount_untaxed,self.amount_total
-        ))
+        raise models.ValidationError('entre ejale')
         url = ''
         invoice= {
             "createdDate": self.create_date,
