@@ -69,7 +69,6 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def send_invoice(self):
-        raise models.ValidationError('entre')
         url = ''
         invoice= {
             "createdDate": self.create_date,
