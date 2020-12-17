@@ -75,20 +75,20 @@ class AccountInvoice(models.Model):
             "expirationDate": self.date_due.strftime("%Y/%m/%d"),
             "dteType": "33",
             "transmitter": {
-                "EnterpriseRut": str(self.env.user.company_id.invoice_rut),
+                "EnterpriseRut": self.env.user.company_id.invoice_rut,
                 "EnterpriseActeco": "519",
-                "EnterpriseAddressOrigin": str(self.env.user.company_id.street),
-                "EnterpriseCity": str(self.env.user.company_id.city),
-                "EnterpriseCommune": "direccion test",
-                "EnterpriseName":str(self.env.user.company_id.partner_id),
+                "EnterpriseAddressOrigin": self.env.user.company_id.street,
+                "EnterpriseCity": self.env.user.company_id.city,
+                "EnterpriseCommune": str(self.env.user.company_id.state_id),
+                "EnterpriseName":str(self.env.user.company_id.partner_id.name),
                 "EnterpriseTurn": "Ejemplo"
             },
             "recipient": {
-                "EnterpriseRut": str(self.partner_id.invoice_rut),
-                "EnterpriseAddressOrigin": str(self.partner_id.street),
-                "EnterpriseCity": str( self.partner_id.city),
-                "EnterpriseCommune": "dire test",
-                "EnterpriseName": str(self.partner_id),
+                "EnterpriseRut": self.partner_id.invoice_rut,
+                "EnterpriseAddressOrigin": self.partner_id.street,
+                "EnterpriseCity": self.partner_id.city,
+                "EnterpriseCommune": str(self.partner_id.state_id),
+                "EnterpriseName": str(self.partner_id.name),
                 "EnterpriseTurn":"Ejemplo"
             },
             "total": {
