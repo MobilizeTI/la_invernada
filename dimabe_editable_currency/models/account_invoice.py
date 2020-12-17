@@ -70,6 +70,24 @@ class AccountInvoice(models.Model):
     @api.multi
     def send_invoice(self):
         url = ''
+        productLines = []
+        lineNumber = 1
+        for item in self.invoice_line_ids:
+            productLines.push(
+                {
+                    "LineNumber": lineNumber,
+                    "ProductTypeCode": "EAN",
+                    "ProductCode": item.product_id,
+                    "ProductName": item.name,
+                    "ProductQuantity": item.quantity,
+                    "ProductPrice": item.price_unit,
+                    "ProductDiscountPercent": "0",
+                    "DiscountAmount": "0",
+                    "Amount": item.price_subtotal
+                }
+            )
+            lineNumber += 1
+
         invoice= {
             "createdDate": self.create_date.strftime("%Y/%m/%d"),
             "expirationDate": self.date_due.strftime("%Y/%m/%d"),
@@ -79,16 +97,16 @@ class AccountInvoice(models.Model):
                 "EnterpriseActeco": "519",
                 "EnterpriseAddressOrigin": self.env.user.company_id.street,
                 "EnterpriseCity": self.env.user.company_id.city,
-                "EnterpriseCommune": str(self.env.user.company_id.state_id),
-                "EnterpriseName":str(self.env.user.company_id.partner_id.name),
+                "EnterpriseCommune": str(self.env.user.company_id.state_id.name),
+                "EnterpriseName": self.env.user.company_id.partner_id.name,
                 "EnterpriseTurn": "Ejemplo"
             },
             "recipient": {
                 "EnterpriseRut": self.partner_id.invoice_rut,
                 "EnterpriseAddressOrigin": self.partner_id.street,
                 "EnterpriseCity": self.partner_id.city,
-                "EnterpriseCommune": str(self.partner_id.state_id),
-                "EnterpriseName": str(self.partner_id.name),
+                "EnterpriseCommune": str(self.partner_id.state_id.name),
+                "EnterpriseName": self.partner_id.name,
                 "EnterpriseTurn":"Ejemplo"
             },
             "total": {
@@ -98,7 +116,7 @@ class AccountInvoice(models.Model):
                 "taxtRateAmount": self.amount_tax,
                 "totalAmount": self.amount_total
             },
-            "lines": []
+            "lines": productLines
         }
         #r = requests.post(url, json={invoice})
         raise models.ValidationError(json.dumps(invoice))
