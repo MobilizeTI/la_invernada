@@ -76,14 +76,14 @@ class AccountInvoice(models.Model):
             productLines.append(
                 {
                     "LineNumber": lineNumber,
-                    "ProductTypeCode": "EAN",
-                    "ProductCode": str(item.product_id),
-                    "ProductName":  str(item.name),
-                    "ProductQuantity":  str(item.quantity),
-                    "ProductPrice":  str(item.price_unit),
+                    "ProductTypeCode": "SIN TIPO",
+                    "ProductCode": str(item.product_id.default_code),
+                    "ProductName":  item.name,
+                    "ProductQuantity":  item.quantity,
+                    "ProductPrice":  item.price_unit,
                     "ProductDiscountPercent": "0",
                     "DiscountAmount": "0",
-                    "Amount":  str(item.price_subtotal)
+                    "Amount":  item.price_subtotal
                 }
             )
             lineNumber += 1
