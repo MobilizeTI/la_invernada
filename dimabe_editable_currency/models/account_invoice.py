@@ -73,7 +73,7 @@ class AccountInvoice(models.Model):
         productLines = []
         lineNumber = 1
         for item in self.invoice_line_ids:
-            productLines.push(
+            productLines.append(
                 {
                     "LineNumber": lineNumber,
                     "ProductTypeCode": "EAN",
