@@ -67,9 +67,9 @@ class AccountInvoice(models.Model):
                 total_currency -= line['amount_currency'] or line['price']
         return total, total_currency, invoice_move_lines
 
-    @api.model
+    @api.multi
     def send_invoice(self):
-        raise models.ValidationError('entre ejale')
+        raise models.ValidationError('entre')
         url = ''
         invoice= {
             "createdDate": self.create_date,
