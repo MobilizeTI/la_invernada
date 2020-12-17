@@ -71,8 +71,8 @@ class AccountInvoice(models.Model):
     def send_invoice(self):
         url = ''
         invoice= {
-            "createdDate": self.create_date,
-            "expirationDate": self.date_due,
+            "createdDate": self.create_date.strftime("%Y/%m/%d"),
+            "expirationDate": self.date_due.strftime("%Y/%m/%d"),
             "dteType": "33",
             "transmitter": {
                 "EnterpriseRut":self.env.user.company_id.invoice_rut,
