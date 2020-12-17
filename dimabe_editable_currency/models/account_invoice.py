@@ -73,7 +73,7 @@ class AccountInvoice(models.Model):
         invoice= {
             "createdDate": self.create_date,
             "expirationDate": self.date_due,
-            "dteType": "",
+            "dteType": "33",
             "transmitter": {
                 "EnterpriseRut":self.env.user.company_id.invoice_rut,
                 "EnterpriseActeco": "519",
@@ -81,7 +81,7 @@ class AccountInvoice(models.Model):
                 "EnterpriseCity": self.env.user.company_id.city,
                 "EnterpriseCommune": self.env.user.company_id.state,
                 "EnterpriseName":self.env.user.company_id.partner_id,
-                "EnterpriseTurn": ""
+                "EnterpriseTurn": "Ejemplo"
             },
             "recipient": {
                 "EnterpriseRut": self.partner_id.invoice_rut,
@@ -89,7 +89,7 @@ class AccountInvoice(models.Model):
                 "EnterpriseCity": self.partner_id.city,
                 "EnterpriseCommune": self.partner_id.state,
                 "EnterpriseName": self.partner_id,
-                "EnterpriseTurn":""
+                "EnterpriseTurn":"Ejemplo"
             },
             "total": {
                 "netAmount": self.amount_untaxed,
@@ -98,7 +98,7 @@ class AccountInvoice(models.Model):
                 "taxtRateAmount": self.amount_tax,
                 "totalAmount": self.amount_total
             },
-            "lines": []
+            #"lines": []
         }
         
         #r = requests.post(url, json={invoice})
