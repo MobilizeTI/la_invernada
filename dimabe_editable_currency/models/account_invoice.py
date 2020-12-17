@@ -66,3 +66,56 @@ class AccountInvoice(models.Model):
                 total -= line['price']
                 total_currency -= line['amount_currency'] or line['price']
         return total, total_currency, invoice_move_lines
+
+    @api.model
+    def send_invoice(self):
+        url = ''
+        invoice= {
+            "createdDate": self.create_date,
+            "expirationDate": self.date_due,
+            "dteType": "",
+            "transmitter": {
+                "EnterpriseRut":self.env.user.company_id.invoice_rut,
+                "EnterpriseActeco": "519",
+                "EnterpriseAddressOrigin": self.env.user.company_id.street,
+                "EnterpriseCity": self.env.user.company_id.city,
+                "EnterpriseCommune": self.env.user.company_id.state,
+                "EnterpriseName":self.env.user.company_id.partner_id,
+                "EnterpriseTurn": ""
+            },
+            "recipient": {
+                "EnterpriseRut": self.partner_id.invoice_rut,
+                "EnterpriseAddressOrigin": self.partner_id.street,
+                "EnterpriseCity": self.partner_id.city,
+                "EnterpriseCommune": self.partner_id.state,
+                "EnterpriseName": self.partner_id,
+                "EnterpriseTurn":""
+            },
+            "total": {
+                "netAmount": self.amount_untaxed,
+                "exemptAmount": "0",
+                "taxRate": "19",
+                "taxtRateAmount": self.amount_tax,
+                "totalAmount": self.amount_total
+            },
+            "lines": []
+        }
+        lineNumber = 1
+        for item in self.invoice_line_ids:
+            invoice.lines.push(
+                {
+                    "LineNumber": lineNumber,
+                    "ProductTypeCode": "EAN",
+                    "ProductCode": item.product_id,
+                    "ProductName": item.name,
+                    "ProductQuantity": item.quantity,
+                    "ProductPrice": item.price_unit,
+                    "ProductDiscountPercent": "0",
+                    "DiscountAmount": "0",
+                    "Amount": item.price_subtotal
+                }
+            )
+            lineNumber += 1
+
+        r = requests.post(url, json={invoice})
+        raise models.ValidationError(invoice)

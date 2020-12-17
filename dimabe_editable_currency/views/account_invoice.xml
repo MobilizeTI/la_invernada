@@ -5,6 +5,9 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_supplier_form" />
             <field name="arch" type="xml">
+                 <xpath expr="//header" position="inside">
+                    <button name="send_invoice"  string="Test Json"  type="object"/>
+                 </xpath>
                 <field name="partner_bank_id" position="after">
                     <field name="exchange_rate" />
                 </field>
@@ -21,5 +24,6 @@
                 </field>
             </field>
         </record>
+       
     </data>
 </odoo>

@@ -229,11 +229,6 @@ class StockPicking(models.Model):
                     return super(StockPicking, self).button_validate()
                 else:
                     super(StockPicking, self).action_done()
-                    #return super(StockPicking,self).button_validate()
-                    #self.write({
-                    #    'state': 'done',
-                    #    'date_done': datetime.datetime.now()
-                    #})
         else:
             return super(StockPicking, self).button_validate()
 
