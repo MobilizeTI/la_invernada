@@ -87,7 +87,7 @@ class AccountInvoice(models.Model):
                 "EnterpriseRut": self.partner_id.invoice_rut,
                 "EnterpriseAddressOrigin": self.partner_id.street,
                 "EnterpriseCity": self.partner_id.city,
-                "EnterpriseCommune": self.partner_id.state,
+                "EnterpriseCommune": "dire test",
                 "EnterpriseName": self.partner_id,
                 "EnterpriseTurn":"Ejemplo"
             },
