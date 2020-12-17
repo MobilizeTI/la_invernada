@@ -97,25 +97,9 @@ class AccountInvoice(models.Model):
                 "taxRate": "19",
                 "taxtRateAmount": self.amount_tax,
                 "totalAmount": self.amount_total
-            },
-            "lines": []
+            }
         }
-        lineNumber = 1
-        for item in self.invoice_line_ids:
-            invoice.lines.push(
-                {
-                    "LineNumber": lineNumber,
-                    "ProductTypeCode": "EAN",
-                    "ProductCode": item.product_id,
-                    "ProductName": item.name,
-                    "ProductQuantity": item.quantity,
-                    "ProductPrice": item.price_unit,
-                    "ProductDiscountPercent": "0",
-                    "DiscountAmount": "0",
-                    "Amount": item.price_subtotal
-                }
-            )
-            lineNumber += 1
+   
 
         #r = requests.post(url, json={invoice})
         raise models.ValidationError(invoice.transmitter)
