@@ -99,7 +99,7 @@ class AccountInvoice(models.Model):
             "dteType": self.dte_type_id.code,
             "transmitter": {
                 "EnterpriseRut": self.env.user.company_id.invoice_rut,
-                "EnterpriseActeco": str(self.env.user.company_id.economic_activities.code),
+                "EnterpriseActeco": str(self.env.user.company_id.company_activity_id.code),
                 "EnterpriseAddressOrigin": self.env.user.company_id.street,
                 "EnterpriseCity": self.env.user.company_id.city,
                 "EnterpriseCommune": str(self.env.user.company_id.state_id.name),
