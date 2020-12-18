@@ -11,7 +11,7 @@ class AccountMoveLine(models.Model):
         ("4", 'Ítem No Venta'),
         ("5", 'Ítem a rebajar'),
         ("6", 'Producto o servicio no facturable negativo'),
-        ], 'Tipo Exento', default='No afecto o exento de IVA')
+        ], 'Tipo Exento', default='1')
 
     def _compute_amount_fields(self, amount, src_currency, company_currency):
         """ Helper function to compute value for fields debit/credit/amount_currency based on an amount and the currencies given in parameter"""
