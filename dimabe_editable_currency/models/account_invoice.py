@@ -69,21 +69,26 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def send_invoice(self):
-        url = ''
+        url = 'https://services.dimabe.cl/api/dte/emite'
         productLines = []
         lineNumber = 1
         for item in self.invoice_line_ids:
+            haveExempt = False
+            if (len(item.invoice_line_tax_ids) == 0):
+                haveExempt = True
             productLines.append(
                 {
                     "LineNumber": lineNumber,
-                    "ProductTypeCode": "SIN TIPO",
+                    "ProductTypeCode": "",
                     "ProductCode": str(item.product_id.default_code),
                     "ProductName":  item.name,
                     "ProductQuantity":  item.quantity,
                     "ProductPrice":  item.price_unit,
                     "ProductDiscountPercent": "0",
                     "DiscountAmount": "0",
-                    "Amount":  item.price_subtotal
+                    "Amount":  item.price_subtotal,
+                    "HaveExempt": haveExempt,
+                    "TypeOfExemptEnum": ""
                 }
             )
             lineNumber += 1
@@ -91,15 +96,15 @@ class AccountInvoice(models.Model):
         invoice= {
             "createdDate": self.create_date.strftime("%Y/%m/%d"),
             "expirationDate": self.date_due.strftime("%Y/%m/%d"),
-            "dteType": "33",
+            "dteType": self.dta_type_id.code,
             "transmitter": {
                 "EnterpriseRut": self.env.user.company_id.invoice_rut,
-                "EnterpriseActeco": "519",
+                "EnterpriseActeco": str(self.env.user.company_id.economic_activities.code),
                 "EnterpriseAddressOrigin": self.env.user.company_id.street,
                 "EnterpriseCity": self.env.user.company_id.city,
                 "EnterpriseCommune": str(self.env.user.company_id.state_id.name),
                 "EnterpriseName": self.env.user.company_id.partner_id.name,
-                "EnterpriseTurn": "Ejemplo"
+                "EnterpriseTurn": str(self.env.user.company_id.economic_activities.name)
             },
             "recipient": {
                 "EnterpriseRut": self.partner_id.invoice_rut,
@@ -107,7 +112,7 @@ class AccountInvoice(models.Model):
                 "EnterpriseCity": self.partner_id.city,
                 "EnterpriseCommune": str(self.partner_id.state_id.name),
                 "EnterpriseName": self.partner_id.name,
-                "EnterpriseTurn":"Ejemplo"
+                "EnterpriseTurn":str(self.env.user.company_id.economic_activities.name)
             },
             "total": {
                 "netAmount": self.amount_untaxed,
