@@ -14,6 +14,6 @@ class AccountInvoiceLine(models.Model):
             ], 'Tipo Exento', default='1')
 
     #@api.onchange('invoice_line_tax_ids')
-    def valid_exempt(self):
-        if len(self.invoice_line_tax_ids) == 0:
-            exempt = 1
+    #def valid_exempt(self):
+     #   if len(self.invoice_line_tax_ids) == 0:
+      #      exempt = 1
