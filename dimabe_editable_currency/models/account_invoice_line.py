@@ -11,4 +11,4 @@ class AccountInvoiceLine(models.Model):
             ("4", 'Ítem No Venta'),
             ("5", 'Ítem a rebajar'),
             ("6", 'Producto o servicio no facturable negativo'),
-            ], 'Tipo Exento', default='1')
+            ])
