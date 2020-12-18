@@ -22,6 +22,9 @@
                 <xpath expr="//header" position="inside">
                     <button name="send_invoice"  string="Test Json"  type="object"/>
                  </xpath>
+                 <xpath expr="//field[@name='invoice_line_ids']//field[@name='invoice_line_tax_ids']" position="after">
+                    <field name="exempt"/>
+                 </xpath>
                 <field name="currency_id" position="after">
                     <field name="exchange_rate" />
                 </field>

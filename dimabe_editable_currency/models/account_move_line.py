@@ -1,8 +1,17 @@
 from odoo import models, fields, api
 
-
 class AccountMoveLine(models.Model):
+
     _inherit = 'account.move.line'
+
+    exempt = fields.Selection([
+        (1, 'No afecto o exento de IVA'),
+        (2, 'Producto o servicio no es facturable'),
+        (3, 'Garantía de depósito por envases, autorizados por Resolución especial'),
+        (4, 'Ítem No Venta'),
+        (5, 'Ítem a rebajar'),
+        (6, 'Producto o servicio no facturable negativo'),
+        ], 'Tipo Exento', default='No afecto o exento de IVA')
 
     def _compute_amount_fields(self, amount, src_currency, company_currency):
         """ Helper function to compute value for fields debit/credit/amount_currency based on an amount and the currencies given in parameter"""
