@@ -104,7 +104,7 @@ class AccountInvoice(models.Model):
                 "EnterpriseCity": self.env.user.company_id.city,
                 "EnterpriseCommune": str(self.env.user.company_id.state_id.name),
                 "EnterpriseName": self.env.user.company_id.partner_id.name,
-                "EnterpriseTurn": str(self.env.user.company_id.economic_activities.name)
+                "EnterpriseTurn": str(self.env.user.company_id.company_activity_id.name)
             },
             "recipient": {
                 "EnterpriseRut": self.partner_id.invoice_rut,
@@ -112,7 +112,7 @@ class AccountInvoice(models.Model):
                 "EnterpriseCity": self.partner_id.city,
                 "EnterpriseCommune": str(self.partner_id.state_id.name),
                 "EnterpriseName": self.partner_id.name,
-                "EnterpriseTurn":str(self.env.user.company_id.economic_activities.name)
+                "EnterpriseTurn":str(self.env.user.company_id.partner_activity_id.name)
             },
             "total": {
                 "netAmount": self.amount_untaxed,
