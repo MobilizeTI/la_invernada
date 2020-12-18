@@ -11,7 +11,8 @@ class AccountInvoiceLine(models.Model):
             ('4', 'Item No Venta'),
             ('5', 'Item a rebajar'),
             ('6', 'Producto/servicio no facturable negativo'),
-            ], 'Tipo Exento', default='1')
+            ('7', '')
+            ], 'Tipo Exento', default='7')
 
 
     @api.onchange('invoice_line_tax_ids')
