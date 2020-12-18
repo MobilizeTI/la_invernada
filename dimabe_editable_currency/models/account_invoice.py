@@ -96,7 +96,7 @@ class AccountInvoice(models.Model):
         invoice= {
             "createdDate": self.create_date.strftime("%Y/%m/%d"),
             "expirationDate": self.date_due.strftime("%Y/%m/%d"),
-            "dteType": self.dta_type_id.code,
+            "dteType": self.dte_type_id.code,
             "transmitter": {
                 "EnterpriseRut": self.env.user.company_id.invoice_rut,
                 "EnterpriseActeco": str(self.env.user.company_id.economic_activities.code),
