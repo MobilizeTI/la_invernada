@@ -13,7 +13,7 @@ class AccountInvoiceLine(models.Model):
             ("6", 'Producto o servicio no facturable negativo'),
             ], 'Tipo Exento', default='1')
 
-    @api.onchange('invoice_line_tax_ids')
+    #@api.onchange('invoice_line_tax_ids')
     def valid_exempt(self):
         if len(self.invoice_line_tax_ids) == 0:
             exempt = 1
