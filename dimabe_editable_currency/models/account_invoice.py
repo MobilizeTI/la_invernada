@@ -92,19 +92,18 @@ class AccountInvoice(models.Model):
                 }
             )
             lineNumber += 1
-        raise models.ValidationError(self.company_activity_id.code)
         invoice= {
             "createdDate": self.create_date.strftime("%Y/%m/%d"),
             "expirationDate": self.date_due.strftime("%Y/%m/%d"),
             "dteType": self.dte_type_id.code,
             "transmitter": {
                 "EnterpriseRut": self.env.user.company_id.invoice_rut,
-                "EnterpriseActeco": str(self.company_activity_id),
+                "EnterpriseActeco": self.company_activity_id.code,
                 "EnterpriseAddressOrigin": self.env.user.company_id.street,
                 "EnterpriseCity": self.env.user.company_id.city,
                 "EnterpriseCommune": str(self.env.user.company_id.state_id.name),
                 "EnterpriseName": self.env.user.company_id.partner_id.name,
-                "EnterpriseTurn": str(self.env.user.company_id.company_activity_id.name)
+                "EnterpriseTurn": self.company_activity_id.name
             },
             "recipient": {
                 "EnterpriseRut": self.partner_id.invoice_rut,
@@ -112,7 +111,7 @@ class AccountInvoice(models.Model):
                 "EnterpriseCity": self.partner_id.city,
                 "EnterpriseCommune": str(self.partner_id.state_id.name),
                 "EnterpriseName": self.partner_id.name,
-                "EnterpriseTurn":str(self.env.user.company_id.partner_activity_id.name)
+                "EnterpriseTurn": self.partner_activity_id.name
             },
             "total": {
                 "netAmount": self.amount_untaxed,
