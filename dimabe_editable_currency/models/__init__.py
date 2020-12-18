@@ -7,3 +7,4 @@ from . import account_move_line
 from . import res_currency_rate
 from . import account_move
 from . import balance_sheet_clp
+from . import account_invoice_line
