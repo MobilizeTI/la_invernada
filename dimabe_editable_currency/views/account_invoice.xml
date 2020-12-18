@@ -19,6 +19,9 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form" />
             <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="send_invoice"  string="Test Json"  type="object"/>
+                 </xpath>
                 <field name="currency_id" position="after">
                     <field name="exchange_rate" />
                 </field>
