@@ -92,7 +92,7 @@ class AccountInvoice(models.Model):
                 }
             )
             lineNumber += 1
-
+        raise models.ValidationError(self.company_activity_id)
         invoice= {
             "createdDate": self.create_date.strftime("%Y/%m/%d"),
             "expirationDate": self.date_due.strftime("%Y/%m/%d"),
