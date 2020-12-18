@@ -2,7 +2,7 @@ from odoo import models, fields, api
 
 class AccountInvoiceLine(models.Model):
 
-    _inherit = 'account.invoic.line'
+    _inherit = 'account.invoice.line'
 
     exempt = fields.Selection([
             ('1', 'No afecto o exento de IVA'),
@@ -12,6 +12,7 @@ class AccountInvoiceLine(models.Model):
             ('5', 'Item a rebajar'),
             ('6', 'Producto/servicio no facturable negativo'),
             ], 'Tipo Exento', default='1')
+
 
     @api.onchange('invoice_line_tax_ids')
     def valid_exempt(self):
