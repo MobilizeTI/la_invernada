@@ -79,21 +79,36 @@ class AccountInvoice(models.Model):
             if (len(item.invoice_line_tax_ids) == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6)):
                 haveExempt = True
                 typeOfExemptEnum = item.exempt
-            productLines.append(
-                {
-                    "LineNumber": str(lineNumber),
-                    "ProductTypeCode": "EAN",
-                    "ProductCode": str(item.product_id.default_code),
-                    "ProductName":  item.name,
-                    "ProductQuantity":  str(item.quantity),
-                    "ProductPrice":  str(item.price_unit),
-                    "ProductDiscountPercent": "0",
-                    "DiscountAmount": "0",
-                    "Amount":  str(item.price_subtotal),
-                    "HaveExempt": haveExempt,
-                    "TypeOfExemptEnum": typeOfExemptEnum
-                }
-            )
+            if haveExempt:
+                productLines.append(
+                    {
+                        "LineNumber": str(lineNumber),
+                        "ProductTypeCode": "EAN",
+                        "ProductCode": str(item.product_id.default_code),
+                        "ProductName":  item.name,
+                        "ProductQuantity":  str(item.quantity),
+                        "ProductPrice":  str(item.price_unit),
+                        "ProductDiscountPercent": "0",
+                        "DiscountAmount": "0",
+                        "Amount":  str(item.price_subtotal),
+                        "HaveExempt": haveExempt,
+                        "TypeOfExemptEnum": typeOfExemptEnum
+                    }
+                )
+            else:
+                productLines.append(
+                    {
+                        "LineNumber": str(lineNumber),
+                        "ProductTypeCode": "EAN",
+                        "ProductCode": str(item.product_id.default_code),
+                        "ProductName":  item.name,
+                        "ProductQuantity":  str(item.quantity),
+                        "ProductPrice":  str(item.price_unit),
+                        "ProductDiscountPercent": "0",
+                        "DiscountAmount": "0",
+                        "Amount":  str(item.price_subtotal)
+                    }
+                )
             lineNumber += 1
         invoice= {
             "createdDate": self.create_date.strftime("%Y-%m-%d"),
