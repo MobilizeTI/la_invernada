@@ -125,5 +125,5 @@ class AccountInvoice(models.Model):
             },
             "lines": productLines
         }
-        r = requests.post(url, json={invoice})
+        r = requests.post(url, json=invoice)
         #raise models.ValidationError(json.dumps(invoice))
