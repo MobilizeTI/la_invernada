@@ -72,10 +72,12 @@ class AccountInvoice(models.Model):
         url = 'https://services.dimabe.cl/api/dte/emite'
         productLines = []
         lineNumber = 1
+        typeOfExemptEnum = ""
         for item in self.invoice_line_ids:
             haveExempt = False
             if (len(item.invoice_line_tax_ids) == 0):
                 haveExempt = True
+                typeOfExemptEnum = item.exempt
             productLines.append(
                 {
                     "LineNumber": lineNumber,
@@ -88,7 +90,7 @@ class AccountInvoice(models.Model):
                     "DiscountAmount": "0",
                     "Amount":  item.price_subtotal,
                     "HaveExempt": haveExempt,
-                    "TypeOfExemptEnum": ""
+                    "TypeOfExemptEnum": typeOfExemptEnum
                 }
             )
             lineNumber += 1
