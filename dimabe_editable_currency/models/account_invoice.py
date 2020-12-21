@@ -143,6 +143,6 @@ class AccountInvoice(models.Model):
             },
             "lines": productLines
         }
-        raise models.ValidationError(json.dumps(invoice))
-        r = requests.post(url, json=invoice)
         #raise models.ValidationError(json.dumps(invoice))
+        r = requests.post(url, json=invoice)
+      
