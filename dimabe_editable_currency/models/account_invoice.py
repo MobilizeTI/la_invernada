@@ -73,9 +73,14 @@ class AccountInvoice(models.Model):
     @api.multi
     def send_invoice(self):
         url = 'https://services.dimabe.cl/api/dte/emite'
+        headers = {
+            "apiKey" : "B23F1061-3E42-4424-BDAA-0D33BCA83766",
+            "CustomerCode": "E41958F0-AF3D-4D66-9C26-6A54950CA506"
+        }
         productLines = []
         lineNumber = 1
         typeOfExemptEnum = ""
+
         for item in self.invoice_line_ids:
             haveExempt = False
             #if (len(item.invoice_line_tax_ids) == 0):
@@ -144,5 +149,5 @@ class AccountInvoice(models.Model):
             "lines": productLines
         }
         #raise models.ValidationError(json.dumps(invoice))
-        r = requests.post(url, json=invoice)
+        r = requests.post(url, data=invoice, headers=headers)
       
