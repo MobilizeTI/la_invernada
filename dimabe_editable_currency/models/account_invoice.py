@@ -10,6 +10,9 @@ class AccountInvoice(models.Model):
         'Tasa de Cambio'
     )
 
+    list_references = fields.Many2One('account.invoice.observations')
+    list_observations = fields.Many2One('account.invoice.references')
+
     @api.model
     @api.onchange('date_invoice')
     def _default_exchange_rate(self):
@@ -85,12 +88,12 @@ class AccountInvoice(models.Model):
                         "LineNumber": str(lineNumber),
                         "ProductTypeCode": "EAN",
                         "ProductCode": str(item.product_id.default_code),
-                        "ProductName":  item.name,
-                        "ProductQuantity":  str(item.quantity),
-                        "ProductPrice":  str(item.price_unit),
+                        "ProductName": item.name,
+                        "ProductQuantity": str(int(item.quantity)),
+                        "ProductPrice": str(int(item.price_unit)),
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount":  str(item.price_subtotal),
+                        "Amount": str(int(item.price_subtotal)),
                         "HaveExempt": haveExempt,
                         "TypeOfExemptEnum": typeOfExemptEnum
                     }
@@ -101,12 +104,12 @@ class AccountInvoice(models.Model):
                         "LineNumber": str(lineNumber),
                         "ProductTypeCode": "EAN",
                         "ProductCode": str(item.product_id.default_code),
-                        "ProductName":  item.name,
-                        "ProductQuantity":  str(item.quantity),
-                        "ProductPrice":  str(item.price_unit),
+                        "ProductName": item.name,
+                        "ProductQuantity": str(int(item.quantity)),
+                        "ProductPrice": str(int(item.price_unit)),
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount":  str(item.price_subtotal)
+                        "Amount": str(int(item.price_subtotal))
                     }
                 )
             lineNumber += 1
@@ -132,11 +135,11 @@ class AccountInvoice(models.Model):
                 "EnterpriseTurn": self.partner_activity_id.name
             },
             "total": {
-                "netAmount": str(self.amount_untaxed),
+                "netAmount": str(int(self.amount_untaxed)),
                 "exemptAmount": "0",
                 "taxRate": "19",
-                "taxtRateAmount": str(self.amount_tax),
-                "totalAmount": str(self.amount_total)
+                "taxtRateAmount": str(int(self.amount_tax)),
+                "totalAmount": str(int(self.amount_total))
             },
             "lines": productLines
         }
