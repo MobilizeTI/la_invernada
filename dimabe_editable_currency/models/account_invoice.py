@@ -75,7 +75,8 @@ class AccountInvoice(models.Model):
         typeOfExemptEnum = ""
         for item in self.invoice_line_ids:
             haveExempt = False
-            if (len(item.invoice_line_tax_ids) == 0):
+            #if (len(item.invoice_line_tax_ids) == 0):
+            if (len(item.invoice_line_tax_ids) == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6)):
                 haveExempt = True
                 typeOfExemptEnum = item.exempt
             productLines.append(
