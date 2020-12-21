@@ -81,23 +81,23 @@ class AccountInvoice(models.Model):
                 typeOfExemptEnum = item.exempt
             productLines.append(
                 {
-                    "LineNumber": lineNumber,
-                    "ProductTypeCode": "",
+                    "LineNumber": str(lineNumber),
+                    "ProductTypeCode": "EAN",
                     "ProductCode": str(item.product_id.default_code),
                     "ProductName":  item.name,
-                    "ProductQuantity":  item.quantity,
-                    "ProductPrice":  item.price_unit,
+                    "ProductQuantity":  str(item.quantity),
+                    "ProductPrice":  str(item.price_unit),
                     "ProductDiscountPercent": "0",
                     "DiscountAmount": "0",
-                    "Amount":  item.price_subtotal,
+                    "Amount":  str(item.price_subtotal),
                     "HaveExempt": haveExempt,
                     "TypeOfExemptEnum": typeOfExemptEnum
                 }
             )
             lineNumber += 1
         invoice= {
-            "createdDate": self.create_date.strftime("%Y/%m/%d"),
-            "expirationDate": self.date_due.strftime("%Y/%m/%d"),
+            "createdDate": self.create_date.strftime("%Y-%m-%d"),
+            "expirationDate": self.date_due.strftime("%Y-%m-%d"),
             "dteType": self.dte_type_id.code,
             "transmitter": {
                 "EnterpriseRut": self.env.user.company_id.invoice_rut,
@@ -117,11 +117,11 @@ class AccountInvoice(models.Model):
                 "EnterpriseTurn": self.partner_activity_id.name
             },
             "total": {
-                "netAmount": self.amount_untaxed,
+                "netAmount": str(self.amount_untaxed),
                 "exemptAmount": "0",
                 "taxRate": "19",
-                "taxtRateAmount": self.amount_tax,
-                "totalAmount": self.amount_total
+                "taxtRateAmount": str(self.amount_tax),
+                "totalAmount": str(self.amount_total)
             },
             "lines": productLines
         }
