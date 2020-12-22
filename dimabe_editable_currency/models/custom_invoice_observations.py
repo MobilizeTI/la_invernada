@@ -9,3 +9,5 @@ class CustomInvoiceObservations(models.Model):
         default= None,
         size=140
     )
+
+    invoice_id = fields.Many2one('account.invoice', auto_join = True)
