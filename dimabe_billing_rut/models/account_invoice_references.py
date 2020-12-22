@@ -5,6 +5,9 @@ class account_invoice_references(models.Model):
     _description = 'Referencias de un DTE'
 
     document_type_reference_id = fields.Many2one('dte.type', string="Tipo Documento Referencia")
+
+    line_number = fields.Integer(string="Linea de Producto")
+
     code_reference = fields.Selection(
             [
                 ('1', 'Anula Documento de Referencia'),

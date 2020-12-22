@@ -76,9 +76,56 @@ class AccountInvoice(models.Model):
             "apiKey" : "B23F1061-3E42-4424-BDAA-0D33BCA83766",
             "CustomerCode": "E41958F0-AF3D-4D66-9C26-6A54950CA506"
         }
+       
+
+        if self.dte_type_id.code == 33:
+            invoice = self.invoice_type()
+        elif self.dte_type_id.code == 34:
+            invoice = self.invoice_exempt_type()
+        elif self.dte_type_id.code == 39:
+            invoice = self.receipt_type()
+        elif self.dte_type_id.code == 41:  #43  46
+            invoice = self.receipt_exempt_type()
+        elif self.dte_type_id.code == 52:
+            invoice = self.guide_dispatch_type()
+        elif self.dte_type_id.code == 56:
+            invoice = self.debit_note()
+        elif self.dte_type_id.code == 61:
+            invoice = self.credit_note_type_type()
+        elif self.dte_type_id.code == 110:
+            invoice = self.invoice_export_type()
+        elif self.dte_type_id.code == 111:
+            invoice = self.debit_note_invoice_export_type()
+        elif self.dte_type_id.code == 112:
+            invoice = self.credit_note_invoice_export_type()
+        
+        
+
+        
+        raise models.ValidationError(json.dumps(invoice))
+        r = requests.post(url, data=invoice, headers=headers)
+    
+    
+    def invoice_type(self):
         productLines = []
         lineNumber = 1
         typeOfExemptEnum = ""
+        references = []
+        additional = []
+        for item in self.references:
+            references.append(
+                {
+                    "LineNumber": str(item.line_number),
+                    "DocumentType": str(item.document_type_reference_id),
+                    "Folio": str(item.folio_reference),
+                    "Date": str(item.document_date),
+                    "Code": str(item.code_reference),
+                    "Reason": str(item.reason)
+                }
+            )
+        
+        for item in self.observations_ids:
+            additional.append(item)
 
         for item in self.invoice_line_ids:
             haveExempt = False
@@ -145,8 +192,9 @@ class AccountInvoice(models.Model):
                 "taxtRateAmount": str(int(self.amount_tax)),
                 "totalAmount": str(int(self.amount_total))
             },
-            "lines": productLines
+            "lines": productLines,
+            "references": references,
+            "additional": additional
         }
-        raise models.ValidationError(json.dumps(invoice))
-        r = requests.post(url, data=invoice, headers=headers)
+        return invoice
       

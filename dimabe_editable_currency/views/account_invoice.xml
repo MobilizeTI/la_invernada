@@ -26,8 +26,18 @@
                     <button name="send_invoice"  string="Test Json"  type="object"/>
                  </xpath>
                  <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='invoice_line_tax_ids']" position="after">
-                    <!--<field name="exempt" attrs="{'invisible':[('len(item.invoice_line_tax_ids)', '>', 0)]}"/>-->
                     <field name="exempt"/>
+                 </xpath>
+                 <xpath expr="//field[@name='xdte_tab']/tree//field[@string='Referencias']" position="after">
+                    <group string="Observaciones">
+                        <field name="references" mode="tree">
+                            <form>
+                                <field name="observations_ids"/>
+                            </form>
+                                <tree>
+                                    <field name="observations_ids"/>
+                                </tree>
+                        </field>
                  </xpath>
                 <field name="currency_id" position="after">
                     <field name="exchange_rate" />
