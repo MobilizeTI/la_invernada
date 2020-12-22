@@ -77,8 +77,7 @@ class AccountInvoice(models.Model):
             "apiKey" : "B23F1061-3E42-4424-BDAA-0D33BCA83766",
             "CustomerCode": "E41958F0-AF3D-4D66-9C26-6A54950CA506"
         }
-        test = self.invoice_type()
-        raise models.ValidationError(test)
+        invoice = {}
 
         if self.dte_type_id.code == 33:
             invoice = self.invoice_type()
