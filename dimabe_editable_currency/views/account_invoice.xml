@@ -41,12 +41,12 @@
             <field name="arch" type="xml">
                 <xpath expr="//page[@name='xdte_tab']" position="inside">
                 <group string="Observaciones">
-                    <field name="observations" mode="tree">
+                    <field name="observations_ids" mode="tree">
                         <form>
-                            <field name="observations_ids"/>
+                            <field name="observations"/>
                         </form>
                         <tree>
-                            <field name="observations_ids"/>
+                            <field name="observations"/>
                         </tree>
                     </field>
                     </group>
