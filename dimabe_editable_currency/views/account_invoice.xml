@@ -38,6 +38,7 @@
                                     <field name="observations_ids"/>
                                 </tree>
                         </field>
+                    </group>
                  </xpath>
                 <field name="currency_id" position="after">
                     <field name="exchange_rate" />
