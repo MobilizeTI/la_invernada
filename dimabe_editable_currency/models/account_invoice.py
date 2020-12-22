@@ -10,7 +10,7 @@ class AccountInvoice(models.Model):
         'Tasa de Cambio'
     )
 
-    observations_ids = fields.Many2many('custom.invoice.observations','Observaciones')
+    observations_ids = fields.Many2many('custom.invoice.observations','Observaciones',nullable = True)
 
     @api.model
     @api.onchange('date_invoice')
