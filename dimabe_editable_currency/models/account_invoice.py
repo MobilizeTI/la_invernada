@@ -173,7 +173,7 @@ class AccountInvoice(models.Model):
             "expirationDate": self.date_due.strftime("%Y-%m-%d"),
             "dteType": self.dte_type_id.code,
             "transmitter": {
-                "EnterpriseRut": re.sub('[\.-]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
+                "EnterpriseRut": re.sub('[\.]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
                 "EnterpriseActeco": self.company_activity_id.code,
                 "EnterpriseAddressOrigin": self.env.user.company_id.street,
                 "EnterpriseCity": self.env.user.company_id.city,
@@ -182,7 +182,7 @@ class AccountInvoice(models.Model):
                 "EnterpriseTurn": self.company_activity_id.name
             },
             "recipient": {
-                "EnterpriseRut": re.sub('[\.-]','', self.partner_id.invoice_rut),
+                "EnterpriseRut": re.sub('[\.]','', self.partner_id.invoice_rut),
                 "EnterpriseAddressOrigin": self.partner_id.street,
                 "EnterpriseCity": self.partner_id.city,
                 "EnterpriseCommune": self.partner_id.state_id.name,
