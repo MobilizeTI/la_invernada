@@ -81,7 +81,7 @@ class AccountInvoice(models.Model):
 
         
 
-        if self.dte_type_id.code == 33:
+        if self.dte_type_id.code == "33":
             raise models.ValidationError("entre")
             invoice = self.invoice_type()
         elif self.dte_type_id.code == 34:
