@@ -1,10 +1,11 @@
 from odoo import models, fields, api
 
 class AccountInvoiceObservations(models.Model):
-    _name = 'account.invoice.observations'
+    _name = 'custom.invoice.observations'
 
-    observations = fields.text(
+    observations = fields.char(
         'Observación',
         nullable = True,
-        default= None
+        default= None,
+        size=140
     )
