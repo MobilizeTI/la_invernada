@@ -119,7 +119,7 @@ class AccountInvoice(models.Model):
                 references.append(
                     {
                         "LineNumber": str(item.line_number),
-                        "DocumentType": str(item.document_type_reference_id),
+                        "DocumentType": str(item.document_type_reference_id.id),
                         "Folio": str(item.folio_reference),
                         "Date": str(item.document_date),
                         "Code": str(item.code_reference),
