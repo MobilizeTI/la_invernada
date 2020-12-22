@@ -28,23 +28,25 @@
                  <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='invoice_line_tax_ids']" position="after">
                     <field name="exempt"/>
                  </xpath>
-                 <xpath expr="//page[@name='xdte_tab']" position="inside">
-                    <group string="Observaciones">
-                        <field name="references" mode="tree">
-                            <form>
-                                <field name="observations_ids"/>
-                            </form>
-                                <tree>
-                                    <field name="observations_ids"/>
-                                </tree>
-                        </field>
-                    </group>
-                 </xpath>
+                 
                 <field name="currency_id" position="after">
                     <field name="exchange_rate" />
                 </field>
             </field>
         </record>
-       
+       <record model="ir.ui.view" id="account_invoice_additional">
+            <xpath expr="//page[@name='xdte_tab']" position="inside">
+                <group string="Observaciones">
+                    <field name="references" mode="tree">
+                        <form>
+                            <field name="observations_ids"/>
+                        </form>
+                        <tree>
+                            <field name="observations_ids"/>
+                        </tree>
+                    </field>
+                </group>
+            </xpath>
+       </record>
     </data>
 </odoo>
