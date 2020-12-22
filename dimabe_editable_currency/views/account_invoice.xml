@@ -28,7 +28,7 @@
                  <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='invoice_line_tax_ids']" position="after">
                     <field name="exempt"/>
                  </xpath>
-                 <xpath expr="//field[@name='xdte_tab']/tree//field[@string='Referencias']" position="after">
+                 <xpath expr="//field[@name='xdte_tab']/tree//field[@name='references']" position="after">
                     <group string="Observaciones">
                         <field name="references" mode="tree">
                             <form>
