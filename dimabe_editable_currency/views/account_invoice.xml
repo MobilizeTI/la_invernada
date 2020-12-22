@@ -35,7 +35,11 @@
             </field>
         </record>
        <record model="ir.ui.view" id="account_invoice_additional">
-            <xpath expr="//page[@name='xdte_tab']" position="inside">
+            <field name="name">Observaciones</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="dimabe_billing_rut.xdte_invoice_form_supplier"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='xdte_tab']" position="inside">
                 <group string="Observaciones">
                     <field name="observations" mode="tree">
                         <form>
@@ -45,8 +49,9 @@
                             <field name="observations_ids"/>
                         </tree>
                     </field>
-                </group>
-            </xpath>
+                    </group>
+                </xpath>
+            </field>
        </record>
     </data>
 </odoo>

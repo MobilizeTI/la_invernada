@@ -112,20 +112,22 @@ class AccountInvoice(models.Model):
         typeOfExemptEnum = ""
         references = []
         additional = []
-        for item in self.references:
-            references.append(
-                {
-                    "LineNumber": str(item.line_number),
-                    "DocumentType": str(item.document_type_reference_id),
-                    "Folio": str(item.folio_reference),
-                    "Date": str(item.document_date),
-                    "Code": str(item.code_reference),
-                    "Reason": str(item.reason)
-                }
-            )
-        
-        for item in self.observations_ids:
-            additional.append(item)
+
+        if self.references and len(self.references) > 0:
+            for item in self.references:
+                references.append(
+                    {
+                        "LineNumber": str(item.line_number),
+                        "DocumentType": str(item.document_type_reference_id),
+                        "Folio": str(item.folio_reference),
+                        "Date": str(item.document_date),
+                        "Code": str(item.code_reference),
+                        "Reason": str(item.reason)
+                    }
+                )
+        if len(self.observations_ids) > 0:
+            for item in self.observations_ids:
+                additional.append(item)
 
         for item in self.invoice_line_ids:
             haveExempt = False
