@@ -1,6 +1,6 @@
 from odoo import models, fields, api
 
-class AccountInvoiceObservations(models.Model):
+class CustomInvoiceObservations(models.Model):
     _name = 'custom.invoice.observations'
 
     observations = fields.char(
