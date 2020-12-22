@@ -218,13 +218,6 @@ class StockPicking(models.Model):
                 query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg, lot.id)
                 cr = self._cr
                 cr.execute(query)
-                quant = self.env['stock.quant'].search([('lot_id', '=', lot.id), ('location_id', '=',
-                                                                                  lot.stock_production_lot_serial_ids.mapped(
-                                                                                      'production_id').mapped(
-                                                                                      'location_src_id').id)])
-                quant.write({
-                    'quantity': available_kg
-                })
             if len(self.move_line_ids_without_package) == 0:
                 raise models.UserError('No existe ningun campo en operaciones detalladas')
             if self.move_line_ids_without_package.filtered(lambda a: a.qty_done == 0):
@@ -234,17 +227,7 @@ class StockPicking(models.Model):
                     move_line._action_done()
                     return super(StockPicking, self).button_validate()
                 else:
-                    move_line.write({
-                        'state': 'done',
-                        'qty_done': 0
-                    })
-                    move_line.move_id.write({
-                        'state': 'done',
-                    })
-                    self.write({
-                        'state': 'done',
-                        'date_done':datetime.datetime.now()
-                    })
+                    super(StockPicking, self).action_done()
         else:
             return super(StockPicking, self).button_validate()
 
