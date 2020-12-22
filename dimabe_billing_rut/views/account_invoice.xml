@@ -73,7 +73,7 @@
                                 <field name="references" mode="tree">
                                 <form>
                                     <group>
-                                        <field name="line_number" required="True">
+                                        <field name="line_number" required="True"/>
                                         <field name="folio_reference" required="True"/>
                                         <field name="document_type_reference_id" required="True" />
                                         <field name="code_reference"/>
@@ -82,7 +82,7 @@
                                     </group>
                                 </form>
                                 <tree>
-                                    <field name="line_number" required="True">
+                                    <field name="line_number" required="True"/>
                                     <field name="folio_reference" required="True"/>
                                     <field name="document_type_reference_id" required="True" />
                                     <field name="code_reference"/>
