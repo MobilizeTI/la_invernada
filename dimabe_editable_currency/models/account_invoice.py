@@ -79,28 +79,25 @@ class AccountInvoice(models.Model):
         }
         invoice = {}
 
-        
-
         if self.dte_type_id.code == "33":
-            raise models.ValidationError("entre")
             invoice = self.invoice_type()
-        elif self.dte_type_id.code == 34:
+        elif self.dte_type_id.code == "34":
             invoice = self.invoice_exempt_type()
-        elif self.dte_type_id.code == 39:
+        elif self.dte_type_id.code == "39":
             invoice = self.receipt_type()
-        elif self.dte_type_id.code == 41:  #43  46
+        elif self.dte_type_id.code == "41":  #43  46
             invoice = self.receipt_exempt_type()
-        elif self.dte_type_id.code == 52:
+        elif self.dte_type_id.code == "52":
             invoice = self.guide_dispatch_type()
-        elif self.dte_type_id.code == 56:
+        elif self.dte_type_id.code == "56":
             invoice = self.debit_note()
-        elif self.dte_type_id.code == 61:
+        elif self.dte_type_id.code == "61":
             invoice = self.credit_note_type_type()
-        elif self.dte_type_id.code == 110:
+        elif self.dte_type_id.code == "110":
             invoice = self.invoice_export_type()
-        elif self.dte_type_id.code == 111:
+        elif self.dte_type_id.code == "111":
             invoice = self.debit_note_invoice_export_type()
-        elif self.dte_type_id.code == 112:
+        elif self.dte_type_id.code == "112":
             invoice = self.credit_note_invoice_export_type()
         
         
