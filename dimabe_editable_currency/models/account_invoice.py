@@ -127,7 +127,7 @@ class AccountInvoice(models.Model):
                     }
                 )
 
-        raise models.ValidationError(self.observations_ids[0])
+        raise models.ValidationError(self.observations_ids[0].observations)
         if len(self.observations_ids) > 0:
             for obs in self.observations_ids:
                 additional.append(obs)
