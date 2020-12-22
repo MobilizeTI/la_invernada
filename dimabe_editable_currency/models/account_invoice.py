@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 import requests
 import json
+import re
 
 
 class AccountInvoice(models.Model):
@@ -180,7 +181,7 @@ class AccountInvoice(models.Model):
                 "EnterpriseTurn": self.company_activity_id.name
             },
             "recipient": {
-                "EnterpriseRut": "22222222-2", #self.partner_id.invoice_rut,
+                "EnterpriseRut": re.sub('[\.]','', self.partner_id.invoice_rut),
                 "EnterpriseAddressOrigin": self.partner_id.street,
                 "EnterpriseCity": self.partner_id.city,
                 "EnterpriseCommune": self.partner_id.state_id.name,
