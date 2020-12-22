@@ -126,9 +126,11 @@ class AccountInvoice(models.Model):
                         "Reason": str(item.reason)
                     }
                 )
+
+        raise models.ValidationError(self.observations_ids)
         if len(self.observations_ids) > 0:
-            for item in self.observations_ids:
-                additional.append(item)
+            for obs in self.observations_ids:
+                additional.append(obs)
 
         for item in self.invoice_line_ids:
             haveExempt = False
