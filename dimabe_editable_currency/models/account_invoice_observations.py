@@ -1,6 +1,10 @@
-#from odoo import models, fields, api
+from odoo import models, fields, api
 
-#class AccountInvoiceObservations(models.Model):
-#    _inherit = 'account.invoice.observations'
+class AccountInvoiceObservations(models.Model):
+    _name = 'account.invoice.observations'
 
-#    observations = []
+    observations = fields.text(
+        'Observación',
+        nullable = True,
+        default= None
+    )

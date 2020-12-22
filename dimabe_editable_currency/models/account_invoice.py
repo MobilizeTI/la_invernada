@@ -10,8 +10,8 @@ class AccountInvoice(models.Model):
         'Tasa de Cambio'
     )
 
-    #list_references = fields.Many2One('account.invoice.observations')
-    #list_observations = fields.Many2One('account.invoice.references')
+    #list_references = fields.Many2One('account.invoice.observations','Referencias')
+    #list_observations = fields.Many2One('account.invoice.references','Observaciones')
 
     @api.model
     @api.onchange('date_invoice')
