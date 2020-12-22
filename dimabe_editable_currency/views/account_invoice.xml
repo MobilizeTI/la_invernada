@@ -28,7 +28,6 @@
                  <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='invoice_line_tax_ids']" position="after">
                     <field name="exempt"/>
                  </xpath>
-                 
                 <field name="currency_id" position="after">
                     <field name="exchange_rate" />
                 </field>
@@ -38,6 +37,25 @@
             <field name="name">Observaciones</field>
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="dimabe_billing_rut.xdte_invoice_form_supplier"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='xdte_tab']" position="inside">
+                <group string="Observaciones">
+                    <field name="observations_ids" mode="tree">
+                        <form>
+                            <field name="observations"/>
+                        </form>
+                        <tree>
+                            <field name="observations"/>
+                        </tree>
+                    </field>
+                    </group>
+                </xpath>
+            </field>
+       </record>
+       <record model="ir.ui.view" id="account_invoice_additional">
+            <field name="name">Observaciones</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="dimabe_billing_rut.xdte_invoice_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//page[@name='xdte_tab']" position="inside">
                 <group string="Observaciones">
