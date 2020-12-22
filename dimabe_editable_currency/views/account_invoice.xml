@@ -37,7 +37,7 @@
        <record model="ir.ui.view" id="account_invoice_additional">
             <xpath expr="//page[@name='xdte_tab']" position="inside">
                 <group string="Observaciones">
-                    <field name="references" mode="tree">
+                    <field name="observations" mode="tree">
                         <form>
                             <field name="observations_ids"/>
                         </form>
