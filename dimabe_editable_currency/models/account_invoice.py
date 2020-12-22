@@ -79,6 +79,8 @@ class AccountInvoice(models.Model):
         }
         invoice = {}
 
+        raise models.ValidationError(self.dte_type_id.code)
+    
         if self.dte_type_id.code == 33:
             invoice = self.invoice_type()
         elif self.dte_type_id.code == 34:
