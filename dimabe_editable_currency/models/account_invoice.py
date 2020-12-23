@@ -78,6 +78,9 @@ class AccountInvoice(models.Model):
             "CustomerCode": "E41958F0-AF3D-4D66-9C26-6A54950CA506"
         }
         invoice = {}
+        
+        invoice['createdDate'] = self.create_date.strftime("%Y-%m-%d"),
+        invoice['dteType'] = self.dte_type_id.code,
 
         if len(self.references) > 10:
             raise models.ValidationError('Solo puede generar 20 Referencias')
@@ -156,8 +159,6 @@ class AccountInvoice(models.Model):
             invoice['additional'] =  additionals    
 
 
-
-
         r = requests.post(url, json=invoice, headers=headers)
 
         raise models.ValidationError(json.dumps(invoice))
@@ -221,10 +222,8 @@ class AccountInvoice(models.Model):
             recipientPhone = ''
 
         invoice= {
-            "createdDate": self.create_date.strftime("%Y-%m-%d"),
             "expirationDate": self.date_due.strftime("%Y-%m-%d"),
-            "dteType": self.dte_type_id.code,
-            #"paymentType": int(self.method_of_payment),
+            "paymentTypeEnum": int(self.method_of_payment),
             "transmitter": {
                 "EnterpriseRut": re.sub('[\.]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
                 "EnterpriseActeco": self.company_activity_id.code,
@@ -260,26 +259,6 @@ class AccountInvoice(models.Model):
         productLines = []
         lineNumber = 1
         typeOfExemptEnum = ""
-        references = []
-        additional = []
-
-        if self.references and len(self.references) > 0:
-            for item in self.references:
-                references.append(
-                    {
-                        "LineNumber": str(item.line_number),
-                        "DocumentType": str(item.document_type_reference_id.id),
-                        "Folio": str(item.folio_reference),
-                        "Date": str(item.document_date),
-                        "Code": str(item.code_reference),
-                        "Reason": str(item.reason)
-                    }
-                )
-
-        if len(self.observations_ids) > 0:
-            for item in self.observations_ids:
-                additional.append(item.observations)  
-
         #Transporte
 
         for item in self.invoice_line_ids:
@@ -319,9 +298,7 @@ class AccountInvoice(models.Model):
                 )
             lineNumber += 1
         invoice= {
-            "createdDate": self.create_date.strftime("%Y-%m-%d"),
             "expirationDate": self.date_due.strftime("%Y-%m-%d"),
-            "dteType": self.dte_type_id.code,
             "paymentType": self.method_of_payment,
             "transmitter": {
                 "EnterpriseRut": re.sub('[\.]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
