@@ -136,6 +136,8 @@ class AccountInvoice(models.Model):
         
        
         r = requests.post(url, data=invoice, headers=headers)
+        if r.errors:
+            raise models.ValidationError('Error: {}'.format(json.dumps(r.errors)))
         if r.message:
             raise models.ValidationError('Mensaje DTE: {}  objeto: {}'.format(r.message, json.dumps(invoice)))
         if r.urlPdf:
