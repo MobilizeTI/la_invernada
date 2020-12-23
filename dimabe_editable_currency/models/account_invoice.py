@@ -208,6 +208,7 @@ class AccountInvoice(models.Model):
                         "ProductCode": str(item.product_id.default_code),
                         "ProductName": item.name,
                         "ProductQuantity": str(int(item.quantity)),
+                        "UnitOfMeasure": str(item.uom_id.name),
                         "ProductPrice": str(int(item.price_unit)),
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
