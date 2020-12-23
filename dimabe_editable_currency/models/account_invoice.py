@@ -208,11 +208,12 @@ class AccountInvoice(models.Model):
         else:
             recipientPhone = ''
 
+        raise models.ValidationError(self.method_of_payment)
         invoice= {
             "createdDate": self.create_date.strftime("%Y-%m-%d"),
             "expirationDate": self.date_due.strftime("%Y-%m-%d"),
             "dteType": self.dte_type_id.code,
-            "paymentType": self.method_of_payment.code,
+            "paymentType": self.method_of_payment,
             "transmitter": {
                 "EnterpriseRut": re.sub('[\.]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
                 "EnterpriseActeco": self.company_activity_id.code,
@@ -312,7 +313,7 @@ class AccountInvoice(models.Model):
             "createdDate": self.create_date.strftime("%Y-%m-%d"),
             "expirationDate": self.date_due.strftime("%Y-%m-%d"),
             "dteType": self.dte_type_id.code,
-            "paymentType": self.method_of_payment.code,
+            "paymentType": self.method_of_payment,
             "transmitter": {
                 "EnterpriseRut": re.sub('[\.]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
                 "EnterpriseActeco": self.company_activity_id.code,
