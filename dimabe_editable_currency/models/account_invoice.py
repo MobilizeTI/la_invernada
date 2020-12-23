@@ -135,7 +135,7 @@ class AccountInvoice(models.Model):
        
         r = requests.post(url, json=invoice, headers=headers)
 
-        raise models.ValidationError('url: {}   objeto: {}'.format(r.urlPdf,json.dumps(invoice)))
+        raise models.ValidationError('url: {}   objeto: {}'.format(r.response.urlPdf,json.dumps(invoice)))
     
     #Factura electrónica
     def invoice_type(self):
