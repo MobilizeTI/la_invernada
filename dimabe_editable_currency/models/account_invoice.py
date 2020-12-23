@@ -134,8 +134,9 @@ class AccountInvoice(models.Model):
                 raise models.ValidationError('Para Nota de Crédito de exportación electrónica debe agregar al menos una Referencia')
        
         #Add Common Data
-        invoice.createdDate = self.create_date.strftime("%Y-%m-%d"),
-        invoice.dteType = self.dte_type_id.code,
+        
+        invoice['createdDate'] = self.create_date.strftime("%Y-%m-%d")
+        invoice['dteType'] = self.dte_type_id.code
         # Add Refeences
         if self.references and len(self.references) > 0:
             refrenecesList = []
