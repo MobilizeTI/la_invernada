@@ -72,11 +72,13 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def send_invoice(self):
-        url = 'https://services.dimabe.cl/api/dte/emite'
+        url = self.dte_url
         headers = {
-            "apiKey" : "B23F1061-3E42-4424-BDAA-0D33BCA83766",
-            "CustomerCode": "E41958F0-AF3D-4D66-9C26-6A54950CA506"
+            "apiKey" : self.dte_hash,
+            "CustomerCode": self.dte_customer_code
         }
+
+        raise models.ValidationError('{} {} {}'.format(url,self.dte_hash,self.dte_customer_code))
         invoice = {}
         
         if len(self.references) > 10:
