@@ -187,7 +187,10 @@ class AccountInvoice(models.Model):
       
         if 'status' in Jrkeys and 'title' in Jrkeys:
             raise models.ValidationError('Status: {} Title: {} Json: {}'.format(jr['status'],jr['title'],json.dumps(invoice)))
-    
+            
+        raise models.ValidationError(json.dumps(invoice))
+
+            
     #Factura electrónica
     def invoice_type(self):
         productLines = []
