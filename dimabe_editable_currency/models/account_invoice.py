@@ -137,6 +137,17 @@ class AccountInvoice(models.Model):
         
         invoice['createdDate'] = self.create_date.strftime("%Y-%m-%d")
         invoice['dteType'] = self.dte_type_id.code
+        invoice['transmitter'] =  {
+                "EnterpriseRut": re.sub('[\.]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
+                "EnterpriseActeco": self.company_activity_id.code,
+                "EnterpriseAddressOrigin": self.env.user.company_id.street,
+                "EnterpriseCity": self.env.user.company_id.city,
+                "EnterpriseCommune": str(self.env.user.company_id.state_id.name),
+                "EnterpriseName": self.env.user.company_id.partner_id.name,
+                "EnterpriseTurn": self.company_activity_id.name if self.company_activity_id.name else '',
+                "EnterprisePhone": self.env.user.company_id.phone if self.env.user.company_id.phone else ''
+            }
+        
         # Add Refeences
         if self.references and len(self.references) > 0:
             refrenecesList = []
@@ -152,7 +163,7 @@ class AccountInvoice(models.Model):
                     }
                 )
             invoice['references'] = refrenecesList
-
+        #Add Additionals
         if len(self.observations_ids) > 0:
             additionals = []
             for item in self.observations_ids:
@@ -226,16 +237,6 @@ class AccountInvoice(models.Model):
         invoice= {
             "expirationDate": self.date_due.strftime("%Y-%m-%d"),
             "paymentTypeEnum": int(self.method_of_payment),
-            "transmitter": {
-                "EnterpriseRut": re.sub('[\.]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
-                "EnterpriseActeco": self.company_activity_id.code,
-                "EnterpriseAddressOrigin": self.env.user.company_id.street,
-                "EnterpriseCity": self.env.user.company_id.city,
-                "EnterpriseCommune": str(self.env.user.company_id.state_id.name),
-                "EnterpriseName": self.env.user.company_id.partner_id.name,
-                "EnterpriseTurn": self.company_activity_id.name if self.company_activity_id.name else '',
-                "EnterprisePhone": self.env.user.company_id.phone if self.env.user.company_id.phone else ''
-            },
             "recipient": {
                 "EnterpriseRut": re.sub('[\.]','', self.partner_id.invoice_rut),
                 "EnterpriseAddressOrigin": self.partner_id.street[0:60],
@@ -302,15 +303,6 @@ class AccountInvoice(models.Model):
         invoice= {
             "expirationDate": self.date_due.strftime("%Y-%m-%d"),
             "paymentType": self.method_of_payment,
-            "transmitter": {
-                "EnterpriseRut": re.sub('[\.]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
-                "EnterpriseActeco": self.company_activity_id.code,
-                "EnterpriseAddressOrigin": self.env.user.company_id.street,
-                "EnterpriseCity": self.env.user.company_id.city,
-                "EnterpriseCommune": str(self.env.user.company_id.state_id.name),
-                "EnterpriseName": self.env.user.company_id.partner_id.name,
-                "EnterpriseTurn": self.company_activity_id.name
-            },
             "recipient": {
                 "EnterpriseRut": re.sub('[\.]','', self.partner_id.invoice_rut),
                 "EnterpriseAddressOrigin": self.partner_id.street,
