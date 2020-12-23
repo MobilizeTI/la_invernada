@@ -182,7 +182,7 @@ class AccountInvoice(models.Model):
             self.write({'pdf_url':jr['urlPdf']})
             self.write({'dte_pdf':jr['filePdf']})
             self.write({'dte_folio':jr['folio']})
-            self.write({'dte_xml':jr['folio']})
+            self.write({'dte_xml':jr['fileXml']})
       
         if 'status' in Jrkeys and 'title' in Jrkeys:
             raise models.ValidationError('Status: {} Title: {} Json: {}'.format(jr['status'],jr['title'],json.dumps(invoice)))
