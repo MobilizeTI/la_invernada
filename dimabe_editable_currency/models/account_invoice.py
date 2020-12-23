@@ -252,8 +252,6 @@ class AccountInvoice(models.Model):
                 "totalAmount": str(int(self.amount_total))
             },
             "lines": productLines,
-            "references": references,
-            "additional": additional
         }
         return invoice
 
