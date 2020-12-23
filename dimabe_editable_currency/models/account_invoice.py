@@ -208,8 +208,7 @@ class AccountInvoice(models.Model):
             recipientPhone = str(self.partner_id.mobile)
         else:
             recipientPhone = ''
-
-        raise models.ValidationError(self.method_of_payment)
+            
         invoice= {
             "createdDate": self.create_date.strftime("%Y-%m-%d"),
             "expirationDate": self.date_due.strftime("%Y-%m-%d"),
