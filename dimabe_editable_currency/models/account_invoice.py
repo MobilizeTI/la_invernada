@@ -137,7 +137,7 @@ class AccountInvoice(models.Model):
        
         r = requests.post(url, data=invoice, headers=headers)
 
-        raise models.ValidationError(r['status'])
+        raise models.ValidationError(json.loads(r.content))
         if r.errors:
             raise models.ValidationError('Error: {}'.format(json.dumps(r.errors)))
         if r.message:
