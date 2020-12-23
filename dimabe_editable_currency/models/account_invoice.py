@@ -160,7 +160,7 @@ class AccountInvoice(models.Model):
 
         r = requests.post(url, json=invoice, headers=headers)
 
-        raise models.ValidationError(json.dump(invoice))
+        raise models.ValidationError(json.dumps(invoice))
 
         jr = json.loads(r.text)
         self.write({'pdf_url':jr['urlPdf']})
