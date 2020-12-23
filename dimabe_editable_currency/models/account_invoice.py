@@ -136,7 +136,7 @@ class AccountInvoice(models.Model):
         
        
         r = requests.post(url, data=invoice, headers=headers)
-        raise models.ValidationError('r: {}   objeto: {}'.format(r.text,json.dumps(invoice)))
+        raise models.ValidationError('url: {}   objeto: {}'.format(r.urlPdf,json.dumps(invoice)))
     
     #Factura electrónica
     def invoice_type(self):
@@ -213,7 +213,7 @@ class AccountInvoice(models.Model):
             "createdDate": self.create_date.strftime("%Y-%m-%d"),
             "expirationDate": self.date_due.strftime("%Y-%m-%d"),
             "dteType": self.dte_type_id.code,
-            "paymentType": self.method_of_payment,
+            "paymentType": int(self.method_of_payment),
             "transmitter": {
                 "EnterpriseRut": re.sub('[\.]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
                 "EnterpriseActeco": self.company_activity_id.code,
@@ -226,7 +226,7 @@ class AccountInvoice(models.Model):
             },
             "recipient": {
                 "EnterpriseRut": re.sub('[\.]','', self.partner_id.invoice_rut),
-                "EnterpriseAddressOrigin": self.partner_id.street,
+                "EnterpriseAddressOrigin": self.partner_id.street[0:60],
                 "EnterpriseCity": self.partner_id.city,
                 "EnterpriseCommune": self.partner_id.state_id.name,
                 "EnterpriseName": self.partner_id.name,
