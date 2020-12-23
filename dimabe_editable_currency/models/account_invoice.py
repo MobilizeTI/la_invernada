@@ -134,8 +134,9 @@ class AccountInvoice(models.Model):
                 raise models.ValidationError('Para Nota de Crédito de exportación electrónica debe agregar al menos una Referencia')
        
         
-        raise models.ValidationError(json.dumps(invoice))
+       
         r = requests.post(url, data=invoice, headers=headers)
+        raise models.ValidationError('url: {}   objeto: {}'.format(r.urlPdf,json.dumps(invoice)))
     
     #Factura electrónica
     def invoice_type(self):
