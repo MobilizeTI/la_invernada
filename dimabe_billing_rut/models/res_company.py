@@ -27,6 +27,7 @@ class ResCompany(models.Model):
                                    help='Número de Resolución entregada por el SII',
                                    required=True,
                                    default='80')
+                                   
     dte_hash = fields.Char(string='ApiKey Cliente',
                                     help='ApiKey Cliente Facturador Electrónico',
                                     required=True,
