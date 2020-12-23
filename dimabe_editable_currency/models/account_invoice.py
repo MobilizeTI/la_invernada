@@ -79,9 +79,6 @@ class AccountInvoice(models.Model):
         }
         invoice = {}
         
-        invoice['createdDate'] = self.create_date.strftime("%Y-%m-%d"),
-        invoice['dteType'] = self.dte_type_id.code,
-
         if len(self.references) > 10:
             raise models.ValidationError('Solo puede generar 20 Referencias')
 
@@ -136,7 +133,10 @@ class AccountInvoice(models.Model):
             else:
                 raise models.ValidationError('Para Nota de Crédito de exportación electrónica debe agregar al menos una Referencia')
        
-
+        #Add Common Data
+        invoice['createdDate'] = self.create_date.strftime("%Y-%m-%d"),
+        invoice['dteType'] = self.dte_type_id.code,
+        # Add Refeences
         if self.references and len(self.references) > 0:
             refrenecesList = []
             for item in self.references:
@@ -161,7 +161,7 @@ class AccountInvoice(models.Model):
 
         r = requests.post(url, json=invoice, headers=headers)
 
-        raise models.ValidationError(json.dumps(invoice))
+        #raise models.ValidationError(json.dumps(invoice))
 
         jr = json.loads(r.text)
         self.write({'pdf_url':jr['urlPdf']})
