@@ -133,24 +133,10 @@ class AccountInvoice(models.Model):
             else:
                 raise models.ValidationError('Para Nota de Crédito de exportación electrónica debe agregar al menos una Referencia')
        
-        r = requests.post(url, json=invoice, headers=headers)
-
-        jr = json.loads(r.text)
-        self.write({'pdf_url':jr['urlPdf']})
-        self.write({'dte_pdf':jr['filePdf']})
-       # raise models.ValidationError('URL: {} '.format(jd['urlPdf']))
-    
-    #Factura electrónica
-    def invoice_type(self):
-        productLines = []
-        lineNumber = 1
-        typeOfExemptEnum = ""
-        references = []
-        additional = []
 
         if self.references and len(self.references) > 0:
             for item in self.references:
-                references.append(
+                invoice['references'].append(
                     {
                         "LineNumber": str(item.line_number),
                         "DocumentType": str(item.document_type_reference_id.id),
@@ -163,7 +149,25 @@ class AccountInvoice(models.Model):
 
         if len(self.observations_ids) > 0:
             for item in self.observations_ids:
-                additional.append(item.observations)                
+                invoice['additional'].append(item.observations)        
+
+
+
+
+        r = requests.post(url, json=invoice, headers=headers)
+
+        raise models.ValidationError(json.dump(invoice))
+
+        jr = json.loads(r.text)
+        self.write({'pdf_url':jr['urlPdf']})
+        self.write({'dte_pdf':jr['filePdf']})
+      
+    
+    #Factura electrónica
+    def invoice_type(self):
+        productLines = []
+        lineNumber = 1
+        typeOfExemptEnum = ""                       
 
         for item in self.invoice_line_ids:
             haveExempt = False
