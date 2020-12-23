@@ -176,7 +176,7 @@ class AccountInvoice(models.Model):
         #raise models.ValidationError(json.dumps(invoice))
 
         jr = json.loads(r.text)
-       # raise models.ValidationError(jr.keys())
+
         Jrkeys = jr.keys()
         if 'urlPdf' in Jrkeys  and 'filePdf' in Jrkeys and 'folio' in Jrkeys:
             self.write({'pdf_url':jr['urlPdf']})
@@ -184,7 +184,7 @@ class AccountInvoice(models.Model):
             self.write({'dte_folio':jr['folio']})
       
         if 'status' in Jrkeys and 'title' in Jrkeys:
-            raise models.ValidationError('Status: {} Title: {}'.format(jr['status'],jr['title']))
+            raise models.ValidationError('Status: {} Title: {} Json: {}'.format(jr['status'],jr['title'],json.dumps(invoice)))
     
     #Factura electrónica
     def invoice_type(self):
@@ -327,3 +327,56 @@ class AccountInvoice(models.Model):
         }
         return invoice
       
+    #Nota de credito electronica
+    def credit_note_type(self):
+        productLines = []
+        lineNumber = 1
+        typeOfExemptEnum = ""                       
+
+        for item in self.invoice_line_ids:
+            
+            productLines.append(
+                {
+                    "LineNumber": str(lineNumber),
+                    "ProductTypeCode": "EAN",
+                    "ProductCode": str(item.product_id.default_code),
+                    "ProductName": item.name,
+                    "ProductQuantity": str(int(item.quantity)),
+                    "ProductPrice": str(int(item.price_unit)),
+                    #"ProductDiscountPercent": "0",
+                    #"DiscountAmount": "0",
+                    "Amount": str(int(item.price_subtotal))
+                })
+                
+            
+            lineNumber += 1
+        
+        if self.partner_id.phone:
+            recipientPhone = str(self.partner_id.phone)
+        elif self.partner_id.mobile:
+            recipientPhone = str(self.partner_id.mobile)
+        else:
+            recipientPhone = ''
+
+        invoice= {
+            "expirationDate": self.date_due.strftime("%Y-%m-%d"),
+            "paymentTypeEnum": int(self.method_of_payment),
+            "recipient": {
+                "EnterpriseRut": re.sub('[\.]','', self.partner_id.invoice_rut),
+                "EnterpriseAddressOrigin": self.partner_id.street[0:60],
+                "EnterpriseCity": self.partner_id.city,
+                "EnterpriseCommune": self.partner_id.state_id.name,
+                "EnterpriseName": self.partner_id.name,
+                "EnterpriseTurn": self.partner_activity_id.name,
+                "EnterprisePhone": recipientPhone
+            },
+            "total": {
+                "netAmount": str(int(self.amount_untaxed)),
+                "exemptAmount": "0",
+                "taxRate": "19",
+                "taxtRateAmount": str(int(self.amount_tax)),
+                "totalAmount": str(int(self.amount_total))
+            },
+            "lines": productLines,
+        }
+        return invoice
