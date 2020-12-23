@@ -72,8 +72,6 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def send_invoice(self):
-        raise models.ValidationError('{} {} {}'.format(self.env.user.company_id.dte_url,self.env.user.company_id.dte_hash,self.env.user.company_id.dte_customer_code))
-
         url = self.env.user.company_id.dte_url
         headers = {
             "apiKey" : self.env.user.company_id.dte_hash,
