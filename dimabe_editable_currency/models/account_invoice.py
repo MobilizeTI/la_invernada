@@ -135,8 +135,9 @@ class AccountInvoice(models.Model):
        
 
         if self.references and len(self.references) > 0:
+            refreneces = []
             for item in self.references:
-                invoice['references'].append(
+                refreneces.append(
                     {
                         "LineNumber": str(item.line_number),
                         "DocumentType": str(item.document_type_reference_id.id),
@@ -146,10 +147,13 @@ class AccountInvoice(models.Model):
                         "Reason": str(item.reason)
                     }
                 )
+            invoice['references'] = refreneces
 
         if len(self.observations_ids) > 0:
+            additionals = []
             for item in self.observations_ids:
-                invoice['additional'].append(item.observations)        
+                additionals.append(item.observations)
+            invoice['additional'] =  additionals    
 
 
 
