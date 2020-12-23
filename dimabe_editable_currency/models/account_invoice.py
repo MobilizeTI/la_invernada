@@ -222,7 +222,7 @@ class AccountInvoice(models.Model):
                 "EnterpriseCommune": str(self.env.user.company_id.state_id.name),
                 "EnterpriseName": self.env.user.company_id.partner_id.name,
                 "EnterpriseTurn": self.company_activity_id.name if self.company_activity_id.name else '',
-                "EnterprisePhone": self.env.user.company.id.phone if self.env.user.company_id.phone else ''
+                "EnterprisePhone": self.env.user.company_id.phone if self.env.user.company_id.phone else ''
             },
             "recipient": {
                 "EnterpriseRut": re.sub('[\.]','', self.partner_id.invoice_rut),
