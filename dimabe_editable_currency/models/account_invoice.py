@@ -77,8 +77,7 @@ class AccountInvoice(models.Model):
             "apiKey" : self.env.user.company_id.dte_hash,
             "CustomerCode": self.env.user.company_id.dte_customer_code
         }
-
-        raise models.ValidationError('{} {} {}'.format(url,self.env.user.company_id.dte_hash,self.env.user.company_id.dte_customer_code))
+        
         invoice = {}
         
         if len(self.references) > 10:
