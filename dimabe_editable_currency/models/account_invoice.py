@@ -173,7 +173,7 @@ class AccountInvoice(models.Model):
 
         r = requests.post(url, json=invoice, headers=headers)
 
-        #raise models.ValidationError(json.dumps(invoice))
+        raise models.ValidationError(json.dumps(invoice))
 
         jr = json.loads(r.text)
         if jr['urlPdf'] and jr['filePdf'] and jr['folio']:
@@ -319,9 +319,7 @@ class AccountInvoice(models.Model):
                 "taxtRateAmount": str(self.amount_tax),
                 "totalAmount": str(self.amount_total)
             },
-            "lines": productLines,
-            "references": references,
-            "additional": additional
+            "lines": productLines
         }
         return invoice
       
