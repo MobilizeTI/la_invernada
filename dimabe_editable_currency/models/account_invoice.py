@@ -176,7 +176,7 @@ class AccountInvoice(models.Model):
         #raise models.ValidationError(json.dumps(invoice))
 
         jr = json.loads(r.text)
-        raise models.ValidationError(jr.values())
+        raise models.ValidationError(jr.keys())
         if jr['urlPdf'] and jr['filePdf'] and jr['folio']:
             self.write({'pdf_url':jr['urlPdf']})
             self.write({'dte_pdf':jr['filePdf']})
