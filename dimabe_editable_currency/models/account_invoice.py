@@ -173,7 +173,7 @@ class AccountInvoice(models.Model):
 
         r = requests.post(url, json=invoice, headers=headers)
 
-        raise models.ValidationError(json.dumps(invoice))
+        #raise models.ValidationError(json.dumps(invoice))
 
         jr = json.loads(r.text)
         if jr['urlPdf'] and jr['filePdf'] and jr['folio']:
@@ -181,6 +181,8 @@ class AccountInvoice(models.Model):
             self.write({'dte_pdf':jr['filePdf']})
             self.write({'dte_folio':jr['folio']})
       
+        if jr['status'] and jr['title']:
+            raise models.ValidationError('Status: {} Title: {}'.format(jr['status'],jr['title']))
     
     #Factura electrónica
     def invoice_type(self):
