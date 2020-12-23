@@ -165,6 +165,7 @@ class AccountInvoice(models.Model):
         jr = json.loads(r.text)
         self.write({'pdf_url':jr['urlPdf']})
         self.write({'dte_pdf':jr['filePdf']})
+        self.write({'dte_folio':jr['folio']})
       
     
     #Factura electrónica
