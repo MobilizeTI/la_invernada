@@ -41,8 +41,9 @@ class AccountInvoice(models.Model):
 
     custom_invoice_id = fields.Many2one('custom.invoice','Factura Recibida')
 
-    #New
     observations_ids = fields.One2many('custom.invoice.observations','invoice_id',string='Observaciones')
+
+    dte_type = fields.Many2many('dte.type',compute = 'onchange_type')
 
     @api.onchange('partner_id')
     @api.multi
@@ -136,6 +137,15 @@ class AccountInvoice(models.Model):
             dte['Referencia'] = referencias
         # raise models.ValidationError(json.dumps(dte))
         self.send_dte(json.dumps(dte))
+
+    @api.onchange('type')
+    @api.multi
+    def onchange_type(self):
+        if 'refund' in self.type:
+            types = self.env['dte_type'].search([('code','in',('56','61','111','112'))]) 
+        else:
+            types = self.env['dte_type'].search([('code','not in',('56','61','111','112'))]) 
+        return types
 
     def send_dte(self, dte):
         url = self.company_id.dte_url
