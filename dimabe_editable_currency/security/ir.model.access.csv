@@ -1,3 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_dimabe_editable_currency_balance_sheet_clp,editable_currency.balance_sheet_clp,model_balance_sheet_clp,,1,1,1,1
-access_dimabe_editable_currency_custom_invoice_observations,editable_currency.custom_invoice_observations,model_custom_invoice_observations,,1,1,1,1
