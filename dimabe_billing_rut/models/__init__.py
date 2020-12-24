@@ -22,4 +22,4 @@ from . import wizard
 from . import custom_data
 from . import account_invoice_xlsx
 #from . import account_invoice_line
-from . import custom_invoice_observations
+#from . import custom_invoice_observations
