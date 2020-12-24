@@ -5,6 +5,12 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="send_invoice"  string="Test Json"  type="object"/>
+                 </xpath>
+                 <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='invoice_line_tax_ids']" position="after">
+                    <field name="exempt"/>
+                 </xpath>
                 <data>
                     <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
                         <page name="xdte_tab" string="DTE">
@@ -26,7 +32,6 @@
                                 <field name="references" mode="tree">
                                 <form>
                                     <group>
-                                    <field name="line_number" required="True"/>
                                     <field name="folio_reference" required="True"/>
                                     <field name="document_type_reference_id" required="True" />
                                     <field name="code_reference"/>
@@ -35,13 +40,22 @@
                                     </group>
                                 </form>
                                 <tree>
-                                    <field name="line_number" required="True"/>
                                     <field name="folio_reference" required="True"/>
                                     <field name="document_type_reference_id" required="True" />
                                     <field name="code_reference"/>
                                     <field name="reason"/>
                                     <field name="document_date"/>
                                 </tree>
+                                </field>
+                            </group>
+                            <group string="Observaciones">
+                                <field name="observations_ids" mode="tree">
+                                    <form>
+                                        <field name="observations"/>
+                                    </form>
+                                    <tree>
+                                        <field name="observations"/>
+                                    </tree>
                                 </field>
                             </group>
                         </page>
@@ -54,6 +68,12 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_supplier_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='invoice_line_tax_ids']" position="after">
+                    <field name="exempt"/>
+                 </xpath>
+                 <xpath expr="//header" position="inside">
+                    <button name="send_invoice"  string="Test Json"  type="object"/>
+                 </xpath>
                 <data>
                     <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
                         <page name="xdte_tab" string="DTE">
@@ -91,6 +111,16 @@
                                     <field name="reason"/>
                                     <field name="document_date"/>
                                 </tree>
+                                </field>
+                            </group>
+                            <group string="Observaciones">
+                                <field name="observations_ids" mode="tree">
+                                    <form>
+                                        <field name="observations"/>
+                                    </form>
+                                    <tree>
+                                        <field name="observations"/>
+                                    </tree>
                                 </field>
                             </group>
                         </page>

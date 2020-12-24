@@ -41,6 +41,9 @@ class AccountInvoice(models.Model):
 
     custom_invoice_id = fields.Many2one('custom.invoice','Factura Recibida')
 
+    #New
+    observations_ids = fields.One2many('custom.invoice.observations','invoice_id',string='Observaciones')
+
     @api.onchange('partner_id')
     @api.multi
     def _compute_partner_activity(self):
@@ -154,4 +157,324 @@ class AccountInvoice(models.Model):
         total = data.get("total", None)
         self.pdf_url = "%s/dte/dte_emitidos/pdf/%s/%s/0/%s/%s/%s" % (
             url, self.dte_type_id.code, self.dte_folio, rut_emisor, fecha, total)
+
+    #new
+    @api.multi
+    def send_invoice(self):
+        url = self.env.user.company_id.dte_url
+        headers = {
+            "apiKey" : self.env.user.company_id.dte_hash,
+            "CustomerCode": self.env.user.company_id.dte_customer_code
+        }
+        
+        invoice = {}
+        
+        if len(self.references) > 10:
+            raise models.ValidationError('Solo puede generar 20 Referencias')
+
+        if len(self.observations_ids) > 10: 
+            raise models.ValidationError('Solo puede generar 10 Observaciones')
+
+        if self.dte_type_id.code == "33": #Factura electrónica
+            invoice = self.invoice_type()
+       
+        elif self.dte_type_id.code == "34": #Factura no afecta o exenta electrónica
+            invoice = self.invoice_exempt_type()
+       
+        elif self.dte_type_id.code == "39": #Boleta electrónica
+            invoice = self.receipt_type()
+       
+        elif self.dte_type_id.code == "41":  #Boleta exenta electrónica
+            invoice = self.receipt_exempt_type()
+
+        elif self.dte_type_id.code == "43": #Liquidación factura electrónica
+            invoice = self.invoice_liquidation_type()
+        
+        elif self.dte_type_id.code == "46":  #Factura de compra electrónica
+            invoice = self.invoice_purchase_type()
+       
+        elif self.dte_type_id.code == "52": #Guía de despacho electrónica
+            invoice = self.dispatch_guide_type()
+       
+        elif self.dte_type_id.code == "56": #Nota de débito electrónica
+            if len(self.references) > 0:
+                invoice = self.debit_note()
+            else:
+                raise models.ValidationError('Para Nota de Débito electrónica debe agregar al menos una Referencia') 
+       
+        elif self.dte_type_id.code == "61": #Nota de crédito electrónica
+            if len(self.references) > 0:
+                invoice = self.credit_note_type()
+            else:
+                raise models.ValidationError('Para Nota de Crédito electrónica debe agregar al menos una Referencia')
+       
+        elif self.dte_type_id.code == "110": #Factura de exportación electrónica
+            invoice = self.invoice_export_type()
+       
+        elif self.dte_type_id.code == "111": #Nota de débito de exportación electrónica
+            if len(self.references) > 0:
+                invoice = self.debit_note_invoice_export_type()
+            else:
+                raise models.ValidationError('Para Nota de Débito de exportación electrónica debe agregar al menos una Referencia')
+       
+        elif self.dte_type_id.code == "112": #Nota de crédito de exportación electrónica
+            if len(self.references) > 0:
+                invoice = self.credit_note_invoice_export_type()
+            else:
+                raise models.ValidationError('Para Nota de Crédito de exportación electrónica debe agregar al menos una Referencia')
+       
+        #Add Common Data
+        
+        invoice['createdDate'] = self.create_date.strftime("%Y-%m-%d")
+        invoice['dteType'] = self.dte_type_id.code
+        invoice['transmitter'] =  {
+                "EnterpriseRut": re.sub('[\.]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
+                "EnterpriseActeco": self.company_activity_id.code,
+                "EnterpriseAddressOrigin": self.env.user.company_id.street,
+                "EnterpriseCity": self.env.user.company_id.city,
+                "EnterpriseCommune": str(self.env.user.company_id.state_id.name),
+                "EnterpriseName": self.env.user.company_id.partner_id.name,
+                "EnterpriseTurn": self.company_activity_id.name if self.company_activity_id.name else '',
+                "EnterprisePhone": self.env.user.company_id.phone if self.env.user.company_id.phone else ''
+            }
+        
+        # Add Refeences
+        if self.references and len(self.references) > 0:
+            refrenecesList = []
+            line_reference_number = 1
+            for item in self.references:
+                refrenecesList.append(
+                    {
+                        "LineNumber": str(line_reference_number),
+                        "DocumentType": str(item.document_type_reference_id.id),
+                        "Folio": str(item.folio_reference),
+                        "Date": str(item.document_date),
+                        "Code": str(item.code_reference),
+                        "Reason": str(item.reason)
+                    }
+                )
+                line_reference_number += 1
+            invoice['references'] = refrenecesList
+        #Add Additionals
+        if len(self.observations_ids) > 0:
+            additionals = []
+            for item in self.observations_ids:
+                additionals.append(item.observations)
+            invoice['additional'] =  additionals    
+
+
+        r = requests.post(url, json=invoice, headers=headers)
+
+        #raise models.ValidationError(json.dumps(invoice))
+
+        jr = json.loads(r.text)
+
+        Jrkeys = jr.keys()
+        if 'urlPdf' in Jrkeys  and 'filePdf' in Jrkeys and 'folio' in Jrkeys and 'fileXml' in Jrkeys:
+            self.write({'pdf_url':jr['urlPdf']})
+            self.write({'dte_pdf':jr['filePdf']})
+            self.write({'dte_folio':jr['folio']})
+            self.write({'dte_xml':jr['fileXml']})
+      
+        if 'status' in Jrkeys and 'title' in Jrkeys:
+            raise models.ValidationError('Status: {} Title: {} Json: {}'.format(jr['status'],jr['title'],json.dumps(invoice)))
+            
+     
+
+            
+    #Factura electrónica
+    def invoice_type(self):
+        productLines = []
+        lineNumber = 1
+        typeOfExemptEnum = ""                       
+
+        for item in self.invoice_line_ids:
+            haveExempt = False
+
+            if (len(item.invoice_line_tax_ids) == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6)):
+                haveExempt = True
+                typeOfExemptEnum = item.exempt
+            if haveExempt:
+                productLines.append(
+                    {
+                        "LineNumber": str(lineNumber),
+                        "ProductTypeCode": "EAN",
+                        "ProductCode": str(item.product_id.default_code),
+                        "ProductName": item.name,
+                        "ProductQuantity": str(int(item.quantity)),
+                        "UnitOfMeasure": str(item.uom_id.name),
+                        "ProductPrice": str(int(item.price_unit)),
+                        "ProductDiscountPercent": "0",
+                        "DiscountAmount": "0",
+                        "Amount": str(int(item.price_subtotal)),
+                        "HaveExempt": haveExempt,
+                        "TypeOfExemptEnum": typeOfExemptEnum
+                    }
+                )
+            else:
+                productLines.append(
+                    {
+                        "LineNumber": str(lineNumber),
+                        "ProductTypeCode": "EAN",
+                        "ProductCode": str(item.product_id.default_code),
+                        "ProductName": item.name,
+                        "ProductQuantity": str(int(item.quantity)),
+                        "UnitOfMeasure": str(item.uom_id.name),
+                        "ProductPrice": str(int(item.price_unit)),
+                        "ProductDiscountPercent": "0",
+                        "DiscountAmount": "0",
+                        "Amount": str(int(item.price_subtotal))
+                    }
+                )
+            lineNumber += 1
+        
+        if self.partner_id.phone:
+            recipientPhone = str(self.partner_id.phone)
+        elif self.partner_id.mobile:
+            recipientPhone = str(self.partner_id.mobile)
+        else:
+            recipientPhone = ''
+
+        invoice= {
+            "expirationDate": self.date_due.strftime("%Y-%m-%d"),
+            "paymentType": int(self.method_of_payment),
+            "recipient": {
+                "EnterpriseRut": re.sub('[\.]','', self.partner_id.invoice_rut),
+                "EnterpriseAddressOrigin": self.partner_id.street[0:60],
+                "EnterpriseCity": self.partner_id.city,
+                "EnterpriseCommune": self.partner_id.state_id.name,
+                "EnterpriseName": self.partner_id.name,
+                "EnterpriseTurn": self.partner_activity_id.name,
+                "EnterprisePhone": recipientPhone
+            },
+            "total": {
+                "netAmount": str(int(self.amount_untaxed)),
+                "exemptAmount": "0",
+                "taxRate": "19",
+                "taxtRateAmount": str(int(self.amount_tax)),
+                "totalAmount": str(int(self.amount_total))
+            },
+            "lines": productLines,
+        }
+        return invoice
+
+    #Factura de exportación electrónica
+    def invoice_export_type(self):
+        productLines = []
+        lineNumber = 1
+        typeOfExemptEnum = ""
+        #Transporte
+
+        for item in self.invoice_line_ids:
+            haveExempt = False
+            if (len(item.invoice_line_tax_ids) == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6)):
+                haveExempt = True
+                typeOfExemptEnum = item.exempt
+            if haveExempt:
+                productLines.append(
+                    {
+                        "LineNumber": str(lineNumber),
+                        "ProductTypeCode": "EAN",
+                        "ProductCode": str(item.product_id.default_code),
+                        "ProductName": item.name,
+                        "ProductQuantity": str(int(item.quantity)),
+                        "ProductPrice": str(int(item.price_unit)),
+                        "ProductDiscountPercent": "0",
+                        "DiscountAmount": "0",
+                        "Amount": str(int(item.price_subtotal)),
+                        "HaveExempt": haveExempt,
+                        "TypeOfExemptEnum": typeOfExemptEnum
+                    }
+                )
+            else:
+                productLines.append(
+                    {
+                        "LineNumber": str(lineNumber),
+                        "ProductTypeCode": "EAN",
+                        "ProductCode": str(item.product_id.default_code),
+                        "ProductName": item.name,
+                        "ProductQuantity": str(int(item.quantity)),
+                        "ProductPrice": str(int(item.price_unit)),
+                        "ProductDiscountPercent": "0",
+                        "DiscountAmount": "0",
+                        "Amount": str(int(item.price_subtotal))
+                    }
+                )
+            lineNumber += 1
+        invoice= {
+            "expirationDate": self.date_due.strftime("%Y-%m-%d"),
+            "paymentType": self.method_of_payment,
+            "recipient": {
+                "EnterpriseRut": re.sub('[\.]','', self.partner_id.invoice_rut),
+                "EnterpriseAddressOrigin": self.partner_id.street,
+                "EnterpriseCity": self.partner_id.city,
+                "EnterpriseCommune": self.partner_id.state_id.name,
+                "EnterpriseName": self.partner_id.name,
+                "EnterpriseTurn": self.partner_activity_id.name
+            },
+            "total": {
+                "currency": str(self.currency),
+                "netAmount": str(self.amount_untaxed),
+                "exemptAmount": "0",
+                "taxRate": "19",
+                "taxtRateAmount": str(self.amount_tax),
+                "totalAmount": str(self.amount_total)
+            },
+            "lines": productLines
+        }
+        return invoice
+      
+    #Nota de credito electronica
+    def credit_note_type(self):
+        productLines = []
+        lineNumber = 1
+        typeOfExemptEnum = ""                       
+
+        for item in self.invoice_line_ids:
+            
+            productLines.append(
+                {
+                    "LineNumber": str(lineNumber),
+                    "ProductTypeCode": "EAN",
+                    "ProductCode": str(item.product_id.default_code),
+                    "ProductName": item.name,
+                    "ProductQuantity": str(int(item.quantity)),
+                    "ProductPrice": str(int(item.price_unit)),
+                    #"ProductDiscountPercent": "0",
+                    #"DiscountAmount": "0",
+                    "Amount": str(int(item.price_subtotal))
+                })
+                
+            
+            lineNumber += 1
+        
+        if self.partner_id.phone:
+            recipientPhone = str(self.partner_id.phone)
+        elif self.partner_id.mobile:
+            recipientPhone = str(self.partner_id.mobile)
+        else:
+            recipientPhone = ''
+
+        invoice= {
+            "expirationDate": self.date_due.strftime("%Y-%m-%d"),
+            "paymentTypeEnum": int(self.method_of_payment),
+            "recipient": {
+                "EnterpriseRut": re.sub('[\.]','', self.partner_id.invoice_rut),
+                "EnterpriseAddressOrigin": self.partner_id.street[0:60],
+                "EnterpriseCity": self.partner_id.city,
+                "EnterpriseCommune": self.partner_id.state_id.name,
+                "EnterpriseName": self.partner_id.name,
+                "EnterpriseTurn": self.partner_activity_id.name,
+                "EnterprisePhone": recipientPhone
+            },
+            "total": {
+                "netAmount": str(int(self.amount_untaxed)),
+                "exemptAmount": "0",
+                "taxRate": "19",
+                "taxtRateAmount": str(int(self.amount_tax)),
+                "totalAmount": str(int(self.amount_total))
+            },
+            "lines": productLines,
+        }
+        return invoice
 
