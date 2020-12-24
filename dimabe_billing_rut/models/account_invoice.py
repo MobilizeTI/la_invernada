@@ -42,7 +42,7 @@ class AccountInvoice(models.Model):
     custom_invoice_id = fields.Many2one('custom.invoice','Factura Recibida')
 
     #New
-    observations_ids = fields.One2many('custom.invoice.observations','invoice_id',string='Observaciones')
+    #observations_ids = fields.One2many('custom.invoice.observations','invoice_id',string='Observaciones')
 
     @api.onchange('partner_id')
     @api.multi
