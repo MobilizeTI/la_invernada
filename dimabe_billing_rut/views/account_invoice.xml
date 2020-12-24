@@ -113,16 +113,6 @@
                                 </tree>
                                 </field>
                             </group>
-                            <group string="Observaciones">
-                                <field name="observations_ids" mode="tree">
-                                    <form>
-                                        <field name="observations"/>
-                                    </form>
-                                    <tree>
-                                        <field name="observations"/>
-                                    </tree>
-                                </field>
-                            </group>
                         </page>
                     </xpath>
                 </data>
