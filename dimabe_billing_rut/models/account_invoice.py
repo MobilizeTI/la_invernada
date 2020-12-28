@@ -313,7 +313,7 @@ class AccountInvoice(models.Model):
             haveExempt = False
 
             if len(item.invoice_line_tax_ids) == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6):
-                if item.exempt is not None and item.exempt != 7:
+                if item.exempt != 7:
                     haveExempt = True
                     typeOfExemptEnum = item.exempt
                 else:
