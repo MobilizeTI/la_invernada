@@ -148,8 +148,7 @@ class StockPicking(models.Model):
         invoice = {}
         productLines = []
         lineNumber = 1
-        typeOfExemptEnum = ""                       
-        exemtAmount = 0
+        typeOfExemptEnum = ""
         netAmount = 0
         countNotExempt = 0
 
@@ -157,17 +156,9 @@ class StockPicking(models.Model):
         self.validation_fields()
 
         for item in self.move_ids_without_package:
-            haveExempt = False
-
-            if len(item.invoice_line_tax_ids) == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6):
-                haveExempt = True
-                typeOfExemptEnum = item.exempt
-                if typeOfExemptEnum == '7':
-                    raise models.ValidationError('El Producto {} al no tener impuesto seleccionado, debe seleccionar el tipo Exento'.format(item.name))
-       
-            if haveExempt:
-                exemtAmount += int(item.price_subtotal)
-                productLines.append(
+           
+            netAmount += int(item.price_subtotal)
+            productLines.append(
                     {
                         "LineNumber": str(lineNumber),
                         "ProductTypeCode": "EAN",
@@ -179,24 +170,6 @@ class StockPicking(models.Model):
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
                         "Amount": str(int(item.price_subtotal)),
-                        "HaveExempt": haveExempt,
-                        "TypeOfExemptEnum": typeOfExemptEnum
-                    }
-                )
-            else:
-                netAmount += int(item.price_subtotal)
-                productLines.append(
-                    {
-                        "LineNumber": str(lineNumber),
-                        "ProductTypeCode": "EAN",
-                        "ProductCode": str(item.product_id.default_code),
-                        "ProductName": item.name,
-                        "ProductQuantity": str(item.quantity),
-                        "UnitOfMeasure": str(item.uom_id.name),
-                        "ProductPrice": str(item.price_unit),
-                        "ProductDiscountPercent": "0",
-                        "DiscountAmount": "0",
-                        "Amount": str(int(item.price_subtotal))
                     }
                 )
             lineNumber += 1
@@ -234,10 +207,10 @@ class StockPicking(models.Model):
             },
             "total": {
                 "netAmount": str(netAmount),
-                "exemptAmount": str(exemtAmount),
+                "exemptAmount": "0",
                 "taxRate": "19",
                 "taxtRateAmount": str(int(self.amount_tax)),
-                "totalAmount": str(int(netAmount + exemtAmount + self.amount_tax))
+                "totalAmount": str(int(netAmount + self.amount_tax))
             },
             "lines": productLines,
         }
