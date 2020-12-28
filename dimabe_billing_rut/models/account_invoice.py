@@ -295,10 +295,16 @@ class AccountInvoice(models.Model):
      
     def validation_fields(self):
         if not self.date_invoice:
-            raise models.ValidationError('Debe Selccionar la Fecha de Expiración')
+            raise models.ValidationError('Debe Selccionar la Fecha de la Factura')
         
         if not self.date_due:
             raise models.ValidationError('Debe Selccionar la Fecha de Expiración')
+
+        if not self.dte_type_id.code:
+            raise models.ValidationError('Debe seleccionar el Tipo de Documento')
+
+        if len(self.invoice_line_ids) == 0:
+            raise models.ValidationError('Debe agregar al menos un Producto')
 
         if len(self.references) > 10:
             raise models.ValidationError('Solo puede generar 20 Referencias')
@@ -306,11 +312,9 @@ class AccountInvoice(models.Model):
         if len(self.observations_ids) > 10: 
             raise models.ValidationError('Solo puede generar 10 Observaciones')
 
-        if not self.dte_type_id.code:
-            raise models.ValidationError('Debe seleccionar el Tipo de Documento')
+        
 
-        if len(self.invoice_line_ids) == 0:
-            raise models.ValidationError('Debe agregar al menos un Producto')
+        
 
         #VALIDAR AMBAS FECHAS
         #RUT DE CLIENTE
