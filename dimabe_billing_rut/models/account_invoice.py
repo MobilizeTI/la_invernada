@@ -305,8 +305,8 @@ class AccountInvoice(models.Model):
         for item in self.invoice_line_ids:
             haveExempt = False
 
-
-            if len(item.invoice_line_tax_ids or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6)) == 0:
+            raise models.ValidationError(item.exempt)
+            if len(item.invoice_line_tax_ids == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6)):
                 if item.exempt is not None:
                     haveExempt = True
                     typeOfExemptEnum = item.exempt
