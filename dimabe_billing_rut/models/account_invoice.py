@@ -293,6 +293,7 @@ class AccountInvoice(models.Model):
             
      
     def validation_fields(self):
+        raise models.ValidationError('{} {} {} {}'.format(self.env.user.company_id.invoice_rut,self.date_due, self.partner_id.invoice_rut, self.dte_type_id))
         if len(self.references) > 10:
             raise models.ValidationError('Solo puede generar 20 Referencias')
 
@@ -301,6 +302,7 @@ class AccountInvoice(models.Model):
 
         if self.dte_type_id.code is None:
             raise models.ValidationError('Debe seleccionar el Tipo de Documento')
+
         if len(self.invoice_line_ids) == 0:
             raise models.ValidationError('Debe agregar al menos un Producto')
 
