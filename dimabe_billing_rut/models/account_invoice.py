@@ -138,7 +138,8 @@ class AccountInvoice(models.Model):
         # raise models.ValidationError(json.dumps(dte))
         self.send_dte(json.dumps(dte))
 
-    @api.onchange('type')
+    #@api.onchange('type')
+    #not worked
     @api.multi
     def onchange_type(self):
         if self.type:
