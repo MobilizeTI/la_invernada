@@ -184,11 +184,7 @@ class AccountInvoice(models.Model):
         invoice = {}
 
         #Main Validations
-        if len(self.references) > 10:
-            raise models.ValidationError('Solo puede generar 20 Referencias')
-
-        if len(self.observations_ids) > 10: 
-            raise models.ValidationError('Solo puede generar 10 Observaciones')
+        self.validation_fields(self)
         
         if self.dte_type_id.code is None:
             raise models.ValidationError('Debe seleccionar el Tipo de Documento')
@@ -304,7 +300,12 @@ class AccountInvoice(models.Model):
             raise models.ValidationError('Status: {} Title: {} Json: {}'.format(jr['status'],jr['title'],json.dumps(invoice)))
             
      
+    def validation_fields(self):
+        if len(self.references) > 10:
+            raise models.ValidationError('Solo puede generar 20 Referencias')
 
+        if len(self.observations_ids) > 10: 
+            raise models.ValidationError('Solo puede generar 10 Observaciones')
             
     #Factura electrónica
     def invoice_type(self):
@@ -316,11 +317,9 @@ class AccountInvoice(models.Model):
             haveExempt = False
 
             if len(item.invoice_line_tax_ids) == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6):
-                if item.exempt != 7:
-                    raise models.ValidationError(item.exempt)
-                    haveExempt = True
-                    typeOfExemptEnum = item.exempt
-                else:
+                haveExempt = True
+                typeOfExemptEnum = item.exempt
+                if typeOfExemptEnum == 7:
                     raise models.ValidationError('El Producto {} al no tener impuesto seleccionado, debe seleccionar el tipo Exento'.format(item.name))
        
             if haveExempt:
