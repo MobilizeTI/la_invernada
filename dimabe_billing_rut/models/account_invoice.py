@@ -184,7 +184,7 @@ class AccountInvoice(models.Model):
         invoice = {}
 
         #Main Validations
-        self.validation_fields(self)
+        self.validation_fields()
         
         if self.dte_type_id.code is None:
             raise models.ValidationError('Debe seleccionar el Tipo de Documento')
