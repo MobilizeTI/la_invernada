@@ -183,6 +183,7 @@ class AccountInvoice(models.Model):
         
         invoice = {}
 
+        #Main Validations
         if len(self.references) > 10:
             raise models.ValidationError('Solo puede generar 20 Referencias')
 
@@ -190,8 +191,10 @@ class AccountInvoice(models.Model):
             raise models.ValidationError('Solo puede generar 10 Observaciones')
         
         if self.dte_type_id.code is None:
-            raise models.ValidationError('Debe Seleccionar el Tipo de Documento')
-        #Validar Dte type
+            raise models.ValidationError('Debe seleccionar el Tipo de Documento')
+        if len(self.invoice_line_ids) == 0:
+            raise models.ValidationError('Debe agregar al menos un Producto')
+        #End Validations
 
         if self.dte_type_id.code == "33": #Factura electrónica
             invoice = self.invoice_type()
@@ -309,7 +312,7 @@ class AccountInvoice(models.Model):
         for item in self.invoice_line_ids:
             haveExempt = False
 
-            if len(item.invoice_line_tax_ids == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6)):
+            if len(item.invoice_line_tax_ids) == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6):
                 if item.exempt is not None and item.exempt != 7:
                     haveExempt = True
                     typeOfExemptEnum = item.exempt
