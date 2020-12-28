@@ -235,8 +235,6 @@ class AccountInvoice(models.Model):
                 raise models.ValidationError('Para Nota de Crédito de exportación electrónica debe agregar al menos una Referencia')
        
         #Add Common Data
-        
-        #invoice['createdDate'] = self.create_date.strftime("%Y-%m-%d")
         invoice['createdDate'] = self.date_invoice.strftime("%Y-%m-%d")
         invoice['dteType'] = self.dte_type_id.code
         invoice['transmitter'] =  {
@@ -277,7 +275,7 @@ class AccountInvoice(models.Model):
 
         r = requests.post(url, json=invoice, headers=headers)
 
-        raise models.ValidationError(json.dumps(invoice))
+        #raise models.ValidationError(json.dumps(invoice))
 
         jr = json.loads(r.text)
 
@@ -317,7 +315,6 @@ class AccountInvoice(models.Model):
         if not self.company_activity_id.name:
             raise models.ValidationError('Debe seleccionar la Actividad de la Compañia')
 
-        #Validacion por confirmar
         if self.dte_type_id.code != "34" and self.dte_type_id.code != "41" :
             countNotExempt = 0
             for item in self.invoice_line_ids:
@@ -332,9 +329,6 @@ class AccountInvoice(models.Model):
         if len(self.observations_ids) > 10: 
             raise models.ValidationError('Solo puede generar 10 Observaciones')
 
-
-        #VALIDAR AMBAS FECHAS
-        #RUT DE CLIENTE
             
     #Factura electrónica
     def invoice_type(self):
