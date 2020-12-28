@@ -146,7 +146,7 @@ class AccountInvoice(models.Model):
         else:
             types = self.env['dte.type'].search([('code','not in',('56','61','111','112'))]) 
 
-        #raise models.ValidationError(types)
+        raise models.ValidationError('id = {} code = {} name = {}'.format(types[0]['id'], types[0]['code'], types[0]['name']))
         return types
 
     def send_dte(self, dte):
