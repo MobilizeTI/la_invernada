@@ -143,11 +143,11 @@ class AccountInvoice(models.Model):
     def onchange_type(self):
         #raise models.ValidationError(self.type)
         if 'refund' in self.type:
-            types = self.env['dte_type'].search([('code','in',('56','61','111','112'))]) 
+            types = self.env['dte.type'].search([('code','in',('56','61','111','112'))]) 
         else:
-            types = self.env['dte_type'].search([('code','not in',('56','61','111','112'))]) 
+            types = self.env['dte.type'].search([('code','not in',('56','61','111','112'))]) 
 
-        raise models.ValidationError(self.env['dte_type'])
+        raise models.ValidationError(types)
         return types
 
     def send_dte(self, dte):
