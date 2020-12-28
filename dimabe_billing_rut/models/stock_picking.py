@@ -156,7 +156,7 @@ class StockPicking(models.Model):
         self.validation_fields()
 
         for item in self.move_ids_without_package:
-            raise models.ValidationError('{} {} '.format(item.quantity_done,item.product_id.lst_price))
+            raise models.ValidationError('{} {} '.format(item.product_id.uom_id.name))
             netAmount += int((item.product_id.lst_price))
             amount = int(item.quantity_done * item.product_id.lst_price)
             productLines.append(
