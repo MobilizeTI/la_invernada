@@ -165,7 +165,7 @@ class StockPicking(models.Model):
                         "ProductCode": str(item.product_id.default_code),
                         "ProductName": item.name,
                         "ProductQuantity": str(round(item.quantity_done, 6)), #segun DTEmite no es requerido int
-                        "UnitOfMeasure": str(item.uom_id.name),
+                        "UnitOfMeasure": str(item.product_uom_id.name),
                         "ProductPrice": str(round(item.product_id.lst_price,4)), #segun DTEmite no es requerido int
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
