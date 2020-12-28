@@ -289,7 +289,7 @@ class AccountInvoice(models.Model):
         if 'status' in Jrkeys and 'title' in Jrkeys:
             raise models.ValidationError('Status: {} Title: {} Json: {}'.format(jr['status'],jr['title'],json.dumps(invoice)))
         elif 'message' in Jrkeys:
-            raise models.ValidationError('Advertencia: {} '.format(jr['message'],json.dumps(invoice)))
+            raise models.ValidationError('Advertencia: {} Json: {}'.format(jr['message'],json.dumps(invoice)))
 
             
      
