@@ -180,7 +180,6 @@ class AccountInvoice(models.Model):
             "apiKey" : self.env.user.company_id.dte_hash,
             "CustomerCode": self.env.user.company_id.dte_customer_code
         }
-        raise models.ValidationError('{} {} {} {} '.format(self.amount_untaxed,self.amount_tax,self.amount_untaxed_invoice_signed, self.amount_total))
         invoice = {}
 
         #Main Validations
