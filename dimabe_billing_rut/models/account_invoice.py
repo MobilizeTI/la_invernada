@@ -237,7 +237,8 @@ class AccountInvoice(models.Model):
        
         #Add Common Data
         
-        invoice['createdDate'] = self.create_date.strftime("%Y-%m-%d")
+        #invoice['createdDate'] = self.create_date.strftime("%Y-%m-%d")
+        invoice['createdDate'] = self.date_invoice.strftime("%Y-%m-%d")
         invoice['dteType'] = self.dte_type_id.code
         invoice['transmitter'] =  {
                 "EnterpriseRut": re.sub('[\.]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
@@ -293,7 +294,9 @@ class AccountInvoice(models.Model):
             
      
     def validation_fields(self):
-        raise models.ValidationError('{} {} {} {}'.format(self.env.user.company_id.invoice_rut,self.date_due, self.partner_id.invoice_rut, self.dte_type_id.code))
+        if not self.date_invoice:
+            raise models.ValidationError('Debe Selccionar la Fecha de Expiración')
+        
         if not self.date_due:
             raise models.ValidationError('Debe Selccionar la Fecha de Expiración')
 
@@ -303,7 +306,7 @@ class AccountInvoice(models.Model):
         if len(self.observations_ids) > 10: 
             raise models.ValidationError('Solo puede generar 10 Observaciones')
 
-        if self.dte_type_id.code is None:
+        if not self.dte_type_id.code:
             raise models.ValidationError('Debe seleccionar el Tipo de Documento')
 
         if len(self.invoice_line_ids) == 0:
