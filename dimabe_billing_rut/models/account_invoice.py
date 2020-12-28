@@ -194,6 +194,9 @@ class AccountInvoice(models.Model):
             raise models.ValidationError('Debe seleccionar el Tipo de Documento')
         if len(self.invoice_line_ids) == 0:
             raise models.ValidationError('Debe agregar al menos un Producto')
+
+        #VALIDAR AMBAS FECHAS
+        #RUT DE CLIENTE
         #End Validations
 
         if self.dte_type_id.code == "33": #Factura electrónica
@@ -314,6 +317,7 @@ class AccountInvoice(models.Model):
 
             if len(item.invoice_line_tax_ids) == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6):
                 if item.exempt != 7:
+                    raise models.ValidationError(item.exempt)
                     haveExempt = True
                     typeOfExemptEnum = item.exempt
                 else:
