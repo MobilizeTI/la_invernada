@@ -366,7 +366,7 @@ class AccountInvoice(models.Model):
                     }
                 )
             else:
-                netAmount += int(item.item.price_subtotal)
+                netAmount += int(item.price_subtotal)
                 productLines.append(
                     {
                         "LineNumber": str(lineNumber),
