@@ -321,7 +321,7 @@ class AccountInvoice(models.Model):
         productLines = []
         lineNumber = 1
         typeOfExemptEnum = ""                       
-
+        exemtAmount = 0
         for item in self.invoice_line_ids:
             haveExempt = False
 
@@ -332,6 +332,7 @@ class AccountInvoice(models.Model):
                     raise models.ValidationError('El Producto {} al no tener impuesto seleccionado, debe seleccionar el tipo Exento'.format(item.name))
        
             if haveExempt:
+                exemtAmount += int(item.price_subtotal)
                 productLines.append(
                     {
                         "LineNumber": str(lineNumber),
@@ -372,6 +373,7 @@ class AccountInvoice(models.Model):
         else:
             recipientPhone = ''
 
+        raise models.ValidationError('total exento: {}'.format(exemtAmount))
         invoice= {
             "expirationDate": self.date_due.strftime("%Y-%m-%d"),
             "paymentType": int(self.method_of_payment),
@@ -386,7 +388,7 @@ class AccountInvoice(models.Model):
             },
             "total": {
                 "netAmount": str(int(self.amount_untaxed)),
-                "exemptAmount": "0",
+                "exemptAmount": str(exemtAmount),
                 "taxRate": "19",
                 "taxtRateAmount": str(int(self.amount_tax)),
                 "totalAmount": str(int(self.amount_total))
