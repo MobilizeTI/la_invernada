@@ -290,9 +290,18 @@ class AccountInvoice(models.Model):
       
         if 'status' in Jrkeys and 'title' in Jrkeys:
             raise models.ValidationError('Status: {} Title: {} Json: {}'.format(jr['status'],jr['title'],json.dumps(invoice)))
+        elif 'message' in Jrkeys:
+            raise models.ValidationError('Advertencia: {} '.format(jr['message'],json.dumps(invoice)))
+
             
      
     def validation_fields(self):
+        if not self.partner_id:
+            raise models.ValidationError('Debe Selccionar el Cliente')
+        else:
+            if not self.partner_id.invoice_rut:
+                raise models.ValidationError('El Cliente {} no tiene Rut de Facturación'.format(self.partner_id.name))
+        
         if not self.date_invoice:
             raise models.ValidationError('Debe Selccionar la Fecha de la Factura')
         
