@@ -314,7 +314,7 @@ class AccountInvoice(models.Model):
             if countNotExempt == 0:
                 raise models.ValidationError('Uno de los productos debe tener impuesto')
 
-        raise models.ValidationError(len(countNotExempt))
+        raise models.ValidationError(countNotExempt)
 
         if len(self.references) > 10:
             raise models.ValidationError('Solo puede generar 20 Referencias')
