@@ -181,7 +181,7 @@ class AccountInvoice(models.Model):
         }
         
         invoice = {}
-        
+
         if len(self.references) > 10:
             raise models.ValidationError('Solo puede generar 20 Referencias')
 
@@ -304,7 +304,14 @@ class AccountInvoice(models.Model):
         for item in self.invoice_line_ids:
             haveExempt = False
 
-            if (len(item.invoice_line_tax_ids) == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6)):
+
+            if len(item.invoice_line_tax_ids) == 0:
+                if item.exempt is not None:
+                    haveExempt = True
+                    typeOfExemptEnum = item.exempt
+                else:
+                    raise models.ValidationError('El Producto {} al no tener impuesto seleccionado, debe seleccionar el tipo Exento'.format(item.name))
+            elif (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6):
                 haveExempt = True
                 typeOfExemptEnum = item.exempt
             if haveExempt:
