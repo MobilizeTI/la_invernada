@@ -147,7 +147,7 @@ class AccountInvoice(models.Model):
             else:
                 types = self.env['dte.type'].search([('code','not in',('56','61','111','112'))]) 
 
-        return types
+            return types
 
     def send_dte(self, dte):
         url = self.company_id.dte_url
