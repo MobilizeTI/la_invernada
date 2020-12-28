@@ -305,15 +305,13 @@ class AccountInvoice(models.Model):
             haveExempt = False
 
 
-            if len(item.invoice_line_tax_ids) == 0:
+            if len(item.invoice_line_tax_ids or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6)) == 0:
                 if item.exempt is not None:
                     haveExempt = True
                     typeOfExemptEnum = item.exempt
                 else:
                     raise models.ValidationError('El Producto {} al no tener impuesto seleccionado, debe seleccionar el tipo Exento'.format(item.name))
-            elif (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6):
-                haveExempt = True
-                typeOfExemptEnum = item.exempt
+       
             if haveExempt:
                 productLines.append(
                     {
