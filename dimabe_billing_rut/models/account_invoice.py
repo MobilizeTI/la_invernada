@@ -355,9 +355,9 @@ class AccountInvoice(models.Model):
                         "ProductTypeCode": "EAN",
                         "ProductCode": str(item.product_id.default_code),
                         "ProductName": item.name,
-                        "ProductQuantity": str(int(item.quantity)),
+                        "ProductQuantity": str(item.quantity), #segun DTEmite no es requerido int
                         "UnitOfMeasure": str(item.uom_id.name),
-                        "ProductPrice": str(int(item.price_unit)),
+                        "ProductPrice": str(item.price_unit), #segun DTEmite no es requerido int
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
                         "Amount": str(int(item.price_subtotal)),
@@ -373,9 +373,9 @@ class AccountInvoice(models.Model):
                         "ProductTypeCode": "EAN",
                         "ProductCode": str(item.product_id.default_code),
                         "ProductName": item.name,
-                        "ProductQuantity": str(int(item.quantity)),
+                        "ProductQuantity": str(item.quantity),
                         "UnitOfMeasure": str(item.uom_id.name),
-                        "ProductPrice": str(int(item.price_unit)),
+                        "ProductPrice": str(item.price_unit),
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
                         "Amount": str(int(item.price_subtotal))
