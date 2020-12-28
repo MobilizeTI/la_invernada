@@ -305,6 +305,17 @@ class AccountInvoice(models.Model):
         if len(self.invoice_line_ids) == 0:
             raise models.ValidationError('Debe agregar al menos un Producto')
 
+        #Validacion por confirmar
+        if self.dte_type_id.code != "34" and self.dte_type_id.code != "41" :
+            countNotExempt = 0
+            for item in self.invoice_line_ids:
+                if len(item.invoice_line_tax_ids) > 0 or item.invoice_line_tax_ids[0].id != 6:
+                    countNotExempt += 1
+            if countNotExempt == 0:
+                raise models.ValidationError('Uno de los productos debe tener impuesto')
+
+        raise models.ValidationError(len(self.invoice_line_ids))
+
         if len(self.references) > 10:
             raise models.ValidationError('Solo puede generar 20 Referencias')
 
@@ -321,6 +332,7 @@ class AccountInvoice(models.Model):
         lineNumber = 1
         typeOfExemptEnum = ""                       
         exemtAmount = 0
+        countNotExempt = 0
         for item in self.invoice_line_ids:
             haveExempt = False
 
@@ -372,7 +384,6 @@ class AccountInvoice(models.Model):
         else:
             recipientPhone = ''
 
-        raise models.ValidationError('total exento: {}'.format(exemtAmount))
         invoice= {
             "expirationDate": self.date_due.strftime("%Y-%m-%d"),
             "paymentType": int(self.method_of_payment),
