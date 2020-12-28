@@ -277,7 +277,7 @@ class AccountInvoice(models.Model):
 
         r = requests.post(url, json=invoice, headers=headers)
 
-        #raise models.ValidationError(json.dumps(invoice))
+        raise models.ValidationError(json.dumps(invoice))
 
         jr = json.loads(r.text)
 
@@ -306,7 +306,7 @@ class AccountInvoice(models.Model):
             raise models.ValidationError('Debe agregar al menos un Producto')
 
         if not self.company_activity_id.name:
-            raise models.ValidationError('Debe seleccionar el Giro de la Compañia')
+            raise models.ValidationError('Debe seleccionar la Actividad de la Compañia')
 
         #Validacion por confirmar
         if self.dte_type_id.code != "34" and self.dte_type_id.code != "41" :
