@@ -293,11 +293,8 @@ class StockPicking(models.Model):
             if not self.partner_id.invoice_rut:
                 raise models.ValidationError('El Cliente {} no tiene Rut de Facturación'.format(self.partner_id.name))
         
-        if not self.date_invoice:
+        if not self.scheduled_date:
             raise models.ValidationError('Debe Selccionar la Fecha de la Factura')
-        
-        if not self.date_due:
-            raise models.ValidationError('Debe Selccionar la Fecha de Expiración')
 
         if not self.dte_type_id.code:
             raise models.ValidationError('Por favor seleccione el Tipo de Documento a emitir')
