@@ -155,21 +155,21 @@ class StockPicking(models.Model):
         #Main Validations
         self.validation_fields()
 
-        for item in self.move_line_ids_without_package:
-            raise models.ValidationError(item['origin'])
+        for item in self.move_ids_without_package:
             netAmount += int(item.price_subtotal)
+            amount = int(item.quantity_done * item.product_id.lst_price)
             productLines.append(
                     {
                         "LineNumber": str(lineNumber),
                         "ProductTypeCode": "EAN",
                         "ProductCode": str(item.product_id.default_code),
                         "ProductName": item.name,
-                        "ProductQuantity": str(item.quantity), #segun DTEmite no es requerido int
+                        "ProductQuantity": str(round(item.quantity_done, 6)), #segun DTEmite no es requerido int
                         "UnitOfMeasure": str(item.uom_id.name),
-                        "ProductPrice": str(item.price_unit), #segun DTEmite no es requerido int
+                        "ProductPrice": str(round(item.product_id.lst_price,4)), #segun DTEmite no es requerido int
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(int(item.price_subtotal)),
+                        "Amount": str(amount),
                     }
                 )
             lineNumber += 1
