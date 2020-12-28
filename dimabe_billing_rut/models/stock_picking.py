@@ -286,7 +286,7 @@ class StockPicking(models.Model):
             raise models.ValidationError('Advertencia: {} Json: {}'.format(jr['message'],json.dumps(invoice)))
 
 
-def validation_fields(self):
+    def validation_fields(self):
         if not self.partner_id:
             raise models.ValidationError('Por favor selccione el Cliente')
         else:
@@ -307,14 +307,6 @@ def validation_fields(self):
 
         if not self.company_activity_id or not self.partner_activity_id:
             raise models.ValidationError('Por favor seleccione la Actividad de la Compañía y del Proveedor')
-
-        if self.dte_type_id.code != "34" and self.dte_type_id.code != "41" :
-            countNotExempt = 0
-            for item in self.invoice_line_ids:
-                if len(item.invoice_line_tax_ids) > 0 and item.invoice_line_tax_ids[0].id != 6:
-                    countNotExempt += 1
-            if countNotExempt == 0:
-                raise models.ValidationError('El tipo {} debe tener almenos un producto con impuesto'.format(self.dte_type_id.name))
 
         if len(self.references) > 10:
             raise models.ValidationError('Solo puede generar 20 Referencias')
