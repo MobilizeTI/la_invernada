@@ -293,7 +293,10 @@ class AccountInvoice(models.Model):
             
      
     def validation_fields(self):
-        raise models.ValidationError('{} {} {} {}'.format(self.env.user.company_id.invoice_rut,self.date_due, self.partner_id.invoice_rut, self.dte_type_id))
+        raise models.ValidationError('{} {} {} {}'.format(self.env.user.company_id.invoice_rut,self.date_due, self.partner_id.invoice_rut, self.dte_type_id.code))
+        if not self.date_due:
+            raise models.ValidationError('Debe Selccionar la Fecha de Expiración')
+
         if len(self.references) > 10:
             raise models.ValidationError('Solo puede generar 20 Referencias')
 
