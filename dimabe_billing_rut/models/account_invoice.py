@@ -54,9 +54,9 @@ class AccountInvoice(models.Model):
             for activity in item.partner_id.economic_activities:
                 activities.append(activity.id)
             item.partner_activity_id = activities
-
+    #eliminar
     @api.one
-    def send_to_sii(self):
+    def send_to_sii_old(self):
         # PARA COMPLETAR EL DOCUMENTO SE DEBE BASAR EN http://www.sii.cl/factura_electronica/formato_dte.pdf
         if not self.company_activity_id or not self.partner_activity_id:
             raise models.ValidationError('Por favor seleccione las actividades de la compañía y del proveedor')
@@ -139,18 +139,9 @@ class AccountInvoice(models.Model):
         # raise models.ValidationError(json.dumps(dte))
         self.send_dte(json.dumps(dte))
 
-    #@api.onchange('type')
-    #not worked
-    @api.multi
-    def onchange_type(self):
-        if self.type:
-            if 'refund' in self.type:
-                types = self.env['dte.type'].search([('code','in',('56','61','111','112'))]) 
-            else:
-                types = self.env['dte.type'].search([('code','not in',('56','61','111','112'))]) 
+    
 
-            return types
-
+    #eliminar
     def send_dte(self, dte):
         url = self.company_id.dte_url
         rut_emisor = self.company_id.invoice_rut.replace(".", "").split("-")[0]
@@ -173,8 +164,21 @@ class AccountInvoice(models.Model):
             url, self.dte_type_id.code, self.dte_folio, rut_emisor, fecha, total)
 
     #new
+
+    #@api.onchange('type')
+    #not worked
     @api.multi
-    def send_invoice(self):
+    def onchange_type(self):
+        if self.type:
+            if 'refund' in self.type:
+                types = self.env['dte.type'].search([('code','in',('56','61','111','112'))]) 
+            else:
+                types = self.env['dte.type'].search([('code','not in',('56','61','111','112'))]) 
+
+            return types
+    
+    @api.multi
+    def send_to_sii(self):
         url = self.env.user.company_id.dte_url
         headers = {
             "apiKey" : self.env.user.company_id.dte_hash,
@@ -203,9 +207,6 @@ class AccountInvoice(models.Model):
         
         elif self.dte_type_id.code == "46":  #Factura de compra electrónica
             invoice = self.invoice_purchase_type()
-       
-        elif self.dte_type_id.code == "52": #Guía de despacho electrónica
-            invoice = self.dispatch_guide_type()
        
         elif self.dte_type_id.code == "56": #Nota de débito electrónica
             if len(self.references) > 0:
@@ -295,7 +296,7 @@ class AccountInvoice(models.Model):
      
     def validation_fields(self):
         if not self.partner_id:
-            raise models.ValidationError('Debe Selccionar el Cliente')
+            raise models.ValidationError('Por favor selccione el Cliente')
         else:
             if not self.partner_id.invoice_rut:
                 raise models.ValidationError('El Cliente {} no tiene Rut de Facturación'.format(self.partner_id.name))
@@ -307,13 +308,13 @@ class AccountInvoice(models.Model):
             raise models.ValidationError('Debe Selccionar la Fecha de Expiración')
 
         if not self.dte_type_id.code:
-            raise models.ValidationError('Debe seleccionar el Tipo de Documento')
+            raise models.ValidationError('Por favor seleccione el Tipo de Documento a emitir')
 
         if len(self.invoice_line_ids) == 0:
-            raise models.ValidationError('Debe agregar al menos un Producto')
+            raise models.ValidationError('Por favor agregar al menos un Producto')
 
-        if not self.company_activity_id.name:
-            raise models.ValidationError('Debe seleccionar la Actividad de la Compañia')
+        if not self.company_activity_id or not self.partner_activity_id:
+            raise models.ValidationError('Por favor seleccione la Actividad de la Compañía y del Proveedor')
 
         if self.dte_type_id.code != "34" and self.dte_type_id.code != "41" :
             countNotExempt = 0
