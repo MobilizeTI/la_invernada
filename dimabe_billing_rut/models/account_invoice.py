@@ -141,7 +141,7 @@ class AccountInvoice(models.Model):
     @api.onchange('type')
     @api.multi
     def onchange_type(self):
-        raise models.ValidationError(self.type)
+        #raise models.ValidationError(self.type)
         if 'refund' in self.type:
             types = self.env['dte_type'].search([('code','in',('56','61','111','112'))]) 
         else:
