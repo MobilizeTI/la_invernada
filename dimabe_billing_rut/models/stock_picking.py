@@ -156,7 +156,7 @@ class StockPicking(models.Model):
         #Main Validations
         self.validation_fields()
 
-        for item in self.invoice_line_ids:
+        for item in self.move_ids_without_package:
             haveExempt = False
 
             if len(item.invoice_line_tax_ids) == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6):
@@ -296,7 +296,8 @@ class StockPicking(models.Model):
         if not self.dte_type_id.code:
             raise models.ValidationError('Por favor seleccione el Tipo de Documento a emitir')
 
-        #Validar si hay almenos un producto
+            if len(self.move_ids_without_package) == 0:
+                raise models.ValidationError('Por favor agregar al menos un Producto')
 
         if not self.company_activity_id or not self.partner_activity_id:
             raise models.ValidationError('Por favor seleccione la Actividad de la Compañía y del Proveedor')
