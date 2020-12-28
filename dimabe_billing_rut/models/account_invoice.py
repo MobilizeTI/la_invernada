@@ -309,7 +309,7 @@ class AccountInvoice(models.Model):
         if self.dte_type_id.code != "34" and self.dte_type_id.code != "41" :
             countNotExempt = 0
             for item in self.invoice_line_ids:
-                if len(item.invoice_line_tax_ids) > 0 or item.invoice_line_tax_ids[0].id != 6:
+                if len(item.invoice_line_tax_ids) > 0 and item.invoice_line_tax_ids[0].id != 6:
                     countNotExempt += 1
             if countNotExempt == 0:
                 raise models.ValidationError('Uno de los productos debe tener impuesto')
