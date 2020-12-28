@@ -336,6 +336,7 @@ class AccountInvoice(models.Model):
         lineNumber = 1
         typeOfExemptEnum = ""                       
         exemtAmount = 0
+        netAmount = 0
         countNotExempt = 0
         for item in self.invoice_line_ids:
             haveExempt = False
@@ -365,6 +366,7 @@ class AccountInvoice(models.Model):
                     }
                 )
             else:
+                netAmount += int(item.item.price_subtotal)
                 productLines.append(
                     {
                         "LineNumber": str(lineNumber),
@@ -401,11 +403,11 @@ class AccountInvoice(models.Model):
                 "EnterprisePhone": recipientPhone
             },
             "total": {
-                "netAmount": str(int(self.amount_untaxed)),
+                "netAmount": str(netAmount),
                 "exemptAmount": str(exemtAmount),
                 "taxRate": "19",
-                "taxtRateAmount": str(int(self.amount_tax)),
-                "totalAmount": str(int(self.amount_total))
+                "taxtRateAmount": str(self.amount_tax),
+                "totalAmount": str(int(netAmount + exemtAmount + self.amount_tax))
             },
             "lines": productLines,
         }
