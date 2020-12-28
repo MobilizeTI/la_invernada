@@ -321,7 +321,7 @@ class AccountInvoice(models.Model):
                 if len(item.invoice_line_tax_ids) > 0 and item.invoice_line_tax_ids[0].id != 6:
                     countNotExempt += 1
             if countNotExempt == 0:
-                raise models.ValidationError('Uno de los productos debe tener impuesto')
+                raise models.ValidationError('El tipo {} debe tener almenos un producto con impuesto'.format(self.dte_type_id.name))
 
         if len(self.references) > 10:
             raise models.ValidationError('Solo puede generar 20 Referencias')
