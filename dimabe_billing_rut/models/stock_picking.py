@@ -156,7 +156,6 @@ class StockPicking(models.Model):
         self.validation_fields()
 
         for item in self.move_ids_without_package:
-            raise models.ValidationError('{}'.format(item.product_id.uom_id.name))
             netAmount += int((item.product_id.lst_price))
             amount = int(item.quantity_done * item.product_id.lst_price)
             productLines.append(
@@ -166,7 +165,7 @@ class StockPicking(models.Model):
                         "ProductCode": str(item.product_id.default_code),
                         "ProductName": item.name,
                         "ProductQuantity": str(round(item.quantity_done, 6)), #segun DTEmite no es requerido int
-                        "UnitOfMeasure": str(item.product_uom_id.name),
+                        "UnitOfMeasure": str(item.product_id.uom_id.name),
                         "ProductPrice": str(round(item.product_id.lst_price,4)), #segun DTEmite no es requerido int
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
