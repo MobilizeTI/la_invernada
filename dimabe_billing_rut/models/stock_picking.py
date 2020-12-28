@@ -156,7 +156,7 @@ class StockPicking(models.Model):
         self.validation_fields()
 
         for item in self.move_ids_without_package:
-            netAmount += int(item.price_subtotal)
+            netAmount += int((item.product_id.lst_price))
             amount = int(item.quantity_done * item.product_id.lst_price)
             productLines.append(
                     {
