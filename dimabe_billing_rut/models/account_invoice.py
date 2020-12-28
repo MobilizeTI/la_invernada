@@ -406,7 +406,7 @@ class AccountInvoice(models.Model):
                 "netAmount": str(netAmount),
                 "exemptAmount": str(exemtAmount),
                 "taxRate": "19",
-                "taxtRateAmount": str(self.amount_tax),
+                "taxtRateAmount": str(int(self.amount_tax)),
                 "totalAmount": str(int(netAmount + exemtAmount + self.amount_tax))
             },
             "lines": productLines,
