@@ -1,7 +1,6 @@
 from odoo import models, fields, api
 import requests
 import json
-import re
 
 
 class AccountInvoice(models.Model):
