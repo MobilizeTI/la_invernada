@@ -246,7 +246,7 @@ class AccountInvoice(models.Model):
                 "EnterpriseCity": self.env.user.company_id.city,
                 "EnterpriseCommune": str(self.env.user.company_id.state_id.name),
                 "EnterpriseName": self.env.user.company_id.partner_id.name,
-                "EnterpriseTurn": self.company_activity_id.name if self.company_activity_id.name else '',
+                "EnterpriseTurn": self.company_activity_id.name,
                 "EnterprisePhone": self.env.user.company_id.phone if self.env.user.company_id.phone else ''
             }
         
@@ -304,6 +304,9 @@ class AccountInvoice(models.Model):
 
         if len(self.invoice_line_ids) == 0:
             raise models.ValidationError('Debe agregar al menos un Producto')
+
+        if not self.company_activity_id.name:
+            raise models.ValidationError('Debe seleccionar el Giro de la Compañia')
 
         #Validacion por confirmar
         if self.dte_type_id.code != "34" and self.dte_type_id.code != "41" :
