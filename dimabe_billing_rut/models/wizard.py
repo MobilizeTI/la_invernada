@@ -26,7 +26,7 @@ class WizardHrPaySlip(models.TransientModel):
         'none': '',
     }
 
-     company_id = fields.Many2one('res.partner', domain=[('id', 'in', ('423', '1', '1000', '79'))])
+    company_id = fields.Many2one('res.partner', domain=[('id', 'in', ('423', '1', '1000', '79'))])
 
     report = fields.Binary(string='Descarge aqui =>',default=self.env['wizard.hr.payslip'].search([])[-1].report)
 
