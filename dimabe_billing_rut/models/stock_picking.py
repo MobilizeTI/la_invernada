@@ -40,14 +40,14 @@ class StockPicking(models.Model):
 
     observations_ids = fields.One2many('custom.invoice.observations','invoice_id',string='Observaciones')
 
-    dispatchType = fields.Selection([
+    dispatch_type = fields.Selection([
             ('0', 'Sin Despacho'),
             ('1', 'Despacho por cuenta del receptor del documento'),
             ('2', 'Despacho por cuenta del emisor a instalaciones del cliente'),
             ('3', 'Despacho por cuenta del emisor a otras instalaciones')
             ], 'Tipo de Despacho', default='0')
 
-    transferIndication  = fields.Selection([
+    transfer_indication  = fields.Selection([
             ('0', 'Sin Translado'),
             ('1', 'Operación constituye venta'),
             ('2', 'Ventas por efectuar'),
