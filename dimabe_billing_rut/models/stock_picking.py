@@ -169,7 +169,7 @@ class StockPicking(models.Model):
                         "ProductPrice": str(round(item.product_id.lst_price,4)), #segun DTEmite no es requerido int
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(item.product_id.price_subtotal),
+                        "Amount": str(item.sale_order.price_subtotal),
                     }
                 )
             lineNumber += 1
