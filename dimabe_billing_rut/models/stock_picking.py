@@ -183,8 +183,8 @@ class StockPicking(models.Model):
 
         invoice= {
             "dteType": self.dte_type_id.code,
-            "createdDate": self.date_invoice.strftime("%Y-%m-%d"),
-            "expirationDate": self.date_due.strftime("%Y-%m-%d"),
+            "createdDate": self.scheduled_date.strftime("%Y-%m-%d"),
+            "expirationDate": self.scheduled_date.strftime("%Y-%m-%d"), #No hay fecha de vencimiento
             "paymentType": int(self.method_of_payment),
             "transmitter": {
                 "EnterpriseRut": re.sub('[\.]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
@@ -269,8 +269,8 @@ class StockPicking(models.Model):
         if not self.dte_type_id.code:
             raise models.ValidationError('Por favor seleccione el Tipo de Documento a emitir')
 
-            if len(self.move_ids_without_package) == 0:
-                raise models.ValidationError('Por favor agregar al menos un Producto')
+        if len(self.move_ids_without_package) == 0:
+            raise models.ValidationError('Por favor agregar al menos un Producto')
 
         if not self.company_activity_id or not self.partner_activity_id:
             raise models.ValidationError('Por favor seleccione la Actividad de la Compañía y del Proveedor')
