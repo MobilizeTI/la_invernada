@@ -316,7 +316,7 @@ class AccountInvoice(models.Model):
         if not self.company_activity_id or not self.partner_activity_id:
             raise models.ValidationError('Por favor seleccione la Actividad de la Compañía y del Proveedor')
 
-        if self.dte_type_id.code != "34" and self.dte_type_id.code != "41" :
+        if self.dte_type_id.code != "34" and self.dte_type_id.code != "41" and self.dte_type_id.code != "61": #Consultar si en NC y ND prdocuto sin impuesto
             countNotExempt = 0
             for item in self.invoice_line_ids:
                 if len(item.invoice_line_tax_ids) > 0 and item.invoice_line_tax_ids[0].id != 6:
