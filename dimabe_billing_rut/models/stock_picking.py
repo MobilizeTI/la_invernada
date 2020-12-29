@@ -157,7 +157,7 @@ class StockPicking(models.Model):
 
         for item in self.move_ids_without_package:
             netAmount += int((item.product_id.lst_price))
-            amount = int(item.quantity_done * item.product_id.lst_price)
+            #amount = int(item.quantity_done * item.product_id.lst_price)
             productLines.append(
                     {
                         "LineNumber": str(lineNumber),
@@ -169,7 +169,7 @@ class StockPicking(models.Model):
                         "ProductPrice": str(round(item.product_id.lst_price,4)), #segun DTEmite no es requerido int
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(amount),
+                        "Amount": str(item.product_id.price_subtotal),
                     }
                 )
             lineNumber += 1
@@ -206,11 +206,11 @@ class StockPicking(models.Model):
                 "EnterprisePhone": recipientPhone
             },
             "total": {
-                "netAmount": str(netAmount),
+                "netAmount": str(int(self.sale_order.amount_untax)),
                 "exemptAmount": "0",
                 "taxRate": "19",
-                "taxtRateAmount": str(int(self.amount_tax)),
-                "totalAmount": str(int(netAmount + self.amount_tax))
+                "taxtRateAmount": str(int(self.sale_order.amount_tax)),
+                "totalAmount": str(int(self.sale_order.amount_total)
             },
             "lines": productLines,
         }
