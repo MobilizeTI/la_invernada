@@ -148,7 +148,6 @@ class StockPicking(models.Model):
         invoice = {}
         productLines = []
         lineNumber = 1
-        typeOfExemptEnum = ""
         netAmount = 0
         exemtAmount = 0
         countNotExempt = 0
@@ -163,7 +162,6 @@ class StockPicking(models.Model):
 
             if len(self.sale_id.mapped('order_line').filtered(lambda a : a.product_id.id == item.product_id.id).mapped('tax_id')) == 0:
                 haveExempt = True
-                typeOfExemptEnum = item.exempt
             amount = self.sale_id.order_line.filtered(lambda a : a.product_id.id == item.product_id.id).price_subtotal
             
             if haveExempt:
