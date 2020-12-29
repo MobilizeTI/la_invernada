@@ -24,7 +24,7 @@ class AccountInvoice(models.Model):
     references = fields.One2many(
         'account.invoice.references',
         'invoice_id',
-        readonly=True,
+        readonly=False,
         states={'draft': [('readonly', False)]},
     )
 
