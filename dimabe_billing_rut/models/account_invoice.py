@@ -210,7 +210,7 @@ class AccountInvoice(models.Model):
        
         elif self.dte_type_id.code == "56": #Nota de débito electrónica
             if len(self.references) > 0:
-                invoice = self.debit_note()
+                invoice = self.invoice_type()
             else:
                 raise models.ValidationError('Para Nota de Débito electrónica debe agregar al menos una Referencia') 
        
@@ -331,7 +331,7 @@ class AccountInvoice(models.Model):
             raise models.ValidationError('Solo puede generar 10 Observaciones')
 
             
-    #Factura electrónica
+    #Factura electrónica y #Nota de crédito electrónica
     def invoice_type(self):
         productLines = []
         lineNumber = 1
@@ -477,60 +477,6 @@ class AccountInvoice(models.Model):
                 "totalAmount": str(self.amount_total)
             },
             "lines": productLines
-        }
-        return invoice
-      
-    #Nota de credito electronica
-    def credit_note_type(self):
-        productLines = []
-        lineNumber = 1
-        typeOfExemptEnum = ""                       
-
-        for item in self.invoice_line_ids:
-            
-            productLines.append(
-                {
-                    "LineNumber": str(lineNumber),
-                    "ProductTypeCode": "EAN",
-                    "ProductCode": str(item.product_id.default_code),
-                    "ProductName": item.name,
-                    "ProductQuantity": str(int(item.quantity)),
-                    "ProductPrice": str(int(item.price_unit)),
-                    "ProductDiscountPercent": "0",
-                    "DiscountAmount": "0",
-                    "Amount": str(int(item.price_subtotal))
-                })
-                
-            
-            lineNumber += 1
-        
-        if self.partner_id.phone:
-            recipientPhone = str(self.partner_id.phone)
-        elif self.partner_id.mobile:
-            recipientPhone = str(self.partner_id.mobile)
-        else:
-            recipientPhone = ''
-
-        invoice= {
-            "expirationDate": self.date_due.strftime("%Y-%m-%d"),
-            "paymentTypeEnum": int(self.method_of_payment),
-            "recipient": {
-                "EnterpriseRut": re.sub('[\.]','', self.partner_id.invoice_rut),
-                "EnterpriseAddressOrigin": self.partner_id.street[0:60],
-                "EnterpriseCity": self.partner_id.city,
-                "EnterpriseCommune": self.partner_id.state_id.name,
-                "EnterpriseName": self.partner_id.name,
-                "EnterpriseTurn": self.partner_activity_id.name,
-                "EnterprisePhone": recipientPhone
-            },
-            "total": {
-                "netAmount": str(int(self.amount_untaxed)),
-                "exemptAmount": "0",
-                "taxRate": "19",
-                "taxtRateAmount": str(int(self.amount_tax)),
-                "totalAmount": str(int(self.amount_total))
-            },
-            "lines": productLines,
         }
         return invoice
 
