@@ -161,6 +161,11 @@ class StockPicking(models.Model):
                 haveExempt = True
             amount = self.sale_id.order_line.filtered(lambda a : a.product_id.id == item.product_id.id).price_subtotal
             
+            quantity = 0
+            if item.quantity_done == 0.0:
+                quantity = self.sale_id.order_line.filtered(lambda a : a.product_id.id == item.product_id.id).qty_delivered
+            else:
+                quantity = str(round(item.quantity_done, 6))
             if haveExempt:
                 exemtAmount += int(amount)
 
@@ -170,7 +175,7 @@ class StockPicking(models.Model):
                             "ProductTypeCode": "EAN",
                             "ProductCode": str(item.product_id.default_code),
                             "ProductName": item.name,
-                            "ProductQuantity": str(round(item.quantity_done, 6)), #segun DTEmite no es requerido int
+                            "ProductQuantity": str(quantity), # str(round(item.quantity_done, 6)), #segun DTEmite no es requerido int
                             "UnitOfMeasure": str(item.product_id.uom_id.name),
                             "ProductPrice": str(round(item.product_id.lst_price,4)), #segun DTEmite no es requerido int
                             "ProductDiscountPercent": "0",
@@ -188,12 +193,12 @@ class StockPicking(models.Model):
                         "ProductTypeCode": "EAN",
                         "ProductCode": str(item.product_id.default_code),
                         "ProductName": item.name,
-                        "ProductQuantity": str(item.quantity),
-                        "UnitOfMeasure": str(item.uom_id.name),
-                        "ProductPrice": str(item.price_unit),
+                        "ProductQuantity": str(quantity), # str(round(item.quantity_done, 6)),
+                        "UnitOfMeasure": str(item.product_id.uom_id.name),
+                        "ProductPrice": str(round(item.product_id.lst_price,4)),
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(amount)
+                        "Amount": str(int(amount))
                     }
                 )
             lineNumber += 1
