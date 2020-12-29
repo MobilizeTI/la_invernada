@@ -35,7 +35,7 @@ class AccountInvoice(models.Model):
             ('3', 'Gratuito')
         ],
         string="Forma de pago",
-        readonly=True,
+        readonly=False,
         states={'draft': [('readonly', False)]},
         default='1',
     )
