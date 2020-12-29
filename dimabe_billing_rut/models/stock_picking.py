@@ -169,7 +169,7 @@ class StockPicking(models.Model):
                         "ProductPrice": str(round(item.product_id.lst_price,4)), #segun DTEmite no es requerido int
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(item.sale_order.price_subtotal),
+                        "Amount": str(self.sale_id.order_line.filtered(lambda a : a.product_id.id == item.product_id.id).price_subtotal)
                     }
                 )
             lineNumber += 1
@@ -206,11 +206,11 @@ class StockPicking(models.Model):
                 "EnterprisePhone": recipientPhone
             },
             "total": {
-                "netAmount": str(int(self.sale_order.amount_untax)),
+                "netAmount": str(int(self.sale_id.amount_untax)),
                 "exemptAmount": "0",
                 "taxRate": "19",
-                "taxtRateAmount": str(int(self.sale_order.amount_tax)),
-                "totalAmount": str(int(self.sale_order.amount_total))
+                "taxtRateAmount": str(int(self.sale_id.amount_tax)),
+                "totalAmount": str(int(self.sale_id.amount_total))
             },
             "lines": productLines,
         }
