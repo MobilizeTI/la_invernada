@@ -157,9 +157,6 @@ class StockPicking(models.Model):
         self.validation_fields()
 
         for item in self.move_ids_without_package:
-            netAmount += int((item.product_id.lst_price))
-            #amount = int(item.quantity_done * item.product_id.lst_price)
-
             if len(self.sale_id.mapped('order_line').filtered(lambda a : a.product_id.id == item.product_id.id).mapped('tax_id')) == 0:
                 haveExempt = True
             amount = self.sale_id.order_line.filtered(lambda a : a.product_id.id == item.product_id.id).price_subtotal
@@ -178,7 +175,7 @@ class StockPicking(models.Model):
                             "ProductPrice": str(round(item.product_id.lst_price,4)), #segun DTEmite no es requerido int
                             "ProductDiscountPercent": "0",
                             "DiscountAmount": "0",
-                            "Amount": str(amount),
+                            "Amount": str(int(amount)),
                             "HaveExempt": haveExempt,
                             "TypeOfExemptEnum": "1"
                         }
