@@ -288,7 +288,7 @@ class StockPicking(models.Model):
             invoice['additional'] =  additionals    
 
 
-        r = requests.post(url, json=invoice, headers=headers)
+        #r = requests.post(url, json=invoice, headers=headers)
 
         raise models.ValidationError(json.dumps(invoice))
 
