@@ -210,7 +210,7 @@ class StockPicking(models.Model):
                 "exemptAmount": "0",
                 "taxRate": "19",
                 "taxtRateAmount": str(int(self.sale_order.amount_tax)),
-                "totalAmount": str(int(self.sale_order.amount_total)
+                "totalAmount": str(int(self.sale_order.amount_total))
             },
             "lines": productLines,
         }
