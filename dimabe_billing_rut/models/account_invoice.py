@@ -216,7 +216,7 @@ class AccountInvoice(models.Model):
        
         elif self.dte_type_id.code == "61": #Nota de crédito electrónica
             if len(self.references) > 0:
-                invoice = self.credit_note_type()
+                invoice = self.invoice_type()
             else:
                 raise models.ValidationError('Para Nota de Crédito electrónica debe agregar al menos una Referencia')
        
@@ -496,8 +496,8 @@ class AccountInvoice(models.Model):
                     "ProductName": item.name,
                     "ProductQuantity": str(int(item.quantity)),
                     "ProductPrice": str(int(item.price_unit)),
-                    #"ProductDiscountPercent": "0",
-                    #"DiscountAmount": "0",
+                    "ProductDiscountPercent": "0",
+                    "DiscountAmount": "0",
                     "Amount": str(int(item.price_subtotal))
                 })
                 
