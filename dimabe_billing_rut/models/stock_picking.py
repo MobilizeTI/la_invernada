@@ -40,6 +40,24 @@ class StockPicking(models.Model):
 
     observations_ids = fields.One2many('custom.invoice.observations','invoice_id',string='Observaciones')
 
+    dispatchType = fields.Selection([
+            ('0', 'Sin Despacho'),
+            ('1', 'Despacho por cuenta del receptor del documento'),
+            ('2', 'Despacho por cuenta del emisor a instalaciones del cliente'),
+            ('3', 'Despacho por cuenta del emisor a otras instalaciones')
+            ], 'Tipo de Despacho', default='0')
+
+    transferIndication  = fields.Selection([
+            ('0', 'Sin Translado'),
+            ('1', 'Operación constituye venta'),
+            ('2', 'Ventas por efectuar'),
+            ('3', 'Consignaciones'),
+            ('4', 'Entrega gratuita'),
+            ('5', 'Traslados internos'),
+            ('6', 'Otros traslados no venta'),
+            ('7', 'Guía de devolución'),
+            ], 'Tipo Exento', default='0')
+
 
     @api.onchange('partner_id')
     @api.multi
@@ -168,23 +186,22 @@ class StockPicking(models.Model):
                 quantity = str(round(item.quantity_done, 6))
             if haveExempt:
                 exemtAmount += int(amount)
-
                 productLines.append(
-                        {
-                            "LineNumber": str(lineNumber),
-                            "ProductTypeCode": "EAN",
-                            "ProductCode": str(item.product_id.default_code),
-                            "ProductName": item.name,
-                            "ProductQuantity": str(quantity), # str(round(item.quantity_done, 6)), #segun DTEmite no es requerido int
-                            "UnitOfMeasure": str(item.product_id.uom_id.name),
-                            "ProductPrice": str(round(item.product_id.lst_price,4)), #segun DTEmite no es requerido int
-                            "ProductDiscountPercent": "0",
-                            "DiscountAmount": "0",
-                            "Amount": str(int(amount)),
-                            "HaveExempt": haveExempt,
-                            "TypeOfExemptEnum": "1"
-                        }
-                    )
+                    {
+                        "LineNumber": str(lineNumber),
+                        "ProductTypeCode": "EAN",
+                        "ProductCode": str(item.product_id.default_code),
+                        "ProductName": item.name,
+                        "ProductQuantity": str(quantity), # str(round(item.quantity_done, 6)), #segun DTEmite no es requerido int
+                        "UnitOfMeasure": str(item.product_id.uom_id.name),
+                        "ProductPrice": str(round(item.product_id.lst_price,4)), #segun DTEmite no es requerido int
+                        "ProductDiscountPercent": "0",
+                        "DiscountAmount": "0",
+                        "Amount": str(int(amount)),
+                        "HaveExempt": haveExempt,
+                        "TypeOfExemptEnum": "1"
+                    }
+                )
             else:
                 netAmount += int(amount)
                 productLines.append(
