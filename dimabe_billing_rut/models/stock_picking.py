@@ -206,7 +206,7 @@ class StockPicking(models.Model):
                 "EnterprisePhone": recipientPhone
             },
             "total": {
-                "netAmount": str(int(self.sale_id.amount_untax)),
+                "netAmount": str(int(self.sale_id.amount_untaxed)),
                 "exemptAmount": "0",
                 "taxRate": "19",
                 "taxtRateAmount": str(int(self.sale_id.amount_tax)),
