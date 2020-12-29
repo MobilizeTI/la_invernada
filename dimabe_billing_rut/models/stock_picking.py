@@ -237,7 +237,7 @@ class StockPicking(models.Model):
                 "exemptAmount": str(exemtAmount),
                 "taxRate": "19",
                 "taxtRateAmount": str(int(self.sale_id.amount_tax)),
-                "totalAmount":str(int(netAmount + exemtAmount + self.amount_tax)) # str(int(self.sale_id.amount_total))
+                "totalAmount":str(int(netAmount + exemtAmount + self.sale_id.amount_tax)) # str(int(self.sale_id.amount_total))
             },
             "lines": productLines,
         }
