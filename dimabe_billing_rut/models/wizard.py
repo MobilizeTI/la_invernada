@@ -184,7 +184,7 @@ class WizardHrPaySlip(models.TransientModel):
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
-        self.env['wizard.hr.payslip'].create({'report': file_base64, 'report_name': 'Libro de Remuneraciones {}'.format(indicadores_id.name)})
+        self.write({'report': file_base64, 'report_name': 'Libro de Remuneraciones {}'.format(indicadores_id.name)})
         return {
             "type": "ir.actions.do_nothing",
         }
@@ -1032,7 +1032,7 @@ class WizardHrPaySlip(models.TransientModel):
                              ]
             writer.writerow([str(l) for l in line_employee])
             models._logger.error('Llega aqui')
-        self.env['wizard.hr.payslip'].create({'file_data': base64.encodebytes(output.getvalue().encode()),
+        self.write({'file_data': base64.encodebytes(output.getvalue().encode()),
                     'file_name': "Previred_{}{}.txt".format(self.date_to, self.company_id.display_name.replace('.','')),
                     })
 
