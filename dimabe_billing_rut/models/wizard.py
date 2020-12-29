@@ -28,8 +28,7 @@ class WizardHrPaySlip(models.TransientModel):
 
     company_id = fields.Many2one('res.partner', domain=[('id', 'in', ('423', '1', '1000', '79'))])
 
-    report = fields.Binary(string='Descarge aqui =>',
-                           default=lambda self: self.env['wizard.hr.payslip'].search([])[-1].report)
+    report = fields.Binary(string='Descarge aqui =>')
 
     month = fields.Selection(
         [('Enero', 'Enero'), ('Febrero', 'Febrero'), ('Marzo', 'Marzo'), ('Abril', 'Abril'), ('Mayo', 'Mayo'),
@@ -44,8 +43,8 @@ class WizardHrPaySlip(models.TransientModel):
     date_from = fields.Date('Fecha Inicial', required=True, default=lambda self: time.strftime('%Y-%m-01'))
     date_to = fields.Date('Fecha Final', required=True, default=lambda self: str(
         datetime.now() + relativedelta.relativedelta(months=+1, day=1, days=-1))[:10])
-    file_data = fields.Binary('Archivo Generado',default=lambda self: self.env['wizard.hr.payslip'].search([])[-1].file_data)
-    file_name = fields.Char('Nombre de archivo',default=lambda self: self.env['wizard.hr.payslip'].search([])[-1].file_name)
+    file_data = fields.Binary('Archivo Generado')
+    file_name = fields.Char('Nombre de archivo')
     delimiter_option = fields.Selection([
         ('colon', 'Comillas Dobles(")'),
         ('semicolon', "Comillas Simples(')"),
@@ -185,7 +184,7 @@ class WizardHrPaySlip(models.TransientModel):
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
-        self.write({'report': file_base64, 'report_name': 'Libro de Remuneraciones {}'.format(indicadores_id.name)})
+        self.env['wizard.hr.payslip'].create({'report': file_base64, 'report_name': 'Libro de Remuneraciones {}'.format(indicadores_id.name)})
         return {
             "type": "ir.actions.do_nothing",
         }
@@ -1033,7 +1032,7 @@ class WizardHrPaySlip(models.TransientModel):
                              ]
             writer.writerow([str(l) for l in line_employee])
             models._logger.error('Llega aqui')
-        self.write({'file_data': base64.encodebytes(output.getvalue().encode()),
+        self.env['wizard.hr.payslip'].create({'file_data': base64.encodebytes(output.getvalue().encode()),
                     'file_name': "Previred_{}{}.txt".format(self.date_to, self.company_id.display_name.replace('.','')),
                     })
 
