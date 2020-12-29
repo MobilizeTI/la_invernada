@@ -56,7 +56,7 @@ class StockPicking(models.Model):
             ('5', 'Traslados internos'),
             ('6', 'Otros traslados no venta'),
             ('7', 'Guía de devolución'),
-            ], 'Tipo Exento', default='0')
+            ], 'Tipo Translado', default='0')
 
 
     @api.onchange('partner_id')
@@ -232,6 +232,8 @@ class StockPicking(models.Model):
             "createdDate": self.scheduled_date.strftime("%Y-%m-%d"),
             "expirationDate": self.scheduled_date.strftime("%Y-%m-%d"), #No hay fecha de vencimiento
             "paymentType": int(self.method_of_payment),
+            "dispatchType": str(dispatch_type),
+            "transferIndication": str(transfer_indication),
             "transmitter": {
                 "EnterpriseRut": re.sub('[\.]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
                 "EnterpriseActeco": self.company_activity_id.code,
