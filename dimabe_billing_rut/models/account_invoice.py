@@ -24,7 +24,7 @@ class AccountInvoice(models.Model):
     references = fields.One2many(
         'account.invoice.references',
         'invoice_id',
-        readonly=True,
+        readonly=False,
         states={'draft': [('readonly', False)]},
     )
 
@@ -35,7 +35,7 @@ class AccountInvoice(models.Model):
             ('3', 'Gratuito')
         ],
         string="Forma de pago",
-        readonly=False,
+        readonly=True,
         states={'draft': [('readonly', False)]},
         default='1',
     )
