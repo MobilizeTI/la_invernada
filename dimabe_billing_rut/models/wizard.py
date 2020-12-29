@@ -433,7 +433,7 @@ class WizardHrPaySlip(models.TransientModel):
             self.get_values(sheet, "BA" + str(row) + ":" + "BB" + str(row),
                             'ANTICIPO DE SUELDO', merge_format_data, payslip)
             self.get_values(sheet, "BC" + str(row) + ":" + "BD" + str(row),
-                            'ANTICIPO DE AGUINALDO', merge_format_data, payslip)
+                            'Anticipo Aguinaldo', merge_format_data, payslip)
             self.get_values(sheet, "BE" + str(row) + ":" + "BF" + str(row),
                             'CREDITO SOCIAL', merge_format_data, payslip)
             self.get_values(sheet, "BG" + str(row) + ":" + "BH" + str(row),
