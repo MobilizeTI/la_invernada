@@ -47,7 +47,8 @@ class AccountInvoice(models.Model):
             ('3','Boleta de Ventas y Servicios'),
             ('4','Boleta de Espectáculos emitida por cuenta de terceros.')
         ],
-        string = "Tipo de Transacción"
+        string = "Tipo de Transacción",
+        readonly= True
         #dte_type_id={'39':[('invisible', False)]}
     )
 
@@ -56,7 +57,8 @@ class AccountInvoice(models.Model):
             ('0','Líneas de Detalle en Montos Brutos'),
             ('2','Líneas de Detalle en Montos Netos')
         ],
-        string="Indicador Monto Neto"
+        string="Indicador Monto Neto",
+        readonly= True
         #dte_type_id={'39':[('invisible', False)]}
     )
 
@@ -364,15 +366,15 @@ class AccountInvoice(models.Model):
             if item.dte_type_id.code == '39':
                 res = {
                     'attrs': {
-                        'ind_service': [('invisible', '=', False)],
-                        'ind_net_amount':  [('invisible', '=', False)]
+                        'ind_service': [('readonly', '=', False)],
+                        'ind_net_amount':  [('readonly', '=', False)]
                     }
                 }
             else:
                 res = {
                     'attrs': {
-                        'ind_service' : [('invisible', '=', True)],
-                        'ind_net_amount' : [('invisible', '=', True)]
+                        'ind_service' : [('readonly', '=', True)],
+                        'ind_net_amount' : [('readonly', '=', True)]
                     }
                 }
         return res
