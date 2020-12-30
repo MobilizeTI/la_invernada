@@ -12,6 +12,8 @@ class AccountInvoice(models.Model):
     dte_type_id = fields.Many2one(
         'dte.type', string='Tipo Documento'
     )
+
+    
     dte_xml = fields.Text("XML")
     dte_pdf = fields.Text("PDF")
     ted = fields.Text("TED")
@@ -40,6 +42,9 @@ class AccountInvoice(models.Model):
         default='1'
     )
 
+    dte_code = fields.Char(
+        invisible=True
+    )
     ind_service = fields.Selection(
         [
             ('1','Boleta de Servicios Periódicos'),
@@ -362,22 +367,23 @@ class AccountInvoice(models.Model):
 
     @api.onchange('dte_type_id')
     def on_change_dte_type_id(self):
-        for item in self:
-            if item.dte_type_id.code == '39':
-                res = {
-                    'attrs': {
-                        'ind_service': [('readonly', '=', False)],
-                        'ind_net_amount':  [('readonly', '=', False)]
-                    }
-                }
-            else:
-                res = {
-                    'attrs': {
-                        'ind_service' : [('readonly', '=', True)],
-                        'ind_net_amount' : [('readonly', '=', True)]
-                    }
-                }
-        return res
+        self.dte_code = dte_type_id.code
+        #for item in self:
+         #   if item.dte_type_id.code == '39':
+          #      res = {
+           #         'attrs': {
+            #            'ind_service': [('readonly', '=', False)],
+             #           'ind_net_amount':  [('readonly', '=', False)]
+              #      }
+               # }
+            #else:
+             #   res = {
+              #      'attrs': {
+               #         'ind_service' : [('readonly', '=', True)],
+                #        'ind_net_amount' : [('readonly', '=', True)]
+                 #   }
+                #}
+       # return res
 
 
     #Factura electrónica y #Nota de crédito electrónica
