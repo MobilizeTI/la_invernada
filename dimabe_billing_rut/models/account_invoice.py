@@ -413,8 +413,8 @@ class AccountInvoice(models.Model):
                 if self.dte_type_id.code == "39":
                     for tax in item.invoice_line_tax_ids:
                         if tax.id == 1 or tax.id == 2: 
-                            product_price = item.price_unit  * tax.amount
-                            amount_subtotal = item.price_subtotal * tax.amount
+                            product_price = item.price_unit  * (tax.amount / 100)
+                            amount_subtotal = item.price_subtotal * (tax.amount / 100)
                 
                 netAmount += int(item.price_subtotal)
                 productLines.append(
