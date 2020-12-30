@@ -371,7 +371,7 @@ class AccountInvoice(models.Model):
             else:
                 res = {
                     'domain': {
-                        'ind_service' :  [('invisible', '=', True)]
+                        'ind_service' :  [('invisible', '=', True)],
                         'ind_net_amount' : [('invisible', '=', True)]
                     }
                 }
