@@ -359,6 +359,31 @@ class AccountInvoice(models.Model):
             raise models.ValidationError('Solo puede generar 10 Observaciones')
 
             
+
+    @api.onchange('dte_type_id')
+    def on_change_dte_type_id(self):
+        for item in self:
+            if item.dte_type_id.code == '39':
+                res = {
+                    'attrs':{
+                        'invisible': {
+                            'ind_service' : 'False',
+                            'ind_net_amount' : 'False'
+                        }
+                    }
+                }
+            else:
+                res = {
+                    'attrs':{
+                        'invisible': {
+                            'ind_service' : 'True',
+                            'ind_net_amount' : 'False'
+                        }
+                    }
+                }
+        return res
+
+    
     #Factura electrónica y #Nota de crédito electrónica
     def invoice_type(self):
         productLines = []
