@@ -363,20 +363,16 @@ class AccountInvoice(models.Model):
         for item in self:
             if item.dte_type_id.code == '39':
                 res = {
-                    'attrs':{
-                        'invisible': {
-                            'ind_service' : 'False',
-                            'ind_net_amount' : 'False'
-                        }
+                    'domain': {
+                        'ind_service' : [('invisible', '=', False)],
+                        'ind_net_amount' :  [('invisible', '=', False)]
                     }
                 }
             else:
                 res = {
-                    'attrs':{
-                        'invisible': {
-                            'ind_service' : 'True',
-                            'ind_net_amount' : 'True'
-                        }
+                    'domain': {
+                        'ind_service' :  [('invisible', '=', True)]
+                        'ind_net_amount' : [('invisible', '=', True)]
                     }
                 }
         return res
