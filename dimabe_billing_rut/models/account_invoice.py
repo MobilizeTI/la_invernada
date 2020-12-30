@@ -410,6 +410,15 @@ class AccountInvoice(models.Model):
                 )
             else:
                 raise models.ValidationError('{} {}'.format(item.invoice_line_tax_ids[0].amount, item.invoice_line_tax_ids[0].name))
+                
+                product_price = item.price_unit
+                amount_subtotal = item.price_subtotal
+                if self.dte_type_id.code == "39":
+                    for tax in self.item.invoice_line_tax_ids:
+                        if tax.id == 1 or tax.id == 2: 
+                            product_price = item.price_unit  * tax.amount
+                            amount_subtotal = item.price_subtotal * tax.amount
+                
                 netAmount += int(item.price_subtotal)
                 productLines.append(
                     {
@@ -419,10 +428,10 @@ class AccountInvoice(models.Model):
                         "ProductName": item.name,
                         "ProductQuantity": str(item.quantity),
                         "UnitOfMeasure": str(item.uom_id.name),
-                        "ProductPrice": str(item.price_unit),
+                        "ProductPrice": str(product_price),
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(int(item.price_subtotal))
+                        "Amount": str(int(amount_subtotal))
                     }
                 )
             lineNumber += 1
