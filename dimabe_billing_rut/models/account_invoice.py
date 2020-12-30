@@ -356,6 +356,10 @@ class AccountInvoice(models.Model):
             if countNotExempt == 0:
                 raise models.ValidationError('El tipo {} debe tener almenos un producto con impuesto'.format(self.dte_type_id.name))
 
+        if self.dte_type_id.code == "33" or self.dte_type_id.code == "39":
+            if self.currency_id.name != "CLP":
+                raise models.ValidationError('El Tipo {} debe tener moneda CLP'.format(self.self.dte_type_id.name))
+
         if len(self.references) > 10:
             raise models.ValidationError('Solo puede generar 20 Referencias')
 
@@ -405,7 +409,7 @@ class AccountInvoice(models.Model):
                     }
                 )
             else:
-                raise models.ValidationError('{} {}'.format(self.item.invoice_line_tax_ids[0].id, self.item.invoice_line_tax_ids[0].name))
+                raise models.ValidationError('{} {}'.format(item.invoice_line_tax_ids[0].id, item.invoice_line_tax_ids[0].name))
                 netAmount += int(item.price_subtotal)
                 productLines.append(
                     {
