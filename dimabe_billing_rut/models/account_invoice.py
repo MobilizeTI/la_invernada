@@ -363,21 +363,21 @@ class AccountInvoice(models.Model):
         for item in self:
             if item.dte_type_id.code == '39':
                 res = {
-                    'invisible': {
-                        'ind_service' : False,
-                        'ind_net_amount' : False
+                    'attrs': {
+                        'ind_service': [('invisible', '=', False)],
+                        'ind_net_amount':  [('invisible', '=', False)]
                     }
                 }
             else:
                 res = {
-                    'invisible': {
-                        'ind_service' : True,
-                        'ind_net_amount' : True
+                    'attrs': {
+                        'ind_service' : [('invisible', '=', True)],
+                        'ind_net_amount' : [('invisible', '=', True)]
                     }
                 }
         return res
 
-    
+
     #Factura electrónica y #Nota de crédito electrónica
     def invoice_type(self):
         productLines = []
