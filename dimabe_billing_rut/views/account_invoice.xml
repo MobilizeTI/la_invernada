@@ -22,8 +22,8 @@
                                 <field name="dte_type" invisible="1"/>
                                 <field name="dte_type_id" domain="[('code', 'in', [33,34,39,110,56,61,111,112])]" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
                                 <!--<field name="dte_type_id" domain="[('id','in',dte_type)]" attrs="{'readonly': [('dte_folio', '!=', False)]}"/> -->
-                                <field name="ind_service" attrs="{'invisible': [('dte_type_id','!=','39')]}"/>
-                                <field name="ind_net_amount" attrs="{'invisible': [('dte_type_id','!=','39')]}"/>
+                                <field name="ind_service" attrs="{'invisible': [('dte_type_id.code','!=','39')]}"/>
+                                <field name="ind_net_amount" attrs="{'invisible': [('dte_type_id.code','!=','39')]}"/>
                                 <field name="ted" widget="image"  readonly="1"/>
                                 <field name="pdf_url" widget="url" readonly="1" text="Url de Descarga"/>
                                 <field name="dte_xml" widget="binary" readonly="1" filename="dte.xml" />
@@ -86,8 +86,8 @@
                                 <field name="dte_type" invisible="1"/>
                                 <field name="dte_type_id" domain="[('code', 'in', [33,34,39,110,56,61,111,112])]" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
                                 <!--<field name="dte_type_id" domain="[('id','in',dte_type)]" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>-->
-                                <field name="ind_service" attrs="{'invisible': [('dte_type_id','!=','39')]}"/>
-                                <field name="ind_net_amount" attrs="{'invisible': [('dte_type_id','!=','39')]}"/>
+                                <field name="ind_service" attrs="{'invisible': [('dte_type_id.code','!=','39')]}"/>
+                                <field name="ind_net_amount" attrs="{'invisible': [('dte_type_id.code','!=','39')]}"/>
                                 <field name="ted" widget="image"  readonly="1"/>
                                 <field name="pdf_url" widget="url" readonly="1" text="Url de Descarga"/>
                                 <field name="dte_xml" widget="binary" readonly="1" filename="dte.xml" />
