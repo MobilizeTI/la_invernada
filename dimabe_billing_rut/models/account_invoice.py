@@ -216,14 +216,11 @@ class AccountInvoice(models.Model):
         self.validation_fields()
         
 
-        if self.dte_type_id.code == "33": #Factura electrónica
+        if self.dte_type_id.code == "33" or self.dte_type_id.code == "39": #Factura electrónica y Boleta electrónica
             invoice = self.invoice_type()
        
         elif self.dte_type_id.code == "34": #Factura no afecta o exenta electrónica
             invoice = self.invoice_exempt_type()
-       
-        elif self.dte_type_id.code == "39": #Boleta electrónica
-            invoice = self.invoice_type()
        
         elif self.dte_type_id.code == "41":  #Boleta exenta electrónica
             invoice = self.receipt_exempt_type()
@@ -413,11 +410,11 @@ class AccountInvoice(models.Model):
                 
                 product_price = item.price_unit
                 amount_subtotal = item.price_subtotal
-                #if self.dte_type_id.code == "39":
-                #    for tax in self.item.invoice_line_tax_ids:
-                #        if tax.id == 1 or tax.id == 2: 
-                #            product_price = item.price_unit  * tax.amount
-                #            amount_subtotal = item.price_subtotal * tax.amount
+                if self.dte_type_id.code == "39":
+                    for tax in self.item.invoice_line_tax_ids:
+                        if tax.id == 1 or tax.id == 2: 
+                            product_price = item.price_unit  * tax.amount
+                            amount_subtotal = item.price_subtotal * tax.amount
                 
                 netAmount += int(item.price_subtotal)
                 productLines.append(
