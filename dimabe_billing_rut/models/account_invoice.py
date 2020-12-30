@@ -37,7 +37,29 @@ class AccountInvoice(models.Model):
         string="Forma de pago",
         readonly=True,
         states={'draft': [('readonly', False)]},
-        default='1',
+        default='1'
+    )
+
+    ind_service = fields.Selection(
+        [
+            ('1','Boleta de Servicios Periódicos'),
+            ('2','Boleta de Servicios Periódicos Domiciliarios.'),
+            ('3','Boleta de Ventas y Servicios'),
+            ('4','Boleta de Espectáculos emitida por cuenta de terceros.')
+        ],
+        string = "Tipo de Transacción",
+        #invisible = True,
+        #dte_type_id={'39':[('invisible', False)]}
+    )
+
+    ind_net_amount = fields.Selection(
+        [
+            ('0','Líneas de Detalle en Montos Brutos'),
+            ('2','Líneas de Detalle en Montos Netos')
+        ],
+        string="Indicador Monto Neto",
+        #invisible = True,
+        #dte_type_id={'39':[('invisible', False)]}
     )
 
     custom_invoice_id = fields.Many2one('custom.invoice','Factura Recibida')
@@ -238,6 +260,12 @@ class AccountInvoice(models.Model):
         #Add Common Data
         invoice['createdDate'] = self.date_invoice.strftime("%Y-%m-%d")
         invoice['dteType'] = self.dte_type_id.code
+        
+        #Si es Boleta Electronica
+        if self.dte_type_id == '39':
+            invoice['serviceIndicator'] = self.ind_service
+            invoice['netAmountIndicator'] = self.ind_net_amount
+
         invoice['transmitter'] =  {
                 "EnterpriseRut": re.sub('[\.]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
                 "EnterpriseActeco": self.company_activity_id.code,
@@ -347,7 +375,7 @@ class AccountInvoice(models.Model):
                 typeOfExemptEnum = item.exempt
                 if typeOfExemptEnum == '7':
                     raise models.ValidationError('El Producto {} al no tener impuesto seleccionado, debe seleccionar el tipo Exento'.format(item.name))
-       
+            
             if haveExempt:
                 exemtAmount += int(item.price_subtotal)
                 productLines.append(
@@ -358,7 +386,7 @@ class AccountInvoice(models.Model):
                         "ProductName": item.name,
                         "ProductQuantity": str(item.quantity), #segun DTEmite no es requerido int
                         "UnitOfMeasure": str(item.uom_id.name),
-                        "ProductPrice": str(item.price_unit), #segun DTEmite no es requerido int
+                        "ProductPrice": str(), #segun DTEmite no es requerido int
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
                         "Amount": str(int(item.price_subtotal)),
