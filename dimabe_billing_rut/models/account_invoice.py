@@ -52,8 +52,7 @@ class AccountInvoice(models.Model):
             ('3','Boleta de Ventas y Servicios'),
             ('4','Boleta de Espectáculos emitida por cuenta de terceros.')
         ],
-        string = "Tipo de Transacción",
-        readonly= True
+        string = "Tipo de Transacción"
         #dte_type_id={'39':[('invisible', False)]}
     )
 
@@ -62,8 +61,7 @@ class AccountInvoice(models.Model):
             ('0','Líneas de Detalle en Montos Brutos'),
             ('2','Líneas de Detalle en Montos Netos')
         ],
-        string="Indicador Monto Neto",
-        readonly= True
+        string="Indicador Monto Neto"
         #dte_type_id={'39':[('invisible', False)]}
     )
 
@@ -367,23 +365,7 @@ class AccountInvoice(models.Model):
 
     @api.onchange('dte_type_id')
     def on_change_dte_type_id(self):
-        self.dte_code = dte_type_id.code
-        #for item in self:
-         #   if item.dte_type_id.code == '39':
-          #      res = {
-           #         'attrs': {
-            #            'ind_service': [('readonly', '=', False)],
-             #           'ind_net_amount':  [('readonly', '=', False)]
-              #      }
-               # }
-            #else:
-             #   res = {
-              #      'attrs': {
-               #         'ind_service' : [('readonly', '=', True)],
-                #        'ind_net_amount' : [('readonly', '=', True)]
-                 #   }
-                #}
-       # return res
+        self.dte_code = self.dte_type_id.code
 
 
     #Factura electrónica y #Nota de crédito electrónica
