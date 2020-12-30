@@ -47,8 +47,7 @@ class AccountInvoice(models.Model):
             ('3','Boleta de Ventas y Servicios'),
             ('4','Boleta de Espectáculos emitida por cuenta de terceros.')
         ],
-        string = "Tipo de Transacción",
-        invisible = True,
+        string = "Tipo de Transacción"
         #dte_type_id={'39':[('invisible', False)]}
     )
 
@@ -57,8 +56,7 @@ class AccountInvoice(models.Model):
             ('0','Líneas de Detalle en Montos Brutos'),
             ('2','Líneas de Detalle en Montos Netos')
         ],
-        string="Indicador Monto Neto",
-        invisible = True,
+        string="Indicador Monto Neto"
         #dte_type_id={'39':[('invisible', False)]}
     )
 
