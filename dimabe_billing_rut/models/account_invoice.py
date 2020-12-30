@@ -315,7 +315,7 @@ class AccountInvoice(models.Model):
             self.write({'dte_pdf':jr['filePdf']})
             self.write({'dte_folio':jr['folio']})
             self.write({'dte_xml':jr['fileXml']})
-            self.write({'ted':jr['ted']})
+            #self.write({'ted':jr['ted']})
       
         if 'status' in Jrkeys and 'title' in Jrkeys:
             raise models.ValidationError('Status: {} Title: {} Json: {}'.format(jr['status'],jr['title'],json.dumps(invoice)))
