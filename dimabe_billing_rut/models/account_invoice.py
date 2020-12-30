@@ -358,7 +358,7 @@ class AccountInvoice(models.Model):
 
         if self.dte_type_id.code == "33" or self.dte_type_id.code == "39":
             if self.currency_id.name != "CLP":
-                raise models.ValidationError('El Tipo {} debe tener moneda CLP'.format(self.self.dte_type_id.name))
+                raise models.ValidationError('El Tipo {} debe tener moneda CLP'.format(self.dte_type_id.name))
 
         if len(self.references) > 10:
             raise models.ValidationError('Solo puede generar 20 Referencias')
