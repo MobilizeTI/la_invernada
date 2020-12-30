@@ -362,6 +362,7 @@ class AccountInvoice(models.Model):
     def on_change_dte_type_id(self):
         for item in self:
             if item.dte_type_id.code == '39':
+                raise models.ValidationError("es boleta")
                 res = {
                     'domain': {
                         'ind_service' : [('invisible', '=', False)],
