@@ -405,6 +405,7 @@ class AccountInvoice(models.Model):
                     }
                 )
             else:
+                raise models.ValidationError('{} {}'.format(self.invoice_line_tax_ids[0].id, self.invoice_line_tax_ids[0].name))
                 netAmount += int(item.price_subtotal)
                 productLines.append(
                     {
