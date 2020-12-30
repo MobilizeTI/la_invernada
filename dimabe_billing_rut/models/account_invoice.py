@@ -367,7 +367,7 @@ class AccountInvoice(models.Model):
     @api.onchange('dte_type_id')
     def on_change_dte_type_id(self):
         self.dte_code = self.dte_type_id.code
-        raise models.ValidationError(self.dte_code)
+        #raise models.ValidationError(self.dte_code)
 
     #Factura electrónica y #Nota de crédito electrónica
     def invoice_type(self):
