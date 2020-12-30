@@ -197,7 +197,7 @@ class AccountInvoice(models.Model):
             invoice = self.invoice_exempt_type()
        
         elif self.dte_type_id.code == "39": #Boleta electrónica
-            invoice = self.receipt_type()
+            invoice = self.invoice_type()
        
         elif self.dte_type_id.code == "41":  #Boleta exenta electrónica
             invoice = self.receipt_exempt_type()
