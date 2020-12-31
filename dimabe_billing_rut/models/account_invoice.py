@@ -366,9 +366,7 @@ class AccountInvoice(models.Model):
         if len(self.observations_ids) > 10: 
             raise models.ValidationError('Solo puede generar 10 Observaciones')
 
-    @api.onchange('invoice_line_tax_ids')
-    def valid_exempt(self):
-        raise models.Validations('es vacio es dcir debe elegir tipo exento')
+    
 
     @api.onchange('dte_type_id')
     def on_change_dte_type_id(self):
