@@ -12,7 +12,8 @@
                     <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
                         <page name="xdte_tab" string="DTE">
                             <group name="xdte_info" cols="">
-                                <button  type="object" name="send_to_sii" string="Enviar al SII" attrs="{'invisible': [('state','!=','draft')]}" class="oe_highlight"/>
+                                <!--<button  type="object" name="send_to_sii" string="Enviar al SII" attrs="{'invisible': [('state','!=','draft')]}" class="oe_highlight"/>-->
+                                <button  type="object" name="send_to_sii" string="Enviar al SII" class="oe_highlight"/>
                                 <field name="method_of_payment" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
                                 <field name="partner_activity_id" domain="[('id','in',partner_economic_activities)]"/>
                                 <field name="partner_economic_activities" invisible="1"/>
@@ -21,7 +22,6 @@
                                 <field name="dte_folio" readonly="1"/>
                                 <field name="dte_type" invisible="1"/>
                                 <field name="dte_type_id" domain="[('code', 'in', [33,34,39,110,56,61,111,112])]" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
-                                <!--<field name="dte_type_id" domain="[('id','in',dte_type)]" attrs="{'readonly': [('dte_folio', '!=', False)]}"/> -->
                                 <field name="dte_code" invisible="1"/>
                                 <field name="ind_service" attrs="{'invisible': [('dte_code', '!=', '39')]}"/>
                                 <field name="ind_net_amount" attrs="{'invisible': [('dte_code', '!=', '39')]}"/>
@@ -77,7 +77,8 @@
                     <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
                         <page name="xdte_tab" string="DTE">
                             <group name="xdte_info" cols="">
-                                <button  type="object" name="send_to_sii" string="Enviar al SII" attrs="{'invisible': [('state','!=','draft')]}" class="oe_highlight"/>
+                                <!--<button  type="object" name="send_to_sii" string="Enviar al SII" attrs="{'invisible': [('state','!=','draft')]}" class="oe_highlight"/>-->
+                                <button  type="object" name="send_to_sii" string="Enviar al SII"  class="oe_highlight"/>
                                 <field name="method_of_payment" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
                                 <field name="partner_activity_id" domain="[('id','in',partner_economic_activities)]"/>
                                 <field name="partner_economic_activities" invisible="1"/>
@@ -86,7 +87,6 @@
                                 <field name="dte_folio" readonly="1"/>
                                 <field name="dte_type" invisible="1"/>
                                 <field name="dte_type_id" domain="[('code', 'in', [33,34,39,110,56,61,111,112])]" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
-                                <!--<field name="dte_type_id" domain="[('id','in',dte_type)]" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>-->
                                 <field name="dte_code" invisible="1"/>
                                 <field name="ind_service" attrs="{'invisible': [('dte_code', '!=', '39')]}"/>
                                 <field name="ind_net_amount" attrs="{'invisible': [('dte_code', '!=', '39')]}"/>
