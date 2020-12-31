@@ -15,8 +15,9 @@ class AccountInvoiceLine(models.Model):
             ], 'Tipo Exento', default='7')
 
     # VALIDAR QUE INGRESE ALGO EN EXEPT CUANDO ESTE VACIO O EXENTO EN IMPUESTOS
-    @api.onchange('invoice_line_ids')
+    @api.onchange('invoice_line_tax_ids')
     def valid_exempt(self):
         if len(self.invoice_line_tax_ids) == 0:
+            raise models.Validations('es vacio es dcir debe elegir tipo exento')
             exempt = 1
 
