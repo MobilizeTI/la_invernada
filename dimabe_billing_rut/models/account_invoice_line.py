@@ -19,5 +19,5 @@ class AccountInvoiceLine(models.Model):
     def valid_exempt(self):
         if len(self.invoice_line_tax_ids) == 0:
             raise models.Validations('es vacio es dcir debe elegir tipo exento')
-            exempt = 1
+           
 
