@@ -403,7 +403,7 @@ class AccountInvoice(models.Model):
                         "ProductName": item.name,
                         "ProductQuantity": str(item.quantity), #segun DTEmite no es requerido int
                         "UnitOfMeasure": str(item.uom_id.name),
-                        "ProductPrice": str(), #segun DTEmite no es requerido int
+                        "ProductPrice": str(item.price_unit), #segun DTEmite no es requerido int
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
                         "Amount": str(int(item.price_subtotal)),
