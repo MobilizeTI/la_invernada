@@ -15,7 +15,7 @@ class AccountInvoice(models.Model):
 
     
     dte_xml = fields.Text("XML")
-    dte_xml_sii = fields.Text("XML")
+    dte_xml_sii = fields.Text("XML SII")
     dte_pdf = fields.Text("PDF")
     ted = fields.Text("TED")
     pdf_url = fields.Text("URL PDF")
@@ -316,6 +316,7 @@ class AccountInvoice(models.Model):
             self.write({'dte_pdf':jr['filePdf']})
             self.write({'dte_folio':jr['folio']})
             self.write({'dte_xml':jr['fileXml']})
+            self.write({'dte_xml_sii':jr['fileXmlSII']})
             #self.write({'ted':jr['ted']})
       
         if 'status' in Jrkeys and 'title' in Jrkeys:
