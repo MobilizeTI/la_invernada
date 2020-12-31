@@ -15,6 +15,7 @@ class AccountInvoice(models.Model):
 
     
     dte_xml = fields.Text("XML")
+    dte_xml_sii = fields.Text("XML")
     dte_pdf = fields.Text("PDF")
     ted = fields.Text("TED")
     pdf_url = fields.Text("URL PDF")
