@@ -360,17 +360,16 @@ class AccountInvoice(models.Model):
             if self.currency_id.name != "CLP":
                 raise models.ValidationError('El Tipo {} debe tener moneda CLP'.format(self.dte_type_id.name))
 
+        for item in self.invoice_line_ids:
+            for tax_line in item.invoice_line_tax_ids:
+                if (tax_line.code == "6" or tax_line.code == None) and (item.exempt != "7"):
+                    raise models.ValidationError('El Producto {} no tiene impuesto por ende debe seleccionar el Tipo Exento'.format(item.name))
+
         if len(self.references) > 10:
             raise models.ValidationError('Solo puede generar 20 Referencias')
 
         if len(self.observations_ids) > 10: 
             raise models.ValidationError('Solo puede generar 10 Observaciones')
-
-    @api.onchange('invoice_line_tax_ids')
-    def valid_exempt(self):
-        raise models.ValidationError('cambiando')
-        for item in self.invoice_line_ids:
-            raise models.ValidationError(item.invoice_line_tax_ids[0].code)
 
     @api.onchange('dte_type_id')
     def on_change_dte_type_id(self):

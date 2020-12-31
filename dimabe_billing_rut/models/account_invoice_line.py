@@ -14,7 +14,7 @@ class AccountInvoiceLine(models.Model):
             ('7', '')
             ], 'Tipo Exento', default='7')
 
-    # VALIDAR QUE INGRESE ALGO EN EXEPT CUANDO ESTE VACIO O EXENTO EN IMPUESTOS
+    
 
            
 
