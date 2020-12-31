@@ -368,6 +368,7 @@ class AccountInvoice(models.Model):
 
     @api.onchange('invoice_line_tax_ids')
     def valid_exempt(self):
+        raise models.ValidationError('cambiando')
         for item in self.invoice_line_ids:
             raise models.ValidationError(item.invoice_line_tax_ids[0].code)
 
