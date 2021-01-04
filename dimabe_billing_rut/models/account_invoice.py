@@ -254,8 +254,8 @@ class AccountInvoice(models.Model):
 
         for item in self.invoice_line_ids:
             for tax_line in item.invoice_line_tax_ids:
-                raise  models.ValidationError('{} {} '.format(item.exempt, tax_line.id))
                 if (tax_line.id == 6 or tax_line.id == None) and (item.exempt != "7"):
+                    raise  models.ValidationError('{} {} '.format(item.exempt, tax_line.id))
                     raise models.ValidationError('El Producto {} no tiene impuesto por ende debe seleccionar el Tipo Exento'.format(item.name))
 
         if len(self.references) > 10:
