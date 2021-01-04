@@ -213,14 +213,22 @@ class AccountInvoice(models.Model):
             self.write({'dte_folio':jr['folio']})
             self.write({'dte_xml':jr['fileXml']})
             self.write({'dte_xml_sii':jr['fileXmlSII']})
-            codes = encode(jr['ted'],12)
-            image = render_image(codes)
 
-            buffered = BytesIO()
-            image.save(buffered, format="JPEG")
-            img_str = base64.b64encode(buffered.getvalue())
-
-            self.write({'ted':img_str})
+            cols = 10
+            while True:
+                try:
+                    if cols == 31:
+                        break
+                    codes = encode(jr['ted'],cols)
+                    image = render_image(codes)
+                    buffered = BytesIO()
+                    image.save(buffered, format="JPEG")
+                    img_str = base64.b64encode(buffered.getvalue())
+                    self.write({'ted':img_str})
+                    break
+                except:
+                    cols += 1
+            
         
         
         if 'status' in Jrkeys and 'title' in Jrkeys:
