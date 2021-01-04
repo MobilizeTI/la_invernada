@@ -204,15 +204,17 @@ class AccountInvoice(models.Model):
         jr = json.loads(r.text)
 
         Jrkeys = jr.keys()
-        if 'urlPdf' in Jrkeys  and 'filePdf' in Jrkeys and 'folio' in Jrkeys and 'fileXml' in Jrkeys:
+        if 'urlPdf' in Jrkeys  and 'filePdf' in Jrkeys and 'folio' in Jrkeys and 'fileXml' in Jrkeys and 'ted' in JrKeys:
             self.write({'pdf_url':jr['urlPdf']})
             self.write({'dte_pdf':jr['filePdf']})
             self.write({'dte_folio':jr['folio']})
             self.write({'dte_xml':jr['fileXml']})
             self.write({'dte_xml_sii':jr['fileXmlSII']})
+            codes = encode(jr['ted'])
+            image = render_image(codes)
+            self.write({'ted':image})
             #self.write({'ted':jr['ted']})
         
-        raise models.ValidationError(jr['ted'])
         
         if 'status' in Jrkeys and 'title' in Jrkeys:
             raise models.ValidationError('Status: {} Title: {} Json: {}'.format(jr['status'],jr['title'],json.dumps(invoice)))
