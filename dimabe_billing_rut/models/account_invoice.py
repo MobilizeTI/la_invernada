@@ -262,7 +262,7 @@ class AccountInvoice(models.Model):
 
         if self.dte_type_id.code == "33" or self.dte_type_id.code == "39":
             if self.currency_id.name != "CLP":
-                raise models.ValidationError('El Tipo {} debe tener moneda CLP'.format(self.dte_type_id.name))
+                raise models.ValidationError('El Tipo {} debe tener moneda CLP {}'.format(self.dte_type_id.name, self.currency_id))
 
         for item in self.invoice_line_ids:
             for tax_line in item.invoice_line_tax_ids:
