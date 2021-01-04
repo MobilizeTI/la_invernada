@@ -219,7 +219,7 @@ class AccountInvoice(models.Model):
             buffered = BytesIO()
             image.save(buffered, format="JPEG")
             img_str = base64.b64encode(buffered.getvalue())
-            #self.write({'ted':image})
+
             self.write({'ted':img_str})
         
         
@@ -325,7 +325,7 @@ class AccountInvoice(models.Model):
                             product_price = item.price_unit  * (1 + tax.amount / 100)
                             amount_subtotal = item.price_subtotal * (1 + tax.amount / 100)
                 
-                netAmount += int(amount_subtotal)
+                netAmount += int(item.price_subtotal)
                 productLines.append(
                     {
                         "LineNumber": str(lineNumber),
