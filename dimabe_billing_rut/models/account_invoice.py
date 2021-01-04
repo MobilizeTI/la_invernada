@@ -4,6 +4,7 @@ import requests
 import inspect
 from datetime import date
 import re
+from pdf417 import encode, render_image, render_svg
 
 
 class AccountInvoice(models.Model):
@@ -210,7 +211,9 @@ class AccountInvoice(models.Model):
             self.write({'dte_xml':jr['fileXml']})
             self.write({'dte_xml_sii':jr['fileXmlSII']})
             #self.write({'ted':jr['ted']})
-      
+        
+        raise models.ValidationError(jr['ted'])
+        
         if 'status' in Jrkeys and 'title' in Jrkeys:
             raise models.ValidationError('Status: {} Title: {} Json: {}'.format(jr['status'],jr['title'],json.dumps(invoice)))
         elif 'message' in Jrkeys:
@@ -266,9 +269,8 @@ class AccountInvoice(models.Model):
     @api.onchange('dte_type_id')
     def on_change_dte_type_id(self):
         self.dte_code = self.dte_type_id.code
-        #raise models.ValidationError(self.dte_code)
 
-    #Factura electrónica y #Nota de crédito electrónica
+    #Factura electrónica y #Nota de crédito/debito electrónica
     def invoice_type(self):
         productLines = []
         lineNumber = 1
