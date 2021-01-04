@@ -204,7 +204,7 @@ class AccountInvoice(models.Model):
         jr = json.loads(r.text)
 
         Jrkeys = jr.keys()
-        if 'urlPdf' in Jrkeys  and 'filePdf' in Jrkeys and 'folio' in Jrkeys and 'fileXml' in Jrkeys and 'ted' in JrKeys:
+        if 'urlPdf' in Jrkeys and 'filePdf' in Jrkeys and 'folio' in Jrkeys and 'fileXml' in Jrkeys and 'ted' in Jrkeys:
             self.write({'pdf_url':jr['urlPdf']})
             self.write({'dte_pdf':jr['filePdf']})
             self.write({'dte_folio':jr['folio']})
