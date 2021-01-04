@@ -6,7 +6,8 @@ from datetime import date
 import re
 from pdf417 import encode, render_image, render_svg
 import xml.etree.ElementTree as ET
-
+import base64
+from io import BytesIO 
 
 
 class AccountInvoice(models.Model):
@@ -214,9 +215,12 @@ class AccountInvoice(models.Model):
             self.write({'dte_xml_sii':jr['fileXmlSII']})
             codes = encode(jr['ted'],12)
             image = render_image(codes)
-            raise models.ValidationError('{}'.format(image.tobytes()))
+
+            buffered = BytesIO()
+            image.save(buffered, format="JPEG")
+            img_str = base64.b64encode(buffered.getvalue())
             #self.write({'ted':image})
-            #self.write({'ted':jr['ted']})
+            self.write({'ted':img_str})
         
         
         if 'status' in Jrkeys and 'title' in Jrkeys:
