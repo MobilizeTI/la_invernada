@@ -212,7 +212,8 @@ class AccountInvoice(models.Model):
             self.write({'dte_xml_sii':jr['fileXmlSII']})
             codes = encode(jr['ted'],12)
             image = render_svg(codes)
-            self.write({'ted':image})
+            raise models.ValidationError('{} {}'.format(codes,image))
+            #self.write({'ted':image})
             #self.write({'ted':jr['ted']})
         
         
