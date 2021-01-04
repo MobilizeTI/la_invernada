@@ -808,7 +808,7 @@ class WizardHrPaySlip(models.TransientModel):
                              self.get_payslip_lines_value_2(payslip, 'ASIGFAM') if self.get_payslip_lines_value_2(
                                  payslip, 'ASIGFAM') else "0",
                              # ASIGNACION FAMILIAR RETROACTIVA
-                             "0",
+                            self.get_payslip_lines_value_2(payslip,'ASFRETRO') if self.get_payslip_lines_value_2(payslip,'ASFRETRO') else "0",
                              # Refloategro Cargas Familiares
                              "0",
                              # 25 Solicitud Trabajador Joven TODO SUBSIDIO JOVEN
