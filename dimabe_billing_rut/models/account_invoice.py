@@ -68,7 +68,7 @@ class AccountInvoice(models.Model):
             ('0','Líneas de Detalle en Montos Brutos'),
             ('2','Líneas de Detalle en Montos Netos')
         ],
-        string="Indicqador Monto Neto"
+        string="Indicador Monto Neto"
         #dte_type_id={'39':[('invisible', False)]}
     )
 

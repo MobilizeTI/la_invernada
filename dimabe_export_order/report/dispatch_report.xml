@@ -191,12 +191,13 @@
                             </th>
                             <th style="width:10%;border-right:1px solid;border-bottom:1px solid;">CANT.</th>
                             <th style="width:10%;border-bottom:1px solid;border-left:1px solid;">PRECIO</th>
+                            <th style="width:10%;border-bottom:1px solid;border-left:1px solid;">TOTAL</th>
                             <t t-foreach="d.move_ids_without_package" t-as="m">
                                 <tr>
                                     <td style="border-right:1px solid;border-bottom:1px solid;text-align:center;">
                                         <span t-field="m.product_id.default_code"/>
                                     </td>
-                                    <td style="border-right:1px solid;border-bottom:1px solid;border-left:1px solid;text-align:left;">
+                                    <td style="border-right:1px solid;border-bottom:1px solid;text-align:left;">
                                         <span t-field="m.product_id.package"/>
                                         <span t-field="m.product_id.display_name"/>
                                     </td>
@@ -205,6 +206,9 @@
                                     </td>
                                     <td style="border-left:1px solid;border-bottom:1px solid;text-align:center;">
                                         <span t-field="m.product_id.lst_price"/>
+                                    </td style="border-left:1px solid;border-bottom:1px solid;text-align:center;">
+                                        <span t-esc="d.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id).price_subtotal"/>
+                                    <td>
                                     
                                     </td>
                                     <t t-if="m.id == d.move_ids_without_package[-1].id">

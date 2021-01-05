@@ -15,6 +15,7 @@ class StockPicking(models.Model):
         'dte.type', string = 'Tipo Documento'
     )
     dte_xml = fields.Text("XML")
+    dte_xml_sii = fields.Text("XML SII")
     dte_pdf = fields.Text("PDF")
     ted = fields.Text("TED")
     pdf_url = fields.Text("URL PDF")
