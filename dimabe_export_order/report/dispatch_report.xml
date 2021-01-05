@@ -431,7 +431,7 @@
                                             <span>%</span>
                                             <span>0</span>
                                         </td>
-                                    <tr>
+                                    </tr>
                                     <tr>
                                         <th style="border-right: 1px solid;text-align: left"> 
                                             EXENTO
@@ -440,7 +440,7 @@
                                             <span>%</span>
                                             <span>0</span>
                                         </td>
-                                    <tr>
+                                    </tr>
                                     <tr>
                                         <th style="border-right: 1px solid;text-align: left"> 
                                             19% I.V.A
@@ -449,7 +449,7 @@
                                             <span>%</span>
                                             <span>0</span>
                                         </td>
-                                    <tr>
+                                    </tr>
                                     <tr>
                                         <th style="border-right: 1px solid;text-align: left"> 
                                             DESCUENTO
@@ -458,7 +458,7 @@
                                             <span>%</span>
                                             <span>0</span>
                                         </td>
-                                    <tr>
+                                    </tr>
                                     <tr>
                                         <th style="border-right: 1px solid;text-align: left"> 
                                             TOTAL
@@ -467,7 +467,7 @@
                                             <span>%</span>
                                             <span>0</span>
                                         </td>
-                                    <tr>
+                                    </tr>
                                 </t>
                             </table>
                         </div>
