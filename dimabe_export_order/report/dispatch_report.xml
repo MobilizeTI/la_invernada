@@ -140,18 +140,28 @@
                                     <td style="text-align:left;">
                                         <strong>GIRO:</strong>
                                     </td>
-                                    <td style="text-align:left;"><![CDATA[&nbsp;]]></td>
+                                    <td style="text-align:left;">
+                                        <span t-field="d.partner_activity_id.name"></span>
+                                    </td>
                                     <td style="text-align:left;">
                                         <strong>COND.PAGO:</strong>
                                     </td>
-                                    <td style="text-align:left;"><![CDATA[&nbsp;]]></td>
+                                    <td style="text-align:left;">
+                                        <span t-field="d.method_of_payment"></span>
+                                    </td>
                                 </tr>
                                 <tr>
+                                    <td>
+                                        <strong>TIPO DE DESPACHO:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="d.dispatch_type"/>
+                                    </td>
                                     <td>
                                         <strong>TIPO DE TRASLADO:</strong>
                                     </td>
                                     <td>
-                                        <span t-field="d.type_of_transfer"/>
+                                        <span t-field="d.transfer_indication"/>
                                     </td>
                                 </tr>
                             </tr>
@@ -347,6 +357,7 @@
                         <img t-att-src="'data:image/png;base64,%s' % to_text(d.ted)"
                              style="height:140px;padding-top:12px;"
                         />
+                        <span t-field="to_text(d.ted)">
                     </div>
                     <div style="width:100%;height:5%;border:1px solid;">
                         <table style="font-size:11px;">
