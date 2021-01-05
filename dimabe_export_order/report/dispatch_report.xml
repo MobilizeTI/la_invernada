@@ -415,7 +415,7 @@
                                         <td>
                                             <span t-field="o.observations"/></span>
                                         </td>
-                                    <tr>
+                                    </tr>
                                 </t>
                             </table>
                         </div>
