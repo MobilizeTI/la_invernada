@@ -421,10 +421,8 @@
                         </div>
 
                         <div style="width:40%">
-                            <table style="width:100%;font-size:11px;" cellspacing="0">
-                                <t t-foreach="d.referobservations_idsences" t-as="o">
-                                    <tr>
-                                        <th style="border-right: 1px solid;text-align: left"> 
+                            <table style="width:100%;font-size:11px;" cellspacing="0"><tr>
+                                    <th style="border-right: 1px solid;text-align: left"> 
                                             NETO
                                         </th>
                                         <td style="border-right: 1px solid;text-align: right">
@@ -468,7 +466,6 @@
                                             <span>0</span>
                                         </td>
                                     </tr>
-                                </t>
                             </table>
                         </div>
                     
