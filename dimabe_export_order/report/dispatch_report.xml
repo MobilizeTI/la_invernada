@@ -472,7 +472,7 @@
                             </table>
                         </div>
                     
-                    <div>
+                    </div>
 
                     <t t-if="d.type_of_dispatch == 'exp'">
                         <span t-esc="d.note_dispatched.get_footer_note()" style="font-size:12px;"/>
