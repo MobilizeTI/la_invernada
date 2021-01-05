@@ -413,7 +413,7 @@
                                 <t t-foreach="d.referobservations_idsences" t-as="o">
                                     <tr>
                                         <td>
-                                            <span t-field="o.observations"/></span>
+                                            <span t-field="o.observations"></span>
                                         </td>
                                     </tr>
                                 </t>
