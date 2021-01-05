@@ -127,7 +127,7 @@ class AccountInvoice(models.Model):
             invoice = self.invoice_liquidation_type()
         
         elif self.dte_type_id.code == "46":  #Factura de compra electrónica
-            invoice = self.invoice_purchase_type()
+            invoice = self.invoice_type()
        
         elif self.dte_type_id.code == "56": #Nota de débito electrónica
             if len(self.references) > 0:
@@ -348,6 +348,7 @@ class AccountInvoice(models.Model):
                 if self.dte_type_id.code == "110": #Exportacion con decimal
                     amount_subtotal = item.price_subtotal
                 elif self.dte_type_id.code == "39": #Boleta Elecronica
+                    raise models.ValidationError('entre')
                     for tax in item.invoice_line_tax_ids:
                         if tax.id == 1 or tax.id == 2: 
                             product_price = item.price_unit  * (1 + tax.amount / 100)
