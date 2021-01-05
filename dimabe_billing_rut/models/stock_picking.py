@@ -27,8 +27,8 @@ class StockPicking(models.Model):
     references = fields.One2many(
         'account.invoice.references',
         'invoice_id',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
+        #readonly=True,
+        #states={'draft': [('readonly', False)]},
     )
 
     method_of_payment = fields.Selection(
