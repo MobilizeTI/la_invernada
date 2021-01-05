@@ -14,7 +14,7 @@
                             <table style="margin: 0 auto;font-size:12px;">
                                 <tr>
                                     <td style="text-align:center;">
-                                        <span t-field="res_company.name"/>
+                                        <span t-field="res_company.name"/> Test
                                     </td>
                                 </tr>
                                 <tr>
