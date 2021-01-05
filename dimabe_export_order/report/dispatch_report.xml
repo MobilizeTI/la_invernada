@@ -207,9 +207,8 @@
                                     <td style="border-left:1px solid;border-bottom:1px solid;text-align:center;">
                                         <span t-field="m.product_id.lst_price"/>
                                     </td style="border-left:1px solid;border-bottom:1px solid;text-align:center;">
-                                        <span t-esc="d.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id).price_subtotal"/>
                                     <td>
-                                    
+                                        <span t-esc="d.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id).price_subtotal"/>
                                     </td>
                                     <t t-if="m.id == d.move_ids_without_package[-1].id">
                                         <tr>
