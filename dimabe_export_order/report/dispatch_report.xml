@@ -223,10 +223,10 @@
                             <th style="width:52%;border-right:1px solid;border-bottom:1px solid;">
                                 DESCRIPCIÓN
                             </th>
-                            <th style="width:10%;border-bottom:1px solid;">UNID.</th>
+                            <th style="width:10%;border-right:1px solid; border-bottom:1px solid;">UNID.</th>
                             <th style="width:8%;border-right:1px solid;border-bottom:1px solid;">CANT.</th>
                             <th style="width:10%;border-right:1px solid;border-bottom:1px solid;">PRECIO</th>
-                            <th style="width:10%;border-right:1px solid;border-bottom:1px solid;">TOTAL</th>
+                            <th style="border-bottom:1px solid;">TOTAL</th>
                             <t t-foreach="d.move_ids_without_package" t-as="m">
                                 <tr>
                                     <td style="border-right:1px solid;border-bottom:1px solid;text-align:center;">
@@ -242,10 +242,10 @@
                                     <td style="border-right:1px solid;border-bottom:1px solid;text-align:right;">
                                         <span t-field="m.quantity_done"/>
                                     </td>
-                                    <td style="border-left:1px solid;border-bottom:1px solid;text-align:right;">
+                                    <td style="border-right:1px solid;border-bottom:1px solid;text-align:right;">
                                         <span t-field="m.product_id.lst_price"/>
                                     </td>
-                                    <td style="border-left:1px solid;border-bottom:1px solid;text-align:right;">
+                                    <td style="border-bottom:1px solid;text-align:right;">
                                         <span t-esc="d.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id).price_subtotal"/>
                                     </td>
                                     <t t-if="m.id == d.move_ids_without_package[-1].id">
