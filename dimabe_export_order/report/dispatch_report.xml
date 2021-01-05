@@ -183,9 +183,9 @@
                             </tr>
                         </table>
                     </div>
-                    <div style="width:100%;margin:0 auto;min-height:100px;border:1px solid; border-radius: 5px; margin-top:4px;">
+                    <div style="width:100%;margin:0 auto;min-height:80px;border:1px solid; border-radius: 5px; margin-top:4px;">
                         <div style="text-align:center;">
-                            <span style="font-weight: bold; font-size:12px;">DOCUMENTO(S) EN REFERENCIA </span>
+                            <span style="font-weight: bold; font-size:12px; margin-top:2px">DOCUMENTO(S) EN REFERENCIA </span>
                         </div>
                         <br/>
                         <table style="width:100%;font-size:11px; padding: 6px;" cellspacing="0">
@@ -218,7 +218,7 @@
                         </table>
                     </div>
                     <div style="width:100%;margin:0 auto;height:350px;border:1px solid; border-radius: 5px; margin-top:4px;">
-                        <table style="width:100%;font-size:11px;" cellspacing="0">
+                        <table style="width:100%;font-size:11px; padding: 6px;"  cellspacing="0">
                             <th style="width:10%;border-right:1px solid;border-bottom:1px solid;">CÓDIGO</th>
                             <th style="width:52%;border-right:1px solid;border-bottom:1px solid;">
                                 DESCRIPCIÓN
@@ -415,9 +415,9 @@
                     <div style="margin-top: 4px; width:100%">
                         <div style="width:58%;min-height:100px;border:1px solid; border-radius: 5px; float:left;">
                             <div style="text-align:center;">
-                                <span style="font-weight: bold; font-size: 12px;">OBSERVACIONES </span>
+                                <span style="font-weight: bold; font-size: 12px; margin-top:2px">OBSERVACIONES </span>
                             </div>
-                            <hr/>
+                            <hr style="border: 1px solid black"/>
                             <table style="font-size:11px; padding: 6px;" cellspacing="0">
                                 <t t-foreach="d.observations_ids" t-as="o">
                                     <tr>
@@ -487,7 +487,7 @@
                     <div style="width:100%;height:18.5%;text-align:center;">
                         <div style="text-align:center; width:250px; float:left">
                             <img t-att-src="'data:image/png;base64,%s' % to_text(d.ted)"
-                                style="width:240px;padding-top:12px;"
+                                style="width:240px; height: 150px; padding-top:12px;"
                             />
                         </div>
                     </div>
