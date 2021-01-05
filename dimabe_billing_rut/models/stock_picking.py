@@ -3,6 +3,10 @@ import json
 import requests
 from datetime import date
 import re
+from pdf417 import encode, render_image, render_svg
+import base64
+from io import BytesIO 
+from math import floor
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
@@ -291,15 +295,30 @@ class StockPicking(models.Model):
         r = requests.post(url, json=invoice, headers=headers)
 
         #raise models.ValidationError(json.dumps(invoice))
-
         jr = json.loads(r.text)
 
         Jrkeys = jr.keys()
-        if 'urlPdf' in Jrkeys  and 'filePdf' in Jrkeys and 'folio' in Jrkeys and 'fileXml' in Jrkeys:
+        if 'urlPdf' in Jrkeys and 'filePdf' in Jrkeys and 'folio' in Jrkeys and 'fileXml' in Jrkeys and 'ted' in Jrkeys:
             self.write({'pdf_url':jr['urlPdf']})
             self.write({'dte_pdf':jr['filePdf']})
             self.write({'dte_folio':jr['folio']})
             self.write({'dte_xml':jr['fileXml']})
+            self.write({'dte_xml_sii':jr['fileXmlSII']})
+
+            cols = 10
+            while True:
+                try:
+                    if cols == 31:
+                        break
+                    codes = encode(jr['ted'],cols)
+                    image = render_image(codes)
+                    buffered = BytesIO()
+                    image.save(buffered, format="JPEG")
+                    img_str = base64.b64encode(buffered.getvalue())
+                    self.write({'ted':img_str})
+                    break
+                except:
+                    cols += 1
       
         if 'status' in Jrkeys and 'title' in Jrkeys:
             raise models.ValidationError('Status: {} Title: {} Json: {}'.format(jr['status'],jr['title'],json.dumps(invoice)))
