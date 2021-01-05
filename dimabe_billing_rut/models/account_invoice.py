@@ -8,6 +8,7 @@ from pdf417 import encode, render_image, render_svg
 import xml.etree.ElementTree as ET
 import base64
 from io import BytesIO 
+from math import floor
 
 
 class AccountInvoice(models.Model):
@@ -102,9 +103,6 @@ class AccountInvoice(models.Model):
     
     @api.multi
     def send_to_sii(self):
-        test = 3.3
-        test2 = 3.8
-        raise models.ValidationError('{} {} '.format(int(test),int(test2)))
         url = self.env.user.company_id.dte_url
         headers = {
             "apiKey" : self.env.user.company_id.dte_hash,
@@ -290,6 +288,14 @@ class AccountInvoice(models.Model):
     def on_change_dte_type_id(self):
         self.dte_code = self.dte_type_id.code
 
+    def roundclp(self, value):
+        value_str = str(value)
+        list_value = value_str.split('.')
+        if int(list_value[1]) < 5:
+            return floor(value)
+        else:
+            return round(value)
+
     #Factura electrónica y #Nota de crédito/debito electrónica
     def invoice_type(self):
         productLines = []
@@ -311,12 +317,13 @@ class AccountInvoice(models.Model):
                     raise models.ValidationError('El Producto {} al no tener impuesto seleccionado, debe seleccionar el tipo Exento'.format(item.name))
             
             if haveExempt:
-                if self.dte_type_id.code == "34":
+                if self.dte_type_id.code == "110": #Exportacion con decimal
                     amount_subtotal = item.price_subtotal
+                    exemtAmount += amount_subtotal
                 else: 
-                    amount_subtotal = int(item.price_subtotal)
+                    amount_subtotal = self.roundclp(item.price_subtotal)
+                    exemtAmount += self.roundclp(amount_subtotal)
 
-                exemtAmount += int(amount_subtotal)
                 productLines.append(
                     {
                         "LineNumber": str(lineNumber),
@@ -337,18 +344,18 @@ class AccountInvoice(models.Model):
                 product_price = item.price_unit
                 amount_subtotal = item.price_subtotal
 
-                if self.dte_type_id.code == "34":
+                if self.dte_type_id.code == "110": #Exportacion con decimal
                     amount_subtotal = item.price_subtotal
                 elif self.dte_type_id.code == "39": #Boleta Elecronica
                     for tax in item.invoice_line_tax_ids:
                         if tax.id == 1 or tax.id == 2: 
                             product_price = item.price_unit  * (1 + tax.amount / 100)
-                            amount_subtotal = int(item.price_subtotal * (1 + tax.amount / 100))
+                            amount_subtotal = self.roundclp(item.price_subtotal * (1 + tax.amount / 100))
                 else: 
-                    amount_subtotal = int(item.price_subtotal)
+                    amount_subtotal = self.roundclp(item.price_subtotal)
               
                 
-                netAmount += int(item.price_subtotal)
+                netAmount += self.roundclp(item.price_subtotal)
                 productLines.append(
                     {
                         "LineNumber": str(lineNumber),
@@ -372,6 +379,11 @@ class AccountInvoice(models.Model):
         else:
             recipientPhone = ''
 
+        if self.dte_type_id.code == "110": #Factura Exportacion decimal
+            total_amount = netAmount + exemtAmount + self.amount_tax
+        else:
+            total_amount = self.roundclp(netAmount + exemtAmount + self.amount_tax)
+
         invoice= {
             "expirationDate": self.date_due.strftime("%Y-%m-%d"),
             "paymentType": int(self.method_of_payment),
@@ -388,8 +400,8 @@ class AccountInvoice(models.Model):
                 "netAmount": str(netAmount),
                 "exemptAmount": str(exemtAmount),
                 "taxRate": "19",
-                "taxtRateAmount": str(int(self.amount_tax)),
-                "totalAmount": str(int(netAmount + exemtAmount + self.amount_tax))
+                "taxtRateAmount": str(self.roundclp(self.amount_tax)),
+                "totalAmount": str(total_amount)
             },
             "lines": productLines,
         }
