@@ -184,7 +184,9 @@
                         </table>
                     </div>
                     <div style="width:100%;margin:0 auto;min-height:100px;border:1px solid; border-radius: 5px; margin-top:4px;">
-                        <span style="text-align:center; font-weight: bold;">DOCUMENTO(S) EN REFERENCIA </span>
+                        <div style="text-align:center;">
+                            <span style="font-weight: bold; font-size:12px;">DOCUMENTO(S) EN REFERENCIA </span>
+                        </div>
                         <br/>
                         <table style="width:100%;font-size:11px; padding: 6px;" cellspacing="0">
                             <tr>
@@ -195,7 +197,7 @@
                                 <th>Fecha Doc</th>
                             </tr>
                             <t t-foreach="d.references" t-as="r">
-                                <tr>
+                                <tr style="text-align:center;">
                                     <td>
                                         <span t-field="r.folio_reference"/>
                                     </td>
@@ -411,8 +413,10 @@
 
                     </div>
                     <div style="margin-top: 4px; width:100%">
-                        <div style="width:60%;min-height:100px;border:1px solid; border-radius: 5px; float:left;">
-                            <span style="text-align:center; font-weight: bold;">OBSERVACIONES </span>
+                        <div style="width:58%;min-height:100px;border:1px solid; border-radius: 5px; float:left;">
+                            <div style="text-align:center;">
+                                <span style="font-weight: bold; font-size: 12px;">OBSERVACIONES </span>
+                            </div>
                             <hr/>
                             <table style="font-size:11px; padding: 6px;" cellspacing="0">
                                 <t t-foreach="d.observations_ids" t-as="o">
@@ -425,12 +429,13 @@
                             </table>
                         </div>
 
-                        <div style="width:40%; border:1px solid; border-radius: 5px; float:right;">
-                            <table style="font-size:11px; padding: 6px;" cellspacing="0"><tr>
-                                    <th style="border-right: 1px solid;text-align: left"> 
+                        <div style="width:38%; border:1px solid; border-radius: 5px; float:right;">
+                            <table style="font-size:11px; padding: 6px;" cellspacing="0">
+                                    <tr>
+                                        <th style="border-right: 1px solid;text-align: left"> 
                                             NETO
                                         </th>
-                                        <td style="border-right: 1px solid;text-align: right">
+                                        <td style="border-right: 1px solid;text-align: right; width:70%;">
                                             <span>%</span>
                                             <span>0</span>
                                         </td>
@@ -439,7 +444,7 @@
                                         <th style="border-right: 1px solid;text-align: left"> 
                                             EXENTO
                                         </th>
-                                        <td style="border-right: 1px solid;text-align: right">
+                                        <td style="text-align: right; width:70%;">
                                             <span>%</span>
                                             <span>0</span>
                                         </td>
@@ -448,7 +453,7 @@
                                         <th style="border-right: 1px solid;text-align: left"> 
                                             19% I.V.A
                                         </th>
-                                        <td style="border-right: 1px solid;text-align: right">
+                                        <td style="text-align: right; width:70%;">
                                             <span>%</span>
                                             <span>0</span>
                                         </td>
@@ -457,7 +462,7 @@
                                         <th style="border-right: 1px solid;text-align: left"> 
                                             DESCUENTO
                                         </th>
-                                        <td style="border-right: 1px solid;text-align: right">
+                                        <td style="text-align: right; width:70%;">
                                             <span>%</span>
                                             <span>0</span>
                                         </td>
@@ -466,7 +471,7 @@
                                         <th style="border-right: 1px solid;text-align: left"> 
                                             TOTAL
                                         </th>
-                                        <td style="border-right: 1px solid;text-align: right">
+                                        <td style="text-align: right; width:70%;">
                                             <span>%</span>
                                             <span>0</span>
                                         </td>
