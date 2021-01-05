@@ -33,7 +33,7 @@
                         <div style="width:32.3%;display:inline-block;">
                             <table style="border:4px solid; border-color: #ff0000">
                                 <tr>
-                                    <td style="text-align:center;color:#ff0000;">
+                                    <td style="text-align:center;color:#ff0000; font-weight: bold;">
                                         R.U.T
                                         <span style="color:#ff0000;" t-field="res_company.invoice_rut"/>
                                     </td>
@@ -45,7 +45,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td style="text-align:center;color:#ff0000;">
+                                    <td style="text-align:center;color:#ff0000; font-weight: bold;">
                                         GUIA DE DESPACHO ELECTRONICA
                                     </td>
                                 </tr>
@@ -56,7 +56,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td style="text-align:center;color:#ff0000;">
+                                    <td style="text-align:center;color:#ff0000; font-weight: bold;">
                                         N°
                                         <span style="color:#ff0000;" t-field="d.dte_folio"/>
                                     </td>
@@ -67,7 +67,7 @@
                     <br/>
                     <div style="width:100%;height:10px;font-size:12px;"/>
                     <br/>
-                    <span style="text-align:left;font-size:12px;" t-esc="d.create_date.date()"/>
+                    <!--<span style="text-align:left;font-size:12px;" t-esc="d.create_date.date()"/>-->
                     <div style="width:100%;margin:0 auto;border:1px solid; border-radius: 5px">
                         <table style="width:90%;margin 0 auto;font-size:11px;" cellspacing="0">
                             <tr>
@@ -183,6 +183,7 @@
                             </tr>
                         </table>
                     </div>
+                    </br>
                     <div style="width:100%;margin:0 auto;height:583px;border:1px solid;">
                         <table style="width:100%;font-size:11px;">
                             <th style="width:20%;border-right:1px solid;border-bottom:1px solid;">CANTIDAD</th>
@@ -468,7 +469,7 @@
 
                     </div>
                     <br/>
-                    <div style="width:100%;margin:0 auto;">
+                    <div style="width:100%;margin:0 auto;padding:6px">
                         <table style="width:90%;margin 0 auto;font-size:11px;" cellspacing="8">
                             <tr>
                                 <tr>
