@@ -102,6 +102,9 @@ class AccountInvoice(models.Model):
     
     @api.multi
     def send_to_sii(self):
+        test = 3.3
+        test2 = 3.8
+        raise models.ValidationError('{} {} '.format(int(test),int(test2)))
         url = self.env.user.company_id.dte_url
         headers = {
             "apiKey" : self.env.user.company_id.dte_hash,
@@ -165,7 +168,7 @@ class AccountInvoice(models.Model):
             invoice['netAmountIndicator'] = self.ind_net_amount
 
         invoice['transmitter'] =  {
-                "EnterpriseRut": self.env.user.company_id.invoice_rut, #re.sub('[\.]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
+                "EnterpriseRut": re.sub('[\.]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
                 "EnterpriseActeco": self.company_activity_id.code,
                 "EnterpriseAddressOrigin": self.env.user.company_id.street,
                 "EnterpriseCity": self.env.user.company_id.city,
