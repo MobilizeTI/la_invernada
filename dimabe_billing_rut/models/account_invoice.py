@@ -320,10 +320,10 @@ class AccountInvoice(models.Model):
             if haveExempt:
                 if self.dte_type_id.code == "110": #Exportacion con decimal
                     amount_subtotal = item.price_subtotal
-                    exemtAmount += amount_subtotal
                 else: 
                     amount_subtotal = self.roundclp(item.price_subtotal)
-                    exemtAmount += self.roundclp(amount_subtotal)
+                
+                exemtAmount += amount_subtotal
 
                 productLines.append(
                     {
