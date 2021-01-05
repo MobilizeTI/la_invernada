@@ -186,10 +186,11 @@
                     <div style="width:100%;margin:0 auto;height:583px;border:1px solid; border-radius: 5px; margin-top:4px;">
                         <table style="width:100%;font-size:11px;" cellspacing="0">
                             <th style="width:10%;border-right:1px solid;border-bottom:1px solid;">CÓDIGO</th>
-                            <th style="width:60%;border-right:1px solid;border-bottom:1px solid;border-left:1px solid;">
+                            <th style="width:52%;border-right:1px solid;border-bottom:1px solid;border-left:1px solid;">
                                 DESCRIPCIÓN
                             </th>
-                            <th style="width:10%;border-right:1px solid;border-bottom:1px solid;">CANT.</th>
+                            <th style="width:10%;border-bottom:1px solid;border-left:1px solid;">UNID.</th>
+                            <th style="width:8%;border-right:1px solid;border-bottom:1px solid;">CANT.</th>
                             <th style="width:10%;border-bottom:1px solid;border-left:1px solid;">PRECIO</th>
                             <th style="width:10%;border-bottom:1px solid;border-left:1px solid;">TOTAL</th>
                             <t t-foreach="d.move_ids_without_package" t-as="m">
@@ -200,6 +201,9 @@
                                     <td style="border-right:1px solid;border-bottom:1px solid;text-align:left;">
                                         <span t-field="m.product_id.package"/>
                                         <span t-field="m.product_id.display_name"/>
+                                    </td>
+                                    <td style="border-right:1px solid;border-bottom:1px solid;text-align:center;">
+                                        <span t-field="m.product_id.uom_id.name"/>
                                     </td>
                                     <td style="border-right:1px solid;border-bottom:1px solid;text-align:center;">
                                         <span t-field="m.quantity_done"/>
