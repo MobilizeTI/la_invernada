@@ -165,7 +165,7 @@ class AccountInvoice(models.Model):
             invoice['netAmountIndicator'] = self.ind_net_amount
 
         invoice['transmitter'] =  {
-                "EnterpriseRut": re.sub('[\.]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
+                "EnterpriseRut": self.env.user.company_id.invoice_rut, #re.sub('[\.]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
                 "EnterpriseActeco": self.company_activity_id.code,
                 "EnterpriseAddressOrigin": self.env.user.company_id.street,
                 "EnterpriseCity": self.env.user.company_id.city,
@@ -298,14 +298,22 @@ class AccountInvoice(models.Model):
         for item in self.invoice_line_ids:
             haveExempt = False
 
-            if len(item.invoice_line_tax_ids) == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6):
+            if self.dte_type_id.code == "34": #FACTURA EXENTA
+                haveExempt == True
+
+            if haveExempt == False and (len(item.invoice_line_tax_ids) == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6)):
                 haveExempt = True
                 typeOfExemptEnum = item.exempt
                 if typeOfExemptEnum == '7':
                     raise models.ValidationError('El Producto {} al no tener impuesto seleccionado, debe seleccionar el tipo Exento'.format(item.name))
             
             if haveExempt:
-                exemtAmount += int(item.price_subtotal)
+                if self.dte_type_id.code == "34":
+                    amount_subtotal = item.price_subtotal
+                else: 
+                    amount_subtotal = int(item.price_subtotal)
+
+                exemtAmount += int(amount_subtotal)
                 productLines.append(
                     {
                         "LineNumber": str(lineNumber),
@@ -317,21 +325,25 @@ class AccountInvoice(models.Model):
                         "ProductPrice": str(item.price_unit), #segun DTEmite no es requerido int
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(int(item.price_subtotal)),
+                        "Amount": str(amount_subtotal),
                         "HaveExempt": haveExempt,
                         "TypeOfExemptEnum": typeOfExemptEnum
                     }
                 )
             else:
-              #  raise models.ValidationError('{} {}'.format(item.invoice_line_tax_ids[0].amount, item.invoice_line_tax_ids[0].name))
-                
                 product_price = item.price_unit
                 amount_subtotal = item.price_subtotal
-                if self.dte_type_id.code == "39": #Boleta Elecronica
+
+                if self.dte_type_id.code == "34":
+                    amount_subtotal = item.price_subtotal
+                elif self.dte_type_id.code == "39": #Boleta Elecronica
                     for tax in item.invoice_line_tax_ids:
                         if tax.id == 1 or tax.id == 2: 
                             product_price = item.price_unit  * (1 + tax.amount / 100)
-                            amount_subtotal = item.price_subtotal * (1 + tax.amount / 100)
+                            amount_subtotal = int(item.price_subtotal * (1 + tax.amount / 100))
+                else: 
+                    amount_subtotal = int(item.price_subtotal)
+              
                 
                 netAmount += int(item.price_subtotal)
                 productLines.append(
@@ -345,7 +357,7 @@ class AccountInvoice(models.Model):
                         "ProductPrice": str(product_price),
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(int(amount_subtotal))
+                        "Amount": str(amount_subtotal)
                     }
                 )
             lineNumber += 1
