@@ -194,19 +194,19 @@
                             <t t-foreach="d.references" t-as="r">
                                 <tr>
                                     <span t-field="r.folio_reference"/>
-                                <tr>
+                                </tr>
                                 <tr>
                                     <span t-field="r.document_type_reference_id.name"/>
-                                <tr>
+                                </tr>
                                 <tr>
                                     <span t-field="r.code_reference"/>
-                                <tr>
+                                </tr>
                                 <tr>
                                     <span t-field="r.reason"/>
-                                <tr>
+                                </tr>
                                 <tr>
                                     <span t-field="r.document_date"/>
-                                <tr>
+                                </tr>
                             </t>
                         </table>
                     </div>
