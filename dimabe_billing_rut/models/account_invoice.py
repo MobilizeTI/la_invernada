@@ -166,7 +166,7 @@ class AccountInvoice(models.Model):
             invoice['netAmountIndicator'] = self.ind_net_amount
 
         invoice['transmitter'] =  {
-                "EnterpriseRut": re.sub('[\.]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
+                "EnterpriseRut": self.env.user.company_id.invoice_rut, #re.sub('[\.]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
                 "EnterpriseActeco": self.company_activity_id.code,
                 "EnterpriseAddressOrigin": self.env.user.company_id.street,
                 "EnterpriseCity": self.env.user.company_id.city,
