@@ -184,13 +184,15 @@
                         </table>
                     </div>
                     <div style="width:100%;margin:0 auto;min-height:100px;border:1px solid; border-radius: 5px; margin-top:4px;">
-                        <h3 style="text-align:center">DOCUMENTO(S) EN REFERENCIA </h3>
+                        <span style="text-align:center; font-weight: bold;">DOCUMENTO(S) EN REFERENCIA </span>
                         <table style="width:100%;font-size:11px;" cellspacing="0">
-                            <th>N° Doc Referencia</th>
-                            <th>Tipo Doc Referencia</th>
-                            <th>Tipo de Referencia</th>
-                            <th>Motivo</th>
-                            <th>Fecha Doc</th>
+                            <tr>
+                                <th>N° Doc Referencia</th>
+                                <th>Tipo Doc Referencia</th>
+                                <th>Tipo de Referencia</th>
+                                <th>Motivo</th>
+                                <th>Fecha Doc</th>
+                            </tr>
                             <t t-foreach="d.references" t-as="r">
                                 <tr>
                                     <span t-field="r.folio_reference"/>
@@ -406,8 +408,8 @@
 
                     </div>
                     <div style="margin-top: 4px; width:100%">
-                        <div style="width:60%;min-height:100px;border:1px solid; border-radius: 5px;">
-                            <h3 style="text-align:center">OBSERVACIONES </h3>
+                        <div style="width:60%;min-height:100px;border:1px solid; border-radius: 5px; float:left;">
+                            <span style="text-align:center; font-weight: bold;">OBSERVACIONES </span>
                             <hr/>
                             <table style="width:100%;font-size:11px;" cellspacing="0">
                                 <t t-foreach="d.observations_ids" t-as="o">
@@ -420,7 +422,7 @@
                             </table>
                         </div>
 
-                        <div style="width:40%">
+                        <div style="width:40%;  float:right;">
                             <table style="width:100%;font-size:11px;" cellspacing="0"><tr>
                                     <th style="border-right: 1px solid;text-align: left"> 
                                             NETO
