@@ -185,6 +185,7 @@
                     </div>
                     <div style="width:100%;margin:0 auto;min-height:100px;border:1px solid; border-radius: 5px; margin-top:4px;">
                         <span style="text-align:center; font-weight: bold;">DOCUMENTO(S) EN REFERENCIA </span>
+                        <br/>
                         <table style="width:100%;font-size:11px;" cellspacing="0">
                             <tr>
                                 <th>N° Doc Referencia</th>
@@ -195,24 +196,26 @@
                             </tr>
                             <t t-foreach="d.references" t-as="r">
                                 <tr>
-                                    <span t-field="r.folio_reference"/>
-                                </tr>
-                                <tr>
-                                    <span t-field="r.document_type_reference_id.name"/>
-                                </tr>
-                                <tr>
-                                    <span t-field="r.code_reference"/>
-                                </tr>
-                                <tr>
-                                    <span t-field="r.reason"/>
-                                </tr>
-                                <tr>
-                                    <span t-field="r.document_date"/>
+                                    <td>
+                                        <span t-field="r.folio_reference"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="r.document_type_reference_id.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="r.code_reference"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="r.reason"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="r.document_date"/>
+                                    </td>
                                 </tr>
                             </t>
                         </table>
                     </div>
-                    <div style="width:100%;margin:0 auto;height:483px;border:1px solid; border-radius: 5px; margin-top:4px;">
+                    <div style="width:100%;margin:0 auto;height:350px;border:1px solid; border-radius: 5px; margin-top:4px;">
                         <table style="width:100%;font-size:11px;" cellspacing="0">
                             <th style="width:10%;border-right:1px solid;border-bottom:1px solid;">CÓDIGO</th>
                             <th style="width:52%;border-right:1px solid;border-bottom:1px solid;">
@@ -411,7 +414,7 @@
                         <div style="width:60%;min-height:100px;border:1px solid; border-radius: 5px; float:left;">
                             <span style="text-align:center; font-weight: bold;">OBSERVACIONES </span>
                             <hr/>
-                            <table style="width:100%;font-size:11px;" cellspacing="0">
+                            <table style="font-size:11px;" cellspacing="0">
                                 <t t-foreach="d.observations_ids" t-as="o">
                                     <tr>
                                         <td>
@@ -422,8 +425,8 @@
                             </table>
                         </div>
 
-                        <div style="width:40%;  float:right;">
-                            <table style="width:100%;font-size:11px;" cellspacing="0"><tr>
+                        <div style="width:40%; border:1px solid; border-radius: 5px; float:right;">
+                            <table style="font-size:11px;" cellspacing="0"><tr>
                                     <th style="border-right: 1px solid;text-align: left"> 
                                             NETO
                                         </th>
