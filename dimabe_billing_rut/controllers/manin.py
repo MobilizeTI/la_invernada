@@ -1,6 +1,8 @@
 from odoo import http, exceptions, models
 from odoo.http import request
+from odoo.tools import date_utils
 from datetime import date, timedelta
+import json
 import werkzeug
 
 
@@ -12,5 +14,7 @@ class XLSXReportController(http.Controller):
         result = []
         for payslip in respond:
             raw_data = payslip.read()
-            result.append(raw_data)
+            json_data = json.dumps(raw_data, default=date_utils.json_default)
+            json_dict = json.loads(json_data)
+            result.append(json_dict)
         return result
