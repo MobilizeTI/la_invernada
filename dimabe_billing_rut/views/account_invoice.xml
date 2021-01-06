@@ -25,13 +25,13 @@
                                 <field name="dte_code" invisible="1"/>
                                 <field name="ind_service" attrs="{'invisible': [('dte_code', '!=', '39')]}"/>
                                 <field name="ind_net_amount" attrs="{'invisible': [('dte_code', '!=', '39')]}"/>
-                                <group string="Datos de Exportación" groups="base.group_no_one">
-                                    <field name="departure_port"/>
-                                    <field name="arrival_port"/>
-                                    <field name="type_transport"/>
-                                    <field name="receiving_country_dte"/>
+                             
+                                    <field name="departure_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <field name="arrival_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <field name="type_transport" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <field name="receiving_country_dte" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="sale_method"/>
-                                </group>
+                            
                                 <field name="ted" widget="image"  readonly="1"/>
                                 <field name="pdf_url" widget="url" readonly="1" text="Url de Descarga"/>
                                 <field name="dte_xml" widget="binary" readonly="1" filename="dte.xml" />
