@@ -220,7 +220,7 @@ class AccountInvoice(models.Model):
                     if cols == 31:
                         break
                     codes = encode(jr['ted'],cols)
-                    image = render_image(codes, scale=5)
+                    image = render_image(codes, scale=5, ratio=2)
                     buffered = BytesIO()
                     image.save(buffered, format="JPEG")
                     img_str = base64.b64encode(buffered.getvalue())
