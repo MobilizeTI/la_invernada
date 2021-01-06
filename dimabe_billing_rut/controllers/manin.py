@@ -18,3 +18,4 @@ class XLSXReportController(http.Controller):
             json_dict = json.loads(json_data)
             result.append(json_dict)
         return result
+
