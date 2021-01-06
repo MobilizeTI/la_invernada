@@ -25,7 +25,7 @@
                                 <field name="dte_code" invisible="1"/>
                                 <field name="ind_service" attrs="{'invisible': [('dte_code', '!=', '39')]}"/>
                                 <field name="ind_net_amount" attrs="{'invisible': [('dte_code', '!=', '39')]}"/>
-                                <group string="Datos de Exportaciin" attrs="{'invisible': [('dte_code', '!=', '110')]}">
+                                <group string="Datos de Exportación" groups="base.group_no_one">
                                     <field name="departure_port"/>
                                     <field name="arrival_port"/>
                                     <field name="type_transport"/>
