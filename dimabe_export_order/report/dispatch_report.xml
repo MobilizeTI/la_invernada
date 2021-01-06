@@ -498,8 +498,8 @@
                         <div style="text-align:center; width:250px; float:left">
                             <img t-att-src="'data:image/png;base64,%s' % to_text(d.ted)"
                                 style="width:240px; height: 150px;"
-                            />
-                            <span style="font-size:10px">Timbre Electrónico SII</span><br>
+                            /><br/>
+                            <span style="font-size:10px">Timbre Electrónico SII</span><br/>
                             <span style="font-size:8px">Resolución 80 del 2014-08-22 Verifique Documento:
                                 <a href="https://homer.sii.cl/" style="margins-left:2px;">https://www.sii.cl</a>
                             </span>
