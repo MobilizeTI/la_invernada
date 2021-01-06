@@ -346,7 +346,7 @@ class AccountInvoice(models.Model):
 
                 if self.dte_type_id.code == "110": #Exportacion con decimal
                     amount_subtotal = item.price_subtotal
-                elif self.dte_type_id.code == "39": #Boleta Elecronica  CORREGIR Y CONSULAR
+                elif self.dte_type_id.code == "39" and self.ind_net_amount != "2": #Boleta Elecronica  CORREGIR Y CONSULAR
                     for tax in item.invoice_line_tax_ids:
                         if tax.id == 1 or tax.id == 2 or tax.id == 3 or tax.id == 4: 
                             product_price = item.price_unit  * (1 + tax.amount / 100)
