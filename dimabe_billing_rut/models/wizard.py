@@ -423,7 +423,7 @@ class WizardHrPaySlip(models.TransientModel):
                             'COLACION', merge_format_data, payslip)
             self.get_values(sheet, "AI" + str(row) + ":" + "AJ" + str(row),
                             'MOVILACION', merge_format_data, payslip)
-            self.get_values(sheet, "AK" + str(row) + ":" + "AK" + str(row),
+            self.get_values(sheet, "AK" + str(row) + ":" + "AL" + str(row),
                             'ASIGNACION FAMILIAR', merge_format_data, payslip)
             self.get_values(sheet, "AM" + str(row) + ":" + "AN" + str(row),
                             'ASIGNACION VARIAS', merge_format_data, payslip)
