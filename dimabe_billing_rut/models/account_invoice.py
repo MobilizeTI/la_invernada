@@ -214,13 +214,13 @@ class AccountInvoice(models.Model):
             self.write({'dte_xml':jr['fileXml']})
             self.write({'dte_xml_sii':jr['fileXmlSII']})
 
-            cols = 10
+            cols = 12
             while True:
                 try:
                     if cols == 31:
                         break
                     codes = encode(jr['ted'],cols)
-                    image = render_image(codes)
+                    image = render_image(codes, scale=5)
                     buffered = BytesIO()
                     image.save(buffered, format="JPEG")
                     img_str = base64.b64encode(buffered.getvalue())
