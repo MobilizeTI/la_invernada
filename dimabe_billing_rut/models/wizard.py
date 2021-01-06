@@ -345,20 +345,22 @@ class WizardHrPaySlip(models.TransientModel):
             sheet.merge_range("BG" + str(row - 1) + ":" + "BH" +
                               str(row - 1), 'Credito Social:', merge_format)
             sheet.merge_range("BI" + str(row - 1) + ":" + "BJ" +
-                              str(row - 1), 'Ahorro AFP:', merge_format)
+                              str(row - 1), 'Anticipo Bono:', merge_format)
             sheet.merge_range("BK" + str(row - 1) + ":" + "BL" +
-                              str(row - 1), 'Ahorro APV:', merge_format)
+                              str(row - 1), 'Ahorro AFP:', merge_format)
             sheet.merge_range("BM" + str(row - 1) + ":" + "BN" +
-                              str(row - 1), 'Ahorro CCAF:', merge_format)
+                              str(row - 1), 'Ahorro APV:', merge_format)
             sheet.merge_range("BO" + str(row - 1) + ":" + "BP" +
-                              str(row - 1), 'Seg. de Vida CCAF:', merge_format)
+                              str(row - 1), 'Ahorro CCAF:', merge_format)
             sheet.merge_range("BQ" + str(row - 1) + ":" + "BR" +
-                              str(row - 1), 'Ptmo. Empresa:', merge_format)
+                              str(row - 1), 'Seg. de Vida CCAF:', merge_format)
             sheet.merge_range("BS" + str(row - 1) + ":" + "BT" +
-                              str(row - 1), 'Retencion Judicial:', merge_format)
+                              str(row - 1), 'Ptmo. Empresa:', merge_format)
             sheet.merge_range("BU" + str(row - 1) + ":" + "BV" +
-                              str(row - 1), 'Total Descuentos:', merge_format)
+                              str(row - 1), 'Retencion Judicial:', merge_format)
             sheet.merge_range("BW" + str(row - 1) + ":" + "BX" +
+                              str(row - 1), 'Total Descuentos:', merge_format)
+            sheet.merge_range("BY" + str(row - 1) + ":" + "BZ" +
                               str(row - 1), 'Liquido A Pagar:', merge_format)
         else:
             sheet.merge_range(
@@ -394,20 +396,22 @@ class WizardHrPaySlip(models.TransientModel):
             sheet.merge_range("BE" + str(row - 1) + ":" + "BF" +
                               str(row - 1), 'Credito Social:', merge_format)
             sheet.merge_range("BG" + str(row - 1) + ":" + "BH" +
-                              str(row - 1), 'Ahorro AFP:', merge_format)
+                              str(row - 1), 'Anticipo Bono:', merge_format)
             sheet.merge_range("BI" + str(row - 1) + ":" + "BJ" +
-                              str(row - 1), 'Ahorro APV:', merge_format)
+                              str(row - 1), 'Ahorro AFP:', merge_format)
             sheet.merge_range("BK" + str(row - 1) + ":" + "BL" +
-                              str(row - 1), 'Ahorro CCAF:', merge_format)
+                              str(row - 1), 'Ahorro APV:', merge_format)
             sheet.merge_range("BM" + str(row - 1) + ":" + "BN" +
-                              str(row - 1), 'Seg. de Vida CCAF:', merge_format)
+                              str(row - 1), 'Ahorro CCAF:', merge_format)
             sheet.merge_range("BO" + str(row - 1) + ":" + "BP" +
-                              str(row - 1), 'Ptmo. Empresa:', merge_format)
+                              str(row - 1), 'Seg. de Vida CCAF:', merge_format)
             sheet.merge_range("BQ" + str(row - 1) + ":" + "BR" +
-                              str(row - 1), 'Retencion Judicial:', merge_format)
+                              str(row - 1), 'Ptmo. Empresa:', merge_format)
             sheet.merge_range("BS" + str(row - 1) + ":" + "BT" +
-                              str(row - 1), 'Total Descuentos:', merge_format)
+                              str(row - 1), 'Retencion Judicial:', merge_format)
             sheet.merge_range("BU" + str(row - 1) + ":" + "BV" +
+                              str(row - 1), 'Total Descuentos:', merge_format)
+            sheet.merge_range("BW" + str(row - 1) + ":" + "BX" +
                               str(row - 1), 'Liquido A Pagar:', merge_format)
         return sheet
 
@@ -448,20 +452,22 @@ class WizardHrPaySlip(models.TransientModel):
             self.get_values(sheet, "BG" + str(row) + ":" + "BH" + str(row),
                             'CREDITO SOCIAL', merge_format_data, payslip)
             self.get_values(sheet, "BI" + str(row) + ":" + "BJ" + str(row),
-                            'AHORRO AFP', merge_format_data, payslip)
+                            'ANTICIPO BONO', merge_format_data, payslip)
             self.get_values(sheet, "BK" + str(row) + ":" + "BL" + str(row),
-                            'APORTE AL AHORRO VOLUNTARIO', merge_format_data, payslip)
+                            'AHORRO AFP', merge_format_data, payslip)
             self.get_values(sheet, "BM" + str(row) + ":" + "BN" + str(row),
-                            'AHORRO CAJA DE COMPENSACION', merge_format_data, payslip)
+                            'APORTE AL AHORRO VOLUNTARIO', merge_format_data, payslip)
             self.get_values(sheet, "BO" + str(row) + ":" + "BP" + str(row),
-                            'SEGURO VIDA CAJA DE COMPENSACION', merge_format_data, payslip)
+                            'AHORRO CAJA DE COMPENSACION', merge_format_data, payslip)
             self.get_values(sheet, "BQ" + str(row) + ":" + "BR" + str(row),
-                            'PRESTAMOS EMPRESA', merge_format_data, payslip)
+                            'SEGURO VIDA CAJA DE COMPENSACION', merge_format_data, payslip)
             self.get_values(sheet, "BS" + str(row) + ":" + "BT" + str(row),
-                            'RETENCION JUDICIAL', merge_format_data, payslip)
+                            'PRESTAMOS EMPRESA', merge_format_data, payslip)
             self.get_values(sheet, "BU" + str(row) + ":" + "BV" + str(row),
-                            'TOTAL DESCUENTOS', merge_format_data, payslip)
+                            'RETENCION JUDICIAL', merge_format_data, payslip)
             self.get_values(sheet, "BW" + str(row) + ":" + "BX" + str(row),
+                            'TOTAL DESCUENTOS', merge_format_data, payslip)
+            self.get_values(sheet, "BY" + str(row) + ":" + "BZ" + str(row),
                             'ALCANCE LIQUIDO', merge_format_data, payslip)
             return sheet
         else:
@@ -498,20 +504,22 @@ class WizardHrPaySlip(models.TransientModel):
             self.get_values(sheet, "BE" + str(row) + ":" + "BF" + str(row),
                             'CREDITO SOCIAL', merge_format_data, payslip)
             self.get_values(sheet, "BG" + str(row) + ":" + "BH" + str(row),
-                            'AHORRO AFP', merge_format_data, payslip)
+                            'ANTICIPO BONO', merge_format_data, payslip)
             self.get_values(sheet, "BI" + str(row) + ":" + "BJ" + str(row),
-                            'APORTE AL AHORRO VOLUNTARIO', merge_format_data, payslip)
+                            'AHORRO AFP', merge_format_data, payslip)
             self.get_values(sheet, "BK" + str(row) + ":" + "BL" + str(row),
-                            'AHORRO CCAF', merge_format_data, payslip)
+                            'APORTE AL AHORRO VOLUNTARIO', merge_format_data, payslip)
             self.get_values(sheet, "BM" + str(row) + ":" + "BN" + str(row),
-                            'SEGURO DE VIDA CCAF', merge_format_data, payslip)
+                            'AHORRO CCAF', merge_format_data, payslip)
             self.get_values(sheet, "BO" + str(row) + ":" + "BP" + str(row),
-                            'PRESTAMOS EMPRESA', merge_format_data, payslip)
+                            'SEGURO DE VIDA CCAF', merge_format_data, payslip)
             self.get_values(sheet, "BQ" + str(row) + ":" + "BR" + str(row),
-                            'RETENCION JUDICIAL', merge_format_data, payslip)
+                            'PRESTAMOS EMPRESA', merge_format_data, payslip)
             self.get_values(sheet, "BS" + str(row) + ":" + "BT" + str(row),
-                            'TOTAL DESCUENTOS', merge_format_data, payslip)
+                            'RETENCION JUDICIAL', merge_format_data, payslip)
             self.get_values(sheet, "BU" + str(row) + ":" + "BV" + str(row),
+                            'TOTAL DESCUENTOS', merge_format_data, payslip)
+            self.get_values(sheet, "BW" + str(row) + ":" + "BX" + str(row),
                             'ALCANCE LIQUIDO', merge_format_data, payslip)
             return sheet
 
