@@ -5,8 +5,8 @@
             <div class="page" style="margin:auto;">
                 <t t-foreach="docs" t-as="d">
                     <div style="width:100%;">
-                        <div style="width:33.3%;display:inline-block;border: 1px solid">
-                            <img border="1" t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                        <div style="width:33.3%;display:inline-block;">
+                            <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
                                  style="width:200px;"
                             />
                         </div>
@@ -402,6 +402,13 @@
                                                             </td>
 
                                                         </tr>
+                                                        <tr>
+                                                            <td colspan="3">
+                                                                <t t-if="d.type_of_dispatch == 'exp'">
+                                                                    <span t-esc="d.note_dispatched.get_footer_note()" style="font-size:12px;"/>
+                                                                </t>
+                                                            </td>
+                                                        </tr>
                                                     </table>
                                                 </t>
                                             </td>
@@ -491,9 +498,7 @@
                     
                     </div>
 
-                    <t t-if="d.type_of_dispatch == 'exp'">
-                        <span t-esc="d.note_dispatched.get_footer_note()" style="font-size:12px;"/>
-                    </t>
+                    
                     <div style="width:100%;height:180px;margin-top:4px;">
                         <div style="text-align:center; width:250px; float:left">
                             <img t-att-src="'data:image/png;base64,%s' % to_text(d.ted)"
