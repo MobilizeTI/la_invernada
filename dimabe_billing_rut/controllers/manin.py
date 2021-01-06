@@ -12,5 +12,5 @@ class XLSXReportController(http.Controller):
         result = []
         for payslip in respond:
             raw_data = payslip.read()
-            result.append(type(raw_data))
+            result.append(raw_data)
         return result
