@@ -483,7 +483,7 @@
                                             <span>%</span>
                                         </td>
                                         <td style="text-align: right;width:70%;">
-                                            <span t-field="self.total"></span>
+                                            <span t-field="d.total"></span>
                                         </td>
                                     </tr>
                             </table>
