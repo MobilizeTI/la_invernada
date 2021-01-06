@@ -8,7 +8,7 @@ class XLSXReportController(http.Controller):
 
     @http.route('/api/test', type='json', method=['GET'], auth='public', cors='*')
     def get_report_xlsx(self):
-        respond = request.env['hr.payslip'].sudo().search([('state', '=', 'done')])
+        respond = request.env['hr.payroll.structure'].sudo().search([('name', '=', 'Codigo del Trabajo')])
         result = []
         for payslip in respond:
             raw_data = payslip.read()
