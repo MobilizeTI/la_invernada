@@ -6,7 +6,7 @@ import werkzeug
 
 class XLSXReportController(http.Controller):
 
-    @http.route('/api/order', type='json', method=['GET'], auth='token', cors='*')
+    @http.route('/api/order', type='json', method=['GET'], auth='public', cors='*')
     def get_report_xlsx(self):
         respond = request.env['hr.payroll.structure'].sudo().search([('name', '=', 'Codigo del Trabajo')])
         result = []
