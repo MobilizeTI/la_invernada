@@ -183,9 +183,9 @@
                             </tr>
                         </table>
                     </div>
-                    <div style="width:100%;margin:0 auto;min-height:80px;border:1px solid; border-radius: 5px; margin-top:4px;">
+                    <div style="width:100%;margin:0 auto;min-height:80px;border:1px solid; border-radius: 5px; margin-top:4px;padding-top:2px;">
                         <div style="text-align:center;">
-                            <span style="font-weight: bold; font-size:12px; margin-top:2px">DOCUMENTO(S) EN REFERENCIA </span>
+                            <span style="font-weight: bold; font-size:12px;">DOCUMENTO(S) EN REFERENCIA </span>
                         </div>
                         <br/>
                         <table style="width:100%;font-size:11px; padding: 6px;" cellspacing="0">
@@ -218,15 +218,15 @@
                         </table>
                     </div>
                     <div style="width:100%;margin:0 auto;height:350px;border:1px solid; border-radius: 5px; margin-top:4px;">
-                        <table style="width:100%;font-size:11px; padding: 6px;"  cellspacing="0">
-                            <th style="width:10%;border-right:1px solid;border-bottom:1px solid;">CÓDIGO</th>
-                            <th style="width:52%;border-right:1px solid;border-bottom:1px solid;">
+                        <table style="width:100%;font-size:11px;"  cellspacing="0">
+                            <th style="width:10%;border-right:1px solid;border-bottom:1px solid; padding-top: 6px;">CÓDIGO</th>
+                            <th style="width:52%;border-right:1px solid;border-bottom:1px solid; padding-top: 6px;">
                                 DESCRIPCIÓN
                             </th>
-                            <th style="width:10%;border-right:1px solid; border-bottom:1px solid;">UNID.</th>
-                            <th style="width:8%;border-right:1px solid;border-bottom:1px solid;">CANT.</th>
-                            <th style="width:10%;border-right:1px solid;border-bottom:1px solid;">PRECIO</th>
-                            <th style="border-bottom:1px solid;">TOTAL</th>
+                            <th style="width:10%;border-right:1px solid; border-bottom:1px solid;padding-top: 6px;">UNID.</th>
+                            <th style="width:8%;border-right:1px solid;border-bottom:1px solid;padding-top: 6px;">CANT.</th>
+                            <th style="width:10%;border-right:1px solid;border-bottom:1px solid;padding-top: 6px;">PRECIO</th>
+                            <th style="border-bottom:1px solid;padding-top: 6px;">TOTAL</th>
                             <t t-foreach="d.move_ids_without_package" t-as="m">
                                 <tr>
                                     <td style="border-right:1px solid;border-bottom:1px solid;text-align:center;">
@@ -245,7 +245,7 @@
                                     <td style="border-right:1px solid;border-bottom:1px solid;text-align:right;">
                                         <span t-field="m.product_id.lst_price"/>
                                     </td>
-                                    <td style="border-bottom:1px solid;text-align:right;">
+                                    <td style="border-bottom:1px solid;text-align:right;padding-right:4px;">
                                         <span t-esc="d.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id).price_subtotal"/>
                                     </td>
                                     <t t-if="m.id == d.move_ids_without_package[-1].id">
@@ -413,9 +413,9 @@
 
                     </div>
                     <div style="margin-top: 4px; width:100%; min-height:100px">
-                        <div style="width:58%;border:1px solid; border-radius: 5px; float:left;">
+                        <div style="width:58%; min-height:100px;border:1px solid; border-radius: 5px; float:left;padding-top:2px;">
                             <div style="text-align:center;">
-                                <span style="font-weight: bold; font-size: 12px; margin-top:2px">OBSERVACIONES </span>
+                                <span style="font-weight: bold; font-size: 12px;">OBSERVACIONES </span>
                             </div>
                             <hr style="border: 1px solid black"/>
                             <table style="font-size:11px; padding: 6px;" cellspacing="0">
@@ -439,7 +439,7 @@
                                             <span>%</span>
                                         </td>
                                         <td style="text-align: right;width:70%;">
-                                            <span>0</span>
+                                            <span t-field="d.net_amount"></span>
                                         </td>
                                     </tr>
                                     <tr>
@@ -450,7 +450,7 @@
                                             <span>%</span>
                                         </td>
                                         <td style="text-align: right;width:70%;">
-                                            <span>0</span>
+                                            <span t-field="d.exempt_amount"></span>
                                         </td>
                                     </tr>
                                     <tr>
@@ -458,10 +458,10 @@
                                             19% I.V.A
                                         </th>
                                         <td style="text-align: left;">
-                                            <span>%</span>
+                                            <span t-field="d.sale_id.amount_tax">%</span>
                                         </td>
                                         <td style="text-align: right;width:70%;">
-                                            <span>0</span>
+                                            <span></span>
                                         </td>
                                     </tr>
                                     <tr>
@@ -483,7 +483,7 @@
                                             <span>%</span>
                                         </td>
                                         <td style="text-align: right;width:70%;">
-                                            <span>0</span>
+                                            <span t-field="self.total"></span>
                                         </td>
                                     </tr>
                             </table>

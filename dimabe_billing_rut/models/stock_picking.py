@@ -63,6 +63,15 @@ class StockPicking(models.Model):
             ('7', 'Guía de devolución'),
             ], 'Tipo Translado', default='0')
 
+    date_due = fields.Date(string="Fecha Vencimiento")
+
+    net_amount = fields.Char(string="Neto")
+
+    exempt_amount = fields.Char(string="Exento")
+
+    total = fields.Char(string="Total")
+
+
 
     @api.onchange('partner_id')
     @api.multi
@@ -121,7 +130,7 @@ class StockPicking(models.Model):
                     }
                 )
             else:
-                netAmount += int(amount)
+                netAmount += roundclp(amount)
                 productLines.append(
                     {
                         "LineNumber": str(lineNumber),
@@ -144,6 +153,12 @@ class StockPicking(models.Model):
             recipientPhone = str(self.partner_id.mobile)
         else:
             recipientPhone = ''
+
+        self.net_amount = str(netAmount)
+
+        self.exempt_amount = str(exemtAmount)
+
+        self.total = str(self.roundclp(netAmount + exemtAmount + self.sale_id.amount_tax))
 
         invoice= {
             "dteType": self.dte_type_id.code,
@@ -172,11 +187,11 @@ class StockPicking(models.Model):
                 "EnterprisePhone": recipientPhone
             },
             "total": {
-                "netAmount": str(netAmount), #str(int(self.sale_id.amount_untaxed)),
-                "exemptAmount": str(exemtAmount),
+                "netAmount": self.net_amount, #str(int(self.sale_id.amount_untaxed)),
+                "exemptAmount": self.exempt_amount,
                 "taxRate": "19",
-                "taxtRateAmount": str(int(self.sale_id.amount_tax)),
-                "totalAmount":str(int(netAmount + exemtAmount + self.sale_id.amount_tax)) # str(int(self.sale_id.amount_total))
+                "taxtRateAmount": str(self.roundclp(self.sale_id.amount_tax)),
+                "totalAmount":self.total # str(int(self.sale_id.amount_total))
             },
             "lines": productLines,
         }
@@ -239,6 +254,13 @@ class StockPicking(models.Model):
         elif 'message' in Jrkeys:
             raise models.ValidationError('Advertencia: {} Json: {}'.format(jr['message'],json.dumps(invoice)))
 
+    def roundclp(self, value):
+        value_str = str(value)
+        list_value = value_str.split('.')
+        if int(list_value[1]) < 5:
+            return floor(value)
+        else:
+            return round(value)
 
     def validation_fields(self):
         if not self.partner_id:
