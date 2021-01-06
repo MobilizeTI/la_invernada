@@ -502,7 +502,7 @@
                     <div style="width:100%;height:180px;margin-top:4px;">
                         <div style="text-align:center; width:250px; float:left">
                             <img t-att-src="'data:image/png;base64,%s' % to_text(d.ted)"
-                                style="width:240px; height: 150px;"
+                                style="height: 140px;"
                             /><br/>
                             <span style="font-size:10px">Timbre Electrónico SII</span><br/>
                             <span style="font-size:8px">Resolución 80 del 2014-08-22 Verifique Documento:
@@ -845,7 +845,7 @@
             <div class="page">
                 <t t-foreach="docs.sorted(key=lambda x: x.counter)" t-as="o">
                     <t t-if="o.counter == 3 or o.counter == 6 or o.counter == 9">
-                        <img style="height:280px;" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
+                        <img style="width:250px;height:300px;" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
                         />
                         <br style="line-height:0px;"/>
                     </t>
