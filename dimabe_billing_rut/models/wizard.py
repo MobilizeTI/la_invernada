@@ -268,13 +268,21 @@ class WizardHrPaySlip(models.TransientModel):
             sheet.merge_range("U" + str(row) + ":" + "V" + str(row),
                               payslip.mapped('line_ids').filtered(lambda a: a.name == "BONO DE PERMANENCIA").total,
                               merge_format_number)
-        if sum(payslip.mapped('line_ids').filtered(
-                lambda a: 'BONO' in a.name and a.category_id.name == 'Imponible').mapped('total')) == 0:
+        if payslip.mapped('line_ids').filtered(lambda a: a.name == "BONO DE GESTION").total == 0:
             sheet.merge_range("W" + str(row) + ":" + "X" + str(row),
                               '',
                               merge_format_number)
         else:
             sheet.merge_range("W" + str(row) + ":" + "X" + str(row),
+                              payslip.mapped('line_ids').filtered(lambda a: a.name == "BONO DE PERMANENCIA").total,
+                              merge_format_number)
+        if sum(payslip.mapped('line_ids').filtered(
+                lambda a: 'BONO' in a.name and a.category_id.name == 'Imponible').mapped('total')) == 0:
+            sheet.merge_range("Y" + str(row) + ":" + "Z" + str(row),
+                              '',
+                              merge_format_number)
+        else:
+            sheet.merge_range("Y" + str(row) + ":" + "Z" + str(row),
                               sum(payslip.mapped('line_ids').filtered(
                                   lambda a: 'BONO' in a.name and a.category_id.name == 'Imponible').mapped('total')),
                               merge_format_number)
