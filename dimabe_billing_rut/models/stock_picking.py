@@ -163,7 +163,7 @@ class StockPicking(models.Model):
         invoice= {
             "dteType": self.dte_type_id.code,
             "createdDate": self.scheduled_date.strftime("%Y-%m-%d"),
-            "expirationDate": self.scheduled_date.strftime("%Y-%m-%d"), #No hay fecha de vencimiento
+            "expirationDate": self.date_due.strftime("%Y-%m-%d"), #No hay fecha de vencimiento
             "paymentType": int(self.method_of_payment),
             "dispatchType": str(self.dispatch_type),
             "transferIndication": str(self.transfer_indication),
