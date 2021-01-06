@@ -23,3 +23,6 @@ from . import custom_data
 from . import account_invoice_xlsx
 from . import account_invoice_line
 from . import custom_invoice_observations
+from . import custom_receiving_country_dte
+from . import custom_sale_method
+from . import custom_type_transport
