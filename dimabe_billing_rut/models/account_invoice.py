@@ -85,7 +85,7 @@ class AccountInvoice(models.Model):
 
     type_transport = fields.Many2one('custom.type.transport','Vía de Transporte')
 
-    receiving_country_dte = fields.Many2one('custom.country.dte','País Receptor')
+    receiving_country_dte = fields.Many2one('custom.receiving.country.dte','País Receptor')
 
     sale_method = fields.Many2one('custom.sale.method','Modalidad de Venta')
 
