@@ -274,7 +274,7 @@ class WizardHrPaySlip(models.TransientModel):
                               merge_format_number)
         else:
             sheet.merge_range("W" + str(row) + ":" + "X" + str(row),
-                              payslip.mapped('line_ids').filtered(lambda a: a.name == "BONO DE PERMANENCIA").total,
+                              payslip.mapped('line_ids').filtered(lambda a: a.name == "BONO DE GESTION").total,
                               merge_format_number)
         if sum(payslip.mapped('line_ids').filtered(
                 lambda a: 'BONO' in a.name and a.category_id.name == 'Imponible').mapped('total')) == 0:
