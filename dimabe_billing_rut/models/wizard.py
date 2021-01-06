@@ -212,7 +212,10 @@ class WizardHrPaySlip(models.TransientModel):
         sheet.merge_range("U" + str(row - 1) + ":" + "V" +
                           str(row - 1), 'Bono de Permanencia:', merge_format)
         sheet.merge_range("W" + str(row - 1) + ":" + "X" +
+                          str(row - 1), 'Bono de Gestion:', merge_format)
+        sheet.merge_range("Y" + str(row - 1) + ":" + "Z" +
                           str(row - 1), 'Bonos Imponibles:', merge_format)
+
         if 'Septiembre' in indicadores_id[-1].name:
             sheet = self.title_format(sheet, row, merge_format, 'Aguinaldo Fiestas Patrias:')
         elif 'Diciembre' in indicadores_id[-1].name:
@@ -299,8 +302,57 @@ class WizardHrPaySlip(models.TransientModel):
     def title_format(self, sheet, row, merge_format, title=''):
         if title != '':
             sheet.set_column(1, row, 30)
-            sheet.merge_range("Y" + str(row - 1) + ":" + "Z" + str(row - 1),
+            sheet.merge_range("AA" + str(row - 1) + ":" + "AB" + str(row - 1),
                               title, merge_format)
+            sheet.merge_range(
+                "AC" + str(row - 1) + ":" + "AD" + str(row - 1), 'Horas de Descuento:', merge_format)
+            sheet.merge_range("AE" + str(row - 1) + ":" + "AF" +
+                              str(row - 1), 'Total Imponible:', merge_format)
+            sheet.merge_range("AG" + str(row - 1) + ":" + "AH" +
+                              str(row - 1), 'Colacion', merge_format)
+            sheet.merge_range("AI" + str(row - 1) + ":" + "AJ" +
+                              str(row - 1), 'Movilizacion:', merge_format)
+            sheet.merge_range("AK" + str(row - 1) + ":" + "AL" +
+                              str(row - 1), 'Asig Familiar:', merge_format)
+            sheet.merge_range("AM" + str(row - 1) + ":" + "AN" +
+                              str(row - 1), 'Asig Varias:', merge_format)
+            sheet.merge_range("AO" + str(row - 1) + ":" + "AP" +
+                              str(row - 1), 'Total No Imponible:', merge_format)
+            sheet.merge_range("AQ" + str(row - 1) + ":" + "AR" +
+                              str(row - 1), 'Total Haberes:', merge_format)
+            sheet.merge_range("AS" + str(row - 1) + ":" + "AT" +
+                              str(row - 1), 'AFP:', merge_format)
+            sheet.merge_range("AU" + str(row - 1) + ":" + "AV" +
+                              str(row - 1), 'Salud:', merge_format)
+            sheet.merge_range("AW" + str(row - 1) + ":" + "AX" +
+                              str(row - 1), 'Seg. Cesantia:', merge_format)
+            sheet.merge_range("AY" + str(row - 1) + ":" + "AZ" +
+                              str(row - 1), 'Impto. Unico:', merge_format)
+            sheet.merge_range("BA" + str(row - 1) + ":" + "BB" +
+                              str(row - 1), 'Otros AFP:', merge_format)
+            sheet.merge_range("BC" + str(row - 1) + ":" + "BD" +
+                              str(row - 1), 'Anticipos:', merge_format)
+            sheet.merge_range("BE" + str(row - 1) + ":" + "BF" +
+                              str(row - 1), 'Anticipo Aguinaldo:', merge_format)
+            sheet.merge_range("BG" + str(row - 1) + ":" + "BH" +
+                              str(row - 1), 'Credito Social:', merge_format)
+            sheet.merge_range("BI" + str(row - 1) + ":" + "BJ" +
+                              str(row - 1), 'Ahorro AFP:', merge_format)
+            sheet.merge_range("BK" + str(row - 1) + ":" + "BL" +
+                              str(row - 1), 'Ahorro APV:', merge_format)
+            sheet.merge_range("BM" + str(row - 1) + ":" + "BN" +
+                              str(row - 1), 'Ahorro CCAF:', merge_format)
+            sheet.merge_range("BO" + str(row - 1) + ":" + "BP" +
+                              str(row - 1), 'Seg. de Vida CCAF:', merge_format)
+            sheet.merge_range("BQ" + str(row - 1) + ":" + "BR" +
+                              str(row - 1), 'Ptmo. Empresa:', merge_format)
+            sheet.merge_range("BS" + str(row - 1) + ":" + "BT" +
+                              str(row - 1), 'Retencion Judicial:', merge_format)
+            sheet.merge_range("BU" + str(row - 1) + ":" + "BV" +
+                              str(row - 1), 'Total Descuentos:', merge_format)
+            sheet.merge_range("BW" + str(row - 1) + ":" + "BX" +
+                              str(row - 1), 'Liquido A Pagar:', merge_format)
+        else:
             sheet.merge_range(
                 "AA" + str(row - 1) + ":" + "AB" + str(row - 1), 'Horas de Descuento:', merge_format)
             sheet.merge_range("AC" + str(row - 1) + ":" + "AD" +
@@ -347,63 +399,64 @@ class WizardHrPaySlip(models.TransientModel):
                               str(row - 1), 'Retencion Judicial:', merge_format)
             sheet.merge_range("BS" + str(row - 1) + ":" + "BT" +
                               str(row - 1), 'Total Descuentos:', merge_format)
-            sheet.merge_range("BV" + str(row - 1) + ":" + "BX" +
-                              str(row - 1), 'Liquido A Pagar:', merge_format)
-        else:
-            sheet.merge_range(
-                "Y" + str(row - 1) + ":" + "Z" + str(row - 1), 'Horas de Descuento:', merge_format)
-            sheet.merge_range("AA" + str(row - 1) + ":" + "AB" +
-                              str(row - 1), 'Total Imponible:', merge_format)
-            sheet.merge_range("AC" + str(row - 1) + ":" + "AD" +
-                              str(row - 1), 'Colacion', merge_format)
-            sheet.merge_range("AE" + str(row - 1) + ":" + "AF" +
-                              str(row - 1), 'Movilizacion:', merge_format)
-            sheet.merge_range("AG" + str(row - 1) + ":" + "AH" +
-                              str(row - 1), 'Asig Familiar:', merge_format)
-            sheet.merge_range("AI" + str(row - 1) + ":" + "AJ" +
-                              str(row - 1), 'Asig Varias:', merge_format)
-            sheet.merge_range("AK" + str(row - 1) + ":" + "AL" +
-                              str(row - 1), 'Total No Imponible:', merge_format)
-            sheet.merge_range("AM" + str(row - 1) + ":" + "AN" +
-                              str(row - 1), 'Total Haberes:', merge_format)
-            sheet.merge_range("AO" + str(row - 1) + ":" + "AP" +
-                              str(row - 1), 'AFP:', merge_format)
-            sheet.merge_range("AQ" + str(row - 1) + ":" + "AR" +
-                              str(row - 1), 'Salud:', merge_format)
-            sheet.merge_range("AS" + str(row - 1) + ":" + "AT" +
-                              str(row - 1), 'Seg. Cesantia:', merge_format)
-            sheet.merge_range("AU" + str(row - 1) + ":" + "AV" +
-                              str(row - 1), 'Impto. Unico:', merge_format)
-            sheet.merge_range("AW" + str(row - 1) + ":" + "AX" +
-                              str(row - 1), 'Otros AFP:', merge_format)
-            sheet.merge_range("AY" + str(row - 1) + ":" + "AZ" +
-                              str(row - 1), 'Anticipos:', merge_format)
-            sheet.merge_range("BA" + str(row - 1) + ":" + "BB" +
-                              str(row - 1), 'Anticipo Aguinaldo:', merge_format)
-            sheet.merge_range("BC" + str(row - 1) + ":" + "BD" +
-                              str(row - 1), 'Credito Social:', merge_format)
-            sheet.merge_range("BE" + str(row - 1) + ":" + "BF" +
-                              str(row - 1), 'Ahorro AFP:', merge_format)
-            sheet.merge_range("BG" + str(row - 1) + ":" + "BH" +
-                              str(row - 1), 'Ahorro APV:', merge_format)
-            sheet.merge_range("BI" + str(row - 1) + ":" + "BJ" +
-                              str(row - 1), 'Ahorro CCAF:', merge_format)
-            sheet.merge_range("BK" + str(row - 1) + ":" + "BL" +
-                              str(row - 1), 'Seg. de Vida CCAF:', merge_format)
-            sheet.merge_range("BM" + str(row - 1) + ":" + "BN" +
-                              str(row - 1), 'Ptmo. Empresa:', merge_format)
-            sheet.merge_range("BO" + str(row - 1) + ":" + "BP" +
-                              str(row - 1), 'Retencion Judicial:', merge_format)
-            sheet.merge_range("BQ" + str(row - 1) + ":" + "BR" +
-                              str(row - 1), 'Total Descuentos:', merge_format)
-            sheet.merge_range("BS" + str(row - 1) + ":" + "BT" +
+            sheet.merge_range("BU" + str(row - 1) + ":" + "BV" +
                               str(row - 1), 'Liquido A Pagar:', merge_format)
         return sheet
 
     def data_format(self, sheet, row, merge_format_data, payslip, is_bonus=False):
         if is_bonus:
-            self.get_values(sheet, "Y" + str(row) + ":" + "Z" + str(row),
+            self.get_values(sheet, "AA" + str(row) + ":" + "AB" + str(row),
                             'AGUINALDO', merge_format_data, payslip)
+            self.get_values(sheet, "AC" + str(row) + ":" + "AD" + str(row),
+                            'HORAS DESCUENTO', merge_format_data, payslip)
+            self.get_values(sheet, "AE" + str(row) + ":" + "AF" + str(row),
+                            'TOTAL IMPONIBLE', merge_format_data, payslip)
+            self.get_values(sheet, "AG" + str(row) + ":" + "AH" + str(row),
+                            'COLACION', merge_format_data, payslip)
+            self.get_values(sheet, "AI" + str(row) + ":" + "AJ" + str(row),
+                            'MOVILACION', merge_format_data, payslip)
+            self.get_values(sheet, "AK" + str(row) + ":" + "AK" + str(row),
+                            'ASIGNACION FAMILIAR', merge_format_data, payslip)
+            self.get_values(sheet, "AM" + str(row) + ":" + "AN" + str(row),
+                            'ASIGNACION VARIAS', merge_format_data, payslip)
+            self.get_values(sheet, "AO" + str(row) + ":" + "AP" + str(row),
+                            'TOTAL NO IMPONIBLE', merge_format_data, payslip)
+            self.get_values(sheet, "AQ" + str(row) + ":" + "AR" + str(row),
+                            'TOTAL HABERES', merge_format_data, payslip)
+            self.get_values(sheet, "AS" + str(row) + ":" + "AT" + str(row),
+                            'PREVISION', merge_format_data, payslip)
+            self.get_values(sheet, "AU" + str(row) + ":" + "AV" + str(row),
+                            'SALUD', merge_format_data, payslip)
+            self.get_values(sheet, "AW" + str(row) + ":" + "AX" + str(row),
+                            'SEGURO CESANTIA', merge_format_data, payslip)
+            self.get_values(sheet, "AY" + str(row) + ":" + "AZ" + str(row),
+                            'IMPUESTO UNICO', merge_format_data, payslip)
+            self.get_values(sheet, "BA" + str(row) + ":" + "BB" + str(row),
+                            'OTROS AFP', merge_format_data, payslip)
+            self.get_values(sheet, "BC" + str(row) + ":" + "BD" + str(row),
+                            'ANTICIPO DE SUELDO', merge_format_data, payslip)
+            self.get_values(sheet, "BE" + str(row) + ":" + "BF" + str(row),
+                            'Anticipo Aguinaldo', merge_format_data, payslip)
+            self.get_values(sheet, "BG" + str(row) + ":" + "BH" + str(row),
+                            'CREDITO SOCIAL', merge_format_data, payslip)
+            self.get_values(sheet, "BI" + str(row) + ":" + "BJ" + str(row),
+                            'AHORRO AFP', merge_format_data, payslip)
+            self.get_values(sheet, "BK" + str(row) + ":" + "BL" + str(row),
+                            'APORTE AL AHORRO VOLUNTARIO', merge_format_data, payslip)
+            self.get_values(sheet, "BM" + str(row) + ":" + "BN" + str(row),
+                            'AHORRO CAJA DE COMPENSACION', merge_format_data, payslip)
+            self.get_values(sheet, "BO" + str(row) + ":" + "BP" + str(row),
+                            'SEGURO VIDA CAJA DE COMPENSACION', merge_format_data, payslip)
+            self.get_values(sheet, "BQ" + str(row) + ":" + "BR" + str(row),
+                            'PRESTAMOS EMPRESA', merge_format_data, payslip)
+            self.get_values(sheet, "BS" + str(row) + ":" + "BT" + str(row),
+                            'RETENCION JUDICIAL', merge_format_data, payslip)
+            self.get_values(sheet, "BU" + str(row) + ":" + "BV" + str(row),
+                            'TOTAL DESCUENTOS', merge_format_data, payslip)
+            self.get_values(sheet, "BW" + str(row) + ":" + "BX" + str(row),
+                            'ALCANCE LIQUIDO', merge_format_data, payslip)
+            return sheet
+        else:
             self.get_values(sheet, "AA" + str(row) + ":" + "AB" + str(row),
                             'HORAS DESCUENTO', merge_format_data, payslip)
             self.get_values(sheet, "AC" + str(row) + ":" + "AD" + str(row),
@@ -415,10 +468,10 @@ class WizardHrPaySlip(models.TransientModel):
             self.get_values(sheet, "AI" + str(row) + ":" + "AJ" + str(row),
                             'ASIGNACION FAMILIAR', merge_format_data, payslip)
             self.get_values(sheet, "AK" + str(row) + ":" + "AL" + str(row),
-                            'ASIGNACION VARIAS', merge_format_data, payslip)
+                            'ASIGNACIONES VARIAS', merge_format_data, payslip)
             self.get_values(sheet, "AM" + str(row) + ":" + "AN" + str(row),
                             'TOTAL NO IMPONIBLE', merge_format_data, payslip)
-            self.get_values(sheet, "AO" + str(row) + ":" + "AN" + str(row),
+            self.get_values(sheet, "AO" + str(row) + ":" + "AP" + str(row),
                             'TOTAL HABERES', merge_format_data, payslip)
             self.get_values(sheet, "AQ" + str(row) + ":" + "AR" + str(row),
                             'PREVISION', merge_format_data, payslip)
@@ -433,7 +486,7 @@ class WizardHrPaySlip(models.TransientModel):
             self.get_values(sheet, "BA" + str(row) + ":" + "BB" + str(row),
                             'ANTICIPO DE SUELDO', merge_format_data, payslip)
             self.get_values(sheet, "BC" + str(row) + ":" + "BD" + str(row),
-                            'Anticipo Aguinaldo', merge_format_data, payslip)
+                            'ANTICIPO DE AGUINALDO', merge_format_data, payslip)
             self.get_values(sheet, "BE" + str(row) + ":" + "BF" + str(row),
                             'CREDITO SOCIAL', merge_format_data, payslip)
             self.get_values(sheet, "BG" + str(row) + ":" + "BH" + str(row),
@@ -441,9 +494,9 @@ class WizardHrPaySlip(models.TransientModel):
             self.get_values(sheet, "BI" + str(row) + ":" + "BJ" + str(row),
                             'APORTE AL AHORRO VOLUNTARIO', merge_format_data, payslip)
             self.get_values(sheet, "BK" + str(row) + ":" + "BL" + str(row),
-                            'AHORRO CAJA DE COMPENSACION', merge_format_data, payslip)
+                            'AHORRO CCAF', merge_format_data, payslip)
             self.get_values(sheet, "BM" + str(row) + ":" + "BN" + str(row),
-                            'SEGURO VIDA CAJA DE COMPENSACION', merge_format_data, payslip)
+                            'SEGURO DE VIDA CCAF', merge_format_data, payslip)
             self.get_values(sheet, "BO" + str(row) + ":" + "BP" + str(row),
                             'PRESTAMOS EMPRESA', merge_format_data, payslip)
             self.get_values(sheet, "BQ" + str(row) + ":" + "BR" + str(row),
@@ -451,56 +504,6 @@ class WizardHrPaySlip(models.TransientModel):
             self.get_values(sheet, "BS" + str(row) + ":" + "BT" + str(row),
                             'TOTAL DESCUENTOS', merge_format_data, payslip)
             self.get_values(sheet, "BU" + str(row) + ":" + "BV" + str(row),
-                            'ALCANCE LIQUIDO', merge_format_data, payslip)
-            return sheet
-        else:
-            self.get_values(sheet, "Y" + str(row) + ":" + "Z" + str(row),
-                            'HORAS DESCUENTO', merge_format_data, payslip)
-            self.get_values(sheet, "AA" + str(row) + ":" + "AB" + str(row),
-                            'TOTAL IMPONIBLE', merge_format_data, payslip)
-            self.get_values(sheet, "AC" + str(row) + ":" + "AD" + str(row),
-                            'COLACION', merge_format_data, payslip)
-            self.get_values(sheet, "AE" + str(row) + ":" + "AF" + str(row),
-                            'MOVILACION', merge_format_data, payslip)
-            self.get_values(sheet, "AG" + str(row) + ":" + "AH" + str(row),
-                            'ASIGNACION FAMILIAR', merge_format_data, payslip)
-            self.get_values(sheet, "AI" + str(row) + ":" + "AJ" + str(row),
-                            'ASIGNACIONES VARIAS', merge_format_data, payslip)
-            self.get_values(sheet, "AK" + str(row) + ":" + "AL" + str(row),
-                            'TOTAL NO IMPONIBLE', merge_format_data, payslip)
-            self.get_values(sheet, "AM" + str(row) + ":" + "AN" + str(row),
-                            'TOTAL HABERES', merge_format_data, payslip)
-            self.get_values(sheet, "AO" + str(row) + ":" + "AP" + str(row),
-                            'PREVISION', merge_format_data, payslip)
-            self.get_values(sheet, "AQ" + str(row) + ":" + "AR" + str(row),
-                            'SALUD', merge_format_data, payslip)
-            self.get_values(sheet, "AS" + str(row) + ":" + "AT" + str(row),
-                            'SEGURO CESANTIA', merge_format_data, payslip)
-            self.get_values(sheet, "AU" + str(row) + ":" + "AV" + str(row),
-                            'IMPUESTO UNICO', merge_format_data, payslip)
-            self.get_values(sheet, "AW" + str(row) + ":" + "AX" + str(row),
-                            'OTROS AFP', merge_format_data, payslip)
-            self.get_values(sheet, "AY" + str(row) + ":" + "AZ" + str(row),
-                            'ANTICIPO DE SUELDO', merge_format_data, payslip)
-            self.get_values(sheet, "BA" + str(row) + ":" + "BB" + str(row),
-                            'ANTICIPO DE AGUINALDO', merge_format_data, payslip)
-            self.get_values(sheet, "BC" + str(row) + ":" + "BD" + str(row),
-                            'CREDITO SOCIAL', merge_format_data, payslip)
-            self.get_values(sheet, "BE" + str(row) + ":" + "BF" + str(row),
-                            'AHORRO AFP', merge_format_data, payslip)
-            self.get_values(sheet, "BG" + str(row) + ":" + "BH" + str(row),
-                            'APORTE AL AHORRO VOLUNTARIO', merge_format_data, payslip)
-            self.get_values(sheet, "BI" + str(row) + ":" + "BJ" + str(row),
-                            'AHORRO CCAF', merge_format_data, payslip)
-            self.get_values(sheet, "BK" + str(row) + ":" + "BL" + str(row),
-                            'SEGURO DE VIDA CCAF', merge_format_data, payslip)
-            self.get_values(sheet, "BM" + str(row) + ":" + "BN" + str(row),
-                            'PRESTAMOS EMPRESA', merge_format_data, payslip)
-            self.get_values(sheet, "BO" + str(row) + ":" + "BP" + str(row),
-                            'RETENCION JUDICIAL', merge_format_data, payslip)
-            self.get_values(sheet, "BQ" + str(row) + ":" + "BR" + str(row),
-                            'TOTAL DESCUENTOS', merge_format_data, payslip)
-            self.get_values(sheet, "BS" + str(row) + ":" + "BT" + str(row),
                             'ALCANCE LIQUIDO', merge_format_data, payslip)
             return sheet
 
