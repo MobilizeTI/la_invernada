@@ -79,15 +79,15 @@ class AccountInvoice(models.Model):
     dte_type = fields.Many2many('dte.type',compute = 'onchange_type')
 
     #To Export
-    #departure_port = fields.Many2one('custom.port','Puerto de Embarque')
+    departure_port = fields.Many2one('custom.port','Puerto de Embarque')
 
-    #arrival_port = fields.Many2one('custom.port','Puerto de Desembarque')
+    arrival_port = fields.Many2one('custom.port','Puerto de Desembarque')
 
-    #type_transport = fields.Many2one('custom.type.transport','Vía de Transporte')
+    type_transport = fields.Many2one('custom.type.transport','Vía de Transporte')
 
-    #receiving_country_dte = fields.Many2one('custom.country.dte','País Receptor')
+    receiving_country_dte = fields.Many2one('custom.country.dte','País Receptor')
 
-    #sale_method = fields.Many2one('custom.sale.method','Modalidad de Venta')
+    sale_method = fields.Many2one('custom.sale.method','Modalidad de Venta')
 
 
     @api.onchange('partner_id')
