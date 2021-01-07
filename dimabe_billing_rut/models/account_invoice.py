@@ -434,6 +434,8 @@ class AccountInvoice(models.Model):
     def total_invoice_Export(self):
         if self.dte_type_id.code == "110":
             self.total_export_sales_clause = self.amount_total
+            raise models.ValidationError('{}{}'.format(self.amount_total,self.total_export_sales_clause))
+            
 
     #Factura de exportación electrónica
     def invoice_export_type(self):
