@@ -3,6 +3,7 @@ from odoo import models, fields, api
 class CustomExportClause(models.Model):
 
     _name = 'custom.export.clause'
+    _rec_name = 'initials'
 
     name = fields.Char(string= 'Nombre', required=True)
 
