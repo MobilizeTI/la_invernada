@@ -95,7 +95,7 @@ class AccountInvoice(models.Model):
 
     export_clause = fields.Many2one('custom.export.clause','Cláusulas de Exportación')
 
-    total_export_sales_clause = retencion = fields.Float(string="Valor Cláusula de Venta Exportación", default=0.00)
+    total_export_sales_clause = fields.Float(string="Valor Cláusula de Venta Exportación", default=0.00)
 
     @api.onchange('partner_id')
     @api.multi
@@ -433,7 +433,6 @@ class AccountInvoice(models.Model):
 
     def total_invoice_Export(self):
         if self.dte_type_id.code == "110":
-            raise models.ValidationError('entre')
             self.total_export_sales_clause = self.amount_total
 
     #Factura de exportación electrónica
