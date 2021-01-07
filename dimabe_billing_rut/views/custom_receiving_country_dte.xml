@@ -1,0 +1,56 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_custom_receiving_country_dte_tree">
+            <field name="name">view.custom.receiving.country.dte.tree</field>
+            <field name="model">custom.receiving.country.dte</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="code"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+
+            <record id="view_custom_receiving_country_dte_form" model="ir.ui.view">
+            <field name="name">view.custom.receiving.country.dte.form</field>
+            <field name="model">custom.receiving.country.dte</field>
+            <field name="arch" type="xml">
+                <form name="Países Receptores">
+                <sheet>
+                    <div class="oe_title">
+                    <label for="code" class="oe_edit_only" />
+                    <h1>
+                        <field name="code" placeholder="Código" />
+                    </h1>
+                    </div>
+                    <group>
+                        <field name="name" placeholder="Nombre" />
+                    </group>
+                </sheet>
+                </form>
+            </field>
+            </record>
+
+            <record id="action_custom_receiving_country_dte_views" model="ir.actions.act_window">
+            <field name="name">Países Receptores</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">custom.receiving.country.dte</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                Países Receptores
+                </p>
+                <p>
+                Click aquí para agregar Países Receptores
+                </p>
+            </field>
+            </record>
+
+            <menuitem id="menu_custom_receiving_country_dte"
+                    name="Países Receptores"
+                    parent="menu_account_dte"
+                    action="action_custom_receiving_country_dte_views"
+            />
+    </data>
+</odoo>
