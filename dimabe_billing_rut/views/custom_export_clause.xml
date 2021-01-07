@@ -5,9 +5,9 @@
             <field name="model">custom.export.clause</field>
             <field name="arch" type="xml">
                 <tree>
-                <field name="code"/>
-                <field name="name"/>
-                <field name="initials"/>
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="initials"/>
                 </tree>
             </field>
         </record>
@@ -15,13 +15,14 @@
 
             <record id="view_custom_export_clause_form" model="ir.ui.view">
             <field name="name">view.custom.export.clause.form</field>
-            <field name="model">dte.type</field>
+            <field name="model">custom.export.clause</field>
             <field name="arch" type="xml">
                 <form name="Cláusulas de Exportación">
                 <sheet>
                     <div class="oe_title">
                     <label for="code" class="oe_edit_only" />
                     <h1>
+                        <field name="code" placeholder="Código" />
                         <field name="code" placeholder="Código" />
                     </h1>
                     </div>
@@ -49,11 +50,13 @@
                 </p>
             </field>
             </record>
-            
-            <menuitem id="menu_dte_type"
+
+            <menuitem id="menu_custom_export_clause"
                     name="Cláusulas de Exportación"
                     parent="menu_account_dte"
                     action="action_custom_export_clause_views"
             />
     </data>
 </odoo>
+
+        />
