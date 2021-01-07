@@ -89,6 +89,8 @@ class AccountInvoice(models.Model):
 
     sale_method = fields.Many2one('custom.sale.method','Modalidad de Venta')
 
+    #export_clause = fields.Many2one('custom.export.clause','Cláusulas de Exportación')
+
 
     @api.onchange('partner_id')
     @api.multi
