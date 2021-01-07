@@ -81,7 +81,11 @@ class AccountInvoice(models.Model):
     #To Export
     departure_port = fields.Many2one('custom.port','Puerto de Embarque')
 
+    #other_arrivale_port_name = fields.Many2one(string="Indicador Adisional Puerto de Desembarque")  cuando no eciste en sii
+
     arrival_port = fields.Many2one('custom.port','Puerto de Desembarque')
+
+    #other_arrivale_port_name = fields.Many2one(string="Indicador Adisional Puerto de Desembarque")
 
     type_transport = fields.Many2one('custom.type.transport','Vía de Transporte')
 
@@ -91,6 +95,7 @@ class AccountInvoice(models.Model):
 
     export_clause = fields.Many2one('custom.export.clause','Cláusulas de Exportación')
 
+    total_export_sales_clause = retencion = fields.Float(string="Valor Cláusula de Venta Exportación", default=0.00)
 
     @api.onchange('partner_id')
     @api.multi
@@ -420,6 +425,15 @@ class AccountInvoice(models.Model):
             "lines": productLines,
         }
         return invoice
+
+    @api.onchange('amount_total')
+    def total_change_invoice_Export(self):
+        self.total_invoice_Export
+
+
+    def total_invoice_Export(self):
+        if self.dte_type_id.code == "110":
+            self.total_export_sales_clause = self.amount_total
 
     #Factura de exportación electrónica
     def invoice_export_type(self):
