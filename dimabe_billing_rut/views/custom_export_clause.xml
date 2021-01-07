@@ -14,7 +14,7 @@
 
 
             <record id="view_custom_export_clause_form" model="ir.ui.view">
-            <field name="name">view.export.clause.form</field>
+            <field name="name">view.custom.export.clause.form</field>
             <field name="model">dte.type</field>
             <field name="arch" type="xml">
                 <form name="Cláusulas de Exportación">
@@ -50,7 +50,6 @@
             </field>
             </record>
             
-
             <menuitem id="menu_dte_type"
                     name="Cláusulas de Exportación"
                     parent="menu_account_dte"
