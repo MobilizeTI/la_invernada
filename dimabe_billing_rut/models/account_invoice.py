@@ -428,6 +428,7 @@ class AccountInvoice(models.Model):
 
     @api.onchange('amount_total')
     def total_change_invoice_Export(self):
+        raise models.ValidationError('entre')
         self.total_invoice_Export
 
 
