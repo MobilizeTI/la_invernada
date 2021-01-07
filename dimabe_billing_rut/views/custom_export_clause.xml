@@ -35,7 +35,6 @@
             </field>
             </record>
 
-
             <record id="action_custom_export_clause_views" model="ir.actions.act_window">
             <field name="name">Cláusulas de Exportación</field>
             <field name="type">ir.actions.act_window</field>
@@ -58,5 +57,3 @@
             />
     </data>
 </odoo>
-
-        />
