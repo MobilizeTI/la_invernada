@@ -51,7 +51,8 @@
         'views/custom_export_clause.xml',
         'views/custom_sale_method.xml',
         'views/custom_type_transport.xml',
-        'views/custom_receiving_country_dte.xml'
+        'views/custom_receiving_country_dte.xml',
+        'views/custom_package_type.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
