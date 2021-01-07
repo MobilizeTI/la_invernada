@@ -428,12 +428,12 @@ class AccountInvoice(models.Model):
 
     @api.onchange('amount_total')
     def total_change_invoice_Export(self):
-        raise models.ValidationError('entre')
         self.total_invoice_Export
 
 
     def total_invoice_Export(self):
         if self.dte_type_id.code == "110":
+            raise models.ValidationError('entre')
             self.total_export_sales_clause = self.amount_total
 
     #Factura de exportación electrónica
