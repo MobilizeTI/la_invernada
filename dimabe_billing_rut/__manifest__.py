@@ -47,7 +47,8 @@
         'views/custom_data.xml',
         'views/hr_contract.xml',
         'views/hr_leave.xml',
-        'views/wizard_account_move.xml'
+        'views/wizard_account_move.xml',
+        'views/custom_export_clause.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
