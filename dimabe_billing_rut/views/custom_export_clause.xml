@@ -39,7 +39,7 @@
             <record id="action_custom_export_clause_views" model="ir.actions.act_window">
             <field name="name">Cláusulas de Exportación</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">custom.export.clause.</field>
+            <field name="res_model">custom.export.clause</field>
             <field name="view_mode">tree,form</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
