@@ -47,7 +47,7 @@
             </field>
             </record>
 
-            <menuitem id="menu_custom_sale_method"
+            <menuitem id="menu_custom_type_transport"
                     name="Vía de Transporte"
                     parent="menu_account_dte"
                     action="action_custom_type_transport_views"
