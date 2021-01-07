@@ -27,7 +27,7 @@
                                 <field name="ind_net_amount" attrs="{'invisible': [('dte_code', '!=', '39')]}"/>
                                 <field name="receiving_country_dte" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 <field name="sale_method" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                <fields name="export_clause" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                <!--<fields name="export_clause" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>-->
                                 <field name="type_transport" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 <field name="departure_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 <field name="arrival_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
