@@ -48,7 +48,7 @@
             </record>
 
             <menuitem id="menu_custom_receiving_country_dte"
-                    name="Países Receptores"
+                    name="Países Receptores loco"
                     parent="menu_account_dte"
                     action="action_custom_receiving_country_dte_views"
             />
