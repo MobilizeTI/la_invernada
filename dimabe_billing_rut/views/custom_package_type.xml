@@ -50,8 +50,8 @@
             </record>
 
             <menuitem id="menu_custom_package_type"
-                    name="Tipo de Bulto"
-                    parent="account.menu_finance_reports"
+                    string="Tipo de Bulto"
+                    parent="menu_account_dte"
                     action="action_custom_package_type_views"
             />
     </data>
