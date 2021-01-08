@@ -97,7 +97,7 @@ class AccountInvoice(models.Model):
 
     total_packages = fields.Integer(string="Total Bultos")
 
-    #packages = fields.One2many('custom.package','invoice_id',string="Bultos")
+    packages = fields.One2many('custom.package','invoice_id',string="Bultos")
 
     #unit_tara = fields.
     #UnitGrossWeightCode
