@@ -42,13 +42,13 @@
                                 <field name="dte_xml_sii" widget="binary" readonly="1" filename="dte_sii.xml" />
                                 <field name="dte_pdf" widget="binary" readonly="1" filename="dte.pdf" />
                             </group>
-                            <group string="Bultos">
+                            <group string="Bultos" attrs="{'invisible': [('dte_code', '!=', '110')]}">
                                 <field name="packages" mode="tree">
                                 <form>
                                     <group>
                                         <field name="package_type" required="True"/>
                                         <field name="quantity" required="True" />
-                                        <field name="brand"/>
+                                        <field name="brand" required="True"/>
                                         <field name="container"/>
                                         <field name="stamp"/>
                                     </group>
@@ -56,7 +56,7 @@
                                 <tree>
                                     <field name="package_type" required="True"/>
                                     <field name="quantity" required="True" />
-                                    <field name="brand"/>
+                                    <field name="brand" required="True"/>
                                     <field name="container"/>
                                     <field name="stamp"/>
                                 </tree>
