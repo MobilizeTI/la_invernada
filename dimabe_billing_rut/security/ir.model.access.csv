@@ -13,4 +13,5 @@ access_dimabe_custom_receiving_country_dte,dimabe_billing_rut.custom_receiving_c
 access_dimabe_custom_sale_method,dimabe_billing_rut.custom_sale_method,model_custom_sale_method,,1,1,1,1
 access_dimabe_custom_type_transport,dimabe_billing_rut.custom_type_transport,model_custom_type_transport,,1,1,1,1
 access_dimabe_custom_export_clause,dimabe_billing_rut.custom_export_clause,model_custom_export_clause,,1,1,1,1
+access_dimabe_custom_package_type_clause,dimabe_billing_rut.custom_package_type,model_custom_package_type,,1,1,1,1
 

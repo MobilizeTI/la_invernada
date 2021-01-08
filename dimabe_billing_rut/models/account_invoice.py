@@ -95,10 +95,12 @@ class AccountInvoice(models.Model):
 
     total_export_sales_clause = fields.Float(string="Valor Cláusula de Venta Exportación", default=0.00)
 
+    TotalPackages = fields.Integer(string="Total Bultos")
+
     #UnitTaraCode
     #UnitGrossWeightCode
     #UnitNetWeightCode
-    #TotalPackages
+    #
     #Packages
     #FreightAmount
     #SafeAmount
