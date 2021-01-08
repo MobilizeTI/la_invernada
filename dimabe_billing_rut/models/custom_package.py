@@ -13,7 +13,7 @@ class CustomPackage(models.Model):
     
     stamp = fields.Char(string="Sello")
 
-    #invoice_id = fields.Many2one('account.invoice', auto_join = True)
+    invoice_id = fields.Many2one('account.invoice', auto_join = True)
 
 
    
