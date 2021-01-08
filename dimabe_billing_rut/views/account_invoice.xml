@@ -44,20 +44,22 @@
                             </group>
                             <group string="Bultos">
                                 <field name="packages" mode="tree">
-                                    <form>
-                                            <field name="package_type" required="True"/>
-                                            <field name="quantity" required="True"/>
-                                            <field name="brand" required="True"/>
-                                            <field name="container"/>
-                                            <field name="stamp"/>
-                                    </form>
-                                    <tree>
+                                <form>
+                                    <group>
                                         <field name="package_type" required="True"/>
-                                        <field name="quantity" required="True"/>
-                                        <field name="brand" required="True"/>
+                                        <field name="quantity" required="True" />
+                                        <field name="brand"/>
                                         <field name="container"/>
-                                        <field name="stamp" />
-                                    </tree>  
+                                        <field name="stamp"/>
+                                    </group>
+                                </form>
+                                <tree>
+                                    <field name="package_type" required="True"/>
+                                    <field name="quantity" required="True" />
+                                    <field name="brand"/>
+                                    <field name="container"/>
+                                    <field name="stamp"/>
+                                </tree>
                                 </field>
                             </group>
                             <group string="Referencias">
