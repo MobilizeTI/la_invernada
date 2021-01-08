@@ -32,7 +32,6 @@
                                 <field name="departure_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 <field name="arrival_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 <field name="total_packages" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                
                                 <field name="freight_amount" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 <field name="saf_amount" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 <field name="destiny_country_dte" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
@@ -43,7 +42,24 @@
                                 <field name="dte_xml_sii" widget="binary" readonly="1" filename="dte_sii.xml" />
                                 <field name="dte_pdf" widget="binary" readonly="1" filename="dte.pdf" />
                             </group>
-                            
+                            <group string="Bultos">
+                                <field name="packages" mode="tree">
+                                    <form>
+                                            <field name="package_type" required="True"/>
+                                            <field name="quantity" required="True"/>
+                                            <field name="brand" required="True"/>
+                                            <field name="container"/>
+                                            <field name="stamp"/>
+                                    </form>
+                                    <tree>
+                                        <field name="package_type" required="True"/>
+                                        <field name="quantity" required="True"/>
+                                        <field name="brand" required="True"/>
+                                        <field name="container"/>
+                                        <field name="stamp" />
+                                    </tree>  
+                                </field>
+                            </group>
                             <group string="Referencias">
                                 <field name="references" mode="tree">
                                 <form>
