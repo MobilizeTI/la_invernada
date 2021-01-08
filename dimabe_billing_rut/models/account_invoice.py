@@ -95,15 +95,16 @@ class AccountInvoice(models.Model):
 
     total_export_sales_clause = fields.Float(string="Valor Cláusula de Venta Exportación", default=0.00)
 
-    TotalPackages = fields.Integer(string="Total Bultos")
+    total_packages = fields.Integer(string="Total Bultos")
 
-    #UnitTaraCode
+    packages = fields.One2many('custom.package','invoice_id',string="Bultos")
+
+    #unit_tara = fields.
     #UnitGrossWeightCode
     #UnitNetWeightCode
-    #
-    #Packages
-    #FreightAmount
-    #SafeAmount
+
+    freight_amount = fields.Float(string="Flete")
+    saf_amount = fields.Float(string="Seguro")
 
     @api.onchange('partner_id')
     @api.multi

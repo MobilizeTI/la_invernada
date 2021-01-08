@@ -8,4 +8,6 @@ class CustomPackageType(models.Model):
     name = fields.Char(string= 'Nombre', required=True)
 
     short_name = fields.Char(string= 'Nombre Corto', required=True)
+
+    invoice_id = fields.Many2one('account.invoice', auto_join = True)
    
