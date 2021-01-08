@@ -4,10 +4,16 @@ class CustomPackage(models.Model):
     _name = 'custom.package'
     
     package_type = fields.Many2one('custom.package.type', string="Tipo de Bulto")
+    
     quantity = fields.Float(string="Cantidad")
+    
     brand = fields.Char(string="Marca")
+    
     container = fields.Char(string="Container")
+    
     stamp = fields.Char(string="Sello")
+
+    invoice_id = fields.Many2one('account.invoice', auto_join = True)
 
 
    

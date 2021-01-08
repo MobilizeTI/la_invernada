@@ -9,5 +9,5 @@ class CustomPackageType(models.Model):
 
     short_name = fields.Char(string= 'Nombre Corto', required=True)
 
-    invoice_id = fields.Many2one('account.invoice', auto_join = True)
+
    
