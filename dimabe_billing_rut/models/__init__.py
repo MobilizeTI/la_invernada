@@ -28,3 +28,4 @@ from . import custom_sale_method
 from . import custom_type_transport
 from . import custom_export_clause
 from . import custom_package_type
+from . import custom_package
