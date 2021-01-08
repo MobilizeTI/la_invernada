@@ -51,7 +51,7 @@
 
             <menuitem id="menu_custom_package_type"
                     name="Tipo de Bulto"
-                    parent="menu_finance_reports"
+                    parent="account.menu_finance_reports"
                     action="action_custom_package_type_views"
             />
     </data>
