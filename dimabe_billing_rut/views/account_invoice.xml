@@ -39,14 +39,14 @@
                                             <field name="package_type" required="True"/>
                                             <field name="quantity" required="True"/>
                                             <field name="brand" required="True"/>
-                                            <field name="container" >
+                                            <field name="container" />
                                             <field name="stamp" />
                                         </group>
                                         <tree>
                                             <field name="package_type" required="True"/>
                                             <field name="quantity" required="True"/>
                                             <field name="brand" required="True"/>
-                                            <field name="container" >
+                                            <field name="container"/>
                                             <field name="stamp" />
                                         </tree>
                                     </form>
