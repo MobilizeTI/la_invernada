@@ -81,21 +81,27 @@ class AccountInvoice(models.Model):
     #To Export
     departure_port = fields.Many2one('custom.port','Puerto de Embarque')
 
-    #other_arrivale_port_name = fields.Many2one(string="Indicador Adisional Puerto de Desembarque")  cuando no eciste en sii
-
     arrival_port = fields.Many2one('custom.port','Puerto de Desembarque')
-
-    #other_arrivale_port_name = fields.Many2one(string="Indicador Adisional Puerto de Desembarque")
 
     type_transport = fields.Many2one('custom.type.transport','Vía de Transporte')
 
     receiving_country_dte = fields.Many2one('custom.receiving.country.dte','País Receptor')
 
+    destiny_country_dte = fields.Many2one('custom.receiving.country.dte','País Destino')
+
     sale_method = fields.Many2one('custom.sale.method','Modalidad de Venta')
 
-    export_clause = fields.Many2one('custom.export.clause','Cláusulas de Exportación')
+    export_clause = fields.Many2one('custom.export.clause','Cláusula de Exportación')
 
     total_export_sales_clause = fields.Float(string="Valor Cláusula de Venta Exportación", default=0.00)
+
+    #UnitTaraCode
+    #UnitGrossWeightCode
+    #UnitNetWeightCode
+    #TotalPackages
+    #Packages
+    #FreightAmount
+    #SafeAmount
 
     @api.onchange('partner_id')
     @api.multi
