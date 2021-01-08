@@ -46,19 +46,19 @@
                                 <field name="packages" mode="tree" attrs="{'invisible': [('dte_code', '!=', '110')]}">
                                 <form>
                                     <group>
-                                        <field name="package_type" required="True"/>
-                                        <field name="quantity" required="True" />
-                                        <field name="brand" required="True"/>
-                                        <field name="container"/>
-                                        <field name="stamp"/>
+                                        <field name="package_type" required="True" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                        <field name="quantity" required="True" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                        <field name="brand" required="True" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                        <field name="container" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                        <field name="stamp" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     </group>
                                 </form>
                                 <tree>
-                                    <field name="package_type" required="True"/>
-                                    <field name="quantity" required="True" />
-                                    <field name="brand" required="True"/>
-                                    <field name="container"/>
-                                    <field name="stamp"/>
+                                    <field name="package_type" required="True" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <field name="quantity" required="True" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <field name="brand" required="True" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <field name="container" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <field name="stamp" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 </tree>
                                 </field>
                             </group>
