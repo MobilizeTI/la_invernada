@@ -2,7 +2,7 @@ from odoo import models, api, fields
 from odoo.addons import decimal_precision as dp
 from datetime import datetime
 import requests
-
+import json
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
@@ -151,7 +151,8 @@ class StockPicking(models.Model):
     @api.multi
     def button_weight(self):
         res = requests.request('POST','http://201.217.253.174:8899/romana/index.py')
-        raise models.ValidationError(res.text.strip())
+        json_data = json.loads(res.text.strip())
+
 
     @api.one
     @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package', 'quality_weight')
