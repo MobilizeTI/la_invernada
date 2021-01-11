@@ -152,7 +152,9 @@ class StockPicking(models.Model):
     def button_weight(self):
         res = requests.request('POST','http://201.217.253.174:8899/romana/index.py')
         json_data = json.loads(res.text.strip())
-
+        self.write({
+            'gross_weight' : float(json_data['value'])
+        })
 
     @api.one
     @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package', 'quality_weight')
