@@ -1,6 +1,7 @@
 from odoo import models, api, fields
 from odoo.addons import decimal_precision as dp
 from datetime import datetime
+import requests
 
 
 class StockPicking(models.Model):
@@ -146,6 +147,11 @@ class StockPicking(models.Model):
         'Cosecha',
         default=datetime.now().year
     )
+
+    @api.multi
+    def button_weight(self):
+        res = requests.request('POST','http://201.217.253.174:8899/romana')
+        raise models.ValidationError(res.text)
 
     @api.one
     @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package', 'quality_weight')
