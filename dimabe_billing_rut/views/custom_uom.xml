@@ -2,7 +2,7 @@
     <data>
         <record model="ir.ui.view" id="view_custom_uom_tree">
             <field name="name">view.custom.uom.tree</field>
-            <field name="model">custom.sale.method</field>
+            <field name="model">custom.uom</field>
             <field name="arch" type="xml">
                 <tree>
                     <field name="code"/>
@@ -15,7 +15,7 @@
 
             <record id="view_custom_uom_form" model="ir.ui.view">
             <field name="name">view.custom.uom.form</field>
-            <field name="model">custom.custom.uom</field>
+            <field name="model">custom.uom</field>
             <field name="arch" type="xml">
                 <form name="Modalidad de Venta">
                 <sheet>
