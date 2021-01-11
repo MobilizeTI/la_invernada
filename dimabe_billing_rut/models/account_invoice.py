@@ -409,6 +409,18 @@ class AccountInvoice(models.Model):
 
         if self.dte_type_id.code == "110": #Factura Exportacion decimal
             total_amount = netAmount + exemtAmount + self.amount_tax
+            if len(packages) > 0:
+                packages_list =[]
+                for pk in self.packages:
+                    packages_list.append(
+                    {
+                        "PackageTypeCode": str(pk.package_type),
+                        "PackageQuantity": str(pk.quantity),
+                        "Brands": str(pk.brand),
+                        "Container": str(pk.container),
+                        "Stamp": str(pk.stamp)
+                    }
+                )
         else:
             total_amount = self.roundclp(netAmount + exemtAmount + self.amount_tax)
 
@@ -433,6 +445,24 @@ class AccountInvoice(models.Model):
             },
             "lines": productLines,
         }
+        if self.dte_type_id.code == "110":
+            invoice['aduana'] = {
+                "SaleModeCode": self.sale_method,
+                "SaleClauseCode":self.export_clause,
+                "SaleClauseTotal":self.total_export_sales_clause,
+                "TransportRoute":str(self.type_transport),
+                "OriginPortCode":str(self.departure_port),
+                "DestinyPortCode":str(self.arrival_port),
+                "UnitTaraCode":"",
+                "UnitGrossWeightCode":"",
+                "UnitNetWeightCode":"",
+                "TotalPackages": str(self.total_packages),
+                "Packages": packages_list,
+                "FreightAmount": str(self.freight_amount),
+                "SafeAmount":str(self.saf_amount),
+                "ReceiverCountryCode":str(self.receiving_country_dte),
+                "DestinyCountryCode":str(self.destiny_country_dte)
+            }
         return invoice
 
     @api.onchange('amount_total')

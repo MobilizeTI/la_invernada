@@ -32,10 +32,6 @@
                                 <field name="departure_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 <field name="arrival_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 <field name="total_packages" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                <field name="freight_amount" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                <field name="saf_amount" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                <field name="destiny_country_dte" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                <field name="receiving_country_dte" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 <field name="packages" mode="tree" attrs="{'invisible': [('dte_code', '!=', '110')]}">
                                 <form>
                                     <group>
@@ -54,6 +50,10 @@
                                     <field name="stamp"/>
                                 </tree>
                                 </field>
+                                <field name="freight_amount" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                <field name="saf_amount" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                <field name="destiny_country_dte" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                <field name="receiving_country_dte" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 <field name="ted" widget="image"  readonly="1"/>
                                 <field name="pdf_url" widget="url" readonly="1" text="Url de Descarga"/>
                                 <field name="dte_xml" widget="binary" readonly="1" filename="dte.xml" />

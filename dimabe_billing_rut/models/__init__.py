@@ -29,3 +29,4 @@ from . import custom_type_transport
 from . import custom_export_clause
 from . import custom_package_type
 from . import custom_package
+from . import custom_uom
