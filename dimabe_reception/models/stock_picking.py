@@ -151,7 +151,7 @@ class StockPicking(models.Model):
     @api.multi
     def button_weight(self):
         res = requests.request('POST','http://201.217.253.174:8899/romana/index.py')
-        raise models.ValidationError(res.text)
+        raise models.ValidationError(res.text.strip())
 
     @api.one
     @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package', 'quality_weight')
