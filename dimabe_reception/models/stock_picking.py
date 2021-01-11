@@ -265,6 +265,14 @@ class StockPicking(models.Model):
         diff = str((finish_date - init_date))
         return diff.split('.')[0]
 
+    def _get_data_from_weigh(self):
+        try:
+            res = requests.request('POST', 'http://201.217.253.174:8899/romana/index.py')
+            json_data = json.loads(res.text.strip())
+        except Exception as e:
+            raise models.ValidationError(str(e))
+
+
     @api.multi
     def action_confirm(self):
         if self.picking_type_code == 'incoming':
