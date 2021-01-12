@@ -313,8 +313,8 @@ class AccountInvoice(models.Model):
             count_quantity = 0
             for pk in self.packages:
                 count_quantity += pk.quantity
-            if count_quantity != self.total_packages:
-                raise models.ValidationError('El Total de Bultos {} no cuadra con la usma de los bultos {}'.format(self.total_packages,count_quantity))
+            if int(count_quantity) != int(self.total_packages):
+                raise models.ValidationError('El Total de Bultos {} no cuadra con la usma de los bultos {}'.format(int(self.total_packages),int(count_quantity)))
 
         for item in self.invoice_line_ids:
             for tax_line in item.invoice_line_tax_ids:
@@ -425,7 +425,7 @@ class AccountInvoice(models.Model):
 
         if self.dte_type_id.code == "110": #Factura Exportacion decimal
             total_amount = netAmount + exemtAmount + self.amount_tax
-            if len(packages) > 0:
+            if len(self.packages) > 0:
                 packages_list =[]
                 for pk in self.packages:
                     packages_list.append(
