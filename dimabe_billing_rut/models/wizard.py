@@ -729,7 +729,8 @@ class WizardHrPaySlip(models.TransientModel):
         TOTIM_2 = float(TOTIM)
         if TOTIM_2 > self.ccaf_max:
             data = float(UF * 80)
-            return 
+            models._logger.error(data)
+            return data
         else:
             return TOTIM
 
