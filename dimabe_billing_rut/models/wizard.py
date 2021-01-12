@@ -74,27 +74,26 @@ class WizardHrPaySlip(models.TransientModel):
             raise models.ValidationError(f'No existen datos del mes de {self.month} {self.years}')
         if indicadores.state != 'done':
             raise models.ValidationError(f'Los indicadores provicionales del mes de {indicadores.name} no se encuentran validados')
-        row = 5
+        row = 0
         col = 0
         payslips = self.env['hr.payslip'].sudo().search([('indicadores_id','=',indicadores.id)])
         for pay in payslips:
             rules = pay.struct_id.rule_ids
             titles = pay.struct_id.rule_ids.mapped('name')
             for title in titles:
-                models._logger.error(f'Row {row} Col {col}')
                 stringTitle = str(title)
                 worksheet.write(row,col,stringTitle.capitalize())
                 col += 1
-            col = 0    
-            worksheet.write(row,col,pay.employee_id.display_name)
-            col += 1
-            worksheet.write(row,col,pay.employee_id.identification_id)
-            col += 1
-            for rule in rules:
-                worksheet.write(row,col,self.env['hr.payslip.line'].sudo().search([('slip_id','=',pay.id),('salary_rule_id','=',rule.id)]).total)
-                col += 1
-            col = 0
-            row += 1
+            # col = 0    
+            # worksheet.write(row,col,pay.employee_id.display_name)
+            # col += 1
+            # worksheet.write(row,col,pay.employee_id.identification_id)
+            # col += 1
+            # for rule in rules:
+            #     worksheet.write(row,col,self.env['hr.payslip.line'].sudo().search([('slip_id','=',pay.id),('salary_rule_id','=',rule.id)]).total)
+            #     col += 1
+            # col = 0
+            # row += 1
         workbook.close()
         with open(file_name,"rb") as file:
             file_base64 = base64.b64encode(file.read())
