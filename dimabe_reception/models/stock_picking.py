@@ -276,6 +276,7 @@ class StockPicking(models.Model):
         try:
             res = requests.request('POST', 'http://201.217.253.174:8899/romana/index.py')
             json_data = json.loads(res.text.strip())
+            return json_data['value']
         except Exception as e:
             if 'HTTPConnectionPool' in str(e):
                 raise models.ValidationError("Por favor comprobar si el equipo de romana se encuentre enciendo o con conexion a internet")
