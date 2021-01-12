@@ -131,14 +131,7 @@ class AccountInvoice(models.Model):
     @api.model
     @api.onchange('other_coin')
     def exchange_rate_other_coin(self):
-        self._default_exchange_rate(self)
-
-    @api.model
-    @api.onchange('date')
-    def exchange_rate_date(self):
-        self._default_exchange_rate(self)
-
-    def _default_exchange_rate(self):
+        raise models.ValidationError('entre {}'.format(self.date))
         date = self.date
         if date:
             currency_id = self.env['res.currency'].search([('name', '=', 'USD')])
