@@ -80,7 +80,9 @@ class AccountInvoice(models.Model):
 
     #Orders to Add in Invoice
 
-    order_ids = fields.Many2one(string='Pedidos', compute='_get_sale_orders')
+    order_ids = fields.Many2many('sale.order')
+
+    order_id = fields.Many2one('sale.order')
 
     #To Export
     other_coin = fields.Many2one('res.currency', string='Otra Moneda')
@@ -133,39 +135,10 @@ class AccountInvoice(models.Model):
             item.partner_activity_id = activities
 
     def _get_sale_orders(self):
-        self.order_ids = self.env['sale.order'].name
+        self.order_ids = self.env['sale.order'].search([])
         #raise models.ValidationError('test _getsale_orders')
 
-    @api.model
-    @api.onchange('other_coin')
-    def _exchange_rate_other_coin(self):
-        raise models.ValidationError('entre {}'.format(self.date))
-        date = self.date
-        if date:
-            currency_id = self.env['res.currency'].search([('name', '=', 'USD')])
-            rates = currency_id.rate_ids.search([('name', '=', date)])
-            if len(rates) == 0:
-                currency_id.get_rate_by_date(date)
 
-            rates = self.env['res.currency.rate'].search([('name', '<=', date)])
-
-            if len(rates) > 0:
-                rate = rates[0]
-                self.exchange_rate_other_coin = 1 / rate.rate
-        else:
-            self.exchange_rate_other_coin = 0
-
- 
-    #@api.onchange('type')
-    #not worked
-    #@api.multi
-    #def onchange_type(self):
-    #    if self.type:
-    #        if 'refund' in self.type:
-    #            types = self.env['dte.type'].search([('code','in',('56','61','111','112'))]) 
-    #        else:
-    #            types = self.env['dte.type'].search([('code','not in',('56','61','111','112'))]) 
-    #        return types
     
     @api.multi
     def send_to_sii(self):
@@ -208,6 +181,7 @@ class AccountInvoice(models.Model):
                 raise models.ValidationError('Para Nota de Crédito electrónica debe agregar al menos una Referencia')
        
         elif self.dte_type_id.code == "110": #Factura de exportación electrónica
+            self.other_coin = self.exchange_rate
             invoice = self.invoice_type()
        
         elif self.dte_type_id.code == "111": #Nota de débito de exportación electrónica
@@ -344,6 +318,9 @@ class AccountInvoice(models.Model):
                 count_quantity += pk.quantity
             if int(count_quantity) != int(self.total_packages):
                 raise models.ValidationError('El Total de Bultos {} no cuadra con la usma de los bultos {}'.format(int(self.total_packages),int(count_quantity)))
+            if self.currency_id.code == self.other_coin.code:
+                raise models.ValidationError('El tipo de Moneda y Otra Moneda no pueden ser iguales')
+
 
         for item in self.invoice_line_ids:
             for tax_line in item.invoice_line_tax_ids:

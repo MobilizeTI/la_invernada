@@ -9,7 +9,12 @@
                     <field name="exempt"/>
                 </xpath>
                 <xpath expr="//field[@name='cash_rounding_id']" position="after">
-                    <field name="order_ids"/>
+                    <field name="order_id"/>
+                    <field name="order_ids">
+                        <tree>
+                            <field name="name">
+                        </tree>
+                    <field/>
                 </xpath>
                 <data>
                     <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
