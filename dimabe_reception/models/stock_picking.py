@@ -152,8 +152,7 @@ class StockPicking(models.Model):
     def button_weight_gross(self):
         data = self._get_data_from_weigh()
         self.write({
-            'gross_weight' : float(data)
-        })
+            'gross_weight' : float(2)
 
     @api.multi
     def button_weight_net(self):
