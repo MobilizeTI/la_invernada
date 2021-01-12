@@ -725,7 +725,7 @@ class WizardHrPaySlip(models.TransientModel):
         return cadena
 
     @api.multi
-    def verify_ccfa(self,TOTIM):
+    def verify_ccaf(self,TOTIM):
         if TOTIM > self.ccaf_max:
             return self.ccaf_max
         else:
