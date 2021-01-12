@@ -1053,14 +1053,11 @@ class WizardHrPaySlip(models.TransientModel):
                              ]
             writer.writerow([str(l) for l in line_employee])
             models._logger.error('Llega aqui')
-        self.env['wizard.hr.payslip'].create({'file_data': base64.encodebytes(output.getvalue().encode()),
+        self.write({'file_data': base64.encodebytes(output.getvalue().encode()),
                     'file_name': "Previred_{}{}.txt".format(self.date_to, self.company_id.display_name.replace('.','')),
                     })
 
         return {
-            "type": "ir.actions.act_url",
-            "name": "Previred_{}{}.txt".format(self.date_to, self.company_id.display_name.replace('.','')),
-            "url":f"/web/content?model={self._name}&field={base64.encodebytes(output.getvalue().encode())}&filename_field={self.file_name}&id={self.id}",
-            'nodestroy':False
+            "type": "ir.actions.do_nothing",
         }
 
