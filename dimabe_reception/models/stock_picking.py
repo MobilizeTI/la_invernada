@@ -156,12 +156,11 @@ class StockPicking(models.Model):
         })
 
     @api.multi
-    def button_weight_net(self):
+    def button_weight_tare(self):
         data = self._get_data_from_weigh()
         self.write({
-            'net_weight':float(data)
+            'tare_weight':float(data)
         })
-
 
     @api.one
     @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package', 'quality_weight')
