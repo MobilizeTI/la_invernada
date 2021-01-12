@@ -79,7 +79,8 @@ class WizardHrPaySlip(models.TransientModel):
         payslips = self.env['hr.payslip'].sudo().search([('indicadores_id','=',indicadores.id)])
         for pay in payslips:
             rules = pay.struct_id.rule_ids
-            for title in rules.mapped('name'):
+            titles = pay.struct_id.rule_ids.mapped('name')
+            for title in titles:
                 worksheet.write(row,col,title.capitalize())
                 col += 1
             col = 0    
