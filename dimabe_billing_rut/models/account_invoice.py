@@ -99,11 +99,20 @@ class AccountInvoice(models.Model):
 
     packages = fields.One2many('custom.package','invoice_id',string="Bultos")
 
-    #unit_tara = fields.
-    #UnitGrossWeightCode
-    #UnitNetWeightCode
+    tara = fields.Float(string="Tara")
+
+    gross_weight = fields.Float(string="Peso Bruto")
+
+    net_weight = fields.Float(string="Peso Neto")
+
+    uom_tara = fields.Many2one('custom.uom','Unidad de Medida Tara')
+
+    uom_gross_weight = fields.Many2one('custom.uom','Unidad de Peso Bruto')
+
+    uom_net_weight = fields.Many2one('custom.uom','Unidad de Peso Neto')
 
     freight_amount = fields.Float(string="Flete")
+
     saf_amount = fields.Float(string="Seguro")
 
     @api.onchange('partner_id')
@@ -170,7 +179,7 @@ class AccountInvoice(models.Model):
                 raise models.ValidationError('Para Nota de Crédito electrónica debe agregar al menos una Referencia')
        
         elif self.dte_type_id.code == "110": #Factura de exportación electrónica
-            invoice = self.invoice_export_type()
+            invoice = self.invoice_type()
        
         elif self.dte_type_id.code == "111": #Nota de débito de exportación electrónica
             if len(self.references) > 0:
@@ -230,7 +239,7 @@ class AccountInvoice(models.Model):
 
 
         r = requests.post(url, json=invoice, headers=headers)
-        #raise models.ValidationError(json.dumps(invoice))
+        raise models.ValidationError(json.dumps(invoice))
 
         jr = json.loads(r.text)
 
@@ -299,6 +308,13 @@ class AccountInvoice(models.Model):
         if self.dte_type_id.code == "33" or self.dte_type_id.code == "39":
             if self.currency_id.name != "CLP":
                 raise models.ValidationError('El Tipo {} debe tener moneda CLP {}'.format(self.dte_type_id.name, self.currency_id.id))
+        
+        if self.dte_type_id.code == "110": #FACTURA EXPORTACION
+            count_quantity = 0
+            for pk in self.packages:
+                count_quantity += pk.quantity
+            if count_quantity != self.total_packages:
+                raise models.ValidationError('El Total de Bultos {} no cuadra con la usma de los bultos {}'.format(self.total_packages,count_quantity))
 
         for item in self.invoice_line_ids:
             for tax_line in item.invoice_line_tax_ids:

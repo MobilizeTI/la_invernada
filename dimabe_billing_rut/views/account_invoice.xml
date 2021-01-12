@@ -19,7 +19,6 @@
                                 <field name="partner_economic_activities" invisible="1"/>
                                 <field name="company_economic_activities" invisible="1"/>
                                 <field name="company_activity_id" domain="[('id','in',company_economic_activities)]" />
-                                <field name="dte_folio" readonly="1"/>
                                 <field name="dte_type" invisible="1"/>
                                 <field name="dte_type_id" domain="[('code', 'in', [33,34,39,110,56,61,111,112])]" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
                                 <field name="dte_code" invisible="1"/>
@@ -31,6 +30,12 @@
                                 <field name="type_transport" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 <field name="departure_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 <field name="arrival_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                <field name="tara" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                <field name="uom_tara" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                <field name="gross_weight" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                <field name="uom_gross_weight" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                <field name="net_weight" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                <field name="uom_net_weight" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 <field name="total_packages" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 <field name="packages" mode="tree" attrs="{'invisible': [('dte_code', '!=', '110')]}">
                                 <form>
@@ -54,6 +59,7 @@
                                 <field name="saf_amount" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 <field name="destiny_country_dte" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 <field name="receiving_country_dte" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                <field name="dte_folio" readonly="1"/>
                                 <field name="ted" widget="image"  readonly="1"/>
                                 <field name="pdf_url" widget="url" readonly="1" text="Url de Descarga"/>
                                 <field name="dte_xml" widget="binary" readonly="1" filename="dte.xml" />
