@@ -8,10 +8,10 @@
                 <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='invoice_line_tax_ids']" position="after">
                     <field name="exempt"/>
                 </xpath>
-                <field name="exchange_rate" position="after">
+                <xpath expr="//field[@name='exchange_rate'" position="after">
                     <field name="other_coin" />
                     <field name="exchange_rate_other_coin"/>
-                </field>
+                </xpath>
                 <data>
                     <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
                         <page string="Comex">
