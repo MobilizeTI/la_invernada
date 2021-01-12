@@ -430,11 +430,11 @@ class AccountInvoice(models.Model):
                 for pk in self.packages:
                     packages_list.append(
                     {
-                        "PackageTypeCode": str(pk.package_type),
-                        "PackageQuantity": str(pk.quantity),
+                        "PackageTypeCode": str(pk.package_type.code),
+                        "PackageQuantity": str(int(pk.quantity)),
                         "Brands": str(pk.brand),
-                        "Container": str(pk.container),
-                        "Stamp": str(pk.stamp)
+                        "Container": pk.container if str(pk.container) else '',
+                        "Stamp": pk.container if str(pk.stamp) else ''
                     }
                 )
         else:
@@ -442,7 +442,7 @@ class AccountInvoice(models.Model):
 
         invoice= {
             "expirationDate": self.date_due.strftime("%Y-%m-%d"),
-            "paymentType": int(self.method_of_payment),
+            "paymentType": str(int(self.method_of_payment)),
             "recipient": {
                 "EnterpriseRut": re.sub('[\.]','', self.partner_id.invoice_rut),
                 "EnterpriseAddressOrigin": self.partner_id.street[0:60],
@@ -462,7 +462,7 @@ class AccountInvoice(models.Model):
             "lines": productLines,
         }
         if self.dte_type_id.code == "110":
-            invoice['aduana'] = {
+            invoice['transport']['aduana'] = {
                 "SaleModeCode": str(self.sale_method.code),
                 "SaleClauseCode":str(self.export_clause.code),
                 "SaleClauseTotal":str(self.total_export_sales_clause),
@@ -479,8 +479,13 @@ class AccountInvoice(models.Model):
                 "Packages": packages_list,
                 "FreightAmount": str(self.freight_amount),
                 "SafeAmount":str(self.saf_amount),
-                "ReceiverCountryCode":str(self.receiving_country_dte),
-                "DestinyCountryCode":str(self.destiny_country_dte)
+                "ReceiverCountryCode":str(self.receiving_country_dte.code),
+                "DestinyCountryCode":str(self.destiny_country_dte.code)
+            }
+            invoice['othercoin'] = {
+                "CoinType" : "",
+                "ExemptAmount" : "",
+                "Amount" : ""
             }
         return invoice
 
