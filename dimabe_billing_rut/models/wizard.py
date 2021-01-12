@@ -26,8 +26,6 @@ class WizardHrPaySlip(models.TransientModel):
         'none': '',
     }
 
-    ccaf_max = fields.Float('Maximo Legal CCFA',compute='compute_ccaf_max')
-
     company_id = fields.Many2one('res.partner', domain=[('id', 'in', ('423', '1', '1000', '79'))])
 
 
@@ -727,8 +725,18 @@ class WizardHrPaySlip(models.TransientModel):
     @api.multi
     def verify_ccaf(self,TOTIM,UF):
         TOTIM_2 = float(TOTIM)
-        if TOTIM_2 > self.ccaf_max:
+        if TOTIM_2 > (UF * 80):
             data = round(float(UF * 80))
+            models._logger.error(data)
+            return data
+        else:
+            return TOTIM
+
+    @api.multi
+    def verify_ips(self,TOTIM,UF):
+        TOTIM_2 = float(TOTIM)
+        if TOTIM_2 > (UF * 80):
+            data = round(float(UF * 60))
             models._logger.error(data)
             return data
         else:
@@ -932,8 +940,7 @@ class WizardHrPaySlip(models.TransientModel):
                              # 63 Tasa Cotizacion Ex-Caja Prevision
                              "0",
                              # 64 Renta Imponible IPS    Obligatorio si es IPS Obligatorio si es IPS Obligatorio si es INP si no, 0000
-                             self.get_payslip_lines_value_2(payslip,
-                                                            'TOTIM') if payslip.contract_id.isapre_id.codigo == '07' else "0",
+                             self.verify_ips(self.get_payslip_lines_value_2(payslip,'TOTIM'),payslip.indicadores_id.uf) if self.get_payslip_lines_value_2(payslip,'TOTIM') else "0"
                              # 65 Cotizacion Obligatoria IPS
                              "0",
                              # 66 Renta Imponible Desahucio
@@ -995,7 +1002,7 @@ class WizardHrPaySlip(models.TransientModel):
                              # TODO ES HACER PANTALLA CON DATOS EMPRESA
                              payslip.indicadores_id.ccaf_id.codigo if payslip.indicadores_id.ccaf_id.codigo else "00",
                              # 84 Renta Imponible CCAF
-                             self.verify_ccaf(self.get_payslip_lines_value_2(payslip,'TOTIM'),payslip.indicadores_id.uf),
+                             self.verify_ccaf(self.get_payslip_lines_value_2(payslip,'TOTIM'),payslip.indicadores_id.uf) if self.get_payslip_lines_value_2(payslip,'TOTIM') else "0",
                              # 85 Creditos Personales CCAF TODO
                              self.get_payslip_lines_value_2(payslip, 'PCCAF') if self.get_payslip_lines_value_2(payslip,
                                                                                                                 'PCCAF') else "0",
