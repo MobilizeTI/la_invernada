@@ -74,14 +74,16 @@ class WizardHrPaySlip(models.TransientModel):
             raise models.ValidationError(f'No existen datos del mes de {self.month} {self.years}')
         if indicadores.state != 'done':
             raise models.ValidationError(f'Los indicadores provicionales del mes de {indicadores.name} no se encuentran validados')
-        row = 2
-        col = 2
+        row = 0
+        col = 0
         payslips = self.env['hr.payslip'].sudo().search([('indicadores_id','=',indicadores.id)])
         for pay in payslips:
             rules = pay.struct_id.rule_ids
+            worksheet.write(row,col,pay.employee_id.display_name)
+            col += 1
+            worksheet.write(row,col,pay.employee_id.identification_id)
+            col += 1
             for rule in rules:
-                worksheet.write(row,col - 2,pay.employee_id.display_name)
-                worksheet.write(row,col - 1,pay.employee_id.identification_id)
                 worksheet.write(row,col,self.env['hr.payslip.line'].sudo().search([('slip_id','=',pay.id),('salary_rule_id','=',rule.id)]).total)
                 col += 1
             col = 0
