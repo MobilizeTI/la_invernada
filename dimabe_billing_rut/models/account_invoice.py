@@ -133,7 +133,7 @@ class AccountInvoice(models.Model):
             item.partner_activity_id = activities
 
     def _get_sale_orders(self):
-        self.order_ids = self.env['sale.order'].search([('qty_delivered', '<', 'product_uom_qty')])
+        self.order_ids = self.env['sale.order']
         #raise models.ValidationError('test _getsale_orders')
 
     @api.model
