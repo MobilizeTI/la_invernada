@@ -78,6 +78,10 @@ class AccountInvoice(models.Model):
 
     dte_type = fields.Many2many('dte.type')
 
+    #Orders to Add in Invoice
+
+    order_ids = fields.Many2one(string='Pedidos', compute='_get_sale_orders')
+
     #To Export
     other_coin = fields.Many2one('res.currency', string='Otra Moneda')
 
@@ -128,9 +132,13 @@ class AccountInvoice(models.Model):
                 activities.append(activity.id)
             item.partner_activity_id = activities
 
+    def _get_sale_orders(self):
+        self.order_ids = self.env['sale.order'].search([('qty_delivered', '<', 'product_uom_qty')])
+        #raise models.ValidationError('test _getsale_orders')
+
     @api.model
     @api.onchange('other_coin')
-    def exchange_rate_other_coin(self):
+    def _exchange_rate_other_coin(self):
         raise models.ValidationError('entre {}'.format(self.date))
         date = self.date
         if date:
