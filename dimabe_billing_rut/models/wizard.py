@@ -81,6 +81,7 @@ class WizardHrPaySlip(models.TransientModel):
             rules = pay.struct_id.rule_ids
             titles = pay.struct_id.rule_ids.mapped('name')
             for title in titles:
+                models._logger.error(f'Row {row} Col {col}')
                 stringTitle = str(title)
                 worksheet.write(row,col,stringTitle.capitalize())
                 col += 1
