@@ -83,6 +83,17 @@ class WizardHrPaySlip(models.TransientModel):
                 worksheet.write(row,col,self.env['hr.payslip.line'].sudo().search([('slip_id','=',pay.id),('rule_id','=',rule.id)]).total)
                 col += 1
             row += 1
+        workbook.close()
+        with open(file_name,"rb") as file:
+            file_base64 = base64.b64encode(file.read())
+        self.env[self._name].create({
+            'report': file_base64,
+            'report_name':f'Libro de Remuneraciones {self.company_id.name}'
+            })
+        self.write({'report': file_base64, 'report_name': 'Libro de Remuneraciones {}'.format(indicadores_id.name)})
+        return {
+            'type':'ir.actions.do_nothing'
+        } 
 
     @api.model
     def get_nacionalidad(self, employee):
