@@ -26,6 +26,8 @@ class WizardHrPaySlip(models.TransientModel):
         'none': '',
     }
 
+    ccaf_max = fields.Float('Maximo Legal CCFA',compute='compute_ccaf_max')
+
     company_id = fields.Many2one('res.partner', domain=[('id', 'in', ('423', '1', '1000', '79'))])
 
 
@@ -58,6 +60,12 @@ class WizardHrPaySlip(models.TransientModel):
     ], string='Separador de Campos', default='dot_coma', required=True)
 
     report_name = fields.Char('')
+    }
+
+    @api.multi
+    def compute_ccaf_max(self):
+        max_ccaf = self.env['hr.indicadores'].search([])[-1]
+        self.ccaf_max = 80 * max_ccaf.uf
 
     @api.multi
     def print_report_xlsx(self):
@@ -717,6 +725,13 @@ class WizardHrPaySlip(models.TransientModel):
         return cadena
 
     @api.multi
+    def verify_ccfa(self,TOTIM):
+        if TOTIM > self.ccaf_max:
+            return self.ccaf_max
+        else:
+            return TOTIM
+
+    @api.multi
     def action_generate_csv(self):
         employee_model = self.env['hr.employee']
         payslip_model = self.env['hr.payslip']
@@ -978,9 +993,7 @@ class WizardHrPaySlip(models.TransientModel):
                              # TODO ES HACER PANTALLA CON DATOS EMPRESA
                              payslip.indicadores_id.ccaf_id.codigo if payslip.indicadores_id.ccaf_id.codigo else "00",
                              # 84 Renta Imponible CCAF
-                             str(float(self.get_payslip_lines_value_2(payslip, 'TOTIM'))).split('.')[
-                                 0] if self.get_payslip_lines_value_2(payslip, 'TOTIM').split(
-                                 '.')[0] else "00",
+                             self.verify_ccaf(self.get_payslip_lines_value_2(payslip,'TOTIM')),
                              # 85 Creditos Personales CCAF TODO
                              self.get_payslip_lines_value_2(payslip, 'PCCAF') if self.get_payslip_lines_value_2(payslip,
                                                                                                                 'PCCAF') else "0",

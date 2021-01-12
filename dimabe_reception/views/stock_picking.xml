@@ -38,7 +38,7 @@
           />
           <field name="gross_weight"
                  attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
-          /><button type="object" string="Obtener Peso Romana" name="button_weight"/>
+          /><button type="object" string="Obtener Peso Romana" name="button_weight_gross"/>
           <field name="tare_weight"
                  attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
           />
@@ -47,7 +47,7 @@
                  readonly="1"/>
           <field name="net_weight"
                  attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)]}"
-          />
+          /><button type="object" string="Obtener Peso Romana" name="button_weight_net" attrs="{'invisible':}"/>
           <field name="avg_unitary_weight"
                  attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)]}"
           />
