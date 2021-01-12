@@ -1056,6 +1056,11 @@ class WizardHrPaySlip(models.TransientModel):
                     'file_name': "Previred_{}{}.txt".format(self.date_to, self.company_id.display_name.replace('.','')),
                     })
 
-        return {
-            "type": "ir.actions.do_nothing",
+        return
+        {
+            'name': 'Report',
+            'type': 'ir.actions.act_url',
+            'url': "web/content/?model=" + self._name + "&id=" + str(
+                self.id) + "&filename_field=file_name&field=data_file&download=true&filename=" + self.file_name,
+            'target': 'self',
         }
