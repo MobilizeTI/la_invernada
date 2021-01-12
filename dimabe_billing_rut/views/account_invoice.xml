@@ -8,13 +8,6 @@
                 <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='invoice_line_tax_ids']" position="after">
                     <field name="exempt"/>
                 </xpath>
-                <!--<field name="account_invoice.exchange_rate" position="after">
-                    <field name="other_coin" />
-                    <field name="exchange_rate_other_coin"/>
-                </field>-->
-                <xpath expr="//field[@name='exchange_rate']" position="after">
-                    <field name="other_coin" />
-                </xpath>
                 <data>
                     <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
                         <page string="Comex">
@@ -25,6 +18,8 @@
                                 <!--<button  type="object" name="send_to_sii" string="Enviar al SII" attrs="{'invisible': [('state','!=','draft')]}" class="oe_highlight"/>-->
                                 <button  type="object" name="send_to_sii" string="Enviar al SII" class="oe_highlight"/>
                                 <field name="method_of_payment" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
+                                <field name="other_coin" attrs="{'invisible': [('dte_code', '!=', '110')]}" />
+                                <field name="exchange_rate_other_coin" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 <field name="partner_activity_id" domain="[('id','in',partner_economic_activities)]"/>
                                 <field name="partner_economic_activities" invisible="1"/>
                                 <field name="company_economic_activities" invisible="1"/>
