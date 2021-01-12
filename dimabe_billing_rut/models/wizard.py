@@ -764,7 +764,6 @@ class WizardHrPaySlip(models.TransientModel):
         rut_dv = ""
         rut_emp = ""
         rut_emp_dv = ""
-
         try:
             rut_emp, rut_emp_dv = self.env.user.company_id.vat.split("-")
             rut_emp = rut_emp.replace('.', '')
