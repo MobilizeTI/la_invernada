@@ -90,7 +90,7 @@ class WizardHrPaySlip(models.TransientModel):
             'report': file_base64,
             'report_name':f'Libro de Remuneraciones {self.company_id.name}'
             })
-        self.write({'report': file_base64, 'report_name': 'Libro de Remuneraciones {}'.format(indicadores_id.name)})
+        self.write({'report': file_base64, 'report_name': 'Libro de Remuneraciones {}'.format(indicadores.name)})
         return {
             'type':'ir.actions.do_nothing'
         } 
