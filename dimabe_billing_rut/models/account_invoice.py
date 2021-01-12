@@ -492,7 +492,7 @@ class AccountInvoice(models.Model):
                     "TransportRoute":str(self.type_transport.code),
                     "OriginPortCode":str(self.departure_port.code),
                     "DestinyPortCode":str(self.arrival_port.code),
-                    "tara":str(self.tara),
+                    "Tara":str(self.tara),
                     "GrossWeight":str(self.gross_weight),
                     "NetWeight":str(self.net_weight),
                     "UnitTaraCode":str(self.uom_tara.code),
@@ -506,7 +506,7 @@ class AccountInvoice(models.Model):
                     "DestinyCountryCode":str(self.destiny_country_dte.code)
                 }  
             }
-            invoice['total']: {
+            invoice['total'] = {
                 "CoinType": str(self.currency_id.name),
                 "exemptAmount": str(exemtAmount),
                 "totalAmount": str(total_amount)
@@ -519,7 +519,7 @@ class AccountInvoice(models.Model):
                 }
             
         else:
-            invoice['total']: {
+            invoice['total'] = {
                 "netAmount": str(netAmount),
                 "exemptAmount": str(exemtAmount),
                 "taxRate": "19",
