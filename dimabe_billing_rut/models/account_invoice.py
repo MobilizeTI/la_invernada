@@ -133,7 +133,7 @@ class AccountInvoice(models.Model):
             item.partner_activity_id = activities
 
     def _get_sale_orders(self):
-        self.order_ids = self.env['sale.order'].order_id.mapped('sale_order_line').filtered(lambda a : a.qty_delivered < a.product_uom_qty)
+        self.order_ids = self.env['sale.order'].id.mapped('sale_order_line').filtered(lambda a : a.qty_delivered < a.product_uom_qty)
         #raise models.ValidationError('test _getsale_orders')
 
     @api.model
