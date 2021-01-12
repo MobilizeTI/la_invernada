@@ -1062,3 +1062,4 @@ class WizardHrPaySlip(models.TransientModel):
             "url":f"/web/content/wizard.hr.payslip/{self.id}?download=true",
             'nodestroy':False
         }
+
