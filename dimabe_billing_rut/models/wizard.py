@@ -82,6 +82,7 @@ class WizardHrPaySlip(models.TransientModel):
             for rule in rules:
                 worksheet.write(row,col,self.env['hr.payslip.line'].sudo().search([('slip_id','=',pay.id),('salary_rule_id','=',rule.id)]).total)
                 col += 1
+            col = 0
             row += 1
         workbook.close()
         with open(file_name,"rb") as file:
