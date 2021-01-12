@@ -129,9 +129,17 @@ class AccountInvoice(models.Model):
             item.partner_activity_id = activities
 
     @api.model
-    @api.onchange('date_invoice')
+    @api.onchange('other_coin')
+    def exchange_rate_other_coin(self):
+        self._default_exchange_rate(self)
+
+    @api.model
+    @api.onchange('date')
+    def exchange_rate_date(self):
+        self._default_exchange_rate(self)
+
     def _default_exchange_rate(self):
-        date = self.date_invoice
+        date = self.date
         if date:
             currency_id = self.env['res.currency'].search([('name', '=', 'USD')])
             rates = currency_id.rate_ids.search([('name', '=', date)])
@@ -145,7 +153,6 @@ class AccountInvoice(models.Model):
                 self.exchange_rate_other_coin = 1 / rate.rate
         else:
             self.exchange_rate_other_coin = 0
-
 
  
     #@api.onchange('type')
