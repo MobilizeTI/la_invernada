@@ -76,9 +76,13 @@ class AccountInvoice(models.Model):
 
     observations_ids = fields.One2many('custom.invoice.observations','invoice_id',string='Observaciones')
 
-    dte_type = fields.Many2many('dte.type',compute = 'onchange_type')
+    dte_type = fields.Many2many('dte.type')
 
     #To Export
+    other_coin = fields.Many2one('res.currency', string='Otra Moneda')
+
+    exchange_rate_other_coin = fields.Float('Tasa de Cambio Otra Moneda')
+
     departure_port = fields.Many2one('custom.port','Puerto de Embarque')
 
     arrival_port = fields.Many2one('custom.port','Puerto de Desembarque')
@@ -124,19 +128,36 @@ class AccountInvoice(models.Model):
                 activities.append(activity.id)
             item.partner_activity_id = activities
 
+    @api.model
+    @api.onchange('date_invoice')
+    def _default_exchange_rate(self):
+        date = self.date_invoice
+        if date:
+            currency_id = self.env['res.currency'].search([('name', '=', 'USD')])
+            rates = currency_id.rate_ids.search([('name', '=', date)])
+            if len(rates) == 0:
+                currency_id.get_rate_by_date(date)
+
+            rates = self.env['res.currency.rate'].search([('name', '<=', date)])
+
+            if len(rates) > 0:
+                rate = rates[0]
+                self.exchange_rate_other_coin = 1 / rate.rate
+        else:
+            self.exchange_rate_other_coin = 0
+
 
  
     #@api.onchange('type')
     #not worked
-    @api.multi
-    def onchange_type(self):
-        if self.type:
-            if 'refund' in self.type:
-                types = self.env['dte.type'].search([('code','in',('56','61','111','112'))]) 
-            else:
-                types = self.env['dte.type'].search([('code','not in',('56','61','111','112'))]) 
-
-            return types
+    #@api.multi
+    #def onchange_type(self):
+    #    if self.type:
+    #        if 'refund' in self.type:
+    #            types = self.env['dte.type'].search([('code','in',('56','61','111','112'))]) 
+    #        else:
+    #            types = self.env['dte.type'].search([('code','not in',('56','61','111','112'))]) 
+    #        return types
     
     @api.multi
     def send_to_sii(self):
@@ -452,13 +473,6 @@ class AccountInvoice(models.Model):
                 "EnterpriseTurn": self.partner_activity_id.name,
                 "EnterprisePhone": recipientPhone
             },
-            "total": {
-                "netAmount": str(netAmount),
-                "exemptAmount": str(exemtAmount),
-                "taxRate": "19",
-                "taxtRateAmount": str(self.roundclp(self.amount_tax)),
-                "totalAmount": str(total_amount)
-            },
             "lines": productLines,
         }
         if self.dte_type_id.code == "110":
@@ -482,10 +496,25 @@ class AccountInvoice(models.Model):
                 "ReceiverCountryCode":str(self.receiving_country_dte.code),
                 "DestinyCountryCode":str(self.destiny_country_dte.code)
             }
-            invoice['othercoin'] = {
-                "CoinType" : "",
-                "ExemptAmount" : "",
-                "Amount" : ""
+            invoice['total']: {
+                "CoinType": str(self.currency_id.name),
+                "exemptAmount": str(exemtAmount),
+                "totalAmount": str(total_amount)
+            }
+            if self.other_coin:
+                invoice['othercoin'] = {
+                    "CoinType" : str(self.other_coin.name),
+                    "ExemptAmount" : str(exemtAmount * self.exchange_rate_other_coin),
+                    "Amount" : str(total_amount * self.exchange_rate_other_coin)
+                }
+            
+        else:
+            invoice['total']: {
+                "netAmount": str(netAmount),
+                "exemptAmount": str(exemtAmount),
+                "taxRate": "19",
+                "taxtRateAmount": str(self.roundclp(self.amount_tax)),
+                "totalAmount": str(total_amount)
             }
         return invoice
 
