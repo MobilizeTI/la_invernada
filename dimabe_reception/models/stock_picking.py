@@ -282,7 +282,6 @@ class StockPicking(models.Model):
             else:
                 raise models.ValidationError(str(e))
 
-
     @api.multi
     def action_confirm(self):
         if self.picking_type_code == 'incoming':
