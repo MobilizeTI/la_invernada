@@ -47,7 +47,7 @@
                  readonly="1"/>
           <field name="net_weight"
                  attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)]}"
-          /><button type="object" string="Obtener Peso Romana" name="button_weight_net" attrs="{'invisible':}"/>
+          /><button type="object" string="Obtener Peso Romana" name="button_weight_net"/>
           <field name="avg_unitary_weight"
                  attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)]}"
           />
