@@ -725,10 +725,11 @@ class WizardHrPaySlip(models.TransientModel):
         return cadena
 
     @api.multi
-    def verify_ccaf(self,TOTIM):
+    def verify_ccaf(self,TOTIM,UF):
         TOTIM_2 = float(TOTIM)
         if TOTIM_2 > self.ccaf_max:
-            return self.ccaf_max
+            data = float(uf * 80)
+            return 
         else:
             return TOTIM
 
@@ -994,7 +995,7 @@ class WizardHrPaySlip(models.TransientModel):
                              # TODO ES HACER PANTALLA CON DATOS EMPRESA
                              payslip.indicadores_id.ccaf_id.codigo if payslip.indicadores_id.ccaf_id.codigo else "00",
                              # 84 Renta Imponible CCAF
-                             self.verify_ccaf(self.get_payslip_lines_value_2(payslip,'TOTIM')),
+                             self.verify_ccaf(self.get_payslip_lines_value_2(payslip,'TOTIM'),payslip.indicadores_id.uf),
                              # 85 Creditos Personales CCAF TODO
                              self.get_payslip_lines_value_2(payslip, 'PCCAF') if self.get_payslip_lines_value_2(payslip,
                                                                                                                 'PCCAF') else "0",
