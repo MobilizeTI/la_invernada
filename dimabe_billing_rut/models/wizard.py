@@ -81,11 +81,9 @@ class WizardHrPaySlip(models.TransientModel):
             if row == 0:
                 worksheet.write(row,col,pay.employee_id.display_name)
                 row += 1
-                col += 1
             elif row == 1:
                 worksheet.write(row,col,pay.employee_id.identification_id)
                 row += 1
-                col += 1
             rules = pay.struct_id.rule_ids
             for rule in rules:
                 worksheet.write(row,col,self.env['hr.payslip.line'].sudo().search([('slip_id','=',pay.id),('salary_rule_id','=',rule.id)]).total)
