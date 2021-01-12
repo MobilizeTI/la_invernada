@@ -60,7 +60,7 @@ class WizardHrPaySlip(models.TransientModel):
     ], string='Separador de Campos', default='dot_coma', required=True)
 
     report_name = fields.Char('')
-    }
+
 
     @api.multi
     def compute_ccaf_max(self):
