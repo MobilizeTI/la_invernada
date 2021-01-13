@@ -86,9 +86,11 @@ class WizardHrPaySlip(models.TransientModel):
             rules = pay.struct_id.rule_ids
             col = 0
             worksheet.write(row, col, pay.employee_id.display_name)
+            worksheet.write(4,0,'Nombre:')
             long_name = max(payslips.mapped('employee_id').mapped('display_name'), key=len)
             worksheet.set_column(row, col, len(long_name))
             col += 1
+            worksheet.write(4,1,'Rut:')
             worksheet.write(row, col, pay.employee_id.identification_id)
             long_rut = max(payslips.mapped('employee_id').mapped('identification_id'), key=len)
             worksheet.set_column(row, col, len(long_rut))
@@ -96,6 +98,8 @@ class WizardHrPaySlip(models.TransientModel):
             for rule in rules:
                 if not rule.show_in_book:
                     continue
+                worksheet.write(4,col,self.env['hr.payslip.line'].sudo().search(
+                    [('slip_id', '=', pay.id), ('salary_rule_id', '=', rule.id)]).name.capitalize())
                 worksheet.write(row, col, self.env['hr.payslip.line'].sudo().search(
                     [('slip_id', '=', pay.id), ('salary_rule_id', '=', rule.id)]).total)
                 col += 1
