@@ -153,7 +153,7 @@ class AccountInvoice(models.Model):
         for ol in order_lines:
             if ol.qty_delivered < ol.product_uom_qty:
                 if ol.order_id not in order_ids:
-                    order_ids.append(ol.order_id)
+                    order_ids.append(ol.order_id.id)
                # raise models.ValidationError('el id {} es apto por que pedido: {} y entregado: {} u orderid: {}'.format(ol.id,ol.product_uom_qty,ol.qty_delivered,ol.order_id))
         test = ''
         for asd in order_ids:
