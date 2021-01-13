@@ -99,7 +99,7 @@ class WizardHrPaySlip(models.TransientModel):
                 if not rule.show_in_book:
                     continue
                 worksheet.write(4,col,rule.name.capitalize())
-                worksheet.write(row, col, f'Rule {self.env["hr.payslip.line"].sudo().search([("slip_id","=",pay.id),("rule_id","=",rule.id)])}')
+                worksheet.write(row, col, f'Rule {self.env["hr.payslip.line"].sudo().search([("slip_id","=",pay.id),("rule_id","=",rule.id)]).read()}')
                 col += 1
             col = 0
             row += 1
