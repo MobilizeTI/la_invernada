@@ -78,15 +78,20 @@ class WizardHrPaySlip(models.TransientModel):
                 f'Los indicadores provicionales del mes de {indicadores.name} no se encuentran validados')
         row = 0
         col = 0
-        payslips = self.env['hr.payslip'].sudo().search([('indicadores_id', '=', indicadores.id)])
+        payslips = self.env['hr.payslip'].sudo().search(
+            [('indicadores_id', '=', indicadores.id), ('state', '=', 'done')])
         for pay in payslips:
             if pay.employee_id.address_id.id != self.company_id.id:
                 continue
             rules = pay.struct_id.rule_ids
             col = 0
             worksheet.write(row, col, pay.employee_id.display_name)
+            long_name = max(payslips.mapped('employee_id').mapped('display_name'), key=len)
+            worksheet.set_column(row, col, len(long_name))
             col += 1
             worksheet.write(row, col, pay.employee_id.identification_id)
+            long_rut = max(payslips.mapped('employee_id').mapped('identification_id'), key=len)
+            worksheet.set_column(row, col, len(long_rut))
             col += 1
             for rule in rules:
                 if not rule.show_in_book:
