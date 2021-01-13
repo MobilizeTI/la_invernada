@@ -54,7 +54,8 @@
         'views/custom_receiving_country_dte.xml',
         'views/custom_package_type.xml',
         'views/custom_uom.xml',
-        'views/hr_payroll_structure.xml'
+        'views/hr_payroll_structure.xml',
+        'views/hr_salary_rule.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
