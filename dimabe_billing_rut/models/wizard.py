@@ -84,7 +84,7 @@ class WizardHrPaySlip(models.TransientModel):
             if pay.employee_id.address_id.id != self.company_id.id:
                 continue
             rules = self.env['hr.salary.rule'].search([('id', 'in', pay.struct_id.rule_ids.mapped('id'))],
-                                                      order='category_id.order_from_book')
+                                                      order='sequence')
             col = 0
             worksheet.write(row, col, pay.employee_id.display_name)
             worksheet.write(4, 0, 'Nombre:')
