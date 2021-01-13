@@ -9,14 +9,17 @@ class AccountInvoiceXlsx(models.Model):
     _name = 'account.invoice.xlsx'
 
     purchase_file = fields.Binary(
-        "Libro de Compra")
+        "Libro de Compra", default=lambda self: self.env['account.invoice.xlsx'].sudo().search([])[-1].purchase_file)
 
-    purchase_report_name = fields.Char("Reporte Compra")
+    purchase_report_name = fields.Char("Reporte Compra",
+                                       default=lambda self: self.env['account.invoice.xlsx'].sudo().search([])[
+                                           -1].purchase_report_name)
 
     sale_file = fields.Binary(
-        "Libro de Venta")
+        "Libro de Venta", default=lambda self: self.env['account.invoice.xlsx'].search([])[-1].sale_file)
 
-    sale_report_name = fields.Char("Reporte Venta")
+    sale_report_name = fields.Char("Reporte Venta", default=lambda self: self.env['account.invoice.xlsx'].search([])[
+        -1].sale_report_name)
 
     from_date = fields.Date('Desde')
 
