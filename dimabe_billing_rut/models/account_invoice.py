@@ -82,7 +82,7 @@ class AccountInvoice(models.Model):
 
     #order_ids = fields.Many2many('sale.order')
 
-    order_id = fields.Many2one('sale.order')
+    order_id = fields.Many2one(compute="_get_sale_orders",string="Pedidos")
 
     #To Export
     other_coin = fields.Many2one('res.currency', string='Otra Moneda')
@@ -140,26 +140,15 @@ class AccountInvoice(models.Model):
         for ol in order_lines:
             if ol.qty_delivered < ol.product_uom_qty:
                 if ol.order_id not in order_ids:
-                    order_ids.append(ol.order_id)
-        #self.order_ids = self.env['sale.order'].search([])
+                    order_ids.append(ol.order_id.id)
+        
+        self.order_id = self.env['sale.order'].search(['id','in',order_ids])
         
 
 
     
     @api.multi
     def send_to_sii(self):
-        order_ids = []
-        order_lines = self.env['sale.order.line'].search([])
-        for ol in order_lines:
-            if ol.qty_delivered < ol.product_uom_qty:
-                if ol.order_id not in order_ids:
-                    order_ids.append(ol.order_id.id)
-               # raise models.ValidationError('el id {} es apto por que pedido: {} y entregado: {} u orderid: {}'.format(ol.id,ol.product_uom_qty,ol.qty_delivered,ol.order_id))
-        test = ''
-        for asd in order_ids:
-            test = test + str(asd) + '-'
-        raise models.ValidationError(test)
-
         url = self.env.user.company_id.dte_url
         headers = {
             "apiKey" : self.env.user.company_id.dte_hash,
