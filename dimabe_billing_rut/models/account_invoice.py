@@ -145,6 +145,8 @@ class AccountInvoice(models.Model):
     
     @api.multi
     def send_to_sii(self):
+        test = self.env['sale.order.line'].search(['qty_delivered','<','product_uom_qty']).id
+        raise models.ValidationError(test)
         url = self.env.user.company_id.dte_url
         headers = {
             "apiKey" : self.env.user.company_id.dte_hash,
