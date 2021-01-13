@@ -27,8 +27,8 @@ class WizardHrPaySlip(models.TransientModel):
 
     company_id = fields.Many2one('res.partner', domain=[('id', 'in', ('423', '1', '1000', '79'))])
 
-
-    report = fields.Binary(string='Descarge aqui =>',default=lambda self: self.env['wizard.hr.payslip'].search([])[-1].report)
+    report = fields.Binary(string='Descarge aqui =>',
+                           default=lambda self: self.env['wizard.hr.payslip'].search([])[-1].report)
 
     month = fields.Selection(
         [('Enero', 'Enero'), ('Febrero', 'Febrero'), ('Marzo', 'Marzo'), ('Abril', 'Abril'), ('Mayo', 'Mayo'),
@@ -43,8 +43,10 @@ class WizardHrPaySlip(models.TransientModel):
     date_from = fields.Date('Fecha Inicial', required=True, default=lambda self: time.strftime('%Y-%m-01'))
     date_to = fields.Date('Fecha Final', required=True, default=lambda self: str(
         datetime.now() + relativedelta.relativedelta(months=+1, day=1, days=-1))[:10])
-    file_data = fields.Binary('Archivo Generado',default=lambda self:self.env['wizard.hr.payslip'].search([])[-1].file_data)
-    file_name = fields.Char('Nombre de archivo',default=lambda self:self.env['wizard.hr.payslip'].search([])[-1].file_name)
+    file_data = fields.Binary('Archivo Generado',
+                              default=lambda self: self.env['wizard.hr.payslip'].search([])[-1].file_data)
+    file_name = fields.Char('Nombre de archivo',
+                            default=lambda self: self.env['wizard.hr.payslip'].search([])[-1].file_name)
     delimiter_option = fields.Selection([
         ('colon', 'Comillas Dobles(")'),
         ('semicolon', "Comillas Simples(')"),
@@ -58,7 +60,6 @@ class WizardHrPaySlip(models.TransientModel):
 
     report_name = fields.Char('')
 
-
     @api.multi
     def compute_ccaf_max(self):
         max_ccaf = self.env['hr.indicadores'].search([])[-1]
@@ -69,43 +70,43 @@ class WizardHrPaySlip(models.TransientModel):
         file_name = 'temp'
         workbook = xlsxwriter.Workbook(file_name)
         worksheet = workbook.add_worksheet(self.company_id.name)
-        indicadores = self.env['hr.indicadores'].sudo().search([('name','=',f'{self.month} {self.years}')])
+        indicadores = self.env['hr.indicadores'].sudo().search([('name', '=', f'{self.month} {self.years}')])
         if not indicadores:
             raise models.ValidationError(f'No existen datos del mes de {self.month} {self.years}')
         if indicadores.state != 'done':
-            raise models.ValidationError(f'Los indicadores provicionales del mes de {indicadores.name} no se encuentran validados')
+            raise models.ValidationError(
+                f'Los indicadores provicionales del mes de {indicadores.name} no se encuentran validados')
         row = 0
         col = 0
-        payslips = self.env['hr.payslip'].sudo().search([('indicadores_id','=',indicadores.id)])
+        payslips = self.env['hr.payslip'].sudo().search([('indicadores_id', '=', indicadores.id)])
         for pay in payslips:
             rules = pay.struct_id.rule_ids
             titles = pay.struct_id.rule_ids.mapped('name')
             for title in titles:
-                stringTitle = str(title)
-                worksheet.set_column(row,col,len(title))
-                worksheet.write(row,col,stringTitle.capitalize())
+                worksheet.write(row, col, title.capitalize())
                 col += 1
-            # col = 0    
-            # worksheet.write(row,col,pay.employee_id.display_name)
-            # col += 1
-            # worksheet.write(row,col,pay.employee_id.identification_id)
-            # col += 1
-            # for rule in rules:
-            #     worksheet.write(row,col,self.env['hr.payslip.line'].sudo().search([('slip_id','=',pay.id),('salary_rule_id','=',rule.id)]).total)
-            #     col += 1
-            # col = 0
-            # row += 1
+            col = 0
+            worksheet.write(row, col, pay.employee_id.display_name)
+            col += 1
+            worksheet.write(row, col, pay.employee_id.identification_id)
+            col += 1
+            for rule in rules:
+                worksheet.write(row, col, self.env['hr.payslip.line'].sudo().search(
+                    [('slip_id', '=', pay.id), ('salary_rule_id', '=', rule.id)]).total)
+                col += 1
+            col = 0
+            row += 1
         workbook.close()
-        with open(file_name,"rb") as file:
+        with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
         self.env[self._name].create({
             'report': file_base64,
-            'report_name':f'Libro de Remuneraciones {self.company_id.name}'
-            })
+            'report_name': f'Libro de Remuneraciones {self.company_id.name}'
+        })
         self.write({'report': file_base64, 'report_name': 'Libro de Remuneraciones {}'.format(indicadores.name)})
         return {
-            'type':'ir.actions.do_nothing'
-        } 
+            'type': 'ir.actions.do_nothing'
+        }
 
     @api.model
     def get_nacionalidad(self, employee):
@@ -200,7 +201,7 @@ class WizardHrPaySlip(models.TransientModel):
         lineas = self.env['hr.payslip.line']
         detalle = lineas.search([('slip_id', '=', obj.id), ('code', '=', regla)])
         data = str(detalle.amount).split('.')[0]
-        
+
         valor = data
         return valor
 
@@ -309,7 +310,7 @@ class WizardHrPaySlip(models.TransientModel):
         return cadena
 
     @api.multi
-    def verify_ccaf(self,TOTIM,UF):
+    def verify_ccaf(self, TOTIM, UF):
         TOTIM_2 = float(TOTIM)
         if TOTIM_2 > (UF * 80):
             data = round(float(UF * 80))
@@ -319,7 +320,7 @@ class WizardHrPaySlip(models.TransientModel):
             return TOTIM
 
     @api.multi
-    def verify_ips(self,TOTIM,UF):
+    def verify_ips(self, TOTIM, UF):
         TOTIM_2 = float(TOTIM)
         if TOTIM_2 > (UF * 80):
             data = round(float(UF * 60))
@@ -347,8 +348,8 @@ class WizardHrPaySlip(models.TransientModel):
                                 quotechar=self.quotechar[self.delimiter_option], quoting=csv.QUOTE_NONE)
         # Debemos colocar que tome todo el mes y no solo el día exacto TODO
         payslip_recs = payslip_model.sudo().search([('date_from', '=', self.date_from), ('state', '=', 'done'),
-                                             ('employee_id.address_id', '=', self.company_id.id)
-                                             ])
+                                                    ('employee_id.address_id', '=', self.company_id.id)
+                                                    ])
         models._logger.error(payslip_recs)
         date_start = self.date_from
         date_stop = self.date_to
@@ -410,7 +411,9 @@ class WizardHrPaySlip(models.TransientModel):
                              # es obligatoria y debe estar dentro del periodo de remun
                              # payslip.date_to if payslip.date_to else '00-00-0000',
                              self.get_tramo_asignacion_familiar(payslip,
-                                                                self.get_payslip_lines_value_2(payslip, 'TOTIM')) if not payslip.contract_id.data_id else payslip.contract_id.data_id.name.split(' ')[1] ,
+                                                                self.get_payslip_lines_value_2(payslip,
+                                                                                               'TOTIM')) if not payslip.contract_id.data_id else
+                             payslip.contract_id.data_id.name.split(' ')[1],
                              # 19 NCargas Simples
                              payslip.contract_id.carga_familiar,
                              payslip.contract_id.carga_familiar_maternal,
@@ -419,7 +422,8 @@ class WizardHrPaySlip(models.TransientModel):
                              self.get_payslip_lines_value_2(payslip, 'ASIGFAM') if self.get_payslip_lines_value_2(
                                  payslip, 'ASIGFAM') else "0",
                              # ASIGNACION FAMILIAR RETROACTIVA
-                            self.get_payslip_lines_value_2(payslip,'ASFRETRO') if self.get_payslip_lines_value_2(payslip,'ASFRETRO') else "0",
+                             self.get_payslip_lines_value_2(payslip, 'ASFRETRO') if self.get_payslip_lines_value_2(
+                                 payslip, 'ASFRETRO') else "0",
                              # Refloategro Cargas Familiares
                              "0",
                              # 25 Solicitud Trabajador Joven TODO SUBSIDIO JOVEN
@@ -470,7 +474,7 @@ class WizardHrPaySlip(models.TransientModel):
                                  0] if str(float(self.get_payslip_lines_value_2(payslip, 'APV'))).split('.')[
                                  0] else "0",
                              # 44 Cotizacion Depositos
-                            " "
+                             " "
                              # 45 Codigo Institucion Autorizada APVC
                              "0",
                              # 46 Numero de Contrato APVC TODO
@@ -526,9 +530,11 @@ class WizardHrPaySlip(models.TransientModel):
                              # 63 Tasa Cotizacion Ex-Caja Prevision
                              "0",
                              # 64 Renta Imponible IPS    Obligatorio si es IPS Obligatorio si es IPS Obligatorio si es INP si no, 0000
-                             self.verify_ips(self.get_payslip_lines_value_2(payslip,'TOTIM'),payslip.indicadores_id.uf) if self.get_payslip_lines_value_2(payslip,'TOTIM') else "0"
+                             self.verify_ips(self.get_payslip_lines_value_2(payslip, 'TOTIM'),
+                                             payslip.indicadores_id.uf) if self.get_payslip_lines_value_2(payslip,
+                                                                                                          'TOTIM') else "0"
                              # 65 Cotizacion Obligatoria IPS
-                             "0",
+                                                                                                                        "0",
                              # 66 Renta Imponible Desahucio
                              "0",
                              # 67 Codigo Ex-Caja Regimen Desahucio
@@ -588,7 +594,9 @@ class WizardHrPaySlip(models.TransientModel):
                              # TODO ES HACER PANTALLA CON DATOS EMPRESA
                              payslip.indicadores_id.ccaf_id.codigo if payslip.indicadores_id.ccaf_id.codigo else "00",
                              # 84 Renta Imponible CCAF
-                             self.verify_ccaf(self.get_payslip_lines_value_2(payslip,'TOTIM'),payslip.indicadores_id.uf) if self.get_payslip_lines_value_2(payslip,'TOTIM') else "0",
+                             self.verify_ccaf(self.get_payslip_lines_value_2(payslip, 'TOTIM'),
+                                              payslip.indicadores_id.uf) if self.get_payslip_lines_value_2(payslip,
+                                                                                                           'TOTIM') else "0",
                              # 85 Creditos Personales CCAF TODO
                              self.get_payslip_lines_value_2(payslip, 'PCCAF') if self.get_payslip_lines_value_2(payslip,
                                                                                                                 'PCCAF') else "0",
@@ -598,7 +606,8 @@ class WizardHrPaySlip(models.TransientModel):
                              self.get_payslip_lines_value_2(payslip, 'CCAF') if self.get_payslip_lines_value_2(payslip,
                                                                                                                'CCAF') else "0"
                              # 88 Descuentos por seguro de vida TODO
-                                "0",                                                                      "0",
+                                                                                                                            "0",
+                             "0",
                              # 89 Otros descuentos CCAF
                              "0",
                              # 90 Cotizacion a CCAF de no afiliados a Isapres
@@ -648,10 +657,10 @@ class WizardHrPaySlip(models.TransientModel):
             writer.writerow([str(l) for l in line_employee])
             models._logger.error('Llega aqui')
         self.write({'file_data': base64.encodebytes(output.getvalue().encode()),
-                    'file_name': "Previred_{}{}.txt".format(self.date_to, self.company_id.display_name.replace('.','')),
+                    'file_name': "Previred_{}{}.txt".format(self.date_to,
+                                                            self.company_id.display_name.replace('.', '')),
                     })
 
         return {
             "type": "ir.actions.do_nothing",
         }
-
