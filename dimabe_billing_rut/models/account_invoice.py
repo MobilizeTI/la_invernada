@@ -143,7 +143,6 @@ class AccountInvoice(models.Model):
                 if ol.order_id not in order_ids:
                     order_ids.append(ol.order_id.id)
         
-
         sale_order = self.env['sale.order'].search([])
         for item in sale_order:
             if item.id in order_ids:
