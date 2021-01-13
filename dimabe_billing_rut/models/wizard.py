@@ -83,14 +83,15 @@ class WizardHrPaySlip(models.TransientModel):
         for pay in payslips:
             if pay.employee_id.address_id.id != self.company_id.id:
                 continue
-            rules = self.env['hr.salary.rule'].search([('id','in',pay.struct_id.rule_ids.mapped('id'))],order='name')
+            rules = self.env['hr.salary.rule'].search([('id', 'in', pay.struct_id.rule_ids.mapped('id'))],
+                                                      order='category_id.order_from_book')
             col = 0
             worksheet.write(row, col, pay.employee_id.display_name)
-            worksheet.write(4,0,'Nombre:')
+            worksheet.write(4, 0, 'Nombre:')
             long_name = max(payslips.mapped('employee_id').mapped('display_name'), key=len)
             worksheet.set_column(row, col, len(long_name))
             col += 1
-            worksheet.write(4,1,'Rut:')
+            worksheet.write(4, 1, 'Rut:')
             worksheet.write(row, col, pay.employee_id.identification_id)
             long_rut = max(payslips.mapped('employee_id').mapped('identification_id'), key=len)
             worksheet.set_column(row, col, len(long_rut))
@@ -98,8 +99,9 @@ class WizardHrPaySlip(models.TransientModel):
             for rule in rules:
                 if not rule.show_in_book:
                     continue
-                worksheet.write(4,col,rule.name.capitalize())
-                worksheet.write(row, col, self.env["hr.payslip.line"].sudo().search([("slip_id","=",pay.id),("salary_rule_id","=",rule.id)]).total)
+                worksheet.write(4, col, rule.name.capitalize())
+                worksheet.write(row, col, self.env["hr.payslip.line"].sudo().search(
+                    [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total)
                 col += 1
             col = 0
             row += 1
