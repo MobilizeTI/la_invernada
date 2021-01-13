@@ -53,7 +53,8 @@
         'views/custom_type_transport.xml',
         'views/custom_receiving_country_dte.xml',
         'views/custom_package_type.xml',
-        'views/custom_uom.xml'
+        'views/custom_uom.xml',
+        'views/hr_payroll_structure.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
