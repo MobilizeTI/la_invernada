@@ -80,6 +80,8 @@ class WizardHrPaySlip(models.TransientModel):
         col = 0
         payslips = self.env['hr.payslip'].sudo().search([('indicadores_id', '=', indicadores.id)])
         for pay in payslips:
+            if pay.employee_id.address_id.id != self.company_id.id:
+                continue
             rules = pay.struct_id.rule_ids
             col = 0
             worksheet.write(row, col, pay.employee_id.display_name)
