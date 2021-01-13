@@ -82,7 +82,7 @@ class AccountInvoice(models.Model):
 
     #order_ids = fields.Many2many('sale.order')
 
-    order_id = fields.Char(compute="_compute_sale_orders",string="Pedidos")
+    order_id = fields.Many2one(compute="_compute_sale_orders",string="Pedidos")
 
     #To Export
     other_coin = fields.Many2one('res.currency', string='Otra Moneda')
@@ -136,17 +136,17 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def _compute_sale_orders(self):
-        order_ids = []
+        order_line_ids = []
         order_lines = self.env['sale.order.line'].search([])
         for ol in order_lines:
             if ol.qty_delivered < ol.product_uom_qty:
-                if ol.order_id not in order_ids:
-                    order_ids.append(ol.order_id.id)
+                if ol.order_id not in order_line_ids:
+                    order_line_ids.append(ol.order_id.id)
         
         all_sale_order = self.env['sale.order'].search([])
         sale_order = []
         for item in all_sale_order:
-            if item.id in order_ids:
+            if item.id in order_line_ids:
                 sale_order.append(item.name)
                 
         self.order_id = sale_order
