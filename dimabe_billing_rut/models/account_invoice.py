@@ -144,7 +144,9 @@ class AccountInvoice(models.Model):
                     order_ids.append(ol.order_id.id)
         
 
-        self.order_id = self.env['sale.order'].search(['id','in',order_ids]).name
+        sale_order = self.env['sale.order'].search(['id','in',order_ids])
+        for item in sale_order:
+            self.order_id.appemd(item.name)
         
 
 
