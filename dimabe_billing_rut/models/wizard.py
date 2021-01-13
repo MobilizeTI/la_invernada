@@ -91,6 +91,8 @@ class WizardHrPaySlip(models.TransientModel):
             worksheet.write(row, col, pay.employee_id.identification_id)
             col += 1
             for rule in rules:
+                if not rule.show_in_book:
+                    continue
                 worksheet.write(row, col, self.env['hr.payslip.line'].sudo().search(
                     [('slip_id', '=', pay.id), ('salary_rule_id', '=', rule.id)]).total)
                 col += 1
