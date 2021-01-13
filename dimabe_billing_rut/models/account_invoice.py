@@ -157,7 +157,7 @@ class AccountInvoice(models.Model):
                # raise models.ValidationError('el id {} es apto por que pedido: {} y entregado: {} u orderid: {}'.format(ol.id,ol.product_uom_qty,ol.qty_delivered,ol.order_id))
         test = ''
         for asd in order_ids:
-            test = test + asd + '-'
+            test = test + str(asd) + '-'
         raise models.ValidationError(test)
 
         url = self.env.user.company_id.dte_url
