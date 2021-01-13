@@ -76,7 +76,7 @@ class WizardHrPaySlip(models.TransientModel):
         if indicadores.state != 'done':
             raise models.ValidationError(
                 f'Los indicadores provicionales del mes de {indicadores.name} no se encuentran validados')
-        row = 0
+        row = 5
         col = 0
         payslips = self.env['hr.payslip'].sudo().search(
             [('indicadores_id', '=', indicadores.id), ('state', '=', 'done')])
