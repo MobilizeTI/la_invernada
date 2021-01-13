@@ -135,20 +135,31 @@ class AccountInvoice(models.Model):
             item.partner_activity_id = activities
 
     def _get_sale_orders(self):
-        order_line = []
-        test = self.env['sale.order.line'].search(['qty_delivered','<','product_uom_qty']).id
-        raise models.ValidationError(test)
-        self.order_ids = self.env['sale.order'].search([])
+        order_ids = []
+        order_lines = self.env['sale.order.line'].search([])
+        for ol in order_lines:
+            if ol.qty_delivered < ol.product_uom_qty:
+                if ol.order_id not in order_ids:
+                    order_ids.append(ol.order_id)
+        #self.order_ids = self.env['sale.order'].search([])
         
 
 
     
     @api.multi
     def send_to_sii(self):
+        order_ids = []
         order_lines = self.env['sale.order.line'].search([])
         for ol in order_lines:
             if ol.qty_delivered < ol.product_uom_qty:
-                raise models.ValidationError('el id {} es apto por que pedido: {} y entregado: {}'.format(ol.id,ol.product_uom_qty,ol.qty_delivered))
+                if ol.order_id not in order_ids:
+                    order_ids.append(ol.order_id)
+               # raise models.ValidationError('el id {} es apto por que pedido: {} y entregado: {} u orderid: {}'.format(ol.id,ol.product_uom_qty,ol.qty_delivered,ol.order_id))
+        test = ''
+        for asd in order_ids:
+            test = test + asd + '-'
+        raise models.ValidationError(test)
+
         url = self.env.user.company_id.dte_url
         headers = {
             "apiKey" : self.env.user.company_id.dte_hash,
