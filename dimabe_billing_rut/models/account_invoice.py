@@ -80,13 +80,13 @@ class AccountInvoice(models.Model):
 
     #Orders to Add in Invoice
 
-    order_ids = fields.Many2one(
-        'sale.order',
+    order_ids = fields.Selection(
         string="Pedidos",
-        compute=lambda self: self._compute_sale_orders()
+        compute="_compute_sale_orders"
+        #compute=lambda self: self._compute_sale_orders()
     )
 
-    order_id = fields.Selection(compute="_compute_sale_orders",string="Pedidos")
+    order_id = fields.Many2one(compute="_compute_sale_orders",string="Pedidos")
 
     #To Export
     other_coin = fields.Many2one('res.currency', string='Otra Moneda')
