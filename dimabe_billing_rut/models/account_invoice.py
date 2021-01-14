@@ -153,7 +153,7 @@ class AccountInvoice(models.Model):
         for item in all_sale_order:
             if item.id in order_line_ids:
                 sale_order.append(item.name)
-                    
+        raise models.ValidationError(str(sale_order[0]))      
         self.order_ids = sale_order
         
 
