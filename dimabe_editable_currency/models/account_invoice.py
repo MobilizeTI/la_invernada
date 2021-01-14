@@ -28,6 +28,25 @@ class AccountInvoice(models.Model):
         else:
             self.exchange_rate = 0
 
+    #nuevo
+    @api.model
+    @api.onchange('currency_id')
+    def _default_exchange_rate_currency(self):
+        date = self.date_invoice
+        if date:
+            currency_id = self.env['res.currency'].search([('name', '=', 'USD')])
+            rates = currency_id.rate_ids.search([('name', '=', date)])
+            if len(rates) == 0:
+                currency_id.get_rate_by_date(date)
+
+            rates = self.env['res.currency.rate'].search([('name', '<=', date)])
+
+            if len(rates) > 0:
+                rate = rates[0]
+                self.exchange_rate = 1 / rate.rate
+        else:
+            self.exchange_rate = 0
+
     def action_invoice_open(self):
 
         if self.id:
