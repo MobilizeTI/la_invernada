@@ -154,7 +154,7 @@ class AccountInvoice(models.Model):
                 if item.id in order_line_ids:
                     sale_order.append(item.name)
                     
-            item.order_ids = [(6,0,sale_order)]
+            item.order_ids = sale_order
         
 
 
