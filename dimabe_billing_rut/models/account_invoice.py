@@ -80,7 +80,7 @@ class AccountInvoice(models.Model):
 
     #Orders to Add in Invoice
 
-    order_ids = fields.Selection(_compute_sale_orders,
+    order_ids = fields.Selection(selection=lambda self: self._compute_sale_orders(),
         string="Pedidos"
     )
 
@@ -146,12 +146,13 @@ class AccountInvoice(models.Model):
                     order_line_ids.append(ol.order_id.id)
            
         all_sale_order = self.env['sale.order'].search([])
-        sale_order_valid = []
+        sale_order_valid =  []
         for item in all_sale_order:
             if item.id in order_line_ids:
-                sale_order_valid.append(item.name)  
+                sale_order_valid[item.order_id] = item.name  
 
         #self.order_ids = sale_order_valid
+        raise models.ValidationError(json.dumps(sale_order_valid))
         return sale_order_valid
     
     @api.multi
