@@ -80,23 +80,8 @@ class AccountInvoice(models.Model):
 
     #Orders to Add in Invoice
 
-    def _compute_sale_orders(self):     
-        order_line_ids = []
-        order_lines = self.env['sale.order.line'].search([])
-        for ol in order_lines:
-            if ol.qty_delivered < ol.product_uom_qty:
-                if ol.order_id not in order_line_ids:
-                    order_line_ids.append(ol.order_id.id)
-           
-        all_sale_order = self.env['sale.order'].search([])
-        sale_order_valid =  {}
-        for item in all_sale_order:
-            if item.id in order_line_ids:
-                sale_order_valid[item.id] = item.name  
-
-        return sale_order_valid
-
-    order_ids = fields.Selection(selection=lambda self: self._compute_sale_orders(),
+    order_ids = fields.Many2one('sale.order',
+        domain=[('can_add_order','=',True)],
         string="Pedidos"
     )
 
