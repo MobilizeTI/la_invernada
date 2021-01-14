@@ -80,7 +80,11 @@ class AccountInvoice(models.Model):
 
     #Orders to Add in Invoice
 
-    #order_ids = fields.Many2many('sale.order')
+    order_ids = fields.Many2many(
+        'sale.order',
+        string="Pedidos",
+        compute=lambda self: self._compute_sale_orders()
+    )
 
     order_id = fields.Many2many(compute="_compute_sale_orders",string="Pedidos")
 
@@ -136,14 +140,18 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def _compute_sale_orders(self):
-        order_line_ids = []
-        order_lines = self.env['sale.order.line'].search([])
-        for ol in order_lines:
-            if ol.qty_delivered < ol.product_uom_qty:
-                if ol.order_id not in order_line_ids:
-                    order_line_ids.append(ol.order_id.id)
+        for item in self:
+            order_line_ids = []
+            order_lines = self.env['sale.order.line'].search([])
+            for ol in order_lines:
+                if ol.qty_delivered < ol.product_uom_qty:
+                    if ol.order_id not in order_line_ids:
+                        order_line_ids.append(ol.order_id.id)
+            item.order_ids = [(4,0,order_line_ids)]
         
-        all_sale_order = self.env['sale.order'].search([])
+        #for oli in order_line_ids:
+
+        all_sale_order = self.env['sale.order'].search(['id','=',])
         sale_order = []
         for item in all_sale_order:
             if item.id in order_line_ids:
