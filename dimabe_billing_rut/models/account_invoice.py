@@ -100,7 +100,7 @@ class AccountInvoice(models.Model):
         string="Pedidos"
     )
 
-    order_id = fields.Many2many('sale.order',string="Todos los Pedidos")
+    #order_id = fields.Many2many('sale.order',string="Todos los Pedidos")
 
     #To Export
     other_coin = fields.Many2one('res.currency', string='Otra Moneda')

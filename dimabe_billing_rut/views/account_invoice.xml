@@ -10,6 +10,7 @@
                 </xpath>
                 <xpath expr="//field[@name='cash_rounding_id']" position="after">
                     <field name="order_ids"/>
+                    <button type="object" string="Agregar Productos" class="oe_highlight"/>
                     <!--<field name="order_ids">
                         <tree>
                             <field name="name"/>
