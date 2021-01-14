@@ -152,7 +152,7 @@ class AccountInvoice(models.Model):
                 sale_order_valid[item.id] = item.name  
 
         #self.order_ids = sale_order_valid
-        raise models.ValidationError(json.dumps(sale_order_valid))
+        #raise models.ValidationError(json.dumps(sale_order_valid))
         return sale_order_valid
 
 
