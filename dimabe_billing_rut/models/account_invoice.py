@@ -140,21 +140,21 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def _compute_sale_orders(self):
-        for item in self:
-            order_line_ids = []
-            order_lines = self.env['sale.order.line'].search([])
-            for ol in order_lines:
-                if ol.qty_delivered < ol.product_uom_qty:
-                    if ol.order_id not in order_line_ids:
-                        order_line_ids.append(ol.order_id.id)
+        
+        order_line_ids = []
+        order_lines = self.env['sale.order.line'].search([])
+        for ol in order_lines:
+            if ol.qty_delivered < ol.product_uom_qty:
+                if ol.order_id not in order_line_ids:
+                    order_line_ids.append(ol.order_id.id)
            
-            all_sale_order = self.env['sale.order'].search([])
-            sale_order = []
-            for item in all_sale_order:
-                if item.id in order_line_ids:
-                    sale_order.append(item.name)
+        all_sale_order = self.env['sale.order'].search([])
+        sale_order = []
+        for item in all_sale_order:
+            if item.id in order_line_ids:
+                sale_order.append(item.name)
                     
-            item.order_ids = sale_order
+        self.order_ids = sale_order
         
 
 
