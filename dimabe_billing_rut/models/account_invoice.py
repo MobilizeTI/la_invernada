@@ -86,7 +86,7 @@ class AccountInvoice(models.Model):
         compute=lambda self: self._compute_sale_orders()
     )
 
-    order_id = fields.Many2many(compute="_compute_sale_orders",string="Pedidos")
+    order_id = fields.Many2many('sale.order',string="Todos los Pedidos")
 
     #To Export
     other_coin = fields.Many2one('res.currency', string='Otra Moneda')
@@ -153,8 +153,8 @@ class AccountInvoice(models.Model):
             if item.id in order_line_ids:
                 sale_order_valid.append(item.name)  
 
-        self.order_ids = sale_order_valid
-        #return sale_order_valid
+        #self.order_ids = sale_order_valid
+        return sale_order_valid
     
     @api.multi
     def send_to_sii(self):
