@@ -151,9 +151,10 @@ class AccountInvoice(models.Model):
         sale_order_valid = []
         for item in all_sale_order:
             if item.id in order_line_ids:
-                sale_order_valid.append(item.name)    
-                 
-        return sale_order_valid
+                sale_order_valid.append(item.name)  
+                  
+        self.order_ids = sale_order_valid
+        #return sale_order_valid
 
         
         
