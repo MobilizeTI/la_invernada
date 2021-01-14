@@ -149,13 +149,14 @@ class AccountInvoice(models.Model):
         sale_order_valid =  []
         for item in all_sale_order:
             if item.id in order_line_ids:
-                raise models.ValidationError('id {}  name {}'.format(item.id, item.name))
-                sale_order_valid[item.id] = item.name  
+                sale_order_valid[str(item.id)] = item.name  
 
         #self.order_ids = sale_order_valid
         raise models.ValidationError(json.dumps(sale_order_valid))
         return sale_order_valid
-    
+
+
+        
     @api.multi
     def send_to_sii(self):
         url = self.env.user.company_id.dte_url
