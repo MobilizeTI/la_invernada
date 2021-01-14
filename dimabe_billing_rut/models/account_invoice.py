@@ -86,7 +86,7 @@ class AccountInvoice(models.Model):
         compute=lambda self: self._compute_sale_orders()
     )
 
-    order_id = fields.Many2many(compute="_compute_sale_orders",string="Pedidos")
+    order_id = fields.Selection(compute="_compute_sale_orders",string="Pedidos")
 
     #To Export
     other_coin = fields.Many2one('res.currency', string='Otra Moneda')
@@ -139,8 +139,7 @@ class AccountInvoice(models.Model):
             item.partner_activity_id = activities
 
     @api.multi
-    def _compute_sale_orders(self):
-        
+    def _compute_sale_orders(self):     
         order_line_ids = []
         order_lines = self.env['sale.order.line'].search([])
         for ol in order_lines:
@@ -149,11 +148,13 @@ class AccountInvoice(models.Model):
                     order_line_ids.append(ol.order_id.id)
            
         all_sale_order = self.env['sale.order'].search([])
-        sale_order = []
+        sale_order_valid = []
         for item in all_sale_order:
             if item.id in order_line_ids:
-                sale_order.append(item.name)     
-        self.order_ids = sale_order
+                sale_order_valid.append(item.name)     
+        return sale_order_valid
+
+        
         
 
 
