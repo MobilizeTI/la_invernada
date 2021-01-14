@@ -86,7 +86,7 @@ class AccountInvoice(models.Model):
         #compute=lambda self: self._compute_sale_orders()
     )
 
-    order_id = fields.Many2one(compute="_compute_sale_orders",string="Pedidos")
+    #order_id = fields.Many2one(compute="_compute_sale_orders",string="Pedidos")
 
     #To Export
     other_coin = fields.Many2one('res.currency', string='Otra Moneda')
@@ -151,7 +151,8 @@ class AccountInvoice(models.Model):
         sale_order_valid = []
         for item in all_sale_order:
             if item.id in order_line_ids:
-                sale_order_valid.append(item.name)     
+                sale_order_valid.append(item.name)    
+                 
         return sale_order_valid
 
         
