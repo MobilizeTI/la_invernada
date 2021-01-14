@@ -149,7 +149,7 @@ class AccountInvoice(models.Model):
         sale_order_valid =  []
         for item in all_sale_order:
             if item.id in order_line_ids:
-                sale_order_valid[item.order_id] = item.name  
+                sale_order_valid[item.id] = item.name  
 
         #self.order_ids = sale_order_valid
         raise models.ValidationError(json.dumps(sale_order_valid))
