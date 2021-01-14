@@ -147,17 +147,14 @@ class AccountInvoice(models.Model):
                 if ol.qty_delivered < ol.product_uom_qty:
                     if ol.order_id not in order_line_ids:
                         order_line_ids.append(ol.order_id.id)
-            item.order_ids = [(4,0,order_line_ids)]
-        
-        #for oli in order_line_ids:
-
-        all_sale_order = self.env['sale.order'].search(['id','=',])
-        sale_order = []
-        for item in all_sale_order:
-            if item.id in order_line_ids:
-                sale_order.append(item.name)
-                
-        self.order_id = sale_order
+           
+            all_sale_order = self.env['sale.order'].search([])
+            sale_order = []
+            for item in all_sale_order:
+                if item.id in order_line_ids:
+                    sale_order.append(item.name)
+                    
+            item.order_ids = [(4,0,sale_order)]
         
 
 
