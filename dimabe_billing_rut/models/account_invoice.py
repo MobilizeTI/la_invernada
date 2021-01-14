@@ -146,7 +146,7 @@ class AccountInvoice(models.Model):
                     order_line_ids.append(ol.order_id.id)
            
         all_sale_order = self.env['sale.order'].search([])
-        sale_order_valid =  []
+        sale_order_valid =  {}
         for item in all_sale_order:
             if item.id in order_line_ids:
                 sale_order_valid[item.id] = item.name  
