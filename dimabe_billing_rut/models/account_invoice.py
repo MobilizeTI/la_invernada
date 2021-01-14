@@ -80,7 +80,7 @@ class AccountInvoice(models.Model):
 
     #Orders to Add in Invoice
 
-    order_ids = fields.Selection(selection=lambda self: self._compute_sale_orders(),
+    order_ids = fields.Selection(compute="_compute_sale_orders",
         string="Pedidos"
     )
 
