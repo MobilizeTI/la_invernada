@@ -20,7 +20,7 @@
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'stock', 'account', 'hr_payroll',
-                'hr_payroll_account'],
+                'hr_payroll_account','sale'],
 
     # always loaded
     'data': [
