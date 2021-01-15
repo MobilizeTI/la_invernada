@@ -602,7 +602,7 @@ class AccountInvoice(models.Model):
                     "TotalPackages": str(self.total_packages),
                     "Packages": packages_list,
                     "FreightAmount": str(self.freight_amount),
-                    "SafeAmount":str(self.saf_amount),
+                    "SafeAmount":str(self.safe_amount),
                     "ReceiverCountryCode":str(self.receiving_country_dte.code),
                     "DestinyCountryCode":str(self.destiny_country_dte.code)
                 }  
