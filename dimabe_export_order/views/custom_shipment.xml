@@ -49,8 +49,6 @@
                     <field name="ship"/>
                     <field name="ship_number"/>
                     <field name="type_transport"/>
-                    <field name="departure_port"/>
-                    <field name="arrival_port"/>
                     <field name="required_loading_date"/>
                     <field name="etd"/>
                     <field name="etd_month"/>
