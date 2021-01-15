@@ -18,12 +18,10 @@
 
                         </page>
                         <page name="xdte_tab" string="DTE">
+                            <button  type="object" name="send_to_sii" string="Enviar al SII" class="oe_highlight"/>
                             <group name="xdte_info" cols="">
-                                <!--<button  type="object" name="send_to_sii" string="Enviar al SII" attrs="{'invisible': [('state','!=','draft')]}" class="oe_highlight"/>-->
-                                <button  type="object" name="send_to_sii" string="Enviar al SII" class="oe_highlight"/>
                                 <group>
-                                    <field name="method_of_payment" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
-                                    
+                                    <field name="method_of_payment" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>                           
                                     <field name="partner_activity_id" domain="[('id','in',partner_economic_activities)]"/>
                                     <field name="partner_economic_activities" invisible="1"/>
                                     <field name="company_economic_activities" invisible="1"/>
