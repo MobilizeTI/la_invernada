@@ -126,7 +126,7 @@ class AccountInvoice(models.Model):
 
     freight_amount = fields.Float(string="Flete")
 
-    saf_amount = fields.Float(string="Seguro")
+    safe_amount = fields.Float(string="Seguro")
 
     #COMEX
     total_value = fields.Float(
