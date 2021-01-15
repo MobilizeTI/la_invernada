@@ -65,7 +65,7 @@
                                 </tree>
                                 </field>
                                 <field name="freight_amount" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                <field name="saf_amount" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                <field name="safe_amount" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 <field name="destiny_country_dte" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 <field name="receiving_country_dte" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 <field name="dte_folio" readonly="1"/>
