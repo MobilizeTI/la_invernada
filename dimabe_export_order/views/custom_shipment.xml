@@ -19,6 +19,8 @@
                             <field name="type_transport"/>
                         </group>
                         <group>
+                            <field name="departure_port"/>
+                            <field name="arrival_port"/>
                             <field name="required_loading_date" autocomplete="off"/>
                             <field name="required_loading_week" />
                         </group>
@@ -49,6 +51,8 @@
                     <field name="ship"/>
                     <field name="ship_number"/>
                     <field name="type_transport"/>
+                    <field name="departure_port"/>
+                    <field name="arrival_port"/>
                     <field name="required_loading_date"/>
                     <field name="etd"/>
                     <field name="etd_month"/>

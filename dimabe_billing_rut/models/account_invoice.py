@@ -90,9 +90,9 @@ class AccountInvoice(models.Model):
 
     exchange_rate_other_coin = fields.Float('Tasa de Cambio Otra Moneda')
 
-    departure_port = fields.Many2one('custom.port','Puerto de Embarque')
+    #departure_port = fields.Many2one('custom.port','Puerto de Embarque')
 
-    arrival_port = fields.Many2one('custom.port','Puerto de Desembarque')
+    #arrival_port = fields.Many2one('custom.port','Puerto de Desembarque')
 
     type_transport = fields.Many2one('custom.type.transport','Vía de Transporte')
 
@@ -619,8 +619,8 @@ class AccountInvoice(models.Model):
                     "SaleClauseCode":str(self.export_clause.code),
                     "SaleClauseTotal":str(self.total_export_sales_clause),
                     "TransportRoute":str(self.type_transport.code),
-                    "OriginPortCode":str(self.departure_port.code),
-                    "DestinyPortCode":str(self.arrival_port.code),
+                    "OriginPortCode":str(self.shipment_id.departure_port.code),
+                    "DestinyPortCode":str(self.shipment_id.arrival_port.code),
                     "Tara":str(self.tara),
                     "GrossWeight":str(self.gross_weight),
                     "NetWeight":str(self.net_weight),
