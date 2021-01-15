@@ -143,16 +143,16 @@ class AccountInvoice(models.Model):
 
     shipping_number = fields.Integer('Número Embarque')
 
-    #contract_correlative_view = fields.Char(
-    #    'N° Orden',
-    #    compute='_get_correlative_text'
-    #)
+    contract_correlative_view = fields.Char(
+        'N° Orden',
+        compute='_get_correlative_text'
+    )
 
-    #agent_id = fields.Many2one(
-    #    'res.partner',
-    #    'Agente',
-    #    domain=[('is_agent', '=', True)]
-    #)
+    agent_id = fields.Many2one(
+        'res.partner',
+        'Agente',
+        domain=[('is_agent', '=', True)]
+    )
 
     total_commission = fields.Float(
         'Valor Comisión',
@@ -174,17 +174,17 @@ class AccountInvoice(models.Model):
 
     container_number = fields.Char('N° Contenedor')
 
-    #container_type = fields.Many2one(
-    #    'custom.container.type',
-    #    'Tipo de contenedor'
-    #)
+    container_type = fields.Many2one(
+        'custom.container.type',
+        'Tipo de contenedor'
+    )
 
     client_label = fields.Boolean('Etiqueta Cliente', default=False)
 
 
     #COMEX METHOD
     @api.multi
-    @api.depends('freight_value', 'safe_value')
+    @api.depends('freight_amount', 'safe_amount')
     def _compute_total_value(self):
         for item in self:
             list_price = []
