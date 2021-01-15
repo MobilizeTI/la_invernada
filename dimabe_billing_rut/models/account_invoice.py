@@ -204,7 +204,7 @@ class AccountInvoice(models.Model):
             #        qantas = sum(list_qty)
 
             #item.total_value = (prices * qantas) + item.freight_value + item.safe_value
-        item.total_value = sum(list_price) + self.freight_value + self.safe_value
+        self.total_value = sum(list_price) + self.freight_value + self.safe_value
             
 
     @api.multi
