@@ -188,14 +188,14 @@ class AccountInvoice(models.Model):
     @api.multi
     @api.depends('freight_amount', 'safe_amount')
     def _compute_total_value(self):
-        for item in self:
-            list_price = []
-            list_qty = []
-            prices = 0
-            qantas = 0
-            for i in item.invoice_line_ids:
-                if len(item.invoice_line_ids) != 0:
-                    list_price.append(i.price_unit*i.quantity)
+      
+        list_price = []
+        list_qty = []
+        prices = 0
+        qantas = 0
+        for i in self.invoice_line_ids:
+            if len(self.invoice_line_ids) > 0:
+                list_price.append(i.price_unit*i.quantity)
 
             #for a in item.move_ids_without_package:
             #    if len(item.move_ids_without_package) != 0:
