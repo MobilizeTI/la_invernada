@@ -90,6 +90,7 @@
                                            placeholder="Ingrese número de contenedor" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="container_type"
                                            placeholder="Seleccione el tipo de contenedor" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <field name="remarks_comex" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 </group>
                                 <group>
                                     <field name="client_label" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
@@ -105,7 +106,7 @@
                                     <field name="dte_xml_sii" widget="binary" readonly="1" filename="dte_sii.xml" />
                                     <field name="dte_pdf" widget="binary" readonly="1" filename="dte.pdf" />
                                 </group>
-                                <field name="remarks_comex" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                
                             </group>
                             <group string="Referencias">
                                 <field name="references" mode="tree">

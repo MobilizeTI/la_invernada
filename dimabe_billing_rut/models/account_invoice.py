@@ -191,7 +191,7 @@ class AccountInvoice(models.Model):
         compute="get_permision"
     )
     
-    remarks_comex = fields.Text('Comentarios')
+    remarks_comex = fields.Text('Comentarios Comex')
 
     #COMEX METHOD
     @api.multi
