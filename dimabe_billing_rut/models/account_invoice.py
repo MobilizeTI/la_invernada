@@ -515,7 +515,13 @@ class AccountInvoice(models.Model):
         if self.dte_type_id.code == "110":
             self.total_export_sales_clause = self.amount_total
             raise models.ValidationError('{}{}'.format(self.amount_total,self.total_export_sales_clause))
-            
+
+    @api.multi  
+    def add_products_by_order(self):
+        product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
+        raise models.ValidationError(json.dumps(product_ids[0]))
+
+    
 
     #Factura de exportación electrónica
     def invoice_export_type(self):
