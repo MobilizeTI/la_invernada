@@ -188,14 +188,14 @@ class AccountInvoice(models.Model):
     @api.multi
     @api.depends('freight_amount', 'safe_amount')
     def _compute_total_value(self):
-      
-        list_price = []
-        list_qty = []
-        prices = 0
-        qantas = 0
-        if len(self.invoice_line_ids) > 0:
-            for i in self.invoice_line_ids:
-                list_price.append(i.price_unit * i.quantity)
+        print('')
+        #list_price = []
+        #list_qty = []
+        #prices = 0
+        #qantas = 0
+        #if len(self.invoice_line_ids) > 0:
+        #    for i in self.invoice_line_ids:
+        #        list_price.append(i.price_unit * i.quantity)
 
             #for a in item.move_ids_without_package:
             #    if len(item.move_ids_without_package) != 0:
@@ -204,19 +204,20 @@ class AccountInvoice(models.Model):
             #        qantas = sum(list_qty)
 
             #item.total_value = (prices * qantas) + item.freight_value + item.safe_value
-        raise models.ValidationError('{} {} {}'.format(sum(list_price), self.freight_amount,  self.safe_amount))
-        self.total_value =  sum(list_price) + self.freight_amount + self.safe_amount
+        #raise models.ValidationError('{} {} {}'.format(sum(list_price), self.freight_amount,  self.safe_amount))
+        #self.total_value =  sum(list_price) + self.freight_amount + self.safe_amount
             
 
     @api.multi
     @api.depends('total_value')
     def _compute_value_per_kilogram(self):
-        for item in self:
-            qty_total = 0
-            for line in item.move_ids_without_package:
-                qty_total = qty_total + line.quantity_done
-            if qty_total > 0:
-                item.value_per_kilogram = item.total_value / qty_total
+        print('')
+        #for item in self:
+        #    qty_total = 0
+         #   for line in item.move_ids_without_package:
+          #      qty_total = qty_total + line.quantity_done
+          #  if qty_total > 0:
+          #      item.value_per_kilogram = item.total_value / qty_total
 
     @api.onchange('commission')
     @api.multi
