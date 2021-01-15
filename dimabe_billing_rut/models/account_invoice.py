@@ -183,8 +183,18 @@ class AccountInvoice(models.Model):
 
     client_label = fields.Boolean('Etiqueta Cliente', default=False)
 
+    is_dispatcher = fields.Integer(
+        compute="get_permision"
+    )
+    
 
     #COMEX METHOD
+    @api.multi
+    def get_permision(self):
+        for i in self.env.user.groups_id:
+            if i.name == "Despachos":
+                self.is_dispatcher = 1
+    
     @api.multi
     @api.depends('freight_amount', 'safe_amount')
     def _compute_total_value(self):

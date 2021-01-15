@@ -269,6 +269,7 @@ class StockPicking(models.Model):
         return self.env.ref('dimabe_export_order.action_dispatch_label_report') \
             .report_action(self.pictures)
 
+
     @api.multi
     def get_permision(self):
         for i in self.env.user.groups_id:
