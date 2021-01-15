@@ -80,7 +80,7 @@ class AccountInvoice(models.Model):
 
     #Orders to Add in Invoice
 
-    order_to_add_ids = fields.Many2on('sale.order',
+    order_to_add_ids = fields.Many2many('sale.order',
         domain=[('invoice_status','=','to invoice')],
         string="Pedidos"
     )
