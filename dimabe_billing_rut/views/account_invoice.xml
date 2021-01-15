@@ -42,8 +42,8 @@
                                     <field name="export_clause" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="total_export_sales_clause" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="type_transport" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                    <field name="departure_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                    <field name="arrival_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <!--<field name="departure_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <field name="arrival_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>-->
                                     <field name="destiny_country_dte" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="receiving_country_dte" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 </group>

@@ -37,17 +37,17 @@ class CustomShipment(models.Model):
         required=True
     )
 
-    #departure_port = fields.Many2one(
-    #    comodel_name='custom.port',
-    #    string='Puerto de salida',
-    #    required=True
-    #)
+    departure_port = fields.Many2one(
+        comodel_name='custom.port',
+        string='Puerto de Embarque',
+        required=True
+    )
 
-    #arrival_port = fields.Many2one(
-    #    comodel_name='custom.port',
-    #    string='Puerto de llegada',
-    #    required=True
-    #)
+    arrival_port = fields.Many2one(
+        comodel_name='custom.port',
+        string='Puerto de Desembarque',
+        required=True
+    )
 
     required_loading_date = fields.Date(
         'Fecha requerida de carga',
