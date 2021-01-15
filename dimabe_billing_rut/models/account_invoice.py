@@ -140,7 +140,11 @@ class AccountInvoice(models.Model):
         compute='_compute_value_per_kilogram',
         store=True
     )
-
+    shipping_id = fields.Many2one(
+        'custom.shipment',
+        'Embarque'
+    )
+    
     shipping_number = fields.Integer('Número Embarque')
 
     contract_correlative = fields.Integer('corr')
