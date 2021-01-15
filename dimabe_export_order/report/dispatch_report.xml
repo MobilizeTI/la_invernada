@@ -313,7 +313,7 @@
                                                         <tr>
                                                             <td>PTO EMBARQUE:</td>
                                                             <td>
-                                                                <span t-field="d.shipping_id.departure_port"/>
+                                                                <!--<span t-field="d.shipping_id.departure_port"/>-->
                                                             </td>
                                                             <td>SELLO INVERNADA</td>
                                                             <td>
@@ -323,7 +323,7 @@
                                                         <tr>
                                                             <td>PTO DESCARGA</td>
                                                             <td>
-                                                                <span t-field="d.shipping_id.arrival_port"/>
+                                                                <!--<span t-field="d.shipping_id.arrival_port"/>-->
                                                             </td>
                                                             <td>N° RESERVA</td>
                                                             <td>
