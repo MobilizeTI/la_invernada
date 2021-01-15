@@ -144,7 +144,7 @@ class AccountInvoice(models.Model):
         'custom.shipment',
         'Embarque'
     )
-    
+
     shipping_number = fields.Integer('Número Embarque')
 
     contract_correlative = fields.Integer('corr')
@@ -238,13 +238,14 @@ class AccountInvoice(models.Model):
     @api.onchange('commission')
     @api.multi
     def _compute_total_commission(self):
-        for item in self:
-            if item.agent_id and item.commission > 3:
-                raise models.ValidationError('la comisión debe ser mayor que 0 y menor o igual que 3')
-            else:
-                item.total_commission = (item.commission / 100) \
-                                        * (sum(item.invoice_line_ids.price_unit
-                                        * sum(item.invoice_line_ids.quantity)))
+        print('')
+        #for item in self:
+        #    if item.agent_id and item.commission > 3:
+        #        raise models.ValidationError('la comisión debe ser mayor que 0 y menor o igual que 3')
+        #    else:
+        #        item.total_commission = (item.commission / 100) \
+        #                                * (sum(item.invoice_line_ids.price_unit
+        #                                * sum(item.invoice_line_ids.quantity)))
                                         #* (sum(item.sale_id.order_line.mapped('price_unit'))
                                         #* sum(item.move_ids_without_package.mapped('product_uom_qty')))
     
