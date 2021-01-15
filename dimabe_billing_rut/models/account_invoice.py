@@ -223,8 +223,10 @@ class AccountInvoice(models.Model):
                 raise models.ValidationError('la comisión debe ser mayor que 0 y menor o igual que 3')
             else:
                 item.total_commission = (item.commission / 100) \
-                                        * (sum(item.sale_id.order_line.mapped('price_unit'))
-                                           * sum(item.move_ids_without_package.mapped('product_uom_qty')))
+                                        * (sum(item.invoice_line_ids.price_unit
+                                        * sum(item.invoice_line_ids.quantity
+                                        #* (sum(item.sale_id.order_line.mapped('price_unit'))
+                                        #* sum(item.move_ids_without_package.mapped('product_uom_qty')))
     
     @api.multi
     # @api.depends('contract_id')
