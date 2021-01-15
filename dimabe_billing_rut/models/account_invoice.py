@@ -80,7 +80,7 @@ class AccountInvoice(models.Model):
 
     #Orders to Add in Invoice
 
-    order_to_add_ids = fields.Many2many('sale.order',
+    order_to_add_ids = fields.Many2on('sale.order',
         domain=[('invoice_status','=','to invoice')],
         string="Pedidos"
     )
@@ -193,11 +193,11 @@ class AccountInvoice(models.Model):
     
     remarks_comex = fields.Text('Comentarios Comex')
 
-    references = fields.One2many(
-        'account.order.in.invoice',
-        'invoice_id',
-        readonly=False
-    )
+    #references = fields.One2many(
+    #    'account.order.in.invoice',
+    #    'invoice_id',
+    #    readonly=False
+    #)
 
     #COMEX METHOD
     @api.multi
@@ -619,8 +619,8 @@ class AccountInvoice(models.Model):
                     "SaleClauseCode":str(self.export_clause.code),
                     "SaleClauseTotal":str(self.total_export_sales_clause),
                     "TransportRoute":str(self.type_transport.code),
-                    "OriginPortCode":str(self.shipping_id.departure_port.code),
-                    "DestinyPortCode":str(self.shipping_id.arrival_port.code),
+                    "OriginPortCode":str(self.departure_port.code),
+                    "DestinyPortCode":str(self.arrival_port.code),
                     "Tara":str(self.tara),
                     "GrossWeight":str(self.gross_weight),
                     "NetWeight":str(self.net_weight),
