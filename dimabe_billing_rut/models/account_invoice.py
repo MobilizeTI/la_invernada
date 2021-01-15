@@ -193,8 +193,8 @@ class AccountInvoice(models.Model):
             list_qty = []
             prices = 0
             qantas = 0
-            for i in item.sale_id.order_line:
-                if len(item.sale_id.order_line) != 0:
+            for i in item.invoice_line_ids:
+                if len(item.invoice_line_ids) != 0:
                     list_price.append(int(i.price_unit))
 
             for a in item.move_ids_without_package:
