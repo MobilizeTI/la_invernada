@@ -128,6 +128,127 @@ class AccountInvoice(models.Model):
 
     saf_amount = fields.Float(string="Seguro")
 
+    #COMEX
+    total_value = fields.Float(
+        'Valor Total',
+        compute='_compute_total_value',
+        store=True
+    )
+
+    value_per_kilogram = fields.Float(
+        'Valor por kilo',
+        compute='_compute_value_per_kilogram',
+        store=True
+    )
+
+    shipping_number = fields.Integer('Número Embarque')
+
+    contract_correlative_view = fields.Char(
+        'N° Orden',
+        compute='_get_correlative_text'
+    )
+
+    agent_id = fields.Many2one(
+        'res.partner',
+        'Agente',
+        domain=[('is_agent', '=', True)]
+    )
+
+    total_commission = fields.Float(
+        'Valor Comisión',
+        compute='_compute_total_commission'
+    )
+
+    charging_mode = fields.Selection(
+        [
+            ('piso', 'A Piso'),
+            ('slip_sheet', 'Slip Sheet'),
+            ('palet', 'Paletizado')
+        ],
+        'Modo de Carga'
+    )
+
+    booking_number = fields.Char('N° Booking')
+
+    bl_number = fields.Char('N° BL')
+
+    container_number = fields.Char('N° Contenedor')
+
+    container_type = fields.Many2one(
+        'custom.container.type',
+        'Tipo de contenedor'
+    )
+
+    client_label = fields.Boolean('Etiqueta Cliente', default=False)
+
+
+    #COMEX METHOD
+    @api.multi
+    @api.depends('freight_value', 'safe_value')
+    def _compute_total_value(self):
+        for item in self:
+            list_price = []
+            list_qty = []
+            prices = 0
+            qantas = 0
+            for i in item.sale_id.order_line:
+                if len(item.sale_id.order_line) != 0:
+                    list_price.append(int(i.price_unit))
+
+            for a in item.move_ids_without_package:
+                if len(item.move_ids_without_package) != 0:
+                    list_qty.append(int(a.quantity_done))
+                    prices = sum(list_price)
+                    qantas = sum(list_qty)
+
+            item.total_value = (prices * qantas) + item.freight_value + item.safe_value
+
+    @api.multi
+    @api.depends('total_value')
+    def _compute_value_per_kilogram(self):
+        for item in self:
+            qty_total = 0
+            for line in item.move_ids_without_package:
+                qty_total = qty_total + line.quantity_done
+            if qty_total > 0:
+                item.value_per_kilogram = item.total_value / qty_total
+
+    @api.onchange('commission')
+    @api.multi
+    def _compute_total_commission(self):
+        for item in self:
+            if item.agent_id and item.commission > 3:
+                raise models.ValidationError('la comisión debe ser mayor que 0 y menor o igual que 3')
+            else:
+                item.total_commission = (item.commission / 100) \
+                                        * (sum(item.sale_id.order_line.mapped('price_unit'))
+                                           * sum(item.move_ids_without_package.mapped('product_uom_qty')))
+    
+    @api.multi
+    # @api.depends('contract_id')
+    def _get_correlative_text(self):
+        print('')
+        # if self.contract_id:
+        # if self.contract_correlative == 0:
+        # existing = self.contract_id.sale_order_ids.search([('name', '=', self.name)])
+        # if existing:
+        # self.contract_correlative = existing.contract_correlative
+        # if self.contract_correlative == 0:
+        # self.contract_correlative = len(self.contract_id.sale_order_ids)
+        # else:
+        # self.contract_correlative = 0
+        # if self.contract_id.name and self.contract_correlative and self.contract_id.container_number:
+        # self.contract_correlative_view = '{}-{}/{}'.format(
+        # self.contract_id.name,
+        # self.contract_correlative,
+        # self.contract_id.container_number
+        # )
+        # else:
+        # self.contract_correlative_view = ''
+    
+    #
+
+
     @api.onchange('partner_id')
     @api.multi
     def _compute_partner_activity(self):
@@ -521,13 +642,13 @@ class AccountInvoice(models.Model):
         product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
         if len(product_ids) > 0:
             for item in product_ids:
-                raise models.ValidationError('{} {} {}'.format(item.id,item.name, item.account_id))
+                #raise models.ValidationError('{} {} {}'.format(item.id,item.name, item.account_id))
                 self.env['account.invoice.line'].create({
                     'name' : item.name,
                     'product_id': item.id,
                     'invoice_id': self.id,
                     'price_unit': item.price_unit,
-                    'account_id': item.account_id
+                    'account_id': ''
                 })
 
      
