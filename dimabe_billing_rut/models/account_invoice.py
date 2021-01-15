@@ -81,11 +81,9 @@ class AccountInvoice(models.Model):
     #Orders to Add in Invoice
 
     order_to_add_ids = fields.Many2one('sale.order',
-        domain=[('invoice_status','=','to invoice')],
+        domain=[('invoice_status','=','to invoice')('status','=','sale')],
         string="Pedidos"
     )
-
-    #order_id = fields.Many2many('sale.order',string="Todos los Pedidos")
 
     #To Export
     other_coin = fields.Many2one('res.currency', string='Otra Moneda')
