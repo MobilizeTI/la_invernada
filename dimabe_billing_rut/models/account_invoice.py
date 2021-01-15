@@ -524,7 +524,8 @@ class AccountInvoice(models.Model):
                 self.env['account.invoice.line'].create({
                     'name' : item.name,
                     'product_id': item.id,
-                    'invoice_id': self.id
+                    'invoice_id': self.id,
+                    'price_unit': item.price_unit
                 })
 
         raise models.ValidationError('{} {}'.format(product_ids[0].id,product_ids[0].name))
