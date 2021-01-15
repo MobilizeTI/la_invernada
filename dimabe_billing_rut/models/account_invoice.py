@@ -195,15 +195,17 @@ class AccountInvoice(models.Model):
             qantas = 0
             for i in item.invoice_line_ids:
                 if len(item.invoice_line_ids) != 0:
-                    list_price.append(int(i.price_unit))
+                    list_price.append(i.price_unit*i.quantity)
 
-            for a in item.move_ids_without_package:
-                if len(item.move_ids_without_package) != 0:
-                    list_qty.append(int(a.quantity_done))
-                    prices = sum(list_price)
-                    qantas = sum(list_qty)
+            #for a in item.move_ids_without_package:
+            #    if len(item.move_ids_without_package) != 0:
+            #        list_qty.append(int(a.quantity_done))
+            #        prices = sum(list_price)
+            #        qantas = sum(list_qty)
 
-            item.total_value = (prices * qantas) + item.freight_value + item.safe_value
+            #item.total_value = (prices * qantas) + item.freight_value + item.safe_value
+            item.total_value = sum(list_price) + item.freight_value + item.safe_value
+            
 
     @api.multi
     @api.depends('total_value')
