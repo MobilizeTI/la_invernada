@@ -154,6 +154,8 @@ class AccountInvoice(models.Model):
         domain=[('is_agent', '=', True)]
     )
 
+    commission = fields.Float('Comisión')
+
     total_commission = fields.Float(
         'Valor Comisión',
         compute='_compute_total_commission'
