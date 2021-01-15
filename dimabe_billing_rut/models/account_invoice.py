@@ -143,6 +143,8 @@ class AccountInvoice(models.Model):
 
     shipping_number = fields.Integer('Número Embarque')
 
+    contract_correlative = fields.Integer('corr')
+
     contract_correlative_view = fields.Char(
         'N° Orden',
         compute='_get_correlative_text'
