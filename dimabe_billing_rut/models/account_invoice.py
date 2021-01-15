@@ -193,9 +193,9 @@ class AccountInvoice(models.Model):
         list_qty = []
         prices = 0
         qantas = 0
-        for i in self.invoice_line_ids:
-            if len(self.invoice_line_ids) > 0:
-                list_price.append(i.price_unit*i.quantity)
+        if len(self.invoice_line_ids) > 0:
+            for i in self.invoice_line_ids:
+                list_price.append(i.price_unit * i.quantity)
 
             #for a in item.move_ids_without_package:
             #    if len(item.move_ids_without_package) != 0:
@@ -204,7 +204,8 @@ class AccountInvoice(models.Model):
             #        qantas = sum(list_qty)
 
             #item.total_value = (prices * qantas) + item.freight_value + item.safe_value
-        return sum(list_price) + self.freight_amount + self.safe_amount
+        raise models.ValidationError('{} {} {}'.format(sum(list_price), self.freight_amount,  self.safe_amount))
+        self.total_value =  sum(list_price) + self.freight_amount + self.safe_amount
             
 
     @api.multi
