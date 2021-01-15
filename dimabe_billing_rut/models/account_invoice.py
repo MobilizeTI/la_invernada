@@ -224,7 +224,7 @@ class AccountInvoice(models.Model):
             else:
                 item.total_commission = (item.commission / 100) \
                                         * (sum(item.invoice_line_ids.price_unit
-                                        * sum(item.invoice_line_ids.quantity
+                                        * sum(item.invoice_line_ids.quantity)))
                                         #* (sum(item.sale_id.order_line.mapped('price_unit'))
                                         #* sum(item.move_ids_without_package.mapped('product_uom_qty')))
     
