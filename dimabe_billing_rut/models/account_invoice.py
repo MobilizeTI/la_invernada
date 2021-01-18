@@ -198,6 +198,10 @@ class AccountInvoice(models.Model):
     remarks_comex = fields.Text('Comentarios Comex')
 
     #COMEX METHOD
+    @api.onchange('order_to_add_ids')
+    def _onchange_order_to_add(self):
+        self.order_to_add_id = order_to_add_ids.id
+
     @api.multi
     def get_permision(self):
         for i in self.env.user.groups_id:

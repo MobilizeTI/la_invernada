@@ -13,8 +13,9 @@
                     <field name="quantity_to_invoice"/>
                 </xpath>
                 <xpath expr="//field[@name='cash_rounding_id']" position="after">
+                    <field name="order_to_add_id" invisible="1"/>
                     <field name="order_to_add_ids"/>
-                    <field name="stock_picking_ids" domain="[('sale_id','=',order_to_add_ids.id)]"/>
+                    <field name="stock_picking_ids" domain="[('sale_id','=',order_to_add_id)]"/>
                     <button type="object" name="add_products_by_order" string="Agregar Productos" class="oe_highlight"/>
                 </xpath>
                 <data>
