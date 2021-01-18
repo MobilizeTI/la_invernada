@@ -85,11 +85,7 @@ class AccountInvoice(models.Model):
         string="Pedidos"
     )
 
-    stock_picking_ids = fields.Many2one('stock.picking',
-        domain=[('sale_id','=',order_to_add_ids.id)],
-        string="Stock Picking" #cambiar nombre
-    )
-
+    
     #To Export
     other_coin = fields.Many2one('res.currency', string='Otra Moneda')
 
