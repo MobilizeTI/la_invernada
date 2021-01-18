@@ -692,9 +692,9 @@ class AccountInvoice(models.Model):
             s.write({
                 'shipping_number': self.shipping_number
             })
-        #res = super(AccountInvoice, self).write(vals)
+        res = super(AccountInvoice, self).write(vals)
 
-        #return res
+        return res
 
     #Factura de exportación electrónica ELIMINAR
     def invoice_export_type(self):
