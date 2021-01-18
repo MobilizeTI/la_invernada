@@ -693,7 +693,7 @@ class AccountInvoice(models.Model):
             s.write({
                 'shipping_number': self.shipping_number,
                 'contract_correlative_view': self.contract_correlative_view,
-                'shipping_id': self.shipping_id,
+                #'shipping_id': self.shipping_id,
                 'agent_id': self.agent_id,
                 'commission' : self.commission,
                 'total_commission' : self.total_commission,
@@ -707,6 +707,7 @@ class AccountInvoice(models.Model):
                 'safe_value' : self.safe_amount,
                 'total_value' : self.total_value,
                 'value_per_kilogram' : self.value_per_kilogram,
+                'remarks': self.remarks_comex
             })
         
 
