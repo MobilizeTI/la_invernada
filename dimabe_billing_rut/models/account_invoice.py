@@ -669,38 +669,42 @@ class AccountInvoice(models.Model):
 
     @api.multi  
     def add_products_by_order(self):
-        product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
-        if len(product_ids) > 0:
-            for item in product_ids:
-                valid = False
-                for i in self.invoice_line_ids:
-                    if item.product_id.id != i.product_id and self.order_to_add_ids.name != i.order_name:
-                        valid = True
-                    else:
-                        raise models.ValidationError('El Producto {} del pedido {} ya se encuentra agregada en la lista'.format(item.name,self.order_to_add_ids.name))
-                if valid:
-                    self.env['account.invoice.line'].create({
-                            'name' : item.name,
-                            'product_id': item.product_id.id,
-                            'invoice_id': self.id,
-                            'price_unit': item.price_unit,
-                            'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
-                            'order_id': self.order_to_add_ids.id,
-                            'order_name': self.order_to_add_ids.name,
-                            'quantity_to_invoice': str(item.qty_delivered - item.qty_invoiced),
-                            'dispatch': self.stock_picking_ids.name,
-                            'stock_picking_id': self.stock_picking_ids.id
-                        })
+        if self.stock_picking_ids and self.order_to_add_ids:
+            product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
+            if len(product_ids) > 0:
+                for item in product_ids:
                     valid = False
+                    for i in self.invoice_line_ids:
+                        if item.product_id.id != i.product_id and self.order_to_add_ids.name != i.order_name:
+                            valid = True
+                        else:
+                            raise models.ValidationError('El Producto {} del pedido {} ya se encuentra agregada en la lista'.format(item.name,self.order_to_add_ids.name))
+                    if valid:
+                        self.env['account.invoice.line'].create({
+                                'name' : item.name,
+                                'product_id': item.product_id.id,
+                                'invoice_id': self.id,
+                                'price_unit': item.price_unit,
+                                'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
+                                'order_id': self.order_to_add_ids.id,
+                                'order_name': self.order_to_add_ids.name,
+                                'quantity_to_invoice': str(item.qty_delivered - item.qty_invoiced),
+                                'dispatch': self.stock_picking_ids.name,
+                                'stock_picking_id': self.stock_picking_ids.id
+                            })
+                        valid = False
+        else:
+            raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
 
     @api.multi
     def write(self, vals):
         order_list = []
         for item in self.invoice_line_ids:
             if item.order_id:
-                order_list.append(item.order_id)
+                order_list.append(item.stock_picking_id)
         
-        stock_picking_ids = self.env['stock.picking'].search([('sale_id', 'in', order_list)])
+        #stock_picking_ids = self.env['stock.picking'].search([('sale_id', 'in', order_list)])
+        stock_picking_ids = self.env['stock.picking'].search([('id', 'in', order_list)])
         res = super(AccountInvoice, self).write(vals)
         for s in stock_picking_ids:
             s.write({
