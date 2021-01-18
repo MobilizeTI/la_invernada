@@ -666,7 +666,7 @@ class AccountInvoice(models.Model):
         product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
         if len(product_ids) > 0:
             for item in product_ids:
-                if item.product_id.id not in self.account.invoice.line.product_id and self.order_to_add_ids.name not in self.account.invoice.line.order_name:
+                if item.product_id.id not in self.invoice_line_ids.product_id and self.order_to_add_ids.name not in self.invoice_line_ids.order_name:
                     self.env['account.invoice.line'].create({
                         'name' : item.name,
                         'product_id': item.product_id.id,
