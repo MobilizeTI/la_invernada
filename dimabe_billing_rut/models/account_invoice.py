@@ -675,14 +675,14 @@ class AccountInvoice(models.Model):
                     'account_id': item.product_id.categ_id.property_account_income_categ_id.id
                 })
                 
-                self.orders_in_invoice.create({
-                    'order_id' : self.order_to_add_ids.id,
-                    'order_name' : self.order_to_add_ids.name,
-                    'product_id' : item.id,
-                    'price' : item.price_unit,
-                    'quantity' : '',
-                    'invoice_id' : self.id
-                })
+                #self.orders_in_invoice.create({
+                #    'order_id' : self.order_to_add_ids.id,
+                #    'order_name' : self.order_to_add_ids.name,
+                #    'product_id' : item.id,
+                #    'price' : item.price_unit,
+                #    'quantity' : '',
+                #    'invoice_id' : self.id
+                #})
                
 
 
