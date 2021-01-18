@@ -679,7 +679,7 @@ class AccountInvoice(models.Model):
                             valid = True
                         else:
                             raise models.ValidationError('El Producto {} del despacho {} del pedido {} ya se encuentra agregada en la lista'.format(item.name,self.stock_picking_ids.name,self.order_to_add_ids.name))
-                    raise models.ValidationError('valid= {}'.fomat(valid))
+                    raise models.ValidationError('valid= {}'.format(valid))
                     if valid:
                         self.env['account.invoice.line'].create({
                                 'name' : item.name,
