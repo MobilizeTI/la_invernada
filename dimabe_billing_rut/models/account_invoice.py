@@ -679,6 +679,7 @@ class AccountInvoice(models.Model):
                             valid = True
                         else:
                             raise models.ValidationError('El Producto {} del despacho {} del pedido {} ya se encuentra agregada en la lista'.format(item.name,self.stock_picking_ids.name,self.order_to_add_ids.name))
+                    raise models.ValidationError'valid= {}'(.fomat(valid))
                     if valid:
                         self.env['account.invoice.line'].create({
                                 'name' : item.name,
@@ -694,6 +695,9 @@ class AccountInvoice(models.Model):
                                 'quantity': item.qty_delivered - item.qty_invoiced
                             })
                         valid = False
+            else:
+                raise models.ValidationError('No se han encontrado Productos')
+
         else:
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
 
