@@ -692,6 +692,11 @@ class AccountInvoice(models.Model):
                 stock_picking = self.env['stock.picking'].search([('sale_id', '=', item.order_id)])
                 stock_picking.shipping_number = self.shipping_number
         res = super(AccountInvoice, self).write(vals)
+        #record_ids = self.env['your.model'].search([('name', '=', 'Example')])
+        #for record in record_ids:
+        #    record.write({
+        #        'some_field': 'some_description'
+        #  })
         return res
 
     #Factura de exportación electrónica ELIMINAR
