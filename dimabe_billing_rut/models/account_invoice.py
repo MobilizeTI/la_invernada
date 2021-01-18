@@ -675,8 +675,7 @@ class AccountInvoice(models.Model):
                     'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
                     'order_name': self.order_to_add_ids.name
                 })
-                #else
-                #   ra
+                
                 
                 #self.orders_in_invoice.create({
                 #    'order_id' : self.order_to_add_ids.id,
