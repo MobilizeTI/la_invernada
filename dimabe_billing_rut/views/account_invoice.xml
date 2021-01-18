@@ -14,7 +14,6 @@
                 </xpath>
                 <xpath expr="//field[@name='cash_rounding_id']" position="after">
                     <field name="order_to_add_ids"/>
-                    <field name="stock_picking_ids" domain="[('id','in',[order.sale_id for order in order_to_add_ids])]"/>
                     <button type="object" name="add_products_by_order" string="Agregar Productos" class="oe_highlight"/>
                 </xpath>
                 <data>
