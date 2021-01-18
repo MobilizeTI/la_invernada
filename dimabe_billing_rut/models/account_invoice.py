@@ -684,9 +684,9 @@ class AccountInvoice(models.Model):
     def write(self, vals):
         res = super(AccountInvoice, self).write(vals)
         order_list = []
+        raise models.ValidationError('{} {}'.format(self.invoice_line_ids[0],self.invoice_line_ids[1]))
         for item in self.invoice_line_ids:
             if item.order_id:
-                raise models.ValidationError(item.order_id)
                 order_list.append(item.order_id)
         
         stock_picking_ids = self.env['stock.picking'].search([('sale_id', 'in', order_list)])
