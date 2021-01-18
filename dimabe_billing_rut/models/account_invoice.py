@@ -672,7 +672,7 @@ class AccountInvoice(models.Model):
                     'product_id': item.id,
                     'invoice_id': self.id,
                     'price_unit': item.price_unit,
-                    'account_id': item.property_account_income_categ_id.id
+                    'account_id': item.categ_id.property_account_income_categ_id.id
                 })
                 
                 self.orders_in_invoice.create({
