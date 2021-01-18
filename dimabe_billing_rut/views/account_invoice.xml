@@ -10,6 +10,7 @@
                 </xpath>
                 <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='product_id']" position="before">
                     <field name="order_name"/> 
+                    <field name="quantity_to_invoice"/>
                 </xpath>
                 <xpath expr="//field[@name='cash_rounding_id']" position="after">
                     <field name="order_to_add_ids"/>
