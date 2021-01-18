@@ -675,10 +675,10 @@ class AccountInvoice(models.Model):
                 for item in product_ids:
                     valid = False
                     for i in self.invoice_line_ids:
-                        if item.product_id.id != i.product_id and self.order_to_add_ids.name != i.order_name and self.self.stock_picking_ids.id != i.stock_picking_id:
+                        if item.product_id.id != i.product_id and self.order_to_add_ids.name != i.order_name and self.stock_picking_ids.id != i.stock_picking_id:
                             valid = True
                         else:
-                            raise models.ValidationError('El Producto {} del despacho {} del pedido {} ya se encuentra agregada en la lista'.format(item.name,self.self.stock_picking_ids.name,self.order_to_add_ids.name))
+                            raise models.ValidationError('El Producto {} del despacho {} del pedido {} ya se encuentra agregada en la lista'.format(item.name,self.stock_picking_ids.name,self.order_to_add_ids.name))
                     if valid:
                         self.env['account.invoice.line'].create({
                                 'name' : item.name,
@@ -690,7 +690,8 @@ class AccountInvoice(models.Model):
                                 'order_name': self.order_to_add_ids.name,
                                 'quantity_to_invoice': str(item.qty_delivered - item.qty_invoiced),
                                 'dispatch': self.stock_picking_ids.name,
-                                'stock_picking_id': self.stock_picking_ids.id
+                                'stock_picking_id': self.stock_picking_ids.id,
+                                'quantity': item.qty_delivered - item.qty_invoiced
                             })
                         valid = False
         else:
