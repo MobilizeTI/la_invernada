@@ -686,6 +686,7 @@ class AccountInvoice(models.Model):
         order_list = []
         for item in self.invoice_line_ids:
             if item.order_id:
+                raise models.ValidationError(item.order_id)
                 order_list.append(item.order_id)
         
         stock_picking_ids = self.env['stock.picking'].search([('sale_id', 'in', order_list)])
