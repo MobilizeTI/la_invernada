@@ -666,18 +666,18 @@ class AccountInvoice(models.Model):
         product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
         if len(product_ids) > 0:
             for item in product_ids:
-                #if item.product_id.id not in self.account.invoice.line:
-                self.env['account.invoice.line'].create({
-                    'name' : item.name,
-                    'product_id': item.product_id.id,
-                    'invoice_id': self.id,
-                    'price_unit': item.price_unit,
-                    'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
-                    'order_id': self.order_to_add_ids.order_id,
-                    'order_name': self.order_to_add_ids.name,
-                    'quantity_to_invoice': str(self.qty_delivered - self.qty_invoiced)
-                })
-                
+                if item.product_id.id not in self.account.invoice.line.product_id and self.order_to_add_ids.name not in self.account.invoice.line.order_name:
+                    self.env['account.invoice.line'].create({
+                        'name' : item.name,
+                        'product_id': item.product_id.id,
+                        'invoice_id': self.id,
+                        'price_unit': item.price_unit,
+                        'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
+                        'order_id': self.order_to_add_ids.id,
+                        'order_name': self.order_to_add_ids.name,
+                        'quantity_to_invoice': str(self.qty_delivered - self.qty_invoiced)
+                    })
+                raise models.ValidationError('El Producto {} del pedido {} ya se encuentra agregada en la lista'.format(item.name,self.order_to_add_ids.name))
                 
                 #self.orders_in_invoice.create({
                 #    'order_id' : self.order_to_add_ids.id,
