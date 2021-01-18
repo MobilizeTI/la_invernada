@@ -86,7 +86,7 @@ class AccountInvoice(models.Model):
     )
 
     stock_picking_ids = fields.Many2one('stock.picking',
-        string="Stock Picking" #cambiar nombre
+        string="Despachos" #cambiar nombre
     )
 
     #To Export
