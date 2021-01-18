@@ -686,7 +686,6 @@ class AccountInvoice(models.Model):
         order_list = []
         
         for item in self.invoice_line_ids:
-            raise models.ValidationError(item.order_name)
             if item.order_id:
                 order_list.append(item.order_id)
         
