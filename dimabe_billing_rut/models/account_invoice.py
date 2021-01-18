@@ -673,7 +673,9 @@ class AccountInvoice(models.Model):
                     'invoice_id': self.id,
                     'price_unit': item.price_unit,
                     'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
-                    'order_name': self.order_to_add_ids.name
+                    'order_id': self.order_to_add_ids.order_id,
+                    'order_name': self.order_to_add_ids.name,
+                    'quantity_to_invoice': str(self.qty_delivered - self.qty_invoiced)
                 })
                 
                 
