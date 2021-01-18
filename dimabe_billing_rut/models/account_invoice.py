@@ -89,6 +89,8 @@ class AccountInvoice(models.Model):
         string="Despachos" #cambiar nombre
     )
 
+    stock_picking_id = fields.Integer(string="Despacho Id")
+
     #To Export
     other_coin = fields.Many2one('res.currency', string='Otra Moneda')
 
@@ -198,6 +200,11 @@ class AccountInvoice(models.Model):
     remarks_comex = fields.Text('Comentarios Comex')
 
     #COMEX METHOD
+
+    @api.onchange('order_to_add_ids')
+    def onchange_order_to_add(self):
+        raise models.ValidationError(self.order_to_add_ids.sale_id)
+    
     @api.multi
     def get_permision(self):
         for i in self.env.user.groups_id:
