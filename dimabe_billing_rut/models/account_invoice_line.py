@@ -14,7 +14,7 @@ class AccountInvoiceLine(models.Model):
             ('7', '')
             ], 'Tipo Exento', default='7')
 
-    
+    order_name = fields.Char(string="Pedido", readonly=True)
 
            
 

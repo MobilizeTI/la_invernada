@@ -666,14 +666,17 @@ class AccountInvoice(models.Model):
         product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
         if len(product_ids) > 0:
             for item in product_ids:
-                #raise models.ValidationError('{} {} {} {} {} '.format(self.order_to_add_ids.id,self.order_to_add_ids.name,item.id,item.price_unit,self.id))
+                #if item.product_id.id not in self.account.invoice.line:
                 self.env['account.invoice.line'].create({
                     'name' : item.name,
                     'product_id': item.product_id.id,
                     'invoice_id': self.id,
                     'price_unit': item.price_unit,
-                    'account_id': item.product_id.categ_id.property_account_income_categ_id.id
+                    'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
+                    'order_name': self.order_to_add_ids.name
                 })
+                #else
+                #   ra
                 
                 #self.orders_in_invoice.create({
                 #    'order_id' : self.order_to_add_ids.id,
