@@ -682,7 +682,7 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def write(self, vals):
-        res = super(AccountInvoice, self).write(vals)
+
         order_list = []
         
         for item in self.invoice_line_ids:
@@ -691,7 +691,7 @@ class AccountInvoice(models.Model):
                 order_list.append(item.order_id)
         
         stock_picking_ids = self.env['stock.picking'].search([('sale_id', 'in', order_list)])
-        raise models.ValidationError('{} {} '.format(len(stock_picking_ids),order_list[0]))
+        res = super(AccountInvoice, self).write(vals)
         for s in stock_picking_ids:
             s.write({
                 'shipping_number': self.shipping_number
