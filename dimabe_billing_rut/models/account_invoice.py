@@ -666,19 +666,24 @@ class AccountInvoice(models.Model):
         product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
         if len(product_ids) > 0:
             for item in product_ids:
-                if item.product_id.id not in self.invoice_line_ids.product_id and self.order_to_add_ids.name not in self.invoice_line_ids.order_name:
+                valid = False
+                for i in self.invoice_line_ids:
+                    if item.product_id.id != i.product_id and self.order_to_add_ids.name != i.order_name:
+                        valid = True
+                    else:
+                        raise models.ValidationError('El Producto {} del pedido {} ya se encuentra agregada en la lista'.format(item.name,self.order_to_add_ids.name))
+                if valid:
                     self.env['account.invoice.line'].create({
-                        'name' : item.name,
-                        'product_id': item.product_id.id,
-                        'invoice_id': self.id,
-                        'price_unit': item.price_unit,
-                        'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
-                        'order_id': self.order_to_add_ids.id,
-                        'order_name': self.order_to_add_ids.name,
-                        'quantity_to_invoice': str(self.qty_delivered - self.qty_invoiced)
-                    })
-                raise models.ValidationError('El Producto {} del pedido {} ya se encuentra agregada en la lista'.format(item.name,self.order_to_add_ids.name))
-                
+                            'name' : item.name,
+                            'product_id': item.product_id.id,
+                            'invoice_id': self.id,
+                            'price_unit': item.price_unit,
+                            'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
+                            'order_id': self.order_to_add_ids.id,
+                            'order_name': self.order_to_add_ids.name,
+                            'quantity_to_invoice': str(self.qty_delivered - self.qty_invoiced)
+                        })
+                    valid = False
                 #self.orders_in_invoice.create({
                 #    'order_id' : self.order_to_add_ids.id,
                 #    'order_name' : self.order_to_add_ids.name,
