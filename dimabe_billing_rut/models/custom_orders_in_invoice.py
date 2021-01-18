@@ -3,7 +3,9 @@ from odoo import models, fields, api
 class CustomOrdersInInvoice(models.Model):
     _name = 'custom.orders.in.invoice'
 
-    order_id = fields.Char(string= 'Pedido', required=True)
+    order_id = fields.Char(string= 'Id Pedido', required=True)
+
+    order_name = fields.Char(string= 'Pedido', required=True)
 
     product_id = fields.Char(string= 'Producto', required=True)
 
