@@ -693,8 +693,8 @@ class AccountInvoice(models.Model):
             s.write({
                 'shipping_number': self.shipping_number,
                 'contract_correlative_view': self.contract_correlative_view,
-                #'shipping_id': self.shipping_id,
-                'agent_id': self.agent_id,
+                'shipping_id': self.shipping_id.id,
+                'agent_id': self.agent_id.id,
                 'commission' : self.commission,
                 'total_commission' : self.total_commission,
                 'charging_mode' : self.charging_mode,
