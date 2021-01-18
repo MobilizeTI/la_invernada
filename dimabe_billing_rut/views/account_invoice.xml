@@ -14,9 +14,6 @@
                 </xpath>
                 <data>
                     <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
-                        <page string="Comex">
-
-                        </page>
                         <page name="xdte_tab" string="DTE">
                             <button  type="object" name="send_to_sii" string="Enviar al SII" class="oe_highlight"/>
                             <group name="xdte_info" cols="">

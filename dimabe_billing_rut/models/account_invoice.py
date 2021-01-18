@@ -80,7 +80,7 @@ class AccountInvoice(models.Model):
 
     #Orders to Add in Invoice
 
-    order_to_add_ids = fields.Many2many('sale.order',
+    order_to_add_ids = fields.Many2one('sale.order',
         domain=[('invoice_status','=','to invoice')],
         string="Pedidos"
     )
@@ -432,16 +432,16 @@ class AccountInvoice(models.Model):
      
     def validation_fields(self):
         if not self.partner_id:
-            raise models.ValidationError('Por favor selccione el Cliente')
+            raise models.ValidationError('Por favor seleccione el Cliente')
         else:
             if not self.partner_id.invoice_rut:
                 raise models.ValidationError('El Cliente {} no tiene Rut de Facturación'.format(self.partner_id.name))
         
         if not self.date_invoice:
-            raise models.ValidationError('Debe Selccionar la Fecha de la Factura')
+            raise models.ValidationError('Debe Seleccionar la Fecha de la Factura')
         
         if not self.date_due:
-            raise models.ValidationError('Debe Selccionar la Fecha de Expiración')
+            raise models.ValidationError('Debe Seleccionar la Fecha de Expiración')
 
         if not self.dte_type_id.code:
             raise models.ValidationError('Por favor seleccione el Tipo de Documento a emitir')
@@ -469,7 +469,7 @@ class AccountInvoice(models.Model):
             for pk in self.packages:
                 count_quantity += pk.quantity
             if int(count_quantity) != int(self.total_packages):
-                raise models.ValidationError('El Total de Bultos {} no cuadra con la usma de los bultos {}'.format(int(self.total_packages),int(count_quantity)))
+                raise models.ValidationError('El Total de Bultos {} no cuadra con la suma de los bultos {}'.format(int(self.total_packages),int(count_quantity)))
             if self.currency_id.code == self.other_coin.code:
                 raise models.ValidationError('El tipo de Moneda y Otra Moneda no pueden ser iguales')
 
@@ -619,8 +619,8 @@ class AccountInvoice(models.Model):
                     "SaleClauseCode":str(self.export_clause.code),
                     "SaleClauseTotal":str(self.total_export_sales_clause),
                     "TransportRoute":str(self.type_transport.code),
-                    "OriginPortCode":'',#str(self.shipment_id.departure_port.code),
-                    "DestinyPortCode": '',#str(self.shipment_id.arrival_port.code),
+                    "OriginPortCode": str(self.shipment_id.departure_port.code),
+                    "DestinyPortCode": str(self.shipment_id.arrival_port.code),
                     "Tara":str(self.tara),
                     "GrossWeight":str(self.gross_weight),
                     "NetWeight":str(self.net_weight),
