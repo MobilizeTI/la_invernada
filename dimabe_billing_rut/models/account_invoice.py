@@ -688,6 +688,7 @@ class AccountInvoice(models.Model):
                 order_list.append(item.order_id)
         
         stock_picking_ids = self.env['stock.picking'].search([('sale_id', 'in', order_list)])
+        raise models.ValidationError('{} {} '.format(len(stock_picking_ids),order_list[0]))
         for s in stock_picking_ids:
             s.write({
                 'shipping_number': self.shipping_number
