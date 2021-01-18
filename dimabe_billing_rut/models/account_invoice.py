@@ -89,7 +89,7 @@ class AccountInvoice(models.Model):
         string="Despachos" #cambiar nombre
     )
 
-    stock_picking_id = fields.Integer(string="Despacho Id")
+    order_to_add_id = fields.Integer(string="Despacho Id")
 
     #To Export
     other_coin = fields.Many2one('res.currency', string='Otra Moneda')
@@ -203,8 +203,9 @@ class AccountInvoice(models.Model):
 
     @api.onchange('order_to_add_ids')
     def onchange_order_to_add(self):
-        raise models.ValidationError(self.order_to_add_ids.sale_id)
-    
+        self.order_to_add_id = order_to_add_ids.id
+        raise models.ValidationError(self.order_to_add_ids.id)
+
     @api.multi
     def get_permision(self):
         for i in self.env.user.groups_id:
