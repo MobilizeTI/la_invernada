@@ -687,7 +687,9 @@ class AccountInvoice(models.Model):
                             'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
                             'order_id': self.order_to_add_ids.id,
                             'order_name': self.order_to_add_ids.name,
-                            'quantity_to_invoice': str(item.qty_delivered - item.qty_invoiced)
+                            'quantity_to_invoice': str(item.qty_delivered - item.qty_invoiced),
+                            'dispatch': self.order_to_add_id.name,
+                            'stock_picking_id': self.order_to_add_id.id
                         })
                     valid = False
 

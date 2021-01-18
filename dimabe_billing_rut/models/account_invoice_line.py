@@ -20,5 +20,9 @@ class AccountInvoiceLine(models.Model):
 
     quantity_to_invoice = fields.Char(string="Cantidad por Facturar", readonly=True)
 
+    dispatch = fields.Char(string="Despacho", readonly="True")
+
+    stock_picking_id = fields.Integer(string="Stock Picking Id", readonly="True")
+
            
 
