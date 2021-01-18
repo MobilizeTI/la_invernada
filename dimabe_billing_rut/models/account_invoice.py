@@ -85,6 +85,8 @@ class AccountInvoice(models.Model):
         string="Pedidos"
     )
 
+    order_to_add_id = fields.Integer(string="Pedido")
+
     stock_picking_ids = fields.Many2one('stock.picking',
         string="Stock Picking" #cambiar nombre
     )
