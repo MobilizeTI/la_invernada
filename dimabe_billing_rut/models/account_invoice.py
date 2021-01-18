@@ -193,8 +193,8 @@ class AccountInvoice(models.Model):
     
     remarks_comex = fields.Text('Comentarios Comex')
 
-    #references = fields.One2many(
-    #    'account.order.in.invoice',
+    #orders_in_invoice = fields.One2many(
+    #    'account.orders.in.invoice',
     #    'invoice_id',
     #    readonly=False
     #)
