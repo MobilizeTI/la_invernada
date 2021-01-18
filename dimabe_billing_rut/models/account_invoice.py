@@ -706,7 +706,7 @@ class AccountInvoice(models.Model):
                 'freight_value' : self.freight_amount,
                 'safe_value' : self.safe_amount,
                 'total_value' : self.total_value,
-                'value_per_kilo' : self.value_per_kilo,
+                'value_per_kilogram' : self.value_per_kilogram,
             })
         
 
