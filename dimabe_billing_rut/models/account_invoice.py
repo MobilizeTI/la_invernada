@@ -674,12 +674,15 @@ class AccountInvoice(models.Model):
             if len(product_ids) > 0:
                 for item in product_ids:  
                     valid = False
-                    for i in self.invoice_line_ids:
-                        if item.product_id.id != i.product_id and self.order_to_add_ids.name != i.order_name:
-                            valid = True
-                        else:
-                            raise models.ValidationError('El Producto {} del despacho {} del pedido {} ya se encuentra agregada en la lista'.format(item.name,self.stock_picking_ids.name,self.order_to_add_ids.name))
-                    raise models.ValidationError('valid= {}'.format(valid))
+                    if len(self.invoice_line_ids) == 0:
+                        valid = True
+                    else:
+                        for i in self.invoice_line_ids:
+                            if item.product_id.id != i.product_id and self.order_to_add_ids.name != i.order_name:
+                                valid = True
+                            else:
+                                raise models.ValidationError('El Producto {} del despacho {} del pedido {} ya se encuentra agregada en la lista'.format(item.name,self.stock_picking_ids.name,self.order_to_add_ids.name))
+                   
                     if valid:
                         self.env['account.invoice.line'].create({
                                 'name' : item.name,
