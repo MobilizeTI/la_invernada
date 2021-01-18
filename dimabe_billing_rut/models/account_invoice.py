@@ -194,7 +194,7 @@ class AccountInvoice(models.Model):
     remarks_comex = fields.Text('Comentarios Comex')
 
     orders_in_invoice = fields.One2many(
-        'account.orders.in.invoice',
+        'custom.orders.in.invoice',
         'invoice_id'
     )
 
@@ -667,13 +667,13 @@ class AccountInvoice(models.Model):
         if len(product_ids) > 0:
             for item in product_ids:
                 raise models.ValidationError('{} {} {} {} {} {}'.format(self.order_to_add_ids.id,self.order_to_add_ids.name,item.price_unit,self.id))
-                #self.orders_in_invoice.create({
-                #    'order_id' : self.order_to_add_ids.id,
-                #    'product_id' : item.id,
-                #    'price' : item.price_unit,
-                #    'quantity' : '',
-                #    'invoice_id' : self.id
-                #})
+                self.orders_in_invoice.create({
+                    'order_id' : self.order_to_add_ids.id,
+                    'product_id' : item.id,
+                    'price' : item.price_unit,
+                    'quantity' : '',
+                    'invoice_id' : self.id
+                })
                 #self.env['account.invoice.line'].create({
                 #    'name' : item.name,
                 #    'product_id': item.id,
