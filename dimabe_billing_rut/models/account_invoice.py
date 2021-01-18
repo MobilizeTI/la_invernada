@@ -682,9 +682,7 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def write(self, vals):
-
         order_list = []
-        
         for item in self.invoice_line_ids:
             if item.order_id:
                 order_list.append(item.order_id)
@@ -693,7 +691,22 @@ class AccountInvoice(models.Model):
         res = super(AccountInvoice, self).write(vals)
         for s in stock_picking_ids:
             s.write({
-                'shipping_number': self.shipping_number
+                'shipping_number': self.shipping_number,
+                'contract_correlative_view': self.contract_correlative_view,
+                'shipping_id': self.shipping_id,
+                'agent_id': self.agent_id,
+                'commission' : self.commission,
+                'total_commission' : self.total_commission,
+                'charging_mode' : self.charging_mode,
+                'booking_number' : self.booking_number,
+                'bl_number' : self.bl_number,
+                'container_number' : self.container_number,
+                'container_type' : self.container_type,
+                'client_label' : self.client_label,
+                'freight_value' : self.freight_amount,
+                'safe_value' : self.save_amount,
+                'total_value' : self.total_value,
+                'value_per_kilo' : self.value_per_kilo,
             })
         
 
