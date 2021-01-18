@@ -684,24 +684,22 @@ class AccountInvoice(models.Model):
                             'quantity_to_invoice': str(item.qty_delivered - item.qty_invoiced)
                         })
                     valid = False
-                #self.orders_in_invoice.create({
-                #    'order_id' : self.order_to_add_ids.id,
-                #    'order_name' : self.order_to_add_ids.name,
-                #    'product_id' : item.id,
-                #    'price' : item.price_unit,
-                #    'quantity' : '',
-                #    'invoice_id' : self.id
-                #})
-               
 
+    @api.multi
+    def write(self, values):
+        res = super(AccountInvoice, self).write(values)
+        for item in  self.invoice_line_ids:
+            if item.order_id and item.order_id != None:
+                stock_picking = self.env['stock.picking'].search([('sale_id','=',item.order_id)])
+                stock_picking.shipping_number = self.shipping_number
 
+        return res
 
-    #Factura de exportación electrónica
+    #Factura de exportación electrónica ELIMINAR
     def invoice_export_type(self):
         productLines = []
         lineNumber = 1
         typeOfExemptEnum = ""
-        #Transporte
 
         for item in self.invoice_line_ids:
             haveExempt = False

@@ -32,4 +32,3 @@ from . import custom_package
 from . import custom_uom
 from . import hr_salary_rule
 from . import sale_order
-from . import custom_orders_in_invoice
