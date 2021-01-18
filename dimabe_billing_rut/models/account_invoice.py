@@ -193,11 +193,6 @@ class AccountInvoice(models.Model):
     
     remarks_comex = fields.Text('Comentarios Comex')
 
-    orders_in_invoice = fields.One2many(
-        'custom.orders.in.invoice',
-        'invoice_id'
-    )
-
     #COMEX METHOD
     @api.multi
     def get_permision(self):
