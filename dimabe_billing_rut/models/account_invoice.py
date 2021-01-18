@@ -195,8 +195,7 @@ class AccountInvoice(models.Model):
 
     orders_in_invoice = fields.One2many(
         'account.orders.in.invoice',
-        'invoice_id',
-        readonly=False
+        'invoice_id'
     )
 
     #COMEX METHOD
@@ -667,8 +666,7 @@ class AccountInvoice(models.Model):
         product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
         if len(product_ids) > 0:
             for item in product_ids:
-                raise models.ValidationError('{} {} {} {} {} {}'.format(self.order_to_add_ids.id,self.order_to_add_ids.name,
-                item.price_unit,self.id))
+                raise models.ValidationError('{} {} {} {} {} {}'.format(self.order_to_add_ids.id,self.order_to_add_ids.name,item.price_unit,self.id))
                 self.orders_in_invoice.create({
                     'order_id' : self.order_to_add_ids.id,
                     'product_id' : item.id,
