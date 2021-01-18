@@ -675,10 +675,10 @@ class AccountInvoice(models.Model):
                 for item in product_ids:
                     valid = False
                     for i in self.invoice_line_ids:
-                        if item.product_id.id != i.product_id and self.order_to_add_ids.name != i.order_name:
+                        if item.product_id.id != i.product_id and self.order_to_add_ids.name != i.order_name and self.self.stock_picking_ids.id != i.stock_picking_id:
                             valid = True
                         else:
-                            raise models.ValidationError('El Producto {} del pedido {} ya se encuentra agregada en la lista'.format(item.name,self.order_to_add_ids.name))
+                            raise models.ValidationError('El Producto {} del despacho {} del pedido {} ya se encuentra agregada en la lista'.format(item.name,self.self.stock_picking_ids.name,self.order_to_add_ids.name))
                     if valid:
                         self.env['account.invoice.line'].create({
                                 'name' : item.name,
@@ -691,12 +691,13 @@ class AccountInvoice(models.Model):
                                 'quantity_to_invoice': str(item.qty_delivered - item.qty_invoiced),
                                 'dispatch': self.stock_picking_ids.name,
                                 'stock_picking_id': self.stock_picking_ids.id,
-                                'quantity': item.qty_delivered - item.qty_invoiced
+                                'quantity': float(item.qty_delivered - item.qty_invoiced)
                             })
                         valid = False
         else:
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
 
+    #Send Data to Stock_Picking Comex
     @api.multi
     def write(self, vals):
         order_list = []
@@ -704,7 +705,6 @@ class AccountInvoice(models.Model):
             if item.order_id:
                 order_list.append(item.stock_picking_id)
         
-        #stock_picking_ids = self.env['stock.picking'].search([('sale_id', 'in', order_list)])
         stock_picking_ids = self.env['stock.picking'].search([('id', 'in', order_list)])
         res = super(AccountInvoice, self).write(vals)
         for s in stock_picking_ids:
@@ -727,72 +727,4 @@ class AccountInvoice(models.Model):
                 'value_per_kilogram' : self.value_per_kilogram,
                 'remarks': self.remarks_comex
             })
-        
-
         return res
-
-    #Factura de exportación electrónica ELIMINAR
-    def invoice_export_type(self):
-        productLines = []
-        lineNumber = 1
-        typeOfExemptEnum = ""
-
-        for item in self.invoice_line_ids:
-            haveExempt = False
-            if (len(item.invoice_line_tax_ids) == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6)):
-                haveExempt = True
-                typeOfExemptEnum = item.exempt
-            if haveExempt:
-                productLines.append(
-                    {
-                        "LineNumber": str(lineNumber),
-                        "ProductTypeCode": "EAN",
-                        "ProductCode": str(item.product_id.default_code),
-                        "ProductName": item.name,
-                        "ProductQuantity": str(int(item.quantity)),
-                        "ProductPrice": str(int(item.price_unit)),
-                        "ProductDiscountPercent": "0",
-                        "DiscountAmount": "0",
-                        "Amount": str(int(item.price_subtotal)),
-                        "HaveExempt": haveExempt,
-                        "TypeOfExemptEnum": typeOfExemptEnum
-                    }
-                )
-            else:
-                productLines.append(
-                    {
-                        "LineNumber": str(lineNumber),
-                        "ProductTypeCode": "EAN",
-                        "ProductCode": str(item.product_id.default_code),
-                        "ProductName": item.name,
-                        "ProductQuantity": str(int(item.quantity)),
-                        "ProductPrice": str(int(item.price_unit)),
-                        "ProductDiscountPercent": "0",
-                        "DiscountAmount": "0",
-                        "Amount": str(int(item.price_subtotal))
-                    }
-                )
-            lineNumber += 1
-        invoice= {
-            "expirationDate": self.date_due.strftime("%Y-%m-%d"),
-            "paymentType": self.method_of_payment,
-            "recipient": {
-                "EnterpriseRut": re.sub('[\.]','', self.partner_id.invoice_rut),
-                "EnterpriseAddressOrigin": self.partner_id.street,
-                "EnterpriseCity": self.partner_id.city,
-                "EnterpriseCommune": self.partner_id.state_id.name,
-                "EnterpriseName": self.partner_id.name,
-                "EnterpriseTurn": self.partner_activity_id.name
-            },
-            "total": {
-                "currency": str(self.currency),
-                "netAmount": str(self.amount_untaxed),
-                "exemptAmount": "0",
-                "taxRate": "19",
-                "taxtRateAmount": str(self.amount_tax),
-                "totalAmount": str(self.amount_total)
-            },
-            "lines": productLines
-        }
-        return invoice
-
