@@ -669,6 +669,7 @@ class AccountInvoice(models.Model):
 
     @api.multi  
     def add_products_by_order(self):
+        raise models.ValidationError('{} {}'.format(self.order_to_add_id.id,self.order_to_add_id.name))
         product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
         if len(product_ids) > 0:
             for item in product_ids:
