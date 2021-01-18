@@ -690,8 +690,7 @@ class AccountInvoice(models.Model):
                                 'order_name': self.order_to_add_ids.name,
                                 'quantity_to_invoice': str(item.qty_delivered - item.qty_invoiced),
                                 'dispatch': self.stock_picking_ids.name,
-                                'stock_picking_id': self.stock_picking_ids.id,
-                                'quantity': item.qty_delivered - item.qty_invoiced
+                                'stock_picking_id': self.stock_picking_ids.id
                             })
                         valid = False
         else:
