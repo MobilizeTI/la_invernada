@@ -684,9 +684,8 @@ class AccountInvoice(models.Model):
     def write(self, vals):
         res = super(AccountInvoice, self).write(vals)
         order_list = []
-        raise models.ValidationError('{}'.format(len(self.invoice_line_ids))
+        raise models.ValidationError('{}'.format(len(self.invoice_line_ids)))
         for item in self.invoice_line_ids:
-            
             if item.order_id:
                 order_list.append(item.order_id)
         
