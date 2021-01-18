@@ -688,7 +688,7 @@ class AccountInvoice(models.Model):
     @api.multi
     def write(self, values):
         for item in self.invoice_line_ids:
-            if item.order_id and not item.order_id is None:
+            if item.order_id:
                 stock_picking = self.env['stock.picking'].search([('sale_id', '=', item.order_id)])
                 stock_picking.shipping_number = self.shipping_number
         res = super(AccountInvoice, self).write(values)
