@@ -701,7 +701,7 @@ class AccountInvoice(models.Model):
                 'booking_number' : self.booking_number,
                 'bl_number' : self.bl_number,
                 'container_number' : self.container_number,
-                'container_type' : self.container_type,
+                'container_type' : self.container_type.id,
                 'client_label' : self.client_label,
                 'freight_value' : self.freight_amount,
                 'safe_value' : self.safe_amount,
