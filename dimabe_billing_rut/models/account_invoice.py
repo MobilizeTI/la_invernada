@@ -686,12 +686,12 @@ class AccountInvoice(models.Model):
                     valid = False
 
     @api.multi
-    def write(self, values):
+    def write(self, vals):
         for item in self.invoice_line_ids:
             if item.order_id:
                 stock_picking = self.env['stock.picking'].search([('sale_id', '=', item.order_id)])
                 stock_picking.shipping_number = self.shipping_number
-        res = super(AccountInvoice, self).write(values)
+        res = super(AccountInvoice, self).write(vals)
         return res
 
     #Factura de exportación electrónica ELIMINAR
