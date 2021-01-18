@@ -687,17 +687,20 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def write(self, vals):
+        order_list = []
         for item in self.invoice_line_ids:
             if item.order_id:
-                stock_picking = self.env['stock.picking'].search([('sale_id', '=', item.order_id)])
-                stock_picking.shipping_number = self.shipping_number
-        res = super(AccountInvoice, self).write(vals)
-        #record_ids = self.env['your.model'].search([('name', '=', 'Example')])
-        #for record in record_ids:
-        #    record.write({
-        #        'some_field': 'some_description'
-        #  })
-        return res
+                order_list.append(item.order_id)
+        raise models.ValidationError(order_list[0])
+        
+        stock_picking_ids = self.env['stock.picking'].search([('sale_id', 'in', order_list)])
+        for s in stock_picking_ids:
+            s.write({
+                'shipping_number': self.shipping_number
+            })
+        #res = super(AccountInvoice, self).write(vals)
+
+        #return res
 
     #Factura de exportación electrónica ELIMINAR
     def invoice_export_type(self):
