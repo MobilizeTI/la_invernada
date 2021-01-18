@@ -193,11 +193,11 @@ class AccountInvoice(models.Model):
     
     remarks_comex = fields.Text('Comentarios Comex')
 
-    #orders_in_invoice = fields.One2many(
-    #    'account.orders.in.invoice',
-    #    'invoice_id',
-    #    readonly=False
-    #)
+    orders_in_invoice = fields.One2many(
+        'account.orders.in.invoice',
+        'invoice_id',
+        readonly=False
+    )
 
     #COMEX METHOD
     @api.multi
@@ -287,10 +287,6 @@ class AccountInvoice(models.Model):
             for activity in item.partner_id.economic_activities:
                 activities.append(activity.id)
             item.partner_activity_id = activities
-
-    
-
-
         
     @api.multi
     def send_to_sii(self):
@@ -427,8 +423,7 @@ class AccountInvoice(models.Model):
             raise models.ValidationError('Status: {} Title: {} Json: {}'.format(jr['status'],jr['title'],json.dumps(invoice)))
         elif 'message' in Jrkeys:
             raise models.ValidationError('Advertencia: {} Json: {}'.format(jr['message'],json.dumps(invoice)))
-
-            
+  
      
     def validation_fields(self):
         if not self.partner_id:
@@ -672,18 +667,24 @@ class AccountInvoice(models.Model):
         product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
         if len(product_ids) > 0:
             for item in product_ids:
-                #raise models.ValidationError('{} {} {}'.format(item.id,item.name, item.account_id))
-                self.env['account.invoice.line'].create({
-                    'name' : item.name,
-                    'product_id': item.id,
-                    'invoice_id': self.id,
-                    'price_unit': item.price_unit,
-                    'account_id': ''
+                raise models.ValidationError('{} {} {} {} {} {}'.format(self.order_to_add_ids.id,self.order_to_add_ids.name,
+                item.price_unit,self.id))
+                self.orders_in_invoice.create({
+                    'order_id' : self.order_to_add_ids.id,
+                    'product_id' : item.id,
+                    'price' : item.price_unit,
+                    'quantity' : '',
+                    'invoice_id' : self.id
                 })
+                #self.env['account.invoice.line'].create({
+                #    'name' : item.name,
+                #    'product_id': item.id,
+                #    'invoice_id': self.id,
+                #    'price_unit': item.price_unit,
+                #    'account_id': ''
+                #})
 
-     
 
-    
 
     #Factura de exportación electrónica
     def invoice_export_type(self):
