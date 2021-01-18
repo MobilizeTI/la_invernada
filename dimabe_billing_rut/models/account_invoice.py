@@ -203,7 +203,7 @@ class AccountInvoice(models.Model):
 
     @api.onchange('order_to_add_ids')
     def onchange_order_to_add(self):
-        self.order_to_add_id = order_to_add_ids.id
+        self.order_to_add_id = self.order_to_add_ids.id
         raise models.ValidationError(self.order_to_add_ids.id)
 
     @api.multi
