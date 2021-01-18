@@ -85,8 +85,6 @@ class AccountInvoice(models.Model):
         string="Pedidos"
     )
 
-    order_to_add_id = fields.Integer(string="Pedido")
-
     stock_picking_ids = fields.Many2one('stock.picking',
         string="Stock Picking" #cambiar nombre
     )
@@ -200,10 +198,6 @@ class AccountInvoice(models.Model):
     remarks_comex = fields.Text('Comentarios Comex')
 
     #COMEX METHOD
-    @api.onchange('order_to_add_ids')
-    def _onchange_order_to_add(self):
-        self.order_to_add_id = order_to_add_ids.id
-
     @api.multi
     def get_permision(self):
         for i in self.env.user.groups_id:
