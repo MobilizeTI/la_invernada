@@ -666,22 +666,28 @@ class AccountInvoice(models.Model):
         product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
         if len(product_ids) > 0:
             for item in product_ids:
-                raise models.ValidationError('{} vs {}'.format(item.id,item.product_id.id))
                 #raise models.ValidationError('{} {} {} {} {} '.format(self.order_to_add_ids.id,self.order_to_add_ids.name,item.id,item.price_unit,self.id))
                 self.env['account.invoice.line'].create({
                     'name' : item.name,
-                    'product_id': item.id,
+                    'product_id': item.product_id.id,
                     'invoice_id': self.id,
                     'price_unit': item.price_unit,
                     'account_id': item.product_id.categ_id.property_account_income_categ_id.id
                 })
                 
-                
+                self.orders_in_invoice.create({
+                    'order_id' : self.order_to_add_ids.id,
+                    'order_name' : self.order_to_add_ids.name,
+                    'product_id' : item.id,
+                    'price' : item.price_unit,
+                    'quantity' : '',
+                    'invoice_id' : self.id
+                })
                
 
 
 
-    #Factura de exportación electrónica ELIMINAR
+    #Factura de exportación electrónica
     def invoice_export_type(self):
         productLines = []
         lineNumber = 1
