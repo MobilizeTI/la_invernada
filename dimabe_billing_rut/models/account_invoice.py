@@ -626,6 +626,7 @@ class AccountInvoice(models.Model):
             "lines": productLines,
         }
         if self.dte_type_id.code == "110":
+            invoice['recipient']['EnterpriseCountryCode'] = '219'
             invoice['transport'] = {
                 "SaleModeCode": str(self.sale_method.code),
                 "SaleClauseCode":str(self.export_clause.code),
