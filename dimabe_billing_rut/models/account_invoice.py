@@ -435,7 +435,11 @@ class AccountInvoice(models.Model):
             sale_order_line = self.env['sale.order.line'].search([('order_id', '=', line.order_id)])
             for s in sale_order_line:
                 if s.product_id.id == line.product_id:
-                    s.qty_invoiced += line.quantity
+                    new_qty_invoiced = s.qty_invoiced + line.quantity
+                    s.write({
+                        'id': s.id,
+                        'qty_invoiced': new_qty_invoiced
+                    })
         #res = super(AccountInvoice, self).write(vals)
                     # Se se factura todo lo pedido y entregado cambia de estado
                     #if s.qty.invoiced == s.qty.delivered and s.qty.invoiced == s.product_uom_qty:
