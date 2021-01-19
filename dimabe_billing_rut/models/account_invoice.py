@@ -422,30 +422,34 @@ class AccountInvoice(models.Model):
                 except:
                     cols += 1
             
-            self.update_sale_order
+            self.update_sale_order()
         
         if 'status' in Jrkeys and 'title' in Jrkeys:
             raise models.ValidationError('Status: {} Title: {} Json: {}'.format(jr['status'],jr['title'],json.dumps(invoice)))
         elif 'message' in Jrkeys:
             raise models.ValidationError('Advertencia: {} Json: {}'.format(jr['message'],json.dumps(invoice)))
   
-    def update_sale_order(self):
-        for line in self.invoice_line_ids:
-            sale_order = self.env['stock.picking'].search([('id', '=', line.stock_picking_id)])
-            sale_order_line = self.env['sale.order.line'].search([('order_id', '=', line.order_id)])
-            
-            for s in sale_order_line:
-                if s.product_id.id == line.product_id.id:
-                    new_qty_invoiced = s.qty_invoiced + line.quantity
-                    s.write({
-                        'qty_invoiced': new_qty_invoiced
-                    })
-        #res = super(AccountInvoice, self).write(vals)
+    
+    def update_sale_order(self, vals):
+        if len(self.invoice_line_ids) > 0: 
+            for line in self.invoice_line_ids:
+                sale_order = self.env['stock.picking'].search([('id', '=', line.stock_picking_id)])
+                sale_order_lines = self.env['sale.order.line'].search([('order_id', '=', line.order_id)])
+                if len(sale_order_lines) > 0: 
+                    for s in sale_order_lines:
+                        if s.product_id.id == line.product_id.id:
+                            new_qty_invoiced = s.qty_invoiced + line.quantity
+                            s.write({
+                                'qty_invoiced': new_qty_invoiced
+                            })
+        
+       
                     # Se se factura todo lo pedido y entregado cambia de estado
                     #if s.qty.invoiced == s.qty.delivered and s.qty.invoiced == s.product_uom_qty:
                     #   sale_order.invoice_status = 'invoiced'
                     #Agregar invoice_id 
-        #return res
+        res = super(AccountInvoice, self).write(vals)
+        return res
      
     def validation_fields(self):
         if not self.partner_id:
