@@ -432,9 +432,8 @@ class AccountInvoice(models.Model):
     def update_sale_order(self):
         for line in self.invoice_line_ids:
             sale_order = self.env['stock.picking'].search([('id', '=', line.stock_picking_id)])
-            sale_order_line = self.env['sale.order.line'].search([('order_id', '=', line.stock_picking_id)])
-            raise models.ValidationError('stock_picking {}  len saleo_l {}'.format(line.stock_picking_id,len(sale_order_line))
-
+            sale_order_line = self.env['sale.order.line'].search([('order_id', '=', line.order_id)])
+           # raise models.ValidationError('stock_picking {}  len saleo_l {}'.format(line.stock_picking_id,len(sale_order_line))
             for s in sale_order_line:
                 raise models.ValidationError('s.p_id {} s.qty {}'.format(s.product_id,s.qty_invoiced))
 
