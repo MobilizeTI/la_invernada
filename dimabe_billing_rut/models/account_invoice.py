@@ -281,8 +281,6 @@ class AccountInvoice(models.Model):
         # else:
         # self.contract_correlative_view = ''
     
-    
-
 
     @api.onchange('partner_id')
     @api.multi
@@ -437,6 +435,7 @@ class AccountInvoice(models.Model):
             for s in sale_order.order_line:
                 if s.product_id == line.product_id:
                     s.qty_invoiced += line.quantity
+                    raise models.ValidationError('s.p_id {} == line.p_id {}   s.qty {}   line.quan {}'.format(s.product_id,line.product_id,s.qty_invoiced,line.quantity))
         res = super(AccountInvoice, self).write(vals)
 
         return res
