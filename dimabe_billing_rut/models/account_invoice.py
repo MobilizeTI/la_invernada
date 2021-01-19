@@ -438,7 +438,6 @@ class AccountInvoice(models.Model):
                 if s.product_id.id == line.product_id.id:
                     new_qty_invoiced = s.qty_invoiced + line.quantity
                     s.write({
-                        'order_id': line.order_id,
                         'qty_invoiced': new_qty_invoiced
                     })
         #res = super(AccountInvoice, self).write(vals)
