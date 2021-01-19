@@ -293,8 +293,8 @@ class AccountInvoice(models.Model):
         
     @api.multi
     def send_to_sii(self):
-        self.update_sale_order()
-        raise models.ValidationError('verificar actualizacion de SO')
+        #self.update_sale_order()
+        #raise models.ValidationError('verificar actualizacion de SO')
         url = self.env.user.company_id.dte_url
         headers = {
             "apiKey" : self.env.user.company_id.dte_hash,
@@ -430,7 +430,7 @@ class AccountInvoice(models.Model):
             raise models.ValidationError('Advertencia: {} Json: {}'.format(jr['message'],json.dumps(invoice)))
   
     
-    def update_sale_order(self, vals):
+    def update_sale_order(self):
         if len(self.invoice_line_ids) > 0: 
             for line in self.invoice_line_ids:
                 sale_order = self.env['stock.picking'].search([('id', '=', line.stock_picking_id)])
@@ -442,14 +442,7 @@ class AccountInvoice(models.Model):
                             s.write({
                                 'qty_invoiced': new_qty_invoiced
                             })
-        
-       
-                    # Se se factura todo lo pedido y entregado cambia de estado
-                    #if s.qty.invoiced == s.qty.delivered and s.qty.invoiced == s.product_uom_qty:
-                    #   sale_order.invoice_status = 'invoiced'
-                    #Agregar invoice_id 
-        res = super(AccountInvoice, self).write(vals)
-        return res
+
      
     def validation_fields(self):
         if not self.partner_id:
