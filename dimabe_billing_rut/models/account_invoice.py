@@ -437,9 +437,7 @@ class AccountInvoice(models.Model):
             for s in sale_order_line:
                 if s.product_id.id == line.product_id.id:
                     new_qty_invoiced = s.qty_invoiced + line.quantity
-                    raise models.ValidationError('{}  -  {}  -  {}'.format(s.id,line.order_id,new_qty_invoiced))
                     s.write({
-                        'id': s.id,
                         'order_id': line.order_id,
                         'qty_invoiced': new_qty_invoiced
                     })
