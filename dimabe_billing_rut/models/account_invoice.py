@@ -435,7 +435,7 @@ class AccountInvoice(models.Model):
             sale_order_line = self.env['sale.order.line'].search([('order_id', '=', line.order_id)])
             
             for s in sale_order_line:
-                raise models.ValidationError('{}  -  {}  -  {}'.format(s.id,line.order_id,len(sale_order_line)))
+                raise models.ValidationError('{}  -  {}  -  {}'.format(s.product_id.id,line.product_id))
                 if s.product_id.id == line.product_id:
                     new_qty_invoiced = s.qty_invoiced + line.quantity
                     raise models.ValidationError('{}  -  {}  -  {}'.format(s.id,line.order_id,new_qty_invoiced))
