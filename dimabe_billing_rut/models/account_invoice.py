@@ -431,12 +431,15 @@ class AccountInvoice(models.Model):
         elif 'message' in Jrkeys:
             raise models.ValidationError('Advertencia: {} Json: {}'.format(jr['message'],json.dumps(invoice)))
   
-    def update_sale_order(self):
+    def update_sale_order(self, vals):
         for line in self.invoice_line_ids:
             sale_order = self.env['stock.picking'].search([('id', '=', line.stock_picking_id)])
             for s in sale_order.order_line:
                 if s.product_id == line.product_id:
                     s.qty_invoiced += line.quantity
+        res = super(AccountInvoice, self).write(vals)
+
+        return res
                     # Se se factura todo lo pedido y entregado cambia de estado
                     #if s.qty.invoiced == s.qty.delivered and s.qty.invoiced == s.product_uom_qty:
                     #   sale_order.invoice_status = 'invoiced'
