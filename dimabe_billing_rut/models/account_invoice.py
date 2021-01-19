@@ -438,8 +438,6 @@ class AccountInvoice(models.Model):
                     s.qty_invoiced += line.quantity
                     raise models.ValidationError('s.p_id {} == line.p_id {}   s.qty {}   line.quan {}'.format(s.product_id,line.product_id,s.qty_invoiced,line.quantity))
         #res = super(AccountInvoice, self).write(vals)
-
-        
                     # Se se factura todo lo pedido y entregado cambia de estado
                     #if s.qty.invoiced == s.qty.delivered and s.qty.invoiced == s.product_uom_qty:
                     #   sale_order.invoice_status = 'invoiced'
