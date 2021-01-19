@@ -433,13 +433,9 @@ class AccountInvoice(models.Model):
         for line in self.invoice_line_ids:
             sale_order = self.env['stock.picking'].search([('id', '=', line.stock_picking_id)])
             sale_order_line = self.env['sale.order.line'].search([('order_id', '=', line.order_id)])
-           # raise models.ValidationError('stock_picking {}  len saleo_l {}'.format(line.stock_picking_id,len(sale_order_line))
             for s in sale_order_line:
-                raise models.ValidationError('s.p_id {} s.qty {}'.format(s.product_id.id,s.qty_invoiced))
-
                 if s.product_id.id == line.product_id:
                     s.qty_invoiced += line.quantity
-                    raise models.ValidationError('s.p_id {} == line.p_id {}   s.qty {}   line.quan {}'.format(s.product_id,line.product_id,s.qty_invoiced,line.quantity))
         #res = super(AccountInvoice, self).write(vals)
                     # Se se factura todo lo pedido y entregado cambia de estado
                     #if s.qty.invoiced == s.qty.delivered and s.qty.invoiced == s.product_uom_qty:
