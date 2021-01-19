@@ -628,26 +628,24 @@ class AccountInvoice(models.Model):
         }
         if self.dte_type_id.code == "110":
             invoice['transport'] = {
-                "Aduana": {
-                    "SaleModeCode": str(self.sale_method.code),
-                    "SaleClauseCode":str(self.export_clause.code),
-                    "SaleClauseTotal":str(self.total_export_sales_clause),
-                    "TransportRoute":str(self.type_transport.code),
-                    "OriginPortCode": str(self.shipping_id.departure_port.code),
-                    "DestinyPortCode": str(self.shipping_id.arrival_port.code),
-                    "Tara":str(self.tara),
-                    "GrossWeight":str(self.gross_weight),
-                    "NetWeight":str(self.net_weight),
-                    "UnitTaraCode":str(self.uom_tara.code),
-                    "UnitGrossWeightCode":str(self.uom_gross_weight.code),
-                    "UnitNetWeightCode":str(self.uom_net_weight.code),
-                    "TotalPackages": str(self.total_packages),
-                    "Packages": packages_list,
-                    "FreightAmount": str(self.freight_amount),
-                    "SafeAmount":str(self.safe_amount),
-                    "ReceiverCountryCode":str(self.receiving_country_dte.code),
-                    "DestinyCountryCode":str(self.destiny_country_dte.code)
-                }  
+                "SaleModeCode": str(self.sale_method.code),
+                "SaleClauseCode":str(self.export_clause.code),
+                "SaleClauseTotal":str(self.total_export_sales_clause),
+                "TransportRoute":str(self.type_transport.code),
+                "OriginPortCode": str(self.shipping_id.departure_port.code),
+                "DestinyPortCode": str(self.shipping_id.arrival_port.code),
+                "Tara":str(self.tara),
+                "GrossWeight":str(self.gross_weight),
+                "NetWeight":str(self.net_weight),
+                "UnitTaraCode":str(self.uom_tara.code),
+                "UnitGrossWeightCode":str(self.uom_gross_weight.code),
+                "UnitNetWeightCode":str(self.uom_net_weight.code),
+                "TotalPackages": str(self.total_packages),
+                "Packages": packages_list,
+                "FreightAmount": str(self.freight_amount),
+                "SafeAmount":str(self.safe_amount),
+                "ReceiverCountryCode":str(self.receiving_country_dte.code),
+                "DestinyCountryCode":str(self.destiny_country_dte.code)
             }
             invoice['total'] = {
                 "CoinType": str(self.currency_id.name),
