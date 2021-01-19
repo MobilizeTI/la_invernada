@@ -430,6 +430,7 @@ class AccountInvoice(models.Model):
             raise models.ValidationError('Advertencia: {} Json: {}'.format(jr['message'],json.dumps(invoice)))
   
     def update_sale_order(self, vals):
+        raise models.ValidationError('entre')
         for line in self.invoice_line_ids:
             sale_order = self.env['stock.picking'].search([('id', '=', line.stock_picking_id)])
             raise models.ValidationError(sale_order.name)
