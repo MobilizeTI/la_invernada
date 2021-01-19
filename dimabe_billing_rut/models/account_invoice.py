@@ -395,7 +395,7 @@ class AccountInvoice(models.Model):
 
 
         r = requests.post(url, json=invoice, headers=headers)
-        raise models.ValidationError(json.dumps(invoice))
+        #raise models.ValidationError(json.dumps(invoice))
 
         jr = json.loads(r.text)
 
@@ -422,7 +422,7 @@ class AccountInvoice(models.Model):
                 except:
                     cols += 1
             
-            self.update_sale_order()
+            #self.update_sale_order()
         
         if 'status' in Jrkeys and 'title' in Jrkeys:
             raise models.ValidationError('Status: {} Title: {} Json: {}'.format(jr['status'],jr['title'],json.dumps(invoice)))
