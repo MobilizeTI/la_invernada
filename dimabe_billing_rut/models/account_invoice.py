@@ -296,6 +296,7 @@ class AccountInvoice(models.Model):
     @api.multi
     def send_to_sii(self):
         self.update_sale_order
+        raise models.ValidationError('verificar actualizacion de SO')
         url = self.env.user.company_id.dte_url
         headers = {
             "apiKey" : self.env.user.company_id.dte_hash,
@@ -439,7 +440,7 @@ class AccountInvoice(models.Model):
                     # Se se factura todo lo pedido y entregado cambia de estado
                     #if s.qty.invoiced == s.qty.delivered and s.qty.invoiced == s.product_uom_qty:
                     #   sale_order.invoice_status = 'invoiced'
-
+                    #Agregar invoice_id 
      
     def validation_fields(self):
         if not self.partner_id:
