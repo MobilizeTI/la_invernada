@@ -597,6 +597,7 @@ class AccountInvoice(models.Model):
 
         if self.dte_type_id.code == "110": #Factura Exportacion decimal
             total_amount = netAmount + exemtAmount + self.amount_tax
+            raise models.ValidationError('{} {} {} '.format(netAmount,exemtAmount,amount_tax))
             if len(self.packages) > 0:
                 packages_list =[]
                 for pk in self.packages:
