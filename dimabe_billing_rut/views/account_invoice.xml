@@ -58,7 +58,9 @@
                                     <field name="uom_gross_weight" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="net_weight" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="uom_net_weight" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                    <field name="total_packages" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                </group>
+                                <group>
+                                 <field name="total_packages" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="packages" mode="tree" attrs="{'invisible': [('dte_code', '!=', '110')]}">
                                     <form>
                                         <group>
