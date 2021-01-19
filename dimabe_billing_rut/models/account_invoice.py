@@ -484,8 +484,8 @@ class AccountInvoice(models.Model):
                 count_quantity += pk.quantity
             if int(count_quantity) != int(self.total_packages):
                 raise models.ValidationError('El Total de Bultos {} no cuadra con la suma de los bultos {}'.format(int(self.total_packages),int(count_quantity)))
-            if self.currency_id.code == self.other_coin.code:
-                raise models.ValidationError('El tipo de Moneda y Otra Moneda no pueden ser iguales')
+            #if self.currency_id.code == self.other_coin.code:
+            #    raise models.ValidationError('El tipo de Moneda y Otra Moneda no pueden ser iguales')
 
 
         for item in self.invoice_line_ids:
