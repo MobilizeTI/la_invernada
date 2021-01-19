@@ -433,7 +433,6 @@ class AccountInvoice(models.Model):
         for line in self.invoice_line_ids:
             sale_order = self.env['stock.picking'].search([('id', '=', line.stock_picking_id)])
             sale_order_line = self.env['sale.order.line'].search([('order_id', '=', line.stock_picking_id)])
-            #raise models.ValidationError(sale_order.name)
             for s in sale_order_line:
                 if s.product_id == line.product_id:
                     s.qty_invoiced += line.quantity
