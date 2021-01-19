@@ -433,11 +433,14 @@ class AccountInvoice(models.Model):
         for line in self.invoice_line_ids:
             sale_order = self.env['stock.picking'].search([('id', '=', line.stock_picking_id)])
             sale_order_line = self.env['sale.order.line'].search([('order_id', '=', line.order_id)])
+            
             for s in sale_order_line:
                 if s.product_id.id == line.product_id:
                     new_qty_invoiced = s.qty_invoiced + line.quantity
+                    raise models.ValidatinError('{}  -  {}  -  {}'.format(s.id,line.order_id,new_qty_invoiced))
                     s.write({
                         'id': s.id,
+                        'order_id': line.order_id,
                         'qty_invoiced': new_qty_invoiced
                     })
         #res = super(AccountInvoice, self).write(vals)
