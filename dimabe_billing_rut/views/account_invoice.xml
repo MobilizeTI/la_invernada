@@ -14,7 +14,7 @@
                     <field name="stock_picking_ids" domain="[('sale_id','=',order_to_add_id)]" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"/>
                     <button type="object" name="add_products_by_order" string="Agregar Productos" class="oe_highlight"/>
                 </xpath>
-              
+               
                 <data>
                     <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
                         <page name="xdte_tab" string="DTE">

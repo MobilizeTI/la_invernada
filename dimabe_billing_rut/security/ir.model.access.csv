@@ -16,4 +16,4 @@ access_dimabe_custom_export_clause,dimabe_billing_rut.custom_export_clause,model
 access_dimabe_custom_package_type,dimabe_billing_rut.custom_package_type,model_custom_package_type,,1,1,1,1
 access_dimabe_custom_package,dimabe_billing_rut.custom_package,model_custom_package,,1,1,1,1
 access_dimabe_custom_uom,dimabe_billing_rut.custom_uom,model_custom_uom,,1,1,1,1
-
+access_dimabe_custom_orders_in_invoice,dimabe_billing_rut.custom_orders_in_invoice.model_custom_orders_in_invoice,,1,1,1,1
