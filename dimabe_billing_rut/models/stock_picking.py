@@ -118,7 +118,9 @@ class StockPicking(models.Model):
     )
 
     required_loading_week = fields.Integer(
-        'Semana de Carga'
+        'Semana de Carga',
+        compute='_compute_required_loading_week',
+        store=True
     )
 
     etd = fields.Date(
@@ -127,11 +129,15 @@ class StockPicking(models.Model):
     )
 
     etd_month = fields.Integer(
-        'Mes ETD'
+        'Mes ETD',
+        compute='_compute_etd_values',
+        store=True
     )
 
     etd_week = fields.Integer(
-        'Semana ETD'
+        'Semana ETD',
+        compute='_compute_etd_values',
+        store=True
     )
 
     eta = fields.Date(
@@ -142,6 +148,44 @@ class StockPicking(models.Model):
     departure_date = fields.Datetime('Fecha de zarpe')
 
     arrival_date = fields.Datetime('Fecha de arribo')
+
+    #Comex Embarque Method
+
+    @api.model
+    @api.onchange('etd')
+    @api.depends('etd')
+    def _compute_etd_values(self):
+        if self.etd:
+            try:
+                self.etd_month = self.etd.month
+                _year, _week, _day_of_week = self.etd.isocalendar()
+                self.etd_week = _week
+            except:
+                raise UserWarning('Error producido al intentar obtener el mes y semana de embarque')
+        else:
+            self.etd_week = None
+            self.etd_month = None
+
+    @api.model
+    @api.onchange('required_loading_date')
+    @api.depends('required_loading_date')
+    def _compute_required_loading_week(self):
+        if self.required_loading_date:
+            try:
+                year, week, day_of_week = self.required_loading_date.isocalendar()
+                self.required_loading_week = week
+            except:
+                raise UserWarning('no se pudo establecer la semana de carga')
+        else:
+            self.required_loading_week = None
+
+    @api.one
+    @api.constrains('etd', 'eta')
+    def _check_eta_greater_than_etd(self):
+        if self.etd == False and self.eta:
+            raise models.ValidationError('Debe ingresar el ETD')
+        if self.eta and self.eta < self.etd:
+            raise models.ValidationError('La ETA debe ser mayor al ETD')
 
 
     @api.onchange('partner_id')
