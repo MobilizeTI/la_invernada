@@ -251,17 +251,17 @@ class AccountInvoice(models.Model):
         nullable=True
     )
 
-    etd_month = fields.Integer(
-        'Mes ETD',
-        compute='_compute_etd_values',
-        store=True
-    )
+    #etd_month = fields.Integer(
+    #    'Mes ETD',
+    #    compute='_compute_etd_values',
+    #    store=True
+    #)
 
-    etd_week = fields.Integer(
-        'Semana ETD',
-        compute='_compute_etd_values',
-        store=True
-    )
+    #etd_week = fields.Integer(
+    #    'Semana ETD',
+    #    compute='_compute_etd_values',
+    #    store=True
+    #)
 
     eta = fields.Date(
         string='ETA',
