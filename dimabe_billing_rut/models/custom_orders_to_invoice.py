@@ -17,7 +17,9 @@ class CustomOrdersToInvoice(models.Model):
 
     price = fields.Char(string="Precio", required=True)
 
-    quantity = fields.Char(string="Cantidad", required=True)
+    quantity = fields.Float(string="Cantidad", required=True)
+
+    quantity_to_invoice = fields.Char(string="Cantidad", required=True)
 
     invoice_id = fields.Many2one(
         'account.invoice',
