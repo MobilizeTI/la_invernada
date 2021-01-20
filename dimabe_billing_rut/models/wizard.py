@@ -185,7 +185,7 @@ class WizardHrPaySlip(models.TransientModel):
         if payslip:
             for line in payslip.input_line_ids:
                 if line.code == 'HEX50':
-                    worked_days = line.number_of_days
+                    worked_days = line.amount
         return worked_days
 
     @api.model
