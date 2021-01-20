@@ -69,7 +69,7 @@
                                     <group>
                                         <field name="etd" autocomplete="off" readonly="1"/>
                                         <field name="etd_month" readonly="1"/>
-                                        <field name="etd_week"readonly="1"/>
+                                        <field name="etd_week" readonly="1"/>
                                         <field name="eta" autocomplete="off" readonly="1"/>
                                     </group>
                                     <group>
