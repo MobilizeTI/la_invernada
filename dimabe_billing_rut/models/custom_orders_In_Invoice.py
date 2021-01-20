@@ -3,9 +3,9 @@ from odoo import models, fields, api
 class CustomOrdersInInvoice(models.Model):
     _name = 'custom.orders.in.invoice'
 
-    dispatch_id = fields.Integer(string= 'Despacho Id', required=True)
+    stock_picking_id = fields.Integer(string= 'Despacho Id', required=True)
 
-    dispatch_name = fields.Char(string= 'Despacho', required=True)
+    stock_picking_name = fields.Char(string= 'Despacho', required=True)
 
     order_id = fields.Integer(string= 'Pedido Id', required=True)
 

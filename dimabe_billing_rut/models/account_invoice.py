@@ -129,6 +129,13 @@ class AccountInvoice(models.Model):
 
     safe_amount = fields.Float(string="Seguro")
 
+    orders_in_invoice = fields.One2many(
+        'custom.orders.in.invoice',
+        'invoice_id',
+        readonly=False,
+        states={'draft': [('readonly', False)]},
+    )
+
     #COMEX
     total_value = fields.Float(
         'Valor Total',
@@ -140,10 +147,6 @@ class AccountInvoice(models.Model):
         'Valor por kilo',
         compute='_compute_value_per_kilogram',
         store=True
-    )
-    shipping_id = fields.Many2one(
-        'custom.shipment',
-        'Embarque'
     )
 
     shipping_number = fields.Integer('Número Embarque')
@@ -540,7 +543,7 @@ class AccountInvoice(models.Model):
         elif 'message' in Jrkeys:
             raise models.ValidationError('Advertencia: {} Json: {}'.format(jr['message'],json.dumps(invoice)))
   
-    
+    #pendiente
     def update_sale_order(self):
         if len(self.invoice_line_ids) > 0: 
             for line in self.invoice_line_ids:
@@ -747,8 +750,8 @@ class AccountInvoice(models.Model):
                 "SaleClauseCode":str(self.export_clause.code),
                 "SaleClauseTotal":str(self.total_export_sales_clause),
                 "TransportRoute":str(self.type_transport.code),
-                "OriginPortCode": str(self.shipping_id.departure_port.code),
-                "DestinyPortCode": str(self.shipping_id.arrival_port.code),
+                "OriginPortCode": str(self.departure_port.code),
+                "DestinyPortCode": str(self.arrival_port.code),
                 "Tara":str(self.tara),
                 "GrossWeight":str(self.gross_weight),
                 "NetWeight":str(self.net_weight),
@@ -828,12 +831,19 @@ class AccountInvoice(models.Model):
                                 'invoice_id': self.id,
                                 'price_unit': item.price_unit,
                                 'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
+                                'quantity': item.qty_delivered - item.qty_invoiced
+                                #'uom_id': 
+                            })
+                        self.env['custom.orders.in.invoice'].create({
+                                'product_id': item.product_id.id,
+                                'quantity': item.qty_delivered - item.qty_invoiced,
+                                'name' : item.name,
+                                'invoice_id': self.id,
+                                'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
                                 'order_id': self.order_to_add_ids.id,
                                 'order_name': self.order_to_add_ids.name,
-                                'quantity_to_invoice': str(item.qty_delivered - item.qty_invoiced),
-                                'dispatch': self.stock_picking_ids.name,
+                                'stock_picking_name': self.stock_picking_ids.name,
                                 'stock_picking_id': self.stock_picking_ids.id,
-                                'quantity': item.qty_delivered - item.qty_invoiced
                             })
                         valid = False
             else:
@@ -856,7 +866,6 @@ class AccountInvoice(models.Model):
             s.write({
                 'shipping_number': self.shipping_number,
                 'contract_correlative_view': self.contract_correlative_view,
-                'shipping_id': self.shipping_id.id,
                 'agent_id': self.agent_id.id,
                 'commission' : self.commission,
                 'total_commission' : self.total_commission,
@@ -870,6 +879,17 @@ class AccountInvoice(models.Model):
                 'safe_value' : self.safe_amount,
                 'total_value' : self.total_value,
                 'value_per_kilogram' : self.value_per_kilogram,
-                'remarks': self.remarks_comex
+                'remarks': self.remarks_comex,
+                'shipping_company': self.shipping_company,
+                'ship': self.ship,
+                'ship_number': self.ship_number,
+                'type_transport': self.type_transport,
+                'departure_port': self.departure_port,
+                'arrival_port': self.arrival_port,
+                'required_loading_date': self.required_loading_date,
+                'etd': self.etd,
+                'eta': self.eta,
+                'departure_date': self.departure_date,
+                'arrival_date': self.arrival_date
             })
         return res
