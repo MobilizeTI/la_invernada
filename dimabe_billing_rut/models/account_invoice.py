@@ -131,10 +131,7 @@ class AccountInvoice(models.Model):
 
     orders_in_invoice = fields.One2many(
         'custom.orders.in.invoice',
-        'invoice_id',
-        readonly=False,
-        states={'draft': [('readonly', False)]},
-    )
+        'invoice_id')
 
     #COMEX
     total_value = fields.Float(
