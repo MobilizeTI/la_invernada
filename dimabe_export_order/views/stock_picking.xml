@@ -29,30 +29,32 @@
                                     <field name="reserved_amount"/>
                                     -->
                                     <field name="is_dispatcher" invisible="1"/>
-                                    <field name="shipping_number"/>
-                                    <field name="contract_correlative_view"/>
+                                    <field name="shipping_number" readonly="1"/>
+                                    <field name="contract_correlative_view" readonly="1"/>
                                     <field name="contract_correlative" invisible="1"/>
                                     <field name="shipping_id" attrs="{'readonly':[('is_dispatcher', '=', 1)]}"/>
-                                    <field name="agent_id"/>
-                                    <field name="commission"/>
-                                    <field name="total_commission"/>
-                                    <field name="charging_mode"/>
-                                    <field name="booking_number"/>
-                                    <field name="bl_number"/>
+                                    <field name="agent_id" readonly="1"/>
+                                    <field name="commission" readonly="1"/>
+                                    <field name="total_commission" readonly="1"/>
+                                    <field name="charging_mode" readonly="1"/>
+                                    <field name="booking_number" readonly="1"/>
+                                    <field name="bl_number" readonly="1"/>
                                     <field name="container_number"
-                                           placeholder="Ingrese número de contenedor"/>
+                                           placeholder="Ingrese número de contenedor" readonly="1"/>
                                     <field name="container_type"
-                                           placeholder="Seleccione el tipo de contenedor"/>
+                                           placeholder="Seleccione el tipo de contenedor" readonly="1"/>
                                 </group>
                                 <group>
-                                    <field name="client_label"/>
+                                    <field name="client_label" readonly="1"/>
                                     <field name="client_label_file"
-                                           attrs="{'invisible':[('client_label', '=', False)]}"
+                                           attrs="{'invisible':[('client_label', '=', False)]}" readonly="1"
                                     />
-                                    <field name="freight_value"/>
-                                    <field name="safe_value"/>
-                                    <field name="total_value"/>
-                                    <field name="value_per_kilogram"/>
+                                    <field name="freight_value" readonly="1"/>
+                                    <field name="safe_value" readonly="1"/>
+                                    <field name="total_value" readonly="1"/>
+                                    <field name="value_per_kilogram" readonly="1"/>
+                                </group>
+                                <group name="Embarque">
                                 </group>
                             </group>
                             <group style="width:100%%">

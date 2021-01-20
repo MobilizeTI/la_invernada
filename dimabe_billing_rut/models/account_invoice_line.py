@@ -14,7 +14,15 @@ class AccountInvoiceLine(models.Model):
             ('7', '')
             ], 'Tipo Exento', default='7')
 
-    
+    order_id = fields.Integer(string="Id Pedido", readonly=True)
+
+    order_name = fields.Char(string="Pedido", readonly=True)
+
+    quantity_to_invoice = fields.Char(string="Cantidad por Facturar", readonly=True)
+
+    dispatch = fields.Char(string="Despacho", readonly="True")
+
+    stock_picking_id = fields.Integer(string="Stock Picking Id", readonly="True")
 
            
 
