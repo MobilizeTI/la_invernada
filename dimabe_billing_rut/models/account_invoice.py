@@ -240,11 +240,11 @@ class AccountInvoice(models.Model):
         required=True
     )
 
-    required_loading_week = fields.Integer(
-        'Semana de Carga',
-        compute='_compute_required_loading_week',
-        store=True
-    )
+    #required_loading_week = fields.Integer(
+    #    'Semana de Carga',
+    #    compute='_compute_required_loading_week',
+    #    store=True
+    #)
 
     etd = fields.Date(
         string='ETD',
