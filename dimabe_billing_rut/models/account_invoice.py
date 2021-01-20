@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 import json
 import requests
 import inspect
@@ -305,9 +306,9 @@ class AccountInvoice(models.Model):
     @api.constrains('etd', 'eta')
     def _check_eta_greater_than_etd(self):
         if self.etd == False and self.eta:
-            raise ValidationError('Debe ingresar el ETD')
+            raise models.ValidationError('Debe ingresar el ETD')
         if self.eta and self.eta < self.etd:
-            raise ValidationError('La ETA debe ser mayor al ETD')
+            raise models.ValidationError('La ETA debe ser mayor al ETD')
 
 
     #COMEX METHOD
