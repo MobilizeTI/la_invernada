@@ -242,7 +242,9 @@ class AccountInvoice(models.Model):
     )
 
     required_loading_week = fields.Integer(
-        'Semana de Carga'
+        'Semana de Carga',
+        compute='_compute_required_loading_week',
+        store=True
     )
 
     etd = fields.Date(
@@ -251,11 +253,15 @@ class AccountInvoice(models.Model):
     )
 
     etd_month = fields.Integer(
-        'Mes ETD'
+        'Mes ETD',
+        compute='_compute_etd_values',
+        store=True
     )
 
     etd_week = fields.Integer(
-        'Semana ETD'
+        'Semana ETD',
+        compute='_compute_etd_values',
+        store=True
     )
 
     eta = fields.Date(
