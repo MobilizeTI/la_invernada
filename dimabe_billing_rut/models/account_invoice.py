@@ -650,7 +650,7 @@ class AccountInvoice(models.Model):
                 "ReceiverCountryCode":str(self.receiving_country_dte.code),
                 "DestinyCountryCode":str(self.destiny_country_dte.code)
             }
-            raise models.ValidationError(self.other_coin.id)
+  
             #por confirmar  si el exento siempre es igual al total
             exemtAmount = total_amount
 
