@@ -824,7 +824,7 @@ class AccountInvoice(models.Model):
                                 'quantity': item.qty_delivered - item.qty_invoiced
                                 #'uom_id': 
                             })
-                        self.env['custom.orders.in.invoice'].create({
+                        self.env['custom.orders.to.invoice'].create({
                                 'product_id': item.product_id.name,
                                 'product_name': item.product_id.id,
                                 'quantity': item.qty_delivered - item.qty_invoiced,
