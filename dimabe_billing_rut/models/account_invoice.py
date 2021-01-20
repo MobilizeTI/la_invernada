@@ -129,8 +129,8 @@ class AccountInvoice(models.Model):
 
     safe_amount = fields.Float(string="Seguro")
 
-    #orders_in_invoice = fields.One2many(
-    #    'custom.orders.in.invoice',
+    #orders_to_invoice = fields.One2many(
+    #    'custom.orders.to.invoice',
     #    'invoice_id')
 
     #COMEX

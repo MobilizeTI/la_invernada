@@ -1,7 +1,7 @@
 from odoo import models, fields, api
 
-class CustomOrdersInInvoice(models.Model):
-    _name = 'custom.orders.in.invoice'
+class CustomOrdersToInvoice(models.Model):
+    _name = 'custom.orders.to.invoice'
 
     stock_picking_id = fields.Integer(string="Despacho Id", required=True)
 
