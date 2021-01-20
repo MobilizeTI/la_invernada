@@ -650,11 +650,11 @@ class AccountInvoice(models.Model):
                 "ReceiverCountryCode":str(self.receiving_country_dte.code),
                 "DestinyCountryCode":str(self.destiny_country_dte.code)
             }
-            
+            raise models.ValidationError(self.other_coin.id)
             #por confirmar  si el exento siempre es igual al total
             exemtAmount = total_amount
 
-            if self.other_coin.id == 45: # Si es CLP monto int
+            if self.other_coin.id == 45: # Si es CLP el monto es int
                 other_coin_amount = int(total_amount * self.exchange_rate_other_coin)
                 other_coin_exempt = exemtAmount * self.exchange_rate_other_coin
             else:
