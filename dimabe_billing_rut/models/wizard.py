@@ -113,6 +113,12 @@ class WizardHrPaySlip(models.TransientModel):
                     col += 1
                     worksheet.write(row, col, self.env["hr.payslip.line"].sudo().search(
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total)
+                elif rule.code == 'HEXDE':
+                    worksheet.write(4, col, 'Cant. Horas Descuentos')
+                    worksheet.write(row, col, self.get_qty_discount_hours(payslip=pay))
+                    col += 1
+                    worksheet.write(row, col, self.env["hr.payslip.line"].sudo().search(
+                        [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total)
                 else:
                     worksheet.write(4, col, rule.name.capitalize())
                     worksheet.write(row, col, self.env["hr.payslip.line"].sudo().search(
@@ -185,6 +191,15 @@ class WizardHrPaySlip(models.TransientModel):
         if payslip:
             for line in payslip.input_line_ids:
                 if line.code == 'HEX50':
+                    worked_days = line.amount
+        return worked_days
+
+    @api.model
+    def get_qty_discount_hours(self, payslip):
+        worked_days = 0
+        if payslip:
+            for line in payslip.input_line_ids:
+                if line.code == 'HEXDE':
                     worked_days = line.amount
         return worked_days
 
