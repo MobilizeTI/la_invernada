@@ -334,7 +334,6 @@ class AccountInvoice(models.Model):
                 raise models.ValidationError('Para Nota de Crédito electrónica debe agregar al menos una Referencia')
        
         elif self.dte_type_id.code == "110": #Factura de exportación electrónica
-            self.other_coin = self.exchange_rate
             invoice = self.invoice_type()
        
         elif self.dte_type_id.code == "111": #Nota de débito de exportación electrónica
@@ -652,14 +651,14 @@ class AccountInvoice(models.Model):
                 "DestinyCountryCode":str(self.destiny_country_dte.code)
             }
             invoice['total'] = {
-                "CoinType": str(self.currency_id.name),
+                "CoinType": str(self.currency_id.sii_currency_name),
                 "exemptAmount": str(exemtAmount),
                 "totalAmount": str(total_amount)
             }
             if self.other_coin:
                 raise models.ValidationError('si hay other_coin')
                 invoice['othercoin'] = {
-                    "CoinType" : str(self.other_coin.name),
+                    "CoinType" : str(self.other_coin.sii_currency_name),
                     "ExemptAmount" : str(exemtAmount * self.exchange_rate_other_coin),
                     "Amount" : str(total_amount * self.exchange_rate_other_coin)
                 }
