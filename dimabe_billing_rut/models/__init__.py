@@ -33,3 +33,4 @@ from . import custom_uom
 from . import hr_salary_rule
 from . import sale_order
 from . import res_country
+from . import res_currency

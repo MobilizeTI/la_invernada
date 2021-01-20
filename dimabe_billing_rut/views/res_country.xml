@@ -6,7 +6,7 @@
       <field name="inherit_id" ref="base.view_country_form" />
       <field name="arch" type="xml">
         <xpath expr="//field[@name='code']" position="after">
-          <field name="sii_code"/>
+          <field name="sii_currency_name"/>
         </xpath>
       </field>
     </record>
