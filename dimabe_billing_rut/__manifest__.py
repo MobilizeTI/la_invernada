@@ -57,7 +57,7 @@
         'views/hr_payroll_structure.xml',
         'views/hr_salary_rule.xml',
         'views/res_country.xml',
-        'views/res_country'
+        'views/res_currency.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
