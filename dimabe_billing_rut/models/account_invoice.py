@@ -655,13 +655,11 @@ class AccountInvoice(models.Model):
                 "exemptAmount": str(exemtAmount),
                 "totalAmount": str(total_amount)
             }
-            if self.other_coin:
-                raise models.ValidationError('si hay other_coin')
-                invoice['othercoin'] = {
-                    "CoinType" : str(self.other_coin.sii_currency_name),
-                    "ExemptAmount" : str(exemtAmount * self.exchange_rate_other_coin),
-                    "Amount" : str(total_amount * self.exchange_rate_other_coin)
-                }
+            invoice['othercoin'] = {
+                "CoinType" : str(self.other_coin.sii_currency_name),
+                "ExemptAmount" : str(exemtAmount * self.exchange_rate_other_coin),
+                "Amount" : str(total_amount * self.exchange_rate_other_coin)
+            }
             
         else:
             invoice['total'] = {
