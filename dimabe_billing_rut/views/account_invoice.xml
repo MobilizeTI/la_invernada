@@ -15,7 +15,7 @@
                     <button type="object" name="add_products_by_order" string="Agregar Productos" class="oe_highlight"/>
                 </xpath>
                 <xpath expr="//field[@name='comment']" position="before">
-                    <field name="orders_in_invoice" mode="tree">
+                    <field name="orders_to_invoice" mode="tree">
                         <form>
                             <group>
                                 <field name="order_name"/>
