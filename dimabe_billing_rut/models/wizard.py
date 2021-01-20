@@ -96,20 +96,27 @@ class WizardHrPaySlip(models.TransientModel):
             long_rut = max(payslips.mapped('employee_id').mapped('identification_id'), key=len)
             worksheet.set_column(row, col, len(long_rut))
             col += 1
-            worksheet.write(4,2,'Centro de Costo:')
-            worksheet.write(row,col,pay.contract_id.analytic_account_id.name)
+            worksheet.write(4, 2, 'Centro de Costo:')
+            worksheet.write(row, col, pay.contract_id.analytic_account_id.name)
             long_const = max(payslips.mapped('contract_id').mapped('analytic_account_id').mapped('name'), key=len)
-            worksheet.set_column(row,col,len(long_const))
+            worksheet.set_column(row, col, len(long_const))
             col += 1
-            worksheet.write(4,3,'Dias Trabajados:')
-            worksheet.write(row,col,self.get_dias_trabajados(pay))
+            worksheet.write(4, 3, 'Dias Trabajados:')
+            worksheet.write(row, col, self.get_dias_trabajados(pay))
             col += 1
             for rule in rules:
                 if not rule.show_in_book:
                     continue
-                worksheet.write(4, col, rule.name.capitalize())
-                worksheet.write(row, col, self.env["hr.payslip.line"].sudo().search(
-                    [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total)
+                if rule.code == 'HEX50':
+                    worksheet.write(4, col, 'Cant. Horas Extras')
+                    worksheet.write(row, col, self.get_qty_extra_hours(payslip=pay))
+                    col += 1
+                    worksheet.write(row, col, self.env["hr.payslip.line"].sudo().search(
+                        [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total)
+                else:
+                    worksheet.write(4, col, rule.name.capitalize())
+                    worksheet.write(row, col, self.env["hr.payslip.line"].sudo().search(
+                        [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total)
                 col += 1
             col = 0
             row += 1
@@ -169,6 +176,15 @@ class WizardHrPaySlip(models.TransientModel):
         if payslip:
             for line in payslip.worked_days_line_ids:
                 if line.code == 'WORK100':
+                    worked_days = line.number_of_days
+        return worked_days
+
+    @api.model
+    def get_qty_extra_hours(self, payslip):
+        worked_days = 0
+        if payslip:
+            for line in payslip.input_line_ids:
+                if line.code == 'HEX50':
                     worked_days = line.number_of_days
         return worked_days
 
