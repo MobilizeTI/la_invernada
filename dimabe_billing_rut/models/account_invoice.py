@@ -484,6 +484,10 @@ class AccountInvoice(models.Model):
                 count_quantity += pk.quantity
             if int(count_quantity) != int(self.total_packages):
                 raise models.ValidationError('El Total de Bultos {} no cuadra con la suma de los bultos {}'.format(int(self.total_packages),int(count_quantity)))
+            if not self.partner_id.country_id.sii_code:
+                raise models.ValidationError('El País {} no tiene registrado el Código SII'.format(self.self.partner_id.country_id.name, self.currency_id.id))
+
+            
             #if self.currency_id.code == self.other_coin.code:
             #    raise models.ValidationError('El tipo de Moneda y Otra Moneda no pueden ser iguales')
 
@@ -626,7 +630,7 @@ class AccountInvoice(models.Model):
             "lines": productLines,
         }
         if self.dte_type_id.code == "110":
-            invoice['recipient']['EnterpriseCountryCode'] = '219'
+            invoice['recipient']['EnterpriseCountryCode'] = self.partner_id.country_id.sii_code
             invoice['transport'] = {
                 "SaleModeCode": str(self.sale_method.code),
                 "SaleClauseCode":str(self.export_clause.code),
