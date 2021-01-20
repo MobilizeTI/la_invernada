@@ -71,6 +71,77 @@ class StockPicking(models.Model):
 
     total = fields.Char(string="Total")
 
+    #Comex Embarque
+
+    shipping_company = fields.Many2one(
+        comodel_name='custom.shipping.company',
+        string='Naviera',
+        required=True
+    )
+
+    ship = fields.Many2one(
+        comodel_name='custom.ship',
+        string='Nave',
+        required=True
+    )
+
+    ship_number = fields.Char(
+        string='Viaje',
+        required=True
+    )
+
+    type_transport = fields.Selection(
+        selection=[
+            ('maritimo', 'Marítimo'),
+            ('terrestre', 'Terrestre'),
+            ('aereo', 'Aéreo')
+        ],
+        string='Vía de Transporte',
+        required=True
+    )
+
+    departure_port = fields.Many2one(
+        comodel_name='custom.port',
+        string='Puerto de Embarque',
+        required=True
+    )
+
+    arrival_port = fields.Many2one(
+        comodel_name='custom.port',
+        string='Puerto de Desembarque',
+        required=True
+    )
+
+    required_loading_date = fields.Date(
+        'Fecha requerida de carga',
+        required=True
+    )
+
+    required_loading_week = fields.Integer(
+        'Semana de Carga'
+    )
+
+    etd = fields.Date(
+        string='ETD',
+        nullable=True
+    )
+
+    etd_month = fields.Integer(
+        'Mes ETD'
+    )
+
+    etd_week = fields.Integer(
+        'Semana ETD'
+    )
+
+    eta = fields.Date(
+        string='ETA',
+        nullable=True
+    )
+
+    departure_date = fields.Datetime('Fecha de zarpe')
+
+    arrival_date = fields.Datetime('Fecha de arribo')
 
 
     @api.onchange('partner_id')

@@ -54,6 +54,8 @@
                                     <field name="total_value" readonly="1"/>
                                     <field name="value_per_kilogram" readonly="1"/>
                                 </group>
+                                <group name="Embarque">
+                                </group>
                             </group>
                             <group style="width:100%%">
                                 <group>

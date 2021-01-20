@@ -127,13 +127,13 @@
                                     <field name="departure_date" autocomplete="off" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="arrival_date" autocomplete="off" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 </group>
-                                
+                                <group>
                                     <field name="ted" widget="image"  readonly="1"/>
                                     <field name="pdf_url" widget="url" readonly="1" text="Url de Descarga"/>
                                     <field name="dte_xml" widget="binary" readonly="1" filename="dte.xml" />
                                     <field name="dte_xml_sii" widget="binary" readonly="1" filename="dte_sii.xml" />
                                     <field name="dte_pdf" widget="binary" readonly="1" filename="dte.pdf" />
-                               
+                                </group>
                                 
                             </group>
                             <group string="Referencias">
