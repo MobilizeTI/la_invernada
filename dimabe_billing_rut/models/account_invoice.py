@@ -358,7 +358,7 @@ class AccountInvoice(models.Model):
             invoice['netAmountIndicator'] = self.ind_net_amount
 
         invoice['transmitter'] =  {
-                "EnterpriseRut": self.env.user.company_id.invoice_rut, #re.sub('[\.]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
+                "EnterpriseRut": re.sub('[\.]','', self.env.user.company_id.invoice_rut), #re.sub('[\.]','', "11.111.111-1"), #self.env.user.company_id.invoice_rut,
                 "EnterpriseActeco": self.company_activity_id.code,
                 "EnterpriseAddressOrigin": self.env.user.company_id.street,
                 "EnterpriseCity": self.env.user.company_id.city,
@@ -465,7 +465,7 @@ class AccountInvoice(models.Model):
         if not self.company_activity_id or not self.partner_activity_id:
             raise models.ValidationError('Por favor seleccione la Actividad de la Compañía y del Proveedor')
 
-        if self.dte_type_id.code != "34" and self.dte_type_id.code != "41" and self.dte_type_id.code != "61": #Consultar si en NC y ND prdocuto sin impuesto
+        if self.dte_type_id.code != "34" and self.dte_type_id.code != "41" and self.dte_type_id.code != "61" and self.dte_type_id.code != "110": #Consultar si en NC y ND prdocuto sin impuesto
             countNotExempt = 0
             for item in self.invoice_line_ids:
                 if len(item.invoice_line_tax_ids) > 0 and item.invoice_line_tax_ids[0].id != 6:
@@ -650,15 +650,27 @@ class AccountInvoice(models.Model):
                 "ReceiverCountryCode":str(self.receiving_country_dte.code),
                 "DestinyCountryCode":str(self.destiny_country_dte.code)
             }
+            
+            #por confirmar  si el exento siempre es igual al total
+            exemtAmount = total_amount
+
+            if self.other_coin.id == 45: # Si es CLP monto int
+                other_coin_amount = int(total_amount * self.exchange_rate_other_coin)
+                other_coin_exempt = exemtAmount * self.exchange_rate_other_coin
+            else:
+                other_coin_amount = total_amount * self.exchange_rate_other_coin
+                other_coin_exempt = exemtAmount
+
             invoice['total'] = {
                 "CoinType": str(self.currency_id.sii_currency_name),
                 "exemptAmount": str(exemtAmount),
                 "totalAmount": str(total_amount)
             }
+
             invoice['othercoin'] = {
                 "CoinType" : str(self.other_coin.sii_currency_name),
-                "ExemptAmount" : str(exemtAmount * self.exchange_rate_other_coin),
-                "Amount" : str(total_amount * self.exchange_rate_other_coin)
+                "ExemptAmount" : str(other_coin_exempt),
+                "Amount" : str(other_coin_amount)
             }
             
         else:
