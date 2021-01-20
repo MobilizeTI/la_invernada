@@ -11,7 +11,7 @@ class CustomOrdersInInvoice(models.Model):
 
     order_name = fields.Char(string= 'Pedido', required=True)
 
-    product_id = fields.Integer(string= 'Producto', required=True)
+    product_id = fields.Integer(string= 'Producto Id', required=True)
 
     product_name = fields.Char(string= 'Producto', required=True)
 
@@ -21,8 +21,7 @@ class CustomOrdersInInvoice(models.Model):
 
     invoice_id = fields.Many2one(
         'account.invoice',
-        ondelete='cascade',
         index=True,
         copy=False,
-        string="Pedido",
+        string="Pedido"
     )
