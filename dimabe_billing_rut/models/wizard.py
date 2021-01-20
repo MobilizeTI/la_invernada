@@ -96,6 +96,14 @@ class WizardHrPaySlip(models.TransientModel):
             long_rut = max(payslips.mapped('employee_id').mapped('identification_id'), key=len)
             worksheet.set_column(row, col, len(long_rut))
             col += 1
+            worksheet.write(4,2,'Centro de Costo:')
+            worksheet.write(row,col,pay.contract_id.analytic_account_id.name)
+            long_const = max(payslips.mapped('contract_id').mapped('analytic_account_id').mapped('name'), key=len)
+            worksheet.set_column(row,col,len(long_const))
+            col += 1
+            worksheet.write(4,3,'Dias Trabajados:')
+            worksheet.write(row,col,self.get_dias_trabajados(pay))
+            col += 1
             for rule in rules:
                 if not rule.show_in_book:
                     continue
