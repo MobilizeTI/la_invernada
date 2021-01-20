@@ -129,12 +129,12 @@ class AccountInvoice(models.Model):
 
     safe_amount = fields.Float(string="Seguro")
 
-    orders_in_invoice = fields.One2many(
-        'custom.orders.in.invoice',
-        'invoice_id',
-        readonly=False,
-        states={'draft': [('readonly', False)]},
-    )
+    #orders_in_invoice = fields.One2many(
+    #    'custom.orders.in.invoice',
+    #    'invoice_id',
+    #    readonly=False,
+    #    states={'draft': [('readonly', False)]},
+    #)
 
     #COMEX
     total_value = fields.Float(

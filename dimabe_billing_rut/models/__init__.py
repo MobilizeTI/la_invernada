@@ -34,4 +34,4 @@ from . import hr_salary_rule
 from . import sale_order
 from . import res_country
 from . import res_currency
-from . import custom_orders_In_Invoice
+from . import custom_orders_in_invoice
