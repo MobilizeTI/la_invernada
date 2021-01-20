@@ -15,7 +15,20 @@
                     <button type="object" name="add_products_by_order" string="Agregar Productos" class="oe_highlight"/>
                 </xpath>
                 <xpath expr="//field[@name='comment']" position="before">
-                    <field name="orders_in_invoice"/>
+                    <field name="orders_in_invoice" mode="tree">
+                        <form>
+                            <group>
+                                <field name="order_name"/>
+                                <field name="stock_picking_name"/>
+                                <field name="product_name"/>
+                            </group>
+                        </form>
+                        <tree>
+                            <field name="order_name"/>
+                            <field name="stock_picking_name"/>
+                            <field name="product_name"/>
+                        </tree>
+                    </field>
                 </xpath>
                 <data>
                     <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
@@ -44,8 +57,6 @@
                                     <field name="export_clause" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="total_export_sales_clause" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="type_transport" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                    <!--<field name="departure_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                    <field name="arrival_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>-->
                                     <field name="destiny_country_dte" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="receiving_country_dte" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 </group>
