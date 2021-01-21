@@ -171,7 +171,7 @@ class WizardHrPaySlip(models.TransientModel):
         rule = self.env['hr.salary.rule'].sudo().search([('show_in_central','=',True)])
         for data in rule:
             line = self.env['hr.payslip.line'].sudo().search([('slip_id','in',payslips.mapped('id')),('salary_rule_id','=',data.id)])
-            raise models.ValidationError(f'{line.__str__()}')
+            raise models.ValidationError(f'{line.mapped("total").__str__()}')
             worksheet.write(row,col,sum(line.mapped('amount')))
             row += 1
 
