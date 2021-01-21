@@ -8,4 +8,4 @@ class HrSalaryRule(models.Model):
 
     order_number = fields.Integer('Orden')
 
-    show_in_central = fields.Boolan('Aparece en Centralizacion')
+    show_in_central = fields.Boolean('Aparece en Centralizacion')
