@@ -35,7 +35,7 @@ class Binary(http.Controller):
     @http.route('/api/indicators', type='json', auth='token', cors='*')
     @serialize_exception
     def get_indicators(self):
-        response = request.env['hr.indicators'].sudo().search([])
+        response = request.env['hr.indicadores'].sudo().search([])
         result = []
         for item in response:
             raw_data = item.read()
