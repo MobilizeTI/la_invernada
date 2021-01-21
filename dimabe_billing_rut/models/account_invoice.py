@@ -553,7 +553,7 @@ class AccountInvoice(models.Model):
             orders_to_invoice = self.env['custom.orders.to.invoice'].search([('product_id','=',item.product_id.id),('invoice_id','=',self.id)])
             sum_quantity_invoice_line = 0
             for order in orders_to_invoice:
-                if order.product_id.id == item.product_id.id:
+                if order.product_id == item.product_id.id:
                     sum_quantity_invoice_line += order.quantity_to_invoice
             sum_quantity_invoice_line = sum(orders_to_invoice.quantity)
             if item.quantiy != sum_quantity_invoice_line:
