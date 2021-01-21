@@ -792,7 +792,7 @@ class AccountInvoice(models.Model):
                             'quantity': item.qty_delivered - item.qty_invoiced
                         })
                     
-                    if not exist_orders_to_invoice:
+                    if  exist_orders_to_invoice:
                         self.env['custom.orders.to.invoice'].create({
                             'product_id': item.product_id.id,
                             'product_name': item.name,
