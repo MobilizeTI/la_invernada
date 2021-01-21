@@ -151,7 +151,9 @@ class WizardHrPaySlip(models.TransientModel):
         wage = lines.filtered(lambda a: a.code == 'SUELDO').mapped('amount')
         total = sum(wage)
         ajustotal =  sum(lines.filtered(lambda a: a.code == 'ALSB').mapped('amount'))
-        raise models.ValidationError(f'Sueldo Base {total} Ajuste Ley Sueldo Base{ajustotal}')
+        legaltotal = sum(lines.filtered(lambda a: a.code == 'GRAT').mapped('amount'))
+        bonustotal = sum(lines.filtered(lambda a: a.code == 'AGUI').mapped('amount'))
+        raise models.ValidationError(f'Sueldo Base {total} Ajuste Ley Sueldo Base {ajustotal} Gratificación Legal {legaltotal} Aguinaldo {bonustotal} ')
 
     @api.model
     def get_nacionalidad(self, employee):
