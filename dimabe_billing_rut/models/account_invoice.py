@@ -798,14 +798,14 @@ class AccountInvoice(models.Model):
                                 'invoice_id': self.id,
                                 'price_unit': item.price_unit,
                                 'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
-                                'uom_id': item.product_uom
+                                'uom_id': item.product_uom.id
                             })
                         valid_to_invoice_line = False
                     
                     if valid_orders_to_invoice:
                         self.env['custom.orders.to.invoice'].create({
                             'product_id': item.product_id.id,
-                            'product_name': item.product_id.name,
+                            'product_name': item.name,
                             'quantity_to_invoice': str(item.qty_delivered - item.qty_invoiced),
                             'invoice_id': self.id,
                             'order_id': self.order_to_add_ids.id,
