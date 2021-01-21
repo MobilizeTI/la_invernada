@@ -31,7 +31,8 @@
             <form>
                 <group>
                     <group>
-                        <field name="indicators_id"/>
+                        <field name="indicators_id" required="1"/>
+                        <field name="centralization_report_field" readonly="1"/>
                     </group>
                     <footer>
                         <button type="object" name="generate_centralization" string="Generar"/>
