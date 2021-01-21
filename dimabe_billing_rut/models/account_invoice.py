@@ -843,7 +843,7 @@ class AccountInvoice(models.Model):
                 'shipping_company': self.shipping_company,
                 'ship': self.ship,
                 'ship_number': self.ship_number,
-                'type_transport': self.type_transport,
+                'type_transport': self.type_transport.code,
                 'departure_port': self.departure_port,
                 'arrival_port': self.arrival_port,
                 'required_loading_date': self.required_loading_date,
