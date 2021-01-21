@@ -142,7 +142,8 @@ class WizardHrPaySlip(models.TransientModel):
 
     @api.multi
     def generate_centralization(self):
-        payslips = self.env['hr.payslip'].sudo().search([('indicadores_id', '=', self.indicators_id.id)])
+        payslips = self.env['hr.payslip'].sudo().search(
+            [('indicadores_id', '=', self.indicators_id.id), ('state', '=', 'done')])
         # file_name = 'temp'
         # workbook = xlsxwriter.Workbook(file_name)
         # worksheet = workbook.add_worksheet(self.company_id.name)
