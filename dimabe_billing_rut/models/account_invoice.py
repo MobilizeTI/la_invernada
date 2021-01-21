@@ -550,9 +550,9 @@ class AccountInvoice(models.Model):
         
       
         for item in self.invoice_line_ids:
-            sum_quantity_invoice_line = sum(self.env['sale.order.line'].search([('product_id','=',item.product_id.id)]).quantity)
-            if item.quantiy != sum_quantity_invoice_line:
-                raise models.ValidationError('La cantidad {} a facturar del prodcuto {} no cuadra con la suma de las cantidades {}'.format(item.quantity,item.name,sum_quantity_invoice_line))
+            #sum_quantity_invoice_line = sum(self.env['sale.order.line'].search([('product_id','=',item.product_id.id)]).quantity)
+            #if item.quantiy != sum_quantity_invoice_line:
+            #    raise models.ValidationError('La cantidad {} a facturar del prodcuto {} no cuadra con la suma de las cantidades {}'.format(item.quantity,item.name,sum_quantity_invoice_line))
 
             for tax_line in item.invoice_line_tax_ids:
                 if (tax_line.id == 6 or tax_line.id == None) and (item.exempt == "7"):
