@@ -550,10 +550,14 @@ class AccountInvoice(models.Model):
         
       
         for item in self.invoice_line_ids:
-            #orders_to_invoice = self.env['custom.orders.to.invoice'].search([('product_id','=',item.product_id.id)])
-            #sum_quantity_invoice_line = sum(orders_to_invoice.quantity)
-            #if item.quantiy != sum_quantity_invoice_line:
-            #    raise models.ValidationError('La cantidad {} a facturar del prodcuto {} no cuadra con la suma de las cantidades {}'.format(item.quantity,item.name,sum_quantity_invoice_line))
+            orders_to_invoice = self.env['custom.orders.to.invoice'].search([('product_id','=',item.product_id.id),('invoice_id','=',self.id)])
+            sum_quantity_invoice_line = 0
+            for order in orders_to_invoice:
+                if order.product_id == item.product_id:
+                    sum_quantity_invoice_line += order.quantity_to_invoice
+            sum_quantity_invoice_line = sum(orders_to_invoice.quantity)
+            if item.quantiy != sum_quantity_invoice_line:
+                raise models.ValidationError('La cantidad {} a facturar del prodcuto {} no cuadra con la suma de las cantidades {}'.format(item.quantity,item.name,sum_quantity_invoice_line))
 
             for tax_line in item.invoice_line_tax_ids:
                 if (tax_line.id == 6 or tax_line.id == None) and (item.exempt == "7"):
@@ -775,7 +779,7 @@ class AccountInvoice(models.Model):
                     
                     if len(self.invoice_line_ids) > 0:
                         for i in self.invoice_line_ids:
-                            if item.product_id.id == i.product_id:
+                            if item.product_id.id == i.product_id.id:
                                 exist_to_invoice_line = True
                                 i.write({
                                    'quantity': i.quantity + (item.qty_delivered - item.qty_invoiced)
@@ -792,7 +796,7 @@ class AccountInvoice(models.Model):
                             'quantity': item.qty_delivered - item.qty_invoiced
                         })
                     
-                    if not exist_orders_to_invoice:
+                    if  exist_orders_to_invoice: #cambiar a not
                         self.env['custom.orders.to.invoice'].create({
                             'product_id': item.product_id.id,
                             'product_name': item.name,
