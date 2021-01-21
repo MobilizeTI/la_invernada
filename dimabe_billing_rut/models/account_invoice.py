@@ -213,15 +213,6 @@ class AccountInvoice(models.Model):
         string='Viaje'
     )
 
-    type_transport = fields.Selection(
-        selection=[
-            ('maritimo', 'Marítimo'),
-            ('terrestre', 'Terrestre'),
-            ('aereo', 'Aéreo')
-        ],
-        string='Vía de Transporte'
-    )
-
     departure_port = fields.Many2one(
         comodel_name='custom.port',
         string='Puerto de Embarque'

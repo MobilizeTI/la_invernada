@@ -33,11 +33,13 @@ class ResCurrency(models.Model):
 
     def get_rate_by_date(self, date):
         date_now = datetime.now().date()
-        if date > date_now:
-            date = date_now
+        if date <= date_now:
+            search_date = date
+        else:
+            search_date = date_now
         res = requests.request(
             'GET',
-            'https://services.dimabe.cl/api/currencies?date={}'.format(date.strftime('%Y-%m-%d')),
+            'https://services.dimabe.cl/api/currencies?date={}'.format(search_date.strftime('%Y-%m-%d')),
             headers={
                 'apikey': '790AEC76-9D15-4ABF-9709-E0E3DC45ABBC',
                 'customerCode': 'E41958F0-AF3D-4D66-9C26-6A54950CA506'
