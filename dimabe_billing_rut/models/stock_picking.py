@@ -77,38 +77,32 @@ class StockPicking(models.Model):
 
     shipping_company = fields.Many2one(
         comodel_name='custom.shipping.company',
-        string='Naviera',
-        required=True
+        string='Naviera'
     )
 
     ship = fields.Many2one(
         comodel_name='custom.ship',
-        string='Nave',
-        required=True
+        string='Nave'
     )
 
     ship_number = fields.Char(
-        string='Viaje',
-        required=True
+        string='Viaje'
     )
 
     type_transport = fields.Many2one('custom.type.transport','Vía de Transporte')
 
     departure_port = fields.Many2one(
         comodel_name='custom.port',
-        string='Puerto de Embarque',
-        required=True
+        string='Puerto de Embarque'
     )
 
     arrival_port = fields.Many2one(
         comodel_name='custom.port',
-        string='Puerto de Desembarque',
-        required=True
+        string='Puerto de Desembarque'
     )
 
     required_loading_date = fields.Date(
-        'Fecha requerida de carga',
-        required=True
+        'Fecha requerida de carga'
     )
 
     required_loading_week = fields.Integer(

@@ -11,7 +11,7 @@
                 <xpath expr="//field[@name='cash_rounding_id']" position="after">
                     <field name="order_to_add_ids"/>
                     <field name="order_to_add_id" invisible="1"/>
-                    <field name="stock_picking_ids" domain="[('sale_id','=',order_to_add_id),('state','=','done'),('invoiced','=',False)]" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"/>
+                    <field name="stock_picking_ids" domain="[('sale_id','=',order_to_add_id),('invoiced','=',False)]" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"/>
                     <button type="object" name="add_products_by_order" string="Agregar Productos" class="oe_highlight"/>
                 </xpath>
                 <xpath expr="//field[@name='comment']" position="before">
@@ -22,7 +22,6 @@
                                 <field name="stock_picking_name" readonly="1"/>
                                 <field name="quantity_to_invoice" readonly="1"/>
                                 <field name="product_name" readonly="1"/>
-                                <field name="quantity"/>
                             </group>
                         </form>
                         <tree>
@@ -30,7 +29,6 @@
                             <field name="stock_picking_name" readonly="1"/>
                             <field name="quantity_to_invoice" readonly="1"/>
                             <field name="product_name" readonly="1"/>
-                            <field name="quantity"/>
                         </tree>
                     </field>
                 </xpath>

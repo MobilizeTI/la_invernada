@@ -15,7 +15,7 @@ class CustomOrdersToInvoice(models.Model):
 
     product_name = fields.Char(string="Producto", required=True)
 
-    quantity = fields.Float(string="Cantidad")
+    #quantity = fields.Float(string="Cantidad")
 
     quantity_to_invoice = fields.Char(string="Cantidad por Facturar", required=True)
 
