@@ -25,6 +25,8 @@ class WizardHrPaySlip(models.TransientModel):
         'none': '',
     }
 
+    indicators_id = fields.Many2one('hr.indicadores',string='Indicadores')
+
     company_id = fields.Many2one('res.partner', domain=[('id', 'in', ('423', '1', '1000', '79'))])
 
     report = fields.Binary(string='Descarge aqui =>',
@@ -137,10 +139,6 @@ class WizardHrPaySlip(models.TransientModel):
         return {
             'type': 'ir.actions.do_nothing'
         }
-
-    @api.multi
-    def generate_centralization_remu(self):
-
 
     @api.model
     def get_nacionalidad(self, employee):
