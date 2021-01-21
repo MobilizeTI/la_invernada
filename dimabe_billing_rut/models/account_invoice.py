@@ -845,7 +845,7 @@ class AccountInvoice(models.Model):
                 'ship_number': self.ship_number,
                 'type_transport': self.type_transport.id,
                 'departure_port': self.departure_port.id,
-                'arrival_port': self.arrival_port.code,
+                'arrival_port': self.arrival_port.id,
                 'required_loading_date': self.required_loading_date,
                 'etd': self.etd,
                 'eta': self.eta,
