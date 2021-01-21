@@ -150,7 +150,7 @@ class WizardHrPaySlip(models.TransientModel):
         lines = self.env['hr.payslip.line'].sudo().search([('slip_id','in',payslips.mapped('id'))])
         wage = lines.filtered(lambda a: a.code == 'SUELDO').mapped('amount')
         total = sum(wage)
-        ajustotal =  sum(lines.mapped('amount'))
+        ajustotal =  sum(lines.filtered(lambda a: a.code == 'ALSB').mapped('amount'))
         raise models.ValidationError(f'Sueldo Base {total} Ajuste Ley Sueldo Base{ajustotal}')
 
     @api.model
