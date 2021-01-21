@@ -143,7 +143,7 @@ class WizardHrPaySlip(models.TransientModel):
     @api.multi
     def generate_centralization(self):
         payslips = self.env['hr.payslip'].sudo().search([('indicadores_id','=',self.indicators_id.id)])
-        raise models.ValidationError(payslips[0].read())
+        raise models.ValidationError(type(payslips[0].read()))
 
     @api.model
     def get_nacionalidad(self, employee):
