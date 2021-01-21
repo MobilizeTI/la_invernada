@@ -166,15 +166,18 @@ class WizardHrPaySlip(models.TransientModel):
         worksheet.write(3, 3, 'DEBE', format_title)
         worksheet.write(3, 4, 'HABER', format_title)
         line = self.env['hr.payslip.line'].search([('slip_id','=',payslips.mapped('id'))])
-        row = 4
-        col = 4
+        row = 1
+        col = 3
         for data in range(5):
             worksheet.write(row,col,sum(line.filtered(lambda a: a.code == 'SUELDO').mapped('total')))
             row += 1
+            col += 1
             worksheet.write(row, col, sum(line.filtered(lambda a: a.code == 'ALSB').mapped('total')))
             row += 1
+            col += 1
             worksheet.write(row, col, sum(line.filtered(lambda a: a.id == 9).mapped('total')))
             row += 1
+            col += 1
 
         workbook.close()
 
