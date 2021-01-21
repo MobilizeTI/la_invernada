@@ -408,54 +408,15 @@ class AccountInvoice(models.Model):
             "CustomerCode": self.env.user.company_id.dte_customer_code
         }
         invoice = {}
-
-        #Main Validations
         self.validation_fields()
-        
-
-        if self.dte_type_id.code == "33" or self.dte_type_id.code == "39": #Factura electrónica y Boleta electrónica
-            invoice = self.invoice_type()
+        invoice = self.generate_invoice()
        
-        elif self.dte_type_id.code == "34": #Factura no afecta o exenta electrónica
-            invoice = self.invoice_type()
-       
-        elif self.dte_type_id.code == "41":  #Boleta exenta electrónica
+        if self.dte_type_id.code == "41":  #Boleta exenta electrónica
             invoice = self.receipt_exempt_type()
 
-        elif self.dte_type_id.code == "43": #Liquidación factura electrónica
+        if self.dte_type_id.code == "43": #Liquidación factura electrónica
             invoice = self.invoice_liquidation_type()
-        
-        elif self.dte_type_id.code == "46":  #Factura de compra electrónica
-            invoice = self.invoice_type()
-       
-        elif self.dte_type_id.code == "56": #Nota de débito electrónica
-            if len(self.references) > 0:
-                invoice = self.invoice_type()
-            else:
-                raise models.ValidationError('Para Nota de Débito electrónica debe agregar al menos una Referencia') 
-       
-        elif self.dte_type_id.code == "61": #Nota de crédito electrónica
-            if len(self.references) > 0:
-                invoice = self.invoice_type()
-            else:
-                raise models.ValidationError('Para Nota de Crédito electrónica debe agregar al menos una Referencia')
-       
-        elif self.dte_type_id.code == "110": #Factura de exportación electrónica
-            invoice = self.invoice_type()
-       
-        elif self.dte_type_id.code == "111": #Nota de débito de exportación electrónica
-            if len(self.references) > 0:
-                invoice = self.debit_note_invoice_export_type()
-            else:
-                raise models.ValidationError('Para Nota de Débito de exportación electrónica debe agregar al menos una Referencia')
-       
-        elif self.dte_type_id.code == "112": #Nota de crédito de exportación electrónica
-            if len(self.references) > 0:
-                invoice = self.credit_note_invoice_export_type()
-            else:
-                raise models.ValidationError('Para Nota de Crédito de exportación electrónica debe agregar al menos una Referencia')
-       
-        #Add Common Data
+
         invoice['createdDate'] = self.date_invoice.strftime("%Y-%m-%d")
         invoice['dteType'] = self.dte_type_id.code
         
@@ -561,7 +522,7 @@ class AccountInvoice(models.Model):
             raise models.ValidationError('Debe Seleccionar la Fecha de la Factura')
         
         if not self.date_due:
-            raise models.ValidationError('Debe Seleccionar la Fecha de Expiración')
+            raise models.ValidationError('Debe Seleccionar el Plazo de Pago para obtener la Fecha de Expiración')
 
         if not self.dte_type_id.code:
             raise models.ValidationError('Por favor seleccione el Tipo de Documento a emitir')
@@ -593,10 +554,9 @@ class AccountInvoice(models.Model):
             if not self.partner_id.country_id.sii_code:
                 raise models.ValidationError('El País {} no tiene registrado el Código SII'.format(self.self.partner_id.country_id.name, self.currency_id.id))
 
-            
-            #if self.currency_id.code == self.other_coin.code:
-            #    raise models.ValidationError('El tipo de Moneda y Otra Moneda no pueden ser iguales')
-
+        if self.dte_type_id.code == "61" or self.dte_type_id.code == "111" or self.dte_type_id.code == "56" or self.dte_type_id.code == "112":
+            if len(self.references) == 0:
+                raise models.ValidationError('Para {} debe agregar al menos una Referencia'.format(self.dte_type_id.name))
 
         for item in self.invoice_line_ids:
             for tax_line in item.invoice_line_tax_ids:
@@ -622,8 +582,7 @@ class AccountInvoice(models.Model):
         else:
             return round(value)
 
-    #Factura electrónica y #Nota de crédito/debito electrónica
-    def invoice_type(self):
+    def generate_invoice(self):
         productLines = []
         lineNumber = 1
         typeOfExemptEnum = ""                       

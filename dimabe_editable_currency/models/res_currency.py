@@ -55,3 +55,5 @@ class ResCurrency(models.Model):
                 'rate': rate,
                 'currency_id': self.id
             })
+        else:
+            raise models.ValidationError('No es posible obtener el valor USD en la fecha {}'.format(date))
