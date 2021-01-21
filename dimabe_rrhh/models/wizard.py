@@ -164,7 +164,7 @@ class WizardHrPaySlip(models.TransientModel):
             'centralization_report_field':file_base64
         })
         self.write({
-            'centralization_report_field':centralization.centralization
+            'centralization_report_field':centralization.centralization_report_field
         })
         return {
             'type': 'ir.actions.do_nothing'
