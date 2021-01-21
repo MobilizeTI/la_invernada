@@ -147,7 +147,7 @@ class WizardHrPaySlip(models.TransientModel):
         # file_name = 'temp'
         # workbook = xlsxwriter.Workbook(file_name)
         # worksheet = workbook.add_worksheet(self.company_id.name)
-        lines = self.env['hr.payslip.line'].sudo().search(['slip_id','in',payslips.mapped('id')])
+        lines = self.env['hr.payslip.line'].sudo().search([('slip_id','in',payslips.mapped('id'))])
         wage = lines.filtered(lambda a: a.code == 'SUELDO').mapped('amount')
         total = sum(wage)
         ajustotal =  sum(lines.mapped('amount'))
