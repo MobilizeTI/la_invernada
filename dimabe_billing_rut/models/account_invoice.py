@@ -550,14 +550,14 @@ class AccountInvoice(models.Model):
         
       
         for item in self.invoice_line_ids:
-            orders_to_invoice = self.env['custom.orders.to.invoice'].search([('product_id','=',item.product_id.id),('invoice_id','=',self.id)])
-            sum_quantity_invoice_line = 0
-            for order in orders_to_invoice:
-                if order.product_id == item.product_id.id:
-                    sum_quantity_invoice_line += float(order.quantity_to_invoice)
+            #orders_to_invoice = self.env['custom.orders.to.invoice'].search([('product_id','=',item.product_id.id),('invoice_id','=',self.id)])
+            #sum_quantity_invoice_line = 0
+            #for order in orders_to_invoice:
+            #    if order.product_id == item.product_id.id:
+            #        sum_quantity_invoice_line += float(order.quantity_to_invoice)
         
-            if item.quantiy != sum_quantity_invoice_line:
-                raise models.ValidationError('La cantidad {} a facturar del prodcuto {} no cuadra con la suma de las cantidades {}'.format(item.quantity,item.name,sum_quantity_invoice_line))
+            #if item.quantity != sum_quantity_invoice_line:
+            #    raise models.ValidationError('La cantidad {} a facturar del prodcuto {} no cuadra con la suma de las cantidades {}'.format(item.quantity,item.name,sum_quantity_invoice_line))
 
             for tax_line in item.invoice_line_tax_ids:
                 if (tax_line.id == 6 or tax_line.id == None) and (item.exempt == "7"):
