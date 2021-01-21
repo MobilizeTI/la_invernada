@@ -25,8 +25,6 @@ class WizardHrPaySlip(models.TransientModel):
         'none': '',
     }
 
-    indicadores_id = fields.Many2one('hr.indicadores',string='Indicadores')
-
     company_id = fields.Many2one('res.partner', domain=[('id', 'in', ('423', '1', '1000', '79'))])
 
     report = fields.Binary(string='Descarge aqui =>',
