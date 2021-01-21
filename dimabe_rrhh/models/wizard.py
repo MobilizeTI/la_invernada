@@ -147,10 +147,11 @@ class WizardHrPaySlip(models.TransientModel):
         # file_name = 'temp'
         # workbook = xlsxwriter.Workbook(file_name)
         # worksheet = workbook.add_worksheet(self.company_id.name)
-        wage = self.env['hr.payslip.line'].sudo().search(
-            [('slip_id', '=', payslips.mapped('id')), ('salary_rule_id.code', '=', 'SUELDO')]).mapped('amount')
+        lines = self.env['hr.payslip.line'].sudo().search(['slip_id','in',payslips.mapped('id')])
+        wage = lines.filtered(lambda a: a.code == 'SUELDO').mapped('amount')
         total = sum(wage)
-        raise models.ValidationError(total)
+        ajustotal =  sum(lines.mapped('amount'))
+        raise models.ValidationError(f'Sueldo Base {total} Ajuste Ley Sueldo Base{ajustotal}')
 
     @api.model
     def get_nacionalidad(self, employee):
