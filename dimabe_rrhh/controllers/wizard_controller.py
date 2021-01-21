@@ -32,7 +32,7 @@ class Binary(http.Controller):
                                              [('Content-Type', 'application/octet-stream'),
                                               ('Content-Disposition', content_disposition(filename))])
 
-    @http.route('/api/indicators', type='json', auth='token', cors='*')
+    @http.route('/api/indicators',method=['GET'], type='json', auth='token', cors='*')
     @serialize_exception
     def get_indicators(self):
         response = request.env['hr.indicadores'].sudo().search([])
