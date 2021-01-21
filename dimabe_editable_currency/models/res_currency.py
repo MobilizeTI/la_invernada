@@ -1,6 +1,7 @@
 from odoo import models, fields
 import requests
 import json
+from datetime import datetime
 
 
 class ResCurrency(models.Model):
@@ -31,6 +32,9 @@ class ResCurrency(models.Model):
         return to_currency.round(to_amount) if round else to_amount
 
     def get_rate_by_date(self, date):
+        date_now = datetime.now().date()
+        if date > date_now:
+            date = date_now
         res = requests.request(
             'GET',
             'https://services.dimabe.cl/api/currencies?date={}'.format(date.strftime('%Y-%m-%d')),
@@ -45,15 +49,13 @@ class ResCurrency(models.Model):
         if res.status_code == 200:
             rate = None
 
-            for data in response:
-                if data['currency'] == 'USD':
-                    tmp = data['value'].replace(',', '.')
-                    rate = 1 / float(tmp)
+        for data in response:
+            if data['currency'] == 'USD':
+                tmp = data['value'].replace(',', '.')
+            rate = 1 / float(tmp)
 
-            self.env['res.currency.rate'].create({
-                'name': date,
-                'rate': rate,
-                'currency_id': self.id
-            })
-        else:
-            raise models.ValidationError('No es posible obtener el valor USD en la fecha {}'.format(date))
+        self.env['res.currency.rate'].create({
+            'name': date,
+            'rate': rate,
+            'currency_id': self.id
+        })
