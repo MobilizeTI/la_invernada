@@ -39,7 +39,7 @@ class Binary(http.Controller):
         result = []
         for item in response:
             raw_data = item.read()
-            json_data = json.loads(raw_data, default=date_utils.json_default)
+            json_data = json.dumps(raw_data, default=date_utils.json_default)
             json_dict = json.loads(json_data)
             result.append(json_dict)
 
