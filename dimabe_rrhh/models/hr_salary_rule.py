@@ -7,3 +7,5 @@ class HrSalaryRule(models.Model):
     show_in_book = fields.Boolean('Aparece en el libro de remuneraciones', default=True)
 
     order_number = fields.Integer('Orden')
+
+    show_in_central = fields.Boolan('Aparece en Centralizacion')
