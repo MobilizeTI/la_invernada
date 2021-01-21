@@ -817,6 +817,7 @@ class AccountInvoice(models.Model):
                                 valid_to_invoice_line = True
                             else:
                                 valid_to_invoice_line = False
+                                raise models.ValidationError('El Producto {} ya se ecuentra agregado'.format(item.product_id.name))
                                 break 
 
                     if len(self.orders_to_invoice) == 0:
@@ -827,6 +828,7 @@ class AccountInvoice(models.Model):
                                 valid_orders_to_invoice = True
                             else:
                                 valid_to_invoice_line = False
+                                raise models.ValidationError('El Producto {} del despacho {} del pedido {} ya se ecuentra agregado'.format(item.product_id.name, self.stock_picking_ids.name, self.order_to_add_ids.name))
                                 break 
 
 
@@ -883,7 +885,7 @@ class AccountInvoice(models.Model):
                 'container_number' : self.container_number,
                 'container_type' : self.container_type.id,
                 'client_label' : self.client_label,
-                #'client_label_file': self.client_label_file,
+                'client_label_file': self.client_label_file,
                 'freight_value' : self.freight_amount,
                 'safe_value' : self.safe_amount,
                 'total_value' : self.total_value,
