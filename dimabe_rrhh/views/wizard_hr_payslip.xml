@@ -22,6 +22,22 @@
 			</form>
 		</field>
 	</record>
+	<record id="wizard_hr_payslip_centralization_view" model="ir.ui.view">
+		<field name="name">Centralizacion de Remuneraciones</field>
+		<field name="model">wizard.hr.payslip</field>
+		<field name="arch" type="xml">
+			<form>
+				<group>
+					<group>
+						<field name="indicators_id"/>
+					</group>
+					<footer>
+						<button type="obejct" name="generate_centralization" string="Generar"/>
+					</footer>
+				</group>
+			</form>
+		</field>
+	</record>
 	<record id="wizard_hr_payslip_report_previred_view" model="ir.ui.view">
 		<field name="name">Archivo Previred</field>
 		<field name="model">wizard.hr.payslip</field>

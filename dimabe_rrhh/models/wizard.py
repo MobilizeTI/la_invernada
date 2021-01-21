@@ -140,6 +140,10 @@ class WizardHrPaySlip(models.TransientModel):
             'type': 'ir.actions.do_nothing'
         }
 
+    @api.multi
+    def generate_centralization(self):
+        raise models.ValidationError(self.indicators_id.name)
+
     @api.model
     def get_nacionalidad(self, employee):
         # 0 chileno, 1 extranjero, comparar con el pais de la compañia
