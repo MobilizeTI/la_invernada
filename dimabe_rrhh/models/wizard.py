@@ -154,7 +154,7 @@ class WizardHrPaySlip(models.TransientModel):
         legaltotal = sum(lines.filtered(lambda a: a.code == 'GRAT').mapped('amount'))
         bonustotal = sum(lines.filtered(lambda a: a.code == 'AGUI').mapped('amount'))
         worksheet.write(1,1,total)
-        worksheet.write(2,1)
+        worksheet.write(2,1,legaltotal)
 
     @api.model
     def get_nacionalidad(self, employee):
