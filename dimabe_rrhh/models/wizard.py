@@ -62,6 +62,8 @@ class WizardHrPaySlip(models.TransientModel):
 
     report_name = fields.Char('')
 
+    centralization_report_field = fields.Binary('Centralizacion')
+
     @api.multi
     def compute_ccaf_max(self):
         max_ccaf = self.env['hr.indicadores'].search([])[-1]
@@ -155,6 +157,17 @@ class WizardHrPaySlip(models.TransientModel):
         bonustotal = sum(lines.filtered(lambda a: a.code == 'AGUI').mapped('amount'))
         worksheet.write(1,1,total)
         worksheet.write(2,1,legaltotal)
+        workbook.close()
+        with open(file_name, "rb") as file:
+            file_base64 = base64.b64encode(file.read())
+        centralization = self.env[self._name].sudo().create({
+            'centralization_report_field':file_base64
+        })
+        return {
+            'type': 'ir.actions.act_url',
+            'url': f'/web/binary/download_document?model={self._name}&field={centralization.centralization_report_field}&id={self.id}&filename=Centralizacion de Remuneraciones.xlsx',
+            'target': 'self',
+        }
 
     @api.model
     def get_nacionalidad(self, employee):
