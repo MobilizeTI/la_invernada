@@ -555,7 +555,7 @@ class AccountInvoice(models.Model):
             for order in orders_to_invoice:
                 if order.product_id == item.product_id.id:
                     sum_quantity_invoice_line += float(order.quantity_to_invoice)
-            sum_quantity_invoice_line = sum(orders_to_invoice.quantity)
+        
             if item.quantiy != sum_quantity_invoice_line:
                 raise models.ValidationError('La cantidad {} a facturar del prodcuto {} no cuadra con la suma de las cantidades {}'.format(item.quantity,item.name,sum_quantity_invoice_line))
 
