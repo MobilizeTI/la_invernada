@@ -144,16 +144,17 @@ class WizardHrPaySlip(models.TransientModel):
     def generate_centralization(self):
         payslips = self.env['hr.payslip'].sudo().search(
             [('indicadores_id', '=', self.indicators_id.id), ('state', '=', 'done')])
-        # file_name = 'temp'
-        # workbook = xlsxwriter.Workbook(file_name)
-        # worksheet = workbook.add_worksheet(self.company_id.name)
+        file_name = 'temp'
+        workbook = xlsxwriter.Workbook(file_name)
+        worksheet = workbook.add_worksheet('Prueba')
         lines = self.env['hr.payslip.line'].sudo().search([('slip_id','in',payslips.mapped('id'))])
         wage = lines.filtered(lambda a: a.code == 'SUELDO').mapped('amount')
         total = sum(wage)
         ajustotal =  sum(lines.filtered(lambda a: a.code == 'ALSB').mapped('amount'))
         legaltotal = sum(lines.filtered(lambda a: a.code == 'GRAT').mapped('amount'))
         bonustotal = sum(lines.filtered(lambda a: a.code == 'AGUI').mapped('amount'))
-        raise models.ValidationError(f'Sueldo Base {total} Ajuste Ley Sueldo Base {ajustotal} Gratificación Legal {legaltotal} Aguinaldo {bonustotal} ')
+        worksheet.write(1,1,total)
+        worksheet.write(2,1)
 
     @api.model
     def get_nacionalidad(self, employee):
