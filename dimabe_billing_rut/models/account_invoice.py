@@ -766,7 +766,10 @@ class AccountInvoice(models.Model):
     def add_products_by_order(self):
         if self.stock_picking_ids and self.order_to_add_ids:
             product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
-            stock_picking = self.env['stock.picking'].search([('id','=',self.stock_picking_ids.id)])
+            stock_picking_line = self.env['stock.move.line'].search([('picking_id','=',self.stock_picking_ids.id)])
+            quantity = 0
+            for picking in stock_picking_line:
+                quantity += picking.qty.done
             if len(product_ids) > 0:
                 for item in product_ids:  
                     exist_to_invoice_line = False
@@ -775,14 +778,13 @@ class AccountInvoice(models.Model):
                         for o in self.orders_to_invoice:
                             if item.product_id.id == o.product_id and self.stock_picking_ids.id == o.stock_picking_id and self.order_to_add_ids.id == o.order_id:
                                 exist_orders_to_invoice = True
-
                     
                     if len(self.invoice_line_ids) > 0:
                         for i in self.invoice_line_ids:
                             if item.product_id.id == i.product_id.id:
                                 exist_to_invoice_line = True
                                 i.write({
-                                   'quantity': i.quantity + (item.qty_delivered - item.qty_invoiced)
+                                   'quantity': i.quantity + quantity
                                 })
 
                     if not exist_to_invoice_line:
@@ -793,14 +795,14 @@ class AccountInvoice(models.Model):
                             'price_unit': item.price_unit,
                             'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
                             'uom_id': item.product_uom.id,
-                            'quantity': item.qty_delivered - item.qty_invoiced
+                            'quantity': quantity
                         })
                     
-                    if  exist_orders_to_invoice: #cambiar a not
+                    if not exist_orders_to_invoice: #cambiar a not
                         self.env['custom.orders.to.invoice'].create({
                             'product_id': item.product_id.id,
                             'product_name': item.name,
-                            'quantity_to_invoice': str(item.qty_delivered - item.qty_invoiced),
+                            'quantity_to_invoice': str(quantity),
                             'invoice_id': self.id,
                             'order_id': self.order_to_add_ids.id,
                             'order_name': self.order_to_add_ids.name,
