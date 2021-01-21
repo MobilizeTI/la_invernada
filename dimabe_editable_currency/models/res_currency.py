@@ -32,7 +32,7 @@ class ResCurrency(models.Model):
         return to_currency.round(to_amount) if round else to_amount
 
     def get_rate_by_date(self, date):
-        date_now = datetime.now()
+        date_now = datetime.now().date()
         if date <= date_now:
             res = requests.request(
                 'GET',
