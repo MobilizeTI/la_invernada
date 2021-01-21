@@ -87,7 +87,7 @@ class AccountInvoice(models.Model):
     )
 
     stock_picking_ids = fields.Many2one('stock.picking',
-        string="Despachos" #cambiar nombre
+        string="Despachos"
     )
 
     order_to_add_id = fields.Integer(string="Despacho Id")
@@ -352,7 +352,7 @@ class AccountInvoice(models.Model):
         #        raise models.ValidationError('la comisión debe ser mayor que 0 y menor o igual que 3')
         #    else:
         #        item.total_commission = (item.commission / 100) \
-        #                                * (sum(item.invoice_line_ids.price_unit) * sum(item.invoice_line_ids.quantity)))
+        #                         
                                         #* (sum(item.sale_id.order_line.mapped('price_unit'))
                                         #* sum(item.move_ids_without_package.mapped('product_uom_qty')))
     
@@ -547,12 +547,20 @@ class AccountInvoice(models.Model):
         if self.dte_type_id.code == "61" or self.dte_type_id.code == "111" or self.dte_type_id.code == "56" or self.dte_type_id.code == "112":
             if len(self.references) == 0:
                 raise models.ValidationError('Para {} debe agregar al menos una Referencia'.format(self.dte_type_id.name))
-
+        
+      
         for item in self.invoice_line_ids:
+            sum_quantity_invoice_line = sum(self.env['sale.order.line'].search([('product_id','=',item.product_id)]).quantity)
+            if item.quantiy != sum_quantity_invoice_line:
+                raise models.ValidationError('La cantidad {} a facturar del prodcuto {} no cuadra con la suma de las cantidades {}'.format(item.quantity,item.name,sum_quantity_invoice_line))
+
             for tax_line in item.invoice_line_tax_ids:
                 if (tax_line.id == 6 or tax_line.id == None) and (item.exempt == "7"):
                     raise models.ValidationError('El Producto {} no tiene impuesto por ende debe seleccionar el Tipo Exento'.format(item.name))
-
+        
+       
+            
+        
         if len(self.references) > 10:
             raise models.ValidationError('Solo puede generar 20 Referencias')
 
@@ -755,44 +763,34 @@ class AccountInvoice(models.Model):
             product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
             if len(product_ids) > 0:
                 for item in product_ids:  
-                    valid_to_invoice_line = False
-                    valid_orders_to_invoice = False
-
-                    if len(self.invoice_line_ids) == 0:
-                        valid_to_invoice_line = True
-                    else:
-                        for i in self.invoice_line_ids:
-                            if item.product_id.id != i.product_id:
-                                valid_to_invoice_line = True
-                            else:
-                                valid_to_invoice_line = False
-                                raise models.ValidationError('El Producto {} ya se ecuentra agregado'.format(item.product_id.name))
-                                break 
-
-                    if len(self.orders_to_invoice) == 0:
-                        valid_orders_to_invoice = True
-                    else:
+                    exist_to_invoice_line = False
+                    exist_orders_to_invoice = False
+                    if len(self.orders_to_invoice) > 0:
                         for o in self.orders_to_invoice:
-                            if item.product_id.id != o.product_id and self.stock_picking_ids.id != o.stock_picking_id and self.order_to_add_ids.id != o.order_id:
-                                valid_orders_to_invoice = True
-                            else:
-                                valid_to_invoice_line = False
-                                raise models.ValidationError('El Producto {} del despacho {} del pedido {} ya se ecuentra agregado'.format(item.product_id.name, self.stock_picking_ids.name, self.order_to_add_ids.name))
-                                break 
+                            if item.product_id.id == o.product_id and self.stock_picking_ids.id == o.stock_picking_id and self.order_to_add_ids.id == o.order_id:
+                                exist_orders_to_invoice = True
 
-
-                    if valid_to_invoice_line:
-                        self.env['account.invoice.line'].create({
-                                'name' : item.name,
-                                'product_id': item.product_id.id,
-                                'invoice_id': self.id,
-                                'price_unit': item.price_unit,
-                                'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
-                                'uom_id': item.product_uom.id
-                            })
-                        valid_to_invoice_line = False
                     
-                    if valid_orders_to_invoice:
+                    if len(self.invoice_line_ids) > 0:
+                        for i in self.invoice_line_ids:
+                            if item.product_id.id == i.product_id:
+                                exist_to_invoice_line = True
+                                i.write({
+                                   'quantity': i.quantity + (item.qty_delivered - item.qty_invoiced)
+                                })
+
+                    if not exist_to_invoice_line:
+                        self.env['account.invoice.line'].create({
+                            'name' : item.name,
+                            'product_id': item.product_id.id,
+                            'invoice_id': self.id,
+                            'price_unit': item.price_unit,
+                            'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
+                            'uom_id': item.product_uom.id,
+                            'quantity': item.quantity
+                        })
+                    
+                    if not exist_orders_to_invoice:
                         self.env['custom.orders.to.invoice'].create({
                             'product_id': item.product_id.id,
                             'product_name': item.name,
@@ -803,8 +801,9 @@ class AccountInvoice(models.Model):
                             'stock_picking_name': self.stock_picking_ids.name,
                             'stock_picking_id': self.stock_picking_ids.id,
                         })
-                        valid_orders_to_invoice = False
-                        
+                    else:
+                       raise models.ValidationError('El Producto {} del despacho {} del pedido {} ya se ecuentra agregado'.format(item.product_id.name, self.stock_picking_ids.name, self.order_to_add_ids.name))
+
             else:
                 raise models.ValidationError('No se han encontrado Productos')
 

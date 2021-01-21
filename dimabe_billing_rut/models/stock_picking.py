@@ -71,6 +71,8 @@ class StockPicking(models.Model):
 
     total = fields.Char(string="Total")
 
+    invoiced = fields.Boolean(string="Estado Facturación",default=False)
+
     #Comex Embarque
 
     shipping_company = fields.Many2one(
@@ -90,15 +92,6 @@ class StockPicking(models.Model):
         required=True
     )
 
-    #type_transport = fields.Selection(
-    #    selection=[
-    #        ('maritimo', 'Marítimo'),
-    #        ('terrestre', 'Terrestre'),
-    #        ('aereo', 'Aéreo')
-     #   ],
-    #    string='Vía de Transporte',
-    #    required=True
-    #)
     type_transport = fields.Many2one('custom.type.transport','Vía de Transporte')
 
     departure_port = fields.Many2one(
