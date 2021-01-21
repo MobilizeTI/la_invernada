@@ -41,7 +41,7 @@
             id="custom_parameter_menu"
             string="Tramos"
             parent="hr_payroll.menu_hr_payroll_configuration"
-            action="dimabe_billing_rut.custom_parameter_action"
+            action="dimabe_rrhh.custom_parameter_action"
             sequence="10" />
     </data>
 </odoo>
