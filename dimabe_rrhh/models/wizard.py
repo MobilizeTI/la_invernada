@@ -163,7 +163,14 @@ class WizardHrPaySlip(models.TransientModel):
         centralization = self.env[self._name].sudo().create({
             'centralization_report_field':file_base64
         })
-        return file_base64
+        base_url = self.env['ir.config_parameter'].get_param('web.base.url')
+        download_url = '/web/content/' + str(centralization.id) + '?download=true'
+
+        return {
+            "type": "ir.actions.act_url",
+            "url": str(base_url) + str(download_url),
+            "target": "new",
+        }
 
 
     @api.model
