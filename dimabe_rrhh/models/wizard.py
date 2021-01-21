@@ -62,7 +62,7 @@ class WizardHrPaySlip(models.TransientModel):
 
     report_name = fields.Char('')
 
-    centralization_report_field = fields.Binary('Centralizacion')
+    centralization_report_field = fields.Binary('Centralizacion',default=lambda self:self.env['wizard.hr.payslip'].sudo().search([])[-1].centralization_report_field)
 
     @api.multi
     def compute_ccaf_max(self):
