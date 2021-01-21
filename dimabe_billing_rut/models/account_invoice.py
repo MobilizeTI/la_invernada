@@ -787,7 +787,7 @@ class AccountInvoice(models.Model):
                             'price_unit': item.price_unit,
                             'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
                             'uom_id': item.product_uom.id,
-                            'quantity': item.quantity
+                            'quantity': item.qty_delivered - item.qty_invoiced
                         })
                     
                     if not exist_orders_to_invoice:
