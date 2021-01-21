@@ -163,11 +163,8 @@ class WizardHrPaySlip(models.TransientModel):
         centralization = self.env[self._name].sudo().create({
             'centralization_report_field':file_base64
         })
-        return {
-            'type': 'ir.actions.act_url',
-            'url': f'/web/binary/download_document?model={self._name}&field={centralization.centralization_report_field}&id={self.id}&filename=Centralizacion de Remuneraciones.xlsx',
-            'target': 'self',
-        }
+        return file_base64
+
 
     @api.model
     def get_nacionalidad(self, employee):
