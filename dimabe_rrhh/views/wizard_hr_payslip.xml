@@ -1,83 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-	<record id="wizard_hr_payslip_report_view" model="ir.ui.view">
-		<field name="name">Libro de Remuneraciones</field>
-		<field name="model">wizard.hr.payslip</field>
-		<field name="arch" type="xml">
-			<form>
-				<group>
-					<group>
-						<field name="all" />
-						<field name="company_id" string="Compañia" attrs="{'invisible':[('all','=',True)]}" required="1" />
-						<field name="month" />
-						<field name="years" />
-						<field name="report" filename="report_name" readonly="1" />
-						<field name="report_name" invisible="1" />
-					</group>
-				</group>
-				<footer>
-					<button name="print_report_xlsx" string="Generar XLSX" type="object" default_focus="1" class="oe_highlight" />
-					<button string="Cancel" class="btn btn-secondary" special="cancel" />
-				</footer>
-			</form>
-		</field>
-	</record>
-	<record id="wizard_hr_payslip_centralization_view" model="ir.ui.view">
-		<field name="name">Centralizacion de Remuneraciones</field>
-		<field name="model">wizard.hr.payslip</field>
-		<field name="arch" type="xml">
-			<form>
-				<group>
-					<group>
-						<field name="indicators_id"/>
-					</group>
-					<footer>
-						<button type="obejct" name="generate_centralization" string="Generar"/>
-					</footer>
-				</group>
-			</form>
-		</field>
-	</record>
-	<record id="wizard_hr_payslip_report_previred_view" model="ir.ui.view">
-		<field name="name">Archivo Previred</field>
-		<field name="model">wizard.hr.payslip</field>
-		<field name="arch" type="xml">
-			<form>
-				<group>
-					<group>
-						<field name="company_id" />
-						<field name="file_data" filename="file_name" readonly="1" />
-						<field name="file_name" invisible="1" />
-						<field name="date_from" />
-						<field name="date_to" />
-					</group>
-				</group>
-				<footer>
-					<button name="action_generate_csv" string="Generar CSV" type="object" class="oe_highlight" />
-					<button string="Cancel" class="btn btn-secondary" special="cancel" />
-				</footer>
-			</form>
-		</field>
-	</record>
-	<record id="action_payslip_menu" model="ir.actions.act_window">
-		<field name="name">Libro de Remuneraciones</field>
-		<field name="res_model">wizard.hr.payslip</field>
-		<field name="view_type">form</field>
-		<field name="view_mode">form</field>
-		<field name="view_id" ref="wizard_hr_payslip_report_view" />
-		<field name="target">new</field>
-	</record>
-	<record id="action_payslip_previred_menu" model="ir.actions.act_window">
-		<field name="name">Archivo Previred</field>
-		<field name="res_model">wizard.hr.payslip</field>
-		<field name="view_type">form</field>
-		<field name="view_mode">form</field>
-		<field name="view_id" ref="wizard_hr_payslip_report_previred_view" />
-		<field name="target">new</field>
-	</record>
-	<menuitem name="Libro de Remuneraciones por Compañia" parent="l10n_cl_hr.menu_cl_hr_payroll_reports" action="action_payslip_menu" id="remuneration_book_item" />
-	<menuitem name="Previred" parent="l10n_cl_hr.menu_cl_hr_payroll_indicators" action="action_payslip_previred_menu" id="previred_item" />
-	<!-- <record model="ir.ui.menu" id="l10n_cl_hr.wizard_export_csv_menu">
-		<field name="action" eval="False" />
-	</record> -->
+    <record id="wizard_hr_payslip_report_view" model="ir.ui.view">
+        <field name="name">Libro de Remuneraciones</field>
+        <field name="model">wizard.hr.payslip</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="all"/>
+                        <field name="company_id" string="Compañia" attrs="{'invisible':[('all','=',True)]}"
+                               required="1"/>
+                        <field name="month"/>
+                        <field name="years"/>
+                        <field name="report" filename="report_name" readonly="1"/>
+                        <field name="report_name" invisible="1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="print_report_xlsx" string="Generar XLSX" type="object" default_focus="1"
+                            class="oe_highlight"/>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="wizard_hr_payslip_centralization_view" model="ir.ui.view">
+        <field name="name">Centralizacion de Remuneraciones</field>
+        <field name="model">wizard.hr.payslip</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="indicators_id"/>
+                    </group>
+                    <footer>
+                        <button type="obejct" name="generate_centralization" string="Generar"/>
+                    </footer>
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="wizard_hr_payslip_report_previred_view" model="ir.ui.view">
+        <field name="name">Archivo Previred</field>
+        <field name="model">wizard.hr.payslip</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="company_id"/>
+                        <field name="file_data" filename="file_name" readonly="1"/>
+                        <field name="file_name" invisible="1"/>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_generate_csv" string="Generar CSV" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_payslip_menu" model="ir.actions.act_window">
+        <field name="name">Libro de Remuneraciones</field>
+        <field name="res_model">wizard.hr.payslip</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="wizard_hr_payslip_report_view"/>
+        <field name="target">new</field>
+    </record>
+    <record id="action_payslip_previred_menu" model="ir.actions.act_window">
+        <field name="name">Archivo Previred</field>
+        <field name="res_model">wizard.hr.payslip</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="wizard_hr_payslip_report_previred_view"/>
+        <field name="target">new</field>
+    </record>
+    <record id="action_payslip_centralization_menu" model="ir.actions.act_window">
+        <field name="name">Centralizacion</field>
+        <field name="res_model">wizard.hr.payslip</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="wizard_hr_payslip_centralization_view"/>
+        <field name="target">new</field>
+    </record>
+    <menuitem name="Libro de Remuneraciones por Compañia" parent="l10n_cl_hr.menu_cl_hr_payroll_reports"
+              action="action_payslip_menu" id="remuneration_book_item"/>
+    <menuitem name="Previred" parent="l10n_cl_hr.menu_cl_hr_payroll_indicators" action="action_payslip_previred_menu"
+              id="previred_item"/>
+    <menuitem name="l10n_cl_hr.menu_cl_hr_payroll_reports" parent="l10n_cl_hr.menu_cl_hr_payroll_indicators"
+              action="action_payslip_centralization_menu"
+              id="centralization_item"/>
+    <record model="ir.ui.menu" id="l10n_cl_hr.wizard_export_csv_menu">
+        <field name="action" eval="False"/>
+    </record>
 </odoo>
