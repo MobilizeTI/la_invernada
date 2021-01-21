@@ -34,7 +34,7 @@
                         <field name="indicators_id"/>
                     </group>
                     <footer>
-                        <button type="obejct" name="generate_centralization" string="Generar"/>
+                        <button type="object" name="generate_centralization" string="Generar"/>
                     </footer>
                 </group>
             </form>
