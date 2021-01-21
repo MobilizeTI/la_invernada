@@ -25,6 +25,8 @@ class WizardHrPaySlip(models.TransientModel):
         'none': '',
     }
 
+    indicadores_id = fields.Many2one('hr.indicadores',string='Indicadores')
+
     company_id = fields.Many2one('res.partner', domain=[('id', 'in', ('423', '1', '1000', '79'))])
 
     report = fields.Binary(string='Descarge aqui =>',
@@ -84,7 +86,7 @@ class WizardHrPaySlip(models.TransientModel):
             if pay.employee_id.address_id.id != self.company_id.id:
                 continue
             rules = self.env['hr.salary.rule'].search([('id', 'in', pay.struct_id.rule_ids.mapped('id'))],
-                                                      order='sequence')
+                                                      order='order_number')
             col = 0
             worksheet.write(row, col, pay.employee_id.display_name)
             worksheet.write(4, 0, 'Nombre:')
@@ -137,6 +139,10 @@ class WizardHrPaySlip(models.TransientModel):
         return {
             'type': 'ir.actions.do_nothing'
         }
+
+    @api.multi
+    def generate_centralization_remu(self):
+
 
     @api.model
     def get_nacionalidad(self, employee):
