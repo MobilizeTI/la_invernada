@@ -779,8 +779,7 @@ class AccountInvoice(models.Model):
                     
                     if len(self.invoice_line_ids) > 0:
                         for i in self.invoice_line_ids:
-                            raise models.ValidationError('{} {}'.format(item.product_id.id,i.product_id))
-                            if item.product_id.id == i.product_id:
+                            if item.product_id.id == i.product_id.id:
                                 exist_to_invoice_line = True
                                 i.write({
                                    'quantity': i.quantity + (item.qty_delivered - item.qty_invoiced)
