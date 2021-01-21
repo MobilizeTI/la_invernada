@@ -773,10 +773,10 @@ class AccountInvoice(models.Model):
                     quantity = 0
                     for picking in stock_picking_line:
                         if picking.product_id.id == item.product_id.id:
-                            quantity += picking.qty.done 
+                            quantity += picking.qty_done 
                     exist_to_invoice_line = False
                     exist_orders_to_invoice = False
-                    
+
                     if len(self.orders_to_invoice) > 0:
                         for o in self.orders_to_invoice:
                             if item.product_id.id == o.product_id and self.stock_picking_ids.id == o.stock_picking_id and self.order_to_add_ids.id == o.order_id:
