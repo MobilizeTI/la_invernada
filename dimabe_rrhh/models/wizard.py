@@ -146,18 +146,38 @@ class WizardHrPaySlip(models.TransientModel):
     def generate_centralization(self):
         payslips = self.env['hr.payslip'].sudo().search(
             [('indicadores_id', '=', self.indicators_id.id), ('state', '=', 'done')])
-        file_name = 'temp'
+        file_name = 'temp.xlsx'
         workbook = xlsxwriter.Workbook(file_name)
         worksheet = workbook.add_worksheet('Prueba')
-        lines = self.env['hr.payslip.line'].sudo().search([('slip_id','in',payslips.mapped('id'))])
-        wage = lines.filtered(lambda a: a.code == 'SUELDO').mapped('amount')
-        total = sum(wage)
-        ajustotal =  sum(lines.filtered(lambda a: a.code == 'ALSB').mapped('amount'))
-        legaltotal = sum(lines.filtered(lambda a: a.code == 'GRAT').mapped('amount'))
-        bonustotal = sum(lines.filtered(lambda a: a.code == 'AGUI').mapped('amount'))
-        worksheet.write(1,1,total)
-        worksheet.write(2,1,legaltotal)
+
+        format_title = workbook.add_format({
+            'bold': 1,
+            'align': 'center',
+            'valign': 'center'
+        })
+        worksheet.set_column('B:B', 68)
+        worksheet.set_column('C:C', len('Centro de Costo'))
+        worksheet.set_column('D:D', 32)
+        worksheet.set_column('E:E', 15)
+        worksheet.merge_range('B2:E2', 'Centralizacion de Remuneraciones', format_title)
+
+        worksheet.write(3, 1, 'Descripcion', format_title)
+        worksheet.write(3, 2, 'Centro de Costo', format_title)
+        worksheet.write(3, 3, 'DEBE', format_title)
+        worksheet.write(3, 4, 'HABER', format_title)
+        line = self.env['hr.payslip.line'].search([('slip_id','=',payslips.mapped('id'))])
+        row = 4
+        col = 4
+        for data in range(5):
+            worksheet.write(row,col,sum(line.filtered(lambda a: a.code == 'SUELDO').mapped('total')))
+            row += 1
+            worksheet.write(row, col, sum(line.filtered(lambda a: a.code == 'ALSB').mapped('total')))
+            row += 1
+            worksheet.write(row, col, sum(line.filtered(lambda a: a.id == 9).mapped('total')))
+            row += 1
+
         workbook.close()
+
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
         centralization = self.env[self._name].sudo().create({
