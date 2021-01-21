@@ -866,7 +866,7 @@ class AccountInvoice(models.Model):
     @api.multi
     def write(self, vals):
         order_list = []
-        for item in self.invoice_line_ids:
+        for item in self.orders_to_invoice:
             if item.order_id:
                 order_list.append(item.stock_picking_id)
         
