@@ -767,13 +767,16 @@ class AccountInvoice(models.Model):
         if self.stock_picking_ids and self.order_to_add_ids:
             product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
             stock_picking_line = self.env['stock.move.line'].search([('picking_id','=',self.stock_picking_ids.id)])
-            quantity = 0
-            for picking in stock_picking_line:
-                quantity += picking.qty.done
+            
             if len(product_ids) > 0:
-                for item in product_ids:  
+                for item in product_ids: 
+                    quantity = 0
+                    for picking in stock_picking_line:
+                        if picking.product_id.id == item.product_id.id:
+                            quantity += picking.qty.done 
                     exist_to_invoice_line = False
                     exist_orders_to_invoice = False
+                    
                     if len(self.orders_to_invoice) > 0:
                         for o in self.orders_to_invoice:
                             if item.product_id.id == o.product_id and self.stock_picking_ids.id == o.stock_picking_id and self.order_to_add_ids.id == o.order_id:
