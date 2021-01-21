@@ -32,42 +32,42 @@ class Binary(http.Controller):
                                              [('Content-Type', 'application/octet-stream'),
                                               ('Content-Disposition', content_disposition(filename))])
 
-        @http.route('/api/indicators',type='json',auth='token',cors='*')
-        @serialize_exception
-        def get_indicators(self):
-            response = request.env['hr.indicators'].sudo().search([])
-            result = []
-            for item in response:
-                raw_data = item.read()
-                json_data = json.loads(raw_data,default=date_utils.json_defualt)
-                json_dict = json.loads(json_data)
-                result.append(json_dict)
+    @http.route('/api/indicators', type='json', auth='token', cors='*')
+    @serialize_exception
+    def get_indicators(self):
+        response = request.env['hr.indicators'].sudo().search([])
+        result = []
+        for item in response:
+            raw_data = item.read()
+            json_data = json.loads(raw_data, default=date_utils.json_defualt)
+            json_dict = json.loads(json_data)
+            result.append(json_dict)
 
-            return result
+        return result
 
-        @http.route('/api/payslips', type='json', auth='token', cors='*')
-        @serialize_exception
-        def get_payslip(self,indicator_id):
-            response = request.env['hr.payslip'].sudo().search([('indicadores_id','=',indicator_id)])
-            result = []
-            for item in response:
-                raw_data = item.read()
-                json_data = json.loads(raw_data, default=date_utils.json_defualt)
-                json_dict = json.loads(json_data)
-                result.append(json_dict)
+    @http.route('/api/payslips', type='json', auth='token', cors='*')
+    @serialize_exception
+    def get_payslip(self, indicator_id):
+        response = request.env['hr.payslip'].sudo().search([('indicadores_id', '=', indicator_id)])
+        result = []
+        for item in response:
+            raw_data = item.read()
+            json_data = json.loads(raw_data, default=date_utils.json_defualt)
+            json_dict = json.loads(json_data)
+            result.append(json_dict)
 
-            return result
+        return result
 
-        @http.route('/api/line', type='json', auth='token', cors='*')
-        @serialize_exception
-        def get_lines(self,slip_id):
-            response = request.env['hr.payslip.line'].sudo().search([('slip_id','=',slip_id)])
-            result = []
-            for item in response:
-                raw_data = item.read()
-                json_data = json.loads(raw_data, default=date_utils.json_defualt)
-                json_dict = json.loads(json_data)
-                result.append(json_dict)
+    @http.route('/api/line', type='json', auth='token', cors='*')
+    @serialize_exception
+    def get_lines(self, slip_id):
+        response = request.env['hr.payslip.line'].sudo().search([('slip_id', '=', slip_id)])
+        result = []
+        for item in response:
+            raw_data = item.read()
+            json_data = json.loads(raw_data, default=date_utils.json_defualt)
+            json_dict = json.loads(json_data)
+            result.append(json_dict)
 
-            return result
+        return result
 
