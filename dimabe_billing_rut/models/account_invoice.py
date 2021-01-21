@@ -840,7 +840,7 @@ class AccountInvoice(models.Model):
                 'total_value' : self.total_value,
                 'value_per_kilogram' : self.value_per_kilogram,
                 'remarks': self.remarks_comex,
-                'shipping_company': self.shipping_company.code,
+                'shipping_company': self.shipping_company,
                 'ship': self.ship.code,
                 'ship_number': self.ship_number,
                 'type_transport': self.type_transport.code,
