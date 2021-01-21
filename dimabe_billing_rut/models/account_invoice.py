@@ -190,6 +190,8 @@ class AccountInvoice(models.Model):
 
     client_label = fields.Boolean('Etiqueta Cliente', default=False)
 
+    client_label_file = fields.Binary(string='Archivo Etiqueta Cliente')
+
     is_dispatcher = fields.Integer(
         compute="get_permision"
     )
@@ -804,37 +806,54 @@ class AccountInvoice(models.Model):
             product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
             if len(product_ids) > 0:
                 for item in product_ids:  
-                    valid = False
+                    valid_to_invoice_line = False
+                    valid_orders_to_invoice = False
+
                     if len(self.invoice_line_ids) == 0:
-                        valid = True
+                        valid_to_invoice_line = True
                     else:
                         for i in self.invoice_line_ids:
-                            if item.product_id.id != i.product_id and self.order_to_add_ids.name != i.order_name:
-                                valid = True
+                            if item.product_id.id != i.product_id:
+                                valid_to_invoice_line = True
                             else:
-                                raise models.ValidationError('El Producto {} del despacho {} del pedido {} ya se encuentra agregada en la lista'.format(item.name,self.stock_picking_ids.name,self.order_to_add_ids.name))
-                   
-                    if valid:
+                                valid_to_invoice_line = False
+                                break 
+
+                    if len(self.orders_to_invoice) == 0:
+                        valid_orders_to_invoice = True
+                    else:
+                        for o in self.orders_to_invoice:
+                            if item.product_id.id != o.product_id and self.stock_picking_ids.id != o.stock_picking_id and self.order_to_add_ids.id != o.order_id:
+                                valid_orders_to_invoice = True
+                            else:
+                                valid_to_invoice_line = False
+                                break 
+
+
+                    if valid_to_invoice_line:
                         self.env['account.invoice.line'].create({
                                 'name' : item.name,
                                 'product_id': item.product_id.id,
                                 'invoice_id': self.id,
                                 'price_unit': item.price_unit,
                                 'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
-                                'quantity': item.qty_delivered - item.qty_invoiced
-                                #'uom_id': 
+                                'uom_id': item.product_uom
                             })
+                        valid_to_invoice_line = False
+                    
+                    if valid_orders_to_invoice:
                         self.env['custom.orders.to.invoice'].create({
-                                'product_id': item.product_id.id,
-                                'product_name': item.product_id,
-                                'quantity_to_invoice': str(item.qty_delivered - item.qty_invoiced),
-                                'invoice_id': self.id,
-                                'order_id': self.order_to_add_ids.id,
-                                'order_name': self.order_to_add_ids.name,
-                                'stock_picking_name': self.stock_picking_ids.name,
-                                'stock_picking_id': self.stock_picking_ids.id,
-                            })
-                        valid = False
+                            'product_id': item.product_id.id,
+                            'product_name': item.product_id.name,
+                            'quantity_to_invoice': str(item.qty_delivered - item.qty_invoiced),
+                            'invoice_id': self.id,
+                            'order_id': self.order_to_add_ids.id,
+                            'order_name': self.order_to_add_ids.name,
+                            'stock_picking_name': self.stock_picking_ids.name,
+                            'stock_picking_id': self.stock_picking_ids.id,
+                        })
+                        valid_orders_to_invoice = False
+                        
             else:
                 raise models.ValidationError('No se han encontrado Productos')
 
@@ -864,6 +883,7 @@ class AccountInvoice(models.Model):
                 'container_number' : self.container_number,
                 'container_type' : self.container_type.id,
                 'client_label' : self.client_label,
+                #'client_label_file': self.client_label_file,
                 'freight_value' : self.freight_amount,
                 'safe_value' : self.safe_amount,
                 'total_value' : self.total_value,
