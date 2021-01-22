@@ -26,6 +26,9 @@ class HrPayslip(models.Model):
 
     total_imp = fields.Float('Total Imp. Anterior')
 
+    account_analytic_id = fields.Char('Centro de Costo',readonly=True)
+
+
     @api.onchange('struct_id')
     def onchange_domain(self):
         res = {
@@ -115,6 +118,11 @@ class HrPayslip(models.Model):
             identy = '{}00'.format(id)
         res = res[0:3].upper() + identy
         return res
+
+    @api.multi
+    def write(self,vals):
+        vals['account_analytic_id'] = self.contract_id.account_analytic_id.name
+        return super(HrPayslip,self).write(vals)
 
     @api.multi
     def compute_sheet(self):
