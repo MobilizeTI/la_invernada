@@ -825,7 +825,15 @@ class AccountInvoice(models.Model):
     @api.onchange('orders_to_invoice')
     @api.multi
     def change_orders_to_invoice(self):
-        raise models.ValidationError('{} {} {} {}'.format(self.orders_to_invoice.id, self.orders_to_invoice.product_id,self.orders_to_invoice.stock_picking_id,self.orders_to_invoice.quantity_to_invoice))
+        for line in self.invoice_line_ids:
+            sum_quantity = 0
+            for item in self.orders_to_invoice:
+                if line.product_id.id == item.product_id:
+                    sum_quantity += float(line.quantity_to_invoice)
+            if sum_quantity != line.quantity:
+                line.write({
+                    'quantity': sum_quantity
+                })
 
     #Send Data to Stock_Picking Comex
     @api.multi
