@@ -264,16 +264,16 @@ class AccountInvoice(models.Model):
     @api.onchange('etd')
     @api.depends('etd')
     def _compute_etd_values(self):
-        if self.etd:
-            try:
-                self.etd_month = self.etd.month
-                _year, _week, _day_of_week = self.etd.isocalendar()
-                self.etd_week = _week
-            except:
-                raise UserWarning('Error producido al intentar obtener el mes y semana de embarque')
-        else:
-            self.etd_week = None
-            self.etd_month = None
+        #if self.etd:
+        #    try:
+        #        self.etd_month = self.etd.month
+        #        _year, _week, _day_of_week = self.etd.isocalendar()
+        #        self.etd_week = _week
+        #    except:
+        #        raise UserWarning('Error producido al intentar obtener el mes y semana de embarque')
+        #else:
+        #    self.etd_week = None
+        #    self.etd_month = None
 
     @api.model
     @api.onchange('required_loading_date')
@@ -494,10 +494,10 @@ class AccountInvoice(models.Model):
                 if item.order_id not in list_order_ids:
                     list_order_ids.append(item.order_id)
             
-            #raise models.ValidationError('{} {}'.format(list_order_ids[0],list_order_ids[1]))
             for item in list_order_ids:
                 order = self.env['sale.order'].search([('id','=',item)])
-                raise models.ValidationError(order.invoice_ids[0])
+                raise models.ValidationError(order.invoice_ids[0].id)
+               
                 order.write({
                     'invoice_ids':[(4, [self.id])]
                 })
