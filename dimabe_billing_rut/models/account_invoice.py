@@ -289,7 +289,7 @@ class AccountInvoice(models.Model):
         #    except:
         #        raise UserWarning('no se pudo establecer la semana de carga')
         #else:
-        3    self.required_loading_week = None
+        #    self.required_loading_week = None
 
     @api.one
     @api.constrains('etd', 'eta')
