@@ -172,12 +172,9 @@ class WizardHrPaySlip(models.TransientModel):
         for data in rule:
             line = self.env['hr.payslip.line'].sudo().search([('slip_id','in',payslips.mapped('id')),('salary_rule_id','=',data.id)])
             worksheet.write(row , col - 2,data.name)
-            col += 1
             total = sum(line.mapped("total"))
             worksheet.write(row,col,total)
-            col += 1
             row += 1
-            col = 3
 
         workbook.close()
 
