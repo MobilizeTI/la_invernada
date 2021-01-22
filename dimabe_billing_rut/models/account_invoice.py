@@ -281,14 +281,15 @@ class AccountInvoice(models.Model):
     @api.onchange('required_loading_date')
     @api.depends('required_loading_date')
     def _compute_required_loading_week(self):
-        if self.required_loading_date:
-            try:
-                year, week, day_of_week = self.required_loading_date.isocalendar()
-                self.required_loading_week = week
-            except:
-                raise UserWarning('no se pudo establecer la semana de carga')
-        else:
-            self.required_loading_week = None
+        print('')
+        #if self.required_loading_date:
+        #    try:
+        #        year, week, day_of_week = self.required_loading_date.isocalendar()
+        #        self.required_loading_week = week
+        #    except:
+        #        raise UserWarning('no se pudo establecer la semana de carga')
+        #else:
+        3    self.required_loading_week = None
 
     @api.one
     @api.constrains('etd', 'eta')
