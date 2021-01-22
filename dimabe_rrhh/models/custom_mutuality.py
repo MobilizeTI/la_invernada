@@ -17,7 +17,7 @@ class CustomMutuality(models.Model):
         for item in self:
             hr_employee = self.env['hr.employee'].sudo().search([])
             companies = self.env['res.partner'].sudo().search([('id','in',hr_employee.mapped('id'))])
-            self.partner_ids = companies
+            item.partner_ids = companies
 
 
 
