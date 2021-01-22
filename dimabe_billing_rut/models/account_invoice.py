@@ -390,7 +390,7 @@ class AccountInvoice(models.Model):
         
     @api.multi
     def send_to_sii(self):
-        #self.update_sale_order()
+        self.update_sale_order()
         #raise models.ValidationError('verificar actualizacion de SO')
         url = self.env.user.company_id.dte_url
         headers = {
@@ -488,19 +488,32 @@ class AccountInvoice(models.Model):
   
     #pendiente
     def update_sale_order(self):
-        if len(self.invoice_line_ids) > 0: 
-            for line in self.invoice_line_ids:
-                sale_order = self.env['stock.picking'].search([('id', '=', line.stock_picking_id)])
-                sum_quantity = 0
-                
-                sale_order_lines = self.env['sale.order.line'].search([('order_id', '=', line.order_id)])
-                if len(sale_order_lines) > 0: 
-                    for s in sale_order_lines:
-                        if s.product_id.id == line.product_id.id:
-                            new_qty_invoiced = s.qty_invoiced + line.quantity
-                            s.write({
-                                'qty_invoiced': new_qty_invoiced
-                            })
+        if len(self.orders_to_invoice) > 0:
+            list_order_ids = []
+            for item in self.orders_to_invoice:
+                if item.order_id not in list_order_ids:
+                    list_order_ids.append(item.order_id)
+            
+            #raise models.ValidationError('{} {}'.format(list_order_ids[0],list_order_ids[1]))
+            for item in list_order_ids:
+                order = self.env['sale.order'].search([('id','=',item)])
+                raise models.ValidationError(order.invoice_ids[0])
+                order.write({
+                    'invoice_ids':[(4, [self.id])]
+                })
+        #if len(self.invoice_line_ids) > 0: 
+        #    for line in self.invoice_line_ids:
+        #        sale_order = self.env['stock.picking'].search([('id', '=', line.stock_picking_id)])
+        #        sum_quantity = 0
+
+        #        sale_order_lines = self.env['sale.order.line'].search([('order_id', '=', line.order_id)])
+        #        if len(sale_order_lines) > 0: 
+        #            for s in sale_order_lines:
+        #                if s.product_id.id == line.product_id.id:
+        #                    new_qty_invoiced = s.qty_invoiced + line.quantity
+        #                    s.write({
+        #                        'qty_invoiced': new_qty_invoiced
+        #                    })
 
      
     def validation_fields(self):

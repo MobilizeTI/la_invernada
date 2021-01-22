@@ -7,7 +7,6 @@
             <field name="arch" type="xml">
                 <field name="partner_id" position="after">
                     <field name="contract_number"/>
-                    <button  type="object" name="get_invoice_ids" string="Enviar al SII" class="oe_highlight"/>
                 </field>
                 <xpath expr="//field[@name='partner_id']" position="attributes">
                     <attribute name="domain">[('is_company', '=', True), ('customer', '=', True)]</attribute>
