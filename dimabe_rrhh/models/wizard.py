@@ -157,24 +157,31 @@ class WizardHrPaySlip(models.TransientModel):
             'align': 'center',
             'valign': 'center'
         })
-        worksheet = self.set_format_title(worksheet,format_title)
+        worksheet = self.set_format_title(worksheet, format_title)
         line = self.env['hr.payslip.line'].search([('slip_id', '=', payslips.mapped('id'))])
         row = 5
         col = 3
+        sum_totals = []
         rule = self.env['hr.salary.rule'].sudo().search([('show_in_central', '=', True), ('category_id', '!=', 9)])
         for data in rule:
             line = self.env['hr.payslip.line'].sudo().search(
                 [('slip_id', 'in', payslips.mapped('id')), ('salary_rule_id', '=', data.id)])
             worksheet.write(row, col - 2, data.name)
             total = sum(line.mapped("total"))
+            sum_totals.append(total)
             worksheet.write(row, col, total)
-            row += 1
+            if data.id == rule[-1].id:
+                totals = sum(sum_totals)
+                worksheet.write(row + 1,col,totals)
+                row += 1
+            else:
+                row += 1
         row += 2
         discount = self.env['hr.salary.rule'].sudo().search(
             [('show_in_central', '=', True), ('category_id', '=', 9), ('is_legal', '=', True)])
         discount_codes = ('APV', 'FONASA', 'SALUD', 'ADISA', 'SECE', 'PREV')
         total_line = self.env['hr.payslip.line'].sudo().search([('slip_id', 'in', payslips.mapped('id')), (
-        'salary_rule_id.code', 'in', discount_codes)])
+            'salary_rule_id.code', 'in', discount_codes)])
         sum_total_line = sum(total_line.mapped('total'))
         worksheet.write(row, col - 2, 'Imposiciones por Pagar')
         worksheet.write(row, col + 1, sum_total_line)
@@ -189,7 +196,7 @@ class WizardHrPaySlip(models.TransientModel):
 
         row += 2
         another_discount = self.env['hr.salary.rule'].sudo().search(
-            [('is_legal', '=', False),('category_id','in',(9,11))])
+            [('is_legal', '=', False), ('category_id', 'in', (9, 11))])
         for another_discount in another_discount:
             line = self.env['hr.payslip.line'].sudo().search(
                 [('slip_id', 'in', payslips.mapped('id')), ('salary_rule_id', '=', another_discount.id)])
@@ -212,7 +219,7 @@ class WizardHrPaySlip(models.TransientModel):
             'type': 'ir.actions.do_nothing'
         }
 
-    def set_format_title(self,worksheet,format_title):
+    def set_format_title(self, worksheet, format_title):
         worksheet.set_column('B:B', 68)
         worksheet.set_column('C:C', len('Centro de Costo'))
         worksheet.set_column('D:D', 32)
@@ -444,7 +451,7 @@ class WizardHrPaySlip(models.TransientModel):
         return cadena
 
     @api.multi
-    def verify_ccaf(self, TOTIM, UF,TOPE):
+    def verify_ccaf(self, TOTIM, UF, TOPE):
         TOTIM_2 = float(TOTIM)
         if TOTIM_2 > (UF * TOPE):
             data = round(float(UF * TOPE))
@@ -454,7 +461,7 @@ class WizardHrPaySlip(models.TransientModel):
             return TOTIM
 
     @api.multi
-    def verify_ips(self, TOTIM, UF,TOPE):
+    def verify_ips(self, TOTIM, UF, TOPE):
         TOTIM_2 = float(TOTIM)
         if TOTIM_2 > (UF * TOPE):
             data = round(float(UF * TOPE))
@@ -665,10 +672,12 @@ class WizardHrPaySlip(models.TransientModel):
                              "0",
                              # 64 Renta Imponible IPS    Obligatorio si es IPS Obligatorio si es IPS Obligatorio si es INP si no, 0000
                              self.verify_ips(self.get_payslip_lines_value_2(payslip, 'TOTIM'),
-                                             payslip.indicadores_id.uf,payslip.indicadores_id.tope_imponible_ips) if self.get_payslip_lines_value_2(payslip,
-                                                                                                          'TOTIM') else "0"
+                                             payslip.indicadores_id.uf,
+                                             payslip.indicadores_id.tope_imponible_ips) if self.get_payslip_lines_value_2(
+                                 payslip,
+                                 'TOTIM') else "0"
                              # 65 Cotizacion Obligatoria IPS
-                                                                                                                        "0",
+                                               "0",
                              # 66 Renta Imponible Desahucio
                              "0",
                              # 67 Codigo Ex-Caja Regimen Desahucio
