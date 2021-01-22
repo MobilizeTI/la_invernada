@@ -496,7 +496,7 @@ class AccountInvoice(models.Model):
             
             #raise models.ValidationError('{} {}'.format(list_order_ids[0],list_order_ids[1]))
             for item in list_order_ids:
-                order = self.env['sale.order'].search([('id','=',item.order_id)])
+                order = self.env['sale.order'].search([('id','=',item)])
                 order.write({
                     'invoice_ids':[(4, item)]
                 })
