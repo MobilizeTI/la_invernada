@@ -29,7 +29,8 @@ class WizardHrPaySlip(models.TransientModel):
 
     company_id = fields.Many2one('res.partner', domain=[('id', 'in', ('423', '1', '1000', '79'))])
 
-    report = fields.Binary(string='Descarge aqui =>')
+    report = fields.Binary(string='Descarge aqui =>',
+                           default=lambda self: self.env['wizard.hr.payslip'].sudo().search([])[-1].report)
 
     month = fields.Selection(
         [('Enero', 'Enero'), ('Febrero', 'Febrero'), ('Marzo', 'Marzo'), ('Abril', 'Abril'), ('Mayo', 'Mayo'),
@@ -44,8 +45,10 @@ class WizardHrPaySlip(models.TransientModel):
     date_from = fields.Date('Fecha Inicial', required=True, default=lambda self: time.strftime('%Y-%m-01'))
     date_to = fields.Date('Fecha Final', required=True, default=lambda self: str(
         datetime.now() + relativedelta.relativedelta(months=+1, day=1, days=-1))[:10])
-    file_data = fields.Binary('Archivo Generado')
-    file_name = fields.Char('Nombre de archivo')
+    file_data = fields.Binary('Archivo Generado',
+                              default=lambda self: self.env['wizard.hr.payslip'].sudo().search([])[-1].file_data)
+    file_name = fields.Char('Nombre de archivo',
+                            default=lambda self: self.env['wizard.hr.payslip'].sudo().search([])[-1].file_name)
     delimiter_option = fields.Selection([
         ('colon', 'Comillas Dobles(")'),
         ('semicolon', "Comillas Simples(')"),
@@ -59,7 +62,9 @@ class WizardHrPaySlip(models.TransientModel):
 
     report_name = fields.Char('')
 
-    centralization_report_field = fields.Binary('Centralizacion')
+    centralization_report_field = fields.Binary('Centralizacion',
+                                                default=lambda self: self.env['wizard.hr.payslip'].sudo().search([])[
+                                                    -1].centralization_report_field)
 
     @api.multi
     def compute_ccaf_max(self):
