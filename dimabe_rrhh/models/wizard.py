@@ -157,15 +157,7 @@ class WizardHrPaySlip(models.TransientModel):
             'align': 'center',
             'valign': 'center'
         })
-        worksheet.set_column('B:B', 68)
-        worksheet.set_column('C:C', len('Centro de Costo'))
-        worksheet.set_column('D:D', 32)
-        worksheet.set_column('E:E', 15)
-        worksheet.merge_range('B2:E2', 'Centralizacion de Remuneraciones', format_title)
-        worksheet.write(3, 1, 'Descripcion', format_title)
-        worksheet.write(3, 2, 'Centro de Costo', format_title)
-        worksheet.write(3, 3, 'DEBE', format_title)
-        worksheet.write(3, 4, 'HABER', format_title)
+        worksheet = self.set_format_title(worksheet,format_title)
         line = self.env['hr.payslip.line'].search([('slip_id', '=', payslips.mapped('id'))])
         row = 5
         col = 3
@@ -180,8 +172,9 @@ class WizardHrPaySlip(models.TransientModel):
         row += 2
         discount = self.env['hr.salary.rule'].sudo().search(
             [('show_in_central', '=', True), ('category_id', '=', 9), ('is_legal', '=', True)])
+        discount_codes = ('APV', 'FONASA', 'SALUD', 'ADISA', 'SECE', 'PREV')
         total_line = self.env['hr.payslip.line'].sudo().search([('slip_id', 'in', payslips.mapped('id')), (
-        'salary_rule_id.code', 'in', ('APV', 'FONASA', 'SALUD', 'ADISA', 'SECE', 'PREV'))])
+        'salary_rule_id.code', 'in', discount)])
         sum_total_line = sum(total_line.mapped('total'))
         worksheet.write(row, col - 2, 'Imposiciones por Pagar')
         worksheet.write(row, col + 1, sum_total_line)
@@ -218,6 +211,18 @@ class WizardHrPaySlip(models.TransientModel):
         return {
             'type': 'ir.actions.do_nothing'
         }
+
+    def set_format_title(self,worksheet,format_title):
+        worksheet.set_column('B:B', 68)
+        worksheet.set_column('C:C', len('Centro de Costo'))
+        worksheet.set_column('D:D', 32)
+        worksheet.set_column('E:E', 15)
+        worksheet.merge_range('B2:E2', 'Centralizacion de Remuneraciones', format_title)
+        worksheet.write(3, 1, 'Descripcion', format_title)
+        worksheet.write(3, 2, 'Centro de Costo', format_title)
+        worksheet.write(3, 3, 'DEBE', format_title)
+        worksheet.write(3, 4, 'HABER', format_title)
+        return worksheet
 
     @api.model
     def get_nacionalidad(self, employee):
@@ -439,20 +444,20 @@ class WizardHrPaySlip(models.TransientModel):
         return cadena
 
     @api.multi
-    def verify_ccaf(self, TOTIM, UF):
+    def verify_ccaf(self, TOTIM, UF,TOPE):
         TOTIM_2 = float(TOTIM)
-        if TOTIM_2 > (UF * 80):
-            data = round(float(UF * 80))
+        if TOTIM_2 > (UF * TOPE):
+            data = round(float(UF * TOPE))
             models._logger.error(data)
             return data
         else:
             return TOTIM
 
     @api.multi
-    def verify_ips(self, TOTIM, UF):
+    def verify_ips(self, TOTIM, UF,TOPE):
         TOTIM_2 = float(TOTIM)
-        if TOTIM_2 > (UF * 80):
-            data = round(float(UF * 60))
+        if TOTIM_2 > (UF * TOPE):
+            data = round(float(UF * TOPE))
             models._logger.error(data)
             return data
         else:
@@ -660,7 +665,7 @@ class WizardHrPaySlip(models.TransientModel):
                              "0",
                              # 64 Renta Imponible IPS    Obligatorio si es IPS Obligatorio si es IPS Obligatorio si es INP si no, 0000
                              self.verify_ips(self.get_payslip_lines_value_2(payslip, 'TOTIM'),
-                                             payslip.indicadores_id.uf) if self.get_payslip_lines_value_2(payslip,
+                                             payslip.indicadores_id.uf,payslip.indicadores_id.tope_imponible_ips) if self.get_payslip_lines_value_2(payslip,
                                                                                                           'TOTIM') else "0"
                              # 65 Cotizacion Obligatoria IPS
                                                                                                                         "0",
