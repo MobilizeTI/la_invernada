@@ -4,7 +4,7 @@ from odoo import models, fields, api
 class CustomMutuality(models.Model):
     _name = 'custom.mutuality'
 
-    company_id = fields.Many2one('res.partner', 'Compañia', domain=lambda self: self.compute_partner_company)
+    company_id = fields.Many2one('res.partner', 'Compañia',compute='compute_partner_company')
 
     value = fields.Float('Valor')
 
