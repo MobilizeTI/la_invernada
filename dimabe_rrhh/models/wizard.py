@@ -162,7 +162,6 @@ class WizardHrPaySlip(models.TransientModel):
         worksheet.set_column('D:D', 32)
         worksheet.set_column('E:E', 15)
         worksheet.merge_range('B2:E2', 'Centralizacion de Remuneraciones', format_title)
-
         worksheet.write(3, 1, 'Descripcion', format_title)
         worksheet.write(3, 2, 'Centro de Costo', format_title)
         worksheet.write(3, 3, 'DEBE', format_title)
@@ -185,15 +184,27 @@ class WizardHrPaySlip(models.TransientModel):
         'salary_rule_id.code', 'in', ('APV', 'FONASA', 'SALUD', 'ADISA', 'SECE', 'PREV'))])
         sum_total_line = sum(total_line.mapped('total'))
         worksheet.write(row, col - 2, 'Imposiciones por Pagar')
-        worksheet.write(row, col, sum_total_line)
+        worksheet.write(row, col + 1, sum_total_line)
         row += 1
         for dis in discount:
             line = self.env['hr.payslip.line'].sudo().search(
                 [('slip_id', 'in', payslips.mapped('id')), ('salary_rule_id', '=', dis.id)])
             worksheet.write(row, col - 2, dis.name)
             total = sum(line.mapped("total"))
-            worksheet.write(row, col, total)
+            worksheet.write(row, col + 1, total)
             row += 1
+
+        row += 2
+        another_discount = self.env['hr.salary.rule'].sudo().search(
+            [('show_in_central', '=', True), ('is_legal', '=', False)])
+        for another_discount in another_discount:
+            line = self.env['hr.payslip.line'].sudo().search(
+                [('slip_id', 'in', payslips.mapped('id')), ('salary_rule_id', '=', another_discount.id)])
+            worksheet.write(row, col - 2, another_discount.name)
+            total = sum(line.mapped("total"))
+            worksheet.write(row, col + 1, total)
+            row += 1
+
         workbook.close()
 
         with open(file_name, "rb") as file:
