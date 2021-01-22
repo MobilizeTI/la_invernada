@@ -10,7 +10,6 @@ class CustomMutuality(models.Model):
 
     indicator_id = fields.Many2one(comodel_name='hr.indicadores', auto_join=True, string='Indicadores')
 
-    partner_ids = fields.Many2many(comodel_name='res.partner', compute='compute_partner_company')
 
     @api.model
     def compute_partner_company(self):
