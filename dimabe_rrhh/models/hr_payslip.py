@@ -121,7 +121,7 @@ class HrPayslip(models.Model):
 
     @api.multi
     def write(self,vals):
-        vals['account_analytic_id'] = self.contract_id.account_analytic_id.name
+        vals['account_analytic_id'] = self.contract_id.analytic_account_id.name
         return super(HrPayslip,self).write(vals)
 
     @api.multi
