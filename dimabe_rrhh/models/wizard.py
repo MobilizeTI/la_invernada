@@ -746,7 +746,7 @@ class WizardHrPaySlip(models.TransientModel):
                              payslip.indicadores_id.ccaf_id.codigo if payslip.indicadores_id.ccaf_id.codigo else "00",
                              # 84 Renta Imponible CCAF
                              self.verify_ccaf(self.get_payslip_lines_value_2(payslip, 'TOTIM'),
-                                              payslip.indicadores_id.uf) if self.get_payslip_lines_value_2(payslip,
+                                              payslip.indicadores_id.uf,payslip.indicadores_id.tope_imponible_afp) if self.get_payslip_lines_value_2(payslip,
                                                                                                            'TOTIM') else "0",
                              # 85 Creditos Personales CCAF TODO
                              self.get_payslip_lines_value_2(payslip, 'PCCAF') if self.get_payslip_lines_value_2(payslip,
