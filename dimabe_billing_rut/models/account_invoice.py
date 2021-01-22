@@ -829,9 +829,11 @@ class AccountInvoice(models.Model):
             sum_quantity = 0
             for item in self.orders_to_invoice:
                 if line.product_id.id == item.product_id:
-                    sum_quantity += float(line.quantity_to_invoice)
+                    sum_quantity += float(item.quantity_to_invoice)
             raise models.ValidationError('{} != {}'.format(sum_quantity,line.quantity))
-            if sum_quantity != line.quantity:
+            if sum_quantity == 0:
+                line.unlink()
+            elif sum_quantity != line.quantity:
                 line.write({
                     'quantity': sum_quantity
                 })
