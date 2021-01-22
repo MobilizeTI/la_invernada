@@ -491,6 +491,8 @@ class AccountInvoice(models.Model):
         if len(self.invoice_line_ids) > 0: 
             for line in self.invoice_line_ids:
                 sale_order = self.env['stock.picking'].search([('id', '=', line.stock_picking_id)])
+                sum_quantity = 0
+                
                 sale_order_lines = self.env['sale.order.line'].search([('order_id', '=', line.order_id)])
                 if len(sale_order_lines) > 0: 
                     for s in sale_order_lines:
@@ -821,7 +823,7 @@ class AccountInvoice(models.Model):
         else:
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
 
-
+    #modificar 
     @api.onchange('orders_to_invoice')
     @api.multi
     def change_orders_to_invoice(self):
@@ -830,9 +832,9 @@ class AccountInvoice(models.Model):
             for item in self.orders_to_invoice:
                 if line.product_id.id == item.product_id:
                     sum_quantity += float(item.quantity_to_invoice)
-            if sum_quantity == 0:
+            if sum_quantity == 0: #por verifica
                 line.unlink()
-            elif sum_quantity != line.quantity:
+            elif sum_quantity != line.quantity: #validado
                 line.write({
                     'quantity': sum_quantity
                 })
