@@ -390,7 +390,7 @@ class AccountInvoice(models.Model):
         
     @api.multi
     def send_to_sii(self):
-        #self.update_sale_order()
+        self.update_sale_order()
         #raise models.ValidationError('verificar actualizacion de SO')
         url = self.env.user.company_id.dte_url
         headers = {
