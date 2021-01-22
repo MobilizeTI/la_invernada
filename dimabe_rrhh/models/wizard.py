@@ -196,7 +196,7 @@ class WizardHrPaySlip(models.TransientModel):
 
         row += 2
         another_discount = self.env['hr.salary.rule'].sudo().search(
-            [('show_in_central', '=', True), ('is_legal', '=', False)])
+            [('is_legal', '=', False)])
         for another_discount in another_discount:
             line = self.env['hr.payslip.line'].sudo().search(
                 [('slip_id', 'in', payslips.mapped('id')), ('salary_rule_id', '=', another_discount.id)])
