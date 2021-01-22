@@ -62,7 +62,9 @@ class WizardHrPaySlip(models.TransientModel):
 
     report_name = fields.Char('')
 
-    centralization_report_field = fields.Binary('Centralizacion',default=lambda self:self.env['wizard.hr.payslip'].sudo().search([])[-1].centralization_report_field)
+    centralization_report_field = fields.Binary('Centralizacion',
+                                                default=lambda self: self.env['wizard.hr.payslip'].sudo().search([])[
+                                                    -1].centralization_report_field)
 
     @api.multi
     def compute_ccaf_max(self):
@@ -165,31 +167,40 @@ class WizardHrPaySlip(models.TransientModel):
         worksheet.write(3, 2, 'Centro de Costo', format_title)
         worksheet.write(3, 3, 'DEBE', format_title)
         worksheet.write(3, 4, 'HABER', format_title)
-        line = self.env['hr.payslip.line'].search([('slip_id','=',payslips.mapped('id'))])
+        line = self.env['hr.payslip.line'].search([('slip_id', '=', payslips.mapped('id'))])
         row = 5
         col = 3
-        rule = self.env['hr.salary.rule'].sudo().search([('show_in_central','=',True)])
+        rule = self.env['hr.salary.rule'].sudo().search([('show_in_central', '=', True), ('category_id', '!=', 9)])
         for data in rule:
-            line = self.env['hr.payslip.line'].sudo().search([('slip_id','in',payslips.mapped('id')),('salary_rule_id','=',data.id)])
-            worksheet.write(row , col - 2,data.name)
+            line = self.env['hr.payslip.line'].sudo().search(
+                [('slip_id', 'in', payslips.mapped('id')), ('salary_rule_id', '=', data.id)])
+            worksheet.write(row, col - 2, data.name)
             total = sum(line.mapped("total"))
-            worksheet.write(row,col,total)
+            worksheet.write(row, col, total)
             row += 1
-
+        row += 2
+        discount = self.env['hr.salary.rule'].sudo().search(
+            [('show_in_central', '=', True), ('category_id', '=', 9), ('is_legal', '=', True)])
+        for dis in discount:
+            line = self.env['hr.payslip.line'].sudo().search(
+                [('slip_id', 'in', payslips.mapped('id')), ('salary_rule_id', '=', dis.id)])
+            worksheet.write(row, col - 2, data.name)
+            total = sum(line.mapped("total"))
+            worksheet.write(row, col, total)
+            row += 1
         workbook.close()
 
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
         centralization = self.env[self._name].sudo().create({
-            'centralization_report_field':file_base64
+            'centralization_report_field': file_base64
         })
         self.write({
-            'centralization_report_field':centralization.centralization_report_field
+            'centralization_report_field': centralization.centralization_report_field
         })
         return {
             'type': 'ir.actions.do_nothing'
         }
-
 
     @api.model
     def get_nacionalidad(self, employee):
