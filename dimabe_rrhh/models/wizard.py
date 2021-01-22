@@ -174,7 +174,7 @@ class WizardHrPaySlip(models.TransientModel):
             [('show_in_central', '=', True), ('category_id', '=', 9), ('is_legal', '=', True)])
         discount_codes = ('APV', 'FONASA', 'SALUD', 'ADISA', 'SECE', 'PREV')
         total_line = self.env['hr.payslip.line'].sudo().search([('slip_id', 'in', payslips.mapped('id')), (
-        'salary_rule_id.code', 'in', discount)])
+        'salary_rule_id.code', 'in', discount_codes)])
         sum_total_line = sum(total_line.mapped('total'))
         worksheet.write(row, col - 2, 'Imposiciones por Pagar')
         worksheet.write(row, col + 1, sum_total_line)
