@@ -563,8 +563,7 @@ class AccountInvoice(models.Model):
                 if (tax_line.id == 6 or tax_line.id == None) and (item.exempt == "7"):
                     raise models.ValidationError('El Producto {} no tiene impuesto por ende debe seleccionar el Tipo Exento'.format(item.name))
         
-       
-            
+
         
         if len(self.references) > 10:
             raise models.ValidationError('Solo puede generar 20 Referencias')
@@ -824,6 +823,7 @@ class AccountInvoice(models.Model):
 
 
     @api.onchange('orders_to_invoice')
+    @api.multi
     def change_orders_to_invoice(self):
         raise models.ValidationError('{} {} {} {}'.format(self.orders_to_invoice.id, self.orders_to_invoice.product_id,self.orders_to_invoice.stock_picking_id,self.orders_to_invoice.quantity_to_invoice))
 
