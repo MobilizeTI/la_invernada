@@ -164,8 +164,7 @@ class WizardHrPaySlip(models.TransientModel):
         sum_totals = []
         rule = self.env['hr.salary.rule'].sudo().search([('show_in_central', '=', True), ('category_id', '!=', 9)])
         for data in rule:
-            line = self.env['hr.payslip.line'].sudo().search(
-                [('slip_id', 'in', payslips.mapped('id')), ('salary_rule_id', '=', data.id)])
+            line = self.search_data([('slip_id', 'in', payslips.mapped('id')), ('salary_rule_id', '=', data.id)])
             worksheet.write(row, col - 2, data.name)
             total = sum(line.mapped("total"))
             sum_totals.append(total)
@@ -177,29 +176,35 @@ class WizardHrPaySlip(models.TransientModel):
             else:
                 row += 1
         row += 2
+
+        sum_totals_discount = []
         discount = self.env['hr.salary.rule'].sudo().search(
             [('show_in_central', '=', True), ('category_id', '=', 9), ('is_legal', '=', True)])
-        discount_codes = ('APV', 'FONASA', 'SALUD', 'ADISA', 'SECE', 'PREV')
-        total_line = self.env['hr.payslip.line'].sudo().search([('slip_id', 'in', payslips.mapped('id')), (
-            'salary_rule_id.code', 'in', discount_codes)])
+        total_line = self.search_data([('slip_id', 'in', payslips.mapped('id')), (
+            'salary_rule_id.code', 'in', ('APV', 'FONASA', 'SALUD', 'ADISA', 'SECE', 'PREV'))])
         sum_total_line = sum(total_line.mapped('total'))
+        sum_totals_discount.append(sum_total_line)
         worksheet.write(row, col - 2, 'Imposiciones por Pagar')
         worksheet.write(row, col + 1, sum_total_line)
         row += 1
         for dis in discount:
-            line = self.env['hr.payslip.line'].sudo().search(
-                [('slip_id', 'in', payslips.mapped('id')), ('salary_rule_id', '=', dis.id)])
+            line = self.search_data([('slip_id','in',payslips.mapped('id')),('rule_id','=',dis.id)])
             worksheet.write(row, col - 2, dis.name)
             total = sum(line.mapped("total"))
+            sum_totals_discount.append(total)
             worksheet.write(row, col + 1, total)
-            row += 1
+            if data.id == rule[-1].id:
+                totals = sum(sum_totals_discount)
+                worksheet.write(row + 1, col + 1, totals)
+                row += 1
+            else:
+                row += 1
 
         row += 2
         another_discount = self.env['hr.salary.rule'].sudo().search(
             [('is_legal', '=', False), ('category_id', 'in', (9, 11))])
         for another_discount in another_discount:
-            line = self.env['hr.payslip.line'].sudo().search(
-                [('slip_id', 'in', payslips.mapped('id')), ('salary_rule_id', '=', another_discount.id)])
+            line = self.search_data([('slip_id', 'in', payslips.mapped('id')), ('salary_rule_id', '=', another_discount.id)])
             worksheet.write(row, col - 2, another_discount.name)
             total = sum(line.mapped("total"))
             worksheet.write(row, col + 1, total)
@@ -218,6 +223,9 @@ class WizardHrPaySlip(models.TransientModel):
         return {
             'type': 'ir.actions.do_nothing'
         }
+
+    def search_data(self,conditions):
+        return self.env['hr.payslip.line'].search(conditions)
 
     def set_format_title(self, worksheet, format_title):
         worksheet.set_column('B:B', 68)

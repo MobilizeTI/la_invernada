@@ -37,6 +37,7 @@
         'reports/holiday_ticket.xml',
         'views/hr_payroll_structure.xml',
         'views/hr_salary_rule.xml',
+        'views/hr_indicadores.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
