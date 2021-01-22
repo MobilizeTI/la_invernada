@@ -276,6 +276,7 @@ class AccountInvoice(models.Model):
         #    self.etd_week = None
         #    self.etd_month = None
 
+
     @api.model
     @api.onchange('required_loading_date')
     @api.depends('required_loading_date')
