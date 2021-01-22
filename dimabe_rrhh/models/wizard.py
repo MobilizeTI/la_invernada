@@ -460,13 +460,15 @@ class WizardHrPaySlip(models.TransientModel):
 
     @api.multi
     def verify_ccaf(self, TOTIM, UF, TOPE):
-        TOTIM_2 = float(TOTIM)
-        if TOTIM_2 > (UF * TOPE):
-            data = round(float(UF * TOPE))
-            models._logger.error(f'CCAF {data}')
-            return data
+        if TOTIM:
+            TOTIM_2 = float(TOTIM)
+            if TOTIM_2 > (UF * TOPE):
+                data = round(float(UF * TOPE))
+                return str(data)
+            else:
+                return str(TOTIM)
         else:
-            return TOTIM
+            return "0"
 
     @api.multi
     def verify_ips(self, TOTIM, UF, TOPE):
