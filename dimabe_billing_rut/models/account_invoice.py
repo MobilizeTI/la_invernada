@@ -498,7 +498,7 @@ class AccountInvoice(models.Model):
             for item in list_order_ids:
                 order = self.env['sale.order'].search([('id','=',item)])
                 order.write({
-                    'invoice_ids':[(4, self.id)]
+                    'invoice_ids':[(4, [self.id])]
                 })
         #if len(self.invoice_line_ids) > 0: 
         #    for line in self.invoice_line_ids:
