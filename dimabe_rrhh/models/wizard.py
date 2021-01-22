@@ -27,7 +27,8 @@ class WizardHrPaySlip(models.TransientModel):
 
     indicators_id = fields.Many2one('hr.indicadores', string='Indicadores')
 
-    company_id = fields.Many2one('res.partner', domain=[('id', 'in', ('423', '1', '1000', '79'))])
+    company_id = fields.Many2one('res.partner', domain=lambda self: [
+        ('id', 'in', self.env['hr.employee'].sudo().search([('active', '=', True)]).mapped('address_id').mapped('id'))])
 
     report = fields.Binary(string='Descarge aqui =>',
                            default=lambda self: self.env['wizard.hr.payslip'].sudo().search([])[-1].report)
