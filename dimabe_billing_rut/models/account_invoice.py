@@ -264,6 +264,7 @@ class AccountInvoice(models.Model):
     @api.onchange('etd')
     @api.depends('etd')
     def _compute_etd_values(self):
+        print('')
         #if self.etd:
         #    try:
         #        self.etd_month = self.etd.month
