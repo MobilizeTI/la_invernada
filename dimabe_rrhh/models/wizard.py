@@ -396,7 +396,7 @@ class WizardHrPaySlip(models.TransientModel):
     def get_imponible_seguro_cesantia(self, payslip, TOTIM, LIC):
         LIC_2 = float(LIC)
         TOTIM_2 = float(TOTIM)
-        if self.get_dias_trabajados() == '10':
+        if TOTIM_2 < payslip.indicadores_id.sueldo_minimo:
             return 0
         if LIC_2 > 0:
             TOTIM = LIC
