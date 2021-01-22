@@ -31,7 +31,7 @@
             <form>
                 <group>
                     <group>
-                        <field name="indicators_id" required="1"/>
+                        <field name="indicators_id"  required="1"/>
                         <field name="centralization_report_field" readonly="1"/>
                     </group>
                     <footer>
@@ -48,7 +48,7 @@
             <form>
                 <group>
                     <group>
-                        <field name="company_id"/>
+                        <field name="company_id" string="Compañia"/>
                         <field name="file_data" filename="file_name" readonly="1"/>
                         <field name="file_name" invisible="1"/>
                         <field name="date_from"/>

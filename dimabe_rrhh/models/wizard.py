@@ -82,7 +82,7 @@ class WizardHrPaySlip(models.TransientModel):
         if indicadores.state != 'done':
             raise models.ValidationError(
                 f'Los indicadores provicionales del mes de {indicadores.name} no se encuentran validados')
-        row = 5
+        row = 0
         col = 0
         payslips = self.env['hr.payslip'].sudo().search(
             [('indicadores_id', '=', indicadores.id), ('state', '=', 'done')])
@@ -807,6 +807,10 @@ class WizardHrPaySlip(models.TransientModel):
                              ]
             writer.writerow([str(l) for l in line_employee])
             models._logger.error('Llega aqui')
+        self.env[self._name].sudo().create({'file_data': base64.encodebytes(output.getvalue().encode()),
+                    'file_name': "Previred_{}{}.txt".format(self.date_to,
+                                                            self.company_id.display_name.replace('.', '')),
+                    })
         self.write({'file_data': base64.encodebytes(output.getvalue().encode()),
                     'file_name': "Previred_{}{}.txt".format(self.date_to,
                                                             self.company_id.display_name.replace('.', '')),
