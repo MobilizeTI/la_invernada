@@ -752,6 +752,7 @@ class AccountInvoice(models.Model):
             }
         return invoice
 
+    #revisar
     @api.onchange('amount_total')
     def total_change_invoice_Export(self):
         self.total_invoice_Export
@@ -820,6 +821,11 @@ class AccountInvoice(models.Model):
 
         else:
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
+
+
+    @api.onchange('orders_to_invoice')
+    def change_orders_to_invoice(self):
+        raise models.ValidationError('{} {} {} {}'.format(self.orders_to_invoice.id, self.orders_to_invoice.product_id,self.orders_to_invoice.stock_picking_id,self.orders_to_invoice.quantity_to_invoice))
 
     #Send Data to Stock_Picking Comex
     @api.multi
