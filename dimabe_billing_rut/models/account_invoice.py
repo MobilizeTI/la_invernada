@@ -494,7 +494,7 @@ class AccountInvoice(models.Model):
                 if item.order_id not in list_order_ids:
                     list_order_ids.append(item.order_id)
             
-            raise models.ValidationError('{} {}'.format(list_order_ids[0],list_order_ids[1]))
+            #raise models.ValidationError('{} {}'.format(list_order_ids[0],list_order_ids[1]))
             for item in list_order_ids:
                 order = self.env['sale.order'].search([('id','=',item.order_id)])
                 order.write({
