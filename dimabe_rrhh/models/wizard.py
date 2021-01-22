@@ -463,7 +463,7 @@ class WizardHrPaySlip(models.TransientModel):
         TOTIM_2 = float(TOTIM)
         if TOTIM_2 > (UF * TOPE):
             data = round(float(UF * TOPE))
-            models._logger.error(data)
+            models._logger.error(f'CCAF {data}')
             return data
         else:
             return TOTIM
@@ -473,7 +473,6 @@ class WizardHrPaySlip(models.TransientModel):
         TOTIM_2 = float(TOTIM)
         if TOTIM_2 > (UF * TOPE):
             data = round(float(UF * TOPE))
-            models._logger.error(data)
             return data
         else:
             return TOTIM
@@ -482,7 +481,6 @@ class WizardHrPaySlip(models.TransientModel):
     def action_generate_csv(self):
         employee_model = self.env['hr.employee']
         payslip_model = self.env['hr.payslip']
-        models._logger.error('paso')
         payslip_line_model = self.env['hr.payslip.line']
         sexo_data = {'male': "M",
                      'female': "F",
@@ -499,7 +497,6 @@ class WizardHrPaySlip(models.TransientModel):
         payslip_recs = payslip_model.sudo().search([('date_from', '=', self.date_from), ('state', '=', 'done'),
                                                     ('employee_id.address_id', '=', self.company_id.id)
                                                     ])
-        models._logger.error(payslip_recs)
         date_start = self.date_from
         date_stop = self.date_to
         date_start_format = date_start.strftime("%m%Y")
@@ -516,7 +513,6 @@ class WizardHrPaySlip(models.TransientModel):
             pass
 
         for payslip in payslip_recs:
-            models._logger.error(payslip_recs)
             payslip_line_recs = payslip_line_model.sudo().search([('slip_id', '=', payslip.id)])
             rut = ""
             rut_dv = ""
@@ -609,8 +605,8 @@ class WizardHrPaySlip(models.TransientModel):
                              "0",
                              # 39 Cotizacion Trabajo Pesado
                              "0",
-                             # 3- Datos Ahorro Previsional Voluntario Individual
-                             # 40 Código de la Institución APVI
+                             # 3- Datos Ahorro Previsional Voluntario Indiidual
+                             #                              # 40 Código de lav Institución APVI
                              payslip.contract_id.apv_id.codigo if self.get_payslip_lines_value_2(payslip,
                                                                                                  'APV') != "0" else "0",
                              # 41 Numero de Contrato APVI Strinng
@@ -695,7 +691,6 @@ class WizardHrPaySlip(models.TransientModel):
                              # 69 Cotizacion Desahucio
                              "0",
                              # 70 Cotizacion Fonasa
-                             # "0",
                              self.get_payslip_lines_value_2(payslip,
                                                             'FONASA') if payslip.contract_id.isapre_id.codigo == '07' else "0",
 
@@ -806,7 +801,6 @@ class WizardHrPaySlip(models.TransientModel):
                              # str(float(self.get_cost_center(payslip.contract_id))).split('.')[0],
                              ]
             writer.writerow([str(l) for l in line_employee])
-            models._logger.error('Llega aqui')
         self.env[self._name].sudo().create({'file_data': base64.encodebytes(output.getvalue().encode()),
                     'file_name': "Previred_{}{}.txt".format(self.date_to,
                                                             self.company_id.display_name.replace('.', '')),
