@@ -804,6 +804,10 @@ class WizardHrPaySlip(models.TransientModel):
                              # str(float(self.get_cost_center(payslip.contract_id))).split('.')[0],
                              ]
             writer.writerow([str(l) for l in line_employee])
+
+        #Nueva Forma de generar Archivo
+        self.save_to_file(self,writer)
+
         self.env[self._name].sudo().create({'file_data': base64.encodebytes(output.getvalue().encode()),
                     'file_name': "Previred_{}{}.txt".format(self.date_to,
                                                             self.company_id.display_name.replace('.', '')),
@@ -815,4 +819,21 @@ class WizardHrPaySlip(models.TransientModel):
 
         return {
             "type": "ir.actions.do_nothing",
+        }
+    
+    @api.multi
+    def save_to_file(self, writer):
+        file = self.env['custom.save.file.wizars'].sudo().create({
+            'file_name': "Previred_{}{}.txt".format(self.date_to,self.company_id.display_name.replace('.', '')),
+            'file_data': base64.encodebytes(writer)
+        })
+        return {
+            'name': _('Descargar Archivo'),
+            'res_id': file.id,
+            'res_model': 'o1c.save.conf',
+            'target': 'new',
+            'type': 'ir.actions.act_window',
+            'view_id': self.env.ref('my_module_name.save_file_wizand_view_done').id,
+            'view_mode': 'form',
+            'view_type': 'form',
         }
