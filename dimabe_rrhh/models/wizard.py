@@ -823,7 +823,7 @@ class WizardHrPaySlip(models.TransientModel):
     
     @api.multi
     def save_to_file(self, writer):
-        file = self.env['custom.save.file.wizars'].sudo().create({
+        file = self.env['custom.save.file.wizard'].sudo().create({
             'file_name': "Previred_{}{}.txt".format(self.date_to,self.company_id.display_name.replace('.', '')),
             'file_data': base64.encodebytes(writer)
         })
