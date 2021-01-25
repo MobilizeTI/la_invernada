@@ -833,7 +833,7 @@ class WizardHrPaySlip(models.TransientModel):
             'res_model': 'o1c.save.conf',
             'target': 'new',
             'type': 'ir.actions.act_window',
-            'view_id': self.env.ref('my_module_name.custom_save_file_wizard_view_done').id,
+            'view_id': self.env.ref('custom_save_file_wizard_view_done').id,
             'view_mode': 'form',
             'view_type': 'form',
         }
