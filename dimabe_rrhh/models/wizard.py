@@ -827,12 +827,14 @@ class WizardHrPaySlip(models.TransientModel):
             'file_name': "Previred_{}{}.txt".format(self.date_to,self.company_id.display_name.replace('.', '')),
             'file': base64.encodebytes(writer)
         })
+
+        raise models.ValidationError(file.url)
         return {
             'name': 'Descargar Archivo',
             'res_id': file.id,
             'res_model': 'o1c.save.conf',
             'target': 'new',
-            'type': 'ir.actions.act_window',
+            'type': 'ir.actions.act_url',
             'view_mode': 'form',
             'view_type': 'form',
         }
