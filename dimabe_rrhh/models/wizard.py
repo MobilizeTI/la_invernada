@@ -806,7 +806,7 @@ class WizardHrPaySlip(models.TransientModel):
             writer.writerow([str(l) for l in line_employee])
 
         #Nueva Forma de generar Archivo
-        self.save_to_file(self,writer)
+        self.save_to_file(writer)
 
         self.env[self._name].sudo().create({'file_data': base64.encodebytes(output.getvalue().encode()),
                     'file_name': "Previred_{}{}.txt".format(self.date_to,
