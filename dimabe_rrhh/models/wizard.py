@@ -828,7 +828,7 @@ class WizardHrPaySlip(models.TransientModel):
             'file': base64.encodebytes(writer)
         })
         return {
-            'name': _('Descargar Archivo'),
+            'name': ('Descargar Archivo'),
             'res_id': file.id,
             'res_model': 'o1c.save.conf',
             'target': 'new',
