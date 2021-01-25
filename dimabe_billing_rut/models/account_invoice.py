@@ -502,7 +502,7 @@ class AccountInvoice(models.Model):
                 raise models.ValidationError(order.invoice_ids[0].id)
                
                 order.write({
-                    'invoice_ids':[(4, [self.id])]
+                    'invoice_ids': [(4, self.id)]
                 })
         #if len(self.invoice_line_ids) > 0: 
         #    for line in self.invoice_line_ids:

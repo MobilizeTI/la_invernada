@@ -638,13 +638,13 @@ class WizardHrPaySlip(models.TransientModel):
                              # 50 RUT Afiliado Voluntario 9 (11)
                              "0",
                              # 51 DV Afiliado Voluntario
-                             " ",
+                             "51",
                              # 52 Apellido Paterno
                              " ",
                              # 53 Apellido Materno
                              " ",
                              # 54 Nombres
-                             " ",
+                             "54",
                              "0",
 
                              # Tabla N°7: Movimiento de Personal
