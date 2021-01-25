@@ -628,7 +628,7 @@ class WizardHrPaySlip(models.TransientModel):
                              # 45 Codigo Institucion Autorizada APVC
                              "0",
                              # 46 Numero de Contrato APVC TODO
-                             " ",
+                             "0",
                              # 47 Forma de Pago APVC
                              "0",
                              # 48 Cotizacion Trabajador APVC
@@ -645,7 +645,6 @@ class WizardHrPaySlip(models.TransientModel):
                              " ",
                              # 54 Nombres Vol
                              " ",
-
                              # 55 Tabla N°7: Movimiento de Personal
                              # Código Glosa
                              # 0 Sin Movimiento en el Mes
