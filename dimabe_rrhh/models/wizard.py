@@ -825,7 +825,7 @@ class WizardHrPaySlip(models.TransientModel):
     def save_to_file(self, writer):
         file = self.env['custom.save.file.wizard'].sudo().create({
             'file_name': "Previred_{}{}.txt".format(self.date_to,self.company_id.display_name.replace('.', '')),
-            'file_data': base64.encodebytes(writer)
+            'file': base64.encodebytes(writer)
         })
         return {
             'name': _('Descargar Archivo'),
