@@ -624,7 +624,7 @@ class WizardHrPaySlip(models.TransientModel):
                                  0] if str(float(self.get_payslip_lines_value_2(payslip, 'APV'))).split('.')[
                                  0] else "0",
                              # 44 Cotizacion Depositos
-                             " "
+                             " ",
                              # 45 Codigo Institucion Autorizada APVC
                              "0",
                              # 46 Numero de Contrato APVC TODO
@@ -638,16 +638,15 @@ class WizardHrPaySlip(models.TransientModel):
                              # 50 RUT Afiliado Voluntario 9 (11)
                              "0",
                              # 51 DV Afiliado Voluntario
-                             "51",
+                             " ",
                              # 52 Apellido Paterno
                              " ",
                              # 53 Apellido Materno
                              " ",
-                             # 54 Nombres
-                             "54",
-                             "0",
+                             # 54 Nombres Vol
+                             " ",
 
-                             # Tabla N°7: Movimiento de Personal
+                             # 55 Tabla N°7: Movimiento de Personal
                              # Código Glosa
                              # 0 Sin Movimiento en el Mes
                              # 1 Contratación a plazo indefinido
@@ -662,7 +661,7 @@ class WizardHrPaySlip(models.TransientModel):
                              # 12 Reliquidación, Premio, Bono
                              # TODO LIQUIDACION
 
-                             "00",
+                             "0",
                              # 56 Fecha inicio movimiento personal (dia-mes-año)
                              "0",
                              # 57 Fecha fin movimiento personal (dia-mes-año)
@@ -692,7 +691,6 @@ class WizardHrPaySlip(models.TransientModel):
                              # 67 Codigo Ex-Caja Regimen Desahucio
                              "0",
                              # 68 Tasa Cotizacion Desahucio Ex-Cajas
-                             "0",
                              "0",
                              # 69 Cotizacion Desahucio
                              "0",
