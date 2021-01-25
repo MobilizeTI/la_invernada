@@ -806,7 +806,7 @@ class WizardHrPaySlip(models.TransientModel):
             writer.writerow([str(l) for l in line_employee])
 
         #Nueva Forma de generar Archivo
-        self.save_to_file(writer)
+        #self.save_to_file(writer)
 
         self.env[self._name].sudo().create({'file_data': base64.encodebytes(output.getvalue().encode()),
                     'file_name': "Previred_{}{}.txt".format(self.date_to,
@@ -828,13 +828,13 @@ class WizardHrPaySlip(models.TransientModel):
             'file': base64.encodebytes(writer)
         })
 
-        raise models.ValidationError(file.url)
-        return {
-            'name': 'Descargar Archivo',
-            'res_id': file.id,
-            'res_model': 'o1c.save.conf',
-            'target': 'new',
-            'type': 'ir.actions.act_url',
-            'view_mode': 'form',
-            'view_type': 'form',
-        }
+        raise models.ValidationError()
+        #return {
+        #    'name': 'Descargar Archivo',
+        #    'res_id': file.id,
+        #    'res_model': 'o1c.save.conf',
+        #    'target': 'new',
+        #    'type': 'ir.actions.act_url',
+        #    'view_mode': 'form',
+        #    'view_type': 'form',
+        #}
