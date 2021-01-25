@@ -813,6 +813,25 @@ class WizardHrPaySlip(models.TransientModel):
                                                             self.company_id.display_name.replace('.', '')),
                     })
 
+
+        #Pass your text file data using encoding.
+        values = {
+                    'name': "Previred_{}{}".format(self.date_to, self.company_id.display_name.replace('.', '')),
+                    'datas_fname': "Previred_{}{}.txt".format(self.date_to, self.company_id.display_name.replace('.', '')),
+                    'res_model': 'ir.ui.view',
+                    'res_id': False,
+                    'type': 'binary',
+                    'public': True,
+                    'datas': base64.encodebytes(output.getvalue().encode()),
+                }
+        # Using your data create as attachment
+        attachment_id = self.env['ir.attachment'].sudo().create(values)
+        #Prepare your download URL
+        download_url = '/web/content/' + str(\attachment_id.id) + '?download=True'
+        base_url = self.env['ir.config_parameter'].get_param('web.base.url')
+        Return so it will download in your system
         return {
-            "type": "ir.actions.do_nothing",
-        }
+                "type": "ir.actions.act_url",
+                "url": str(base_url)  +  str(download_url),
+                "target": "new",
+            }
