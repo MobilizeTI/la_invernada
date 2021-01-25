@@ -683,7 +683,7 @@ class WizardHrPaySlip(models.TransientModel):
                                              payslip.indicadores_id.uf,
                                              payslip.indicadores_id.tope_imponible_ips) if self.get_payslip_lines_value_2(
                                  payslip,
-                                 'TOTIM') else "0"
+                                 'TOTIM') else "0",
                              # 65 Cotizacion Obligatoria IPS                
                              "0",
                              # 66 Renta Imponible Desahucio
