@@ -264,32 +264,30 @@ class AccountInvoice(models.Model):
     @api.onchange('etd')
     @api.depends('etd')
     def _compute_etd_values(self):
-        print('')
-        #if self.etd:
-        #    try:
-        #        self.etd_month = self.etd.month
-        #        _year, _week, _day_of_week = self.etd.isocalendar()
-        #        self.etd_week = _week
-        #    except:
-        #        raise UserWarning('Error producido al intentar obtener el mes y semana de embarque')
-        #else:
-        #    self.etd_week = None
-        #    self.etd_month = None
+        if self.etd:
+            try:
+                self.etd_month = self.etd.month
+                _year, _week, _day_of_week = self.etd.isocalendar()
+                self.etd_week = _week
+            except:
+                raise UserWarning('Error producido al intentar obtener el mes y semana de embarque')
+        else:
+            self.etd_week = None
+            self.etd_month = None
 
 
     @api.model
     @api.onchange('required_loading_date')
     @api.depends('required_loading_date')
     def _compute_required_loading_week(self):
-        print('')
-        #if self.required_loading_date:
-        #    try:
-        #        year, week, day_of_week = self.required_loading_date.isocalendar()
-        #        self.required_loading_week = week
-        #    except:
-        #        raise UserWarning('no se pudo establecer la semana de carga')
-        #else:
-        #    self.required_loading_week = None
+        if self.required_loading_date:
+            try:
+                year, week, day_of_week = self.required_loading_date.isocalendar()
+                self.required_loading_week = week
+            except:
+                raise UserWarning('no se pudo establecer la semana de carga')
+        else:
+            self.required_loading_week = None
 
     @api.one
     @api.constrains('etd', 'eta')
@@ -500,7 +498,7 @@ class AccountInvoice(models.Model):
             for item in list_order_ids:
                 order = self.env['sale.order'].search([('id','=',item)])
                 order.update({
-                    'invoice_ids': [(4, self.id)]
+                    'invoice_ids': (4, self.id)
                 })
         #if len(self.invoice_line_ids) > 0: 
         #    for line in self.invoice_line_ids:
