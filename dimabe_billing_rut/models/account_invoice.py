@@ -558,11 +558,17 @@ class AccountInvoice(models.Model):
             if int(count_quantity) != int(self.total_packages):
                 raise models.ValidationError('El Total de Bultos {} no cuadra con la suma de los bultos {}'.format(int(self.total_packages),int(count_quantity)))
             if not self.partner_id.country_id.sii_code:
-                raise models.ValidationError('El País {} no tiene registrado el Código SII'.format(self.partner_id.country_id.name, self.currency_id.id))
+                raise models.ValidationError('El País {} no tiene registrado el Código SII'.format(self.partner_id.country_id.name))
+            if not self.currency_id.sii_currency_name:
+                raise models.ValidationError('La Moneda {} no tiene registrado el Nombre SII'.format(self.currency_id.name))
+            if not self.other_coin.sii_currency_name:
+               raise models.ValidationError('La otra Moneda {} no tiene registrado el Nombre SII'.format(self.currency_id.name))
+
 
         if self.dte_type_id.code == "61" or self.dte_type_id.code == "111" or self.dte_type_id.code == "56" or self.dte_type_id.code == "112":
             if len(self.references) == 0:
                 raise models.ValidationError('Para {} debe agregar al menos una Referencia'.format(self.dte_type_id.name))
+
         
       
         for item in self.invoice_line_ids:
