@@ -38,10 +38,10 @@
           />
           <field name="gross_weight"
                  attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
-          />
+          /><button type="object" string="Obtener Peso Romana" name="gross_weight_button"/>
           <field name="tare_weight"
                  attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
-          />
+          /><button type="object" string="Obtener Peso Romana" name="button_weight_tare"/>
           <field name="quality_weight"
                  attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception'),'=',False]}"
                  readonly="1"/>
@@ -52,6 +52,9 @@
                  attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)]}"
           />
         </field>
+        <xpath expr="//header" position="inside">
+          <button type="object" string="Obtener Peso Romana" name="button_weight"/>
+        </xpath>
         <xpath expr="//page[@name='note']" position="after">
           <page string="Transportista" name="carrier_page"
                 attrs="{'invisible':[('picking_type_code', 'not in', ('outgoing', 'incoming'))]}">

@@ -20,7 +20,7 @@
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'stock', 'account', 'hr_payroll',
-                'hr_payroll_account'],
+                'hr_payroll_account','sale'],
 
     # always loaded
     'data': [
@@ -36,17 +36,16 @@
         'views/dte_type.xml',
         'views/templates.xml',
         'views/custom_invoice.xml',
-        'views/custom_settlement.xml',
-        'views/hr_payslip.xml',
-        'views/custom_holidays.xml',
-        'reports/settlement_document.xml',
-        'reports/holiday_ticket.xml',
         'data/reports/balance_sheet_clp.xml',
-        'reports/remunerations_book.xml',
-        'views/wizard_hr_payslip.xml',
-        'views/custom_data.xml',
-        'views/hr_contract.xml',
-        'views/hr_leave.xml'
+        'views/wizard_account_move.xml',
+        'views/custom_export_clause.xml',
+        'views/custom_sale_method.xml',
+        'views/custom_type_transport.xml',
+        'views/custom_receiving_country_dte.xml',
+        'views/custom_package_type.xml',
+        'views/custom_uom.xml',
+        'views/res_country.xml',
+        'views/res_currency.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

@@ -1,0 +1,58 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_custom_package_type_tree">
+            <field name="name">view.custom.package.type.tree</field>
+            <field name="model">custom.package.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="short_name"/>
+                </tree>
+            </field>
+        </record>
+
+
+            <record id="view_custom_package_type_form" model="ir.ui.view">
+            <field name="name">view.custom.package.type.form</field>
+            <field name="model">custom.package.type</field>
+            <field name="arch" type="xml">
+                <form name="Tipo de Bulto">
+                <sheet>
+                    <div class="oe_title">
+                    <label for="code" class="oe_edit_only" />
+                    <h1>
+                        <field name="code" placeholder="Código" />
+                    </h1>
+                    </div>
+                    <group>
+                        <field name="name" placeholder="Nombre" />
+                        <field name="short_name" placeholder="Nombre Corto" />
+                    </group>
+                </sheet>
+                </form>
+            </field>
+            </record>
+
+            <record id="action_custom_package_type_views" model="ir.actions.act_window">
+            <field name="name">Tipo de Bulto</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">custom.package.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                Tipo de Bulto
+                </p>
+                <p>
+                Click aquí para agregar Tipo de Bulto
+                </p>
+            </field>
+            </record>
+
+            <menuitem id="menu_custom_package_type"
+                    name="Tipo de Bulto"
+                    parent="menu_account_dte"
+                    action="action_custom_package_type_views"
+            />
+    </data>
+</odoo>

@@ -1,7 +1,8 @@
 from odoo import models, api, fields
 from odoo.addons import decimal_precision as dp
 from datetime import datetime
-
+import requests
+import json
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
@@ -147,6 +148,20 @@ class StockPicking(models.Model):
         default=datetime.now().year
     )
 
+    @api.multi
+    def gross_weight_button(self):
+        data = self._get_data_from_weigh()
+        self.write({
+            'gross_weight' : float(data)
+        })
+
+    @api.multi
+    def button_weight_tare(self):
+        data = self._get_data_from_weigh()
+        self.write({
+            'tare_weight':float(data)
+        })
+
     @api.one
     @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package', 'quality_weight')
     def _compute_net_weight(self):
@@ -256,6 +271,17 @@ class StockPicking(models.Model):
         diff = str((finish_date - init_date))
         return diff.split('.')[0]
 
+    def _get_data_from_weigh(self):
+        try:
+            res = requests.request('POST', 'http://201.217.253.174:8899/romana/index.py')
+            json_data = json.loads(res.text.strip())
+            return json_data['value']
+        except Exception as e:
+            if 'HTTPConnectionPool' in str(e):
+                raise models.ValidationError("Por favor comprobar si el equipo de romana se encuentre enciendo o con conexion a internet")
+            else:
+                raise models.ValidationError(str(e))
+
     @api.multi
     def action_confirm(self):
         if self.picking_type_code == 'incoming':
@@ -361,6 +387,9 @@ class StockPicking(models.Model):
                         })
 
             return res
+        else:
+            return super(StockPicking, self).button_validate()
+
 
     @api.model
     def validate_mp_reception(self):

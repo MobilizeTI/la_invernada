@@ -1,0 +1,56 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_custom_type_transport_tree">
+            <field name="name">view.custom.type.transport.tree</field>
+            <field name="model">custom.type.transport</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="code"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+
+            <record id="view_custom_type_transport_form" model="ir.ui.view">
+            <field name="name">view.custom.type.transport.form</field>
+            <field name="model">custom.type.transport</field>
+            <field name="arch" type="xml">
+                <form name="Vía de Transporte">
+                <sheet>
+                    <div class="oe_title">
+                    <label for="code" class="oe_edit_only" />
+                    <h1>
+                        <field name="code" placeholder="Código" />
+                    </h1>
+                    </div>
+                    <group>
+                        <field name="name" placeholder="Nombre" />
+                    </group>
+                </sheet>
+                </form>
+            </field>
+            </record>
+
+            <record id="action_custom_type_transport_views" model="ir.actions.act_window">
+            <field name="name">Vía de Transporte</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">custom.type.transport</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                Vía de Transporte
+                </p>
+                <p>
+                Click aquí para agregar Vía de Transporte
+                </p>
+            </field>
+            </record>
+
+            <menuitem id="menu_custom_type_transport"
+                    name="Vía de Transporte"
+                    parent="menu_account_dte"
+                    action="action_custom_type_transport_views"
+            />
+    </data>
+</odoo>

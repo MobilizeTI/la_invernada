@@ -39,13 +39,13 @@ class CustomShipment(models.Model):
 
     departure_port = fields.Many2one(
         comodel_name='custom.port',
-        string='Puerto de salida',
+        string='Puerto de Embarque',
         required=True
     )
 
     arrival_port = fields.Many2one(
         comodel_name='custom.port',
-        string='Puerto de llegada',
+        string='Puerto de Desembarque',
         required=True
     )
 

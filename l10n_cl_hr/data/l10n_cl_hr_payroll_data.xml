@@ -58,7 +58,7 @@ else:
             <field name="condition_python">result = payslip.indicadores_id.sueldo_minimo > contract.wage</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = round(((payslip.indicadores_id.sueldo_minimo - contract.wage) / 30) * worked_days.WORK100.number_of_days)
-</field>
+            </field>
 
         </record>
 

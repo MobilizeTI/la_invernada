@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="custom_indicators_form_inherit" model="ir.ui.view">
+            <field name="name">custom_indicatos_form_inherit</field>
+            <field name="model">hr.indicadores</field>
+            <field name="inherit_id" ref="l10n_cl_hr.hr_indicadores_previsionales_view"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='mutual_seguridad']" position="replace">
+                    <field name="multuality_ids">
+                        <tree editable="bottom" create="true" delete="true">
+                            <field name="company_id" required="1"/>
+                            <field name="value"/>
+                        </tree>
+                    </field>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -5,3 +5,5 @@ xlwt
 xlrd
 python-dateutil
 pandas
+Pillow
+pdf417

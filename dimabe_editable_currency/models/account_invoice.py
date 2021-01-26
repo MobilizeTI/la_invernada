@@ -25,9 +25,11 @@ class AccountInvoice(models.Model):
             if len(rates) > 0:
                 rate = rates[0]
                 self.exchange_rate = 1 / rate.rate
+                self.exchange_rate_other_coin = 1 / rate.rate
         else:
-            self.exchange_rate = 0
+            self.exchange_rate_other_coin = 0
 
+   
     def action_invoice_open(self):
 
         if self.id:
@@ -66,3 +68,6 @@ class AccountInvoice(models.Model):
                 total -= line['price']
                 total_currency -= line['amount_currency'] or line['price']
         return total, total_currency, invoice_move_lines
+
+
+    

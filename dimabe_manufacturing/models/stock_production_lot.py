@@ -521,7 +521,7 @@ class StockProductionLot(models.Model):
                 move_line = self.env['stock.move.line'].create({
                     'product_id': lot.product_id.id,
                     'lot_id': lot.id,
-                    'product_uom_qty': available_total_serial,
+                    'qty_done': available_total_serial,
                     'product_uom_id': stock_move.product_uom.id,
                     'location_id': stock_quant.location_id.id,
                     # 'qty_done': item.display_weight,
@@ -586,6 +586,9 @@ class StockProductionLot(models.Model):
                 for serial in item.stock_production_lot_serial_ids:
                     if not serial.serial_number:
                         if len(item.stock_production_lot_serial_ids) > 1:
+                            item.stock_production_lot_serial_ids[0].write({
+                                'serial_number': item.name + '001'
+                            })
                             counter = int(item.stock_production_lot_serial_ids.filtered(lambda a: a.serial_number)[
                                               -1].serial_number) + 1
                         else:
@@ -597,9 +600,9 @@ class StockProductionLot(models.Model):
                                 item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
                                     'real_weight'))
                         })
-            # else:
-            #     if len(item.stock_production_lot_serial_ids) > 999:
-            #         item.check_duplicate()
+            else:
+                if len(item.stock_production_lot_serial_ids) > 999:
+                    item.check_duplicate()
             return res
 
     @api.multi

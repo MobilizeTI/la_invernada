@@ -1,6 +1,7 @@
 from odoo import models, fields
 import requests
 import json
+from datetime import datetime
 
 
 class ResCurrency(models.Model):
@@ -31,9 +32,14 @@ class ResCurrency(models.Model):
         return to_currency.round(to_amount) if round else to_amount
 
     def get_rate_by_date(self, date):
+        date_now = datetime.now().date()
+        if date <= date_now:
+            search_date = date
+        else:
+            search_date = date_now
         res = requests.request(
             'GET',
-            'https://services.dimabe.cl/api/currencies?date={}'.format(date.strftime('%Y-%m-%d')),
+            'https://services.dimabe.cl/api/currencies?date={}'.format(search_date.strftime('%Y-%m-%d')),
             headers={
                 'apikey': '790AEC76-9D15-4ABF-9709-E0E3DC45ABBC',
                 'customerCode': 'E41958F0-AF3D-4D66-9C26-6A54950CA506'
@@ -45,13 +51,13 @@ class ResCurrency(models.Model):
         if res.status_code == 200:
             rate = None
 
-            for data in response:
-                if data['currency'] == 'USD':
-                    tmp = data['value'].replace(',', '.')
-                    rate = 1 / float(tmp)
+        for data in response:
+            if data['currency'] == 'USD':
+                tmp = data['value'].replace(',', '.')
+            rate = 1 / float(tmp)
 
-            self.env['res.currency.rate'].create({
-                'name': date,
-                'rate': rate,
-                'currency_id': self.id
-            })
+        self.env['res.currency.rate'].create({
+            'name': date,
+            'rate': rate,
+            'currency_id': self.id
+        })

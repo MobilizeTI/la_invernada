@@ -1,9 +1,9 @@
 from odoo import models, fields, api
 
-
 class AccountMoveLine(models.Model):
-    _inherit = 'account.move.line'
 
+    _inherit = 'account.move.line'
+    
     def _compute_amount_fields(self, amount, src_currency, company_currency):
         """ Helper function to compute value for fields debit/credit/amount_currency based on an amount and the currencies given in parameter"""
 

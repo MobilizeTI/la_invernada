@@ -5,12 +5,18 @@
             <field name="model">stock.picking</field>
             <field name="inherit_id" ref="stock.view_picking_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//field[@name='date_done']" position="after">
+                    <field name="date_due"/>
+                 </xpath>
                 <data>
                     <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">   
                         <page name="xdte_stock_picking_tab" string="DTE">
                             <group name="xdte_stock_picking_info" cols="">
-                                <button  type="object" name="send_to_sii" string="Enviar al SII" attrs="{'invisible': ['|',('dte_folio', '!=', False),('state','!=','done')]}" class="oe_highlight"/>
+                                <!--<button  type="object" name="send_to_sii" string="Enviar al SII" attrs="{'invisible': ['|',('dte_folio', '!=', False),('state','!=','done')]}" class="oe_highlight"/>-->
+                                <button  type="object" name="send_to_sii" string="Enviar al SII"  class="oe_highlight"/>
                                 <field name="method_of_payment" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
+                                <field name="dispatch_type"/>
+                                <field name="transfer_indication"/>
                                 <field name="partner_activity_id" domain="[('id','in',partner_economic_activities)]"/>
                                 <field name="partner_economic_activities" invisible="1"/>
                                 <field name="company_economic_activities" invisible="1"/>
@@ -20,6 +26,7 @@
                                 <field name="ted" widget="image"  readonly="1"/>
                                 <field name="pdf_url" widget="url" readonly="1" text="Url de Descarga"/>
                                 <field name="dte_xml" widget="binary" readonly="1" filename="dte.xml" />
+                                <field name="dte_xml_sii" widget="binary" readonly="1" filename="dte_sii.xml" />
                                 <field name="dte_pdf" widget="binary" readonly="1" filename="dte.pdf" />
                             </group>
                             <group string="Referencias">
@@ -39,6 +46,16 @@
                                         <field name="code_reference"/>
                                         <field name="reason"/>
                                         <field name="document_date"/>
+                                    </tree>
+                                </field>
+                            </group>
+                            <group string="Observaciones">
+                                <field name="observations_ids" mode="tree">
+                                    <form>
+                                        <field name="observations"/>
+                                    </form>
+                                    <tree>
+                                        <field name="observations"/>
                                     </tree>
                                 </field>
                             </group>

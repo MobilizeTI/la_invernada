@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="hr_payroll_structure_inherit" model="ir.ui.view">
+            <field name="name">Hr PayRoll Structure Inherit</field>
+            <field name="model">hr.payroll.structure</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_employee_grade_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='rule_ids']/tree//field[@name='category_id']" positon="after">
+                    <field name="show_in_book"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

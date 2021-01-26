@@ -14,7 +14,7 @@ class ResCompany(models.Model):
     dte_url = fields.Char(string='URL portal de Facturacion',
                           help='',
                           required=True,
-                          default='http://dte.xdte.cl/')
+                          default='https://services.dimabe.cl/api/dte/emite')
     ticket_url = fields.Char(string='URL Validacion de Boletas',
                           help='',
                           required=True,
@@ -27,12 +27,19 @@ class ResCompany(models.Model):
                                    help='Número de Resolución entregada por el SII',
                                    required=True,
                                    default='80')
-    dte_hash = fields.Char(string='Hash de Facturación',
-                                    help='Hash de acceso al Facturador Electrónico',
+                                   
+    dte_hash = fields.Char(string='ApiKey Cliente',
+                                    help='ApiKey Cliente Facturador Electrónico',
                                     required=True,
                                     default='')
+    dte_customer_code = fields.Char(string='Código Cliente',
+                                    help='Código Cliente Facturador Electrónico',
+                                    required=True,
+                                    default='')
+    
 
 
+    add_to_sale_book = fields.Boolean()
 
     @api.model
     def create(self, values_list):

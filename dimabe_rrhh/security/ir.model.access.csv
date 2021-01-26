@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dimabe_rrhh_custom_fired,dimabe_rrhh.custom_fired,model_custom_fired,,1,1,1,1
+access_dimabe_rrhh_custom_settlement,dimabe_rrhh.custom_settlement,model_custom_settlement,,1,1,1,1
+access_dimabe_rrhh_custom_holidays,dimabe_rrhh.custom_holidays,model_custom_holidays,,1,1,1,1
+access_dimabe_rrhh_custom_data,dimabe_rrhh.custom_data,model_custom_data,,1,1,1,1
+access_dimabe_rrhh_wizard_hr_payslip,dimabe_rrhh_wizard_hr_payslip,model_wizard_hr_payslip,,1,1,1,1
+access_dimabe_rrhh_custom_mutality,dimabe_rrhh_custom_mutuality,model_custom_mutuality,,1,1,1,1

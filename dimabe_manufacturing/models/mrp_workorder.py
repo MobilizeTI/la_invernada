@@ -1,8 +1,5 @@
 from odoo import fields, models, api
 from odoo.addons import decimal_precision as dp
-import xlsxwriter
-from odoo.tools import float_compare, float_round
-from odoo.addons import decimal_precision as dp
 
 
 class MrpWorkorder(models.Model):
@@ -143,6 +140,8 @@ class MrpWorkorder(models.Model):
     pallet_content = fields.Float('Kilos Totales', compute='_compute_pallet_content')
 
     pallet_serial = fields.Integer('Total de Series', compute='_compute_pallet_serial')
+
+    have_subproduct = fields.Boolean('Tiene subproductos')
 
     @api.multi
     def _compute_pallet_content(self):
@@ -334,8 +333,7 @@ class MrpWorkorder(models.Model):
         return res
 
     def open_tablet_view(self):
-        while self.current_quality_check_id:
-            check = self.current_quality_check_id
+        for check in self.check_ids:
             if not check.component_is_byproduct:
                 check.qty_done = 0
                 self.action_skip()
@@ -348,10 +346,14 @@ class MrpWorkorder(models.Model):
                     })
                     check.lot_id = lot_tmp.id
                     check.qty_done = self.component_remaining_qty
+                    self.active_move_line_ids.filtered(lambda a : a.lot_id.id == lot_tmp.id).write({
+                        'is_raw': False
+                    })
                     if check.quality_state == 'none' and check.qty_done > 0:
                         self.action_next()
         self.action_first_skipped_step()
         return super(MrpWorkorder, self).open_tablet_view()
+
 
     def action_next(self):
         self.write({
@@ -384,7 +386,7 @@ class MrpWorkorder(models.Model):
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
                                 'lot_produced_id': self.production_finished_move_line_ids.filtered(
-                                    lambda a: a.product_id.id == self.product_id.id and a.lot_id).lot_id,
+                                    lambda a: a.product_id.id == self.product_id.id and a.lot_id)[0].lot_id,
                                 'workorder_id': self.id,
                                 'production_id': self.production_id.id,
                                 'product_uom_id': stock_move.product_uom.id,
@@ -455,11 +457,13 @@ class MrpWorkorder(models.Model):
             return res
         self.qty_done = qty_done + custom_serial.display_weight
         self.write({
-            'in_weight': sum(self.potential_serial_planned_ids.mapped('real_weight'))
+            'in_weight': sum(self.potential_serial_planned_ids.mapped('real_weight')),
+            'lot_id':custom_serial.stock_production_lot_id.id
         })
         quant = self.env['stock.quant'].search([('lot_id', '=', lot.id)])
         quant.write({
-            'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
+            'quantity': sum(
+                lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
         })
         return res
 

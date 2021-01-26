@@ -1,0 +1,58 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_custom_uom_tree">
+            <field name="name">view.custom.uom.tree</field>
+            <field name="model">custom.uom</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="code"/>
+                    <field name="initials"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+
+            <record id="view_custom_uom_form" model="ir.ui.view">
+            <field name="name">view.custom.uom.form</field>
+            <field name="model">custom.uom</field>
+            <field name="arch" type="xml">
+                <form name="Modalidad de Venta">
+                <sheet>
+                    <div class="oe_title">
+                    <label for="code" class="oe_edit_only" />
+                    <h1>
+                        <field name="code" placeholder="Código" />
+                    </h1>
+                    </div>
+                    <group>
+                        <field name="initials" placeholder="Sigla" />
+                        <field name="name" placeholder="Nombre" />
+                    </group>
+                </sheet>
+                </form>
+            </field>
+            </record>
+
+            <record id="action_custom_uom_views" model="ir.actions.act_window">
+            <field name="name">Unidades de Medida</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">custom.uom</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                Unidades de Medida
+                </p>
+                <p>
+                Click aquí para agregar Unidades de Medida
+                </p>
+            </field>
+            </record>
+
+            <menuitem id="menu_custom_uom"
+                    name="Unidades de Medida"
+                    parent="menu_account_dte"
+                    action="action_custom_uom_views"
+            />
+    </data>
+</odoo>
