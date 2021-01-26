@@ -907,7 +907,7 @@ class AccountInvoice(models.Model):
             
             for item in list_order_ids:
                 order = self.env['sale.order'].search([('id','=',item)])
-                order.update({
+                order.write({
                     'invoice_ids': [(4,self.id)]
                 })
         
