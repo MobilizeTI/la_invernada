@@ -898,7 +898,7 @@ class AccountInvoice(models.Model):
                 'departure_date': self.departure_date,
                 'arrival_date': self.arrival_date
             })
-
+        raise models.ValidationError('{}'.format(len(self.orders_to_invoice)))
         if len(self.orders_to_invoice) > 0:
             list_order_ids = []
             for item in self.orders_to_invoice:
@@ -907,7 +907,7 @@ class AccountInvoice(models.Model):
             
             for item in list_order_ids:
                 order = self.env['sale.order'].search([('id','=',item)])
-                raise models.ValidationError('{} {}'.format(order.name, self.id))
+                #raise models.ValidationError('{} {}'.format(order.name, self.id))
                 order.update({
                     'invoice_ids': [(4,self.id)]
                 })
