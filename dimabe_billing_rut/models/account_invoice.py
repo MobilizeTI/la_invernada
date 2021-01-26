@@ -492,7 +492,6 @@ class AccountInvoice(models.Model):
     #pendiente
     @api.multi
     def update_sale_order(self):
-        raise models.ValidationError('valid in update sale order')
         if len(self.orders_to_invoice) > 0:
             list_order_ids = []
             for item in self.orders_to_invoice:
@@ -907,7 +906,7 @@ class AccountInvoice(models.Model):
             
             for item in list_order_ids:
                 order = self.env['sale.order'].search([('id','=',item)])
-                #raise models.ValidationError('{} {}'.format(order.name, self.id))
+                raise models.ValidationError('{} {}'.format(order.name, self.id))
                 order.update({
                     'invoice_ids': [(4,self.id)]
                 })
