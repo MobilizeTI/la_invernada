@@ -265,16 +265,16 @@ class AccountInvoice(models.Model):
     @api.depends('etd')
     def _compute_etd_values(self):
         print('')
-        #if self.etd:
-        #    try:
-        #        self.etd_month = self.etd.month
-        #        _year, _week, _day_of_week = self.etd.isocalendar()
-        #        self.etd_week = _week
-        #    except:
-        #        raise UserWarning('Error producido al intentar obtener el mes y semana de embarque')
-        #else:
-        #    self.etd_week = None
-        #    self.etd_month = None
+        if self.etd:
+            try:
+                self.etd_month = self.etd.month
+                _year, _week, _day_of_week = self.etd.isocalendar()
+                self.etd_week = _week
+            except:
+                raise UserWarning('Error producido al intentar obtener el mes y semana de embarque')
+        else:
+            self.etd_week = None
+            self.etd_month = None
 
 
     @api.model
@@ -282,14 +282,14 @@ class AccountInvoice(models.Model):
     @api.depends('required_loading_date')
     def _compute_required_loading_week(self):
         print('')
-        #if self.required_loading_date:
-        #    try:
-        #        year, week, day_of_week = self.required_loading_date.isocalendar()
-        #        self.required_loading_week = week
-        #    except:
-        #        raise UserWarning('no se pudo establecer la semana de carga')
-        #else:
-        #    self.required_loading_week = None
+        if self.required_loading_date:
+            try:
+                year, week, day_of_week = self.required_loading_date.isocalendar()
+                self.required_loading_week = week
+            except:
+                raise UserWarning('no se pudo establecer la semana de carga')
+        else:
+            self.required_loading_week = None
 
     @api.one
     @api.constrains('etd', 'eta')
@@ -498,12 +498,15 @@ class AccountInvoice(models.Model):
                 if item.order_id not in list_order_ids:
                     list_order_ids.append(item.order_id)
             
+            orders = self.env['sale.order'].search([])
             for item in list_order_ids:
-                order = self.env['sale.order'].search([('id','=',item)])
-                raise models.ValidationError(self.id)
-                order.update({
-                    'invoice_ids': [(4,self.id)]
-                })
+                
+                for order in orders:
+                    if order.id == item:
+                        order.update({
+                            'invoice_ids': [(4,self.id)]
+                        })
+            return orders
         #if len(self.invoice_line_ids) > 0: 
         #    for line in self.invoice_line_ids:
         #        sale_order = self.env['stock.picking'].search([('id', '=', line.stock_picking_id)])
