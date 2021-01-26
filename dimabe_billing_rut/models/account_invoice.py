@@ -860,6 +860,8 @@ class AccountInvoice(models.Model):
     #Send Data to Stock_Picking Comex
     @api.multi
     def write(self, vals):
+        raise models.ValidationError('{}'.format(len(self.orders_to_invoice)))
+
         order_list = []
         for item in self.orders_to_invoice:
             if item.order_id:
@@ -898,7 +900,6 @@ class AccountInvoice(models.Model):
                 'departure_date': self.departure_date,
                 'arrival_date': self.arrival_date
             })
-        raise models.ValidationError('{}'.format(len(self.orders_to_invoice)))
         if len(self.orders_to_invoice) > 0:
             list_order_ids = []
             for item in self.orders_to_invoice:
