@@ -907,7 +907,8 @@ class AccountInvoice(models.Model):
             
             for item in list_order_ids:
                 order = self.env['sale.order'].search([('id','=',item)])
-                order.write({
+                raise models.ValidationError('{} {}'.format(order.name, self.id))
+                order.update({
                     'invoice_ids': [(4,self.id)]
                 })
         
