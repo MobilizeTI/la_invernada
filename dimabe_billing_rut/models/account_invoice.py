@@ -492,6 +492,7 @@ class AccountInvoice(models.Model):
     #pendiente
     @api.multi
     def update_sale_order(self):
+        raise models.ValidationError('valid in update sale order')
         if len(self.orders_to_invoice) > 0:
             list_order_ids = []
             for item in self.orders_to_invoice:
@@ -860,8 +861,6 @@ class AccountInvoice(models.Model):
     #Send Data to Stock_Picking Comex
     @api.multi
     def write(self, vals):
-        raise models.ValidationError('{}'.format(len(self.orders_to_invoice)))
-
         order_list = []
         for item in self.orders_to_invoice:
             if item.order_id:
