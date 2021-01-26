@@ -488,6 +488,7 @@ class AccountInvoice(models.Model):
             raise models.ValidationError('Advertencia: {} Json: {}'.format(jr['message'],json.dumps(invoice)))
   
     #pendiente
+    @api.multi
     def update_sale_order(self):
         if len(self.orders_to_invoice) > 0:
             list_order_ids = []
@@ -497,9 +498,8 @@ class AccountInvoice(models.Model):
             
             for item in list_order_ids:
                 order = self.env['sale.order'].search([('id','=',item)])
-                raise models.ValidationError(order.name)
                 order.update({
-                    'invoice_ids': [(1,item ,{self.id})]
+                    'invoice_ids': [(4,self.id)]
                 })
         #if len(self.invoice_line_ids) > 0: 
         #    for line in self.invoice_line_ids:
