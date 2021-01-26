@@ -498,7 +498,7 @@ class AccountInvoice(models.Model):
             for item in list_order_ids:
                 order = self.env['sale.order'].search([('id','=',item)])
                 order.update({
-                    'invoice_ids': (4, self.id)
+                    'invoice_ids': [(4,item ,{self.id})]
                 })
         #if len(self.invoice_line_ids) > 0: 
         #    for line in self.invoice_line_ids:
@@ -567,14 +567,10 @@ class AccountInvoice(models.Model):
             if len(self.references) == 0:
                 raise models.ValidationError('Para {} debe agregar al menos una Referencia'.format(self.dte_type_id.name))
 
-        
-      
         for item in self.invoice_line_ids:
             for tax_line in item.invoice_line_tax_ids:
                 if (tax_line.id == 6 or tax_line.id == None) and (item.exempt == "7"):
                     raise models.ValidationError('El Producto {} no tiene impuesto por ende debe seleccionar el Tipo Exento'.format(item.name))
-        
-
         
         if len(self.references) > 10:
             raise models.ValidationError('Solo puede generar 20 Referencias')
@@ -589,7 +585,6 @@ class AccountInvoice(models.Model):
     def roundclp(self, value):
         value_str = str(value)
         list_value = value_str.split('.')
-        #raise models.ValidationError('value: {}  value_str: {}  floor: {}'.format(value, value_str, floor(value)))
         if int(list_value[1]) < 5:
             return floor(value)
         else:
