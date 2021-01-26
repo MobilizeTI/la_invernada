@@ -498,20 +498,25 @@ class AccountInvoice(models.Model):
                 if item.order_id not in list_order_ids:
                     list_order_ids.append(item.order_id)
             
-            orders = self.env['sale.order'].search([])
-            for item in list_order_ids:
-                
-                for order in orders:
-                    if order.id == item:
-                        order.update({
-                            'invoice_ids': [(4,self.id)]
-                        })
-            return orders
+            order = self.env['sale.order'].search([('id','=',648)])
+            order.update({
+                'invoice_ids': [(4,self.id)]
+            })
+
+
+        return True
+        #  orders = self.env['sale.order'].search([])
+        #    for item in list_order_ids:
+        #        for order in orders:
+        #            if order.id == item:
+        #                order.update({
+        #                    'invoice_ids': [(4,self.id)]
+        #                })
+        #    return orders
         #if len(self.invoice_line_ids) > 0: 
         #    for line in self.invoice_line_ids:
         #        sale_order = self.env['stock.picking'].search([('id', '=', line.stock_picking_id)])
         #        sum_quantity = 0
-
         #        sale_order_lines = self.env['sale.order.line'].search([('order_id', '=', line.order_id)])
         #        if len(sale_order_lines) > 0: 
         #            for s in sale_order_lines:
