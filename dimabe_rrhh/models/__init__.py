@@ -15,4 +15,4 @@ from . import hr_salary_rule_category
 from . import wizard
 from . import hr_indicadores
 from . import custom_mutuality
-from . import custom_save_file_wizard
+from . import hr_department

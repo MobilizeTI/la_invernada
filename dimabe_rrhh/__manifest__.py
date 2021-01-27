@@ -5,7 +5,7 @@
     'summary': """RRHH""",
 
     'description': """
-        Long description of module's purpose
+        Módulo de recursos humanos Dimabe
     """,
 
     'author': "Dimabe ltda",
@@ -29,6 +29,7 @@
         'views/wizard_hr_payslip.xml',
         'views/custom_data.xml',
         'views/hr_contract.xml',
+        'views/hr_department.xml',
         'views/hr_leave.xml',
         'views/custom_settlement.xml',
         'views/hr_payslip.xml',
