@@ -5,7 +5,7 @@
     'summary': """RRHH""",
 
     'description': """
-        Long description of module's purpose
+        Módulo de recursos humanos
     """,
 
     'author': "Dimabe ltda",
