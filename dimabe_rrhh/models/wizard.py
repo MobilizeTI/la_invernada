@@ -105,7 +105,7 @@ class WizardHrPaySlip(models.TransientModel):
             col += 1
             worksheet.write(0, 2, 'Centro de Costo:')
             if pay.account_analytic_id:
-                worksheet.write(row, col, pay.account_analytic_id.name)
+                worksheet.write(row, col, pay.account_analytic_id)
             elif pay.contract_id.department_id.analytic_account_id:
                 worksheet.write(row, col, pay.contract_id.department_id.analytic_account_id.name)
             else:
