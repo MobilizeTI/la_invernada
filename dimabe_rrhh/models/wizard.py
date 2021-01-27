@@ -86,7 +86,7 @@ class WizardHrPaySlip(models.TransientModel):
         row = 0
         col = 0
         payslips = self.env['hr.payslip'].sudo().search(
-            [('indicadores_id', '=', indicadores.id), '|',('state', '=', 'done'),('state', '=', 'draft')])
+            [('indicadores_id', '=', indicadores.id),('state', 'in', ['done', 'draft'])])
         for pay in payslips:
             if pay.employee_id.address_id.id != self.company_id.id:
                 continue
