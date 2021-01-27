@@ -5,7 +5,7 @@
     'summary': """RRHH""",
 
     'description': """
-        Módulo de recursos humanos
+        Módulo de recursos humanos Dimabe
     """,
 
     'author': "Dimabe ltda",
