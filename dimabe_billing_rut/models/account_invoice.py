@@ -905,9 +905,12 @@ class AccountInvoice(models.Model):
                     list_order_ids.append(item.order_id)
             
             for item in list_order_ids:
-                order = self.env['sale.order'].search([('id','=',item)])
-                order.update({
-                    'invoice_ids': [(4,self.id)]
-                })
+                order_line = self.env['sale.order.line'].search([('id','=',item)])
+                for order in order_line:
+                    for line in self.invoice_line_ids:
+                        if order.product_id.id == line.product_id.id:      
+                            order.update({
+                                'invoice_lines': [(4,line.id)]
+                            })
         
         return res
