@@ -29,6 +29,7 @@
         'views/wizard_hr_payslip.xml',
         'views/custom_data.xml',
         'views/hr_contract.xml',
+        'views/hr_department.xml',
         'views/hr_leave.xml',
         'views/custom_settlement.xml',
         'views/hr_payslip.xml',
