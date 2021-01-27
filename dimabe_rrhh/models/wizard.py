@@ -118,12 +118,14 @@ class WizardHrPaySlip(models.TransientModel):
                     worksheet.write(0, col, 'Cant. Horas Extras')
                     worksheet.write(row, col, self.get_qty_extra_hours(payslip=pay))
                     col += 1
+                    worksheet.write(0, col, 'Monto Horas Extras')
                     worksheet.write(row, col, self.env["hr.payslip.line"].sudo().search(
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total)
                 elif rule.code == 'HEXDE':
                     worksheet.write(0, col, 'Cant. Horas Descuentos')
                     worksheet.write(row, col, self.get_qty_discount_hours(payslip=pay))
                     col += 1
+                    worksheet.write(0, col, 'Monto Horas Descuentos')
                     worksheet.write(row, col, self.env["hr.payslip.line"].sudo().search(
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total)
                 else:
