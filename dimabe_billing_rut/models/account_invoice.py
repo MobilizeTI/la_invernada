@@ -898,6 +898,7 @@ class AccountInvoice(models.Model):
                 'departure_date': self.departure_date,
                 'arrival_date': self.arrival_date
             })
+
         if len(self.orders_to_invoice) > 0:
             list_order_ids = []
             for item in self.orders_to_invoice:
@@ -905,9 +906,23 @@ class AccountInvoice(models.Model):
                     list_order_ids.append(item.order_id)
             
             for item in list_order_ids:
-                order = self.env['sale.order'].search([('id','=',item)])
-                order.update({
-                    'invoice_ids': [(4,self.id)]
-                })
+                order_line = self.env['sale.order.line'].search([('id','=',item)])
+                for order in order_line:
+                    for line in self.invoice_line_ids:
+                        if order.product_id.id == line.product_id.id:      
+                            order.update({
+                                'invoice_lines': [(4,line.id)]
+                            })
+        #if len(self.orders_to_invoice) > 0:
+        #    list_order_ids = []
+        #    for item in self.orders_to_invoice:
+        #        if item.order_id not in list_order_ids:
+        #            list_order_ids.append(item.order_id)
+            
+        #    for item in list_order_ids:
+        #        order = self.env['sale.order'].search([('id','=',item)])
+        #        order.update({
+        #            'invoice_ids': [(4,self.id)]
+        #        })
         
         return res
