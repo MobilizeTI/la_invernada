@@ -90,7 +90,7 @@ class AccountInvoice(models.Model):
         string="Despachos"
     )
 
-    order_to_add_id = fields.Integer(string="Despacho Id")
+    order_to_add_id = fields.Integer(string="Pedido Id")
 
     #To Export
     other_coin = fields.Many2one('res.currency', string='Otra Moneda')
@@ -784,7 +784,7 @@ class AccountInvoice(models.Model):
     @api.multi  
     def add_products_by_order(self):
         if self.stock_picking_ids and self.order_to_add_ids:
-            if self.stock_picking_ids.order_id != self.order_to_add_ids.id:
+            if self.stock_picking_ids.sale_id != self.order_to_add_id:
                 raise models.ValidationError('El Desapcho {} no pertenece al pedido {}'.format(self.stock_picking_ids.name,self.order_to_add_ids.name))
     
             product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
