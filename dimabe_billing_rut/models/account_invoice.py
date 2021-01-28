@@ -909,7 +909,7 @@ class AccountInvoice(models.Model):
                 order_line_ids = self.env['sale.order.line'].search([('id','=',item)])
                 for order_line in order_line_ids:
                     for line in self.invoice_line_ids:
-                        raise models.ValidationError('{} {}'.format(line.product_id.id,order_line.product_id.id))
+                     #   raise models.ValidationError('{} {}'.format(line.product_id.id,order_line.product_id.id))
                         if order_line.product_id.id == line.product_id.id:      
                             order_line.write({
                                 'invoice_lines': [(4,line.id)]
