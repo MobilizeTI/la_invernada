@@ -911,10 +911,13 @@ class AccountInvoice(models.Model):
                     for line in self.invoice_line_ids:
                      #   raise models.ValidationError('{} {}'.format(line.product_id.id,order_line.product_id.id))
                         if order_line.product_id.id == line.product_id.id:      
-                            #order_line.write({
-                            #    'invoice_lines': [(4,line.id)]
-                            #})
-                            order_line.invoice_lines = [(4,line.id)]
+                            order_line.write({
+                                'invoice_lines': [(4,line.id)]
+                            })
+                            line.write({
+                                'sale_line_ids': [(4,order_line.id)]
+                            })
+                    
         
         
         #if len(self.orders_to_invoice) > 0:
