@@ -915,6 +915,8 @@ class AccountInvoice(models.Model):
                             #    'invoice_lines': [(4,line.id)]
                             #})
                             order_line.invoice_lines = [(4,line.id)]
+        
+        
         #if len(self.orders_to_invoice) > 0:
         #    list_order_ids = []
         #    for item in self.orders_to_invoice:
