@@ -784,9 +784,13 @@ class AccountInvoice(models.Model):
     @api.multi  
     def add_products_by_order(self):
         if self.stock_picking_ids and self.order_to_add_ids:
+            if self.stock_picking_ids.order_id != self.order_to_add_ids.id:
+                raise models.ValidationError('El Desapcho {} no pertenece al pedido {}'.format(self.stock_picking_ids.name,self.order_to_add_ids.name))
+    
             product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
             stock_picking_line = self.env['stock.move.line'].search([('picking_id','=',self.stock_picking_ids.id)])
-            
+
+           
             if len(product_ids) > 0:
                 for item in product_ids: 
                     quantity = 0
