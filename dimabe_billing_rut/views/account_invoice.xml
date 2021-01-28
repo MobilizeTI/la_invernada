@@ -12,7 +12,6 @@
                     <field name="order_to_add_ids"/>
                     <field name="order_to_add_id" invisible="1"/>
                     <field name="stock_picking_ids" domain="[('sale_id','=',order_to_add_id),('invoiced','=',False)]" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"/>
-                    <field name="sale_line_ids"/>
                     <button type="object" name="add_products_by_order" string="Agregar Productos" class="oe_highlight"/>
                 </xpath>
                 <xpath expr="//field[@name='comment']" position="before">
