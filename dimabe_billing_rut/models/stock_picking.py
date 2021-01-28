@@ -63,6 +63,7 @@ class StockPicking(models.Model):
             ('7', 'Guía de devolución'),
             ], 'Tipo Translado', default='0')
 
+
     date_due = fields.Date(string="Fecha Vencimiento")
 
     net_amount = fields.Char(string="Neto")
