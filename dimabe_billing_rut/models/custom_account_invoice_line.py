@@ -1,4 +1,4 @@
-from odoo import api, fields
+from odoo import models, fields
 
 class CustomAccountInvoiceLine(models.Model):
     _name = "custom.account.invoice.line"
