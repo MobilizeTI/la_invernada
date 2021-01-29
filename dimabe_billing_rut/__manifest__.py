@@ -45,7 +45,8 @@
         'views/custom_package_type.xml',
         'views/custom_uom.xml',
         'views/res_country.xml',
-        'views/res_currency.xml'
+        'views/res_currency.xml',
+        'views/account_incoterms.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
