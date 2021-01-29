@@ -265,6 +265,8 @@ class AccountInvoice(models.Model):
 
     arrival_date = fields.Datetime('Fecha de arribo')
 
+    city_final_destiny_id = fields.Many2one('custom.cities',string="Destino Final")
+
     #Emarque Method
     @api.model
     @api.onchange('etd')
