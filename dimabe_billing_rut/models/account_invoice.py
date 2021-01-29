@@ -810,15 +810,7 @@ class AccountInvoice(models.Model):
                             if item.product_id.id == o.product_id and self.stock_picking_ids.id == o.stock_picking_id and self.order_to_add_ids.id == o.order_id:
                                 exist_orders_to_invoice = True
                     
-                    if len(self.invoice_line_ids) > 0:
-                        for i in self.custom_invoice_line_ids:
-                            if item.product_id.id == i.product_id.id:
-                                exist_to_invoice_line = True
-                                i.write({
-                                   'quantity': i.quantity + quantity
-                                })
-
-                                       
+                                                          
                     if  exist_orders_to_invoice:
                         self.env['custom.orders.to.invoice'].create({
                             'product_id': item.product_id.id,
@@ -833,26 +825,37 @@ class AccountInvoice(models.Model):
                     else:
                        raise models.ValidationError('El Producto {} del despacho {} del pedido {} ya se ecuentra agregado'.format(item.product_id.name, self.stock_picking_ids.name, self.order_to_add_ids.name))
 
-                    if not exist_to_invoice_line:
-                        self.env['account.invoice.line'].create({
-                            'name' : item.name,
-                            'product_id': item.product_id.id,
-                            'invoice_id': self.id,
-                            'price_unit': item.price_unit,
-                            'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
-                            'uom_id': item.product_uom.id,
-                            'quantity': quantity
-                        })
-                    
-                    self.env['custom.account.invoice.line'].create({
+                    self.env['account.invoice.line'].create({
+                        'name' : item.name,
                         'product_id': item.product_id.id,
                         'invoice_id': self.id,
-                        'account_id' : item.product_id.categ_id.property_account_income_categ_id.id,
-                        'quantity' : quantity,
-                        'uom_id' : item.product_uom.id,
-                        'price_unit' : item.price_unit,
-                        'price_subtotal' : quantity * item.price_unit,
+                        'order_id' : self.order_to_add_ids.id,
+                        'order_name' : self.order_to_add_ids.name,
+                        'stock_picking_id' : self.stock_picking_ids.id,
+                        'dispatch' : self.stock_picking_ids.name,
+                        'price_unit': item.price_unit,
+                        'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
+                        'uom_id': item.product_uom.id,
+                        'quantity': quantity
                     })
+                    
+                    if len(self.invoice_line_ids) > 0:
+                        for i in self.custom_invoice_line_ids:
+                            if item.product_id.id == i.product_id.id:
+                                exist_to_invoice_line = True
+                                i.write({
+                                   'quantity': i.quantity + quantity
+                                })
+                    if not exist_to_invoice_line:
+                        self.env['custom.account.invoice.line'].create({
+                            'product_id': item.product_id.id,
+                            'invoice_id': self.id,
+                            'account_id' : item.product_id.categ_id.property_account_income_categ_id.id,
+                            'quantity' : quantity,
+                            'uom_id' : item.product_uom.id,
+                            'price_unit' : item.price_unit,
+                            'price_subtotal' : quantity * item.price_unit,
+                        })
             else:
                 raise models.ValidationError('No se han encontrado Productos')
 
