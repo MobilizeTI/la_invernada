@@ -553,12 +553,13 @@ class AccountInvoice(models.Model):
         if self.dte_type_id.code == "61" or self.dte_type_id.code == "111" or self.dte_type_id.code == "56" or self.dte_type_id.code == "112":
             if len(self.references) == 0:
                 raise models.ValidationError('Para {} debe agregar al menos una Referencia'.format(self.dte_type_id.name))
-
-        for item in self.invoice_line_ids:
-            for tax_line in item.invoice_line_tax_ids:
-                if (tax_line.id == 6 or tax_line.id == None) and (item.exempt == "7"):
-                    raise models.ValidationError('El Producto {} no tiene impuesto por ende debe seleccionar el Tipo Exento'.format(item.name))
         
+        if self.dte_type_id.code != "110":
+            for item in self.invoice_line_ids:
+                for tax_line in item.invoice_line_tax_ids:
+                    if (tax_line.id == 6 or tax_line.id == None) and (item.exempt == "7"):
+                        raise models.ValidationError('El Producto {} no tiene impuesto por ende debe seleccionar el Tipo Exento'.format(item.name))
+            
         if len(self.references) > 10:
             raise models.ValidationError('Solo puede generar 20 Referencias')
 
