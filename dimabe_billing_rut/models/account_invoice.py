@@ -843,7 +843,8 @@ class AccountInvoice(models.Model):
                             'price_unit': item.price_unit,
                             'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
                             'uom_id': item.product_uom.id,
-                            'quantity': quantity
+                            'quantity': quantity,
+                            'sale_line_ids' : [(6, 0 ,[item.id])]
                         })
                         self.env['custom.orders.to.invoice'].create({
                             'product_id': item.product_id.id,
