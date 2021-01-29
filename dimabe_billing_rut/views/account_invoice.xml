@@ -46,6 +46,7 @@
                                     <field name="total_export_sales_clause" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="destiny_country_dte" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="receiving_country_dte" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <field name="city_final_destiny_id" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 </group>
                                 <group>
                                     <field name="tara" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
