@@ -521,9 +521,10 @@ class AccountInvoice(models.Model):
                      #   raise models.ValidationError('{} {}'.format(line.product_id.id,order_line.product_id.id))
                         if order_line.product_id.id == line.product_id.id: 
                             try:
-                                order_line.update({
-                                    'invoice_lines': [(4,line.id)]
-                                })   
+                                line.update({
+                                    'invoice_id' : self.id,
+                                    'sale_line_ids' : [(6, 0 ,[order_line.id])]
+                                })  
                             except:
                                  raise models.ValidationError('Error al asignar linea de Factura a Linea de Pedido')
 
