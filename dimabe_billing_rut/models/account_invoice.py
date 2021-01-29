@@ -674,8 +674,8 @@ class AccountInvoice(models.Model):
                         "PackageTypeCode": str(pk.package_type.code),
                         "PackageQuantity": str(int(pk.quantity)),
                         "Brands": str(pk.brand),
-                        "Container": pk.container if str(pk.container) else '',
-                        "Stamp": pk.container if str(pk.stamp) else ''
+                        "Container": pk.container if pk.container else '',
+                        "Stamp": pk.container if pk.stamp else ''
                     }
                 )
         else:
@@ -772,6 +772,7 @@ class AccountInvoice(models.Model):
 
             if len(product_ids) > 0:
                 for item in product_ids: 
+                    raise models.ValidationError(item.product_id.taxes_id)
                     exist_custom_invoice_line = False
                     exist_invoice_line = False
 
@@ -812,6 +813,8 @@ class AccountInvoice(models.Model):
                             'stock_picking_id': self.stock_picking_ids.id,
                             'invoice_tax_line_ids': [(6, 0, item.product_id.taxes_id)], 
                         })
+
+                        
 
 
                         if len(self.custom_invoice_line_ids) > 0:
