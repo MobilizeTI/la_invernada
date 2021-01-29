@@ -294,7 +294,7 @@
 				</tr>
 				<tr>
 					<th colspan="4">
-						<span t-field="res_company.name" />
+						<span t-field="o.employee_id.addres_id.name" />
 					</th>
 					<th>
 						<span t-field="o.employee_id.name" />
