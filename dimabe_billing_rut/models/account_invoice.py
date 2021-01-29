@@ -132,7 +132,8 @@ class AccountInvoice(models.Model):
 
     orders_to_invoice = fields.One2many(
         'custom.orders.to.invoice',
-        'invoice_id')
+        'invoice_id',
+        string="Lineas a Facturar")
 
     custom_invoice_line_ids = fields.One2many(
         'custom.account.invoice.line',
