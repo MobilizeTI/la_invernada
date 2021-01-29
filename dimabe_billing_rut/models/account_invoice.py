@@ -648,7 +648,7 @@ class AccountInvoice(models.Model):
                         "LineNumber": str(lineNumber),
                         "ProductTypeCode": "EAN",
                         "ProductCode": str(item.product_id.default_code),
-                        "ProductName": item.name,
+                        "ProductName": str(item.product_id.name),
                         "ProductQuantity": str(item.quantity),
                         "UnitOfMeasure": str(item.uom_id.name),
                         "ProductPrice": str(product_price),
