@@ -492,17 +492,18 @@ class AccountInvoice(models.Model):
     #pendiente
     @api.multi
     def update_sale_order(self):
-        if len(self.orders_to_invoice) > 0:
-            list_order_ids = []
-            for item in self.orders_to_invoice:
-                if item.order_id not in list_order_ids:
-                    list_order_ids.append(item.order_id)
-            
-            for item in list_order_ids:
-                order = self.env['sale.order'].search([('id','=',item)])
-                order.update({
-                    'invoice_ids': [(4,self.id)]
-                })
+        print('')
+        #if len(self.orders_to_invoice) > 0:
+        #    list_order_ids = []
+        #    for item in self.orders_to_invoice:
+        #        if item.order_id not in list_order_ids:
+        #            list_order_ids.append(item.order_id)
+        #    
+        #    for item in list_order_ids:
+        #        order = self.env['sale.order'].search([('id','=',item)])
+        #        order.update({
+        #            'invoice_ids': [(4,self.id)]
+        #        })
 
 
 
@@ -824,7 +825,7 @@ class AccountInvoice(models.Model):
                             'quantity': quantity
                         })
                     
-                    if not exist_orders_to_invoice: #cambiar a not
+                    if not exist_orders_to_invoice:
                         self.env['custom.orders.to.invoice'].create({
                             'product_id': item.product_id.id,
                             'product_name': item.name,
@@ -845,18 +846,18 @@ class AccountInvoice(models.Model):
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
 
     #modificar 
-    @api.onchange('orders_to_invoice')
-    @api.multi
-    def change_orders_to_invoice(self):
-        for line in self.invoice_line_ids:
-            sum_quantity = 0
-            for item in self.orders_to_invoice:
-                if line.product_id.id == item.product_id:
-                    sum_quantity += float(item.quantity_to_invoice)
-            if sum_quantity != line.quantity: #validado
-                line.write({
-                    'quantity': sum_quantity
-                })
+    #@api.onchange('orders_to_invoice')
+    #@api.multi
+    #def change_orders_to_invoice(self):
+    #    for line in self.invoice_line_ids:
+    #        sum_quantity = 0
+    #        for item in self.orders_to_invoice:
+    #            if line.product_id.id == item.product_id:
+    #                sum_quantity += float(item.quantity_to_invoice)
+    #        if sum_quantity != line.quantity: #validado
+    #            line.write({
+    #                'quantity': sum_quantity
+    #            })
             
 
     #Send Data to Stock_Picking Comex
@@ -913,7 +914,7 @@ class AccountInvoice(models.Model):
                     for line in self.invoice_line_ids:
                      #   raise models.ValidationError('{} {}'.format(line.product_id.id,order_line.product_id.id))
                         if order_line.product_id.id == line.product_id.id:      
-                            order_line.write({
+                            order_line.invoice_lines.write({
                                 'invoice_lines': [(4,line.id)]
                             })
                             line.write({

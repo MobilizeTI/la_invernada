@@ -76,7 +76,7 @@
                             </group>
                             <group style="width:100%%">
                                 <group>
-                                    <field name="remarks"/>
+                                    <field name="remarks" readonly="1"/>
                                 </group>
                             </group>
                         </group>

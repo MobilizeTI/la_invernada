@@ -24,3 +24,4 @@ from . import sale_order
 from . import res_country
 from . import res_currency
 from . import custom_orders_to_invoice
+from . import custom_account_invoice_line
