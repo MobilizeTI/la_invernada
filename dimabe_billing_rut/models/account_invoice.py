@@ -840,7 +840,10 @@ class AccountInvoice(models.Model):
                             'quantity': quantity
                         })
                     
-                  
+                    #self.env['custom.account.invoice.line'].create({
+                    #    'product_id': item.product_id.id,
+                    #    'invoice_id': self.id,
+                    #})
             else:
                 raise models.ValidationError('No se han encontrado Productos')
 
