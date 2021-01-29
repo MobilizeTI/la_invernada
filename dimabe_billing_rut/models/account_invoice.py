@@ -825,6 +825,18 @@ class AccountInvoice(models.Model):
                             'uom_id': item.product_uom.id,
                             'quantity': quantity
                         })
+                        self.env['custom.orders.to.invoice'].create({
+                            'product_id': item.product_id.id,
+                            'product_name': item.name,
+                            'quantity_to_invoice': str(quantity),
+                            'invoice_id': self.id,
+                            'order_id': self.order_to_add_ids.id,
+                            'order_name': self.order_to_add_ids.name,
+                            'stock_picking_name': self.stock_picking_ids.name,
+                            'stock_picking_id': self.stock_picking_ids.id,
+                        })
+
+
                         if len(self.custom_invoice_line_ids) > 0:
                             for i in self.custom_invoice_line_ids:
                                 if item.product_id.id == i.product_id.id:
