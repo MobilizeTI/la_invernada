@@ -843,6 +843,11 @@ class AccountInvoice(models.Model):
                     #self.env['custom.account.invoice.line'].create({
                     #    'product_id': item.product_id.id,
                     #    'invoice_id': self.id,
+                    #    'account_id : ,
+                    #    'quantity : ,
+                    #    'uom_id : ,
+                    #    'price_unit : ,
+                    #    'proce_subtotal : ,
                     #})
             else:
                 raise models.ValidationError('No se han encontrado Productos')
