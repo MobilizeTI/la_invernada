@@ -409,7 +409,6 @@ class AccountInvoice(models.Model):
         
     @api.multi
     def send_to_sii(self):
-        self.update_sale_order()
         #raise models.ValidationError('verificar actualizacion de SO')
         url = self.env.user.company_id.dte_url
         headers = {
@@ -496,62 +495,11 @@ class AccountInvoice(models.Model):
                     self.write({'ted':img_str})
                     break
                 except:
-                    cols += 1
-            
-            #self.update_sale_order()
-        
+                    cols += 1        
         if 'status' in Jrkeys and 'title' in Jrkeys:
             raise models.ValidationError('Status: {} Title: {} Json: {}'.format(jr['status'],jr['title'],json.dumps(invoice)))
         elif 'message' in Jrkeys:
             raise models.ValidationError('Advertencia: {} Json: {}'.format(jr['message'],json.dumps(invoice)))
-  
-    #pendiente
-    @api.multi
-    def update_sale_order(self):
-        if len(self.orders_to_invoice) > 0:
-            list_order_ids = []
-            for item in self.orders_to_invoice:
-                if item.order_id not in list_order_ids:
-                    list_order_ids.append(item.order_id)
-            
-            for item in list_order_ids:
-                order_line_ids = self.env['sale.order.line'].search([('id','=',item)])
-                for order_line in order_line_ids:
-                    for line in self.invoice_line_ids:
-                     #   raise models.ValidationError('{} {}'.format(line.product_id.id,order_line.product_id.id))
-                        if order_line.product_id.id == line.product_id.id: 
-                            try:
-                                line.update({
-                                    'invoice_id' : self.id,
-                                    'sale_line_ids' : [(6, 0 ,[order_line.id])]
-                                })  
-                            except:
-                                 raise models.ValidationError('Error al asignar linea de Factura a Linea de Pedido')
-
-                      
-
-
-
-        #  orders = self.env['sale.order'].search([])
-        #    for item in list_order_ids:
-        #        for order in orders:
-        #            if order.id == item:
-        #                order.update({
-        #                    'invoice_ids': [(4,self.id)]
-        #                })
-        #    return orders
-        #if len(self.invoice_line_ids) > 0: 
-        #    for line in self.invoice_line_ids:
-        #        sale_order = self.env['stock.picking'].search([('id', '=', line.stock_picking_id)])
-        #        sum_quantity = 0
-        #        sale_order_lines = self.env['sale.order.line'].search([('order_id', '=', line.order_id)])
-        #        if len(sale_order_lines) > 0: 
-        #            for s in sale_order_lines:
-        #                if s.product_id.id == line.product_id.id:
-        #                    new_qty_invoiced = s.qty_invoiced + line.quantity
-        #                    s.write({
-        #                        'qty_invoiced': new_qty_invoiced
-        #                    })
 
      
     def validation_fields(self):
@@ -844,12 +792,13 @@ class AccountInvoice(models.Model):
                             'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
                             'uom_id': item.product_uom.id,
                             'quantity': quantity,
-                            'sale_line_ids' : [(6, 0 ,[item.id])]
+                            'sale_line_ids' : [(6, 0 ,[item.id])] #asociacion con linea de pedido
                         })
                         self.env['custom.orders.to.invoice'].create({
                             'product_id': item.product_id.id,
                             'product_name': item.name,
                             'quantity_to_invoice': str(quantity),
+                            'quantity_reminds_to_invoice': str(quantity),
                             'invoice_id': self.id,
                             'order_id': self.order_to_add_ids.id,
                             'order_name': self.order_to_add_ids.name,
@@ -883,29 +832,10 @@ class AccountInvoice(models.Model):
         else:
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
 
-    #@api.onchange('invoice_line_ids')
-    #@api.multi
-    #def change_invioce_line(self):
-    #    for custom_line in self.custom_invoice_line_ids:
-    #        for item in self.invoive_line_ids:
-    #            if custom_line.product_id.id == item.product_id.id and 
-          
-
-
-    #modificar 
-    #@api.onchange('orders_to_invoice')
-    #@api.multi
-    #def change_orders_to_invoice(self):
-    #    for line in self.invoice_line_ids:
-    #        sum_quantity = 0
-    #        for item in self.orders_to_invoice:
-    #            if line.product_id.id == item.product_id:
-    #                sum_quantity += float(item.quantity_to_invoice)
-    #        if sum_quantity != line.quantity: #validado
-    #            line.write({
-    #                'quantity': sum_quantity
-    #            })
-            
+    @api.onchange('invoice_line_ids')
+    @api.multi
+    def change_invioce_line(self):
+        print('')
 
     #Send Data to Stock_Picking Comex
     @api.multi
@@ -948,38 +878,4 @@ class AccountInvoice(models.Model):
                 'departure_date': self.departure_date,
                 'arrival_date': self.arrival_date
             })
-
-        if len(self.orders_to_invoice) > 0:
-            list_order_ids = []
-            for item in self.orders_to_invoice:
-                if item.order_id not in list_order_ids:
-                    list_order_ids.append(item.order_id)
-            
-            for item in list_order_ids:
-                order_line_ids = self.env['sale.order.line'].search([('id','=',item)])
-                for order_line in order_line_ids:
-                    for line in self.invoice_line_ids:
-                     #   raise models.ValidationError('{} {}'.format(line.product_id.id,order_line.product_id.id))
-                        if order_line.product_id.id == line.product_id.id: 
-                            order_line.write({
-                                'invoice_lines': [(4,line.id)]
-                            })
-                            #line.write({
-                            #    'sale_line_ids': [(4,order_line.id)]
-                            #})
-                    
-        
-        
-        #if len(self.orders_to_invoice) > 0:
-        #    list_order_ids = []
-        #    for item in self.orders_to_invoice:
-        #        if item.order_id not in list_order_ids:
-        #            list_order_ids.append(item.order_id)
-            
-        #    for item in list_order_ids:
-        #        order = self.env['sale.order'].search([('id','=',item)])
-        #        order.update({
-        #            'invoice_ids': [(4,self.id)]
-        #        })
-        
         return res
