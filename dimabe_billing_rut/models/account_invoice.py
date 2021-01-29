@@ -508,18 +508,22 @@ class AccountInvoice(models.Model):
     #pendiente
     @api.multi
     def update_sale_order(self):
-        print('')
-        #if len(self.orders_to_invoice) > 0:
-        #    list_order_ids = []
-        #    for item in self.orders_to_invoice:
-        #        if item.order_id not in list_order_ids:
-        #            list_order_ids.append(item.order_id)
-        #    
-        #    for item in list_order_ids:
-        #        order = self.env['sale.order'].search([('id','=',item)])
-        #        order.update({
-        #            'invoice_ids': [(4,self.id)]
-        #        })
+        if len(self.orders_to_invoice) > 0:
+            list_order_ids = []
+            for item in self.orders_to_invoice:
+                if item.order_id not in list_order_ids:
+                    list_order_ids.append(item.order_id)
+            
+            for item in list_order_ids:
+                order_line_ids = self.env['sale.order.line'].search([('id','=',item)])
+                for order_line in order_line_ids:
+                    for line in self.invoice_line_ids:
+                     #   raise models.ValidationError('{} {}'.format(line.product_id.id,order_line.product_id.id))
+                        if order_line.product_id.id == line.product_id.id: 
+                            order_line.write({
+                                'invoice_lines': [(4,line.id)]
+                            })   
+                        raise models.ValidationError('{} = {}  => '.format(line.product_id.id,order_line.product_id.id))
 
 
 
