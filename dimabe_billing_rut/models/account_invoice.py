@@ -310,6 +310,8 @@ class AccountInvoice(models.Model):
 
     @api.onchange('export_clause')
     def onchange_export_clause(self):
+        incoterm = self.env['account.incoterms'].search([('sii_code','=',self.export_clause.code)])
+        raise models.ValidationError('{} {}'.format(incoterm.code,incoterm.id))
         self.incoterm_id.id = self.env['account.incoterms'].search([('code_sii','=',self.export_clause.code)]).id
 
     @api.onchange('order_to_add_ids')
