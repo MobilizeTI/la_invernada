@@ -810,7 +810,7 @@ class AccountInvoice(models.Model):
                             'order_name': self.order_to_add_ids.name,
                             'stock_picking_name': self.stock_picking_ids.name,
                             'stock_picking_id': self.stock_picking_ids.id,
-                            'invoice_tax_line_ids': self.product_id.taxes_id
+                            'invoice_tax_line_ids': self.item.product_id.taxes_id
                         })
 
 
