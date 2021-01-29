@@ -312,10 +312,11 @@ class AccountInvoice(models.Model):
     def onchange_export_clause(self):
         self.incoterm_id = self.env['account.incoterms'].search([('sii_code','=',self.export_clause.code)])
 
-    @api.onchange('incoterm_id')
-    def onchange_incoterm(self):
-        if self.incoterm_id.sii_code:
-            self.export_clause = self.env['custom.export.clause'].search([('code','=',self.incoterm_id.sii_code)])
+    #@api.onchange('incoterm_id')
+    #def onchange_incoterm(self):
+    #    if self.incoterm_id.sii_code:
+    #        raise models.ValidationError()
+    #        self.export_clause = self.env['custom.export.clause'].search([('code','=',self.incoterm_id.sii_code)])
 
     @api.onchange('order_to_add_ids')
     def onchange_order_to_add(self):
@@ -949,13 +950,13 @@ class AccountInvoice(models.Model):
                 for order_line in order_line_ids:
                     for line in self.invoice_line_ids:
                      #   raise models.ValidationError('{} {}'.format(line.product_id.id,order_line.product_id.id))
-                        if order_line.product_id.id == line.product_id.id:      
-                            order_line.invoice_lines.write({
+                        if order_line.product_id.id == line.product_id.id: 
+                            order_line.write({
                                 'invoice_lines': [(4,line.id)]
                             })
-                            line.write({
-                                'sale_line_ids': [(4,order_line.id)]
-                            })
+                            #line.write({
+                            #    'sale_line_ids': [(4,order_line.id)]
+                            #})
                     
         
         
