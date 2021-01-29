@@ -814,17 +814,7 @@ class AccountInvoice(models.Model):
                                    'quantity': i.quantity + quantity
                                 })
 
-                    if not exist_to_invoice_line:
-                        self.env['account.invoice.line'].create({
-                            'name' : item.name,
-                            'product_id': item.product_id.id,
-                            'invoice_id': self.id,
-                            'price_unit': item.price_unit,
-                            'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
-                            'uom_id': item.product_uom.id,
-                            'quantity': quantity
-                        })
-                    
+                                       
                     if not exist_orders_to_invoice:
                         self.env['custom.orders.to.invoice'].create({
                             'product_id': item.product_id.id,
@@ -839,6 +829,18 @@ class AccountInvoice(models.Model):
                     else:
                        raise models.ValidationError('El Producto {} del despacho {} del pedido {} ya se ecuentra agregado'.format(item.product_id.name, self.stock_picking_ids.name, self.order_to_add_ids.name))
 
+                    if not exist_to_invoice_line:
+                        self.env['account.invoice.line'].create({
+                            'name' : item.name,
+                            'product_id': item.product_id.id,
+                            'invoice_id': self.id,
+                            'price_unit': item.price_unit,
+                            'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
+                            'uom_id': item.product_uom.id,
+                            'quantity': quantity
+                        })
+                    
+                  
             else:
                 raise models.ValidationError('No se han encontrado Productos')
 
