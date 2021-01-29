@@ -584,7 +584,13 @@ class AccountInvoice(models.Model):
         exemtAmount = 0
         netAmount = 0
         countNotExempt = 0
-        for item in self.invoice_line_ids:
+        invoice_line = []
+        if self.dte_type_id.code == "110":
+            invoice_line = self.custom_invoice_line_ids
+        else:
+            invoice_line = self.invoice_line_ids
+
+        for item in invoice_line:
             haveExempt = False
 
             if self.dte_type_id.code == "34": #FACTURA EXENTA

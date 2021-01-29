@@ -178,7 +178,7 @@
                                             <field name="uom_id" readonly="1"/>
                                             <field name="price_unit" readonly="1"/>
                                             <field name="invoice_tax_line_ids" readonly="1"/>
-                                            <field name="exempt" readonly="1"/>
+                                            <field name="exempt"/>
                                             <field name="price_subtotal" readonly="1"/>
                                         </group>
                                     </form>
