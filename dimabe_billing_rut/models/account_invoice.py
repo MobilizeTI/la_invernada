@@ -597,12 +597,13 @@ class AccountInvoice(models.Model):
             if self.dte_type_id.code == "34": #FACTURA EXENTA
                 haveExempt == True
 
-            if haveExempt == False and (len(item.invoice_line_tax_ids) == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6)):
-                haveExempt = True
-                typeOfExemptEnum = item.exempt
-                if typeOfExemptEnum == '7':
-                    raise models.ValidationError('El Producto {} al no tener impuesto seleccionado, debe seleccionar el tipo Exento'.format(item.name))
-            
+            if self.dte_type_id.code != "34"
+                if haveExempt == False and (len(item.invoice_line_tax_ids) == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6)):
+                    haveExempt = True
+                    typeOfExemptEnum = item.exempt
+                    if typeOfExemptEnum == '7':
+                        raise models.ValidationError('El Producto {} al no tener impuesto seleccionado, debe seleccionar el tipo Exento'.format(item.name))
+                
             if haveExempt:
                 if self.dte_type_id.code == "110": #Exportacion con decimal
                     amount_subtotal = item.price_subtotal
