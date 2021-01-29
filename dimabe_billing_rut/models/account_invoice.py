@@ -617,7 +617,7 @@ class AccountInvoice(models.Model):
                         "LineNumber": str(lineNumber),
                         "ProductTypeCode": "EAN",
                         "ProductCode": str(item.product_id.default_code),
-                        "ProductName": item.name,
+                        "ProductName": item.product_id.name,
                         "ProductQuantity": str(item.quantity), #segun DTEmite no es requerido int
                         "UnitOfMeasure": str(item.uom_id.name),
                         "ProductPrice": str(item.price_unit), #segun DTEmite no es requerido int
