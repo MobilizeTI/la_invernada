@@ -184,7 +184,7 @@
                             </group>
                         </page>
                     </xpath>
-                    <xpath expr="//form[1]/sheet[1]/notebook[1]/field[@name='invoice_line_ids']" position="inside">
+                    <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
                         <page name="invoice_line_order_tab" string="Linea de Factura Pedidos">
                             <group name="invoice_line_order_info" cols="">
                                <field name="custom_invoice_line_ids" mode="tree" options="{'no_create':True}">
