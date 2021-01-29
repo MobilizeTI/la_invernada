@@ -520,10 +520,11 @@ class AccountInvoice(models.Model):
                     for line in self.invoice_line_ids:
                      #   raise models.ValidationError('{} {}'.format(line.product_id.id,order_line.product_id.id))
                         if order_line.product_id.id == line.product_id.id: 
-                            order_line.write({
+                            raise models.ValidationError('if valid = try update')
+                            order_line.update({
                                 'invoice_lines': [(4,line.id)]
                             })   
-                        raise models.ValidationError('{} = {}  => '.format(line.product_id.id,order_line.product_id.id))
+                      
 
 
 
