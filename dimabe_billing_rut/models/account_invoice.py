@@ -844,7 +844,8 @@ class AccountInvoice(models.Model):
                             if item.product_id.id == i.product_id.id:
                                 exist_to_invoice_line = True
                                 i.write({
-                                   'quantity': i.quantity + quantity
+                                   'quantity': i.quantity + quantity,
+                                   'price_subtotal' : i.price_unit * (i.quantity + quantity)
                                 })
                     if not exist_to_invoice_line:
                         self.env['custom.account.invoice.line'].create({
