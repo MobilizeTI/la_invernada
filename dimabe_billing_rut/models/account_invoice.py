@@ -811,7 +811,7 @@ class AccountInvoice(models.Model):
                                 exist_orders_to_invoice = True
                     
                                                           
-                    if  exist_orders_to_invoice:
+                    if not exist_orders_to_invoice:
                         self.env['custom.orders.to.invoice'].create({
                             'product_id': item.product_id.id,
                             'product_name': item.name,
