@@ -5,4 +5,4 @@ class CustomCities(models.Model):
 
     name = fields.Char(string="Ciudad")
 
-    country = fields.Many2one('res.country',string="País")
+    country = fields.Many2one('res.country',string="País", nullable=True)
