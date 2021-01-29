@@ -819,7 +819,7 @@ class AccountInvoice(models.Model):
                                 })
 
                                        
-                    if not exist_orders_to_invoice:
+                    if  exist_orders_to_invoice:
                         self.env['custom.orders.to.invoice'].create({
                             'product_id': item.product_id.id,
                             'product_name': item.name,
@@ -858,6 +858,13 @@ class AccountInvoice(models.Model):
 
         else:
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
+
+    #@api.onchange('invoice_line_ids')
+    #@api.multi
+    #def change_invioce_line(self):
+    #    for item in self.invoive_line_ids:
+    #        if 
+
 
     #modificar 
     #@api.onchange('orders_to_invoice')
