@@ -33,6 +33,7 @@ class AccountInvoice(models.Model):
     references = fields.One2many(
         'account.invoice.references',
         'invoice_id',
+        string="Referencias",
         readonly=False,
         states={'draft': [('readonly', False)]},
     )
@@ -135,7 +136,7 @@ class AccountInvoice(models.Model):
 
     custom_invoice_line_ids = fields.One2many(
         'custom.account.invoice.line',
-        'invoice_id')
+        'invoice_id', string="Lineas Consolidadas")
 
     #COMEX
     total_value = fields.Float(
@@ -795,79 +796,67 @@ class AccountInvoice(models.Model):
             product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
             stock_picking_line = self.env['stock.move.line'].search([('picking_id','=',self.stock_picking_ids.id)])
 
-           
             if len(product_ids) > 0:
                 for item in product_ids: 
-                    quantity = 0
-                    for picking in stock_picking_line:
-                        if picking.product_id.id == item.product_id.id:
-                            quantity += picking.qty_done 
-                    exist_to_invoice_line = False
-                    exist_orders_to_invoice = False
+                    exist_custom_invoice_line = False
+                    exist_invoice_line = False
 
-                    if len(self.orders_to_invoice) > 0:
-                        for o in self.orders_to_invoice:
-                            if item.product_id.id == o.product_id and self.stock_picking_ids.id == o.stock_picking_id and self.order_to_add_ids.id == o.order_id:
-                                exist_orders_to_invoice = True
-                    
-                                                          
-                    if exist_orders_to_invoice:
-                        self.env['custom.orders.to.invoice'].create({
-                            'product_id': item.product_id.id,
-                            'product_name': item.name,
-                            'quantity_to_invoice': str(quantity),
-                            'invoice_id': self.id,
-                            'order_id': self.order_to_add_ids.id,
-                            'order_name': self.order_to_add_ids.name,
-                            'stock_picking_name': self.stock_picking_ids.name,
-                            'stock_picking_id': self.stock_picking_ids.id,
-                        })
-                    else:
-                       raise models.ValidationError('El Producto {} del despacho {} del pedido {} ya se ecuentra agregado'.format(item.product_id.name, self.stock_picking_ids.name, self.order_to_add_ids.name))
-
-                    self.env['account.invoice.line'].create({
-                        'name' : item.name,
-                        'product_id': item.product_id.id,
-                        'invoice_id': self.id,
-                        'order_id' : self.order_to_add_ids.id,
-                        'order_name' : self.order_to_add_ids.name,
-                        'stock_picking_id' : self.stock_picking_ids.id,
-                        'dispatch' : self.stock_picking_ids.name,
-                        'price_unit': item.price_unit,
-                        'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
-                        'uom_id': item.product_uom.id,
-                        'quantity': quantity
-                    })
-                    
                     if len(self.invoice_line_ids) > 0:
-                        for i in self.custom_invoice_line_ids:
-                            if item.product_id.id == i.product_id.id:
-                                exist_to_invoice_line = True
-                                i.write({
-                                   'quantity': i.quantity + quantity,
-                                   'price_subtotal' : i.price_unit * (i.quantity + quantity)
-                                })
-                    if not exist_to_invoice_line:
-                        self.env['custom.account.invoice.line'].create({
+                        for line in self.invoice_line_ids:
+                            if item.product_id.id == line.product_id and self.stock_picking_ids.id == line.stock_picking_id and self.order_to_add_ids.id == line.order_id:
+                                exist_invoice_line = True
+
+                    if not exist_invoice_line:
+                        quantity = 0
+                        for picking in stock_picking_line:
+                            if picking.product_id.id == item.product_id.id:
+                                quantity += picking.qty_done 
+                        
+                        self.env['account.invoice.line'].create({
+                            'name' : item.name,
                             'product_id': item.product_id.id,
                             'invoice_id': self.id,
-                            'account_id' : item.product_id.categ_id.property_account_income_categ_id.id,
-                            'quantity' : quantity,
-                            'uom_id' : item.product_uom.id,
-                            'price_unit' : item.price_unit,
-                            'price_subtotal' : quantity * item.price_unit,
+                            'order_id' : self.order_to_add_ids.id,
+                            'order_name' : self.order_to_add_ids.name,
+                            'stock_picking_id' : self.stock_picking_ids.id,
+                            'dispatch' : self.stock_picking_ids.name,
+                            'price_unit': item.price_unit,
+                            'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
+                            'uom_id': item.product_uom.id,
+                            'quantity': quantity
                         })
+                        if len(self.custom_invoice_line_ids) > 0:
+                            for i in self.custom_invoice_line_ids:
+                                if item.product_id.id == i.product_id.id:
+                                    exist_custom_invoice_line = True
+                                    i.write({
+                                        'quantity': i.quantity + quantity,
+                                        'price_subtotal' : i.price_unit * (i.quantity + quantity)
+                                    })
+                        if not exist_custom_invoice_line:
+                            self.env['custom.account.invoice.line'].create({
+                                'product_id': item.product_id.id,
+                                'invoice_id': self.id,
+                                'account_id' : item.product_id.categ_id.property_account_income_categ_id.id,
+                                'quantity' : quantity,
+                                'uom_id' : item.product_uom.id,
+                                'price_unit' : item.price_unit,
+                                'price_subtotal' : quantity * item.price_unit,
+                            })
+                    else:
+                       raise models.ValidationError('El Producto {} del despacho {} del pedido {} ya se ecuentra agregado'.format(item.product_id.name, self.stock_picking_ids.name, self.order_to_add_ids.name))               
             else:
                 raise models.ValidationError('No se han encontrado Productos')
-
         else:
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
 
     #@api.onchange('invoice_line_ids')
     #@api.multi
     #def change_invioce_line(self):
-    #    for item in self.invoive_line_ids:
-    #        if 
+    #    for custom_line in self.custom_invoice_line_ids:
+    #        for item in self.invoive_line_ids:
+    #            if custom_line.product_id.id == item.product_id.id and 
+          
 
 
     #modificar 
