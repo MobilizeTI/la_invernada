@@ -308,6 +308,10 @@ class AccountInvoice(models.Model):
 
     #COMEX METHOD
 
+    @api.onchange('export_clause')
+    def onchange_export_clause(self):
+        self.incoterm_id.id = self.env['account.incoterms'].search([('code_sii','=',self.export_clause.code)]).id
+
     @api.onchange('order_to_add_ids')
     def onchange_order_to_add(self):
         self.order_to_add_id = self.order_to_add_ids.id
