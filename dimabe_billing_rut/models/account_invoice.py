@@ -587,7 +587,8 @@ class AccountInvoice(models.Model):
         countNotExempt = 0
         invoice_line = []
         if self.dte_type_id.code == "110":
-            invoice_line = self.custom_invoice_line_ids
+            #invoice_line = self.custom_invoice_line_ids
+            invoice_line = self.invoice_line_ids
         else:
             invoice_line = self.invoice_line_ids
 
@@ -617,7 +618,7 @@ class AccountInvoice(models.Model):
                         "LineNumber": str(lineNumber),
                         "ProductTypeCode": "EAN",
                         "ProductCode": str(item.product_id.default_code),
-                        "ProductName": item.product_id.name,
+                        "ProductName": item.name,
                         "ProductQuantity": str(item.quantity), #segun DTEmite no es requerido int
                         "UnitOfMeasure": str(item.uom_id.name),
                         "ProductPrice": str(item.price_unit), #segun DTEmite no es requerido int
@@ -648,7 +649,7 @@ class AccountInvoice(models.Model):
                         "LineNumber": str(lineNumber),
                         "ProductTypeCode": "EAN",
                         "ProductCode": str(item.product_id.default_code),
-                        "ProductName": str(item.product_id.name),
+                        "ProductName": item.name,
                         "ProductQuantity": str(item.quantity),
                         "UnitOfMeasure": str(item.uom_id.name),
                         "ProductPrice": str(product_price),
