@@ -553,13 +553,12 @@ class AccountInvoice(models.Model):
         if self.dte_type_id.code == "61" or self.dte_type_id.code == "111" or self.dte_type_id.code == "56" or self.dte_type_id.code == "112":
             if len(self.references) == 0:
                 raise models.ValidationError('Para {} debe agregar al menos una Referencia'.format(self.dte_type_id.name))
+                
+        for item in self.invoice_line_ids:
+            for tax_line in item.invoice_line_tax_ids:
+                if (tax_line.id == 6 or tax_line.id == None) and (item.exempt == "7"):
+                    raise models.ValidationError('El Producto {} no tiene impuesto por ende debe seleccionar el Tipo Exento'.format(item.name))
         
-        if self.dte_type_id.code != "110":
-            for item in self.invoice_line_ids:
-                for tax_line in item.invoice_line_tax_ids:
-                    if (tax_line.id == 6 or tax_line.id == None) and (item.exempt == "7"):
-                        raise models.ValidationError('El Producto {} no tiene impuesto por ende debe seleccionar el Tipo Exento'.format(item.name))
-            
         if len(self.references) > 10:
             raise models.ValidationError('Solo puede generar 20 Referencias')
 
@@ -587,8 +586,7 @@ class AccountInvoice(models.Model):
         countNotExempt = 0
         invoice_line = []
         if self.dte_type_id.code == "110":
-            #invoice_line = self.custom_invoice_line_ids
-            invoice_line = self.invoice_line_ids
+            invoice_line = self.custom_invoice_line_ids
         else:
             invoice_line = self.invoice_line_ids
 
@@ -598,13 +596,12 @@ class AccountInvoice(models.Model):
             if self.dte_type_id.code == "34": #FACTURA EXENTA
                 haveExempt == True
 
-            if self.dte_type_id.code != "110":
-                if haveExempt == False and (len(item.invoice_line_tax_ids) == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6)):
-                    haveExempt = True
-                    typeOfExemptEnum = item.exempt
-                    if typeOfExemptEnum == '7':
-                        raise models.ValidationError('El Producto {} al no tener impuesto seleccionado, debe seleccionar el tipo Exento'.format(item.name))
-                
+            if haveExempt == False and (len(item.invoice_line_tax_ids) == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6)):
+                haveExempt = True
+                typeOfExemptEnum = item.exempt
+                if typeOfExemptEnum == '7':
+                    raise models.ValidationError('El Producto {} al no tener impuesto seleccionado, debe seleccionar el tipo Exento'.format(item.name))
+            
             if haveExempt:
                 if self.dte_type_id.code == "110": #Exportacion con decimal
                     amount_subtotal = item.price_subtotal
