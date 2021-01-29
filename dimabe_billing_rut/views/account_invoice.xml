@@ -187,22 +187,30 @@
                     <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
                         <page name="invoice_line_order_tab" string="Linea de Factura Pedidos">
                             <group name="invoice_line_order_info" cols="">
-                               <!--<field name="orders_to_invoice" mode="tree" options="{'no_create':True}">
+                               <field name="custom_invoice_line_ids" mode="tree" options="{'no_create':True}">
                                     <form>
                                         <group>
-                                            <field name="order_name" readonly="1"/>
-                                            <field name="stock_picking_name" readonly="1"/>
-                                            <field name="quantity_to_invoice" readonly="1"/>
-                                            <field name="product_name" readonly="1"/>
+                                            <field name="product_id" readonly="1"/>
+                                            <field name="account_id" readonly="1"/>
+                                            <field name="quantity" readonly="1"/>
+                                            <field name="uom_id" readonly="1"/>
+                                            <field name="price_unit" readonly="1"/>
+                                            <field name="invoice_tax_line_ids" readonly="1"/>
+                                            <field name="exempt" readonly="1"/>
+                                            <field name="price_subtotal" readonly="1"/>
                                         </group>
                                     </form>
                                     <tree>
-                                        <field name="order_name" readonly="1"/>
-                                        <field name="stock_picking_name" readonly="1"/>
-                                        <field name="quantity_to_invoice" readonly="1"/>
-                                        <field name="product_name" readonly="1"/>
+                                        <field name="product_id" readonly="1"/>
+                                        <field name="account_id" readonly="1"/>
+                                        <field name="quantity" readonly="1"/>
+                                        <field name="uom_id" readonly="1"/>
+                                        <field name="price_unit" readonly="1"/>
+                                        <field name="invoice_tax_line_ids" readonly="1"/>
+                                        <field name="exempt" readonly="1"/>
+                                        <field name="price_subtotal" readonly="1"/>
                                     </tree>
-                                </field>-->
+                                </field>
                             </group>
                         </page>
                     </xpath>

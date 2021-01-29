@@ -133,6 +133,10 @@ class AccountInvoice(models.Model):
         'custom.orders.to.invoice',
         'invoice_id')
 
+    custom_invoice_line_ids = fields.One2many(
+        'custom.account.invoice.line',
+        'invoice_id')
+
     #COMEX
     total_value = fields.Float(
         'Valor Total',
@@ -807,7 +811,7 @@ class AccountInvoice(models.Model):
                                 exist_orders_to_invoice = True
                     
                     if len(self.invoice_line_ids) > 0:
-                        for i in self.invoice_line_ids:
+                        for i in self.custom_invoice_line_ids:
                             if item.product_id.id == i.product_id.id:
                                 exist_to_invoice_line = True
                                 i.write({
@@ -840,15 +844,15 @@ class AccountInvoice(models.Model):
                             'quantity': quantity
                         })
                     
-                    #self.env['custom.account.invoice.line'].create({
-                    #    'product_id': item.product_id.id,
-                    #    'invoice_id': self.id,
-                    #    'account_id : ,
-                    #    'quantity : ,
-                    #    'uom_id : ,
-                    #    'price_unit : ,
-                    #    'proce_subtotal : ,
-                    #})
+                    self.env['custom.account.invoice.line'].create({
+                        'product_id': item.product_id.id,
+                        'invoice_id': self.id,
+                        'account_id' : item.product_id.categ_id.property_account_income_categ_id.id,
+                        'quantity' : quantity,
+                        'uom_id' : item.product_uom.id,
+                        'price_unit' : item.price_unit,
+                        'price_subtotal' : quantity * item.price_unit,
+                    })
             else:
                 raise models.ValidationError('No se han encontrado Productos')
 
