@@ -5,4 +5,4 @@ class ResCountry(models.Model):
 
     sii_code = fields.Char(string="Código SII")
 
-    city_ids = fields.One2many('custom.cities',nullable=True)
+    city_ids = fields.One2many('custom.cities','country')
