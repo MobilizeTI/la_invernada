@@ -316,13 +316,12 @@ class AccountInvoice(models.Model):
 
     @api.onchange('incoterm_id')
     def onchange_incoterm(self):
-        if self.incoterm_id.sii_code:
-            if self.incoterm_id.sii_code != '0' or self.incoterm_id.sii_code != '':
-                test = self.env['custom.export.clause'].search([('code','=',self.incoterm_id.sii_code)])
-                raise models.ValidationError(test.initials)
-                self.export_clause = self.env['custom.export.clause'].search([('code','=',self.incoterm_id.sii_code)])
-            else:
-                raise models.ValidationError('{} no tiene un código válido para SII')
+        if self.incoterm_id.sii_code != '0' or self.incoterm_id.sii_code != '':
+            test = self.env['custom.export.clause'].search([('code','=',self.incoterm_id.sii_code)])
+            raise models.ValidationError(test.initials)
+            self.export_clause = self.env['custom.export.clause'].search([('code','=',self.incoterm_id.sii_code)])
+        else:
+            raise models.ValidationError('{} no tiene un código válido para SII')
 
     @api.onchange('order_to_add_ids')
     def onchange_order_to_add(self):
@@ -848,7 +847,7 @@ class AccountInvoice(models.Model):
     @api.onchange('invoice_line_ids')
     @api.multi
     def change_invioce_line(self):
-        for item in self:
+        for item in self.invoice_line_ids:
             raise models.ValidationError('intentando eliminar id {}'.format(item.id))
 
     #Send Data to Stock_Picking Comex
