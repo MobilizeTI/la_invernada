@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from dimabe_billing_rut.models.account_invoice import change_invoice_line
 
 class AccountInvoiceLine(models.Model):
 
@@ -24,5 +25,13 @@ class AccountInvoiceLine(models.Model):
 
     stock_picking_id = fields.Integer(string="Stock Picking Id", readonly="True")
 
+
+
+    @api.multi
+    def unlink(self):
+        change_invoice_line(self.id, self.quantity)
+        return super(AccountInvoiceLine, self).unlink()
+        
+            
            
 

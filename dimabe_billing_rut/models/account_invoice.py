@@ -844,11 +844,10 @@ class AccountInvoice(models.Model):
         else:
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
 
-    @api.onchange('invoice_line_ids')
-    @api.multi
-    def change_invioce_line(self):
-        for item in self.invoice_line_ids:
-            raise models.ValidationError('intentando eliminar id {}'.format(item.id))
+
+    def change_invoice_line(self, id, quantity):
+        raise models.ValidationError('intentando eliminar id {} que tiene cantidad {}'.format(id, quantity))
+
 
     #Send Data to Stock_Picking Comex
     @api.multi

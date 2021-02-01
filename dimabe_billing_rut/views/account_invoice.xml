@@ -183,7 +183,7 @@
                                             <field name="price_subtotal" readonly="1"/>
                                         </group>
                                     </form>
-                                    <tree delete="false">
+                                    <tree ><!--delete="false" create="0"-->
                                         <field name="product_id" readonly="1"/>
                                         <field name="account_id" readonly="1"/>
                                         <field name="quantity" readonly="1"/>
@@ -205,7 +205,7 @@
                                             <field name="product_name" readonly="1"/>
                                         </group>
                                     </form>
-                                    <tree>
+                                    <tree><!--delete="false" create="0"-->
                                         <field name="order_name" readonly="1"/>
                                         <field name="stock_picking_name" readonly="1"/>
                                         <field name="quantity_to_invoice" readonly="1"/>
