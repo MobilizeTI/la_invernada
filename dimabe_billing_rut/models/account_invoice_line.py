@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from dimabe_billing_rut.models.account_invoice import change_invoice_line as cil
+from .account_invoice import change_invoice_line as cil
 
 class AccountInvoiceLine(models.Model):
 
