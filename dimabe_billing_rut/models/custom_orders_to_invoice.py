@@ -25,3 +25,12 @@ class CustomOrdersToInvoice(models.Model):
         copy=False,
         string="Pedido"
     )
+
+    invoice_line_id = fields.Integer(string="Linea Factura")
+
+    def change_invoice_line(self,invoice_line):
+        for item in self:
+            if item.product_id == invoice_line.product_id and item.order_id == invoice_line.order_id and item.stock_picking_id == invoice_line.stock_picking_id:
+                self.env[self.model].search([('id','=',item.id)]).unlink()
+
+    

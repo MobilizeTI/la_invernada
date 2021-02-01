@@ -777,7 +777,6 @@ class AccountInvoice(models.Model):
 
             if len(product_ids) > 0:
                 for item in product_ids: 
-                    #raise models.ValidationError(item.product_id.taxes_id)
                     exist_custom_invoice_line = False
                     exist_invoice_line = False
 
@@ -815,8 +814,7 @@ class AccountInvoice(models.Model):
                             'order_id': self.order_to_add_ids.id,
                             'order_name': self.order_to_add_ids.name,
                             'stock_picking_name': self.stock_picking_ids.name,
-                            'stock_picking_id': self.stock_picking_ids.id,
-                            'invoice_tax_line_ids': [(6, 0, item.product_id.taxes_id)], 
+                            'stock_picking_id': self.stock_picking_ids.id
                         })
 
                         if len(self.custom_invoice_line_ids) > 0:
@@ -835,7 +833,8 @@ class AccountInvoice(models.Model):
                                 'quantity' : quantity,
                                 'uom_id' : item.product_uom.id,
                                 'price_unit' : item.price_unit,
-                                'price_subtotal' : quantity * item.price_unit,
+                                'price_subtotal' : quantity * item.price_unit,   
+                                'invoice_tax_line_ids': [(6, 0, item.product_id.taxes_id)], 
                             })
                     else:
                        raise models.ValidationError('El Producto {} del despacho {} del pedido {} ya se ecuentra agregado'.format(item.product_id.name, self.stock_picking_ids.name, self.order_to_add_ids.name))               
@@ -845,9 +844,7 @@ class AccountInvoice(models.Model):
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
 
 
-    def change_invoice_line(self,invoice_line_id, quantity):
-        raise models.ValidationError('intentando eliminar id {} que tiene cantidad {}'.format(invoice_line_id, quantity))
-
+    
 
     #Send Data to Stock_Picking Comex
     @api.multi

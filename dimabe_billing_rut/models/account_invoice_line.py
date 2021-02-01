@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from .account_invoice import AccountInvoice as ai
+from .custom_orders_to_invoice import CustomOrdersToInvoice as oti
 
 class AccountInvoiceLine(models.Model):
 
@@ -29,8 +29,7 @@ class AccountInvoiceLine(models.Model):
 
     @api.multi
     def unlink(self):
-        #raise models.ValidationError('Try control Unlink invoice line')
-        ai.change_invoice_line(self, self.id, self.quantity)
+        oti.change_invoice_line(self, self)
         res = super(AccountInvoiceLine, self).unlink()
         
         return res
