@@ -314,11 +314,15 @@ class AccountInvoice(models.Model):
     def onchange_export_clause(self):
         self.incoterm_id = self.env['account.incoterms'].search([('sii_code','=',self.export_clause.code)])
 
-    #@api.onchange('incoterm_id')
-    #def onchange_incoterm(self):
-    #    if self.incoterm_id.sii_code:
-    #        raise models.ValidationError()
-    #        self.export_clause = self.env['custom.export.clause'].search([('code','=',self.incoterm_id.sii_code)])
+    @api.onchange('incoterm_id')
+    def onchange_incoterm(self):
+        if self.incoterm_id.sii_code:
+            if self.incoterm_id.sii_code != '0' or self.incoterm_id.sii_code != '':
+                test = self.env['custom.export.clause'].search([('code','=',self.incoterm_id.sii_code)])
+                raise models.ValidationError(test.initials)
+                self.export_clause = self.env['custom.export.clause'].search([('code','=',self.incoterm_id.sii_code)])
+            else:
+                raise models.ValidationError('{} no tiene un código válido para SII')
 
     @api.onchange('order_to_add_ids')
     def onchange_order_to_add(self):
@@ -774,7 +778,7 @@ class AccountInvoice(models.Model):
 
             if len(product_ids) > 0:
                 for item in product_ids: 
-                    raise models.ValidationError(item.product_id.taxes_id)
+                    #raise models.ValidationError(item.product_id.taxes_id)
                     exist_custom_invoice_line = False
                     exist_invoice_line = False
 
@@ -816,9 +820,6 @@ class AccountInvoice(models.Model):
                             'invoice_tax_line_ids': [(6, 0, item.product_id.taxes_id)], 
                         })
 
-                        
-
-
                         if len(self.custom_invoice_line_ids) > 0:
                             for i in self.custom_invoice_line_ids:
                                 if item.product_id.id == i.product_id.id:
@@ -847,7 +848,8 @@ class AccountInvoice(models.Model):
     @api.onchange('invoice_line_ids')
     @api.multi
     def change_invioce_line(self):
-        print('')
+        for item in self:
+            raise models.ValidationError('intentando eliminar id {}'.format(item.id))
 
     #Send Data to Stock_Picking Comex
     @api.multi
