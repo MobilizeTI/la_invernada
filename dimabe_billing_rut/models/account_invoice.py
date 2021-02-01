@@ -316,10 +316,9 @@ class AccountInvoice(models.Model):
 
     @api.onchange('incoterm_id')
     def onchange_incoterm(self):
-        if self.incoterm_id.sii_code != '0' or self.incoterm_id.sii_code != '':
-            test = self.env['custom.export.clause'].search([('code','=',self.incoterm_id.sii_code)])
-            raise models.ValidationError(test.initials)
-            self.export_clause = self.env['custom.export.clause'].search([('code','=',self.incoterm_id.sii_code)])
+        incoterm = self.env['custom.export.clause'].search([('code','=',self.incoterm_id.sii_code)])
+        if incoterm:
+            self.export_clause = incoterm
         else:
             raise models.ValidationError('{} no tiene un código válido para SII')
 
