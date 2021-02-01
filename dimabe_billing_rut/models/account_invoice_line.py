@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from . import account_invoice as ai
+from dimabe_billing_rut.models.account_invoice import change_invoice_line as cil
 
 class AccountInvoiceLine(models.Model):
 
@@ -29,7 +29,7 @@ class AccountInvoiceLine(models.Model):
 
     @api.multi
     def unlink(self):
-        ai.change_invoice_line(self.id, self.quantity)
+        cil(self.id, self.quantity)
         return super(AccountInvoiceLine, self).unlink()
         
             
