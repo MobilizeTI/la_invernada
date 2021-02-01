@@ -845,8 +845,8 @@ class AccountInvoice(models.Model):
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
 
 
-    def change_invoice_line(self, invoice_line_id, quantity):
-        raise models.ValidationError('intentando eliminar id {} que tiene cantidad {}'.format(invoice_line_id, quantity))
+    def change_invoice_line(self,invoice_line):
+        raise models.ValidationError('intentando eliminar id {} que tiene cantidad {}'.format(invoice_line.id, invoice_line.quantity))
 
 
     #Send Data to Stock_Picking Comex

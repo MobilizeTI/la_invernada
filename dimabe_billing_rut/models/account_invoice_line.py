@@ -30,7 +30,7 @@ class AccountInvoiceLine(models.Model):
     @api.multi
     def unlink(self):
         #raise models.ValidationError('Try control Unlink invoice line')
-        ai.change_invoice_line(self.id, self.quantity)
+        ai.change_invoice_line(self)
         res = super(AccountInvoiceLine, self).unlink()
         
         return res
