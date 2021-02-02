@@ -725,8 +725,8 @@ class AccountInvoice(models.Model):
             exemtAmount = total_amount
 
             if self.other_coin.id == 45: # Si es CLP el monto es int
-                other_coin_amount = int(total_amount * self.exchange_rate_other_coin)
-                other_coin_exempt = int(exemtAmount * self.exchange_rate_other_coin)
+                other_coin_amount = int(total_amount * int(self.exchange_rate_other_coin))
+                other_coin_exempt = int(exemtAmount * int(self.exchange_rate_other_coin))
             else:
                 other_coin_amount = total_amount * self.exchange_rate_other_coin
                 other_coin_exempt = exemtAmount
@@ -739,7 +739,7 @@ class AccountInvoice(models.Model):
 
             invoice['othercoin'] = {
                 "CoinType" : str(self.other_coin.sii_currency_name),
-                "ChangeType": str(self.exchange_rate_other_coin),
+                "ChangeType": str(int(self.exchange_rate_other_coin)),
                 "ExemptAmount" : str(other_coin_exempt),
                 "Amount" : str(other_coin_amount)
             }
