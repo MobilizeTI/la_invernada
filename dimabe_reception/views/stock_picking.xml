@@ -45,7 +45,7 @@
                  attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
           />
           <button type="object" string="Obtener Peso Romana" name="button_weight_tare"
-          attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False),('gross_weight', '==', 0)], 'readonly': [('state', '=', 'done')]}"/>
+          attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False),('gross_weight', '=', 0)], 'readonly': [('state', '=', 'done')]}"/>
           <field name="quality_weight"
                  attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception'),'=',False]}"
                  readonly="1"/>
