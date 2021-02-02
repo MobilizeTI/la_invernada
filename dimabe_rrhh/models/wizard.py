@@ -103,11 +103,11 @@ class WizardHrPaySlip(models.TransientModel):
             long_rut = max(payslips.mapped('employee_id').mapped('identification_id'), key=len)
             worksheet.set_column(row, col, len(long_rut))
             col += 1
-<<<<<<< HEAD
-            worksheet.write(4, 2, 'Centro de Costo:')
-            worksheet.write(row, col, pay.contract_id.analytic_account_id.name)
-            long_const = max(payslips.mapped('contract_id').mapped('analytic_account_id').mapped('name'), key=len)
-=======
+#<<<<<<< HEAD
+#            worksheet.write(4, 2, 'Centro de Costo:')
+#            worksheet.write(row, col, pay.contract_id.analytic_account_id.name)
+#            long_const = max(payslips.mapped('contract_id').mapped('analytic_account_id').mapped('name'), key=len)
+#=======
             worksheet.write(0, 2, 'Centro de Costo:')
             if pay.account_analytic_id:
                 worksheet.write(row, col, pay.account_analytic_id)
@@ -116,7 +116,7 @@ class WizardHrPaySlip(models.TransientModel):
             else:
                 worksheet.write(row, col, '')
             long_const = max(payslips.mapped('contract_id').mapped('department_id').mapped('analytic_account_id').mapped('name'), key=len)
->>>>>>> 2db5b47f95652373574ba22a2cb2c2beafc801e3
+#>>>>>>> 2db5b47f95652373574ba22a2cb2c2beafc801e3
             worksheet.set_column(row, col, len(long_const))
             col += 1
             worksheet.write(4, 3, 'Dias Trabajados:')
