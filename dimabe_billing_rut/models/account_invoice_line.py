@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from .custom_orders_to_invoice import CustomOrdersToInvoice as oti
 
 class AccountInvoiceLine(models.Model):
 
@@ -24,5 +25,15 @@ class AccountInvoiceLine(models.Model):
 
     stock_picking_id = fields.Integer(string="Stock Picking Id", readonly="True")
 
+
+
+    @api.multi
+    def unlink(self):
+        oti.change_invoice_line(self)
+        res = super(AccountInvoiceLine, self).unlink()
+        
+        return res
+        
+            
            
 

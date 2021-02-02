@@ -15,9 +15,9 @@ class CustomOrdersToInvoice(models.Model):
 
     product_name = fields.Char(string="Producto", required=True)
 
-    #quantity = fields.Float(string="Cantidad")
+    quantity_remains_to_invoice = fields.Float(string="Cantidada por Facturar")
 
-    quantity_to_invoice = fields.Char(string="Cantidad por Facturar", required=True)
+    quantity_to_invoice = fields.Char(string="Cantidad a Facturar", required=True)
 
     invoice_id = fields.Many2one(
         'account.invoice',
@@ -25,3 +25,10 @@ class CustomOrdersToInvoice(models.Model):
         copy=False,
         string="Pedido"
     )
+
+    def change_invoice_line(self,invoice_line):
+        for item in self:
+            if item.product_id == invoice_line.product_id and item.order_id == invoice_line.order_id and item.stock_picking_id == invoice_line.stock_picking_id:
+                self.env[self.model].search([('id','=',item.id)]).unlink()
+
+    

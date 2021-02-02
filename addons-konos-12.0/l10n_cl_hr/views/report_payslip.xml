@@ -17,8 +17,8 @@
                   </thead>
                   <tbody>
                       <tr>
-                          <th><span t-field="res_company.name"/></th>
-                         <th><span class="float-right" t-esc="res_company.vat and res_company.vat.replace('CL', ' ') or '55.555.555-5'"/></th>
+                          <th><span t-field="o.employee_id.address_id.name"/></th>
+                         <th><span class="float-right" t-esc="o.employee_id.address_id.vat"/></th>
                       </tr>
                   </tbody>
                 </table>
@@ -294,7 +294,7 @@
 				</tr>
 				<tr>
 					<th colspan="4">
-						<span t-field="res_company.name" />
+						<span t-field="o.employee_id.address_id.name" />
 					</th>
 					<th>
 						<span t-field="o.employee_id.name" />

@@ -27,6 +27,7 @@ class StockPicking(models.Model):
     references = fields.One2many(
         'account.invoice.references',
         'invoice_id',
+        string="Referencias",
         readonly=False,
         states={'draft': [('readonly', False)]},
     )
@@ -62,6 +63,7 @@ class StockPicking(models.Model):
             ('6', 'Otros traslados no venta'),
             ('7', 'Guía de devolución'),
             ], 'Tipo Translado', default='0')
+
 
     date_due = fields.Date(string="Fecha Vencimiento")
 
