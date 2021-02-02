@@ -86,7 +86,7 @@ class WizardHrPaySlip(models.TransientModel):
         row = 0
         col = 0
         payslips = self.env['hr.payslip'].sudo().search(
-            [('indicadores_id', '=', indicadores.id), '|',('state', '=', 'done'),('state', '=', 'draft')])
+            [('indicadores_id', '=', indicadores.id),('state', 'in', ['done', 'draft'])])
         for pay in payslips:
             if pay.employee_id.address_id.id != self.company_id.id:
                 continue
@@ -103,9 +103,20 @@ class WizardHrPaySlip(models.TransientModel):
             long_rut = max(payslips.mapped('employee_id').mapped('identification_id'), key=len)
             worksheet.set_column(row, col, len(long_rut))
             col += 1
+<<<<<<< HEAD
             worksheet.write(4, 2, 'Centro de Costo:')
             worksheet.write(row, col, pay.contract_id.analytic_account_id.name)
             long_const = max(payslips.mapped('contract_id').mapped('analytic_account_id').mapped('name'), key=len)
+=======
+            worksheet.write(0, 2, 'Centro de Costo:')
+            if pay.account_analytic_id:
+                worksheet.write(row, col, pay.account_analytic_id)
+            elif pay.contract_id.department_id.analytic_account_id:
+                worksheet.write(row, col, pay.contract_id.department_id.analytic_account_id.name)
+            else:
+                worksheet.write(row, col, '')
+            long_const = max(payslips.mapped('contract_id').mapped('department_id').mapped('analytic_account_id').mapped('name'), key=len)
+>>>>>>> 2db5b47f95652373574ba22a2cb2c2beafc801e3
             worksheet.set_column(row, col, len(long_const))
             col += 1
             worksheet.write(4, 3, 'Dias Trabajados:')
@@ -118,12 +129,14 @@ class WizardHrPaySlip(models.TransientModel):
                     worksheet.write(4, col, 'Cant. Horas Extras')
                     worksheet.write(row, col, self.get_qty_extra_hours(payslip=pay))
                     col += 1
+                    worksheet.write(0, col, 'Monto Horas Extras')
                     worksheet.write(row, col, self.env["hr.payslip.line"].sudo().search(
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total)
                 elif rule.code == 'HEXDE':
                     worksheet.write(4, col, 'Cant. Horas Descuentos')
                     worksheet.write(row, col, self.get_qty_discount_hours(payslip=pay))
                     col += 1
+                    worksheet.write(0, col, 'Monto Horas Descuentos')
                     worksheet.write(row, col, self.env["hr.payslip.line"].sudo().search(
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total)
                 else:
