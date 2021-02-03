@@ -422,10 +422,10 @@ class AccountInvoice(models.Model):
         self.validation_fields()
         invoice = self.generate_invoice()
        
-        if self.dte_type_id.code == "41":  #Boleta exenta electrónica
+        if self.dte_type_id.code == "41":  #Boleta exenta electrónica (No contralada Aun)
             invoice = self.receipt_exempt_type()
 
-        if self.dte_type_id.code == "43": #Liquidación factura electrónica
+        if self.dte_type_id.code == "43": #Liquidación factura electrónica (No contralada Aun)
             invoice = self.invoice_liquidation_type()
 
         invoice['createdDate'] = self.date_invoice.strftime("%Y-%m-%d")
@@ -556,12 +556,13 @@ class AccountInvoice(models.Model):
         if self.dte_type_id.code == "61" or self.dte_type_id.code == "111" or self.dte_type_id.code == "56" or self.dte_type_id.code == "112":
             if len(self.references) == 0:
                 raise models.ValidationError('Para {} debe agregar al menos una Referencia'.format(self.dte_type_id.name))
-                
-        for item in self.invoice_line_ids:
-            for tax_line in item.invoice_line_tax_ids:
-                if (tax_line.id == 6 or tax_line.id == None) and (item.exempt == "7"):
-                    raise models.ValidationError('El Producto {} no tiene impuesto por ende debe seleccionar el Tipo Exento'.format(item.name))
-        
+
+        if self.dte_type_id.code != "110":    
+            for item in self.invoice_line_ids:
+                for tax_line in item.invoice_line_tax_ids:
+                    if (tax_line.id == 6 or tax_line.id == None) and (item.exempt == "7"):
+                        raise models.ValidationError('El Producto {} no tiene impuesto por ende debe seleccionar el Tipo Exento'.format(item.name))
+            
         if len(self.references) > 10:
             raise models.ValidationError('Solo puede generar 20 Referencias')
 
@@ -584,10 +585,12 @@ class AccountInvoice(models.Model):
         productLines = []
         lineNumber = 1
         typeOfExemptEnum = ""                       
-        exemtAmount = 0
+        exemptAmount = 0
         netAmount = 0
         countNotExempt = 0
         invoice_line = []
+
+        #Si es Exportacion debe tomar la tabla clone consolidada
         if self.dte_type_id.code == "110":
             invoice_line = self.custom_invoice_line_ids
         else:
@@ -596,47 +599,60 @@ class AccountInvoice(models.Model):
         for item in self.invoice_line_ids:
             haveExempt = False
 
-            if self.dte_type_id.code == "34": #FACTURA EXENTA
+            if self.dte_type_id.code == "34" or self.dte_type_id.code == "34": #FACTURA EXENTA Y FACTURA EXPORT
                 haveExempt == True
 
             if haveExempt == False and (len(item.invoice_line_tax_ids) == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6)):
                 haveExempt = True
                 typeOfExemptEnum = item.exempt
-                if typeOfExemptEnum == '7':
+                if typeOfExemptEnum == '7': #No debe Aplicar Para Factura de Exportacion
                     raise models.ValidationError('El Producto {} al no tener impuesto seleccionado, debe seleccionar el tipo Exento'.format(item.name))
-            
+                
             if haveExempt:
                 if self.dte_type_id.code == "110": #Exportacion con decimal
                     amount_subtotal = item.price_subtotal
                 else: 
                     amount_subtotal = self.roundclp(item.price_subtotal)
                 
-                exemtAmount += amount_subtotal
+                exemptAmount += amount_subtotal
 
-                productLines.append(
-                    {
-                        "LineNumber": str(lineNumber),
-                        "ProductTypeCode": "EAN",
-                        "ProductCode": str(item.product_id.default_code),
-                        "ProductName": item.name,
-                        "ProductQuantity": str(item.quantity),
-                        "UnitOfMeasure": str(item.uom_id.name),
-                        "ProductPrice": str(item.price_unit),
-                        "ProductDiscountPercent": "0",
-                        "DiscountAmount": "0",
-                        "Amount": str(amount_subtotal),
-                        "HaveExempt": haveExempt,
-                        "TypeOfExemptEnum": typeOfExemptEnum
-                    }
-                )
+                if self.dte_type_id.code == "110":
+                    productLines.append(
+                        {
+                            "LineNumber": str(lineNumber),
+                            "ProductTypeCode": "EAN",
+                            "ProductCode": str(item.product_id.default_code),
+                            "ProductName": item.name,
+                            "ProductQuantity": str(item.quantity),
+                            "UnitOfMeasure": str(item.uom_id.name),
+                            "ProductPrice": str(item.price_unit),
+                            "ProductDiscountPercent": "0",
+                            "DiscountAmount": "0",
+                            "Amount": str(amount_subtotal)
+                        }
+                    )
+                else:
+                    productLines.append(
+                        {
+                            "LineNumber": str(lineNumber),
+                            "ProductTypeCode": "EAN",
+                            "ProductCode": str(item.product_id.default_code),
+                            "ProductName": item.name,
+                            "ProductQuantity": str(item.quantity),
+                            "UnitOfMeasure": str(item.uom_id.name),
+                            "ProductPrice": str(item.price_unit),
+                            "ProductDiscountPercent": "0",
+                            "DiscountAmount": "0",
+                            "Amount": str(amount_subtotal),
+                            "HaveExempt": haveExempt,
+                            "TypeOfExemptEnum": typeOfExemptEnum
+                        }
+                    )
             else:
                 product_price = item.price_unit
                 amount_subtotal = item.price_subtotal
 
-                if self.dte_type_id.code == "110": #Exportacion con decimal
-                    amount_subtotal = item.price_subtotal
-                    netAmount += item.price_subtotal
-                elif self.dte_type_id.code == "39" and self.ind_net_amount != "2": #Boleta Elecronica  CORREGIR Y CONSULAR
+                if self.dte_type_id.code == "39" and self.ind_net_amount != "2": #Boleta Elecronica  CORREGIR Y CONSULAR
                     for tax in item.invoice_line_tax_ids:
                         if tax.id == 1 or tax.id == 2 or tax.id == 3 or tax.id == 4: 
                             product_price = item.price_unit  * (1 + tax.amount / 100)
@@ -669,7 +685,7 @@ class AccountInvoice(models.Model):
             recipientPhone = ''
 
         if self.dte_type_id.code == "110": #Factura Exportacion decimal
-            total_amount = netAmount + exemtAmount + self.amount_tax
+            total_amount = exemptAmount + self.amount_tax
             if len(self.packages) > 0:
                 packages_list =[]
                 for pk in self.packages:
@@ -683,8 +699,8 @@ class AccountInvoice(models.Model):
                     }
                 )
         else:
-            #total_amount = self.roundclp(netAmount + exemtAmount + self.amount_tax)
-            total_amount = round(netAmount + exemtAmount + self.amount_tax)
+            total_amount = self.roundclp(netAmount + exemptAmount + self.amount_tax)
+           
 
         invoice= {
             "expirationDate": self.date_due.strftime("%Y-%m-%d"),
@@ -724,18 +740,18 @@ class AccountInvoice(models.Model):
             }
   
             #por confirmar  si el exento siempre es igual al total
-            exemtAmount = total_amount
+            #exemtAmount = total_amount
 
             if self.other_coin.id == 45: # Si es CLP el monto es int
                 other_coin_amount = int(total_amount * int(self.exchange_rate_other_coin))
-                other_coin_exempt = int(exemtAmount * int(self.exchange_rate_other_coin))
+                other_coin_exempt = int(total_amount * int(self.exchange_rate_other_coin))
             else:
                 other_coin_amount = total_amount * self.exchange_rate_other_coin
-                other_coin_exempt = exemtAmount
+                other_coin_exempt = total_amount
 
             invoice['total'] = {
                 "CoinType": str(self.currency_id.sii_currency_name),
-                "exemptAmount": str(exemtAmount),
+                "exemptAmount": str(total_amount),
                 "totalAmount": str(total_amount)
             }
 
@@ -749,7 +765,7 @@ class AccountInvoice(models.Model):
         else:
             invoice['total'] = {
                 "netAmount": str(netAmount),
-                "exemptAmount": str(exemtAmount),
+                "exemptAmount": str(exemptAmount),
                 "taxRate": "19",
                 "taxtRateAmount": str(self.roundclp(self.amount_tax)),
                 "totalAmount": str(total_amount)
