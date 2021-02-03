@@ -598,7 +598,7 @@ class AccountInvoice(models.Model):
         for item in self.invoice_line_ids:
             haveExempt = False
 
-            if self.dte_type_id.code == "34" or self.dte_type_id.code == "34": #FACTURA EXENTA Y FACTURA EXPORT
+            if self.dte_type_id.code == "34" or self.dte_type_id.code == "110": #FACTURA EXENTA Y FACTURA EXPORT
                 haveExempt == True
 
             if haveExempt == False and (len(item.invoice_line_tax_ids) == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6)):
