@@ -49,7 +49,8 @@ class AccountInvoiceLine(models.Model):
                     sum_quantity += invoice_line.quantity
             if sum_quantity == 0:
                 custom_line_to_delete = self.env['custom.account.invoice.line'].search([('id','=',custom_line.id)])
-                custom_line_to_delete.unlink()
+                if custom_line_to_delete:
+                    custom_line_to_delete.unlink()
             else:
                 custom_line.write({
                     'quantity': sum_quantity
