@@ -412,6 +412,7 @@ class AccountInvoice(models.Model):
         
     @api.multi
     def send_to_sii(self):
+        raise models.ValidationError('{} {}'.format(self.dte_type_id.code))
         url = self.env.user.company_id.dte_url
         headers = {
             "apiKey" : self.env.user.company_id.dte_hash,
@@ -600,11 +601,11 @@ class AccountInvoice(models.Model):
 
             if self.dte_type_id.code == "34" or self.dte_type_id.code == "110": #FACTURA EXENTA Y FACTURA EXPORT
                 haveExempt == True
-            raise models.ValidationError('{} {}'.format(haveExempt, self.dte_type_id.code))
+            
             if haveExempt == False and (len(item.invoice_line_tax_ids) == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6)):
                 haveExempt = True
                 typeOfExemptEnum = item.exempt
-                if typeOfExemptEnum == '7': #No debe Aplicar Para Factura de Exportacion
+                if typeOfExemptEnum == '7':
                     raise models.ValidationError('El Producto {} al no tener impuesto seleccionado, debe seleccionar el tipo Exento'.format(item.name))
                 
             if haveExempt:
