@@ -590,11 +590,12 @@ class AccountInvoice(models.Model):
 
         #Si es Exportacion debe tomar la tabla clone consolidada
         if self.dte_type_id.code == "110":
-            invoice_line = self.custom_invoice_line_ids
+            invoice_lines = self.custom_invoice_line_ids
         else:
-            invoice_line = self.invoice_line_ids
+            invoice_lines = self.invoice_line_ids
 
-        for item in self.invoice_line_ids:
+        #for item in self.invoice_line_ids:
+        for item in invoice_lines:
             haveExempt = False
 
             if self.dte_type_id.code == "34" or self.dte_type_id.code == "110": #FACTURA EXENTA Y FACTURA EXPORT
