@@ -275,7 +275,7 @@ class StockPicking(models.Model):
             "dispatchType": str(self.dispatch_type),
             "transferIndication": str(self.transfer_indication),
             "transmitter": {
-                "EnterpriseRut": re.sub('[\.]','', self.partner_id.invoice_rut), #re.sub('[\.]','', "76.991.487-0"), #self.env.user.company_id.invoice_rut,
+                "EnterpriseRut": re.sub('[\.]','', self.company_id.invoice_rut), #re.sub('[\.]','', "76.991.487-0"), #self.env.user.company_id.invoice_rut,
                 "EnterpriseActeco": self.company_activity_id.code,
                 "EnterpriseAddressOrigin": self.env.user.company_id.street,
                 "EnterpriseCity": self.env.user.company_id.city,
