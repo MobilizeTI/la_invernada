@@ -27,13 +27,13 @@ class AccountInvoiceLine(models.Model):
 
 
 
-    #@api.multi
-    #def unlink(self):
-    #    orders_to_invoice = self.env['custom.orders.to.inoice'].search([('invoice_line_id','=',self.id)])
-    #    orders_to_invoice.unlink()
-    #    res = super(AccountInvoiceLine, self).unlink()
-    #    
-    #    return res
+    @api.multi
+    def unlink(self):
+        orders_to_invoice = self.env['custom.orders.to.inoice'].search([('invoice_line_id','=',self.id)])
+        orders_to_invoice.unlink()
+        res = super(AccountInvoiceLine, self).unlink()
+        
+        return res
         
             
            
