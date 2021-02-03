@@ -211,13 +211,16 @@ class StockPicking(models.Model):
         for item in self.move_ids_without_package:
             if len(self.sale_id.mapped('order_line').filtered(lambda a : a.product_id.id == item.product_id.id).mapped('tax_id')) == 0:
                 haveExempt = True
-            amount = self.sale_id.order_line.filtered(lambda a : a.product_id.id == item.product_id.id).price_subtotal
+            #amount = self.sale_id.order_line.filtered(lambda a : a.product_id.id == item.product_id.id).price_subtotal
             
             quantity = 0
             if item.quantity_done == 0.0:
                 quantity = self.sale_id.order_line.filtered(lambda a : a.product_id.id == item.product_id.id).qty_delivered
             else:
                 quantity = str(round(item.quantity_done, 6))
+
+            amount = str(quantity * round(item.product_id.lst_price,4)),
+            
             if haveExempt:
                 exemtAmount += int(amount)
                 productLines.append(
@@ -231,7 +234,7 @@ class StockPicking(models.Model):
                         "ProductPrice": str(round(item.product_id.lst_price,4)), #segun DTEmite no es requerido int
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(int(amount)),
+                        "Amount": str(quantity * round(item.product_id.lst_price,4)), #str(int(amount)),
                         "HaveExempt": haveExempt,
                         "TypeOfExemptEnum": "1"
                     }
@@ -249,7 +252,7 @@ class StockPicking(models.Model):
                         "ProductPrice": str(round(item.product_id.lst_price,4)),
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(int(amount))
+                        "Amount": str(int(quantity * round(item.product_id.lst_price,4))),#str(int(amount))
                     }
                 )
             lineNumber += 1
