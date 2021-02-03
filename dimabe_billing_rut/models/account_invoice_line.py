@@ -29,8 +29,9 @@ class AccountInvoiceLine(models.Model):
 
     @api.multi
     def unlink(self):
-        orders_to_invoice = self.env['custom.orders.to.inoice'].search([('invoice_line_id','=',self.id)])
-        orders_to_invoice.unlink()
+        orders_to_invoice = self.env['custom.orders.to.inoice'].search([('invoice_id','=',self.invoice_id),('order_id','=',self.order_id),('stock_picking_id','=',self.stock_picking_id),('product_id','=',self.product_id)])
+        if orders_to_invoice:
+            orders_to_invoice.unlink()
         res = super(AccountInvoiceLine, self).unlink()
         
         return res

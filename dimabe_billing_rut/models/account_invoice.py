@@ -830,7 +830,7 @@ class AccountInvoice(models.Model):
                             'order_id': self.order_to_add_ids.id,
                             'order_name': self.order_to_add_ids.name,
                             'stock_picking_name': self.stock_picking_ids.name,
-                            'stock_picking_id': self.stock_picking_ids.id
+                            'stock_picking_id': self.stock_picking_ids.id,
                         })
 
                         if len(self.custom_invoice_line_ids) > 0:
