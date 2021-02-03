@@ -600,12 +600,12 @@ class AccountInvoice(models.Model):
 
             if self.dte_type_id.code == "34" or self.dte_type_id.code == "110": #FACTURA EXENTA Y FACTURA EXPORT
                 haveExempt == True
-
+            raise models.ValidationError('{} {}'.format(haveExempt, self.dte_type_id.code))
             if haveExempt == False and (len(item.invoice_line_tax_ids) == 0 or (len(item.invoice_line_tax_ids) == 1 and item.invoice_line_tax_ids[0].id == 6)):
                 haveExempt = True
                 typeOfExemptEnum = item.exempt
                 if typeOfExemptEnum == '7': #No debe Aplicar Para Factura de Exportacion
-                    raise models.ValidationError('{}  {} El Producto {} al no tener impuesto seleccionado, debe seleccionar el tipo Exento'.format(haveExempt,self.dte_type_id.code,item.name))
+                    raise models.ValidationError('El Producto {} al no tener impuesto seleccionado, debe seleccionar el tipo Exento'.format(item.name))
                 
             if haveExempt:
                 if self.dte_type_id.code == "110": #Exportacion con decimal
