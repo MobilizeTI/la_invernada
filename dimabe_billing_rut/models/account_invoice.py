@@ -560,7 +560,7 @@ class AccountInvoice(models.Model):
             for item in self.invoice_line_ids:
                 for tax_line in item.invoice_line_tax_ids:
                     if (tax_line.id == 6 or tax_line.id == None) and (item.exempt == "7"):
-                        raise models.ValidationError('El Producto {} no tiene impuesto por ende debe seleccionar el Tipo Exento'.format(item.name))
+                        raise models.ValidationError('Validacion: El Producto {} no tiene impuesto por ende debe seleccionar el Tipo Exento'.format(item.name))
             
         if len(self.references) > 10:
             raise models.ValidationError('Solo puede generar 20 Referencias')
@@ -605,7 +605,7 @@ class AccountInvoice(models.Model):
                 haveExempt = True
                 typeOfExemptEnum = item.exempt
                 if typeOfExemptEnum == '7': #No debe Aplicar Para Factura de Exportacion
-                    raise models.ValidationError('El Producto {} al no tener impuesto seleccionado, debe seleccionar el tipo Exento'.format(item.name))
+                    raise models.ValidationError('{}  {} El Producto {} al no tener impuesto seleccionado, debe seleccionar el tipo Exento'.format(haveExempt,self.dte_type_id.code,item.name))
                 
             if haveExempt:
                 if self.dte_type_id.code == "110": #Exportacion con decimal
