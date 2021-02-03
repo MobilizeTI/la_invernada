@@ -237,7 +237,7 @@ class StockPicking(models.Model):
                     }
                 )
             else:
-                netAmount += roundclp(amount)
+                netAmount += self.roundclp(amount)
                 productLines.append(
                     {
                         "LineNumber": str(lineNumber),
