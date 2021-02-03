@@ -17,6 +17,8 @@ class CustomAccountInvoiceLine(models.Model):
 
     invoice_tax_line_ids = fields.Many2many('account.tax', string="Impuestos")
 
+    name = fields.Text(string="Descripción", required=True)
+
     exempt = fields.Selection([
             ('1', 'No afecto o exento de IVA'),
             ('2', 'Producto o servicio no es facturable'),
