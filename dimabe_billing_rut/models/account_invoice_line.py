@@ -33,7 +33,7 @@ class AccountInvoiceLine(models.Model):
         #orders_to_invoice = self.env['custom.orders.to.invoice'].search([('invoice_id','=',self.invoice_id.id),('order_id','=',self.order_id.id),('stock_picking_id','=',self.stock_picking_id.id),('product_id','=',self.product_id.id)])
         o = self.env['custom.orders.to.invoice'].search([('id','=',32)])
 
-        raise models.ValidationError('{} = {}  {} = {}  {} = {}'.format(o.order_id,self.order_id.id,o.stock_picking_id,self.stock_picking_id.id, o.product_id,self.product_id.id))
+        raise models.ValidationError('{} = {}  {} = {}  {} = {}'.format(o.order_id,self.order_id.id,o.stock_picking_id,self.stock_picking_id.id, o.product_id,self.product_id))
         if o:
             o.unlink()
         res = super(AccountInvoiceLine, self).unlink()
