@@ -640,7 +640,8 @@ class AccountInvoice(models.Model):
                     for tax in item.invoice_line_tax_ids:
                         if tax.id == 1 or tax.id == 2 or tax.id == 3 or tax.id == 4: 
                             product_price = item.price_unit  * (1 + tax.amount / 100)
-                            amount_subtotal = self.roundclp(item.price_subtotal * (1 + tax.amount / 100))               
+                            amount_subtotal = self.roundclp(item.price_subtotal * (1 + tax.amount / 100))  
+                            netAmount += self.roundclp(item.price_subtotal)             
                 else: 
                     amount_subtotal = self.roundclp(item.price_subtotal)
                     netAmount += self.roundclp(item.price_subtotal)
