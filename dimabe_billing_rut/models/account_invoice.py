@@ -904,13 +904,16 @@ class AccountInvoice(models.Model):
 
         return res
 
-    #@api.onchange('invoice_line_ids')
-    #def _onchange_invoice_line_ids(self):
-    #    invoice_line_sort = self.invoice_line_ids
-    #    invoice_line_sort.sort(key=keytosort)
-
-    
-    #def keytosort(self, e):
-    #    return e['product_id']
-
-    
+    @api.onchange('invoice_line_ids')
+    def _onchange_invoice_line_ids(self):
+        for custom_invoice_line in self.custom_invoice_line_ids:
+            sum_quantity = 0;
+            for invoice_line in self.invoice_line_ids:
+                if  custom_invoice_line.product_id == invoice_line.product_id.id:
+                    sum_quantity += invoice_line.quantity
+            if sum_quantity == 0:
+                custom_invoice_line.unlink()
+            else:
+                custom_invoice_line.write({
+                    'quantity': sum_quantity
+                })
