@@ -29,9 +29,13 @@ class AccountInvoiceLine(models.Model):
 
     @api.multi
     def unlink(self):
-        orders_to_invoice = self.env['custom.orders.to.invoice'].search([('invoice_id','=',self.invoice_id.id),('order_id','=',self.order_id.id),('stock_picking_id','=',self.stock_picking_id.id),('product_id','=',self.product_id.id)])
-        if orders_to_invoice:
-            orders_to_invoice.unlink()
+        
+        #orders_to_invoice = self.env['custom.orders.to.invoice'].search([('invoice_id','=',self.invoice_id.id),('order_id','=',self.order_id.id),('stock_picking_id','=',self.stock_picking_id.id),('product_id','=',self.product_id.id)])
+        o = self.env['custom.orders.to.invoice'].search([('id','=',32)])
+
+        raise models.ValidacionError('{} = {}  {} = {}  {} = {}'.format(o.order_id,self.order_id.id,o.stock_picking_id,self.stock_picking_id.id, o.product_id,self.product_id.id))
+        if o:
+            o.unlink()
         res = super(AccountInvoiceLine, self).unlink()
         
         return res

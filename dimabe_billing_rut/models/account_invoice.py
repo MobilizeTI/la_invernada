@@ -904,4 +904,13 @@ class AccountInvoice(models.Model):
 
         return res
 
+    @api.onchange('invoice_line_ids')
+    def _onchange_invoice_line_ids(self):
+        invoice_line_sort = self.invoice_line_ids
+        invoice_line_sort.sort(key=keytosort)
+
+    
+    def keytosort(self, e):
+        return e['product_id']
+
     
