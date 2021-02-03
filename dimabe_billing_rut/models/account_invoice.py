@@ -699,7 +699,6 @@ class AccountInvoice(models.Model):
         else:
             total_amount = self.roundclp(netAmount + exemptAmount + self.amount_tax)
            
-
         invoice= {
             "expirationDate": self.date_due.strftime("%Y-%m-%d"),
             "paymentType": str(int(self.method_of_payment)),
