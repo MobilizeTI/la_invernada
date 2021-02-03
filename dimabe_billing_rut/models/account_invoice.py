@@ -912,7 +912,8 @@ class AccountInvoice(models.Model):
                 if  custom_invoice_line.product_id == invoice_line.product_id.id:
                     sum_quantity += invoice_line.quantity
             if sum_quantity == 0:
-                self.env['custom.account.invoice.line'].search([('id','=',custom_invoice_line.id)])
+                custom_invoice_line_to_delete = self.env['custom.account.invoice.line'].search([('id','=',custom_invoice_line.id)])
+                custom_invoice_line_to_delete.unlink()
             else:
                 custom_invoice_line.write({
                     'quantity': sum_quantity
