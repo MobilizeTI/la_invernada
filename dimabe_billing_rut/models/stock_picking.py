@@ -220,7 +220,7 @@ class StockPicking(models.Model):
                 quantity = str(round(item.quantity_done, 6))
 
             amount = str(quantity * round(item.product_id.lst_price,4)),
-            
+
             if haveExempt:
                 exemtAmount += int(amount)
                 productLines.append(
@@ -367,7 +367,7 @@ class StockPicking(models.Model):
     def roundclp(self, value):
         value_str = str(value)
         list_value = value_str.split('.')
-        if int(list_value[1]) < 5:
+        if len(list_value)>1 and int(list_value[1]) < 5:
             return floor(value)
         else:
             return round(value)
