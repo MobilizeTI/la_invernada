@@ -412,7 +412,6 @@ class AccountInvoice(models.Model):
         
     @api.multi
     def send_to_sii(self):
-        raise models.ValidationError('{} {}'.format(self.env.user.company_id.id, self.env.user.company_id.name))
         url = self.env.user.company_id.dte_url
         headers = {
             "apiKey" : self.env.user.company_id.dte_hash,
