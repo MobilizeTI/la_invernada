@@ -470,7 +470,6 @@ class AccountInvoice(models.Model):
                 additionals.append(item.observations)
             invoice['additional'] =  additionals    
 
-
         r = requests.post(url, json=invoice, headers=headers)
         #raise models.ValidationError(json.dumps(invoice))
 
