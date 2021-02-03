@@ -174,6 +174,7 @@
                                     <form>
                                         <group>
                                             <field name="product_id" readonly="1"/>
+                                            <field name="name" readonly="1"/>
                                             <field name="account_id" readonly="1"/>
                                             <field name="quantity" readonly="1"/>
                                             <field name="uom_id" readonly="1"/>
@@ -185,6 +186,7 @@
                                     </form>
                                     <tree ><!--delete="false" create="0"-->
                                         <field name="product_id" readonly="1"/>
+                                        <field name="name" readonly="1"/>
                                         <field name="account_id" readonly="1"/>
                                         <field name="quantity" readonly="1"/>
                                         <field name="uom_id" readonly="1"/>

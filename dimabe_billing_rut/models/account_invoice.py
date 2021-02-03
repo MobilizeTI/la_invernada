@@ -843,6 +843,7 @@ class AccountInvoice(models.Model):
                         if not exist_custom_invoice_line:
                             self.env['custom.account.invoice.line'].create({
                                 'product_id': item.product_id.id,
+                                'name': item.name,
                                 'invoice_id': self.id,
                                 'account_id' : item.product_id.categ_id.property_account_income_categ_id.id,
                                 'quantity' : quantity,
