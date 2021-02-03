@@ -31,13 +31,13 @@ class AccountInvoiceLine(models.Model):
         if orders_to_invoice:
             orders_to_invoice.unlink()
         res = super(AccountInvoiceLine, self).unlink()
-        self._onchange_invoice_line_ids()
+        self._onchange_invoice_line()
         return res
 
     @api.multi
     def write(self):
         res = super(AccountInvoiceLine, self).write()
-        self._onchange_invoice_line_ids()
+        self._onchange_invoice_line()
         return res
 
     def _onchange_invoice_line(self):
