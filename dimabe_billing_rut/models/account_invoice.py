@@ -482,6 +482,7 @@ class AccountInvoice(models.Model):
             self.write({'dte_folio':jr['folio']})
             self.write({'dte_xml':jr['fileXml']})
             self.write({'dte_xml_sii':jr['fileXmlSII']})
+            self.write({'reference':jr['folio']})
 
             cols = 12
             while True:
@@ -903,7 +904,4 @@ class AccountInvoice(models.Model):
 
         return res
 
-    @api.onchange('dte_folio')
-    def _onchange_dte_folio(self):
-        if self.dte_folio and self.state != 'draft':
-            self.reference = str(self.dte_folio) 
+    
