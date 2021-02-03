@@ -31,8 +31,29 @@ class AccountInvoiceLine(models.Model):
         if orders_to_invoice:
             orders_to_invoice.unlink()
         res = super(AccountInvoiceLine, self).unlink()
-        
+        self._onchange_invoice_line_ids()
         return res
+
+    @api.multi
+    def write(self):
+        res = super(AccountInvoiceLine, self).write()
+        self._onchange_invoice_line_ids()
+        return res
+
+    def _onchange_invoice_line(self):
+        custom_invoice_line = self.env['custom.account.invoice.line'].search([('invoice_id','=',self.invoice_id.id)])
+        for custom_line in custom_invoice_line:
+            sum_quantity = 0;
+            for invoice_line in self.invoice_line_ids:
+                if  custom_line.product_id == invoice_line.product_id.id:
+                    sum_quantity += invoice_line.quantity
+            if sum_quantity == 0:
+                custom_line_to_delete = self.env['custom.account.invoice.line'].search([('id','=',custom_line.id)])
+                custom_line_to_delete.unlink()
+            else:
+                custom_line.write({
+                    'quantity': sum_quantity
+                })
         
             
            

@@ -903,18 +903,3 @@ class AccountInvoice(models.Model):
             })
 
         return res
-
-    @api.onchange('invoice_line_ids')
-    def _onchange_invoice_line_ids(self):
-        for custom_invoice_line in self.custom_invoice_line_ids:
-            sum_quantity = 0;
-            for invoice_line in self.invoice_line_ids:
-                if  custom_invoice_line.product_id == invoice_line.product_id.id:
-                    sum_quantity += invoice_line.quantity
-            if sum_quantity == 0:
-                custom_invoice_line_to_delete = self.env['custom.account.invoice.line'].search([('id','=',custom_invoice_line.id)])
-                custom_invoice_line_to_delete.unlink()
-            else:
-                custom_invoice_line.write({
-                    'quantity': sum_quantity
-                })
