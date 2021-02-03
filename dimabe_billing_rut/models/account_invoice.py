@@ -412,7 +412,7 @@ class AccountInvoice(models.Model):
         
     @api.multi
     def send_to_sii(self):
-        #raise models.ValidationError('verificar actualizacion de SO')
+        raise models.ValidationError('{} {}'.format(self.env.user.company_id.id, self.env.user.company_id.name))
         url = self.env.user.company_id.dte_url
         headers = {
             "apiKey" : self.env.user.company_id.dte_hash,
@@ -557,10 +557,10 @@ class AccountInvoice(models.Model):
             if len(self.references) == 0:
                 raise models.ValidationError('Para {} debe agregar al menos una Referencia'.format(self.dte_type_id.name))
                 
-        #for item in self.invoice_line_ids:
-        #    for tax_line in item.invoice_line_tax_ids:
-        #        if (tax_line.id == 6 or tax_line.id == None) and (item.exempt == "7"):
-        #            raise models.ValidationError('El Producto {} no tiene impuesto por ende debe seleccionar el Tipo Exento'.format(item.name))
+        for item in self.invoice_line_ids:
+            for tax_line in item.invoice_line_tax_ids:
+                if (tax_line.id == 6 or tax_line.id == None) and (item.exempt == "7"):
+                    raise models.ValidationError('El Producto {} no tiene impuesto por ende debe seleccionar el Tipo Exento'.format(item.name))
         
         if len(self.references) > 10:
             raise models.ValidationError('Solo puede generar 20 Referencias')
@@ -619,9 +619,9 @@ class AccountInvoice(models.Model):
                         "ProductTypeCode": "EAN",
                         "ProductCode": str(item.product_id.default_code),
                         "ProductName": item.name,
-                        "ProductQuantity": str(item.quantity), #segun DTEmite no es requerido int
+                        "ProductQuantity": str(item.quantity),
                         "UnitOfMeasure": str(item.uom_id.name),
-                        "ProductPrice": str(item.price_unit), #segun DTEmite no es requerido int
+                        "ProductPrice": str(item.price_unit),
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
                         "Amount": str(amount_subtotal),
@@ -683,7 +683,8 @@ class AccountInvoice(models.Model):
                     }
                 )
         else:
-            total_amount = self.roundclp(netAmount + exemtAmount + self.amount_tax)
+            #total_amount = self.roundclp(netAmount + exemtAmount + self.amount_tax)
+            total_amount = round(netAmount + exemtAmount + self.amount_tax)
 
         invoice= {
             "expirationDate": self.date_due.strftime("%Y-%m-%d"),
