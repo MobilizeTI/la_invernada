@@ -27,12 +27,12 @@ class AccountInvoiceLine(models.Model):
 
 
 
-    @api.multi
-    def unlink(self):
-        oti.change_invoice_line(self)
-        res = super(AccountInvoiceLine, self).unlink()
-        
-        return res
+    #@api.multi
+    #def unlink(self):
+    #    oti.change_invoice_line(self)
+    #    res = super(AccountInvoiceLine, self).unlink()
+    #    
+    #    return res
         
             
            
