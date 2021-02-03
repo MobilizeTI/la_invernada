@@ -859,9 +859,6 @@ class AccountInvoice(models.Model):
         else:
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
 
-
-    
-
     #Send Data to Stock_Picking Comex
     @api.multi
     def write(self, vals):
@@ -905,3 +902,8 @@ class AccountInvoice(models.Model):
             })
 
         return res
+
+    @api.onchange('dte_folio')
+    def _onchange_dte_folio(self):
+        if self.dte_folio and self.state != 'draft':
+            self.reference = str(self.dte_folio) 
