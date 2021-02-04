@@ -36,8 +36,6 @@ class AccountInvoiceLine(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            raise models.ValidationError(vals['invoice_id'])
-
             invoice_id = self.env['account.invoice'].search([('id','=',vals['invoice_id'])])
             if invoice_id.currency_id.name=="CLP":
                 vals.update(price_unit = vals['price_unit'] * self.roundClp(invoice_id.exchange_rate))
