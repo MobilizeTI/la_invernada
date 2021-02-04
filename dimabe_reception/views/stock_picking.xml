@@ -60,7 +60,7 @@
           />
         </field>
         <xpath expr="//header" position="inside">
-          <button type="object" string="Obtener Peso Romana" name="button_weight"/>
+          <button type="object" string="Obtener Peso Romana" name="button_weight" confirm="Mensaje de confirmacion"/>
         </xpath>
         <xpath expr="//page[@name='note']" position="after">
           <page string="Transportista" name="carrier_page"
