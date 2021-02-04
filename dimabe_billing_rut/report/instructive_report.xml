@@ -131,8 +131,7 @@
                                 </tr>
                             </table>
                         </div>
-                    </div>
-                    <div style="width:100%;display:inline-block; border:1px solid;">
+                        <div style="width:100%;display:inline-block; border:1px solid;">
                              <table>
                                 <tr>
                                     <th style="text-align:left;">PRODUCTO:</th>
@@ -298,7 +297,6 @@
                                 </tr>
                             </table>
                         </div>
-                    </div>
                     </div>
                     <span style="style='page-break-before:avoid;'"/>
                 </t>
