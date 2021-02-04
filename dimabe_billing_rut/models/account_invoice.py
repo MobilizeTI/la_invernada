@@ -858,7 +858,7 @@ class AccountInvoice(models.Model):
                                 'quantity' : quantity,
                                 'uom_id' : item.product_uom.id,
                                 'price_unit' : product.lst_price,
-                                'price_subtotal' : quantity * item.price_unit,   
+                                'price_subtotal' : quantity * product.lst_price,   
                                 'invoice_tax_line_ids': [(6, 0, item.product_id.taxes_id)], 
                             })
                     else:
