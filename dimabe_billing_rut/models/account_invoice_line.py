@@ -31,6 +31,18 @@ class AccountInvoiceLine(models.Model):
         orders_to_invoice = self.env['custom.orders.to.invoice'].search([('invoice_id','=',self.invoice_id.id),('order_id','=',self.order_id),('stock_picking_id','=',self.stock_picking_id),('product_id','=',self.product_id.id)])
         if orders_to_invoice:
             orders_to_invoice.unlink()
+
+        custom_invoice_line_ids : self.env['custom.account.invoice.line'].search([('invoice_id','=',self.invoice_id.id)])
+        for custom_line in custom_invoice_line_ids:
+            new_quantity = custom_line.quantity
+            if custom_line.product_id.id == self.product_id.id:
+                new_quantity = new_quantity - self.quantity
+
+            if new_quantity > 0:
+                custom_line.write({'quantity' : new_quantity})
+            elif new_quantity == 0:
+                custom_line.unlink()
+
         res = super(AccountInvoiceLine, self).unlink()
         return res
 

@@ -857,7 +857,7 @@ class AccountInvoice(models.Model):
                                 'account_id' : item.product_id.categ_id.property_account_income_categ_id.id,
                                 'quantity' : quantity,
                                 'uom_id' : item.product_uom.id,
-                                'price_unit' : item.price_unit,
+                                'price_unit' : product.lst_price,
                                 'price_subtotal' : quantity * item.price_unit,   
                                 'invoice_tax_line_ids': [(6, 0, item.product_id.taxes_id)], 
                             })
