@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 import json
+from math import floor
 
 class AccountInvoiceLine(models.Model):
 
