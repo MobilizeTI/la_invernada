@@ -43,11 +43,9 @@
                 attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)], 'readonly': [('state', '=', 'done')]}"/>
           <field name="tare_weight"
                  attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
-                confirm="Esta acción modificará el valor del peso bruto ¿Está seguro de realizar esta acción?"
           />
           <button type="object" string="Obtener Peso Romana" name="button_weight_tare"
           attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False),('gross_weight', '=', 0)], 'readonly': [('state', '=', 'done')]}"
-          confirm="Esta acción modificará el valor del peso tara ¿Está seguro de realizar esta acción?"
           />
           <field name="quality_weight"
                  attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception'),'=',False]}"
@@ -59,9 +57,6 @@
                  attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)]}"
           />
         </field>
-        <xpath expr="//header" position="inside">
-          <button type="object" string="Obtener Peso Romana" name="button_weight" confirm="Mensaje de confirmacion"/>
-        </xpath>
         <xpath expr="//page[@name='note']" position="after">
           <page string="Transportista" name="carrier_page"
                 attrs="{'invisible':[('picking_type_code', 'not in', ('outgoing', 'incoming'))]}">
