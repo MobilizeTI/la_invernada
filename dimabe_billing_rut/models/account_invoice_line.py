@@ -37,9 +37,27 @@ class AccountInvoiceLine(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             raise models.ValidationError(vals['invoice_id'])
+
+            invoice_id = self.env['account.invoice'].search([('id','=',vals['invoice_id'])])
+            if invoice_id.currency_id.name=="CLP":
+                vals.update(price_unit = vals['price_unit'] * self.roundClp(invoice_id.exchange_rate))
             if vals.get('display_type', self.default_get(['display_type'])['display_type']):
                 vals.update(price_unit=0, account_id=False, quantity=0)
         return super(AccountInvoiceLine, self).create(vals_list)
+
+    def roundclp(self, value):
+        value_str = str(value)
+        list_value = value_str.split('.')
+        if len(list_value) > 1:
+            decimal = int(list_value[1][0])
+            if decimal == 0:
+                return int(value)
+            elif decimal < 5:
+                return floor(value)
+            else:
+                return round(value)
+        else:
+            return value
 
     
 
