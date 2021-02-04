@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_aga_instructive">
+        <t t-call="web.html_container">
+            <div class="page" style="margin:auto;">
+                <t t-foreach="docs" t-as="d">
+                    <div style="width:100%;">
+                        <div style="width:100%;text-align:center;display:inline-block; border:1px solid;">
+                            <h3>MANDATO</h3>
+                            <p>{FECHA}, DON DAVID VALENZUELA, REPRESENTANTE LEGAL DE LA FIRMA LA INVERNADA EXPORT SpA, R.U.T.: 76.263.274-8, CON DOMICILIO EN VALLE HERMOSO CAMINO SAN MIGUEL PARCELA 2 PAINE, CHILE, CONFIERE PODER ESPECIAL AL AGENTE DE ADUANAS SEÑOR OMAR BARRERA BERNALES, PARA QUE A SU NOMBRE Y REPRESENTACION EFECTUE ANTE EL SERVICIO NACIONAL DE ADUANAS, TODOS LOS TRAMITES PERTINENTES PARA PROCEDER A LA EXPORTACION DE LAS MERCANCIAS QUE SE DETALLAN A CONTINUACION, DE ACUERDO A LAS SIGUENTES INSTRUCCIONES:</p>
+                        </div>
+                        <div style="width:100%;text-align:center;display:inline-block; border:1px solid;">
+                            <h1>INSTRUCCIÓN DE EMBARQUE MARÍTIMO</h1>
+                            <p style="font-wight:bold;font-size:15px">EMB. N°</p>
+                        </div>
+                        <div style="width:100%;display:inline-block; border:1px solid;">
+                            <table style="margin: 0 auto;font-size:12px;">
+                                <tr>
+                                    <th style="text-align:right;">A SRES. :</th>
+                                    <td style="text-align:left;">Agencia de Aduana Barrera Limitada</td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:right;">DE :</th>
+                                    <td style="text-align:left;">David Valenzuela Lira</td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:right;">REF :</th>
+                                    <td style="text-align:left;"></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div style="width:100%;display:inline-block; border:1px solid;">
+                            <table>
+                                <tr>
+                                    <th style="text-align:left;">EXPORTADR:</th>
+                                    <td style="text-align:left;">
+                                        <span t-field="res_company.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">DIRECCIÓN:</th>
+                                    <td style="text-align:left;">
+                                        <span t-field="res_company.street"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">RUT:</th>
+                                    <td style="text-align:left;">
+                                        <span t-field="res_company.invoice_rut"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">E-MAIL:</th>
+                                    <td style="text-align:left;">
+                                        <span t-field="res_company.email"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">TELÉFONO</th>
+                                    <td style="text-align:left;">
+                                        <span t-field="res_company.phone"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div style="width:100%;display:inline-block; border:1px solid;">
+                             <table>
+                                <tr>
+                                    <th style="text-align:left;">CONSIGNATORIO:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">DIRECCIÓN:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">EORI NUMBER:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">CONTACTO:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">TELÉFONO:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div style="width:100%;display:inline-block; border:1px solid;">
+                             <table>
+                                <tr>
+                                    <th style="text-align:left;">NOTIFY:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">DIRECCIÓN:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">EORI NUMBER:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">CONTACTO:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">TELÉFONO:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div style="width:100%;display:inline-block; border:1px solid;">
+                             <table>
+                                <tr>
+                                    <th style="text-align:left;">PRODUCTO:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">VARIEDAD (S):</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">ENVASE (S):</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">CANTIDAD DE SACOS:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">CANTIDAD DE CONTENEDORES:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">DEPÓSITO RETIRO:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">MARCAS:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">KG. NETOS TOTALES:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">KG. BRUTOS TOTALES:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">CALIBRES:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">CALIDAD:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">FLETE:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">SEGURO:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">FORMA DE PAGO:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">MODALIDAD DE VENTA:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">CLAUSULA DE VENTA:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">PRECIO UNITARIO US$:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div style="width:100%;display:inline-block; border:1px solid;">
+                             <table>
+                                <tr>
+                                    <th style="text-align:left;">OBSERVACIONES:</th>
+                                    <td style="font-weight: bold;">Stacking:</td>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <td style="font-weight: bold;">Cut Off:</td>
+                                    <td style="text-align:left;"></td>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <td style="font-weight: bold;">RESERVA VÍA:</td>
+                                    <td style="text-align:left;"></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div style="width:100%;display:inline-block; border:1px solid;">
+                             <table>
+                                <tr>
+                                    <th style="text-align:left;">DOCUMENTACIÓN:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">D.U.S 2DO.ENVIO:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">CONOCIMIENTO DE EMBARQUE:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">CERTIFICADO FITOSANITARIO:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">CERTIFICADO ORIGEN:</th>
+                                    <td style="text-align:left;">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <td style="text-align:right">ATTE.:</td>
+                                    <td style="text-align:right">p.p La Invernada Export SpA.</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    </div>
+                    <span style="style='page-break-before:avoid;'"/>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <record id="paper_format_letter_custom" model="report.paperformat">
+        <field name="name">Carta Custom</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">15</field>
+        <field name="margin_right">15</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="footer_line" eval="False"/>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="paper_format_letter_horizontal" model="report.paperformat">
+        <field name="name">Carta Horizontal</field>
+        <field name="default" eval="False"/>
+        <field name="format">Letter</field>
+        <field name="orientation">Landscape</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="footer_line" eval="False"/>
+        <field name="dpi">90</field>
+    </record>
+
+    <report id="action_dispatch_guide_report" string="Instructivo AGA" model="account.invoice" report_type="qweb-pdf"
+            name="dimabe_billing_rut.report_aga_instructive" menu="True" paperformat="paper_format_letter_custom"
+    />
+    
+</odoo>
