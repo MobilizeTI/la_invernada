@@ -575,6 +575,7 @@ class AccountInvoice(models.Model):
     def roundclp(self, value):
         value_str = str(value)
         list_value = value_str.split('.')
+        raise models.ValidationError('{}'.format(int(list_value[1][0])))
         if int(list_value[1][0]) < 5:
             return floor(value)
         else:
