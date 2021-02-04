@@ -10,7 +10,7 @@
                     <field name="consignee_id"
                            attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"
                     />
-                    <field name="notify_ids"
+                    <field name="notify_ids" delete="true"
                            attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"
                     />
                 </field>
