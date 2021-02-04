@@ -922,3 +922,19 @@ class AccountInvoice(models.Model):
             })
 
         return res
+
+    @api.onchange('exchange_rate')
+    def _onchange_exchange_rate(self):
+        if self.currency_id.name == "CLP":
+            if self.env.user.company_id.id == 1 and self.dte_type_id.code != "110":
+                self.amount_untaxed =  self.roundclp(self.amount_untaxed * self.roundclp(self.exchange_rate))
+                self.amount_tax =  self.roundclp(self.amount_tax * self.roundclp(self.exchange_rate))
+                self.amount_total =  self.roundclp(self.amount_total * self.roundclp(self.exchange_rate))
+                self.residual =  self.roundclp(self.residual * self.roundclp(self.exchange_rate))
+
+            elif self.env.user.company_id.id == 3:
+                self.amount_untaxed =  self.roundclp(self.amount_untaxed)
+                self.amount_tax =  self.roundclp(self.amount_tax)
+                self.amount_total =  self.roundclp(self.amount_total)
+                self.residual =  self.roundclp(self.residual)
+                
