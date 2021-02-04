@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from .custom_orders_to_invoice import CustomOrdersToInvoice as oti
+import json
 
 class AccountInvoiceLine(models.Model):
 
@@ -36,7 +36,7 @@ class AccountInvoiceLine(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            raise models.ValidationError(type(vals))
+            raise models.ValidationError(json.dumps((vals))
             if vals.get('display_type', self.default_get(['display_type'])['display_type']):
                 vals.update(price_unit=0, account_id=False, quantity=0)
         return super(AccountInvoiceLine, self).create(vals_list)
