@@ -915,22 +915,4 @@ class AccountInvoice(models.Model):
     @api.onchange('amount_total')
     def total_change_invoice_Export(self):
         self.total_invoice_Export   #revisar
-        self.change_values_from_currency()
-    
-    def change_values_from_currency(self):  
-        if self.currency_id.name == "CLP":
-            if self.env.user.company_id.id == 1 and self.dte_type_id.code != "110":
-                self.write({
-                    'amount_untaxed': self.roundclp(self.amount_untaxed * self.roundclp(self.exchange_rate)),
-                    'amount_tax': self.roundclp(self.amount_tax * self.roundclp(self.exchange_rate)),
-                    'amount_total': self.roundclp(self.amount_total * self.roundclp(self.exchange_rate)),
-                    'residual': self.roundclp(self.residual * self.roundclp(self.exchange_rate)),
-                })
-
-            elif self.env.user.company_id.id == 3:
-                self.write({
-                    'amount_untaxed': self.roundclp(self.amount_untaxed),
-                    'amount_tax': self.roundclp(self.amount_tax),
-                    'amount_total': self.roundclp(self.amount_totaldclp(self.exchange_rate)),
-                    'residual': self.roundclp(self.residual),
-                })
+       

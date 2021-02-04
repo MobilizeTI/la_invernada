@@ -31,8 +31,22 @@ class AccountInvoiceLine(models.Model):
         if orders_to_invoice:
             orders_to_invoice.unlink()
         res = super(AccountInvoiceLine, self).unlink()
-        self._onchange_invoice_line()
+        #self._onchange_invoice_line()
         return res
 
-    
+    @api.multi
+    def create(self, vals):
+        invoice_id = self.env['account.invoice'].search([('id','=',self.invoice_id.id)])
+        if self.invoice_id.currency_id.name == "CLP":
+            if self.env.user.company_id.id == 1 and self.invoice_id.dte_type_id.code != "110":
+                self.write({
+                    'price_unit': self.roundclp(self.amount_untaxed * self.roundclp(self.exchange_rate)),
+                })
+
+            elif self.env.user.company_id.id == 3:
+                self.write({
+                    'price_unit': self.roundclp(self.amount_untaxed * self.roundclp(self.exchange_rate)),
+                })
+        res = super(AccountInvoiceLine, self).create()
+        return res
 
