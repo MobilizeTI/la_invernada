@@ -598,7 +598,7 @@ class AccountInvoice(models.Model):
 
         value_exchange = 1
 
-        if (self.env.company_id.id == 1 and self.dte_type_id.code != "110") or self.env.company_id.id == 3:
+        if (self.env.user.company_id.id == 1 and self.dte_type_id.code != "110") or self.env.user.company_id.id == 3:
             value_exchange = self.exchange_rate
 
         #for item in self.invoice_line_ids:
