@@ -31,8 +31,15 @@ class AccountInvoiceLine(models.Model):
         if orders_to_invoice:
             orders_to_invoice.unlink()
         res = super(AccountInvoiceLine, self).unlink()
-        #self._onchange_invoice_line()
         return res
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            raise models.ValidationError(vals.invoice_id)
+            if vals.get('display_type', self.default_get(['display_type'])['display_type']):
+                vals.update(price_unit=0, account_id=False, quantity=0)
+        return super(AccountInvoiceLine, self).create(vals_list)
 
     
 
