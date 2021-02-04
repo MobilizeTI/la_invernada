@@ -661,11 +661,11 @@ class AccountInvoice(models.Model):
                     for tax in item.invoice_line_tax_ids:
                         if tax.id == 1 or tax.id == 2 or tax.id == 3 or tax.id == 4: 
                             product_price = item.price_unit  * (1 + tax.amount / 100)
-                            amount_subtotal = self.roundclp(item.price_subtotal * (1 + tax.amount / 100))  
-                            netAmount += self.roundclp(item.price_subtotal)             
+                            amount_subtotal = item.price_subtotal * (1 + tax.amount / 100)
+                            netAmount += item.price_subtotal   
                 else: 
-                    amount_subtotal = self.roundclp(item.price_subtotal)
-                    netAmount += self.roundclp(item.price_subtotal)
+                    amount_subtotal = item.price_subtotal
+                    netAmount += item.price_subtotal
                 productLines.append(
                     {
                         "LineNumber": str(lineNumber),
@@ -677,7 +677,7 @@ class AccountInvoice(models.Model):
                         "ProductPrice": str(self.roundclp(product_price * value_exchange)),
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(amount_subtotal * value_exchange)
+                        "Amount": str(self.roundclp(amount_subtotal * value_exchange))
                     }
                 )
             lineNumber += 1
@@ -769,7 +769,7 @@ class AccountInvoice(models.Model):
         else:
             invoice['total'] = {
                 "netAmount": str(self.roundclp(netAmount * value_exchange)),
-                "exemptAmount": str(exemptAmount * value_exchange),
+                "exemptAmount": str(self.roundclp(exemptAmount * value_exchange)),
                 "taxRate": "19",
                 "taxtRateAmount": str(self.roundclp(self.amount_tax * value_exchange)),
                 "totalAmount": str(self.roundclp(total_amount * value_exchange))
