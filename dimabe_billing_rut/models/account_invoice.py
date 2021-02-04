@@ -575,11 +575,14 @@ class AccountInvoice(models.Model):
     def roundclp(self, value):
         value_str = str(value)
         list_value = value_str.split('.')
-        decimal = int(list_value[1][0])
-        if decimal < 5:
-            return floor(value)
+        if len(list_value) > 1:
+            decimal = int(list_value[1][0])
+            if decimal < 5:
+                return floor(value)
+            else:
+                return round(value)
         else:
-            return round(value)
+            return value
 
     def generate_invoice(self):
         productLines = []
