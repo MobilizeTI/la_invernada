@@ -202,31 +202,31 @@
                                 <tr>
                                     <th style="text-align:left;">FLETE:</th>
                                     <td style="text-align:left;">
-                                        <span t-field="freight_amount"/>
+                                        <span t-field="d.freight_amount"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">SEGURO:</th>
                                     <td style="text-align:left;">
-                                        <span t-field="safe_amount"/>
+                                        <span t-field="d.safe_amount"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">FORMA DE PAGO:</th>
                                     <td style="text-align:left;">
-                                        <span t-field="method_of_payment"/>
+                                        <span t-field="d.method_of_payment"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">MODALIDAD DE VENTA:</th>
                                     <td style="text-align:left;">
-                                        <span t-field="sale_method.name"/>
+                                        <span t-field="d.sale_method.name"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">CLAUSULA DE VENTA:</th>
                                     <td style="text-align:left;">
-                                        <span t-field="export_clause.name"/>
+                                        <span t-field="d.export_clause.name"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -248,13 +248,13 @@
                                 <tr>
                                     <th style="text-align:left;">PUERTO DE DESTINO:</th>
                                     <td style="text-align:left;">
-                                        <span t-field="arrival_port.name"/>
+                                        <span t-field="d.arrival_port.name"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">NAVE:</th>
                                     <td style="text-align:left;">
-                                        <span t-field="ship.name"/>
+                                        <span t-field="d.ship.name"/>
                                     </td>
                                 </tr>
                                 <tr>
