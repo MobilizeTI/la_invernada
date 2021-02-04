@@ -683,7 +683,7 @@ class AccountInvoice(models.Model):
                         "ProductPrice": str(product_price * value_exchange),
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(amount_subtotal * value_exchange)
+                        "Amount": str(self.roundclp(amount_subtotal * value_exchange))
                     }
                 )
             lineNumber += 1
