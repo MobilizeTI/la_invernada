@@ -769,11 +769,11 @@ class AccountInvoice(models.Model):
             
         else:
             invoice['total'] = {
-                "netAmount": str(netAmount),
-                "exemptAmount": str(exemptAmount),
+                "netAmount": str(netAmount * value_exchange),
+                "exemptAmount": str(exemptAmount * value_exchange),
                 "taxRate": "19",
-                "taxtRateAmount": str(self.roundclp(self.amount_tax)),
-                "totalAmount": str(total_amount)
+                "taxtRateAmount": str(self.roundclp(self.amount_tax * value_exchange)),
+                "totalAmount": str(total_amount * value_exchange)
             }
         return invoice
 
