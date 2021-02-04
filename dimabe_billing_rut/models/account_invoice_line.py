@@ -36,9 +36,10 @@ class AccountInvoiceLine(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            invoice_id = self.env['account.invoice'].search([('id','=',vals['invoice_id'])])
-            if invoice_id.currency_id.name=="CLP":
-                vals.update(price_unit = vals['price_unit'] * self.roundClp(invoice_id.exchange_rate))
+            if self.env.user.company_id.id == 1:
+                invoice_id = self.env['account.invoice'].search([('id','=',vals['invoice_id'])])
+                if invoice_id.currency_id.name=="CLP":
+                    vals.update(price_unit = vals['price_unit'] * self.roundClp(invoice_id.exchange_rate))
             if vals.get('display_type', self.default_get(['display_type'])['display_type']):
                 vals.update(price_unit=0, account_id=False, quantity=0)
         return super(AccountInvoiceLine, self).create(vals_list)
