@@ -782,12 +782,6 @@ class AccountInvoice(models.Model):
             }
         return invoice
 
-    #revisar
-    @api.onchange('amount_total')
-    def total_change_invoice_Export(self):
-        self.total_invoice_Export
-
-
     def total_invoice_Export(self):
         if self.dte_type_id.code == "110":
             self.total_export_sales_clause = self.amount_total
@@ -819,12 +813,7 @@ class AccountInvoice(models.Model):
                                 quantity += picking.qty_done 
                         
                         #Verificar la moneda desde el despacho
-                        #price_unit = 0
-                        #if item.pricelist_id.currency_id.name == "CLP":
-                        #    price_unit
-                        #else:
-                        #    price_unit = item.price_unit
-                        #
+                        product = self.env['product.product'].search([('id','=',item.product_id.id)])
                         
                         self.env['account.invoice.line'].create({
                             'name' : item.name,
@@ -834,7 +823,7 @@ class AccountInvoice(models.Model):
                             'order_name' : self.order_to_add_ids.name,
                             'stock_picking_id' : self.stock_picking_ids.id,
                             'dispatch' : self.stock_picking_ids.name,
-                            'price_unit': self.price_unit,
+                            'price_unit': product.lst_price,
                             'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
                             'uom_id': item.product_uom.id,
                             'quantity': quantity,
@@ -923,18 +912,25 @@ class AccountInvoice(models.Model):
 
         return res
 
-    @api.onchange('exchange_rate')
-    def _onchange_exchange_rate(self):
+    @api.onchange('amount_total')
+    def total_change_invoice_Export(self):
+        self.total_invoice_Export   #revisar
+        self.change_values_from_currency()
+    
+    def change_values_from_currency(self):  
         if self.currency_id.name == "CLP":
             if self.env.user.company_id.id == 1 and self.dte_type_id.code != "110":
-                self.amount_untaxed =  self.roundclp(self.amount_untaxed * self.roundclp(self.exchange_rate))
-                self.amount_tax =  self.roundclp(self.amount_tax * self.roundclp(self.exchange_rate))
-                self.amount_total =  self.roundclp(self.amount_total * self.roundclp(self.exchange_rate))
-                self.residual =  self.roundclp(self.residual * self.roundclp(self.exchange_rate))
+                self.write({
+                    'amount_untaxed': self.roundclp(self.amount_untaxed * self.roundclp(self.exchange_rate)),
+                    'amount_tax': self.roundclp(self.amount_tax * self.roundclp(self.exchange_rate)),
+                    'amount_total': self.roundclp(self.amount_total * self.roundclp(self.exchange_rate)),
+                    'residual': self.roundclp(self.residual * self.roundclp(self.exchange_rate)),
+                })
 
             elif self.env.user.company_id.id == 3:
-                self.amount_untaxed =  self.roundclp(self.amount_untaxed)
-                self.amount_tax =  self.roundclp(self.amount_tax)
-                self.amount_total =  self.roundclp(self.amount_total)
-                self.residual =  self.roundclp(self.residual)
-                
+                self.write({
+                    'amount_untaxed': self.roundclp(self.amount_untaxed),
+                    'amount_tax': self.roundclp(self.amount_tax),
+                    'amount_total': self.roundclp(self.amount_totaldclp(self.exchange_rate)),
+                    'residual': self.roundclp(self.residual),
+                })
