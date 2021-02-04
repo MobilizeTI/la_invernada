@@ -589,11 +589,17 @@ class AccountInvoice(models.Model):
         countNotExempt = 0
         invoice_line = []
 
+
         #Si es Exportacion debe tomar la tabla clone consolidada
         if self.dte_type_id.code == "110":
             invoice_lines = self.custom_invoice_line_ids
         else:
             invoice_lines = self.invoice_line_ids
+
+        value_exchange = 1
+
+        if (self.env.company_id.id == 1 and self.dte_type_id.code != "110") or self.env.company_id.id == 3:
+            value_exchange = self.exchange_rate
 
         #for item in self.invoice_line_ids:
         for item in invoice_lines:
@@ -640,10 +646,10 @@ class AccountInvoice(models.Model):
                             "ProductName": item.name,
                             "ProductQuantity": str(item.quantity),
                             "UnitOfMeasure": str(item.uom_id.name),
-                            "ProductPrice": str(item.price_unit),
+                            "ProductPrice": str(item.price_unit * value_exchange),
                             "ProductDiscountPercent": "0",
                             "DiscountAmount": "0",
-                            "Amount": str(amount_subtotal),
+                            "Amount": str(amount_subtotal * value_exchange),
                             "HaveExempt": haveExempt,
                             "TypeOfExemptEnum": typeOfExemptEnum
                         }
@@ -669,10 +675,10 @@ class AccountInvoice(models.Model):
                         "ProductName": item.name,
                         "ProductQuantity": str(item.quantity),
                         "UnitOfMeasure": str(item.uom_id.name),
-                        "ProductPrice": str(product_price),
+                        "ProductPrice": str(product_price * value_exchange),
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(amount_subtotal)
+                        "Amount": str(amount_subtotal * value_exchange)
                     }
                 )
             lineNumber += 1
@@ -699,7 +705,7 @@ class AccountInvoice(models.Model):
                     }
                 )
         else:
-            total_amount = self.roundclp(netAmount + exemptAmount + self.amount_tax)
+            total_amount = self.roundclp(netAmount + exemptAmount + self.amount_tax * value_exchange)
            
         invoice= {
             "expirationDate": self.date_due.strftime("%Y-%m-%d"),
