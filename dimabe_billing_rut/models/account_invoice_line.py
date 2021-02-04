@@ -32,7 +32,7 @@ class AccountInvoiceLine(models.Model):
         if orders_to_invoice:
             orders_to_invoice.unlink()
 
-        custom_invoice_line_ids : self.env['custom.account.invoice.line'].search([('invoice_id','=',self.invoice_id.id)])
+        custom_invoice_line_ids = self.env['custom.account.invoice.line'].search([('invoice_id','=',self.invoice_id.id)])
         for custom_line in custom_invoice_line_ids:
             new_quantity = custom_line.quantity
             if custom_line.product_id.id == self.product_id.id:
