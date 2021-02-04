@@ -242,7 +242,7 @@
                                 <tr>
                                     <th style="text-align:left;">PUERTO DE EMBARQUE:</th>
                                     <td style="text-align:left;">
-                                        <span t-field="departure_port.name"/>
+                                        <span t-field="d.departure_port.name"/>
                                     </td>
                                 </tr>
                                 <tr>
