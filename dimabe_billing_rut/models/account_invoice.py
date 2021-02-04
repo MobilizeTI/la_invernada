@@ -599,7 +599,7 @@ class AccountInvoice(models.Model):
         value_exchange = 1
 
         if (self.env.user.company_id.id == 1 and self.dte_type_id.code != "110") or self.env.user.company_id.id == 3:
-            value_exchange = self.exchange_rate
+            value_exchange = self.roundclp(self.exchange_rate)
 
         for item in invoice_lines:
             haveExempt = False
@@ -674,10 +674,10 @@ class AccountInvoice(models.Model):
                         "ProductName": item.name,
                         "ProductQuantity": str(item.quantity),
                         "UnitOfMeasure": str(item.uom_id.name),
-                        "ProductPrice": str(self.roundclp(product_price * value_exchange)),
+                        "ProductPrice": str(product_price * value_exchange),
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(self.roundclp(amount_subtotal * value_exchange))
+                        "Amount": str(amount_subtotal * value_exchange)
                     }
                 )
             lineNumber += 1
