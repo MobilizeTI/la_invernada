@@ -710,7 +710,7 @@ class AccountInvoice(models.Model):
                     }
                 )
         else:
-            total_amount = self.roundclp(netAmount + exemptAmount + self.amount_tax * value_exchange)
+            total_amount = netAmount + exemptAmount + self.amount_tax
            
         invoice= {
             "expirationDate": self.date_due.strftime("%Y-%m-%d"),
@@ -818,6 +818,14 @@ class AccountInvoice(models.Model):
                             if picking.product_id.id == item.product_id.id:
                                 quantity += picking.qty_done 
                         
+                        #Verificar la moneda desde el despacho
+                        #price_unit = 0
+                        #if item.pricelist_id.currency_id.name == "CLP":
+                        #    price_unit
+                        #else:
+                        #    price_unit = item.price_unit
+                        #
+                        
                         self.env['account.invoice.line'].create({
                             'name' : item.name,
                             'product_id': item.product_id.id,
@@ -826,7 +834,7 @@ class AccountInvoice(models.Model):
                             'order_name' : self.order_to_add_ids.name,
                             'stock_picking_id' : self.stock_picking_ids.id,
                             'dispatch' : self.stock_picking_ids.name,
-                            'price_unit': item.price_unit,
+                            'price_unit': self.price_unit,
                             'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
                             'uom_id': item.product_uom.id,
                             'quantity': quantity,
