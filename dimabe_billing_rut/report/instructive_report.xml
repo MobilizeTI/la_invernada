@@ -10,14 +10,14 @@
                             <p>{FECHA}, DON DAVID VALENZUELA, REPRESENTANTE LEGAL DE LA FIRMA LA INVERNADA EXPORT SpA, R.U.T.: 76.263.274-8, CON DOMICILIO EN VALLE HERMOSO CAMINO SAN MIGUEL PARCELA 2 PAINE, CHILE, CONFIERE PODER ESPECIAL AL AGENTE DE ADUANAS SEÑOR OMAR BARRERA BERNALES, PARA QUE A SU NOMBRE Y REPRESENTACION EFECTUE ANTE EL SERVICIO NACIONAL DE ADUANAS, TODOS LOS TRAMITES PERTINENTES PARA PROCEDER A LA EXPORTACION DE LAS MERCANCIAS QUE SE DETALLAN A CONTINUACION, DE ACUERDO A LAS SIGUENTES INSTRUCCIONES:</p>
                         </div>
                         <div style="width:100%;text-align:center;display:inline-block; border:1px solid;">
-                            <h1>INSTRUCCIÓN DE EMBARQUE MARÍTIMO</h1>
+                            <h3>INSTRUCCIÓN DE EMBARQUE MARÍTIMO</h3>
                             <p style="font-wight:bold;font-size:15px">EMB. N°</p>
                         </div>
                         <div style="width:100%;display:inline-block; border:1px solid">
                             <table style="width: 600px;margin: 0 auto;font-size:12px;">
                                 <tr>
-                                    <th style="text-align:right;">A SRES. :</th>
-                                    <td style="text-align:left;">Agencia de Aduana Barrera Limitada</td>
+                                    <th style="text-align:right; width:300px">A SRES. :</th>
+                                    <td style="text-align:left;  width:300px">Agencia de Aduana Barrera Limitada</td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:right;">DE :</th>
@@ -32,7 +32,8 @@
                         <div style="width:100%;display:inline-block; border:1px solid;">
                             <table style="width:100%;font-size:10px">
                                 <tr>
-                                    <th style="text-align:left;">EXPORTADOR:</th>
+                                    <th style="text-align:left;width:400px">EXPORTADOR</th>
+                                    <td style="width:10px">:</td>
                                     <td style="text-align:left;">
                                         <span t-field="res_company.name"/>
                                     </td>
@@ -66,7 +67,7 @@
                         <div style="width:100%;display:inline-block; border:1px solid;">
                              <table style="width:100%;font-size:10px">
                                 <tr>
-                                    <th style="text-align:left;">CONSIGNATORIO:</th>
+                                    <th style="text-align:left;width:400px">CONSIGNATORIO:</th>
                                     <td style="text-align:left;">
                                         <span t-field="d.partner_id.name"/>
                                     </td>
@@ -100,7 +101,7 @@
                         <div style="width:100%;display:inline-block; border:1px solid;">
                              <table style="width:100%;font-size:10px">
                                 <tr>
-                                    <th style="text-align:left;">NOTIFY:</th>
+                                    <th style="text-align:left;width:400px">NOTIFY:</th>
                                     <td style="text-align:left;">
                                         <span t-field="d.partner_id.name"/>
                                     </td>
@@ -134,7 +135,7 @@
                         <div style="width:100%;display:inline-block; border:1px solid;">
                              <table style="width:100%;font-size:10px">
                                 <tr>
-                                    <th style="text-align:left;">PRODUCTO:</th>
+                                    <th style="text-align:left;width:400px">PRODUCTO:</th>
                                     <td style="text-align:left;">
                                         
                                     </td>
@@ -240,7 +241,7 @@
                         <div style="width:100%;display:inline-block; border:1px solid;">
                              <table style="width:100%;font-size:10px">
                                 <tr>
-                                    <th style="text-align:left;">PUERTO DE EMBARQUE:</th>
+                                    <th style="text-align:left;width:400px">PUERTO DE EMBARQUE:</th>
                                     <td style="text-align:left;">
                                         <span t-field="d.departure_port.name"/>
                                     </td>
@@ -286,7 +287,7 @@
                         <div style="width:100%;display:inline-block; border:1px solid;">
                              <table style="width:100%;font-size:10px">
                                 <tr>
-                                    <th style="text-align:left;">TRANSPORTE A PUERTO:</th>
+                                    <th style="text-align:left;width:400px">TRANSPORTE A PUERTO:</th>
                                     <td style="text-align:left;">
                                     </td>
                                 </tr>
@@ -329,7 +330,7 @@
                         <div style="width:100%;display:inline-block; border:1px solid;">
                              <table style="width:100%;font-size:10px">
                                 <tr>
-                                    <th style="text-align:left;">OBSERVACIONES:</th>
+                                    <th style="text-align:left;width:400px">OBSERVACIONES:</th>
                                     <td style="font-weight: bold;">Stacking:</td>
                                     <td style="text-align:left;">
                                         
@@ -350,7 +351,7 @@
                         <div style="width:100%;display:inline-block; border:1px solid;">
                              <table style="width:100%;font-size:10px">
                                 <tr>
-                                    <th style="text-align:left;">DOCUMENTACIÓN:</th>
+                                    <th style="text-align:left;width:400px">DOCUMENTACIÓN:</th>
                                     <td style="text-align:left;">
                                         
                                     </td>
@@ -380,8 +381,8 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th></th>
-                                    <td style="text-align:right">ATTE.:</td>
+                                    <th style="width:400px"></th>
+                                    <td style="text-align:right;width:250px">ATTE.:</td>
                                     <td style="text-align:right">p.p La Invernada Export SpA.</td>
                                 </tr>
                             </table>
