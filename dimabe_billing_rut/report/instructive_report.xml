@@ -68,13 +68,13 @@
                                 <tr>
                                     <th style="text-align:left;">CONSIGNATORIO:</th>
                                     <td style="text-align:left;">
-                                        <span t-field="partner_id.name"/>
+                                        <span t-field="d.partner_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">DIRECCIÓN:</th>
                                     <td style="text-align:left;">
-                                        <span t-field="partner_id.street"/>
+                                        <span t-field="d.partner_id.street"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -92,7 +92,7 @@
                                 <tr>
                                     <th style="text-align:left;">TELÉFONO:</th>
                                     <td style="text-align:left;">
-                                        <span t-field="partner_id.mobile"/>
+                                        <span t-field="d.partner_id.mobile"/>
                                     </td>
                                 </tr>
                             </table>
@@ -102,7 +102,7 @@
                                 <tr>
                                     <th style="text-align:left;">NOTIFY:</th>
                                     <td style="text-align:left;">
-                                        <span t-field="partner_id.name"/>
+                                        <span t-field="d.partner_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -126,7 +126,7 @@
                                 <tr>
                                     <th style="text-align:left;">TELÉFONO:</th>
                                     <td style="text-align:left;">
-                                        <span t-field="partner_id.mobile"/>
+                                        <span t-field="d.partner_id.mobile"/>
                                     </td>
                                 </tr>
                             </table>
