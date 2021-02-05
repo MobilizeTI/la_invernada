@@ -216,7 +216,7 @@ class StockPicking(models.Model):
             haveExempt = False
             
             price_unit =  self.sale_id.mapped('order_line').filtered(lambda a : a.product_id.id == item.product_id.id).price_unit
-            amount = item.qty_done * price_unit
+            amount = item.quantity_done * price_unit
             tax_ids = self.sale_id.mapped('order_line').filtered(lambda a : a.product_id.id == item.product_id.id).tax_id
             amount_tax = 0
             for tax in tax_ids:
@@ -228,9 +228,6 @@ class StockPicking(models.Model):
             if len(self.sale_id.mapped('order_line').filtered(lambda a : a.product_id.id == item.product_id.id).mapped('tax_id')) == 0:
                 haveExempt = True
 
-
-    
-
             if haveExempt:
                 exemtAmount += amount
                 productLines.append(
@@ -239,12 +236,12 @@ class StockPicking(models.Model):
                         "ProductTypeCode": "EAN",
                         "ProductCode": str(item.product_id.default_code),
                         "ProductName": item.name,
-                        "ProductQuantity": str(item.qty_done), #segun DTEmite no es requerido int
+                        "ProductQuantity": str(item.quantity_done), #segun DTEmite no es requerido int
                         "UnitOfMeasure": str(item.product_id.uom_id.name),
                         "ProductPrice": str(price_unit), #segun DTEmite no es requerido int
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(item.qty_done * price_unit), #str(int(amount)),
+                        "Amount": str(item.quantity_done * price_unit), #str(int(amount)),
                         "HaveExempt": haveExempt,
                         "TypeOfExemptEnum": "1" #agregar campo a sale.order.line igual que acoount.invoice.line
                     }
@@ -257,12 +254,12 @@ class StockPicking(models.Model):
                         "ProductTypeCode": "EAN",
                         "ProductCode": str(item.product_id.default_code),
                         "ProductName": item.name,
-                        "ProductQuantity": str(item.qty_done),
+                        "ProductQuantity": str(item.quantity_done),
                         "UnitOfMeasure": str(item.product_id.uom_id.name),
                         "ProductPrice": str(round(item.product_id.lst_price,4)),
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(self.roundclp(item.qty_done * price_unit)),
+                        "Amount": str(self.roundclp(item.quantity_done * price_unit)),
                     }
                 )
             lineNumber += 1

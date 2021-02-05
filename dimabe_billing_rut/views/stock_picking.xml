@@ -8,12 +8,17 @@
                 <xpath expr="//field[@name='date_done']" position="after">
                     <field name="date_due"/>
                  </xpath>
+                 <xpath expr="//header" position="inside">
+                    <button type="object" string="Validar para SII" name="validation_fields"
+                    attrs="{'invisible':['&amp;','&amp;',('valid_to_sii', '=', True)}"
+                    />
+                </xpath>
                 <data>
                     <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">   
                         <page name="xdte_stock_picking_tab" string="DTE">
                             <group name="xdte_stock_picking_info" cols="">
                                 <!--<button  type="object" name="send_to_sii" string="Enviar al SII" attrs="{'invisible': ['|',('dte_folio', '!=', False),('state','!=','done')]}" class="oe_highlight"/>-->
-                                <button  type="object" name="send_to_sii" string="Enviar al SII"  class="oe_highlight"/>
+                                <button type="object" name="send_to_sii" string="Enviar al SII"  class="oe_highlight" attrs="{'invisible': [('valid_to_sii', '=', False)]}"/>
                                 <field name="method_of_payment" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
                                 <field name="dispatch_type"/>
                                 <field name="transfer_indication"/>
