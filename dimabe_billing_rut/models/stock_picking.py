@@ -197,7 +197,6 @@ class StockPicking(models.Model):
     @api.one
     def send_to_sii(self):
 
-        raise models.ValidationError(self.total)
         url = self.env.user.company_id.dte_url
         headers = {
             "apiKey" : self.env.user.company_id.dte_hash,
