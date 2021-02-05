@@ -280,7 +280,7 @@ class StockPicking(models.Model):
             return json_data['value']
         except Exception as e:
             if 'HTTPConnectionPool' in str(e):
-                raise models.ValidationError("Por favor comprobar si el equipo de romana se encuentre enciendo o con conexion a internet")
+                raise models.ValidationError("Por favor comprobar si el equipo de romana se encuentre encendido o con conexion a internet")
             else:
                 raise models.ValidationError(str(e))
 
