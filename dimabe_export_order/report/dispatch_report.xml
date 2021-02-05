@@ -239,14 +239,23 @@
                                     <td style="border-right:1px solid;border-bottom:1px solid;text-align:center;padding-right:4px;">
                                         <span t-field="m.product_id.uom_id.name"/>
                                     </td>
-                                    <td style="border-right:1px solid;border-bottom:1px solid;text-align:right;padding-right:4px;">
+                                    <!--<td style="border-right:1px solid;border-bottom:1px solid;text-align:right;padding-right:4px;">
                                         <span t-field="m.quantity_done"/>
-                                    </td>
+                                    </td>-->
                                     <td style="border-right:1px solid;border-bottom:1px solid;text-align:right;padding-right:4px;">
-                                        <span t-field="m.product_id.lst_price"/>
+                                        <span t-field="m.qty_done"/>
                                     </td>
-                                    <td style="border-bottom:1px solid;text-align:right;padding-right:4px;">
+                                    <!--<td style="border-right:1px solid;border-bottom:1px solid;text-align:right;padding-right:4px;">
+                                        <span t-field="m.product_id.lst_price"/>
+                                    </td>-->
+                                    <td style="border-right:1px solid;border-bottom:1px solid;text-align:right;padding-right:4px;">
+                                        <span t-esc="d.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id).price_unit"/>
+                                    </td>
+                                    <!--<td style="border-bottom:1px solid;text-align:right;padding-right:4px;">
                                         <span t-esc="d.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id).price_subtotal"/>
+                                    </td>-->
+                                    <td style="border-bottom:1px solid;text-align:right;padding-right:4px;">
+                                        <span t-esc="'{}'.format(d.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id).price_unit * m.qty_done)"/>
                                     </td>
                                     <t t-if="m.id == d.move_ids_without_package[-1].id">
                                         <tr>
@@ -553,9 +562,7 @@
                                     <t t-if="d.type_of_dispatch == 'exp'">
                                         <table style="font-size:9px;width:55%;height:30%;margin:0 auto;">
                                             <tr>
-                                                <td>
-                                                    KILOS NETOS
-                                                </td>
+                                                <td>KILOS NETOS</td>
                                                 <td>
                                                     <span t-field="d.net_weight_dispatch"/>
                                                 </td>

@@ -139,6 +139,8 @@ class AccountInvoice(models.Model):
         'custom.account.invoice.line',
         'invoice_id', string="Lineas Consolidadas")
 
+    valid_to_sii = fields.Boolean(string="Valido para SII")
+
     #COMEX
     total_value = fields.Float(
         'Valor Total',
@@ -505,6 +507,7 @@ class AccountInvoice(models.Model):
 
      
     def validation_fields(self):
+        valid_to_sii = False
         if not self.partner_id:
             raise models.ValidationError('Por favor seleccione el Cliente')
         else:
@@ -567,6 +570,11 @@ class AccountInvoice(models.Model):
 
         if len(self.observations_ids) > 10: 
             raise models.ValidationError('Solo puede generar 10 Observaciones')
+
+        valid_to_sii = True
+
+        if valid_to_sii:
+            self.valid_to_sii = valid_to_sii
 
     @api.onchange('dte_type_id')
     def on_change_dte_type_id(self):

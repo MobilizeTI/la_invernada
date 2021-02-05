@@ -69,11 +69,15 @@ class StockPicking(models.Model):
 
     net_amount = fields.Char(string="Neto")
 
+    amount_tax = fields.Char(string="IVA")
+
     exempt_amount = fields.Char(string="Exento")
 
     total = fields.Char(string="Total")
 
     invoiced = fields.Boolean(string="Estado Facturación",default=False)
+
+    valid_to_sii = fields.Boolean(string="Valido para SII")
 
     #Comex Embarque
 
@@ -203,40 +207,46 @@ class StockPicking(models.Model):
         netAmount = 0
         exemtAmount = 0
         countNotExempt = 0
-        haveExempt = False
+        
 
         #Main Validations
         self.validation_fields()
 
         for item in self.move_ids_without_package:
+            haveExempt = False
+            
+            price_unit =  self.sale_id.mapped('order_line').filtered(lambda a : a.product_id.id == item.product_id.id).price_unit
+            amount = item.qty_done * price_unit
+            tax_ids = self.sale_id.mapped('order_line').filtered(lambda a : a.product_id.id == item.product_id.id).tax_id
+            amount_tax = 0
+            for tax in tax_ids:
+                if int(tax.amount) == 19:
+                    amount_tax += amount * (tax.amount / 100)
+                    break
+
+
             if len(self.sale_id.mapped('order_line').filtered(lambda a : a.product_id.id == item.product_id.id).mapped('tax_id')) == 0:
                 haveExempt = True
-            #amount = self.sale_id.order_line.filtered(lambda a : a.product_id.id == item.product_id.id).price_subtotal
-            
-            quantity = 0
-            if item.quantity_done == 0.0:
-                quantity = self.sale_id.order_line.filtered(lambda a : a.product_id.id == item.product_id.id).qty_delivered
-            else:
-                quantity = str(round(item.quantity_done, 6))
 
-            amount = str(quantity * round(item.product_id.lst_price,4)),
+
+    
 
             if haveExempt:
-                exemtAmount += int(amount)
+                exemtAmount += amount
                 productLines.append(
                     {
                         "LineNumber": str(lineNumber),
                         "ProductTypeCode": "EAN",
                         "ProductCode": str(item.product_id.default_code),
                         "ProductName": item.name,
-                        "ProductQuantity": str(quantity), # str(round(item.quantity_done, 6)), #segun DTEmite no es requerido int
+                        "ProductQuantity": str(item.qty_done), #segun DTEmite no es requerido int
                         "UnitOfMeasure": str(item.product_id.uom_id.name),
-                        "ProductPrice": str(round(item.product_id.lst_price,4)), #segun DTEmite no es requerido int
+                        "ProductPrice": str(price_unit), #segun DTEmite no es requerido int
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(quantity * round(item.product_id.lst_price,4)), #str(int(amount)),
+                        "Amount": str(item.qty_done * price_unit), #str(int(amount)),
                         "HaveExempt": haveExempt,
-                        "TypeOfExemptEnum": "1"
+                        "TypeOfExemptEnum": "1" #agregar campo a sale.order.line igual que acoount.invoice.line
                     }
                 )
             else:
@@ -247,12 +257,12 @@ class StockPicking(models.Model):
                         "ProductTypeCode": "EAN",
                         "ProductCode": str(item.product_id.default_code),
                         "ProductName": item.name,
-                        "ProductQuantity": str(quantity), # str(round(item.quantity_done, 6)),
+                        "ProductQuantity": str(item.qty_done),
                         "UnitOfMeasure": str(item.product_id.uom_id.name),
                         "ProductPrice": str(round(item.product_id.lst_price,4)),
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(int(quantity * round(item.product_id.lst_price,4))),#str(int(amount))
+                        "Amount": str(self.roundclp(item.qty_done * price_unit)),
                     }
                 )
             lineNumber += 1
@@ -264,9 +274,11 @@ class StockPicking(models.Model):
         else:
             recipientPhone = ''
 
-        self.net_amount = str(netAmount)
+        self.net_amount = str(self.roundclp(netAmount))
 
-        self.exempt_amount = str(exemtAmount)
+        self.exempt_amount = str(self.roundclp(exemtAmount))
+
+        #self.amount_tax = str(self.roundclp(amount_tax))
 
         self.total = str(self.roundclp(netAmount + exemtAmount + self.sale_id.amount_tax))
 
@@ -367,12 +379,21 @@ class StockPicking(models.Model):
     def roundclp(self, value):
         value_str = str(value)
         list_value = value_str.split('.')
-        if len(list_value)>1 and int(list_value[1]) < 5:
-            return floor(value)
+        if len(list_value) > 1:
+            decimal = int(list_value[1][0])
+            if decimal == 0:
+                return int(value)
+            elif decimal < 5:
+                return floor(value)
+            else:
+                return round(value)
         else:
-            return round(value)
+            return value
 
     def validation_fields(self):
+
+        valid_to_sii = False
+
         if not self.partner_id:
             raise models.ValidationError('Por favor selccione el Cliente')
         else:
@@ -393,3 +414,8 @@ class StockPicking(models.Model):
 
         if len(self.observations_ids) > 10: 
             raise models.ValidationError('Solo puede generar 10 Observaciones')
+
+        valid_to_sii = True
+
+        if valid_to_sii:
+            self.valid_to_sii = valid_to_sii
