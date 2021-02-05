@@ -26,5 +26,9 @@ class CustomOrdersToInvoice(models.Model):
         string="Pedido"
     )
 
+    total_value = fields.Float(string="Valor Total")
+
+    value_per_kilo = fields.Float(string="Valor por Kilo")
+
   
     
