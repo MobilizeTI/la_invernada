@@ -903,7 +903,11 @@ class AccountInvoice(models.Model):
         qty_total = 0
         for line in stock_id.move_ids_without_package:
             qty_total = qty_total + line.quantity_done
-        return qty_total
+
+        if qty_total > 0:
+            return qty_total
+        else:
+            return 1
 
     #Send Data to Stock_Picking Comex
     @api.multi
