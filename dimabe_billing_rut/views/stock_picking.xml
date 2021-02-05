@@ -10,7 +10,7 @@
                  </xpath>
                  <xpath expr="//header" position="inside">
                     <button type="object" string="Validar para SII" name="validation_fields"
-                    attrs="{'invisible':['&amp;','&amp;',('valid_to_sii', '=', True)}"
+                    attrs="{'invisible':[('valid_to_sii', '=', True)}"
                     />
                 </xpath>
                 <data>
