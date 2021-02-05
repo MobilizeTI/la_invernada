@@ -10,9 +10,10 @@
                     <field name="consignee_id"
                            attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"
                     />
-                    <field name="notify_ids" delete="true"
+                    <field name="notify_ids"
                            attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"
                     />
+                    <button name="clean_notify" />
                 </field>
                 <xpath expr="//page[@name='extra']" position="after">
                     <page string="COMEX" id="export_data"

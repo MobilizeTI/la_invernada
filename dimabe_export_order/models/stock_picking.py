@@ -370,3 +370,10 @@ class StockPicking(models.Model):
         for item in self:
             if item.agent_id and item.commission > 3:
                 raise models.ValidationError('la comisión debe ser mayor que 0 y menor o igual que 3')
+
+    @api.multi
+    def clean_notify(self):
+        self.notify_ids = [(5,)]
+
+ 
+        
