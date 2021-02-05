@@ -847,8 +847,8 @@ class AccountInvoice(models.Model):
                             'order_name': self.order_to_add_ids.name,
                             'stock_picking_name': self.stock_picking_ids.name,
                             'stock_picking_id': self.stock_picking_ids.id,
-                            'total_value' : self.total_value_stock_picking(self, self.stock_picking_ids.id),
-                            'value_per_kilo': self.total_value_stock_picking(self, self.stock_picking_ids.id) / self.value_per_kilo(self, self.stock_picking_ids.id)
+                            'total_value' : self.total_value_stock_picking(self.stock_picking_ids.id),
+                            'value_per_kilo': self.total_value_stock_picking(self.stock_picking_ids.id) / self.value_per_kilo(self.stock_picking_ids.id)
                         })
 
                         if len(self.custom_invoice_line_ids) > 0:
