@@ -477,7 +477,7 @@
                                             <span style="margin-left:4px;">$</span>
                                         </td>
                                         <td style="text-align: right;width:70%;">
-                                            <span t-field="d.sale_id.amount_tax"></span>
+                                            <span t-field="d.amount_tax"></span>
                                         </td>
                                     </tr>
                                     <tr>

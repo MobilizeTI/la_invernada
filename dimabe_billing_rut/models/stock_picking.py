@@ -255,7 +255,7 @@ class StockPicking(models.Model):
                         "ProductName": item.name,
                         "ProductQuantity": str(item.quantity_done),
                         "UnitOfMeasure": str(item.product_id.uom_id.name),
-                        "ProductPrice": str(round(item.product_id.lst_price,4)),
+                        "ProductPrice": str(price_unit),
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
                         "Amount": str(self.roundclp(item.quantity_done * price_unit)),
