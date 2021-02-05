@@ -894,7 +894,7 @@ class AccountInvoice(models.Model):
                         prices = sum(list_price)
                         qantas = sum(list_qty)
 
-        return (prices * qantas) + self.freight_value + self.safe_value
+        return (prices * qantas) + self.freight_amount + self.safe_amount
 
     def value_per_kilo(self, stock_picking_id):
         stock_id = self.env['stock.picking'].search([('id','=',stock_picking_id)])
