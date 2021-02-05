@@ -847,6 +847,8 @@ class AccountInvoice(models.Model):
                             'order_name': self.order_to_add_ids.name,
                             'stock_picking_name': self.stock_picking_ids.name,
                             'stock_picking_id': self.stock_picking_ids.id,
+                            'total_value' : self.total_value_stock_picking(self, self.stock_picking_ids.id),
+                            'value_per_kilo': self.total_value_stock_picking(self, self.stock_picking_ids.id) / self.value_per_kilo(self, self.stock_picking_ids.id)
                         })
 
                         if len(self.custom_invoice_line_ids) > 0:
@@ -875,6 +877,31 @@ class AccountInvoice(models.Model):
                 raise models.ValidationError('No se han encontrado Productos')
         else:
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
+
+
+    def total_value_stock_picking(self, stock_picking_id):
+        stock_id = self.env['stock.picking'].search([('id','=',stock_picking_id)])
+        list_price = []
+        list_qty = []
+        prices = 0
+        qantas = 0
+        for i in stock_id.sale_id.order_line:
+            if len(stock_id.sale_id.order_line) != 0:
+                list_price.append(int(i.price_unit))
+                for a in stock_id.move_ids_without_package:
+                    if len(stock_id.move_ids_without_package) != 0:
+                        list_qty.append(int(a.quantity_done))
+                        prices = sum(list_price)
+                        qantas = sum(list_qty)
+
+        return (prices * qantas) + self.freight_value + self.safe_value
+
+    def value_per_kilo(self, stock_picking_id):
+        stock_id = self.env['stock.picking'].search([('id','=',stock_picking_id)])
+        qty_total = 0
+        for line in stock_id.move_ids_without_package:
+            qty_total = qty_total + line.quantity_done
+        return qty_total
 
     #Send Data to Stock_Picking Comex
     @api.multi
