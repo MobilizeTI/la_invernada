@@ -571,6 +571,8 @@ class AccountInvoice(models.Model):
         if len(self.observations_ids) > 10: 
             raise models.ValidationError('Solo puede generar 10 Observaciones')
 
+        #Verificar/Validar si hay cambios en el despacho  de los pedidos respecto a las lineas
+
         valid_to_sii = True
 
         if valid_to_sii:
