@@ -14,4 +14,5 @@ class CustomCities(models.Model):
     @api.depends('name','country')
     def _compute_fields_city_country(self):
         for item in self:
-            item.city_country = item.name + ', ' +  item.country.name
+            if item.name and item.country:
+                item.city_country = item.name + ', ' +  item.country.name
