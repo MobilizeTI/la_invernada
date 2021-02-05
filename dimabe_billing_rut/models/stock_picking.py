@@ -274,7 +274,7 @@ class StockPicking(models.Model):
 
         self.exempt_amount = str(self.roundclp(exemtAmount))
 
-        #self.amount_tax = str(self.roundclp(amount_tax))
+        self.amount_tax = str(self.roundclp(amount_tax))
 
         self.total = str(self.roundclp(netAmount + exemtAmount + self.sale_id.amount_tax))
 
@@ -305,11 +305,11 @@ class StockPicking(models.Model):
                 "EnterprisePhone": recipientPhone
             },
             "total": {
-                "netAmount": self.net_amount, #str(int(self.sale_id.amount_untaxed)),
+                "netAmount": self.net_amount, 
                 "exemptAmount": self.exempt_amount,
                 "taxRate": "19",
-                "taxtRateAmount": str(self.roundclp(self.sale_id.amount_tax)),
-                "totalAmount":self.total # str(int(self.sale_id.amount_total))
+                "taxtRateAmount": self.amount_tax,
+                "totalAmount":self.total 
             },
             "lines": productLines,
         }
@@ -342,6 +342,7 @@ class StockPicking(models.Model):
         r = requests.post(url, json=invoice, headers=headers)
 
         #raise models.ValidationError(json.dumps(invoice))
+        raise models.ValidationError('{} {} {}'.format(self.net_amount,self.amount_tax, self.total))
         jr = json.loads(r.text)
 
         Jrkeys = jr.keys()
