@@ -224,7 +224,6 @@ class StockPicking(models.Model):
                     amount_tax += amount * (tax.amount / 100)
                     break
 
-
             if len(self.sale_id.mapped('order_line').filtered(lambda a : a.product_id.id == item.product_id.id).mapped('tax_id')) == 0:
                 haveExempt = True
 
