@@ -144,19 +144,13 @@
                     </group>
                     <group>
                         <field name="stock_production_lot_serial_ids"
-                               domain="[('reserved_to_stock_picking_id','!=',None),('consumed','=',False)]">
+                               domain="[('reserved_to_stock_picking_id','!=',None)]">
                             <tree editable="bottom" edit="true" create="false" delete="false">
                                 <field name="to_add"/>
                                 <field name="pallet_id" readonly="1"/>
                                 <field name="serial_number" readonly="1"/>
                                 <field name="stock_product_id" readonly="1"/>
                                 <field name="display_weight" readonly="1"/>
-
-                                <button string="Agregar Reserva"
-                                        type="object"
-                                        name="reserve_picking"
-                                        context="{'dispatch_id':parent.context_picking_id}"
-                                />
                             </tree>
                         </field>
                     </group>
