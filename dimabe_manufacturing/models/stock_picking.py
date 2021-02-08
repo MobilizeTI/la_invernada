@@ -4,6 +4,7 @@ import datetime
 from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 import datetime
 
+
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
@@ -83,9 +84,17 @@ class StockPicking(models.Model):
 
     @api.multi
     def remove_reserved(self):
+        lots = self.packing_list_ids.filtered(lambda a: a.to_delete).mapped('stock_production_lot_id')
+        for lot in lots:
+            qty_done = self.move_line_ids_without_package.filtered(lambda a: a.to_delete).qty_done - sum(
+                self.packing_list_ids.filtered(lambda a: a.to_delete and a.stock_production_lot_id.id == lot.id).mapped(
+                    'display_weight'))
+            self.move_line_ids_without_package.filtered(lambda a: a.to_delete).write({
+                'qty_done' : qty_done
+            })
         self.packing_list_ids.filtered(lambda a: a.to_delete).write({
-            'reserved_to_stock_picking_id':None,
-            'to_delete':False
+            'reserved_to_stock_picking_id': None,
+            'to_delete': False
         })
 
     @api.multi
