@@ -145,7 +145,8 @@
                     <group>
                         <field name="stock_production_lot_available_serial_ids"
                                domain="[('reserved_to_stock_picking_id','!=',None)]">
-                            <tree>
+                            <tree editable="bottom" create="false" delete="false">
+                                <field name="to_add"/>
                                 <field name="pallet_id"/>
                                 <field name="serial_number"/>
                                 <field name="stock_product_id"/>
