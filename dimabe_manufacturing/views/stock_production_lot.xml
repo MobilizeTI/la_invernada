@@ -162,7 +162,7 @@
                     </group>
                 </group>
                 <footer>
-                    <button string="Agregar Selección" name="add_selection" type="object" context="{'dispatch_id':parent.context_picking_id}"/>
+                    <button string="Agregar Selección" name="add_selection" type="object" context="{'dispatch_id':context_picking_id}"/>
                 </footer>
             </form>
         </field>
