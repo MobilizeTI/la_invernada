@@ -63,21 +63,16 @@
                         <page string="Series Reservadas">
                             <group>
                                 <field name="packing_list_ids">
-                                    <tree>
-                                        <field name="stock_production_lot_id"/>
-                                        <field name="stock_product_id"/>
-                                        <field name="serial_number"/>
-                                        <field name="display_weight"/>
+                                    <tree editable="bottom" edit="true" delete="false" create="false">
+                                        <field name="to_delete" attrs="{'invisible':[('consumed','=',False)]}"/>
+                                        <field name="stock_production_lot_id" readonly="1"/>
+                                        <field name="stock_product_id" readonly="1"/>
+                                        <field name="serial_number" readonly="1"/>
+                                        <field name="display_weight" readonly="1"/>
                                         <field name="consumed" invisible="1"/>
-                                        <button string="Quitar Reserva"
-                                                type="object"
-                                                name="unreserved_picking"
-                                                groups="mrp.group_mrp_manager"
-                                                attrs="{'invisible':['|',('parent.state','=','done'),('consumed','=',True)]}"
-                                                context="{'stock_picking_id': parent.id}"
-                                        />
                                     </tree>
                                 </field>
+                                <button name="remove_reserved" type="object" string="Quitar seleccion"/>
                             </group>
                         </page>
                         <page string="Lotes Disponibles">
