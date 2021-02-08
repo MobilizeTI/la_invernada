@@ -702,4 +702,3 @@ class StockProductionLot(models.Model):
         #                     'move_line_ids': [
         #                         (4, move_line.id)
         #                     ]
-        #                 })
