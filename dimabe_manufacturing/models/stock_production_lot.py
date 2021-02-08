@@ -701,4 +701,3 @@ class StockProductionLot(models.Model):
         #                 stock_move.sudo().update({
         #                     'move_line_ids': [
         #                         (4, move_line.id)
-        #                     ]
