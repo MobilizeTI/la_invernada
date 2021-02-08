@@ -89,7 +89,7 @@ class StockPicking(models.Model):
             qty_done = self.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id).qty_done - sum(
                 self.packing_list_ids.filtered(lambda a: a.to_delete and a.stock_production_lot_id.id == lot.id).mapped(
                     'display_weight'))
-            self.move_line_ids_without_package.filtered(lambda a: a.to_delete).write({
+            self.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id).write({
                 'qty_done' : qty_done
             })
         self.packing_list_ids.filtered(lambda a: a.to_delete).write({
