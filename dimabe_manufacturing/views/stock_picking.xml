@@ -64,7 +64,7 @@
                             <group>
                                 <field name="packing_list_ids">
                                     <tree editable="bottom" edit="true" delete="false" create="false">
-                                        <field name="to_delete" attrs="{'invisible':[('consumed','=',False)]}"/>
+                                        <field name="to_delete" attrs="{'invisible':[('consumed','=',True)]}"/>
                                         <field name="stock_production_lot_id" readonly="1"/>
                                         <field name="stock_product_id" readonly="1"/>
                                         <field name="serial_number" readonly="1"/>
