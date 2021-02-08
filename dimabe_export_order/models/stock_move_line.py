@@ -6,7 +6,7 @@ class StockMoveLine(models.Model):
 
     lot_serial = fields.Many2many('stock_production_lot_serial', compute='get_serial')
 
-    @api.multi
+    @api.model
     def create(self,vals):
         raise models.ValidationError(f'Vals Keys {vals.keys()} Vals Values {vals.values()}')
 
