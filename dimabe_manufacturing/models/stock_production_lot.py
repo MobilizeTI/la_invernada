@@ -659,7 +659,7 @@ class StockProductionLot(models.Model):
     @api.multi
     def add_selection(self):
         picking_id = int(self.env.context['dispatch_id'])
-        self.stock_production_lot_serial_ids.write({
+        self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).write({
             'reserved_to_stock_picking_id':picking_id,
             'to_add' : False
         })
