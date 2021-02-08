@@ -147,10 +147,10 @@
                                domain="[('reserved_to_stock_picking_id','!=',None),('consumed','=',False)]">
                             <tree editable="bottom" edit="true" create="false" delete="false">
                                 <field name="to_add"/>
-                                <field name="pallet_id"/>
-                                <field name="serial_number"/>
-                                <field name="stock_product_id"/>
-                                <field name="display_weight"/>
+                                <field name="pallet_id" readonly="1"/>
+                                <field name="serial_number" readonly="1"/>
+                                <field name="stock_product_id" readonly="1"/>
+                                <field name="display_weight" readonly="1"/>
 
                                 <button string="Agregar Reserva"
                                         type="object"

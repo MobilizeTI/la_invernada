@@ -658,7 +658,7 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def add_selection(self):
-        models._logger.error('Hola')
+        raise models.ValidationError(self.env.context)
 
     @api.multi
     def reserved(self):
