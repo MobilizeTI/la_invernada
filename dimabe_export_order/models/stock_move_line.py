@@ -8,7 +8,8 @@ class StockMoveLine(models.Model):
 
     @api.model
     def create(self,values):
-        raise models.ValidationError(f'Key of Values {values.keys()} Values of Values {values.values()}')
+        super(StockMoveLine, self).create(values)
+        raise models.ValidationError(self.id)
 
 
     @api.multi
