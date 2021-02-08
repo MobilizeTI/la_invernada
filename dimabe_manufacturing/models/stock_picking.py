@@ -30,7 +30,7 @@ class StockPicking(models.Model):
 
     packing_list_ids = fields.One2many(
         'stock.production.lot.serial',
-        compute='_compute_packing_list_ids'
+        'reserved_to_stock_picking_id'
     )
 
     product_search_id = fields.Many2one(
