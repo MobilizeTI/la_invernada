@@ -63,7 +63,7 @@
                         <page string="Series Reservadas">
                             <group>
                                 <field name="packing_list_ids">
-                                    <tree>
+                                    <tree >
                                         <field name="stock_production_lot_id"/>
                                         <field name="stock_product_id"/>
                                         <field name="serial_number"/>

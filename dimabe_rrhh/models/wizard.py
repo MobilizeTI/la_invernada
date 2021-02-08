@@ -506,7 +506,7 @@ class WizardHrPaySlip(models.TransientModel):
             writer = csv.writer(output, delimiter=self.delimiter[self.delimiter_field_option],
                                 quotechar=self.quotechar[self.delimiter_option], quoting=csv.QUOTE_NONE)
         # Debemos colocar que tome todo el mes y no solo el día exacto TODO
-        payslip_recs = payslip_model.sudo().search([('date_from', '=', self.date_from), ('state', '=', 'done'),
+        payslip_recs = payslip_model.sudo().search([('date_from', '=', self.date_from),
                                                     ('employee_id.address_id', '=', self.company_id.id)
                                                     ])
         date_start = self.date_from
