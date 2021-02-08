@@ -664,6 +664,10 @@ class StockProductionLot(models.Model):
             'reserved_to_stock_picking_id':picking_id,
             'to_add' : False
         })
+        picking = self.env['stock.picking'].sudo().search([('id','=',picking_id)])
+        raise models.ValidationError(picking.move_ids_without_package)
+
+
 
     @api.multi
     def reserved(self):
