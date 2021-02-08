@@ -659,15 +659,22 @@ class StockProductionLot(models.Model):
     @api.multi
     def add_selection(self):
         picking_id = int(self.env.context['dispatch_id'])
-
+        picking = self.env['stock.picking'].sudo().search([('id', '=', picking_id)])
+        if not picking.move_line_ids_without_package:
+            for item in self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('stock_production_lot_id').mapped('product_id'):
+                self.env['stock.move.line'].create({
+                    'product_id': item.id,
+                    'move_id': picking.move_ids_without_package.filtered(lambda a: a.product_id.id == item.id).id,
+                    'picking_id': picking.id,
+                    'qty_done': sum(self.stock_production_lot_serial_ids.filtered(
+                        lambda a: a.to_add and a.stock_production_lot_id.product_id.id == item.id)),
+                    'location_id':picking.location_id.id,
+                    'location_dest_id':picking.location_dest_id.id
+                })
         self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).write({
-            'reserved_to_stock_picking_id':picking_id,
-            'to_add' : False
+            'reserved_to_stock_picking_id': picking_id,
+            'to_add': False
         })
-        picking = self.env['stock.picking'].sudo().search([('id','=',picking_id)])
-        raise models.ValidationError(picking.move_ids_without_package)
-
-
 
     @api.multi
     def reserved(self):
