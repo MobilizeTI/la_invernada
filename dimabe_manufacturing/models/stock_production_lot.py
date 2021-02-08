@@ -81,7 +81,8 @@ class StockProductionLot(models.Model):
 
     stock_production_lot_available_serial_ids = fields.One2many(
         'stock.production.lot.serial',
-        compute='_compute_stock_production_lot_available_serial_ids',
+        'stock_production_lot_id',
+        domain=[('reserved_to_stock_picking_id','=',None),('consumed','=',False)],
         string='Series Disponibles'
     )
 
@@ -146,6 +147,8 @@ class StockProductionLot(models.Model):
         related='stock_picking_id.elapsed_time',
         store=True
     )
+
+    stock
 
     oven_init_active_time = fields.Integer(
         'Inicio Tiempo Activo',
