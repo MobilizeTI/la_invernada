@@ -381,8 +381,6 @@ class StockProductionLotSerial(models.Model):
                 if item.id == self.id:
                     item.unlink()
 
-
-
     @api.multi
     def print_serial_label(self):
         if 'producer_id' in self.env.context:

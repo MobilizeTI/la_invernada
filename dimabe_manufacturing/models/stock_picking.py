@@ -82,6 +82,13 @@ class StockPicking(models.Model):
         return res
 
     @api.multi
+    def remove_reserved(self):
+        self.packing_list_ids.filtered(lambda a: a.to_delete).write({
+            'reserved_to_stock_picking_id':None,
+            'to_delete':False
+        })
+
+    @api.multi
     def clean_reserved(self):
         for item in self:
             for move in item.move_line_ids_without_package:
