@@ -129,7 +129,7 @@
                         <field name="pallet_ids" domain="[('is_reserved','=',True)]">
                             <field name="is_reserved" invisible="1"/>
                             <tree editable="bottom" edit="true" create="false" delete="false">
-                                <field name="add_to_picking"/>
+
                                 <field name="name"/>
                                 <field name="total_content_weight"/>
                                 <field name="total_available_content"/>

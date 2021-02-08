@@ -46,7 +46,6 @@
                             <group>
                                 <field name="assigned_pallet_ids">
                                     <tree editable="bottom" edit="true" delete="false" create="false">
-                                        <field name="to_delete"/>
                                         <field name="name"/>
                                         <field name="total_content_weight"/>
                                         <field name="total_available_content"/>
