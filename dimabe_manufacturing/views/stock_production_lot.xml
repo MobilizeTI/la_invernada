@@ -143,8 +143,8 @@
                         </field>
                     </group>
                     <group>
-                        <field name="stock_production_lot_available_serial_ids"
-                               domain="[('reserved_to_stock_picking_id','!=',None)]">
+                        <field name="stock_production_lot_serial_ids"
+                               domain="[('reserved_to_stock_picking_id','!=',None),('consumed','=',False)]">
                             <tree editable="bottom" edit="true" create="false" delete="false">
                                 <field name="to_add"/>
                                 <field name="pallet_id"/>
