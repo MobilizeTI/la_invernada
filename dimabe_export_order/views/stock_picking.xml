@@ -95,7 +95,7 @@
                                 </group>
                                 <group attrs="{'invisible':[('type_of_dispatch','!=','exp')]}" style="width:100%%;">
                                     <group string="Pesos">
-                                        <field name="net_weight_dispatch"/>
+                                        <field name="net_weight_dispatch" string="Kilos Netos"/>
                                         <field name="gross_weight_dispatch"/>
                                         <field name="tare_container_weight_dispatch"/>
                                         <field name="container_weight"/>

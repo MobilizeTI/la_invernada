@@ -106,7 +106,7 @@ class StockPicking(models.Model):
     )
 
     net_weight_dispatch = fields.Float(
-        string="Kilos Netos"
+        string="Kilos Netos Despacho"
     )
 
     gross_weight_dispatch = fields.Float(
