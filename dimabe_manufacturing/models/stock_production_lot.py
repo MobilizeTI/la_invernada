@@ -148,8 +148,6 @@ class StockProductionLot(models.Model):
         store=True
     )
 
-    stock
-
     oven_init_active_time = fields.Integer(
         'Inicio Tiempo Activo',
         related='oven_use_ids.init_active_time'
