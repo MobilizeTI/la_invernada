@@ -672,7 +672,7 @@ class StockProductionLot(models.Model):
             })
         else:
             total = picking.move_line_ids_without_package.filtered(
-                lambda a: a.product_id.id == self.product_id.id).qty_done + sum(
+                lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id).qty_done + sum(
                 self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('display_weight'))
             picking.move_line_ids_without_package.filtered(lambda a: a.product_id.id == self.product_id.id).write({
                 'qty_done':total
