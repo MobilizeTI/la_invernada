@@ -658,7 +658,11 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def add_selection(self):
-        raise models.ValidationError(f'Keys of Context {self.env.context.keys()} Values of Context {self.env.context.values})')
+        picking_id = int(self.env.context['dispatch_id'])
+        self.stock_production_lot_serial_ids.write({
+            'reserved_to_stock_picking_id':picking_id,
+            'to_add' : False
+        })
 
     @api.multi
     def reserved(self):
