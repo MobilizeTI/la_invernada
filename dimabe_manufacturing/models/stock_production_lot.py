@@ -699,4 +699,3 @@ class StockProductionLot(models.Model):
         #                         (4, move_line.id)
         #                     ]
         #                 })
-
