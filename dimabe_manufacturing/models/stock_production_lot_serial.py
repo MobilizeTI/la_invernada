@@ -132,6 +132,10 @@ class StockProductionLotSerial(models.Model):
         related='production_id.bom_id'
     )
 
+    to_add = fields.Boolean('Agregar')
+
+    to_delete = fields.Boolean('Desreservar')
+
     movement = fields.Char('Movimiento', compute='_compute_movement')
 
     in_weight = fields.Float('Kilos Ingresado', compute='_compute_in_weight')
@@ -376,6 +380,8 @@ class StockProductionLotSerial(models.Model):
             for item in self.stock_production_lot_id.serial_without_pallet_ids:
                 if item.id == self.id:
                     item.unlink()
+
+
 
     @api.multi
     def print_serial_label(self):
