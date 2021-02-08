@@ -661,16 +661,22 @@ class StockProductionLot(models.Model):
         picking_id = int(self.env.context['dispatch_id'])
         picking = self.env['stock.picking'].sudo().search([('id', '=', picking_id)])
         if not picking.move_line_ids_without_package:
-            for item in self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('stock_production_lot_id').mapped('product_id'):
-                self.env['stock.move.line'].create({
-                    'product_id': item.id,
-                    'move_id': picking.move_ids_without_package.filtered(lambda a: a.product_id.id == item.id).id,
-                    'picking_id': picking.id,
-                    'qty_done': sum(self.stock_production_lot_serial_ids.filtered(
-                        lambda a: a.to_add and a.stock_production_lot_id.product_id.id == item.id)),
-                    'location_id':picking.location_id.id,
-                    'location_dest_id':picking.location_dest_id.id
-                })
+            self.env['stock.move.line'].create({
+                'lot_id': self.id,
+                'picking_id': picking.id,
+                'move_id': picking.move_ids_without_package.filtered(lambda a: a.product_id == self.product_id.id).id,
+                'location_id': picking.location_id.id,
+                'location_dest_id': picking.location_dest_id.id,
+                'qty_done': sum(
+                    self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('display_weight'))
+            })
+        else:
+            total = picking.move_line_ids_without_package.filtered(
+                lambda a: a.product_id.id == self.product_id.id).qty_done + sum(
+                self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('display_weight'))
+            picking.move_line_ids_without_package.filtered(lambda a: a.product_id.id == self.product_id.id).write({
+                'qty_done':total
+            })
         self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).write({
             'reserved_to_stock_picking_id': picking_id,
             'to_add': False
