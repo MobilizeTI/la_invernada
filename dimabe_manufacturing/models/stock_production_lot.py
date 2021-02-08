@@ -658,7 +658,7 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def add_selection(self):
-        raise models.ValidationError(f'Keys of Context {self.env.context.keys()} Values of Context {self.env.context.values})'
+        raise models.ValidationError(f'Keys of Context {self.env.context.keys()} Values of Context {self.env.context.values})')
 
     @api.multi
     def reserved(self):
