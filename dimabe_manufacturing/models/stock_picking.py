@@ -109,13 +109,12 @@ class StockPicking(models.Model):
                     self.assigned_pallet_ids.filtered(lambda a: a.remove_picking).mapped('lot_serial_ids').mapped(
                         'display_weight'))
             })
+        self.packing_list_ids.filtered(lambda a: a.pallet_id in self.assigned_pallet_ids.mapped('id')).write({
+            'reserved_to_stock_picking_id':None,
+        })
         self.assigned_pallet_ids.filtered(lambda a: a.remove_picking).write({
             'remove_picking': False,
             'reserved_to_stock_picking_id':None
-        })
-        self.packing_list_ids.filtered(lambda a: a.to_delete).write({
-            'reserved_to_stock_picking_id': None,
-            'to_delete': False
         })
 
     @api.multi
