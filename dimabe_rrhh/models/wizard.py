@@ -490,6 +490,15 @@ class WizardHrPaySlip(models.TransientModel):
             return TOTIM
 
     @api.multi
+    def verify_quotation_afc(self,TOTIM,indicadores,contract):
+        if contract.type_id.name == 'Plazo Fijo':
+            return TOTIM * indicadores.contrato_plazo_fijo_empleador
+        elif contract.type_id.name == 'Plazo Indefinido':
+            return TOTIM * indicadores.contrato_plazo_indefinido_empleador
+        else:
+            return 0
+
+    @api.multi
     def action_generate_csv(self):
         employee_model = self.env['hr.employee']
         payslip_model = self.env['hr.payslip']
@@ -798,8 +807,9 @@ class WizardHrPaySlip(models.TransientModel):
                              str(float(self.get_payslip_lines_value_2(payslip, 'SECE'))).split('.')[
                                  0] if self.get_payslip_lines_value_2(payslip, 'SECE') else "0",
                              # 102 Aporte Empleador Seguro Cesantia
-                             str(float(self.get_payslip_lines_value_2(payslip, 'SECEEMP'))).split('.')[
-                                 0] if self.get_payslip_lines_value_2(payslip, 'SECEEMP') else "0",
+                             str(self.verify_quotation_afc(self.get_imponible_seguro_cesantia(payslip and payslip[0] or False,
+                                                                self.get_payslip_lines_value_2(payslip, 'TOTIM'),
+                                                                self.get_payslip_lines_value_2(payslip, 'IMPLIC')),payslip.indicadores_id,payslip.contract_id)),
                              # 103 Rut Pagadora Subsidio
                              # yo pensaba rut_emp,
                              "0",
