@@ -384,11 +384,9 @@ class WizardHrPaySlip(models.TransientModel):
         if payslip.contract_id.pension is True:
             return '0.0'
         elif TOTIM_2 >= round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf):
-            data = str(float(round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf))).split('.')
-            return data[0]
+            return str(float(round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf)))
         else:
-            data = str(float(round(TOTIM_2))).split('.')
-            return data[0]
+            return str(round(float(round(TOTIM_2))))
 
     @api.model
     def get_imponible_mutual(self, payslip, TOTIM):
@@ -415,13 +413,10 @@ class WizardHrPaySlip(models.TransientModel):
         elif payslip.contract_id.type_id.name == 'Sueldo Empresarial':
             return 0
         elif TOTIM_2 >= round(payslip.indicadores_id.tope_imponible_seguro_cesantia * payslip.indicadores_id.uf):
-            data = str(
-                float(round(payslip.indicadores_id.tope_imponible_seguro_cesantia * payslip.indicadores_id.uf))).split(
-                '.')
-            return data[0]
+            return str(round(
+                float(round(payslip.indicadores_id.tope_imponible_seguro_cesantia * payslip.indicadores_id.uf))))
         else:
-            data = str(float(round(TOTIM_2))).split('.')
-            return data[0]
+            return str(round(float(round(TOTIM_2))))
 
     @api.model
     def get_imponible_salud(self, payslip, TOTIM):
