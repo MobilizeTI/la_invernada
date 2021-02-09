@@ -630,7 +630,7 @@ class WizardHrPaySlip(models.TransientModel):
                              # 39 Cotizacion Trabajo Pesado
                              "0",
                              # 3- Datos Ahorro Previsional Voluntario Indiidual
-                             #                              # 40 Código de lav Institución APVI
+                             ## 40 Código de lav Institución APVI
                              payslip.contract_id.apv_id.codigo if self.get_payslip_lines_value_2(payslip,
                                                                                                  'APV') != "0" else "0",
                              # 41 Numero de Contrato APVI Strinng
