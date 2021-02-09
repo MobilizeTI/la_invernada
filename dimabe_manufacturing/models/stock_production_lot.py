@@ -118,7 +118,7 @@ class StockProductionLot(models.Model):
 
     pallet_ids = fields.One2many(
         'manufacturing.pallet',
-        compute='_compute_pallet_ids'
+        'lot_id'
     )
 
     picking_type_id = fields.Many2one(
