@@ -86,7 +86,7 @@ class WizardHrPaySlip(models.TransientModel):
         row = 0
         col = 0
         payslips = self.env['hr.payslip'].sudo().search(
-            [('indicadores_id', '=', indicadores.id),('state', 'in', ['done', 'draft'])])
+            [('indicadores_id', '=', indicadores.id), ('state', 'in', ['done', 'draft'])])
         for pay in payslips:
             if pay.employee_id.address_id.id != self.company_id.id:
                 continue
@@ -110,7 +110,9 @@ class WizardHrPaySlip(models.TransientModel):
                 worksheet.write(row, col, pay.contract_id.department_id.analytic_account_id.name)
             else:
                 worksheet.write(row, col, '')
-            long_const = max(payslips.mapped('contract_id').mapped('department_id').mapped('analytic_account_id').mapped('name'), key=len)
+            long_const = max(
+                payslips.mapped('contract_id').mapped('department_id').mapped('analytic_account_id').mapped('name'),
+                key=len)
             worksheet.set_column(row, col, len(long_const))
             col += 1
             worksheet.write(0, 3, 'Dias Trabajados:')
@@ -179,7 +181,7 @@ class WizardHrPaySlip(models.TransientModel):
             worksheet.write(row, col, total)
             if data.id == rule[-1].id:
                 totals = sum(sum_totals)
-                worksheet.write(row + 1,col,totals)
+                worksheet.write(row + 1, col, totals)
                 row += 1
             else:
                 row += 1
@@ -196,7 +198,7 @@ class WizardHrPaySlip(models.TransientModel):
         worksheet.write(row, col + 1, sum_total_line)
         row += 1
         for dis in discount:
-            line = self.search_data([('slip_id','in',payslips.mapped('id')),('rule_id','=',dis.id)])
+            line = self.search_data([('slip_id', 'in', payslips.mapped('id')), ('rule_id', '=', dis.id)])
             worksheet.write(row, col - 2, dis.name)
             total = sum(line.mapped("total"))
             sum_totals_discount.append(total)
@@ -212,7 +214,8 @@ class WizardHrPaySlip(models.TransientModel):
         another_discount = self.env['hr.salary.rule'].sudo().search(
             [('is_legal', '=', False), ('category_id', 'in', (9, 11))])
         for another_discount in another_discount:
-            line = self.search_data([('slip_id', 'in', payslips.mapped('id')), ('salary_rule_id', '=', another_discount.id)])
+            line = self.search_data(
+                [('slip_id', 'in', payslips.mapped('id')), ('salary_rule_id', '=', another_discount.id)])
             worksheet.write(row, col - 2, another_discount.name)
             total = sum(line.mapped("total"))
             worksheet.write(row, col + 1, total)
@@ -232,7 +235,7 @@ class WizardHrPaySlip(models.TransientModel):
             'type': 'ir.actions.do_nothing'
         }
 
-    def search_data(self,conditions):
+    def search_data(self, conditions):
         return self.env['hr.payslip.line'].search(conditions)
 
     def set_format_title(self, worksheet, format_title):
@@ -490,7 +493,7 @@ class WizardHrPaySlip(models.TransientModel):
             return TOTIM
 
     @api.multi
-    def verify_quotation_afc(self,TOTIM,indicadores,contract):
+    def verify_quotation_afc(self, TOTIM, indicadores, contract):
         totimp = float(TOTIM)
         if contract.type_id.name == 'Plazo Fijo':
             return round(totimp * indicadores.contrato_plazo_fijo_empleador / 100)
@@ -560,7 +563,7 @@ class WizardHrPaySlip(models.TransientModel):
                              "0",
                              # payslip.employee_id.type_id.id_type,
                              # 13
-                             str(float(self.get_dias_trabajados(payslip and payslip[0] or False))).split('.')[0],
+                             str(round(self.get_dias_trabajados(payslip and payslip[0] or False))),
                              # 14
                              self.get_tipo_linea(payslip and payslip[0] or False),
                              # 15
@@ -598,15 +601,14 @@ class WizardHrPaySlip(models.TransientModel):
                              # 26
                              payslip.contract_id.afp_id.codigo if payslip.contract_id.afp_id.codigo else "00",
                              # 27
-                             str(float(self.get_imponible_afp_2(payslip and payslip[0] or False,
+                             str(round(self.get_imponible_afp_2(payslip and payslip[0] or False,
                                                                 self.get_payslip_lines_value_2(payslip, 'TOTIM'),
                                                                 self.get_payslip_lines_value_2(payslip,
-                                                                                               'IMPLIC')))).split('.')[
-                                 0],
+                                                                                               'IMPLIC')))),
                              # AFP SIS APV 0 0 0 0 0 0
                              # 28
-                             str(float(self.get_payslip_lines_value_2(payslip, 'PREV'))).split('.')[0],
-                             str(float(self.get_payslip_lines_value_2(payslip, 'SIS'))).split('.')[0],
+                             str(round(float(self.get_payslip_lines_value_2(payslip, 'PREV')))),
+                             str(round(float(self.get_payslip_lines_value_2(payslip, 'SIS')))),
                              # 30 Cuenta de Ahorro Voluntario AFP
                              "0",
                              # 31 Renta Imp. Sust.AFP
@@ -637,9 +639,8 @@ class WizardHrPaySlip(models.TransientModel):
                              payslip.contract_id.forma_pago_apv if self.get_payslip_lines_value_2(payslip,
                                                                                                   'APV') else "0",
                              # 43 Cotización APVI 9(8) Monto en $ de la Cotización APVI
-                             str(float(self.get_payslip_lines_value_2(payslip, 'APV'))).split('.')[
-                                 0] if str(float(self.get_payslip_lines_value_2(payslip, 'APV'))).split('.')[
-                                 0] else "0",
+                             str(round(float(self.get_payslip_lines_value_2(payslip, 'APV')))) if str(
+                                 round(float(self.get_payslip_lines_value_2(payslip, 'APV')))) else "0",
                              # 44 Cotizacion Depositos
                              " ",
                              # 45 Codigo Institucion Autorizada APVC
@@ -715,8 +716,9 @@ class WizardHrPaySlip(models.TransientModel):
                                                             'FONASA') if payslip.contract_id.isapre_id.codigo == '07' else "0",
 
                              # 71 Cotizacion Acc. Trabajo (ISL)
-                             str(float(self.get_payslip_lines_value_2(payslip, 'ISL'))).split('.')[
-                                 0] if self.get_payslip_lines_value_2(payslip, 'ISL') else "0",
+                             str(round(float(
+                                 self.get_payslip_lines_value_2(payslip, 'ISL')))) if self.get_payslip_lines_value_2(
+                                 payslip, 'ISL') else "0",
 
                              # 0.93% de la Rta. Imp. (64) y es obligatorio para
                              # el empleador. Se paga a través de ISL sólo en
@@ -749,10 +751,10 @@ class WizardHrPaySlip(models.TransientModel):
                              "0" if payslip.contract_id.isapre_id.codigo == '07' else payslip.contract_id.isapre_cotizacion_uf,
                              # 80 Cotizacion Obligatoria Isapre
                              "0" if payslip.contract_id.isapre_id.codigo == '07' else
-                             str(float(self.get_payslip_lines_value_2(payslip, 'SALUD'))).split('.')[0],
+                             str(round(float(self.get_payslip_lines_value_2(payslip, 'SALUD')))).split('.')[0],
                              # 81 Cotizacion Adicional Voluntaria
                              "0" if payslip.contract_id.isapre_id.codigo == '07' else
-                             str(float(self.get_payslip_lines_value_2(payslip, 'ADISA'))).split('.')[0],
+                             str(round(float(self.get_payslip_lines_value_2(payslip, 'ADISA')))).split('.')[0],
                              # 82 Monto Garantia Explicita de Salud
                              "0",
                              # 8- Datos Caja de Compensacion
@@ -761,8 +763,10 @@ class WizardHrPaySlip(models.TransientModel):
                              payslip.indicadores_id.ccaf_id.codigo if payslip.indicadores_id.ccaf_id.codigo else "00",
                              # 84 Renta Imponible CCAF
                              self.verify_ccaf(self.get_payslip_lines_value_2(payslip, 'TOTIM'),
-                                              payslip.indicadores_id.uf,payslip.indicadores_id.tope_imponible_afp) if self.get_payslip_lines_value_2(payslip,
-                                                                                                           'TOTIM') else "0",
+                                              payslip.indicadores_id.uf,
+                                              payslip.indicadores_id.tope_imponible_afp) if self.get_payslip_lines_value_2(
+                                 payslip,
+                                 'TOTIM') else "0",
                              # 85 Creditos Personales CCAF TODO
                              self.get_payslip_lines_value_2(payslip, 'PCCAF') if self.get_payslip_lines_value_2(payslip,
                                                                                                                 'PCCAF') else "0",
@@ -796,7 +800,7 @@ class WizardHrPaySlip(models.TransientModel):
                              self.get_imponible_mutual(payslip and payslip[0] or False,
                                                        self.get_payslip_lines_value_2(payslip, 'TOTIM')),
                              # 98 Cotizacion Accidente del Trabajo
-                             str(float(self.get_payslip_lines_value_2(payslip, 'MUT'))).split('.')[
+                             str(round(float(self.get_payslip_lines_value_2(payslip, 'MUT')))).split('.')[
                                  0] if self.get_payslip_lines_value_2(payslip, 'MUT') else "0",
                              # 99 Codigo de Sucursal (Uso Futuro)
                              "0",
@@ -805,12 +809,14 @@ class WizardHrPaySlip(models.TransientModel):
                                                                 self.get_payslip_lines_value_2(payslip, 'TOTIM'),
                                                                 self.get_payslip_lines_value_2(payslip, 'IMPLIC')),
                              # 101 Aporte Trabajador Seguro Cesantia
-                             str(float(self.get_payslip_lines_value_2(payslip, 'SECE'))).split('.')[
+                             str(round(float(self.get_payslip_lines_value_2(payslip, 'SECE')))).split('.')[
                                  0] if self.get_payslip_lines_value_2(payslip, 'SECE') else "0",
                              # 102 Aporte Empleador Seguro Cesantia
-                             str(self.verify_quotation_afc(self.get_imponible_seguro_cesantia(payslip and payslip[0] or False,
-                                                                self.get_payslip_lines_value_2(payslip, 'TOTIM'),
-                                                                self.get_payslip_lines_value_2(payslip, 'IMPLIC')),payslip.indicadores_id,payslip.contract_id)),
+                             str(self.verify_quotation_afc(
+                                 self.get_imponible_seguro_cesantia(payslip and payslip[0] or False,
+                                                                    self.get_payslip_lines_value_2(payslip, 'TOTIM'),
+                                                                    self.get_payslip_lines_value_2(payslip, 'IMPLIC')),
+                                 payslip.indicadores_id, payslip.contract_id)),
                              # 103 Rut Pagadora Subsidio
                              # yo pensaba rut_emp,
                              "0",
@@ -823,9 +829,10 @@ class WizardHrPaySlip(models.TransientModel):
                              ]
             writer.writerow([str(l) for l in line_employee])
         self.env[self._name].sudo().create({'file_data': base64.encodebytes(output.getvalue().encode()),
-                    'file_name': "Previred_{}{}.txt".format(self.date_to,
-                                                            self.company_id.display_name.replace('.', '')),
-                    })
+                                            'file_name': "Previred_{}{}.txt".format(self.date_to,
+                                                                                    self.company_id.display_name.replace(
+                                                                                        '.', '')),
+                                            })
         self.write({'file_data': base64.encodebytes(output.getvalue().encode()),
                     'file_name': "Previred_{}{}.txt".format(self.date_to,
                                                             self.company_id.display_name.replace('.', '')),
