@@ -277,7 +277,6 @@ class StockPicking(models.Model):
         return custom_serial
 
     def on_barcode_scanned(self, barcode):
-
         for item in self:
             custom_serial = item.validate_barcode(barcode)
             if custom_serial.consumed:
