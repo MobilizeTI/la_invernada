@@ -114,7 +114,7 @@ class ManufacturingPallet(models.Model):
 
     serial_not_consumed = fields.Integer('Cantidad', compute='_compute_serial_not_consumed')
 
-    lot_id = fields.Many2one('stock.production.lot', compute='_compute_lot_id')
+    lot_id = fields.Many2one('stock.production.lot','Lote')
 
     @api.multi
     def _compute_lot_id(self):
