@@ -105,10 +105,12 @@ class StockPicking(models.Model):
         lots = self.assigned_pallet_ids.filtered(lambda a: a.remove_picking).mapped('lot_id')
         for lot in lots:
             self.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id).write({
-                'qty_done': sum(self.assigned_pallet_ids.filtered(lambda a: a.remove_picking).mapped('lot_serial_ids').mappped('display_weight'))
+                'qty_done': sum(
+                    self.assigned_pallet_ids.filtered(lambda a: a.remove_picking).mapped('lot_serial_ids').mappped(
+                        'display_weight'))
             })
         self.assigned_pallet_ids.filtered(lambda a: a.remove_picking).write({
-            'remove_picking':False
+            'remove_picking': False
         })
         self.packing_list_ids.filtered(lambda a: a.to_delete).write({
             'reserved_to_stock_picking_id': None,
