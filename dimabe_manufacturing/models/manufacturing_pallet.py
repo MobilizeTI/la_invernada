@@ -94,9 +94,9 @@ class ManufacturingPallet(models.Model):
         compute='_compute_total_weight_content'
     )
 
-    add_to_picking = fields.Boolean('Agregar')
+    add_picking = fields.Boolean('Agregar')
 
-    remove_from_picking = fields.Boolean('Desreservar')
+    remove_picking = fields.Boolean('Desreservar')
 
     is_reserved = fields.Boolean('¿Esta reservado?')
 
