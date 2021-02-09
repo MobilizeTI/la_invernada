@@ -491,10 +491,11 @@ class WizardHrPaySlip(models.TransientModel):
 
     @api.multi
     def verify_quotation_afc(self,TOTIM,indicadores,contract):
+        totimp = float(TOTIM)
         if contract.type_id.name == 'Plazo Fijo':
-            return TOTIM * indicadores.contrato_plazo_fijo_empleador
+            return round(TOTIM * indicadores.contrato_plazo_fijo_empleador)
         elif contract.type_id.name == 'Plazo Indefinido':
-            return TOTIM * indicadores.contrato_plazo_indefinido_empleador
+            return round(TOTIM * indicadores.contrato_plazo_indefinido_empleador)
         else:
             return 0
 
