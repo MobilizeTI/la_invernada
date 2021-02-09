@@ -669,6 +669,7 @@ class StockProductionLot(models.Model):
                 'picking_id': picking.id,
                 'move_id': picking.move_ids_without_package.filtered(lambda a: a.product_id.id == self.product_id.id).id,
                 'location_id': picking.location_id.id,
+                'product_uom_id': self.product_id.uom_id.id,
                 'location_dest_id': picking.location_dest_id.id,
                 'qty_done': sum(
                     self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('display_weight'))
@@ -700,6 +701,8 @@ class StockProductionLot(models.Model):
                 'picking_id':picking_id,
                 'move_id':picking.move_ids_without_package.filtered(lambda a: a.product_id.id == self.product_id.id).id,
                 'location_id':picking.location_id.id,
+                'product_uom_id':self.product_id.uom_id.id,
+
                 'location_dest_id':picking.location_dest_id.id,
                 'qty_done': sum(
                     self.pallet_ids.filtered(lambda a: a.add_to_picking).mapped('lot_serial_ids').mapped('display_weight')
