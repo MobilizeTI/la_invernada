@@ -118,29 +118,12 @@ class StockPicking(models.Model):
         })
 
     @api.multi
-    def clean_reserved(self):
-        for item in self:
-            for move in item.move_line_ids_without_package:
-                if move.lot_id.id not in item.packing_list_lot_ids.mapped('id'):
-                    query = 'DELETE FROM stock_move_line where id = {}'.format('id')
-                    cr = self._cr
-                    cr.execute(query)
-
-    @api.multi
     def _compute_packing_list_lot_ids(self):
         for item in self:
             if item.packing_list_ids and item.picking_type_code == 'outgoing':
                 item.packing_list_lot_ids = item.packing_list_ids.mapped('stock_production_lot_id')
             else:
                 item.packing_list_lot_ids = []
-
-    @api.multi
-    def _compute_assigned_pallet_ids(self):
-        for item in self:
-            if item.packing_list_ids and item.picking_type_code == 'outgoing':
-                item.assigned_pallet_ids = item.packing_list_ids.mapped('pallet_id')
-            else:
-                item.assigned_pallet_ids = []
 
     @api.onchange('sale_order_id')
     def on_change_production_id(self):
@@ -194,14 +177,6 @@ class StockPicking(models.Model):
                 ]
                 lot = self.env['stock.production.lot'].search(domain)
                 item.potential_lot_ids = lot
-
-    @api.multi
-    def _compute_packing_list_ids(self):
-        for item in self:
-            reserved_serial_ids = self.env['stock.production.lot.serial'].search([
-                ('reserved_to_stock_picking_id', '=', item.id)
-            ])
-            item.packing_list_ids = reserved_serial_ids
 
     @api.multi
     def return_action(self):
