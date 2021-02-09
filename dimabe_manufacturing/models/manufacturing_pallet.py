@@ -149,9 +149,7 @@ class ManufacturingPallet(models.Model):
     @api.model
     def create(self, values_list):
         res = super(ManufacturingPallet, self).create(values_list)
-
         res.name = self.env['ir.sequence'].next_by_code('manufacturing.pallet')
-
         if self.lot_serial_ids.mapped('production_id').mapped('sale_order_id'):
             res.sale_order_id = self.lot_serial_ids.mapped('production_id').mapped('sale_order_id')
 
