@@ -712,14 +712,14 @@ class StockProductionLot(models.Model):
             picking.move_line_ids_without_package.filtered(lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id).write({
                 'qty_done':total
             })
-        for pallet in self.pallet_ids.filtered(lambda a:a.add_to_picking):
+        for pallet in self.pallet_ids.filtered(lambda a:a.add_picking):
             pallet.lot_serial_ids.write({
                 'reserved_to_stock_picking_id': picking_id
             })
-            pallet.filtered(lambda a: a.add_to_picking).write({
-                'reserved_to_stock_picking_id':picking_id,
-                'add_to_picking': False
-            })
+        self.pallet_ids.filtered(lambda a:a.add_picking).write({
+            'reserved_to_stock_picking_id':picking_id,
+            'add_picking':False
+        })
 
     @api.multi
     def reserved(self):
