@@ -423,11 +423,9 @@ class WizardHrPaySlip(models.TransientModel):
         result = 0
         TOTAL = float(TOTIM)
         if TOTAL >= round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf):
-            data = str(float(round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf))).split('.')
-            return data[0]
+            return str(float(round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf)))
         else:
-            data = str(float(round(TOTAL))).split('.')
-            return data[0]
+            return str(float(round(TOTAL)))
 
     @api.model
     def _acortar_str(self, texto, size=1):
@@ -746,10 +744,10 @@ class WizardHrPaySlip(models.TransientModel):
                              "0" if payslip.contract_id.isapre_id.codigo == '07' else payslip.contract_id.isapre_cotizacion_uf,
                              # 80 Cotizacion Obligatoria Isapre
                              "0" if payslip.contract_id.isapre_id.codigo == '07' else
-                             str(round(float(self.get_payslip_lines_value_2(payslip, 'SALUD')))).split('.')[0],
+                             str(round(float(self.get_payslip_lines_value_2(payslip, 'SALUD')))),
                              # 81 Cotizacion Adicional Voluntaria
                              "0" if payslip.contract_id.isapre_id.codigo == '07' else
-                             str(round(float(self.get_payslip_lines_value_2(payslip, 'ADISA')))).split('.')[0],
+                             str(round(float(self.get_payslip_lines_value_2(payslip, 'ADISA')))),
                              # 82 Monto Garantia Explicita de Salud
                              "0",
                              # 8- Datos Caja de Compensacion
@@ -795,8 +793,7 @@ class WizardHrPaySlip(models.TransientModel):
                              self.get_imponible_mutual(payslip and payslip[0] or False,
                                                        self.get_payslip_lines_value_2(payslip, 'TOTIM')),
                              # 98 Cotizacion Accidente del Trabajo
-                             str(round(float(self.get_payslip_lines_value_2(payslip, 'MUT')))).split('.')[
-                                 0] if self.get_payslip_lines_value_2(payslip, 'MUT') else "0",
+                             str(round(float(self.get_payslip_lines_value_2(payslip, 'MUT')))) if self.get_payslip_lines_value_2(payslip, 'MUT') else "0",
                              # 99 Codigo de Sucursal (Uso Futuro)
                              "0",
                              # 10- Datos Administradora de Seguro de Cesantia
@@ -804,8 +801,7 @@ class WizardHrPaySlip(models.TransientModel):
                                                                 self.get_payslip_lines_value_2(payslip, 'TOTIM'),
                                                                 self.get_payslip_lines_value_2(payslip, 'IMPLIC')),
                              # 101 Aporte Trabajador Seguro Cesantia
-                             str(round(float(self.get_payslip_lines_value_2(payslip, 'SECE')))).split('.')[
-                                 0] if self.get_payslip_lines_value_2(payslip, 'SECE') else "0",
+                             str(round(float(self.get_payslip_lines_value_2(payslip, 'SECE')))) if self.get_payslip_lines_value_2(payslip, 'SECE') else "0",
                              # 102 Aporte Empleador Seguro Cesantia
                              str(self.verify_quotation_afc(
                                  self.get_imponible_seguro_cesantia(payslip and payslip[0] or False,
