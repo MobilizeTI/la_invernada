@@ -540,9 +540,6 @@ class WizardHrPaySlip(models.TransientModel):
             rut_dv = ""
             rut, rut_dv = payslip.employee_id.identification_id.split("-")
             rut = rut.replace('.', '')
-            raise models.ValidationError(self.verify_quotation_afc(self.get_imponible_seguro_cesantia(payslip and payslip[0] or False,
-                                                                self.get_payslip_lines_value_2(payslip, 'TOTIM'),
-                                                                self.get_payslip_lines_value_2(payslip, 'IMPLIC')),payslip.indicadores_id,payslip.contract_id))
             line_employee = [self._acortar_str(rut, 11),
                              self._acortar_str(rut_dv, 1),
                              self._arregla_str(payslip.employee_id.last_name.upper(),
