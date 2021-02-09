@@ -74,7 +74,7 @@
                                 </field>
                             </group>
                             <group>
-                                <button name="remove_reserved" type="object" string="Quitar seleccion"/>
+                                <button name="remove_reserved_serial" type="object" string="Quitar seleccion"/>
                             </group>
                         </page>
                         <page string="Lotes Disponibles">
