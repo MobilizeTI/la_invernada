@@ -129,7 +129,7 @@
                         <field name="pallet_ids" domain="[('is_reserved','=',True)]">
                             <field name="is_reserved" invisible="1"/>
                             <tree editable="bottom" edit="true" create="false" delete="false">
-
+                                <field name="add_to_picking"/>
                                 <field name="name"/>
                                 <field name="total_content_weight"/>
                                 <field name="total_available_content"/>
@@ -142,6 +142,7 @@
                                 />
                             </tree>
                         </field>
+                        <button string="Agregar Seleccion" type="object" name="add_selection_pallet" context="{'dispatch_id':context_picking_id}"/>
                     </group>
                     <group>
                         <field name="stock_production_lot_available_serial_ids"
@@ -154,11 +155,9 @@
                                 <field name="display_weight" readonly="1"/>
                             </tree>
                         </field>
+                        <button string="Agregar Selección" name="add_selection_serial" type="object" context="{'dispatch_id':context_picking_id}"/>
                     </group>
                 </group>
-                <footer>
-                    <button string="Agregar Selección" name="add_selection" type="object" context="{'dispatch_id':context_picking_id}"/>
-                </footer>
             </form>
         </field>
     </record>
