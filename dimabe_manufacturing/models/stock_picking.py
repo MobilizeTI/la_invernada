@@ -53,7 +53,7 @@ class StockPicking(models.Model):
 
     assigned_pallet_ids = fields.One2many(
         'manufacturing.pallet',
-        compute='_compute_assigned_pallet_ids'
+        'reserved_to_stock_picking_id'
     )
 
     have_series = fields.Boolean('Tiene Serie', default=True, compute='_compute_potential_lot_serial_ids')

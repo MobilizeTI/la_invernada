@@ -680,6 +680,11 @@ class StockProductionLot(models.Model):
             picking.move_line_ids_without_package.filtered(lambda a: a.product_id.id == self.product_id.id).write({
                 'qty_done':total
             })
+        pallets = self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('pallet_id')
+        for pallet in pallets:
+            pallet.write({
+                'reserved_to_stock_picking_id':picking_id
+            })
         self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).write({
             'reserved_to_stock_picking_id': picking_id,
             'to_add': False
