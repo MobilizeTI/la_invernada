@@ -705,7 +705,7 @@ class StockProductionLot(models.Model):
                 'product_id':self.product_id.id,
                 'location_dest_id':picking.location_dest_id.id,
                 'qty_done': sum(
-                    self.pallet_ids.filtered(lambda a: a.add_to_picking).mapped('lot_serial_ids').mapped('display_weight')
+                    self.pallet_ids.filtered(lambda a: a.add_picking).mapped('lot_serial_ids').mapped('display_weight')
                 )
             })
         else:
