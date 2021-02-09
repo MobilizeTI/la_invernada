@@ -190,11 +190,6 @@ class StockProductionLot(models.Model):
         'Es lote de Secado'
     )
 
-    is_dimabe_team = fields.Boolean(
-        'Es Equipo Dimabe',
-        compute='_compute_is_dimabe_team'
-    )
-
     product_variety = fields.Char(
         'Variedad del Producto',
         related='product_id.variety',
