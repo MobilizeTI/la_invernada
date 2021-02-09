@@ -110,7 +110,8 @@ class StockPicking(models.Model):
                         'display_weight'))
             })
         self.assigned_pallet_ids.filtered(lambda a: a.remove_picking).write({
-            'remove_picking': False
+            'remove_picking': False,
+            'reserved_to_stock_picking_id':None
         })
         self.packing_list_ids.filtered(lambda a: a.to_delete).write({
             'reserved_to_stock_picking_id': None,
