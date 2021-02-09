@@ -102,6 +102,8 @@ class ManufacturingPallet(models.Model):
 
     measure = fields.Char('Medida', related='product_id.measure')
 
+    reserved_to_stock_picking_id = fields.Many2one('stock.picking','Para Despacho')
+
     sale_order_id = fields.Many2one('sale.order', compute='_compute_sale_order_id', store=True)
 
     dest_client_id = fields.Many2one('res.partner', compute='_compute_dest_client_id')

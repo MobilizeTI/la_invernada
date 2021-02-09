@@ -710,6 +710,7 @@ class StockProductionLot(models.Model):
                 'reserved_to_stock_picking_id': picking_id
             })
             pallet.filtered(lambda a: a.add_to_picking).write({
+                'reserved_to_stock_picking_id':picking_id,
                 'add_to_picking': False
             })
 
