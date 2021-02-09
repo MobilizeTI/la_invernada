@@ -357,7 +357,7 @@ class WizardHrPaySlip(models.TransientModel):
         valor = 0
         lineas = self.env['hr.payslip.line']
         detalle = lineas.search([('slip_id', '=', obj.id), ('code', '=', regla)])
-        data = str(detalle.amount).split('.')[0]
+        data = round(detalle.total)
 
         valor = data
         return valor
@@ -493,9 +493,9 @@ class WizardHrPaySlip(models.TransientModel):
     def verify_quotation_afc(self,TOTIM,indicadores,contract):
         totimp = float(TOTIM)
         if contract.type_id.name == 'Plazo Fijo':
-            return round(totimp * indicadores.contrato_plazo_fijo_empleador)
+            return round(totimp * indicadores.contrato_plazo_fijo_empleador / 100)
         elif contract.type_id.name == 'Plazo Indefinido':
-            return round(totimp * indicadores.contrato_plazo_indefinido_empleador)
+            return round(totimp * indicadores.contrato_plazo_indefinido_empleador / 100)
         else:
             return 0
 
@@ -540,6 +540,9 @@ class WizardHrPaySlip(models.TransientModel):
             rut_dv = ""
             rut, rut_dv = payslip.employee_id.identification_id.split("-")
             rut = rut.replace('.', '')
+            raise models.ValidationError(self.verify_quotation_afc(self.get_imponible_seguro_cesantia(payslip and payslip[0] or False,
+                                                                self.get_payslip_lines_value_2(payslip, 'TOTIM'),
+                                                                self.get_payslip_lines_value_2(payslip, 'IMPLIC')),payslip.indicadores_id,payslip.contract_id))
             line_employee = [self._acortar_str(rut, 11),
                              self._acortar_str(rut_dv, 1),
                              self._arregla_str(payslip.employee_id.last_name.upper(),
