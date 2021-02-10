@@ -78,6 +78,8 @@ class StockPicking(models.Model):
                 'product_uom':item.product_id.uom_id.id,
                 'product_uom_qty':item.product_uom_qty,
                 'picking_id':self.id,
+                'location_id':self.location_id.id,
+                'location_dest_id':self.location_dest_id.id,
                 'date':datetime.datetime.now(),
                 'procure_method':'make_to_stock'
             })
