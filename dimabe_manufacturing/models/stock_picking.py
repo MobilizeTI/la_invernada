@@ -102,8 +102,8 @@ class StockPicking(models.Model):
         for lot in lots:
             move = self.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id)
             move.write({
-                'product_uom_qty': (move - sum(
-                    self.assigned_pallet_ids.filtered(lambda a: a.remove_picking).mapped('lot_serial_ids').mapped(
+                'product_uom_qty': (move.product_uom_qty - sum(
+                    self.assigned_pallet_ids.filtered(lambda a: a.remove_picking).mapped('lot_serial_ids').filtered(lambda a: a.a.reserved_to_stock_picking_id).mapped(
                         'display_weight')))
             })
         pallet_to_remove = self.assigned_pallet_ids.filtered(lambda a: a.remove_picking)
