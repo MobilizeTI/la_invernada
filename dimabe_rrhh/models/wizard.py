@@ -149,14 +149,21 @@ class WizardHrPaySlip(models.TransientModel):
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
-        self.env[self._name].create({
-            'report': file_base64,
-            'report_name': f'Libro de Remuneraciones {self.company_id.name}'
+
+        file_name = 'Libro de Remuneraciones {}'.format(indicadores.name)
+        attachment_id = self.env['ir.attachment'].sudo().create({
+            'name':file_name,
+            'datas_fname': file_name,
+            'datas': file_base64
         })
-        self.write({'report': file_base64, 'report_name': 'Libro de Remuneraciones {}'.format(indicadores.name)})
-        return {
-            'type': 'ir.actions.do_nothing'
+
+        action = {
+            'type': 'ir.actions.act_url',
+            'url': '/web/content/{}?download=true'.format(attachment_id.id,),
+            'target': 'self',
         }
+        return action
+
 
     @api.multi
     def generate_centralization(self):
