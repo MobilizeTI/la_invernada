@@ -31,6 +31,9 @@ class ResCurrency(models.Model):
         # apply rounding
         return to_currency.round(to_amount) if round else to_amount
 
+    def get_current_rate(self):
+        self.get_rate_by_date(datetime.now().date())
+
     def get_rate_by_date(self, date):
         date_now = datetime.now().date()
         if date <= date_now:
