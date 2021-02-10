@@ -137,7 +137,6 @@ class WizardHrPaySlip(models.TransientModel):
                     total_amount = self.env["hr.payslip.line"].sudo().search(
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
                     worksheet.write(row, col, total_amount,number_format)
-                    totals_result.append()
                 elif rule.code == 'HEXDE':
                     worksheet.write(0, col, 'Cant. Horas Descuentos')
                     worksheet.write(row, col, self.get_qty_discount_hours(payslip=pay))
