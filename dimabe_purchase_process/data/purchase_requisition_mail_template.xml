@@ -58,5 +58,12 @@
             </field>
         </record>
 
+
+        <template id="report_purchase_requisition_inherit" inherit_id="purchase_requisition.report_purchaserequisitions">
+            <xpath expr="//field[@name='name']" position="after">
+                <h2>Solicitante: <span t-field="o.user_id.name"/></h2>
+            </xpath>
+        </template>
+
     </data>
 </odoo>
