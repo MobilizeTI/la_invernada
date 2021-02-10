@@ -119,7 +119,7 @@ class WizardHrPaySlip(models.TransientModel):
             worksheet.write(row, col, self.get_dias_trabajados(pay))
             col += 1
             for rule in rules:
-                if sum(self.env['hr.payslip.rule'].sudo().search([('salary_rule_id','=',rule.id)]).mapped('total')) == 0:
+                if sum(self.env['hr.payslip.line'].sudo().search([('salary_rule_id','=',rule.id)]).mapped('total')) == 0:
                     continue
                 if not rule.show_in_book:
                     continue
