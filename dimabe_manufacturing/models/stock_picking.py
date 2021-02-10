@@ -65,6 +65,27 @@ class StockPicking(models.Model):
 
     sale_order_id = fields.Many2one('sale.order', 'Pedido')
 
+    sale_orders_id = fields.Many2one('sale.order','Pedidos')
+
+
+    @api.multi
+    def add_orders_to_dispatch(self):
+        for item in self.sale_orders_id.mapped('order_line'):
+            self.env['stock.move'].sudo().create({
+                'product_id':item.product_id.id,
+
+                'product_uom_id':item.product_id.uom_id.id,
+                'product_uom_qty':item.product_uom_qty,
+                'picking_id':self.id,
+                'date':datetime.date.now(),
+                'procure_method':'make_to_stock'
+            })
+        self.env['custom.dispatch.line'].create({
+            'sale_id':self.sale_orders_id.id,
+            'dispatch_id':self.dispatch_id.id,
+            'product_uom_qty':sum(self.sale_orders_id.mapped('order_line').mapped('product_uom_qty'))
+        })
+
     @api.onchange('picking_type_code')
     def on_change_picking_type(self):
         for item in self:
