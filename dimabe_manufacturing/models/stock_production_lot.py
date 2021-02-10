@@ -177,7 +177,7 @@ class StockProductionLot(models.Model):
 
     all_pallet_ids = fields.One2many(
         'manufacturing.pallet',
-        compute='_compute_all_pallet_ids',
+        'lot_id',
         string='pallets'
     )
 
