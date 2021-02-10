@@ -27,3 +27,4 @@ from . import stock_move
 from . import change_production_qty
 from . import res_user
 from . import stock_quant
+from . import custom_dispatch_line
