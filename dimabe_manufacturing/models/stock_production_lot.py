@@ -653,7 +653,7 @@ class StockProductionLot(models.Model):
                 'location_id': picking.location_id.id,
                 'product_uom_id': self.product_id.uom_id.id,
                 'location_dest_id': picking.location_dest_id.id,
-                'qty_done': sum(
+                'product_uom_qty': sum(
                     self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('display_weight'))
             })
         else:
@@ -661,7 +661,7 @@ class StockProductionLot(models.Model):
                 lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id).qty_done + sum(
                 self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('display_weight'))
             picking.move_line_ids_without_package.filtered(lambda a: a.product_id.id == self.product_id.id).write({
-                'qty_done':total
+                'product_uom_qty':total
             })
         pallets = self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('pallet_id')
         for pallet in pallets:
