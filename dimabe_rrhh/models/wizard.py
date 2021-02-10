@@ -94,7 +94,7 @@ class WizardHrPaySlip(models.TransientModel):
 
         totals_result = []
 
-        raise models.ValidationError(totals.mapped('total'))
+        raise models.ValidationError(totals.mapped('id'))
         for pay in payslips:
             if pay.employee_id.address_id.id != self.company_id.id:
                 continue
