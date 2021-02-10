@@ -19,7 +19,14 @@
             <button name="action_assign" position="replace"/>
             <button name="do_unreserve" position="replace"/>
             <xpath expr="//notebook[1]//page[1]" position="after">
-                <field name="dispatch_line_ids"/>
+                <page string="Lineas de Despacho" name="dispatch_line_ids">
+                    <field name="dispatch_line_ids">
+                        <tree>
+                            <field name="sale_id"/>
+                            <field name="product_uom_qty"/>
+                        </tree>
+                    </field>
+                </page>
             </xpath>
             <xpath expr="//field[@name='origin']" position="after">
                     <field name="sale_orders_id"/>
