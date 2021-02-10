@@ -95,8 +95,7 @@
                     <field name="elapsed_time"/>
                     <field name="origin"/>
                     <field name="backorder_id"/>
-                    <field name="container_number"
-                           attrs="{ 'column_invisible' : [('parent.picking_type_code', 'not in', ['outgoing'])]}"/>
+                    <field name="container_number"/>
                     <field name="state"/>
                 </tree>
             </field>
