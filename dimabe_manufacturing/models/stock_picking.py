@@ -73,8 +73,8 @@ class StockPicking(models.Model):
     def add_orders_to_dispatch(self):
         for item in self.sale_orders_id.mapped('order_line'):
             self.env['stock.move'].sudo().create({
+                'name':self.name,
                 'product_id':item.product_id.id,
-
                 'product_uom_id':item.product_id.uom_id.id,
                 'product_uom_qty':item.product_uom_qty,
                 'picking_id':self.id,
