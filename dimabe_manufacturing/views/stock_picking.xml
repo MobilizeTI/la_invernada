@@ -18,7 +18,18 @@
 
             <button name="action_assign" position="replace"/>
             <button name="do_unreserve" position="replace"/>
-
+            <xpath expr="//notebook[1]//page[1]">
+                    <field name="dispatch_lines">
+                        <tree>
+                            <field name="sale_id" widget="many2onebutton"/>
+                            <field name="dispatch_id" widget="many2onebutton"/>
+                            <field name="product_uom_qty"/>
+                        </tree>
+                    </field>
+            </xpath>
+            <xpath expr="//field[@name='origin']" position="after">
+                    <field name="sale_orders_id"/>
+                </xpath>
             <page name="note" position="after">
                 <page name="packing_list" string="Reservados"
                       attrs="{'invisible':['|',('state','=','cancel'),('picking_type_code', '!=', 'outgoing')]}"
