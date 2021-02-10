@@ -75,7 +75,7 @@ class StockPicking(models.Model):
             self.env['stock.move'].sudo().create({
                 'name':self.name,
                 'product_id':item.product_id.id,
-                'product_uom_id':item.product_id.uom_id.id,
+                'product_uom':item.product_id.uom_id.id,
                 'product_uom_qty':item.product_uom_qty,
                 'picking_id':self.id,
                 'date':datetime.datetime.now(),
