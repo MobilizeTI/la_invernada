@@ -109,8 +109,6 @@ class StockProductionLot(models.Model):
         digits=dp.get_precision('Product Unit of Measure')
     )
 
-    is_reserved = fields.Boolean('Esta reservado?', compute='reserved', default=False)
-
     context_picking_id = fields.Integer(
         'picking del contexto',
         compute='_compute_context_picking_id'
@@ -488,10 +486,6 @@ class StockProductionLot(models.Model):
                 serial_to_assign_ids.update({
                     'reserved_to_stock_picking_id': stock_picking.id
                 })
-
-                item.all_pallet_ids.update({
-                    'is_reserved': True
-                })
                 stock_move = stock_picking.move_lines.filtered(
                     lambda a: a.product_id == item.product_id
                 )
@@ -551,7 +545,6 @@ class StockProductionLot(models.Model):
                 )
                 item.update({
                     'qty_to_reserve': 0,
-                    'is_reserved': False
                 })
 
                 stock_quant = item.get_stock_quant()
