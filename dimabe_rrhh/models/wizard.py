@@ -87,7 +87,7 @@ class WizardHrPaySlip(models.TransientModel):
         row = 0
         col = 0
         payslips = self.env['hr.payslip'].sudo().search(
-            [('indicadores_id', '=', indicadores.id), ('state', 'in', ['done', 'draft']),('company_id.id','=',self.company_id.company_id.id)])
+            [('indicadores_id', '=', indicadores.id), ('state', 'in', ['done', 'draft']),('employee_id.address_id.id','=',self.company_id.id)])
 
         raise models.ValidationError(payslips.mapped('id'))
 
