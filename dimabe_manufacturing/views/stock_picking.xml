@@ -20,7 +20,7 @@
             <button name="do_unreserve" position="replace"/>
             <xpath expr="//notebook[1]//page[1]" position="after">
                 <page string="Lineas de Despacho" name="dispatch_line_ids">
-                    <field name="dispatch_line_ids" attrs="{'invisible':[('picking_type_code','outgoing')],'read_only':[('state','=','done')]}">
+                    <field name="dispatch_line_ids" attrs="{'invisible':[('picking_type_code','=','outgoing')],'read_only':[('state','=','done')]}">
                         <tree>
                             <field name="sale_id"/>
                             <field name="product_uom_qty"/>
@@ -30,7 +30,7 @@
             </xpath>
             <xpath expr="//field[@name='origin']" position="after">
                     <field name="sale_orders_id" attrs="{'invisible':['|',('state','=','done'),('picking_type_code','=','outgoing')]}"/>
-                    <button name="add_orders_to_dispatch" type="object" string="Agregar" attrs="{'invisible':['|',('state','=','done'),('picking_type_code','outgoing')]}"/>
+                    <button name="add_orders_to_dispatch" type="object" string="Agregar" attrs="{'invisible':['|',('state','=','done'),('picking_type_code','=','outgoing')]}"/>
                 </xpath>
             <page name="note" position="after">
                 <page name="packing_list" string="Reservados"
