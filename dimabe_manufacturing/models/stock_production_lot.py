@@ -638,6 +638,14 @@ class StockProductionLot(models.Model):
     def add_selection_serial(self):
         picking_id = int(self.env.context['dispatch_id'])
         picking = self.env['stock.picking'].sudo().search([('id', '=', picking_id)])
+        pallets = self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('pallet_id')
+        for pallet in pallets:
+            pallet.write({
+                'reserved_to_stock_picking_id': picking_id
+            })
+        self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).write({
+            'reserved_to_stock_picking_id': picking_id
+        })
         if not picking.move_line_ids_without_package:
             self.env['stock.move.line'].create({
                 'lot_id': self.id,
@@ -650,19 +658,10 @@ class StockProductionLot(models.Model):
                     self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('display_weight'))
             })
         else:
-            total = picking.move_line_ids_without_package.filtered(
-                lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id).qty_done + sum(
-                self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('display_weight'))
             picking.move_line_ids_without_package.filtered(lambda a: a.product_id.id == self.product_id.id).write({
-                'product_uom_qty':total
-            })
-        pallets = self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('pallet_id')
-        for pallet in pallets:
-            pallet.write({
-                'reserved_to_stock_picking_id':picking_id
+                'product_uom_qty':sum(self.stock_production_lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id).mapped('display_weight'))
             })
         self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).write({
-            'reserved_to_stock_picking_id': picking_id,
             'to_add': False
         })
 
@@ -670,6 +669,9 @@ class StockProductionLot(models.Model):
     def add_selection_pallet(self):
         picking_id = int(self.env.context['dispatch_id'])
         picking = self.env['stock.picking'].sudo().search([('id','=',picking_id)])
+        self.pallet_ids.filtered(lambda a: a.add_picking).write({
+            'reserved_to_stock_picking_id':picking_id
+        })
         if not picking.move_line_ids_without_package:
             self.env['stock.move.line'].create({
                 'lot_id':self.id,
@@ -679,22 +681,18 @@ class StockProductionLot(models.Model):
                 'product_uom_id':self.product_id.uom_id.id,
                 'product_id':self.product_id.id,
                 'location_dest_id':picking.location_dest_id.id,
-                'qty_done': sum(
+                'product_uom_qty': sum(
                     self.pallet_ids.filtered(lambda a: a.add_picking).mapped('lot_serial_ids').mapped('display_weight')
                 )
             })
         else:
-            total = picking.move_line_ids_without_package.filtered(lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id).qty_done + sum(
-                    self.pallet_ids.filtered(lambda a: a.add_to_picking).mapped('lot_serial_ids').mapped('display_weight')
-                )
             picking.move_line_ids_without_package.filtered(lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id).write({
-                'qty_done':total
+                'product_uom_qty': sum(self.pallet_ids.filtered(lambda a: a.reserved_to_stock_picking_id).mapped('lot_serial_ids').mapped('display_weight'))
             })
         for pallet in self.pallet_ids.filtered(lambda a:a.add_picking):
             pallet.lot_serial_ids.write({
                 'reserved_to_stock_picking_id': picking_id
             })
         self.pallet_ids.filtered(lambda a:a.add_picking).write({
-            'reserved_to_stock_picking_id':picking_id,
             'add_picking':False
         })
