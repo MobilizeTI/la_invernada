@@ -112,14 +112,4 @@
             </page>
         </field>
     </record>
-    <record id="stock_picking_tree_inherit" model="ir.ui.view">
-        <field name="name">Stock Picking Inherit</field>
-        <field name="model">stock.picking</field>
-        <field name="inherit" ref="dimabe_reception.stock_picking_list"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='backoorder_id]" position="before">
-                <field name="container_number"/>
-            </xpath>
-        </field>
-    </record>
 </odoo>
