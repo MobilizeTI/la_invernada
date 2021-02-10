@@ -92,9 +92,7 @@ class WizardHrPaySlip(models.TransientModel):
         totals = self.env['hr.payslip.line'].sudo().search([('slip_id', 'in', payslips.mapped('id'))]).filtered(
             lambda a: a.total > 0)
 
-        totals.mapped('salary_rule_id')
-
-        raise models.ValidationError(totals)
+        raise models.ValidationError(totals.mapped('salary_rule_id'))
 
         totals_result = []
         for pay in payslips:
