@@ -1,101 +1,105 @@
 <odoo>
-  <data>
-    <record id="stock_picking_form_inherit" model="ir.ui.view">
-      <field name="name">Export Page</field>
-      <field name="model">stock.picking</field>
-      <field name="inherit_id" ref="stock.view_picking_form"/>
-      <field name="arch" type="xml">
-        <xpath expr="//field[@name='move_ids_without_package']/tree//field[@name='product_id']" position="after">
-          <field name="products_can_be_stored" invisible="1"/>
-        </xpath>
-        <xpath expr="//field[@name='move_ids_without_package']/tree//field[@name='product_id']" position="attributes">
-          <attribute name="domain">[('type', 'in', ['product', 'consu']), ('categ_id', 'in', products_can_be_stored)]
-          </attribute>
-        </xpath>
-        <field name="picking_type_id" position="after">
-          <field name="sag_code"/>
-          <field name="is_mp_reception"
-                 invisible="1"
-          />
-        </field>
-        <field name="origin" position="after">
-          <field name="truck_in_date"/>
-          <field name="date_done"/>
-          <field name="elapsed_time"/>
-          <field name="is_pt_reception" invisible="1"/>
-          <field name="is_satelite_reception" invisible="1" />
-          <field name="harvest"
-                 attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
-          />
-          <field name="guide_number"
-                 attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
-          />
-          <field name="weight_guide"
-                 attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)], 'readonly': 1}"
-          />
-          <field name="gross_weight"
-                 attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
-          />
-          
-          <field name="tare_weight"
-                 attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
-          />
-          
-          <field name="quality_weight"
-                 attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception'),'=',False]}"
-                 readonly="1"/>
-          <field name="net_weight"
-                 attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)]}"
-          />
-          <field name="avg_unitary_weight"
-                 attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)]}"
-          />
-        </field>
-        <xpath expr="//header" position="inside">
-          <button type="object" string="Peso Bruto Romana" name="gross_weight_button" 
-                attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
-              confirm="¿Está seguro de modificar el peso bruto?"
-          />
-          <button type="object" string="Peso Tara Romana" name="button_weight_tare"
-          attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False),('gross_weight', '=', 0)], 'readonly': [('state', '=', 'done')]}"
-          confirm="¿Está seguro de modificar el peso tara?"
-          />
-        </xpath>
-        <xpath expr="//page[@name='note']" position="after">
-          <page string="Transportista" name="carrier_page"
-                attrs="{'invisible':[('picking_type_code', 'not in', ('outgoing', 'incoming'))]}">
-            <group name="carrier_page" position="inside">
-              <field name="carrier_id"/>
-              <field name="carrier_rut"/>
-              <field name="carrier_cell_phone"/>
-              <field name="truck_id"/>
-              <field name="cart_id"/>
-            </group>
-          </page>
-        </xpath>
-      </field>
-    </record>
+    <data>
+        <record id="stock_picking_form_inherit" model="ir.ui.view">
+            <field name="name">Export Page</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='move_ids_without_package']/tree//field[@name='product_id']"
+                       position="after">
+                    <field name="products_can_be_stored" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='move_ids_without_package']/tree//field[@name='product_id']"
+                       position="attributes">
+                    <attribute name="domain">[('type', 'in', ['product', 'consu']),
+                                              ('categ_id', 'in', products_can_be_stored)]
+                    </attribute>
+                </xpath>
+                <field name="picking_type_id" position="after">
+                    <field name="sag_code"/>
+                    <field name="is_mp_reception"
+                           invisible="1"
+                    />
+                </field>
+                <field name="origin" position="after">
+                    <field name="truck_in_date"/>
+                    <field name="date_done"/>
+                    <field name="elapsed_time"/>
+                    <field name="is_pt_reception" invisible="1"/>
+                    <field name="is_satelite_reception" invisible="1"/>
+                    <field name="harvest"
+                           attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
+                    />
+                    <field name="guide_number"
+                           attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
+                    />
+                    <field name="weight_guide"
+                           attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)], 'readonly': 1}"
+                    />
+                    <field name="gross_weight"
+                           attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
+                    />
 
-    <record id="stock_picking_list" model="ir.ui.view">
-      <field name="name">stock picking list</field>
-      <field name="model">stock.picking</field>
-      <field name="view_mode">kanban,calendar,tree</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="name"/>
-          <field name="date"/>
-          <field name="location_dest_id"/>
-          <field name="partner_id"/>
-          <field name="scheduled_date"/>
-          <field name="truck_in_date"/>
-          <field name="date_done"/>
-          <field name="elapsed_time"/>
-          <field name="origin"/>
-          <field name="backorder_id"/>
-          <field name="container_number" attrs="{'column_invisible':['parent.picking_type_code','!=','outgoing']}"/>
-          <field name="state"/>
-        </tree>
-      </field>
-    </record>
-  </data>
+                    <field name="tare_weight"
+                           attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
+                    />
+
+                    <field name="quality_weight"
+                           attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception'),'=',False]}"
+                           readonly="1"/>
+                    <field name="net_weight"
+                           attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)]}"
+                    />
+                    <field name="avg_unitary_weight"
+                           attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)]}"
+                    />
+                </field>
+                <xpath expr="//header" position="inside">
+                    <button type="object" string="Peso Bruto Romana" name="gross_weight_button"
+                            attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False)], 'readonly': [('state', '=', 'done')]}"
+                            confirm="¿Está seguro de modificar el peso bruto?"
+                    />
+                    <button type="object" string="Peso Tara Romana" name="button_weight_tare"
+                            attrs="{'invisible':['&amp;','&amp;',('is_mp_reception', '=', False),('is_pt_reception','=',False),('is_satelite_reception','=',False),('gross_weight', '=', 0)], 'readonly': [('state', '=', 'done')]}"
+                            confirm="¿Está seguro de modificar el peso tara?"
+                    />
+                </xpath>
+                <xpath expr="//page[@name='note']" position="after">
+                    <page string="Transportista" name="carrier_page"
+                          attrs="{'invisible':[('picking_type_code', 'not in', ('outgoing', 'incoming'))]}">
+                        <group name="carrier_page" position="inside">
+                            <field name="carrier_id"/>
+                            <field name="carrier_rut"/>
+                            <field name="carrier_cell_phone"/>
+                            <field name="truck_id"/>
+                            <field name="cart_id"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="stock_picking_list" model="ir.ui.view">
+            <field name="name">stock picking list</field>
+            <field name="model">stock.picking</field>
+            <field name="view_mode">kanban,calendar,tree</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="location_dest_id"/>
+                    <field name="partner_id"/>
+                    <field name="scheduled_date"/>
+                    <field name="truck_in_date"/>
+                    <field name="date_done"/>
+                    <field name="elapsed_time"/>
+                    <field name="origin"/>
+                    <field name="backorder_id"/>
+                    <field name="container_number"
+                           attrs="{'column_invisible':['parent.picking_type_code','!=','outgoing']}"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+    </data>
 </odoo>
