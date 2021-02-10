@@ -124,7 +124,7 @@ class WizardHrPaySlip(models.TransientModel):
             for rule in rules:
                 if not rule.show_in_book:
                     continue
-                if not totals.filtered(lambda a : a.salary_rule_id.id == rule.id):
+                if not totals.filtered(lambda a : a.salary_rule_id.id == rule.id and a.slip_id.employee_id.address_id.id == self.company_id.id):
                     continue
                 if rule.code == 'HEX50':
                     worksheet.write(0, col, 'Cant. Horas Extras')
