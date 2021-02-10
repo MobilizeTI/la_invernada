@@ -89,7 +89,7 @@ class WizardHrPaySlip(models.TransientModel):
         payslips = self.env['hr.payslip'].sudo().search(
             [('indicadores_id', '=', indicadores.id), ('state', 'in', ['done', 'draft']),('employee_id.address_id.id','=',self.company_id.id)])
         totals = self.env['hr.payslip.line'].sudo().search([('slip_id', 'in', payslips.mapped('id'))]).filtered(
-            lambda a: a.total > 0 and a.total)
+            lambda a: a.total > 0 and type(a.total) == int)
 
         totals_result = []
         for pay in payslips:
@@ -152,6 +152,8 @@ class WizardHrPaySlip(models.TransientModel):
                     worksheet.write(row, col,total_amount,number_format)
                     totals_result.append(total_amount)
                 col += 1
+
+            
             col = 0
             row += 1
         workbook.close()
