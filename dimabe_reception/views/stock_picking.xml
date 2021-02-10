@@ -96,7 +96,7 @@
                     <field name="origin"/>
                     <field name="backorder_id"/>
                     <field name="container_number"
-                           attrs="{'column_invisible':[('parent.picking_type_code','!=','outgoing')]}"/>
+                           attrs="{ 'column_invisible' : [('parent.picking_type_code', 'not in', ['outgoing'])]}"/>
                     <field name="state"/>
                 </tree>
             </field>
