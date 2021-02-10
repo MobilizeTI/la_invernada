@@ -121,7 +121,6 @@
                 <group>
                     <group>
                         <field name="pallet_ids">
-                            <field name="is_reserved" invisible="1"/>
                             <tree editable="bottom" edit="true" create="false" delete="false">
                                 <field name="add_picking"/>
                                 <field name="name"/>
