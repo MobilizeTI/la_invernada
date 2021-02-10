@@ -77,6 +77,7 @@ class WizardHrPaySlip(models.TransientModel):
         file_name = 'temp'
         workbook = xlsxwriter.Workbook(file_name)
         worksheet = workbook.add_worksheet(self.company_id.name)
+        number_format=workbook.add_format({'num_format': '$#.##'})
         indicadores = self.env['hr.indicadores'].sudo().search([('name', '=', f'{self.month} {self.years}')])
         if not indicadores:
             raise models.ValidationError(f'No existen datos del mes de {self.month} {self.years}')
@@ -97,6 +98,7 @@ class WizardHrPaySlip(models.TransientModel):
             rules = self.env['hr.salary.rule'].search([('id', 'in', pay.struct_id.rule_ids.mapped('id'))],
                                                       order='order_number')
             col = 0
+
             worksheet.write(row, col, pay.employee_id.display_name)
             worksheet.write(0, 0, 'Nombre:')
             long_name = max(payslips.mapped('employee_id').mapped('display_name'), key=len)
@@ -132,19 +134,24 @@ class WizardHrPaySlip(models.TransientModel):
                     worksheet.write(row, col, self.get_qty_extra_hours(payslip=pay))
                     col += 1
                     worksheet.write(0, col, 'Monto Horas Extras')
-                    worksheet.write(row, col, self.env["hr.payslip.line"].sudo().search(
-                        [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total)
+                    total_amount = self.env["hr.payslip.line"].sudo().search(
+                        [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
+                    worksheet.write(row, col, total_amount,number_format)
+                    totals_result.append(total_amount)
                 elif rule.code == 'HEXDE':
                     worksheet.write(0, col, 'Cant. Horas Descuentos')
                     worksheet.write(row, col, self.get_qty_discount_hours(payslip=pay))
                     col += 1
                     worksheet.write(0, col, 'Monto Horas Descuentos')
-                    worksheet.write(row, col, self.env["hr.payslip.line"].sudo().search(
-                        [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total)
+                    total_amount = self.env["hr.payslip.line"].sudo().search(
+                        [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
+                    worksheet.write(row, col,total_amount,number_format)
                 else:
+                    total_amount = self.env["hr.payslip.line"].sudo().search(
+                        [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
                     worksheet.write(0, col, rule.name.capitalize())
-                    worksheet.write(row, col, self.env["hr.payslip.line"].sudo().search(
-                        [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total)
+                    worksheet.write(row, col,total_amount,number_format)
+                    totals_result.append(total_amount)
                 col += 1
             col = 0
             row += 1
@@ -162,7 +169,7 @@ class WizardHrPaySlip(models.TransientModel):
         action = {
             'type': 'ir.actions.act_url',
             'url': '/web/content/{}?download=true'.format(attachment_id.id, ),
-            'target': 'self',
+            'target': 'current',
         }
         return action
 
