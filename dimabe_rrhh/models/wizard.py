@@ -817,15 +817,28 @@ class WizardHrPaySlip(models.TransientModel):
                              # str(float(self.get_cost_center(payslip.contract_id))).split('.')[0],
                              ]
             writer.writerow([str(l) for l in line_employee])
-        self.env[self._name].sudo().create({'file_data': base64.encodebytes(output.getvalue().encode()),
+
+'''         self.env[self._name].sudo().create({'file_data': base64.encodebytes(output.getvalue().encode()),
                     'file_name': "Previred_{}{}.txt".format(self.date_to,
                                                             self.company_id.display_name.replace('.', '')),
                     })
         self.write({'file_data': base64.encodebytes(output.getvalue().encode()),
                     'file_name': "Previred_{}{}.txt".format(self.date_to,
                                                             self.company_id.display_name.replace('.', '')),
-                    })
+                    }) '''
 
-        return {
-            "type": "ir.actions.do_nothing",
+        # registrar en ir.attachment
+        file_name = "Previred_{}{}.txt".format(self.date_to,
+                                                            self.company_id.display_name.replace('.', ''))
+        attachment_id = self.env['ir.attachment'].sudo()create({
+            'name': file_name,
+            'datas_fname': file_name,
+            'datas': base64.encodebytes(output.getvalue().encode())
+        })
+
+        action = {
+            'type': 'ir.actions.act_url',
+            'url': '/web/content/{}?download=true'.format(attachment_id.id,),
+            'target': 'self',
         }
+        return action
