@@ -34,6 +34,8 @@ class StockPicking(models.Model):
         'reserved_to_stock_picking_id'
     )
 
+
+
     product_search_id = fields.Many2one(
         'product.product',
         string='Buscar Producto',
@@ -68,6 +70,7 @@ class StockPicking(models.Model):
     sale_orders_id = fields.Many2one('sale.order','Pedidos')
 
     dispatch_line_ids = fields.One2many('custom.dispatch.line','dispatch_id')
+
 
     @api.multi
     def add_orders_to_dispatch(self):
@@ -243,6 +246,7 @@ class StockPicking(models.Model):
     @api.multi
     def button_validate(self):
         if self.picking_type_code == 'outgoing':
+            raise models.ValidationError(self.dispatch_line_ids.mapped('sale_id').mapped('picking_ids'))
             for serial in self.packing_list_ids:
                 serial.write({
                     'consumed': True
