@@ -93,7 +93,7 @@ class WizardHrPaySlip(models.TransientModel):
 
         totals.mapped('salary_rule_id.id')
 
-        raise ValidationError(totals)
+        raise models.ValidationError(totals)
 
         totals_result = []
         for pay in payslips:
