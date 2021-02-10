@@ -96,7 +96,7 @@ class WizardHrPaySlip(models.TransientModel):
         for pay in payslips:
             if pay.employee_id.address_id.id != self.company_id.id:
                 continue
-            rules = self.env['hr.salary.rule'].search([('id', 'in', totals.mapped('salary_rule_id'))],
+            rules = self.env['hr.salary.rule'].search([('id', 'in', totals.mapped('salary_rule_id.id'))],
                                                       order='order_number')
             col = 0
 
