@@ -67,30 +67,30 @@ class StockPicking(models.Model):
 
     sale_order_id = fields.Many2one('sale.order', 'Pedido')
 
-    sale_orders_id = fields.Many2one('sale.order','Pedidos')
+    sale_orders_id = fields.Many2one('sale.order','Pedidos',domain=[('state','=','sale')])
 
     dispatch_line_ids = fields.One2many('custom.dispatch.line','dispatch_id')
 
-
     @api.multi
     def add_orders_to_dispatch(self):
-        for item in self.sale_orders_id.mapped('order_line'):
-            self.env['stock.move'].sudo().create({
-                'name':self.name,
-                'product_id':item.product_id.id,
-                'product_uom':item.product_id.uom_id.id,
-                'product_uom_qty':item.product_uom_qty,
-                'picking_id':self.id,
-                'location_id':self.location_id.id,
-                'location_dest_id':self.location_dest_id.id,
-                'date':datetime.datetime.now(),
-                'procure_method':'make_to_stock'
+        if len(self.sale_orders_id.mapped('order_line')) > 0:
+            for item in self.sale_orders_id.mapped('order_line'):
+                self.env['stock.move'].sudo().create({
+                    'name':self.name,
+                    'product_id':item.product_id.id,
+                    'product_uom':item.product_id.uom_id.id,
+                    'product_uom_qty':item.product_uom_qty,
+                    'picking_id':self.id,
+                    'location_id':self.location_id.id,
+                    'location_dest_id':self.location_dest_id.id,
+                    'date':datetime.datetime.now(),
+                    'procure_method':'make_to_stock'
+                })
+            self.env['custom.dispatch.line'].create({
+                'sale_id':self.sale_orders_id.id,
+                'dispatch_id':self.id,
+                'product_uom_qty':sum(self.sale_orders_id.mapped('order_line').mapped('product_uom_qty'))
             })
-        self.env['custom.dispatch.line'].create({
-            'sale_id':self.sale_orders_id.id,
-            'dispatch_id':self.id,
-            'product_uom_qty':sum(self.sale_orders_id.mapped('order_line').mapped('product_uom_qty'))
-        })
 
     @api.onchange('picking_type_code')
     def on_change_picking_type(self):
