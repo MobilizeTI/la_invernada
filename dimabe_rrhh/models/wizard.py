@@ -77,7 +77,7 @@ class WizardHrPaySlip(models.TransientModel):
         file_name = 'temp'
         workbook = xlsxwriter.Workbook(file_name)
         worksheet = workbook.add_worksheet(self.company_id.name)
-        number_format=workbook.add_format({'num_format': '$#.##'})
+        number_format=workbook.add_format({'num_format': '$#.###'})
         indicadores = self.env['hr.indicadores'].sudo().search([('name', '=', f'{self.month} {self.years}')])
         if not indicadores:
             raise models.ValidationError(f'No existen datos del mes de {self.month} {self.years}')
@@ -137,7 +137,7 @@ class WizardHrPaySlip(models.TransientModel):
                     total_amount = self.env["hr.payslip.line"].sudo().search(
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
                     worksheet.write(row, col, total_amount,number_format)
-                    totals_result.append(total_amount)
+                    totals_result.append()
                 elif rule.code == 'HEXDE':
                     worksheet.write(0, col, 'Cant. Horas Descuentos')
                     worksheet.write(row, col, self.get_qty_discount_hours(payslip=pay))
