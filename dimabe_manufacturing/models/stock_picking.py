@@ -246,7 +246,7 @@ class StockPicking(models.Model):
     @api.multi
     def button_validate(self):
         if self.picking_type_code == 'outgoing':
-            raise models.ValidationError(self.dispatch_line_ids.mapped('sale_id').mapped('picking_ids'))
+
             for serial in self.packing_list_ids:
                 serial.write({
                     'consumed': True
