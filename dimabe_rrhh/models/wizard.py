@@ -818,20 +818,12 @@ class WizardHrPaySlip(models.TransientModel):
                              ]
             writer.writerow([str(l) for l in line_employee])
 
-'''         self.env[self._name].sudo().create({'file_data': base64.encodebytes(output.getvalue().encode()),
-                    'file_name': "Previred_{}{}.txt".format(self.date_to,
-                                                            self.company_id.display_name.replace('.', '')),
-                    })
-        self.write({'file_data': base64.encodebytes(output.getvalue().encode()),
-                    'file_name': "Previred_{}{}.txt".format(self.date_to,
-                                                            self.company_id.display_name.replace('.', '')),
-                    }) '''
 
         # registrar en ir.attachment
         file_name = "Previred_{}{}.txt".format(self.date_to,
                                                             self.company_id.display_name.replace('.', ''))
-        attachment_id = self.env['ir.attachment'].sudo()create({
-            'name': file_name,
+        attachment_id = self.env['ir.attachment'].sudo().create({
+            'name':file_name,
             'datas_fname': file_name,
             'datas': base64.encodebytes(output.getvalue().encode())
         })
