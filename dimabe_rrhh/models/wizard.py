@@ -77,7 +77,7 @@ class WizardHrPaySlip(models.TransientModel):
         file_name = 'temp'
         workbook = xlsxwriter.Workbook(file_name)
         worksheet = workbook.add_worksheet(self.company_id.name)
-        number_format=workbook.add_format({'num_format': '$#.###'})
+        number_format=workbook.add_format({'num_format': '#,###'})
         indicadores = self.env['hr.indicadores'].sudo().search([('name', '=', f'{self.month} {self.years}')])
         if not indicadores:
             raise models.ValidationError(f'No existen datos del mes de {self.month} {self.years}')
