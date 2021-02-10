@@ -78,7 +78,7 @@ class StockPicking(models.Model):
                 'product_uom_id':item.product_id.uom_id.id,
                 'product_uom_qty':item.product_uom_qty,
                 'picking_id':self.id,
-                'date':datetime.date.now(),
+                'date':datetime.datetime.now(),
                 'procure_method':'make_to_stock'
             })
         self.env['custom.dispatch.line'].create({
