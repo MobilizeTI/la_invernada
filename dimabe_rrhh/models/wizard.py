@@ -88,13 +88,15 @@ class WizardHrPaySlip(models.TransientModel):
         payslips = self.env['hr.payslip'].sudo().search(
             [('indicadores_id', '=', indicadores.id), ('state', 'in', ['done', 'draft'])])
         totals = self.env['hr.payslip.line'].sudo().search([('slip_id','in',payslips.mapped('id'))]).filtered(lambda a: a.total > 0 or a.total)
+
         totals_result = []
         for total in totals:
+
             totals_result.append({
                 'rule_id':total.salary_rule_id.id,
                 'total':total.total
             })
-        raise models.UserError(totals_result)
+        raise models.UserError(f'Values {totals_result[0].values()}')
         for pay in payslips:
             if pay.employee_id.address_id.id != self.company_id.id:
                 continue
