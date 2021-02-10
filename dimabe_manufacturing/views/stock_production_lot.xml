@@ -117,7 +117,6 @@
         <field name="model">stock.production.lot</field>
         <field name="arch" type="xml">
             <form>
-
             <field name="context_picking_id" invisible="1"/>
                 <group>
                     <group>
@@ -129,7 +128,6 @@
                                 <field name="total_content_weight"/>
                                 <field name="total_available_content"/>
                                 <field name="state"/>
-
                                 <button string="Agregar Reserva"
                                         name="add_to_picking"
                                         type="object"
@@ -153,6 +151,7 @@
                         <button string="Agregar Selección" name="add_selection_serial" type="object" context="{'dispatch_id':context_picking_id}"/>
                     </group>
                 </group>
+                <footer></footer>
             </form>
         </field>
     </record>
