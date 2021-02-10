@@ -67,7 +67,6 @@ class StockPicking(models.Model):
 
     sale_orders_id = fields.Many2one('sale.order','Pedidos')
 
-    dispatch_line = fields.One2many('custom.dispatch.line','dispatch_id')
 
     @api.multi
     def add_orders_to_dispatch(self):
