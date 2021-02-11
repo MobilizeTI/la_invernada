@@ -288,7 +288,7 @@ class StockPicking(models.Model):
     @api.multi
     def action_confirm(self):
         if self.picking_type_code == 'incoming':
-            models._logger.eroro(f'Canning Weight {self.canning_weight}')
+            models._logger.error(f'Canning Weight {self.canning_weight}')
             for stock_picking in self:
                 if stock_picking.is_mp_reception or stock_picking.is_pt_reception or stock_picking.is_satelite_reception:
                     stock_picking.validate_mp_reception()
