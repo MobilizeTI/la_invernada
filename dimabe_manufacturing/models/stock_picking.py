@@ -246,7 +246,15 @@ class StockPicking(models.Model):
     @api.multi
     def button_validate(self):
         if self.picking_type_code == 'outgoing':
-
+            quants = []
+            for lot in self.move_line_ids_without_package.mapped('lot_id'):
+                lot_quant = self.env['stock.quant'].search([('lot_id','=',lot.id),('location_id.usage','=','internal')])
+                move_line = self.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id)
+                quants.append({
+                    'quant_id':lot_quant.id,
+                    'quantity':lot_quant.quantity,
+                    'reserved_quantity':lot_quant.reserved_quantity - move_line.product_uom_qty
+                })
             for serial in self.packing_list_ids:
                 serial.write({
                     'consumed': True
@@ -267,6 +275,12 @@ class StockPicking(models.Model):
                     return super(StockPicking, self).button_validate()
                 else:
                     super(StockPicking, self).action_done()
+                for quant in quants:
+                    self.env['stock.quant'].search([('id','=',quant['id'])]).write({
+                        'reserved_quantity':quant['reserved_quantity'],
+                        'quantity':quant['quantity']
+                    })
+
         else:
             return super(StockPicking, self).button_validate()
 
