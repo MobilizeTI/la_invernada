@@ -32,7 +32,7 @@ class ManufacturingPallet(models.Model):
 
     product_id = fields.Many2one(
         'product.product',
-        compute='_compute_product_id',
+        related='lot_id.product_id',
         store=True
     )
 

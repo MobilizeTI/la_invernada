@@ -669,7 +669,7 @@ class StockProductionLot(models.Model):
             move_line.write({
                 'product_uom_qty': move_line.product_uom_qty + weight
             })
-        dispatch_line =picking.dispatch_line_ids.filtered(lambda a: a.product_id == self.product_id and a.sale_id.id == picking.sale_order_id.id)
+        dispatch_line =picking.dispatch_line_ids.filtered(lambda a: a.product_id == self.product_id)
         dispatch_line.write({
             'real_dispatch_qty':dispatch_line.real_dispatch_qty + weight
         })
