@@ -157,12 +157,15 @@ class StockPicking(models.Model):
 
     @api.multi
     def button_weight_tare(self):
+        raise models.ValidationError(self.canning_weight)
         data = self._get_data_from_weigh()
         if not self.gross_weight:
             raise models.ValidationError('Debe ingresar el peso bruto')
         self.write({
             'tare_weight':float(data)
         })
+
+
 
     @api.one
     @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package', 'quality_weight')
