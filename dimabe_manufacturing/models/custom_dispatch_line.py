@@ -9,6 +9,9 @@ class CustomDispatchLine(models.Model):
 
     product_id = fields.Many2one('product.product','Producto')
 
-    product_uom_qty = fields.Float('Cantidad')
+    required_sale_qty = fields.Float('Cantidad Requerida')
+
+    real_dispatch_qty = fields.Float('Cantidad Real')
+
 
 

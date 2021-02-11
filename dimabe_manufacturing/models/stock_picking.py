@@ -90,7 +90,7 @@ class StockPicking(models.Model):
                 'sale_id':self.sale_orders_id.id,
                 'product_id':self.sale_orders_id.mapped('order_line').mapped('product_id').id,
                 'dispatch_id':self.id,
-                'product_uom_qty':sum(self.sale_orders_id.mapped('order_line').mapped('product_uom_qty'))
+                'required_sale_qty':sum(self.sale_orders_id.mapped('order_line').mapped('product_uom_qty'))
             })
 
     @api.onchange('picking_type_code')
