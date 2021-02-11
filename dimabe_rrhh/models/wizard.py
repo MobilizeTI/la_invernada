@@ -94,8 +94,8 @@ class WizardHrPaySlip(models.TransientModel):
             lambda a: a.total > 0)
 
         totals_result = []
-
-        for pay in totals.mapped('slip_id'):
+        payslips = totals.mapped('slip_id')
+        for pay in payslips:
             rules = self.env['hr.salary.rule'].search([('id', 'in', totals.mapped('salary_rule_id').mapped('id'))],
                                                       order='order_number')
             col = 0
