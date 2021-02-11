@@ -658,8 +658,10 @@ class StockProductionLot(models.Model):
                     self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('display_weight'))
             })
         else:
-            picking.move_line_ids_without_package.filtered(lambda a: a.product_id.id == self.product_id.id).write({
-                'product_uom_qty':sum(self.stock_production_lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id).mapped('display_weight'))
+            raise models.ValidationError(sum(self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('display_weight')))
+            move_line = picking.move_line_ids_without_package.filtered(lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id)
+            move_line.write({
+                'product_uom_qty': move_line.product_uom_qty +sum(self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('display_weight'))
             })
         dispatch_line =picking.dispatch_line_ids.filtered(lambda a: a.product_id == self.product_id)
         dispatch_line.write({
