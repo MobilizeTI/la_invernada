@@ -128,7 +128,7 @@ class ManufacturingPallet(models.Model):
     @api.multi
     def compute_total_reserved_weight(self):
         for item in self:
-            item.total_reserved_weight = sum(item.lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking).mapped('display_weight'))
+            item.total_reserved_weight = sum(item.lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id).mapped('display_weight'))
 
     @api.multi
     def _compute_lot_id(self):
