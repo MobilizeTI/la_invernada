@@ -693,7 +693,7 @@ class StockProductionLot(models.Model):
                 'product_uom_qty': sum(self.pallet_ids.filtered(lambda a: a.reserved_to_stock_picking_id).mapped('lot_serial_ids').mapped('display_weight'))
             })
         picking.dispatch_line_ids.filtered(lambda a: a.product_id == self.product_id).write({
-            'real_dispatch_qty': sum(self.pallet_ids.filtered(lambda a: a.reserved_to_stock_picking_id).mapped('lot_serial_ids').mapped('display_weight'))
+            'real_dispatch_qty': sum(self.pallet_ids.filtered(lambda a: a.add_picking).mapped('lot_serial_ids').mapped('display_weight'))
         })
         for pallet in self.pallet_ids.filtered(lambda a:a.add_picking):
             pallet.lot_serial_ids.write({
