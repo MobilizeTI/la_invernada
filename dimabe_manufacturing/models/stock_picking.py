@@ -73,17 +73,23 @@ class StockPicking(models.Model):
     def add_orders_to_dispatch(self):
         if len(self.sale_orders_id.mapped('order_line')) > 0:
             for item in self.sale_orders_id.mapped('order_line'):
-                self.env['stock.move'].sudo().create({
-                    'name': self.name,
-                    'product_id': item.product_id.id,
-                    'product_uom': item.product_id.uom_id.id,
-                    'product_uom_qty': item.product_uom_qty,
-                    'picking_id': self.id,
-                    'location_id': self.location_id.id,
-                    'location_dest_id': self.location_dest_id.id,
-                    'date': datetime.datetime.now(),
-                    'procure_method': 'make_to_stock'
-                })
+                if item.product_id.id not in self.move_ids_without_package.mapped('product_id').mapped('id'):
+                    self.env['stock.move'].sudo().create({
+                        'name': self.name,
+                        'product_id': item.product_id.id,
+                        'product_uom': item.product_id.uom_id.id,
+                        'product_uom_qty': item.product_uom_qty,
+                        'picking_id': self.id,
+                        'location_id': self.location_id.id,
+                        'location_dest_id': self.location_dest_id.id,
+                        'date': datetime.datetime.now(),
+                        'procure_method': 'make_to_stock'
+                    })
+                else:
+                    move = self.move_ids_without_package.filtered(lambda a: a.product_id.id in item.product_id.id)
+                    move.write({
+                        'product_uom_qty':move.product_uom_qty + item.product_uom_qty
+                    })
             self.env['custom.dispatch.line'].create({
                 'sale_id': self.sale_orders_id.id,
                 'product_id': self.sale_orders_id.mapped('order_line').mapped('product_id').id,

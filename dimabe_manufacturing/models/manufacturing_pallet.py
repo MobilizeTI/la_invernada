@@ -74,7 +74,7 @@ class ManufacturingPallet(models.Model):
     lot_available_serial_ids = fields.One2many(
         'stock.production.lot.serial',
         'pallet_id',
-        domain=['|',('consumed','=',False),('reserved_to_stock_picking_id','=',None)]
+        domain=['|', ('consumed', '=', False), ('reserved_to_stock_picking_id', '=', None)]
     )
 
     total_content = fields.Integer(
@@ -102,7 +102,7 @@ class ManufacturingPallet(models.Model):
 
     measure = fields.Char('Medida', related='product_id.measure')
 
-    reserved_to_stock_picking_id = fields.Many2one('stock.picking','Para Despacho')
+    reserved_to_stock_picking_id = fields.Many2one('stock.picking', 'Para Despacho')
 
     sale_order_id = fields.Many2one('sale.order', compute='_compute_sale_order_id', store=True)
 
@@ -114,7 +114,7 @@ class ManufacturingPallet(models.Model):
 
     serial_not_consumed = fields.Integer('Cantidad', compute='_compute_serial_not_consumed')
 
-    lot_id = fields.Many2one('stock.production.lot','Lote')
+    lot_id = fields.Many2one('stock.production.lot', 'Lote')
 
     @api.multi
     def _compute_lot_id(self):
@@ -192,7 +192,8 @@ class ManufacturingPallet(models.Model):
     @api.multi
     def _compute_total_available_content(self):
         for item in self:
-            item.total_available_content = len(item.lot_available_serial_ids.filtered(lambda a: not a.reserved_to_stock_picking_id ))
+            item.total_available_content = len(
+                item.lot_available_serial_ids.filtered(lambda a: not a.reserved_to_stock_picking_id))
 
     @api.onchange('manual_code')
     def onchange_manual_code(self):
