@@ -102,9 +102,7 @@
                         </page>
                         <page string="Lotes Disponibles">
                             <group>
-
                                 <field name="sale_order_id"/>
-
                                 <field name="potential_lot_ids"
                                        groups="mrp.group_mrp_manager"
                                        attrs="{'invisible':[('state','=','done')]}"
