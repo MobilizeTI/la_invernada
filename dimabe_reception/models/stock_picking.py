@@ -207,7 +207,7 @@ class StockPicking(models.Model):
     @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package' )
     def _compute_production_net_weight(self):
         if self.picking_type_code == 'incoming':
-            self.production_net_weight = self.gross_weight - self.tare_weight
+            self.production_net_weight = self.gross_weight - self.tare_weight + self.quality_weight
             if self.is_mp_reception or self.is_pt_reception or self.is_satelite_reception:
                 if self.canning_weight:
                     self.production_net_weight = self.production_net_weight - self.canning_weight
@@ -301,7 +301,7 @@ class StockPicking(models.Model):
                         lot = self.env['stock.production.lot'].create({
                             'name': stock_picking.name,
                             'product_id': move_line.product_id.id,
-                            'standard_weight': stock_picking.production_net_weight,
+                            'standard_weight': stock_picking.net_weight,
                             'producer_id': stock_picking.partner_id.id
                         })
                         if lot:
