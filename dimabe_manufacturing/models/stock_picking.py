@@ -65,29 +65,37 @@ class StockPicking(models.Model):
 
     sale_order_id = fields.Many2one('sale.order', 'Pedido')
 
-    sale_orders_id = fields.Many2one('sale.order','Pedidos')
+    sale_orders_id = fields.Many2one('sale.order', 'Pedidos', domain=[('state', '=', 'sale')])
 
-    dispatch_line_ids = fields.One2many('custom.dispatch.line','dispatch_id')
+    dispatch_line_ids = fields.One2many('custom.dispatch.line', 'dispatch_id')
 
     @api.multi
     def add_orders_to_dispatch(self):
-        for item in self.sale_orders_id.mapped('order_line'):
-            self.env['stock.move'].sudo().create({
-                'name':self.name,
-                'product_id':item.product_id.id,
-                'product_uom':item.product_id.uom_id.id,
-                'product_uom_qty':item.product_uom_qty,
-                'picking_id':self.id,
-                'location_id':self.location_id.id,
-                'location_dest_id':self.location_dest_id.id,
-                'date':datetime.datetime.now(),
-                'procure_method':'make_to_stock'
+        if len(self.sale_orders_id.mapped('order_line')) > 0:
+            for item in self.sale_orders_id.mapped('order_line'):
+                if item.product_id.id not in self.move_ids_without_package.mapped('product_id').mapped('id'):
+                    self.env['stock.move'].sudo().create({
+                        'name': self.name,
+                        'product_id': item.product_id.id,
+                        'product_uom': item.product_id.uom_id.id,
+                        'product_uom_qty': item.product_uom_qty,
+                        'picking_id': self.id,
+                        'location_id': self.location_id.id,
+                        'location_dest_id': self.location_dest_id.id,
+                        'date': datetime.datetime.now(),
+                        'procure_method': 'make_to_stock'
+                    })
+                else:
+                    move = self.move_ids_without_package.filtered(lambda a: a.product_id.id == item.product_id.id)
+                    move.write({
+                        'product_uom_qty':move.product_uom_qty + item.product_uom_qty
+                    })
+            self.env['custom.dispatch.line'].create({
+                'sale_id': self.sale_orders_id.id,
+                'product_id': self.sale_orders_id.mapped('order_line').mapped('product_id').id,
+                'dispatch_id': self.id,
+                'required_sale_qty': sum(self.sale_orders_id.mapped('order_line').mapped('product_uom_qty'))
             })
-        self.env['custom.dispatch.line'].create({
-            'sale_id':self.sale_orders_id.id,
-            'dispatch_id':self.id,
-            'product_uom_qty':sum(self.sale_orders_id.mapped('order_line').mapped('product_uom_qty'))
-        })
 
     @api.onchange('picking_type_code')
     def on_change_picking_type(self):
@@ -127,7 +135,8 @@ class StockPicking(models.Model):
             move = self.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id)
             move.write({
                 'product_uom_qty': (move.product_uom_qty - sum(
-                    self.assigned_pallet_ids.filtered(lambda a: a.remove_picking).mapped('lot_serial_ids').filtered(lambda a: a.reserved_to_stock_picking_id).mapped(
+                    self.assigned_pallet_ids.filtered(lambda a: a.remove_picking).mapped('lot_serial_ids').filtered(
+                        lambda a: a.reserved_to_stock_picking_id).mapped(
                         'display_weight')))
             })
         pallet_to_remove = self.assigned_pallet_ids.filtered(lambda a: a.remove_picking)
@@ -243,6 +252,15 @@ class StockPicking(models.Model):
     @api.multi
     def button_validate(self):
         if self.picking_type_code == 'outgoing':
+            quants = []
+            for lot in self.move_line_ids_without_package.mapped('lot_id'):
+                lot_quant = self.env['stock.quant'].search([('lot_id','=',lot.id),('location_id.usage','=','internal')])
+                move_line = self.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id)
+                quants.append({
+                    'quant_id':lot_quant.id,
+                    'quantity':lot_quant.quantity,
+                    'reserved_quantity':lot_quant.reserved_quantity - move_line.product_uom_qty
+                })
             for serial in self.packing_list_ids:
                 serial.write({
                     'consumed': True
@@ -263,6 +281,12 @@ class StockPicking(models.Model):
                     return super(StockPicking, self).button_validate()
                 else:
                     super(StockPicking, self).action_done()
+                for quant in quants:
+                    self.env['stock.quant'].search([('id','=',quant['quant_id'])]).write({
+                        'reserved_quantity':quant['reserved_quantity'],
+                        'quantity':quant['quantity']
+                    })
+
         else:
             return super(StockPicking, self).button_validate()
 

@@ -32,7 +32,7 @@ class ManufacturingPallet(models.Model):
 
     product_id = fields.Many2one(
         'product.product',
-        compute='_compute_product_id',
+        related='lot_id.product_id',
         store=True
     )
 
@@ -74,7 +74,7 @@ class ManufacturingPallet(models.Model):
     lot_available_serial_ids = fields.One2many(
         'stock.production.lot.serial',
         'pallet_id',
-        domain=['|',('consumed','=',False),('reserved_to_stock_picking_id','=',None)]
+        domain=['|', ('consumed', '=', False), ('reserved_to_stock_picking_id', '=', None)]
     )
 
     total_content = fields.Integer(
@@ -102,7 +102,7 @@ class ManufacturingPallet(models.Model):
 
     measure = fields.Char('Medida', related='product_id.measure')
 
-    reserved_to_stock_picking_id = fields.Many2one('stock.picking','Para Despacho')
+    reserved_to_stock_picking_id = fields.Many2one('stock.picking', 'Para Despacho')
 
     sale_order_id = fields.Many2one('sale.order', compute='_compute_sale_order_id', store=True)
 
@@ -114,7 +114,21 @@ class ManufacturingPallet(models.Model):
 
     serial_not_consumed = fields.Integer('Cantidad', compute='_compute_serial_not_consumed')
 
-    lot_id = fields.Many2one('stock.production.lot','Lote')
+    lot_id = fields.Many2one('stock.production.lot', 'Lote')
+
+    total_reserved_serial = fields.Integer('Cantidad Reservada',compute='compute_total_reserved_serial')
+
+    total_reserved_weight = fields.Float('Kilos Reservados',compute='compute_total_reserved_weight')
+
+    @api.multi
+    def compute_total_reserved_serial(self):
+        for item in self:
+            item.total_reserved_serial = len(item.lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id))
+
+    @api.multi
+    def compute_total_reserved_weight(self):
+        for item in self:
+            item.total_reserved_weight = sum(item.lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id).mapped('display_weight'))
 
     @api.multi
     def _compute_lot_id(self):
@@ -192,7 +206,8 @@ class ManufacturingPallet(models.Model):
     @api.multi
     def _compute_total_available_content(self):
         for item in self:
-            item.total_available_content = len(item.lot_available_serial_ids)
+            item.total_available_content = len(
+                item.lot_available_serial_ids.filtered(lambda a: not a.reserved_to_stock_picking_id))
 
     @api.onchange('manual_code')
     def onchange_manual_code(self):

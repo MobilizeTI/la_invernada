@@ -134,7 +134,6 @@
                                 />
                             </tree>
                         </field>
-                        <button string="Agregar Seleccion" type="object" name="add_selection_pallet" context="{'dispatch_id':context_picking_id}"/>
                     </group>
                     <group>
                         <field name="stock_production_lot_available_serial_ids"
@@ -147,10 +146,12 @@
                                 <field name="display_weight" readonly="1"/>
                             </tree>
                         </field>
-                        <button string="Agregar Selección" name="add_selection_serial" type="object" context="{'dispatch_id':context_picking_id}"/>
+
                     </group>
                 </group>
-                <footer></footer>
+                <footer>
+                    <button name="add_selection" string="Agregar Selección" type="object"/>
+                </footer>
             </form>
         </field>
     </record>

@@ -19,19 +19,26 @@
             <button name="action_assign" position="replace"/>
             <button name="do_unreserve" position="replace"/>
             <xpath expr="//notebook[1]//page[1]" position="after">
-                <page string="Lineas de Despacho" name="dispatch_line_ids">
-                    <field name="dispatch_line_ids" attrs="{'invisible':[('picking_type_code','!=','outgoing')],'read_only':[('state','=','done')]}">
+                <page string="Lineas de Despacho" name="dispatch_line_ids"
+                      attrs="{'invisible':[('picking_type_code','!=','outgoing')]}">
+                    <field name="dispatch_line_ids"
+                           attrs="{'invisible':[('picking_type_code','!=','outgoing')],'read_only':[('state','=','done')]}">
                         <tree>
                             <field name="sale_id"/>
-                            <field name="product_uom_qty"/>
+                            <field name="product_id"/>
+                            <field name="required_sale_qty"/>
+                            <field name="real_dispatch_qty"
+                                   attrs="{'column_invisible':[('parent.dispatch_line_ids','=',None)]}"/>
                         </tree>
                     </field>
                 </page>
             </xpath>
             <xpath expr="//field[@name='origin']" position="after">
-                    <field name="sale_orders_id" attrs="{'invisible':['|',('state','=','done'),('picking_type_code','!=','outgoing')]}"/>
-                    <button name="add_orders_to_dispatch" type="object" string="Agregar" attrs="{'invisible':['|',('state','=','done'),('picking_type_code','!=','outgoing')]}"/>
-                </xpath>
+                <field name="sale_orders_id"
+                       attrs="{'invisible':['|',('state','=','done'),('picking_type_code','!=','outgoing')]}"/>
+                <button name="add_orders_to_dispatch" type="object" string="Agregar"
+                        attrs="{'invisible':['|',('state','=','done'),('picking_type_code','!=','outgoing')]}"/>
+            </xpath>
             <page name="note" position="after">
                 <page name="packing_list" string="Reservados"
                       attrs="{'invisible':['|',('state','=','cancel'),('picking_type_code', '!=', 'outgoing')]}"
@@ -61,9 +68,11 @@
                                     <tree editable="bottom" edit="true" delete="false" create="false">
                                         <field name="remove_picking"/>
                                         <field name="name" readonly="1"/>
-                                        <field name="total_content_weight" readonly="1"/>
-                                        <field name="total_available_content" readonly="1"/>
-                                        <field name="state"/>
+                                        <field name="lot_id" readonly="1"/>
+                                        <field name="product_id" readonly="1"/>
+                                        <field name="total_reserved_serial" readonly="1"/>
+                                        <field name="total_reserved_weight" readonly="1"/>
+                                        <field name="state" readonly="1"/>
                                         <button string="Quitar Reserva"
                                                 name="remove_from_picking"
                                                 type="object"
@@ -76,7 +85,6 @@
                                 <button name="remove_reserved_pallet" type="object" string="Quitar seleccion"/>
                             </group>
                         </page>
-
                         <page string="Series Reservadas">
                             <group>
                                 <field name="packing_list_ids">
@@ -96,9 +104,7 @@
                         </page>
                         <page string="Lotes Disponibles">
                             <group>
-
                                 <field name="sale_order_id"/>
-
                                 <field name="potential_lot_ids"
                                        groups="mrp.group_mrp_manager"
                                        attrs="{'invisible':[('state','=','done')]}"

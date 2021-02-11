@@ -164,6 +164,8 @@ class StockPicking(models.Model):
             'tare_weight':float(data)
         })
 
+
+
     @api.one
     @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package', 'quality_weight')
     def _compute_net_weight(self):
@@ -207,11 +209,10 @@ class StockPicking(models.Model):
     @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package' )
     def _compute_production_net_weight(self):
         if self.picking_type_code == 'incoming':
-            self.production_net_weight = self.gross_weight - self.tare_weight
+            self.production_net_weight = self.gross_weight - self.tare_weight + self.quality_weight
             if self.is_mp_reception or self.is_pt_reception or self.is_satelite_reception:
                 if self.canning_weight:
                     self.production_net_weight = self.production_net_weight - self.canning_weight
-            models._logger.error(self.production_net_weight)
 
     @api.one
     def _compute_elapsed_time(self):
@@ -245,17 +246,17 @@ class StockPicking(models.Model):
                                      'recepciones' in str.lower(self.picking_type_id.name)
 
     @api.one
-    @api.depends('production_net_weight', 'tare_weight', 'gross_weight', 'move_ids_without_package')
+    @api.depends('net_weight', 'tare_weight', 'gross_weight', 'move_ids_without_package')
     def _compute_avg_unitary_weight(self):
         if self.picking_type_code == 'incoming':
-            if self.production_net_weight:
+            if self.net_weight:
                 canning = self.get_canning_move()
                 if len(canning) == 1:
                     divisor = canning.product_uom_qty
                     if divisor == 0:
                         divisor = 1
 
-                    self.avg_unitary_weight = self.production_net_weight / divisor
+                    self.avg_unitary_weight = self.net_weight / divisor
 
     @api.model
     def get_mp_move(self):
@@ -287,6 +288,7 @@ class StockPicking(models.Model):
     @api.multi
     def action_confirm(self):
         if self.picking_type_code == 'incoming':
+            models._logger.error(f'Canning Weight {self.canning_weight}')
             for stock_picking in self:
                 if stock_picking.is_mp_reception or stock_picking.is_pt_reception or stock_picking.is_satelite_reception:
                     stock_picking.validate_mp_reception()
@@ -301,7 +303,7 @@ class StockPicking(models.Model):
                         lot = self.env['stock.production.lot'].create({
                             'name': stock_picking.name,
                             'product_id': move_line.product_id.id,
-                            'standard_weight': stock_picking.production_net_weight,
+                            'standard_weight': stock_picking.net_weight,
                             'producer_id': stock_picking.partner_id.id
                         })
                         if lot:
@@ -323,10 +325,10 @@ class StockPicking(models.Model):
                                     for i in range(int(total_qty)):
                                         models._logger.error(i == int(total_qty))
                                         models._logger.error(
-                                            stock_picking.production_net_weight - (int(total_qty) * default_value))
+                                            stock_picking.net_weight - (int(total_qty) * default_value))
                                         if i == int(total_qty):
 
-                                            diff = stock_picking.production_net_weight - (
+                                            diff = stock_picking.net_weight - (
                                                         int(total_qty) * default_value)
 
                                             tmp = '00{}'.format(i + 1)
@@ -373,7 +375,7 @@ class StockPicking(models.Model):
                 m_move = self.get_mp_move()
                 if not m_move:
                     m_move = self.get_pt_move()
-                m_move.quantity_done = self.production_net_weight
+                m_move.quantity_done = self.net_weight
                 m_move.product_uom_qty = self.weight_guide
                 if m_move.has_serial_generated and self.avg_unitary_weight:
                     self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)]).write(
@@ -382,7 +384,7 @@ class StockPicking(models.Model):
                         })
                     canning = self.get_canning_move()
                     if len(canning) == 1:
-                        diff = self.production_net_weight - (canning.product_uom_qty * self.avg_unitary_weight)
+                        diff = self.net_weight - (canning.product_uom_qty * self.avg_unitary_weight)
                         self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)])[
                             -1].write({
                             'real_weight': self.avg_unitary_weight + diff
