@@ -116,6 +116,20 @@ class ManufacturingPallet(models.Model):
 
     lot_id = fields.Many2one('stock.production.lot', 'Lote')
 
+    total_reserved_serial = fields.Integer('Cantidad Reservada',compute='compute_total_reserved_serial')
+
+    total_reserved_weight = fields.Float('Kilos Reservados',compute='compute_total_reserved_weight')
+
+    @api.multi
+    def compute_total_reserved_serial(self):
+        for item in self:
+            item.total_reserved_serial = len(item.lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id))
+
+    @api.multi
+    def compute_total_reserved_weight(self):
+        for item in self:
+            item.total_reserved_weight = sum(item.lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking).mapped('display_weight'))
+
     @api.multi
     def _compute_lot_id(self):
         for item in self:
