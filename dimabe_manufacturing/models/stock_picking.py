@@ -86,6 +86,7 @@ class StockPicking(models.Model):
                         'procure_method': 'make_to_stock'
                     })
                 else:
+                    raise models.ValidationError(type(self))
                     move = self.mapped('move_ids_without_package').filtered(lambda a: a.product_id.id in item.product_id.id)
                     move.write({
                         'product_uom_qty':move.product_uom_qty + item.product_uom_qty
