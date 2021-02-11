@@ -635,6 +635,11 @@ class StockProductionLot(models.Model):
         }
 
     @api.multi
+    def add_selection(self):
+        self.add_selection_pallet()
+        self.add_selection_serial()
+
+
     def add_selection_serial(self):
         weight = sum(
                     self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('display_weight'))
@@ -677,7 +682,6 @@ class StockProductionLot(models.Model):
             'to_add': False
         })
 
-    @api.multi
     def add_selection_pallet(self):
         weight = sum(
                     self.pallet_ids.filtered(lambda a: a.add_picking).mapped('lot_serial_ids').mapped('display_weight')
