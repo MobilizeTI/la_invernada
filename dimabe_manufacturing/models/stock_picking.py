@@ -34,8 +34,6 @@ class StockPicking(models.Model):
         'reserved_to_stock_picking_id'
     )
 
-
-
     product_search_id = fields.Many2one(
         'product.product',
         string='Buscar Producto',
@@ -67,30 +65,30 @@ class StockPicking(models.Model):
 
     sale_order_id = fields.Many2one('sale.order', 'Pedido')
 
-    sale_orders_id = fields.Many2one('sale.order','Pedidos',domain=[('state','=','sale')])
+    sale_orders_id = fields.Many2one('sale.order', 'Pedidos', domain=[('state', '=', 'sale')])
 
-    dispatch_line_ids = fields.One2many('custom.dispatch.line','dispatch_id')
+    dispatch_line_ids = fields.One2many('custom.dispatch.line', 'dispatch_id')
 
     @api.multi
     def add_orders_to_dispatch(self):
         if len(self.sale_orders_id.mapped('order_line')) > 0:
             for item in self.sale_orders_id.mapped('order_line'):
                 self.env['stock.move'].sudo().create({
-                    'name':self.name,
-                    'product_id':item.product_id.id,
-                    'product_uom':item.product_id.uom_id.id,
-                    'product_uom_qty':item.product_uom_qty,
-                    'picking_id':self.id,
-                    'location_id':self.location_id.id,
-                    'location_dest_id':self.location_dest_id.id,
-                    'date':datetime.datetime.now(),
-                    'procure_method':'make_to_stock'
+                    'name': self.name,
+                    'product_id': item.product_id.id,
+                    'product_uom': item.product_id.uom_id.id,
+                    'product_uom_qty': item.product_uom_qty,
+                    'picking_id': self.id,
+                    'location_id': self.location_id.id,
+                    'location_dest_id': self.location_dest_id.id,
+                    'date': datetime.datetime.now(),
+                    'procure_method': 'make_to_stock'
                 })
             self.env['custom.dispatch.line'].create({
-                'sale_id':self.sale_orders_id.id,
-                'product_id':self.sale_orders_id.mapped('order_line').mapped('product_id').id,
-                'dispatch_id':self.id,
-                'required_sale_qty':sum(self.sale_orders_id.mapped('order_line').mapped('product_uom_qty'))
+                'sale_id': self.sale_orders_id.id,
+                'product_id': self.sale_orders_id.mapped('order_line').mapped('product_id').id,
+                'dispatch_id': self.id,
+                'required_sale_qty': sum(self.sale_orders_id.mapped('order_line').mapped('product_uom_qty'))
             })
 
     @api.onchange('picking_type_code')
@@ -131,7 +129,8 @@ class StockPicking(models.Model):
             move = self.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id)
             move.write({
                 'product_uom_qty': (move.product_uom_qty - sum(
-                    self.assigned_pallet_ids.filtered(lambda a: a.remove_picking).mapped('lot_serial_ids').filtered(lambda a: a.reserved_to_stock_picking_id).mapped(
+                    self.assigned_pallet_ids.filtered(lambda a: a.remove_picking).mapped('lot_serial_ids').filtered(
+                        lambda a: a.reserved_to_stock_picking_id).mapped(
                         'display_weight')))
             })
         pallet_to_remove = self.assigned_pallet_ids.filtered(lambda a: a.remove_picking)
