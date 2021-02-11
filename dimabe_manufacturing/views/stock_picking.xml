@@ -70,8 +70,8 @@
                                         <field name="name" readonly="1"/>
                                         <field name="lot_id" readonly="1"/>
                                         <field name="product_id" readonly="1"/>
-                                        <field name="total_content_weight" readonly="1"/>
-                                        <field name="total_available_content" readonly="1"/>
+                                        <field name="total_reserved_serial" readonly="1"/>
+                                        <field name="total_reserved_weight" readonly="1"/>
                                         <field name="state" readonly="1"/>
                                         <button string="Quitar Reserva"
                                                 name="remove_from_picking"
