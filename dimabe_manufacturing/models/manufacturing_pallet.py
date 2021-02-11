@@ -192,7 +192,7 @@ class ManufacturingPallet(models.Model):
     @api.multi
     def _compute_total_available_content(self):
         for item in self:
-            item.total_available_content = len(item.lot_available_serial_ids)
+            item.total_available_content = len(item.lot_available_serial_ids.filtered(lambda a: not a.reserved_to_stock_picking_id or not a.consumed))
 
     @api.onchange('manual_code')
     def onchange_manual_code(self):
