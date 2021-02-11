@@ -7,6 +7,8 @@ class CustomDispatchLine(models.Model):
 
     dispatch_id = fields.Many2one('stock.picking','Despacho')
 
+    product_id = fields.Many2one('product.product','Producto')
+
     product_uom_qty = fields.Float('Cantidad')
 
 

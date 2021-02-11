@@ -88,6 +88,7 @@ class StockPicking(models.Model):
                 })
             self.env['custom.dispatch.line'].create({
                 'sale_id':self.sale_orders_id.id,
+                'product_id':self.sale_orders_id.mapped('order_line').mapped('product_id').id,
                 'dispatch_id':self.id,
                 'product_uom_qty':sum(self.sale_orders_id.mapped('order_line').mapped('product_uom_qty'))
             })
