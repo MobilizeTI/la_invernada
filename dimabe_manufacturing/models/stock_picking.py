@@ -276,8 +276,7 @@ class StockPicking(models.Model):
                 else:
                     super(StockPicking, self).action_done()
                 for quant in quants:
-                    raise models.ValidationError(f'Type of object quant id {type(quant["id"])} Quant Id {quant["id"]}')
-                    self.env['stock.quant'].search([('id','=',quant['id'])]).write({
+                    self.env['stock.quant'].search([('id','=',quant['quant_id'])]).write({
                         'reserved_quantity':quant['reserved_quantity'],
                         'quantity':quant['quantity']
                     })
