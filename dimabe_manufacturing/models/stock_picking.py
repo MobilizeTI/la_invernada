@@ -70,7 +70,7 @@ class StockPicking(models.Model):
     dispatch_line_ids = fields.One2many('custom.dispatch.line', 'dispatch_id')
 
     def get_name_orders(self):
-        return repr(self.dispatch_line_ids.mapped('sale_id').mapped('name'))
+        return ", ".join(self.dispatch_line_ids.mapped('sale_id').mapped('name'))
 
     @api.multi
     def add_orders_to_dispatch(self):
