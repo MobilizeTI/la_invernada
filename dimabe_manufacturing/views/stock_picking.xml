@@ -35,7 +35,7 @@
             </xpath>
             <xpath expr="//field[@name='origin']" position="after">
                 <field name="sale_orders_id"
-                       attrs="{'invisible':['|',('state','=','done'),('picking_type_code','!=','outgoing')]}"/>
+                       attrs="{'invisible':['|',('state','=','done'),('picking_type_code','!=','outgoing')]}" domain="[('partner_id','=',partner_id)]"/>
                 <field name="dispatch_id" domain="[('sale_id','=',sale_orders_id)]" attrs="{'invisible':[('sale_orders_id','=',None)]}" />
                 <button name="add_orders_to_dispatch" type="object" string="Agregar"
                         attrs="{'invisible':['|',('state','=','done'),('picking_type_code','!=','outgoing')]}"/>
