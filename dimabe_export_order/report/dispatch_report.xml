@@ -1023,7 +1023,7 @@
                         <tr rowspan="2">
                             <td style="text-align:center;">PURCHASE ORDER/ORDER DE COMPRA</td>
                             <td style="text-align:center;">
-                                <span t-esc="d.mapped('dispatch_line_ids').mapped('sale_id').mapped('id')"/>
+                                <span t-esc="repr(d.mapped('dispatch_line_ids').mapped('sale_id').mapped('name'))"/>
                             </td>
                         </tr>
                         <tr></tr>
