@@ -676,8 +676,10 @@ class StockProductionLot(models.Model):
             'reserved_to_stock_picking_id': picking_id
         })
         quant.write({
-            'reserved_quantity': quant.reserved_quantity + weight,
-            'quantity': quant.quantity - weight
+            'reserved_quantity': sum(self.stock_production_lot_serial_ids.filtered(
+                    lambda a: a.reserved_to_stock_picking_id).mapped('display_weight')),
+            'quantity': sum(self.stock_production_lot_serial_ids.filtered(
+                    lambda a: not a.reserved_to_stock_picking_id).mapped('display_weight'))
         })
         dispatch_line = picking.dispatch_line_ids.filtered(
             lambda a: a.product_id.id == self.product_id.id and self.sale_order_id.id == a.sale_id.id)
