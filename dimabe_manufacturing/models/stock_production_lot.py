@@ -644,6 +644,7 @@ class StockProductionLot(models.Model):
                 'move_id': picking.move_ids_without_package.filtered(
                     lambda a: a.product_id.id == self.product_id.id).id,
                 'product_id': self.product_id.id,
+                'lot_id':self.id,
                 'product_uom_id': self.product_id.uom_id.id,
                 'product_uom_qty': sum(self.stock_production_lot_serial_ids.filtered(
                     lambda a: a.reserved_to_stock_picking_id.id == picking_id).mapped('display_weight')),
