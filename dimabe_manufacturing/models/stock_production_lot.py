@@ -645,11 +645,9 @@ class StockProductionLot(models.Model):
         else:
             move_line = picking.mapped('move_line_ids_without_package').filtered(
                 lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id)
-            raise models.ValidationError(self.stock_production_lot_serial_ids.filtered(
-                    lambda a: a.reserved_to_stock_picking_id == picking_id).mapped('display_weight'))
             move_line.write({
                 'product_uom_qty': sum(self.stock_production_lot_serial_ids.filtered(
-                    lambda a: a.reserved_to_stock_picking_id == picking_id).mapped('display_weight'))
+                    lambda a: a.reserved_to_stock_picking_id.id == picking_id).mapped('display_weight'))
             })
 
     def add_selection_serial(self, picking_id):
