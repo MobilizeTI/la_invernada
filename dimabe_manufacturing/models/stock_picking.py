@@ -73,8 +73,6 @@ class StockPicking(models.Model):
 
     dispatch_id = fields.Many2one('stock.picking','Despachos')
 
-    dispatch_ids = fields.Many2many('stock.picking')
-
     @api.multi
     def get_name_orders(self):
         self.name_orders = ", ".join(self.dispatch_line_ids.mapped('sale_id').mapped('name'))
