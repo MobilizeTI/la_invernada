@@ -77,7 +77,8 @@ class StockPicking(models.Model):
 
     @api.multi
     def compute_net_weigth_real(self):
-        item.real_net_weigth = sum(self.packing_list_ids.mapped('display_weight'))
+        for item in self:
+            item.real_net_weigth = sum(item.packing_list_ids.mapped('display_weight'))
 
     @api.multi
     def get_name_orders(self):
