@@ -80,7 +80,7 @@ class StockPicking(models.Model):
     @api.multi
     def add_orders_to_dispatch(self):
         if len(self.sale_orders_id.mapped('order_line')) > 0:
-            for item in self.sale_orders_id.mapped('order_line'):
+            for item in self.dispatch_id.mapped('move_ids_without_package'):
                 if item.product_id.id not in self.move_ids_without_package.mapped('product_id').mapped('id'):
                     self.env['stock.move'].sudo().create({
                         'name': self.name,
