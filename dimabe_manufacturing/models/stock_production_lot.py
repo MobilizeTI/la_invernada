@@ -636,7 +636,7 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def add_selection(self):
-        picking_id = self.env.context['picking_id']
+        picking_id = self.env.context['dispatch_id']
         self.add_selection_pallet(picking_id)
         self.add_selection_serial(picking_id)
 
