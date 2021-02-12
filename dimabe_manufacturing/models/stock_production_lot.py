@@ -631,7 +631,8 @@ class StockProductionLot(models.Model):
 
     def add_selection_serial(self, picking_id):
         weight = sum(
-            self.stock_production_lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id).mapped(
+            self.stock_production_lot_serial_ids.filtered(
+                lambda a: a.reserved_to_stock_picking_id == picking_id).mapped(
                 'display_weight'))
         quant = self.env['stock.quant'].search([('lot_id', '=', self.id), ('location_id.usage', '=', 'internal')])
         picking = self.env['stock.picking'].sudo().search([('id', '=', picking_id)])
@@ -663,9 +664,6 @@ class StockProductionLot(models.Model):
             move_line = picking.move_line_ids_without_package.filtered(
                 lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id)
             move_line.write({
-                'product_uom_qty': 0
-            })
-            move_line.write({
                 'product_uom_qty': weight
             })
         dispatch_line = picking.dispatch_line_ids.filtered(
@@ -679,7 +677,8 @@ class StockProductionLot(models.Model):
 
     def add_selection_pallet(self, picking_id):
         weight = sum(
-            self.pallet_ids.filtered(lambda a: a.reserved_to_stock_picking_id).mapped('lot_serial_ids').mapped(
+            self.pallet_ids.filtered(lambda a: a.reserved_to_stock_picking_id == picking_id).mapped(
+                'lot_serial_ids').mapped(
                 'display_weight')
         )
         quant = self.env['stock.quant'].search([('lot_id', '=', self.id), ('location_id.usage', '=', 'internal')])
