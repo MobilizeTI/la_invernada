@@ -345,7 +345,7 @@ class StockPicking(models.Model):
                                                 'serial_number': '{}{}'.format(stock_move_line.lot_name, tmp[-3:])
                                             })
                                     stock_move_line.lot_id.write({
-                                        'available_kg': sum(stock_move_line.lot_id.stock_production_lot_serial_ids.mapped('available_weight'))
+                                        'available_kg': sum(stock_move_line.lot_id.stock_production_lot_serial_ids.mapped('display_weight'))
                                     })
                                     m_move.has_serial_generated = True
                 return res
