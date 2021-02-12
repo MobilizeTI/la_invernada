@@ -129,33 +129,33 @@ class StockPicking(models.Model):
     @api.multi
     def remove_reserved_serial(self):
         lots = self.packing_list_ids.filtered(lambda a: a.to_delete).mapped('stock_production_lot_id')
-        for lot in lots:
-            move = self.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id)
-            move.write({
-                'product_uom_qty': (move.product_uom_qty - sum(
-                    self.packing_list_ids.filtered(lambda a: a.to_delete).mapped('display_weight')))
-            })
         self.packing_list_ids.filtered(lambda a: a.to_delete).write({
             'reserved_to_stock_picking_id': None,
             'to_delete': False
         })
+        for lot in lots:
+            move = self.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id)
+            quant = self.env['stock.quant'].search([('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal')])
+            qty_move = sum(lot.stock_production_lot_serial_ids.filtered(
+                lambda a: a.reserved_to_stock_picking_id.id == self.id).mapped('display_weight'))
+            qty_quant = sum(
+                lot.stock_production_lot_serial_ids.filtered(lambda a: not a.reserved_to_stock_picking_id).mapped(
+                    'display_weight'))
+            reserved_qty = sum(
+                lot.stock_production_lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id).mapped(
+                    'display_weight'))
+            quant.write({
+                'quantity': qty_quant if qty_quant > 0 else 0,
+                'reserved_quantity': reserved_qty if reserved_qty > 0 else 0
+            })
+            move.write({
+                'product_uom_qty': qty_move if qty_move > 0 else 0
+            })
+
 
     @api.multi
     def remove_reserved_pallet(self):
-
         lots = self.assigned_pallet_ids.filtered(lambda a: a.remove_picking).mapped('lot_id')
-        for lot in lots:
-            move = self.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id)
-            qty = move.product_uom_qty - sum(
-                    self.assigned_pallet_ids.filtered(lambda a: a.remove_picking).mapped('lot_serial_ids').filtered(
-                        lambda a: a.reserved_to_stock_picking_id).mapped(
-                        'display_weight'))
-            if qty < 0:
-                qty = 0
-
-            move.write({
-                'product_uom_qty': qty
-            })
         pallet_to_remove = self.assigned_pallet_ids.filtered(lambda a: a.remove_picking)
         for pallet in pallet_to_remove:
             pallet.lot_serial_ids.write({
@@ -165,6 +165,20 @@ class StockPicking(models.Model):
                 'reserved_to_stock_picking_id': None,
                 'remove_picking': False
             })
+        for lot in lots:
+            move = self.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id)
+            quant = self.env['stock.quant'].search([('lot_id','=',lot.id),('location_id.usage', '=', 'internal')])
+            qty_move = sum(lot.stock_production_lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id.id == self.id).mapped('display_weight'))
+            qty_quant = sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.reserved_to_stock_picking_id).mapped('display_weight'))
+            reserved_qty = sum(lot.stock_production_lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id).mapped('display_weight'))
+            quant.write({
+                'quantity':qty_quant if qty_quant > 0 else 0,
+                'reserved_quantity':reserved_qty if reserved_qty > 0 else 0
+            })
+            move.write({
+                'product_uom_qty': qty_move if qty_move > 0 else 0
+            })
+
 
     @api.multi
     def _compute_packing_list_lot_ids(self):
