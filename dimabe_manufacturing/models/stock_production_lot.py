@@ -539,11 +539,6 @@ class StockProductionLot(models.Model):
                     'quantity': sum(self.stock_production_lot_serial_ids.filtered(
                         lambda a: a.reserved_to_stock_picking_id == stock_picking_id).mapped('display_weight'))
                 })
-                self.stock_production_lot_serial_ids.filtered(
-                    lambda a: a.reserved_to_stock_picking_id == stock_picking_id).write({
-                    'reserved_to_stock_picking_id': None
-                })
-                stock_picking.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == self.id).unlink()
 
     @api.multi
     def write(self, values):
