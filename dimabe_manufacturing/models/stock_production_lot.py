@@ -663,6 +663,9 @@ class StockProductionLot(models.Model):
             move_line = picking.move_line_ids_without_package.filtered(
                 lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id)
             move_line.write({
+                'product_uom_qty': 0
+            })
+            move_line.write({
                 'product_uom_qty': weight
             })
         dispatch_line = picking.dispatch_line_ids.filtered(
