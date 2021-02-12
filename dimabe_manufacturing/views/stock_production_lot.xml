@@ -120,7 +120,7 @@
             <field name="context_picking_id" invisible="1"/>
                 <group>
                     <group>
-                        <field name="pallet_ids">
+                        <field name="pallet_ids" domain="[('total_content_weight','=',0)]">
                             <tree editable="bottom" edit="true" create="false" delete="false">
                                 <field name="add_picking"/>
                                 <field name="name"/>
