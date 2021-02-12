@@ -7,3 +7,5 @@ class StockPickingType(models.Model):
     require_dried = fields.Boolean(
         'Requiere de Secado'
     )
+
+    is_pt = fields.Boolean('Es Despacho Pt')
