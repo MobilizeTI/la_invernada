@@ -384,7 +384,7 @@
                                                             <td><![CDATA[&nbsp;]]></td>
                                                             <td>N° Pedido:</td>
                                                             <td>
-                                                                <span t-field="d.origin"/>
+                                                                <span t-esc="d.get_name_orders()"/>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -681,7 +681,7 @@
                                                 <td><![CDATA[&nbsp;]]></td>
                                                 <td>N° Pedido:</td>
                                                 <td>
-                                                    <span t-field="d.origin"/>
+                                                    <span t-esc="d.get_name_orders()"/>
                                                 </td>
                                             </tr>
                                             <tr>
