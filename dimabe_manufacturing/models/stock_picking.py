@@ -71,6 +71,8 @@ class StockPicking(models.Model):
 
     name_orders = fields.Char('Pedidos',compute='get_name_orders')
 
+    is_principal_dispatch = fields.Boolean('Es despacho principal?')
+
     @api.multi
     def get_name_orders(self):
         self.name_orders = ", ".join(self.dispatch_line_ids.mapped('sale_id').mapped('name'))
@@ -101,6 +103,9 @@ class StockPicking(models.Model):
                 'product_id': self.sale_orders_id.mapped('order_line').mapped('product_id').id,
                 'dispatch_id': self.id,
                 'required_sale_qty': sum(self.sale_orders_id.mapped('order_line').mapped('product_uom_qty'))
+            })
+            self.write({
+                'is_principal_dispatch':True
             })
 
     @api.onchange('picking_type_code')
