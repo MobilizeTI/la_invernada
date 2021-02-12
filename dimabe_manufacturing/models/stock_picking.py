@@ -81,6 +81,7 @@ class StockPicking(models.Model):
     def add_orders_to_dispatch(self):
         if len(self.sale_orders_id.mapped('order_line')) > 0:
             for item in self.sale_orders_id.mapped('order_line'):
+
                 if item.product_id.id not in self.move_ids_without_package.mapped('product_id').mapped('id'):
                     self.env['stock.move'].sudo().create({
                         'name': self.name,
@@ -98,12 +99,13 @@ class StockPicking(models.Model):
                     move.write({
                         'product_uom_qty':move.product_uom_qty + item.product_uom_qty
                     })
-            self.env['custom.dispatch.line'].create({
-                'sale_id': self.sale_orders_id.id,
-                'product_id': self.sale_orders_id.mapped('order_line').mapped('product_id').id,
-                'dispatch_id': self.id,
-                'required_sale_qty': sum(self.sale_orders_id.mapped('order_line').mapped('product_uom_qty'))
-            })
+            for product_id in self.sale_orders_id.mapped('order_line').mapped('product_id'):
+                self.env['custom.dispatch.line'].create({
+                    'sale_id': self.sale_orders_id.id,
+                    'product_id': product_id.id,
+                    'dispatch_id': self.id,
+                    'required_sale_qty': sum(self.sale_orders_id.mapped('order_line').filtered(lambda a: a.product_id.id == product_id.id).mapped('product_uom_qty'))
+                })
             self.write({
                 'is_principal_dispatch':True
             })
