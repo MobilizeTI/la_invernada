@@ -299,6 +299,10 @@ class StockPicking(models.Model):
                         'reserved_quantity':quant['reserved_quantity'],
                         'quantity':quant['quantity']
                     })
+                for sale in self.dispatch_line_ids:
+                    self.env['sale.order.line'].search([('order_id','=',sale.sale_id.id),('product_id','=',sale.product_id.id)]).write({
+                        'qty_delivered': sale.real_dispatch_qty
+                    })
 
         else:
             return super(StockPicking, self).button_validate()
