@@ -150,7 +150,7 @@
                     </group>
                 </group>
                 <footer>
-                    <button name="add_selection" string="Agregar Selección" type="object"/>
+                    <button name="add_selection" string="Agregar Selección" type="object" context="{'dispatch':context_picking_id}"/>
                 </footer>
             </form>
         </field>

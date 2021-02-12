@@ -636,15 +636,15 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def add_selection(self):
-        self.add_selection_pallet()
-        self.add_selection_serial()
+        picking_id = self.env.context['picking_id']
+        self.add_selection_pallet(picking_id)
+        self.add_selection_serial(picking_id)
 
 
-    def add_selection_serial(self):
+    def add_selection_serial(self,picking_id):
         weight = sum(
                     self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('display_weight'))
         quant = self.env['stock.quant'].search([('lot_id','=',self.id),('location_id.usage','=','internal')])
-        picking_id = int(self.env.context['dispatch_id'])
         picking = self.env['stock.picking'].sudo().search([('id', '=', picking_id)])
         pallets = self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('pallet_id')
         for pallet in pallets:
@@ -682,11 +682,10 @@ class StockProductionLot(models.Model):
             'to_add': False
         })
 
-    def add_selection_pallet(self):
+    def add_selection_pallet(self,picking_id):
         weight = sum(
                     self.pallet_ids.filtered(lambda a: a.add_picking).mapped('lot_serial_ids').mapped('display_weight')
                 )
-        picking_id = int(self.env.context['dispatch_id'])
         quant = self.env['stock.quant'].search([('lot_id', '=', self.id), ('location_id.usage', '=', 'internal')])
         picking = self.env['stock.picking'].sudo().search([('id','=',picking_id)])
         self.pallet_ids.filtered(lambda a: a.add_picking).write({
