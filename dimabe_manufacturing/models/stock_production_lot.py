@@ -696,7 +696,7 @@ class StockProductionLot(models.Model):
             'reserved_quantity': quant.reserved_quantity + weight,
             'quantity': quant.quantity - weight
         })
-        if not picking.move_line_ids_without_package:
+        if not picking.move_line_ids_without_package.filtered(lambda a: a.product_id.id == self.product_id.id or self.lot_id.id):
             self.env['stock.move.line'].create({
                 'lot_id':self.id,
                 'picking_id':picking_id,
