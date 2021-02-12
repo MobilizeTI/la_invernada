@@ -6,6 +6,7 @@
     <field name="arch" type="xml">
       <field name="barcode" position="after">
         <field name="require_dried"/>
+        <field name="is_pt" groups="base.group_no_one"/>
       </field>
     </field>
   </record>
