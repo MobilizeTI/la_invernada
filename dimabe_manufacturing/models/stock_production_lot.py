@@ -637,7 +637,7 @@ class StockProductionLot(models.Model):
                 'product_id': self.product_id.id,
                 'product_uom_id': self.product_id.uom_id.id,
                 'product_uom_qty': sum(self.stock_production_lot_serial_ids.filtered(
-                    lambda a: a.reserved_to_stock_picking_id == picking_id).mapped('display_weight')),
+                    lambda a: a.reserved_to_stock_picking_id.id == picking_id.id).mapped('display_weight')),
                 'picking_id': picking_id,
                 'location_id': picking.location_id.id,
                 'location_dest_id': picking.partner_id.property_stock_customer.id
@@ -646,8 +646,8 @@ class StockProductionLot(models.Model):
             move_line = picking.mapped('move_line_ids_without_package').filtered(
                 lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id)
             move_line.write({
-                'product_uom_qty': sum(sum(self.stock_production_lot_serial_ids.filtered(
-                    lambda a: a.reserved_to_stock_picking_id == picking_id).mapped('display_weight')))
+                'product_uom_qty': sum(self.stock_production_lot_serial_ids.filtered(
+                    lambda a: a.reserved_to_stock_picking_id == picking_id).mapped('display_weight'))
             })
 
     def add_selection_serial(self, picking_id):
