@@ -71,7 +71,9 @@ class StockPicking(models.Model):
 
     name_orders = fields.Char('Pedidos',compute='get_name_orders')
 
-    is_principal_dispatch = fields.Boolean('Es despacho principal?')
+    dispatch_id = fields.Many2one('stock.picking','Despachos')
+
+    dispatch_ids = fields.Many2many('stock.picking')
 
     @api.multi
     def get_name_orders(self):
@@ -81,7 +83,6 @@ class StockPicking(models.Model):
     def add_orders_to_dispatch(self):
         if len(self.sale_orders_id.mapped('order_line')) > 0:
             for item in self.sale_orders_id.mapped('order_line'):
-
                 if item.product_id.id not in self.move_ids_without_package.mapped('product_id').mapped('id'):
                     self.env['stock.move'].sudo().create({
                         'name': self.name,
@@ -278,12 +279,6 @@ class StockPicking(models.Model):
                 serial.write({
                     'consumed': True
                 })
-            for lot in self.packing_list_lot_ids:
-                available_kg = sum(
-                    lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
-                query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg, lot.id)
-                cr = self._cr
-                cr.execute(query)
             if len(self.move_line_ids_without_package) == 0:
                 raise models.UserError('No existe ningun campo en operaciones detalladas')
             if self.move_line_ids_without_package.filtered(lambda a: a.qty_done == 0):
