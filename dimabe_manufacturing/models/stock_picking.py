@@ -73,6 +73,12 @@ class StockPicking(models.Model):
 
     dispatch_id = fields.Many2one('stock.picking','Despachos')
 
+    real_net_weigth = fields.Float('Kilos Netos Reales',compute='compute_net_weigth_real')
+
+    @api.multi
+    def compute_net_weigth_real(self):
+        item.real_net_weigth = sum(self.packing_list_ids.mapped('display_weight'))
+
     @api.multi
     def get_name_orders(self):
         self.name_orders = ", ".join(self.dispatch_line_ids.mapped('sale_id').mapped('name'))
