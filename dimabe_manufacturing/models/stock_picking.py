@@ -183,7 +183,7 @@ class StockPicking(models.Model):
             qty_quant = sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.reserved_to_stock_picking_id).mapped('display_weight'))
             reserved_qty = sum(lot.stock_production_lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id).mapped('display_weight'))
             quant.write({
-                'quantity':qty_quant if qty_quant > 0 else 0,
+                'quantity': qty_quant if qty_quant > 0 else 0,
                 'reserved_quantity':reserved_qty if reserved_qty > 0 else 0
             })
             move.write({
@@ -295,9 +295,11 @@ class StockPicking(models.Model):
     def button_validate(self):
         if self.picking_type_code == 'outgoing':
             quants = []
+
             for lot in self.move_line_ids_without_package.mapped('lot_id'):
                 lot_quant = self.env['stock.quant'].search([('lot_id','=',lot.id),('location_id.usage','=','internal')])
                 move_line = self.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id)
+
                 quants.append({
                     'quant_id':lot_quant.id,
                     'quantity':lot_quant.quantity,
