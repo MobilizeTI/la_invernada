@@ -136,7 +136,7 @@ class StockPicking(models.Model):
     @api.multi
     def remove_reserved_serial(self):
         lots = self.packing_list_ids.filtered(lambda a: a.to_delete and a.se).mapped('stock_production_lot_id')
-        self.packing_list_ids.filtered(lambda a: a.to_delete and a.reserved_to_stock_picking_id == self.id).write({
+        self.packing_list_ids.filtered(lambda a: a.to_delete and a.reserved_to_stock_picking_id.id == self.id).write({
             'reserved_to_stock_picking_id': None,
             'to_delete': False
         })
@@ -163,7 +163,7 @@ class StockPicking(models.Model):
     @api.multi
     def remove_reserved_pallet(self):
         lots = self.assigned_pallet_ids.filtered(lambda a: a.remove_picking).mapped('lot_id')
-        pallet_to_remove = self.assigned_pallet_ids.filtered(lambda a: a.remove_picking)
+        pallet_to_remove = self.assigned_pallet_ids.filtered(lambda a: a.remove_picking and a.reserved_to_stock_picking_id.id == self.id)
         for pallet in pallet_to_remove:
             pallet.lot_serial_ids.write({
                 'reserved_to_stock_picking_id': None
