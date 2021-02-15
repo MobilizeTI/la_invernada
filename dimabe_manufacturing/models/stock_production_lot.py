@@ -223,10 +223,10 @@ class StockProductionLot(models.Model):
         for item in self:
             serial_not_consumed_and_not_reserved = self.env['stock.production.lot.serial'].search(
                 [('consumed', '=', False), ('stock_production_lot_id.is_prd_lot', '=', True),
-                 ('production_id.state', '=', 'done'), ('reserved_to_stock_picking_id', '!=', None)])
+                 ('production_id.state', '=', 'done'), ('reserved_to_stock_picking_id', '=', None)])
             serial_not_consumed_and_reserved = self.env['stock.production.lot.serial'].search(
                 [('consumed', '=', False), ('stock_production_lot_id.is_prd_lot', '=', True),
-                 ('production_id.state', '=', 'done')])
+                 ('production_id.state', '=', 'done'), ('reserved_to_stock_picking_id', '!=', None)])
             models._logger.error('serial_not_consumed_and_not_reserved')
             for lot in serial_not_consumed_and_not_reserved.mapped('stock_production_lot_id'):
                 models._logger.error(
