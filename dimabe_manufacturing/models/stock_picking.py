@@ -165,7 +165,7 @@ class StockPicking(models.Model):
         lots = self.assigned_pallet_ids.filtered(lambda a: a.remove_picking).mapped('lot_id')
         pallet_to_remove = self.assigned_pallet_ids.filtered(lambda a: a.remove_picking and a.reserved_to_stock_picking_id.id == self.id)
         for pallet in pallet_to_remove:
-            pallet.lot_serial_ids.write({
+            pallet.lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id.id == self.id).write({
                 'reserved_to_stock_picking_id': None
             })
             pallet.write({
