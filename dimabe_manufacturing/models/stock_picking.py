@@ -287,6 +287,8 @@ class StockPicking(models.Model):
     def button_validate(self):
         if self.picking_type_code == 'outgoing':
             return super(StockPicking, self).button_validate()
+        if self.picking_type_code == 'incoming':
+            raise models.ValidationError('Voy a entra a este metodo')
 
     def validate_barcode(self, barcode):
         custom_serial = self.packing_list_ids.filtered(
