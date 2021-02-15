@@ -222,7 +222,7 @@ class StockProductionLot(models.Model):
     def test(self):
         for item in self:
             serial_not_consumed_and_not_reserved = self.env['stock.production.lot.serial'].search(
-                [('consumed', '=', False),
+                [('consumed', '=', False), ('stock_production_lot_id.is_prd_lot', '=', True),
                  ('production_id.state', '=', 'done'), ('reserved_to_stock_picking_id', '=', None)])
             serial_not_consumed_and_reserved = self.env['stock.production.lot.serial'].search(
                 [('consumed', '=', False), ('stock_production_lot_id.is_prd_lot', '=', True),
