@@ -223,8 +223,9 @@ class StockProductionLot(models.Model):
         for item in self:
             lots = self.env['stock.production.lot'].search([])
             products = lots.mapped('product_id')
-            category = products.mapped('categ_id').mapped('warehouse_ids')
-            raise models.ValidationError(f'Category Warehouse Ids {category.mapped("name")}')
+            list_for_debug = []
+            for product in products:
+                models._logger.error(f'ProductName : {product.display_name} Category : {product.categ_id.name} Warehouse : {product.categ_id.mapped("warehouse_ids").mapped("name")}')
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
