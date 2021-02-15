@@ -221,11 +221,11 @@ class StockProductionLot(models.Model):
     @api.multi
     def test(self):
         for item in self:
-            lots = self.env['stock.production.lot'].search([])
-            products = lots.mapped('product_id')
-            list_for_debug = []
-            for product in products:
-                models._logger.error(f'ProductName : {product.display_name} Category : {product.categ_id.name} Warehouse : {product.categ_id.mapped("warehouse_ids").mapped("name")}')
+            serial_not_consumed = self.env['stock.production.lot.serial'].search(
+                [('consumed', '=', False), ('stock_production_lot_id.is_prd_lot', '=', True),
+                 ('production_id.state', '=', 'done'),('reserved_to_stock_picking_id','!=',None)])
+            raise models.ValidationError(f"Serial Not Consumed = {serial_not_consumed} Qty = {len(serial_not_consumed)}")
+
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
@@ -549,13 +549,14 @@ class StockProductionLot(models.Model):
                         lambda a: a.reserved_to_stock_picking_id == stock_picking_id).mapped('display_weight'))
                 })
                 self.pallet_ids.filtered(lambda a: a.reserved_to_stock_picking_id.id == stock_picking_id).write({
-                    'reserved_to_stock_picking_id':None
+                    'reserved_to_stock_picking_id': None
                 })
-                self.stock_production_lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id.id == stock_picking_id and not a.consumed).write({
-                    'reserved_to_stock_picking_id':None
+                self.stock_production_lot_serial_ids.filtered(
+                    lambda a: a.reserved_to_stock_picking_id.id == stock_picking_id and not a.consumed).write({
+                    'reserved_to_stock_picking_id': None
                 })
                 stock_picking.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == self.id).write({
-                    'product_uom_qty':sum(stock_picking.packing_list_ids.mapped('display_weight'))
+                    'product_uom_qty': sum(stock_picking.packing_list_ids.mapped('display_weight'))
                 })
 
     @api.multi
@@ -653,7 +654,7 @@ class StockProductionLot(models.Model):
                 'move_id': picking.move_ids_without_package.filtered(
                     lambda a: a.product_id.id == self.product_id.id).id,
                 'product_id': self.product_id.id,
-                'lot_id':self.id,
+                'lot_id': self.id,
                 'product_uom_id': self.product_id.uom_id.id,
                 'product_uom_qty': sum(self.stock_production_lot_serial_ids.filtered(
                     lambda a: a.reserved_to_stock_picking_id.id == picking_id).mapped('display_weight')),
@@ -686,9 +687,9 @@ class StockProductionLot(models.Model):
         })
         quant.write({
             'reserved_quantity': sum(self.stock_production_lot_serial_ids.filtered(
-                    lambda a: a.reserved_to_stock_picking_id).mapped('display_weight')),
+                lambda a: a.reserved_to_stock_picking_id).mapped('display_weight')),
             'quantity': sum(self.stock_production_lot_serial_ids.filtered(
-                    lambda a: not a.reserved_to_stock_picking_id).mapped('display_weight'))
+                lambda a: not a.reserved_to_stock_picking_id).mapped('display_weight'))
         })
         dispatch_line = picking.dispatch_line_ids.filtered(
             lambda a: a.product_id.id == self.product_id.id and self.sale_order_id.id == a.sale_id.id)
