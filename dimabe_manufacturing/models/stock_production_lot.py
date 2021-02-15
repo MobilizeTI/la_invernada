@@ -224,8 +224,9 @@ class StockProductionLot(models.Model):
             serial_not_consumed = self.env['stock.production.lot.serial'].search(
                 [('consumed', '=', False), ('stock_production_lot_id.is_prd_lot', '=', True),
                  ('production_id.state', '=', 'done'), ('reserved_to_stock_picking_id', '!=', None)])
-            raise models.ValidationError(
-                f"Serial Not Consumed = {serial_not_consumed} Qty = {len(serial_not_consumed)} Products = {serial_not_consumed.mapped('stock_production_lot_id').mapped('product_id').mapped('display_name')}")
+            for lot in serial_not_consumed.mapped('stock_production_lot_id'):
+                models._logger.error(
+                    f"Lot Product {lot.product_id.display_name} Qty {sum(serial_not_consumed.filtered(lambda x: x.stock_production_lot_id.id == lot.id)).mapped('display_weight')} ")
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
