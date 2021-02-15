@@ -148,9 +148,11 @@ class StockPicking(models.Model):
             qty_quant = sum(
                 lot.stock_production_lot_serial_ids.filtered(lambda a: not a.reserved_to_stock_picking_id).mapped(
                     'display_weight'))
+
             reserved_qty = sum(
                 lot.stock_production_lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id).mapped(
                     'display_weight'))
+            raise models.ValidationError(f'Qty Quant {qty_quant} reserved_qty {reserved_qty}')
             quant.write({
                 'quantity': qty_quant if qty_quant > 0 else 0,
                 'reserved_quantity': reserved_qty if reserved_qty > 0 else 0
