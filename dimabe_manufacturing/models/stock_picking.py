@@ -286,37 +286,6 @@ class StockPicking(models.Model):
     @api.multi
     def button_validate(self):
         if self.picking_type_code == 'outgoing':
-            quants = []
-
-            for lot in self.move_line_ids_without_package.mapped('lot_id'):
-                lot_quant = self.env['stock.quant'].search([('lot_id','=',lot.id),('location_id.usage','=','internal')])
-                move_line = self.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id)
-
-                quants.append({
-                    'quant_id':lot_quant.id,
-                    'quantity':lot_quant.quantity,
-                    'reserved_quantity':lot_quant.reserved_quantity - move_line.product_uom_qty
-                })
-            for serial in self.packing_list_ids:
-                serial.write({
-                    'consumed': True
-                })
-            if len(self.move_line_ids_without_package) == 0:
-                raise models.UserError('No existe ningun campo en operaciones detalladas')
-            if self.move_line_ids_without_package.filtered(lambda a: a.qty_done == 0):
-                raise models.UserError('No ha ingresado la cantidad realizada')
-            for move_line in self.move_line_ids_without_package:
-                if self.picking_type_id.warehouse_id.id == 17 and self.picking_type_code != 'outgoing':
-                    move_line._action_done()
-                    return super(StockPicking, self).button_validate()
-                else:
-                    super(StockPicking, self).action_done()
-                for sale in self.dispatch_line_ids:
-                    self.env['sale.order.line'].search([('order_id','=',sale.sale_id.id),('product_id','=',sale.product_id.id)]).write({
-                        'qty_delivered': sale.real_dispatch_qty
-                    })
-
-        else:
             return super(StockPicking, self).button_validate()
 
     def validate_barcode(self, barcode):

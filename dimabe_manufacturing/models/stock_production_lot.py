@@ -695,13 +695,9 @@ class StockProductionLot(models.Model):
         self.pallet_ids.filtered(lambda a: a.add_picking).write({
             'reserved_to_stock_picking_id': picking_id
         })
-        weight = sum(
-            self.pallet_ids.filtered(lambda a: a.reserved_to_stock_picking_id == picking_id).mapped(
-                'lot_serial_ids').filtered(lambda a: not a.reserved_to_stock_picking_id).mapped(
-                'display_weight')
-        )
+
         quant.write({
-            'reserved_quantity': quant.reserved_quantity + weight,
+            'reserved_quantity': quant.reserved_quantity,
         })
         dispatch_line = picking.dispatch_line_ids.filtered(
             lambda a: a.product_id.id == self.product_id.id and self.sale_order_id.id == a.sale_id.id)
