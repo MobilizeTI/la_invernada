@@ -343,7 +343,7 @@ class StockPicking(models.Model):
 
         #raise models.ValidationError(json.dumps(invoice))
         jr = json.loads(r.text)
-
+        raise models.ValidationError(r.text)
         Jrkeys = jr.keys()
         if 'urlPdf' in Jrkeys and 'filePdf' in Jrkeys and 'folio' in Jrkeys and 'fileXml' in Jrkeys and 'ted' in Jrkeys:
             self.write({'pdf_url':jr['urlPdf']})
