@@ -473,7 +473,6 @@ class AccountInvoice(models.Model):
             invoice['additional'] =  additionals    
 
         r = requests.post(url, json=invoice, headers=headers)
-        raise models.ValidationError(r)
         #raise models.ValidationError(json.dumps(invoice))
 
         jr = json.loads(r.text)
