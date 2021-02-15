@@ -341,7 +341,7 @@ class StockPicking(models.Model):
 
         r = requests.post(url, json=invoice, headers=headers)
 
-        raise models.ValidationError(json.dumps(invoice))
+        #raise models.ValidationError(json.dumps(invoice))
         jr = json.loads(r.text)
 
         Jrkeys = jr.keys()
