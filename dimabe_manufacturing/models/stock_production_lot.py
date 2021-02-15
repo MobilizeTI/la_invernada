@@ -218,6 +218,14 @@ class StockProductionLot(models.Model):
 
     sale_order_id = fields.Many2one('sale.order', compute='_compute_sale_order_id', store=True)
 
+    @api.multi
+    def test(self):
+        for item in self:
+            lots = self.env['stock.production.lot'].search([])
+            products = lots.mapped('product_id')
+            category = products.mapped('categ_id').mapped('warehouse_ids')
+            raise models.ValidationError(f'Category Warehouse Ids {category.mapped("name")}')
+
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
     def _compute_sale_order_id(self):
