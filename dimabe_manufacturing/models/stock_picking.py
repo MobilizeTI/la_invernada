@@ -153,6 +153,9 @@ class StockPicking(models.Model):
                 lot.stock_production_lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id).mapped(
                     'display_weight'))
             quant.write({
+                'quantity':reserved_qty
+            })
+            quant.write({
                 'quantity': qty_quant if qty_quant > 0 else 0,
                 'reserved_quantity': reserved_qty if reserved_qty > 0 else 0
             })
