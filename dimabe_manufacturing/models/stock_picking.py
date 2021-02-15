@@ -135,7 +135,7 @@ class StockPicking(models.Model):
 
     @api.multi
     def remove_reserved_serial(self):
-        lots = self.packing_list_ids.filtered(lambda a: a.to_delete and a.se).mapped('stock_production_lot_id')
+        lots = self.packing_list_ids.filtered(lambda a: a.to_delete ).mapped('stock_production_lot_id')
         self.packing_list_ids.filtered(lambda a: a.to_delete and a.reserved_to_stock_picking_id.id == self.id).write({
             'reserved_to_stock_picking_id': None,
             'to_delete': False
