@@ -8,6 +8,7 @@ from datetime import datetime
 import xlsxwriter
 from dateutil import relativedelta
 from odoo import api, fields, models
+from collections import Counter
 
 
 class WizardHrPaySlip(models.TransientModel):
@@ -167,12 +168,18 @@ class WizardHrPaySlip(models.TransientModel):
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
                     worksheet.write(12, col, rule.name.capitalize(), bold_format)
                     worksheet.write(row, col,total_amount,number_format)
-                    totals_result.append(total_amount)
+                totals_result.append({col : total_amount})
                 col += 1
-
-            
             col = 0
             row += 1
+        counter = Counter()
+        for item in totals_result:
+            counter.update(item)
+        total_dict = dict(counter)
+        for k in total_dict:
+            worksheet.write(row, k,total_dict[k],number_format)
+        col = 0
+        row += 1
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
