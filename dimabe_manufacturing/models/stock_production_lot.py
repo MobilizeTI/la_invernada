@@ -665,7 +665,7 @@ class StockProductionLot(models.Model):
         dispatch_line = picking.dispatch_line_ids.filtered(
             lambda a: a.product_id.id == self.product_id.id and self.sale_order_id.id == a.sale_id.id)
         dispatch_line.write({
-            'real_dispatch_qty': dispatch_line.real_dispatch_qty + weight
+            'real_dispatch_qty': dispatch_line.real_dispatch_qty
         })
         self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).write({
             'to_add': False

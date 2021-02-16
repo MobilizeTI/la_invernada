@@ -409,6 +409,21 @@ class StockPicking(models.Model):
                 self.packing_list_ids.write({
                     'consumed': True
                 })
+                for stock in self.move_line_ids_without_package.filtered(lambda a: a.lot_id).mapped('lot_id'):
+                    quant = self.env['stock.quant'].search(
+                        [('lot_id', '=', stock.id), ('location_id.usage', '=', 'internal')])
+                    quant.write({
+                        'reserved_quantity': sum(stock.stock_production_lot_serial_ids.filtered(lambda
+                                                                                                   x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
+                            'display_weight')),
+                        'quantity': sum(stock.stock_production_lot_serial_ids.filtered(
+                            lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight'))
+                    })
+
+                    quant.write({
+                        'reserved_quantity': sum(self.stock_production_lot_serial_ids.filtered(
+                            lambda a: a.reserved_to_stock_picking_id).mapped('display_weight')),
+                    })
         return super(StockPicking, self).button_validate()
 
     @api.model
