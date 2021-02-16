@@ -84,6 +84,7 @@ class StockPicking(models.Model):
     def get_name_orders(self):
         self.name_orders = ", ".join(self.dispatch_line_ids.mapped('sale_id').mapped('name'))
 
+
     @api.multi
     def add_orders_to_dispatch(self):
         if len(self.sale_orders_id.mapped('order_line')) > 0:
@@ -142,14 +143,15 @@ class StockPicking(models.Model):
         })
         for lot in lots:
             move = self.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id)
-            quant = self.env['stock.quant'].search([('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal')])
             qty_move = sum(lot.stock_production_lot_serial_ids.filtered(
                 lambda a: a.reserved_to_stock_picking_id.id == self.id).mapped('display_weight'))
-            reserved_qty = sum(
-                lot.stock_production_lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id).mapped(
-                    'display_weight'))
+            quant = self.env['stock.quant'].search([('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal')])
             quant.write({
-                'reserved_quantity': reserved_qty if reserved_qty > 0 else 0
+                'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                                                                                           x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
+                    'display_weight')),
+                'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
+                    lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight'))
             })
             move.write({
                 'product_uom_qty': qty_move if qty_move > 0 else 0
@@ -170,13 +172,14 @@ class StockPicking(models.Model):
             })
         for lot in lots:
             move = self.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id)
-            quant = self.env['stock.quant'].search([('lot_id','=',lot.id),('location_id.usage', '=', 'internal')])
             qty_move = sum(lot.stock_production_lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id.id == self.id).mapped('display_weight'))
-            qty_quant = sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.reserved_to_stock_picking_id).mapped('display_weight'))
-            reserved_qty = sum(lot.stock_production_lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id).mapped('display_weight'))
+            quant = self.env['stock.quant'].search([('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal')])
             quant.write({
-                'quantity': qty_quant if qty_quant > 0 else 0,
-                'reserved_quantity':reserved_qty if reserved_qty > 0 else 0
+                'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                                                                                          x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
+                    'display_weight')),
+                'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
+                    lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight'))
             })
             move.write({
                 'product_uom_qty': qty_move if qty_move > 0 else 0
