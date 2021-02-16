@@ -97,7 +97,7 @@ class StockPicking(models.Model):
         for product in self.dispatch_id.move_ids_without_package:
             # No existe producto
             if self.move_ids_without_package.filtered(lambda p: p.product_id.id == product.product_id.id):
-                self.env['stock.move.line'].create({
+                self.env['stock.move'].create({
                     'product_id':product.product_id.id,
                     'picking_id':self.id,
                     'product_uom':product.product_id.uom_id.id,
