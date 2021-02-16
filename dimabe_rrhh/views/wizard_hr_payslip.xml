@@ -7,9 +7,7 @@
             <form>
                 <group>
                     <group>
-                        <field name="all"/>
-                        <field name="company_id" string="Compañia" attrs="{'invisible':[('all','=',True)]}"
-                               required="1"/>
+                        <field name="company_id" string="Compañia" required="1" />
                         <field name="month"/>
                         <field name="years"/>
                     </group>
