@@ -47,7 +47,7 @@ class AccountInvoiceXlsx(models.Model):
                 region = self.env['region.address'].search([('id', '=', 1)])
                 sheet = self.set_data_company(wk['company_object'], sheet, formats, region, 0)
                 invoices = self.env['account.invoice'].search(
-                    [('type', 'in', ('out_invoice','out_refund')), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
+                    [('type', 'in', ('out_invoice','out_refund')), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 33)])
                 row = 14
                 sheet.merge_range('A{}:F{}'.format((row), (row)),
@@ -69,7 +69,7 @@ class AccountInvoiceXlsx(models.Model):
                 begin = 0
                 end = 0
                 exempts = self.env['account.invoice'].search(
-                    [('type', 'in', ('out_invoice','out_refund')), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
+                    [('type', 'in', ('out_invoice','out_refund')), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 34)])
                 sheet.merge_range('A{}:F{}'.format((row), (row)),
                                   'Factura de compra electronica. (FACTURA COMPRA EXENTA ELECTRONICA)',
@@ -89,7 +89,7 @@ class AccountInvoiceXlsx(models.Model):
                 begin = 0
                 end = 0
                 credit_notes = self.env['account.invoice'].search(
-                    [('type', 'in', ('out_invoice','out_refund')), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
+                    [('type', 'in', ('out_invoice','out_refund')), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 61)])
                 sheet.merge_range('A{}:F{}'.format((row), (row)),
                                   'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)',
@@ -109,7 +109,7 @@ class AccountInvoiceXlsx(models.Model):
                 begin = 0
                 end = 0
                 debit_notes = self.env['account.invoice'].search(
-                    [('type', 'in', ('out_invoice','out_refund')), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
+                    [('type', 'in', ('out_invoice','out_refund')), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 56)])
                 sheet.merge_range('A{}:F{}'.format((row), (row)),
                                   'NOTA DE DEBITO ELECTRONICA (NOTA DE DEBITO COMPRA ELECTRONICA)',
@@ -166,7 +166,7 @@ class AccountInvoiceXlsx(models.Model):
                 region = self.env['region.address'].search([('id', '=', 1)])
                 sheet = self.set_data_company(wk['company_object'], sheet, formats, region, 1)
                 invoices = self.env['account.invoice'].search(
-                    [('type', 'in', ('in_invoice','in_refund')), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
+                    [('type', 'in', ('in_invoice','in_refund')), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 33)])
                 row = 14
                 sheet.merge_range('A{}:F{}'.format((row), (row)),
@@ -188,7 +188,7 @@ class AccountInvoiceXlsx(models.Model):
                 begin = 0
                 end = 0
                 exempts = self.env['account.invoice'].search(
-                    [('type', '=', 'in_invoice'), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
+                    [('type', '=', 'in_invoice'), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 34)])
                 sheet.merge_range('A{}:F{}'.format((row), (row)),
                                   'Factura de compra electronica. (FACTURA COMPRA EXENTA ELECTRONICA)',
@@ -208,7 +208,7 @@ class AccountInvoiceXlsx(models.Model):
                 begin = 0
                 end = 0
                 credit_notes = self.env['account.invoice'].search(
-                    [('type', 'in', ('in_invoice','in_refund')), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
+                    [('type', 'in', ('in_invoice','in_refund')), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 61)])
                 sheet.merge_range('A{}:F{}'.format((row), (row)),
                                   'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)',
@@ -228,7 +228,7 @@ class AccountInvoiceXlsx(models.Model):
                 begin = 0
                 end = 0
                 debit_notes = self.env['account.invoice'].search(
-                    [('type', 'in', ('in_invoice','in_refund')), ('state', '=', 'paid'), ('date_invoice', '>', self.from_date),
+                    [('type', 'in', ('in_invoice','in_refund')), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 56)])
                 sheet.merge_range('A{}:F{}'.format((row), (row)),
                                   'NOTA DE DEBITO ELECTRONICA (NOTA DE DEBITO COMPRA ELECTRONICA)',

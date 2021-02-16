@@ -95,22 +95,35 @@ class WizardHrPaySlip(models.TransientModel):
 
         totals_result = []
         payslips = totals.mapped('slip_id')
+        bold_format = workbook.add_format({'bold': True})
+        worksheet.write(0, 0, self.company_id.name,bold_format)
+        worksheet.write(1,0, 'PROCESO Y COMERCIALIZACION DE NUECES', bold_format)
+        worksheet.write(2,0, self.company_id.street, bold_format)
+        worksheet.write(3,0, self.company_id.city, bold_format)
+        worksheet.write(4,0, self.company_id.country_id.name, bold_format)
+        worksheet.write(5,0, self.company_id.invoice_rut, bold_format)
+        worksheet.write(6,0, 'Fecha Informe : '+datetime.date.today().strftime('%d-%m-%Y'), bold_format)
+        worksheet.write(7,0, self.month, bold_format)
+        worksheet.write(8,0, 'Fichas : Todas', bold_format)
+        worksheet.write(9,0, 'Area de Negocio : Todas las Areas de Negocios', bold_format)
+        worksheet.write(10,0, 'Centro de Costo : Todos los Centros de Costos', bold_format)
+        worksheet.write(11,0, 'Total Trabajadores : '+len(payslips), bold_format)
         for pay in payslips:
             rules = self.env['hr.salary.rule'].search([('id', 'in', totals.mapped('salary_rule_id').mapped('id'))],
                                                       order='order_number')
             col = 0
 
             worksheet.write(row, col, pay.employee_id.display_name)
-            worksheet.write(0, 0, 'Nombre:')
+            worksheet.write(12, 0, 'Nombre:')
             long_name = max(payslips.mapped('employee_id').mapped('display_name'), key=len)
             worksheet.set_column(row, col, len(long_name))
             col += 1
-            worksheet.write(0, 1, 'Rut:')
+            worksheet.write(12, 1, 'Rut:')
             worksheet.write(row, col, pay.employee_id.identification_id)
             long_rut = max(payslips.mapped('employee_id').mapped('identification_id'), key=len)
             worksheet.set_column(row, col, len(long_rut))
             col += 1
-            worksheet.write(0, 2, 'Centro de Costo:')
+            worksheet.write(12, 2, 'Centro de Costo:')
             if pay.account_analytic_id:
                 worksheet.write(row, col, pay.account_analytic_id)
             elif pay.contract_id.department_id.analytic_account_id:
@@ -122,7 +135,7 @@ class WizardHrPaySlip(models.TransientModel):
                 key=len)
             worksheet.set_column(row, col, len(long_const))
             col += 1
-            worksheet.write(0, 3, 'Dias Trabajados:')
+            worksheet.write(12, 3, 'Dias Trabajados:')
             worksheet.write(row, col, self.get_dias_trabajados(pay))
             col += 1
             for rule in rules:
@@ -131,25 +144,25 @@ class WizardHrPaySlip(models.TransientModel):
                 if not totals.filtered(lambda a: a.salary_rule_id.id == rule.id):
                     continue
                 if rule.code == 'HEX50':
-                    worksheet.write(0, col, 'Cant. Horas Extras')
+                    worksheet.write(12, col, 'Cant. Horas Extras')
                     worksheet.write(row, col, self.get_qty_extra_hours(payslip=pay))
                     col += 1
-                    worksheet.write(0, col, 'Monto Horas Extras')
+                    worksheet.write(12, col, 'Monto Horas Extras')
                     total_amount = self.env["hr.payslip.line"].sudo().search(
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
                     worksheet.write(row, col, total_amount,number_format)
                 elif rule.code == 'HEXDE':
-                    worksheet.write(0, col, 'Cant. Horas Descuentos')
+                    worksheet.write(12, col, 'Cant. Horas Descuentos')
                     worksheet.write(row, col, self.get_qty_discount_hours(payslip=pay))
                     col += 1
-                    worksheet.write(0, col, 'Monto Horas Descuentos')
+                    worksheet.write(12, col, 'Monto Horas Descuentos')
                     total_amount = self.env["hr.payslip.line"].sudo().search(
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
                     worksheet.write(row, col,total_amount,number_format)
                 else:
                     total_amount = self.env["hr.payslip.line"].sudo().search(
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
-                    worksheet.write(0, col, rule.name.capitalize())
+                    worksheet.write(12, col, rule.name.capitalize())
                     worksheet.write(row, col,total_amount,number_format)
                     totals_result.append(total_amount)
                 col += 1
