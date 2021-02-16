@@ -102,7 +102,7 @@ class WizardHrPaySlip(models.TransientModel):
         worksheet.write(3,0, self.company_id.city, bold_format)
         worksheet.write(4,0, self.company_id.country_id.name, bold_format)
         worksheet.write(5,0, self.company_id.invoice_rut, bold_format)
-        worksheet.write(6,0, 'Fecha Informe : '+datetime.date.today().strftime('%d-%m-%Y'), bold_format)
+        worksheet.write(6,0, 'Fecha Informe : '+datetime.today().strftime('%d-%m-%Y'), bold_format)
         worksheet.write(7,0, self.month, bold_format)
         worksheet.write(8,0, 'Fichas : Todas', bold_format)
         worksheet.write(9,0, 'Area de Negocio : Todas las Areas de Negocios', bold_format)
