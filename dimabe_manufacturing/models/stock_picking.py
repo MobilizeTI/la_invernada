@@ -1,4 +1,5 @@
 from odoo import models, api, fields
+import base64
 from odoo.addons import decimal_precision as dp
 import datetime
 from odoo.tools.float_utils import float_compare, float_is_zero, float_round
@@ -74,6 +75,30 @@ class StockPicking(models.Model):
     dispatch_id = fields.Many2one('stock.picking','Despachos')
 
     real_net_weigth = fields.Float('Kilos Netos Reales',compute='compute_net_weigth_real')
+
+    packing_list_file = fields.Binary('Packing List')
+
+    @api.multi
+    def test(self):
+        for item in self:
+            report_name = 'dimabe_export_order.report_packing_list'
+            pdf =self.env['report'].sudo().get_pdf([self.id],report_name)
+            self.write({
+                'packing_list_file':base64.encodestring(pdf)
+            })
+            attachment_id = self.env['ir.attachment'].sudo().create({
+                'name': "Packing List.xlsx",
+                'datas_fname': "Packing List.xlsx",
+                'datas':    base64.encodestring(pdf)
+            })
+
+            action = {
+                'type': 'ir.actions.act_url',
+                'url': '/web/content/{}?download=true'.format(attachment_id.id, ),
+                'target': 'current',
+            }
+            return action
+
 
     @api.multi
     def compute_net_weigth_real(self):
