@@ -100,7 +100,7 @@ class StockPicking(models.Model):
             self.env['custom.dispatch.line'].create({
                 'dispatch_real_id': self.id,
                 'dispatch_id': self.dispatch_id.id,
-                'sale_id': self.sale_id.id,
+                'sale_id': self.sale_orders_id.id,
                 'product_id': product.product_id.id,
                 'required_sale_qty': product.product_uom_qty,
             })
