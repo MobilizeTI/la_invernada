@@ -68,7 +68,7 @@ class StockPicking(models.Model):
 
     sale_orders_id = fields.Many2one('sale.order', 'Pedidos', domain=[('state', '=', 'sale')])
 
-    dispatch_line_ids = fields.One2many('custom.dispatch.line', 'dispatch_id')
+    dispatch_line_ids = fields.One2many('custom.dispatch.line', 'dispatch_real_id')
 
     name_orders = fields.Char('Pedidos',compute='get_name_orders')
 
