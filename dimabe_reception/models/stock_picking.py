@@ -244,7 +244,7 @@ class StockPicking(models.Model):
     @api.depends('picking_type_id')
     def _compute_is_pt_dispatch(self):
         self.is_pt_reception = 'producto terminado' in str.lower(self.picking_type_id.warehouse_id.name) and \
-                               'orden de entrega' in str.lower(self.picking_type_id.name)
+                               'ordenes de entrega' in str.lower(self.picking_type_id.name)
 
     @api.one
     @api.depends('picking_type_id')
