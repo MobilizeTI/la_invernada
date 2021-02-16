@@ -640,10 +640,6 @@ class StockProductionLot(models.Model):
             })
 
     def add_selection_serial(self, picking_id):
-        weight = sum(
-            self.stock_production_lot_serial_ids.filtered(
-                lambda a: a.reserved_to_stock_picking_id.id == picking_id).mapped(
-                'display_weight'))
         picking = self.env['stock.picking'].sudo().search([('id', '=', picking_id)])
         pallets = self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('pallet_id')
         for pallet in pallets:
