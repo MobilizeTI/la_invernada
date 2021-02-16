@@ -96,8 +96,7 @@ class StockPicking(models.Model):
             raise models.ValidationError('No se selecciono ningun despacho')
         for product in self.dispatch_id.move_ids_without_package:
             # No existe producto
-            raise models.ValidationError(self.move_ids_without_package.filtered(lambda p: p.product_id.id == product.product_id.id))
-            if self.move_ids_without_package.filtered(lambda p: p.product_id.id == product.product_id.id):
+            if not self.move_ids_without_package.filtered(lambda p: p.product_id.id == product.product_id.id):
                 self.env['stock.move'].create({
                     'product_id':product.product_id.id,
                     'picking_id':self.id,
