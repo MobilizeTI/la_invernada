@@ -405,6 +405,7 @@ class StockPicking(models.Model):
             return res
         # Se usaran datos de modulo de dimabe_manufacturing
         if self.picking_type_code == 'outgoing':
+            raise models.ValidationError(self.is_pt_dispatch)
             if self.is_pt_dispatch:
                 self.packing_list_ids.write({
                     'consumed': True
