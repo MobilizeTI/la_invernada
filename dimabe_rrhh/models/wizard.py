@@ -150,25 +150,29 @@ class WizardHrPaySlip(models.TransientModel):
                 if rule.code == 'HEX50':
                     worksheet.write(12, col, 'Cant. Horas Extras', bold_format)
                     worksheet.write(row, col, self.get_qty_extra_hours(payslip=pay))
+                    totals_result.append({col : self.get_qty_extra_hours(payslip=pay)})
                     col += 1
                     worksheet.write(12, col, 'Monto Horas Extras', bold_format)
                     total_amount = self.env["hr.payslip.line"].sudo().search(
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
                     worksheet.write(row, col, total_amount,number_format)
+                    totals_result.append({col : total_amount})
                 elif rule.code == 'HEXDE':
                     worksheet.write(12, col, 'Cant. Horas Descuentos', bold_format)
                     worksheet.write(row, col, self.get_qty_discount_hours(payslip=pay))
+                    totals_result.append({col : self.get_qty_discount_hours(payslip=pay)})
                     col += 1
                     worksheet.write(12, col, 'Monto Horas Descuentos', bold_format)
                     total_amount = self.env["hr.payslip.line"].sudo().search(
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
                     worksheet.write(row, col,total_amount,number_format)
+                    totals_result.append({col : total_amount})
                 else:
                     total_amount = self.env["hr.payslip.line"].sudo().search(
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
                     worksheet.write(12, col, rule.name.capitalize(), bold_format)
                     worksheet.write(row, col,total_amount,number_format)
-                totals_result.append({col : total_amount})
+                    totals_result.append({col : total_amount})
                 col += 1
             col = 0
             row += 1
