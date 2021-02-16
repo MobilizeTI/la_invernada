@@ -114,7 +114,7 @@ class StockPicking(models.Model):
                 move.write({
                     'product_uom_qty': move.product_uom_qty + product.product_uom_qty
                 })
-            self.env['custom.dispatch.line'].write({
+            self.env['custom.dispatch.line'].create({
                 'dispatch_real_id': self.id,
                 'dispatch_id':self.dispatch_id.id,
                 'sale_id':self.sale_id.id,
