@@ -138,7 +138,7 @@ class WizardHrPaySlip(models.TransientModel):
             worksheet.write(12, 3, 'Dias Trabajados:')
             worksheet.write(row, col, self.get_dias_trabajados(pay))
             col += 1
-            worksheet.write(0, col, 'Cant. Horas Extras')
+            worksheet.write(12, col, 'Cant. Horas Extras')
             worksheet.write(row, col, self.get_qty_extra_hours(payslip=pay))
             col += 1
             for rule in rules:
