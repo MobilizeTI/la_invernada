@@ -4,11 +4,12 @@ from datetime import datetime
 import requests
 import json
 
+
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
     _order = 'date desc'
 
-    guide_number  = fields.Integer('Número de Guía')
+    guide_number = fields.Integer('Número de Guía')
 
     weight_guide = fields.Float(
         'Kilos Guía',
@@ -141,6 +142,8 @@ class StockPicking(models.Model):
         related='partner_id.sag_code'
     )
 
+    is_pt_dispatch = fields.Boolean('Es PT Despacho',compute='_compute_is_pt_dispatch')
+
     reception_alert = fields.Many2one('reception.alert.config')
 
     harvest = fields.Char(
@@ -152,7 +155,7 @@ class StockPicking(models.Model):
     def gross_weight_button(self):
         data = self._get_data_from_weigh()
         self.write({
-            'gross_weight' : float(data)
+            'gross_weight': float(data)
         })
 
     @api.multi
@@ -161,10 +164,8 @@ class StockPicking(models.Model):
         if not self.gross_weight:
             raise models.ValidationError('Debe ingresar el peso bruto')
         self.write({
-            'tare_weight':float(data)
+            'tare_weight': float(data)
         })
-
-
 
     @api.one
     @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package', 'quality_weight')
@@ -206,7 +207,7 @@ class StockPicking(models.Model):
                 raise models.ValidationError(message)
 
     @api.one
-    @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package' )
+    @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package')
     def _compute_production_net_weight(self):
         if self.picking_type_code == 'incoming':
             self.production_net_weight = self.gross_weight - self.tare_weight + self.quality_weight
@@ -238,6 +239,12 @@ class StockPicking(models.Model):
     def _compute_is_pt_reception(self):
         self.is_pt_reception = 'producto terminado' in str.lower(self.picking_type_id.warehouse_id.name) and \
                                'recepciones' in str.lower(self.picking_type_id.name)
+
+    @api.one
+    @api.depends('picking_type_id')
+    def _compute_is_pt_dispatch(self):
+        self.is_pt_reception = 'producto terminado' in str.lower(self.picking_type_id.warehouse_id.name) and \
+                               'orden de entrega' in str.lower(self.picking_type_id.name)
 
     @api.one
     @api.depends('picking_type_id')
@@ -281,7 +288,8 @@ class StockPicking(models.Model):
             return json_data['value']
         except Exception as e:
             if 'HTTPConnectionPool' in str(e):
-                raise models.ValidationError("Por favor comprobar si el equipo de romana se encuentre encendido o con conexion a internet")
+                raise models.ValidationError(
+                    "Por favor comprobar si el equipo de romana se encuentre encendido o con conexion a internet")
             else:
                 raise models.ValidationError(str(e))
 
@@ -329,7 +337,7 @@ class StockPicking(models.Model):
                                         if i == int(total_qty):
 
                                             diff = stock_picking.net_weight - (
-                                                        int(total_qty) * default_value)
+                                                    int(total_qty) * default_value)
 
                                             tmp = '00{}'.format(i + 1)
                                             self.env['stock.production.lot.serial'].create({
@@ -345,10 +353,17 @@ class StockPicking(models.Model):
                                                 'serial_number': '{}{}'.format(stock_move_line.lot_name, tmp[-3:])
                                             })
                                     stock_move_line.lot_id.write({
-                                        'available_kg': sum(stock_move_line.lot_id.stock_production_lot_serial_ids.mapped('display_weight'))
+                                        'available_kg': sum(
+                                            stock_move_line.lot_id.stock_production_lot_serial_ids.mapped(
+                                                'display_weight'))
                                     })
                                     m_move.has_serial_generated = True
                 return res
+        if self.picking_type_code == 'outgoing':
+            if self.is_pt_dispatch:
+                self.packing_list_ids.write({
+                    'consumed': True
+                })
         else:
             return super(StockPicking, self).action_confirm()
 
@@ -395,7 +410,6 @@ class StockPicking(models.Model):
             return res
         else:
             return super(StockPicking, self).button_validate()
-
 
     @api.model
     def validate_mp_reception(self):
