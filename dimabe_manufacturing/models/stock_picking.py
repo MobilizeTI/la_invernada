@@ -94,14 +94,9 @@ class StockPicking(models.Model):
             raise models.ValidationError('No se selecciono ningun numero de pedido')
         if not self.dispatch_id:
             raise models.ValidationError('No se selecciono ningun despacho')
+        if self.dispatch_id in self.dispatch_line_ids.mapped('dispatch_id'):
+            raise models.ValidationError(f'El despacho {self.dispatch_id.name} ya se encuentra agregado')
         for product in self.dispatch_id.move_ids_without_package:
-            self.env['custom.dispatch.line'].create({
-                'dispatch_real_id': self.id,
-                'dispatch_id': self.dispatch_id.id,
-                'sale_id': self.sale_id.id,
-                'product_id': product.product_id.id,
-                'required_sale_qty': product.product_uom_qty,
-            })
             # No existe producto
             if not self.move_ids_without_package.filtered(lambda p: p.product_id.id == product.product_id.id):
                 self.env['stock.move'].create({
