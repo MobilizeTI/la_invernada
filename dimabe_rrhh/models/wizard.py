@@ -114,16 +114,16 @@ class WizardHrPaySlip(models.TransientModel):
             col = 0
 
             worksheet.write(row, col, pay.employee_id.display_name)
-            worksheet.write(12, 0, 'Nombre:')
+            worksheet.write(12, 0, 'Nombre:', bold_format)
             long_name = max(payslips.mapped('employee_id').mapped('display_name'), key=len)
             worksheet.set_column(row, col, len(long_name))
             col += 1
-            worksheet.write(12, 1, 'Rut:')
+            worksheet.write(12, 1, 'Rut:', bold_format)
             worksheet.write(row, col, pay.employee_id.identification_id)
             long_rut = max(payslips.mapped('employee_id').mapped('identification_id'), key=len)
             worksheet.set_column(row, col, len(long_rut))
             col += 1
-            worksheet.write(12, 2, 'Centro de Costo:')
+            worksheet.write(12, 2, 'Centro de Costo:', bold_format)
             if pay.account_analytic_id:
                 worksheet.write(row, col, pay.account_analytic_id)
             elif pay.contract_id.department_id.analytic_account_id:
@@ -135,10 +135,10 @@ class WizardHrPaySlip(models.TransientModel):
                 key=len)
             worksheet.set_column(row, col, len(long_const))
             col += 1
-            worksheet.write(12, 3, 'Dias Trabajados:')
+            worksheet.write(12, 3, 'Dias Trabajados:', bold_format)
             worksheet.write(row, col, self.get_dias_trabajados(pay))
             col += 1
-            worksheet.write(12, col, 'Cant. Horas Extras')
+            worksheet.write(12, col, 'Cant. Horas Extras', bold_format)
             worksheet.write(row, col, self.get_qty_extra_hours(payslip=pay))
             col += 1
             for rule in rules:
@@ -147,25 +147,25 @@ class WizardHrPaySlip(models.TransientModel):
                 if not totals.filtered(lambda a: a.salary_rule_id.id == rule.id):
                     continue
                 if rule.code == 'HEX50':
-                    worksheet.write(12, col, 'Cant. Horas Extras')
+                    worksheet.write(12, col, 'Cant. Horas Extras', bold_format)
                     worksheet.write(row, col, self.get_qty_extra_hours(payslip=pay))
                     col += 1
-                    worksheet.write(12, col, 'Monto Horas Extras')
+                    worksheet.write(12, col, 'Monto Horas Extras', bold_format)
                     total_amount = self.env["hr.payslip.line"].sudo().search(
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
                     worksheet.write(row, col, total_amount,number_format)
                 elif rule.code == 'HEXDE':
-                    worksheet.write(12, col, 'Cant. Horas Descuentos')
+                    worksheet.write(12, col, 'Cant. Horas Descuentos', bold_format)
                     worksheet.write(row, col, self.get_qty_discount_hours(payslip=pay))
                     col += 1
-                    worksheet.write(12, col, 'Monto Horas Descuentos')
+                    worksheet.write(12, col, 'Monto Horas Descuentos', bold_format)
                     total_amount = self.env["hr.payslip.line"].sudo().search(
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
                     worksheet.write(row, col,total_amount,number_format)
                 else:
                     total_amount = self.env["hr.payslip.line"].sudo().search(
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
-                    worksheet.write(12, col, rule.name.capitalize())
+                    worksheet.write(12, col, rule.name.capitalize(), bold_format)
                     worksheet.write(row, col,total_amount,number_format)
                     totals_result.append(total_amount)
                 col += 1
