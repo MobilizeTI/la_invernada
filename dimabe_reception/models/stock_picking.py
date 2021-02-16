@@ -409,6 +409,19 @@ class StockPicking(models.Model):
                 self.packing_list_ids.write({
                     'consumed': True
                 })
+                if self.dispatch_line_ids:
+                    for dispatch in self.dispatch_line_ids:
+                        self.env['stock.move.line'].create({
+                            'picking_id':dispatch.dispatch_id.id,
+                            'product_id': dispatch.product_id.id,
+                            'product_uom_id': dispatch.product_id.uom_id.id,
+                            'qty_done':self.move_line_ids_without_package.filtered(lambda a: a.product_id.id == dispatch.product_id.id).qty_done,
+                            'location_id':dispatch.location_id.id,
+                            'location_dest_id':dispatch.location_dest_id.id,
+                            'move_id':dispatch.move_ids_without_package.filtered(lambda m: m.product_id.id == dispatch.product_id.id).id,
+                            'date':datetime.date.today()
+                        })
+                        dispatch.button_validate()
                 for stock in self.move_line_ids_without_package.filtered(lambda a: a.lot_id).mapped('lot_id'):
                     quant = self.env['stock.quant'].search(
                         [('lot_id', '=', stock.id), ('location_id.usage', '=', 'internal')])
