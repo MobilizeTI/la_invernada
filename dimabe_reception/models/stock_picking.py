@@ -418,6 +418,7 @@ class StockPicking(models.Model):
                             'qty_done':self.move_line_ids_without_package.filtered(lambda a: a.product_id.id == dispatch.product_id.id).qty_done,
                             'location_id':dispatch.location_id.id,
                             'location_dest_id':dispatch.location_dest_id.id,
+                            'state':'done',
                             'move_id':dispatch.move_ids_without_package.filtered(lambda m: m.product_id.id == dispatch.product_id.id).id,
                             'date':datetime.date.today()
                         })
