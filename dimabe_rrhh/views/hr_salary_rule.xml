@@ -8,6 +8,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='appears_on_payslip']" position="after">
                     <field name="show_in_book"/>
+                    <field name="order_number" groups="base.group_no_one"/>
                 </xpath>
             </field>
         </record>
