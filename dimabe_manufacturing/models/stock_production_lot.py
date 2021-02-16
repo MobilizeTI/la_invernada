@@ -672,14 +672,7 @@ class StockProductionLot(models.Model):
         })
 
     def add_selection_pallet(self, picking_id):
-        quant = self.env['stock.quant'].search([('lot_id', '=', self.id), ('location_id.usage', '=', 'internal')])
-        quant.write({
-            'reserved_quantity': sum(self.stock_production_lot_serial_ids.filtered(lambda
-                                                                                       x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
-                'display_weight')),
-            'quantity': sum(self.stock_production_lot_serial_ids.filtered(
-                lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight'))
-        })
+
         picking = self.env['stock.picking'].sudo().search([('id', '=', picking_id)])
         self.pallet_ids.filtered(lambda a: a.add_picking).write({
             'reserved_to_stock_picking_id': picking_id
@@ -694,6 +687,14 @@ class StockProductionLot(models.Model):
             pallet.lot_serial_ids.filtered(lambda a: not a.reserved_to_stock_picking_id).write({
                 'reserved_to_stock_picking_id': picking_id
             })
+        quant = self.env['stock.quant'].search([('lot_id', '=', self.id), ('location_id.usage', '=', 'internal')])
+        quant.write({
+            'reserved_quantity': sum(self.stock_production_lot_serial_ids.filtered(lambda
+                                                                                       x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
+                'display_weight')),
+            'quantity': sum(self.stock_production_lot_serial_ids.filtered(
+                lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight'))
+        })
         self.pallet_ids.filtered(lambda a: a.add_picking).write({
             'add_picking': False
         })
