@@ -72,7 +72,7 @@ class StockPicking(models.Model):
 
     name_orders = fields.Char('Pedidos',compute='get_name_orders')
 
-    dispatch_real_id = fields.Many2one('stock.picking','Despachos',domain=[('state','!=','done')])
+    dispatch_id = fields.Many2one('stock.picking','Despachos',domain=[('state','!=','done')])
 
     real_net_weigth = fields.Float('Kilos Netos Reales',compute='compute_net_weigth_real')
 
