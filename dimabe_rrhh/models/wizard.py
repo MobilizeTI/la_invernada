@@ -107,7 +107,7 @@ class WizardHrPaySlip(models.TransientModel):
         worksheet.write(8,0, 'Fichas : Todas', bold_format)
         worksheet.write(9,0, 'Area de Negocio : Todas las Areas de Negocios', bold_format)
         worksheet.write(10,0, 'Centro de Costo : Todos los Centros de Costos', bold_format)
-        worksheet.write(11,0, 'Total Trabajadores : '+len(payslips), bold_format)
+        worksheet.write(11,0, 'Total Trabajadores : '+ str(len(payslips)), bold_format)
         for pay in payslips:
             rules = self.env['hr.salary.rule'].search([('id', 'in', totals.mapped('salary_rule_id').mapped('id'))],
                                                       order='order_number')
