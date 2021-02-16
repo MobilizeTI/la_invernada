@@ -9,17 +9,15 @@ class AccountInvoiceXlsx(models.Model):
     _name = 'account.invoice.xlsx'
 
     purchase_file = fields.Binary(
-        "Libro de Compra", default=lambda self: self.env['account.invoice.xlsx'].sudo().search([])[-1].purchase_file)
+        "Libro de Compra")
 
     purchase_report_name = fields.Char("Reporte Compra",
-                                       default=lambda self: self.env['account.invoice.xlsx'].sudo().search([])[
-                                           -1].purchase_report_name)
+                                       )
 
     sale_file = fields.Binary(
-        "Libro de Venta", default=lambda self: self.env['account.invoice.xlsx'].search([])[-1].sale_file)
+        "Libro de Venta")
 
-    sale_report_name = fields.Char("Reporte Venta", default=lambda self: self.env['account.invoice.xlsx'].search([])[
-        -1].sale_report_name)
+    sale_report_name = fields.Char("Reporte Venta")
 
     from_date = fields.Date('Desde')
 
@@ -132,13 +130,19 @@ class AccountInvoiceXlsx(models.Model):
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
-        self.env[self._name].create({'sale_file': file_base64,
-                    'sale_report_name': 'Libro de Ventas {} {}.xlsx'.format(company_name,date.today().strftime("%d/%m/%Y"))})
-        self.write({'sale_file': file_base64,
-                    'sale_report_name': 'Libro de Ventas {} {}.xlsx'.format(company_name,date.today().strftime("%d/%m/%Y"))})
-        return {
-            "type": "ir.actions.do_nothing",
+        file_name = 'Libro de Ventas {} {}.xlsx'.format(company_name, date.today().strftime("%d/%m/%Y"))
+        attachment_id = self.env['ir.attachment'].sudo().create({
+            'name': file_name,
+            'datas_fname': file_name,
+            'datas': file_base64
+        })
+
+        action = {
+            'type': 'ir.actions.act_url',
+            'url': '/web/content/{}?download=true'.format(attachment_id.id, ),
+            'target': 'current',
         }
+        return action
 
     @api.multi
     def generate_purchase_book(self):
@@ -245,13 +249,20 @@ class AccountInvoiceXlsx(models.Model):
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
-        self.env[self._name].create({'purchase_file': file_base64,
-                    'purchase_report_name': 'Libro de Compra {} {}.xlsx'.format(company_name,date.today().strftime("%d/%m/%Y"))})
-        self.write({'purchase_file': file_base64,
-                    'purchase_report_name': 'Libro de Compra {} {}.xlsx'.format(company_name,date.today().strftime("%d/%m/%Y"))})
-        return {
-            "type": "ir.actions.do_nothing",
+        file_name = 'Libro de Compra {} {}.xlsx'.format(company_name,date.today().strftime("%d/%m/%Y"))
+        attachment_id = self.env['ir.attachment'].sudo().create({
+            'name': file_name,
+            'datas_fname': file_name,
+            'datas': file_base64
+        })
+
+        action = {
+            'type': 'ir.actions.act_url',
+            'url': '/web/content/{}?download=true'.format(attachment_id.id, ),
+            'target': 'current',
         }
+        return action
+
 
     def set_size(self, sheet):
         sheet.set_column('F:F', 40)
