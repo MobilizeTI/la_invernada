@@ -469,10 +469,10 @@ class StockProductionLot(models.Model):
     def add_to_packing_list(self):
         picking_id = int(self.env.context['dispatch_id'])
         self.pallet_ids.write({
-            'add_picking':True
+            'add_picking': True
         })
         self.stock_production_lot_serial_ids.write({
-            'to_add' : True
+            'to_add': True
         })
         if self.pallet_ids.filtered(lambda a: a.add_picking):
             self.add_selection_pallet(picking_id)
