@@ -4,11 +4,7 @@
         <record id="update_lot_pallet" model="ir.actions.server">
             <field name="name">Actualizar Lotes de Pallets</field>
             <field name="model_id" ref="mail.model_ir_actions_server"/>
-            <field name="code">pallets = env['manufacturing.pallet'].search([])
-                for pallet in pallets:
-                    pallet.write({
-                        'lot_id':pallet.lot_serial_ids.mapped('stock_production_lot_id').id
-                    })
+            <field name="code">
             </field>
         </record>
     </data>
