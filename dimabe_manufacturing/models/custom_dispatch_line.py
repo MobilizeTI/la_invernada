@@ -5,6 +5,8 @@ class CustomDispatchLine(models.Model):
 
     sale_id = fields.Many2one('sale.order','Pedido')
 
+    dispatch_real_id = fields.Many2one('stock.picking','Despacho Odoo')
+
     dispatch_id = fields.Many2one('stock.picking','Despacho')
 
     product_id = fields.Many2one('product.product','Producto')
