@@ -99,6 +99,7 @@ class StockPicking(models.Model):
             if self.move_ids_without_package.filtered(lambda p: p.product_id.id == product.product_id.id):
                 self.env['stock.move.line'].create({
                     'product_id':product.product_id.id,
+                    'picking_id':self.id,
                     'product_uom':product.product_id.uom_id.id,
                     'product_uom_qty':product.product_uom_qty,
                     'date':datetime.date.today(),
