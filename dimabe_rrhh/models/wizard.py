@@ -141,6 +141,7 @@ class WizardHrPaySlip(models.TransientModel):
             col += 1
             worksheet.write(12, col, 'Cant. Horas Extras', bold_format)
             worksheet.write(row, col, self.get_qty_extra_hours(payslip=pay))
+            totals_result.append({col : self.get_qty_extra_hours(payslip=pay)})
             col += 1
             for rule in rules:
                 if not rule.show_in_book:
@@ -148,10 +149,6 @@ class WizardHrPaySlip(models.TransientModel):
                 if not totals.filtered(lambda a: a.salary_rule_id.id == rule.id):
                     continue
                 if rule.code == 'HEX50':
-                    worksheet.write(12, col, 'Cant. Horas Extras', bold_format)
-                    worksheet.write(row, col, self.get_qty_extra_hours(payslip=pay))
-                    totals_result.append({col : self.get_qty_extra_hours(payslip=pay)})
-                    col += 1
                     worksheet.write(12, col, 'Monto Horas Extras', bold_format)
                     total_amount = self.env["hr.payslip.line"].sudo().search(
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
