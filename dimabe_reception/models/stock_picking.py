@@ -359,11 +359,6 @@ class StockPicking(models.Model):
                                     })
                                     m_move.has_serial_generated = True
                 return res
-        if self.picking_type_code == 'outgoing':
-            if self.is_pt_dispatch:
-                self.packing_list_ids.write({
-                    'consumed': True
-                })
         else:
             return super(StockPicking, self).action_confirm()
 
@@ -408,6 +403,12 @@ class StockPicking(models.Model):
                         })
 
             return res
+        # Se usaran datos de modulo de dimabe_manufacturing
+        if self.picking_type_code == 'outgoing':
+            if self.is_pt_dispatch:
+                self.packing_list_ids.write({
+                    'consumed': True
+                })
         else:
             return super(StockPicking, self).button_validate()
 
