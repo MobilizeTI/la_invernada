@@ -72,33 +72,11 @@ class StockPicking(models.Model):
 
     name_orders = fields.Char('Pedidos',compute='get_name_orders')
 
-    dispatch_id = fields.Many2one('stock.picking','Despachos')
+    dispatch_real_id = fields.Many2one('stock.picking','Despachos',domain=[('state','!=','done')])
 
     real_net_weigth = fields.Float('Kilos Netos Reales',compute='compute_net_weigth_real')
 
     packing_list_file = fields.Binary('Packing List')
-
-    @api.multi
-    def test(self):
-        for item in self:
-            report_name = 'dimabe_export_order.report_packing_list'
-            pdf =self.env['report'].sudo().get_pdf([self.id],report_name)
-            self.write({
-                'packing_list_file':base64.encodestring(pdf)
-            })
-            attachment_id = self.env['ir.attachment'].sudo().create({
-                'name': "Packing List.xlsx",
-                'datas_fname': "Packing List.xlsx",
-                'datas':    base64.encodestring(pdf)
-            })
-
-            action = {
-                'type': 'ir.actions.act_url',
-                'url': '/web/content/{}?download=true'.format(attachment_id.id, ),
-                'target': 'current',
-            }
-            return action
-
 
     @api.multi
     def compute_net_weigth_real(self):
@@ -112,35 +90,37 @@ class StockPicking(models.Model):
 
     @api.multi
     def add_orders_to_dispatch(self):
-        if len(self.sale_orders_id.mapped('order_line')) > 0:
-            for item in self.dispatch_id.mapped('move_ids_without_package'):
-                if item.product_id.id not in self.move_ids_without_package.mapped('product_id').mapped('id'):
-                    self.env['stock.move'].sudo().create({
-                        'name': self.name,
-                        'product_id': item.product_id.id,
-                        'product_uom': item.product_id.uom_id.id,
-                        'product_uom_qty': item.product_uom_qty,
-                        'picking_id': self.id,
-                        'location_id': self.location_id.id,
-                        'location_dest_id': self.location_dest_id.id,
-                        'date': datetime.datetime.now(),
-                        'procure_method': 'make_to_stock'
-                    })
-                else:
-                    move = self.move_ids_without_package.filtered(lambda a: a.product_id.id == item.product_id.id)
-                    move.write({
-                        'product_uom_qty':move.product_uom_qty + item.product_uom_qty
-                    })
-            for product_id in self.sale_orders_id.mapped('order_line').mapped('product_id'):
-                self.env['custom.dispatch.line'].create({
-                    'sale_id': self.sale_orders_id.id,
-                    'product_id': product_id.id,
-                    'dispatch_id': self.id,
-                    'required_sale_qty': sum(self.sale_orders_id.mapped('order_line').filtered(lambda a: a.product_id.id == product_id.id).mapped('product_uom_qty'))
+        if not self.sale_orders_id:
+            raise models.ValidationError('No se selecciono ningun numero de pedido')
+        if not self.dispatch_id:
+            raise models.ValidationError('No se selecciono ningun despacho')
+        for product in self.dispatch_id.move_ids_without_package:
+            # No existe producto
+            if self.move_ids_without_package.filtered(lambda p: p.product_id.id == product.product_id.id):
+                self.env['stock.move.line'].create({
+                    'product_id':product.product_id.id,
+                    'product_uom':product.product_id.uom_id.id,
+                    'product_uom_qty':product.product_uom_qty,
+                    'date':datetime.date.today(),
+                    'date_expected':self.scheduled_date,
+                    'location_dest_id': self.partner_id.property_stock_customer.id,
+                    'location_id':self.location_id.id,
+                    'name':self.origin if self.origin else self.name,
+                    'procure_method':'make_to_stock',
                 })
-            self.write({
-                'is_principal_dispatch':True
+            else:
+                move = self.move_ids_without_package.filtered(lambda p: p.product_id.id == product.product_id.id)
+                move.write({
+                    'product_uom_qty': move.product_uom_qty + product.product_uom_qty
+                })
+            self.env['custom.dispatch.line'].write({
+                'dispatch_real_id': self.id,
+                'dispatch_id':self.dispatch_id.id,
+                'sale_id':self.sale_id.id,
+                'product_id': product.product_id.id,
+                'required_sale_qty':product.product_uom_qty,
             })
+
 
     @api.onchange('picking_type_code')
     def on_change_picking_type(self):
