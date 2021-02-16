@@ -409,6 +409,7 @@ class StockPicking(models.Model):
                 self.packing_list_ids.write({
                     'consumed': True
                 })
+                raise models.ValidationError(self.dispatch_line_ids)
                 if self.dispatch_line_ids:
                     for dispatch in self.dispatch_line_ids:
                         self.env['stock.move.line'].create({
