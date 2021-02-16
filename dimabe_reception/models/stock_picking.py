@@ -409,8 +409,7 @@ class StockPicking(models.Model):
                 self.packing_list_ids.write({
                     'consumed': True
                 })
-        else:
-            return super(StockPicking, self).button_validate()
+        return super(StockPicking, self).button_validate()
 
     @api.model
     def validate_mp_reception(self):
