@@ -442,8 +442,9 @@ class StockPicking(models.Model):
         return super(StockPicking, self).button_validate()
 
     def clean_reserved(self,picking):
+        picking.move_line_ids_without_package.filtered(lambda a: not a.lot_id).unlink()
         for lot in picking.move_line_ids.mapped('lot_id'):
-            if lot not in picking.packing_list_lot_ids:
+            if lot not in picking.packing_list_lot_ids :
                 picking.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id).unlink()
 
     @api.model
