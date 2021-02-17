@@ -420,7 +420,7 @@ class StockPicking(models.Model):
                             'location_id':dispatch.dispatch_id.location_id.id,
                             'location_dest_id':dispatch.dispatch_id.partner_id.property_stock_customer.id,
                             'state':'done',
-                            'move_id':dispatch.move_ids_without_package.filtered(lambda m: m.product_id.id == dispatch.product_id.id).id,
+                            'move_id':dispatch.dispatch_id.move_ids_without_package.filtered(lambda m: m.product_id.id == dispatch.product_id.id).id,
                             'date':datetime.date.today()
                         })
                         dispatch.button_validate()
