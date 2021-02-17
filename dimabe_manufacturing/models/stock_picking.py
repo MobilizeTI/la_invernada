@@ -79,6 +79,11 @@ class StockPicking(models.Model):
     packing_list_file = fields.Binary('Packing List')
 
     @api.multi
+    def test(self):
+        pdf = self.env['report'].sudo().get_pdf([self.id],'dimabe_export_order.report_packing_list')
+        raise models.ValidationError(pdf)
+
+    @api.multi
     def compute_net_weigth_real(self):
         for item in self:
             item.real_net_weigth = sum(item.packing_list_ids.mapped('display_weight'))
@@ -86,7 +91,6 @@ class StockPicking(models.Model):
     @api.multi
     def get_name_orders(self):
         self.name_orders = ", ".join(self.dispatch_line_ids.mapped('sale_id').mapped('name'))
-
 
     @api.multi
     def add_orders_to_dispatch(self):
