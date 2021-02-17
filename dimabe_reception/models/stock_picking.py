@@ -452,6 +452,8 @@ class StockPicking(models.Model):
                         'reserved_quantity': sum(stock.stock_production_lot_serial_ids.filtered(
                             lambda a: a.reserved_to_stock_picking_id).mapped('display_weight')),
                     })
+            else:
+                return super(StockPicking, self).button_validate()
         return super(StockPicking, self).button_validate()
 
     def clean_reserved(self, picking):
