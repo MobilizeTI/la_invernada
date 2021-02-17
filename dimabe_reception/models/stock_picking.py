@@ -430,7 +430,7 @@ class StockPicking(models.Model):
                             })
                         else:
                             dispatch.dispatch_id.move_line_ids_without_package.filtered(lambda
-                                                                                            m: m.product_id.id == dispatch.product_id and self.move_line_ids_without_package.filtered(
+                                                                                            m: m.product_id.id == dispatch.product_id.id and self.move_line_ids_without_package.filtered(
                                 lambda
                                     a: a.product_id.id == dispatch.product_id.id and a.sale_order_id.id == dispatch.sale_id.id).lot_id.id).write({
                                 'product_uom_qty':dispatch.real_dispatch_qty
