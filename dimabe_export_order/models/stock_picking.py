@@ -242,8 +242,23 @@ class StockPicking(models.Model):
             raise models.ValidationError('No tiene definido el consignatario')
         if not self.notify_ids:
             raise models.ValidationError('No tiene ninguna persona para notificar')
-        return self.env.ref('dimabe_export_order.action_packing_list') \
-            .report_action(self)
+        if not self.dispatch_line_ids and not self.packing_list_file:
+            return self.env.ref('dimabe_export_order.action_packing_list') \
+                .report_action(self)
+        else:
+            file_name = 'Packing List.pdf'
+            attachment_id = self.env['ir.attachment'].sudo().create({
+                'name': file_name,
+                'datas_fname': file_name,
+                'datas': self.packing_list_file
+            })
+
+            action = {
+                'type': 'ir.actions.act_url',
+                'url': '/web/content/{}?download=true'.format(attachment_id.id, ),
+                'target': 'current',
+            }
+            return action
 
     @api.multi
     def generate_inform(self):

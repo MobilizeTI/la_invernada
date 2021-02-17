@@ -3,12 +3,14 @@ import csv
 import datetime
 import io
 import logging
+import string
 import time
 from datetime import datetime
 import xlsxwriter
 from dateutil import relativedelta
 from odoo import api, fields, models
 from collections import Counter
+
 
 
 class WizardHrPaySlip(models.TransientModel):
@@ -115,16 +117,28 @@ class WizardHrPaySlip(models.TransientModel):
             col = 0
 
             worksheet.write(row, col, pay.employee_id.display_name)
-            worksheet.write(12, 0, 'Nombre:', bold_format)
+            worksheet.write(12, 0, 'Nombre', bold_format)
             long_name = max(payslips.mapped('employee_id').mapped('display_name'), key=len)
             worksheet.set_column(row, col, len(long_name))
             col += 1
-            worksheet.write(12, 1, 'Rut:', bold_format)
+            worksheet.write(12, 1, 'Rut', bold_format)
             worksheet.write(row, col, pay.employee_id.identification_id)
             long_rut = max(payslips.mapped('employee_id').mapped('identification_id'), key=len)
             worksheet.set_column(row, col, len(long_rut))
             col += 1
-            worksheet.write(12, 2, 'Centro de Costo:', bold_format)
+            worksheet.write(12, 2, 'N° Centro de Costo', bold_format)
+            if pay.account_analytic_id:
+                worksheet.write(row, col, pay.account_analytic_id)
+            elif pay.contract_id.department_id.analytic_account_id:
+                worksheet.write(row, col, pay.contract_id.department_id.analytic_account_id.code)
+            else:
+                worksheet.write(row, col, '')
+            long_const = max(
+                payslips.mapped('contract_id').mapped('department_id').mapped('analytic_account_id').mapped('name'),
+                key=len)
+            worksheet.set_column(row, col, len(long_const))
+            col += 1
+            worksheet.write(12, 3, 'Centro de Costo:', bold_format)
             if pay.account_analytic_id:
                 worksheet.write(row, col, pay.account_analytic_id)
             elif pay.contract_id.department_id.analytic_account_id:
@@ -136,7 +150,7 @@ class WizardHrPaySlip(models.TransientModel):
                 key=len)
             worksheet.set_column(row, col, len(long_const))
             col += 1
-            worksheet.write(12, 3, 'Dias Trabajados:', bold_format)
+            worksheet.write(12, 4, 'Dias Trabajados:', bold_format)
             worksheet.write(row, col, self.get_dias_trabajados(pay))
             col += 1
             worksheet.write(12, col, 'Cant. Horas Extras', bold_format)
@@ -149,7 +163,7 @@ class WizardHrPaySlip(models.TransientModel):
                 if not totals.filtered(lambda a: a.salary_rule_id.id == rule.id):
                     continue
                 if rule.code == 'HEX50':
-                    worksheet.write(12, col, 'Monto Horas Extras', bold_format)
+                    worksheet.write(12, col, 'Valor Horas Extras', bold_format)
                     total_amount = self.env["hr.payslip.line"].sudo().search(
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
                     worksheet.write(row, col, total_amount,number_format)

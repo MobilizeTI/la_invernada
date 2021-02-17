@@ -79,24 +79,6 @@ class StockPicking(models.Model):
     packing_list_file = fields.Binary('Packing List')
 
     @api.multi
-    def test(self):
-        report = self.env.ref('dimabe_export_order.action_packing_list').sudo().render_qweb_pdf([self.id])
-        file_base64 = base64.b64encode(report[0])
-        file_name = 'Packing List.pdf'
-        attachment_id = self.env['ir.attachment'].sudo().create({
-            'name': file_name,
-            'datas_fname': file_name,
-            'datas': file_base64
-        })
-
-        action = {
-            'type': 'ir.actions.act_url',
-            'url': '/web/content/{}?download=true'.format(attachment_id.id, ),
-            'target': 'current',
-        }
-        return action
-
-    @api.multi
     def compute_net_weigth_real(self):
         for item in self:
             item.real_net_weigth = sum(item.packing_list_ids.mapped('display_weight'))
