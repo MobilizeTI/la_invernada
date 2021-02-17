@@ -422,7 +422,6 @@ class StockPicking(models.Model):
                             'move_id':dispatch.dispatch_id.move_ids_without_package.filtered(lambda m: m.product_id.id == dispatch.product_id.id).id,
                             'date':date.today()
                         })
-                        dispatch.dispatch_id.button_validate()
                 for stock in self.move_line_ids_without_package.filtered(lambda a: a.lot_id).mapped('lot_id'):
                     quant = self.env['stock.quant'].search(
                         [('lot_id', '=', stock.id), ('location_id.usage', '=', 'internal')])
