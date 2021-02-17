@@ -515,7 +515,7 @@ class StockProductionLot(models.Model):
                 quant.write({
                     'reserved_quantity': 0,
                     'quantity': sum(self.stock_production_lot_serial_ids.filtered(
-                        lambda a: a.reserved_to_stock_picking_id == stock_picking_id).mapped('display_weight'))
+                        lambda a: a.reserved_to_stock_picking_id.id == stock_picking_id).mapped('display_weight'))
                 })
                 self.pallet_ids.filtered(lambda a: a.reserved_to_stock_picking_id.id == stock_picking_id).write({
                     'reserved_to_stock_picking_id': None
