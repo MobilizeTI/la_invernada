@@ -1031,7 +1031,7 @@
                         <tr rowspan="2">
                             <td style="text-align:center;">PURCHASE ORDER/ORDER DE COMPRA</td>
                             <td style="text-align:center;">
-                                <span t-field="d.name_orders"/>
+                                <span t-esc="','.join(d.dispatch_line_ids.mapped('sale_id').mapped('name'))"/>
                             </td>
                         </tr>
                         <tr></tr>
