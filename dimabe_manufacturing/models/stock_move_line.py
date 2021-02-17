@@ -20,6 +20,8 @@ class StockMoveLine(models.Model):
         digits=dp.get_precision('Product Unit of Measure')
     )
 
+    sale_order_id = fields.Many2one('sale.order','Orden')
+
     @api.multi
     def _compute_count_stock_production_lot_serial(self):
         for item in self:
