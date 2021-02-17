@@ -81,7 +81,7 @@ class StockPicking(models.Model):
     @api.multi
     def test(self):
         report = self.env.ref('dimabe_export_order.report_packing_list')
-        ctx = self.env.content.copy()
+        ctx = self.env.context.copy()
         ctx['flag'] = True
         pdf = report.with_context(ctx).render_qweb_pdf()
         raise models.ValidationError(base64.b64encode(pdf[0]))
