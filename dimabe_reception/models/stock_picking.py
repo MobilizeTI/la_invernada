@@ -412,12 +412,13 @@ class StockPicking(models.Model):
                 })
                 if self.dispatch_line_ids:
                     for dispatch in self.dispatch_line_ids:
+                        self.clean_reserved(dispatch.dispatch_id)
                         self.env['stock.move.line'].create({
                             'picking_id':dispatch.dispatch_id.id,
                             'product_id': dispatch.product_id.id,
                             'product_uom_id': dispatch.product_id.uom_id.id,
                             'lot_id':self.move_line_ids_without_package.filtered(lambda a: a.product_id.id == dispatch.product_id.id and a.sale_order_id.id == dispatch.sale_id.id).lot_id.id,
-                            'product_uom:_qty':self.move_line_ids_without_package.filtered(lambda a: a.product_id == dispatch.product_id.id and a.sale_order_id.id == dispatch.sale_id.id).product_uom_qty,
+                            'product_uom:_qty':dispatch.real_dispatch_qty,
                             'location_id':dispatch.dispatch_id.location_id.id,
                             'location_dest_id':dispatch.dispatch_id.partner_id.property_stock_customer.id,
                             'move_id':dispatch.dispatch_id.move_ids_without_package.filtered(lambda m: m.product_id.id == dispatch.product_id.id).id,
@@ -439,6 +440,11 @@ class StockPicking(models.Model):
                             lambda a: a.reserved_to_stock_picking_id).mapped('display_weight')),
                     })
         return super(StockPicking, self).button_validate()
+
+    def clean_reserved(self,picking):
+        for lot in picking.move_line_ids.mapped('lot_id'):
+            if lot not in picking.packing_list_lot_ids:
+                picking.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id).unlink()
 
     @api.model
     def validate_mp_reception(self):
