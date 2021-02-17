@@ -410,8 +410,6 @@ class StockPicking(models.Model):
                 self.packing_list_ids.write({
                     'consumed': True
                 })
-                raise models.ValidationError('producto terminado' in str.lower(self.picking_type_id.warehouse_id.name) and \
-                               'ordenes de entrega' in str.lower(self.picking_type_id.name))
                 if self.dispatch_line_ids:
                     for dispatch in self.dispatch_line_ids:
                         self.env['stock.move.line'].create({
