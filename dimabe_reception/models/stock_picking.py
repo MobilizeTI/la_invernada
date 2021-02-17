@@ -1,6 +1,6 @@
 from odoo import models, api, fields
 from odoo.addons import decimal_precision as dp
-from datetime import datetime
+from datetime import datetime,date
 import requests
 import json
 
@@ -421,7 +421,7 @@ class StockPicking(models.Model):
                             'location_dest_id':dispatch.dispatch_id.partner_id.property_stock_customer.id,
                             'state':'done',
                             'move_id':dispatch.dispatch_id.move_ids_without_package.filtered(lambda m: m.product_id.id == dispatch.product_id.id).id,
-                            'date':datetime.date.today()
+                            'date':date.today()
                         })
                         dispatch.button_validate()
                 for stock in self.move_line_ids_without_package.filtered(lambda a: a.lot_id).mapped('lot_id'):
