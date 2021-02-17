@@ -436,7 +436,7 @@ class StockPicking(models.Model):
                     })
 
                     quant.write({
-                        'reserved_quantity': sum(self.stock_production_lot_serial_ids.filtered(
+                        'reserved_quantity': sum(stock.stock_production_lot_serial_ids.filtered(
                             lambda a: a.reserved_to_stock_picking_id).mapped('display_weight')),
                     })
         return super(StockPicking, self).button_validate()
