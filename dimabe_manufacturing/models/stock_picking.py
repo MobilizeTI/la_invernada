@@ -80,7 +80,7 @@ class StockPicking(models.Model):
 
     @api.multi
     def test(self):
-        report = self.env.ref('dimabe_export_order.action_packing_list').sudo().render_qweb_pf([self.id])
+        report = self.env.ref('dimabe_export_order.action_packing_list').sudo().render_qweb_pdf([self.id])
         raise models.ValidationError(report)
 
     @api.multi
