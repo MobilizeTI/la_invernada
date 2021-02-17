@@ -413,7 +413,7 @@ class StockPicking(models.Model):
                 if self.dispatch_line_ids:
                     for dispatch in self.dispatch_line_ids:
                         self.clean_reserved(dispatch.dispatch_id)
-                        if dispatch.dispatch_id.move_line_ids_without_package.filtered(
+                        if not dispatch.dispatch_id.move_line_ids_without_package.filtered(
                                 lambda a: a.product_id.id == dispatch.product_id.id):
                             self.env['stock.move.line'].create({
                                 'picking_id': dispatch.dispatch_id.id,
@@ -455,7 +455,7 @@ class StockPicking(models.Model):
     def clean_reserved(self, picking):
         picking.move_line_ids_without_package.filtered(lambda a: not a.lot_id).unlink()
         for lot in picking.move_line_ids.mapped('lot_id'):
-            if lot not in picking.packing_list_lot_ids:
+            if lot not in self.packing_list_lot_ids:
                 picking.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id).unlink()
 
     @api.model
