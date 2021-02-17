@@ -435,7 +435,7 @@ class StockPicking(models.Model):
                                     a: a.product_id.id == dispatch.product_id.id and a.sale_order_id.id == dispatch.sale_id.id).lot_id.id).write({
                                 'product_uom_qty':dispatch.real_dispatch_qty
                             })
-                        dispatch.button_validate()
+                        dispatch.dispatch_id.button_validate()
                 for stock in self.move_line_ids_without_package.filtered(lambda a: a.lot_id).mapped('lot_id'):
                     quant = self.env['stock.quant'].search(
                         [('lot_id', '=', stock.id), ('location_id.usage', '=', 'internal')])
