@@ -80,11 +80,8 @@ class StockPicking(models.Model):
 
     @api.multi
     def test(self):
-        report = self.env.ref('dimabe_export_order.report_packing_list')
-        ctx = self.env.context.copy()
-        ctx['flag'] = True
-        pdf = report.with_context(ctx).render_qweb_pdf(self.id)
-        raise models.ValidationError(base64.b64encode(pdf[0]))
+        report = self.env.ref('dimabe_export_order.report_packing_list').sudo().render_qweb_pf([self.id])
+        raise models.ValidationError(report)
 
     @api.multi
     def compute_net_weigth_real(self):
