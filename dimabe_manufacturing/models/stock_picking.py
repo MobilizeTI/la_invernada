@@ -81,7 +81,7 @@ class StockPicking(models.Model):
     @api.multi
     def test(self):
         report = self.env.ref('dimabe_export_order.action_packing_list').sudo().render_qweb_pdf([self.id])
-        raise models.ValidationError(base64.b64encode(report))
+        raise models.ValidationError(base64.b64encode(report[0]))
 
     @api.multi
     def compute_net_weigth_real(self):
