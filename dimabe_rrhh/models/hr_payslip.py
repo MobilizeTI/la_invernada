@@ -26,7 +26,7 @@ class HrPayslip(models.Model):
 
     total_imp = fields.Float('Total Imp. Anterior')
 
-    account_analytic_id = fields.Char('Centro de Costo',readonly=True)
+    account_analytic_id = fields.Many2one('account.analytic.account','Centro de Costo',readonly=True)
 
 
     @api.onchange('struct_id')
@@ -121,7 +121,7 @@ class HrPayslip(models.Model):
 
     @api.multi
     def write(self,vals):
-        vals['account_analytic_id'] = self.contract_id.department_id.analytic_account_id.name
+        vals['account_analytic_id'] = self.contract_id.department_id.analytic_account_id.id
         return super(HrPayslip,self).write(vals)
 
     @api.multi

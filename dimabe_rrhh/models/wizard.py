@@ -3,7 +3,6 @@ import csv
 import datetime
 import io
 import logging
-import string
 import time
 from datetime import datetime
 import xlsxwriter
