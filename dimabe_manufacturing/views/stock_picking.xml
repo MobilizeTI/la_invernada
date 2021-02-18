@@ -35,11 +35,12 @@
                 </page>
             </xpath>
             <xpath expr="//field[@name='origin']" position="after">
+                <field name="is_multiple_dispatch"/>
                 <field name="sale_orders_id"
-                       attrs="{'invisible':['|',('state','=','done'),('picking_type_code','!=','outgoing')]}" domain="[('partner_id','=',partner_id)]"/>
-                <field name="dispatch_id" domain="[('sale_id','=',sale_orders_id)]" attrs="{'invisible':[('sale_orders_id','=',None)]}" />
+                       attrs="{'invisible':['|',('state','=','done'),('picking_type_code','!=','outgoing'),('is_multiple_dispatch','=',False)]}" domain="[('partner_id','=',partner_id)]"/>
+                <field name="dispatch_id" domain="[('sale_id','=',sale_orders_id),('state','!=','done')]" attrs="{'invisible':['|',('sale_orders_id','=',None),('state','=','done'),('is_multiple_dispatch','=',False)]}" />
                 <button name="add_orders_to_dispatch" type="object" string="Agregar"
-                        attrs="{'invisible':['|',('state','=','done'),('picking_type_code','!=','outgoing')]}"/>
+                        attrs="{'invisible':['|',('state','=','done'),('picking_type_code','!=','outgoing'),'&amp;',('is_multiple_dispatch','=',False)]}"/>
             </xpath>
             <page name="note" position="after">
                 <page name="packing_list" string="Reservados"

@@ -613,7 +613,7 @@ class StockProductionLot(models.Model):
                 lambda a: a.add_picking):
             raise models.UserError('No se a seleccionado nada')
         picking = self.env['stock.picking'].search([('id', '=', picking_id)])
-        if picking.dispatch_line_ids:
+        if picking.is_multiple_dispatch:
             line = picking.dispatch_line_ids.filtered(lambda a: a.product_id.id == self.product_id.id and a.sale_id.id == self.sale_order_id.id)
             if self.pallet_ids.filtered(lambda a: a.add_picking):
                 self.add_selection_pallet(line.dispatch_id.id)
