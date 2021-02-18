@@ -438,7 +438,7 @@ class StockPicking(models.Model):
                         })
             for item in self.dispatch_line_ids:
                 if item.dispatch_id.state != 'done':
-                    item.dispatch_id.button_validate()
+                    item.dispatch_id.action_done()
                 else:
                     continue
         else:
