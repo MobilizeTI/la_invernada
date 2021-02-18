@@ -436,6 +436,8 @@ class StockPicking(models.Model):
                             'product_uom_qty': item.real_dispatch_qty,
                             'qty_done':item.real_dispatch_qty
                         })
+                    return super(StockPicking,self).button_validate()
+
         return super(StockPicking, self).button_validate()
 
     def clean_reserved(self, picking):
