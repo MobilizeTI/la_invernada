@@ -89,7 +89,7 @@ class WizardHrPaySlip(models.TransientModel):
         row = 13
         col = 0
         payslips = self.env['hr.payslip'].sudo().search(
-            [('indicadores_id', '=', indicadores.id), ('state', 'in', ['done', 'draft']),('employee_id.address_id.id','=',self.company_id.id)])
+            [('indicadores_id', '=', indicadores.id), ('state', 'in', ['done', 'draft']),('employee_id.address_id.id','=',self.company_id.id), ('name', 'not like', 'Devolución:')])
 
 
         totals = self.env['hr.payslip.line'].sudo().search([('slip_id', 'in', payslips.mapped('id'))]).filtered(
@@ -111,8 +111,6 @@ class WizardHrPaySlip(models.TransientModel):
         worksheet.write(10,0, 'Centro de Costo : Todos los Centros de Costos', bold_format)
         worksheet.write(11,0, 'Total Trabajadores : '+ str(len(payslips)), bold_format)
         for pay in payslips:
-            if pay.name.startswith('Devolución:'):
-                continue
             rules = self.env['hr.salary.rule'].search([('id', 'in', totals.mapped('salary_rule_id').mapped('id'))],
                                                       order='order_number')
             col = 0
