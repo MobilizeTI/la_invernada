@@ -436,6 +436,7 @@ class StockPicking(models.Model):
                         })
                 for item in self.dispatch_line_ids.mapped('dispatch_id'):
                     item.action_done()
+            return super(StockPicking, self).button_validate()
         else:
             return super(StockPicking, self).button_validate()
 
