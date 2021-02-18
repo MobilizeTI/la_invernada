@@ -111,6 +111,8 @@ class WizardHrPaySlip(models.TransientModel):
         worksheet.write(10,0, 'Centro de Costo : Todos los Centros de Costos', bold_format)
         worksheet.write(11,0, 'Total Trabajadores : '+ str(len(payslips)), bold_format)
         for pay in payslips:
+            if pay.name.startswith('Devolución:'):
+                continue
             rules = self.env['hr.salary.rule'].search([('id', 'in', totals.mapped('salary_rule_id').mapped('id'))],
                                                       order='order_number')
             col = 0
