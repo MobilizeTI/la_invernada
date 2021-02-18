@@ -250,8 +250,9 @@ class StockPicking(models.Model):
     @api.one
     @api.depends('picking_type_id')
     def _compute_is_satelite_reception(self):
-        self.is_satelite_reception = 'packing' in str.lower(self.picking_type_id.warehouse_id.name) and \
-                                     'recepciones' in str.lower(self.picking_type_id.name)
+        if self.picking_type_code == 'incoming':
+            self.is_satelite_reception = 'packing' in str.lower(self.picking_type_id.warehouse_id.name) and \
+                                         'recepciones' in str.lower(self.picking_type_id.name)
 
     @api.one
     @api.depends('net_weight', 'tare_weight', 'gross_weight', 'move_ids_without_package')
