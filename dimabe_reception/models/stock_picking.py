@@ -437,7 +437,10 @@ class StockPicking(models.Model):
                             'qty_done':item.real_dispatch_qty
                         })
             for item in self.dispatch_line_ids:
-                item.dispatch_id.button_validate()
+                if item.dispatch_id.state != 'done':
+                    item.dispatch_id.button_validate()
+                else:
+                    continue
         else:
             return super(StockPicking, self).button_validate()
 
