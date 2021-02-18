@@ -421,6 +421,7 @@ class StockPicking(models.Model):
                             'lot_id': self.packing_list_lot_ids.filtered(
                                 lambda
                                     a:(a.product_id.id == item.product_id.id and a.sale_order_id.id == item.sale_id.id) or a.product_id.id == item.product_id.id ).id,
+                            'product_uom_qty':item.real_dispatch_qty,
                             'qty_done': item.real_dispatch_qty,
                             'location_id': item.dispatch_id.location_id.id,
                             'location_dest_id': item.dispatch_id.partner_id.property_stock_customer.id,
@@ -432,9 +433,11 @@ class StockPicking(models.Model):
                         line = item.dispatch_id.move_line_ids_without_package.filtered(
                             lambda a: a.product_id.id == item.product_id.id)
                         line.write({
-                            'product_uom_qty': item.real_dispatch_qty
+                            'product_uom_qty': item.real_dispatch_qty,
+                            'qty_done':item.real_dispatch_qty
                         })
-            return super(StockPicking, self).button_validate()
+            for item in self.dispatch_line_ids:
+                item.dispatch_id.button_validate()
         else:
             return super(StockPicking, self).button_validate()
 
