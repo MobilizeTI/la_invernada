@@ -420,7 +420,7 @@ class StockPicking(models.Model):
                             'product_uom_id': item.product_id.uom_id.id,
                             'lot_id': self.packing_list_lot_ids.filtered(
                                 lambda
-                                    a: a.product_id.id == item.product_id.id and a.sale_order_id.id == item.sale_id.id).id,
+                                    a:(a.product_id.id == item.product_id.id and a.sale_order_id.id == item.sale_id.id) or a.product_id.id == item.product_id.id ).id,
                             'qty_done': item.real_dispatch_qty,
                             'location_id': item.dispatch_id.location_id.id,
                             'location_dest_id': item.dispatch_id.partner_id.property_stock_customer.id,
