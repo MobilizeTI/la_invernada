@@ -83,7 +83,7 @@ class StockPicking(models.Model):
     @api.onchange('is_multiple_dispatch')
     def set_multiple_dispatch(self):
         if self.is_multiple_dispatch:
-            raise models.UserError(type(self.id.id))
+            raise models.UserError(self.name)
             self.env['custom.dispatch.line'].create({
                 'dispatch_real_id': self.id,
                 'dispatch_id': self.id,
