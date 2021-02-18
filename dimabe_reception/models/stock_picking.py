@@ -431,11 +431,10 @@ class StockPicking(models.Model):
                     else:
                         line = item.dispatch_id.move_line_ids_without_package.filtered(
                             lambda a: a.product_id.id == item.product_id.id)
-                        raise models.ValidationError(line)
                         line.write({
                             'product_uom_qty': item.real_dispatch_qty
                         })
-                    #item.dispatch_id.button_validate()
+                    item.dispatch_id.button_validate()
         else:
             return super(StockPicking, self).button_validate()
 
