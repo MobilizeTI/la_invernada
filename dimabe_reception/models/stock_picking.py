@@ -434,8 +434,6 @@ class StockPicking(models.Model):
                         line.write({
                             'product_uom_qty': item.real_dispatch_qty
                         })
-                for item in self.dispatch_line_ids.mapped('dispatch_id'):
-                    item.action_done()
             return super(StockPicking, self).button_validate()
         else:
             return super(StockPicking, self).button_validate()
