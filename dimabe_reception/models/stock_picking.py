@@ -436,12 +436,6 @@ class StockPicking(models.Model):
                             'product_uom_qty': item.real_dispatch_qty,
                             'qty_done':item.real_dispatch_qty
                         })
-                for item in self.dispatch_line_ids:
-                    if item.dispatch_id.state != 'done':
-                        if item.dispatch_id._check_backorder():
-                            return item.dispatch_id.action_generate_backorder_wizard()
-            else:
-                return super(StockPicking, self).button_validate()
         return super(StockPicking, self).button_validate()
 
     def clean_reserved(self, picking):
