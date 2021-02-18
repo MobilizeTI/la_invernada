@@ -405,56 +405,33 @@ class StockPicking(models.Model):
             return res
         # Se usaran datos de modulo de dimabe_manufacturing
         if self.picking_type_code == 'outgoing':
-            if 'producto terminado' in str.lower(self.picking_type_id.warehouse_id.name) and \
-                    'ordenes de entrega' in str.lower(self.picking_type_id.name):
-                self.packing_list_ids.write({
-                    'consumed': True
-                })
-                if self.dispatch_line_ids:
-                    for dispatch in self.dispatch_line_ids:
-                        self.clean_reserved(dispatch.dispatch_id)
-                        if not dispatch.dispatch_id.move_ids_without_package.filtered(
-                                lambda a: a.product_id.id == dispatch.product_id.id):
-                            self.env['stock.move.line'].create({
-                                'picking_id': dispatch.dispatch_id.id,
-                                'product_id': dispatch.product_id.id,
-                                'product_uom_id': dispatch.product_id.uom_id.id,
-                                'lot_id': self.move_line_ids_without_package.filtered(lambda
-                                                                                          a: a.product_id.id == dispatch.product_id.id and a.sale_order_id.id == dispatch.sale_id.id).lot_id.id,
-                                'qty_done':dispatch.real_dispatch_qty,
-                                'location_id': dispatch.dispatch_id.location_id.id,
-                                'location_dest_id': dispatch.dispatch_id.partner_id.property_stock_customer.id,
-                                'move_id': dispatch.dispatch_id.move_ids_without_package.filtered(
-                                    lambda m: m.product_id.id == dispatch.product_id.id).id,
-                                'date': date.today()
-                            })
-                        else:
-                            dispatch.dispatch_id.move_line_ids_without_package.filtered(lambda
-                                                                                            m: m.product_id.id == dispatch.product_id.id and self.move_line_ids_without_package.filtered(
-                                lambda
-                                    a: a.product_id.id == dispatch.product_id.id and a.sale_order_id.id == dispatch.sale_id.id).lot_id.id).write(
-                                {
-                                    'qty_done':dispatch.real_dispatch_qty
-                                })
-                        dispatch.dispatch_id.action_done()
-                for stock in self.move_line_ids_without_package.filtered(lambda a: a.lot_id).mapped('lot_id'):
-                    quant = self.env['stock.quant'].search(
-                        [('lot_id', '=', stock.id), ('location_id.usage', '=', 'internal')])
-                    quant.write({
-                        'reserved_quantity': sum(stock.stock_production_lot_serial_ids.filtered(lambda
-                                                                                                    x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
-                            'display_weight')),
-                        'quantity': sum(stock.stock_production_lot_serial_ids.filtered(
-                            lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight'))
+            self.packing_list_ids.write({
+                'consumed': True
+            })
+            for item in self.dispatch_line_ids:
+                self.clean_reserved(item.dispatch_id)
+                if not item.dispatch_id.move_ids_without_package.filtered(
+                        lambda a: a.product_id.id == item.product_id.id):
+                    self.env['stock.move.line'].create({
+                        'picking_id': item.dispatch_id.id,
+                        'product_id': item.product_id.id,
+                        'product_uom_id': item.product_id.uom_id.id,
+                        'lot_id': self.packing_list_lot_ids.filtered(
+                            lambda a: a.product_id.id == item.product_id.id and a.sale_order_id.id == item.sale_id.id).id,
+                        'product_uom_qty':item.real_dispatch_qty,
+                        'location':item.dispatch_id.location_id.id,
+                        'location_dest_id':item.partner_id.property_stock_customer.id,
+                        'move_id':item.dispatch_id.move_ids_without_package.filtered(lambda a: a.product_id.id == item.product_id.id).id,
+                        'date':date.today()
                     })
-
-                    quant.write({
-                        'reserved_quantity': sum(stock.stock_production_lot_serial_ids.filtered(
-                            lambda a: a.reserved_to_stock_picking_id).mapped('display_weight')),
+                else:
+                    line = item.dispatch_id.move_line_ids_without_package.filtered(lambda a: a.product_id.id == item.product_id.id)
+                    line.write({
+                        'product_uom_qty':item.real_dispatch_qty
                     })
-            else:
-                return super(StockPicking, self).button_validate()
-        return super(StockPicking, self).button_validate()
+                item.dispatch_id.button_validate()
+        else:
+            return super(StockPicking, self).button_validate()
 
     def clean_reserved(self, picking):
         picking.move_line_ids_without_package.filtered(lambda a: not a.lot_id).unlink()
