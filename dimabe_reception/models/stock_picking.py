@@ -235,10 +235,11 @@ class StockPicking(models.Model):
                                self.picking_type_id.name and 'recepciones' in str.lower(self.picking_type_id.name)
 
     @api.one
-    @api.depends('picking_type_id')
+    @api.depends('picki_ngtype_id')
     def _compute_is_pt_reception(self):
-        self.is_pt_reception = 'producto terminado' in str.lower(self.picking_type_id.warehouse_id.name) and \
-                               'recepciones' in str.lower(self.picking_type_id.name)
+        if self.picking_type_code == 'incoming':
+            self.is_pt_reception = 'producto terminado' in str.lower(self.picking_type_id.warehouse_id.name) and \
+                                   'recepciones' in str.lower(self.picking_type_id.name)
 
     @api.one
     @api.depends('picking_type_id')
