@@ -411,8 +411,7 @@ class StockPicking(models.Model):
             if self.is_multiple_dispatch:
                 for item in self.dispatch_line_ids:
                     self.clean_reserved(item.dispatch_id)
-                    raise models.ValidationError(item.dispatch_id.move_ids_without_package.filtered(
-                            lambda a: a.product_id.id == item.product_id.id))
+
                     if not item.dispatch_id.move_ids_without_package.filtered(
                             lambda a: a.product_id.id == item.product_id.id):
                         self.env['stock.move.line'].create({
@@ -432,6 +431,7 @@ class StockPicking(models.Model):
                     else:
                         line = item.dispatch_id.move_line_ids_without_package.filtered(
                             lambda a: a.product_id.id == item.product_id.id)
+                        raise models.ValidationError(line)
                         line.write({
                             'product_uom_qty': item.real_dispatch_qty
                         })
