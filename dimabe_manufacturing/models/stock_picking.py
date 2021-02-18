@@ -83,10 +83,11 @@ class StockPicking(models.Model):
     @api.onchange('is_multiple_dispatch')
     def set_multiple_dispatch(self):
         if self.is_multiple_dispatch:
-            raise models.UserError(self.name)
+            #Se busca objecto a causa de que self.id entrega otro tipo de campo (NewId)
+            picking = self.env['stock.picking'].search([('name','=',self.name)])
             self.env['custom.dispatch.line'].create({
-                'dispatch_real_id': self.id,
-                'dispatch_id': self.id,
+                'dispatch_real_id': picking.id,
+                'dispatch_id': picking.id,
                 'product_id': self.move_ids_without_package.mapped('product_id').id if len(
                     self.move_ids_without_package) == 1 else self.move_ids_without_package[0].mapped('product_id').id,
                 'required_sale_qty': self.move_ids_without_package.product_uom_qty if len(
