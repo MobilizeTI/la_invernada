@@ -423,7 +423,7 @@ class StockPicking(models.Model):
                                     a: a.product_id.id == item.product_id.id and a.sale_order_id.id == item.sale_id.id).id,
                             'product_uom_qty': item.real_dispatch_qty,
                             'location': item.dispatch_id.location_id.id,
-                            'location_dest_id': item.partner_id.property_stock_customer.id,
+                            'location_dest_id': item.dispatch_id.partner_id.property_stock_customer.id,
                             'move_id': item.dispatch_id.move_ids_without_package.filtered(
                                 lambda a: a.product_id.id == item.product_id.id).id,
                             'date': date.today()
