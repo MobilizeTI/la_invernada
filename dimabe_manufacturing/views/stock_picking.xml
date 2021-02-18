@@ -21,11 +21,12 @@
             <button name="do_unreserve" position="replace"/>
             <xpath expr="//notebook[1]//page[1]" position="after">
                 <page string="Lineas de Despacho" name="dispatch_line_ids"
-                      attrs="{'invisible':[('picking_type_code','!=','outgoing')]}">
+                      attrs="{'invisible':[('is_multiple_dispatch','=',False),('picking_type_code','!=','outgoing')]}">
                     <field name="dispatch_line_ids"
                            attrs="{'invisible':[('picking_type_code','!=','outgoing')],'read_only':[('state','=','done')]}">
                         <tree editable="bottom" edit="true" delete="false" create="false">
                             <field name="sale_id"/>
+                            <field name="dispatch_id"/>
                             <field name="product_id"/>
                             <field name="required_sale_qty"/>
                             <field name="real_dispatch_qty"
@@ -35,12 +36,12 @@
                 </page>
             </xpath>
             <xpath expr="//field[@name='origin']" position="after">
-                <field name="is_multiple_dispatch"/>
+                <field name="is_multiple_dispatch" attrs="{'invisible':[('picking_type_code','!=','outgoing')]}"/>
                 <field name="sale_orders_id"
-                       attrs="{'invisible':['|',('state','=','done'),('picking_type_code','!=','outgoing'),('is_multiple_dispatch','=',False)]}" domain="[('partner_id','=',partner_id)]"/>
-                <field name="dispatch_id" domain="[('sale_id','=',sale_orders_id),('state','!=','done')]" attrs="{'invisible':['|',('sale_orders_id','=',None),('state','=','done'),('is_multiple_dispatch','=',False)]}" />
+                       attrs="{'invisible':[('picking_type_code','!=','outgoing'),('is_multiple_dispatch','=',False)]}" domain="[('partner_id','=',partner_id)]"/>
+                <field name="dispatch_id" domain="[('sale_id','=',sale_orders_id),('state','!=','done')]" attrs="{'invisible':[('is_multiple_dispatch','=',False)]}" />
                 <button name="add_orders_to_dispatch" type="object" string="Agregar"
-                        attrs="{'invisible':['|',('state','=','done'),('picking_type_code','!=','outgoing'),'&amp;',('is_multiple_dispatch','=',False)]}"/>
+                        attrs="{'invisible':[('is_multiple_dispatch','=',False)]}"/>
             </xpath>
             <page name="note" position="after">
                 <page name="packing_list" string="Reservados"
