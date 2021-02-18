@@ -440,7 +440,7 @@ class StockPicking(models.Model):
                     if item.dispatch_id.state != 'done':
                         raise models.ValidationError(item.dispatch_id._check_backorder())
                         if item.dispatch_id._check_backorder():
-                            return self.action_generate_backorder_wizard()
+                            return item.action_generate_backorder_wizard()
                         return super(StockPicking, self).action()
                     else:
                         continue
