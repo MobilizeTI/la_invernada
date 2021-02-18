@@ -84,7 +84,7 @@ class StockPicking(models.Model):
     def set_multiple_dispatch(self):
         if self.is_multiple_dispatch:
             #Se busca objecto a causa de que self.id entrega otro tipo de campo (NewId)
-            picking = self.env['stock.picking'].search([('origin','=',self.origin)])
+            picking = self.env['stock.picking'].search([('origin','=',self.name)])
             models._logger.error(picking.name)
             self.env['custom.dispatch.line'].create({
                 'dispatch_real_id': picking.id,
