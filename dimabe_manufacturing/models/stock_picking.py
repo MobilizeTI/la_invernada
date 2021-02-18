@@ -88,8 +88,8 @@ class StockPicking(models.Model):
                 'dispatch_id': self.id,
                 'product_id': self.move_ids_without_package.mapped('product_id').id if len(
                     self.move_ids_without_package) == 1 else self.move_ids_without_package[0].mapped('product_id').id,
-                'required_sale_qty': self.move_ids_without_package.mapped('product_id').product_uom_qty if len(
-                    self.move_ids_without_package) == 1 else self.move_ids_without_package[0].mapped('product_id').product_uom_qty,
+                'required_sale_qty': self.move_ids_without_package.product_uom_qty if len(
+                    self.move_ids_without_package) == 1 else self.move_ids_without_package[0].product_uom_qty,
                 'sale_id':self.sale_id.id
             })
         else:
