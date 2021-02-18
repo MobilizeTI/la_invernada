@@ -47,7 +47,6 @@
                 <page name="packing_list" string="Reservados"
                       attrs="{'invisible':['|',('state','=','cancel'),('picking_type_code', '!=', 'outgoing')]}"
                 >
-
                     <field name="id" invisible="1"/>
                     <field name="state" invisible="1"/>
                     <notebook>
