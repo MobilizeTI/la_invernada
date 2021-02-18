@@ -459,8 +459,7 @@ class StockPicking(models.Model):
                     return super(StockPicking, self).button_validate()
                 else:
                     continue
-        else:
-            return super(StockPicking, self).button_validate()
+        return super(StockPicking, self).button_validate()
 
     def clean_reserved(self, picking):
         picking.move_line_ids_without_package.filtered(lambda a: not a.lot_id).unlink()
