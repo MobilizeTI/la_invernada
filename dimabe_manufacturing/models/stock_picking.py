@@ -95,9 +95,6 @@ class StockPicking(models.Model):
                     self.move_ids_without_package) == 1 else self.move_ids_without_package[0].product_uom_qty,
                 'sale_id':self.sale_id.id
             })
-        else:
-            for line in self.dispatch_line_ids:
-                line.unlink()
 
     @api.multi
     def compute_net_weigth_real(self):
