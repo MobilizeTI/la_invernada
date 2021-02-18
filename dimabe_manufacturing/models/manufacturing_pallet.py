@@ -123,7 +123,7 @@ class ManufacturingPallet(models.Model):
     @api.multi
     def compute_total_reserved_serial(self):
         for item in self:
-            active_id = self.env.context['active_id']['params']
+            active_id = self.env.context['params']
             raise models.ValidationError(f'Datos {active_id} Keys {self.env.context.keys()} Values {self.env.context.values()} type {type(active_id)}')
             item.total_reserved_serial = len(item.lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id.id == active_id))
 
