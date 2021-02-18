@@ -439,7 +439,7 @@ class StockPicking(models.Model):
                 for item in self.dispatch_line_ids:
                     if item.dispatch_id.state != 'done':
                         if item.dispatch_id._check_backorder():
-                            return item.action_generate_backorder_wizard()
+                            return item.dispatch_id.action_generate_backorder_wizard()
                         return super(StockPicking, self).action()
                     else:
                         continue
