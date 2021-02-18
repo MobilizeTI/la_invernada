@@ -436,29 +436,29 @@ class StockPicking(models.Model):
                             'product_uom_qty': item.real_dispatch_qty,
                             'qty_done':item.real_dispatch_qty
                         })
-            for item in self.dispatch_line_ids:
-                if item.dispatch_id.state != 'done':
-                    if self._get_overprocessed_stock_moves() and not self._context.get('skip_overprocessed_check'):
-                        view = self.env.ref('stock.view_overprocessed_transfer')
-                        wiz = self.env['stock.overprocessed.transfer'].create({'picking_id': item.dispatch_id.id})
-                        return {
-                            'type': 'ir.actions.act_window',
-                            'view_type': 'form',
-                            'view_mode': 'form',
-                            'res_model': 'stock.overprocessed.transfer',
-                            'views': [(view.id, 'form')],
-                            'view_id': view.id,
-                            'target': 'new',
-                            'res_id': wiz.id,
-                            'context': self.env.context,
-                        }
+                for item in self.dispatch_line_ids:
+                    if item.dispatch_id.state != 'done':
+                        if self._get_overprocessed_stock_moves() and not self._context.get('skip_overprocessed_check'):
+                            view = self.env.ref('stock.view_overprocessed_transfer')
+                            wiz = self.env['stock.overprocessed.transfer'].create({'picking_id': item.dispatch_id.id})
+                            return {
+                                'type': 'ir.actions.act_window',
+                                'view_type': 'form',
+                                'view_mode': 'form',
+                                'res_model': 'stock.overprocessed.transfer',
+                                'views': [(view.id, 'form')],
+                                'view_id': view.id,
+                                'target': 'new',
+                                'res_id': wiz.id,
+                                'context': self.env.context,
+                            }
 
-                        # Check backorder should check for other barcodes
-                    if self._check_backorder():
-                        return self.action_generate_backorder_wizard()
-                    return super(StockPicking, self).button_validate()
-                else:
-                    continue
+                            # Check backorder should check for other barcodes
+                        if self._check_backorder():
+                            return self.action_generate_backorder_wizard()
+                        return super(StockPicking, self).button_validate()
+                    else:
+                        continue
         return super(StockPicking, self).button_validate()
 
     def clean_reserved(self, picking):
