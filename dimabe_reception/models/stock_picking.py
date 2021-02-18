@@ -438,9 +438,10 @@ class StockPicking(models.Model):
                         })
                 for item in self.dispatch_line_ids:
                     if item.dispatch_id.state != 'done':
+                        raise models.ValidationError(item.dispatch_id._check_backorder())
                         if item.dispatch_id._check_backorder():
                             return self.action_generate_backorder_wizard()
-                        return super(StockPicking, self).button_validate()
+                        return super(StockPicking, self).action()
                     else:
                         continue
         return super(StockPicking, self).button_validate()
