@@ -180,7 +180,7 @@ class WizardHrPaySlip(models.TransientModel):
                 else:
                     total_amount = self.env["hr.payslip.line"].sudo().search(
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
-                    worksheet.write(12, col, rule.name.capitalize(), bold_format)
+                    worksheet.write(12, col, rule.name, bold_format)
                     worksheet.write(row, col,total_amount,number_format)
                     totals_result.append({col : total_amount})
                 col += 1
