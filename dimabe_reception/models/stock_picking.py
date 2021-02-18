@@ -456,7 +456,7 @@ class StockPicking(models.Model):
                         # Check backorder should check for other barcodes
                     if self._check_backorder():
                         return self.action_generate_backorder_wizard()
-                    self.action_done()
+                    return super(StockPicking, self).button_validate()
                 else:
                     continue
         else:
