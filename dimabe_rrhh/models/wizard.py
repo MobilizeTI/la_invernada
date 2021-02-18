@@ -190,8 +190,10 @@ class WizardHrPaySlip(models.TransientModel):
         for item in totals_result:
             counter.update(item)
         total_dict = dict(counter)
+        worksheet.write(row, 0, 'Totales',bold_format)
+        number_bold_format = workbook.add_format({'num_format': '#,###', 'bold': True})
         for k in total_dict:
-            worksheet.write(row, k,total_dict[k],number_format)
+            worksheet.write(row, k,total_dict[k],number_bold_format)
         col = 0
         row += 1
         workbook.close()
