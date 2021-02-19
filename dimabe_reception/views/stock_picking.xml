@@ -83,8 +83,10 @@
             <field name="name">stock picking list</field>
             <field name="model">stock.picking</field>
             <field name="view_mode">kanban,calendar,tree</field>
+            <field name="context">{'stock_picking_id':id}</field>
             <field name="arch" type="xml">
                 <tree>
+                    <field name="id" invisible="1"/>
                     <field name="name"/>
                     <field name="date"/>
                     <field name="location_dest_id"/>
