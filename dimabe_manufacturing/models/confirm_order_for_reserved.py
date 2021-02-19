@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-
+from datetime import date
 
 class ConfirmOrderForReserved(models.TransientModel):
     _name = 'confirm.order.reserved'
@@ -25,6 +25,18 @@ class ConfirmOrderForReserved(models.TransientModel):
         line.filtered(lambda a: a.dispatch_id.id == self.picking_id.id).write({
             'real_dispatch_qty': sum(self.lot_id.stock_production_lot_serial_ids.filtered(
                 lambda a: a.reserved_to_stock_picking_id.id == self.picking_principal_id.id).mapped('display_weight'))
+        })
+        self.env['stock.move.line'].create({
+            'move_id': self.picking_principal_id.move_ids_without_package.filtered(
+                lambda a: a.product_id.id == self.lot_id.product_id.id).id,
+            'picking_id': self.picking_id.id,
+            'product_id': self.lot_id.product_id.id,
+            'qty_done': line.real_dispatch_qty,
+            'lot_id': self.lot_id.id,
+            'product_uom_id': self.lot_id.product_id.uom_id.id,
+            'location_id': self.picking_principal_id.location_id.id,
+            'location_dest_id': self.picking_principal_id.partner_id.property_stock_customer.id,
+            'date': date.today()
         })
 
     @api.one
