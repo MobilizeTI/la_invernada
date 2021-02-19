@@ -209,6 +209,9 @@ class StockPicking(models.Model):
             qty_move = sum(lot.stock_production_lot_serial_ids.filtered(
                 lambda a: a.reserved_to_stock_picking_id.id == self.id).mapped('display_weight'))
             quant = self.env['stock.quant'].search([('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal')])
+            raise models.ValidationError(sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                                                                                          x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
+                    'display_weight')))
             quant.write({
                 'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
                                                                                           x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
