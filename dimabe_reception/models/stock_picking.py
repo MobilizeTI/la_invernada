@@ -412,6 +412,8 @@ class StockPicking(models.Model):
             })
             if self.is_multiple_dispatch:
                 for item in self.dispatch_line_ids:
+                    if self.id == item.dispatch_id.id:
+                        continue
                     self.clean_reserved(item.dispatch_id)
                     move_line = self.env['stock.move.line'].create({
                         'move_id': item.dispatch_id.move_ids_without_package.filtered(
