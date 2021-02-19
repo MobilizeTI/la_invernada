@@ -125,7 +125,7 @@
                             <tree editable="bottom" edit="true" create="false" delete="false">
                                 <field name="add_picking"/>
                                 <field name="name"/>
-                                <field name="total_content_weight"/>
+                                <field name="total_available_weight"/>
                                 <field name="total_available_content"/>
                                 <field name="state"/>
                                 <button string="Agregar Reserva"

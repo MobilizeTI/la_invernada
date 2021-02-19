@@ -120,6 +120,13 @@ class ManufacturingPallet(models.Model):
 
     total_reserved_weight = fields.Float('Kilos Reservados',compute='compute_total_reserved_weight')
 
+    total_available_weight = fields.Float('Kilos Disponible',compute='compute_total_available_weight')
+
+    @api.multi
+    def compute_total_available_weight(self):
+        for item in self:
+            item.total_available_weight = sum(item.lot_serial_ids.filtered(lambda a: not a.reserved_to_stock_picking_id).mapped('display_weight'))
+
     @api.multi
     def compute_total_reserved_serial(self):
         for item in self:
@@ -128,6 +135,7 @@ class ManufacturingPallet(models.Model):
     @api.multi
     def compute_total_reserved_weight(self):
         for item in self:
+            models._logger.error(f' Keys {self.env.context.keys()} Valor {self.env.context.values()}')
             item.total_reserved_weight = sum(item.lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id).mapped('display_weight'))
 
     @api.multi
