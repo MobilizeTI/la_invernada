@@ -635,6 +635,10 @@ class StockProductionLot(models.Model):
                     'res_id': wiz.id,
                     'context': self.env.context
                 }
+            else:
+                line.write({
+                    'real_dispatch_qty': sum(self.pallet_ids.filtered(lambda a: a.add_picking).mapped('lot_serial_ids').mapped('display_weight')) + sum(self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('display_weight'))
+                })
         if self.pallet_ids.filtered(lambda a: a.add_picking):
                 self.add_selection_pallet(picking_id)
         if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
