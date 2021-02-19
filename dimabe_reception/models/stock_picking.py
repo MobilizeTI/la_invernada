@@ -429,7 +429,7 @@ class StockPicking(models.Model):
                         'location_dest_id':item.dispatch_id.partner_id.property_stock_customer.id,
                         'date':date.today()
                     })
-
+            return super(StockPicking, self).button_validate()
         return super(StockPicking, self).button_validate()
 
     def clean_reserved(self, picking):

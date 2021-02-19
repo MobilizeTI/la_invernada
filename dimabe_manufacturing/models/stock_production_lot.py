@@ -635,11 +635,12 @@ class StockProductionLot(models.Model):
                     'res_id': wiz.id,
                     'context': self.env.context
                 }
-            if self.pallet_ids.filtered(lambda a: a.add_picking):
+        if self.pallet_ids.filtered(lambda a: a.add_picking):
                 self.add_selection_pallet(picking_id)
-            if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
+        if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
                 self.add_selection_serial(picking_id)
-            if not picking.mapped('move_line_ids_without_package').filtered(
+
+        if not picking.mapped('move_line_ids_without_package').filtered(
                     lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id):
                 self.env['stock.move.line'].create({
                     'move_id': picking.move_ids_without_package.filtered(
@@ -655,13 +656,13 @@ class StockProductionLot(models.Model):
                     'location_id': picking.location_id.id,
                     'location_dest_id': picking.partner_id.property_stock_customer.id
                 })
-            else:
-                move_line = picking.mapped('move_line_ids_without_package').filtered(
+        else:
+            move_line = picking.mapped('move_line_ids_without_package').filtered(
                     lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id)
-                move_line.write({
+            move_line.write({
                     'product_uom_qty': sum(self.stock_production_lot_serial_ids.filtered(
                         lambda a: a.reserved_to_stock_picking_id.id == picking_id).mapped('display_weight'))
-                })
+            })
 
     def add_selection_serial(self, picking_id):
         picking = self.env['stock.picking'].sudo().search([('id', '=', picking_id)])
