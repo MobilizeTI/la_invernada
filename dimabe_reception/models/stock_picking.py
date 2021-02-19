@@ -414,6 +414,9 @@ class StockPicking(models.Model):
                 for item in self.dispatch_line_ids:
                     report = self.env.ref('dimabe_export_order.action_packing_list').render_qweb_pdf(self.id)
                     if self.id == item.dispatch_id.id:
+                        item.dispatch_id.write({
+                            'packing_list_file': base64.b64encode(report[0])
+                        })
                         continue
                     self.clean_reserved(item.dispatch_id)
                     move_line = self.env['stock.move.line'].create({
