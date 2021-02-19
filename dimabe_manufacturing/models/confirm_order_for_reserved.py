@@ -24,7 +24,7 @@ class ConfirmOrderForReserved(models.TransientModel):
             lambda a: a.dispatch_id.id == self.picking_id.id and self.sale_id.id)
         line.filtered(lambda a: a.dispatch_id.id == self.picking_id.id).write({
             'real_dispatch_qty': sum(self.lot_id.stock_production_lot_serial_ids.filtered(
-                lambda a: a.reserved_to_stock_picking_id.id == self.picking_principal_id.id).mapped('display_weight'))
+                lambda a: a.reserved_to_stock_picking_id.id == self.picking_principal_id.id and a.reserved_to_stock_picking_id.sale_id.id == self.sale_id.id).mapped('display_weight'))
         })
         self.env['stock.move.line'].create({
             'move_id': self.picking_principal_id.move_ids_without_package.filtered(
