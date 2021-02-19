@@ -32,6 +32,7 @@
     'data': [
         'security/ir.model.access.csv',
         'data/update_data_from_upgrade.xml',
+        'views/confirm_order_reserved.xml',
         'views/mrp_workorder.xml',
         'views/stock_production_lot_serial.xml',
         'views/stock_production_lot.xml',

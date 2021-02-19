@@ -615,6 +615,25 @@ class StockProductionLot(models.Model):
         picking = self.env['stock.picking'].search([('id', '=', picking_id)])
         if picking.is_multiple_dispatch:
             line = picking.dispatch_line_ids.filtered(lambda a: (a.product_id.id == self.product_id.id and a.sale_id.id == self.sale_order_id.id) or a.product_id.id == self.product_id.id)
+            if len(line) > 1:
+                view = self.env.ref('dimabe_manufacturing.view_confirm_order_reserved')
+                wiz = self.env['confirm.order.reserved'].create({
+                    'sale_ids':line.mapped('sale_id'),
+                    'lot_id':self.id,
+                    'picking_id':picking_id
+                })
+                return {
+                    'name':'Seleccionar despacho para reservar',
+                    'type':'ir.actions.act_window',
+                    'view_type':'form',
+                    'view_mode':'form',
+                    'res_model':'confirm.order.reserved',
+                    'views':[(view.id,'form')],
+                    'view_id':view.id,
+                    'target':'new',
+                    'res_id':wiz.id,
+                    'context':self.env.context
+                }
             if self.pallet_ids.filtered(lambda a: a.add_picking):
                 self.add_selection_pallet(line.dispatch_id.id)
             if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
