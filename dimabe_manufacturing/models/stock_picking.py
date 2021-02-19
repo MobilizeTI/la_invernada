@@ -200,6 +200,15 @@ class StockPicking(models.Model):
                 'remove_picking': False
             })
         for lot in lots:
+            quant = self.env['stock.quant'].search([('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal')])
+
+            quant.write({
+                'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                                                                                          x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
+                    'display_weight')),
+                'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
+                    lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight'))
+            })
             line = self.env['custom.dispatch.line'].search([('dispatch_id.id', '=', self.id)])
             line.write({
                 'real_dispatch_qty': sum(lot.stock_production_lot_serial_ids.filtered(
