@@ -13,9 +13,9 @@ class ConfirmOrderForReserved(models.TransientModel):
     lot_id = fields.Many2one('stock.production.lot','Lote')
 
     @api.one
-    def _reserved(self,no_reserved=True):
+    def reserved(self,no_reserved=True):
         raise models.ValidationError('Prueba')
 
     @api.one
-    def _cancel(self):
+    def cancel(self):
         raise models.ValidationError('Prueba Cancelar')

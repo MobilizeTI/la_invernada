@@ -618,7 +618,7 @@ class StockProductionLot(models.Model):
             if len(line) > 1:
                 view = self.env.ref('dimabe_manufacturing.view_confirm_order_reserved')
                 wiz = self.env['confirm.order.reserved'].create({
-                    'sale_ids':line.mapped('sale_id'),
+                    'sale_ids':[(4,s.id) for s in line.mapped('sale_id')],
                     'lot_id':self.id,
                     'picking_id':picking_id
                 })
