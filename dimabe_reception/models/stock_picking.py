@@ -412,11 +412,8 @@ class StockPicking(models.Model):
             })
             if self.is_multiple_dispatch:
                 for item in self.dispatch_line_ids:
-                    report = self.env.ref('dimabe_export_order.report_packing_list')
-                    ctx = self.env.context.copy()
-                    ctx['flag'] = True
-                    pdf = report.with_context(ctx).render_qweb_pdf(self.id)
-                    raise models.ValidationError(pdf)
+                    report = self.env.ref('dimabe_export_order.report_packing_list').render_qweb_pdf(self.id)
+                    raise models.ValidationError(report)
                     if self.id == item.dispatch_id.id:
                         continue
                     self.clean_reserved(item.dispatch_id)
