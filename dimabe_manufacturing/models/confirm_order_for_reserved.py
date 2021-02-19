@@ -29,7 +29,7 @@ class ConfirmOrderForReserved(models.TransientModel):
         self.env['stock.move.line'].create({
             'move_id': self.picking_principal_id.move_ids_without_package.filtered(
                 lambda a: a.product_id.id == self.lot_id.product_id.id).id,
-            'picking_id': self.picking_id.id,
+            'picking_id': self.picking_principal_id.id,
             'product_id': self.lot_id.product_id.id,
             'product_uom_qty': line.real_dispatch_qty,
             'lot_id': self.lot_id.id,
