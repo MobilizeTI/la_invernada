@@ -3,7 +3,7 @@ from odoo.addons import decimal_precision as dp
 from datetime import datetime, date
 import requests
 import json
-
+import base64
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
@@ -413,7 +413,7 @@ class StockPicking(models.Model):
             if self.is_multiple_dispatch:
                 for item in self.dispatch_line_ids:
                     report = self.env.ref('dimabe_export_order.action_packing_list').render_qweb_pdf(self.id)
-                    raise models.ValidationError(report[0])
+                    raise models.ValidationError(base64.b64encode(report[0]))
                     if self.id == item.dispatch_id.id:
                         continue
                     self.clean_reserved(item.dispatch_id)
