@@ -435,20 +435,6 @@ class StockPicking(models.Model):
                         'qty_delivered': item.real_dispatch_qty
                     })
                     self.clean_reserved(item.dispatch_id)
-                    self.env['stock.move.line'].create({
-                        'move_id': item.dispatch_id.move_ids_without_package.filtered(
-                            lambda a: a.product_id.id == item.product_id.id).id,
-                        'picking_id': item.dispatch_id.id,
-                        'state': 'done',
-                        'product_id': item.product_id.id,
-                        'qty_done': item.real_dispatch_qty,
-                        'lot_id': self.move_line_ids_without_package.filtered(
-                            lambda a: a.sale_order_id.id == item.sale_id.id or a.product_id.id == item.product_id.id).lot_id.id,
-                        'product_uom_id': item.product_id.uom_id.id,
-                        'location_id': item.dispatch_id.location_id.id,
-                        'location_dest_id': item.dispatch_id.partner_id.property_stock_customer.id,
-                        'date': date.today()
-                    })
             return super(StockPicking, self).button_validate()
         return super(StockPicking, self).button_validate()
 
