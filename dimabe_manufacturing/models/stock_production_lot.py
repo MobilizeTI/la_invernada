@@ -467,7 +467,7 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def add_to_packing_list(self):
-        picking_id = int(self.env.context['dispatch_id'])
+        picking_id = int(self.env.context['stock_picking_id'])
         self.pallet_ids.write({
             'add_picking': True
         })
