@@ -4,7 +4,7 @@ from odoo import models,fields,api
 class ConfirmOrderForReserved(models.TransientModel):
     _name ='confirm.order.reserved'
 
-    sale_ids = fields.Many2many('sale.order','Ordenes para filtro')
+    sale_ids = fields.Many2many('sale.order')
 
     sale_id = fields.Many2one('sale.order','Order')
 
