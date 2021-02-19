@@ -415,7 +415,7 @@ class StockPicking(models.Model):
                     view = self.env.ref('dimabe_manufacturing.view_principal_order')
                     wiz = self.env['confirm.principal.order'].create({
                         'sale_ids': [(4, s.id) for s in self.dispatch_line_ids.mapped('sale_id')],
-                        'picking_id': sel.id
+                        'picking_id': self.id
                     })
                     return {
                         'name': 'Desea que todos los documentos se carguen con el # de pedido principal?',
