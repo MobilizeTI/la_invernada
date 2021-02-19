@@ -639,7 +639,7 @@ class StockProductionLot(models.Model):
             if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
                 self.add_selection_serial(line.dispatch_id.id)
             line.write({
-                'real_dispatch_qty':sum(self.lot_id.stock_production_lot_serial_ids.filtered(
+                'real_dispatch_qty':sum(self.stock_production_lot_serial_ids.filtered(
                         lambda a: a.reserved_to_stock_picking_id.id == line.dispatch_id.id).mapped('display_weight'))
             })
         else:
