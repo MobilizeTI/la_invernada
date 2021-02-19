@@ -412,11 +412,24 @@ class StockPicking(models.Model):
             })
             if self.is_multiple_dispatch:
                 for item in self.dispatch_line_ids:
-                    report = self.env.ref('dimabe_export_order.action_packing_list').render_qweb_pdf(self.id)
+                    view = self.env.ref('dimabe_manufacturing.view_principal_order')
+                    wiz = self.env['confirm.principal.order'].create({
+                        'sale_ids': [(4, s.id) for s in self.dispatch_line_ids.mapped('sale_id')],
+                        'picking_id': sel.id
+                    })
+                    return {
+                        'name': 'Desea que todos los documentos se carguen con el # de pedido principal?',
+                        'type': 'ir.actions.act_window',
+                        'view_type': 'form',
+                        'view_mode': 'form',
+                        'res_model': 'confirm.principal.order',
+                        'views': [(view.id, 'form')],
+                        'view_id': view.id,
+                        'target': 'new',
+                        'res_id': wiz.id,
+                        'context': self.env.context
+                    }
                     if self.id == item.dispatch_id.id:
-                        item.dispatch_id.write({
-                            'packing_list_file': base64.b64encode(report[0])
-                        })
                         continue
                     self.clean_reserved(item.dispatch_id)
                     move_line = self.env['stock.move.line'].create({
@@ -433,7 +446,6 @@ class StockPicking(models.Model):
                     })
                     item.dispatch_id.write({
                         'state': 'done',
-                        'packing_list_file':base64.b64encode(report[0])
                     })
                     move_line.sudo().write({
                         'state':'done'

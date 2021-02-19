@@ -15,5 +15,7 @@ class CustomDispatchLine(models.Model):
 
     real_dispatch_qty = fields.Float('Cantidad Real')
 
+    is_select = fields.Boolean('Pedido Principal')
+
 
 
