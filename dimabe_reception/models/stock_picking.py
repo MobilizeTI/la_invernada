@@ -412,33 +412,23 @@ class StockPicking(models.Model):
             })
             if self.is_multiple_dispatch:
                 for item in self.dispatch_line_ids:
-                    self.clean_reserved(item.dispatch_id)
-
-                    if not item.dispatch_id.move_line_ids_without_package.filtered(
-                            lambda a: a.product_id.id == item.product_id.id):
-                        self.env['stock.move.line'].create({
-                            'picking_id': item.dispatch_id.id,
-                            'product_id': item.product_id.id,
-                            'product_uom_id': item.product_id.uom_id.id,
-                            'lot_id': self.packing_list_lot_ids.filtered(
-                                lambda
-                                    a:(a.product_id.id == item.product_id.id and a.sale_order_id.id == item.sale_id.id) or a.product_id.id == item.product_id.id ).id,
-                            'product_uom_qty':item.real_dispatch_qty,
-                            'qty_done': item.real_dispatch_qty,
-                            'location_id': item.dispatch_id.location_id.id,
-                            'location_dest_id': item.dispatch_id.partner_id.property_stock_customer.id,
-                            'move_id': item.dispatch_id.move_ids_without_package.filtered(
-                                lambda a: a.product_id.id == item.product_id.id).id,
-                            'date': date.today()
-                        })
-                    else:
-                        line = item.dispatch_id.move_line_ids_without_package.filtered(
-                            lambda a: a.product_id.id == item.product_id.id)
-                        line.write({
-                            'product_uom_qty': item.real_dispatch_qty,
-                            'qty_done':item.real_dispatch_qty
-                        })
-                    return super(StockPicking,self).button_validate()
+                    item.dispatch_id.write({
+                        'state':'done'
+                    })
+                    item.sale_id.order_line.filtered(lambda a: a.product_id.id == item.product_id.id and a.order_id.id == item.sale_id.id).write({
+                        'qty_delivered':item.real_dispatch_qty
+                    })
+                    self.env['stock.move.line'].create({
+                        'move_id':item.dispatch_id.move_ids_without_package.filtered(lambda a: a.product_id.id == item.product_id.id).id,
+                        'picking_id':item.dispatch_id.id,
+                        'state':'done',
+                        'product_id':item.product_id.id,
+                        'qty_done':item.real_dispatch_qty,
+                        'product_uom_id':item.product_id.uom_id.id,
+                        'location_id':item.dispatch_id.location_id.id,
+                        'location_dest_id':item.dispatch_id.partner_id.property_stock_customer.id,
+                        'date':date.today()
+                    })
 
         return super(StockPicking, self).button_validate()
 

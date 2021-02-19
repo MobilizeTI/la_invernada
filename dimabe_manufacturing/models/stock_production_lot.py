@@ -614,35 +614,27 @@ class StockProductionLot(models.Model):
             raise models.UserError('No se a seleccionado nada')
         picking = self.env['stock.picking'].search([('id', '=', picking_id)])
         if picking.is_multiple_dispatch:
-            line = picking.dispatch_line_ids.filtered(lambda a: (a.product_id.id == self.product_id.id and a.sale_id.id == self.sale_order_id.id) or a.product_id.id == self.product_id.id)
+            line = picking.dispatch_line_ids.filtered(lambda a: (
+                                                                            a.product_id.id == self.product_id.id and a.sale_id.id == self.sale_order_id.id) or a.product_id.id == self.product_id.id)
             if len(line) > 1:
                 view = self.env.ref('dimabe_manufacturing.view_confirm_order_reserved')
                 wiz = self.env['confirm.order.reserved'].create({
-                    'sale_ids':[(4,s.id) for s in line.mapped('sale_id')],
-                    'lot_id':self.id,
-                    'picking_principal_id':picking_id
+                    'sale_ids': [(4, s.id) for s in line.mapped('sale_id')],
+                    'lot_id': self.id,
+                    'picking_principal_id': picking_id
                 })
                 return {
-                    'name':'Seleccionar despacho para reservar',
-                    'type':'ir.actions.act_window',
-                    'view_type':'form',
-                    'view_mode':'form',
-                    'res_model':'confirm.order.reserved',
-                    'views':[(view.id,'form')],
-                    'view_id':view.id,
-                    'target':'new',
-                    'res_id':wiz.id,
-                    'context':self.env.context
+                    'name': 'Seleccionar despacho para reservar',
+                    'type': 'ir.actions.act_window',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'res_model': 'confirm.order.reserved',
+                    'views': [(view.id, 'form')],
+                    'view_id': view.id,
+                    'target': 'new',
+                    'res_id': wiz.id,
+                    'context': self.env.context
                 }
-            if self.pallet_ids.filtered(lambda a: a.add_picking):
-                self.add_selection_pallet(line.dispatch_id.id)
-            if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
-                self.add_selection_serial(line.dispatch_id.id)
-            line.write({
-                'real_dispatch_qty':sum(self.stock_production_lot_serial_ids.filtered(
-                        lambda a: a.reserved_to_stock_picking_id.id == line.dispatch_id.id).mapped('display_weight'))
-            })
-        else:
             if self.pallet_ids.filtered(lambda a: a.add_picking):
                 self.add_selection_pallet(picking_id)
             if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
