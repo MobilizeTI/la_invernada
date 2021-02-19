@@ -620,7 +620,7 @@ class StockProductionLot(models.Model):
                 wiz = self.env['confirm.order.reserved'].create({
                     'sale_ids':[(4,s.id) for s in line.mapped('sale_id')],
                     'lot_id':self.id,
-                    'picking_id':picking_id
+                    'picking_principal_id':picking_id
                 })
                 return {
                     'name':'Seleccionar despacho para reservar',
