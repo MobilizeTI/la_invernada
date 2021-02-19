@@ -14,7 +14,8 @@ class ConfirmOrderForReserved(models.TransientModel):
 
     @api.one
     def reserved(self,no_reserved=True):
-        raise models.ValidationError('Prueba')
+        pallet = self.lot_id.pallet_ids.filtered(lambda a: a.add_picking)
+        raise models.UserError(pallet)
 
     @api.one
     def cancel(self):
