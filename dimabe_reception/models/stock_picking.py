@@ -412,6 +412,11 @@ class StockPicking(models.Model):
             })
             if self.is_multiple_dispatch:
                 for item in self.dispatch_line_ids:
+                    report = self.env.ref('dimabe_export_order.report_packing_list')
+                    ctx = self.env.context.copy()
+                    ctx['flag'] = True
+                    pdf = report.with_context(ctx).render_qweb_pdf(self.id)
+                    raise models.ValidationError(pdf)
                     if self.id == item.dispatch_id.id:
                         continue
                     self.clean_reserved(item.dispatch_id)
@@ -427,6 +432,11 @@ class StockPicking(models.Model):
                         'location_dest_id': item.dispatch_id.partner_id.property_stock_customer.id,
                         'date': date.today()
                     })
+                    report = self.env.ref('dimabe_export_order.report_packing_list')
+                    ctx = self.env.context.copy()
+                    ctx['flag'] = True
+                    pdf = report.with_context(ctx).render_qweb_pdf(self.id)
+                    raise models.ValidationError(pdf)
                     item.dispatch_id.write({
                         'state': 'done'
                     })
