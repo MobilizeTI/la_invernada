@@ -3,6 +3,7 @@ from odoo.exceptions import UserError, ValidationError
 from odoo.addons import decimal_precision as dp
 from odoo.tools.float_utils import float_compare, float_is_zero
 
+
 class StockQuant(models.Model):
     _inherit = 'stock.quant'
 
@@ -32,7 +33,6 @@ class StockQuant(models.Model):
 
     lot_balance = fields.Float('Stock Disponible', related='lot_id.balance')
 
-
     @api.multi
     def _compute_total_reserved(self):
         for item in self:
@@ -44,7 +44,8 @@ class StockQuant(models.Model):
             ).mapped('display_weight'))
 
     @api.model
-    def _update_reserved_quantity(self, product_id, location_id, quantity, lot_id=None, package_id=None, owner_id=None, strict=False):
+    def _update_reserved_quantity(self, product_id, location_id, quantity, lot_id=None, package_id=None, owner_id=None,
+                                  strict=False):
         """ Increase the reserved quantity, i.e. increase `reserved_quantity` for the set of quants
         sharing the combination of `product_id, location_id` if `strict` is set to False or sharing
         the *exact same characteristics* otherwise. Typically, this method is called when reserving
@@ -59,21 +60,25 @@ class StockQuant(models.Model):
         quantity = quantity * -1
         self = self.sudo()
         rounding = product_id.uom_id.rounding
-        quants = self._gather(product_id, location_id, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=strict)
+        quants = self._gather(product_id, location_id, lot_id=lot_id, package_id=package_id, owner_id=owner_id,
+                              strict=strict)
         reserved_quants = []
 
         if float_compare(quantity, 0, precision_rounding=rounding) > 0:
             # if we want to reserve
-            available_quantity = self._get_available_quantity(product_id, location_id, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=strict)
+            available_quantity = self._get_available_quantity(product_id, location_id, lot_id=lot_id,
+                                                              package_id=package_id, owner_id=owner_id, strict=strict)
             if float_compare(quantity, available_quantity, precision_rounding=rounding) > 0:
                 raise UserError(_(f'first if available_quantity {available_quantity} Quantity {quantity}'))
-                raise UserError(_('It is not possible to reserve more products of %s than you have in stock.') % product_id.display_name)
+                raise UserError(_(
+                    'It is not possible to reserve more products of %s than you have in stock.') % product_id.display_name)
         elif float_compare(quantity, 0, precision_rounding=rounding) < 0:
             # if we want to unreserve
             available_quantity = sum(quants.mapped('reserved_quantity'))
             raise UserError(_(f'second if available_quantity {available_quantity} Quantity {quantity}'))
             if float_compare(abs(quantity), available_quantity, precision_rounding=rounding) > 0:
-                raise UserError(_('It is not possible to unreserve more products of %s than you have in stock.') % product_id.display_name)
+                raise UserError(_(
+                    'It is not possible to unreserve more products of %s than you have in stock.') % product_id.display_name)
         else:
             return reserved_quants
 
@@ -94,6 +99,7 @@ class StockQuant(models.Model):
                 quantity += max_quantity_on_quant
                 available_quantity += max_quantity_on_quant
 
-            if float_is_zero(quantity, precision_rounding=rounding) or float_is_zero(available_quantity, precision_rounding=rounding):
+            if float_is_zero(quantity, precision_rounding=rounding) or float_is_zero(available_quantity,
+                                                                                     precision_rounding=rounding):
                 break
         return reserved_quants
