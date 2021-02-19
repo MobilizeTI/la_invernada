@@ -32,6 +32,7 @@ class ConfirmOrderForReserved(models.TransientModel):
             'picking_id': self.picking_principal_id.id,
             'product_id': self.lot_id.product_id.id,
             'product_uom_qty': line.real_dispatch_qty,
+            'sale_order_id':self.sale_id.id,
             'lot_id': self.lot_id.id,
             'product_uom_id': self.lot_id.product_id.uom_id.id,
             'location_id': self.picking_principal_id.location_id.id,
