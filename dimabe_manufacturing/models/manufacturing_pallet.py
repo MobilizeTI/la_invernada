@@ -74,7 +74,7 @@ class ManufacturingPallet(models.Model):
     lot_available_serial_ids = fields.One2many(
         'stock.production.lot.serial',
         'pallet_id',
-        domain=['|', ('consumed', '=', False), ('reserved_to_stock_picking_id', '=', None)]
+        domain=[('reserved_to_stock_picking_id', '=', None)]
     )
 
     total_content = fields.Integer(

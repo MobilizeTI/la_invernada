@@ -418,6 +418,7 @@ class StockPicking(models.Model):
                     item.sale_id.order_line.filtered(lambda a: a.product_id.id == item.product_id.id and a.order_id.id == item.sale_id.id).write({
                         'qty_delivered':item.real_dispatch_qty
                     })
+                    self.clean_reserved(item.dispatch_id)
                     self.env['stock.move.line'].create({
                         'move_id':item.dispatch_id.move_ids_without_package.filtered(lambda a: a.product_id.id == item.product_id.id).id,
                         'picking_id':item.dispatch_id.id,
