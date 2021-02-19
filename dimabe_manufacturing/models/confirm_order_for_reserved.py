@@ -31,7 +31,7 @@ class ConfirmOrderForReserved(models.TransientModel):
                 lambda a: a.product_id.id == self.lot_id.product_id.id).id,
             'picking_id': self.picking_id.id,
             'product_id': self.lot_id.product_id.id,
-            'qty_done': line.real_dispatch_qty,
+            'product_uom_qty': line.real_dispatch_qty,
             'lot_id': self.lot_id.id,
             'product_uom_id': self.lot_id.product_id.uom_id.id,
             'location_id': self.picking_principal_id.location_id.id,
