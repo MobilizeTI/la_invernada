@@ -130,7 +130,7 @@ class ManufacturingPallet(models.Model):
     @api.multi
     def compute_total_reserved_serial(self):
         for item in self:
-            models._logger.error(f'{self.env.context["active_model]}')
+            models._logger.error(f'{self.env.context["active_model"]}')
             item.total_reserved_serial = len(item.lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id))
 
     @api.multi
