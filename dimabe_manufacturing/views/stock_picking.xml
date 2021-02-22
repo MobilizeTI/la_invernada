@@ -67,7 +67,7 @@
                         </page>
                         <page string="Pallets Reservados">
                             <group>
-                                <field name="assigned_pallet_ids">
+                                <field name="assigned_pallet_ids" context="{'picking_id':parent.id}">
                                     <tree editable="bottom" edit="true" delete="false" create="false">
                                         <field name="remove_picking"/>
                                         <field name="name" readonly="1"/>
