@@ -41,7 +41,7 @@
                                     <field name="booking_number" readonly="1"/>
                                     <field name="bl_number" readonly="1"/>
                                     <field name="container_number"
-                                           placeholder="Ingrese número de contenedor" readonly="1"/>
+                                           placeholder="Ingrese número de contenedor"/>
                                     <field name="container_type"
                                            placeholder="Seleccione el tipo de contenedor" readonly="1"/>
                                 </group>
