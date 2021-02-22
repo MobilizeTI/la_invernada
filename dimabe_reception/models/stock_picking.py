@@ -415,7 +415,8 @@ class StockPicking(models.Model):
                     view = self.env.ref('dimabe_manufacturing.view_principal_order')
                     wiz = self.env['confirm.principal.order'].create({
                         'sale_ids': [(4, s.id) for s in self.dispatch_line_ids.mapped('sale_id')],
-                        'picking_id': self.id
+                        'picking_id': self.id,
+                        'picking_ids': [(4,p.id) for p in self.dispatch_line_ids.mapped('dispatch_id')]
                     })
                     return {
                         'name': 'Desea que todos los documentos se carguen con el # de pedido principal?',
@@ -454,8 +455,6 @@ class StockPicking(models.Model):
                         lambda a: a.product_id.id == item.product_id.id and a.order_id.id == item.sale_id.id).write({
                         'qty_delivered': item.real_dispatch_qty
                     })
-
-            return super(StockPicking, self).button_validate()
         return super(StockPicking, self).button_validate()
 
     def clean_reserved(self, picking):

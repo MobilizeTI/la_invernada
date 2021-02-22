@@ -10,22 +10,11 @@ class ConfirmPrincipalOrde(models.TransientModel):
 
     picking_id = fields.Many2one('stock.picking')
 
+    picking_ids = fields.Many2many('stock.picking')
+
     @api.one
     def select(self):
-        self.picking_id.dispatch_line_ids.filtered(lambda a: a.sale_id.id == self.sale_id.id).write({
-            'is_select':True
-        })
-        for item in self.picking_id.dispatch_line_ids:
-            item.dispatch_id.write({
-                'consignee_id':self.picking_id.consignee_id,
-                'notify_ids':[(4, n.id) for n in self.picking_id.notify_ids]
-            })
-        report = self.env.ref('dimabe_export_order.action_packing_list').render_qweb_pdf(self.picking_id.dispatch_line_ids.filtered(lambda a: a.is_select).dispatch_id.id)
-        for item in self.picking_id.dispatch_line_ids:
-
-            item.dispatch_id.write({
-                'packing_list_file':base64.b64encode(report[0])
-            })
+        raise models.ValidationError(f'Picking_ids {self.picking_ids}')
 
     @api.one
     def cancel(self):
