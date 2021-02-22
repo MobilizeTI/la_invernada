@@ -468,10 +468,10 @@ class StockProductionLot(models.Model):
     @api.multi
     def add_to_packing_list(self):
         picking_id = int(self.env.context['stock_picking_id'])
-        self.pallet_ids.write({
+        self.pallet_ids.filtered(lambda a: not a.reserved_to_stock_picking_id).write({
             'add_picking': True
         })
-        self.stock_production_lot_serial_ids.write({
+        self.stock_production_lot_serial_ids.filtered(lambda a: not a.reserved_to_stock_picking_id).write({
             'to_add': True
         })
         if self.pallet_ids.filtered(lambda a: a.add_picking):
