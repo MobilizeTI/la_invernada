@@ -113,7 +113,7 @@ class StockPicking(models.Model):
             if not self.dispatch_id:
                 raise models.ValidationError('No se selecciono ningun despacho')
             if self.dispatch_id in self.dispatch_line_ids.mapped('dispatch_id'):
-                raise models.ValidationError(f'El despacho {self.dispatch_id.name} ya se encuentra agregado')
+                raise models.ValidationError('El despacho {} ya se encuentra agregado'.format(self.dispatch_id.id))
             for product in self.dispatch_id.move_ids_without_package:
                 self.env['custom.dispatch.line'].create({
                     'dispatch_real_id': self.id,

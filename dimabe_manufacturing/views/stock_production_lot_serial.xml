@@ -66,6 +66,5 @@
             <field name="view_id" ref="stock_production_lot_serial_process_in_form_view"/>
             <field name="view_mode">tree,form</field>
         </record>
-        <menuitem id="stock_production_lot_serial_menu" name="Series" parent="stock_report_menu" action="stock_production_lot_serial_action" groups="base.group_no_one"/>
     </data>
 </odoo>

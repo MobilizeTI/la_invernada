@@ -130,12 +130,12 @@ class ManufacturingPallet(models.Model):
     @api.multi
     def compute_total_reserved_serial(self):
         for item in self:
+            models._logger.error(f'{self.env.context}')
             item.total_reserved_serial = len(item.lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id))
 
     @api.multi
     def compute_total_reserved_weight(self):
         for item in self:
-            models._logger.error(f' Keys {self.env.context.keys()} Valor {self.env.context.values()}')
             item.total_reserved_weight = sum(item.lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id).mapped('display_weight'))
 
     @api.multi
