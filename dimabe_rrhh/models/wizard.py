@@ -8,6 +8,8 @@ from datetime import datetime
 import xlsxwriter
 from dateutil import relativedelta
 from odoo import api, fields, models
+from collections import Counter
+
 
 
 class WizardHrPaySlip(models.TransientModel):
@@ -77,35 +79,67 @@ class WizardHrPaySlip(models.TransientModel):
         file_name = 'temp'
         workbook = xlsxwriter.Workbook(file_name)
         worksheet = workbook.add_worksheet(self.company_id.name)
+        number_format=workbook.add_format({'num_format': '#,###'})
         indicadores = self.env['hr.indicadores'].sudo().search([('name', '=', f'{self.month} {self.years}')])
         if not indicadores:
             raise models.ValidationError(f'No existen datos del mes de {self.month} {self.years}')
         if indicadores.state != 'done':
             raise models.ValidationError(
                 f'Los indicadores provicionales del mes de {indicadores.name} no se encuentran validados')
-        row = 0
+        row = 13
         col = 0
         payslips = self.env['hr.payslip'].sudo().search(
-            [('indicadores_id', '=', indicadores.id), ('state', 'in', ['done', 'draft'])])
+            [('indicadores_id', '=', indicadores.id), ('state', 'in', ['done', 'draft']),('employee_id.address_id.id','=',self.company_id.id), ('name', 'not like', 'Devolución:')])
+
+
+        totals = self.env['hr.payslip.line'].sudo().search([('slip_id', 'in', payslips.mapped('id'))]).filtered(
+            lambda a: a.total > 0)
+
+        totals_result = []
+        payslips = totals.mapped('slip_id')
+        bold_format = workbook.add_format({'bold': True})
+        worksheet.write(0, 0, self.company_id.name,bold_format)
+        worksheet.write(1,0, 'PROCESO Y COMERCIALIZACION DE NUECES', bold_format)
+        worksheet.write(2,0, self.company_id.street, bold_format)
+        worksheet.write(3,0, self.company_id.city, bold_format)
+        worksheet.write(4,0, self.company_id.country_id.name, bold_format)
+        worksheet.write(5,0, self.company_id.company_id.invoice_rut, bold_format)
+        worksheet.write(6,0, 'Fecha Informe : '+datetime.today().strftime('%d-%m-%Y'), bold_format)
+        worksheet.write(7,0, self.month, bold_format)
+        worksheet.write(8,0, 'Fichas : Todas', bold_format)
+        worksheet.write(9,0, 'Area de Negocio : Todas las Areas de Negocios', bold_format)
+        worksheet.write(10,0, 'Centro de Costo : Todos los Centros de Costos', bold_format)
+        worksheet.write(11,0, 'Total Trabajadores : '+ str(len(payslips)), bold_format)
         for pay in payslips:
-            if pay.employee_id.address_id.id != self.company_id.id:
-                continue
-            rules = self.env['hr.salary.rule'].search([('id', 'in', pay.struct_id.rule_ids.mapped('id'))],
+            rules = self.env['hr.salary.rule'].search([('id', 'in', totals.mapped('salary_rule_id').mapped('id'))],
                                                       order='order_number')
             col = 0
+
             worksheet.write(row, col, pay.employee_id.display_name)
-            worksheet.write(0, 0, 'Nombre:')
+            worksheet.write(12, 0, 'Nombre', bold_format)
             long_name = max(payslips.mapped('employee_id').mapped('display_name'), key=len)
             worksheet.set_column(row, col, len(long_name))
             col += 1
-            worksheet.write(0, 1, 'Rut:')
+            worksheet.write(12, 1, 'Rut', bold_format)
             worksheet.write(row, col, pay.employee_id.identification_id)
             long_rut = max(payslips.mapped('employee_id').mapped('identification_id'), key=len)
             worksheet.set_column(row, col, len(long_rut))
             col += 1
-            worksheet.write(0, 2, 'Centro de Costo:')
+            worksheet.write(12, 2, 'N° Centro de Costo', bold_format)
             if pay.account_analytic_id:
-                worksheet.write(row, col, pay.account_analytic_id)
+                worksheet.write(row, col, pay.account_analytic_id.code)
+            elif pay.contract_id.department_id.analytic_account_id:
+                worksheet.write(row, col, pay.contract_id.department_id.analytic_account_id.code)
+            else:
+                worksheet.write(row, col, '')
+            long_const = max(
+                payslips.mapped('contract_id').mapped('department_id').mapped('analytic_account_id').mapped('name'),
+                key=len)
+            worksheet.set_column(row, col, len(long_const))
+            col += 1
+            worksheet.write(12, 3, 'Centro de Costo:', bold_format)
+            if pay.account_analytic_id:
+                worksheet.write(row, col, pay.account_analytic_id.name)
             elif pay.contract_id.department_id.analytic_account_id:
                 worksheet.write(row, col, pay.contract_id.department_id.analytic_account_id.name)
             else:
@@ -115,44 +149,70 @@ class WizardHrPaySlip(models.TransientModel):
                 key=len)
             worksheet.set_column(row, col, len(long_const))
             col += 1
-            worksheet.write(0, 3, 'Dias Trabajados:')
+            worksheet.write(12, 4, 'Dias Trabajados:', bold_format)
             worksheet.write(row, col, self.get_dias_trabajados(pay))
+            col += 1
+            worksheet.write(12, col, 'Cant. Horas Extras', bold_format)
+            worksheet.write(row, col, self.get_qty_extra_hours(payslip=pay))
+            totals_result.append({col : self.get_qty_extra_hours(payslip=pay)})
             col += 1
             for rule in rules:
                 if not rule.show_in_book:
                     continue
+                if not totals.filtered(lambda a: a.salary_rule_id.id == rule.id):
+                    continue
                 if rule.code == 'HEX50':
-                    worksheet.write(0, col, 'Cant. Horas Extras')
-                    worksheet.write(row, col, self.get_qty_extra_hours(payslip=pay))
-                    col += 1
-                    worksheet.write(0, col, 'Monto Horas Extras')
-                    worksheet.write(row, col, self.env["hr.payslip.line"].sudo().search(
-                        [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total)
+                    worksheet.write(12, col, 'Valor Horas Extras', bold_format)
+                    total_amount = self.env["hr.payslip.line"].sudo().search(
+                        [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
+                    worksheet.write(row, col, total_amount,number_format)
+                    totals_result.append({col : total_amount})
                 elif rule.code == 'HEXDE':
-                    worksheet.write(0, col, 'Cant. Horas Descuentos')
+                    worksheet.write(12, col, 'Cant. Horas Descuentos', bold_format)
                     worksheet.write(row, col, self.get_qty_discount_hours(payslip=pay))
+                    totals_result.append({col : self.get_qty_discount_hours(payslip=pay)})
                     col += 1
-                    worksheet.write(0, col, 'Monto Horas Descuentos')
-                    worksheet.write(row, col, self.env["hr.payslip.line"].sudo().search(
-                        [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total)
+                    worksheet.write(12, col, 'Monto Horas Descuentos', bold_format)
+                    total_amount = self.env["hr.payslip.line"].sudo().search(
+                        [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
+                    worksheet.write(row, col,total_amount,number_format)
+                    totals_result.append({col : total_amount})
                 else:
-                    worksheet.write(0, col, rule.name.capitalize())
-                    worksheet.write(row, col, self.env["hr.payslip.line"].sudo().search(
-                        [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total)
+                    total_amount = self.env["hr.payslip.line"].sudo().search(
+                        [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
+                    worksheet.write(12, col, rule.name, bold_format)
+                    worksheet.write(row, col,total_amount,number_format)
+                    totals_result.append({col : total_amount})
                 col += 1
             col = 0
             row += 1
+        counter = Counter()
+        for item in totals_result:
+            counter.update(item)
+        total_dict = dict(counter)
+        worksheet.write(row, 0, 'Totales',bold_format)
+        number_bold_format = workbook.add_format({'num_format': '#,###', 'bold': True})
+        for k in total_dict:
+            worksheet.write(row, k,total_dict[k],number_bold_format)
+        col = 0
+        row += 1
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
-        self.env[self._name].create({
-            'report': file_base64,
-            'report_name': f'Libro de Remuneraciones {self.company_id.name}'
+
+        file_name = 'Libro de Remuneraciones {}'.format(indicadores.name)
+        attachment_id = self.env['ir.attachment'].sudo().create({
+            'name': file_name,
+            'datas_fname': file_name,
+            'datas': file_base64
         })
-        self.write({'report': file_base64, 'report_name': 'Libro de Remuneraciones {}'.format(indicadores.name)})
-        return {
-            'type': 'ir.actions.do_nothing'
+
+        action = {
+            'type': 'ir.actions.act_url',
+            'url': '/web/content/{}?download=true'.format(attachment_id.id, ),
+            'target': 'current',
         }
+        return action
 
     @api.multi
     def generate_centralization(self):
@@ -595,9 +655,9 @@ class WizardHrPaySlip(models.TransientModel):
                              payslip.contract_id.afp_id.codigo if payslip.contract_id.afp_id.codigo else "00",
                              # 27
                              str(round(float(self.get_imponible_afp_2(payslip and payslip[0] or False,
-                                                                self.get_payslip_lines_value_2(payslip, 'TOTIM'),
-                                                                self.get_payslip_lines_value_2(payslip,
-                                                                                               'IMPLIC'))))),
+                                                                      self.get_payslip_lines_value_2(payslip, 'TOTIM'),
+                                                                      self.get_payslip_lines_value_2(payslip,
+                                                                                                     'IMPLIC'))))),
                              # AFP SIS APV 0 0 0 0 0 0
                              # 28
                              str(round(float(self.get_payslip_lines_value_2(payslip, 'PREV')))),
@@ -694,7 +754,7 @@ class WizardHrPaySlip(models.TransientModel):
                                              payslip.indicadores_id.tope_imponible_ips) if self.get_payslip_lines_value_2(
                                  payslip,
                                  'TOTIM') else "0",
-                             # 65 Cotizacion Obligatoria IPS                
+                             # 65 Cotizacion Obligatoria IPS
                              "0",
                              # 66 Renta Imponible Desahucio
                              "0",
@@ -793,7 +853,9 @@ class WizardHrPaySlip(models.TransientModel):
                              self.get_imponible_mutual(payslip and payslip[0] or False,
                                                        self.get_payslip_lines_value_2(payslip, 'TOTIM')),
                              # 98 Cotizacion Accidente del Trabajo
-                             str(round(float(self.get_payslip_lines_value_2(payslip, 'MUT')))) if self.get_payslip_lines_value_2(payslip, 'MUT') else "0",
+                             str(round(float(
+                                 self.get_payslip_lines_value_2(payslip, 'MUT')))) if self.get_payslip_lines_value_2(
+                                 payslip, 'MUT') else "0",
                              # 99 Codigo de Sucursal (Uso Futuro)
                              "0",
                              # 10- Datos Administradora de Seguro de Cesantia
@@ -801,7 +863,9 @@ class WizardHrPaySlip(models.TransientModel):
                                                                 self.get_payslip_lines_value_2(payslip, 'TOTIM'),
                                                                 self.get_payslip_lines_value_2(payslip, 'IMPLIC')),
                              # 101 Aporte Trabajador Seguro Cesantia
-                             str(round(float(self.get_payslip_lines_value_2(payslip, 'SECE')))) if self.get_payslip_lines_value_2(payslip, 'SECE') else "0",
+                             str(round(float(
+                                 self.get_payslip_lines_value_2(payslip, 'SECE')))) if self.get_payslip_lines_value_2(
+                                 payslip, 'SECE') else "0",
                              # 102 Aporte Empleador Seguro Cesantia
                              str(self.verify_quotation_afc(
                                  self.get_imponible_seguro_cesantia(payslip and payslip[0] or False,
@@ -819,16 +883,19 @@ class WizardHrPaySlip(models.TransientModel):
                              # str(float(self.get_cost_center(payslip.contract_id))).split('.')[0],
                              ]
             writer.writerow([str(l) for l in line_employee])
-        self.env[self._name].sudo().create({'file_data': base64.encodebytes(output.getvalue().encode()),
-                                            'file_name': "Previred_{}{}.txt".format(self.date_to,
-                                                                                    self.company_id.display_name.replace(
-                                                                                        '.', '')),
-                                            })
-        self.write({'file_data': base64.encodebytes(output.getvalue().encode()),
-                    'file_name': "Previred_{}{}.txt".format(self.date_to,
-                                                            self.company_id.display_name.replace('.', '')),
-                    })
 
-        return {
-            "type": "ir.actions.do_nothing",
+        # registrar en ir.attachment
+        file_name = "Previred_{}{}.txt".format(self.date_to,
+                                               self.company_id.display_name.replace('.', ''))
+        attachment_id = self.env['ir.attachment'].sudo().create({
+            'name': file_name,
+            'datas_fname': file_name,
+            'datas': base64.encodebytes(output.getvalue().encode())
+        })
+
+        action = {
+            'type': 'ir.actions.act_url',
+            'url': '/web/content/{}?download=true'.format(attachment_id.id, ),
+            'target': 'self',
         }
+        return action
