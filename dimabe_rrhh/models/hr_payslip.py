@@ -26,8 +26,7 @@ class HrPayslip(models.Model):
 
     total_imp = fields.Float('Total Imp. Anterior')
 
-    account_analytic_id = fields.Char('Centro de Costo',readonly=True)
-
+    account_analytic_id = fields.Many2one('account.analytic.account', 'Centro de Costo', readonly=True)
 
     @api.onchange('struct_id')
     def onchange_domain(self):
@@ -120,57 +119,59 @@ class HrPayslip(models.Model):
         return res
 
     @api.multi
-    def write(self,vals):
-        vals['account_analytic_id'] = self.contract_id.department_id.analytic_account_id.name
-        return super(HrPayslip,self).write(vals)
+    def write(self, vals):
+        vals['account_analytic_id'] = self.contract_id.department_id.analytic_account_id.id
+        return super(HrPayslip, self).write(vals)
 
     @api.multi
     def compute_sheet(self):
-        res = super(HrPayslip,self).compute_sheet()
-        if self.worked_days_line_ids.filtered(lambda a : a.code == 'SBS220') and self.line_ids.filtered(lambda a: a.code == 'TOTIM').total == 0:
-            payslips = self.env['hr.payslip'].search([('employee_id','=',self.employee_id.id)])
-            if payslips.mapped('worked_days_line_ids').filtered(lambda a :a.code == 'WORK100').filtered(lambda a: a.number_of_days == 30):
-                worked_days = payslips.mapped('worked_days_line_ids').filtered(lambda a :a.code == 'WORK100').filtered(lambda a: a.number_of_days == 30)[-1]
+        res = super(HrPayslip, self).compute_sheet()
+        if self.worked_days_line_ids.filtered(lambda a: a.code == 'SBS220') and self.line_ids.filtered(
+                lambda a: a.code == 'TOTIM').total == 0:
+            payslips = self.env['hr.payslip'].search([('employee_id', '=', self.employee_id.id)])
+            if payslips.mapped('worked_days_line_ids').filtered(lambda a: a.code == 'WORK100').filtered(
+                    lambda a: a.number_of_days == 30):
+                worked_days = payslips.mapped('worked_days_line_ids').filtered(lambda a: a.code == 'WORK100').filtered(
+                    lambda a: a.number_of_days == 30)[-1]
                 wage = worked_days.payslip_id.mapped('line_ids').filtered(lambda a: a.code == 'SUELDO').total
             else:
                 wage = self.contract_id.wage
             day_value = wage / 30
             licencies_days = self.worked_days_line_ids.filtered(lambda a: a.code == 'SBS220').number_of_days
-            sis_value = self.get_sis_values(self.contract_id.afp_id.name,self.id)
+            sis_value = self.get_sis_values(self.contract_id.afp_id.name, self.id)
             value = ((day_value * licencies_days) * sis_value) / 100
             self.line_ids.filtered(lambda a: a.code == 'SIS').write({
-                'total':value,
-                'amount':value
+                'total': value,
+                'amount': value
             })
             afc_percentaje = 3 if self.contract_id.type_id.name == 'Plazo Fijo' or self.contract_id.type_id.name == 'Operario de Produccion' else 2.4
-            afc_value = ((day_value * licencies_days) * afc_percentaje) / 100 
+            afc_value = ((day_value * licencies_days) * afc_percentaje) / 100
             self.line_ids.filtered(lambda a: a.code == 'SECEEMP').write({
-                'total':afc_value,
-                'amount':afc_value
-            }) 
+                'total': afc_value,
+                'amount': afc_value
+            })
             return res
-        elif self.worked_days_line_ids.filtered(lambda a: a.code == 'SBS220'): 
+        elif self.worked_days_line_ids.filtered(lambda a: a.code == 'SBS220'):
             day_value = self.line_ids.filtered(lambda a: a.code == 'SUELDO').total / 30
             licencies_days = self.worked_days_line_ids.filtered(lambda a: a.code == 'SBS220').number_of_days
-            sis_value = self.get_sis_values(self.contract_id.afp_id.name,self.id)
+            sis_value = self.get_sis_values(self.contract_id.afp_id.name, self.id)
             value = ((day_value * licencies_days) * sis_value) / 100
             self.line_ids.filtered(lambda a: a.code == 'SIS').write({
-                'total':value,
-                'amount':value
+                'total': value,
+                'amount': value
             })
             afc_percentaje = 3 if self.contract_id.type_id.name == 'Plazo Fijo' or self.contract_id.type_id.name == 'Operario de Produccion' else 2.4
-            afc_value = ((day_value * licencies_days) * afc_percentaje) / 100 
+            afc_value = ((day_value * licencies_days) * afc_percentaje) / 100
             self.line_ids.filtered(lambda a: a.code == 'SECEEMP').write({
-                'total':afc_value,
-                'amount':afc_value
-            }) 
+                'total': afc_value,
+                'amount': afc_value
+            })
             return res
         else:
             return res
-    
 
-    def get_sis_values(self,afp,payslip_id):
-        payslip = self.env['hr.payslip'].search([('id','=',payslip_id)])
+    def get_sis_values(self, afp, payslip_id):
+        payslip = self.env['hr.payslip'].search([('id', '=', payslip_id)])
         if afp == 'CAPITAL':
             return payslip.indicadores_id.tasa_sis_capital
         elif afp == 'CUPRUM':
