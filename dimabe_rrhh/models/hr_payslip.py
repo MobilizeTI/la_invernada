@@ -188,3 +188,4 @@ class HrPayslip(models.Model):
             return payslip.indicadores_id.tasa_sis_uno
         else:
             return 0
+
