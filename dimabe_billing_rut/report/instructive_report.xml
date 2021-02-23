@@ -547,7 +547,7 @@
                             <t t-if="len(d.custom_invoice_line_ids) > 1">
                                 <t t-foreach="d.custom_invoice_line_ids" t-as="o">
                                     <tr t-if="o.name != d.custom_invoice_line_ids[0].name">
-                                        <span t-field="o.name"></span>
+                                        <span t-field="o.name"/>
                                     </tr>
                                 </t>
                             </t>
@@ -559,22 +559,22 @@
                             <tr>
                                 <th style="text-align:left; width:200px">TOTAL DE BULTOS</th>
                                 <td>:</td>
-                                <td><span t-field="d.total_packages"></td>
+                                <td><span t-field="d.total_packages"/></td>
                             </tr>
                             <tr>
                                 <th style="text-align:left; width:200px">KILOS NETOS</th>
                                 <td>:</td>
-                                <td><span t-field="d.net_weight"></td>
+                                <td><span t-field="d.net_weight"/></td>
                             </tr>
                             <tr>
                                 <th style="text-align:left; width:200px">KILOS BRUTOS</th>
                                 <td>:</td>
-                                <td><span t-field="d.gross_weight"></td>
+                                <td><span t-field="d.gross_weight"/></td>
                             </tr>
                             <tr>
                                 <th style="text-align:left; width:200px">MODO DE CARGA</th>
                                 <td>:</td>
-                                <td><td><span t-field="d.charging_mode"></td></td>
+                                <td><td><span t-field="d.charging_mode"/></td></td>
                             </tr>
                             <tr>
                                 <th style="text-align:left; width:200px">FECHA Y HORA DE CARGA</th>
@@ -623,12 +623,12 @@
                                 <tr>
                                     <th style="text-align:left; width:220px">IMPORTAMTE</th>
                                     <td style="font-weight:bold">N° DE RESERVA (BOOKING):</td>
-                                    <td style="text-align:left"><span t-field="d.booking_number"></td>
+                                    <td style="text-align:left"><span t-field="d.booking_number"/></td>
                                 </tr>
                                 <tr>
                                     <th></th>
                                     <td style="font-weight:bold;">STACKING:</td>
-                                    <td style="text-align:left"><span t-field="d.remarks_comex"></td>
+                                    <td style="text-align:left"><span t-field="d.remarks_comex"/></td>
                                 </tr>
                                 <tr>
                                     <th></th>
