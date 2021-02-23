@@ -476,8 +476,6 @@ class StockProductionLot(models.Model):
             'to_add': True
         })
         picking = self.env['stock.picking'].search([('id', '=', picking_id)])
-        if self.pallet_ids.filtered(lambda a: a.add_picking):
-            self.add_selection_pallet(picking_id,picking.location_id.id)
         if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
             self.add_selection_serial(picking_id,picking.location_id.id)
 
