@@ -166,15 +166,7 @@ class StockPicking(models.Model):
             'reserved_to_stock_picking_id': None,
             'to_delete': False
         })
-        for lot in lots:
-            move = self.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id)
-            lot.update_quant()
-            if lot.get_reserved_quantity_by_picking(self.id) > 0:
-                move.write({
-                    'product_uom_qty': lot.get_reserved_quantity_by_picking(self.id)
-                })
-            else:
-                move.unlink()
+        self.update_move(lots)
 
     @api.multi
     def remove_reserved_pallet(self):
@@ -183,22 +175,24 @@ class StockPicking(models.Model):
             lambda a: a.remove_picking and a.reserved_to_stock_picking_id.id == self.id)
         for pallet in pallets:
             pallet.lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id.id == self.id).write({
-                'reserved_to_stock_picking_id':None
+                'reserved_to_stock_picking_id': None
             })
             pallet.write({
-                'reserved_to_stock_picking_id':None,
-                'remove_picking':False
+                'reserved_to_stock_picking_id': None,
+                'remove_picking': False
             })
+        self.update_move(lots)
+
+    def update_move(self,lots):
         for lot in lots:
             move = self.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id)
             if lot.get_reserved_quantity_by_picking(self.id) > 0:
                 move.write({
-                    'product_uom_qty':lot.get_reserved_quantity_by_picking(self.id)
+                    'product_uom_qty': lot.get_reserved_quantity_by_picking(self.id)
                 })
             else:
                 move.unlink()
-            lot.update_quant()
-
+            lot.update_quant(self.location_id.id)
 
     @api.multi
     def _compute_packing_list_lot_ids(self):
