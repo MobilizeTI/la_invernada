@@ -661,13 +661,13 @@ class StockProductionLot(models.Model):
         quant = self.env['stock.quant'].sudo().search(
             [('lot_id', '=', self.id), ('location_id.id', '=', location_id), ('location_id.usage', '=', 'internal')])
         quant.sudo().write({
-            'reserved_to_stock_picking_id': self.get_reserved_quantity(),
+            'reserved_quantity': self.get_reserved_quantity(),
             'quantity': self.get_available_quantity()
         })
 
     def get_available_quantity(self):
         return sum(self.stock_production_lot_serial_ids.filtered(
-            lambda r: not r.reserved_to_stock_picking_id and not r.consumed).mapped('display_weight'))
+            lambda r: r.reserved_to_stock_picking_id and not r.consumed).mapped('display_weight'))
 
     def get_reserved_quantity(self):
         return sum(self.stock_production_lot_serial_ids.filtered(lambda
