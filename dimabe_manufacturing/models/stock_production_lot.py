@@ -500,6 +500,9 @@ class StockProductionLot(models.Model):
                 'product_uom_qty': self.get_reserved_quantity_by_picking(picking_id)
             })
 
+        self.clean_add_pallet()
+        self.clean_add_serial()
+
     @api.multi
     def unreserved(self):
         for item in self:
@@ -634,6 +637,8 @@ class StockProductionLot(models.Model):
                 'date': date.today(),
                 'lot_id': self.id
             })
+        self.clean_add_pallet()
+        self.clean_add_serial()
 
     def add_selection_serial(self, picking_id, location_id):
         pallets = self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('pallet_id')
@@ -645,6 +650,7 @@ class StockProductionLot(models.Model):
             'reserved_to_stock_picking_id': picking_id
         })
         self.update_quant(location_id)
+        self.clean_add_serial()
 
     def add_selection_pallet(self, picking_id, location_id):
         self.pallet_ids.filtered(lambda p: p.add_picking).write({
@@ -677,3 +683,13 @@ class StockProductionLot(models.Model):
         return sum(self.stock_production_lot_serial_ids.filtered(
             lambda a: a.reserved_to_stock_picking_id.id == picking_id).mapped(
             'display_weight'))
+
+    def clean_add_pallet(self):
+        self.pallet_ids.filtered(lambda a: a.add_picking).write({
+            'add_picking':False
+        })
+
+    def clean_add_serial(self):
+        self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).write({
+            'to_add':False
+        })
