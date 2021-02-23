@@ -481,7 +481,7 @@ class StockProductionLot(models.Model):
             self.add_selection_serial(picking_id)
         picking = self.env['stock.picking'].search([('id', '=', picking_id)])
         line = picking.mapped('move_line_ids_without_package').filtered(
-                lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id)
+            lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id)
         if not line:
             self.env['stock.move.line'].create({
                 'move_id': picking.move_ids_without_package.filtered(
@@ -613,10 +613,10 @@ class StockProductionLot(models.Model):
             raise models.ValidationError('No se seleccionado nada')
         picking = self.env['stock.picking'].search([('id', '=', picking_id)])
         if self.pallet_ids.filtered(lambda a: a.add_picking):
-            self.add_selection_pallet(picking_id,picking.location_id.id)
+            self.add_selection_pallet(picking_id, picking.location_id.id)
         if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
-            self.add_selection_serial(picking_id,picking.location_id.id)
-        line=picking.move_line_ids_without_package.filtered(
+            self.add_selection_serial(picking_id, picking.location_id.id)
+        line = picking.move_line_ids_without_package.filtered(
             lambda a: a.lot_id.id == self.id and a.product_id.id == self.product_id.id)
         if line:
             line.write({
@@ -624,19 +624,19 @@ class StockProductionLot(models.Model):
             })
         else:
             self.env['stock.move.line'].create({
-                'move_id':picking.move_ids_without_package.filtered(lambda m:m.product_id.id == self.product_id.id).id,
-                'picking_id':picking_id,
-                'product_id':self.product_id.id,
-                'product_uom_id':self.product_id.uom_id.id,
-                'product_uom_qty':self.get_reserved_quantity_by_picking(picking_id),
-                'location_id':picking.location_id.id,
-                'location_dest_id':picking.partner_id.property_stock_customer.id,
-                'date':date.today(),
-                'lot_id':self.id
+                'move_id': picking.move_ids_without_package.filtered(
+                    lambda m: m.product_id.id == self.product_id.id).id,
+                'picking_id': picking_id,
+                'product_id': self.product_id.id,
+                'product_uom_id': self.product_id.uom_id.id,
+                'product_uom_qty': self.get_reserved_quantity_by_picking(picking_id),
+                'location_id': picking.location_id.id,
+                'location_dest_id': picking.partner_id.property_stock_customer.id,
+                'date': date.today(),
+                'lot_id': self.id
             })
 
-
-    def add_selection_serial(self, picking_id,location_id):
+    def add_selection_serial(self, picking_id, location_id):
         pallets = self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('pallet_id')
         for pallet in pallets:
             pallet.write({
@@ -647,19 +647,19 @@ class StockProductionLot(models.Model):
         })
         self.update_quant(location_id)
 
-    def add_selection_pallet(self, picking_id,location_id):
+    def add_selection_pallet(self, picking_id, location_id):
         self.pallet_ids.filtered(lambda p: p.add_picking).write({
             'reserved_to_stock_picking_id': picking_id
         })
         self.pallet_ids.filtered(lambda p: p.add_picking).mapped('lot_serial_ids').filtered(
             lambda s: not s.reserved_to_stock_picking_id).write({
-            'reserved_to_stock_picking_id':picking_id
+            'reserved_to_stock_picking_id': picking_id
         })
         self.update_quant(location_id)
 
-    def update_quant(self,location_id):
+    def update_quant(self, location_id):
         quant = self.env['stock.quant'].sudo().search(
-            [('lot_id', '=', self.id),('location_id.id','=',location_id), ('location_id.usage', '=', 'internal')])
+            [('lot_id', '=', self.id), ('location_id.id', '=', location_id), ('location_id.usage', '=', 'internal')])
         quant.sudo().write({
             'reserved_to_stock_picking_id': self.get_reserved_quantity(),
             'quantity': self.get_available_quantity()
@@ -667,13 +667,14 @@ class StockProductionLot(models.Model):
 
     def get_available_quantity(self):
         return sum(self.stock_production_lot_serial_ids.filtered(
-                lambda r: not r.reserved_to_stock_picking_id and not r.consumed).mapped('display_weight'))
+            lambda r: not r.reserved_to_stock_picking_id and not r.consumed).mapped('display_weight'))
 
     def get_reserved_quantity(self):
         return sum(self.stock_production_lot_serial_ids.filtered(lambda
-                                                              a: a.reserved_to_stock_picking_id and a.reserved_to_stock_picking_id.state != 'done' and not a.consumed).mapped(
+                                                                     x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
             'display_weight'))
 
-    def get_reserved_quantity_by_picking(self,picking_id):
-        return sum(self.stock_production_lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id.id == picking_id).mapped(
+    def get_reserved_quantity_by_picking(self, picking_id):
+        return sum(self.stock_production_lot_serial_ids.filtered(
+            lambda a: a.reserved_to_stock_picking_id.id == picking_id).mapped(
             'display_weight'))
