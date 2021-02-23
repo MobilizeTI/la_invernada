@@ -269,6 +269,14 @@ class AccountInvoice(models.Model):
 
     city_final_destiny_id = fields.Many2one('custom.cities',string="Destino Final")
 
+    #To Intructuives
+
+    temperature = fields.Char('Temperatura')
+
+    ventilation = fields.Char('Temperatura')
+
+    humidity = fields.Char('Temperatura')
+
     #Emarque Method
     @api.model
     @api.onchange('etd')
