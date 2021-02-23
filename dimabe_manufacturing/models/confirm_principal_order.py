@@ -1,5 +1,7 @@
-from odoo import models,fields,api
+from odoo import models, fields, api
 import base64
+from datetime import date
+
 
 class ConfirmPrincipalOrde(models.TransientModel):
     _name = 'confirm.principal.order'
@@ -10,21 +12,42 @@ class ConfirmPrincipalOrde(models.TransientModel):
 
     picking_id = fields.Many2one('stock.picking')
 
-    picking_ids = fields.Many2many('stock.picking')
+    custom_dispatch_line_ids = fields.Many2many('custom.dispatch.line')
 
-    # @api.one
-    # def select(self):
-    #     for item in self.picking_ids:
-    #         item.clean_reserved(item)
-    #         move_line = self.env['stock.move.line'].create({
-    #             'move_id':item.move_ids_without_package.filtered(lambda a:a.product_id.id == )
-    #         })
-    #
-    # @api.one
-    # def cancel(self):
-    #     report = self.env.ref('dimabe_export_order.action_packing_list').render_qweb_pdf(
-    #         self.picking_id.id)
-    #     for item in self.picking_id.dispatch_line_ids:
-    #         item.dispatch_id.write({
-    #             'packing_list_file': base64.b64encode(report[0])
-    #         })
+    @api.one
+    def select(self):
+        self.process_data()
+        report = self.env.ref('action_packing_list').render_qweb_pdf(
+            self.custom_dispatch_line_ids.filtered(lambda a: a.sale_id.id == self.sale_id.id).dispatch_id.id)
+        for item in self.custom_dispatch_line_ids:
+            item.dispatch_id.write({
+                'packing_list_file': base64.b64encode(report[0])
+            })
+
+    @api.one
+    def cancel(self):
+        self.process_data()
+        report = self.env.ref('dimabe_export_order.action_packing_list').render_qweb_pdf(
+            self.picking_id.id)
+        for item in self.picking_id.dispatch_line_ids:
+            item.dispatch_id.write({
+                'packing_list_file': base64.b64encode(report[0])
+            })
+
+    def process_data(self):
+        for item in self.custom_dispatch_line_ids:
+            item.dispatch_id.clean_reserved(item.dispatch_id.id)
+            self.env['stock.move.line'].create({
+                'move_id': item.dispatch_id.move_ids_without_package.filtered(
+                    lambda m: m.product_id.id == item.product_id.id).id,
+                'product_id': item.product_id.id,
+                'product_uom_id': item.product_id.uom_id.id,
+                'product_uom_qty': item.real_dispatch_qty,
+                'qty_done': item.real_dispatch_qty,
+                'location_id': item.dispatch_id.id,
+                'location_dest_id': item.dispatch_id.partner_id.property_stock_customer.id,
+                'date': date.today(),
+                'lot_id': self.picking_id.packing_list_lot_ids.filtered(
+                    lambda a: a.product_id.id == item.product_id.id).id
+            })
+            item.dispatch_id.button_validate()

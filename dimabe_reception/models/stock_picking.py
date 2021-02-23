@@ -414,7 +414,7 @@ class StockPicking(models.Model):
                 wiz = self.env['confirm.principal.order'].create({
                     'sale_ids': [(4, s.id) for s in self.dispatch_line_ids.mapped('sale_id')],
                     'picking_id': self.id,
-                    'picking_ids': [(4, p.id) for p in self.dispatch_line_ids.mapped('dispatch_id')]
+                    'custom_dispatch_line_ids': [(4, c.id) for c in self.dispatch_line_ids]
                 })
                 return {
                     'name': 'Desea que todos los documentos se carguen con el # de pedido principal?',
@@ -428,7 +428,6 @@ class StockPicking(models.Model):
                     'res_id': wiz.id,
                     'context': self.env.context
                 }
-
         return super(StockPicking, self).button_validate()
 
     def clean_reserved(self, picking):
