@@ -608,7 +608,7 @@ class StockProductionLot(models.Model):
     @api.multi
     def add_selection(self):
         picking_id = int(self.env.context['dispatch_id'])
-        if not self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add) or self.pallet_ids.filtered(
+        if not self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add) and not self.pallet_ids.filtered(
                 lambda a: a.add_picking):
             raise models.ValidationError('No se seleccionado nada')
         picking = self.env['stock.picking'].search([('id', '=', picking_id)])
