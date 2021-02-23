@@ -475,11 +475,12 @@ class StockProductionLot(models.Model):
         self.stock_production_lot_serial_ids.filtered(lambda a: not a.reserved_to_stock_picking_id).write({
             'to_add': True
         })
-        if self.pallet_ids.filtered(lambda a: a.add_picking):
-            self.add_selection_pallet(picking_id)
-        if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
-            self.add_selection_serial(picking_id)
         picking = self.env['stock.picking'].search([('id', '=', picking_id)])
+        if self.pallet_ids.filtered(lambda a: a.add_picking):
+            self.add_selection_pallet(picking_id,picking.location_id.id)
+        if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
+            self.add_selection_serial(picking_id,picking.location_id.id)
+
         line = picking.mapped('move_line_ids_without_package').filtered(
             lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id)
         if not line:
