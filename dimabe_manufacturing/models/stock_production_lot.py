@@ -480,16 +480,16 @@ class StockProductionLot(models.Model):
         if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
             self.add_selection_serial(picking_id)
         picking = self.env['stock.picking'].search([('id', '=', picking_id)])
-        if not picking.mapped('move_line_ids_without_package').filtered(
-                lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id):
+        line = picking.mapped('move_line_ids_without_package').filtered(
+                lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id)
+        if not line:
             self.env['stock.move.line'].create({
                 'move_id': picking.move_ids_without_package.filtered(
                     lambda a: a.product_id.id == self.product_id.id).id,
                 'product_id': self.product_id.id,
                 'lot_id': self.id,
                 'product_uom_id': self.product_id.uom_id.id,
-                'product_uom_qty': sum(self.stock_production_lot_serial_ids.filtered(
-                    lambda a: a.reserved_to_stock_picking_id.id == picking_id).mapped('display_weight')),
+                'product_uom_qty': self.get_reserved_quantity_by_picking(picking_id),
                 'picking_id': picking_id,
                 'location_id': picking.location_id.id,
                 'location_dest_id': picking.partner_id.property_stock_customer.id
@@ -498,10 +498,8 @@ class StockProductionLot(models.Model):
             move_line = picking.mapped('move_line_ids_without_package').filtered(
                 lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id)
             move_line.write({
-                'product_uom_qty': sum(self.stock_production_lot_serial_ids.filtered(
-                    lambda a: a.reserved_to_stock_picking_id.id == picking_id).mapped('display_weight'))
+                'product_uom_qty': self.get_reserved_quantity_by_picking(picking_id)
             })
-            # serial_to_assign_ids.with_context(stock_picking_id=picking_id).reserve_picking()
 
     @api.multi
     def unreserved(self):
