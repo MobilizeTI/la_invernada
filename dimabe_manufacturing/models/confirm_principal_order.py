@@ -17,8 +17,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
     @api.one
     def select(self):
         self.process_data()
-        report_obj = self.env['ir.actions.report']
-        report = report_obj._get_report_from_name('action_packing_list')
+        report = self.env.ref('dimabe_export_order.action_packing_list')
         raise models.UserError(report)
         for item in self.custom_dispatch_line_ids:
             item.dispatch_id.write({
