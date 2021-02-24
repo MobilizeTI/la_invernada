@@ -46,7 +46,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     'product_uom_id': item.product_id.uom_id.id,
                     'product_uom_qty': item.real_dispatch_qty,
                     'qty_done': item.real_dispatch_qty,
-                    'location_id': item.dispatch_id.id,
+                    'location_id': line.location_id.id,
                     'location_dest_id': item.dispatch_id.partner_id.property_stock_customer.id,
                     'date': line.date,
                     'lot_id': line.lot_id.id
