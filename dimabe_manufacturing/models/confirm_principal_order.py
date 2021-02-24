@@ -42,6 +42,9 @@ class ConfirmPrincipalOrde(models.TransientModel):
 
     def process_data(self):
         for item in self.custom_dispatch_line_ids:
+            if item.dispatch_id.id == self.picking_id.id:
+                self.picking_id.button_validate()
+                continue
             item.dispatch_id.clean_reserved(item.dispatch_id)
             for line in self.picking_id.move_line_ids_without_package.filtered(
                     lambda a: a.product_id.id == item.product_id.id):
