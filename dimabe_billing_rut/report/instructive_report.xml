@@ -484,7 +484,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            http://www.lainvernada.com
+                                            <span t-field="res_company.website"/>
                                         </td>
                                     </tr>
                                 </table>
@@ -514,13 +514,28 @@
                                 <td>:</td>
                                 <td>INSTRUCCION DE EMBARQUE</td>
                             </tr>
-                            <tr></tr>
+                            <tr>
+                                <th>N°</th>
+                                <td>:</td>
+                                <td><span t-field="o.shipping_number"/></td>
+                            </tr>
                             <tr>
                                 <th style="text-align:left; width:200px">N° PEDIDO</th>
                                 <td>:</td>
                                 <td>
                                     <t t-foreach="d.orders_to_invoice" t-as="o">
                                         <span t-field="o.order_name"></span>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr></tr>
+                            <tr></tr>
+                            <tr>
+                                <th style="text-align:left; width:200px">CLIENTE</th>
+                                <td>:</td>
+                                <td>
+                                    <t t-foreach="d.orders_to_invoice" t-as="o">
+                                        <span t-field="d.partner_id.name"></span>
                                     </t>
                                 </td>
                             </tr>
@@ -552,11 +567,6 @@
                                 </t>
                             </t>
                             <tr>
-                                <th style="text-align:left; width:200px">VARIEDAD</th>
-                                <td>:</td>
-                                <td></td>
-                            </tr>
-                            <tr>
                                 <th style="text-align:left; width:200px">TOTAL DE BULTOS</th>
                                 <td>:</td>
                                 <td><span t-field="d.total_packages"/></td>
@@ -574,7 +584,7 @@
                             <tr>
                                 <th style="text-align:left; width:200px">MODO DE CARGA</th>
                                 <td>:</td>
-                                <td><td><span t-field="d.charging_mode"/></td></td>
+                                <td><span t-field="d.charging_mode"/></td>
                             </tr>
                             <tr>
                                 <th style="text-align:left; width:200px">FECHA Y HORA DE CARGA</th>
@@ -617,27 +627,27 @@
                                 <td></td>
                             </tr>
                         </table>
-                    </div>
-                        <div style="width:100%;display:inline-block;">
+                    </div style="padding:6px;">
+                        <div style="width:100%;display:inline-block; ">
                             <table style="width:100%;font-size:10px;">
                                 <tr>
-                                    <th style="text-align:left; width:220px">IMPORTAMTE</th>
-                                    <td style="font-weight:bold">N° DE RESERVA (BOOKING):</td>
+                                    <th style="text-align:left; width:220px">IMPORTANTE</th>
+                                    <td style="font-weight:bold;text-align:right">N° DE RESERVA (BOOKING):</td>
                                     <td style="text-align:left"><span t-field="d.booking_number"/></td>
                                 </tr>
                                 <tr>
                                     <th></th>
-                                    <td style="font-weight:bold;">STACKING:</td>
+                                    <td style="font-weight:bold;text-align:right">STACKING:</td>
                                     <td style="text-align:left"><span t-field="d.remarks_comex"/></td>
                                 </tr>
                                 <tr>
                                     <th></th>
-                                    <td style="font-weight:bold;">CORTE DOCUMENTAL:</td>
+                                    <td style="font-weight:bold;text-align:right">CORTE DOCUMENTAL:</td>
                                     <td style="text-align:left"></td>
                                 </tr>
                             </table>
                         </div>
-                        <div style="width:100%;display:inline-block;">
+                        <div style="width:100%;display:inline-block;margin-top:20px">
                             <table style="width:100%;font-size:10px;">
                                 <tr>
                                     <th style="text-align:left;">INDICAR N° DE TELÉFONO CELULAR DEL CHOFER DEL TRANSPORTE</th>
@@ -646,6 +656,7 @@
                                     <th style="text-align:left;">INDICAR N° DE SELLO DEL CONTENEDOR (COMPLETO CON LETRAS Y NÚMEROS)</th>
                                 </tr>
                                 <tr></tr>
+                                <tr></tr>
                                 <tr>
                                     <td style="text-align:left;">Se despide atentamente,</td>
                                 </tr>
@@ -653,6 +664,7 @@
                         </div>
                         <br/>
                         <div style="width:100%;display:inline-block;">
+
                             <span style="float:right; font-size:12px"><strong>p.p La Invernada Export SpA</strong></span>
                         </div>
                     </div>

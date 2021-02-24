@@ -83,7 +83,7 @@ class AccountInvoice(models.Model):
     #Orders to Add in Invoice
 
     order_to_add_ids = fields.Many2one('sale.order',
-        domain=[('invoice_status','=','to invoice')],
+        domain=[('invoice_status','=','to invoice')], 
         string="Pedidos"
     )
 
@@ -276,6 +276,12 @@ class AccountInvoice(models.Model):
     ventilation = fields.Char('Temperatura')
 
     humidity = fields.Char('Temperatura')
+
+    #freight_payment_term = fields.Char(string="Termino de Pago Flete")
+
+    
+
+
 
     #Emarque Method
     @api.model
