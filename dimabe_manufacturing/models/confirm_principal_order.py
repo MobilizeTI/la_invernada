@@ -37,17 +37,17 @@ class ConfirmPrincipalOrde(models.TransientModel):
     def process_data(self):
         for item in self.custom_dispatch_line_ids:
             item.dispatch_id.clean_reserved(item.dispatch_id)
-            self.env['stock.move.line'].create({
-                'move_id': item.dispatch_id.move_ids_without_package.filtered(
-                    lambda m: m.product_id.id == item.product_id.id).id,
-                'product_id': item.product_id.id,
-                'product_uom_id': item.product_id.uom_id.id,
-                'product_uom_qty': item.real_dispatch_qty,
-                'qty_done': item.real_dispatch_qty,
-                'location_id': item.dispatch_id.id,
-                'location_dest_id': item.dispatch_id.partner_id.property_stock_customer.id,
-                'date': date.today(),
-                'lot_id': self.picking_id.packing_list_lot_ids.filtered(
-                    lambda a: a.product_id.id == item.product_id.id).id
-            })
+            for line in self.picking_id.move_line_ids_without_package.filtered(lambda a: a.product_id.id == self.product_id.id):
+                self.env['stock.move.line'].create({
+                    'move_id': item.dispatch_id.move_ids_without_package.filtered(
+                        lambda m: m.product_id.id == item.product_id.id).id,
+                    'product_id': item.product_id.id,
+                    'product_uom_id': item.product_id.uom_id.id,
+                    'product_uom_qty': item.real_dispatch_qty,
+                    'qty_done': item.real_dispatch_qty,
+                    'location_id': item.dispatch_id.id,
+                    'location_dest_id': item.dispatch_id.partner_id.property_stock_customer.id,
+                    'date': line.date,
+                    'lot_id':line.lot_id
+                })
             item.dispatch_id.button_validate()
