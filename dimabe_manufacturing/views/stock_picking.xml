@@ -38,7 +38,7 @@
             <xpath expr="//field[@name='origin']" position="after">
                 <field name="is_multiple_dispatch" attrs="{'invisible':[('picking_type_code','!=','outgoing')]}" context="{'picking_id':id}"/>
                 <field name="sale_orders_id"
-                       attrs="{'invisible':[('is_multiple_dispatch','=',False)]}" domain="[('partner_id','=',partner_id)]"/>
+                       attrs="{'invisible':[('is_multiple_dispatch','=',False)]}" />
                 <field name="dispatch_id" domain="[('sale_id','=',sale_orders_id),('state','!=','done')]" attrs="{'invisible':[('is_multiple_dispatch','=',False)]}" />
                 <button name="add_orders_to_dispatch" type="object" string="Agregar"
                         attrs="{'invisible':[('is_multiple_dispatch','=',False)]}"/>
