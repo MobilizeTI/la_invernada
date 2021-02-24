@@ -51,4 +51,6 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     'date': line.date,
                     'lot_id': line.lot_id.id
                 })
-            item.dispatch_id.button_validate()
+            if item.real_dispatch_qty > 0:
+                item.dispatch_id.button_validate()
+
