@@ -24,7 +24,6 @@ class ConfirmPrincipalOrde(models.TransientModel):
         })
         report = self.env.ref('dimabe_export_order.action_packing_list').render_qweb_pdf(
             self.custom_dispatch_line_ids.filtered(lambda x: x.sale_id.id == self.sale_id.id).dispatch_id.id)
-        raise models.UserError(report)
         for item in self.custom_dispatch_line_ids:
             item.dispatch_id.write({
                 'packing_list_file': base64.b64encode(report[0])
