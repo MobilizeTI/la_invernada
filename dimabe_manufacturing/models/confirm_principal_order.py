@@ -48,6 +48,6 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     'location_id': item.dispatch_id.id,
                     'location_dest_id': item.dispatch_id.partner_id.property_stock_customer.id,
                     'date': line.date,
-                    'lot_id':line.lot_id
+                    'lot_id':line.lot_id.id
                 })
             item.dispatch_id.button_validate()
