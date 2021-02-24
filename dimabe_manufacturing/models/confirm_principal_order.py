@@ -17,7 +17,8 @@ class ConfirmPrincipalOrde(models.TransientModel):
     @api.one
     def select(self):
         self.process_data()
-        report = self.env.ref('dimabe_export_order.action_packing_list').render_qweb_pdf(self.custom_dispatch_line_ids.filtered(lambda x:x))
+        report = self.env.ref('dimabe_export_order.action_packing_list').render_qweb_pdf(
+            self.custom_dispatch_line_ids.filtered(lambda x: x.sale_id.id == self.sale_id.id).sale_id.id)
         raise models.UserError(report)
         for item in self.custom_dispatch_line_ids:
             item.dispatch_id.write({
@@ -44,7 +45,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     'move_id': item.dispatch_id.move_ids_without_package.filtered(
                         lambda m: m.product_id.id == item.product_id.id).id,
                     'product_id': item.product_id.id,
-                    'picking_id':item.dispatch_id.id,
+                    'picking_id': item.dispatch_id.id,
                     'product_uom_id': item.product_id.uom_id.id,
                     'product_uom_qty': line.product_uom_qty,
                     'qty_done': line.product_uom_qty,
@@ -55,4 +56,3 @@ class ConfirmPrincipalOrde(models.TransientModel):
                 })
             if item.real_dispatch_qty > 0:
                 item.dispatch_id.button_validate()
-
