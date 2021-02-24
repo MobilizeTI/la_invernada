@@ -124,7 +124,7 @@
                                 </group>
                             </group>
                             <group string="Fotos de Camión" style="width:100%%;">
-                                <field name="picture" context="{'picking_id':id}" widget="many2many_binary"/>
+                                <field name="picture" widget="many2many_binary"/>
                             </group>
                             <group>
                                 <field name="pictures">
