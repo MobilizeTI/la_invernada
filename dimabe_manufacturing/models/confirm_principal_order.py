@@ -43,6 +43,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     'move_id': item.dispatch_id.move_ids_without_package.filtered(
                         lambda m: m.product_id.id == item.product_id.id).id,
                     'product_id': item.product_id.id,
+                    'picking_id':item.dispatch_id.id,
                     'product_uom_id': item.product_id.uom_id.id,
                     'product_uom_qty': line.product_uom_qty,
                     'qty_done': line.product_uom_qty,
