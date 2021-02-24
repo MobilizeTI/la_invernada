@@ -37,7 +37,8 @@ class ConfirmPrincipalOrde(models.TransientModel):
     def process_data(self):
         for item in self.custom_dispatch_line_ids:
             item.dispatch_id.clean_reserved(item.dispatch_id)
-            for line in self.picking_id.move_line_ids_without_package.filtered(lambda a: a.product_id.id == item.product_id.id):
+            for line in self.picking_id.move_line_ids_without_package.filtered(
+                    lambda a: a.product_id.id == item.product_id.id):
                 self.env['stock.move.line'].create({
                     'move_id': item.dispatch_id.move_ids_without_package.filtered(
                         lambda m: m.product_id.id == item.product_id.id).id,
@@ -48,6 +49,6 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     'location_id': item.dispatch_id.id,
                     'location_dest_id': item.dispatch_id.partner_id.property_stock_customer.id,
                     'date': line.date,
-                    'lot_id':line.lot_id.id
+                    'lot_id': line.lot_id.id
                 })
             item.dispatch_id.button_validate()
