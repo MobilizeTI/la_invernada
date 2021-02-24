@@ -27,8 +27,9 @@ class ConfirmPrincipalOrde(models.TransientModel):
     @api.one
     def cancel(self):
         self.process_data()
-        report = self.env.ref('dimabe_export_order.action_packing_list').render_qweb_pdf(
-            self.picking_id.id)
+        report_obj = self.env['ir.actions.report']
+        report = report_obj._get_report_from_name('dimabe_export_order.action_packing_list')
+        raise models.UserError(report)
         for item in self.picking_id.dispatch_line_ids:
             item.dispatch_id.write({
                 'packing_list_file': base64.b64encode(report[0])
