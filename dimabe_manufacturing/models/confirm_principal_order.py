@@ -17,12 +17,13 @@ class ConfirmPrincipalOrde(models.TransientModel):
     @api.one
     def select(self):
         self.process_data()
-        report = self.env.ref('dimabe_export_order.action_packing_list').render_qweb_pdf(
-            self.custom_dispatch_line_ids.filtered(lambda x: x.sale_id.id == self.sale_id.id).sale_id.id)
         self.custom_dispatch_line_ids.filtered(lambda x: x.sale_id.id == self.sale_id.id).dispatch_id.write({
-            'consignee_id':self.custom_dispatch_line_ids.filtered(lambda x: x.sale_id.id == self.sale_id.id).dispatch_id.consignee_id.id,
+            'consignee_id': self.custom_dispatch_line_ids.filtered(
+                lambda x: x.sale_id.id == self.sale_id.id).dispatch_id.consignee_id.id,
             'notify_ids': [(4, n) for n in self.picking_id.notify_ids.mapped('id')]
         })
+        report = self.env.ref('dimabe_export_order.action_packing_list').render_qweb_pdf(
+            self.custom_dispatch_line_ids.filtered(lambda x: x.sale_id.id == self.sale_id.id).dispatch_id.id)
         raise models.UserError(report)
         for item in self.custom_dispatch_line_ids:
             item.dispatch_id.write({
