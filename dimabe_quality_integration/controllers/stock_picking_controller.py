@@ -18,9 +18,7 @@ class StockPickingController(http.Controller):
             for res in result:
                 if res.partner_id.id:
                     if res.picking_type_id:
-                        models._logger.error(res.name)
-                        if 'recepciones' in str.lower(res.picking_type_id.name):
-
+                        if res.picking_type_code == 'incoming':
                             if not res.move_ids_without_package:
                                 continue
                             if res.move_ids_without_package[0].product_id.product_tmpl_id.tracking != 'lot':
