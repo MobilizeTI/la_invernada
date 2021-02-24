@@ -53,10 +53,13 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     'product_uom_id': item.product_id.uom_id.id,
                     'product_uom_qty': line.product_uom_qty,
                     'qty_done': line.product_uom_qty,
+                    'state':'done',
                     'location_id': line.location_id.id,
                     'location_dest_id': item.dispatch_id.partner_id.property_stock_customer.id,
                     'date': line.date,
                     'lot_id': line.lot_id.id
                 })
-            if item.real_dispatch_qty > 0:
-                item.dispatch_id.button_validate()
+            if item.real_dispatch_qty > 0 and item.dispatch_id.id != self.picking_id.id:
+                item.dispatch_id.write({
+                    'state':'done'
+                })
