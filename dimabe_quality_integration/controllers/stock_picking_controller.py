@@ -12,7 +12,7 @@ class StockPickingController(http.Controller):
     def get_stock_pickings(self, sinceDate=None):
         # date_to_search = sinceDate or (date.today() - timedelta(days=7))
         # result = request.env['stock.picking'].search([('write_date','>', date_to_search)])
-        result = request.env['stock.picking'].search([('picking_type_id.id','not in',(41,81))])
+        result = request.env['stock.picking'].search([])
         data = []
         if result:
             for res in result:
@@ -20,6 +20,8 @@ class StockPickingController(http.Controller):
                     if res.picking_type_id:
                         if 'recepciones' in str.lower(res.picking_type_id.name):
                             models._logger.error(res.name)
+                            if not res.move_ids_without_package:
+                                continue
                             if res.move_ids_without_package[0].product_id.product_tmpl_id.tracking != 'lot':
                                 continue
                             kgs = 0
