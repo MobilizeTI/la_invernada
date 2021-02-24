@@ -269,6 +269,8 @@ class AccountInvoice(models.Model):
 
     city_final_destiny_id = fields.Many2one('custom.cities',string="Destino Final")
 
+    custom_department = fields.Many2one('res.partner',string="Oficina Aduanera")
+
     #To Intructuives
 
     temperature = fields.Char('Temperatura')
@@ -276,6 +278,8 @@ class AccountInvoice(models.Model):
     ventilation = fields.Char('Temperatura')
 
     humidity = fields.Char('Temperatura')
+
+
 
     #freight_payment_term = fields.Char(string="Termino de Pago Flete")
 
