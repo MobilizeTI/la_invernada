@@ -1031,7 +1031,12 @@
                         <tr rowspan="2">
                             <td style="text-align:center;">PURCHASE ORDER/ORDER DE COMPRA</td>
                             <td style="text-align:center;">
-                                <span t-esc="','.join(d.dispatch_line_ids.mapped('sale_id').mapped('name'))"/>
+                                <t t-if="d.is_multiple_dispatch">
+                                    <span t-esc="','.join(d.dispatch_line_ids.mapped('sale_id').mapped('name'))"/>
+                                </t>
+                                <t t-else="">
+                                    <span t-esc="d.origin"/>
+                                </t>
                             </td>
                         </tr>
                         <tr></tr>
@@ -1080,9 +1085,16 @@
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                         <span t-esc="p.lot_serial_ids[0].product_id.type_product"/>
                                     </td>
-                                    <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                        <span t-esc="d.dispatch_line_ids.filtered(lambda a: a.product_id.id == p.product_id.id and p.lot_id.sale_order_id.id == a.sale_id.id).sale_id.name"/>
-                                    </td>
+                                    <t t-if="d.is_multiple_dispatch">
+                                        <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
+                                            <span t-esc="d.dispatch_line_ids.filtered(lambda a: a.product_id.id == p.product_id.id and p.lot_id.sale_order_id.id == a.sale_id.id).sale_id.name"/>
+                                        </td>
+                                    </t>
+                                    <t t-else="">
+                                        <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
+                                            <span t-esc="d.origin"/>
+                                        </td>
+                                    </t>
                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                         <span t-field="p.name"/>
                                     </td>

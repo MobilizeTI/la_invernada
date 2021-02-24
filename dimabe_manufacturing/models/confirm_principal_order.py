@@ -32,9 +32,13 @@ class ConfirmPrincipalOrde(models.TransientModel):
     @api.one
     def cancel(self):
         self.process_data()
-        report_obj = self.env['ir.actions.report']
-        report = report_obj._get_report_from_name('action_packing_list')
-        raise models.UserError(report)
+        self.custom_dispatch_line_ids.filtered(lambda x: x.sale_id.id == self.sale_id.id).dispatch_id.write({
+            'consignee_id': self.custom_dispatch_line_ids.filtered(
+                lambda x: x.sale_id.id == self.sale_id.id).dispatch_id.consignee_id.id,
+            'notify_ids': [(4, n) for n in self.picking_id.notify_ids.mapped('id')]
+        })
+        report = self.env.ref('dimabe_export_order.action_packing_list').render_qweb_pdf(
+            self.custom_dispatch_line_ids.filtered(lambda x: x.sale_id.id == self.sale_id.id).dispatch_id.id)
         for item in self.picking_id.dispatch_line_ids:
             item.dispatch_id.write({
                 'packing_list_file': base64.b64encode(report[0])
