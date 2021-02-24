@@ -36,7 +36,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
 
     def process_data(self):
         for item in self.custom_dispatch_line_ids:
-            item.dispatch_id.clean_reserved(item.dispatch_id.id)
+            item.dispatch_id.clean_reserved(item.dispatch_id)
             self.env['stock.move.line'].create({
                 'move_id': item.dispatch_id.move_ids_without_package.filtered(
                     lambda m: m.product_id.id == item.product_id.id).id,
