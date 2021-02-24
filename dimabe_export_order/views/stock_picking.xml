@@ -4,6 +4,7 @@
             <field name="name">Export Page</field>
             <field name="model">stock.picking</field>
             <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="context">{'picking_id':id}</field>
             <field name="arch" type="xml">
 
                 <field name="backorder_id" position="after">
