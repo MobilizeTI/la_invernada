@@ -3,6 +3,7 @@
         <field name="name">Formulario Despacho</field>
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="context">{'picking_id':id}</field>
         <field name="arch" type="xml">
             <xpath expr="//header" postition="after">
                 <button type="object" string="Debug" group="base.group_no_one" name="test"/>
@@ -36,7 +37,7 @@
                 </page>
             </xpath>
             <xpath expr="//field[@name='origin']" position="after">
-                <field name="is_multiple_dispatch" attrs="{'invisible':[('picking_type_code','!=','outgoing')]}" context="{'picking_id':id}"/>
+                <field name="is_multiple_dispatch" attrs="{'invisible':[('picking_type_code','!=','outgoing')]}"/>
                 <field name="sale_orders_id"
                        attrs="{'invisible':[('is_multiple_dispatch','=',False)]}" />
                 <field name="dispatch_id" domain="[('sale_id','=',sale_orders_id),('state','!=','done')]" attrs="{'invisible':[('is_multiple_dispatch','=',False)]}" />
@@ -112,7 +113,7 @@
                                        groups="mrp.group_mrp_manager"
                                        attrs="{'invisible':[('state','=','done')]}"
                                        readonly="0"
-                                       context="{'available': True, 'stock_picking_id': id}"
+                                       context="{'available': True}"
                                 >
                                     <tree editable="bottom" edit="true" delete="false" create="false">
                                         <field name="name" readonly="1"/>
