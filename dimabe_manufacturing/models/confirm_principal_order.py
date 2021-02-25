@@ -80,7 +80,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
         for move in picking.move_lines.filtered(lambda m: m.state not in ['done', 'cancel']):
             for move_line in move.move_line_ids:
                 move_line.qty_done = move_line.product_uom_qty
-        if self.check_backorder():
+        if self.check_backorder(picking):
             pick_to_backorder |= picking
         pick_to_do |= picking
 
