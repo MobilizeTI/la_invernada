@@ -1101,7 +1101,7 @@
                                     </td>
                                     <t t-if="d.is_multiple_dispatch">
                                         <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                            <span t-esc="d.dispatch_line_ids.filtered(lambda a: a.product_id.id == p.product_id.id).sale_id.name"/>
+                                            <span t-esc="d.dispatch_line_ids.filtered(lambda a: a.product_id.id == p.product_id.id).sale_id.name if len(d.dispatch_line_ids.filtered(lambda a: a.product_id.id == p.product_id.id).sale_id.name) == 1 else d.dispatch_line_ids.filtered(lambda a: a.product_id.id == p.product_id.id).sale_id.named.dispatch_line_ids.filtered(lambda a: a.product_id.id == p.product_id.id and a.sale_id.id == p.lot_id.sale_order_id.id).sale_id.name "/>
                                         </td>
                                     </t>
                                     <t t-else="">
