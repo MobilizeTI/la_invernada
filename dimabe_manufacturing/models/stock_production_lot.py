@@ -724,7 +724,7 @@ class StockProductionLot(models.Model):
         if lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed):
 
             quant = self.env['stock.quant'].sudo().search(
-                [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'),('location_id','=',location_id.id)])
+                [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'),('location_id','=',location_id)])
 
             if quant:
                 quant.write({
