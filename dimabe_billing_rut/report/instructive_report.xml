@@ -7,7 +7,7 @@
                     <div style="width:100%;">
                         <div style="width:100%;text-align:center;display:inline-block; border:1px solid;font-size:10px">
                             <p>MANDATO</p>
-                            <p>EN <span t-esc="d.create_date.date().strftime('%A'"/> DEL 
+                            <p>EN <span t-esc="d.create_date.date().strftime('%A')"/> DEL 
                                     <span t-esc="d.create_date.date().strftime('%Y')"/>, DON 
                                     <span style="text-transform: uppercase;" t-field="res_company.legal_represntative.name"/>, 
                                 REPRESENTANTE LEGAL DE LA FIRMA LA INVERNADA EXPORT SpA, R.U.T.: 76.263.274-8, CON DOMICILIO EN VALLE 
