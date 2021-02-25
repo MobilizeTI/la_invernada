@@ -1,6 +1,6 @@
-
 from odoo import models, fields, api
 from datetime import date
+
 
 class ConfirmOrderForReserved(models.TransientModel):
     _name = 'confirm.order.reserved'
