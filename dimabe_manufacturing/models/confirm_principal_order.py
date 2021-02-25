@@ -52,21 +52,8 @@ class ConfirmPrincipalOrde(models.TransientModel):
             item.dispatch_id.clean_reserved(item.dispatch_id)
             for line in self.picking_id.move_line_ids_without_package.filtered(
                     lambda a: a.product_id.id == item.product_id.id):
-                self.env['stock.move.line'].create({
-                    'move_id': item.dispatch_id.move_ids_without_package.filtered(
-                        lambda m: m.product_id.id == item.product_id.id).id,
-                    'product_id': item.product_id.id,
-                    'picking_id': item.dispatch_id.id,
-                    'product_uom_id': item.product_id.uom_id.id,
-                    'product_uom_qty': line.product_uom_qty,
-                    'qty_done': line.product_uom_qty,
-                    'state':'done',
-                    'location_id': line.location_id.id,
-                    'location_dest_id': item.dispatch_id.partner_id.property_stock_customer.id,
-                    'date': line.date,
-                    'lot_id': line.lot_id.id
+                line.write({
+                    'picking_id':item.dispatch_id.id,
                 })
             if item.real_dispatch_qty > 0 and item.dispatch_id.id != self.picking_id.id:
-                item.dispatch_id.write({
-                    'state':'done'
-                })
+                item.dispatch_id.action_done()
