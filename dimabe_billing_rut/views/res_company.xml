@@ -30,6 +30,7 @@
           <page name="info_instructive_tab" string="Información para Instructivos">
             <field name="plant_contact_ids"/>
             <field name="comex_contact_ids"/>
+            <field name="origin_contact_aga"/>
           </page>
         </xpath> 
       </field>

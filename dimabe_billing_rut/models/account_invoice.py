@@ -281,9 +281,9 @@ class AccountInvoice(models.Model):
 
     humidity = fields.Char('Humedad')
 
-    #withdrawal_deposit = fields.Char(string="Depósito Retiro")
+    withdrawal_deposit = fields.Char('custom.withdrawal.deposits',string="Depósito Retiro")
 
-    freight_payment_term = fields.Char(string="Termino de Pago Flete")
+    freight_payment_term = fields.Char('custom.freight.payment.term',string="Termino de Pago Flete")
 
     safe_type = fields.Char(string="Tipo de Seguro")
 
@@ -291,7 +291,7 @@ class AccountInvoice(models.Model):
 
     cut_off = fields.Char(string="Cut Off")
 
-    dus_second_send = fields.Char(string="Cut Off")
+    dus_second_send = fields.Char(string="D.U.S 2DO.ENVÍO")
 
     bill_of_lading = fields.Char(string="Conocimiento de Embarque")
 

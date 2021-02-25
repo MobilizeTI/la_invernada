@@ -197,7 +197,7 @@
                                     <th style="text-align:left;">DEPÓSITO RETIRO</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        
+                                        <span t-field="d.withdrawal_deposit.name"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -239,14 +239,14 @@
                                     <th style="text-align:left;">FLETE</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.freight_amount"/>
+                                        <span t-field="d.freight_payment_term.name"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">SEGURO</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.safe_amount"/>
+                                        <span t-field="d.safe_type.name"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -377,7 +377,7 @@
                                     <th style="text-align:left;">STACKING</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.remarks_comex"/>
+                                        <span t-field="d.stacking"/>
                                     </td>
                                 </tr>
                             </table>
@@ -389,51 +389,49 @@
                                     <td style="width:5px">:</td>
                                     <td style="font-weight: bold;">Stacking:</td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.remarks_comex"/>
+                                        <span t-field="d.stacking"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th></th>
                                     <td style="font-weight: bold;">Cut Off:</td>
-                                    <td style="text-align:left;"></td>
+                                    <td style="text-align:left;"><span t-field="d.cut_off"/></td>
                                 </tr>
                             </table>
                         </div>
                         <div style="width:100%;display:inline-block; border:1px solid;">
                              <table style="width:100%;font-size:10px">
                                 <tr>
-                                    <th style="text-align:left;width:200px">DOCUMENTACIÓN</th>
-                                    <td style="width:5px">:</td>
-                                    <td style="text-align:left;">
-                                        
-                                    </td>
+                                    <th style="text-align:left;width:200px">DOCUMENTACIÓN REQUERIDA</th>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">D.U.S 2DO.ENVIO</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        
+                                        <span t-field="d.dus_second_send"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">CONOCIMIENTO DE EMBARQUE</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        
+                                        <span t-field="d.bill_of_lading"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">CERTIFICADO FITOSANITARIO</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        
+                                        <span t-field="d.phytosanitary_certificate"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">CERTIFICADO ORIGEN</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        
+                                        <span t-field="d.origin_certificate"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -644,7 +642,7 @@
                                 <tr>
                                     <th></th>
                                     <td style="font-weight:bold;text-align:right">STACKING:</td>
-                                    <td style="text-align:left"><span t-field="d.remarks_comex"/></td>
+                                    <td style="text-align:left"><span t-field="d.stacking"/></td>
                                 </tr>
                                 <tr>
                                     <th></th>
