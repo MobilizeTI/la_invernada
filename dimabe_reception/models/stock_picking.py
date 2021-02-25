@@ -425,6 +425,8 @@ class StockPicking(models.Model):
                     'res_id': wiz.id,
                     'context': self.env.context
                 }
+            for lot in self.move_line_ids_without_package.mapped('lot_id'):
+                lot.update_stock_quant(self.location_id.id)
             return super(StockPicking, self).button_validate()
         return super(StockPicking, self).button_validate()
 
