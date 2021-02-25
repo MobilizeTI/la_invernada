@@ -52,9 +52,6 @@ class ConfirmPrincipalOrde(models.TransientModel):
             for line in self.picking_id.move_line_ids_without_package.filtered(
                     lambda a: a.product_id.id == item.product_id.id):
                 line.write({
-                    'picking_id': None
-                })
-                line.write({
                     'picking_id': item.dispatch_id.id,
                     'move_id': item.dispatch_id.move_ids_without_package.filtered(
                         lambda x: x.product_id.id == line.product_id and x.picking_id.id == item.dispatch_id.id)
