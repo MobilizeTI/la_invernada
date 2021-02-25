@@ -281,9 +281,9 @@ class AccountInvoice(models.Model):
 
     humidity = fields.Char('Humedad')
 
-    withdrawal_deposit = fields.Char('custom.withdrawal.deposits',string="Depósito Retiro")
+    withdrawal_deposit = fields.Many2one('custom.withdrawal.deposits',string="Depósito Retiro")
 
-    freight_payment_term = fields.Char('custom.freight.payment.term',string="Termino de Pago Flete")
+    freight_payment_term = fields.Many2one('custom.freight.payment.term',string="Termino de Pago Flete")
 
     safe_type = fields.Char(string="Tipo de Seguro")
 
