@@ -119,6 +119,8 @@ class StockPicking(models.Model):
                         lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight'))
                 })
             elif not quant and lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed):
+                if not lot.product_id.categ_id.id == 65:
+                    continue
                 recepction = self.env['stock.picking'].search([('name', '=', lot.name)])
                 models._logger.error(lot.name)
                 location_id = 0
