@@ -64,6 +64,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
                 if no_quantities_done:
                     self.inmediate_transfer(item.dispatch_id.id)
                 if self.check_backorder(item.dispatch_id):
+                    self.process_backorder(item.dispatch_id)
 
     def inmediate_transfer(self, picking):
         pick_to_backorder = self.env['stock.picking']
