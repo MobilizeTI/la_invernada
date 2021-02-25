@@ -670,9 +670,9 @@
                         </div>
                         <br/>
                         <div style="width:100%;display:inline-block;padding:6px;">
-                             <div style="text-align: right;">
+                            <div style="text-align: right;">
                                 <img style="float:right;" width="100px" t-att-src="'data:image/png;base64,%s' % to_text(res_company.legal_representative_signature)"/>
-                            </div></br>
+                            </div><br/>
                             <div>
                                 <span style="font-size:12px; margin-right:50px"><strong>p.p La Invernada Export SpA</strong></span>
                             </div>
