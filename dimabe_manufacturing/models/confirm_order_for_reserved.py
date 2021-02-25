@@ -34,7 +34,7 @@ class ConfirmOrderForReserved(models.TransientModel):
                 'picking_id': self.picking_id.id,
                 'product_id': self.lot_id.product_id.id,
                 'product_uom_id': self.lot_id.product_id.uom_id.id,
-                'product_uom_qty': self.get_reserved_quantity_by_picking(self.picking_principal_id.id),
+                'product_uom_qty': self.lot_id.get_reserved_quantity_by_picking(self.picking_principal_id.id),
                 'location_id': self.picking_principal_id.location_id.id,
                 'location_dest_id': self.picking_principal_id.partner_id.property_stock_customer.id,
                 'date': date.today(),
