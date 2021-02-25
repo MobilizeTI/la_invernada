@@ -25,13 +25,21 @@
                     />
                 </xpath>
                 <xpath expr="//field[@name='tax_line_ids']" position="after">
-                    <group string="Información para Instructivo AGA">
+                    <group string="Información para Instructivos">
                         <group>
                             <field name="temperature"/>
                             <field name="ventilation"/>
+                            <field name="humidity"/>
+                            <field name="freight_payment_term"/>
+                            <field name="safe_type"/>
+                            <field name="stacking"/>
+                            <field name="cut_off"/>
                         </group>
                         <group>
-                            <field name="humidity"/>
+                            <field name="dus_second_send"/>
+                            <field name="bill_of_lading"/>
+                            <field name="phytosanitary_certificate"/>
+                            <field name="origin_certificate"/>
                         </group>
                     </group>
                 </xpath>
