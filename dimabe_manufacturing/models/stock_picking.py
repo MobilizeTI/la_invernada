@@ -229,7 +229,7 @@ class StockPicking(models.Model):
                 })
             else:
                 move.unlink()
-            lot.update_quant(self.location_id.id)
+            lot.update_stock_quant(self.location_id.id)
 
     @api.multi
     def _compute_packing_list_lot_ids(self):
