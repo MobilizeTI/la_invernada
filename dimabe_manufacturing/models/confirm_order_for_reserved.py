@@ -42,7 +42,7 @@ class ConfirmOrderForReserved(models.TransientModel):
             })
         self.lot_id.clean_add_pallet()
         self.lot_id.clean_add_serial()
-        self.lot_id.update_stock_quant(self.picking_principal_id.location_id)
+        self.lot_id.update_stock_quant(self.picking_principal_id.location_id.id)
 
     @api.one
     def cancel(self):
