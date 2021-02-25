@@ -8,25 +8,25 @@
                         <div style="width:100%;text-align:center;display:inline-block; border:1px solid;font-size:10px">
                             <p>MANDATO</p>
                             <p style="padding=6px;">EN 
-                                <t t-if="d.create_date.date().strftime('%Y') == 'Monday'">
+                                <t t-if="d.create_date.date().strftime('%A') == 'Monday'">
                                     LUNES
                                 </t>
-                                <t t-if="d.create_date.date().strftime('%Y') == 'Tuesday'">
+                                <t t-if="d.create_date.date().strftime('%A') == 'Tuesday'">
                                     MARTES
                                 </t>
-                                <t t-if="d.create_date.date().strftime('%Y') == 'Wednesday'">
+                                <t t-if="d.create_date.date().strftime('%A') == 'Wednesday'">
                                     MIERCOLES
                                 </t>
-                                <t t-if="d.create_date.date().strftime('%Y') == 'Thursday'">
+                                <t t-if="d.create_date.date().strftime('%A') == 'Thursday'">
                                     JUEVES
                                 </t>
-                                <t t-if="d.create_date.date().strftime('%Y') == 'Friday'">
+                                <t t-if="d.create_date.date().strftime('%A') == 'Friday'">
                                     VIERNES
                                 </t>
-                                <t t-if="d.create_date.date().strftime('%Y') == 'Saturday'">
+                                <t t-if="d.create_date.date().strftime('%A') == 'Saturday'">
                                     SABADO
                                 </t>
-                                <t t-if="d.create_date.date().strftime('%Y') == 'Sunday'">
+                                <t t-if="d.create_date.date().strftime('%A') == 'Sunday'">
                                     DOMINGO
                                 </t>
                                 DEL 
@@ -53,11 +53,15 @@
                                 </tr>
                                 <tr>
                                     <th style="text-align:right;">DE :</th>
-                                    <td style="text-align:left;"><span t-field="res_partner.origin_contact_aga.name"/></td>
+                                    <td style="text-align:left;">
+                                        <span t-field="res_company.origin_contact_aga.name"/>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:right;">REF :</th>
-                                    <td style="text-align:left;"><span t-field="d.partner_id.name"/></td>
+                                    <td style="text-align:left;">
+                                        <span t-field="d.partner_id.name"/>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
@@ -529,8 +533,69 @@
                                 </table>
                             </div>
                         </div>
-                        <div style="width:100%;display:inline-block; padding:6px;">
-                        <span style="font-size:12px" t-esc="d.create_date.date()"/>
+                    <div style="width:100%;display:inline-block; padding:6px;">
+                            <t t-if="d.create_date.date().strftime('%A') == 'Monday'">
+                                lunes
+                            </t>
+                             <t t-if="d.create_date.date().strftime('%A') == 'Tuesday'">
+                                martes
+                            </t>
+                            <t t-if="d.create_date.date().strftime('%A') == 'Wednesday'">
+                                miercoles
+                            </t>
+                            <t t-if="d.create_date.date().strftime('%A') == 'Thursday'">
+                                jueves
+                            </t>
+                            <t t-if="d.create_date.date().strftime('%A') == 'Friday'">
+                                viernes
+                            </t>
+                            <t t-if="d.create_date.date().strftime('%A') == 'Saturday'">
+                                sabado
+                            </t>
+                            <t t-if="d.create_date.date().strftime('%A') == 'Sunday'">
+                                domingo
+                            </t>
+                                ,
+                            <span t-field="d.create_date.date().strftime('%d')"/>
+                                de
+                            <t t-if="d.create_date.date().strftime('%M') == 'January'">
+                                enero
+                            </t>
+                            <t t-if="d.create_date.date().strftime('%M') == 'February'">
+                                febrero
+                            </t>
+                            <t t-if="d.create_date.date().strftime('%M') == 'March'">
+                                marzo
+                            </t>
+                            <t t-if="d.create_date.date().strftime('%M') == 'April'">
+                                abril
+                            </t>
+                            <t t-if="d.create_date.date().strftime('%M') == 'May'">
+                                mayo
+                            </t>
+                            <t t-if="d.create_date.date().strftime('%M') == 'June'">
+                                junio
+                            </t>
+                            <t t-if="d.create_date.date().strftime('%M') == 'July'">
+                                julio
+                            </t>
+                            <t t-if="d.create_date.date().strftime('%M') == 'August'">
+                                agosto
+                            </t>
+                            <t t-if="d.create_date.date().strftime('%M') == 'September'">
+                                septiembre
+                            </t>
+                            <t t-if="d.create_date.date().strftime('%M') == 'October'">
+                                octubre
+                            </t>
+                            <t t-if="d.create_date.date().strftime('%M') == 'November'">
+                                noviembre
+                            </t>
+                            <t t-if="d.create_date.date().strftime('%M') == 'December'">
+                                diciembre
+                            </t>
+                                de
+                            <span t-field="d.create_date.date().strftime('%Y')"/>
                         <table style="width:100%;font-size:10px;">
                             <tr>
                                 <th style="text-align:right; width:200px;">A</th>

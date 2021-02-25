@@ -298,7 +298,7 @@ class AccountInvoice(models.Model):
     phytosanitary_certificate = fields.Char(string="Certificado Fitosanitario")
 
     origin_certificate = fields.Char(string="Certificado Origen")
-    
+
 
 
     #Emarque Method
@@ -986,7 +986,9 @@ class AccountInvoice(models.Model):
                 'etd': self.etd,
                 'eta': self.eta,
                 'departure_date': self.departure_date,
-                'arrival_date': self.arrival_date
+                'arrival_date': self.arrival_date,
+                'customs_department': self.custom_department,
+                'transport': self.transport_to_port.name
             })
 
         return res
