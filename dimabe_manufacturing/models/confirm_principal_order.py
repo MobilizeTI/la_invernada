@@ -56,6 +56,8 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     lambda a: a.product_id.id == item.product_id.id):
                 line.write({
                     'picking_id': item.dispatch_id.id,
+                    'move_id': item.dispatch_id.move_ids_without_package.filtered(
+                        lambda x: x.product_id.id == line.product_id and x.picking_id.id == item.dispatch_id.id)
                 })
             if item.real_dispatch_qty > 0 and item.dispatch_id.id != self.picking_id.id:
                 precision_digits = self.env['decimal.precision'].precision_get('Product Unit of Measure')
