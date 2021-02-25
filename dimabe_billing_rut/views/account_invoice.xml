@@ -36,6 +36,7 @@
                             <field name="cut_off"/>
                         </group>
                         <group>
+                            <field name="withdrawal_deposit"/>
                             <field name="dus_second_send"/>
                             <field name="bill_of_lading"/>
                             <field name="phytosanitary_certificate"/>
