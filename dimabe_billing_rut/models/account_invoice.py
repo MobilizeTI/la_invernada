@@ -231,7 +231,7 @@ class AccountInvoice(models.Model):
         string='Puerto de Desembarque'
     )
 
-    required_loading_date = fields.Date(
+    required_loading_date = fields.Datetime(
         'Fecha requerida de carga'
     )
 
@@ -271,20 +271,33 @@ class AccountInvoice(models.Model):
 
     custom_department = fields.Many2one('res.partner',string="Oficina Aduanera")
 
+    transport_to_port = fields.Many2one('res.partner',string="Transporte a Puerto",domain="[('supplier','=',True)]")
+
     #To Intructuives
 
     temperature = fields.Char('Temperatura')
 
-    ventilation = fields.Char('Temperatura')
+    ventilation = fields.Char('Ventilación')
 
-    humidity = fields.Char('Temperatura')
+    humidity = fields.Char('Humedad')
 
+    #withdrawal_deposit = fields.Char(string="Depósito Retiro")
 
+    freight_payment_term = fields.Char(string="Termino de Pago Flete")
 
-    #freight_payment_term = fields.Char(string="Termino de Pago Flete")
+    safe_type = fields.Char(string="Tipo de Seguro")
 
-    
+    stacking = fields.Char(string="Stacking")
 
+    cut_off = fields.Char(string="Cut Off")
+
+    dus_second_send = fields.Char(string="Cut Off")
+
+    bill_of_lading = fields.Char(string="Conocimiento de Embarque")
+
+    phytosanitary_certificate = fields.Char(string="Certificado Fitosanitario")
+
+    origin_certificate = fields.Char(string="Certificado Origen")
 
 
     #Emarque Method
@@ -823,7 +836,13 @@ class AccountInvoice(models.Model):
     
             product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
             stock_picking_line = self.env['stock.move.line'].search([('picking_id','=',self.stock_picking_ids.id)])
-
+            #stock_picking = self.env['stock_picking'].search([('id','=',)])
+            
+            if not self.required_loading_date or self.required_loading_date == "":
+                self.required_loading_date = self.stock_picking_ids.required_loading_date
+            elif self.required_loading_date != self.stock_picking_ids.required_loading_date: 
+                raise models.ValidacionError('Las Fechas de carga no coinciden, la fecha registrada es {} y la fecha de carga del despacho que desea agregar es {}. Favor comunicarse con el encargado de Planta'.format(self.required_loading_date, self.stock_picking_ids.required_loading_date))   
+            
             if len(product_ids) > 0:
                 for item in product_ids: 
                     exist_custom_invoice_line = False
@@ -947,7 +966,7 @@ class AccountInvoice(models.Model):
                 'charging_mode' : self.charging_mode,
                 'booking_number' : self.booking_number,
                 'bl_number' : self.bl_number,
-                'container_number' : self.container_number,
+                #'container_number' : self.container_number,
                 'container_type' : self.container_type.id,
                 'client_label' : self.client_label,
                 'client_label_file': self.client_label_file,
@@ -962,7 +981,7 @@ class AccountInvoice(models.Model):
                 'type_transport': self.type_transport.id,
                 'departure_port': self.departure_port.id,
                 'arrival_port': self.arrival_port.id,
-                'required_loading_date': self.required_loading_date,
+                #'required_loading_date': self.required_loading_date,
                 'etd': self.etd,
                 'eta': self.eta,
                 'departure_date': self.departure_date,

@@ -29,3 +29,4 @@ from . import account_incoterms
 from . import custom_cities
 from . import custom_freight_payment_term
 from . import custom_safe_type
+from . import custom_withdrawal_deposit

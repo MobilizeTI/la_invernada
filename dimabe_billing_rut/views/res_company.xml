@@ -21,7 +21,17 @@
                   <field name="ticket_url" placeholder="URL para validación de Boletas Electrónicas." colspan="3" />
               </group>
           </page>
-      </xpath>
+        </xpath>
+        <xpath expr="//field[@name='street']" position="after">
+          <field name="legal_represntative"/>
+          <field name="legal_representative_signature"/>
+        </xpath>
+        <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+          <page name="info_instructive_tab" string="Información para Instructivos">
+            <field name="plant_contact_ids"/>
+            <field name="comex_contact_ids"/>
+          </page>
+        </xpath> 
       </field>
     </record>
   </data>

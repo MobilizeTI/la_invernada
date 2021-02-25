@@ -49,7 +49,7 @@ class ResCompany(models.Model):
 
     comex_contact_ids = fields.Many2many('res.partner',string="Contacto Comex")
 
-
+    origin_contact_aga = fields.Many2one('res.partner',string="Contacto Origen AGA")
 
     @api.model
     def create(self, values_list):
