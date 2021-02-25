@@ -404,7 +404,7 @@
                                 <tr>
                                     <th style="text-align:left;width:200px">DOCUMENTACIÓN REQUERIDA</th>
                                     <td></td>
-                                    <td></td>
+                                    <td style="text-align: center;" rowspan="5"><img width="100px" t-att-src="'data:image/png;base64,%s' % to_text(res_company.legal_representative_signature)"></td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">D.U.S 2DO.ENVIO</th>
@@ -412,6 +412,7 @@
                                     <td style="text-align:left;">
                                         <span t-field="d.dus_second_send"/>
                                     </td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">CONOCIMIENTO DE EMBARQUE</th>
@@ -426,6 +427,7 @@
                                     <td style="text-align:left;">
                                         <span t-field="d.phytosanitary_certificate"/>
                                     </td>
+                                    
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">CERTIFICADO ORIGEN</th>
@@ -437,7 +439,7 @@
                                 <tr>
                                     <th style="width:200px"></th>
                                     <td style="text-align:right;width:250px">ATTE.:</td>
-                                    <td style="text-align:right;margin-right:20px;">p.p La Invernada Export SpA.</td>
+                                    <td style="text-align:right;">p.p La Invernada Export SpA.</td>
                                 </tr>
                             </table>
                         </div>
