@@ -7,7 +7,7 @@
                     <div style="width:100%;">
                         <div style="width:100%;text-align:center;display:inline-block; border:1px solid;font-size:10px">
                             <p>MANDATO</p>
-                            <p>EN <span t-esc="d.create_date.date().strftime('%A'"/> DEL 
+                            <p>EN <span t-esc="d.create_date.date().strftime('%A')"/> DEL 
                                     <span t-esc="d.create_date.date().strftime('%Y')"/>, DON 
                                     <span style="text-transform: uppercase;" t-field="res_company.legal_represntative.name"/>, 
                                 REPRESENTANTE LEGAL DE LA FIRMA LA INVERNADA EXPORT SpA, R.U.T.: 76.263.274-8, CON DOMICILIO EN VALLE 
@@ -404,7 +404,7 @@
                                 <tr>
                                     <th style="text-align:left;width:200px">DOCUMENTACIÓN REQUERIDA</th>
                                     <td></td>
-                                    <td style="text-align: center;" rowspan="5"><img width="100px" t-att-src="'data:image/png;base64,%s' % to_text(res_company.legal_representative_signature)"></td>
+                                    <td style="text-align: center;" rowspan="5"><img width="100px" t-att-src="'data:image/png;base64,%s' % to_text(res_company.legal_representative_signature)"/></td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">D.U.S 2DO.ENVIO</th>
@@ -670,7 +670,7 @@
                         </div>
                         <br/>
                         <div style="width:100%;display:inline-block;padding:6px;">
-
+                            <img style="float:right;" width="100px" t-att-src="'data:image/png;base64,%s' % to_text(res_company.legal_representative_signature)"/>
                             <span style="float:right; font-size:12px"><strong>p.p La Invernada Export SpA</strong></span>
                         </div>
                     </div>
