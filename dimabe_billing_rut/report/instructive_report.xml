@@ -556,7 +556,7 @@
                                 domingo
                             </t>
                                 ,
-                            <span t-field="d.create_date.date().strftime('%e')"/>
+                            <span t-esc="d.create_date.date().strftime('%e')"/>
                                 de
                             <t t-if="d.create_date.date().strftime('%B') == 'January'">
                                 enero
