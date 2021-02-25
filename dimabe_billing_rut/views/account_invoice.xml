@@ -135,6 +135,7 @@
                                     <field name="ship" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="ship_number" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="type_transport" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <field name="custom_department" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 </group>
                                 <group>
                                     <field name="departure_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
