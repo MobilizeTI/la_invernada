@@ -508,7 +508,7 @@
                                     <span t-field="res_company.comex_contact_ids[0].name"></span>
                                 </td>
                             </tr>
-                            <t t-if="len(d.res_company.comex_contact_ids) > 1">
+                            <t t-if="len(res_company.comex_contact_ids) > 1">
                                 <t t-foreach="res_company.comex_contact_ids" t-as="o">
                                     <tr t-if="o.name != d.custom_invoice_line_ids[0].name">
                                         <th></th>
