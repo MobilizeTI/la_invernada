@@ -743,5 +743,5 @@ class StockProductionLot(models.Model):
                         'display_weight')),
                     'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
                         lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight')),
-                    'location_id': location_id.id
+                    'location_id': location_id
                 })
