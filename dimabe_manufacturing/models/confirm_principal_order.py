@@ -59,15 +59,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     'move_id': item.dispatch_id.move_ids_without_package.filtered(
                         lambda x: x.product_id.id == line.product_id and x.picking_id.id == item.dispatch_id.id)
                 })
-            if item.real_dispatch_qty > 0 and item.dispatch_id.id != self.picking_id.id:
-                precision_digits = self.env['decimal.precision'].precision_get('Product Unit of Measure')
-                no_quantities_done = all(
-                    float_is_zero(move_line.qty_done, precision_digits=precision_digits) for move_line in
-                    item.dispatch_id.move_line_ids.filtered(lambda m: m.state not in ('done', 'cancel')))
-                if no_quantities_done:
-                    self.inmediate_transfer(item.dispatch_id)
-                if self.check_backorder(item.dispatch_id):
-                    self.process_backorder(item.dispatch_id)
+            self.check_backorder(self.custom_dispatch_line_ids.mapped('dispatch_id'))
 
     def inmediate_transfer(self, picking):
         pick_to_backorder = self.env['stock.picking']
@@ -86,31 +78,31 @@ class ConfirmPrincipalOrde(models.TransientModel):
             pick_to_backorder |= picking
         pick_to_do |= picking
 
-    def check_backorder(self, picking):
-        quantity_todo = {}
-        quantity_done = {}
-        for move in picking.mapped('move_lines'):
-            quantity_todo.setdefault(move.product_id.id, 0)
-            quantity_done.setdefault(move.product_id.id, 0)
-            quantity_todo[move.product_id.id] += move.product_uom_qty
-            quantity_done[move.product_id.id] += move.quantity_done
-        for ops in picking.mapped('move_line_ids').filtered(
-                lambda x: x.package_id and not x.product_id and not x.move_id):
-            for quant in ops.package_id.quant_ids:
-                quantity_done.setdefault(quant.product_id.id, 0)
-                quantity_done[quant.product_id.id] += quant.qty
-        for pack in picking.mapped('move_line_ids').filtered(lambda x: x.product_id and not x.move_id):
-            quantity_done.setdefault(pack.product_id.id, 0)
-            quantity_done[pack.product_id.id] += pack.product_uom_id._compute_quantity(pack.qty_done,
-                                                                                       pack.product_id.uom_id)
-        return any(quantity_done[x] < quantity_todo.get(x, 0) for x in quantity_done)
+    def check_backorder(self, picking_ids):
+            draft_picking_lst = picking_ids.\
+                filtered(lambda x: x.state == 'draft').\
+                sorted(key=lambda r: r.scheduled_date)
+            draft_picking_lst.action_confirm()
 
-    def process_backorder(self, picking):
-        for pick_id in picking:
-            moves_to_log = {}
-            for move in pick_id.move_lines:
-                if float_compare(move.product_uom_qty, move.quantity_done,
-                                 precision_rounding=move.product_uom.rounding) > 0:
-                    moves_to_log[move] = (move.quantity_done, move.product_uom_qty)
-            pick_id._log_less_quantities_than_expected(moves_to_log)
-        picking.action_done()
+            pickings_to_check = picking_ids.\
+                filtered(lambda x: x.state not in [
+                    'draft',
+                    'cancel',
+                    'done',
+                ]).\
+                sorted(key=lambda r: r.scheduled_date)
+            pickings_to_check.action_assign()
+
+            assigned_picking_lst = picking_ids.\
+                filtered(lambda x: x.state == 'assigned').\
+                sorted(key=lambda r: r.scheduled_date)
+            quantities_done = sum(
+                move_line.qty_done for move_line in
+                assigned_picking_lst.mapped('move_line_ids').filtered(
+                    lambda m: m.state not in ('done', 'cancel')))
+            if not quantities_done:
+                return assigned_picking_lst.action_immediate_transfer_wizard()
+            if any([pick._check_backorder() for pick in assigned_picking_lst]):
+                return assigned_picking_lst.action_generate_backorder_wizard()
+            assigned_picking_lst.action_done()
+
