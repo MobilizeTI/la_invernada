@@ -436,10 +436,11 @@ class StockPicking(models.Model):
 
     @api.multi
     def action_done(self):
+        super(StockPicking, self).action_done()
         if self.picking_type_code == 'outgoing':
             for lot in self.move_line_ids_without_package.mapped('lot_id'):
-                lot.update_stock_quant(self.location_id.id)
-        return super(StockPicking,self).action_done()
+                self.update_stock_quant(lot.name,self.location_id.id)
+
 
     @api.model
     def validate_mp_reception(self):
@@ -506,3 +507,31 @@ class StockPicking(models.Model):
         if self.is_mp_reception:
             if len(self.move_ids_without_package) > len(self.move_ids_without_package.mapped('product_id')):
                 raise models.ValidationError('no puede tener el mismo producto en más de una linea')
+
+
+    def update_stock_quant(self,lot_name,location_id):
+        lot = self.env['stock.production.lot'].search([('name', '=', self.name)])
+        if lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed):
+
+            quant = self.env['stock.quant'].sudo().search(
+                [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'),('location_id','=',location_id)])
+
+            if quant:
+                quant.write({
+                    'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                                                                                              x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
+                        'display_weight')),
+                    'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
+                        lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight'))
+                })
+            else:
+                self.env['stock.quant'].sudo().create({
+                    'lot_id': lot.id,
+                    'product_id': lot.product_id.id,
+                    'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                                                                                              x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
+                        'display_weight')),
+                    'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
+                        lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight')),
+                    'location_id': location_id
+                })
