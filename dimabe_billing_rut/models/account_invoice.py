@@ -300,6 +300,7 @@ class AccountInvoice(models.Model):
     origin_certificate = fields.Char(string="Certificado Origen")
 
 
+
     #Emarque Method
     @api.model
     @api.onchange('etd')
@@ -985,7 +986,9 @@ class AccountInvoice(models.Model):
                 'etd': self.etd,
                 'eta': self.eta,
                 'departure_date': self.departure_date,
-                'arrival_date': self.arrival_date
+                'arrival_date': self.arrival_date,
+                'customs_department': self.custom_department,
+                'transport': self.transport_to_port.name
             })
 
         return res
