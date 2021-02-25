@@ -428,6 +428,7 @@ class StockPicking(models.Model):
                     'res_id': wiz.id,
                     'context': self.env.context
                 }
+            return super(StockPicking, self).button_validate()
         return super(StockPicking, self).button_validate()
 
     def clean_reserved(self, picking):
