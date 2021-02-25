@@ -346,7 +346,7 @@
                                     <th style="text-align:left;">TEMPERATURA</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.tenperature"/>
+                                        <span t-field="d.temperature"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -556,42 +556,42 @@
                                 domingo
                             </t>
                                 ,
-                            <span t-field="d.create_date.date().strftime('%d')"/>
+                            <span t-field="d.create_date.date().strftime('%e')"/>
                                 de
-                            <t t-if="d.create_date.date().strftime('%M') == 'January'">
+                            <t t-if="d.create_date.date().strftime('%B') == 'January'">
                                 enero
                             </t>
-                            <t t-if="d.create_date.date().strftime('%M') == 'February'">
+                            <t t-if="d.create_date.date().strftime('%B') == 'February'">
                                 febrero
                             </t>
-                            <t t-if="d.create_date.date().strftime('%M') == 'March'">
+                            <t t-if="d.create_date.date().strftime('%B') == 'March'">
                                 marzo
                             </t>
-                            <t t-if="d.create_date.date().strftime('%M') == 'April'">
+                            <t t-if="d.create_date.date().strftime('%B') == 'April'">
                                 abril
                             </t>
-                            <t t-if="d.create_date.date().strftime('%M') == 'May'">
+                            <t t-if="d.create_date.date().strftime('%B') == 'May'">
                                 mayo
                             </t>
-                            <t t-if="d.create_date.date().strftime('%M') == 'June'">
+                            <t t-if="d.create_date.date().strftime('%B') == 'June'">
                                 junio
                             </t>
-                            <t t-if="d.create_date.date().strftime('%M') == 'July'">
+                            <t t-if="d.create_date.date().strftime('%B') == 'July'">
                                 julio
                             </t>
-                            <t t-if="d.create_date.date().strftime('%M') == 'August'">
+                            <t t-if="d.create_date.date().strftime('%B') == 'August'">
                                 agosto
                             </t>
-                            <t t-if="d.create_date.date().strftime('%M') == 'September'">
+                            <t t-if="d.create_date.date().strftime('%B') == 'September'">
                                 septiembre
                             </t>
-                            <t t-if="d.create_date.date().strftime('%M') == 'October'">
+                            <t t-if="d.create_date.date().strftime('%B') == 'October'">
                                 octubre
                             </t>
-                            <t t-if="d.create_date.date().strftime('%M') == 'November'">
+                            <t t-if="d.create_date.date().strftime('%B') == 'November'">
                                 noviembre
                             </t>
-                            <t t-if="d.create_date.date().strftime('%M') == 'December'">
+                            <t t-if="d.create_date.date().strftime('%B') == 'December'">
                                 diciembre
                             </t>
                                 de
