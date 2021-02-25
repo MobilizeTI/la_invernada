@@ -649,11 +649,11 @@ class StockProductionLot(models.Model):
                 'lot_id':self.id
             })
             return {
-                'name': 'Desea que todos los documentos se carguen con el # de pedido principal?',
+                'name': 'Seleccione el pedido al cual quiere reservar',
                 'type': 'ir.actions.act_window',
                 'view_type': 'form',
                 'view_mode': 'form',
-                'res_model': 'confirm.principal.order',
+                'res_model': 'confirm.order.reserved',
                 'views': [(view.id, 'form')],
                 'view_id': view.id,
                 'target': 'new',
