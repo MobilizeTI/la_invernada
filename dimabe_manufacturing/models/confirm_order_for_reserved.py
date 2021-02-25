@@ -22,7 +22,7 @@ class ConfirmOrderForReserved(models.TransientModel):
         if self.lot_id.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
             self.lot_id.add_selection_serial(self.picking_principal_id.id, self.picking_principal_id.location_id.id)
         line = self.picking_principal_id.move_line_ids_without_package.filtered(
-            lambda a: a.lot_id.id == self.id and a.product_id.id == self.product_id.id)
+            lambda a: a.lot_id.id == self.id and a.product_id.id == self.lot_id.product_id.id)
         if line:
             line.write({
                 'product_uom_qty': self.lot_id.get_reserved_quantity_by_picking(self.picking_principal_id.id)
