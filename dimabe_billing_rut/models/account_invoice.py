@@ -285,7 +285,7 @@ class AccountInvoice(models.Model):
 
     freight_payment_term = fields.Many2one('custom.freight.payment.term',string="Termino de Pago Flete")
 
-    safe_type = fields.Char(string="Tipo de Seguro")
+    safe_type = fields.Many2one('custom.safe.type',string="Tipo de Seguro")
 
     stacking = fields.Char(string="Stacking")
 
