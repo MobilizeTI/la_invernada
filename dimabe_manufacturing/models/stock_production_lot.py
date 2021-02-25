@@ -641,7 +641,25 @@ class StockProductionLot(models.Model):
         self.clean_add_serial()
         line = picking.dispatch_line_ids.filtered(lambda x: x.product_id.id == self.product_id.id)
         if len(line) > 1:
-            raise models.ValidationError(line)
+            view = self.env.ref('dimabe_manufacturing.view_confirm_order_reserved')
+            wiz = self.env['confirm.order.reserved'].create({
+                'sale_ids': [(4, s.id) for s in self.dispatch_line_ids.mapped('sale_id')],
+                'picking_principal_id': self.id,
+                'custom_dispatch_line_ids': [(4, c.id) for c in line],
+                'lot_id':self.id
+            })
+            return {
+                'name': 'Desea que todos los documentos se carguen con el # de pedido principal?',
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'confirm.principal.order',
+                'views': [(view.id, 'form')],
+                'view_id': view.id,
+                'target': 'new',
+                'res_id': wiz.id,
+                'context': self.env.context
+            }
         else:
             line.write({
                 'real_dispatch_qty':self.get_reserved_quantity_by_picking(picking_id)
