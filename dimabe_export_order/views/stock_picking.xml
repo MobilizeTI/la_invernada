@@ -119,6 +119,7 @@
                                         <field name="hour_departure" widget="float_time"/>
                                         <field name="dus_number"/>
                                         <field name="sell_shipping"/>
+                                        <field name="canning_data"/>
                                     </group>
 
                                 </group>
