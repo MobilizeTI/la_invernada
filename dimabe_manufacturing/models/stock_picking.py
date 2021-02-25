@@ -121,10 +121,13 @@ class StockPicking(models.Model):
             elif not quant and lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed):
                 recepction = self.env['stock.picking'].search([('name', '=', lot.name)])
                 models._logger.error(lot.name)
+                location_id = 0
                 if recepction:
                     location_id = recepction.location_dest_id.id
                 else:
                     location_id = lot.stock_production_lot_serial_ids.mapped('production_id').location_dest_id.id
+                if location_id == 0:
+                    continue
 
                 self.env['stock.quant'].sudo().create({
                     'lot_id': lot.id,
