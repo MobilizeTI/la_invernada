@@ -19,7 +19,7 @@
                         <div style="width:100%;text-align:center;display:inline-block; border:1px solid;">
                             <p style="font-wight:bold;font-size:20px">INSTRUCCIÓN DE EMBARQUE MARÍTIMO</p>
                             <p style="font-wight:bold;font-size:20px">EMB. N°
-                                <span t-field="o.shipping_number"/>/
+                                <span t-field="d.shipping_number"/>/
                                 <span t-esc="d.create_date.date().strftime('%Y')"/>
                             </p>
                         </div>
@@ -530,7 +530,7 @@
                             <tr>
                                 <th>N°</th>
                                 <td>:</td>
-                                <td><span t-field="o.shipping_number"/></td>
+                                <td><span t-field="d.shipping_number"/></td>
                             </tr>
                             <tr>
                                 <th style="text-align:left; width:200px">N° PEDIDO</th>
