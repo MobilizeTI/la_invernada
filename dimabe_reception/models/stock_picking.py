@@ -430,9 +430,10 @@ class StockPicking(models.Model):
 
     def clean_reserved(self, picking):
         for lot in picking.move_line_ids.mapped('lot_id'):
-            query = f"DELETE FROM stock_move_line where lot_id = {lot.id} and picking_id != {picking.id}"
-            cr = self._cr
-            cr.execute(query)
+            if lot not in self.packing_list_lot_ids:
+                query = f"DELETE FROM stock_move_line where lot_id = {lot.id} and picking_id = {picking.id}"
+                cr = self._cr
+                cr.execute(query)
 
     @api.multi
     def action_done(self):
