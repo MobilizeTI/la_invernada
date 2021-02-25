@@ -17,9 +17,6 @@ class ConfirmOrderForReserved(models.TransientModel):
 
     @api.one
     def reserved(self, no_reserved=True):
-        if not self.lot_id.stock_production_lot_serial_ids.filtered(lambda a: a.to_add) and not self.lot_id.pallet_ids.filtered(
-                lambda a: a.add_picking):
-            raise models.ValidationError('No se seleccionado nada')
         if self.lot_id.pallet_ids.filtered(lambda a: a.add_picking):
             self.lot_id.add_selection_pallet(self.picking_principal_id.id, self.picking_principal_id.location_id.id)
         if self.lot_id.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
