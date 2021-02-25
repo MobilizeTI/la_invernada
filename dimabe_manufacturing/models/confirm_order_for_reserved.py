@@ -1,6 +1,6 @@
-
 from odoo import models, fields, api
 from datetime import date
+
 
 class ConfirmOrderForReserved(models.TransientModel):
     _name = 'confirm.order.reserved'
@@ -32,13 +32,13 @@ class ConfirmOrderForReserved(models.TransientModel):
                 'move_id': self.picking_id.move_ids_without_package.filtered(
                     lambda m: m.product_id.id == self.lot_id.product_id.id).id,
                 'picking_id': self.picking_id.id,
-                'product_id': self.product_id.id,
-                'product_uom_id': self.product_id.uom_id.id,
+                'product_id': self.lot_id.product_id.id,
+                'product_uom_id': self.lot_id.product_id.uom_id.id,
                 'product_uom_qty': self.get_reserved_quantity_by_picking(self.picking_principal_id.id),
                 'location_id': self.picking_principal_id.location_id.id,
                 'location_dest_id': self.picking_principal_id.partner_id.property_stock_customer.id,
                 'date': date.today(),
-                'lot_id': self.id
+                'lot_id': self.lot_id.id
             })
         self.lot_id.clean_add_pallet()
         self.lot_id.clean_add_serial()
@@ -46,3 +46,5 @@ class ConfirmOrderForReserved(models.TransientModel):
     @api.one
     def cancel(self):
         raise models.ValidationError('Prueba Cancelar')
+
+
