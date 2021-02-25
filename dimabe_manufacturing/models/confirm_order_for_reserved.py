@@ -30,7 +30,7 @@ class ConfirmOrderForReserved(models.TransientModel):
         else:
             self.env['stock.move.line'].create({
                 'move_id': self.picking_id.move_ids_without_package.filtered(
-                    lambda m: m.product_id.id == self.product_id.id).id,
+                    lambda m: m.product_id.id == self.lot_id.product_id.id).id,
                 'picking_id': self.picking_id.id,
                 'product_id': self.product_id.id,
                 'product_uom_id': self.product_id.uom_id.id,
