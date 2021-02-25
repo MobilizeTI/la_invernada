@@ -28,7 +28,8 @@ class ConfirmPrincipalOrde(models.TransientModel):
             self.custom_dispatch_line_ids.filtered(lambda x: x.sale_id.id == self.sale_id.id).dispatch_id.id)
         for item in self.custom_dispatch_line_ids:
             item.dispatch_id.write({
-                'packing_list_file': base64.b64encode(report[0])
+                'packing_list_file': base64.b64encode(report[0]),
+                'picking_principal_id': self.picking_id.id if item.dispatch_id.id != self.picking_id.id else None
             })
 
     @api.one
@@ -43,7 +44,8 @@ class ConfirmPrincipalOrde(models.TransientModel):
             self.custom_dispatch_line_ids.filtered(lambda x: x.sale_id.id == self.sale_id.id).dispatch_id.id)
         for item in self.picking_id.dispatch_line_ids:
             item.dispatch_id.write({
-                'packing_list_file': base64.b64encode(report[0])
+                'packing_list_file': base64.b64encode(report[0]),
+                'picking_principal_id':self.picking_id.id if item.dispatch_id.id != self.picking_id.id else None
             })
 
     def process_data(self):
