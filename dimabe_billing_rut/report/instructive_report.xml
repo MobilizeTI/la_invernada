@@ -7,7 +7,29 @@
                     <div style="width:100%;">
                         <div style="width:100%;text-align:center;display:inline-block; border:1px solid;font-size:10px">
                             <p>MANDATO</p>
-                            <p>EN <span t-esc="d.create_date.date().strftime('%A')"/> DEL 
+                            <p style="padding=6px;">EN 
+                                <t t-if="d.create_date.date().strftime('%Y') == 'Monday'">
+                                    LUNES
+                                </t>
+                                <t t-if="d.create_date.date().strftime('%Y') == 'Tuesday'">
+                                    MARTES
+                                </t>
+                                <t t-if="d.create_date.date().strftime('%Y') == 'Wednesday'">
+                                    MIERCOLES
+                                </t>
+                                <t t-if="d.create_date.date().strftime('%Y') == 'Thursday'">
+                                    JUEVES
+                                </t>
+                                <t t-if="d.create_date.date().strftime('%Y') == 'Friday'">
+                                    VIERNES
+                                </t>
+                                <t t-if="d.create_date.date().strftime('%Y') == 'Saturday'">
+                                    SABADO
+                                </t>
+                                <t t-if="d.create_date.date().strftime('%Y') == 'Sunday'">
+                                    DOMINGO
+                                </t>
+                                DEL 
                                     <span t-esc="d.create_date.date().strftime('%Y')"/>, DON 
                                     <span style="text-transform: uppercase;" t-field="res_company.legal_represntative.name"/>, 
                                 REPRESENTANTE LEGAL DE LA FIRMA LA INVERNADA EXPORT SpA, R.U.T.: 76.263.274-8, CON DOMICILIO EN VALLE 
@@ -31,7 +53,7 @@
                                 </tr>
                                 <tr>
                                     <th style="text-align:right;">DE :</th>
-                                    <td style="text-align:left;"></td>
+                                    <td style="text-align:left;"><span t-field="res_partner.origin_contact_aga.name"/></td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:right;">REF :</th>
@@ -130,7 +152,7 @@
                                     <th style="text-align:left;">DIRECCIÓN</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        
+                                        <span t-field="d.partner_id.street"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -320,14 +342,21 @@
                                     <th style="text-align:left;">TEMPERATURA</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        
+                                        <span t-field="d.tenperature"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">VENTILACIÓN</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        
+                                        <span t-field="d.ventilation"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">HUMEDAD</th>
+                                    <td style="width:5px">:</td>
+                                    <td style="text-align:left;">
+                                        <span t-field="d.humidity"/>
                                     </td>
                                 </tr>
                             </table>
@@ -338,12 +367,14 @@
                                     <th style="text-align:left;width:200px">TRANSPORTE A PUERTO</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
+                                        <span t-field="d.transport_to_port.name"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">FECHA Y HORA DE CARGA</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
+                                        <span t-field="d.required_loading_date"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -394,6 +425,7 @@
                                 </tr>
                                 <tr>
                                     <th></th>
+                                    <td></td>
                                     <td style="font-weight: bold;">Cut Off:</td>
                                     <td style="text-align:left;"><span t-field="d.cut_off"/></td>
                                 </tr>
@@ -403,6 +435,7 @@
                              <table style="width:100%;font-size:10px">
                                 <tr>
                                     <th style="text-align:left;width:200px">DOCUMENTACIÓN REQUERIDA</th>
+                                    <td></td>
                                     <td></td>
                                     <td style="text-align: center;" rowspan="5"><img width="100px" t-att-src="'data:image/png;base64,%s' % to_text(res_company.legal_representative_signature)"/></td>
                                 </tr>
@@ -438,8 +471,9 @@
                                 </tr>
                                 <tr>
                                     <th style="width:200px"></th>
-                                    <td style="text-align:right;width:250px">ATTE.:</td>
-                                    <td style="text-align:right;">p.p La Invernada Export SpA.</td>
+                                    <td style="text-align:right;width:250px;font-weight: bold;">ATTE.:</td>
+                                    <td></td>
+                                    <td style="text-align:right;font-weight: bold;">p.p La Invernada Export SpA.</td>
                                 </tr>
                             </table>
                         </div>
@@ -512,9 +546,9 @@
                             </tr>
                             <t t-if="len(res_company.comex_contact_ids) > 1">
                                 <t t-foreach="res_company.comex_contact_ids" t-as="o">
-                                    <tr t-if="o.name != d.custom_invoice_line_ids[0].name">
+                                    <tr t-if="o.name != res_company.comex_contact_ids[0].name">
                                         <th></th>
-                                        <td></td>0
+                                        <td></td>
                                         <td style="text-align:left;">
                                             <span t-field="o.name"/>
                                         </td>
@@ -528,7 +562,7 @@
                                 <td>INSTRUCCION DE EMBARQUE</td>
                             </tr>
                             <tr>
-                                <th style="text-align:left; width:200px">N°</th>
+                                <th style="text-align:right; width:200px">N°</th>
                                 <td>:</td>
                                 <td><span t-field="d.shipping_number"/></td>
                             </tr>
@@ -637,7 +671,7 @@
                         <div style="width:100%;display:inline-block; padding:6px;">
                             <table style="width:100%;font-size:10px;">
                                 <tr>
-                                    <th style="text-align:left;">IMPORTANTE</th>
+                                    <th style="text-align:left; width:200px;">IMPORTANTE</th>
                                     <td style="font-weight:bold;text-align:right">N° DE RESERVA (BOOKING):</td>
                                     <td style="text-align:left"><span t-field="d.booking_number"/></td>
                                 </tr>
@@ -671,10 +705,10 @@
                         <br/>
                         <div style="width:100%;display:inline-block;padding:6px;">
                             <div style="text-align: right;">
-                                <img style="float:right;" width="100px" t-att-src="'data:image/png;base64,%s' % to_text(res_company.legal_representative_signature)"/>
+                                <img style="margin-right:50px;" width="100px" t-att-src="'data:image/png;base64,%s' % to_text(res_company.legal_representative_signature)"/>
                             </div><br/>
-                            <div>
-                                <span style="font-size:12px; margin-right:50px"><strong>p.p La Invernada Export SpA</strong></span>
+                            <div style="text-align: right;">
+                                <span style="font-size:12px; margin-right:20px"><strong>p.p La Invernada Export SpA</strong></span>
                             </div>
                         </div>
                     </div>

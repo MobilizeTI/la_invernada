@@ -298,6 +298,7 @@ class AccountInvoice(models.Model):
     phytosanitary_certificate = fields.Char(string="Certificado Fitosanitario")
 
     origin_certificate = fields.Char(string="Certificado Origen")
+    
 
 
     #Emarque Method
