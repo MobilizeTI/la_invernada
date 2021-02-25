@@ -63,7 +63,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     float_is_zero(move_line.qty_done, precision_digits=precision_digits) for move_line in
                     item.dispatch_id.move_line_ids.filtered(lambda m: m.state not in ('done', 'cancel')))
                 if no_quantities_done:
-                    self.inmediate_transfer(item.dispatch_id.id)
+                    self.inmediate_transfer(item.dispatch_id)
                 if self.check_backorder(item.dispatch_id):
                     self.process_backorder(item.dispatch_id)
 
