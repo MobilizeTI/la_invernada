@@ -425,8 +425,6 @@ class StockPicking(models.Model):
                     'res_id': wiz.id,
                     'context': self.env.context
                 }
-            for lot in self.move_line_ids_without_package.mapped('lot_id'):
-                lot.update_stock_quant(self.location_id.id)
             return super(StockPicking, self).button_validate()
         return super(StockPicking, self).button_validate()
 
@@ -435,6 +433,13 @@ class StockPicking(models.Model):
         for lot in picking.move_line_ids.mapped('lot_id'):
             if lot not in self.packing_list_lot_ids:
                 picking.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id).unlink()
+
+    @api.multi
+    def action_done(self):
+        if self.picking_type_code == 'outgoing':
+            for lot in self.move_line_ids_without_package.mapped('lot_id'):
+                lot.update_stock_quant(self.location_id.id)
+        return super(StockPicking,self).action_done()
 
     @api.model
     def validate_mp_reception(self):
