@@ -46,3 +46,5 @@ class ConfirmOrderForReserved(models.TransientModel):
     @api.one
     def cancel(self):
         raise models.ValidationError('Prueba Cancelar')
+
+
