@@ -59,8 +59,8 @@ class ConfirmPrincipalOrde(models.TransientModel):
                 })
             if item.real_dispatch_qty > 0 and item.dispatch_id.id != self.picking_id.id:
                 no_quantities_done = all(
-                    float_is_zero(move_line.qty_done, precision_digits=dp.get_precision) for move_line in
-                    item.dispatch_id.filtered(lambda m: m.state not in ('done', 'cancel')))
+                    float_is_zero(move_line.qty_done, precision_digits=dp.get_precision('Product Unit of Measure')) for move_line in
+                    item.dispatch_id.move_line_ids.filtered(lambda m: m.state not in ('done', 'cancel')))
                 if no_quantities_done:
                     self.inmediate_transfer(item.dispatch_id.id)
                 if self.check_backorder(item.dispatch_id):
