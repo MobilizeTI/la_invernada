@@ -13,6 +13,8 @@ class SaleOrder(models.Model):
 
     delivered_quantity = fields.Float(string="Cantidad Entregada", compute="compute_delivered_quantity")
 
+    unit_price = fields.Float(string="Precio Unitario", compute="compute_unit_price")
+
     def compute_ships(self):
         for item in self:
             item.ship_ids = item.picking_ids.mapped('ship') 
@@ -24,4 +26,8 @@ class SaleOrder(models.Model):
     def compute_delivered_quantity(self):
         for item in self:
             item.delivered_quantity = item.order_line[0].qty_delivered
+
+    def compute_unit_price(self):
+        for item in self:
+            item.unit_price = item.order_line[0].price_unit
 
