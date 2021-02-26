@@ -472,7 +472,7 @@
                                     <td style="width:5px"></td>
                                     <td style="text-align:left;"></td>
                                     <td></td>
-                                    <td style="text-align: center;" rowspan="6"><img width="100px" t-att-src="'data:image/png;base64,%s' % to_text(res_company.legal_representative_signature)"/></td>
+                                    <td style="text-align: right;" rowspan="6"><img width="100px" t-att-src="'data:image/png;base64,%s' % to_text(res_company.legal_representative_signature)"/></td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">D.U.S 2DO.ENVIO</th>
@@ -567,70 +567,72 @@
                                 </table>
                             </div>
                         </div>
-                    <div style="width:100%;display:inline-block; padding:6px;">
-                            CIUDAD
-                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Monday'">
-                                lunes
-                            </t>
-                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Tuesday'">
-                                martes
-                            </t>
-                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Wednesday'">
-                                miercoles
-                            </t>
-                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Thursday'">
-                                jueves
-                            </t>
-                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Friday'">
-                                viernes
-                            </t>
-                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Saturday'">
-                                sabado
-                            </t>
-                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Sunday'">
-                                domingo
-                            </t>
-                                ,
-                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%e')"/>
+                    <div style="width:100%;display:inline-block; padding:6px; font-size:10px;">
+                            <span>CIUDAD</span>
+                            <span style="font-size:10px;">
+                                <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Monday'">
+                                    lunes
+                                </t>
+                                <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Tuesday'">
+                                    martes
+                                </t>
+                                <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Wednesday'">
+                                    miercoles
+                                </t>
+                                <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Thursday'">
+                                    jueves
+                                </t>
+                                <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Friday'">
+                                    viernes
+                                </t>
+                                <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Saturday'">
+                                    sabado
+                                </t>
+                                <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Sunday'">
+                                    domingo
+                                </t>
+                                    ,
+                                <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%e')"/>
+                                    de
+                                <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'January'">
+                                    enero
+                                </t>
+                                <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'February'">
+                                    febrero
+                                </t>
+                                <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'March'">
+                                    marzo
+                                </t>
+                                <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'April'">
+                                    abril
+                                </t>
+                                <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'May'">
+                                    mayo
+                                </t>
+                                <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'June'">
+                                    junio
+                                </t>
+                                <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'July'">
+                                    julio
+                                </t>
+                                <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'August'">
+                                    agosto
+                                </t>
+                                <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'September'">
+                                    septiembre
+                                </t>
+                                <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'October'">
+                                    octubre
+                                </t>
+                                <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'November'">
+                                    noviembre
+                                </t>
+                                <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'December'">
+                                    diciembre
+                                </t>
                                 de
-                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'January'">
-                                enero
-                            </t>
-                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'February'">
-                                febrero
-                            </t>
-                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'March'">
-                                marzo
-                            </t>
-                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'April'">
-                                abril
-                            </t>
-                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'May'">
-                                mayo
-                            </t>
-                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'June'">
-                                junio
-                            </t>
-                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'July'">
-                                julio
-                            </t>
-                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'August'">
-                                agosto
-                            </t>
-                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'September'">
-                                septiembre
-                            </t>
-                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'October'">
-                                octubre
-                            </t>
-                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'November'">
-                                noviembre
-                            </t>
-                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'December'">
-                                diciembre
-                            </t>
-                                de
-                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')"/>
+                            </span>
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')" style="font-size:10px;"/>
                         <table style="width:100%;font-size:10px;">
                             <tr>
                                 <td style="width:200px; text-alignt:left;">SEÑORES</td>
@@ -641,7 +643,7 @@
                                 </th>
                             </tr>
                             <tr>
-                                PRESENTE
+                                <td>PRESENTE</td>
                             </tr>
                             <tr></tr>
                             <tr></tr>
@@ -715,11 +717,6 @@
                                 <td><span t-field="d.withdrawal_deposit.name"/></td>
                             </tr>
                             <tr>
-                                <th style="text-align:left; width:200px">DÍA Y HORA DEL RETIRO</th>
-                                <td>:</td>
-                                <td></td>
-                            </tr>
-                            <tr>
                                 <th style="text-align:left; width:200px">PLANTA DE CARGUÍO</th>
                                 <td>:</td>
                                 <td></td>
@@ -751,12 +748,12 @@
                             <tr>
                                 <th style="text-align:left; width:200px">ENTREGA EN PUERTO</th>
                                 <td>:</td>
-                                <td>STACKING CONTÍNUO:<![CDATA[&nbsp;]]><span t-field="d.stacking"/></td>
+                                <td><span style="font-weight:bold;">STACKING CONTÍNUO:</span><![CDATA[&nbsp;]]><span t-field="d.stacking"/></td>
                             </tr>
                             <tr>
                                 <th style="text-align:left; width:200px"></th>
                                 <td></td>
-                                <td>CORTE DOCUMENTAL:<![CDATA[&nbsp;]]></td>
+                                <td><span style="font-weight:bold">CORTE DOCUMENTAL:</span><![CDATA[&nbsp;]]><span t-field="d.cut_off"/></td>
                             </tr>
                         </table>
                     </div>
@@ -1057,7 +1054,7 @@
                                 <tr>
                                     <th></th>
                                     <td style="font-weight:bold;text-align:right">CORTE DOCUMENTAL:</td>
-                                    <td style="text-align:left"></td>
+                                    <td style="text-align:left"><span t-field="d.cut_off"/></td>
                                 </tr>
                             </table>
                         </div>

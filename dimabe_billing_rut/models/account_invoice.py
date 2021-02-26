@@ -299,7 +299,7 @@ class AccountInvoice(models.Model):
 
     origin_certificate = fields.Char(string="Certificado Origen")
 
-
+    plant = fields.Many2many('res.partner', string="Planta")
 
     #Emarque Method
     @api.model
@@ -841,10 +841,7 @@ class AccountInvoice(models.Model):
             #stock_picking = self.env['stock_picking'].search([('id','=',)])
             
             if self.stock_picking_ids.required_loading_date:
-                if not self.required_loading_date or self.required_loading_date == "":
-                    self.required_loading_date = self.stock_picking_ids.required_loading_date
-                elif self.required_loading_date != self.stock_picking_ids.required_loading_date: 
-                    raise models.ValidationError('Las Fechas de carga no coinciden, la fecha registrada es {} y la fecha de carga del despacho que desea agregar es {}. Favor comunicarse con el encargado de Planta para corregir la información'.format(self.required_loading_date, self.stock_picking_ids.required_loading_date))   
+                self.required_loading_date = self.stock_picking_ids.required_loading_date 
             else:
                 raise models.ValidationError('El despacho {} no tiene la fecha de carga requerida. Favor informar al encargado de Planta'.format(self.stock_picking_ids.name))
     
@@ -892,7 +889,8 @@ class AccountInvoice(models.Model):
                             'stock_picking_name': self.stock_picking_ids.name,
                             'stock_picking_id': self.stock_picking_ids.id,
                             'total_value' : self.total_value_stock_picking(self.stock_picking_ids.id),
-                            'value_per_kilo': self.total_value_stock_picking(self.stock_picking_ids.id) / self.value_per_kilo(self.stock_picking_ids.id)
+                            'value_per_kilo': self.total_value_stock_picking(self.stock_picking_ids.id) / self.value_per_kilo(self.stock_picking_ids.id),
+                            'required_loading_date': self.stock_picking_ids.required_loading_date
                         })
 
                         if len(self.custom_invoice_line_ids) > 0:

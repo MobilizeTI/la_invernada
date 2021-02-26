@@ -22,4 +22,5 @@ class ResPartner(models.Model):
                                     inverse='_write_company_type'
                                     )
 
+    is_plant = fields.Boolean('Es Planta')
 
