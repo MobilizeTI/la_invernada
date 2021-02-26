@@ -1103,9 +1103,14 @@
                                         <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                             <span t-esc="p.lot_serial_ids[0].product_id.type_product"/>
                                         </td>
-                                        <t>
+                                        <t t-if="d.picking_principal_id.is_multiple_dispatch">
                                             <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                                 <span t-esc="d.picking_principal_id.dispatch_line_ids.filtered(lambda a: a.product_id.id == p.product_id.id).sale_id.name"/>
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                            <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
+                                                <span t-esc="d.origin"/>
                                             </td>
                                         </t>
                                         <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
