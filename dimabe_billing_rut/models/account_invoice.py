@@ -856,6 +856,7 @@ class AccountInvoice(models.Model):
                     if len(self.invoice_line_ids) > 0:
                         for line in self.invoice_line_ids:
                             if item.product_id.id == line.product_id and self.stock_picking_ids.id == line.stock_picking_id and self.order_to_add_ids.id == line.order_id:
+                                raise models.ValidationError('{} = {}  - {} = {}  - {} = {}'.format(item.product_id.id.line.product_id,self.stock_picking_ids.id,line.stock_picking_id,line.stock_picking_id,self.order_to_add_ids.id,line.order_id))
                                 exist_invoice_line = True
 
                     if not exist_invoice_line:
