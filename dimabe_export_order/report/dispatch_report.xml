@@ -1111,7 +1111,6 @@
                                         <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                             <span t-esc="d.picking_principal_id.dispatch_line_ids.filtered(lambda a: a.product_id.id == p.product_id.id).sale_id.name"/>
                                         </td>
-                                    </field>
                                     <t t-else="">
                                         <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                             <span t-esc="d.origin"/>
