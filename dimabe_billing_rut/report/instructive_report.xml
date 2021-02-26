@@ -722,7 +722,7 @@
                                         <span t-field="res_partner.plant_contact_ids.phone"/>
                                     </t>
                                     <t t-if="res_partner.plant_contact_ids.phone and res_partner.plant_contact_ids.mobile">
-                                    &nbsp-&nbsp
+                                    &nbsp;-&nbsp;
                                     </t>
                                     <t t-if="res_partner.plant_contact_ids.mobile">
                                         <span t-field="res_partner.plant_contact_ids.mobile"/>
@@ -732,12 +732,12 @@
                             <tr>
                                 <th style="text-align:left; width:200px">ENTREGA EN PUERTO</th>
                                 <td>:</td>
-                                <td>STACKING CONTÍNUO:&nbsp<span t-field="d.stacking"/></td>
+                                <td>STACKING CONTÍNUO:&nbsp;<span t-field="d.stacking"/></td>
                             </tr>
                             <tr>
                                 <th style="text-align:left; width:200px"></th>
                                 <td></td>
-                                <td>CORTE DOCUMENTAL:&nbsp</td>
+                                <td>CORTE DOCUMENTAL:&nbsp;</td>
                             </tr>
                         </table>
                     </div>
