@@ -991,8 +991,8 @@ class AccountInvoice(models.Model):
                 'eta': self.eta,
                 'departure_date': self.departure_date,
                 'arrival_date': self.arrival_date,
-                'customs_department': self.custom_department,
-                #'transport': self.transport_to_port.name
+                'customs_department': self.custom_department.id,
+                'transport': self.transport_to_port.name
             })
 
         return res
