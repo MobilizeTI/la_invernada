@@ -364,3 +364,5 @@ class StockPicking(models.Model):
             custom_serial.sudo().write({
                 'consumed': True
             })
+
+
