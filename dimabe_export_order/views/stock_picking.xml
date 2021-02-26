@@ -70,7 +70,7 @@
                                     <group>
                                         <field name="departure_port" readonly="1"/>
                                         <field name="arrival_port" readonly="1"/>
-                                        <field name="required_loading_date"/>
+                                        <field name="required_loading_date" readonly="0"/>
                                         <field name="required_loading_week" readonly="1"/>
                                         <field name="departure_date" autocomplete="off" readonly="1"/>
                                         <field name="arrival_date" autocomplete="off" readonly="1"/>
