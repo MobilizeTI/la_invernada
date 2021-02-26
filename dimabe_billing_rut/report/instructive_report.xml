@@ -656,7 +656,7 @@
                             <tr>
                                 <th style="text-align:right; width:200px">INSTR.N°</th>
                                 <td>:</td>
-                                <td><span t-field="d.shipping_number"/>/<span t-esc="context_timestamp(datetime.datetime.now()).strftime(%Y)"/></td>
+                                <td><span t-field="d.shipping_number"/>/<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')"/></td>
                             </tr>
                             <tr></tr>
                             <tr></tr>
@@ -838,7 +838,7 @@
                                 </table>
                             </div>
                         </div>
-                    <div style="width:100%;display:inline-block; padding:6px;">
+                    <div style="width:100%;display:inline-block; padding:6px; font-size:10px;">
                             <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Monday'">
                                 lunes
                             </t>
