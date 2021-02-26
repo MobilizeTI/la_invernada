@@ -23,5 +23,5 @@ class SaleOrder(models.Model):
 
     def compute_delivered_quantity(self):
         for item in self:
-            item.ordered_quantity = item.order_line[0].qty_delivered
+            item.delivered_quantity = item.order_line[0].qty_delivered
 
