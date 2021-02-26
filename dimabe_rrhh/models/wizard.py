@@ -206,7 +206,6 @@ class WizardHrPaySlip(models.TransientModel):
             'datas_fname': file_name,
             'datas': file_base64
         })
-
         action = {
             'type': 'ir.actions.act_url',
             'url': '/web/content/{}?download=true'.format(attachment_id.id, ),
