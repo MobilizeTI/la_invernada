@@ -40,7 +40,7 @@
             <field name="inherit_id" ref="sale.view_order_tree"/>
             <field name="priority">1000</field>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name=user_id]" position="replace">
+                <xpath expr="//field[@name='user_id']" position="replace">
                     <field name="ship_ids" widget="many2many_tags"/>
                 </xpath>
             </field>
