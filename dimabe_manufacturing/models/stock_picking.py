@@ -111,6 +111,8 @@ class StockPicking(models.Model):
     def test(self):
         lots = self.env['stock.production.lot'].search([])
         for lot in lots:
+            if lot.product_id.categ_id.id in (65,103):
+                continue
             quant = self.env['stock.quant'].search([('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal')])
             if quant:
                 quant.write({
