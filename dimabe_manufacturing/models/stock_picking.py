@@ -105,7 +105,7 @@ class StockPicking(models.Model):
 
     @api.multi
     def test(self):
-        lots = self.env['stock.production.lot'].search([])
+        lots = self.env['stock.production.lot'].search([('name','=','201900714')])
         for lot in lots:
             if lot.product_id.categ_id.id in (65,103):
                 continue
