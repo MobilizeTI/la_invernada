@@ -7,3 +7,8 @@ class SaleOrder(models.Model):
 
     contract_number = fields.Char('Contrato')
 
+    ship_ids = fields.Many2many('custom.ship', compute="compute_ships")
+
+    def compute_ships(self):
+        for item in self:
+            item.ship_ids = item.picking_ids.mapped('ship') 

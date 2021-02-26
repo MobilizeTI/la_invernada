@@ -33,5 +33,17 @@
                 </xpath>
             </field>
         </record>
+
+        <record id="view_order_tree_inherit" model="ir.ui.view">
+            <field name="name">formulario de ordenes</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="priority">1000</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name=user_id]" position="replace">
+                    <field name="ship_ids" widget="many2many_tags"/>
+                </xpath>
+            </field>
+        </record>
     </data>
 </odoo>
