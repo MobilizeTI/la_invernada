@@ -104,7 +104,8 @@ class StockPicking(models.Model):
 
     @api.multi
     def get_name_orders(self):
-        self.name_orders = ", ".join(self.dispatch_line_ids.mapped('sale_id').mapped('name'))
+        for item in self:
+            item.name_orders = ", ".join(item.dispatch_line_ids.mapped('sale_id').mapped('name'))
 
     @api.multi
     def test(self):
