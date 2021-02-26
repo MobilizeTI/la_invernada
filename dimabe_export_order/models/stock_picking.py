@@ -17,10 +17,6 @@ class StockPicking(models.Model):
         'custom.shipment',
         'Embarque'
     )
-
-    required_loading_date = fields.Datetime(
-        related='shipping_id.required_loading_date')
-
     variety = fields.Many2many(related="product_id.attribute_value_ids")
 
     country = fields.Char(related='partner_id.country_id.name')
