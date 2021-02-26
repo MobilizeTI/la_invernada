@@ -389,7 +389,7 @@
                                                             <td>N° de Pedido</td>
                                                             <t t-if="d.is_multiple_dispatch">
                                                                 <td>
-                                                                    <span t-esc="d.dispatch_line_ids.filtered(lambda a: a.product_id.id == p.product_id.id and p.lot_id.sale_order_id.id == a.sale_id.id).sale_id.name"/>
+                                                                    <span t-esc="d.name_orders"/>
                                                                 </td>
                                                             </t>
                                                             <t t-else="">
@@ -695,7 +695,7 @@
                                                 <td>N° Pedido:</td>
                                                 <t t-if="d.is_multiple_dispatch">
                                                     <td>
-                                                        <span t-esc="d.dispatch_line_ids.filtered(lambda a: a.product_id.id == p.product_id.id and p.lot_id.sale_order_id.id == a.sale_id.id).sale_id.name"/>
+                                                        <span t-esc="d.name_orders"/>
                                                     </td>
                                                 </t>
                                                 <t t-else="">
