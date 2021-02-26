@@ -6,8 +6,6 @@ class ResPartner(models.Model):
 
     is_agent = fields.Boolean('Es Agente')
 
-
-
     client_identifier_id = fields.Many2one(
         'custom.client.identifier',
         'Tipo de Identificador'

@@ -39,6 +39,7 @@
                             <field name="cut_off"/>
                         </group>
                         <group>
+                            <field name="plant" domain="[('is_plant','=',True)]"/>
                             <field name="withdrawal_deposit"/>
                             <field name="transport_to_port"/> 
                             <field name="dus_second_send"/>
@@ -233,6 +234,7 @@
                                         <group>
                                             <field name="order_name" readonly="1"/>
                                             <field name="stock_picking_name" readonly="1"/>
+                                            <field name="required_loading_date" readonly="1"/>
                                             <field name="quantity_to_invoice" readonly="1"/>
                                             <field name="product_name" readonly="1"/>
                                             <field name="value_per_kilo" readonly="1"/>
@@ -242,6 +244,7 @@
                                     <tree delete="false" create="0"><!--delete="false" create="0"-->
                                         <field name="order_name" readonly="1"/>
                                         <field name="stock_picking_name" readonly="1"/>
+                                        <field name="required_loading_date" readonly="1"/>
                                         <field name="quantity_to_invoice" readonly="1"/>
                                         <field name="product_name" readonly="1"/>
                                         <field name="value_per_kilo" readonly="1"/>
