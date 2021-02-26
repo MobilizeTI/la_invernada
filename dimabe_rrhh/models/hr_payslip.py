@@ -26,12 +26,8 @@ class HrPayslip(models.Model):
 
     total_imp = fields.Float('Total Imp. Anterior')
 
-<<<<<<< HEAD
     account_analytic_id = fields.Many2one('account.analytic.account','Centro de Costo',readonly=True)
 
-=======
-    account_analytic_id = fields.Many2one('account.analytic.account', 'Centro de Costo', readonly=True)
->>>>>>> 63751113df9df67e4692e1c288f1ea9ff8a941d3
 
     @api.onchange('struct_id')
     def onchange_domain(self):
@@ -124,15 +120,9 @@ class HrPayslip(models.Model):
         return res
 
     @api.multi
-<<<<<<< HEAD
     def write(self,vals):
         vals['account_analytic_id'] = self.contract_id.department_id.analytic_account_id.id
         return super(HrPayslip,self).write(vals)
-=======
-    def write(self, vals):
-        vals['account_analytic_id'] = self.contract_id.department_id.analytic_account_id.id
-        return super(HrPayslip, self).write(vals)
->>>>>>> 63751113df9df67e4692e1c288f1ea9ff8a941d3
 
     @api.multi
     def compute_sheet(self):
