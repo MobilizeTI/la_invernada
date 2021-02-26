@@ -471,7 +471,8 @@
                                     <th style="text-align:left;width:200px">DOCUMENTACIÓN REQUERIDA</th>
                                     <td style="width:5px"></td>
                                     <td style="text-align:left;"></td>
-                                    <td style="text-align: center;" rowspan="5"><img width="100px" t-att-src="'data:image/png;base64,%s' % to_text(res_company.legal_representative_signature)"/></td>
+                                    <td></td>
+                                    <td style="text-align: center;" rowspan="6"><img width="100px" t-att-src="'data:image/png;base64,%s' % to_text(res_company.legal_representative_signature)"/></td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">D.U.S 2DO.ENVIO</th>
@@ -487,6 +488,7 @@
                                     <td style="text-align:left;">
                                         <span t-field="d.bill_of_lading"/>
                                     </td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">CERTIFICADO FITOSANITARIO</th>
@@ -494,7 +496,7 @@
                                     <td style="text-align:left;">
                                         <span t-field="d.phytosanitary_certificate"/>
                                     </td>
-                                    
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">CERTIFICADO ORIGEN</th>
@@ -502,11 +504,13 @@
                                     <td style="text-align:left;">
                                         <span t-field="d.origin_certificate"/>
                                     </td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <th style="width:200px"></th>
-                                    <td style="text-align:right;width:250px;font-weight: bold;">ATTE.:</td>
                                     <td></td>
+                                    <td></td>
+                                    <td style="text-align:right;font-weight: bold;">ATTE.:</td>
                                     <td style="text-align:right;font-weight: bold;">p.p La Invernada Export SpA.</td>
                                 </tr>
                             </table>
@@ -678,7 +682,7 @@
                             <tr>
                                 <th style="text-align:left; width:200px">NAVIERA</th>
                                 <td>:</td>
-                                <td><span t-field="d.shiping_company.name"/></td>
+                                <td><span t-field="d.shipping_company.name"/></td>
                             </tr>
                             <tr>
                                 <th style="text-align:left; width:200px">NUMERO DE CONTENEDORES</th>
