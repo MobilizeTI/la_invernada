@@ -21,12 +21,8 @@
                     <page string="COMEX" id="export_data"
                           attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"
                     >
-                        <group name="export_data"
-                               position="inside"
-                        >
-                            <group string="Información de envío"
-                                   style="width:100%%"
-                            >
+                        <group name="export_data" position="inside">
+                            <group string="Información de envío" style="width:100%" >
                                 <group>
                                     <!--
                                     <field name="reserved_amount"/>
@@ -56,8 +52,9 @@
                                     <field name="total_value" readonly="1"/>
                                     <field name="value_per_kilogram" readonly="1"/>
                                 </group>
-                                <group string="Embarque">
-                                    <group>
+                            </group>
+                            <group string="Embarque">
+                                <group>
                                         <field name="shipping_company" readonly="1"/>
                                         <field name="ship" readonly="1"/>
                                         <field name="ship_number" readonly="1"/>
@@ -66,17 +63,17 @@
                                         <field name="etd_month" readonly="1"/>
                                         <field name="etd_week" readonly="1"/>
                                         <field name="eta" autocomplete="off" readonly="1"/>
-                                    </group>
-                                    <group>
+                                </group>
+                                <group>
                                         <field name="departure_port" readonly="1"/>
                                         <field name="arrival_port" readonly="1"/>
                                         <field name="required_loading_date" readonly="0"/>
                                         <field name="required_loading_week" readonly="1"/>
                                         <field name="departure_date" autocomplete="off" readonly="1"/>
                                         <field name="arrival_date" autocomplete="off" readonly="1"/>
-                                    </group>
                                 </group>
                             </group>
+                        </group>
                             <group style="width:100%%">
                                 <group>
                                     <field name="remarks" readonly="1"/>
