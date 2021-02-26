@@ -346,7 +346,8 @@ class AccountInvoice(models.Model):
 
     @api.onchange('export_clause')
     def onchange_export_clause(self):
-        self.incoterm_id = self.env['account.incoterms'].search([('sii_code','=',self.export_clause.code)])
+        if self.export_clause.code:
+            self.incoterm_id = self.env['account.incoterms'].search([('sii_code','=',self.export_clause.code)])
 
     @api.onchange('incoterm_id')
     def onchange_incoterm(self):
@@ -840,9 +841,12 @@ class AccountInvoice(models.Model):
             #stock_picking = self.env['stock_picking'].search([('id','=',)])
             
             if not self.required_loading_date or self.required_loading_date == "":
-                self.required_loading_date = self.stock_picking_ids.required_loading_date
+                if self.stock_picking_ids.required_loading_date:
+                    self.required_loading_date = self.stock_picking_ids.required_loading_date
+                else:
+                    raise models.ValidationError('El despacho {} no tiene la fecha de carga requerida. Favor informar al encargado de Planta'.format(self.stock_picking_ids.name))
             elif self.required_loading_date != self.stock_picking_ids.required_loading_date: 
-                raise models.ValidacionError('Las Fechas de carga no coinciden, la fecha registrada es {} y la fecha de carga del despacho que desea agregar es {}. Favor comunicarse con el encargado de Planta'.format(self.required_loading_date, self.stock_picking_ids.required_loading_date))   
+                raise models.ValidationError('Las Fechas de carga no coinciden, la fecha registrada es {} y la fecha de carga del despacho que desea agregar es {}. Favor comunicarse con el encargado de Planta para corregir la información'.format(self.required_loading_date, self.stock_picking_ids.required_loading_date))   
             
             if len(product_ids) > 0:
                 for item in product_ids: 
