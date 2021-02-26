@@ -108,7 +108,8 @@ class StockPicking(models.Model):
     )
 
     required_loading_date = fields.Datetime(
-        related='shipping_id.required_loading_date', string="'Fecha requerida de carga'")
+        'Fecha requerida de carga'
+    )
 
     required_loading_week = fields.Integer(
         'Semana de Carga',
