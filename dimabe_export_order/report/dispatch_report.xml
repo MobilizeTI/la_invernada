@@ -1048,8 +1048,11 @@
                                 <t t-if="d.is_multiple_dispatch">
                                     <span t-esc="','.join(d.dispatch_line_ids.mapped('sale_id').mapped('name'))"/>
                                 </t>
+                                <t t-elif="d.picking_principal_id">
+                                    <span t-esc="','.join(d.picking_principal_id.dispatch_line_ids.mapped('sale_id').mapped('name'))"/>
+                                </t>
                                 <t t-else="">
-                                    <span t-esc="d.origin"/>
+                                    <span t-field="d.origin"/>
                                 </t>
                             </td>
                         </tr>
@@ -1104,6 +1107,11 @@
                                             <span t-esc="d.dispatch_line_ids.filtered(lambda a: a.product_id.id == p.product_id.id).sale_id.name"/>
                                         </td>
                                     </t>
+                                    <t t-elif="d.picking_principal_id">
+                                        <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
+                                            <span t-esc="d.picking_principal_id.dispatch_line_ids.filtered(lambda a: a.product_id.id == p.product_id.id).sale_id.name"/>
+                                        </td>
+                                    </field>
                                     <t t-else="">
                                         <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                             <span t-esc="d.origin"/>
