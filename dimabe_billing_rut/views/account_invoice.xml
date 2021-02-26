@@ -144,7 +144,7 @@
                                 <group>
                                     <field name="departure_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="arrival_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                    <field name="required_loading_date" autocomplete="off" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <!--<field name="required_loading_date" autocomplete="off" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>-->
                                     <field name="required_loading_week" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 </group>
                                 <group>

@@ -18,4 +18,6 @@ access_dimabe_custom_cities,dimabe_billing_rut.custom_cities,model_custom_cities
 access_dimabe_custom_withdrawal_deposits,dimabe_billing_rut.custom_withdrawal_deposits,model_custom_withdrawal_deposits,,1,1,1,1
 access_dimabe_custm_freight_payment_term,dimabe_billing_rut.custom_freight_payment_term,model_custom_freight_payment_term,,1,1,1,1
 access_dimabe_custm_custom_safe_type,dimabe_billing_rut.custom_safe_type,model_custom_safe_type,,1,1,1,1
+access_dimabe_custm_custom_quality_type,dimabe_billing_rut.custom_quality_type,model_custom_quality_type,,1,1,1,1
+
 
