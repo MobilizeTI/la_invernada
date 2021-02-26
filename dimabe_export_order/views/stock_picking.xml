@@ -18,9 +18,7 @@
                     <button type="object" name="clean_notify" string="Eliminar Notify" class="oe_highlight"/>
                 </field>
                 <xpath expr="//page[@name='extra']" position="after">
-                    <page string="COMEX" id="export_data"
-                          attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"
-                    >
+                    <page string="COMEX" id="export_data" attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}">
                         <group name="export_data" position="inside">
                             <group string="Información de envío" style="width:100%" >
                                 <group>
@@ -74,10 +72,9 @@
                                 </group>
                             </group>
                         </group>
-                            <group style="width:100%%">
-                                <group>
-                                    <field name="remarks" readonly="1"/>
-                                </group>
+                        <group style="width:100%%">
+                            <group>
+                                <field name="remarks" readonly="1"/>
                             </group>
                         </group>
                     </page>
