@@ -299,7 +299,9 @@ class AccountInvoice(models.Model):
 
     origin_certificate = fields.Char(string="Certificado Origen")
 
-    plant = fields.Many2many('res.partner', string="Planta")
+    plant = fields.Many2one('res.partner', string="Planta")
+
+    quality_type = fields.Many2one('custom.quality.type',string="Calidad")
 
     #Emarque Method
     @api.model
