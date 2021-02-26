@@ -49,6 +49,9 @@
                 <xpath expr="//field[@name='ordered_quantity']" position="after">
                     <field name="delivered_quantity"/>
                 </xpath>
+                <xpath expr="//field[@name='delivered_quantity']" position="after">
+                    <field name="unit_price"/>
+                </xpath>
             </field>
         </record>
     </data>
