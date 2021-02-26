@@ -66,7 +66,7 @@ Chilean Payroll & Human Resources.
         'data/l10n_cl_hr_ccaf.xml',
         'data/account_journal.xml',
         'data/partner.xml',
-        'data/l10n_cl_hr_payroll_data.xml',
+        #'data/l10n_cl_hr_payroll_data.xml',
         'security/ir.model.access.csv',
     ],
     'demo': ['demo/l10n_cl_hr_payroll_demo.xml'],
