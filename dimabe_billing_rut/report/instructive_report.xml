@@ -8,44 +8,44 @@
                         <div style="width:100%;text-align:center;display:inline-block; border:1px solid;font-size:10px; padding=6px;">
                             <p>MANDATO</p>
                             <p >EN 
-                                <t t-if="d.create_date.date().strftime('%B') == 'January'">
+                                <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'January'">
                                 ENERO
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'February'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'February'">
                                 FEBRERO
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'March'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'March'">
                                 MARZO
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'April'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'April'">
                                 ABRIL
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'May'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'May'">
                                 MAYO
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'June'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'June'">
                                 JUNIO
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'July'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'July'">
                                 JULIO
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'August'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'August'">
                                 AGOSTO
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'September'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'September'">
                                 SEPTIEMBRE
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'October'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'October'">
                                 OCTUBRE
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'November'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'November'">
                                 NOVIEMBRE
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'December'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'December'">
                                 DICIEMBRE
                             </t>
                                 DEL 
-                                    <span t-esc="d.create_date.date().strftime('%Y')"/>, DON 
+                                    <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')"/>, DON 
                                     <span style="text-transform: uppercase;" t-field="res_company.legal_represntative.name"/>, 
                                 REPRESENTANTE LEGAL DE LA FIRMA LA INVERNADA EXPORT SpA, R.U.T.: 76.263.274-8, CON DOMICILIO EN VALLE 
                                 HERMOSO CAMINO SAN MIGUEL PARCELA 2 PAINE, CHILE, CONFIERE PODER ESPECIAL AL AGENTE DE ADUANAS SEÑOR OMAR 
@@ -57,7 +57,7 @@
                             <p style="font-wight:bold;font-size:18px">INSTRUCCIÓN DE EMBARQUE MARÍTIMO</p>
                             <p style="font-wight:bold;font-size:18px">EMB. N°
                                 <span t-field="d.shipping_number"/>/
-                                <span t-esc="d.create_date.date().strftime('%Y')"/>
+                                <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')"/>
                             </p>
                         </div>
                         <div style="width:100%;display:inline-block; border:1px solid">
@@ -361,21 +361,36 @@
                                     <th style="text-align:left;">TEMPERATURA</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.temperature"/>
+                                        <t t-if="d.temperature">
+                                            <span t-field="d.temperature"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span>N/A</span>
+                                        </t>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">VENTILACIÓN</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.ventilation"/>
+                                        <t t-if="d.ventilation">
+                                            <span t-field="d.ventilation"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span>N/A</span>
+                                        </t>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">HUMEDAD</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.humidity"/>
+                                        <t t-if="d.humidity">
+                                            <span t-field="d.humidity"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span>N/A</span>
+                                        </t>
                                     </td>
                                 </tr>
                             </table>
@@ -550,68 +565,68 @@
                         </div>
                     <div style="width:100%;display:inline-block; padding:6px;">
                             CIUDAD
-                            <t t-if="d.create_date.date().strftime('%A') == 'Monday'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Monday'">
                                 lunes
                             </t>
-                             <t t-if="d.create_date.date().strftime('%A') == 'Tuesday'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Tuesday'">
                                 martes
                             </t>
-                            <t t-if="d.create_date.date().strftime('%A') == 'Wednesday'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Wednesday'">
                                 miercoles
                             </t>
-                            <t t-if="d.create_date.date().strftime('%A') == 'Thursday'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Thursday'">
                                 jueves
                             </t>
-                            <t t-if="d.create_date.date().strftime('%A') == 'Friday'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Friday'">
                                 viernes
                             </t>
-                            <t t-if="d.create_date.date().strftime('%A') == 'Saturday'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Saturday'">
                                 sabado
                             </t>
-                            <t t-if="d.create_date.date().strftime('%A') == 'Sunday'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Sunday'">
                                 domingo
                             </t>
                                 ,
-                            <span t-esc="d.create_date.date().strftime('%e')"/>
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%e')"/>
                                 de
-                            <t t-if="d.create_date.date().strftime('%B') == 'January'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'January'">
                                 enero
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'February'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'February'">
                                 febrero
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'March'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'March'">
                                 marzo
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'April'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'April'">
                                 abril
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'May'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'May'">
                                 mayo
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'June'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'June'">
                                 junio
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'July'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'July'">
                                 julio
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'August'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'August'">
                                 agosto
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'September'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'September'">
                                 septiembre
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'October'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'October'">
                                 octubre
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'November'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'November'">
                                 noviembre
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'December'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'December'">
                                 diciembre
                             </t>
                                 de
-                            <span t-esc="d.create_date.date().strftime('%Y')"/>
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')"/>
                         <table style="width:100%;font-size:10px;">
                             <tr>
                                 <td style="width:200px; text-alignt:left;">SEÑORES</td>
@@ -641,7 +656,7 @@
                             <tr>
                                 <th style="text-align:right; width:200px">INSTR.N°</th>
                                 <td>:</td>
-                                <td><span t-field="d.shipping_number"/>/<span t-esc="datetime.datetime.now().strftime(%Y)"/></td>
+                                <td><span t-field="d.shipping_number"/>/<span t-esc="context_timestamp(datetime.datetime.now()).strftime(%Y)"/></td>
                             </tr>
                             <tr></tr>
                             <tr></tr>
@@ -824,68 +839,68 @@
                             </div>
                         </div>
                     <div style="width:100%;display:inline-block; padding:6px;">
-                            <t t-if="d.create_date.date().strftime('%A') == 'Monday'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Monday'">
                                 lunes
                             </t>
-                             <t t-if="d.create_date.date().strftime('%A') == 'Tuesday'">
+                             <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Tuesday'">
                                 martes
                             </t>
-                            <t t-if="d.create_date.date().strftime('%A') == 'Wednesday'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Wednesday'">
                                 miercoles
                             </t>
-                            <t t-if="d.create_date.date().strftime('%A') == 'Thursday'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Thursday'">
                                 jueves
                             </t>
-                            <t t-if="d.create_date.date().strftime('%A') == 'Friday'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Friday'">
                                 viernes
                             </t>
-                            <t t-if="d.create_date.date().strftime('%A') == 'Saturday'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Saturday'">
                                 sabado
                             </t>
-                            <t t-if="d.create_date.date().strftime('%A') == 'Sunday'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%A') == 'Sunday'">
                                 domingo
                             </t>
                                 ,
-                            <span t-esc="d.create_date.date().strftime('%e')"/>
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%e')"/>
                                 de
-                            <t t-if="d.create_date.date().strftime('%B') == 'January'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'January'">
                                 enero
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'February'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'February'">
                                 febrero
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'March'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'March'">
                                 marzo
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'April'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'April'">
                                 abril
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'May'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'May'">
                                 mayo
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'June'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'June'">
                                 junio
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'July'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'July'">
                                 julio
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'August'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'August'">
                                 agosto
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'September'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'September'">
                                 septiembre
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'October'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'October'">
                                 octubre
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'November'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'November'">
                                 noviembre
                             </t>
-                            <t t-if="d.create_date.date().strftime('%B') == 'December'">
+                            <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'December'">
                                 diciembre
                             </t>
                                 de
-                            <span t-esc="d.create_date.date().strftime('%Y')"/>
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')"/>
                         <table style="width:100%;font-size:10px;">
                             <tr>
                                 <th style="text-align:right; width:200px;">A</th>
