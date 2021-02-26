@@ -19,32 +19,18 @@ class ConfirmPrincipalOrde(models.TransientModel):
     @api.one
     def select(self):
         self.process_data()
-        self.custom_dispatch_line_ids.filtered(lambda x: x.sale_id.id == self.sale_id.id).dispatch_id.write({
-            'consignee_id': self.custom_dispatch_line_ids.filtered(
-                lambda x: x.sale_id.id == self.sale_id.id).dispatch_id.consignee_id.id,
-            'notify_ids': [(4, n) for n in self.picking_id.notify_ids.mapped('id')]
-        })
-        report = self.env.ref('dimabe_export_order.action_packing_list').render_qweb_pdf(
-            self.custom_dispatch_line_ids.filtered(lambda x: x.sale_id.id == self.sale_id.id).dispatch_id.id)
         for item in self.custom_dispatch_line_ids:
             item.dispatch_id.write({
-                'packing_list_file': base64.b64encode(report[0]),
-                'picking_principal_id': self.picking_id.id if item.dispatch_id.id != self.picking_id.id else None
+                'picking_principal_id': self.custom_dispatch_line_ids.filtered(
+                    lambda a: a.sale_id.id == self.sale_id.id).dispatch_id.id
             })
 
     @api.one
     def cancel(self):
         self.process_data()
-        self.custom_dispatch_line_ids.filtered(lambda x: x.sale_id.id == self.sale_id.id).dispatch_id.write({
-            'consignee_id': self.custom_dispatch_line_ids.filtered(
-                lambda x: x.sale_id.id == self.sale_id.id).dispatch_id.consignee_id.id,
-            'notify_ids': [(4, n) for n in self.picking_id.notify_ids.mapped('id')]
-        })
-        report = self.env.ref('dimabe_export_order.action_packing_list').render_qweb_pdf(self.picking_id.id)
         for item in self.picking_id.dispatch_line_ids:
             item.dispatch_id.write({
-                'packing_list_file': base64.b64encode(report[0]),
-                'picking_principal_id':self.picking_id.id if item.dispatch_id.id != self.picking_id.id else None
+                'picking_principal_id': self.picking_id.id
             })
 
     def process_data(self):
