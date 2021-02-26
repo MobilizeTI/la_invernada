@@ -52,6 +52,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
             item.dispatch_id.clean_reserved(item.dispatch_id)
             for line in self.picking_id.move_line_ids_without_package.filtered(
                     lambda a: a.product_id.id == item.product_id.id):
+                models.ValidationError(f'{item.dispatch_id.name} {item.dispatch_id.id} {item.product_id.id}')
                 line.write({
                     'picking_id': item.dispatch_id.id,
                     'move_id': item.dispatch_id.move_ids_without_package.filtered(
