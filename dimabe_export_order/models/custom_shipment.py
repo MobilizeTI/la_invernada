@@ -49,7 +49,7 @@ class CustomShipment(models.Model):
         required=True
     )
 
-    required_loading_date = fields.Date(
+    required_loading_date = fields.Datetime(
         'Fecha requerida de carga',
         required=True
     )
