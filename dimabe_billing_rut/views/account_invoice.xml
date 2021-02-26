@@ -33,6 +33,7 @@
                             <field name="temperature"/>
                             <field name="ventilation"/>
                             <field name="humidity"/>
+                            <field name="quality_type"/>
                             <field name="freight_payment_term"/>
                             <field name="safe_type"/>
                             <field name="stacking"/>
