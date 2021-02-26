@@ -624,55 +624,61 @@
                             <tr>
                                 PRESENTE
                             </tr>
+                            <tr></tr>
+                            <tr></tr>
                             <tr>
-                                <th style="text-align:right;">DE</th>
+                                <th style="text-align:right;">ATN</th>
                                 <td>:</td>
                                 <td style="text-align:left;">
-                                    <span t-field="res_company.comex_contact_ids[0].name"></span>
+                                    
                                 </td>
                             </tr>
-                            <t t-if="len(res_company.comex_contact_ids) > 1">
-                                <t t-foreach="res_company.comex_contact_ids" t-as="o">
-                                    <tr t-if="o.name != res_company.comex_contact_ids[0].name">
-                                        <th></th>
-                                        <td></td>
-                                        <td style="text-align:left;">
-                                            <span t-field="o.name"/>
-                                        </td>
-                                    </tr>
-                                </t>
-                            </t>
-                            <tr></tr>
                             <tr>
                                 <th style="text-align:right; width:200px">REF</th>
                                 <td>:</td>
-                                <td>INSTRUCCION DE EMBARQUE</td>
+                                <td>PROGRAMACIÓN DE RETIRO, CARGA Y ENTREGA DE CONTENEDORES</td>
                             </tr>
                             <tr>
-                                <th style="text-align:right; width:200px">N°</th>
+                                <th style="text-align:right; width:200px">INSTR.N°</th>
                                 <td>:</td>
-                                <td><span t-field="d.shipping_number"/></td>
-                            </tr>
-                            <tr>
-                                <th style="text-align:left; width:200px">N° PEDIDO</th>
-                                <td>:</td>
-                                <td>
-                                    <t t-foreach="d.orders_to_invoice" t-as="o">
-                                        <span t-field="o.order_name" style="margin-right:5px"/>
-                                    </t>
-                                </td>
+                                <td><span t-field="d.shipping_number"/>/<span t-esc="datetime.datetime.now().strftime(%Y)"/></td>
                             </tr>
                             <tr></tr>
                             <tr></tr>
                             <tr>
-                                <th style="text-align:left; width:200px">CLIENTE</th>
+                                <th colspan="3" style="text-align:left; width:200px">MEDIANTE ELA PRESENTE, INFORMO DETALLES DEL RETIRO, CARGA Y ENTREGA DE CONTENEDORES:</th>
+                            </tr>
+                            <tr></tr>
+                            <tr></tr>
+                            <tr>
+                                <th style="text-align:left; width:200px">REFERENCIA CLIENTE</th>
                                 <td>:</td>
-                                <td><span t-field="d.partner_id.name"/></td>
+                                <td><span t-field="d.transport_to_port.name"/></td>
                             </tr>
                             <tr>
-                                <th style="text-align:left; width:200px">NOMBRE DE LA NAVE</th>
+                                <th style="text-align:left; width:200px">NAVE</th>
                                 <td>:</td>
-                                <td><span t-field="d.ship"/></td>
+                                <td><span t-field="d.ship.name"/></td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:left; width:200px">NAVIERA</th>
+                                <td>:</td>
+                                <td><span t-field="d.shiping_company.name"/></td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:left; width:200px">NUMERO DE CONTENEDORES</th>
+                                <td>:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:left; width:200px">PESO NETOS</th>
+                                <td>:</td>
+                                <td><span t-field="d.net_weight"/></td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:left; width:200px">PESO BRUTOS</th>
+                                <td>:</td>
+                                <td><span t-field="d.gross_weight"/></td>
                             </tr>
                             <tr>
                                 <th style="text-align:left; width:200px">PUERTO DE EMBARQUE</th>
@@ -685,38 +691,19 @@
                                 <td><span t-field="d.arrival_port.name"/></td>
                             </tr>
                             <tr>
-                                <th style="text-align:left; width:200px">DESCRIPCIÓN DE MERCADERÍA</th>
+                                <th style="text-align:left; width:200px">RETIRO DE CONTENEDOR</th>
                                 <td>:</td>
-                                <td><span t-field="d.custom_invoice_line_ids[0].name"></span></td>
-                            </tr>
-                            <t t-if="len(d.custom_invoice_line_ids) > 1">
-                                <t t-foreach="d.custom_invoice_line_ids" t-as="o">
-                                    <tr t-if="o.name != d.custom_invoice_line_ids[0].name">
-                                        <th></th>
-                                        <td></td>
-                                        <td><span t-field="o.name"/></td>
-                                    </tr>
-                                </t>
-                            </t>
-                            <tr>
-                                <th style="text-align:left; width:200px">TOTAL DE BULTOS</th>
-                                <td>:</td>
-                                <td><span t-field="d.total_packages"/></td>
+                                <td><span t-field="d.withdrawal_deposit.name"/></td>
                             </tr>
                             <tr>
-                                <th style="text-align:left; width:200px">KILOS NETOS</th>
+                                <th style="text-align:left; width:200px">DÍA Y HORA DEL RETIRO</th>
                                 <td>:</td>
-                                <td><span t-field="d.net_weight"/></td>
+                                <td></td>
                             </tr>
                             <tr>
-                                <th style="text-align:left; width:200px">KILOS BRUTOS</th>
+                                <th style="text-align:left; width:200px">PLANTA DE CARGUÍO</th>
                                 <td>:</td>
-                                <td><span t-field="d.gross_weight"/></td>
-                            </tr>
-                            <tr>
-                                <th style="text-align:left; width:200px">MODO DE CARGA</th>
-                                <td>:</td>
-                                <td><span t-field="d.charging_mode"/></td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <th style="text-align:left; width:200px">FECHA Y HORA DE CARGA</th>
@@ -724,34 +711,33 @@
                                 <td><span t-field="d.required_loading_date"/></td>
                             </tr>
                             <tr>
-                                <th style="text-align:left; width:200px">TOTAL DE CONTENEDORES</th>
+                                <th style="text-align:left; width:200px">PERSONA DE CONTACTO EN PLANTA</th>
                                 <td>:</td>
+                                <td><span t-field="res_partner.plant_contact_ids.name"/></td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:left; width:200px">Telefono</th>
+                                <td>:</td>
+                                <td><t t-if="res_partner.plant_contact_ids.phone">
+                                        <span t-field="res_partner.plant_contact_ids.phone"/>
+                                    </t>
+                                    <t t-if="res_partner.plant_contact_ids.phone and res_partner.plant_contact_ids.mobile">
+                                    &nbsp-&nbsp
+                                    </t>
+                                    <t t-if="res_partner.plant_contact_ids.mobile">
+                                        <span t-field="res_partner.plant_contact_ids.mobile"/>
+                                    </t>        
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:left; width:200px">ENTREGA EN PUERTO</th>
+                                <td>:</td>
+                                <td>STACKING CONTÍNUO:&nbsp<span t-field="d.stacking"/></td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:left; width:200px"></th>
                                 <td></td>
-                            </tr>
-                            <tr>
-                                <th style="text-align:left; width:200px">TRANSPORTE</th>
-                                <td>:</td>
-                                <td><span t-field="d.transport_to_port.name"/></td>
-                            </tr>
-                            <tr>
-                                <th style="text-align:left; width:200px">AGENTE DE ADUANAS</th>
-                                <td>:</td>
-                                <td><span t-field="d.custom_department.name"/></td>
-                            </tr>
-                            <tr>
-                                <th style="text-align:left; width:200px">RUT</th>
-                                <td>:</td>
-                                <td><span t-field="d.custom_department.invoice_rut"/></td>
-                            </tr>
-                            <tr>
-                                <th style="text-align:left; width:200px">DIRECCIÓN</th>
-                                <td>:</td>
-                                <td><span t-field="d.custom_department.street"/></td>
-                            </tr>
-                            <tr>
-                                <th style="text-align:left; width:200px">TELÉFONO</th>
-                                <td>:</td>
-                                <td><span t-field="d.custom_department.phone"/></td>
+                                <td>CORTE DOCUMENTAL:&nbsp</td>
                             </tr>
                         </table>
                     </div>
@@ -759,33 +745,20 @@
                             <table style="width:100%;font-size:10px;">
                                 <tr>
                                     <th style="text-align:left; width:200px;">IMPORTANTE</th>
-                                    <td style="font-weight:bold;text-align:right">N° DE RESERVA (BOOKING):</td>
+                                    <td style="font-weight:bold;text-align:right">PARA RETIRAR EL CONTENEDOR DESDE:</td>
+                                    <td style="text-align:left"><span t-field="d.withdrawal_deposit.name"/></td>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <td style="font-weight:bold;text-align:right">INFORMAR QUE EL N° DE RESERVA ES EL:</td>
                                     <td style="text-align:left"><span t-field="d.booking_number"/></td>
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <td style="font-weight:bold;text-align:right">STACKING:</td>
-                                    <td style="text-align:left"><span t-field="d.stacking"/></td>
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <td style="font-weight:bold;text-align:right">CORTE DOCUMENTAL:</td>
-                                    <td style="text-align:left"></td>
                                 </tr>
                             </table>
                         </div>
                         <div style="width:100%;display:inline-block;margin-top:20px;padding:6px;">
                             <table style="width:100%;font-size:10px;">
                                 <tr>
-                                    <th style="text-align:left;">INDICAR N° DE TELÉFONO CELULAR DEL CHOFER DEL TRANSPORTE</th>
-                                </tr>
-                                <tr>
-                                    <th style="text-align:left;">INDICAR N° DE SELLO DEL CONTENEDOR (COMPLETO CON LETRAS Y NÚMEROS)</th>
-                                </tr>
-                                <tr></tr>
-                                <tr></tr>
-                                <tr>
-                                    <td style="text-align:left;">Se despide atentamente,</td>
+                                    <td style="text-align:left;">Se despide Atentamente,</td>
                                 </tr>
                             </table>
                         </div>
@@ -967,7 +940,7 @@
                             <tr>
                                 <th style="text-align:left; width:200px">NOMBRE DE LA NAVE</th>
                                 <td>:</td>
-                                <td><span t-field="d.ship"/></td>
+                                <td><span t-field="d.ship.name"/></td>
                             </tr>
                             <tr>
                                 <th style="text-align:left; width:200px">PUERTO DE EMBARQUE</th>
