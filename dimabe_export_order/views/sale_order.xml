@@ -21,7 +21,7 @@
                     </page>
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="attributes">
-                    <attribute name="readonly">0</attribute>
+                    <attribute name="attrs">{'readonly':True}</attribute>
                 </xpath>
                 <xpath expr="//field[@name='order_line']/tree//field[@name='name']"
                        position="attributes">
