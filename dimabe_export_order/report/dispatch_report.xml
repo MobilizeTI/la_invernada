@@ -1061,11 +1061,11 @@
                         <tr rowspan="2">
                             <td style="text-align:center;">PURCHASE ORDER/ORDER DE COMPRA</td>
                             <td style="text-align:center;">
-                                <t t-if="d.picking_principal_id">
-                                    <span t-esc="d.picking_principal_id.origin"/>
+                                <t t-if="d.picking_principal_id and d.is_child_dispatch">
+                                    <span t-esc="','.join(d.dispatch_line_ids.mapped('sale_id').mapped('name'))"/>
                                 </t>
-                                <t t-elif="not d.picking_principal_id">
-                                    <span t-esc="','.join(d.picking_principal_id.dispatch_line_ids.mapped('sale_id').mapped('name'))"/>
+                                <t t-elif="d.picking_principal_id and not d.is_child_dispatch">
+                                    <span t-esc="d.picking_principal_id.origin"/>
                                 </t>
                                 <t t-else="">
                                     <span t-field="d.origin"/>
