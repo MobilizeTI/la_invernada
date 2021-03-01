@@ -76,6 +76,8 @@ class StockPicking(models.Model):
 
     is_multiple_dispatch = fields.Boolean('Es Despacho Multiple?')
 
+    picking_real_id = fields.Many2one('stock.picking','Despacho Real')
+
     picking_principal_id = fields.Many2one('stock.picking','Pedido Principal')
 
     is_child_dispatch = fields.Boolean('Es despacho hijo')

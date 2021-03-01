@@ -21,6 +21,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
         self.process_data()
         for item in self.custom_dispatch_line_ids:
             item.dispatch_id.write({
+                'picking_real_id':self.picking_id.id,
                 'picking_principal_id': self.custom_dispatch_line_ids.filtered(
                     lambda a: a.sale_id.id == self.sale_id.id).dispatch_id.id
             })
