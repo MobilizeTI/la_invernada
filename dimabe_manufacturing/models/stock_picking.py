@@ -82,7 +82,7 @@ class StockPicking(models.Model):
 
     @api.onchange('is_multiple_dispatch')
     def set_multiple_dispatch(self):
-        if self.is_multiple_dispatch:
+        if self.is_multiple_dispatch and self.move_ids_without_package:
             # Se busca objecto a causa de que self.id entrega otro tipo de campo (NewId)
             picking = self.env['stock.picking'].search([('name', '=', self.name)])
             self.env['custom.dispatch.line'].create({
