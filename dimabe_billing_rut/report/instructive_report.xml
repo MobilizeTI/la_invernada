@@ -239,6 +239,7 @@
                                                     <t t-if="a.attribute_id.name == 'Tipo de envase'">
                                                         <span t-field="a.attribute.name"/>
                                                     </t>
+                                                </t>
                                             </t>
                                         </t>
                                     </td>
@@ -274,6 +275,7 @@
                                                     <t t-if="a.attribute_id.name == 'Marca'">
                                                         <span t-field="a.attribute.name"/>
                                                     </t>
+                                                </t>
                                             </t>
                                         </t>
                                     </td>
@@ -302,6 +304,7 @@
                                                     <t t-if="a.attribute_id.name == 'Calibre'">
                                                         <span t-field="a.attribute.name"/>
                                                     </t>
+                                                </t>
                                             </t>
                                         </t>
                                     </td>
