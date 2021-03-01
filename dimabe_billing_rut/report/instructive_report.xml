@@ -224,6 +224,7 @@
                                                     <t t-if="a.attribute_id.name == 'Variedad'">
                                                         <span t-field="a.attribute.name"/>
                                                     </t>
+                                                </t>
                                             </t>
                                         </t>
                                     </td>
