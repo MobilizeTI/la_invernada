@@ -78,9 +78,11 @@ class StockPicking(models.Model):
 
     picking_principal_id = fields.Many2one('stock.picking','Pedido Principal')
 
+    is_child_dispatch = fields.Boolean('Es despacho hijo')
+
     @api.onchange('is_multiple_dispatch')
     def set_multiple_dispatch(self):
-        if self.is_multiple_dispatch:
+        if self.is_multiple_dispatch and self.move_ids_without_package:
             # Se busca objecto a causa de que self.id entrega otro tipo de campo (NewId)
             picking = self.env['stock.picking'].search([('name', '=', self.name)])
             self.env['custom.dispatch.line'].create({
