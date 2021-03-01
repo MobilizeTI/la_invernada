@@ -719,7 +719,12 @@
                             <tr>
                                 <th style="text-align:left; width:200px">PLANTA DE CARGUÍO</th>
                                 <td>:</td>
-                                <td></td>
+                                <td><span t-field="d.plant.name"/></td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:left; width:200px">DIRECCIÓN PLANTA DE CARGUÍO</th>
+                                <td>:</td>
+                                <td><span t-field="d.plant.street"/></td>
                             </tr>
                             <tr>
                                 <th style="text-align:left; width:200px">FECHA Y HORA DE CARGA</th>

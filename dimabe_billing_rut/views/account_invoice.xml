@@ -33,12 +33,14 @@
                             <field name="temperature"/>
                             <field name="ventilation"/>
                             <field name="humidity"/>
+                            <field name="quality_type"/>
                             <field name="freight_payment_term"/>
                             <field name="safe_type"/>
                             <field name="stacking"/>
                             <field name="cut_off"/>
                         </group>
                         <group>
+                            <field name="plant" domain="[('is_plant','=',True)]"/>
                             <field name="withdrawal_deposit"/>
                             <field name="transport_to_port"/> 
                             <field name="dus_second_send"/>
@@ -142,7 +144,7 @@
                                 <group>
                                     <field name="departure_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="arrival_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                    <field name="required_loading_date" autocomplete="off" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <!--<field name="required_loading_date" autocomplete="off" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>-->
                                     <field name="required_loading_week" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 </group>
                                 <group>
@@ -233,6 +235,7 @@
                                         <group>
                                             <field name="order_name" readonly="1"/>
                                             <field name="stock_picking_name" readonly="1"/>
+                                            <field name="required_loading_date" readonly="1"/>
                                             <field name="quantity_to_invoice" readonly="1"/>
                                             <field name="product_name" readonly="1"/>
                                             <field name="value_per_kilo" readonly="1"/>
@@ -242,6 +245,7 @@
                                     <tree delete="false" create="0"><!--delete="false" create="0"-->
                                         <field name="order_name" readonly="1"/>
                                         <field name="stock_picking_name" readonly="1"/>
+                                        <field name="required_loading_date" readonly="1"/>
                                         <field name="quantity_to_invoice" readonly="1"/>
                                         <field name="product_name" readonly="1"/>
                                         <field name="value_per_kilo" readonly="1"/>
