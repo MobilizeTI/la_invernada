@@ -5,7 +5,3 @@ class UpdateStockQuant(models.TransientModel):
 
     lot_id = field.Many2one('stock.production.lot','Lote')
 
-    @api.multi
-    def update(self):
-
-
