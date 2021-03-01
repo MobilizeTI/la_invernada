@@ -7,6 +7,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='tax_line_ids']" position="after">
                     <group string="Notify">
+                        <field name="consignee_id" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                         <field name="notify_ids" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                     </group>
                 </xpath>
