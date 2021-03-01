@@ -232,7 +232,7 @@ class StockPicking(models.Model):
 
     customs_department = fields.Many2one('res.partner', 'Oficina Aduanera')
 
-    canning_data = fields.Char('Agregar Envases')
+    canning_data = fields.Text('Agregar Envases')
 
     @api.onchange('picture')
     def get_pictures(self):
