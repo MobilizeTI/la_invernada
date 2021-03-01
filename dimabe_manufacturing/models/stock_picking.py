@@ -78,6 +78,8 @@ class StockPicking(models.Model):
 
     picking_principal_id = fields.Many2one('stock.picking','Pedido Principal')
 
+    is_child_dispatch = fields.Boolean('Es despacho hijo')
+
     @api.onchange('is_multiple_dispatch')
     def set_multiple_dispatch(self):
         if self.is_multiple_dispatch:

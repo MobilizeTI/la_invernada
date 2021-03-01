@@ -30,7 +30,8 @@ class ConfirmPrincipalOrde(models.TransientModel):
         self.process_data()
         for item in self.picking_id.dispatch_line_ids:
             item.dispatch_id.write({
-                'picking_principal_id': self.picking_id.id
+                'picking_principal_id': self.picking_id.id,
+                'is_child':True if item.dispatch_id.id != self.picking_id.id else False
             })
 
     def process_data(self):
