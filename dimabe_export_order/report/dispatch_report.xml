@@ -293,6 +293,10 @@
                                                             <td>
                                                                 <span t-field="d.tare_container_weight_dispatch"/>
                                                             </td>
+                                                            <td>ENVASES:</td>
+                                                            <td>
+                                                                <span t-field="d.canning_data"/>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <td>PESO VGM:</td>
