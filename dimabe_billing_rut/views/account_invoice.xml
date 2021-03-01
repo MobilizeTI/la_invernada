@@ -27,7 +27,7 @@
                 <xpath expr="//field[@name='partner_id']" position="before">
                     <field name="shipping_number" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                 </xpath>
-                <xpath expr="//field[@name='tax_line_ids']" position="after">
+                <xpath expr="//field[@name='notify_ids']" position="after">
                     <group string="Información para Instructivos">
                         <group>
                             <field name="temperature" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
