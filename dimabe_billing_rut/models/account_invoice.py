@@ -997,7 +997,7 @@ class AccountInvoice(models.Model):
                 'arrival_date': self.arrival_date,
                 'customs_department': self.custom_department.id,
                 'transport': self.transport_to_port.name,
-                'notify_ids' : [(6, 0 ,[self.notify_ids])],
+                'notify_ids' : [(6, 0 ,[notify_list])],
                 'consignee_id' : self.consignee_id.id
             })
 
