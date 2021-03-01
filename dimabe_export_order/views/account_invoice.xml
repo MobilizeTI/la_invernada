@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <record id="xdte_invoice_form_2" model="ir.ui.view">
+            <field name="name">account invoice</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='origin_certificate']" position="after">
+                    <group string="Notify">
+                        <field name="notify_ids" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
