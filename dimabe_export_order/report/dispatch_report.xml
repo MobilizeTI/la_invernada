@@ -400,7 +400,7 @@
                                                                     <span t-esc="','.join(d.picking_principal_id.dispatch_line_ids.mapped('sale_id').mapped('name'))"/>
                                                                 </td>
                                                             </t>
-                                                            <t t-if="d.picking_principal_id and not d.picking_principal_id.is_multiple_dispatch">
+                                                            <t t-elif="d.picking_principal_id and not d.picking_principal_id.is_multiple_dispatch">
                                                                 <td>
                                                                     <span t-esc="d.picking_principal_id.origin"/>
                                                                 </td>
