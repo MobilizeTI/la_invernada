@@ -1410,7 +1410,7 @@
                                         <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                             <span t-esc="p.lot_serial_ids[0].product_id.type_product"/>
                                         </td>
-                                        <t t-if="d.picking_principal_id and not d.is_not_child_id">
+                                        <t t-if="d.picking_principal_id and not d.is_child_dispatch">
                                             <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                                 <span t-esc="d.picking_principal_id.origin"/>
                                             </td>
