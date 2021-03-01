@@ -70,7 +70,7 @@
                                 <tr>
                                     <th style="text-align:right;">DE :</th>
                                     <td style="text-align:left;">
-                                        <span t-field="res_company.origin_contact_aga.name"/>
+                                        <span t-field="request.env.user.name"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -451,13 +451,30 @@
                                     <th style="text-align:left;">PLANTA</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
+                                        <span t-field="d.plant.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">DIRECCIÓN PLANTA</th>
+                                    <td style="width:5px">:</td>
+                                    <td style="text-align:left;">
+                                        <span t-field="d.plant.street"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">CONTACTO/TELÉFONO</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        
+                                        <span t-field="res_company.origin_contact_aga.name"/>-
+                                        <t t-if="res_company.origin_contact_aga.phone">
+                                            <span t-field="res_company.origin_contact_aga.phone"/>
+                                        </t>
+                                        <t t-if="res_company.origin_contact_aga.phone and res_company.origin_contact_aga.phone">
+                                            /
+                                        </t>
+                                        <t t-if="res_company.origin_contact_aga.mobile">
+                                            <span t-field="res_company.origin_contact_aga.mobile"/>
+                                        </t>
                                     </td>
                                 </tr>
                                 <tr>
