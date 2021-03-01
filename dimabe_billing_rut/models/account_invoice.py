@@ -992,7 +992,9 @@ class AccountInvoice(models.Model):
                 'departure_date': self.departure_date,
                 'arrival_date': self.arrival_date,
                 'customs_department': self.custom_department.id,
-                'transport': self.transport_to_port.name
+                'transport': self.transport_to_port.name,
+                'notify_ids' : [(6, 0 ,[self.notify_ids])],
+                'consignee_id' : self.consignee_id.id
             })
 
         return res
