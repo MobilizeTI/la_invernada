@@ -321,7 +321,8 @@
                                                                     <span t-field="d.type_transport"/>
                                                                 </t>
                                                                 <t t-elif="d.shipping_id.type_transport != 'terrestre'">
-                                                                    <span t-field="d.shipping_id.ship"/>
+                                                                    <span t-field="d.shipping_id.ship.name"/>
+                                                                    <span t-field="d.shipping_id.ship_number"/>
                                                                 </t>
                                                             </td>
                                                         </tr>
@@ -1182,7 +1183,7 @@
                                                 </tr>
                                             </t>
                                         </t>
-                                        <t t-if="p.id == d.picking_principal_id.assigned_pallet_ids[-1].id">
+                                        <t t-if="p.id == d.picking_real_id.assigned_pallet_ids[-1].id">
                                             <tr>
                                                 <td colspan="7"
                                                     style="border:solid 1px black;text-align:right;padding-right:10px;">
@@ -1192,10 +1193,10 @@
                                                     <span t-esc="len(d.picking_principal_id.packing_list_ids)"/>
                                                 </td>
                                                 <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
-                                                    <span t-esc="'%.2f' %sum(d.picking_principal_id.packing_list_ids.mapped('display_weight'))"/>
+                                                    <span t-esc="'%.2f' %sum(d.picking_real_id.packing_list_ids.mapped('display_weight'))"/>
                                                 </td>
                                                 <td style="border:solid 1px black;text-align:center;margin_top:0px;margin_bottom;0px;margin_left:0px;margin_right:0px;">
-                                                    <span t-esc="'%.2f' %sum(d.picking_principal_id.packing_list_ids.mapped('gross_weight'))"/>
+                                                    <span t-esc="'%.2f' %sum(d.picking_real_id.packing_list_ids.mapped('gross_weight'))"/>
                                                 </td>
                                             </tr>
                                         </t>
