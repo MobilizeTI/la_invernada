@@ -58,7 +58,7 @@
                             <p style="font-wight:bold;font-size:18px">EMB. N°
                                 <span t-field="d.shipping_number"/>/
                                 <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')"/>
-                                <span t-esc="date_invoice.strftime('%Y')"/>
+                                <span t-esc="date_invoice" t-field-options='{"format":"Y"}'/>
                             </p>
                         </div>
                         <div style="width:100%;display:inline-block; border:1px solid">
@@ -719,7 +719,7 @@
                             <tr>
                                 <th style="text-align:left;">INSTR.N°</th>
                                 <td>:</td>
-                                <td><span t-field="d.shipping_number"/>/<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')"/><span t-esc="date_invoice.strftime('%Y')"/></td>
+                                <td><span t-field="d.shipping_number"/>/<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')"/><span t-esc="date_invoice" t-field-options='{"format":"Y"}'/></td>
                             </tr>
                             <tr></tr>
                             <tr></tr>
