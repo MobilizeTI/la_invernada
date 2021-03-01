@@ -961,6 +961,7 @@ class AccountInvoice(models.Model):
                 order_list.append(item.stock_picking_id)
         
         for n in self.notify_ids:
+            raise models.ValidationError(n.id)
             notify_list.append(n.id)
 
         stock_picking_ids = self.env['stock.picking'].search([('id', 'in', order_list)])
