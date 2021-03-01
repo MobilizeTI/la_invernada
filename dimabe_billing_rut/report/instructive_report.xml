@@ -5,7 +5,7 @@
             <div class="page" style="margin:auto;">
                 <t t-foreach="docs" t-as="d">
                     <div style="width:100%;">
-                        <div style="width:100%;text-align:center;display:inline-block; border:1px solid;font-size:10px; padding=6px;">
+                        <div style="width:100%;text-align:justify;display:inline-block; border:1px solid;font-size:10px; padding:6px;">
                             <p>MANDATO</p>
                             <p >EN 
                                 <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'January'">
@@ -58,6 +58,7 @@
                             <p style="font-wight:bold;font-size:18px">EMB. N°
                                 <span t-field="d.shipping_number"/>/
                                 <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')"/>
+                                <span t-esc="date_invoice.strftime('%Y')"/>
                             </p>
                         </div>
                         <div style="width:100%;display:inline-block; border:1px solid">
@@ -200,24 +201,45 @@
                         <div style="width:100%;display:inline-block; border:1px solid;">
                              <table style="width:100%;font-size:10px">
                                 <tr>
-                                    <th style="text-align:left;width:200px">PRODUCTO</th>
+                                    <th style="text-align:left; width:200px">PRODUCTO</th>
                                     <td style="width:5px">:</td>
-                                    <td style="text-align:left;">
-                                        
-                                    </td>
+                                    <td style="text-align:left;"><span t-field="d.custom_invoice_line_ids[0].name"></span></td>
                                 </tr>
+                                    <t t-if="len(d.custom_invoice_line_ids) > 1">
+                                        <t t-foreach="d.custom_invoice_line_ids" t-as="o">
+                                            <tr t-if="o.name != d.custom_invoice_line_ids[0].name">
+                                                <th></th>
+                                                <td></td>
+                                                <td><span t-field="o.name"/></td>
+                                            </tr>
+                                        </t>
+                                    </t>
                                 <tr>
                                     <th style="text-align:left;">VARIEDAD (S)</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        
+                                        <t t-if="len(d.custom_invoice_line_ids) > 1">
+                                            <t t-foreach="d.custom_invoice_line_ids" t-as="line">
+                                                <t t-foreach="line.product_id.attribute_value_ids" t-as="a">
+                                                    <t t-if="a.attribute_id.name == 'Variedad'">
+                                                        <span t-field="a.attribute.name"/>
+                                                    </t>
+                                            </t>
+                                        </t>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">ENVASE (S)</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        
+                                        <t t-if="len(d.custom_invoice_line_ids) > 1">
+                                            <t t-foreach="d.custom_invoice_line_ids" t-as="line">
+                                                <t t-foreach="line.product_id.attribute_value_ids" t-as="a">
+                                                    <t t-if="a.attribute_id.name == 'Tipo de envase'">
+                                                        <span t-field="a.attribute.name"/>
+                                                    </t>
+                                            </t>
+                                        </t>
                                     </td>
                                 </tr>
                                 <tr>
@@ -245,7 +267,14 @@
                                     <th style="text-align:left;">MARCAS</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        
+                                        <t t-if="len(d.custom_invoice_line_ids) > 1">
+                                            <t t-foreach="d.custom_invoice_line_ids" t-as="line">
+                                                <t t-foreach="line.product_id.attribute_value_ids" t-as="a">
+                                                    <t t-if="a.attribute_id.name == 'Marca'">
+                                                        <span t-field="a.attribute.name"/>
+                                                    </t>
+                                            </t>
+                                        </t>
                                     </td>
                                 </tr>
                                 <tr>
@@ -266,14 +295,21 @@
                                     <th style="text-align:left;">CALIBRES</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        
+                                        <t t-if="len(d.custom_invoice_line_ids) > 1">
+                                            <t t-foreach="d.custom_invoice_line_ids" t-as="line">
+                                                <t t-foreach="line.product_id.attribute_value_ids" t-as="a">
+                                                    <t t-if="a.attribute_id.name == 'Calibre'">
+                                                        <span t-field="a.attribute.name"/>
+                                                    </t>
+                                            </t>
+                                        </t>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">CALIDAD</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        
+                                        <span name="d.quality_type.name"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -648,29 +684,31 @@
                             <tr></tr>
                             <tr></tr>
                             <tr>
-                                <th style="text-align:right;">ATN</th>
+                                <th style="text-align:left;">ATN</th>
                                 <td>:</td>
                                 <td style="text-align:left;">
                                     
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align:right; width:200px">REF</th>
+                                <th style="text-align:left; width:100px">REF</th>
                                 <td>:</td>
                                 <td>PROGRAMACIÓN DE RETIRO, CARGA Y ENTREGA DE CONTENEDORES</td>
                             </tr>
                             <tr>
-                                <th style="text-align:right; width:200px">INSTR.N°</th>
+                                <th style="text-align:left;">INSTR.N°</th>
                                 <td>:</td>
-                                <td><span t-field="d.shipping_number"/>/<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')"/></td>
+                                <td><span t-field="d.shipping_number"/>/<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')"/><span t-esc="date_invoice.strftime('%Y')"/></td>
                             </tr>
                             <tr></tr>
                             <tr></tr>
                             <tr>
-                                <th colspan="3" style="text-align:left; width:200px">MEDIANTE ELA PRESENTE, INFORMO DETALLES DEL RETIRO, CARGA Y ENTREGA DE CONTENEDORES:</th>
+                                <th colspan="3" style="text-align:left;">MEDIANTE ELA PRESENTE, INFORMO DETALLES DEL RETIRO, CARGA Y ENTREGA DE CONTENEDORES:</th>
                             </tr>
                             <tr></tr>
                             <tr></tr>
+                        </table>
+                        <table style="width:100%;font-size:10px;">
                             <tr>
                                 <th style="text-align:left; width:200px">REFERENCIA CLIENTE</th>
                                 <td>:</td>
@@ -766,12 +804,12 @@
                             <table style="width:100%;font-size:10px;">
                                 <tr>
                                     <th style="text-align:left; width:200px;">IMPORTANTE</th>
-                                    <td style="font-weight:bold;text-align:right">PARA RETIRAR EL CONTENEDOR DESDE:</td>
+                                    <td style="font-weight:bold;text-align:left">PARA RETIRAR EL CONTENEDOR DESDE:</td>
                                     <td style="text-align:left"><span t-field="d.withdrawal_deposit.name"/></td>
                                 </tr>
                                 <tr>
                                     <th></th>
-                                    <td style="font-weight:bold;text-align:right">INFORMAR QUE EL N° DE RESERVA ES EL:</td>
+                                    <td style="font-weight:bold;text-align:left;width:250px;">INFORMAR QUE EL N° DE RESERVA ES EL:</td>
                                     <td style="text-align:left"><span t-field="d.booking_number"/></td>
                                 </tr>
                             </table>
