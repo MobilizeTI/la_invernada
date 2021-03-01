@@ -7,7 +7,7 @@
                     <div style="width:100%;">
                         <div style="width:100%;display:inline-block; border:1px solid;font-size:10px; padding:6px;">
                             <p style="text-align:center">MANDATO</p>
-                            <p style="text-align:justify; width:96%">EN 
+                            <p style="text-align:justify;">EN 
                                 <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'January'">
                                 ENERO
                             </t>
@@ -130,7 +130,7 @@
                         <div style="width:100%;display:inline-block; border:1px solid;">
                              <table style="width:100%;font-size:10px">
                                 <tr>
-                                    <th style="text-align:left;width:200px">CONSIGNATORIO</th>
+                                    <th style="text-align:left;width:200px">CONSIGNATARIO</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
                                         <span t-field="d.partner_id.name"/>
@@ -735,7 +735,7 @@
                             <tr></tr>
                             <tr></tr>
                             <tr>
-                                <th colspan="3" style="text-align:left;">MEDIANTE ELA PRESENTE, INFORMO DETALLES DEL RETIRO, CARGA Y ENTREGA DE CONTENEDORES:</th>
+                                <th colspan="3" style="text-align:left;">MEDIANTE EL PRESENTE, INFORMO DETALLES DEL RETIRO, CARGA Y ENTREGA DE CONTENEDORES:</th>
                             </tr>
                             <tr></tr>
                             <tr></tr>
