@@ -12,7 +12,7 @@
             <group>
               <field name="invoice_rut"/>
               <field name="economic_activities" placeholder="Giros" colspan="8" />
-              <!--<fields name="mail_dte"/>-->
+              <fields name="mail_dte"/>
             </group>
           </page>
         </xpath> 
