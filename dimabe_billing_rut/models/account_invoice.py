@@ -955,10 +955,14 @@ class AccountInvoice(models.Model):
     @api.multi
     def write(self, vals):
         order_list = []
+        notify_list = []
         for item in self.orders_to_invoice:
             if item.order_id:
                 order_list.append(item.stock_picking_id)
         
+        for n in self.notify_ids:
+            notify_list.append(n.id)
+
         stock_picking_ids = self.env['stock.picking'].search([('id', 'in', order_list)])
         res = super(AccountInvoice, self).write(vals)
         for s in stock_picking_ids:
