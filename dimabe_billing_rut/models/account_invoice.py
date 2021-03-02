@@ -1012,11 +1012,12 @@ class AccountInvoice(models.Model):
                 raise models.ValidationError('El Despacho {} no tiene ingresado los KG Tara'.format(s.name))
 
 
-        self.write({
-            'net_weight':sum_net_kg,
-            'gross_weight':sum_gross_kg,
-            'tara': sum_tara_kg
-        }) 
+        for item in self:
+            item.write({
+                'net_weight':sum_net_kg,
+                'gross_weight':sum_gross_kg,
+                'tara': sum_tara_kg
+            }) 
 
 
 
