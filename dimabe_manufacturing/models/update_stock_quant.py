@@ -8,7 +8,7 @@ class UpdateStockQuant(models.TransientModel):
 
     picking_id = fields.Many2one('stock.picking')
 
-    lot_ids = fields.Many2many('stock.production.lot', 'Lotes')
+    lot_ids = fields.Many2many('stock.production.lot')
 
     @api.multi
     def update(self):
