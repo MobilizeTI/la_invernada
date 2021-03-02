@@ -49,7 +49,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     'product_uom_qty':line.product_uom_qty,
                     'location_id':line.location_id,
                     'location_dest_id':line.location_dest_id.id,
-                    'date':date.today()
+                    'date':date.today(),
                     'picking_id': item.dispatch_id.id,
                     'move_id': item.dispatch_id.move_ids_without_package.filtered(
                         lambda x: x.product_id.id == line.product_id and x.picking_id.id == item.dispatch_id.id)
@@ -64,6 +64,8 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     self.inmediate_transfer(item.dispatch_id)
                 if self.check_backorder(item.dispatch_id):
                     self.process_backorder(item.dispatch_id)
+
+
 
     def inmediate_transfer(self, picking):
         pick_to_backorder = self.env['stock.picking']
