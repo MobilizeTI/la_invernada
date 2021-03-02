@@ -303,6 +303,10 @@ class AccountInvoice(models.Model):
 
     quality_type = fields.Many2one('custom.quality.type',string="Calidad")
 
+    consolidation = fields.Char(string="Consolidación")
+
+    total_container = fields.Char(string="Total de Contenedores")
+
     #Emarque Method
     @api.model
     @api.onchange('etd')

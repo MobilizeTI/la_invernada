@@ -133,21 +133,21 @@
                                     <th style="text-align:left;width:200px">CONSIGNATARIO</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.partner_id.name"/>
+                                        <span t-field="d.consignee_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">DIRECCIÓN</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.partner_id.street"/>
+                                        <span t-field="d.consignee_id.street"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th style="text-align:left;"><span t-field="d.partner_id.client_identifier_id"/></th>
+                                    <th style="text-align:left;"><span t-field="d.consignee_id.client_identifier_id"/></th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.partner_id.client_identifier_value"/>
+                                        <span t-field="d.consignee_id.client_identifier_value"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -161,50 +161,52 @@
                                     <th style="text-align:left;">TELÉFONO</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.partner_id.mobile"/>
+                                        <span t-field="d.consignee_id.mobile"/>
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                        <div style="width:100%;display:inline-block; border:1px solid;">
-                             <table style="width:100%;font-size:10px">
-                                <tr>
-                                    <th style="text-align:left;width:200px">NOTIFY</th>
-                                    <td style="width:5px">:</td>
-                                    <td style="text-align:left;">
-                                        <span t-field="d.partner_id.name"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th style="text-align:left;">DIRECCIÓN</th>
-                                    <td style="width:5px">:</td>
-                                    <td style="text-align:left;">
-                                        <span t-field="d.partner_id.street"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th style="text-align:left;"><span t-field="d.partner_id.client_identifier_id"/></th>
-                                    <td style="width:5px">:</td>
-                                    <td style="text-align:left;">
-                                        <span t-field="d.partner_id.client_identifier_value"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th style="text-align:left;">CONTACTO</th>
-                                    <td style="width:5px">:</td>
-                                    <td style="text-align:left;">
-                                        
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th style="text-align:left;">TELÉFONO</th>
-                                    <td style="width:5px">:</td>
-                                    <td style="text-align:left;">
-                                        <span t-field="d.partner_id.mobile"/>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+                        <t t-foreach="d.notify_ids" t-as="n">
+                            <div style="width:100%;display:inline-block; border:1px solid;">
+                                <table style="width:100%;font-size:10px">
+                                    <tr>
+                                        <th style="text-align:left;width:200px">NOTIFY</th>
+                                        <td style="width:5px">:</td>
+                                        <td style="text-align:left;">
+                                            <span t-field="n.name"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align:left;">DIRECCIÓN</th>
+                                        <td style="width:5px">:</td>
+                                        <td style="text-align:left;">
+                                            <span t-field="n.street"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align:left;"><span t-field="n.client_identifier_id"/></th>
+                                        <td style="width:5px">:</td>
+                                        <td style="text-align:left;">
+                                            <span t-field="n.client_identifier_value"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align:left;">CONTACTO</th>
+                                        <td style="width:5px">:</td>
+                                        <td style="text-align:left;">
+                                            
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align:left;">TELÉFONO</th>
+                                        <td style="width:5px">:</td>
+                                        <td style="text-align:left;">
+                                            <span t-field="n.mobile"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </t>
                         <div style="width:100%;display:inline-block; border:1px solid;">
                              <table style="width:100%;font-size:10px">
                                 <tr>
