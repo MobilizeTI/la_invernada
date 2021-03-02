@@ -111,7 +111,7 @@ class StockPicking(models.Model):
     def update_stock_quant(self):
         view = self.env.ref('dimabe_manufacturing.update_quant_view')
         wiz = self.env['update.stock.quant'].create({
-            'lot_ids': [(4,l.id) for l in self.move_line_ids_without_package.mapped('lot_id')]
+            'lot_ids': [(4,l.id) for l in self.move_line_ids_without_package.mapped('lot_id')],
             'picking_id':self.id
         })
         return {
