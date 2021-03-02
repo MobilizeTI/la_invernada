@@ -981,13 +981,13 @@ class AccountInvoice(models.Model):
     #    self.total_invoice_Export   #revisar
 
     def compute_total_net_gross_kg(self):
-        raise models.ValidationError('entre')
+        
         sum_net_kg = 0
         sum_gross_kg = 0
         sum_tara_kg = 0
         for item in self.orders_to_invoice:
             stock_picking = self.env['stock.picking'].search([('id','=',item.stock_picking_id)]) 
-            
+            raise models.ValidationError(stock_picking.name)
             if stock_picking.net_weight_dispatch and stock_picking.net_weight_dispatch > 0:
                 sum_net_kg += stock_picking.net_weight_dispatch
             else:
