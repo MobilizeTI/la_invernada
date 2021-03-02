@@ -999,9 +999,12 @@ class AccountInvoice(models.Model):
                 'customs_department': self.custom_department.id,
                 'transport': self.transport_to_port.name,
                 'consignee_id' : self.consignee_id.id,
-                'notify_ids' : [(6, 0 [self.notify_ids.id])],
+                'notify_ids' : [(5)]
             })
 
+            s.write({
+                'notify_ids': [(4, n.id) for n in self.notify_ids]
+            })
 
         return res
 
