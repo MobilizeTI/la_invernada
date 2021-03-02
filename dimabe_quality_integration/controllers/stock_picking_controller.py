@@ -32,7 +32,7 @@ class StockPickingController(http.Controller):
                                 'LotNumber': res.name,
                                 'DispatchGuideNumber': res.guide_number,
                                 'ReceptionDate': res.scheduled_date or res.write_date,
-                                'ReceptionKgs': kgs if kgs > 0 else res.net_weigth,
+                                'ReceptionKgs': kgs if kgs > 0 else res.production_net_weight,
                                 'ContainerType': res.get_canning_move().product_id.display_name,
                                 'ContainerWeightAverage': res.avg_unitary_weight,
                                 'ContainerWeight': res.get_canning_move().product_id.weight,
