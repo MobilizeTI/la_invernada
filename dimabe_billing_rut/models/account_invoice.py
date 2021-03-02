@@ -975,7 +975,28 @@ class AccountInvoice(models.Model):
 
         return res
 
-    @api.onchange('amount_total')
-    def total_change_invoice_Export(self):
-        self.total_invoice_Export   #revisar
-       
+    #@api.onchange('amount_total')
+    #def total_change_invoice_Export(self):
+    #    self.total_invoice_Export   #revisar
+
+    def compute_total_net_kg(self):
+        sum_kg = 0
+        for item in self.orders_to_invoice:
+            stock_picking = self.env['stock.picking'].search([('id','=',item.stock_picking_id)]) 
+            if stock_picking.net_weight_dispatch or stock_picking.net_weight_dispatch > 0:
+                sum_kg += stock_picking.net_weight_dispatch
+            else:
+                raise models.ValidationError('El Despacho {} no tiene ingresado los KG Netos'.format(stock_picking.name))
+        self.net_weight = sum_kg 
+
+    
+    def compute_total_gross_kg(self):
+        sum_kg = 0
+        for item in self.orders_to_invoice:
+            stock_picking = self.env['stock.picking'].search([('id','=',item.stock_picking_id)]) 
+            if stock_picking.gross_weight_dispatch or stock_picking.gross_weight_dispatch > 0:
+                sum_kg += stock_picking.gross_weight_dispatch
+            else:
+                raise models.ValidationError('El Despacho {} no tiene ingresado los KG Brutos'.format(stock_picking.name))
+        
+        self.gross_weight = sum_kg
