@@ -108,6 +108,22 @@ class StockPicking(models.Model):
             item.name_orders = ", ".join(item.dispatch_line_ids.mapped('sale_id').mapped('name'))
 
     @api.multi
+    def update_stock_quant(self):
+        view = self.env.ref('dimabe_manufacturing.update_quant_view')
+        wiz = self.env['update.stock.quant'].create({
+            'lot_ids': [(4,l.id) for l in self.move_line_ids_without_package.mapped('lot_id')]
+            'picking_id':self.id
+        })
+        return {
+            'name':"Actualizar Lote",
+            'type':'ir.actions.act_window',
+            'view_type':'form',
+            'view_mode':'form',
+            'res_model':'update.stock.quant',
+            'view'
+        }
+
+    @api.multi
     def test(self):
         lots = self.env['stock.production.lot'].search([('name','=','201900714')])
         for lot in lots:
