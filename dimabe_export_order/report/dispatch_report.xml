@@ -1148,7 +1148,7 @@
                                         </tr>
                                         <t t-if="d.picking_principal_id.packing_list_ids.filtered(lambda a : not a.pallet_id) and p.id == d.picking_principal_id.assigned_pallet_ids[-1].id">
                                             <t t-foreach="d.picking_principal_id.packing_list_ids.filtered(lambda a : not a.pallet_id)"
-                                               t-as="s">
+                                               t-as="p">
                                                 <tr>
                                                     <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                                         <span t-esc="s.stock_product_id.name"/>
