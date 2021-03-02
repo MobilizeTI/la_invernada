@@ -52,7 +52,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     'picking_id': self.picking_id.id,
                     'move_id': self.picking_id.move_ids_without_package.filtered(
                         lambda
-                            x: x.product_id.id == line.product_id.id and x.picking_id.id == item.dispatch_id.id).id
+                            x: x.product_id.id == line.product_id.id and x.picking_id.id == self.picking_id.id).id
                 })
                 line.write({
                     'picking_id': item.dispatch_id.id,
