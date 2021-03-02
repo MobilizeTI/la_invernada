@@ -927,6 +927,9 @@ class AccountInvoice(models.Model):
     @api.multi
     def write(self, vals):
         order_list = []
+        sum_net_kg = 0
+        sum_gross_kg = 0
+        sum_tara_kg = 0
         for item in self.orders_to_invoice:
             if item.order_id:
                 order_list.append(item.stock_picking_id)
@@ -972,7 +975,22 @@ class AccountInvoice(models.Model):
             s.write({
                 'notify_ids': [(4, n.id) for n in self.notify_ids]
             })
-        self.compute_total_net_gross_kg()
+
+            if s.net_weight_dispatch and s.net_weight_dispatch > 0:
+                sum_net_kg += s.net_weight_dispatch
+            else:
+                raise models.ValidationError('El Despacho {} no tiene ingresado los KG Netos'.format(s.name))
+            
+            if s.gross_weight_dispatch and s.gross_weight_dispatch > 0:
+                sum_gross_kg += s.gross_weight_dispatch
+            else:
+                raise models.ValidationError('El Despacho {} no tiene ingresado los KG Brutos'.format(s.name))
+        
+            if s.tare_container_weight_dispatch and s.tare_container_weight_dispatch > 0:
+                sum_gross_kg += s.gross_weight_dispatch
+            else:
+                raise models.ValidationError('El Despacho {} no tiene ingresado los KG Tara'.format(s.name))
+     
 
         return res
 
@@ -987,7 +1005,7 @@ class AccountInvoice(models.Model):
         sum_tara_kg = 0
         for item in self.orders_to_invoice:
             stock_picking = self.env['stock.picking'].search([('id','=',item.stock_picking_id)]) 
-            raise models.ValidationError(item.stock_picking_id)
+
             if stock_picking.net_weight_dispatch and stock_picking.net_weight_dispatch > 0:
                 sum_net_kg += stock_picking.net_weight_dispatch
             else:
