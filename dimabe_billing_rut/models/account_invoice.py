@@ -986,39 +986,37 @@ class AccountInvoice(models.Model):
     def onchange_to_update_kg(self):
         self.update_totals_kg()
 
-    def update_totals_kg(self):
-        for item in self:
-            picking_ids = []
-            sum_net_kg = 0
-            sum_gross_kg = 0
-            sum_tara_kg = 0
-            for item in self.orders_to_invoice:
-                picking_ids.append(item.stock_picking_id)
+    def update_totals_kg(self):   
+        picking_ids = []
+        sum_net_kg = 0
+        sum_gross_kg = 0
+        sum_tara_kg = 0
+        for item in self.orders_to_invoice:
+            picking_ids.append(item.stock_picking_id)
+        stock_picking_ids = self.env['stock.picking'].search([('id','in',picking_ids)])
 
-            stock_picking_ids = self.env['stock.picking'].search([('id','in',picking_ids)])
-
-            for s in stock_picking_ids:
-                if s.net_weight_dispatch and s.net_weight_dispatch > 0:
-                    sum_net_kg += s.net_weight_dispatch
-                else:
-                    raise models.ValidationError('El Despacho {} no tiene ingresado los KG Netos'.format(s.name))
-                
-                if s.gross_weight_dispatch and s.gross_weight_dispatch > 0:
-                    sum_gross_kg += s.gross_weight_dispatch
-                else:
-                    raise models.ValidationError('El Despacho {} no tiene ingresado los KG Brutos'.format(s.name))
-            
-                if s.tare_container_weight_dispatch and s.tare_container_weight_dispatch > 0:
-                    sum_tara_kg += s.tare_container_weight_dispatch
-                else:
-                    raise models.ValidationError('El Despacho {} no tiene ingresado los KG Tara'.format(s.name))
+        for s in stock_picking_ids:
+            if s.net_weight_dispatch and s.net_weight_dispatch > 0:
+                sum_net_kg += s.net_weight_dispatch
+            else:
+                raise models.ValidationError('El Despacho {} no tiene ingresado los KG Netos'.format(s.name))
+               
+            if s.gross_weight_dispatch and s.gross_weight_dispatch > 0:
+                sum_gross_kg += s.gross_weight_dispatch
+            else:
+                raise models.ValidationError('El Despacho {} no tiene ingresado los KG Brutos'.format(s.name))
+           
+            if s.tare_container_weight_dispatch and s.tare_container_weight_dispatch > 0:
+                sum_tara_kg += s.tare_container_weight_dispatch
+            else:
+                raise models.ValidationError('El Despacho {} no tiene ingresado los KG Tara'.format(s.name))
 
 
-            item.write({
-                'net_weight':sum_net_kg,
-                'gross_weight':sum_gross_kg,
-                'tara': sum_tara_kg
-            }) 
+        self.write({
+            'net_weight':sum_net_kg,
+            'gross_weight':sum_gross_kg,
+            'tara': sum_tara_kg
+        }) 
 
 
 
