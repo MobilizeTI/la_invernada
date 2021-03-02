@@ -264,7 +264,7 @@
                                     <th style="text-align:left;">CANTIDAD DE CONTENEDORES</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        
+                                        <span name="d.total_container"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -494,14 +494,14 @@
                                     <th style="text-align:left;">CONSOLIDACIÓN</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        
+                                        <span name="d.consolidation"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">CONTENEDOR</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        
+                                        <span name="d.total_container"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -759,9 +759,9 @@
                                 <td><span t-field="d.shipping_company.name"/></td>
                             </tr>
                             <tr>
-                                <th style="text-align:left; width:200px">NUMERO DE CONTENEDORES</th>
+                                <th style="text-align:left; width:200px">NÚMERO DE CONTENEDORE(ES)</th>
                                 <td>:</td>
-                                <td></td>
+                                <td><span name="d.total_container"/></td>
                             </tr>
                             <tr>
                                 <th style="text-align:left; width:200px">PESO NETOS</th>
