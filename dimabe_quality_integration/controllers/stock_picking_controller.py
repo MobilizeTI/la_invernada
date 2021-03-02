@@ -88,7 +88,7 @@ class StockPickingController(http.Controller):
                     'Season': res.finish_date.year,
                     'Warehouse': res.picking_type_id.name,
                     'ContainerQuantity': res.out_serial_count,
-                    'ArticleCode': res.out_product_id.id,
+                    'ArticleCode': res.out_product_id.default_code,
                     'ArticleDescription': res.out_product_id.name
                 }
             else:
