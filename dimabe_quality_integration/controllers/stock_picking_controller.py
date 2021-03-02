@@ -49,7 +49,7 @@ class StockPickingController(http.Controller):
 
     @http.route('/api/stock_picking', type='json', methods=['GET'], auth='token', cors='*')
     def get_stock_picking(self, lot):
-        res = request.env['stock.picking'].search([('name', '=', lot)])
+        res = request.env['stock.picking'].sudo().search([('name', '=', lot)])
         if res and res.partner_id.id:
             return {
                 'ProducerCode': res.partner_id.id,
@@ -71,7 +71,7 @@ class StockPickingController(http.Controller):
                 'ArticleDescription': res.move_ids_without_package[0].product_id.display_name
             }
         else:
-            res = request.env['dried.unpelled.history'].search(
+            res = request.env['dried.unpelled.history'].sudo().search(
                 [('out_lot_id.name', '=', lot)])
             if res and res.producer_id.id:
                 return {
