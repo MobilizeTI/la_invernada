@@ -36,6 +36,7 @@
         'views/custom_holidays.xml',
         'reports/settlement_document.xml',
         'reports/holiday_ticket.xml',
+        'reports/hr_payslip_report.xml',
         'views/hr_payroll_structure.xml',
         'views/hr_salary_rule.xml',
         'views/hr_indicadores.xml'
