@@ -995,14 +995,16 @@ class AccountInvoice(models.Model):
                 raise models.ValidationError('El Despacho {} no tiene ingresado los KG Brutos'.format(s.name))
         
             if s.tare_container_weight_dispatch and s.tare_container_weight_dispatch > 0:
-                sum_gross_kg += s.tare_container_weight_dispatch
+                sum_tara_kg += s.tare_container_weight_dispatch
             else:
                 raise models.ValidationError('El Despacho {} no tiene ingresado los KG Tara'.format(s.name))
+
+            raise models.ValidationError('sumas: {} {} {}'.format(sum_net_kg,sum_gross_kg,sum_tara_kg))
         
         self.write({
             'net_weight':sum_net_kg,
-            'gross_weight':sum_net_kg,
-            'tara':sum_net_kg
+            'gross_weight':sum_gross_kg,
+            'tara':sum_tara_kg
         }) 
 
         return res
