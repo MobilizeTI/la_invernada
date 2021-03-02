@@ -48,6 +48,8 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     'product_uom_qty': line.product_uom_qty,
                     'location_id': line.location_id.id,
                     'location_dest_id': line.location_dest_id.id,
+                    'lot_id':line.lot_id.id,
+                    'qty_done':item.real_dispatch_qty,
                     'date': date.today(),
                     'picking_id': self.picking_id.id,
                     'move_id': self.picking_id.move_ids_without_package.filtered(
