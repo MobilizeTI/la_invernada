@@ -972,7 +972,7 @@ class AccountInvoice(models.Model):
             s.write({
                 'notify_ids': [(4, n.id) for n in self.notify_ids]
             })
-        self.compute_total_net_gross_kg()
+        self.compute_total_net_gross_kg(self)
 
         return res
 
@@ -1002,7 +1002,7 @@ class AccountInvoice(models.Model):
             else:
                 raise models.ValidationError('El Despacho {} no tiene ingresado los KG Tara'.format(stock_picking.name))
         
-
+            
         self.net_weight = sum_net_kg 
         self.gross_weight = sum_gross_kg
         self.tara = sum_tara_kg
