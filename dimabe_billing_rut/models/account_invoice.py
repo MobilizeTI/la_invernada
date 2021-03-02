@@ -987,7 +987,7 @@ class AccountInvoice(models.Model):
         sum_tara_kg = 0
         for item in self.orders_to_invoice:
             stock_picking = self.env['stock.picking'].search([('id','=',item.stock_picking_id)]) 
-            raise models.ValidationError(stock_picking.name)
+            raise models.ValidationError(item.stock_picking_id)
             if stock_picking.net_weight_dispatch and stock_picking.net_weight_dispatch > 0:
                 sum_net_kg += stock_picking.net_weight_dispatch
             else:
