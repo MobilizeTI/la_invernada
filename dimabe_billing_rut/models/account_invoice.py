@@ -972,7 +972,7 @@ class AccountInvoice(models.Model):
             s.write({
                 'notify_ids': [(4, n.id) for n in self.notify_ids]
             })
-        self.compute_total_net_gross_kg(self)
+        self.compute_total_net_gross_kg()
 
         return res
 
@@ -981,6 +981,7 @@ class AccountInvoice(models.Model):
     #    self.total_invoice_Export   #revisar
 
     def compute_total_net_gross_kg(self):
+        raise models.ValidationError('entre')
         sum_net_kg = 0
         sum_gross_kg = 0
         sum_tara_kg = 0
