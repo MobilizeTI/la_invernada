@@ -989,9 +989,9 @@ class AccountInvoice(models.Model):
     def update_totals_kg(self):   
         picking_ids = []
      
-        self.tara = sum(self.order_to_invoice.mapped('stock_picking_id').mapped('net_weight_dispatch'))  
-        self.gross_weight = sum(self.order_to_invoice.mapped('stock_picking_id').mapped('gross_weight_dispatch'))  
-        self.net_weight = sum(self.order_to_invoice.mapped('stock_picking_id').mapped('tare_container_weight_dispatch'))  
+        self.tara = sum(self.orders_to_invoice.mapped('stock_picking_id').mapped('net_weight_dispatch'))  
+        self.gross_weight = sum(self.orders_to_invoice.mapped('stock_picking_id').mapped('gross_weight_dispatch'))  
+        self.net_weight = sum(self.orders_to_invoice.mapped('stock_picking_id').mapped('tare_container_weight_dispatch'))  
 
 
 
