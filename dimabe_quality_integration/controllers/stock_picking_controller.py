@@ -73,7 +73,7 @@ class StockPickingController(http.Controller):
         else:
             res = request.env['dried.unpelled.history'].search(
                 [('out_lot_id.name', '=', lot)])
-            if res and res.partner_id.id:
+            if res and res.producer_id.id:
                 return {
                     'ProducerCode': res.producer_id.id,
                     'ProducerName': res.producer_id.name,
