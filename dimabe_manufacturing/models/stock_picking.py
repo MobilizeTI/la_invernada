@@ -129,42 +129,7 @@ class StockPicking(models.Model):
 
     @api.multi
     def test(self):
-        lots = self.env['stock.production.lot'].search([('name','=','201900714')])
-        for lot in lots:
-            if lot.product_id.categ_id.id in (65,103):
-                continue
-            quant = self.env['stock.quant'].search([('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal')])
-            if quant:
-                quant.write({
-                    'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
-                                                                                              x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
-                        'display_weight')),
-                    'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
-                        lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight'))
-                })
-            elif not quant and lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed):
-                if not lot.product_id.categ_id.id == 65:
-                    continue
-                recepction = self.env['stock.picking'].search([('name', '=', lot.name)])
-                models._logger.error(lot.name)
-                location_id = 0
-                if recepction:
-                    location_id = recepction.location_dest_id.id
-                else:
-                    location_id = lot.stock_production_lot_serial_ids.mapped('production_id').location_dest_id.id
-                if location_id == 0:
-                    continue
-
-                self.env['stock.quant'].sudo().create({
-                    'lot_id': lot.id,
-                    'product_id': lot.product_id.id,
-                    'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
-                        lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight')),
-                    'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
-                                                                                              x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
-                        'display_weight')),
-                    'location_id': location_id
-                })
+        raise models.ValidationError(self.is_satelite_reception)
 
     @api.multi
     def add_orders_to_dispatch(self):
