@@ -1015,13 +1015,9 @@ class AccountInvoice(models.Model):
 
 
             item.write({
-                'net_weight':float(sum_net_kg)
-            }) 
-            item.write({
-                'gross_weight':float(sum_gross_kg)
-            }) 
-            item.write({
-                'tara': float(sum_tara_kg)
+                'net_weight':sum_net_kg,
+                'gross_weight':sum_gross_kg,
+                'tara': sum_tara_kg
             }) 
 
 
