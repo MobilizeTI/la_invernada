@@ -42,12 +42,6 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     lambda a: a.product_id.id == item.product_id.id):
                 if item.dispatch_id.id == self.picking_id.id:
                     continue
-                line.write({
-                    'picking_id': item.dispatch_id.id,
-                    'move_id': item.dispatch_id.move_ids_without_package.filtered(
-                        lambda x: x.product_id.id == line.product_id.id and x.picking_id.id == item.dispatch_id.id).id
-                })
-
                 self.env['stock.move.line'].create({
                     'product_id': line.product_id.id,
                     'product_uom_id': line.product_id.uom_id.id,
@@ -57,6 +51,12 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     'date': date.today(),
                     'picking_id': self.picking_id.id,
                     'move_id': self.picking_id.move_ids_without_package.filtered(
+                        lambda
+                            x: x.product_id.id == line.product_id.id and x.picking_id.id == item.dispatch_id.id).id
+                })
+                line.write({
+                    'picking_id': item.dispatch_id.id,
+                    'move_id': item.dispatch_id.move_ids_without_package.filtered(
                         lambda x: x.product_id.id == line.product_id.id and x.picking_id.id == item.dispatch_id.id).id
                 })
 
