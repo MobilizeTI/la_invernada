@@ -983,20 +983,28 @@ class AccountInvoice(models.Model):
     def compute_total_net_gross_kg(self):
         sum_net_kg = 0
         sum_gross_kg = 0
+        sum_tara_kg = 0
         for item in self.orders_to_invoice:
             stock_picking = self.env['stock.picking'].search([('id','=',item.stock_picking_id)]) 
             
-            if stock_picking.net_weight_dispatch or stock_picking.net_weight_dispatch > 0:
+            if stock_picking.net_weight_dispatch and stock_picking.net_weight_dispatch > 0:
                 sum_net_kg += stock_picking.net_weight_dispatch
             else:
                 raise models.ValidationError('El Despacho {} no tiene ingresado los KG Netos'.format(stock_picking.name))
             
-            if stock_picking.gross_weight_dispatch or stock_picking.gross_weight_dispatch > 0:
+            if stock_picking.gross_weight_dispatch and stock_picking.gross_weight_dispatch > 0:
                 sum_gross_kg += stock_picking.gross_weight_dispatch
             else:
                 raise models.ValidationError('El Despacho {} no tiene ingresado los KG Brutos'.format(stock_picking.name))
         
+            if stock_picking.tare_container_weight_dispatch and stock_picking.tare_container_weight_dispatch > 0:
+                sum_gross_kg += stock_picking.gross_weight_dispatch
+            else:
+                raise models.ValidationError('El Despacho {} no tiene ingresado los KG Tara'.format(stock_picking.name))
+        
+
         self.net_weight = sum_net_kg 
         self.gross_weight = sum_gross_kg
+        self.tara = sum_tara_kg
 
     
