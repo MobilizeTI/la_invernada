@@ -65,7 +65,6 @@
                                         1):(<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')"/>)
                                         2):(<span t-esc="d.date_invoice" t-field-options='{"format": "yyyy"}'/>)
                                         3):(<span t-esc="d.date_invoice.strftime('%Y')"/>)
-                                        4):(<span t-esc="datetime.datetime.strptime(d.date_invoice, '%Y').strftime('%Y')"/>)
                                         5):(<span t-field="d.date_invoice" t-options='{"format": "yyyy"}'/>)
                                     </th>
                                 </tr>
