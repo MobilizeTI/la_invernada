@@ -988,32 +988,10 @@ class AccountInvoice(models.Model):
 
     def update_totals_kg(self):   
         picking_ids = []
-        sum_net_kg = 0
-        sum_gross_kg = 0
-        sum_tara_kg = 0
-        for item in self.orders_to_invoice:
-            picking_ids.append(item.stock_picking_id)
-        stock_picking_ids = self.env['stock.picking'].search([('id','in',picking_ids)])
-
-        for s in stock_picking_ids:
-            if s.net_weight_dispatch and s.net_weight_dispatch > 0:
-                sum_net_kg += s.net_weight_dispatch
-            else:
-                raise models.ValidationError('El Despacho {} no tiene ingresado los KG Netos'.format(s.name))
-               
-            if s.gross_weight_dispatch and s.gross_weight_dispatch > 0:
-                sum_gross_kg += s.gross_weight_dispatch
-            else:
-                raise models.ValidationError('El Despacho {} no tiene ingresado los KG Brutos'.format(s.name))
-           
-            if s.tare_container_weight_dispatch and s.tare_container_weight_dispatch > 0:
-                sum_tara_kg += s.tare_container_weight_dispatch
-            else:
-                raise models.ValidationError('El Despacho {} no tiene ingresado los KG Tara'.format(s.name))
-
-            self.tara = sum_tara_kg
-            self.gross_weight = sum_gross_kg
-            self.net_weight = sum_gross_kg
+     
+        self.tara = sum(self.order_to_invoice.mapped('stock_picking_id').mapped('net_weight_dispatch'))  
+        self.gross_weight = sum(self.order_to_invoice.mapped('stock_picking_id').mapped('gross_weight_dispatch'))  
+        self.net_weight = sum(self.order_to_invoice.mapped('stock_picking_id').mapped('tare_container_weight_dispatch'))  
 
 
 
