@@ -972,6 +972,8 @@ class AccountInvoice(models.Model):
             s.write({
                 'notify_ids': [(4, n.id) for n in self.notify_ids]
             })
+            self.compute_total_net_kg()
+            self.compute_total_gross_kg()
 
         return res
 
