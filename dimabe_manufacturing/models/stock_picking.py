@@ -114,14 +114,6 @@ class StockPicking(models.Model):
             'lot_ids': [(4,l.id) for l in self.move_line_ids_without_package.mapped('lot_id')],
             'picking_id':self.id
         })
-        return {
-            'name':"Actualizar Lote",
-            'type':'ir.actions.act_window',
-            'view_type':'form',
-            'view_mode':'form',
-            'res_model':'update.stock.quant',
-            'view'
-        }
 
     @api.multi
     def test(self):
