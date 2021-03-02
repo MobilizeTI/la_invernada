@@ -15,7 +15,7 @@ class UpdateStockQuant(models.TransientModel):
         lot = self.env['stock.production.lot'].search([('name', '=', self.lot_id.name)])
         if lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed):
             quant = self.env['stock.quant'].sudo().search(
-                [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'), ('location_id', '=', location_id)])
+                [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'), ('location_id', '=', self.picking_id.location_id.id)])
 
             if quant:
                 quant.write({
@@ -34,5 +34,5 @@ class UpdateStockQuant(models.TransientModel):
                         'display_weight')),
                     'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
                         lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight')),
-                    'location_id': location_id
+                    'location_id': self.picking_id.location_id.id
                 })
