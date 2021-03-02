@@ -440,7 +440,7 @@ class StockPicking(models.Model):
         super(StockPicking, self).action_done()
         if self.picking_type_code == 'outgoing':
             for lot in self.move_line_ids_without_package.mapped('lot_id'):
-                self.update_stock_quant(lot.name,self.location_id.id)
+                lot.update_stock_quant(self.location_id.id)
 
 
     @api.model
