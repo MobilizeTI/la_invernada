@@ -47,7 +47,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     'product_id':line.product_id.id,
                     'product_uom_id':line.product_id.uom_id.id,
                     'product_uom_qty':line.product_uom_qty,
-                    'location_id':line.location_id,
+                    'location_id':line.location_id.id,
                     'location_dest_id':line.location_dest_id.id,
                     'date':date.today(),
                     'picking_id': item.dispatch_id.id,
