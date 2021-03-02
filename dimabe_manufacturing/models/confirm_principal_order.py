@@ -45,7 +45,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
                 line.write({
                     'picking_id': item.dispatch_id.id,
                     'move_id': item.dispatch_id.move_ids_without_package.filtered(
-                        lambda x: x.product_id.id == line.product_id and x.picking_id.id == item.dispatch_id.id)
+                        lambda x: x.product_id.id == line.product_id.id and x.picking_id.id == item.dispatch_id.id)
                 })
 
                 self.env['stock.move.line'].create({
@@ -57,7 +57,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     'date': date.today(),
                     'picking_id': self.picking_id.id,
                     'move_id': self.picking_id.move_ids_without_package.filtered(
-                        lambda x: x.product_id.id == line.product_id and x.picking_id.id == item.dispatch_id.id)
+                        lambda x: x.product_id.id == line.product_id.id and x.picking_id.id == item.dispatch_id.id)
                 })
 
             if item.real_dispatch_qty > 0:
