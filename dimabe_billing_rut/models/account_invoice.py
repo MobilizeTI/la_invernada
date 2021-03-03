@@ -935,7 +935,7 @@ class AccountInvoice(models.Model):
         self.tara = sum(stock_picking_ids.mapped('tare_container_weight_dispatch'))  
         self.gross_weight = sum(stock_picking_ids.mapped('gross_weight_dispatch'))  
         self.net_weight = sum(stock_picking_ids.mapped('net_weight_dispatch'))
-        
+
         for s in stock_picking_ids:
             s.write({
                 'shipping_number': self.shipping_number,
@@ -976,11 +976,6 @@ class AccountInvoice(models.Model):
                 'notify_ids': [(4, n.id) for n in self.notify_ids]
             })
             
-        
-        
-      
-          
-        
         return res
 
     #@api.onchange('amount_total')
