@@ -97,7 +97,6 @@
                                            placeholder="Ingrese número de contenedor" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="container_type"
                                            placeholder="Seleccione el tipo de contenedor" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                    
                                 </group>
                                 <field name="remarks_comex" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 <group>
