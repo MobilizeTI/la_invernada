@@ -932,9 +932,11 @@ class AccountInvoice(models.Model):
         
         stock_picking_ids = self.env['stock.picking'].search([('id', 'in', order_list)])
         res = super(AccountInvoice, self).write(vals)
-        self.tara = sum(stock_picking_ids.mapped('tare_container_weight_dispatch'))  
-        self.gross_weight = sum(stock_picking_ids.mapped('gross_weight_dispatch'))  
-        self.net_weight = sum(stock_picking_ids.mapped('net_weight_dispatch'))
+
+        for a in self:
+            a.tara = sum(stock_picking_ids.mapped('tare_container_weight_dispatch'))  
+            a.gross_weight = sum(stock_picking_ids.mapped('gross_weight_dispatch'))  
+            a.net_weight = sum(stock_picking_ids.mapped('net_weight_dispatch'))
 
         for s in stock_picking_ids:
             s.write({
