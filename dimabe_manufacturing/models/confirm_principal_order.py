@@ -4,6 +4,7 @@ from datetime import date
 from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 from odoo.addons import decimal_precision as dp
 import json
+from odoo.tools import date_utils
 
 
 class ConfirmPrincipalOrde(models.TransientModel):
