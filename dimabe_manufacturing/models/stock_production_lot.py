@@ -519,6 +519,7 @@ class StockProductionLot(models.Model):
                     lambda a: a.reserved_to_stock_picking_id.id == stock_picking_id and not a.consumed).write({
                     'reserved_to_stock_picking_id': None
                 })
+                stock_picking.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == self.id).unlink()
 
 
     @api.multi
