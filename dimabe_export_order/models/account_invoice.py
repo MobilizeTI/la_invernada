@@ -41,8 +41,6 @@ class AccountInvoice(models.Model):
 
     total_container = fields.Integer(string="Total de Contenedores")
 
-    name_container = fields.Char(string="Contendor")
-
     notify_ids = fields.Many2many(
             'res.partner',
             domain=[('customer', '=', True)]
