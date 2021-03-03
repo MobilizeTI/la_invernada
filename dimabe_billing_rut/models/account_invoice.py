@@ -926,15 +926,17 @@ class AccountInvoice(models.Model):
     @api.multi
     def write(self, vals):
         order_list = []
-        sum_net_kg = 0
-        sum_gross_kg = 0
-        sum_tara_kg = 0
         for item in self.orders_to_invoice:
             if item.order_id:
                 order_list.append(item.stock_picking_id)
         
         stock_picking_ids = self.env['stock.picking'].search([('id', 'in', order_list)])
         res = super(AccountInvoice, self).write(vals)
+
+        self.tara = 800
+        self.gross_weight = 8000
+        self.net_weight = 8800
+
         for s in stock_picking_ids:
             s.write({
                 'shipping_number': self.shipping_number,
@@ -974,8 +976,7 @@ class AccountInvoice(models.Model):
             s.write({
                 'notify_ids': [(4, n.id) for n in self.notify_ids]
             })
-            self.update_totals_kg()
-
+            
         return res
 
     #@api.onchange('amount_total')
@@ -986,12 +987,15 @@ class AccountInvoice(models.Model):
     def onchange_to_update_kg(self):
         self.update_totals_kg()
 
-    def update_totals_kg(self):   
-        picking_ids = []
-     
-        self.tara = sum(self.orders_to_invoice.mapped('stock_picking_id').mapped('net_weight_dispatch'))  
-        self.gross_weight = sum(self.orders_to_invoice.mapped('stock_picking_id').mapped('gross_weight_dispatch'))  
-        self.net_weight = sum(self.orders_to_invoice.mapped('stock_picking_id').mapped('tare_container_weight_dispatch'))  
+    def update_totals_kg(self):  
+        pickings_ids = []
+        for item in self.orders_to_invoice:
+            pickings_ids.append(item.stock_picking_id)
+        stock_picking_ids = self.env['stock.picking'].search([('id','in',pickings_ids)])
+
+        self.tara = sum(stock_picking_ids.mapped('tare_container_weight_dispatch'))  
+        self.gross_weight = sum(stock_picking_ids.mapped('gross_weight_dispatch'))  
+        self.net_weight = sum(stock_picking_ids.mapped('net_weight_dispatch'))  
 
 
 
