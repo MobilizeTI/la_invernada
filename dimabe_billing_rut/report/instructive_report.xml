@@ -62,7 +62,7 @@
                                     <th>
                                         EMB. N°
                                         <span t-field="d.shipping_number"/>/
-                                        <span t-esc="d.date_invoice.strftime('%Y')"/>)
+                                        <span t-esc="d.date_invoice.strftime('%Y')"/>
                                     </th>
                                 </tr>
                             </table>
@@ -207,7 +207,16 @@
                                         <td style="width:5px">:</td>
                                         <td style="text-align:left;">
                                             <t t-if="len(n.child_ids) > 0">
-                                                <span t-field="n.child_ids[0].name"/>
+                                                <t t-if="n.child_ids[0].phone">
+                                                    <span t-field="n.child_ids[0].phone"/>
+                                                </t>
+                                                <t t-if="n.child_ids[0].phone and n.child_ids[0].mobile">
+                                                -
+                                                </t>
+                                                <t t-if="n.child_ids[0].mobile">
+                                                    <span t-field="n.child_ids[0].mobile"/>
+                                                </t>
+                                                
                                             </t>
                                         </td>
                                     </tr>
@@ -219,7 +228,9 @@
                                 <tr>
                                     <th style="text-align:left; width:200px">PRODUCTO</th>
                                     <td style="width:5px">:</td>
-                                    <td style="text-align:left;"><span t-field="d.custom_invoice_line_ids[0].name"></span></td>
+                                    <td style="text-align:left;">
+                                        <span t-field="d.custom_invoice_line_ids[0].name"/>
+                                    </td>
                                 </tr>
                                     <t t-if="len(d.custom_invoice_line_ids) > 1">
                                         <t t-foreach="d.custom_invoice_line_ids" t-as="o">
@@ -372,7 +383,9 @@
                                     <th style="text-align:left;">PRECIO UNITARIO US$</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        
+                                        <span t-field="d.custom_invoice_line_ids[0].price_unit"/>
+                                        <![CDATA[&nbsp;]]>
+                                        <span t-field="d.custom_invoice_line_ids[0].product_id.name"/>
                                     </td>
                                 </tr>
                             </table>
@@ -547,7 +560,7 @@
                                     <td style="width:5px"></td>
                                     <td style="text-align:left;"></td>
                                     <td></td>
-                                    <td style="text-align: right;" rowspan="5"><img width="100px" t-att-src="'data:image/png;base64,%s' % to_text(res_company.legal_representative_signature)"/></td>
+                                    <td style="text-align: right;" rowspan="5"><img width="100px" style="margin-right:10px;" t-att-src="'data:image/png;base64,%s' % to_text(res_company.legal_representative_signature)"/></td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">D.U.S 2DO.ENVIO</th>
@@ -631,7 +644,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            Email:<span t-field="res_company.legal_representative.email"/>
+                                            Email:<span t-field="res_company.legal_represntative.email"/>
                                         </td>
                                     </tr>
                                     <tr>
