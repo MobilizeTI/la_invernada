@@ -3,6 +3,7 @@ import base64
 from datetime import date
 from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 from odoo.addons import decimal_precision as dp
+import json
 
 
 class ConfirmPrincipalOrde(models.TransientModel):
@@ -47,8 +48,11 @@ class ConfirmPrincipalOrde(models.TransientModel):
     def cancel(self):
         self.process_data()
         for item in self.picking_id.dispatch_line_ids:
-            raise models.ValidationError(self.picking_id.move_ids_without_package.filtered(
-                        lambda x: x.product_id.id == item.product_id.id and x.picking_id.id == self.picking_id.id).read())
+            raw_data = self.picking_id.move_ids_without_package.filtered(
+                        lambda x: x.product_id.id == item.product_id.id and x.picking_id.id == self.picking_id.id).read()
+            json_data = json.dumps(raw_data, default=date_utils.json_default)
+            json_dict = json.loads(json_data)
+            raise models.ValidationError(json_dict)
             if item.dispatch_id.id == self.picking_id.id:
                 self.env['stock.move.line'].create({
                     'product_id': item.product_id.id,
