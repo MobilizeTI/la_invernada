@@ -972,7 +972,7 @@ class AccountInvoice(models.Model):
                 'customs_department': self.custom_department.id,
                 'transport': self.transport_to_port.name,
                 'consignee_id' : self.consignee_id.id,
-                'notify_ids': [(6, 0, self.notify_ids)]
+                'notify_ids': [(6, 0, self.notify_ids.ids)]
             })
 
             #s.write({
