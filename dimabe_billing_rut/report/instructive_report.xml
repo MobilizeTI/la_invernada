@@ -724,7 +724,10 @@
                                 <th style="text-align:left;">ATN</th>
                                 <td>:</td>
                                 <td style="text-align:left;">
-                                    
+                                    <t t-if="len(d.transport_to_port.child_ids) > 0">
+                                        <span t-field="d.transport_to_port.child_ids[0].title"/>.
+                                        <span t-field="d.transport_to_port.child_ids[0].name"/>
+                                    </t>
                                 </td>
                             </tr>
                             <tr>

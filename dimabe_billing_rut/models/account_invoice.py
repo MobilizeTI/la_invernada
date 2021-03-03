@@ -974,10 +974,6 @@ class AccountInvoice(models.Model):
                 'consignee_id' : self.consignee_id.id,
                 'notify_ids': [(6, 0, self.notify_ids.ids)]
             })
-
-            #s.write({
-            #    'notify_ids': [(4, n.id) for n in self.notify_ids]
-            #})
             
         return res
 

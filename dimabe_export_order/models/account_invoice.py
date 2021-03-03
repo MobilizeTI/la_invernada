@@ -39,7 +39,9 @@ class AccountInvoice(models.Model):
 
     consolidation = fields.Char(string="Consolidación")
 
-    total_container = fields.Char(string="Total de Contenedores")
+    total_container = fields.Integer(string="Total de Contenedores")
+
+    name_container = fields.Char(string="Contendor")
 
     notify_ids = fields.Many2many(
             'res.partner',
