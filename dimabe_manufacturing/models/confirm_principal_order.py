@@ -54,6 +54,10 @@ class ConfirmPrincipalOrde(models.TransientModel):
         self.process_data()
         for item in self.picking_id.dispatch_line_ids:
             if item.dispatch_id.id == self.picking_id.id:
+                item.dispatch_id.write({
+                    'picking_principal_id': self.picking_id.id,
+                    'is_child_dispatch': True if item.dispatch_id.id != self.picking_id.id else False
+                })
                 continue
             self.env['stock.move.line'].create({
                 'product_id': item.product_id.id,
