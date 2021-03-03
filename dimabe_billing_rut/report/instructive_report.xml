@@ -5,9 +5,9 @@
             <div class="page" style="margin:auto;">
                 <t t-foreach="docs" t-as="d">
                     <div style="width:100%;">
-                        <div style="width:100%;display:inline-block; border:1px solid;font-size:10px;">
-                            <p style="text-align:center">MANDATO</p>
-                            <p style="text-align:justify; padding:6px;">EN 
+                        <div style="width:100%;display:inline-block; border:1px solid;">
+                            <p style="text-align:center;font-size:10px;">MANDATO</p>
+                            <p style="text-align:justify; padding:6px;font-size:8px;">EN 
                                 <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'January'">
                                 ENERO
                             </t>
@@ -53,7 +53,7 @@
                                 LOS TRAMITES PERTINENTES PARA PROCEDER A LA EXPORTACION DE LAS MERCANCIAS QUE SE DETALLAN A CONTINUACION, DE 
                                 ACUERDO A LAS SIGUENTES INSTRUCCIONES:</p>
                         </div>
-                        <div style="width:100%;text-align:center;display:inline-block; border:1px solid;">
+                        <div style="width:100%;text-align:center;display:inline-block; border-right:1px solid;border-left:1px solid;border-bottom:1px solid;">
                             <table style="width: 100%;margin: 0 auto;font-size:16px;">
                                 <tr>
                                     <th>INSTRUCCIÓN DE EMBARQUE MARÍTIMO</th>
@@ -67,7 +67,7 @@
                                 </tr>
                             </table>
                         </div>
-                        <div style="width:100%;display:inline-block; border:1px solid">
+                        <div style="width:100%;display:inline-block; border-right:1px solid;border-left:1px solid;border-bottom:1px solid;">
                             <table style="width: 600px;margin: 0 auto;font-size:10px;">
                                 <tr>
                                     <th style="text-align:right; width:200px;">A SRES. :</th>
@@ -87,7 +87,7 @@
                                 </tr>
                             </table>
                         </div>
-                        <div style="width:100%;display:inline-block; border:1px solid;">
+                        <div style="width:100%;display:inline-block; border-right:1px solid;border-left:1px solid;border-bottom:1px solid;">
                             <table style="width:100%;font-size:10px">
                                 <tr>
                                     <th style="text-align:left;width:200px">EXPORTADOR</th>
@@ -126,7 +126,7 @@
                                 </tr>
                             </table>
                         </div>
-                        <div style="width:100%;display:inline-block; border:1px solid;">
+                        <div style="width:100%;display:inline-block; border-right:1px solid;border-left:1px solid;border-bottom:1px solid;">
                              <table style="width:100%;font-size:10px">
                                 <tr>
                                     <th style="text-align:left;width:200px">CONSIGNATARIO</th>
@@ -170,7 +170,7 @@
                             </table>
                         </div>
                         <t t-foreach="d.notify_ids" t-as="n">
-                            <div style="width:100%;display:inline-block; border:1px solid;">
+                            <div style="width:100%;display:inline-block; border-right:1px solid;border-left:1px solid;border-bottom:1px solid;">
                                 <table style="width:100%;font-size:10px">
                                     <tr>
                                         <th style="text-align:left;width:200px">NOTIFY</th>
@@ -223,7 +223,7 @@
                                 </table>
                             </div>
                         </t>
-                        <div style="width:100%;display:inline-block; border:1px solid;">
+                        <div style="width:100%;display:inline-block; border-right:1px solid;border-left:1px solid;border-bottom:1px solid;">
                              <table style="width:100%;font-size:10px">
                                 <tr>
                                     <th style="text-align:left; width:200px">PRODUCTO</th>
@@ -390,7 +390,7 @@
                                 </tr>
                             </table>
                         </div>
-                        <div style="width:100%;display:inline-block; border:1px solid;">
+                        <div style="width:100%;display:inline-block; border-right:1px solid;border-left:1px solid;border-bottom:1px solid;">
                              <table style="width:100%;font-size:10px">
                                 <tr>
                                     <th style="text-align:left;width:200px">PUERTO DE EMBARQUE</th>
@@ -465,7 +465,7 @@
                                 </tr>
                             </table>
                         </div>
-                        <div style="width:100%;display:inline-block; border:1px solid;">
+                        <div style="width:100%;display:inline-block; border-right:1px solid;border-left:1px solid;border-bottom:1px solid;">
                              <table style="width:100%;font-size:10px">
                                 <tr>
                                     <th style="text-align:left;width:200px">TRANSPORTE A PUERTO</th>
@@ -535,7 +535,7 @@
                                 </tr>
                             </table>
                         </div>
-                        <div style="width:100%;display:inline-block; border:1px solid;">
+                        <div style="width:100%;display:inline-block; border-right:1px solid;border-left:1px solid;border-bottom:1px solid;">
                              <table style="width:100%;font-size:10px">
                                 <tr>
                                     <th style="text-align:left;width:200px">OBSERVACIONES</th>
@@ -553,14 +553,14 @@
                                 </tr>
                             </table>
                         </div>
-                        <div style="width:100%;display:inline-block; border:1px solid;">
+                        <div style="width:100%;display:inline-block; border-right:1px solid;border-left:1px solid;border-bottom:1px solid;">
                              <table style="width:100%;font-size:10px">
                                 <tr>
                                     <th style="text-align:left;width:200px">DOCUMENTACIÓN REQUERIDA</th>
                                     <td style="width:5px"></td>
                                     <td style="text-align:left;"></td>
                                     <td></td>
-                                    <td style="text-align: right;" rowspan="5"><img width="100px" style="margin-right:10px;" t-att-src="'data:image/png;base64,%s' % to_text(res_company.legal_representative_signature)"/></td>
+                                    <td style="text-align: right;" rowspan="5"><img width="100px" style="margin-right:25px;" t-att-src="'data:image/png;base64,%s' % to_text(res_company.legal_representative_signature)"/></td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">D.U.S 2DO.ENVIO</th>
@@ -599,7 +599,7 @@
                                     <td></td>
                                     <td></td>
                                     <td style="text-align:right;font-weight: bold;">ATTE.:</td>
-                                    <td style="text-align:right;font-weight: bold;">p.p La Invernada Export SpA.</td>
+                                    <td style="text-align:right;font-weight: bold;"><span style="margin-right:8px;">p.p La Invernada Export SpA.</span></td>
                                 </tr>
                             </table>
                         </div>
@@ -934,7 +934,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            Email:<span t-field="res_company.legal_representative.email"/>
+                                            Email:<span t-field="res_company.legal_represntative.email"/>
                                         </td>
                                     </tr>
                                     <tr>
