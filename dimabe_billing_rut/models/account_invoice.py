@@ -561,6 +561,11 @@ class AccountInvoice(models.Model):
             if not self.other_coin.sii_currency_name:
                raise models.ValidationError('La otra Moneda {} no tiene registrado el Nombre SII'.format(self.currency_id.name))
 
+            for line in self.invoice_line_ids:
+                stock_picking = self.env['stock.picking'].search([('id','=',line.stock_picking_id)])
+                if stock_picking.state != 'done':
+                    raise models.ValidationError('El Despacho {} no se encuentra realizado'.format(stock_picking.name))
+
 
         if self.dte_type_id.code == "61" or self.dte_type_id.code == "111" or self.dte_type_id.code == "56" or self.dte_type_id.code == "112":
             if len(self.references) == 0:
@@ -967,12 +972,12 @@ class AccountInvoice(models.Model):
                 'customs_department': self.custom_department.id,
                 'transport': self.transport_to_port.name,
                 'consignee_id' : self.consignee_id.id,
-                'notify_ids' : [(5)]
+                'notify_ids': [(6, 0, self.notify_ids.ids)]
             })
 
-            s.write({
-                'notify_ids': [(4, n.id) for n in self.notify_ids]
-            })
+            #s.write({
+            #    'notify_ids': [(4, n.id) for n in self.notify_ids]
+            #})
             
         return res
 
