@@ -5,9 +5,7 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='container_type']" position="after">>
-                    <field name="total_container"  attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                </xpath>
+                
                 <xpath expr="//field[@name='tax_line_ids']" position="after">
                     <group string="Notify">
                         <field name="consignee_id" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
