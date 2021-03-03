@@ -263,7 +263,7 @@
                                         <span t-esc="d.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id).price_subtotal"/>
                                     </td>-->
                                     <td style="border-bottom:1px solid;text-align:right;padding-right:4px;">
-                                        <t t-if="if d.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id)">
+                                        <t t-if="d.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id)">
                                             <span t-esc="'{}'.format(d.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id).price_unit * m.quantity_done)"/>
                                         </t>
                                         <t t-else="">
