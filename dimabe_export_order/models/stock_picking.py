@@ -329,7 +329,8 @@ class StockPicking(models.Model):
             qantas = 0
             for i in item.sale_id.order_line:
                 if len(item.sale_id.order_line) != 0:
-                    list_price.append(int(i.price_unit))
+                    list_price.append(i.price_unit)
+                    #list_price.append(int(i.price_unit))
 
             for a in item.move_ids_without_package:
                 if len(item.move_ids_without_package) != 0:

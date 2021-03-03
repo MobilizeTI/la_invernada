@@ -892,6 +892,8 @@ class AccountInvoice(models.Model):
         else:
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
 
+        self.update_totals_kg()
+
 
     def total_value_stock_picking(self, stock_picking_id):
         stock_id = self.env['stock.picking'].search([('id','=',stock_picking_id)])
@@ -978,10 +980,6 @@ class AccountInvoice(models.Model):
     #def total_change_invoice_Export(self):
     #    self.total_invoice_Export   #revisar
 
-    @api.onchange('orders_to_invoice')
-    def onchange_to_update_kg(self):
-        raise models.ValidationError('order to invoice change')
-        self.update_totals_kg()
 
     def update_totals_kg(self):  
         pickings_ids = []

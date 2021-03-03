@@ -57,6 +57,26 @@ class AccountInvoiceLine(models.Model):
                 vals.update(price_unit=0, account_id=False, quantity=0)
         return super(AccountInvoiceLine, self).create(vals_list)
 
+    @api.multi
+    def write(self, vals):
+        res = super(AccountInvoiceLine, self).write(vals)
+
+        #orders_to_invoice_ids = self.env['custom.orders.to.invoice'].search([('invoice_id','=',self.invoice_id)])
+        custom_invoice_line_ids = self.env['custom.account.invoice.line'].search([('invoice_id','=',self.invoice_id.id)])
+
+        #for to_invoice in orders_to_invoice_ids:
+        #    if self.product_id.id == to_invoice.product_id and self.stock_picking_id == to_invoice.stock_picking_id and self.order_id == to_invoice.order_id:
+        #        to_invoice.write({
+        #            ''
+        #        })
+        for line in custom_invoice_line_ids:
+            if self.product_id.id == line.product_id:
+                line.write({
+                    'price_unit': self.price_unit
+                })
+
+        return res
+
     def roundclp(self, value):
         value_str = str(value)
         list_value = value_str.split('.')
