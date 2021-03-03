@@ -183,7 +183,7 @@
                             </tr>
                         </table>
                     </div>
-                    <div style="width:100%;margin:0 auto;min-height:80px;border:1px solid; border-radius: 5px; margin-top:4px;padding-top:2px;">
+                    <div style="width:100%;margin:0 auto;min-height:20px;border:1px solid; border-radius: 5px; margin-top:4px;padding-top:2px;">
                         <div style="text-align:center;">
                             <span style="font-weight: bold; font-size:12px;">DOCUMENTO(S) EN REFERENCIA</span>
                         </div>
@@ -313,12 +313,6 @@
                                                             <td>PESO VGM:</td>
                                                             <td>
                                                                 <span t-field="d.vgm_weight_dispatch"/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr style="height:50%;">
-                                                            <td>Nota</td>
-                                                            <td colspan="3" style="text-align:center;">
-                                                                <t t-esc="d.note_dispatched.get_full_note()"/>
                                                             </td>
                                                         </tr>
                                                         <tr>
