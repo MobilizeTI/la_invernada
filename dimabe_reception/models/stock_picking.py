@@ -302,6 +302,7 @@ class StockPicking(models.Model):
                 if stock_picking.is_mp_reception or stock_picking.is_pt_reception or stock_picking.is_satelite_reception:
                     stock_picking.validate_mp_reception()
                     stock_picking.truck_in_date = fields.datetime.now()
+                raise models.ValidationError(self.name)
                 res = super(StockPicking, self).action_confirm()
                 m_move = stock_picking.get_mp_move()
                 if not m_move:
