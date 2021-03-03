@@ -19,7 +19,7 @@ class SaleOrder(models.Model):
 
     shipping_number = fields.Integer(string="Número Embarque", compute="compute_shipping_number")
 
-    partner_id = fields.Many2one('Cliente','res.partner')
+    partner_id = fields.Many2one('res.partner',"Cliente")
 
     def compute_ships(self):
         for item in self:
