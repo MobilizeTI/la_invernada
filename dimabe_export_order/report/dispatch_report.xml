@@ -190,33 +190,33 @@
                         <br/>
                         <t t-if="d.references or len(d.references) > 0">
                             <table style="width:100%;font-size:11px; padding: 6px;" cellspacing="0">
-                            <tr>
-                                <th>N° Doc Referencia</th>
-                                <th>Tipo Doc Referencia</th>
-                                <th>Tipo de Referencia</th>
-                                <th>Motivo</th>
-                                <th>Fecha Doc</th>
-                            </tr>
-                            <t t-foreach="d.references" t-as="r">
-                                <tr style="text-align:center;">
-                                    <td>
-                                        <span t-field="r.folio_reference"/>
-                                    </td>
-                                    <td>
-                                        <span t-field="r.document_type_reference_id.name"/>
-                                    </td>
-                                    <td>
-                                        <span t-field="r.code_reference"/>
-                                    </td>
-                                    <td>
-                                        <span t-field="r.reason"/>
-                                    </td>
-                                    <td>
-                                        <span t-field="r.document_date"/>
-                                    </td>
+                                <tr>
+                                    <th>N° Doc Referencia</th>
+                                    <th>Tipo Doc Referencia</th>
+                                    <th>Tipo de Referencia</th>
+                                    <th>Motivo</th>
+                                    <th>Fecha Doc</th>
                                 </tr>
-                            </t>
-                        </table>
+                                <t t-foreach="d.references" t-as="r">
+                                    <tr style="text-align:center;">
+                                        <td>
+                                            <span t-field="r.folio_reference"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="r.document_type_reference_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="r.code_reference"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="r.reason"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="r.document_date"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </table>
                         </t>
                     </div>
                     <div style="width:100%;margin:0 auto;height:480px;border:1px solid; border-radius: 5px; margin-top:4px;">
