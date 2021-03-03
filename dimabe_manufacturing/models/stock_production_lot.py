@@ -511,13 +511,7 @@ class StockProductionLot(models.Model):
                 stock_picking_id = self.env.context['stock_picking_id']
                 stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
             if stock_picking:
-                quant = self.env['stock.quant'].search(
-                    [('lot_id', '=', self.id), ('product_id', '=', self.product_id.id)])
-                quant.write({
-                    'reserved_quantity': 0,
-                    'quantity': sum(self.stock_production_lot_serial_ids.filtered(
-                        lambda a: a.reserved_to_stock_picking_id.id == stock_picking_id).mapped('display_weight'))
-                })
+                self.update_stock_quant(stock_picking.location_id.id)
                 self.pallet_ids.filtered(lambda a: a.reserved_to_stock_picking_id.id == stock_picking_id).write({
                     'reserved_to_stock_picking_id': None
                 })
@@ -525,9 +519,7 @@ class StockProductionLot(models.Model):
                     lambda a: a.reserved_to_stock_picking_id.id == stock_picking_id and not a.consumed).write({
                     'reserved_to_stock_picking_id': None
                 })
-                stock_picking.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == self.id).write({
-                    'product_uom_qty': sum(stock_picking.packing_list_ids.mapped('display_weight'))
-                })
+
 
     @api.multi
     def write(self, values):
