@@ -53,7 +53,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
                         lambda x: x.product_id.id == item.product_id.id and x.picking_id.id == self.picking_id.id).read()
             json_data = json.dumps(raw_data, default=date_utils.json_default)
             json_dict = json.loads(json_data)
-            raise models.ValidationError(json_dict)
+            raise models.ValidationError(f'{json_dict.keys()} {json_dict.values()}')
             if item.dispatch_id.id == self.picking_id.id:
                 self.env['stock.move.line'].create({
                     'product_id': item.product_id.id,
