@@ -302,11 +302,11 @@ class StockPicking(models.Model):
                 if stock_picking.is_mp_reception or stock_picking.is_pt_reception or stock_picking.is_satelite_reception:
                     stock_picking.validate_mp_reception()
                     stock_picking.truck_in_date = fields.datetime.now()
-                raise models.ValidationError(self.name)
                 res = super(StockPicking, self).action_confirm()
                 m_move = stock_picking.get_mp_move()
                 if not m_move:
                     m_move = stock_picking.get_pt_move()
+                raise models.ValidationError(m_move)
                 if m_move and m_move.move_line_ids and m_move.picking_id.picking_type_code == 'incoming':
 
                     for move_line in m_move.move_line_ids:
