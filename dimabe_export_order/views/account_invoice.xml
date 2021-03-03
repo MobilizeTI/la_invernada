@@ -20,7 +20,6 @@
                             <field name="safe_type" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                             <field name="stacking" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                             <field name="cut_off" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                            <field name="total_container" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                         </group>
                         <group>
                             <field name="plant" domain="[('is_plant','=',True)]" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
