@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="hr_payslip_report_custom" inherit_id="hr_payroll.report_payslip">
+            <xpath expr="//table[3]//tbody//span[@class='float-right']" position="replace">
+                <span t-esc="o.account_analytic_id.code" class="float-right"/>
+            </xpath>
+        </template>
+    </data>
+</odoo>
