@@ -454,7 +454,7 @@
                                 </tr>
                             </t>
                             </t>
-                            <t t-if="(d.picking_principal_id and not d.child_dispatch) or (d.is_multiple_dispatch and d.pciking_principal_id.id != d.id)">
+                            <t t-if="(d.picking_principal_id and not d.is_child_dispatch) or (d.is_multiple_dispatch and d.pciking_principal_id.id != d.id)">
                                 <t t-foreach="d.move_ids_without_package" t-as="m">
                                 <tr>
                                     <td style="border-right:1px solid;border-bottom:1px solid;text-align:center;">
