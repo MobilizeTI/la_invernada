@@ -992,7 +992,7 @@ class AccountInvoice(models.Model):
             pickings_ids.append(item.stock_picking_id)
         stock_picking_ids = self.env['stock.picking'].search([('id','in',pickings_ids)])
         for i in stock_picking_ids:
-            raise models.ValidationError(i.name)
+            raise models.ValidationError(i.tare_container_weight_dispatch)
         raise models.ValidationError('{} {} {}'.format(sum(stock_picking_ids.mapped('tare_container_weight_dispatch'))),sum(stock_picking_ids.mapped('gross_weight_dispatch')),sum(stock_picking_ids.mapped('net_weight_dispatch')) )
         
         self.tara = sum(stock_picking_ids.mapped('tare_container_weight_dispatch'))  
