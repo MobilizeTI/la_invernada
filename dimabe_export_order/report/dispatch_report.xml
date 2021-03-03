@@ -267,7 +267,7 @@
                                             <span t-esc="'{}'.format(d.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id).price_unit * m.quantity_done)"/>
                                         </t>
                                         <t t-else="">
-                                            <span t-esc="'{}'.format(d.dispatch_line_ids.filtered(lambda a: a.product_id.id == m.product_id.id).sale_id.order_line.filtered(lambda x:x.product_id.id == m.product_id.id).price_unit * m.quantity_done)"
+                                            <span t-esc="'{}'.format(d.dispatch_line_ids.filtered(lambda a: a.product_id.id == m.product_id.id).sale_id.order_line.filtered(lambda x:x.product_id.id == m.product_id.id).price_unit * m.quantity_done)"/>
                                         </t>
                                     </td>
                                     <t t-if="m.id == d.move_ids_without_package[-1].id">
