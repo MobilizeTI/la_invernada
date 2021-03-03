@@ -974,8 +974,10 @@ class AccountInvoice(models.Model):
             s.write({
                 'notify_ids': [(4, n.id) for n in self.notify_ids]
             })
-        for i in self:
-            self.update_totals_kg()
+            
+        self.tara = sum(stock_picking_ids.mapped('tare_container_weight_dispatch'))  
+        self.gross_weight = sum(stock_picking_ids.mapped('gross_weight_dispatch'))  
+        self.net_weight = sum(stock_picking_ids.mapped('net_weight_dispatch'))  
         
         return res
 
