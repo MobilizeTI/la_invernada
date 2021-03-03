@@ -48,21 +48,20 @@ class ConfirmPrincipalOrde(models.TransientModel):
         self.process_data()
         for item in self.picking_id.dispatch_line_ids:
             if item.dispatch_id.id == self.picking_id.id:
-                continue
-            self.env['stock.move.line'].create({
-                'product_id': item.product_id.id,
-                'product_uom_id': item.product_id.uom_id.id,
-                'qty_done': item.real_dispatch_qty,
-                'location_id': self.picking_id.location_id.id,
-                'location_dest_id': self.picking_id.location_dest_id.id,
-                'lot_id': self.picking_id.packing_list_lot_ids.filtered(
-                    lambda a: a.product_id.id == item.product_id.id).id,
-                'date': date.today(),
-                'state': 'done',
-                'picking_id': self.picking_id.id,
-                'move_id': self.picking_id.move_ids_without_package.filtered(
-                    lambda x: x.product_id.id == item.product_id.id and x.picking_id.id == self.picking_id.id).id
-            })
+                self.env['stock.move.line'].create({
+                    'product_id': item.product_id.id,
+                    'product_uom_id': item.product_id.uom_id.id,
+                    'qty_done': item.real_dispatch_qty,
+                    'location_id': self.picking_id.location_id.id,
+                    'location_dest_id': self.picking_id.location_dest_id.id,
+                    'lot_id': self.picking_id.packing_list_lot_ids.filtered(
+                        lambda a: a.product_id.id == item.product_id.id).id,
+                    'date': date.today(),
+                    'state': 'done',
+                    'picking_id': self.picking_id.id,
+                    'move_id': self.picking_id.move_ids_without_package.filtered(
+                        lambda x: x.product_id.id == item.product_id.id and x.picking_id.id == self.picking_id.id).id
+                })
             item.dispatch_id.write({
                 'picking_principal_id': self.picking_id.id,
                 'is_child_dispatch': True if item.dispatch_id.id != self.picking_id.id else False
