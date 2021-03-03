@@ -1554,7 +1554,7 @@
                             </th>
                         </theader>
                         <tbody>
-                            <t t-if="(d.picking_principal_id and d.is_child_dispatch) or (d.is_multiple_dispatch and d.picking_principal_id.id == d.id)">
+                            <t t-if="(d.picking_principal_id and d.is_child_dispatch and d.picking_real_id != d) or (d.is_multiple_dispatch and d.picking_principal_id.id == d.id)">
                                 <t t-if="not d.picking_real_id">
                                     <t t-foreach="d.assigned_pallet_ids" t-as="p">
                                         <tr>
@@ -1736,7 +1736,7 @@
                                     </t>
                                 </t>
                             </t>
-                            <t t-elif="(d.picking_principal_id and d.is_child_dispatch) or (d.is_multiple_dispatch and d.picking_principal_id.id != d.id)">
+                            <t t-elif="(d.picking_principal_id and not d.is_child_dispatch and d.picking_real_id != d) or (d.is_multiple_dispatch and d.picking_principal_id.id != d.id)">
                                 <t t-foreach="d.picking_real_id.assigned_pallet_ids" t-as="p">
                                     <tr>
                                         <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
