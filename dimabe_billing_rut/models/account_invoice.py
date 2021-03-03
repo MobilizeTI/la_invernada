@@ -986,12 +986,15 @@ class AccountInvoice(models.Model):
     def onchange_to_update_kg(self):
         self.update_totals_kg()
 
-    def update_totals_kg(self):   
-        picking_ids = []
-     
-        self.tara = sum(self.orders_to_invoice.mapped('stock_picking_id').mapped('net_weight_dispatch'))  
-        self.gross_weight = sum(self.orders_to_invoice.mapped('stock_picking_id').mapped('gross_weight_dispatch'))  
-        self.net_weight = sum(self.orders_to_invoice.mapped('stock_picking_id').mapped('tare_container_weight_dispatch'))  
+    def update_totals_kg(self):  
+        pickings_ids = []
+        for item in self.orders_to_invoice:
+            pickings_ids.append(item.stock_picking_id)
+        stock_picking_ids = self.env['stock.picking'].search([('id','in',pickings_ids)])
+        
+        self.tara = sum(stock_picking_ids.mapped('tare_container_weight_dispatch'))  
+        self.gross_weight = sum(stock_picking_ids.mapped('gross_weight_dispatch'))  
+        self.net_weight = sum(stock_picking_ids.mapped('net_weight_dispatch'))  
 
 
 
