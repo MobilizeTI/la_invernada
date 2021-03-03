@@ -882,8 +882,7 @@ class AccountInvoice(models.Model):
                                 'account_id' : item.product_id.categ_id.property_account_income_categ_id.id,
                                 'quantity' : quantity,
                                 'uom_id' : item.product_uom.id,
-                                'price_unit' : product.lst_price,
-                                'price_subtotal' : quantity * product.lst_price,   
+                                'price_unit' : product.lst_price,  
                                 'invoice_tax_line_ids': [(6, 0, item.product_id.taxes_id)], 
                             })
                     else:
@@ -981,9 +980,9 @@ class AccountInvoice(models.Model):
 
     @api.onchange('orders_to_invoice')
     def onchange_to_update_kg(self):
+        raise models.ValidationError('order to invoice change')
         self.update_totals_kg()
 
-    @api.one
     def update_totals_kg(self):  
         pickings_ids = []
         for item in self.orders_to_invoice:
@@ -993,6 +992,8 @@ class AccountInvoice(models.Model):
         self.tara = sum(stock_picking_ids.mapped('tare_container_weight_dispatch'))  
         self.gross_weight = sum(stock_picking_ids.mapped('gross_weight_dispatch'))  
         self.net_weight = sum(stock_picking_ids.mapped('net_weight_dispatch'))  
+
+ 
 
 
 

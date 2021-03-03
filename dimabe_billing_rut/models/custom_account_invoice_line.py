@@ -17,7 +17,13 @@ class CustomAccountInvoiceLine(models.Model):
 
     name = fields.Text(string="Descripción", required=True)
 
-    price_subtotal = fields.Float(string="Subtotal")
+    price_subtotal = fields.Float(string="Subtotal", compute="_compute_price_subtotal")
+
+    def _compute_price_subtotal(self):
+        for item in self:
+            if self.price_unit and self.quantity:
+                self.price_subtotal = self.price_unit * self.quantity
+
 
 
 
