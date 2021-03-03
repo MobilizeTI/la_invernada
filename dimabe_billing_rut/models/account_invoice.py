@@ -973,7 +973,7 @@ class AccountInvoice(models.Model):
             })
             
         for a in self:
-           
+            raise models.ValidationError(a.id)
             a.tara = sum(stock_picking_ids.mapped('tare_container_weight_dispatch'))  
             a.gross_weight = sum(stock_picking_ids.mapped('gross_weight_dispatch'))  
             a.net_weight = sum(stock_picking_ids.mapped('net_weight_dispatch'))
