@@ -21,7 +21,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
         self.process_data()
         for item in self.custom_dispatch_line_ids:
             raise models.ValidationError(self.picking_id.move_ids_without_package.filtered(
-                    lambda x: x.product_id.id == item.product_id.id and x.picking_id.id == self.picking_id.id).read())
+                lambda x: x.product_id.id == item.product_id.id and x.picking_id.id == self.picking_id.id).read())
             if item.dispatch_id.id == self.picking_id.id:
                 self.env['stock.move.line'].create({
                     'product_id': item.product_id.id,
@@ -58,9 +58,10 @@ class ConfirmPrincipalOrde(models.TransientModel):
                 'lot_id': self.picking_id.packing_list_lot_ids.filtered(
                     lambda a: a.product_id.id == item.product_id.id).id,
                 'date': date.today(),
-                'state':'done',
+                'state': 'done',
                 'picking_id': self.picking_id.id,
-                'move_id': self.picking_id.move_ids_without_package.filtered(lambda x: x.product_id.id == item.product_id.id and x.picking_id.id == self.picking_id.id).id
+                'move_id': self.picking_id.move_ids_without_package.filtered(
+                    lambda x: x.product_id.id == item.product_id.id and x.picking_id.id == self.picking_id.id).id
             })
             item.dispatch_id.write({
                 'picking_principal_id': self.picking_id.id,
@@ -136,4 +137,3 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     moves_to_log[move] = (move.quantity_done, move.product_uom_qty)
             pick_id._log_less_quantities_than_expected(moves_to_log)
         picking.action_done()
-
