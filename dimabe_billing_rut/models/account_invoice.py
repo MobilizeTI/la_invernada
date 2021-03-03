@@ -972,11 +972,12 @@ class AccountInvoice(models.Model):
                 'notify_ids': [(4, n.id) for n in self.notify_ids]
             })
             
-        self.write({
-            'tara': sum(stock_picking_ids.mapped('tare_container_weight_dispatch')),
-            'gross_weight': sum(stock_picking_ids.mapped('gross_weight_dispatch')),
-            'net_weight': sum(stock_picking_ids.mapped('net_weight_dispatch'))  
-        })
+        for a in self:
+            a.write({
+                'tara': sum(stock_picking_ids.mapped('tare_container_weight_dispatch')),
+                'gross_weight': sum(stock_picking_ids.mapped('gross_weight_dispatch')),
+                'net_weight': sum(stock_picking_ids.mapped('net_weight_dispatch'))  
+            })
        
         
         return res
