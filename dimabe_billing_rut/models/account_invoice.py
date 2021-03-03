@@ -926,9 +926,6 @@ class AccountInvoice(models.Model):
     @api.multi
     def write(self, vals):
         order_list = []
-        sum_net_kg = 0
-        sum_gross_kg = 0
-        sum_tara_kg = 0
         for item in self.orders_to_invoice:
             if item.order_id:
                 order_list.append(item.stock_picking_id)
@@ -975,9 +972,12 @@ class AccountInvoice(models.Model):
                 'notify_ids': [(4, n.id) for n in self.notify_ids]
             })
             
-        self.tara = sum(stock_picking_ids.mapped('tare_container_weight_dispatch'))  
-        self.gross_weight = sum(stock_picking_ids.mapped('gross_weight_dispatch'))  
-        self.net_weight = sum(stock_picking_ids.mapped('net_weight_dispatch'))  
+        self.write({
+            'tara': sum(stock_picking_ids.mapped('tare_container_weight_dispatch')),
+            'gross_weight': sum(stock_picking_ids.mapped('gross_weight_dispatch')),
+            'net_weight': sum(stock_picking_ids.mapped('net_weight_dispatch'))  
+        })
+       
         
         return res
 
