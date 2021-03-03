@@ -71,7 +71,7 @@ class AccountInvoiceLine(models.Model):
         #        })
         
         for line in custom_invoice_line:
-            raise models.ValidationError('{} {} {}'.format(len(custom_invoice_line),line.price_unit,line.name))
+            raise models.ValidationError('{}  = {}'.format(line.price_unit,self.price_unit))
             line.write({
                 'price_unit': self.price_unit
             })
