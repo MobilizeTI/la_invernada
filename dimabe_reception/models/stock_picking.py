@@ -306,59 +306,59 @@ class StockPicking(models.Model):
                 m_move = stock_picking.get_mp_move()
                 if not m_move:
                     m_move = stock_picking.get_pt_move()
-                if m_move and m_move.move_line_ids and m_move.picking_id.picking_type_code == 'incoming':
-
-                    # for move_line in m_move.move_line_ids:
-                    #     lot = self.env['stock.production.lot'].create({
-                    #         'name': stock_picking.name,
-                    #         'product_id': move_line.product_id.id,
-                    #         'standard_weight': stock_picking.net_weight,
-                    #         'producer_id': stock_picking.partner_id.id
-                    #     })
-                    #     if lot:
-                    #         move_line.update({
-                    #             'lot_id': lot.id
-                    #         })
-                    #
-                    # if m_move.product_id.tracking == 'lot' and not m_move.has_serial_generated:
-                    #
-                    #     for stock_move_line in m_move.move_line_ids:
-                    #
-                    #         if m_move.product_id.categ_id.is_mp or m_move.product_id.categ_id.is_pt:
-                    #             total_qty = m_move.picking_id.get_canning_move().product_uom_qty
-                    #             # calculated_weight = stock_move_line.qty_done / total_qty
-                    #
-                    #             if stock_move_line.lot_id:
-                    #
-                    #                 default_value = stock_picking.avg_unitary_weight or 1
-                    #                 for i in range(int(total_qty)):
-                    #                     models._logger.error(i == int(total_qty))
-                    #                     models._logger.error(
-                    #                         stock_picking.net_weight - (int(total_qty) * default_value))
-                    #                     if i == int(total_qty):
-                    #
-                    #                         diff = stock_picking.net_weight - (
-                    #                                 int(total_qty) * default_value)
-                    #
-                    #                         tmp = '00{}'.format(i + 1)
-                    #                         self.env['stock.production.lot.serial'].create({
-                    #                             'calculated_weight': default_value + diff,
-                    #                             'stock_production_lot_id': stock_move_line.lot_id.id,
-                    #                             'serial_number': '{}{}'.format(stock_move_line.lot_name, tmp[-3:])
-                    #                         })
-                    #                     else:
-                    #                         tmp = '00{}'.format(i + 1)
-                    #                         self.env['stock.production.lot.serial'].create({
-                    #                             'calculated_weight': default_value,
-                    #                             'stock_production_lot_id': stock_move_line.lot_id.id,
-                    #                             'serial_number': '{}{}'.format(stock_move_line.lot_name, tmp[-3:])
-                    #                         })
-                    #                 stock_move_line.lot_id.write({
-                    #                     'available_kg': sum(
-                    #                         stock_move_line.lot_id.stock_production_lot_serial_ids.mapped(
-                    #                             'display_weight'))
-                    #                 })
-                    #                 m_move.has_serial_generated = True
+                # if m_move and m_move.move_line_ids and m_move.picking_id.picking_type_code == 'incoming':
+                #
+                #     # for move_line in m_move.move_line_ids:
+                #     #     lot = self.env['stock.production.lot'].create({
+                #     #         'name': stock_picking.name,
+                #     #         'product_id': move_line.product_id.id,
+                #     #         'standard_weight': stock_picking.net_weight,
+                #     #         'producer_id': stock_picking.partner_id.id
+                #     #     })
+                #     #     if lot:
+                #     #         move_line.update({
+                #     #             'lot_id': lot.id
+                #     #         })
+                #     #
+                #     # if m_move.product_id.tracking == 'lot' and not m_move.has_serial_generated:
+                #     #
+                #     #     for stock_move_line in m_move.move_line_ids:
+                #     #
+                #     #         if m_move.product_id.categ_id.is_mp or m_move.product_id.categ_id.is_pt:
+                #     #             total_qty = m_move.picking_id.get_canning_move().product_uom_qty
+                #     #             # calculated_weight = stock_move_line.qty_done / total_qty
+                #     #
+                #     #             if stock_move_line.lot_id:
+                #     #
+                #     #                 default_value = stock_picking.avg_unitary_weight or 1
+                #     #                 for i in range(int(total_qty)):
+                #     #                     models._logger.error(i == int(total_qty))
+                #     #                     models._logger.error(
+                #     #                         stock_picking.net_weight - (int(total_qty) * default_value))
+                #     #                     if i == int(total_qty):
+                #     #
+                #     #                         diff = stock_picking.net_weight - (
+                #     #                                 int(total_qty) * default_value)
+                #     #
+                #     #                         tmp = '00{}'.format(i + 1)
+                #     #                         self.env['stock.production.lot.serial'].create({
+                #     #                             'calculated_weight': default_value + diff,
+                #     #                             'stock_production_lot_id': stock_move_line.lot_id.id,
+                #     #                             'serial_number': '{}{}'.format(stock_move_line.lot_name, tmp[-3:])
+                #     #                         })
+                #     #                     else:
+                #     #                         tmp = '00{}'.format(i + 1)
+                #     #                         self.env['stock.production.lot.serial'].create({
+                #     #                             'calculated_weight': default_value,
+                #     #                             'stock_production_lot_id': stock_move_line.lot_id.id,
+                #     #                             'serial_number': '{}{}'.format(stock_move_line.lot_name, tmp[-3:])
+                #     #                         })
+                #     #                 stock_move_line.lot_id.write({
+                #     #                     'available_kg': sum(
+                #     #                         stock_move_line.lot_id.stock_production_lot_serial_ids.mapped(
+                #     #                             'display_weight'))
+                #     #                 })
+                #     #                 m_move.has_serial_generated = True
                 return res
         else:
             return super(StockPicking, self).action_confirm()
