@@ -1,13 +1,14 @@
-from odoo import fields, models,api
+from odoo import fields, models, api
 import json
 from odoo.tools import date_utils
+
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     contract_number = fields.Char('Contrato')
 
-    ship_ids = fields.Many2many('custom.ship', string="Nave",compute="compute_ships")
+    ship_ids = fields.Many2many('custom.ship', string="Nave", compute="compute_ships")
 
     ordered_quantity = fields.Float(string="Cantidad Pedida", compute="compute_ordered_quantity")
 
@@ -19,12 +20,12 @@ class SaleOrder(models.Model):
 
     shipping_number = fields.Integer(string="Número Embarque", compute="compute_shipping_number")
 
-    partner_id = fields.Many2one('res.partner',"Cliente",readonly=False)
+    partner_id = fields.Many2one('res.partner', "Cliente", readonly=False)
 
     def compute_ships(self):
         for item in self:
-            item.ship_ids = item.picking_ids.mapped('ship') 
-    
+            item.ship_ids = item.picking_ids.mapped('ship')
+
     def compute_ordered_quantity(self):
         for item in self:
             item.ordered_quantity = item.order_line[0].product_uom_qty
@@ -44,4 +45,3 @@ class SaleOrder(models.Model):
     def compute_departure_date(self):
         for item in self:
             item.compute_shipping_number = item.picking_ids[0].compute_shipping_number
-

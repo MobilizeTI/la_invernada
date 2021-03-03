@@ -26,12 +26,13 @@ class ConfirmPrincipalOrde(models.TransientModel):
                 'qty_done': item.real_dispatch_qty,
                 'location_id': self.picking_id.location_id.id,
                 'location_dest_id': self.picking_id.location_dest_id.id,
-                'lot_id': self.picking_id.packing_list_lot_ids.filtered(lambda a: a.product_id.id == item.product_id.id).id,
+                'lot_id': self.picking_id.packing_list_lot_ids.filtered(
+                    lambda a: a.product_id.id == item.product_id.id).id,
                 'date': date.today(),
+                'state': 'done',
                 'picking_id': self.picking_id.id,
                 'move_id': self.picking_id.move_ids_without_package.filtered(
-                    lambda
-                        x: x.product_id.id == item.product_id.id and x.picking_id.id == self.picking_id.id).id
+                    lambda x: x.product_id.id == item.product_id.id and x.picking_id.id == self.picking_id.id).id
             })
             item.dispatch_id.write({
                 'picking_real_id': self.picking_id.id,
@@ -54,10 +55,9 @@ class ConfirmPrincipalOrde(models.TransientModel):
                 'lot_id': self.picking_id.packing_list_lot_ids.filtered(
                     lambda a: a.product_id.id == item.product_id.id).id,
                 'date': date.today(),
+                'state':'done',
                 'picking_id': self.picking_id.id,
-                'move_id': self.picking_id.move_ids_without_package.filtered(
-                    lambda
-                        x: x.product_id.id == item.product_id.id and x.picking_id.id == self.picking_id.id).id
+                'move_id': self.picking_id.move_ids_without_package.filtered(lambda x: x.product_id.id == item.product_id.id and x.picking_id.id == self.picking_id.id).id
             })
             item.dispatch_id.write({
                 'picking_principal_id': self.picking_id.id,
