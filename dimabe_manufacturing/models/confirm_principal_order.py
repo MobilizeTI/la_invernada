@@ -47,6 +47,8 @@ class ConfirmPrincipalOrde(models.TransientModel):
     def cancel(self):
         self.process_data()
         for item in self.picking_id.dispatch_line_ids:
+            raise models.ValidationError(self.picking_id.move_ids_without_package.filtered(
+                        lambda x: x.product_id.id == item.product_id.id and x.picking_id.id == self.picking_id).read())
             if item.dispatch_id.id == self.picking_id.id:
                 self.env['stock.move.line'].create({
                     'product_id': item.product_id.id,
