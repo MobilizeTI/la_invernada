@@ -933,9 +933,7 @@ class AccountInvoice(models.Model):
         stock_picking_ids = self.env['stock.picking'].search([('id', 'in', order_list)])
         res = super(AccountInvoice, self).write(vals)
 
-        self.tara = 800
-        self.gross_weight = 8000
-        self.net_weight = 8800
+        self.update_totals_kg()
 
         for s in stock_picking_ids:
             s.write({
@@ -987,6 +985,7 @@ class AccountInvoice(models.Model):
     def onchange_to_update_kg(self):
         self.update_totals_kg()
 
+    @api.one
     def update_totals_kg(self):  
         pickings_ids = []
         for item in self.orders_to_invoice:
