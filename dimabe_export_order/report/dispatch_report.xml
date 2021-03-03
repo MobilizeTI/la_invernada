@@ -908,7 +908,7 @@
                                 <tr>
                                     <td>Nota</td>
                                     <td colspan="3" style="text-align:center;">
-                                        <t t-esc="d.note_dispatched.get_full_note()"/>
+                                        <t t-esc="d.note_dispatched.get_full_note() if d.note_dispatched else ''"/>
                                     </td>
                                 </tr>
                             </table>
