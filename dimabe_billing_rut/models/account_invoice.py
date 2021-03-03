@@ -933,10 +933,9 @@ class AccountInvoice(models.Model):
         stock_picking_ids = self.env['stock.picking'].search([('id', 'in', order_list)])
         res = super(AccountInvoice, self).write(vals)
 
-        for a in self:
-            a.tara = 800
-            a.gross_weight = 8000
-            a.net_weight = 8800
+        self.tara = 800
+        self.gross_weight = 8000
+        self.net_weight = 8800
 
         for s in stock_picking_ids:
             s.write({
