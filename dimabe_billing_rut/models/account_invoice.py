@@ -933,8 +933,6 @@ class AccountInvoice(models.Model):
         stock_picking_ids = self.env['stock.picking'].search([('id', 'in', order_list)])
         res = super(AccountInvoice, self).write(vals)
 
-        self.update_totals_kg()
-
         for s in stock_picking_ids:
             s.write({
                 'shipping_number': self.shipping_number,
