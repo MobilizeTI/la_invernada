@@ -1320,73 +1320,73 @@
                     </t>
                     -->
                     <t t-if="len(docs) == 1">
-                        <img style="width:100%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                        <img style="width:100%; height:100%;" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                     </t>
                     <t t-if="len(docs) == 2">
-                        <img style="width:50%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                        <img style="width:50%; height:50%;" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                     </t>
                     <t t-if="len(docs) == 3 or len(docs) == 4">
                         <t t-if="o.counter &lt; 3">
-                            <img style="width:50%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                            <img style="width:50%; height:50%;" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                         </t>
                         <t t-else="">
                             <br style="line-height:0px;"/>
-                            <img style="width:50%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                            <img style="width:50%; height:50%;" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                         </t>
                     </t>
                     <t t-if="len(docs) == 5 or len(docs) == 6">
                         <t t-if="o.counter &lt;= 3">
-                            <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                            <img style="width:33%; height:50%;" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                         </t>
                         <t t-else="">
                             <br style="line-height:0px;"/>
-                            <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                            <img style="width:33%; height:50%;" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                         </t>
                     </t>
                     <t t-if="len(docs) == 7 or len(docs) == 8 or len(docs) == 9">
                         <t t-if="o.counter &lt;= 3">
-                            <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                            <img style="width:33%; height:50%;" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                         </t>
                         <t t-else="">
                             <t t-if="o.counter &lt;= 6">
                                 <t t-if="o.counter == 4">
                                     <br style="line-height:0px;"/>
                                 </t>
-                                <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                                <img style="width:33%; height:50%;" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                                 <t t-if="o.counter == 6">
-                                    <span style="page-break-after:always;git pull"/>intento de salto de linea ej
+                                    <p style="page-break-after:always;"></p>
                                 </t>
                             </t>
                             <t t-else="">
                                 <t t-if="o.counter &lt;= 9">
-                                    <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                                    <img style="width:33%; height:50%;" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                                 </t>
                             </t>
                         </t>
                     </t>
                     <t t-if="len(docs) == 10 or len(docs) == 11 or len(docs) == 12">
                         <t t-if="o.counter &lt;= 3">
-                            <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                            <img style="width:33%; height:50%;" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                         </t>
                         <t t-else="">
                             <t t-if="o.counter &lt;= 6">
                                 <t t-if="o.counter == 4">
                                     <br style="line-height:0px;"/>
                                 </t>
-                                <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                                <img style="width:33%; height:50%;" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                                 <t t-if="o.counter == 6">
-                                    <span style="page-break-after:always;"/>intento de salto de linea ej
+                                    <p style="page-break-after:always;"></p>
                                 </t>
                             </t>
                             <t t-else="">
                                 <t t-if="o.counter &lt;= 9">
-                                    <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                                    <img style="width:33%; height:50%;" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                                 </t>
                                 <t t-else="">
                                     <t t-if="o.counter == 10">
                                         <br style="line-height:0px;"/>
                                     </t>
-                                    <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                                    <img style="width:33%; height:50%;" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                                 </t>
                             </t>
                         </t>
