@@ -66,7 +66,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
                 'location_id': self.picking_id.location_id.id,
                 'location_dest_id': self.picking_id.location_dest_id.id,
                 'lot_id': self.picking_id.packing_list_lot_ids.filtered(
-                    lambda a: a.product_id.id == item.product_id.id).id,
+                    lambda a: a.product_id.id == item.product_id.id and a.sale_order_id.id == item.sale_id.id).id,
                 'date': date.today(),
                 'state': 'done',
                 'picking_id': self.picking_id.id,
