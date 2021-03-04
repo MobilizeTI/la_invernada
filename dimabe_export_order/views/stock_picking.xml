@@ -51,7 +51,7 @@
                                     <field name="value_per_kilogram" readonly="1"/>
                                 </group>
                             </group>
-                            <group string="Embarque">
+                            <group string="Embarque" style="width:100%" >
                                 <group>
                                         <field name="shipping_company" readonly="1"/>
                                         <field name="ship" readonly="1"/>
