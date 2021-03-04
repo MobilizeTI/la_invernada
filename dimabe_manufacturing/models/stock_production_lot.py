@@ -477,7 +477,7 @@ class StockProductionLot(models.Model):
         })
         picking = self.env['stock.picking'].search([('id', '=', picking_id)])
         if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
-            self.add_selection_serial(picking_id,picking.location_id.id)
+            self.add_selection_serial(picking_id, picking.location_id.id)
 
         line = picking.mapped('move_line_ids_without_package').filtered(
             lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id)
@@ -520,7 +520,6 @@ class StockProductionLot(models.Model):
                     'reserved_to_stock_picking_id': None
                 })
                 stock_picking.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == self.id).unlink()
-
 
     @api.multi
     def write(self, values):
@@ -618,7 +617,7 @@ class StockProductionLot(models.Model):
                 'product_uom_qty': self.get_reserved_quantity_by_picking(picking_id)
             })
         else:
-            self.env['stock.move.line'].create({
+            line_create = self.env['stock.move.line'].create({
                 'move_id': picking.move_ids_without_package.filtered(
                     lambda m: m.product_id.id == self.product_id.id).id,
                 'picking_id': picking_id,
@@ -639,7 +638,7 @@ class StockProductionLot(models.Model):
                 'sale_ids': [(4, s.id) for s in line.mapped('sale_id')],
                 'picking_principal_id': picking_id,
                 'custom_dispatch_line_ids': [(4, c.id) for c in line],
-                'lot_id':self.id
+                'lot_id': self.id
             })
             return {
                 'name': 'Seleccione el pedido al cual quiere reservar',
@@ -655,7 +654,8 @@ class StockProductionLot(models.Model):
             }
         else:
             line.write({
-                'real_dispatch_qty':self.get_reserved_quantity_by_picking(picking_id)
+                'real_dispatch_qty': self.get_reserved_quantity_by_picking(picking_id),
+                'move_line_ids': [(4, line_create.id)]
             })
 
     def add_selection_serial(self, picking_id, location_id):
@@ -704,20 +704,20 @@ class StockProductionLot(models.Model):
 
     def clean_add_pallet(self):
         self.pallet_ids.filtered(lambda a: a.add_picking).write({
-            'add_picking':False
+            'add_picking': False
         })
 
     def clean_add_serial(self):
         self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).write({
-            'to_add':False
+            'to_add': False
         })
 
-    def update_stock_quant(self,location_id):
+    def update_stock_quant(self, location_id):
         lot = self.env['stock.production.lot'].search([('name', '=', self.name)])
         if lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed):
 
             quant = self.env['stock.quant'].sudo().search(
-                [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'),('location_id','=',location_id)])
+                [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'), ('location_id', '=', location_id)])
 
             if quant:
                 quant.write({

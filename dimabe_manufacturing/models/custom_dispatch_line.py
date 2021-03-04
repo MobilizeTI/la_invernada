@@ -17,5 +17,7 @@ class CustomDispatchLine(models.Model):
 
     is_select = fields.Boolean('Pedido Principal')
 
+    move_line_ids = fields.Many2many('stock.move.line',string='Movimientos')
+
 
 

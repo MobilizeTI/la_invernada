@@ -28,12 +28,7 @@ class ConfirmOrderForReserved(models.TransientModel):
                 'product_uom_qty': self.lot_id.get_reserved_quantity_by_picking(self.picking_principal_id.id)
             })
         else:
-            self.picking_principal_id.dispatch_line_ids.filtered(lambda
-                                                                     a: a.sale_id.id == self.sale_id.id and a.dispatch_id.id == self.picking_id.id).write(
-                {
-                    'real_dispatch_qty': self.lot_id.get_reserved_quantity_by_picking(self.picking_principal_id.id)
-                })
-            self.env['stock.move.line'].create({
+            line_create = self.env['stock.move.line'].create({
                 'move_id': self.picking_id.move_ids_without_package.filtered(
                     lambda m: m.product_id.id == self.lot_id.product_id.id).id,
                 'picking_id': self.picking_id.id,
@@ -45,6 +40,13 @@ class ConfirmOrderForReserved(models.TransientModel):
                 'date': date.today(),
                 'lot_id': self.lot_id.id
             })
+            self.picking_principal_id.dispatch_line_ids.filtered(lambda
+                                                                     a: a.sale_id.id == self.sale_id.id and a.dispatch_id.id == self.picking_id.id).write(
+                {
+                    'real_dispatch_qty': self.lot_id.get_reserved_quantity_by_picking(self.picking_principal_id.id),
+                    'move_line_ids':[(4,line_create.id)]
+                })
+
         self.lot_id.clean_add_pallet()
         self.lot_id.clean_add_serial()
         self.lot_id.update_stock_quant(self.picking_principal_id.location_id.id)

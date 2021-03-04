@@ -29,20 +29,6 @@ class ConfirmPrincipalOrde(models.TransientModel):
                         lambda a: a.sale_id.id == self.sale_id.id).dispatch_id.id
                 })
                 continue
-            self.env['stock.move.line'].create({
-                'product_id': item.product_id.id,
-                'product_uom_id': item.product_id.uom_id.id,
-                'qty_done': item.real_dispatch_qty,
-                'location_id': self.picking_id.location_id.id,
-                'location_dest_id': self.picking_id.location_dest_id.id,
-                'lot_id': self.picking_id.packing_list_lot_ids.filtered(
-                    lambda a: a.product_id.id == item.product_id.id).id,
-                'date': date.today(),
-                'state': 'done',
-                'picking_id': self.picking_id.id,
-                'move_id': self.picking_id.move_ids_without_package.filtered(
-                    lambda x: x.product_id.id == item.product_id.id and x.picking_id.id == self.picking_id.id).id
-            })
             item.dispatch_id.write({
                 'picking_real_id': self.picking_id.id,
                 'picking_principal_id': self.custom_dispatch_line_ids.filtered(
@@ -59,20 +45,6 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     'is_child_dispatch': True if item.dispatch_id.id != self.picking_id.id else False
                 })
                 continue
-            self.env['stock.move.line'].create({
-                'product_id': item.product_id.id,
-                'product_uom_id': item.product_id.uom_id.id,
-                'qty_done': item.real_dispatch_qty,
-                'location_id': self.picking_id.location_id.id,
-                'location_dest_id': self.picking_id.location_dest_id.id,
-                'lot_id': self.picking_id.packing_list_lot_ids.filtered(
-                    lambda a: a.product_id.id == item.product_id.id and a.sale_order_id.id == item.sale_id.id).id,
-                'date': date.today(),
-                'state': 'done',
-                'picking_id': self.picking_id.id,
-                'move_id': self.picking_id.move_ids_without_package.filtered(
-                    lambda x: x.product_id.id == item.product_id.id and x.picking_id.id == self.picking_id.id).id
-            })
             item.dispatch_id.write({
                 'picking_principal_id': self.picking_id.id,
                 'is_child_dispatch': True if item.dispatch_id.id != self.picking_id.id else False
@@ -81,15 +53,20 @@ class ConfirmPrincipalOrde(models.TransientModel):
     def process_data(self):
         for item in self.custom_dispatch_line_ids:
             item.dispatch_id.clean_reserved(item.dispatch_id)
-            for line in self.picking_id.move_line_ids_without_package.filtered(
-                    lambda a: a.product_id.id == item.product_id.id):
+            for line in item.move_line_ids:
                 if item.dispatch_id.id == self.picking_id.id:
                     continue
-
-                line.write({
-                    'picking_id': item.dispatch_id.id,
+                self.env['stock.move.line'].create({
                     'move_id': item.dispatch_id.move_ids_without_package.filtered(
-                        lambda x: x.product_id.id == line.product_id.id and x.picking_id.id == item.dispatch_id.id).id
+                        lambda a: a.product_id == line.product_id.id).id,
+                    'product_id': line.product_id.id,
+                    'product_uom_qty': line.product_uom_qty,
+                    'product_uom_id': line.product_id.uom_id.id,
+                    'lot_id': line.lot_id.id,
+                    'location_id': line.location_id.id,
+                    'location_dest_id': line.location_dest_id.id,
+                    'date': line.date,
+                    'picking_id': item.dispatch_id.id,
                 })
 
             if item.real_dispatch_qty > 0:
