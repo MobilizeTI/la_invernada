@@ -1560,7 +1560,7 @@
                                 <t t-if="d.picking_real_id and d.picking_principal_id">
                                     <span t-esc="d.picking_principal_id.origin"/>
                                 </t>
-                                <t t-elif="not d.picking_real_id and d.picking_principal_id and d.is_child_dispatch">
+                                <t t-elif="not d.picking_real_id and d.picking_principal_id">
                                     <span t-esc="','.join(d.picking_principal_id.mapped('dispatch_line_ids').mapped('sale_id').mapped('name'))"/>
                                 </t>
                                 <t t-else="">

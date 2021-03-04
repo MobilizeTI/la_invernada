@@ -23,6 +23,8 @@ class ConfirmPrincipalOrde(models.TransientModel):
         self.process_data()
         for item in self.custom_dispatch_line_ids:
             item.dispatch_id.write({
+                'consignee_id':self.picking_id.consignee_id.id,
+                'notify_ids':[(4,n.id) for n in self.picking_id.notify_ids],
                 'picking_real_id': self.picking_id.id,
                 'picking_principal_id': self.custom_dispatch_line_ids.filtered(
                     lambda a: a.sale_id.id == self.sale_id.id).dispatch_id.id
@@ -33,6 +35,8 @@ class ConfirmPrincipalOrde(models.TransientModel):
         self.process_data()
         for item in self.picking_id.dispatch_line_ids:
             item.dispatch_id.write({
+                'consignee_id': self.picking_id.consignee_id.id,
+                'notify_ids': [(4, n.id) for n in self.picking_id.notify_ids],
                 'picking_principal_id': self.picking_id.id,
                 'is_child_dispatch': True if item.dispatch_id.id != self.picking_id.id else False
             })
