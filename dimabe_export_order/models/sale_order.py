@@ -44,4 +44,4 @@ class SaleOrder(models.Model):
 
     def compute_shipping_number(self):
         for item in self:
-            item.compute_shipping_number = item.picking_ids[0].compute_shipping_number
+            item.compute_shipping_number = item.picking_ids[0].shipping_number
