@@ -1375,9 +1375,11 @@
                             <t t-if="o.counter &lt;= 6">
                                 <br style="line-height:0px;"/>
                                 <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                                <t t-if="o.counter == 6">
+                                    <span style="style='page-break-after:always;'"/>
+                                </t>
                             </t>
                             <t t-else="">
-                                <span style="style='page-break-after:always;'"/>
                                 <t t-if="o.counter &lt;= 9">
                                     <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                                 </t>
@@ -1392,9 +1394,11 @@
                             <t t-if="o.counter &lt;= 6">
                                 <br style="line-height:0px;"/>
                                 <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                                <t t-if="o.counter == 6">
+                                    <span style="style='page-break-after:always;'"/>
+                                </t>
                             </t>
                             <t t-else="">
-                                <span style="style='page-break-after:always;'"/>
                                 <t t-if="o.counter &lt;= 9">
                                     <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                                 </t>
