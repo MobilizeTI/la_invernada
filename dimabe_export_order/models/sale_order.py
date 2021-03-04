@@ -18,7 +18,7 @@ class SaleOrder(models.Model):
 
     departure_date = fields.Datetime(string="Fecha de Zarpe", compute="compute_departure_date")
 
-    shipping_number = fields.Integer(string="Número Embarque", compute="compute_shipping_number")
+    shipping_number = fields.Char(string="Número Embarque", compute="compute_shipping_number")
 
     partner_id = fields.Many2one('res.partner', "Cliente", readonly=False)
 
@@ -39,9 +39,15 @@ class SaleOrder(models.Model):
             item.unit_price = item.order_line[0].price_unit
 
     def compute_departure_date(self):
+        #valid if one dispatch of sale order havent date
         for item in self:
             item.departure_date = item.picking_ids[0].departure_date
 
     def compute_shipping_number(self):
         for item in self:
-            item.compute_shipping_number = item.picking_ids[0].shipping_number
+            for picking in item.picking_ids:
+                if picking.shipping_number and picking.shipping_number != 0:
+                    item.compute_shipping_number = str(picking.shipping_number)
+                    break
+                else:
+                    item.compute_shipping_number = "N/A"
