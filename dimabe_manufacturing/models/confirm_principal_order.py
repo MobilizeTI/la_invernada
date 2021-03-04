@@ -29,6 +29,20 @@ class ConfirmPrincipalOrde(models.TransientModel):
                         lambda a: a.sale_id.id == self.sale_id.id).dispatch_id.id
                 })
                 continue
+            self.env['stock.move.line'].create({
+                'product_id': item.product_id.id,
+                'product_uom_id': item.product_id.uom_id.id,
+                'qty_done': item.real_dispatch_qty,
+                'location_id': self.picking_id.location_id.id,
+                'location_dest_id': self.picking_id.location_dest_id.id,
+                'lot_id': self.picking_id.packing_list_lot_ids.filtered(
+                    lambda a: a.product_id.id == item.product_id.id).id,
+                'date': date.today(),
+                'state': 'done',
+                'picking_id': self.picking_id.id,
+                'move_id': self.picking_id.move_ids_without_package.filtered(
+                    lambda x: x.product_id.id == item.product_id.id and x.picking_id.id == self.picking_id.id).id
+            })
             item.dispatch_id.write({
                 'picking_real_id': self.picking_id.id,
                 'picking_principal_id': self.custom_dispatch_line_ids.filtered(
@@ -52,7 +66,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
                 'location_id': self.picking_id.location_id.id,
                 'location_dest_id': self.picking_id.location_dest_id.id,
                 'lot_id': self.picking_id.packing_list_lot_ids.filtered(
-                    lambda a: a.product_id.id == item.product_id.id and a.sale_order_id.id == item.sale_id.id).id,
+                    lambda a: a.product_id.id == item.product_id.id).id,
                 'date': date.today(),
                 'state': 'done',
                 'picking_id': self.picking_id.id,
@@ -71,6 +85,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     lambda a: a.product_id.id == item.product_id.id):
                 if item.dispatch_id.id == self.picking_id.id:
                     continue
+
                 line.write({
                     'picking_id': item.dispatch_id.id,
                     'move_id': item.dispatch_id.move_ids_without_package.filtered(
