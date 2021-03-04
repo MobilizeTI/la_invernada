@@ -54,8 +54,6 @@ class ConfirmPrincipalOrde(models.TransientModel):
                         'date': line.date,
                         'picking_id': item.dispatch_id.id,
                     })
-                else:
-                    raise models.ValidationError('123454')
             if item.real_dispatch_qty > 0:
                 precision_digits = self.env['decimal.precision'].precision_get('Product Unit of Measure')
                 no_quantities_done = all(
