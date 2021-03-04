@@ -659,92 +659,83 @@ class StockProductionLot(models.Model):
                 'move_line_ids': [(4, line_create.id)]
             })
 
-
-def add_selection_serial(self, picking_id, location_id):
-    pallets = self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('pallet_id')
-    for pallet in pallets:
-        pallet.write({
+    def add_selection_serial(self, picking_id, location_id):
+        pallets = self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('pallet_id')
+        for pallet in pallets:
+            pallet.write({
+                'reserved_to_stock_picking_id': picking_id
+            })
+        self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).write({
             'reserved_to_stock_picking_id': picking_id
         })
-    self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).write({
-        'reserved_to_stock_picking_id': picking_id
-    })
-    self.update_stock_quant(location_id)
-    self.clean_add_serial()
+        self.update_stock_quant(location_id)
+        self.clean_add_serial()
 
+    def add_selection_pallet(self, picking_id, location_id):
+        self.pallet_ids.filtered(lambda p: p.add_picking).write({
+            'reserved_to_stock_picking_id': picking_id
+        })
+        self.pallet_ids.filtered(lambda p: p.add_picking).mapped('lot_serial_ids').filtered(
+            lambda s: not s.reserved_to_stock_picking_id).write({
+            'reserved_to_stock_picking_id': picking_id
+        })
+        self.update_stock_quant(location_id)
 
-def add_selection_pallet(self, picking_id, location_id):
-    self.pallet_ids.filtered(lambda p: p.add_picking).write({
-        'reserved_to_stock_picking_id': picking_id
-    })
-    self.pallet_ids.filtered(lambda p: p.add_picking).mapped('lot_serial_ids').filtered(
-        lambda s: not s.reserved_to_stock_picking_id).write({
-        'reserved_to_stock_picking_id': picking_id
-    })
-    self.update_stock_quant(location_id)
-
-
-def update_quant(self, location_id):
-    quant = self.env['stock.quant'].sudo().search(
-        [('lot_id', '=', self.id), ('location_id.id', '=', location_id), ('location_id.usage', '=', 'internal')])
-    quant.sudo().write({
-        'reserved_quantity': self.get_reserved_quantity(),
-        'quantity': self.get_available_quantity()
-    })
-
-
-def get_available_quantity(self):
-    return sum(self.stock_production_lot_serial_ids.filtered(
-        lambda r: r.reserved_to_stock_picking_id and not r.consumed).mapped('display_weight'))
-
-
-def get_reserved_quantity(self):
-    return sum(self.stock_production_lot_serial_ids.filtered(lambda
-                                                                 x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
-        'display_weight'))
-
-
-def get_reserved_quantity_by_picking(self, picking_id):
-    return sum(self.stock_production_lot_serial_ids.filtered(
-        lambda a: a.reserved_to_stock_picking_id.id == picking_id).mapped(
-        'display_weight'))
-
-
-def clean_add_pallet(self):
-    self.pallet_ids.filtered(lambda a: a.add_picking).write({
-        'add_picking': False
-    })
-
-
-def clean_add_serial(self):
-    self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).write({
-        'to_add': False
-    })
-
-
-def update_stock_quant(self, location_id):
-    lot = self.env['stock.production.lot'].search([('name', '=', self.name)])
-    if lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed):
-
+    def update_quant(self, location_id):
         quant = self.env['stock.quant'].sudo().search(
-            [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'), ('location_id', '=', location_id)])
+            [('lot_id', '=', self.id), ('location_id.id', '=', location_id), ('location_id.usage', '=', 'internal')])
+        quant.sudo().write({
+            'reserved_quantity': self.get_reserved_quantity(),
+            'quantity': self.get_available_quantity()
+        })
 
-        if quant:
-            quant.write({
-                'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
-                                                                                          x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
-                    'display_weight')),
-                'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
-                    lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight'))
-            })
-        else:
-            self.env['stock.quant'].sudo().create({
-                'lot_id': lot.id,
-                'product_id': lot.product_id.id,
-                'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
-                                                                                          x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
-                    'display_weight')),
-                'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
-                    lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight')),
-                'location_id': location_id
-            })
+    def get_available_quantity(self):
+        return sum(self.stock_production_lot_serial_ids.filtered(
+            lambda r: r.reserved_to_stock_picking_id and not r.consumed).mapped('display_weight'))
+
+    def get_reserved_quantity(self):
+        return sum(self.stock_production_lot_serial_ids.filtered(lambda
+                                                                     x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
+            'display_weight'))
+
+    def get_reserved_quantity_by_picking(self, picking_id):
+        return sum(self.stock_production_lot_serial_ids.filtered(
+            lambda a: a.reserved_to_stock_picking_id.id == picking_id).mapped(
+            'display_weight'))
+
+    def clean_add_pallet(self):
+        self.pallet_ids.filtered(lambda a: a.add_picking).write({
+            'add_picking': False
+        })
+
+    def clean_add_serial(self):
+        self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).write({
+            'to_add': False
+        })
+
+    def update_stock_quant(self, location_id):
+        lot = self.env['stock.production.lot'].search([('name', '=', self.name)])
+        if lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed):
+
+            quant = self.env['stock.quant'].sudo().search(
+                [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'), ('location_id', '=', location_id)])
+
+            if quant:
+                quant.write({
+                    'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                                                                                              x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
+                        'display_weight')),
+                    'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
+                        lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight'))
+                })
+            else:
+                self.env['stock.quant'].sudo().create({
+                    'lot_id': lot.id,
+                    'product_id': lot.product_id.id,
+                    'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                                                                                              x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
+                        'display_weight')),
+                    'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
+                        lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight')),
+                    'location_id': location_id
+                })
