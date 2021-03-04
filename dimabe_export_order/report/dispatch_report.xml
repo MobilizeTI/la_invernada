@@ -1709,7 +1709,7 @@
                                     </t>
                             </t>
                             <t t-elif="not d.picking_real_id and d.picking_principal_id and d.is_child_dispatch">
-                                <t t-foreach="d.assigned_pallet_ids" t-as="p">
+                                <t t-foreach="d.picking_principal_id.assigned_pallet_ids" t-as="p">
                                         <tr>
                                             <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                                 <span t-esc="p.lot_serial_ids[0].product_id.name"/>
