@@ -1631,7 +1631,7 @@
                                                 <span t-esc="d.picking_principal_id.dispatch_line_ids.filtered(lambda a: a.product_id.id == p.product_id.id).sale_id.name"/>
                                             </td>
                                             <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                                <span t-field="p.picking_principal_id.origin"/>
+                                                <span t-field="d.picking_principal_id.origin"/>
                                             </td>
                                             <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                                 <span t-field="p.mapped('lot_serial_ids').mapped('stock_production_lot_id').name"/>
