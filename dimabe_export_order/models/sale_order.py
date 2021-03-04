@@ -22,7 +22,6 @@ class SaleOrder(models.Model):
 
     partner_id = fields.Many2one('res.partner', "Cliente", readonly=False)
 
-
     def compute_ships(self):
         for item in self:
             item.ship_ids = item.picking_ids.mapped('ship')
