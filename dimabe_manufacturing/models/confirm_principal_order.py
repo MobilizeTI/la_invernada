@@ -78,6 +78,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
                 if self.check_backorder(item.dispatch_id):
                     self.process_backorder(item.dispatch_id)
 
+    @api.multi
     def inmediate_transfer(self, picking):
         pick_to_backorder = self.env['stock.picking']
         pick_to_do = self.env['stock.picking']
@@ -95,6 +96,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
             pick_to_backorder |= picking
         pick_to_do |= picking
 
+    @api.multi
     def check_backorder(self, picking):
         quantity_todo = {}
         quantity_done = {}
@@ -114,6 +116,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
                                                                                        pack.product_id.uom_id)
         return any(quantity_done[x] < quantity_todo.get(x, 0) for x in quantity_done)
 
+    @api.multi
     def process_backorder(self, picking):
         for pick_id in picking:
             moves_to_log = {}
