@@ -1320,10 +1320,10 @@
                     </t>
                     -->
                     <t t-if="len(docs) == 1">
-                        <img width="800px" height="800px" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                        <img width="760px" height="800px" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                     </t>
                     <t t-if="len(docs) == 2">
-                        <img width="400px" height="800px" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                        <img width="380px" height="800px" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                     </t>
                     <t t-if="len(docs) == 3 or len(docs) == 4">
                         <t t-if="o.counter &lt; 3">
