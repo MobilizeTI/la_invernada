@@ -260,69 +260,69 @@
                                             <span t-field="m.product_id.lst_price"/>
                                         </td>-->
                                         <td style="border-right:1px solid;border-bottom:1px solid;text-align:right;padding-right:4px;">
-                                            <span t-esc="d.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id).price_unit if d.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id) else d.dispatch_line_ids.filtered(lambda a: a.product_id.id == m.product_id.id).sale_id.order_line.filtered(lambda x:x.product_id.id == m.product_id.id).price_unit"/>
+                                            <span t-esc="d.picking_real_id.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id).price_unit if d.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id) else d.dispatch_line_ids.filtered(lambda a: a.product_id.id == m.product_id.id).sale_id.order_line.filtered(lambda x:x.product_id.id == m.product_id.id).price_unit"/>
                                         </td>
                                         <!--<td style="border-bottom:1px solid;text-align:right;padding-right:4px;">
                                             <span t-esc="d.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id).price_subtotal"/>
                                         </td>-->
                                         <td style="border-bottom:1px solid;text-align:right;padding-right:4px;">
-                                            <t t-if="d.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id)">
+                                            <t t-if="d.picking_real_id.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id)">
                                                 <span t-esc="'{}'.format(d.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id).price_unit * m.quantity_done)"/>
                                             </t>
                                             <t t-else="">
                                                 <span t-esc="'{}'.format(d.roundclp(d.dispatch_line_ids.filtered(lambda a: a.product_id.id == m.product_id.id).sale_id.order_line.filtered(lambda x:x.product_id.id == m.product_id.id).price_unit * m.quantity_done))"/>
                                             </t>
                                         </td>
-                                        <t t-if="m.id == d.move_ids_without_package[-1].id">
+                                        <t t-if="m.id == d.picking_real_id.move_ids_without_package[-1].id">
                                             <tr>
                                                 <td colspan="3">
-                                                    <t t-if="d.type_of_dispatch == 'exp'">
+                                                    <t t-if="d.picking_real_id.type_of_dispatch == 'exp'">
                                                         <table style="font-size:11px;">
                                                             <tr>
                                                                 <td style="text-align:center;">
                                                                     KILOS NETOS
                                                                 </td>
                                                                 <td>
-                                                                    <span t-field="d.net_weight_dispatch"/>
+                                                                    <span t-field="d.picking_real_id.net_weight_dispatch"/>
                                                                 </td>
                                                                 <td>N° CONTENEDOR</td>
                                                                 <td>
-                                                                    <span t-field="d.container_number"/>
+                                                                    <span t-field="d.picking_real_id.container_number"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>KILOS BRUTOS:</td>
                                                                 <td>
-                                                                    <span t-field="d.gross_weight_dispatch"/>
+                                                                    <span t-field="d.picking_real_id.gross_weight_dispatch"/>
                                                                 </td>
                                                                 <td>SELLO NAVIERA</td>
                                                                 <td>
-                                                                    <span t-field="d.sell_shipping"/>
+                                                                    <span t-field="d.picking_real_id.sell_shipping"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>TARA CONTE:</td>
                                                                 <td>
-                                                                    <span t-field="d.tare_container_weight_dispatch"/>
+                                                                    <span t-field="d.picking_real_id.tare_container_weight_dispatch"/>
                                                                 </td>
                                                                 <td>ENVASES:</td>
                                                                 <td>
-                                                                    <span t-field="d.canning_data"/>
+                                                                    <span t-field="d.picking_real_id.canning_data"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>PESO VGM:</td>
                                                                 <td>
-                                                                    <span t-field="d.vgm_weight_dispatch"/>
+                                                                    <span t-field="d.picking_real_id.vgm_weight_dispatch"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Nave:</td>
                                                                 <td>
-                                                                    <t t-if="d.shipping_id.type_transport == 'terrestre'">
+                                                                    <t t-if="d.picking_real_id.shipping_id.type_transport == 'terrestre'">
                                                                         <span t-field="d.type_transport"/>
                                                                     </t>
-                                                                    <t t-elif="d.shipping_id.type_transport != 'terrestre'">
+                                                                    <t t-elif="d.picking_real_id.shipping_id.type_transport != 'terrestre'">
                                                                         <span t-field="d.shipping_id.ship.name"/>
                                                                         <span t-field="d.shipping_id.ship_number"/>
                                                                     </t>
@@ -331,67 +331,67 @@
                                                             <tr>
                                                                 <td>N° DUS:</td>
                                                                 <td>
-                                                                    <span t-field="d.dus_number"/>
+                                                                    <span t-field="d.picking_real_id.dus_number"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>PTO EMBARQUE:</td>
                                                                 <td>
-                                                                    <span t-field="d.shipping_id.departure_port"/>
+                                                                    <span t-field="d.picking_real_id.shipping_id.departure_port"/>
                                                                 </td>
                                                                 <td>SELLO INVERNADA</td>
                                                                 <td>
-                                                                    <span t-field="d.sell_truck"/>
+                                                                    <span t-field="d.picking_real_id.sell_truck"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>PTO DESCARGA</td>
                                                                 <td>
-                                                                    <span t-field="d.shipping_id.arrival_port"/>
+                                                                    <span t-field="d.picking_real_id.shipping_id.arrival_port"/>
                                                                 </td>
                                                                 <td>N° RESERVA</td>
                                                                 <td>
-                                                                    <span t-field="d.booking_number"/>
+                                                                    <span t-field="d.picking_real_id.booking_number"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>TRANSPORTE:</td>
                                                                 <td>
-                                                                    <span t-field="d.transport"/>
+                                                                    <span t-field="d.picking_real_id.transport"/>
                                                                 </td>
                                                                 <td>CANDADO GPS:</td>
                                                                 <td>
-                                                                    <span t-field="d.gps_lock"/>
+                                                                    <span t-field="d.picking_real_id.gps_lock"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>CHOFER:</td>
                                                                 <td>
-                                                                    <span t-field="d.carrier_id"/>
+                                                                    <span t-field="d.picking_real_id.carrier_id"/>
                                                                 </td>
                                                                 <td>BOTON GPS:</td>
                                                                 <td>
-                                                                    <span t-field="d.gps_button"/>
+                                                                    <span t-field="d.picking_real_id.gps_button"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>RUT:</td>
                                                                 <td>
-                                                                    <span t-field="d.carrier_rut"/>
+                                                                    <span t-field="d.picking_real_id.carrier_rut"/>
                                                                 </td>
                                                                 <td>CLIENTE:</td>
                                                                 <td>
-                                                                    <span t-field="d.partner_id"/>
+                                                                    <span t-field="d.picking_real_id.partner_id"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>CELULAR:</td>
                                                                 <td>
-                                                                    <span t-field="d.carrier_cell_phone"/>
+                                                                    <span t-field="d.picking_real_id.carrier_cell_phone"/>
                                                                 </td>
                                                                 <td>SELLO SAG:</td>
                                                                 <td>
-                                                                    <span t-field="d.sell_sag"/>
+                                                                    <span t-field="d.picking_real_id.sell_sag"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -408,28 +408,28 @@
                                                             <tr>
                                                                 <td>Pte Camion:</td>
                                                                 <td>
-                                                                    <span t-field="d.carrier_truck_patent"/>
+                                                                    <span t-field="d.picking_real_id.carrier_truck_patent"/>
                                                                 </td>
                                                                 <td>Hora Llegada:</td>
                                                                 <td>
-                                                                    <t t-esc="'%02d:%02d' % (int(d.hour_arrival),d.hour_arrival % 1 * 60)"/>
+                                                                    <t t-esc="'%02d:%02d' % (int(d.picking_real_id.hour_arrival),d.picking_real_id.hour_arrival % 1 * 60)"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Pte Rampla:</td>
                                                                 <td>
-                                                                    <span t-field="d.carrier_cart_patent"/>
+                                                                    <span t-field="d.picking_real_id.carrier_cart_patent"/>
                                                                 </td>
                                                                 <td>Hora Salida</td>
                                                                 <td>
-                                                                    <t t-esc="'%02d:%02d' % (int(d.hour_departure),d.hour_departure % 1 * 60)"/>
+                                                                    <t t-esc="'%02d:%02d' % (int(d.picking_real_id.hour_departure),d.picking_real_id.hour_departure % 1 * 60)"/>
                                                                 </td>
 
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="3">
-                                                                    <t t-if="d.type_of_dispatch == 'exp'">
-                                                                        <span t-esc="d.note_dispatched.get_footer_note()"
+                                                                    <t t-if="d.picking_real_id.type_of_dispatch == 'exp'">
+                                                                        <span t-esc="d.picking_real_id.note_dispatched.get_footer_note()"
                                                                               style="font-size:12px;"/>
                                                                     </t>
                                                                 </td>
@@ -471,63 +471,63 @@
                                             <span t-esc="d.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id).price_subtotal"/>
                                         </td>-->
                                         <td style="border-bottom:1px solid;text-align:right;padding-right:4px;">
-                                            <t t-if="d.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id)">
-                                                <span t-esc="'{}'.format(d.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id).price_unit * m.quantity_done)"/>
+                                            <t t-if="d.picking_principal_id.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id)">
+                                                <span t-esc="'{}'.format(d.picking_principal_id.sale_id.order_line.filtered(lambda a : a.product_id.id == m.product_id.id).price_unit * m.quantity_done)"/>
                                             </t>
                                             <t t-else="">
-                                                <span t-esc="'{}'.format(d.roundclp(d.dispatch_line_ids.filtered(lambda a: a.product_id.id == m.product_id.id).sale_id.order_line.filtered(lambda x:x.product_id.id == m.product_id.id).price_unit * m.quantity_done))"/>
+                                                <span t-esc="'{}'.format(d.roundclp(d.picking_principal_id.dispatch_line_ids.filtered(lambda a: a.product_id.id == m.product_id.id).sale_id.order_line.filtered(lambda x:x.product_id.id == m.product_id.id).price_unit * m.quantity_done))"/>
                                             </t>
                                         </td>
-                                        <t t-if="m.id == d.move_ids_without_package[-1].id">
+                                        <t t-if="m.id == d.picking_principal_id.move_ids_without_package[-1].id">
                                             <tr>
                                                 <td colspan="3">
-                                                    <t t-if="d.type_of_dispatch == 'exp'">
+                                                    <t t-if="d.picking_principal_id.type_of_dispatch == 'exp'">
                                                         <table style="font-size:11px;">
                                                             <tr>
                                                                 <td style="text-align:center;">
                                                                     KILOS NETOS
                                                                 </td>
                                                                 <td>
-                                                                    <span t-field="d.net_weight_dispatch"/>
+                                                                    <span t-field="d.picking_principal_id.net_weight_dispatch"/>
                                                                 </td>
                                                                 <td>N° CONTENEDOR</td>
                                                                 <td>
-                                                                    <span t-field="d.container_number"/>
+                                                                    <span t-field="d.picking_principal_id.container_number"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>KILOS BRUTOS:</td>
                                                                 <td>
-                                                                    <span t-field="d.gross_weight_dispatch"/>
+                                                                    <span t-field="d.picking_principal_id.gross_weight_dispatch"/>
                                                                 </td>
                                                                 <td>SELLO NAVIERA</td>
                                                                 <td>
-                                                                    <span t-field="d.sell_shipping"/>
+                                                                    <span t-field="d.picking_principal_id.sell_shipping"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>TARA CONTE:</td>
                                                                 <td>
-                                                                    <span t-field="d.tare_container_weight_dispatch"/>
+                                                                    <span t-field="d.picking_principal_id.tare_container_weight_dispatch"/>
                                                                 </td>
                                                                 <td>ENVASES:</td>
                                                                 <td>
-                                                                    <span t-field="d.canning_data"/>
+                                                                    <span t-field="d.picking_principal_id.canning_data"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>PESO VGM:</td>
                                                                 <td>
-                                                                    <span t-field="d.vgm_weight_dispatch"/>
+                                                                    <span t-field="d.picking_principal_id.vgm_weight_dispatch"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Nave:</td>
                                                                 <td>
-                                                                    <t t-if="d.shipping_id.type_transport == 'terrestre'">
+                                                                    <t t-if="d.picking_principal_id.shipping_id.type_transport == 'terrestre'">
                                                                         <span t-field="d.type_transport"/>
                                                                     </t>
-                                                                    <t t-elif="d.shipping_id.type_transport != 'terrestre'">
+                                                                    <t t-elif="d.picking_principal_id.shipping_id.type_transport != 'terrestre'">
                                                                         <span t-field="d.shipping_id.ship.name"/>
                                                                         <span t-field="d.shipping_id.ship_number"/>
                                                                     </t>
@@ -536,67 +536,67 @@
                                                             <tr>
                                                                 <td>N° DUS:</td>
                                                                 <td>
-                                                                    <span t-field="d.dus_number"/>
+                                                                    <span t-field="d.picking_principal_id.dus_number"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>PTO EMBARQUE:</td>
                                                                 <td>
-                                                                    <span t-field="d.shipping_id.departure_port"/>
+                                                                    <span t-field="d.picking_principal_id.shipping_id.departure_port"/>
                                                                 </td>
                                                                 <td>SELLO INVERNADA</td>
                                                                 <td>
-                                                                    <span t-field="d.sell_truck"/>
+                                                                    <span t-field="d.picking_principal_id.sell_truck"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>PTO DESCARGA</td>
                                                                 <td>
-                                                                    <span t-field="d.shipping_id.arrival_port"/>
+                                                                    <span t-field="d.picking_principal_id.shipping_id.arrival_port"/>
                                                                 </td>
                                                                 <td>N° RESERVA</td>
                                                                 <td>
-                                                                    <span t-field="d.booking_number"/>
+                                                                    <span t-field="d.picking_principal_id.booking_number"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>TRANSPORTE:</td>
                                                                 <td>
-                                                                    <span t-field="d.transport"/>
+                                                                    <span t-field="d.picking_principal_id.transport"/>
                                                                 </td>
                                                                 <td>CANDADO GPS:</td>
                                                                 <td>
-                                                                    <span t-field="d.gps_lock"/>
+                                                                    <span t-field="d.picking_principal_id.gps_lock"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>CHOFER:</td>
                                                                 <td>
-                                                                    <span t-field="d.carrier_id"/>
+                                                                    <span t-field="d.picking_principal_id.carrier_id"/>
                                                                 </td>
                                                                 <td>BOTON GPS:</td>
                                                                 <td>
-                                                                    <span t-field="d.gps_button"/>
+                                                                    <span t-field="d.picking_principal_id.gps_button"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>RUT:</td>
                                                                 <td>
-                                                                    <span t-field="d.carrier_rut"/>
+                                                                    <span t-field="d.picking_principal_id.carrier_rut"/>
                                                                 </td>
                                                                 <td>CLIENTE:</td>
                                                                 <td>
-                                                                    <span t-field="d.partner_id"/>
+                                                                    <span t-field="d.picking_principal_id.partner_id"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>CELULAR:</td>
                                                                 <td>
-                                                                    <span t-field="d.carrier_cell_phone"/>
+                                                                    <span t-field="d.picking_principal_id.carrier_cell_phone"/>
                                                                 </td>
                                                                 <td>SELLO SAG:</td>
                                                                 <td>
-                                                                    <span t-field="d.sell_sag"/>
+                                                                    <span t-field="d.picking_principal_id.sell_sag"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -613,28 +613,28 @@
                                                             <tr>
                                                                 <td>Pte Camion:</td>
                                                                 <td>
-                                                                    <span t-field="d.carrier_truck_patent"/>
+                                                                    <span t-field="d.picking_principal_id.carrier_truck_patent"/>
                                                                 </td>
                                                                 <td>Hora Llegada:</td>
                                                                 <td>
-                                                                    <t t-esc="'%02d:%02d' % (int(d.hour_arrival),d.hour_arrival % 1 * 60)"/>
+                                                                    <t t-esc="'%02d:%02d' % (int(d.picking_principal_id.hour_arrival),d.picking_principal_id.hour_arrival % 1 * 60)"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Pte Rampla:</td>
                                                                 <td>
-                                                                    <span t-field="d.carrier_cart_patent"/>
+                                                                    <span t-field="d.picking_principal_id.carrier_cart_patent"/>
                                                                 </td>
                                                                 <td>Hora Salida</td>
                                                                 <td>
-                                                                    <t t-esc="'%02d:%02d' % (int(d.hour_departure),d.hour_departure % 1 * 60)"/>
+                                                                    <t t-esc="'%02d:%02d' % (int(d.picking_principal_id.hour_departure),d.picking_principal_id.hour_departure % 1 * 60)"/>
                                                                 </td>
 
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="3">
-                                                                    <t t-if="d.type_of_dispatch == 'exp'">
-                                                                        <span t-esc="d.note_dispatched.get_footer_note()"
+                                                                    <t t-if="d.picking_principal_id.type_of_dispatch == 'exp'">
+                                                                        <span t-esc="d.picking_principal_id.note_dispatched.get_footer_note()"
                                                                               style="font-size:12px;"/>
                                                                     </t>
                                                                 </td>
