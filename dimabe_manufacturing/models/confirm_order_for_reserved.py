@@ -28,6 +28,11 @@ class ConfirmOrderForReserved(models.TransientModel):
                 'product_uom_qty': self.lot_id.get_reserved_quantity_by_picking(self.picking_principal_id.id)
             })
         else:
+            self.picking_principal_id.filtered(lambda
+                                                   a: a.sale_order_id.id == self.sale_id.id and a.dispatch_id.id == self.picking_id.id and a.product_id.id == self.lot_id.product_id.id).write(
+                {
+                    'real_dispatch_qty': self.lot_id.get_reserved_quantity_by_picking(self.picking_principal_id.id)
+                })
             self.env['stock.move.line'].create({
                 'move_id': self.picking_id.move_ids_without_package.filtered(
                     lambda m: m.product_id.id == self.lot_id.product_id.id).id,
