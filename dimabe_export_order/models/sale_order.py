@@ -45,7 +45,7 @@ class SaleOrder(models.Model):
 
     def compute_shipping_number(self):
         for item in self:
-            shipping_number = "N/A"
+            shipping_number = ""
             for picking in item.picking_ids:
                 if picking.shipping_number and picking.shipping_number != 0:
                     shipping_number = str(picking.shipping_number)
