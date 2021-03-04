@@ -1378,7 +1378,7 @@
                                 </t>
                                 <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                                 <t t-if="o.counter == 6">
-                                    <span style="page-break-after:always;git pull"/>intento de salto de linea ej
+                                    <p style="page-break-after:always;"></p>
                                 </t>
                             </t>
                             <t t-else="">
@@ -1399,7 +1399,7 @@
                                 </t>
                                 <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                                 <t t-if="o.counter == 6">
-                                    <span style="page-break-after:always;"/>intento de salto de linea ej
+                                    <p style="page-break-after:always;"></p>
                                 </t>
                             </t>
                             <t t-else="">
