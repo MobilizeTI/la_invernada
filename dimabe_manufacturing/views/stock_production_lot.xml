@@ -121,7 +121,7 @@
             <field name="context_picking_id" invisible="1"/>
                 <group>
                     <group>
-                        <field name="pallet_ids" domain="[('lot_available_serial_ids','=',None)]">
+                        <field name="pallet_ids" domain="['|',('lot_available_serial_ids','=',None),('reserved_to_stock_picking_id','=',None)]">
                             <tree editable="bottom" edit="true" create="false" delete="false">
                                 <field name="add_picking"/>
                                 <field name="name"/>

@@ -610,8 +610,30 @@ class StockProductionLot(models.Model):
             self.add_selection_pallet(picking_id, picking.location_id.id)
         if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
             self.add_selection_serial(picking_id, picking.location_id.id)
+        dispatch_line = picking.dispatch_line_ids.filtered(lambda x: x.product_id.id == self.product_id.id)
+        if len(dispatch_line) > 1:
+            view = self.env.ref('dimabe_manufacturing.view_confirm_order_reserved')
+            wiz = self.env['confirm.order.reserved'].create({
+                'sale_ids': [(4, s.id) for s in dispatch_line.mapped('sale_id')],
+                'picking_principal_id': picking_id,
+                'custom_dispatch_line_ids': [(4, c.id) for c in dispatch_line],
+                'lot_id': self.id
+            })
+            return {
+                'name': 'Seleccione el pedido al cual quiere reservar',
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'confirm.order.reserved',
+                'views': [(view.id, 'form')],
+                'view_id': view.id,
+                'target': 'new',
+                'res_id': wiz.id,
+                'context': self.env.context
+            }
         line = picking.move_line_ids_without_package.filtered(
             lambda a: a.lot_id.id == self.id and a.product_id.id == self.product_id.id)
+
         if line:
             line.write({
                 'product_uom_qty': self.get_reserved_quantity_by_picking(picking_id)
@@ -631,110 +653,98 @@ class StockProductionLot(models.Model):
             })
         self.clean_add_pallet()
         self.clean_add_serial()
-        line = picking.dispatch_line_ids.filtered(lambda x: x.product_id.id == self.product_id.id)
-        if len(line) > 1:
-            view = self.env.ref('dimabe_manufacturing.view_confirm_order_reserved')
-            wiz = self.env['confirm.order.reserved'].create({
-                'sale_ids': [(4, s.id) for s in line.mapped('sale_id')],
-                'picking_principal_id': picking_id,
-                'custom_dispatch_line_ids': [(4, c.id) for c in line],
-                'lot_id': self.id
-            })
-            return {
-                'name': 'Seleccione el pedido al cual quiere reservar',
-                'type': 'ir.actions.act_window',
-                'view_type': 'form',
-                'view_mode': 'form',
-                'res_model': 'confirm.order.reserved',
-                'views': [(view.id, 'form')],
-                'view_id': view.id,
-                'target': 'new',
-                'res_id': wiz.id,
-                'context': self.env.context
-            }
-        else:
-            line.write({
+        if len(dispatch_line) == 1:
+            dispatch_line.write({
                 'real_dispatch_qty': self.get_reserved_quantity_by_picking(picking_id),
                 'move_line_ids': [(4, line_create.id)]
             })
 
-    def add_selection_serial(self, picking_id, location_id):
-        pallets = self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('pallet_id')
-        for pallet in pallets:
-            pallet.write({
-                'reserved_to_stock_picking_id': picking_id
-            })
-        self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).write({
-            'reserved_to_stock_picking_id': picking_id
-        })
-        self.update_stock_quant(location_id)
-        self.clean_add_serial()
 
-    def add_selection_pallet(self, picking_id, location_id):
-        self.pallet_ids.filtered(lambda p: p.add_picking).write({
+def add_selection_serial(self, picking_id, location_id):
+    pallets = self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('pallet_id')
+    for pallet in pallets:
+        pallet.write({
             'reserved_to_stock_picking_id': picking_id
         })
-        self.pallet_ids.filtered(lambda p: p.add_picking).mapped('lot_serial_ids').filtered(
-            lambda s: not s.reserved_to_stock_picking_id).write({
-            'reserved_to_stock_picking_id': picking_id
-        })
-        self.update_stock_quant(location_id)
+    self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).write({
+        'reserved_to_stock_picking_id': picking_id
+    })
+    self.update_stock_quant(location_id)
+    self.clean_add_serial()
 
-    def update_quant(self, location_id):
+
+def add_selection_pallet(self, picking_id, location_id):
+    self.pallet_ids.filtered(lambda p: p.add_picking).write({
+        'reserved_to_stock_picking_id': picking_id
+    })
+    self.pallet_ids.filtered(lambda p: p.add_picking).mapped('lot_serial_ids').filtered(
+        lambda s: not s.reserved_to_stock_picking_id).write({
+        'reserved_to_stock_picking_id': picking_id
+    })
+    self.update_stock_quant(location_id)
+
+
+def update_quant(self, location_id):
+    quant = self.env['stock.quant'].sudo().search(
+        [('lot_id', '=', self.id), ('location_id.id', '=', location_id), ('location_id.usage', '=', 'internal')])
+    quant.sudo().write({
+        'reserved_quantity': self.get_reserved_quantity(),
+        'quantity': self.get_available_quantity()
+    })
+
+
+def get_available_quantity(self):
+    return sum(self.stock_production_lot_serial_ids.filtered(
+        lambda r: r.reserved_to_stock_picking_id and not r.consumed).mapped('display_weight'))
+
+
+def get_reserved_quantity(self):
+    return sum(self.stock_production_lot_serial_ids.filtered(lambda
+                                                                 x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
+        'display_weight'))
+
+
+def get_reserved_quantity_by_picking(self, picking_id):
+    return sum(self.stock_production_lot_serial_ids.filtered(
+        lambda a: a.reserved_to_stock_picking_id.id == picking_id).mapped(
+        'display_weight'))
+
+
+def clean_add_pallet(self):
+    self.pallet_ids.filtered(lambda a: a.add_picking).write({
+        'add_picking': False
+    })
+
+
+def clean_add_serial(self):
+    self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).write({
+        'to_add': False
+    })
+
+
+def update_stock_quant(self, location_id):
+    lot = self.env['stock.production.lot'].search([('name', '=', self.name)])
+    if lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed):
+
         quant = self.env['stock.quant'].sudo().search(
-            [('lot_id', '=', self.id), ('location_id.id', '=', location_id), ('location_id.usage', '=', 'internal')])
-        quant.sudo().write({
-            'reserved_quantity': self.get_reserved_quantity(),
-            'quantity': self.get_available_quantity()
-        })
+            [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'), ('location_id', '=', location_id)])
 
-    def get_available_quantity(self):
-        return sum(self.stock_production_lot_serial_ids.filtered(
-            lambda r: r.reserved_to_stock_picking_id and not r.consumed).mapped('display_weight'))
-
-    def get_reserved_quantity(self):
-        return sum(self.stock_production_lot_serial_ids.filtered(lambda
-                                                                     x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
-            'display_weight'))
-
-    def get_reserved_quantity_by_picking(self, picking_id):
-        return sum(self.stock_production_lot_serial_ids.filtered(
-            lambda a: a.reserved_to_stock_picking_id.id == picking_id).mapped(
-            'display_weight'))
-
-    def clean_add_pallet(self):
-        self.pallet_ids.filtered(lambda a: a.add_picking).write({
-            'add_picking': False
-        })
-
-    def clean_add_serial(self):
-        self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).write({
-            'to_add': False
-        })
-
-    def update_stock_quant(self, location_id):
-        lot = self.env['stock.production.lot'].search([('name', '=', self.name)])
-        if lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed):
-
-            quant = self.env['stock.quant'].sudo().search(
-                [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'), ('location_id', '=', location_id)])
-
-            if quant:
-                quant.write({
-                    'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
-                                                                                              x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
-                        'display_weight')),
-                    'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
-                        lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight'))
-                })
-            else:
-                self.env['stock.quant'].sudo().create({
-                    'lot_id': lot.id,
-                    'product_id': lot.product_id.id,
-                    'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
-                                                                                              x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
-                        'display_weight')),
-                    'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
-                        lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight')),
-                    'location_id': location_id
-                })
+        if quant:
+            quant.write({
+                'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                                                                                          x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
+                    'display_weight')),
+                'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
+                    lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight'))
+            })
+        else:
+            self.env['stock.quant'].sudo().create({
+                'lot_id': lot.id,
+                'product_id': lot.product_id.id,
+                'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                                                                                          x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
+                    'display_weight')),
+                'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
+                    lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight')),
+                'location_id': location_id
+            })
