@@ -1359,7 +1359,7 @@
                         </t>
                     </t>
                     <t t-if="len(docs) == 5 or len(docs) == 6">
-                        <t t-if="o.counter <= 3">
+                        <t t-if="o.counter &lt;= 3">
                             <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                         </t>
                         <t t-else="">
@@ -1368,34 +1368,34 @@
                         </t>
                     </t>
                     <t t-if="len(docs) == 7 or len(docs) == 8 or len(docs) == 9">
-                        <t t-if="o.counter <= 3">
+                        <t t-if="o.counter &lt;= 3">
                             <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                         </t>
                         <t t-else="">
-                            <t t-if="o.counter <= 6">
+                            <t t-if="o.counter &lt;= 6">
                                 <br style="line-height:0px;"/>
                                 <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                             </t>
                             <t t-else="">
                                 <span style="style='page-break-after:always;'"/>
-                                <t t-if="o.counter <= 9">
+                                <t t-if="o.counter &lt;= 9">
                                     <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                                 </t>
                             </t>
                         </t>
                     </t>
                     <t t-if="len(docs) == 10 or len(docs) == 11 or len(docs) == 12">
-                        <t t-if="o.counter <= 3">
+                        <t t-if="o.counter &lt;= 3">
                             <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                         </t>
                         <t t-else="">
-                            <t t-if="o.counter <= 6">
+                            <t t-if="o.counter &lt;= 6">
                                 <br style="line-height:0px;"/>
                                 <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                             </t>
                             <t t-else="">
                                 <span style="style='page-break-after:always;'"/>
-                                <t t-if="o.counter <= 9">
+                                <t t-if="o.counter &lt;= 9">
                                     <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                                 </t>
                                 <t t-else="">
