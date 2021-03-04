@@ -22,6 +22,7 @@ class SaleOrder(models.Model):
 
     partner_id = fields.Many2one('res.partner', "Cliente", readonly=False)
 
+
     def compute_ships(self):
         for item in self:
             item.ship_ids = item.picking_ids.mapped('ship')
@@ -42,6 +43,6 @@ class SaleOrder(models.Model):
         for item in self:
             item.departure_date = item.picking_ids[0].departure_date
 
-    def compute_departure_date(self):
+    def compute_shipping_number(self):
         for item in self:
             item.compute_shipping_number = item.picking_ids[0].compute_shipping_number
