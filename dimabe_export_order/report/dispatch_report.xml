@@ -1349,11 +1349,15 @@
                         </t>
                         <t t-else="">
                             <t t-if="o.counter &lt;= 6">
-                                <br style="line-height:0px;"/>
+                                <t t-if="o.counter == 4">
+                                    <br style="line-height:0px;"/>
+                                </t>
                                 <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                                <t t-if="o.counter == 6">
+                                    <span style="page-break-after:always;git pull"/>intento de salto de linea ej
+                                </t>
                             </t>
                             <t t-else="">
-                                <span style="style='page-break-after:always;'"/>
                                 <t t-if="o.counter &lt;= 9">
                                     <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                                 </t>
@@ -1366,16 +1370,22 @@
                         </t>
                         <t t-else="">
                             <t t-if="o.counter &lt;= 6">
-                                <br style="line-height:0px;"/>
+                                <t t-if="o.counter == 4">
+                                    <br style="line-height:0px;"/>
+                                </t>
                                 <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                                <t t-if="o.counter == 6">
+                                    <span style="page-break-after:always;"/>intento de salto de linea ej
+                                </t>
                             </t>
                             <t t-else="">
-                                <span style="style='page-break-after:always;'"/>
                                 <t t-if="o.counter &lt;= 9">
                                     <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                                 </t>
                                 <t t-else="">
-                                    <br style="line-height:0px;"/>
+                                    <t t-if="o.counter == 10">
+                                        <br style="line-height:0px;"/>
+                                    </t>
                                     <img style="width:33%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                                 </t>
                             </t>
