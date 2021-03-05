@@ -51,3 +51,22 @@ class AccountInvoice(models.Model):
         'Consignatario',
         domain=[('customer', '=', True)]
     )
+
+    #canning_quantity_ids = fields.Char(string="Cantidad de Sacos",compute="_compute_canning_quantity")
+
+
+    #def _compute_canning_quantity(self):
+    #    canning_quantities = []
+    #    custom_invoice_line_ids = self.env['custom.account.invoice.line'].mapped('product_id').search([('invoice_id','=',self.id)])
+    #    for line in custom_invoice_line_ids:
+    #        for atr in line.product_id.attribute_value_ids:
+    #            is_kg = atr.attribute_id.name.find('K')
+    #            if atr.attribute_id.name == 'Tipo de envase' and is_kg != 1:
+    #                value = atr.name.isdigit()
+    #                canning_quantities.append({
+    #                    'quantity': line.quantity / value,
+    #                    'canning': atr.name
+    #                })
+
+    #   return canning_quantities
+
