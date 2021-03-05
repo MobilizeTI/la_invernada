@@ -576,26 +576,16 @@ class StockProductionLot(models.Model):
         }
 
     @api.multi
-    def add_selection(self,stock_picking_id=None):
-        if not stock_picking_id:
-            picking_id = int(self.env.context['dispatch_id'])
+    def add_selection(self):
+        picking_id = int(self.env.context['dispatch_id'])
         if not self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add) and not self.pallet_ids.filtered(
                 lambda a: a.add_picking):
             raise models.ValidationError('No se seleccionado nada')
-        if not stock_picking_id:
-            picking = self.env['stock.picking'].search([('id', '=', picking_id)])
-        else:
-            picking = self.env['stock.picking'].search([('id', '=',stock_picking_id)])
+        picking = self.env['stock.picking'].search([('id', '=', picking_id)])
         if self.pallet_ids.filtered(lambda a: a.add_picking):
-            if not stock_picking_id:
-                self.add_selection_pallet(picking_id, picking.location_id.id)
-            else:
-                self.add_selection_pallet(stock_picking_id, picking.location_id.id)
+            self.add_selection_pallet(picking_id, picking.location_id.id)
         if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
-            if not stock_picking_id:
-                self.add_selection_serial(picking_id, picking.location_id.id)
-            else:
-                self.add_selection_serial(stock_picking_id, picking.location_id.id)
+            self.add_selection_serial(picking_id, picking.location_id.id)
         dispatch_line = picking.dispatch_line_ids.filtered(lambda x: x.product_id.id == self.product_id.id)
         if len(dispatch_line) > 1:
             view = self.env.ref('dimabe_manufacturing.view_confirm_order_reserved')
@@ -622,7 +612,26 @@ class StockProductionLot(models.Model):
 
         if line:
             line.write({
-                'product_uom_qty': self.get_reserved_quantity_by_picking(picking_id) if not stock_picking_id else self.get_reserved_quantity_by_picking(stock_picking_id)
+                'product_uom_qty': self.get_reserved_quantity_by_picking(picking_id)
+            })
+        else:
+            line_create = self.env['stock.move.line'].create({
+                'move_id': picking.move_ids_without_package.filtered(
+                    lambda m: m.product_id.id == self.product_id.id).id,
+                'product_id': self.product_id.id,
+                'product_uom_id': self.product_id.uom_id.id,
+                'product_uom_qty': self.get_reserved_quantity_by_picking(picking_id),
+                'location_id': picking.location_id.id,
+                'location_dest_id': picking.partner_id.property_stock_customer.id,
+                'date': date.today(),
+                'lot_id': self.id
+            })
+        self.clean_add_pallet()
+        self.clean_add_serial()
+        if len(dispatch_line) == 1:
+            dispatch_line.write({
+                'real_dispatch_qty': self.get_reserved_quantity_by_picking(picking_id),
+                'move_line_ids': [(4, line_create.id)]
             })
 
     def add_selection_serial(self, picking_id, location_id):
