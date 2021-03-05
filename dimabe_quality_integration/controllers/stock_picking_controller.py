@@ -15,14 +15,19 @@ class StockPickingController(http.Controller):
         data = []
         if result:
             for res in result:
+                models._logger(f'1 {res.name}')
                 if res.partner_id.id:
+                    models._logger(f'2 {res.name}')
                     if res.picking_type_id:
+                        models._logger(f'3 {res.name}')
                         if res.picking_type_code == 'incoming':
+                            models._logger(f'4 {res.name}')
                             if not res.move_ids_without_package:
                                 continue
                             if res.move_ids_without_package[0].product_id.product_tmpl_id.tracking != 'lot':
                                 continue
                             kgs = 0
+                            models._logger(f'5 {res.name}')
                             if res.production_net_weight.is_integer():
                                 kgs = int(res.production_net_weight)
                             data.append({
