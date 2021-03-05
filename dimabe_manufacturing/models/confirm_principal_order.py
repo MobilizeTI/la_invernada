@@ -45,8 +45,17 @@ class ConfirmPrincipalOrde(models.TransientModel):
         for item in self.custom_dispatch_line_ids:
             item.dispatch_id.clean_reserved(item.dispatch_id)
             for line in item.move_line_ids:
-                line.write({
-                    'picking_id':item.dispatch_id.id
+                self.env['stock.move.line'].create({
+                    'move_id': item.dispatch_id.move_ids_without_package.filtered(
+                        lambda a: a.product_id.id == line.product_id.id).id,
+                    'product_id': line.product_id.id,
+                    'product_uom_qty': item.real_dispatch_qty,
+                    'product_uom_id': line.product_id.uom_id.id,
+                    'lot_id': line.lot_id.id,
+                    'location_id': line.location_id.id,
+                    'location_dest_id': line.location_dest_id.id,
+                    'date': line.date,
+                    'picking_id': item.dispatch_id.id,
                 })
             if item.real_dispatch_qty > 0:
                 precision_digits = self.env['decimal.precision'].precision_get('Product Unit of Measure')
@@ -106,4 +115,3 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     moves_to_log[move] = (move.quantity_done, move.product_uom_qty)
             pick_id._log_less_quantities_than_expected(moves_to_log)
         picking.action_done()
-
