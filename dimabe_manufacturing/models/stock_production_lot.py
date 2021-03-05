@@ -576,7 +576,7 @@ class StockProductionLot(models.Model):
         }
 
     @api.multi
-    def add_selection(self,stock_picking_id=None):
+    def add_selection(self):
         picking_id = int(self.env.context['dispatch_id'])
         if not self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add) and not self.pallet_ids.filtered(
                 lambda a: a.add_picking):
