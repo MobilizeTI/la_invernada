@@ -1631,7 +1631,7 @@
                                             <span t-esc="p.lot_serial_ids[0].best_before_date.strftime('%d-%b-%y')"/>
                                         </td>
                                         <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                            <span t-esc="len(p.lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id.id == d.id))"/>
+                                            <span t-esc="len(p.lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id.id == d.picking_real_id.id))"/>
                                         </td>
                                         <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                             <span t-esc="'%.2f' %sum(d.picking_principal_id.packing_list_ids.filtered(lambda a : a.pallet_id.id == p.id).mapped('display_weight'))"/>
