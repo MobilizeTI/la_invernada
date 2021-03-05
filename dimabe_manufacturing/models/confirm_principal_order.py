@@ -64,7 +64,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     float_is_zero(move_line.qty_done, precision_digits=precision_digits) for move_line in
                     item.dispatch_id.move_line_ids.filtered(lambda m: m.state not in ('done', 'cancel')))
                 if no_quantities_done:
-                    raise models.ValidationError("Prueba 123")
+
                     self.inmediate_transfer(item.dispatch_id)
                 if self.check_backorder(item.dispatch_id):
                     self.process_backorder(item.dispatch_id)
@@ -78,6 +78,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
             if picking.state != 'assigned':
                 picking.action_assign()
                 if picking.state != 'assigned':
+                    raise models.ValidationError("Prueba 123")
                     raise models.UserError((
                         "Could not reserve all requested products. Please use the \'Mark as Todo\' button to handle the reservation manually."))
         for move in picking.move_lines.filtered(lambda m: m.state not in ['done', 'cancel']):
