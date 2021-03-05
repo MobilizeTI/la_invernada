@@ -475,31 +475,7 @@ class StockProductionLot(models.Model):
         self.stock_production_lot_serial_ids.filtered(lambda a: not a.reserved_to_stock_picking_id).write({
             'to_add': True
         })
-        picking = self.env['stock.picking'].search([('id', '=', picking_id)])
-        if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
-            self.add_selection_serial(picking_id, picking.location_id.id)
-
-        line = picking.mapped('move_line_ids_without_package').filtered(
-            lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id)
-        if not line:
-            self.env['stock.move.line'].create({
-                'move_id': picking.move_ids_without_package.filtered(
-                    lambda a: a.product_id.id == self.product_id.id).id,
-                'product_id': self.product_id.id,
-                'lot_id': self.id,
-                'product_uom_id': self.product_id.uom_id.id,
-                'product_uom_qty': self.get_reserved_quantity_by_picking(picking_id),
-                'picking_id': picking_id,
-                'location_id': picking.location_id.id,
-                'location_dest_id': picking.partner_id.property_stock_customer.id
-            })
-        else:
-            move_line = picking.mapped('move_line_ids_without_package').filtered(
-                lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id)
-            move_line.write({
-                'product_uom_qty': self.get_reserved_quantity_by_picking(picking_id)
-            })
-
+        self.add_selection(stock_picking_id=picking_id)
         self.clean_add_pallet()
         self.clean_add_serial()
 
@@ -600,12 +576,16 @@ class StockProductionLot(models.Model):
         }
 
     @api.multi
-    def add_selection(self):
-        picking_id = int(self.env.context['dispatch_id'])
+    def add_selection(self,stock_picking_id=None):
+        if not stock_picking_id:
+            picking_id = int(self.env.context['dispatch_id'])
         if not self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add) and not self.pallet_ids.filtered(
                 lambda a: a.add_picking):
             raise models.ValidationError('No se seleccionado nada')
-        picking = self.env['stock.picking'].search([('id', '=', picking_id)])
+        if not stock_picking_id:
+            picking = self.env['stock.picking'].search([('id', '=', picking_id)])
+        else:
+            picking = self.env['stock.picking'].search([('id', '=',stock_picking_id)])
         if self.pallet_ids.filtered(lambda a: a.add_picking):
             self.add_selection_pallet(picking_id, picking.location_id.id)
         if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
