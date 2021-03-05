@@ -1696,7 +1696,7 @@
                                     </t>
                                 </t>
                             </t>
-                            <t t-elif="not d.picking_real_id and d.picking_principal_id and d.is_child_dispatch">
+                            <t t-elif="(not d.picking_real_id and d.picking_principal_id and d.is_child_dispatch) or (d.picking_principal_id.id == d.id)">
                                 <t t-foreach="d.picking_principal_id.assigned_pallet_ids" t-as="p">
                                     <tr>
                                         <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
