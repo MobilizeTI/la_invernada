@@ -74,13 +74,13 @@ class StockPicking(models.Model):
 
     packing_list_file = fields.Binary('Packing List')
 
-    is_multiple_dispatch = fields.Boolean('Es Despacho Multiple?')
+    is_multiple_dispatch = fields.Boolean('Es Despacho Multiple?',copy=False)
 
-    picking_real_id = fields.Many2one('stock.picking','Despacho Real')
+    picking_real_id = fields.Many2one('stock.picking','Despacho Real',copy=False)
 
-    picking_principal_id = fields.Many2one('stock.picking','Pedido Principal')
+    picking_principal_id = fields.Many2one('stock.picking','Pedido Principal',copy=False)
 
-    is_child_dispatch = fields.Boolean('Es despacho hijo')
+    is_child_dispatch = fields.Boolean('Es despacho hijo',copy=False)
 
     @api.onchange('is_multiple_dispatch')
     def set_multiple_dispatch(self):
