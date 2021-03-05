@@ -3,12 +3,12 @@
 
     <record id="orders_files_report_view" model="ir.ui.view">
         <field name="name">Archivo de Pedidos</field>
-        <field name="model">sale.order</field>
+        <field name="model">custom.customer.orders.xls</field>
         <field name="arch" type="xml">
             <form>
                 <group>
                     <group>
-                        <!--<field name="for_year"/>-->
+                        <field name="for_year"/>
                     </group>
                 </group>
                 <footer>
