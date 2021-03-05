@@ -878,7 +878,7 @@ class AccountInvoice(models.Model):
                                     exist_custom_invoice_line = True
                                     i.write({
                                         'quantity': i.quantity + quantity,
-                                        'price_subtotal' : i.price_unit * (i.quantity + quantity)
+                                        #'price_subtotal' : i.price_unit * (i.quantity + quantity)
                                     })
                         if not exist_custom_invoice_line:
                             self.env['custom.account.invoice.line'].create({
