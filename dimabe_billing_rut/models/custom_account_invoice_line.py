@@ -19,10 +19,21 @@ class CustomAccountInvoiceLine(models.Model):
 
     price_subtotal = fields.Float(string="Subtotal", compute="_compute_price_subtotal")
 
+    canning_quantity = fields.Float(string="Cantidad de Envases", compute="_compute_canning_quantiy")
+
     def _compute_price_subtotal(self):
         for item in self:
             if self.price_unit and self.quantity:
                 self.price_subtotal = self.price_unit * self.quantity
+
+    def _compute_canning_quantiy(self):
+        for atr in self.product_id.attribute_value_ids:
+            is_kg = atr.attribute_id.name.find('K')
+            if atr.attribute_id.name == 'Tipo de envase' and is_kg != 1:
+                value = atr.name.isdigit()
+                self.canning_quantity = self.quantity / value
+                
+
 
 
 
