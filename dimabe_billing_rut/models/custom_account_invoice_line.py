@@ -31,6 +31,7 @@ class CustomAccountInvoiceLine(models.Model):
             is_kg = atr.attribute_id.name.find('K')
             if atr.attribute_id.name == 'Tipo de envase' and is_kg != 1:
                 value = atr.name.isdigit()
+                raise models.ValidationError('{} valor {} de {}'.format(self.quantity,value,atr.name))
                 self.canning_quantity = self.quantity / value
                 
 
