@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-    <record id="orders_files__report_view" model="ir.ui.view">
+    <record id="orders_files_report_view" model="ir.ui.view">
         <field name="name">Archivo de Pedidos</field>
         <field name="model">sale.order</field>
         <field name="arch" type="xml">
@@ -24,7 +24,7 @@
         <field name="res_model">sale.order</field>
         <field name="view_type">form</field>
         <field name="view_mode">form</field>
-        <field name="view_id" ref="wizard_hr_payslip_report_view"/>
+        <field name="view_id" ref="orders_files_report_view"/>
         <field name="target">new</field>
     </record>
 
