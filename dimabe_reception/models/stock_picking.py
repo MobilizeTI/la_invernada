@@ -306,7 +306,18 @@ class StockPicking(models.Model):
                 m_move = stock_picking.get_mp_move()
                 if not m_move:
                     m_move = stock_picking.get_pt_move()
-                raise models.ValidationError(m_move.move_line_ids)
+                if not m_move.move_line_ids or len(m_move.move_line_ids) == 0:
+                    for move in stock_picking.move_ids_without_package:
+                        self.env['stock.move.line'].create({
+                            'move_id':move.id,
+                            'picking_id':stock_picking.id,
+                            'product_id':move.product_id.id,
+                            'product_uom_id':move.product_id.uom_id.id,
+                            'product_uom_qty':move.product_uom_qty,
+                            'location_id':stock_picking.location_id.id,
+                            'location_dest_id':stock_picking.location_dest_id.id,
+                            'date':date.today(),
+                        })
                 if m_move and m_move.move_line_ids and m_move.picking_id.picking_type_code == 'incoming':
 
                     for move_line in m_move.move_line_ids:
