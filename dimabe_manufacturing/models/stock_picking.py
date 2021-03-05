@@ -1,4 +1,4 @@
-from odoo import models, api, fields
+from odoo import models, api, fields,_
 import base64
 from odoo.addons import decimal_precision as dp
 import datetime
