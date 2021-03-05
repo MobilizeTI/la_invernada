@@ -69,7 +69,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
                 if self.check_backorder(item.dispatch_id):
                     self.process_backorder(item.dispatch_id)
                 else:
-                    item.action_done()
+                    item.dispatch_id.action_done()
 
     @api.multi
     def inmediate_transfer(self, picking):
