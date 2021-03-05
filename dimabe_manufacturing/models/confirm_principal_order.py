@@ -43,7 +43,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
 
     def process_data(self):
         for item in self.custom_dispatch_line_ids:
-            item.dispatch_id.clean_reserved(item.dispatch_id)
+            #item.dispatch_id.clean_reserved(item.dispatch_id)
             for line in item.move_line_ids:
                 line.write({
                     'picking_id':item.dispatch_id.id
