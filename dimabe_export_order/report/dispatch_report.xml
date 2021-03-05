@@ -1741,7 +1741,7 @@
                                                     <span t-esc="s.stock_product_id.type_product"/>
                                                 </td>
                                                 <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                                    <span t-field="d.name"/>
+                                                    <span t-field="d.picking_principal_id.custom_dispatch_line_ids.filtered(lambda a: a.product_id.id == p.product_id.id).dispatch_id.origin"/>
                                                 </td>
                                                 <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                                     <span t-field="p.name"/>
@@ -1796,7 +1796,7 @@
                                             <span t-esc="p.lot_serial_ids[0].product_id.type_product"/>
                                         </td>
                                         <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                            <span t-esc="d.picking_principal_id.dispatch_line_ids.filtered(lambda a: a.product_id.id == p.product_id.id).sale_id.name"/>
+                                            <span t-esc="d.origin"/>
                                         </td>
                                         <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                             <span t-field="p.name"/>
