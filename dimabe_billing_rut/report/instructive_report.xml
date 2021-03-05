@@ -276,6 +276,12 @@
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
                                         <span t-field="d.custom_invoice_line_ids[0].canning_quantity"/>
+                                        <t t-foreach="d.custom_invoice_line_ids[0].product_id.attribute_value_ids" t-as="a">
+                                            <t t-if="a.attribute_id.name == 'Tipo de envase'">
+                                                <span t-field="a.name"/>
+                                            </t>
+                                        </t>
+                                        c/u
                                     </td>
                                 </tr>
                                 <tr>
@@ -286,6 +292,12 @@
                                             <t t.foreach="d.custom_invoice_line_ids" t-as="c">
                                                 <t t-if="c.id != custom_invoice_line_ids[0].id">
                                                     <span t-field="c.canning_quantity"/>
+                                                    <t t-foreach="c.product_id.attribute_value_ids" t-as="a">
+                                                        <t t-if="a.attribute_id.name == 'Tipo de envase'">
+                                                            <span t-field="a.name"/>
+                                                        </t>
+                                                    </t>
+                                                    c/u
                                                 </t>
                                             </t>
                                         </t>
