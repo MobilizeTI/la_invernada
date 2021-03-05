@@ -576,40 +576,54 @@ class StockProductionLot(models.Model):
         }
 
     @api.multi
-    def add_selection(self):
-        picking_id = int(self.env.context['stock_picking_id'])
-        self.pallet_ids.filtered(lambda a: not a.reserved_to_stock_picking_id).write({
-            'add_picking': True
-        })
-        self.stock_production_lot_serial_ids.filtered(lambda a: not a.reserved_to_stock_picking_id).write({
-            'to_add': True
-        })
-        picking = self.env['stock.picking'].search([('id', '=', picking_id)])
-        if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
-            self.add_selection_serial(picking_id, picking.location_id.id)
-
-        line = picking.mapped('move_line_ids_without_package').filtered(
-            lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id)
-        if not line:
-            self.env['stock.move.line'].create({
-                'move_id': picking.move_ids_without_package.filtered(
-                    lambda a: a.product_id.id == self.product_id.id).id,
-                'product_id': self.product_id.id,
-                'lot_id': self.id,
-                'product_uom_id': self.product_id.uom_id.id,
-                'product_uom_qty': self.get_reserved_quantity_by_picking(picking_id),
-                'picking_id': picking_id,
-                'location_id': picking.location_id.id,
-                'location_dest_id': picking.partner_id.property_stock_customer.id
-            })
+    def add_selection(self,stock_picking_id=None):
+        if not stock_picking_id:
+            picking_id = int(self.env.context['dispatch_id'])
+        if not self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add) and not self.pallet_ids.filtered(
+                lambda a: a.add_picking):
+            raise models.ValidationError('No se seleccionado nada')
+        if not stock_picking_id:
+            picking = self.env['stock.picking'].search([('id', '=', picking_id)])
         else:
-            move_line = picking.mapped('move_line_ids_without_package').filtered(
-                lambda a: a.product_id.id == self.product_id.id and a.lot_id.id == self.id)
-            move_line.write({
-                'product_uom_qty': self.get_reserved_quantity_by_picking(picking_id)
+            picking = self.env['stock.picking'].search([('id', '=',stock_picking_id)])
+        if self.pallet_ids.filtered(lambda a: a.add_picking):
+            if not stock_picking_id:
+                self.add_selection_pallet(picking_id, picking.location_id.id)
+            else:
+                self.add_selection_pallet(stock_picking_id, picking.location_id.id)
+        if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
+            if not stock_picking_id:
+                self.add_selection_serial(picking_id, picking.location_id.id)
+            else:
+                self.add_selection_serial(stock_picking_id, picking.location_id.id)
+        dispatch_line = picking.dispatch_line_ids.filtered(lambda x: x.product_id.id == self.product_id.id)
+        if len(dispatch_line) > 1:
+            view = self.env.ref('dimabe_manufacturing.view_confirm_order_reserved')
+            wiz = self.env['confirm.order.reserved'].create({
+                'sale_ids': [(4, s.id) for s in dispatch_line.mapped('sale_id')],
+                'picking_principal_id': picking_id,
+                'custom_dispatch_line_ids': [(4, c.id) for c in dispatch_line],
+                'lot_id': self.id
             })
-        self.clean_add_pallet()
-        self.clean_add_serial()
+            return {
+                'name': 'Seleccione el pedido al cual quiere reservar',
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'confirm.order.reserved',
+                'views': [(view.id, 'form')],
+                'view_id': view.id,
+                'target': 'new',
+                'res_id': wiz.id,
+                'context': self.env.context
+            }
+        line = picking.move_line_ids_without_package.filtered(
+            lambda a: a.lot_id.id == self.id and a.product_id.id == self.product_id.id)
+
+        if line:
+            line.write({
+                'product_uom_qty': self.get_reserved_quantity_by_picking(picking_id) if not stock_picking_id else self.get_reserved_quantity_by_picking(stock_picking_id)
+            })
 
     def add_selection_serial(self, picking_id, location_id):
         pallets = self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('pallet_id')
