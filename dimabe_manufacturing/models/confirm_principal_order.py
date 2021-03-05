@@ -45,18 +45,10 @@ class ConfirmPrincipalOrde(models.TransientModel):
         for item in self.custom_dispatch_line_ids:
             item.dispatch_id.clean_reserved(item.dispatch_id)
             for line in item.move_line_ids:
-                self.env['stock.move.line'].create({
-                    'move_id': item.dispatch_id.move_ids_without_package.filtered(
-                        lambda a: a.product_id.id == line.product_id.id).id,
-                    'product_id': line.product_id.id,
-                    'product_uom_qty': item.real_dispatch_qty,
-                    'product_uom_id': line.product_id.uom_id.id,
-                    'lot_id': line.lot_id.id,
-                    'location_id': line.location_id.id,
-                    'location_dest_id': line.location_dest_id.id,
-                    'date': line.date,
-                    'picking_id': item.dispatch_id.id,
+                line.write({
+                    'picking_id':item.dispatch_id.id
                 })
+                line._action_done()
             if item.real_dispatch_qty > 0:
                 precision_digits = self.env['decimal.precision'].precision_get('Product Unit of Measure')
                 no_quantities_done = all(
@@ -69,21 +61,9 @@ class ConfirmPrincipalOrde(models.TransientModel):
 
     @api.multi
     def inmediate_transfer(self, picking):
-        pick_to_backorder = self.env['stock.picking']
-        pick_to_do = self.env['stock.picking']
-        if picking.state == 'draft':
-            picking.action_confirm()
-            if picking.state != 'assigned':
-                picking.action_assign()
-                if picking.state != 'assigned':
-                    raise models.UserError((
-                        "Could not reserve all requested products. Please use the \'Mark as Todo\' button to handle the reservation manually."))
-        for move in picking.move_lines.filtered(lambda m: m.state not in ['done', 'cancel']):
-            for move_line in move.move_line_ids:
-                move_line.qty_done = move_line.product_uom_qty
-        if self.check_backorder(picking):
-            pick_to_backorder |= picking
-        pick_to_do |= picking
+        picking.write({
+            'state':'done'
+        })
 
     @api.multi
     def check_backorder(self, picking):
