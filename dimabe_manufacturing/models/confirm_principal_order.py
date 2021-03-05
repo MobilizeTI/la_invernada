@@ -106,3 +106,4 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     moves_to_log[move] = (move.quantity_done, move.product_uom_qty)
             pick_id._log_less_quantities_than_expected(moves_to_log)
         picking.action_done()
+
