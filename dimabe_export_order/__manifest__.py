@@ -46,6 +46,7 @@
         'views/views.xml',
         'report/dispatch_report.xml',
         'views/account_invoice.xml'
+        'report/orders_files.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
