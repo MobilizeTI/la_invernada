@@ -622,7 +622,7 @@ class StockProductionLot(models.Model):
 
         if line:
             line.write({
-                'product_uom_qty': self.get_reserved_quantity_by_picking(picking_id)
+                'product_uom_qty': self.get_reserved_quantity_by_picking(picking_id) if not stock_picking_id else self.get_reserved_quantity_by_picking(stock_picking_id)
             })
         else:
             line_create = self.env['stock.move.line'].create({
