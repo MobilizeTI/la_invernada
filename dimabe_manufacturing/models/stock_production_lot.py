@@ -587,9 +587,15 @@ class StockProductionLot(models.Model):
         else:
             picking = self.env['stock.picking'].search([('id', '=',stock_picking_id)])
         if self.pallet_ids.filtered(lambda a: a.add_picking):
-            self.add_selection_pallet(picking_id, picking.location_id.id)
+            if not stock_picking_id:
+                self.add_selection_pallet(picking_id, picking.location_id.id)
+            else:
+                self.add_selection_pallet(stock_picking_id, picking.location_id.id)
         if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
-            self.add_selection_serial(picking_id, picking.location_id.id)
+            if not stock_picking_id:
+                self.add_selection_serial(picking_id, picking.location_id.id)
+            else:
+                self.add_selection_serial(stock_picking_id, picking.location_id.id)
         dispatch_line = picking.dispatch_line_ids.filtered(lambda x: x.product_id.id == self.product_id.id)
         if len(dispatch_line) > 1:
             view = self.env.ref('dimabe_manufacturing.view_confirm_order_reserved')
