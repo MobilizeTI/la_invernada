@@ -198,10 +198,11 @@ class StockPicking(models.Model):
     def _create_backorder(self, backorder_moves=[]):
         """ Move all non-done lines into a new backorder picking.
         """
-        raise models.ValidationError(backorder_moves)
+
         backorders = self.env['stock.picking']
         for picking in self:
             moves_to_backorder = picking.move_lines.filtered(lambda x: x.state not in ('done', 'cancel'))
+            raise models.ValidationError(moves_to_backorder)
             if moves_to_backorder:
                 backorder_picking = picking.copy({
                     'name': '/',
