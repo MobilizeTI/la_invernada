@@ -608,7 +608,6 @@ class StockProductionLot(models.Model):
             move_line.write({
                 'product_uom_qty': self.get_reserved_quantity_by_picking(picking_id)
             })
-
         self.clean_add_pallet()
         self.clean_add_serial()
 
