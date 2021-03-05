@@ -585,7 +585,7 @@ class StockProductionLot(models.Model):
         if not stock_picking_id:
             picking = self.env['stock.picking'].search([('id', '=', picking_id)])
         else:
-            picking = self.env['stock.picking'].search([('id', '=',stock_picking_id)])
+            picking = self.env['stock.picking'].search([('id', '=',stock_picking_id.id)])
         if self.pallet_ids.filtered(lambda a: a.add_picking):
             if not stock_picking_id:
                 self.add_selection_pallet(picking_id, picking.location_id.id)
