@@ -117,7 +117,7 @@ class StockProductionLotSerial(models.Model):
 
     label_durability_id = fields.Many2one(
         'label.durability',
-        'Dirabilidad Etiqueta'
+        'Durabilidad Etiqueta'
     )
 
     label_percent = fields.Float(
