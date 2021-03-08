@@ -404,12 +404,11 @@ class AccountInvoiceXlsx(models.Model):
         taxes = inv.mapped('invoice_line_ids').filtered(lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name'))
         if taxes:
             sheet.write('H{}'.format(str(row)),sum(taxes.mapped('price_subtotal')), formats['number'])
+            sheet.write('I{}'.format(str(row)),'0',formats['number'])
         else:
             sheet.write('H{}'.format(str(row)), '0', formats['number'])
-        if taxes:
             sheet.write('I{}'.format(str(row)), round(inv.amount_untaxed_signed), formats['number'])
-        else:
-            sheet.write('H{}'.format(str(row)), '0', formats['number'])
+
         days = self.diff_dates(inv.date_invoice, date.today())
         if days > 90:
             sheet.write('K{}'.format(str(row)), round(inv.amount_tax), formats['number'])
