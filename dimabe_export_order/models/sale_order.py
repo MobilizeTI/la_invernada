@@ -22,10 +22,10 @@ class SaleOrder(models.Model):
 
     partner_id = fields.Many2one('res.partner', "Cliente", readonly=False)
 
-    current_company_id = fields.Integer(compute="_compute_company_id")
+    is_current_company = fields.Boolean(compute="_compute_company_id")
 
     def _compute_company_id(self):
-        for item in self:
+        #for item in self:
             if self.env.context.get('uid', False):
                 item.current_company_id = self.env.context.get('uid', False)
             else:
@@ -50,7 +50,8 @@ class SaleOrder(models.Model):
     def _compute_departure_date(self):
         #valid if one dispatch of sale order havent date
         for item in self:
-            item.departure_date = item.picking_ids[0].departure_date
+            if item.picking_ids[0].departure_date:
+                item.departure_date = item.picking_ids[0].departure_date
 
     def _compute_shipping_number(self):
         for item in self:
