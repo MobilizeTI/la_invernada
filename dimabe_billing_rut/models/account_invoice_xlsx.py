@@ -423,8 +423,8 @@ class AccountInvoiceXlsx(models.Model):
             sheet.write('J{}'.format(str(row)), round(inv.amount_tax), formats['number'])
         another_taxes = inv.mapped('invoice_line_ids').filtered(
             lambda a: 'IVA' not in a.invoice_line_tax_ids.mapped('name') or 'Exento' not in a.invoice_line_tax_ids.mapped('name'))
-        sheet.write('M{}'.format(str(row)),round(sum(another_taxes.mapped('price_subtotal'))))
-        sheet.write('L{}'.format(str(row)), round(inv.amount_total_signed), formats['number'])
+        sheet.write('L{}'.format(str(row)),round(sum(another_taxes.mapped('price_subtotal'))))
+        sheet.write('M{}'.format(str(row)), round(inv.amount_total_signed), formats['number'])
         return sheet
 
     def diff_dates(self, date1, date2):
