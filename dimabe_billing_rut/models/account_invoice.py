@@ -745,7 +745,7 @@ class AccountInvoice(models.Model):
                 "EnterpriseCity": self.partner_id.city,
                 "EnterpriseCommune": self.partner_id.state_id.name,
                 "EnterpriseName": self.partner_id.name,
-                "EnterpriseTurn": self.partner_id.enterpise_turn,
+                "EnterpriseTurn": self.partner_id.enterprise_turn,
                 "EnterprisePhone": recipientPhone
             },
             "lines": productLines,
