@@ -785,7 +785,7 @@
                                 <td>:</td>
                                 <td>
                                     <span t-field="d.shipping_number"/>/
-                                    <span t-esc="d.date_invoice.strftime('%Y')"/>)
+                                    <span t-esc="d.date_invoice.strftime('%Y')"/>
                                 </td>
                             </tr>
                             <tr></tr>
