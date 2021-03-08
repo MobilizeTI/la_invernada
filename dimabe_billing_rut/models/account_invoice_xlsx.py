@@ -406,7 +406,7 @@ class AccountInvoiceXlsx(models.Model):
         sheet.write('E{}'.format(str(row)), rut, formats['string'])
         sheet.write('F{}'.format(str(row)), inv.partner_id.display_name, formats['string'])
         taxes = inv.mapped('invoice_line_ids').filtered(
-            lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) == 0)
+            lambda a: len(a.invoice_line_tax_ids) == 0)
         if taxes:
             sheet.write('H{}'.format(str(row)), sum(taxes.mapped('price_subtotal')), formats['number'])
             sheet.write('I{}'.format(str(row)), '0', formats['number'])
@@ -421,14 +421,20 @@ class AccountInvoiceXlsx(models.Model):
         else:
             sheet.write('K{}'.format(str(row)), '0', formats['number'])
             sheet.write('J{}'.format(str(row)), round(inv.amount_tax), formats['number'])
-        another_taxes = inv.mapped('invoice_line_ids').filtered(
-            lambda a: 'IVA Crédito' not in a.invoice_line_tax_ids.mapped(
-                'name') or 'IVA Débito' not in a.invoice_line_tax_ids.mapped(
-                'name') or 'Exento' not in a.invoice_line_tax_ids.mapped(
-                'name') or not a.invoice_line_tax_ids)
+
+        another_taxes = self.get_another_taxes(inv)
         sheet.write('L{}'.format(str(row)), round(sum(another_taxes.mapped('price_subtotal'))))
         sheet.write('M{}'.format(str(row)), round(inv.amount_total_signed), formats['number'])
         return sheet
 
     def diff_dates(self, date1, date2):
         return abs(date2 - date1).days
+
+    def get_another_taxes(self, inv):
+        another = []
+        for line in inv.mapped('invoice_line_ids'):
+            if line.invoice_line_tax_ids and len(line.invoice_line_tax_ids) > 0:
+                if 'IVA Crédito' not in line.invoice_line_tax_ids.mapped(
+                    'name') or 'IVA Débito' not in line.invoice_line_tax_ids.mapped('name'):
+                    another.append(line)
+        return another
