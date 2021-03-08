@@ -628,7 +628,7 @@ class StockProductionLot(models.Model):
                 'picking_id':picking.id,
                 'product_id': self.product_id.id,
                 'product_uom_id': self.product_id.uom_id.id,
-                'product_uom_qty': self.get_reserved_quantity_by_picking(picking_id),
+                'product_uom_qty': self.get_reserved_quantity_by_picking(picking.id),
                 'location_id': picking.location_id.id,
                 'location_dest_id': picking.partner_id.property_stock_customer.id,
                 'date': date.today(),
@@ -638,7 +638,7 @@ class StockProductionLot(models.Model):
         self.clean_add_serial()
         if len(dispatch_line) == 1:
             dispatch_line.write({
-                'real_dispatch_qty': self.get_reserved_quantity_by_picking(picking_id),
+                'real_dispatch_qty': self.get_reserved_quantity_by_picking(picking.id),
                 'move_line_ids': [(4, line_create.id)]
             })
 
