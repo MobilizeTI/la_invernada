@@ -10,12 +10,12 @@
         <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
           <page name="dte_tab" string="DTE">
             <group>
-              <field name="invoice_rut"/>
-              <field name="economic_activities" placeholder="Giros" colspan="8" />
               <group>
+                <field name="invoice_rut"/>
                 <field name="enterpise_turn"/>
                 <field name="mail_dte"/>
               </group>
+              <field name="economic_activities" placeholder="Giros" colspan="8" />
             </group>
           </page>
         </xpath> 

@@ -451,7 +451,7 @@ class AccountInvoice(models.Model):
                 "EnterpriseCity": self.env.user.company_id.city,
                 "EnterpriseCommune": str(self.env.user.company_id.state_id.name),
                 "EnterpriseName": self.env.user.company_id.partner_id.name,
-                "EnterpriseTurn": self.company_activity_id.name,
+                "EnterpriseTurn": self.env.user.company_id.partner_id.enterprise_turn,
                 "EnterprisePhone": self.env.user.company_id.phone if self.env.user.company_id.phone else ''
             }
         
@@ -743,7 +743,7 @@ class AccountInvoice(models.Model):
                 "EnterpriseCity": self.partner_id.city,
                 "EnterpriseCommune": self.partner_id.state_id.name,
                 "EnterpriseName": self.partner_id.name,
-                "EnterpriseTurn": self.partner_activity_id.name,
+                "EnterpriseTurn": self.partner_id.enterpise_turn,
                 "EnterprisePhone": recipientPhone
             },
             "lines": productLines,
