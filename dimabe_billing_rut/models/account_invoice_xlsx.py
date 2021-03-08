@@ -425,7 +425,7 @@ class AccountInvoiceXlsx(models.Model):
             lambda a: 'IVA Crédito' not in a.invoice_line_tax_ids.mapped(
                 'name') or 'IVA Crédito' not in a.invoice_line_tax_ids.mapped(
                 'name') or 'Exento' not in a.invoice_line_tax_ids.mapped(
-                'name') or len(a.invoice_line_tax_ids) != 0)
+                'name') or not a.invoice_line_tax_ids)
         sheet.write('L{}'.format(str(row)), round(sum(another_taxes.mapped('price_subtotal'))))
         sheet.write('M{}'.format(str(row)), round(inv.amount_total_signed), formats['number'])
         return sheet
