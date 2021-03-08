@@ -423,7 +423,7 @@ class AccountInvoiceXlsx(models.Model):
             sheet.write('J{}'.format(str(row)), round(inv.amount_tax), formats['number'])
 
         another_taxes = self.get_another_taxes(inv)
-        sheet.write('L{}'.format(str(row)), round(sum(another_taxes.mapped('price_subtotal'))))
+        sheet.write('L{}'.format(str(row)), round(sum(another_taxes)))
         sheet.write('M{}'.format(str(row)), round(inv.amount_total_signed), formats['number'])
         return sheet
 
@@ -436,5 +436,5 @@ class AccountInvoiceXlsx(models.Model):
             if line.invoice_line_tax_ids and len(line.invoice_line_tax_ids) > 0:
                 if 'IVA Crédito' not in line.invoice_line_tax_ids.mapped(
                     'name') or 'IVA Débito' not in line.invoice_line_tax_ids.mapped('name'):
-                    another.append(line)
+                    another.append(line.price_subtotal)
         return another
