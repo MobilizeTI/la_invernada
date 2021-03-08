@@ -441,6 +441,5 @@ class AccountInvoiceXlsx(models.Model):
             if line.invoice_line_tax_ids and len(line.invoice_line_tax_ids) > 0:
                 for tax in line.invoice_line_tax_ids:
                     if tax.amount != 19 and tax.amount > 0:
-                        models._logger.error(tax.name)
                         another.append(line.price_subtotal)
         return another
