@@ -1306,97 +1306,28 @@
     <template id="report_truck_dispatch">
         <t t-call="web.html_container">
             <div class="page" style="width:100%; text-align:center">
-                <t t-foreach="docs.sorted(key=lambda x: x.counter)" t-as="o">
-                    <!--<t t-if="o.counter == 3 or o.counter == 6 or o.counter == 9">
-                        <img style="width:250px;height:300px;"
-                             t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
-                        />
-                        <br style="line-height:0px;"/>
-                    </t>
-                    <t t-else="">
-                        <img style="width:200px;height:300px;"
-                             t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"
-                        />
-                    </t>
-                    -->
-                    <t t-if="len(docs) == 1">
-                        <img width="760px" height="800px" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
-                    </t>
-                    <t t-if="len(docs) == 2">
-                        <img width="380px" height="700px" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
-                    </t>
-                    <t t-if="len(docs) == 3">
-                        <t t-if="o.counter &lt; 3">
-                            <img width="253px" height="550px" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                <t t-if="len(docs) &lt;= 4">
+                    <div style="width:950px; text-align: center;">
+                        <t t-foreach="docs.sorted(key=lambda x: x.counter)" t-as="o">
+                            <img width="49%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                         </t>
-                        <t t-else="">
-                            <br style="line-height:0px;"/>
-                            <img width="253px" height="550px" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                    </div>
+                </t>
+                <t t-if="len(docs) &gt; 4 and len(docs) &lt;= 8">
+                    <p style="page-break-after:always;"></p>
+                    <div style="width:950px; text-align: center;">
+                        <t t-foreach="docs.sorted(key=lambda x: x.counter)" t-as="o">
+                            <img width="49%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                         </t>
-                    </t>
-                    <t t-if="len(docs) == 4 or len(docs) == 5 or len(docs) == 6">
-                        <t t-if="o.counter &lt;= 3">
-                            <img width="253px" height="550px" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                    </div>
+                </t>
+                <t t-if="len(docs) &gt; 8 and len(docs) &lt;= 12">
+                    <p style="page-break-after:always;"></p>
+                    <div style="width:950px; text-align: center;">
+                        <t t-foreach="docs.sorted(key=lambda x: x.counter)" t-as="o">
+                            <img width="49%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                         </t>
-                        <t t-else="">
-                            <t t-if="o.counter == 3">
-                                <br style="line-height:0px;"/>
-                            </t>
-                            <img width="253px" height="550px" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
-                        </t>
-                    </t>
-                    <t t-if="len(docs) == 7 or len(docs) == 8 or len(docs) == 9">
-                        <t t-if="o.counter &lt;= 3">
-                            <img width="253px" height="550px" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
-                        </t>
-                        <t t-else="">
-                            <t t-if="o.counter &lt;= 6">
-                                <t t-if="o.counter == 4">
-                                    <br style="line-height:0px;"/>
-                                </t>
-                                <img width="253px" height="550px" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
-                                <t t-if="o.counter == 6">
-                                    <p style="page-break-after:always;"></p>
-                                </t>
-                            </t>
-                            <t t-else="">
-                                <t t-if="o.counter &lt;= 9">
-                                    <img width="253px" height="550px" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
-                                </t>
-                            </t>
-                        </t>
-                    </t>
-                    <t t-if="len(docs) == 10 or len(docs) == 11 or len(docs) == 12">
-                        <t t-if="o.counter &lt;= 3">
-                            <img width="253px" height="550px" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
-                        </t>
-                        <t t-else="">
-                            <t t-if="o.counter &lt;= 6">
-                                <t t-if="o.counter == 4">
-                                    <br style="line-height:0px;"/>
-                                </t>
-                                <img width="253px" height="550px" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
-                                <t t-if="o.counter == 6">
-                                    <p style="page-break-after:always;"></p>
-                                </t>
-                            </t>
-                            <t t-else="">
-                                <t t-if="o.counter &lt;= 9">
-                                    <img width="253px" height="550px" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
-                                </t>
-                                <t t-else="">
-                                    <t t-if="o.counter == 10">
-                                        <br style="line-height:0px;"/>
-                                    </t>
-                                    <img width="253px" height="550px" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
-                                </t>
-                            </t>
-                        </t>
-                    </t>
-
-                    <!--<t t-if="docs[-1].id == o.id">
-                        <span style="style='page-break-after:always;'"/>
-                    </t>-->
+                    </div>
                 </t>
             </div>
         </t>
