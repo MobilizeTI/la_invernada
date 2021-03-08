@@ -590,7 +590,7 @@ class StockProductionLot(models.Model):
         else:
             picking = self.env['stock.picking'].search([('id', '=', picking_id)])
         if self.pallet_ids.filtered(lambda a: a.add_picking):
-            self.add_selection_pallet(picking.id if isinstance(picking_id,int), picking.location_id.id)
+            self.add_selection_pallet(picking.id, picking.location_id.id)
         if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
             self.add_selection_serial(picking.id, picking.location_id.id)
         dispatch_line = picking.dispatch_line_ids.filtered(lambda x: x.product_id.id == self.product_id.id)
