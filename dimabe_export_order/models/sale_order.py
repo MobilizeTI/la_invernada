@@ -26,7 +26,10 @@ class SaleOrder(models.Model):
 
     def _compute_company_id(self):
         for item in self:
-            item.current_company_id = self.env.user.company_id.id
+            if self.env.context.get('uid', False):
+                item.current_company_id = self.env.context.get('uid', False)
+            else:
+                item.current_company_id = False
 
     def _compute_ships(self):
         for item in self:
