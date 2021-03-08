@@ -475,7 +475,7 @@ class StockProductionLot(models.Model):
         self.stock_production_lot_serial_ids.filtered(lambda a: not a.reserved_to_stock_picking_id).write({
             'to_add': True
         })
-        self.add_selection()
+        self.add_selection(stock_picking_id=picking_id)
         self.clean_add_pallet()
         self.clean_add_serial()
 
@@ -576,8 +576,11 @@ class StockProductionLot(models.Model):
         }
 
     @api.multi
-    def add_selection(self):
-        picking_id = int(self.env.context['dispatch_id'])
+    def add_selection(self,stock_picking_id=None):
+        if self.env.context['dispatch_id']:
+            picking_id = int(self.env.context['dispatch_id'])
+        else:
+            picking_id = stock_picking_id
         if not self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add) and not self.pallet_ids.filtered(
                 lambda a: a.add_picking):
             raise models.ValidationError('No se seleccionado nada')
