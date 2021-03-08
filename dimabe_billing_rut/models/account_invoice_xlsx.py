@@ -369,10 +369,10 @@ class AccountInvoiceXlsx(models.Model):
             sheet.write_formula('L{}'.format(str(row)), '=SUM(L{}:L{})'.format(begin, end),
                                 formats['total'])
         if len(invoices) > 0:
-            sheet.write_formula('L{}'.format(str(row)), '=SUM(M{}:M{})'.format(begin, end),
+            sheet.write_formula('M{}'.format(str(row)), '=SUM(M{}:M{})'.format(begin, end),
                                 formats['total'])
         else:
-            sheet.write('L{}'.format(str(row)), '0', formats['total'])
+            sheet.write('M{}'.format(str(row)), '0', formats['total'])
         return sheet
 
     def set_title(self, sheet, format, book=0):
