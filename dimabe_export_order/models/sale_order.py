@@ -50,7 +50,7 @@ class SaleOrder(models.Model):
     def _compute_departure_date(self):
         #valid if one dispatch of sale order havent date
         for item in self:
-            if item.picking_ids[0].departure_date:
+            if len(item.picking_ids) > 0:
                 item.departure_date = item.picking_ids[0].departure_date
 
     def _compute_shipping_number(self):
