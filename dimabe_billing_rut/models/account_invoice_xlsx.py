@@ -408,7 +408,7 @@ class AccountInvoiceXlsx(models.Model):
         taxes = inv.mapped('invoice_line_ids').filtered(
             lambda a: len(a.invoice_line_tax_ids) == 0 or 'Exento' not in a.invoice_line_tax_ids.mapped('name'))
         if taxes:
-            sheet.write('H{}'.format(str(row)), sum(inv.amount_untaxed_signed), formats['number'])
+            sheet.write('H{}'.format(str(row)), inv.amount_untaxed_signed, formats['number'])
             sheet.write('I{}'.format(str(row)), '0', formats['number'])
         else:
             sheet.write('H{}'.format(str(row)), '0', formats['number'])
