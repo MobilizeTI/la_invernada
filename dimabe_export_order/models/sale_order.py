@@ -22,11 +22,11 @@ class SaleOrder(models.Model):
 
     partner_id = fields.Many2one('res.partner', "Cliente", readonly=False)
 
-    company_id = fields.Integer(compute="_compute_company_id")
+    current_company_id = fields.Integer(compute="_compute_company_id")
 
     def _compute_company_id(self):
         for item in self:
-            item.company_id = self.env.user.company_id.id
+            item.current_company_id = self.env.user.company_id.id
 
     def _compute_ships(self):
         for item in self:
