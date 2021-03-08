@@ -4,15 +4,15 @@ from odoo import models, fields, api
 class UpdateStockQuant(models.TransientModel):
     _name = 'update.stock.quant'
 
-    lot_id = fields.Many2one('stock.production.lot', 'Lote')
+    product_id = fields.Many2one('product.product', 'Producto')
 
     picking_id = fields.Many2one('stock.picking')
 
-    lot_ids = fields.Many2many('stock.production.lot')
+    product_ids = fields.Many2many('product.product')
 
     @api.multi
     def update(self):
-        lot = self.env['stock.production.lot'].search([('name', '=', self.lot_id.name)])
+        lot = self.env['stock.production.lot'].search([('product_id.id', '=',self.product_id.id)])
         if lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed):
             quant = self.env['stock.quant'].sudo().search(
                 [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'), ('location_id', '=', self.picking_id.location_id.id)])

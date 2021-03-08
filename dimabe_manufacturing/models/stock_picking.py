@@ -111,7 +111,7 @@ class StockPicking(models.Model):
     def update_stock_quant(self):
         view = self.env.ref('dimabe_manufacturing.update_quant_view')
         wiz = self.env['update.stock.quant'].create({
-            'lot_ids': [(4,l.id) for l in self.move_line_ids_without_package.mapped('lot_id')],
+            'product_id': [(4,p.id) for p in self.move_line_ids_without_package.mapped('product_id')],
             'picking_id':self.id
         })
         return {
@@ -243,6 +243,17 @@ class StockPicking(models.Model):
                 })
             else:
                 move.unlink()
+            lines = self.dispatch_line_ids.filtered(lambda a: a.product_id.id == lot.product_id.id)
+            if len(lines) < 2:
+                for line in lines:
+                    if lot.id in line.move_line_ids.mapped('lot_id').mapped('id'):
+                        line.write({
+                            'real_dispatch_qty': line.real_dispatch_qty - move.product_uom_qty
+                        })
+            else:
+                lines.write({
+                    'real_dispatch_qty': line.real_dispatch_qty - move.product_uom_qty
+                })
             lot.update_stock_quant(self.location_id.id)
 
     @api.multi

@@ -475,7 +475,7 @@ class StockProductionLot(models.Model):
         self.stock_production_lot_serial_ids.filtered(lambda a: not a.reserved_to_stock_picking_id).write({
             'to_add': True
         })
-        self.add_selection(stock_picking_id=picking_id)
+        self.add_selection()
         self.clean_add_pallet()
         self.clean_add_serial()
 

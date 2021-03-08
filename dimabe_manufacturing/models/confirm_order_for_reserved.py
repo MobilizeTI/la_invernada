@@ -15,6 +15,10 @@ class ConfirmOrderForReserved(models.TransientModel):
 
     lot_id = fields.Many2one('stock.production.lot', 'Lote')
 
+    custom_dispatch_line_ids = fields.Many2many('custom.dispatch.line','Lineas de despacho')
+
+    picking_ids = fields.Many2many('stock.picking',compute='compute_picking_ids')
+
     @api.one
     def reserved(self, no_reserved=True):
         if self.lot_id.pallet_ids.filtered(lambda a: a.add_picking):
@@ -55,3 +59,8 @@ class ConfirmOrderForReserved(models.TransientModel):
     def cancel(self):
         raise models.ValidationError('Prueba Cancelar')
 
+
+    @api.multi
+    def compute_picking_ids(self):
+        for item in self:
+            item.picking_ids = self.custom_dispatch_line_ids.mapped('dispatch_id')

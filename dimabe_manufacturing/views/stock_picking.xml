@@ -26,7 +26,7 @@
                       attrs="{'invisible':[('is_multiple_dispatch','=',False),('picking_type_code','!=','outgoing')]}">
                     <field name="dispatch_line_ids"
                            attrs="{'invisible':[('picking_type_code','!=','outgoing')],'read_only':[('state','=','done')]}">
-                        <tree editable="bottom" edit="true" delete="false" create="false">
+                        <tree editable="bottom" edit="true" delete="true" create="false">
                             <field name="sale_id"/>
                             <field name="dispatch_id"/>
                             <field name="product_id"/>
