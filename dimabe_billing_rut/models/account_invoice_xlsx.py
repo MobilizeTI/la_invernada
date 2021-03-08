@@ -433,6 +433,7 @@ class AccountInvoiceXlsx(models.Model):
     def get_another_taxes(self, inv):
         another = []
         for line in inv.mapped('invoice_line_ids'):
+            models._logger.error(line.invoice_line_tax_ids.mapped('name'))
             if line.invoice_line_tax_ids and len(line.invoice_line_tax_ids) > 0:
                 if 'IVA Crédito' not in line.invoice_line_tax_ids.mapped(
                     'name') or 'IVA Débito' not in line.invoice_line_tax_ids.mapped('name'):
