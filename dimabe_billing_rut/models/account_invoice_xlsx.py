@@ -417,7 +417,7 @@ class AccountInvoiceXlsx(models.Model):
         days = self.diff_dates(inv.date_invoice, date.today())
         if days > 90:
             sheet.write('K{}'.format(str(row)),
-                        round(sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.name).mapped('amount'))),
+                        round(sum(inv.tax_line_ids.filtered(lambda a: a.tax_id.amount == 19).mapped('amount'))),
                         formats['number'])
             sheet.write('J{}'.format(str(row)), '0', formats['number'])
         else:
@@ -440,7 +440,7 @@ class AccountInvoiceXlsx(models.Model):
 
             if line.invoice_line_tax_ids and len(line.invoice_line_tax_ids) > 0:
                 for tax in line.invoice_line_tax_ids:
-                    if 'IVA' not in tax.name and 'Exento' not in tax.name:
+                    if tax.amount != 19 and tax.amount > 0:
                         models._logger.error(tax.name)
                         another.append(line.price_subtotal)
         return another
