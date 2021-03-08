@@ -403,7 +403,7 @@ class AccountInvoiceXlsx(models.Model):
         sheet.write('F{}'.format(str(row)), inv.partner_id.display_name, formats['string'])
         taxes = inv.mapped('invoice_line_ids').filtered(lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name'))
         if taxes:
-            sheet.write('H{}'.format(str(row)),taxes.price_subtotal, formats['number'])
+            sheet.write('H{}'.format(str(row)),sum(taxes.mapped('price_subtotal')), formats['number'])
         else:
             sheet.write('H{}'.format(str(row)), '0', formats['number'])
         sheet.write('I{}'.format(str(row)), round(inv.amount_untaxed_signed), formats['number'])
@@ -416,6 +416,7 @@ class AccountInvoiceXlsx(models.Model):
             sheet.write('J{}'.format(str(row)), round(inv.amount_tax), formats['number'])
         sheet.write('L{}'.format(str(row)), round(inv.amount_total_signed), formats['number'])
         return sheet
+
 
     def diff_dates(self, date1, date2):
         return abs(date2 - date1).days
