@@ -871,14 +871,13 @@ class AccountInvoice(models.Model):
                             'value_per_kilo': self.total_value_stock_picking(self.stock_picking_ids.id) / self.value_per_kilo(self.stock_picking_ids.id),
                             'required_loading_date': self.stock_picking_ids.required_loading_date
                         })
-
                         if len(self.custom_invoice_line_ids) > 0:
                             for i in self.custom_invoice_line_ids:
                                 if item.product_id.id == i.product_id.id:
                                     exist_custom_invoice_line = True
                                     i.write({
                                         'quantity': i.quantity + quantity,
-                                        'price_subtotal' : i.price_unit * (i.quantity + quantity)
+                                        #'price_subtotal' : i.price_unit * (i.quantity + quantity)
                                     })
                         if not exist_custom_invoice_line:
                             self.env['custom.account.invoice.line'].create({
