@@ -15,7 +15,7 @@ class ConfirmOrderForReserved(models.TransientModel):
 
     lot_id = fields.Many2one('stock.production.lot', 'Lote')
 
-    custom_dispatch_line_ids = fields.Many2many('custom.dispatch.line','Lineas de despacho')
+    custom_dispatch_line_ids = fields.Many2many('custom.dispatch.line')
 
     picking_ids = fields.Many2many('stock.picking',compute='compute_picking_ids')
 
