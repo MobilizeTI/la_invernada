@@ -873,13 +873,13 @@
                                 <th style="text-align:left; width:200px">Telefono</th>
                                 <td>:</td>
                                 <td><t t-if="res_company.plant_contact_ids.phone">
-                                        <span t-field="res_partner.plant_contact_ids.phone"/>
+                                        <span t-field="res_company.plant_contact_ids.phone"/>
                                     </t>
-                                    <t t-if="res_company.plant_contact_ids.phone and res_partner.plant_contact_ids.mobile">
+                                    <t t-if="res_company.plant_contact_ids.phone and res_company.plant_contact_ids.mobile">
                                         <![CDATA[&nbsp;]]>-<![CDATA[&nbsp;]]>
                                     </t>
                                     <t t-if="res_company.plant_contact_ids.mobile">
-                                        <span t-field="res_partner.plant_contact_ids.mobile"/>
+                                        <span t-field="res_company.plant_contact_ids.mobile"/>
                                     </t>        
                                 </td>
                             </tr>
