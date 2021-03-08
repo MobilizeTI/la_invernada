@@ -618,6 +618,7 @@ class StockProductionLot(models.Model):
             line_create = self.env['stock.move.line'].create({
                 'move_id': picking.move_ids_without_package.filtered(
                     lambda m: m.product_id.id == self.product_id.id).id,
+                'picking_id':picking_id,
                 'product_id': self.product_id.id,
                 'product_uom_id': self.product_id.uom_id.id,
                 'product_uom_qty': self.get_reserved_quantity_by_picking(picking_id),
