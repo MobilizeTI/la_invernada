@@ -423,7 +423,7 @@ class AccountInvoiceXlsx(models.Model):
             sheet.write('J{}'.format(str(row)), round(sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.name).mapped('amount'))), formats['number'])
 
         another_taxes = self.get_another_taxes(inv)
-        sheet.write('L{}'.format(str(row)), round(sum(another_taxes)))
+        sheet.write('L{}'.format(str(row)), round(sum(another_taxes)),formats['number'])
         sheet.write('M{}'.format(str(row)), round(inv.amount_total_signed), formats['number'])
         return sheet
 
