@@ -582,11 +582,13 @@ class StockProductionLot(models.Model):
             picking_id = int(self.env.context['dispatch_id'])
         else:
             picking_id = stock_picking_id
-        raise models.ValidationError(f'{type(stock_picking_id)} {type(picking_id)}')
         if not self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add) and not self.pallet_ids.filtered(
                 lambda a: a.add_picking):
             raise models.ValidationError('No se seleccionado nada')
-        picking = self.env['stock.picking'].search([('id', '=', picking_id)])
+        if isinstance(picking_id,dict):
+            picking = self.env['stock.picking'].search([('id', '=', picking_id['dispatch_id'])])
+        else:
+            picking = self.env['stock.picking'].search([('id', '=', picking_id)])
         if self.pallet_ids.filtered(lambda a: a.add_picking):
             self.add_selection_pallet(picking_id, picking.location_id.id)
         if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
