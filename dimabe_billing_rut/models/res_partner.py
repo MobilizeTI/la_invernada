@@ -13,6 +13,8 @@ class ResPartner(models.Model):
 
     mail_dte = fields.Char('Email DTE')
 
+    enterpise_turn = fields.Char(string="Giro")
+
     @api.model
     def create(self, values_list):
         prepare_rut(values_list)
