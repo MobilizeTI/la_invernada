@@ -407,8 +407,10 @@ class AccountInvoiceXlsx(models.Model):
             sheet.write('I{}'.format(str(row)), '0', formats['number'])
         else:
             sheet.write('H{}'.format(str(row)), '0', formats['number'])
-            sheet.write('I{}'.format(str(row)), round(
-                inv.mapped('invoice_line_ids').filtered(lambda a: 'IVA' in a.invoice_line_tax_ids.mapped('name'))),
+            sheet.write('I{}'.format(str(row)), round(sum(
+
+                inv.mapped('invoice_line_ids').filtered(lambda a: 'IVA' in a.invoice_line_tax_ids.mapped('name')).mapped('price_subtotal')
+            )),
                         formats['number'])
 
         days = self.diff_dates(inv.date_invoice, date.today())
