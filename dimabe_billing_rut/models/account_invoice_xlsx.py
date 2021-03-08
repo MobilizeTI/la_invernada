@@ -408,7 +408,7 @@ class AccountInvoiceXlsx(models.Model):
         taxes = inv.mapped('invoice_line_ids').filtered(
             lambda a: len(a.invoice_line_tax_ids) == 0)
         if taxes:
-            sheet.write('H{}'.format(str(row)), sum(taxes.mapped('price_subtotal')), formats['number'])
+            sheet.write('H{}'.format(str(row)), sum(inv.amount_untaxed_signed), formats['number'])
             sheet.write('I{}'.format(str(row)), '0', formats['number'])
         else:
             sheet.write('H{}'.format(str(row)), '0', formats['number'])
@@ -416,11 +416,11 @@ class AccountInvoiceXlsx(models.Model):
 
         days = self.diff_dates(inv.date_invoice, date.today())
         if days > 90:
-            sheet.write('K{}'.format(str(row)), round(inv.amount_tax), formats['number'])
+            sheet.write('K{}'.format(str(row)), round(sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.name).mapped('amount'))), formats['number'])
             sheet.write('J{}'.format(str(row)), '0', formats['number'])
         else:
             sheet.write('K{}'.format(str(row)), '0', formats['number'])
-            sheet.write('J{}'.format(str(row)), round(inv.amount_tax), formats['number'])
+            sheet.write('J{}'.format(str(row)), round(sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.name).mapped('amount'))), formats['number'])
 
         another_taxes = self.get_another_taxes(inv)
         sheet.write('L{}'.format(str(row)), round(sum(another_taxes)))
