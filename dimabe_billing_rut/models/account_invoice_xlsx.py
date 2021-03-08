@@ -392,8 +392,9 @@ class AccountInvoiceXlsx(models.Model):
 
     def set_data_invoice(self, sheet, row, inv, formats):
         sheet.write('A{}'.format(str(row)), inv.dte_type_id.code, formats['string'])
-        sheet.write('B{}'.format(str(row)), inv.reference, formats['string'])
-        sheet.write('C{}'.format(str(row)), inv.number, formats['string'])
+        if inv.reference:
+            sheet.write('B{}'.format(str(row)), inv.reference, formats['string'])
+            sheet.write('C{}'.format(str(row)), inv.number, formats['string'])
         sheet.write('D{}'.format(str(row)), inv.date_invoice.strftime("%d/%m/%Y"), formats['string'])
         rut = inv.partner_id.invoice_rut
         if not rut:
