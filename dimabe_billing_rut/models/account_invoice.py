@@ -520,6 +520,8 @@ class AccountInvoice(models.Model):
         else:
             if not self.partner_id.invoice_rut:
                 raise models.ValidationError('El Cliente {} no tiene Rut de Facturación'.format(self.partner_id.name))
+            if not self.partner_id.enterprise_turn:
+                raise models.ValidationError('El Cliente {} no tiene Giro'.format(self.partner_id.name))
         
         if not self.date_invoice:
             raise models.ValidationError('Debe Seleccionar la Fecha de la Factura')
@@ -743,7 +745,7 @@ class AccountInvoice(models.Model):
                 "EnterpriseCity": self.partner_id.city,
                 "EnterpriseCommune": self.partner_id.state_id.name,
                 "EnterpriseName": self.partner_id.name,
-                "EnterpriseTurn": self.partner_id.enterpise_turn,
+                "EnterpriseTurn": self.partner_id.enterprise_turn,
                 "EnterprisePhone": recipientPhone
             },
             "lines": productLines,
