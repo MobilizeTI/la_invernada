@@ -41,20 +41,20 @@
             <field name="priority">1000</field>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='user_id']" position="replace">
-                    <field name="ship_ids" attrs="{'invisible':[([user.company_id.id],'!=','1')]}" widget="many2many_tags"/>
+                    <field name="ship_ids" attrs="{'invisible':[('current_company_id','!=',1)]}" widget="many2many_tags"/>
                 </xpath>
                 <xpath expr="//field[@name='confirmation_date']" position="replace">
-                    <field name="ordered_quantity" attrs="{'invisible':[([user.company_id.id],'!=','1')]}"/>
+                    <field name="ordered_quantity" attrs="{'invisible':[('current_company_id','!=',1)]}"/>
                 </xpath>
                 <xpath expr="//field[@name='ordered_quantity']" position="after">
-                    <field name="delivered_quantity" attrs="{'invisible':[([user.company_id.id],'!=','1')]}"/>
+                    <field name="delivered_quantity" attrs="{'invisible':[('current_company_id','!=',1)]}"/>
                 </xpath>
                 <xpath expr="//field[@name='delivered_quantity']" position="after">
-                    <field name="unit_price" attrs="{'invisible':[([user.company_id.id],'!=','1')]}"/>
+                    <field name="unit_price" attrs="{'invisible':[('current_company_id','!=',1)]}"/>
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="after">
-                    <field name="shipping_number" attrs="{'invisible':[([user.company_id.id],'!=','1')]}"/>
-                    <field name="departure_date" attrs="{'invisible':[([user.company_id.id],'!=','1')]}"/>
+                    <field name="shipping_number" attrs="{'invisible':[('current_company_id','!=',1)]}"/>
+                    <field name="departure_date" attrs="{'invisible':[('current_company_id','!=',1)]}"/>
                 </xpath>
             </field>
         </record>
