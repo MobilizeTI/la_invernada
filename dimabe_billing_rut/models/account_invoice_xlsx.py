@@ -436,7 +436,7 @@ class AccountInvoiceXlsx(models.Model):
 
             if line.invoice_line_tax_ids and len(line.invoice_line_tax_ids) > 0:
                 for tax in line.invoice_line_tax_ids:
-                    if 'IVA' not in tax.name:
+                    if 'IVA' not in tax.name or 'Exento' not in tax.name:
                         models._logger.error(tax.name)
                         another.append(line.price_subtotal)
         return another
