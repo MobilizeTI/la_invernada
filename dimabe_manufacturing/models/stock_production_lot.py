@@ -590,15 +590,15 @@ class StockProductionLot(models.Model):
         else:
             picking = self.env['stock.picking'].search([('id', '=', picking_id)])
         if self.pallet_ids.filtered(lambda a: a.add_picking):
-            self.add_selection_pallet(picking_id, picking.location_id.id)
+            self.add_selection_pallet(picking.id if isinstance(picking_id,int), picking.location_id.id)
         if self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add):
-            self.add_selection_serial(picking_id, picking.location_id.id)
+            self.add_selection_serial(picking.id, picking.location_id.id)
         dispatch_line = picking.dispatch_line_ids.filtered(lambda x: x.product_id.id == self.product_id.id)
         if len(dispatch_line) > 1:
             view = self.env.ref('dimabe_manufacturing.view_confirm_order_reserved')
             wiz = self.env['confirm.order.reserved'].create({
                 'sale_ids': [(4, s.id) for s in dispatch_line.mapped('sale_id')],
-                'picking_principal_id': picking_id,
+                'picking_principal_id': picking.id,
                 'custom_dispatch_line_ids': [(4, c.id) for c in dispatch_line],
                 'lot_id': self.id
             })
@@ -625,7 +625,7 @@ class StockProductionLot(models.Model):
             line_create = self.env['stock.move.line'].create({
                 'move_id': picking.move_ids_without_package.filtered(
                     lambda m: m.product_id.id == self.product_id.id).id,
-                'picking_id':picking_id,
+                'picking_id':picking.id,
                 'product_id': self.product_id.id,
                 'product_uom_id': self.product_id.uom_id.id,
                 'product_uom_qty': self.get_reserved_quantity_by_picking(picking_id),
