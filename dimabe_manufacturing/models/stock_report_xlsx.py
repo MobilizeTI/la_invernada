@@ -44,6 +44,12 @@ class StockReportXlsx(models.TransientModel):
             sheet.write(row, col, lot.location_id.name)
             col += 1
             sheet.write(row, col, lot.product_id.display_name)
+            col += 1
+            sheet.write(row,col,lot.show_guide_number)
+            col += 1
+            sheet.write(row,col,lot.harvest)
+            col += 1
+
             row += 1
             col = 0
         workbook.close()
