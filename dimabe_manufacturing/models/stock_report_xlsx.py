@@ -3,7 +3,7 @@ import xlsxwriter
 from datetime import date
 import base64
 
-class StockReportXlsx(models.Model):
+class StockReportXlsx(models.TransientModel):
     _name = 'stock.report.xlsx'
 
     year = fields.Integer('Cosecha')
