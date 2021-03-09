@@ -29,4 +29,4 @@ class StockMoveLine(models.Model):
                 item.count_stock_production_lot_serial = len(item.lot_id.stock_production_lot_serial_ids)
 
     def _action_done(self):
-        raise models.ValidationError(self.picking_id)
+        raise models.ValidationError(self.move_id)
