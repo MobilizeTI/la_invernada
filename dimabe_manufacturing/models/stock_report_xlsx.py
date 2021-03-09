@@ -30,11 +30,7 @@ class StockReportXlsx(models.TransientModel):
         lots = self.env['stock.production.lot'].sudo().search(
             [('product_id.categ_id.name', 'in', ('Seca', 'Desp. y Secado'))])
         for lot in lots:
-            long_producer_name = max(
-                lots.mapped('producer_id').mapped(
-                    'name'), key=len)
             if lot.producer_id:
-                sheet.set_column(row, col, len(long_producer_name))
                 sheet.write(row, col, lot.producer_id.display_name)
             else:
                 sheet.write(row, col, "Sin Definir")
@@ -56,11 +52,7 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, lot.location_id.display_name)
             col += 1
-            long_product_name = max(
-                lots.mapped('product_id').mapped(
-                    'display_name'), key=len)
             sheet.write(row, col, lot.product_id.display_name)
-            sheet.set_column(col, len(long_product_name))
             col += 1
             sheet.write(row, col, lot.show_guide_number)
             col += 1
