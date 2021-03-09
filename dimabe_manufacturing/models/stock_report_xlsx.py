@@ -41,7 +41,7 @@ class StockReportXlsx(models.TransientModel):
                 sheet.write(row, col, lot.name)
                 col += 1
                 sheet.write(row, col, str(round(
-                    sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight')),
+                    sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight')),
                     2)))
                 col += 1
                 sheet.write(row, col, lot.product_id.get_variety())
