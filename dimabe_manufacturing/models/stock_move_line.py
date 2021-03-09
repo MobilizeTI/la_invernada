@@ -34,5 +34,8 @@ class StockMoveLine(models.Model):
                 res = super(StockMoveLine,self)._action_done()
                 return res
             except UserError:
-                raise UserWarning(ml.picking_id)
+                ml.write({
+                    'state':'done'
+                })
+                ml.lot_id.update_stock_quant(location_id=ml.location_id.id)
 
