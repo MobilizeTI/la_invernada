@@ -94,3 +94,38 @@ class StockReportXlsx(models.TransientModel):
             'target': 'current',
         }
         return action
+
+    @api.multi
+    def generate_excel_serial_report(self):
+        file_name = 'temp_name.xlsx'
+        workbook = xlsxwriter.Workbook(file_name)
+        sheet = workbook.add_worksheet("Informe de Calibrado")
+        row = 0
+        col = 0
+        titles = [(1, 'Productor:'), (2, 'Serie:'), (3, 'Kilos Disponibles:'), (4, 'Variedad:'), (5, 'Calibre:'),
+                  (6, 'Ubicacion Sistema:'), (7, 'Producto:'), (8, 'Serie Disponible:'), (9, 'Fecha de Produccion:'),
+                  (10, 'Cliente o Calidad:'), (11, 'Enviado a proceso:'), (12, 'Fecha de Envio:'),
+                  (13, 'Ubicacion Fisica:'),(14,'Observacion')]
+        for title in titles:
+            sheet.write(row, col, title[1])
+            col += 1
+        col = 0
+        serials = self.env['stock.production.lot.serial'].sudo().search([('PSE006','like','product_id.default_code')])
+        for serial in serials:
+            sheet.write(row,col,serial.producer_id.display_name)
+        workbook.close()
+        with open(file_name, "rb") as file:
+            file_base64 = base64.b64encode(file.read())
+        report_name = f'Informe de Existencia Producto Calibrado {date.today().strftime("%d/%m/%Y")}.xlsx'
+        attachment_id = self.env['ir.attachment'].sudo().create({
+            'name': report_name,
+            'datas_fname': report_name,
+            'datas': file_base64
+        })
+
+        action = {
+            'type': 'ir.actions.act_url',
+            'url': '/web/content/{}?download=true'.format(attachment_id.id, ),
+            'target': 'current',
+        }
+        return action
