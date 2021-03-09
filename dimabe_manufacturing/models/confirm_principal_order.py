@@ -20,6 +20,9 @@ class ConfirmPrincipalOrde(models.TransientModel):
 
     @api.one
     def select(self):
+        self.picking_id.packing_list_ids.write({
+            'consumed':True
+        })
         self.process_data()
         for item in self.custom_dispatch_line_ids:
             self.update_quant(product_ids=self.custom_dispatch_line_ids.mapped('product_id').mapped('id'))
@@ -30,10 +33,13 @@ class ConfirmPrincipalOrde(models.TransientModel):
                 'picking_principal_id': self.custom_dispatch_line_ids.filtered(
                     lambda a: a.sale_id.id == self.sale_id.id).dispatch_id.id
             })
-            self.update_quant(product_ids=self.custom_dispatch_line_ids.mapped('product_id').mapped('id'))
 
     @api.one
     def cancel(self):
+        self.picking_id.packing_list_ids.write({
+            'consumed':True
+        })
+
         self.process_data()
         for item in self.picking_id.dispatch_line_ids:
             self.update_quant(product_ids=self.custom_dispatch_line_ids.mapped('product_id').mapped('id'))
@@ -43,7 +49,6 @@ class ConfirmPrincipalOrde(models.TransientModel):
                 'picking_principal_id': self.picking_id.id,
                 'is_child_dispatch': True if item.dispatch_id.id != self.picking_id.id else False
             })
-            self.update_quant(product_ids=self.custom_dispatch_line_ids.mapped('product_id').mapped('id'))
 
     def process_data(self):
         for item in self.custom_dispatch_line_ids:
@@ -72,9 +77,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
                 if self.check_backorder(item.dispatch_id):
                     self.process_backorder(item.dispatch_id)
                 else:
-                    self.update_quant(product_ids=self.custom_dispatch_line_ids.mapped('product_id').mapped('id'))
                     item.dispatch_id.action_done()
-                    self.update_quant(product_ids=self.custom_dispatch_line_ids.mapped('product_id').mapped('id'))
 
     def update_quant(self, product_ids):
         lots = self.env['stock.production.lot'].search([('product_id.id', 'in', product_ids)])
