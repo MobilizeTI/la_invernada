@@ -35,6 +35,7 @@ class StockMoveLine(models.Model):
                 return res
             except UserError:
                 ml.write({
+                    'product_uom_qty':0,
                     'state':'done'
                 })
                 ml.lot_id.update_stock_quant(location_id=ml.location_id.id)
