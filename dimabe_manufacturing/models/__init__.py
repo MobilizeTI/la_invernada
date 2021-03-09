@@ -31,3 +31,4 @@ from . import custom_dispatch_line
 from . import confirm_order_for_reserved
 from . import confirm_principal_order
 from . import update_stock_quant
+from . import stock_report_xlsx

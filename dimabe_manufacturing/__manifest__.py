@@ -92,5 +92,9 @@
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
+    ],
+    'qweb':[
+        'static/src/xml/action_generate.xml',
+        'static/src/xml/stock_report_button.xml'
     ]
 }
