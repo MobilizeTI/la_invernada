@@ -682,9 +682,9 @@ class StockProductionLot(models.Model):
             'display_weight'))
 
     def get_reserved_quantity_by_picking(self, picking_id):
-        return sum(self.stock_production_lot_serial_ids.filtered(
+        return round(sum(self.stock_production_lot_serial_ids.filtered(
             lambda a: a.reserved_to_stock_picking_id.id == picking_id).mapped(
-            'display_weight'))
+            'display_weight')))
 
     def clean_add_pallet(self):
         self.pallet_ids.filtered(lambda a: a.add_picking).write({
@@ -705,20 +705,20 @@ class StockProductionLot(models.Model):
 
             if quant:
                 quant.write({
-                    'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                    'reserved_quantity': round(sum(lot.stock_production_lot_serial_ids.filtered(lambda
                                                                                               x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
-                        'display_weight')),
-                    'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
-                        lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight'))
+                        'display_weight'))),
+                    'quantity': round(sum(lot.stock_production_lot_serial_ids.filtered(
+                        lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight')))
                 })
             else:
                 self.env['stock.quant'].sudo().create({
                     'lot_id': lot.id,
                     'product_id': lot.product_id.id,
-                    'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                    'reserved_quantity': round(sum(lot.stock_production_lot_serial_ids.filtered(lambda
                                                                                               x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
-                        'display_weight')),
-                    'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
-                        lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight')),
+                        'display_weight'))),
+                    'quantity': round(sum(lot.stock_production_lot_serial_ids.filtered(
+                        lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight'))),
                     'location_id': location_id
                 })
