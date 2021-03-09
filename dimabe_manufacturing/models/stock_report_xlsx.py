@@ -129,7 +129,7 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, serial.consumed)
             col += 1
-            sheet.write_datetime(row,col,serial.packaging_date)
+            sheet.write_datetime(row,col,serial.packaging_date.strftime('%d-%m-%Y'))
             col += 1
             row += 1
             col = 0
