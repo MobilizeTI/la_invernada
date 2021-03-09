@@ -3,6 +3,7 @@ import xlsxwriter
 from datetime import date
 import base64
 
+
 class StockReportXlsx(models.TransientModel):
     _name = 'stock.report.xlsx'
 
@@ -23,6 +24,16 @@ class StockReportXlsx(models.TransientModel):
         for title in titles:
             sheet.write(row, col, title[1])
             col += 1
+        row += 1
+        raw_categ = self.env['product.category'].sudo().search([('name', '=', 'Materia Prima')])
+        lots = self.env['stock.production.lot'].sudo().search(
+            ['product_id.categ_id.id', 'in', raw_categ.mapped('child_id').mapped('id')])
+        for lot in lots:
+            sheet.write(row,col,lot.producer_id.display_name)
+            col += 1
+            sheet.write(row,col,lot.name)
+            col += 1
+            sheet.write(row,col,str(sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))))
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
