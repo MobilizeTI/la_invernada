@@ -284,7 +284,7 @@ class StockProductionLot(models.Model):
             if item.is_dried_lot:
                 dried = self.env['dried.unpelled.history'].search(
                     [('out_lot_id', '=', item.id)])
-                item.show_guide_number = dried.lot_guide_numbers
+                item.show_guide_number = dried.lot_guide_numbers.rep
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi

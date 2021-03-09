@@ -30,28 +30,37 @@ class StockReportXlsx(models.TransientModel):
         lots = self.env['stock.production.lot'].sudo().search(
             [('product_id.categ_id.name', 'in', ('Seca', 'Desp. y Secado'))])
         for lot in lots:
-            sheet.write(row, col, lot.producer_id.display_name)
-            col += 1
-            sheet.write(row, col, lot.name)
-            col += 1
-            sheet.write(row, col, str(round(
-                sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight')), 2)))
-            col += 1
-            sheet.write(row, col, lot.product_id.get_variety())
-            col += 1
-            sheet.write(row, col, lot.product_id.get_calibers())
-            col += 1
-            sheet.write(row, col, lot.location_id.name)
-            col += 1
-            sheet.write(row, col, lot.product_id.display_name)
-            col += 1
-            sheet.write(row,col,lot.show_guide_number)
-            col += 1
-            sheet.write(row,col,lot.harvest)
-            col += 1
-
-            row += 1
-            col = 0
+            if lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed):
+                if lot.producer_id:
+                    sheet.write(row, col, lot.producer_id.display_name)
+                else:
+                    sheet.write(row, col, "Sin Definir")
+                col += 1
+                sheet.write(row, col, lot.name)
+                col += 1
+                sheet.write(row, col, str(round(
+                    sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight')),
+                    2)))
+                col += 1
+                sheet.write(row, col, lot.product_id.get_variety())
+                col += 1
+                sheet.write(row, col, lot.product_id.get_calibers())
+                col += 1
+                sheet.write(row, col, lot.location_id.display_name)
+                col += 1
+                sheet.write(row, col, lot.product_id.display_name)
+                col += 1
+                sheet.write(row, col, lot.show_guide_number)
+                col += 1
+                sheet.write(row, col, lot.harvest)
+                col += 1
+                sheet.write(row, col, lot.reception_weight)
+                col += 1
+                sheet.write(row, col, lot.create_date)
+                col += 1
+                sheet.write(row, col, len(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed)))
+                row += 1
+                col = 0
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
