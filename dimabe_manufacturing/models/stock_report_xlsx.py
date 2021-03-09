@@ -29,8 +29,7 @@ class StockReportXlsx(models.TransientModel):
         raw_categ = self.env['product.category'].sudo().search([('name', '=', 'Materia Prima')])
         lots = self.env['stock.production.lot'].sudo().search(
             [('product_id.categ_id.id', 'in', raw_categ.mapped('child_id').filtered(
-                lambda a: 'Servicio' not in a.name or 'Servicios' not in a.name or 'Verde' not in a.name).mapped('id')),
-             ('product_id.')])
+                lambda a: 'Servicio' not in a.name or 'Servicios' not in a.name or 'Verde' not in a.name).mapped('id'))])
         for lot in lots:
             sheet.write(row, col, lot.producer_id.display_name)
             col += 1
