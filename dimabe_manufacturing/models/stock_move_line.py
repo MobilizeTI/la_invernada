@@ -34,6 +34,11 @@ class StockMoveLine(models.Model):
                 item.update({
                     'state': 'done'
                 })
+            elif item.picking_id.is_multiple_dispatch:
+                item.write({
+                    'state':'done'
+                })
+                item.lot_id.update_stock_quant(location_id=item.location_id.id)
             else:
                 res = super(StockMoveLine, self)._action_done()
                 return res
