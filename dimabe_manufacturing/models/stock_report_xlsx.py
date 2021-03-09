@@ -110,12 +110,13 @@ class StockReportXlsx(models.TransientModel):
             sheet.write(row, col, title[1])
             col += 1
         col = 0
-        row +=1
+        row += 1
         serials = self.env['stock.production.lot.serial'].sudo().search([('product_id.default_code','like','PSE006')])
         for serial in serials:
             sheet.write(row,col,serial.producer_id.display_name)
             col += 1
             row += 1
+            col = 0
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
