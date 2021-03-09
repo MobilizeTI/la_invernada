@@ -30,46 +30,45 @@ class StockReportXlsx(models.TransientModel):
         lots = self.env['stock.production.lot'].sudo().search(
             [('product_id.categ_id.name', 'in', ('Seca', 'Desp. y Secado'))])
         for lot in lots:
-            if lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed):
-                long_producer_name = max(
-                    lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('producer_id').mapped(
-                        'name'), key=len)
-                if lot.producer_id:
-                    sheet.set_column(row, col, len(long_producer_name))
-                    sheet.write(row, col, lot.producer_id.display_name)
-                else:
-                    sheet.write(row, col, "Sin Definir")
-                col += 1
-                sheet.write(row, col, lot.name)
-                col += 1
-                sheet.write(row, col, str(round(
-                    sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
-                        'calculated_weight')),
-                    2)) if not lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
-                    'display_weight') else str(round(
-                    sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
-                        'display_weight')),
-                    2)))
-                col += 1
-                sheet.write(row, col, lot.product_id.get_variety())
-                col += 1
-                sheet.write(row, col, lot.product_id.get_calibers())
-                col += 1
-                sheet.write(row, col, lot.location_id.display_name)
-                col += 1
-                sheet.write(row, col, lot.product_id.display_name)
-                col += 1
-                sheet.write(row, col, lot.show_guide_number)
-                col += 1
-                sheet.write(row, col, lot.harvest)
-                col += 1
-                sheet.write(row, col, lot.reception_weight)
-                col += 1
-                sheet.write(row, col, lot.create_date.strftime("%d-%m-%Y %H:%M:%S"))
-                col += 1
-                sheet.write(row, col, len(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed)))
-                row += 1
-                col = 0
+            long_producer_name = max(
+                lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('producer_id').mapped(
+                    'name'), key=len)
+            if lot.producer_id:
+                sheet.set_column(row, col, len(long_producer_name))
+                sheet.write(row, col, lot.producer_id.display_name)
+            else:
+                sheet.write(row, col, "Sin Definir")
+            col += 1
+            sheet.write(row, col, lot.name)
+            col += 1
+            sheet.write(row, col, str(round(
+                sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
+                    'calculated_weight')),
+                2)) if not lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
+                'display_weight') else str(round(
+                sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
+                    'display_weight')),
+                2)))
+            col += 1
+            sheet.write(row, col, lot.product_id.get_variety())
+            col += 1
+            sheet.write(row, col, lot.product_id.get_calibers())
+            col += 1
+            sheet.write(row, col, lot.location_id.display_name)
+            col += 1
+            sheet.write(row, col, lot.product_id.display_name)
+            col += 1
+            sheet.write(row, col, lot.show_guide_number)
+            col += 1
+            sheet.write(row, col, lot.harvest)
+            col += 1
+            sheet.write(row, col, lot.reception_weight)
+            col += 1
+            sheet.write(row, col, lot.create_date.strftime("%d-%m-%Y %H:%M:%S"))
+            col += 1
+            sheet.write(row, col, len(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed)))
+            row += 1
+            col = 0
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
