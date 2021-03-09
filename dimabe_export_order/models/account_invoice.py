@@ -41,6 +41,8 @@ class AccountInvoice(models.Model):
 
     total_container = fields.Integer(string="Total de Contenedores")
 
+    is_multiple_dispatch = fields.Boolean(string="Es Despacho Multiple?")
+
     notify_ids = fields.Many2many(
             'res.partner',
             domain=[('customer', '=', True)]
