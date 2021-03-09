@@ -695,10 +695,10 @@ class AccountInvoice(models.Model):
                     amount_subtotal = item.price_subtotal
                     netAmount += item.price_subtotal
 
+                other_tax = ''
                 for tax_line in item.invoice_line_tax_ids:
                     if tax_line.id != 1 and tax_line.id != 2:
-                        raise models.ValidationError('{} {} {} {}'.format(tax_line.name,tax_line.id,tax_line.sii_code,tax_line.amount))
-                        productLines['CodeTaxAditional'] = str(tax_line.sii_code)
+                        other_tax = str(tax_line.sii_code)
                 
                 productLines.append(
                     {
@@ -714,6 +714,8 @@ class AccountInvoice(models.Model):
                         "Amount": str(self.roundclp(amount_subtotal * value_exchange))
                     }
                 )
+                if other_tax != '':
+                    productLines['CodeTaxAditional'] = other_tax
                 #for tax in self.tax_line_ids:
                 #    if tax.id != 1 and tax.id != 2:
                 
