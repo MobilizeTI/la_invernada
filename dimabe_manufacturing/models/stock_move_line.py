@@ -34,5 +34,5 @@ class StockMoveLine(models.Model):
                 res = super(StockMoveLine,self)._action_done()
                 return res
             except UserError:
-                raise UserWarning(ml.lot_id)
+                raise UserWarning(ml.picking_id)
 
