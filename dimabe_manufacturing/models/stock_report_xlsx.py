@@ -28,22 +28,22 @@ class StockReportXlsx(models.TransientModel):
         col = 0
 
         lots = self.env['stock.production.lot'].sudo().search(
-            [('product_id.categ_id.name', 'in', ('Seca','Desp. y Secado'))])
+            [('product_id.categ_id.name', 'in', ('Seca', 'Desp. y Secado'))])
         for lot in lots:
             sheet.write(row, col, lot.producer_id.display_name)
             col += 1
             sheet.write(row, col, lot.name)
             col += 1
             sheet.write(row, col, str(round(
-                sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight')),2)))
+                sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight')), 2)))
             col += 1
-            sheet.write(row,col,lot.product_id.get_variety())
+            sheet.write(row, col, lot.product_id.get_variety())
             col += 1
-            sheet.write(row,col,lot.product_id.get_calibers())
+            sheet.write(row, col, lot.product_id.get_calibers())
             col += 1
-            sheet.write(row,col,lot.location_id.name)
+            sheet.write(row, col, lot.location_id.name)
             col += 1
-            sheet.write(row,col,lot.product_id.display_name)
+            sheet.write(row, col, lot.product_id.display_name)
             row += 1
             col = 0
         workbook.close()
@@ -52,7 +52,7 @@ class StockReportXlsx(models.TransientModel):
         report_name = f'Informe de Existencia Materia Prima {date.today().strftime("%d/%m/%Y")}.xlsx'
         attachment_id = self.env['ir.attachment'].sudo().create({
             'name': report_name,
-            'datas_fname': file_name,
+            'datas_fname': report_name,
             'datas': file_base64
         })
 
