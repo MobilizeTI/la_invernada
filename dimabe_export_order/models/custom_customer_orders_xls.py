@@ -15,8 +15,8 @@ class CustomCustomerOrdersXls(models.TransientModel):
         for item in self:
             file_name = 'temp.xlsx'
             workbook = xlsxwriter.Workbook(file_name)
-            if not self.for_year or self.for_year == 0:
-                self.for_year = int(date.now.strftime('%Y'))
+            #if not self.for_year or self.for_year == 0:
+            #    self.for_year = int(date.now.strftime('%Y'))
             sheet = workbook.add_worksheet('Pedidos Clientes')
             row = 0
             col = 0
@@ -41,12 +41,12 @@ class CustomCustomerOrdersXls(models.TransientModel):
 
             workbook.close()
 
-            from_date = '{}/01/01/'.format(str(self.for_year))
-            to_date = '{}/12/31'.format(str(self.for_year))
+            #from_date = '{}/01/01/'.format(str(self.for_year))
+            #to_date = '{}/12/31'.format(str(self.for_year))
             
             
             #bold_format = workbook.add_format({'bold':True})
-            orders = self.env['sale.order'].search([('confirmation_date','>=',from_date),('confirmation_date','<=',to_date)])
+            #orders = self.env['sale.order'].search([('confirmation_date','>=',from_date),('confirmation_date','<=',to_date)])
             #shipping_numbers = self.env['account.invoice'].search([('departure_date.strftime("%Y")','=',str(self.for_year))])
             #self.set_title(sheet, bold_format)
 
