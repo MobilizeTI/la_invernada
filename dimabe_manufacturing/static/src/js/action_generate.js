@@ -13,6 +13,7 @@ odoo.define('stock_production_lot.stock_report_button', function (require) {
             }
         },
         action_def: function () {
+            console.log('Prueba')
             var self = this
             var user = session.uid;
             rpc.query({
@@ -20,7 +21,6 @@ odoo.define('stock_production_lot.stock_report_button', function (require) {
                 method: 'generate_excel_raw_report',
                 args: [[user], {'id': user}],
             }).then(function (e) {
-                self.do_action('dimabe_billing_rut.action_custom_invoice_views')
             });
         }
     });
