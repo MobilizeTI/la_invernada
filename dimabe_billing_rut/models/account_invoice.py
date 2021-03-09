@@ -816,18 +816,16 @@ class AccountInvoice(models.Model):
                 "totalAmount": str(self.roundclp(total_amount * value_exchange))
             }
             # consultar si solo se envian en la factura los impuestos de tipo retencion
-            for tax_line in item.invoice_line_tax_ids:
-                    if tax_line.id != 1 and tax_line.id != 2:
-                        for tax in self.tax_line_ids:
-                            if tax.tax_id == tax_line.id:
-                                if tax_line.sii_code and tax_line.sii_code != 0 and tax_line.amount and tax_line.amount != 0 :
-                                    invoice['total']['TaxToRetention'] = {
-                                        "typeTax": tax_line.sii_code,
-                                        "rateTax": tax_line.amount,
-                                        "amountTax" : tax.amount_total
-                                    }
-                                else:
-                                    raise models.ValidationError('Revisar que el impuesto {} tenga el codigo SII y importe'.format(tax_line.name))
+            for tax in self.tax_line_ids:
+                if tax.id != 1 and tax.id != 2:
+                    if tax_line.sii_code and tax_line.sii_code != 0 and tax_line.amount and tax_line.amount != 0 :
+                        invoice['total']['taxToRetention'] = {
+                            "typeTax": tax_line.sii_code,
+                            "rateTax": tax_line.amount,
+                             "amountTax" : tax.amount_total
+                        }
+                    else:
+                        raise models.ValidationError('Revisar que el impuesto {} tenga el codigo SII y importe'.format(tax_line.name))
                         
         return invoice
 
