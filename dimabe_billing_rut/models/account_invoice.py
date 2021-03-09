@@ -826,8 +826,7 @@ class AccountInvoice(models.Model):
 
     @api.multi  
     def add_products_by_order(self):
-        if self.stock_picking_ids and self.order_to_add_ids:        
-            if not self.is_multiple_dispatch:
+        if self.stock_picking_ids and self.order_to_add_ids:
                 if self.stock_picking_ids.sale_id.id != self.order_to_add_id:
                     raise models.ValidationError('El despacho {} no pertenece al pedido {}'.format(self.stock_picking_ids.name,self.order_to_add_ids.name))
                         
@@ -910,9 +909,7 @@ class AccountInvoice(models.Model):
                             raise models.ValidationError('El Producto {} del despacho {} del pedido {} ya se ecuentra agregado'.format(item.product_id.name, self.stock_picking_ids.name, self.order_to_add_ids.name))               
                 else:
                     raise models.ValidationError('No se han encontrado Productos')
-            else:
-                main_dispatch = self.env['custom.dispatch.line'].search([('dispatch_id','=',self.stock_picking_ids.id)])
-
+            
         else:
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
 
