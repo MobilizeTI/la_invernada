@@ -115,6 +115,9 @@ class StockReportXlsx(models.TransientModel):
         for serial in serials:
             sheet.write(row,col,serial.producer_id.display_name)
             col += 1
+            sheet.write(row,col,serial.serial_number)
+            col += 1
+            sheet.write(row,col,serial.display_weight)
             row += 1
             col = 0
         workbook.close()
