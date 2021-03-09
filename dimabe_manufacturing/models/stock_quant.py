@@ -2,6 +2,8 @@ from odoo import models, api, fields, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.addons import decimal_precision as dp
 from odoo.tools.float_utils import float_compare, float_is_zero
+import json
+from odoo.tools import date_utils
 
 
 class StockQuant(models.Model):
@@ -75,8 +77,11 @@ class StockQuant(models.Model):
             # if we want to unreserve
             available_quantity = sum(quants.mapped('reserved_quantity'))
             if float_compare(abs(quantity), available_quantity, precision_rounding=rounding) > 0:
-
-                raise UserError(_(f' Location_id {location_id} Quantity {quantity} Reserved Quants {reserved_quants} quants {quants} Quants {quants.mapped("reserved_quantity")} Avaiable quantity {available_quantity}'))
+                raw_data = quants.read()
+                json_data = json.dumps(raw_data, default=date_utils.json_default)
+                json_dict = json.loads(json_data)
+                raise UserError(_(
+                    f' Location_id {location_id} Quantity {quantity} json_dict {json_dict.keys()} json_dict values {json_dict.values()} Reserved Quants {reserved_quants} quants {quants} Quants {quants.mapped("reserved_quantity")} Avaiable quantity {available_quantity}'))
         else:
             return reserved_quants
 
