@@ -816,7 +816,7 @@ class AccountInvoice(models.Model):
                         invoice['total']['TaxToRetention'] = {
                             "typeTax": tax_line.sii_code,
                             "rateTax": tax_line.amount,
-                            "amountTax" : self.tax_line_ids.mapped('tax_id','=',tax_line.id).amount_total
+                            "amountTax" : self.tax_line_ids.mapped('tax_id').filtered(lambda a : a.tax_id.id == tax_line.id).amount_total
                         }
                         
         return invoice
