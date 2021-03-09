@@ -25,6 +25,7 @@ class StockReportXlsx(models.TransientModel):
             sheet.write(row, col, title[1])
             col += 1
         row += 1
+        col = 0
         raw_categ = self.env['product.category'].sudo().search([('name', '=', 'Materia Prima')])
         lots = self.env['stock.production.lot'].sudo().search(
             [('product_id.categ_id.id', 'in', raw_categ.mapped('child_id').mapped('id'))])
@@ -34,6 +35,8 @@ class StockReportXlsx(models.TransientModel):
             sheet.write(row,col,lot.name)
             col += 1
             sheet.write(row,col,str(sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))))
+            row += 1
+            col = 0
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
