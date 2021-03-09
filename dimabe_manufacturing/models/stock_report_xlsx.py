@@ -118,6 +118,16 @@ class StockReportXlsx(models.TransientModel):
             sheet.write(row,col,serial.serial_number)
             col += 1
             sheet.write(row,col,serial.display_weight)
+            col += 1
+            sheet.write(row,col,serial.product_id.get_variety())
+            col += 1
+            sheet.write(row,col,serial.product_id.get_calibers())
+            col += 1
+            sheet.write(row,col,serial.stock_production_lot_id.location_id)
+            col += 1
+            sheet.write(row,col,serial.consumed)
+            col += 1
+            sheet.write(row,col,serial.product_id.display_name)
             row += 1
             col = 0
         workbook.close()
