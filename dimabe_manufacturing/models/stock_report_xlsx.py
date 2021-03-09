@@ -56,11 +56,11 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, lot.location_id.display_name)
             col += 1
-            long_producer_name = max(
+            long_product_name = max(
                 lots.mapped('product_id').mapped(
                     'display_name'), key=len)
             sheet.write(row, col, lot.product_id.display_name)
-            sheet.set_column(col, len(long_producer_name))
+            sheet.set_column(col, len(long_product_name))
             col += 1
             sheet.write(row, col, lot.show_guide_number)
             col += 1
