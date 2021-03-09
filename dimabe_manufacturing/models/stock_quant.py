@@ -76,7 +76,7 @@ class StockQuant(models.Model):
             available_quantity = sum(quants.mapped('reserved_quantity'))
             if float_compare(abs(quantity), available_quantity, precision_rounding=rounding) > 0:
 
-                raise UserError(_(f' Location_id {location_id} Quantity {quantity} Reserved Quants {reserved_quants} Quants {quants.mapped("reserved_quantity")} Avaiable quantity {available_quantity}'))
+                raise UserError(_(f' Location_id {location_id} Quantity {quantity} Reserved Quants {reserved_quants} quants {quants} Quants {quants.mapped("reserved_quantity")} Avaiable quantity {available_quantity}'))
         else:
             return reserved_quants
 
