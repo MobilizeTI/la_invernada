@@ -695,6 +695,14 @@ class AccountInvoice(models.Model):
                     amount_subtotal = item.price_subtotal
                     netAmount += item.price_subtotal
                 
+                other_tax = '0'
+                for tax_line in item.invoice_line_tax_ids:
+                    if tax_line.id != 1 and tax_line.id != 2:
+                        if tax_line.sii_code:
+                            other_tax = str(tax_line.sii_code)
+                        else:
+                            raise models.ValidationError('El impuesto {} no tiene el código SII'.format(tax_line.name))
+
                 productLines.append(
                     {
                         "LineNumber": str(lineNumber),
@@ -706,14 +714,11 @@ class AccountInvoice(models.Model):
                         "ProductPrice": str(product_price * value_exchange),
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(self.roundclp(amount_subtotal * value_exchange))
+                        "Amount": str(self.roundclp(amount_subtotal * value_exchange)),
+                        "CodeTaxAditional": other_tax
                     }
                 )
-                for tax_line in item.invoice_line_tax_ids:
-                    if tax_line.id != 1 and tax_line.id != 2:
-                        productLines.append({
-                            "CodeTaxAditional": str(tax_line.sii_code)
-                        })
+                
                 
 
             lineNumber += 1
@@ -815,11 +820,14 @@ class AccountInvoice(models.Model):
                     if tax_line.id != 1 and tax_line.id != 2:
                         for tax in self.tax_line_ids:
                             if tax.tax_id == tax_line.id:
-                                invoice['total']['TaxToRetention'] = {
-                                    "typeTax": tax_line.sii_code,
-                                    "rateTax": tax_line.amount,
-                                    "amountTax" : tax.amount_total
-                                }
+                                if tax_line.sii_code and tax_line.sii_code != 0 and tax_line.amount and tax_line.amount != 0 :
+                                    invoice['total']['TaxToRetention'] = {
+                                        "typeTax": tax_line.sii_code,
+                                        "rateTax": tax_line.amount,
+                                        "amountTax" : tax.amount_total
+                                    }
+                                else:
+                                    raise models.ValidationError('Revisar que el impuesto {} tenga el codigo SII y importe'.format(tax_line.name))
                         
         return invoice
 
