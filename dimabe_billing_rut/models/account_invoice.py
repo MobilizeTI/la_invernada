@@ -712,7 +712,7 @@ class AccountInvoice(models.Model):
                 #    if tax.id != 1 and tax.id != 2:
                 for tax_line in item.invoice_line_tax_ids:
                     if tax_line.id != 1 and tax_line.id != 2:
-                        productLines['CodeTaxAditional'] = tax_line.sii_code
+                        productLines['CodeTaxAditional'] = str(tax_line.sii_code)
 
             lineNumber += 1
         
