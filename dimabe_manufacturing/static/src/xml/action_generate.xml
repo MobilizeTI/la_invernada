@@ -2,7 +2,7 @@
 
     <data>
 
-        <template id="assets_backend" name="xls_assets" inherit_id="web.assets_backend">
+        <template id="assets_backend" name="xlsx_assets" inherit_id="web.assets_backend">
 
             <xpath expr="." position="inside">
 

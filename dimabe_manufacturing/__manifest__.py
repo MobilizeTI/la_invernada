@@ -93,7 +93,7 @@
     'demo': [
         'demo/demo.xml',
     ],
-    'qweb':[
+    'qweb': [
         'static/src/xml/action_generate.xml',
         'static/src/xml/stock_report_button.xml'
     ]

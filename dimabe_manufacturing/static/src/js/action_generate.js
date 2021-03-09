@@ -1,4 +1,4 @@
-odoo.define('stock_production_lot.stock_report_button', function (require) {
+odoo.define('stock_production_lot.generate_xlsx', function (require) {
     "use strict";
     var core = require('web.core');
     var ListController = require('web.ListController');
@@ -9,11 +9,10 @@ odoo.define('stock_production_lot.stock_report_button', function (require) {
         renderButtons: function ($node) {
             this._super.apply(this, arguments);
             if (this.$buttons) {
-                this.$buttons.find('#generate_report_xml').click(this.proxy('action_def'));
+                this.$buttons.find('#generate_report_xml').click(this.proxy('action_generate'));
             }
         },
-        action_def: function () {
-            console.log('Prueba')
+        action_generate: function () {
             var self = this
             var user = session.uid;
             rpc.query({
