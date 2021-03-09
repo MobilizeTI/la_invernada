@@ -27,7 +27,7 @@ class StockReportXlsx(models.TransientModel):
         row += 1
         raw_categ = self.env['product.category'].sudo().search([('name', '=', 'Materia Prima')])
         lots = self.env['stock.production.lot'].sudo().search(
-            ['product_id.categ_id.id', 'in', raw_categ.mapped('child_id').mapped('id')])
+            [('product_id.categ_id.id', 'in', raw_categ.mapped('child_id').mapped('id'))])
         for lot in lots:
             sheet.write(row,col,lot.producer_id.display_name)
             col += 1
