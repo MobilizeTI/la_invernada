@@ -813,11 +813,13 @@ class AccountInvoice(models.Model):
             # consultar si solo se envian en la factura los impuestos de tipo retencion
             for tax_line in item.invoice_line_tax_ids:
                     if tax_line.id != 1 and tax_line.id != 2:
-                        invoice['total']['TaxToRetention'] = {
-                            "typeTax": tax_line.sii_code,
-                            "rateTax": tax_line.amount,
-                            "amountTax" : self.tax_line_ids.mapped('tax_id').filtered(lambda a : a.tax_id.id == tax_line.id).amount_total
-                        }
+                        for tax in self.tax_line_ids:
+                            if tax.tax_id == tax_line.id:
+                                invoice['total']['TaxToRetention'] = {
+                                    "typeTax": tax_line.sii_code,
+                                    "rateTax": tax_line.amount,
+                                    "amountTax" : tax.amount_total
+                                }
                         
         return invoice
 
