@@ -55,7 +55,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
             item.dispatch_id.clean_reserved(item.dispatch_id)
             for line in item.move_line_ids:
                 if item.dispatch_id.id != self.picking_id.id:
-                    self.env['stock.move.line'].create({
+                    line = self.env['stock.move.line'].create({
                         'move_id': item.dispatch_id.move_ids_without_package.filtered(
                             lambda a: a.product_id.id == line.product_id.id).id,
                         'product_id': line.product_id.id,
@@ -68,6 +68,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
                         'state':'done',
                         'picking_id': item.dispatch_id.id,
                     })
+                    raise models.ValidationError(line.state)
             if item.real_dispatch_qty > 0:
                 precision_digits = self.env['decimal.precision'].precision_get('Product Unit of Measure')
                 no_quantities_done = all(
