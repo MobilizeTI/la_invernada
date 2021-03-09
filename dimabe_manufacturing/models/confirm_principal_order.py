@@ -89,8 +89,9 @@ class ConfirmPrincipalOrde(models.TransientModel):
                         'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
                                                                                                   x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
                             'display_weight')),
-                        'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
-                            lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight'))
+                        'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                                                                                                  x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
+                            'display_weight'))
                     })
                 else:
                     self.env['stock.quant'].sudo().create({
@@ -99,8 +100,9 @@ class ConfirmPrincipalOrde(models.TransientModel):
                         'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
                                                                                                   x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
                             'display_weight')),
-                        'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
-                            lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight')),
+                        'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                                                                                                  x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
+                            'display_weight')),
                         'location_id': self.picking_id.location_id.id
                     })
 
