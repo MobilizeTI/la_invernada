@@ -125,11 +125,11 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row,col,serial.stock_production_lot_id.location_id.display_name)
             col += 1
-            sheet.write_datetime(row,col,serial.product_id.display_name)
+            sheet.write(row,col,serial.product_id.display_name)
             col += 1
             sheet.write(row, col, serial.consumed)
             col += 1
-            sheet.write(row,col,serial.packaging_date.strftime('%d-%m-%Y'))
+            sheet.write_datetime(row,col,serial.packaging_date)
             col += 1
             row += 1
             col = 0
