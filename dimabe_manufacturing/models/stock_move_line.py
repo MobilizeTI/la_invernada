@@ -30,11 +30,13 @@ class StockMoveLine(models.Model):
 
     def _action_done(self):
         for item in self:
+            raise models.ValidationError(f'{item.picking_id.is_multiple_dispatch or item.picking_id.picking_real_id or item.picking_id.picking_principal_id}')
             if item.location_dest_id.id == 7:
                 item.update({
                     'state': 'done'
                 })
             elif item.picking_id.is_multiple_dispatch or item.picking_id.picking_real_id or item.picking_id.picking_principal_id:
+
                 item.write({
                     'state':'done'
                 })
