@@ -152,6 +152,14 @@ class StockProductionLotSerial(models.Model):
                                             compute='_compute_production_id_to_view', store=True)
     workcenter_id = fields.Many2one('mrp.workcenter', related="work_order_id.workcenter_id")
 
+    workcenter_send_id = fields.Many2one('mrp.workcenter',string='Enviado a proceso:')
+
+    client_or_quality = fields.Text('Cliente o Calidad')
+
+    physical_location = fields.Text('Ubicacion Fisica')
+
+    observations = fields.Text('Observaciones')
+
     @api.depends('production_id', 'reserved_to_production_id')
     @api.multi
     def _compute_production_id_to_view(self):
