@@ -708,6 +708,12 @@ class AccountInvoice(models.Model):
                         "Amount": str(self.roundclp(amount_subtotal * value_exchange))
                     }
                 )
+                #for tax in self.tax_line_ids:
+                #    if tax.id != 1 and tax.id != 2:
+                for tax_line in item.invoice_line_tax_ids:
+                    if tax_line.id != 1 and tax_line.id != 2:
+                        productLines['CodeTaxAditional'] = str(tax_line.sii_code)
+
             lineNumber += 1
         
         if self.partner_id.phone:
@@ -728,7 +734,7 @@ class AccountInvoice(models.Model):
                         "PackageQuantity": str(int(pk.quantity)),
                         "Brands": str(pk.brand),
                         "Container": pk.container if pk.container else '',
-                        "Stamp": pk.container if pk.stamp else ''
+                        "Stamp": pk.stamp if pk.stamp else ''
                     }
                 )
         else:
@@ -802,6 +808,15 @@ class AccountInvoice(models.Model):
                 "taxtRateAmount": str(self.roundclp(self.amount_tax * value_exchange)),
                 "totalAmount": str(self.roundclp(total_amount * value_exchange))
             }
+            # consultar si solo se envian en la factura los impuestos de tipo retencion
+            for tax_line in item.invoice_line_tax_ids:
+                    if tax_line.id != 1 and tax_line.id != 2:
+                        invoice['total']['TaxToRetention'] = {
+                            "typeTax": tax_line.sii_code,
+                            "rateTax": tax_line.amount,
+                            "amountTax" : self.tax_line_ids.mapped('tax_id','=',tax_line.id).amount_total
+                        }
+                        
         return invoice
 
     def total_invoice_Export(self):
@@ -811,8 +826,7 @@ class AccountInvoice(models.Model):
 
     @api.multi  
     def add_products_by_order(self):
-        if self.stock_picking_ids and self.order_to_add_ids:        
-            if not self.is_multiple_dispatch:
+        if self.stock_picking_ids and self.order_to_add_ids:
                 if self.stock_picking_ids.sale_id.id != self.order_to_add_id:
                     raise models.ValidationError('El despacho {} no pertenece al pedido {}'.format(self.stock_picking_ids.name,self.order_to_add_ids.name))
                         
@@ -895,9 +909,7 @@ class AccountInvoice(models.Model):
                             raise models.ValidationError('El Producto {} del despacho {} del pedido {} ya se ecuentra agregado'.format(item.product_id.name, self.stock_picking_ids.name, self.order_to_add_ids.name))               
                 else:
                     raise models.ValidationError('No se han encontrado Productos')
-            else:
-                main_dispatch = self.env['custom.dispatch.line'].search([('dispatch_id','=',self.stock_picking_ids.id)])
-
+            
         else:
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
 
