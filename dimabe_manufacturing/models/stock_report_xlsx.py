@@ -56,7 +56,7 @@ class StockReportXlsx(models.TransientModel):
                 col += 1
                 sheet.write(row, col, lot.reception_weight)
                 col += 1
-                sheet.write(row, col, lot.create_date)
+                sheet.write(row, col, lot.create_date.strftime("%m/%d/%Y, %H:%M:%S"))
                 col += 1
                 sheet.write(row, col, len(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed)))
                 row += 1

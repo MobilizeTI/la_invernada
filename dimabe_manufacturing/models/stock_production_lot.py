@@ -634,14 +634,13 @@ class StockProductionLot(models.Model):
                 'date': date.today(),
                 'lot_id': self.id
             })
-            if len(dispatch_line) == 1:
-                dispatch_line.write({
-                    'real_dispatch_qty': self.get_reserved_quantity_by_picking(picking.id),
-                    'move_line_ids': [(4, line_create.id)]
-                })
         self.clean_add_pallet()
         self.clean_add_serial()
-
+        if len(dispatch_line) == 1:
+            dispatch_line.write({
+                'real_dispatch_qty': self.get_reserved_quantity_by_picking(picking.id),
+                'move_line_ids': [(4, line_create.id)]
+            })
 
     def add_selection_serial(self, picking_id, location_id):
         pallets = self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('pallet_id')
