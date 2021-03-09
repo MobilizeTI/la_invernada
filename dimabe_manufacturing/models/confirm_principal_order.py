@@ -55,8 +55,18 @@ class ConfirmPrincipalOrde(models.TransientModel):
             item.dispatch_id.clean_reserved(item.dispatch_id)
             for line in item.move_line_ids:
                 if item.dispatch_id.id != self.picking_id.id:
-                    line.write({
-                        'picking_id':item.dispatch_id.id
+                    line_create = self.env['stock.move.line'].create({
+                        'move_id': item.dispatch_id.move_ids_without_package.filtered(
+                            lambda a: a.product_id.id == line.product_id.id).id,
+                        'product_id': line.product_id.id,
+                        'product_uom_qty': item.real_dispatch_qty,
+                        'product_uom_id': line.product_id.uom_id.id,
+                        'lot_id': line.lot_id.id,
+                        'location_id': line.location_id.id,
+                        'location_dest_id': line.location_dest_id.id,
+                        'date': line.date,
+                        'state':'done',
+                        'picking_id': item.dispatch_id.id,
                     })
             if item.real_dispatch_qty > 0:
                 precision_digits = self.env['decimal.precision'].precision_get('Product Unit of Measure')
@@ -109,6 +119,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
             if picking.state != 'assigned':
                 picking.action_assign()
                 if picking.state != 'assigned':
+                    raise models.ValidationError("Prueba 123")
                     raise models.UserError((
                         "Could not reserve all requested products. Please use the \'Mark as Todo\' button to handle the reservation manually."))
         for move in picking.move_lines.filtered(lambda m: m.state not in ['done', 'cancel']):
