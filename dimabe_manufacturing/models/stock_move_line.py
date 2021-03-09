@@ -38,17 +38,3 @@ class StockMoveLine(models.Model):
                 res = super(StockMoveLine, self)._action_done()
                 return res
 
-    def unlink(self):
-        precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
-        for ml in self:
-            if ml.state in ('done', 'cancel'):
-                raise UserError(_('You can not delete product moves if the picking is done. You can only correct the done quantities.'))
-            # Unlinking a move line should unreserve.
-            if ml.product_id.type == 'product' and not ml.location_id.should_bypass_reservation() and not float_is_zero(ml.product_qty, precision_digits=precision):
-                raise UserError("Cago")
-                self.env['stock.quant']._update_reserved_quantity(ml.product_id, ml.location_id, -ml.product_qty, lot_id=ml.lot_id, package_id=ml.package_id, owner_id=ml.owner_id, strict=True)
-        moves = self.mapped('move_id')
-        res = super(StockMoveLine, self).unlink()
-        if moves:
-            moves._recompute_state()
-        return res
