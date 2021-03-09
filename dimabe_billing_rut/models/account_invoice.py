@@ -694,6 +694,12 @@ class AccountInvoice(models.Model):
                 else: 
                     amount_subtotal = item.price_subtotal
                     netAmount += item.price_subtotal
+
+                for tax_line in item.invoice_line_tax_ids:
+                    if tax_line.id != 1 and tax_line.id != 2:
+                        raise models.ValidationError('{} {} {} {}'.format(tax_line.name,tax_line.id,tax_line.sii_code,tax_line.amount))
+                        productLines['CodeTaxAditional'] = str(tax_line.sii_code)
+                
                 productLines.append(
                     {
                         "LineNumber": str(lineNumber),
@@ -710,9 +716,7 @@ class AccountInvoice(models.Model):
                 )
                 #for tax in self.tax_line_ids:
                 #    if tax.id != 1 and tax.id != 2:
-                for tax_line in item.invoice_line_tax_ids:
-                    if tax_line.id != 1 and tax_line.id != 2:
-                        productLines['CodeTaxAditional'] = str(tax_line.sii_code)
+                
 
             lineNumber += 1
         
