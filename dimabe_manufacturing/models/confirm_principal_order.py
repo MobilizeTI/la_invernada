@@ -77,7 +77,8 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     self.inmediate_transfer(item.dispatch_id)
                 if self.check_backorder(item.dispatch_id):
                     self.process_backorder(item.dispatch_id)
-
+                else:
+                    item.dispatch_id.action_done()
 
     def update_quant(self, product_ids):
         lots = self.env['stock.production.lot'].search([('product_id.id', 'in', product_ids)])
