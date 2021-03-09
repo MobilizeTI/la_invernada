@@ -34,7 +34,7 @@ class StockMoveLine(models.Model):
                 item.update({
                     'state': 'done'
                 })
-            elif item.picking_id.is_multiple_dispatch:
+            elif item.picking_id.is_multiple_dispatch or item.picking_id.picking_real_id or item.picking_id.picking_principal_id:
                 item.write({
                     'state':'done'
                 })
