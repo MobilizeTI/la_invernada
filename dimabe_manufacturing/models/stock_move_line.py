@@ -30,7 +30,6 @@ class StockMoveLine(models.Model):
 
     def _action_done(self):
         for item in self:
-            raise models.ValidationError(f'{item.picking_id}')
             if item.location_dest_id.id == 7:
                 item.update({
                     'state': 'done'

@@ -109,7 +109,6 @@ class ConfirmPrincipalOrde(models.TransientModel):
             if picking.state != 'assigned':
                 picking.action_assign()
                 if picking.state != 'assigned':
-                    raise models.ValidationError("Prueba 123")
                     raise models.UserError((
                         "Could not reserve all requested products. Please use the \'Mark as Todo\' button to handle the reservation manually."))
         for move in picking.move_lines.filtered(lambda m: m.state not in ['done', 'cancel']):
