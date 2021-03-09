@@ -68,9 +68,6 @@ class ConfirmPrincipalOrde(models.TransientModel):
                         'state':'done',
                         'picking_id': item.dispatch_id.id,
                     })
-                    line.sudo().write({
-                        'state':'done'
-                    })
             if item.real_dispatch_qty > 0:
                 precision_digits = self.env['decimal.precision'].precision_get('Product Unit of Measure')
                 no_quantities_done = all(
@@ -80,8 +77,7 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     self.inmediate_transfer(item.dispatch_id)
                 if self.check_backorder(item.dispatch_id):
                     self.process_backorder(item.dispatch_id)
-                else:
-                    item.dispatch_id.action_done()
+
 
     def update_quant(self, product_ids):
         lots = self.env['stock.production.lot'].search([('product_id.id', 'in', product_ids)])
