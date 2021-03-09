@@ -81,7 +81,7 @@ class StockQuant(models.Model):
                 json_data = json.dumps(raw_data, default=date_utils.json_default)
                 json_dict = json.loads(json_data)
                 raise UserError(_(
-                    f' Location_id {location_id} Quantity {quantity} json_dict {json_dict.keys()} json_dict values {json_dict.values()} Reserved Quants {reserved_quants} quants {quants} Quants {quants.mapped("reserved_quantity")} Avaiable quantity {available_quantity}'))
+                    f' Location_id {location_id} Quantity {quantity} json_dict {json_dict[0].keys()} json_dict values {json_dict[0].values()} Reserved Quants {reserved_quants} quants {quants} Quants {quants.mapped("reserved_quantity")} Avaiable quantity {available_quantity}'))
         else:
             return reserved_quants
 
