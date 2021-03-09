@@ -21,7 +21,7 @@ class StockReportXlsx(models.TransientModel):
                   (13, 'Enviado a Proceso de:'), (14, 'Fecha de Envio:'), (15, 'Ubicacion Fisica:'),
                   (16, 'Observaciones:')]
         for title in titles:
-            sheet.write(row, col, title)
+            sheet.write(row, col, title[1])
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
