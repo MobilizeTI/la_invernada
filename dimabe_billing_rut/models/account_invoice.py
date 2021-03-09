@@ -273,8 +273,6 @@ class AccountInvoice(models.Model):
 
     transport_to_port = fields.Many2one('res.partner',string="Transporte a Puerto",domain="[('supplier','=',True)]")
 
-    
-
     #Emarque Method
     @api.model
     @api.onchange('etd')
@@ -480,7 +478,7 @@ class AccountInvoice(models.Model):
             invoice['additional'] =  additionals    
 
         r = requests.post(url, json=invoice, headers=headers)
-        #raise models.ValidationError(json.dumps(invoice))
+        raise models.ValidationError(json.dumps(invoice))
 
         jr = json.loads(r.text)
 
@@ -813,89 +811,93 @@ class AccountInvoice(models.Model):
 
     @api.multi  
     def add_products_by_order(self):
-        if self.stock_picking_ids and self.order_to_add_ids:
-            if self.stock_picking_ids.sale_id.id != self.order_to_add_id:
-                raise models.ValidationError('El despacho {} no pertenece al pedido {}'.format(self.stock_picking_ids.name,self.order_to_add_ids.name))
-    
-            product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
-            stock_picking_line = self.env['stock.move.line'].search([('picking_id','=',self.stock_picking_ids.id)])
+        if self.stock_picking_ids and self.order_to_add_ids:        
+            if not self.is_multiple_dispatch:
+                if self.stock_picking_ids.sale_id.id != self.order_to_add_id:
+                    raise models.ValidationError('El despacho {} no pertenece al pedido {}'.format(self.stock_picking_ids.name,self.order_to_add_ids.name))
+                        
+                product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
+                stock_picking_line = self.env['stock.move.line'].search([('picking_id','=',self.stock_picking_ids.id)])
             
-            if self.stock_picking_ids.required_loading_date:
-                self.required_loading_date = self.stock_picking_ids.required_loading_date 
-            else:
-                raise models.ValidationError('El despacho {} no tiene la fecha de carga requerida. Favor informar al encargado de Planta'.format(self.stock_picking_ids.name))
-    
-            if len(product_ids) > 0:
-                for item in product_ids: 
-                    exist_custom_invoice_line = False
-                    exist_invoice_line = False
+                if self.stock_picking_ids.required_loading_date:
+                    self.required_loading_date = self.stock_picking_ids.required_loading_date 
+                else:
+                    raise models.ValidationError('El despacho {} no tiene la fecha de carga requerida. Favor informar al encargado de Planta'.format(self.stock_picking_ids.name))
+        
+                if len(product_ids) > 0:
+                    for item in product_ids: 
+                        exist_custom_invoice_line = False
+                        exist_invoice_line = False
 
-                    if len(self.invoice_line_ids) > 0:
-                        for line in self.invoice_line_ids:
-                            if item.product_id.id == line.product_id.id and self.stock_picking_ids.id == line.stock_picking_id and self.order_to_add_ids.id == line.order_id:
-                                exist_invoice_line = True
+                        if len(self.invoice_line_ids) > 0:
+                            for line in self.invoice_line_ids:
+                                if item.product_id.id == line.product_id.id and self.stock_picking_ids.id == line.stock_picking_id and self.order_to_add_ids.id == line.order_id:
+                                    exist_invoice_line = True
 
-                    if not exist_invoice_line:
-                        quantity = 0
-                        for picking in stock_picking_line:
-                            if picking.product_id.id == item.product_id.id:
-                                quantity += picking.qty_done 
-                        
-                        #Verificar la moneda desde el despacho
-                        product = self.env['product.product'].search([('id','=',item.product_id.id)])
-                        
-                        self.env['account.invoice.line'].create({
-                            'name' : item.name,
-                            'product_id': item.product_id.id,
-                            'invoice_id': self.id,
-                            'order_id' : self.order_to_add_ids.id,
-                            'order_name' : self.order_to_add_ids.name,
-                            'stock_picking_id' : self.stock_picking_ids.id,
-                            'dispatch' : self.stock_picking_ids.name,
-                            'price_unit': product.lst_price,
-                            'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
-                            'uom_id': item.product_uom.id,
-                            'quantity': quantity,
-                            'exempt': '1',
-                            'sale_line_ids' : [(6, 0 ,[item.id])] #asociacion con linea de pedido
-                        })
-                        self.env['custom.orders.to.invoice'].create({
-                            'product_id': item.product_id.id,
-                            'product_name': item.name,
-                            'quantity_to_invoice': str(quantity),
-                            'quantity_reminds_to_invoice': str(quantity),
-                            'invoice_id': self.id,
-                            'order_id': self.order_to_add_ids.id,
-                            'order_name': self.order_to_add_ids.name,
-                            'stock_picking_name': self.stock_picking_ids.name,
-                            'stock_picking_id': self.stock_picking_ids.id,
-                            'total_value' : self.total_value_stock_picking(self.stock_picking_ids.id),
-                            'value_per_kilo': self.total_value_stock_picking(self.stock_picking_ids.id) / self.value_per_kilo(self.stock_picking_ids.id),
-                            'required_loading_date': self.stock_picking_ids.required_loading_date
-                        })
-                        if len(self.custom_invoice_line_ids) > 0:
-                            for i in self.custom_invoice_line_ids:
-                                if item.product_id.id == i.product_id.id:
-                                    exist_custom_invoice_line = True
-                                    i.write({
-                                        'quantity': i.quantity + quantity,
-                                        #'price_subtotal' : i.price_unit * (i.quantity + quantity)
-                                    })
-                        if not exist_custom_invoice_line:
-                            self.env['custom.account.invoice.line'].create({
+                        if not exist_invoice_line:
+                            quantity = 0
+                            for picking in stock_picking_line:
+                                if picking.product_id.id == item.product_id.id:
+                                    quantity += picking.qty_done 
+                            
+                            #Verificar la moneda desde el despacho
+                            product = self.env['product.product'].search([('id','=',item.product_id.id)])
+                            
+                            self.env['account.invoice.line'].create({
+                                'name' : item.name,
                                 'product_id': item.product_id.id,
-                                'name': item.name,
                                 'invoice_id': self.id,
-                                'account_id' : item.product_id.categ_id.property_account_income_categ_id.id,
-                                'quantity' : quantity,
-                                'uom_id' : item.product_uom.id,
-                                'price_unit' : product.lst_price,  
-                                'invoice_tax_line_ids': [(6, 0, item.product_id.taxes_id)], 
+                                'order_id' : self.order_to_add_ids.id,
+                                'order_name' : self.order_to_add_ids.name,
+                                'stock_picking_id' : self.stock_picking_ids.id,
+                                'dispatch' : self.stock_picking_ids.name,
+                                'price_unit': product.lst_price,
+                                'account_id': item.product_id.categ_id.property_account_income_categ_id.id,
+                                'uom_id': item.product_uom.id,
+                                'quantity': quantity,
+                                'exempt': '1',
+                                'sale_line_ids' : [(6, 0 ,[item.id])] #asociacion con linea de pedido
                             })
-                    else:
-                       raise models.ValidationError('El Producto {} del despacho {} del pedido {} ya se ecuentra agregado'.format(item.product_id.name, self.stock_picking_ids.name, self.order_to_add_ids.name))               
+                            self.env['custom.orders.to.invoice'].create({
+                                'product_id': item.product_id.id,
+                                'product_name': item.name,
+                                'quantity_to_invoice': str(quantity),
+                                'quantity_reminds_to_invoice': str(quantity),
+                                'invoice_id': self.id,
+                                'order_id': self.order_to_add_ids.id,
+                                'order_name': self.order_to_add_ids.name,
+                                'stock_picking_name': self.stock_picking_ids.name,
+                                'stock_picking_id': self.stock_picking_ids.id,
+                                'total_value' : self.total_value_stock_picking(self.stock_picking_ids.id),
+                                'value_per_kilo': self.total_value_stock_picking(self.stock_picking_ids.id) / self.value_per_kilo(self.stock_picking_ids.id),
+                                'required_loading_date': self.stock_picking_ids.required_loading_date
+                            })
+                            if len(self.custom_invoice_line_ids) > 0:
+                                for i in self.custom_invoice_line_ids:
+                                    if item.product_id.id == i.product_id.id:
+                                        exist_custom_invoice_line = True
+                                        i.write({
+                                            'quantity': i.quantity + quantity,
+                                            #'price_subtotal' : i.price_unit * (i.quantity + quantity)
+                                        })
+                            if not exist_custom_invoice_line:
+                                self.env['custom.account.invoice.line'].create({
+                                    'product_id': item.product_id.id,
+                                    'name': item.name,
+                                    'invoice_id': self.id,
+                                    'account_id' : item.product_id.categ_id.property_account_income_categ_id.id,
+                                    'quantity' : quantity,
+                                    'uom_id' : item.product_uom.id,
+                                    'price_unit' : product.lst_price,  
+                                    'invoice_tax_line_ids': [(6, 0, item.product_id.taxes_id)], 
+                                })
+                        else:
+                            raise models.ValidationError('El Producto {} del despacho {} del pedido {} ya se ecuentra agregado'.format(item.product_id.name, self.stock_picking_ids.name, self.order_to_add_ids.name))               
+                else:
+                    raise models.ValidationError('No se han encontrado Productos')
             else:
-                raise models.ValidationError('No se han encontrado Productos')
+                main_dispatch = self.env['custom.dispatch.line'].search([('dispatch_id','=',self.stock_picking_ids.id)])
+
         else:
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
 
