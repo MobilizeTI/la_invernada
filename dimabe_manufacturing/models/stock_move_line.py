@@ -29,17 +29,4 @@ class StockMoveLine(models.Model):
                 item.count_stock_production_lot_serial = len(item.lot_id.stock_production_lot_serial_ids)
 
     def _action_done(self):
-        for item in self:
-            if item.location_dest_id.id == 7:
-                item.update({
-                    'state': 'done'
-                })
-            elif item.picking_id.is_multiple_dispatch or item.picking_id.picking_real_id or item.picking_id.picking_principal_id:
-
-                item.write({
-                    'state':'done'
-                })
-                item.lot_id.update_stock_quant(location_id=item.location_id.id)
-            else:
-                res = super(StockMoveLine, self)._action_done()
-                return res
+        raise models.ValidationError(self.picking_id)
