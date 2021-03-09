@@ -627,7 +627,7 @@ class AccountInvoice(models.Model):
         value_exchange = 1
 
         if (self.env.user.company_id.id == 1 and self.dte_type_id.code != "110") or self.env.user.company_id.id == 3:
-            value_exchange = self.roundclp(self.exchange_rate)
+            value_exchange = self.exchange_rate
 
         for item in invoice_lines:
             haveExempt = False
@@ -642,11 +642,7 @@ class AccountInvoice(models.Model):
                     raise models.ValidationError('El Producto {} al no tener impuesto seleccionado, debe seleccionar el tipo Exento'.format(item.name))
                 
             if haveExempt:
-                if self.dte_type_id.code == "110": #Exportacion con decimal
-                    amount_subtotal = item.price_subtotal
-                else: 
-                    amount_subtotal = self.roundclp(item.price_subtotal)
-                
+                amount_subtotal = item.price_subtotal
                 exemptAmount += amount_subtotal
 
                 if self.dte_type_id.code == "110":
@@ -676,7 +672,7 @@ class AccountInvoice(models.Model):
                             "ProductPrice": str(item.price_unit * value_exchange),
                             "ProductDiscountPercent": "0",
                             "DiscountAmount": "0",
-                            "Amount": str(amount_subtotal * value_exchange),
+                            "Amount": str(self.roundclp(amount_subtotal * value_exchange)),
                             "HaveExempt": haveExempt,
                             "TypeOfExemptEnum": typeOfExemptEnum
                         }
@@ -831,7 +827,6 @@ class AccountInvoice(models.Model):
                         }
                     else:
                         raise models.ValidationError('Revisar que el impuesto {} tenga el codigo SII y importe'.format(tax.name))
-                        
         return invoice
 
     def total_invoice_Export(self):
