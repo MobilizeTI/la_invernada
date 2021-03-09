@@ -110,7 +110,7 @@ class StockReportXlsx(models.TransientModel):
             sheet.write(row, col, title[1])
             col += 1
         col = 0
-        serials = self.env['stock.production.lot.serial'].sudo().search([('PSE006','like','product_id.default_code')])
+        serials = self.env['stock.production.lot.serial'].sudo().search([('product_id.default_code','like','PSE006')])
         for serial in serials:
             sheet.write(row,col,serial.producer_id.display_name)
         workbook.close()
