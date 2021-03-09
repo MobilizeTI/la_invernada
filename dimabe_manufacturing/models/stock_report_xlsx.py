@@ -31,7 +31,7 @@ class StockReportXlsx(models.TransientModel):
             [('product_id.categ_id.name', 'in', ('Seca', 'Desp. y Secado'))])
         for lot in lots:
             long_producer_name = max(
-                lot.mapped('producer_id').mapped(
+                lots.mapped('producer_id').mapped(
                     'name'), key=len)
             if lot.producer_id:
                 sheet.set_column(row, col, len(long_producer_name))
