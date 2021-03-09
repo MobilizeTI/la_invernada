@@ -818,14 +818,14 @@ class AccountInvoice(models.Model):
             # consultar si solo se envian en la factura los impuestos de tipo retencion
             for tax in self.tax_line_ids:
                 if tax.id != 1 and tax.id != 2:
-                    if tax_line.sii_code and tax_line.sii_code != 0 and tax_line.amount and tax_line.amount != 0 :
+                    if tax.sii_code and tax.sii_code != 0 and tax.amount and tax.amount != 0 :
                         invoice['total']['taxToRetention'] = {
-                            "typeTax": tax_line.sii_code,
-                            "rateTax": tax_line.amount,
+                            "typeTax": tax.sii_code,
+                            "rateTax": tax.amount,
                              "amountTax" : tax.amount_total
                         }
                     else:
-                        raise models.ValidationError('Revisar que el impuesto {} tenga el codigo SII y importe'.format(tax_line.name))
+                        raise models.ValidationError('Revisar que el impuesto {} tenga el codigo SII y importe'.format(tax.name))
                         
         return invoice
 
