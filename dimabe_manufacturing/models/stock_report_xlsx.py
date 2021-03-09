@@ -30,11 +30,12 @@ class StockReportXlsx(models.TransientModel):
         lots = self.env['stock.production.lot'].sudo().search(
             [('product_id.categ_id.id', 'in', raw_categ.mapped('child_id').mapped('id'))])
         for lot in lots:
-            sheet.write(row,col,lot.producer_id.display_name)
+            sheet.write(row, col, lot.producer_id.display_name)
             col += 1
-            sheet.write(row,col,lot.name)
+            sheet.write(row, col, lot.name)
             col += 1
-            sheet.write(row,col,str(sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))))
+            sheet.write(row, col, str(round(
+                sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight')))))
             row += 1
             col = 0
         workbook.close()
