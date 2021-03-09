@@ -50,7 +50,8 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, lot.product_id.get_calibers())
             col += 1
-            sheet.write(row, col, lot.location_id.display_name)
+            if lot.location_id:
+                sheet.write(row, col, lot.location_id.display_name)
             col += 1
             sheet.write(row, col, lot.product_id.display_name)
             col += 1
@@ -64,13 +65,17 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, len(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed)))
             col += 1
-            sheet.write(row, col, lot.workcenter_id.display_name)
+            if lot.workcenter_id:
+                sheet.write(row, col, lot.workcenter_id.display_name)
             col += 1
-            sheet.write(row, col, lot.delivered_date)
+            if lot.delivered_date:
+                sheet.write(row, col, lot.delivered_date)
             col += 1
-            sheet.write(row, col, lot.physical_location)
+            if lot.physical_location:
+                sheet.write(row, col, lot.physical_location)
             col += 1
-            sheet.write(row, col, lot.observations)
+            if lot.observations:
+                sheet.write(row, col, lot.observations)
             row += 1
             col = 0
         workbook.close()
