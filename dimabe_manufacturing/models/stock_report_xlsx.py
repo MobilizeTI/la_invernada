@@ -69,7 +69,7 @@ class StockReportXlsx(models.TransientModel):
                 sheet.write(row, col, lot.workcenter_id.display_name)
             col += 1
             if lot.delivered_date:
-                sheet.write(row, col, lot.delivered_date)
+                sheet.write(row, col, lot.delivered_date.strftime("%d-%m-%Y"))
             col += 1
             if lot.physical_location:
                 sheet.write(row, col, lot.physical_location)
