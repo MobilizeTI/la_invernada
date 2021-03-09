@@ -90,23 +90,23 @@ class ConfirmPrincipalOrde(models.TransientModel):
 
                 if quant:
                     quant.write({
-                        'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                        'reserved_quantity': round(sum(lot.stock_production_lot_serial_ids.filtered(lambda
                                                                                                   x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
-                            'display_weight')),
-                        'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                            'display_weight'))),
+                        'quantity': round(sum(lot.stock_production_lot_serial_ids.filtered(lambda
                                                                                                   x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
-                            'display_weight'))
+                            'display_weight')))
                     })
                 else:
                     self.env['stock.quant'].sudo().create({
                         'lot_id': lot.id,
                         'product_id': lot.product_id.id,
-                        'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                        'reserved_quantity': round(sum(lot.stock_production_lot_serial_ids.filtered(lambda
                                                                                                   x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
-                            'display_weight')),
-                        'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                            'display_weight'))),
+                        'quantity': round(sum(lot.stock_production_lot_serial_ids.filtered(lambda
                                                                                                   x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
-                            'display_weight')),
+                            'display_weight'))),
                         'location_id': self.picking_id.location_id.id
                     })
 
