@@ -219,6 +219,8 @@ class StockProductionLot(models.Model):
 
     sale_order_id = fields.Many2one('sale.order', compute='_compute_sale_order_id', store=True)
 
+    workcenter_id = fields.Many2one('mrp.workcenter','Enviado a proceso de')
+
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
     def _compute_sale_order_id(self):

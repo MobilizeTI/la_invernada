@@ -6,19 +6,20 @@
       <field name="model">stock.production.lot</field>
       <field name="priority">20</field>
       <field name="arch" type="xml">
-        <tree name="Informe de Materia Prima">
-          <field name="producer_id" widget="many2onebutton" string="Productor"/>
-          <field name="name" widget="many2onebutton" string="Lote"/>
-          <field name="available_kg"/>
-          <field name="product_variety" string="Variedad"/>
-          <field name="product_caliber" string="Calibre"/>
-          <field name="location_id" widget="many2onebutton" string="Ubicacion"/>
-          <field name="product_id" widget="many2onebutton" string="Producto"/>
-          <field name="show_guide_number" string="N° Guia"/>
-          <field name="harvest"/>
-          <field name="reception_weight" string="Kilos Recepcionados"/>
-          <field name="serial_not_consumed" string="Series Disponible"/>
-          <field name="create_date" string="Fecha"/>
+        <tree name="Informe de Materia Prima" editable="bottom" delete="false" edit="false">
+          <field name="producer_id" widget="many2onebutton" readonly="1"/>
+          <field name="name" string="Lote" readonly="1"/>
+          <field name="available_kg" readonly="1"/>
+          <field name="product_variety" string="Variedad" readonly="1"/>
+          <field name="product_caliber" string="Calibre" readonly="1"/>
+          <field name="location_id" widget="many2onebutton" string="Ubicacion" readonly="1"/>
+          <field name="product_id" widget="many2onebutton" string="Producto" readonly="1"/>
+          <field name="show_guide_number" string="N° Guia" readonly="1"/>
+          <field name="harvest" readonly="1"/>
+          <field name="reception_weight" string="Kilos Recepcionados" readonly="1"/>
+          <field name="serial_not_consumed" string="Series Disponible" readonly="1"/>
+          <field name="create_date" string="Fecha" readonly="1"/>
+          <field name="workcenter_id" />
         </tree>
       </field>
     </record>
