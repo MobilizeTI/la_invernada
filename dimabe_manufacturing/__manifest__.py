@@ -62,6 +62,7 @@
         'views/dried_oven.xml',
         'views/res_config_settings.xml',
         'views/update_quant_view.xml',
+        'views/stock_report_xlsx.xml',
         'reports/stock/raw_report.xml',
         'reports/stock/raw_service_report.xml',
         'reports/stock/pt_report.xml',
@@ -92,9 +93,5 @@
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
-    ],
-    'qweb': [
-        'static/src/xml/action_generate.xml',
-        'static/src/xml/stock_report_button.xml'
     ]
 }
