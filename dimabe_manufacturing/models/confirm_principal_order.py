@@ -23,8 +23,8 @@ class ConfirmPrincipalOrde(models.TransientModel):
         self.process_data()
         for item in self.custom_dispatch_line_ids:
             item.dispatch_id.write({
-                'consignee_id':self.picking_id.consignee_id.id,
-                'notify_ids':[(4,n.id) for n in self.picking_id.notify_ids],
+                'consignee_id': self.picking_id.consignee_id.id,
+                'notify_ids': [(4, n.id) for n in self.picking_id.notify_ids],
                 'picking_real_id': self.picking_id.id,
                 'picking_principal_id': self.custom_dispatch_line_ids.filtered(
                     lambda a: a.sale_id.id == self.sale_id.id).dispatch_id.id
@@ -64,12 +64,41 @@ class ConfirmPrincipalOrde(models.TransientModel):
                     float_is_zero(move_line.qty_done, precision_digits=precision_digits) for move_line in
                     item.dispatch_id.move_line_ids.filtered(lambda m: m.state not in ('done', 'cancel')))
                 if no_quantities_done:
-
                     self.inmediate_transfer(item.dispatch_id)
                 if self.check_backorder(item.dispatch_id):
                     self.process_backorder(item.dispatch_id)
                 else:
+                    self.update_quant(product_ids=self.custom_dispatch_line_ids.mapped('product_id').mapped('id'))
                     item.dispatch_id.action_done()
+                    self.update_quant(product_ids=self.custom_dispatch_line_ids.mapped('product_id').mapped('id'))
+
+    def update_quant(self, product_ids):
+        lots = self.env['stock.production.lot'].search([('product_id.id', 'in', product_ids)])
+        for lot in lots:
+            if lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed):
+                quant = self.env['stock.quant'].sudo().search(
+                    [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'),
+                     ('location_id', '=', self.picking_id.location_id.id)])
+
+                if quant:
+                    quant.write({
+                        'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                                                                                                  x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
+                            'display_weight')),
+                        'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
+                            lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight'))
+                    })
+                else:
+                    self.env['stock.quant'].sudo().create({
+                        'lot_id': lot.id,
+                        'product_id': lot.product_id.id,
+                        'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                                                                                                  x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
+                            'display_weight')),
+                        'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
+                            lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight')),
+                        'location_id': self.picking_id.location_id.id
+                    })
 
     @api.multi
     def inmediate_transfer(self, picking):
