@@ -272,7 +272,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th style="text-align:left;">CANTIDAD DE SACOS</th>
+                                    <th style="text-align:left;">CANTIDAD DE ENVASES</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
                                         <span t-field="d.custom_invoice_line_ids[0].canning_quantity"/>
@@ -430,6 +430,13 @@
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
                                         <span t-field="d.arrival_port.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">PAÍS DE DESTINO</th>
+                                    <td style="width:5px">:</td>
+                                    <td style="text-align:left;">
+                                        <span t-field="d.destiny_country_dte.name"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -804,7 +811,7 @@
                             <tr>
                                 <th style="text-align:left; width:200px">REFERENCIA CLIENTE</th>
                                 <td>:</td>
-                                <td><span t-field="d.transport_to_port.name"/></td>
+                                <td><span t-field="d.partner_id.name"/></td>
                             </tr>
                             <tr>
                                 <th style="text-align:left; width:200px">NAVE</th>
@@ -870,7 +877,7 @@
                                 <td><span t-field="res_company.plant_contact_ids.name"/></td>
                             </tr>
                             <tr>
-                                <th style="text-align:left; width:200px">Telefono</th>
+                                <th style="text-align:left; width:200px">TELÉFONO</th>
                                 <td>:</td>
                                 <td><t t-if="res_company.plant_contact_ids.phone">
                                         <span t-field="res_company.plant_contact_ids.phone"/>

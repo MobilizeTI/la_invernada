@@ -66,7 +66,7 @@
                                     <field name="uom_net_weight" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 </group>
                                 <field name="total_packages" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                    <field name="packages" mode="tree" attrs="{'invisible': [('dte_code', '!=', '110')]}">
+                                <field name="packages" mode="tree" attrs="{'invisible': [('dte_code', '!=', '110')]}">
                                     <form>
                                         <group>
                                             <field name="package_type" required="True" />
