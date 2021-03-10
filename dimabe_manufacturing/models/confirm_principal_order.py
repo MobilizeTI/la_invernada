@@ -25,7 +25,6 @@ class ConfirmPrincipalOrde(models.TransientModel):
         })
         self.process_data()
         for item in self.custom_dispatch_line_ids:
-            self.update_quant(product_ids=self.custom_dispatch_line_ids.mapped('product_id').mapped('id'))
             item.dispatch_id.write({
                 'consignee_id': self.picking_id.consignee_id.id,
                 'notify_ids': [(4, n.id) for n in self.picking_id.notify_ids],
