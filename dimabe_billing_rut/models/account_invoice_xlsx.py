@@ -78,23 +78,25 @@ class AccountInvoiceXlsx(models.Model):
                     [('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 33)])
                 begin = row
+                total = []
                 for inv in invoices:
                     data = self.set_data_invoice(sheet, col, row, inv, taxes_title, titles)
                     sheet = data['sheet']
                     row = data['row']
-                    total = data['total_result_exempt']
+                    total = data['total_exempt']
                     if inv.id == invoices[-1].id:
                         row += 2
-                        counter = Counter()
-                        for item in total:
-                            counter.update(item)
-                        total_dict = dict(counter)
-                        for k in total_dict:
-                            worksheet.write(row, k, total_dict[k])
                     else:
                         row += 1
 
-                    col = 0
+                counter = Counter()
+                for item in total:
+                    counter.update(item)
+                total_dict = dict(counter)
+                sheet.write(row, 0, 'Totales:')
+                for k in total_dict:
+                    worksheet.write(row, k, total_dict[k])
+                col = 0
                 exempts = self.env['account.invoice'].search([('date_invoice', '>', self.from_date),
                                                               ('date_invoice', '<', self.to_date),
                                                               ('dte_type_id.code', '=', 34)])
@@ -269,98 +271,6 @@ class AccountInvoiceXlsx(models.Model):
         }
         return action
 
-    def set_size(self, sheet, col, size):
-        sheet.set_column(col, col, size)
-        return sheet
-
-    def set_data_company(self, company, sheet, formats, region, book):
-        sheet.merge_range('A1:C1', company.display_name, formats['string'])
-        sheet.merge_range('A2:C2', company.invoice_rut, formats['string'])
-        sheet.merge_range('A3:C3', '{},Region {}'.format(company.city, region.name.capitalize()),
-                          formats['string'])
-        if book == 0:
-            sheet.merge_range('A5:L5', 'Libro de Ventas', formats['string'])
-            sheet.merge_range('A6:L6', 'Libro de Ventas Ordenado por fecha', formats['string'])
-        else:
-            sheet.merge_range('A5:L5', 'Libro de Compras', formats['string'])
-            sheet.merge_range('A6:L6', 'Libro de Compras Ordenado por fecha', formats['string'])
-        sheet.write('K7', 'Fecha', formats['string'])
-        sheet.write('L7', date.today().strftime('%Y-%m-%d'), formats['string'])
-        sheet.merge_range('A8:L8', 'Desde : {} Hasta : {}'.format(self.from_date.strftime(
-            "%d/%m/%Y"), self.to_date.strftime("%d/%m/%Y")), formats['string'])
-        sheet.merge_range(
-            'A9:L9', 'Moneda : Peso Chileno', formats['string'])
-        sheet = self.set_title(sheet, formats['title'], book)
-        return sheet
-
-    def set_formats(self, workbook):
-        merge_format_string = workbook.add_format({
-            'border': 0,
-            'align': 'center',
-            'valign': 'vcenter',
-        })
-        merge_format_number = workbook.add_format({
-            'bold': 0,
-            'align': 'center',
-            'valign': 'vcenter',
-            'num_format': '#,##0'
-        })
-        merge_format_title = workbook.add_format({
-            'border': 1,
-            'bold': 1,
-            'align': 'center',
-            'valign': 'vcenter'
-        })
-        merge_format_total = workbook.add_format({
-            'border': 1,
-            'bold': 1,
-            'align': 'center',
-            'valign': 'vcenter',
-            'num_format': '#,##0'
-        })
-        merge_format_total_text = workbook.add_format({
-            'border': 1,
-            'bold': 1,
-            'align': 'left',
-            'valign': 'vcenter'
-        })
-        return {
-            'string': merge_format_string,
-            'number': merge_format_number,
-            'title': merge_format_title,
-            'total': merge_format_total,
-            'text_total': merge_format_total_text
-        }
-
-    def set_total(self, sheet, col, row, invoices, type=''):
-        sheet.write(row, col, f'Total {type}')
-        col += 1
-        sheet.write(row, col, sum(invoices.mapped('invoice_line_ids').filtered(
-            lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) == 0).mapped(
-            'price_subtotal')))
-        col += 1
-        sheet.write(row, col, sum(invoices.mapped('tax_line_ids').filtered(lambda a: 'IVA' in a.tax_id.name)))
-        col += 1
-
-    def set_title(self, sheet, format, book=0):
-        sheet.write('A11', 'Cod.SII', format)
-        sheet.write('B11', 'Folio', format)
-        sheet.write('C11', 'Cor.Interno', format)
-        sheet.write('D11', 'Fecha', format)
-        sheet.write('E11', 'RUT', format)
-        if book == 0:
-            sheet.write('F11', 'Nombre de Cliente', format)
-        else:
-            sheet.write('F11', 'Nombre de Proveedor', format)
-        sheet.write('G11', ' ', format)
-        sheet.write('H11', 'EXENTO', format)
-        sheet.write('I11', 'NETO', format)
-        sheet.write('J11', 'IVA', format)
-        sheet.write('K11', 'IVA NO RECUPERABLE', format)
-        sheet.write('L11', 'OTROS IMPUESTOS', format)
-        sheet.write('M11', 'Total', format)
-        return sheet
-
     def set_data_invoice(self, sheet, col, row, inv, taxes_title, titles):
         total_result_exent = []
         sheet.write(row, col, inv.dte_type_id.code)
@@ -410,7 +320,7 @@ class AccountInvoiceXlsx(models.Model):
                     sheet.write(row, col, sum(line))
                     col += 1
 
-        return {'sheet': sheet, 'row': row, 'total_result_exempt': total_result_exent}
+        return {'sheet': sheet, 'row': row, 'total_exempt': total_result_exent}
 
     def diff_dates(self, date1, date2):
         return abs(date2 - date1).days
