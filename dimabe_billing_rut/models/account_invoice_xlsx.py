@@ -3,6 +3,7 @@ from datetime import date
 import string
 import xlsxwriter
 from odoo import fields, models, api
+from collections import Counter
 
 
 class AccountInvoiceXlsx(models.Model):
@@ -54,8 +55,8 @@ class AccountInvoiceXlsx(models.Model):
                         titles.append(tax.upper())
                         if taxes_title[-1] == tax:
                             titles.append('Total')
-                sheet.write(0, 0, self.env.user.company_id.display_name)
-                sheet.write(1, 0, self.env.user.company_id.invoice_rut)
+                sheet.merge_range(0, 0, 0, 2, self.env.user.company_id.display_name)
+                sheet.write(1, 0, 1, 2, self.env.user.company_id.invoice_rut)
                 sheet.write(2, 0,
                             f'{self.env.user.company_id.city},Region {self.env.user.company_id.region_address_id.name}')
                 sheet.write(4, 4, 'Libro Ventas')
@@ -81,7 +82,18 @@ class AccountInvoiceXlsx(models.Model):
                     data = self.set_data_invoice(sheet, col, row, inv, taxes_title, titles)
                     sheet = data['sheet']
                     row = data['row']
-                    row += 1
+                    total = data['total_result_exempt']
+                    if inv.id == invoices[-1].id:
+                        row += 2
+                        counter = Counter()
+                        for item in total:
+                            counter.update(item)
+                        total_dict = dict(counter)
+                        for k in total_dict:
+                            worksheet.write(row, k, total_dict[k])
+                    else:
+                        row += 1
+
                     col = 0
                 exempts = self.env['account.invoice'].search([('date_invoice', '>', self.from_date),
                                                               ('date_invoice', '<', self.to_date),
@@ -96,11 +108,12 @@ class AccountInvoiceXlsx(models.Model):
                     row += 1
                     col = 0
                 credit = self.env['account.invoice'].search([('date_invoice', '>', self.from_date),
-                                                              ('date_invoice', '<', self.to_date),
-                                                              ('dte_type_id.code', '=', 61)])
+                                                             ('date_invoice', '<', self.to_date),
+                                                             ('dte_type_id.code', '=', 61)])
                 row += 2
                 sheet.write(row, col, 'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)')
                 row += 1
+
                 for cre in credit:
                     data = self.set_data_invoice(sheet, col, row, cre, taxes_title, titles)
                     sheet = data['sheet']
@@ -108,11 +121,12 @@ class AccountInvoiceXlsx(models.Model):
                     row += 1
                     col = 0
                 debit = self.env['account.invoice'].search([('date_invoice', '>', self.from_date),
-                                                             ('date_invoice', '<', self.to_date),
-                                                             ('dte_type_id.code', '=', 56)])
+                                                            ('date_invoice', '<', self.to_date),
+                                                            ('dte_type_id.code', '=', 56)])
                 row += 2
                 sheet.write(row, col, 'NOTA DE DEBITO ELECTRONICA (NOTA DE DEBITO COMPRA ELECTRONICA)')
                 row += 1
+
                 for deb in debit:
                     data = self.set_data_invoice(sheet, col, row, deb, taxes_title, titles)
                     sheet = data['sheet']
@@ -120,7 +134,6 @@ class AccountInvoiceXlsx(models.Model):
                     row += 1
                     col = 0
                 row += 2
-
 
         workbook.close()
         with open(file_name, "rb") as file:
@@ -177,8 +190,6 @@ class AccountInvoiceXlsx(models.Model):
                     else:
                         row += 1
 
-                sheet = self.set_total(sheet, begin, end, row, invoices, formats,
-                                       'Total Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)')
                 row += 2
                 begin = 0
                 end = 0
@@ -321,40 +332,15 @@ class AccountInvoiceXlsx(models.Model):
             'text_total': merge_format_total_text
         }
 
-    def set_total(self, sheet, begin, end, row, invoices, formats, string=''):
-        sheet.merge_range('A{}:F{}'.format((row), (row)),
-                          string,
-                          formats['text_total'])
-        sheet.write('G{}'.format(str(row)), str(len(invoices)), formats['total'])
-        if len(invoices) > 0:
-            sheet.write_formula('H{}'.format(str(row)), '=SUM(H{}:H{})'.format(begin, end),
-                                formats['total'])
-        else:
-            sheet.write('H{}'.format(str(row)), '0', formats['total'])
-        if len(invoices) > 0:
-            sheet.write_formula('I{}'.format(str(row)), '=SUM(I{}:I{})'.format(begin, end),
-                                formats['total'])
-        else:
-            sheet.write('I{}'.format(str(row)), '0', formats['total'])
-        if len(invoices) > 0:
-            sheet.write_formula('J{}'.format(str(row)), '=SUM(J{}:J{})'.format(begin, end),
-                                formats['total'])
-        else:
-            sheet.write('J{}'.format(str(row)), '0', formats['total'])
-        if len(invoices) > 0:
-            sheet.write_formula('K{}'.format(str(row)), '=SUM(K{}:K{})'.format(begin, end),
-                                formats['total'])
-        else:
-            sheet.write('K{}'.format(str(row)), '0', formats['total'])
-        if len(invoices) > 0:
-            sheet.write_formula('L{}'.format(str(row)), '=SUM(L{}:L{})'.format(begin, end),
-                                formats['total'])
-        if len(invoices) > 0:
-            sheet.write_formula('M{}'.format(str(row)), '=SUM(M{}:M{})'.format(begin, end),
-                                formats['total'])
-        else:
-            sheet.write('M{}'.format(str(row)), '0', formats['total'])
-        return sheet
+    def set_total(self, sheet, col, row, invoices, type=''):
+        sheet.write(row, col, f'Total {type}')
+        col += 1
+        sheet.write(row, col, sum(invoices.mapped('invoice_line_ids').filtered(
+            lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) == 0).mapped(
+            'price_subtotal')))
+        col += 1
+        sheet.write(row, col, sum(invoices.mapped('tax_line_ids').filtered(lambda a: 'IVA' in a.tax_id.name)))
+        col += 1
 
     def set_title(self, sheet, format, book=0):
         sheet.write('A11', 'Cod.SII', format)
@@ -376,6 +362,7 @@ class AccountInvoiceXlsx(models.Model):
         return sheet
 
     def set_data_invoice(self, sheet, col, row, inv, taxes_title, titles):
+        total_result_exent = []
         sheet.write(row, col, inv.dte_type_id.code)
         col += 1
         if inv.dte_folio:
@@ -396,6 +383,7 @@ class AccountInvoiceXlsx(models.Model):
             lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) == 0)
         if taxes:
             sheet.write(row, col, sum(taxes.mapped('price_subtotal')))
+            total_result_exent.append({col: sum(taxes.mapped('price_subtotal'))})
             col += 1
             if sum(taxes.mapped('price_subtotal')) == inv.amount_untaxed_signed:
                 sheet.write(row, col, '0')
@@ -410,6 +398,7 @@ class AccountInvoiceXlsx(models.Model):
             col += 1
             sheet.write(row, col,
                         sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
+
             col += 1
             sheet.write_number(row, col, 0)
             col += 1
@@ -421,7 +410,7 @@ class AccountInvoiceXlsx(models.Model):
                     sheet.write(row, col, sum(line))
                     col += 1
 
-        return {'sheet': sheet, 'row': row}
+        return {'sheet': sheet, 'row': row, 'total_result_exempt': total_result_exent}
 
     def diff_dates(self, date1, date2):
         return abs(date2 - date1).days
