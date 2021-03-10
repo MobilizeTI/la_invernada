@@ -11,7 +11,8 @@ class StockPicking(models.Model):
 
     delivery_date = fields.Datetime('Fecha de entrega')
 
-    shipping_number = fields.Integer('Número Embarque')
+    #shipping_number = fields.Integer('Número Embarque')
+    shipping_number = fields.Char('Número Embarque')
 
     shipping_id = fields.Many2one(
         'custom.shipment',

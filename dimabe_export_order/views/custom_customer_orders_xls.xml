@@ -1,35 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-
-    <record id="orders_files_report_view" model="ir.ui.view">
-        <field name="name">Archivo de Pedidos</field>
-        <field name="model">custom.customer.orders.xls</field>
-        <field name="arch" type="xml">
-            <form>
-                <group>
-                    <group>
-                        <field name="for_year"/>
-                    </group>
-                </group>
-                <footer>
-                    <button name="generate_orders_file" string="Generar XLSX" type="object" default_focus="1"
-                            class="oe_highlight"/>
-                    <button string="Cancel" class="btn btn-secondary" special="cancel"/>
-                </footer>
-            </form>
-        </field>
-    </record>
-    <record id="action_orders_files_menu" model="ir.actions.act_window">
-        <field name="name">Archivo de Pedidos</field>
-        <field name="res_model">sale.order</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">form</field>
-        <field name="view_id" ref="orders_files_report_view"/>
-        <field name="target">new</field>
-    </record>
-
-
-    <menuitem name="Archivo de Pedidos" 
-              action="action_orders_files_menu" id="orders_files_item"/>
-
+    <data>
+        <record id="custom_customer_orders_view" model="ir.ui.view">
+            <field name="name">Genereación de Archivo de Pedidos</field>
+            <field name="model">custom.customer.orders.xls</field>
+            <field name="arch" type="xml">
+                <form>
+                    <notebook>
+                        <group>
+                            <group>
+                                <!--<field name="for_year"/>-->
+                            </group>
+                        </group>
+                    </notebook>
+                    <footer>
+                        <button name="generate_orders_file" string="Generar XLSX" type="object" default_focus="1"
+                                class="oe_highlight"/>
+                        <button string="Cancel" class="btn btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="generate_orders_file_action" model="ir.actions.act_window">
+            <field name="name">Genereación de Archivo de Pedidos</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="custom_customer_orders_view"/>
+            <field name="target">new</field>
+        </record>
+        <menuitem name="Archivo de Pedidos" parent="sale.menu_sale_report" action="generate_orders_file_action" id="orders_files_item"/>
+    </data>
 </odoo>

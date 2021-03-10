@@ -45,9 +45,8 @@
         'views/sale_order.xml',
         'views/views.xml',
         'report/dispatch_report.xml',
-        'views/account_invoice.xml'
-        #'report/orders_files.xml',
-        #'views/custom_customer_orders_xls.xml'
+        'views/account_invoice.xml',
+        'views/custom_customer_orders_xls.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

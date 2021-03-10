@@ -154,7 +154,8 @@ class AccountInvoice(models.Model):
         store=True
     )
 
-    shipping_number = fields.Integer('Número Embarque')
+    #shipping_number = fields.Integer('Número Embarque')
+    shipping_number = fields.Char('Número Embarque')
 
     contract_correlative = fields.Integer('corr')
 
@@ -805,9 +806,10 @@ class AccountInvoice(models.Model):
             
         else:
             taxt_rate_amount = 0
-            for tax in self.tax_line_ids:
-                if tax.tax_id.id == 1 or tax.tax_id.id == 2:
-                    taxt_rate_amount += tax.amount_total
+            for item in self.invoice_line_ids:
+                for tax in item.invoice_line_ids:
+                    if tax.id == 1 or tax.id == 2:
+                        taxt_rate_amount += (item.prince_subtotal * tax.amount) / 100
                     
             invoice['total'] = {
                 "netAmount": str(self.roundclp(netAmount * value_exchange)),
@@ -919,11 +921,17 @@ class AccountInvoice(models.Model):
                             raise models.ValidationError('El Producto {} del despacho {} del pedido {} ya se ecuentra agregado'.format(item.product_id.name, self.stock_picking_ids.name, self.order_to_add_ids.name))               
                 else:
                     raise models.ValidationError('No se han encontrado Productos')
-            
+
+                if not self.container_number or self.container_number != '':
+                    self.container_number = self.stock_picking_ids.self.container_number
+                else:
+                    if self.container_number != self.stock_picking_ids.self.container_number:
+                        raise models.ValidationError('El despacho tiene ')
         else:
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
 
         self.update_totals_kg()
+        
 
 
     def total_value_stock_picking(self, stock_picking_id):
