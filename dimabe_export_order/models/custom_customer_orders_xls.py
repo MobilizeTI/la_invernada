@@ -61,9 +61,9 @@ class CustomCustomerOrdersXls(models.TransientModel):
                     col += 1
                     sheet.write(row, col, stock.required_loading_week)
                     col += 1
-                    sheet.write(row, col, stock.patner_id.name)
+                    sheet.write(row, col, stock.partner_id.name)
                     col += 1
-                    sheet.write(row, col, stock.patner_id.country_id.name)
+                    sheet.write(row, col, stock.partner_id.country_id.name)
                     col += 1
                     sheet.write(row, col, "pendiente")
                     col += 1
