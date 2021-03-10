@@ -11,7 +11,7 @@ class StockPickingController(http.Controller):
     @http.route('/api/stock_pickings', type='json', methods=['GET'], auth='token', cors='*')
     def get_stock_pickings(self, sinceDate=None):
         date_to_search = sinceDate or (date.today() - timedelta(days=7))
-        result = request.env['stock.picking'].sudo().search([('write_date', '>', date_to_search), ('company_id.id', '=', 1)])
+        result = request.env['stock.picking'].search([('write_date', '>', date_to_search), ('company_id.id', '=', 1)])
         data = []
         if result:
             for res in result:
@@ -54,7 +54,7 @@ class StockPickingController(http.Controller):
 
     @http.route('/api/stock_picking', type='json', methods=['GET'], auth='token', cors='*')
     def get_stock_picking(self, lot):
-        res = request.env['stock.picking'].sudo().search([('name', '=', lot)])
+        res = request.env['stock.picking'].search([('name', '=', lot)])
         if res and res.partner_id.id:
             return {
                 'ProducerCode': res.partner_id.id,
