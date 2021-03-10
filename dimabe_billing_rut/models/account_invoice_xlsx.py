@@ -97,7 +97,6 @@ class AccountInvoiceXlsx(models.Model):
                         lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) == 0)
                     if taxes:
                         sheet.write(row, col, sum(taxes.mapped('price_subtotal')))
-                        sheet.write(row, col)
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
