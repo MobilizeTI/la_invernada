@@ -79,6 +79,16 @@ class AccountInvoiceXlsx(models.Model):
                 for inv in invoices:
                     sheet.write(row,col,inv.dte_type_id.code)
                     col +=1
+                    sheet.write(row,col,inv.dte_folio)
+                    col += 1
+                    sheet.write(row,col,inv.number)
+                    col += 1
+                    sheet.write(row,col,inv.date_invoice.strftime('%Y-%m-%d'))
+                    col += 1
+                    sheet.write(row,col,inv.partner_id.invoice_rut)
+                    col += 1
+                    sheet.write(row,col,inv.partner_id.display_name)
+                    col += 2
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
