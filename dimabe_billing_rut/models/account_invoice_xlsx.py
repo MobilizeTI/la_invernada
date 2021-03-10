@@ -70,25 +70,34 @@ class AccountInvoiceXlsx(models.Model):
                     col += 1
                 row += 2
                 col = 0
-                sheet.write(row,col,'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)')
+                sheet.write(row, col, 'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)')
                 row += 1
                 invoices = self.env['account.invoice'].search(
                     [('type', 'in', ('in_invoice', 'in_refund')), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 33)])
                 begin = row
                 for inv in invoices:
-                    sheet.write(row,col,inv.dte_type_id.code)
-                    col +=1
-                    sheet.write(row,col,inv.dte_folio)
+                    sheet.write(row, col, inv.dte_type_id.code)
                     col += 1
-                    sheet.write(row,col,inv.number)
+                    if inv.dte_folio:
+                        sheet.write(row, col, inv.dte_folio)
                     col += 1
-                    sheet.write(row,col,inv.date_invoice.strftime('%Y-%m-%d'))
+                    if inv.number:
+                        sheet.write(row, col, inv.number)
                     col += 1
-                    sheet.write(row,col,inv.partner_id.invoice_rut)
+                    if inv.date_invoice:
+                        sheet.write(row, col, inv.date_invoice.strftime('%Y-%m-%d'))
                     col += 1
-                    sheet.write(row,col,inv.partner_id.display_name)
+                    if inv.partner_id.invoice_rut:
+                        sheet.write(row, col, inv.partner_id.invoice_rut)
+                    col += 1
+                    sheet.write(row, col, inv.partner_id.display_name)
                     col += 2
+                    taxes = inv.invoice_line_ids.filtered(
+                        lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) == 0)
+                    if taxes:
+                        sheet.write(row, col, sum(taxes.mapped('price_subtotal')))
+                        sheet.write(row, col)
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
