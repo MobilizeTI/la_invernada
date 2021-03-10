@@ -101,12 +101,12 @@ class StockPickingController(http.Controller):
 
     @http.route("/api/stock_picking", type='json', methods=['PUT'], auth='token', cors='*')
     def put_lot(self, lot, data):
-        stock_picking_ids = request.env['stock.picking'].search(
+        stock_picking_ids = request.env['stock.picking'].sudo().search(
             [('name', '=', lot)])
 
         if stock_picking_ids:
             for stock_picking in stock_picking_ids:
-                stock_picking.update(data)
+                stock_picking.sudo().update(data)
         return {
             'lot': lot,
             'data': data
@@ -114,7 +114,7 @@ class StockPickingController(http.Controller):
 
     @http.route('/api/data_by_order', type='json', methods=['POST'], auth='token', cors='*')
     def get_data_by_order(self, sale_order):
-        sale_order = request.env['sale.order'].search(
+        sale_order = request.env['sale.order'].sudo().search(
             [('name', '=', sale_order)])
         data = []
         if sale_order:
