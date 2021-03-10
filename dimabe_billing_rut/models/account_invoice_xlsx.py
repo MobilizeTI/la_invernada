@@ -28,7 +28,7 @@ class AccountInvoiceXlsx(models.Model):
     @api.multi
     def generate_sale_book(self):
         for item in self:
-            file_name = 'temp'
+            file_name = 'salebook.xlsx'
             array_worksheet = []
             companies = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)])
             workbook = xlsxwriter.Workbook(file_name, {'in_memory': True, 'strings_to_numbers': True})
