@@ -43,7 +43,6 @@ class AccountInvoiceXlsx(models.Model):
                 })
             for wk in array_worksheet:
                 sheet = wk['worksheet']
-                formats = self.set_formats(workbook)
                 region = self.env['region.address'].search([('id', '=', 1)])
                 titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', 'Nombre', '#', 'EXENTO', 'NETO', 'IVA',
                           'IVA NO RECUPERABLE']
