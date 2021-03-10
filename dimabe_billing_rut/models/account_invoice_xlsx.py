@@ -426,7 +426,8 @@ class AccountInvoiceXlsx(models.Model):
                         formats['number'])
         another_taxes = self.get_another_taxes(inv)
         list = ascii_uppercase.split()
-        raise models.ValidationError(type(list))
+        del list[:11]
+        raise models.ValidationError(list)
         return sheet
 
     def diff_dates(self, date1, date2):
