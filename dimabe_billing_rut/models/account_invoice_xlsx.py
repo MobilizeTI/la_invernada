@@ -51,7 +51,7 @@ class AccountInvoiceXlsx(models.Model):
                 for tax in sorted(taxes_title):
                     if tax != 'IVA Crédito' and tax != 'IVA Débito' and tax != 'Exento':
                         titles.append(tax.upper())
-                        if taxes[-1] == tax:
+                        if taxes_title[-1] == tax:
                             titles.append('Total')
                 sheet.write(0, 0, self.env.user.company_id.display_name)
                 sheet.write(1, 0, self.env.user.company_id.invoice_rut)
