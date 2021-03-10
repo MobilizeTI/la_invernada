@@ -47,11 +47,12 @@ class AccountInvoiceXlsx(models.Model):
                 titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', '#', 'Nombre', 'EXENTO', 'NETO', 'IVA',
                           'IVA NO RECUPERABLE']
                 invoices = self.env['account.invoice'].sudo().search([])
-                taxes = list(dict.fromkeys(invoices.mapped('tax_line_ids').mapped('tax_id').filtered(lambda a: 'IVA' not in a.name or 'Exento' not in a.name).mapped('name')))
+                taxes = list(dict.fromkeys(invoices.mapped('tax_line_ids').mapped('tax_id').mapped('name')))
                 for tax in taxes:
-                    titles.append(tax.upper())
-                    if taxes[-1] == tax:
-                        titles.append('Total')
+                    if tax != 'IVA Crédito' and tax != 'IVA Débito':
+                        titles.append(tax.upper())
+                        if taxes[-1] == tax:
+                            titles.append('Total')
                 sheet.write(0, 0, self.env.user.company_id.display_name)
                 sheet.write(1, 0, self.env.user.company_id.invoice_rut)
                 sheet.write(2, 0,
