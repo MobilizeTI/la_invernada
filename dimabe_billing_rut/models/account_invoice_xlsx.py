@@ -44,58 +44,10 @@ class AccountInvoiceXlsx(models.Model):
                 sheet = wk['worksheet']
                 formats = self.set_formats(workbook)
                 region = self.env['region.address'].search([('id', '=', 1)])
-                sheet = self.set_data_company(wk['company_object'], sheet, formats, region, 0)
-                invoices = self.env['account.invoice'].search(
-                    [('type', 'in', ('out_invoice', 'out_refund')), ('date_invoice', '>', self.from_date),
-                     ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 33)])
-                row = 14
-                col = 0
-                sheet.merge_range('A{}:F{}'.format((row), (row)),
-                                  'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
-                                  formats['text_total'])
-                row += 1
-                begin = row
-
-                for inv in invoices:
-                    sheet.write(row,col, inv.dte_type_id.code, formats['string'])
-                    col += 1
-                    if inv.reference:
-                        sheet.write(row,col, inv.reference, formats['string'])
-                    col += 1
-                    if inv.number:
-                        sheet.write(row,col, inv.number, formats['string'])
-                    col += 1
-                    if inv.partner_id.invoice_rut:
-                        sheet.write(row,col, inv.partner_id.invoice_rut, formats['string'])
-                    col += 1
-                    taxes = inv.mapped('invoice_line_ids').filtered(
-                        lambda a: len(a.invoice_line_tax_ids) == 0 or 'Exento' not in a.invoice_line_tax_ids.mapped(
-                            'name'))
-                    if not taxes:
-                        sheet.write(row,col, inv.amount_untaxed_signed,
-                                    formats['number'])
-                        sheet.write(row,col, '0', formats['number'])
-                    else:
-                        sheet.write(row,col, '0', formats['number'])
-                        sheet.write(row,col, inv.amount_untaxed_signed,
-                                    formats['number'])
-                    days = self.diff_dates(inv.date_invoice, date.today())
-                    if days > 90:
-                        sheet.write(row,col,
-                                    round(sum(
-                                        inv.tax_line_ids.filtered(lambda a: a.tax_id.amount == 19).mapped('amount'))),
-                                    formats['number'])
-                        sheet.write(row,col, '0', formats['number'])
-                    else:
-                        sheet.write(row,col, '0', formats['number'])
-                        sheet.write(row,col,
-                                    round(sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.name).mapped('amount'))),
-                                    formats['number'])
-                    another_taxes = self.get_another_taxes(inv)
-                    for another in another_taxes:
-                        sheet.write(row,col,another.price_subtotal)
-                        col += 1
-                    sheet.write(row,col, round(inv.amount_total_signed), formats['number'])
+                titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', 'Nombre', 'EXENTO', 'NETO', 'IVA',
+                          'IVA NO RECUPERABLE']
+                invoices = self.env['account.invoice'].sudo().search([])
+                taxes = invoices.mapped('tax_line_ids').mapped('tax_id').mapped('name')
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
