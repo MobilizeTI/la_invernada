@@ -42,7 +42,6 @@ class AccountInvoiceXlsx(models.Model):
                 })
             for wk in array_worksheet:
                 sheet = wk['worksheet']
-                sheet = self.set_size(sheet)
                 formats = self.set_formats(workbook)
                 region = self.env['region.address'].search([('id', '=', 1)])
                 sheet = self.set_data_company(wk['company_object'], sheet, formats, region, 0)
@@ -50,83 +49,53 @@ class AccountInvoiceXlsx(models.Model):
                     [('type', 'in', ('out_invoice', 'out_refund')), ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 33)])
                 row = 14
+                col = 0
                 sheet.merge_range('A{}:F{}'.format((row), (row)),
                                   'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
                                   formats['text_total'])
                 row += 1
                 begin = row
-                for inv in invoices:
-                    sheet = self.set_data_invoice(sheet, row, inv, formats)
-                    if inv.id == invoices[-1].id:
-                        end = row
-                        row += 2
-                    else:
-                        row += 1
 
-                sheet = self.set_total(sheet, begin, end, row, invoices, formats,
-                                       'Total Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)')
-                row += 2
-                begin = 0
-                end = 0
-                exempts = self.env['account.invoice'].search(
-                    [('type', 'in', ('out_invoice', 'out_refund')), ('date_invoice', '>', self.from_date),
-                     ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 34)])
-                sheet.merge_range('A{}:F{}'.format((row), (row)),
-                                  'Factura de compra exenta electronica. (FACTURA COMPRA EXENTA ELECTRONICA)',
-                                  formats['text_total'])
-                row += 2
-                begin = row
-                for ex in exempts:
-                    sheet = self.set_data_invoice(sheet, row, ex, formats)
-                    if ex.id == exempts[-1].id:
-                        end = row
-                        row += 3
+                for inv in invoices:
+                    sheet.write(col, row, inv.dte_type_id.code, formats['string'])
+                    col += 1
+                    if inv.reference:
+                        sheet.write(col, row, inv.reference, formats['string'])
+                    col += 1
+                    if inv.number:
+                        sheet.write(col, row, inv.number, formats['string'])
+                    col += 1
+                    if inv.partner_id.invoice_rut:
+                        sheet.write(col, row, inv.partner_id.invoice_rut, formats['string'])
+                    col += 1
+                    taxes = inv.mapped('invoice_line_ids').filtered(
+                        lambda a: len(a.invoice_line_tax_ids) == 0 or 'Exento' not in a.invoice_line_tax_ids.mapped(
+                            'name'))
+                    if not taxes:
+                        sheet.write(col, row, inv.amount_untaxed_signed,
+                                    formats['number'])
+                        sheet.write(col, row, '0', formats['number'])
                     else:
-                        row += 1
-                sheet = self.set_total(sheet, begin, end, row, exempts, formats,
-                                       'Total Factura de compra exenta electronica. (FACTURA COMPRA EXENTA ELECTRONICA)')
-                row += 2
-                begin = 0
-                end = 0
-                credit_notes = self.env['account.invoice'].search(
-                    [('type', 'in', ('out_invoice', 'out_refund')), ('date_invoice', '>', self.from_date),
-                     ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 61)])
-                sheet.merge_range('A{}:F{}'.format((row), (row)),
-                                  'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)',
-                                  formats['text_total'])
-                row += 2
-                begin = row
-                for note_cre in credit_notes:
-                    sheet = self.set_data_invoice(sheet, row, note_cre, formats)
-                    if note_cre.id == credit_notes[-1].id:
-                        end = row
-                        row += 3
+                        sheet.write(col, row, '0', formats['number'])
+                        sheet.write(col, row, inv.amount_untaxed_signed,
+                                    formats['number'])
+                    days = self.diff_dates(inv.date_invoice, date.today())
+                    if days > 90:
+                        sheet.write(col,row,
+                                    round(sum(
+                                        inv.tax_line_ids.filtered(lambda a: a.tax_id.amount == 19).mapped('amount'))),
+                                    formats['number'])
+                        sheet.write(col,row, '0', formats['number'])
                     else:
-                        row += 1
-                sheet = self.set_total(sheet, begin, end, row, credit_notes, formats,
-                                       'Total Nota de Credito Electronica (NOTA DE CREDITO COMPRA ELECTRONICA)')
-                row += 2
-                begin = 0
-                end = 0
-                debit_notes = self.env['account.invoice'].search(
-                    [('type', 'in', ('out_invoice', 'out_refund')), ('date_invoice', '>', self.from_date),
-                     ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 56)])
-                sheet.merge_range('A{}:F{}'.format((row), (row)),
-                                  'NOTA DE DEBITO ELECTRONICA (NOTA DE DEBITO COMPRA ELECTRONICA)',
-                                  formats['text_total'])
-                row += 2
-                begin = row
-                for note_deb in debit_notes:
-                    sheet = self.set_data_invoice(sheet, row, note_deb, formats)
-                    if note_deb.id == debit_notes[-1].id:
-                        end = row
-                        row += 3
-                    else:
-                        row += 1
-                sheet = self.set_total(sheet, begin, end, row, debit_notes, formats,
-                                       'Total Nota de Debito Electronica (NOTA DE CREDITO COMPRA ELECTRONICA)')
-                row += 2
-                company_name = wk['company_object'].display_name.replace('.', '')
+                        sheet.write(col,row, '0', formats['number'])
+                        sheet.write(col,row,
+                                    round(sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.name).mapped('amount'))),
+                                    formats['number'])
+                    another_taxes = self.get_another_taxes(inv)
+                    for another in another_taxes:
+                        sheet.write(col,row,another.price_subtotal)
+                        col += 1
+                    sheet.write(col,row, round(inv.amount_total_signed), formats['number'])
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
@@ -263,22 +232,8 @@ class AccountInvoiceXlsx(models.Model):
         }
         return action
 
-    def set_size(self, sheet):
-        sheet.set_column('F:F', 40)
-        sheet.set_column('B:B', 17.56)
-        sheet.set_column('H:H', 11)
-        sheet.set_column('J:J', 11)
-        sheet.set_column('I:I', 12.56)
-        sheet.set_column('L:L', 20)
-        sheet.set_column('A:A', 6)
-        sheet.set_column('D:D', 10)
-        sheet.set_column('E:E', 12)
-        sheet.set_column('C:C', 11)
-        sheet.set_column('K:K', 20)
-        sheet.set_column('G:G', 2.89)
-        sheet.set_column('C:C', 15.89)
-        sheet.set_column('F:F', 45)
-        sheet.set_row(9, 6)
+    def set_size(self, sheet, col, size):
+        sheet.set_column(col, col, size)
         return sheet
 
     def set_data_company(self, company, sheet, formats, region, book):
@@ -425,12 +380,13 @@ class AccountInvoiceXlsx(models.Model):
                         round(sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.name).mapped('amount'))),
                         formats['number'])
         another_taxes = self.get_another_taxes(inv)
-        list = ascii_uppercase.split()
-        raise models.ValidationError(list)
+
         return sheet
 
     def diff_dates(self, date1, date2):
         return abs(date2 - date1).days
+
+    def set_another(self):
 
     def get_another_taxes(self, inv):
         another = []
