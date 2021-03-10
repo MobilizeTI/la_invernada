@@ -47,7 +47,7 @@ class AccountInvoiceXlsx(models.Model):
                 titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', 'Nombre', 'EXENTO', 'NETO', 'IVA',
                           'IVA NO RECUPERABLE']
                 invoices = self.env['account.invoice'].sudo().search([])
-                taxes = invoices.mapped('tax_line_ids').mapped('tax_id').mapped('name')
+                taxes = list(dict.fromkeys(invoices.mapped('tax_line_ids').mapped('tax_id').mapped('name')))
                 raise models.ValidationError(taxes)
         workbook.close()
         with open(file_name, "rb") as file:
