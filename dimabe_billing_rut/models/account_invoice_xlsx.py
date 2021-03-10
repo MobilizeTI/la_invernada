@@ -74,7 +74,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.write(row, col, 'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)')
                 row += 1
                 invoices = self.env['account.invoice'].search(
-                    [('type', 'in', ('in_invoice', 'in_refund')), ('date_invoice', '>', self.from_date),
+                    [ ('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 33)])
                 begin = row
                 for inv in invoices:
