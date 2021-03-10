@@ -87,13 +87,41 @@ class AccountInvoiceXlsx(models.Model):
                                                               ('date_invoice', '<', self.to_date),
                                                               ('dte_type_id.code', '=', 34)])
                 row += 2
+                sheet.write(row, col, 'Factura de compra exenta electronica. (FACTURA COMPRA EXENTA ELECTRONICA)')
+                row += 1
                 for ex in exempts:
                     data = self.set_data_invoice(sheet, col, row, ex, taxes_title, titles)
                     sheet = data['sheet']
                     row = data['row']
                     row += 1
                     col = 0
+                credit = self.env['account.invoice'].search([('date_invoice', '>', self.from_date),
+                                                              ('date_invoice', '<', self.to_date),
+                                                              ('dte_type_id.code', '=', 61)])
                 row += 2
+                sheet.write(row, col, 'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)')
+                row += 1
+                for cre in credit:
+                    data = self.set_data_invoice(sheet, col, row, cre, taxes_title, titles)
+                    sheet = data['sheet']
+                    row = data['row']
+                    row += 1
+                    col = 0
+                debit = self.env['account.invoice'].search([('date_invoice', '>', self.from_date),
+                                                             ('date_invoice', '<', self.to_date),
+                                                             ('dte_type_id.code', '=', 56)])
+                row += 2
+                sheet.write(row, col, 'NOTA DE DEBITO ELECTRONICA (NOTA DE DEBITO COMPRA ELECTRONICA)')
+                row += 1
+                for deb in debit:
+                    data = self.set_data_invoice(sheet, col, row, deb, taxes_title, titles)
+                    sheet = data['sheet']
+                    row = data['row']
+                    row += 1
+                    col = 0
+                row += 2
+
+
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
