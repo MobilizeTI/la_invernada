@@ -116,7 +116,7 @@ class AccountInvoiceXlsx(models.Model):
                         sheet.write_number(row,col,0)
                         col += 1
                         for tax in taxes_title:
-                            if tax in titles or str.upper(tax) in titles:
+                            if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
                                 line = inv.tax_line_ids.filtered(
                                     lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(a.tax_id.name) == tax).mapped('amount')
                                 sheet.write(row, col, sum(line))
