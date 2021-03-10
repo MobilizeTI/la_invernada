@@ -386,8 +386,6 @@ class AccountInvoiceXlsx(models.Model):
     def diff_dates(self, date1, date2):
         return abs(date2 - date1).days
 
-    def set_another(self):
-
     def get_another_taxes(self, inv):
         another = []
         for line in inv.mapped('invoice_line_ids'):
