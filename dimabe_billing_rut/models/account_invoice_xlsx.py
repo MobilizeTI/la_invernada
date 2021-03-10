@@ -97,6 +97,13 @@ class AccountInvoiceXlsx(models.Model):
                         lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) == 0)
                     if taxes:
                         sheet.write(row, col, sum(taxes.mapped('price_subtotal')))
+                        col += 1
+                        if sum(taxes.mapped('price_subtotal')) == inv.amount_untaxed_signed:
+                            sheet.write(row,col,'0')
+                            col += 1
+                        else:
+                            sheet.write(row,col,inv.amount_untaxed_signed)
+                            col += 1
                     row += 1
                     col = 0
         workbook.close()
