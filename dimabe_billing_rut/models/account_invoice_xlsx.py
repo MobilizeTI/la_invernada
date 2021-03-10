@@ -51,11 +51,21 @@ class AccountInvoiceXlsx(models.Model):
                 for tax in taxes:
                     titles.append(tax.upper())
                 sheet.write(0, 0, self.env.user.company_id.display_name)
-                sheet.write(1, 1, self.env.user.company_id.invoice_rut)
-                sheet.write(2, 2,
+                sheet.write(0, 1, self.env.user.company_id.invoice_rut)
+                sheet.write(0, 2,
                             f'{self.env.user.company_id.city},Region {self.env.user.company_id.region_address_id.name}')
-                sheet.write(4,4,'Libro Ventas')
-
+                sheet.write(4, 4, 'Libro Ventas')
+                sheet.write(5, 4, 'Libro de Ventas Ordenado por fecha')
+                sheet.write(6, 10, 'Fecha')
+                sheet.write(6, 11, date.today().strftime('%Y-%m-%d'))
+                sheet.write(0, 7, f'Desde {self.from_date} Hasta {self.to_date}')
+                sheet.write(0, 8, 'Moneda : Peso Chileno')
+                row = 12
+                col = 0
+                for title in titles:
+                    sheet.write(row,col,title)
+                    col += 1
+                row += 2
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
