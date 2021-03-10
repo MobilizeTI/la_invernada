@@ -57,27 +57,27 @@ class AccountInvoiceXlsx(models.Model):
                 begin = row
 
                 for inv in invoices:
-                    sheet.write(row,col inv.dte_type_id.code, formats['string'])
+                    sheet.write(row,col, inv.dte_type_id.code, formats['string'])
                     col += 1
                     if inv.reference:
-                        sheet.write(row,col inv.reference, formats['string'])
+                        sheet.write(row,col, inv.reference, formats['string'])
                     col += 1
                     if inv.number:
-                        sheet.write(row,col inv.number, formats['string'])
+                        sheet.write(row,col, inv.number, formats['string'])
                     col += 1
                     if inv.partner_id.invoice_rut:
-                        sheet.write(row,col inv.partner_id.invoice_rut, formats['string'])
+                        sheet.write(row,col, inv.partner_id.invoice_rut, formats['string'])
                     col += 1
                     taxes = inv.mapped('invoice_line_ids').filtered(
                         lambda a: len(a.invoice_line_tax_ids) == 0 or 'Exento' not in a.invoice_line_tax_ids.mapped(
                             'name'))
                     if not taxes:
-                        sheet.write(row,col inv.amount_untaxed_signed,
+                        sheet.write(row,col, inv.amount_untaxed_signed,
                                     formats['number'])
-                        sheet.write(row,col '0', formats['number'])
+                        sheet.write(row,col, '0', formats['number'])
                     else:
-                        sheet.write(row,col '0', formats['number'])
-                        sheet.write(row,col inv.amount_untaxed_signed,
+                        sheet.write(row,col, '0', formats['number'])
+                        sheet.write(row,col, inv.amount_untaxed_signed,
                                     formats['number'])
                     days = self.diff_dates(inv.date_invoice, date.today())
                     if days > 90:
