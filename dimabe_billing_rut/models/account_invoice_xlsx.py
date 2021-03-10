@@ -44,7 +44,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet = wk['worksheet']
                 formats = self.set_formats(workbook)
                 region = self.env['region.address'].search([('id', '=', 1)])
-                titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT','#', 'Nombre', 'EXENTO', 'NETO', 'IVA',
+                titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', '#', 'Nombre', 'EXENTO', 'NETO', 'IVA',
                           'IVA NO RECUPERABLE']
                 invoices = self.env['account.invoice'].sudo().search([])
                 taxes = list(dict.fromkeys(invoices.mapped('tax_line_ids').mapped('tax_id').mapped('name')))
@@ -65,7 +65,7 @@ class AccountInvoiceXlsx(models.Model):
                 row = 12
                 col = 0
                 for title in titles:
-                    sheet.write(row,col,title)
+                    sheet.write(row, col, title)
                     col += 1
                 row += 2
         workbook.close()
