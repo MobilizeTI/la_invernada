@@ -44,24 +44,24 @@ class AccountInvoiceXlsx(models.Model):
                 sheet = wk['worksheet']
                 formats = self.set_formats(workbook)
                 region = self.env['region.address'].search([('id', '=', 1)])
-                titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT','', 'Nombre', 'EXENTO', 'NETO', 'IVA',
+                titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT','#', 'Nombre', 'EXENTO', 'NETO', 'IVA',
                           'IVA NO RECUPERABLE']
                 invoices = self.env['account.invoice'].sudo().search([])
                 taxes = list(dict.fromkeys(invoices.mapped('tax_line_ids').mapped('tax_id').mapped('name')))
                 for tax in taxes:
                     titles.append(tax.upper())
-                    if taxes[-1] == title[-1]:
+                    if taxes[-1] == titles[-1]:
                         titles.append('Total')
                 sheet.write(0, 0, self.env.user.company_id.display_name)
-                sheet.write(0, 1, self.env.user.company_id.invoice_rut)
-                sheet.write(0, 2,
+                sheet.write(1, 0, self.env.user.company_id.invoice_rut)
+                sheet.write(2, 0,
                             f'{self.env.user.company_id.city},Region {self.env.user.company_id.region_address_id.name}')
                 sheet.write(4, 4, 'Libro Ventas')
                 sheet.write(5, 4, 'Libro de Ventas Ordenado por fecha')
                 sheet.write(6, 10, 'Fecha')
                 sheet.write(6, 11, date.today().strftime('%Y-%m-%d'))
-                sheet.write(0, 7, f'Desde {self.from_date} Hasta {self.to_date}')
-                sheet.write(0, 8, 'Moneda : Peso Chileno')
+                sheet.write(7, 0, f'Desde {self.from_date} Hasta {self.to_date}')
+                sheet.write(8, 0, 'Moneda : Peso Chileno')
                 row = 12
                 col = 0
                 for title in titles:
