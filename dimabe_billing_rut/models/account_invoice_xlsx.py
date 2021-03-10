@@ -112,12 +112,11 @@ class AccountInvoiceXlsx(models.Model):
                         col += 1
                         sheet.write(row, col,
                                     sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
-                        col += 2
+                        col += 1
                         for tax in taxes_title:
                             if tax in titles or str.upper(tax) in titles:
                                 line = inv.tax_line_ids.filtered(
                                     lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(a.tax_id.name) == tax).mapped('amount')
-                                models._logger.error(f"fffffffffffffffffffffffffffffffff{tax}fffffffffffffffffffffffffffffffffffffffffffffff{inv.tax_line_ids.filtered(lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(a.tax_id.name) == tax)}")
                                 sheet.write(row, col, sum(line))
                                 col += 1
                     row += 1
