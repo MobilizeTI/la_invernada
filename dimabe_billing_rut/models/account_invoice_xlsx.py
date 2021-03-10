@@ -49,7 +49,7 @@ class AccountInvoiceXlsx(models.Model):
                 invoices_get_tax = self.env['account.invoice'].sudo().search([])
                 taxes_title = list(
                     dict.fromkeys(invoices_get_tax.mapped('tax_line_ids').mapped('tax_id').mapped('name')))
-                for tax in sorted(taxes_title):
+                for tax in taxes_title:
                     if tax != 'IVA Crédito' and tax != 'IVA Débito' and tax != 'Exento':
                         titles.append(tax.upper())
                         if taxes_title[-1] == tax:
@@ -113,7 +113,7 @@ class AccountInvoiceXlsx(models.Model):
                         sheet.write(row, col,
                                     sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
                         col += 2
-                        for tax in sorted(taxes_title):
+                        for tax in taxes_title:
                             line = inv.tax_line_ids.filtered(
                                 lambda a: str.lower(a.tax_id.name) == str.lower(tax)).mapped('amount')
                             sheet.write(row, col, sum(line))
