@@ -1,6 +1,6 @@
 import base64
 from datetime import date
-from string import ascii_uppercase
+import string
 import xlsxwriter
 from odoo import fields, models, api
 
@@ -48,7 +48,14 @@ class AccountInvoiceXlsx(models.Model):
                           'IVA NO RECUPERABLE']
                 invoices = self.env['account.invoice'].sudo().search([])
                 taxes = list(dict.fromkeys(invoices.mapped('tax_line_ids').mapped('tax_id').mapped('name')))
-                raise models.ValidationError(taxes)
+                for tax in taxes:
+                    titles.append(tax.upper())
+                sheet.write(0, 0, self.env.user.company_id.display_name)
+                sheet.write(1, 1, self.env.user.company_id.invoice_rut)
+                sheet.write(2, 2,
+                            f'{self.env.user.company_id.city},Region {self.env.user.company_id.region_address_id.name}')
+                sheet.write(4,4,'Libro Ventas')
+
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
