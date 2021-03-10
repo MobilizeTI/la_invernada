@@ -425,7 +425,7 @@ class AccountInvoiceXlsx(models.Model):
                         round(sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.name).mapped('amount'))),
                         formats['number'])
         another_taxes = self.get_another_taxes(inv)
-        list = ascii_uppercase
+        list = ascii_uppercase.split()
         raise models.ValidationError(type(list))
         return sheet
 
