@@ -50,7 +50,7 @@ class AccountInvoiceXlsx(models.Model):
                 taxes = list(dict.fromkeys(invoices.mapped('tax_line_ids').mapped('tax_id').mapped('name')))
                 for tax in taxes:
                     titles.append(tax.upper())
-                    if taxes[-1] == titles[-1]:
+                    if taxes[-1] == tax:
                         titles.append('Total')
                 sheet.write(0, 0, self.env.user.company_id.display_name)
                 sheet.write(1, 0, self.env.user.company_id.invoice_rut)
