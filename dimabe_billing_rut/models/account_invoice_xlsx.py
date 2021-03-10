@@ -116,8 +116,9 @@ class AccountInvoiceXlsx(models.Model):
                         for tax in sorted(taxes_title):
                             line = inv.tax_line_ids.filtered(
                                 lambda a: str.lower(a.tax_id.name) == str.lower(tax)).mapped('amount')
-                            sheet.write(row, col, sum(line.mapped('price_subtotal')))
+                            sheet.write(row, col, sum(line))
                             col += 1
+                        sheet.write(row,col,inv.)
                     row += 1
                     col = 0
         workbook.close()
