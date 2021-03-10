@@ -46,8 +46,8 @@ class AccountInvoiceXlsx(models.Model):
                 region = self.env['region.address'].search([('id', '=', 1)])
                 titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', '#', 'Nombre', 'EXENTO', 'NETO', 'IVA',
                           'IVA NO RECUPERABLE']
-                invoices = self.env['account.invoice'].sudo().search([])
-                taxes = list(dict.fromkeys(invoices.mapped('tax_line_ids').mapped('tax_id').mapped('name')))
+                invoices_get_tax = self.env['account.invoice'].sudo().search([])
+                taxes = list(dict.fromkeys(invoices_get_tax.mapped('tax_line_ids').mapped('tax_id').mapped('name')))
                 for tax in taxes:
                     if tax != 'IVA Crédito' and tax != 'IVA Débito':
                         titles.append(tax.upper())
@@ -69,6 +69,16 @@ class AccountInvoiceXlsx(models.Model):
                     sheet.write(row, col, title)
                     col += 1
                 row += 2
+                col = 0
+                sheet.write(row,col,'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)')
+                row += 1
+                invoices = self.env['account.invoice'].search(
+                    [('type', 'in', ('in_invoice', 'in_refund')), ('date_invoice', '>', self.from_date),
+                     ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 33)])
+                begin = row
+                for inv in invoices:
+                    sheet.write(row,col,inv.dte_type_id.code)
+                    col +=1
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
