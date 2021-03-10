@@ -47,7 +47,8 @@ class AccountInvoiceXlsx(models.Model):
                 titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', '#', 'Nombre', 'EXENTO', 'NETO', 'IVA',
                           'IVA NO RECUPERABLE']
                 invoices_get_tax = self.env['account.invoice'].sudo().search([])
-                taxes_title = list(dict.fromkeys(invoices_get_tax.mapped('tax_line_ids').mapped('tax_id').mapped('name')))
+                taxes_title = list(
+                    dict.fromkeys(invoices_get_tax.mapped('tax_line_ids').mapped('tax_id').mapped('name')))
                 for tax in sorted(taxes_title):
                     if tax != 'IVA Crédito' and tax != 'IVA Débito' and tax != 'Exento':
                         titles.append(tax.upper())
@@ -113,8 +114,9 @@ class AccountInvoiceXlsx(models.Model):
                                     sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
                         col += 2
                         for tax in sorted(taxes_title):
-                            line = inv.tax_line_ids(lambda a: str.lower(a.tax_id.name) == str.lower(tax)).mapped('amount')
-                            sheet.write(row,col,sum(line.mapped('price_subtotal')))
+                            line = inv.tax_line_ids.filtered(
+                                lambda a: str.lower(a.tax_id.name) == str.lower(tax)).mapped('amount')
+                            sheet.write(row, col, sum(line.mapped('price_subtotal')))
                             col += 1
                     row += 1
                     col = 0
