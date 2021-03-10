@@ -56,7 +56,7 @@ class AccountInvoiceXlsx(models.Model):
                         if taxes_title[-1] == tax:
                             titles.append('Total')
                 sheet.merge_range(0, 0, 0, 2, self.env.user.company_id.display_name)
-                sheet.write(1, 0, 1, 2, self.env.user.company_id.invoice_rut)
+                sheet.merge_range(1, 0, 1, 2, self.env.user.company_id.invoice_rut)
                 sheet.write(2, 0,
                             f'{self.env.user.company_id.city},Region {self.env.user.company_id.region_address_id.name}')
                 sheet.write(4, 4, 'Libro Ventas')
