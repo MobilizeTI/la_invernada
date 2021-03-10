@@ -294,7 +294,10 @@ class AccountInvoiceXlsx(models.Model):
             sheet.write(row, col, sum(taxes.mapped('price_subtotal')))
             total_result_exent.append({col: sum(taxes.mapped('price_subtotal'))})
             col += 1
-            if sum(taxes.mapped('price_subtotal')) == inv.amount_untaxed_signed:
+            net = inv.amount_untaxed_signed
+            if inv.currency_id.name == 'CLP':
+                net  = net * inv.exchange_rate
+            if sum(taxes.mapped('price_subtotal')) == net:
                 sheet.write(row, col, '0')
                 col += 1
             else:
