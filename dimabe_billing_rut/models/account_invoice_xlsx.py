@@ -48,6 +48,7 @@ class AccountInvoiceXlsx(models.Model):
                           'IVA NO RECUPERABLE']
                 invoices = self.env['account.invoice'].sudo().search([])
                 taxes = invoices.mapped('tax_line_ids').mapped('tax_id').mapped('name')
+                raise models.ValidationError(taxes)
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
