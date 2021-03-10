@@ -118,7 +118,6 @@ class AccountInvoiceXlsx(models.Model):
                                 lambda a: str.lower(a.tax_id.name) == str.lower(tax)).mapped('amount')
                             sheet.write(row, col, sum(line))
                             col += 1
-                        sheet.write(row,col,inv.)
                     row += 1
                     col = 0
         workbook.close()
