@@ -18,6 +18,7 @@
                     <field name="create_date" string="Fecha de Creacion" readonly="1"/>
                     <field name="client_or_quality" />
                     <field name="workcenter_send_id"/>
+                    <field name="delivered_date"/>
                     <field name="physical_location"/>
                     <field name="observations" />
                 </tree>

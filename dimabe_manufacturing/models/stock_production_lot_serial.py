@@ -164,6 +164,8 @@ class StockProductionLotSerial(models.Model):
 
     location_id = fields.Many2one('stock.location',related='stock_production_lot_id.location_id')
 
+    delivered_date = fields.Date('Fecha de envio a:')
+
     @api.depends('production_id', 'reserved_to_production_id')
     @api.multi
     def _compute_production_id_to_view(self):
