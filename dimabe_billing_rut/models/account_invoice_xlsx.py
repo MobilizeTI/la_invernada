@@ -99,11 +99,19 @@ class AccountInvoiceXlsx(models.Model):
                         sheet.write(row, col, sum(taxes.mapped('price_subtotal')))
                         col += 1
                         if sum(taxes.mapped('price_subtotal')) == inv.amount_untaxed_signed:
-                            sheet.write(row,col,'0')
+                            sheet.write(row, col, '0')
                             col += 1
                         else:
-                            sheet.write(row,col,inv.amount_untaxed_signed)
+                            sheet.write(row, col, inv.amount_untaxed_signed)
                             col += 1
+                    else:
+                        sheet.write_number(row, col, 0)
+                        col += 1
+                        sheet.write(row, col, inv.amount_untaxed_signed)
+                        col += 1
+                        sheet.write(row, col,
+                                    sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
+                        col += 1
                     row += 1
                     col = 0
         workbook.close()
