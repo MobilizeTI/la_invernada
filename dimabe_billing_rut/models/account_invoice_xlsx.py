@@ -44,7 +44,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet = wk['worksheet']
                 formats = self.set_formats(workbook)
                 region = self.env['region.address'].search([('id', '=', 1)])
-                titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', 'Nombre','#', 'EXENTO', 'NETO', 'IVA',
+                titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', 'Nombre', '#', 'EXENTO', 'NETO', 'IVA',
                           'IVA NO RECUPERABLE']
                 invoices_get_tax = self.env['account.invoice'].sudo().search([])
                 taxes_title = list(
@@ -74,55 +74,26 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.write(row, col, 'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)')
                 row += 1
                 invoices = self.env['account.invoice'].search(
-                    [ ('date_invoice', '>', self.from_date),
+                    [('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 33)])
                 begin = row
                 for inv in invoices:
-                    sheet.write(row, col, inv.dte_type_id.code)
-                    col += 1
-                    if inv.dte_folio:
-                        sheet.write(row, col, inv.dte_folio)
-                    col += 1
-                    if inv.number:
-                        sheet.write(row, col, inv.number)
-                    col += 1
-                    if inv.date_invoice:
-                        sheet.write(row, col, inv.date_invoice.strftime('%Y-%m-%d'))
-                    col += 1
-                    if inv.partner_id.invoice_rut:
-                        sheet.write(row, col, inv.partner_id.invoice_rut)
-                    col += 1
-                    sheet.write(row, col, inv.partner_id.display_name)
-                    col += 2
-                    taxes = inv.invoice_line_ids.filtered(
-                        lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) == 0)
-                    if taxes:
-                        sheet.write(row, col, sum(taxes.mapped('price_subtotal')))
-                        col += 1
-                        if sum(taxes.mapped('price_subtotal')) == inv.amount_untaxed_signed:
-                            sheet.write(row, col, '0')
-                            col += 1
-                        else:
-                            sheet.write(row, col, inv.amount_untaxed_signed)
-                            col += 1
-                    else:
-                        sheet.write_number(row, col, 0)
-                        col += 1
-                        sheet.write(row, col, inv.amount_untaxed_signed)
-                        col += 1
-                        sheet.write(row, col,
-                                    sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
-                        col += 1
-                        sheet.write_number(row,col,0)
-                        col += 1
-                        for tax in taxes_title:
-                            if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
-                                line = inv.tax_line_ids.filtered(
-                                    lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(a.tax_id.name) == tax).mapped('amount')
-                                sheet.write(row, col, sum(line))
-                                col += 1
+                    data = self.set_data_invoice(sheet, col, row, inv, taxes_title, titles)
+                    sheet = data['sheet']
+                    row = data['row']
                     row += 1
                     col = 0
+                exempts = self.env['account.invoice'].search([('date_invoice', '>', self.from_date),
+                                                              ('date_invoice', '<', self.to_date),
+                                                              ('dte_type_id.code', '=', 34)])
+                row += 2
+                for ex in exempts:
+                    data = self.set_data_invoice(sheet, col, row, ex, taxes_title, titles)
+                    sheet = data['sheet']
+                    row = data['row']
+                    row += 1
+                    col = 0
+                row += 2
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
@@ -376,39 +347,53 @@ class AccountInvoiceXlsx(models.Model):
         sheet.write('M11', 'Total', format)
         return sheet
 
-    def set_data_invoice(self, sheet, row, inv, formats):
-        sheet.write('A{}'.format(str(row)), inv.dte_type_id.code, formats['string'])
-        if inv.reference:
-            sheet.write('B{}'.format(str(row)), inv.reference, formats['string'])
-            sheet.write('C{}'.format(str(row)), inv.number, formats['string'])
-        sheet.write('D{}'.format(str(row)), inv.date_invoice.strftime("%d/%m/%Y"), formats['string'])
-        rut = inv.partner_id.invoice_rut
-        if not rut:
-            rut = ''
-        sheet.write('E{}'.format(str(row)), rut, formats['string'])
-        sheet.write('F{}'.format(str(row)), inv.partner_id.display_name, formats['string'])
-        taxes = inv.mapped('invoice_line_ids').filtered(
-            lambda a: len(a.invoice_line_tax_ids) == 0 or 'Exento' not in a.invoice_line_tax_ids.mapped('name'))
-        if not taxes:
-            sheet.write('H{}'.format(str(row)), inv.amount_untaxed_signed, formats['number'])
-            sheet.write('I{}'.format(str(row)), '0', formats['number'])
+    def set_data_invoice(self, sheet, col, row, inv, taxes_title, titles):
+        sheet.write(row, col, inv.dte_type_id.code)
+        col += 1
+        if inv.dte_folio:
+            sheet.write(row, col, inv.dte_folio)
+        col += 1
+        if inv.number:
+            sheet.write(row, col, inv.number)
+        col += 1
+        if inv.date_invoice:
+            sheet.write(row, col, inv.date_invoice.strftime('%Y-%m-%d'))
+        col += 1
+        if inv.partner_id.invoice_rut:
+            sheet.write(row, col, inv.partner_id.invoice_rut)
+        col += 1
+        sheet.write(row, col, inv.partner_id.display_name)
+        col += 2
+        taxes = inv.invoice_line_ids.filtered(
+            lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) == 0)
+        if taxes:
+            sheet.write(row, col, sum(taxes.mapped('price_subtotal')))
+            col += 1
+            if sum(taxes.mapped('price_subtotal')) == inv.amount_untaxed_signed:
+                sheet.write(row, col, '0')
+                col += 1
+            else:
+                sheet.write(row, col, inv.amount_untaxed_signed)
+                col += 1
         else:
-            sheet.write('H{}'.format(str(row)), '0', formats['number'])
-            sheet.write('I{}'.format(str(row)), round(inv.amount_untaxed_signed), formats['number'])
-        days = self.diff_dates(inv.date_invoice, date.today())
-        if days > 90:
-            sheet.write('K{}'.format(str(row)),
-                        round(sum(inv.tax_line_ids.filtered(lambda a: a.tax_id.amount == 19).mapped('amount'))),
-                        formats['number'])
-            sheet.write('J{}'.format(str(row)), '0', formats['number'])
-        else:
-            sheet.write('K{}'.format(str(row)), '0', formats['number'])
-            sheet.write('J{}'.format(str(row)),
-                        round(sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.name).mapped('amount'))),
-                        formats['number'])
-        another_taxes = self.get_another_taxes(inv)
+            sheet.write_number(row, col, 0)
+            col += 1
+            sheet.write(row, col, inv.amount_untaxed_signed)
+            col += 1
+            sheet.write(row, col,
+                        sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
+            col += 1
+            sheet.write_number(row, col, 0)
+            col += 1
+            for tax in taxes_title:
+                if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
+                    line = inv.tax_line_ids.filtered(
+                        lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(a.tax_id.name) == tax).mapped(
+                        'amount')
+                    sheet.write(row, col, sum(line))
+                    col += 1
 
-        return sheet
+        return {'sheet': sheet, 'row': row}
 
     def diff_dates(self, date1, date2):
         return abs(date2 - date1).days
