@@ -114,9 +114,10 @@ class AccountInvoiceXlsx(models.Model):
                                     sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
                         col += 2
                         for tax in taxes_title:
-                            line = inv.tax_line_ids.filtered(
-                                lambda a: str.lower(a.tax_id.name) == str.lower(tax)).mapped('amount')
-                            sheet.write(row, col, sum(line))
+                            if tax in titles:
+                                line = inv.tax_line_ids.filtered(
+                                    lambda a: str.lower(a.tax_id.name) == str.lower(tax)).mapped('amount')
+                                sheet.write(row, col, sum(line))
                             col += 1
                     row += 1
                     col = 0
