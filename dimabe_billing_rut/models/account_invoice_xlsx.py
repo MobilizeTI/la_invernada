@@ -1,6 +1,6 @@
 import base64
 from datetime import date
-
+from string import ascii_uppercase
 import xlsxwriter
 from odoo import fields, models, api
 
@@ -413,7 +413,6 @@ class AccountInvoiceXlsx(models.Model):
         else:
             sheet.write('H{}'.format(str(row)), '0', formats['number'])
             sheet.write('I{}'.format(str(row)), round(inv.amount_untaxed_signed), formats['number'])
-
         days = self.diff_dates(inv.date_invoice, date.today())
         if days > 90:
             sheet.write('K{}'.format(str(row)),
@@ -425,10 +424,9 @@ class AccountInvoiceXlsx(models.Model):
             sheet.write('J{}'.format(str(row)),
                         round(sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.name).mapped('amount'))),
                         formats['number'])
-
         another_taxes = self.get_another_taxes(inv)
-        sheet.write('L{}'.format(str(row)), round(sum(another_taxes)), formats['number'])
-        sheet.write('M{}'.format(str(row)), round(inv.amount_total_signed), formats['number'])
+        list = ascii_uppercase
+        raise models.ValidationError(type(list))
         return sheet
 
     def diff_dates(self, date1, date2):
@@ -441,5 +439,5 @@ class AccountInvoiceXlsx(models.Model):
             if line.invoice_line_tax_ids and len(line.invoice_line_tax_ids) > 0:
                 for tax in line.invoice_line_tax_ids:
                     if tax.amount != 19 and tax.amount > 0:
-                        another.append(line.price_subtotal)
+                        another.append(line)
         return another
