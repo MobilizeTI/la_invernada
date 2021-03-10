@@ -160,6 +160,10 @@ class StockProductionLotSerial(models.Model):
 
     observations = fields.Text('Observaciones')
 
+    product_caliber = fields.Char('Calibre')
+
+    location_id = fields.Many2one('stock.location',related='stock_production_lot_id.location_id')
+
     @api.depends('production_id', 'reserved_to_production_id')
     @api.multi
     def _compute_production_id_to_view(self):
@@ -298,6 +302,7 @@ class StockProductionLotSerial(models.Model):
 
     @api.model
     def create(self, values_list):
+        models._logger.error(f'Keys {values_list.keys()} Values {values_list.values()}')
         res = super(StockProductionLotSerial, self).create(values_list)
 
         if res.display_weight == 0 and res.gross_weight == 0:
