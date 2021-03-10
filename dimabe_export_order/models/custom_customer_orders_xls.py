@@ -44,12 +44,12 @@ class CustomCustomerOrdersXls(models.TransientModel):
             
             
             #bold_format = workbook.add_format({'bold':True})
-            orders = self.env['sale.order'].sudo.search([('confirmation_date','>=',from_date),('confirmation_date','<=',to_date)])
+            orders = self.env['sale.order'].sudo().search([('confirmation_date','>=',from_date),('confirmation_date','<=',to_date)])
             #shipping_numbers = self.env['account.invoice'].search([('departure_date.strftime("%Y")','=',str(self.for_year))])
             #self.set_title(sheet, bold_format)
             
             for order in orders:
-                stock_picking_ids = self.env['stock.picking'].sudo.search([('sale_id','=',order.id)])
+                stock_picking_ids = self.env['stock.picking'].sudo().search([('sale_id','=',order.id)])
                 for stock in stock_picking_ids:
                     sheet.write(row, col, stock.shipping_number)
                     col += 1
