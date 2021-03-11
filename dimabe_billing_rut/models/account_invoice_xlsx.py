@@ -93,7 +93,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet = data_totals['sheet']
                 row = data_totals['row']
                 col = 0
-                exempts = self.env['account.invoice'].search([('date_invoice', '>', self.from_date),
+                exempts = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
                                                               ('date_invoice', '<', self.to_date),
                                                               ('dte_type_id.code', '=', 34),('company_id.id','=',self.company_get_id.id)])
                 row += 2
@@ -105,7 +105,7 @@ class AccountInvoiceXlsx(models.Model):
                     row = data['row']
                     row += 1
                     col = 0
-                credit = self.env['account.invoice'].search([('date_invoice', '>', self.from_date),
+                credit = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
                                                              ('date_invoice', '<', self.to_date),
                                                              ('dte_type_id.code', '=', 61),('company_id.id','=',self.company_get_id.id)])
                 row += 2
@@ -118,7 +118,7 @@ class AccountInvoiceXlsx(models.Model):
                     row = data['row']
                     row += 1
                     col = 0
-                debit = self.env['account.invoice'].search([('date_invoice', '>', self.from_date),
+                debit = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
                                                             ('date_invoice', '<', self.to_date),
                                                             ('dte_type_id.code', '=', 56),('company_id.id','=',self.company_get_id.id)])
                 row += 2
