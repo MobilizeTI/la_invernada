@@ -77,19 +77,21 @@ class AccountInvoiceXlsx(models.Model):
                     [('date_invoice', '>', self.from_date),
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 33)])
                 begin = row
-                total = []
+                total_exempt = []
                 for inv in invoices:
                     data = self.set_data_invoice(sheet, col, row, inv, taxes_title, titles)
                     sheet = data['sheet']
                     row = data['row']
-                    total = data['total_exempt']
+                    total_exempt.append({col: sum(inv.invoice_line_ids.filtered(
+                        lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(
+                            a.invoice_line_tax_ids) == 0).mapped('price_subtotal'))})
                     if inv.id == invoices[-1].id:
                         row += 2
                     else:
                         row += 1
 
                 counter = Counter()
-                for item in total:
+                for item in total_exempt:
                     counter.update(item)
                 total_dict = dict(counter)
                 sheet.write(row, 0, 'Totales:')
@@ -306,11 +308,11 @@ class AccountInvoiceXlsx(models.Model):
             sheet.write_number(row, col, 0)
             col += 1
             sheet.write(row, col, inv.amount_untaxed_signed)
-            total_result_exent.append({col:inv.amount_untaxed_signed})
             col += 1
             sheet.write(row, col,
                         sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
-            total_result_exent.append({col:sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount'))})
+            total_result_exent.append(
+                {col: sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount'))})
             col += 1
             sheet.write_number(row, col, 0)
             col += 1
