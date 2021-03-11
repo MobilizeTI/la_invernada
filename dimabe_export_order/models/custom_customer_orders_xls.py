@@ -54,6 +54,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
                 stock_picking_ids = self.env['stock.picking'].sudo().search([('sale_id','=',order.id)])
                 for stock in stock_picking_ids:
                     invoice_line = self.env['account.invoice.line'].sudo().search([('stock_picking_id','=',stock.id)])
+                    raise models.ValidationError(invoice_line.invoice_id)
                     account_invoice = self.env['account.invoice'].sudo().search([('id','=',invoice_line[0].invoice_id)])
                     #N° Embarque
                     sheet.write(row, col, stock.shipping_number if stock.shipping_number else '') 
