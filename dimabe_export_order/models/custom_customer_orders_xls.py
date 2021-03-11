@@ -37,24 +37,18 @@ class CustomCustomerOrdersXls(models.TransientModel):
                 col += 1
             row += 1
             col = 0
-
-
+            
             from_date = '{}/01/01'.format(str(self.for_year))
             to_date = '{}/12/31'.format(str(self.for_year))
             
-            
-            #bold_format = workbook.add_format({'bold':True})
             orders = self.env['sale.order'].sudo().search([('confirmation_date','>=',from_date),('confirmation_date','<=',to_date)])
 
-            #shipping_numbers = self.env['account.invoice'].search([('departure_date.strftime("%Y")','=',str(self.for_year))])
-            #self.set_title(sheet, bold_format)
-            
             for order in orders:
                 
                 stock_picking_ids = self.env['stock.picking'].sudo().search([('sale_id','=',order.id)])
                 for stock in stock_picking_ids:
                     invoice_line = self.env['account.invoice.line'].sudo().search([('stock_picking_id','=',stock.id)])
-                    raise models.ValidationError(invoice_line.invoice_id)
+                    raise models.ValidationError(len(invoice_line))
                     account_invoice = self.env['account.invoice'].sudo().search([('id','=',invoice_line[0].invoice_id)])
                     #N° Embarque
                     sheet.write(row, col, stock.shipping_number if stock.shipping_number else '') 
