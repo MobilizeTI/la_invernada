@@ -444,6 +444,7 @@
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
                                         <span t-field="d.ship.name"/>
+                                        <span t-field="d.ship_number"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -816,7 +817,11 @@
                             <tr>
                                 <th style="text-align:left; width:200px">NAVE</th>
                                 <td>:</td>
-                                <td><span t-field="d.ship.name"/></td>
+                                <td>
+                                    <span t-field="d.ship.name"/>
+                                    <span t-field="d.ship_number"/>
+                                </td>
+
                             </tr>
                             <tr>
                                 <th style="text-align:left; width:200px">NAVIERA</th>
@@ -1101,7 +1106,10 @@
                             <tr>
                                 <th style="text-align:left; width:200px">NOMBRE DE LA NAVE</th>
                                 <td>:</td>
-                                <td><span t-field="d.ship.name"/></td>
+                                <td>
+                                    <span t-field="d.ship.name"/>
+                                    <span t-field="d.ship_number"/>
+                                </td>
                             </tr>
                             <tr>
                                 <th style="text-align:left; width:200px">PUERTO DE EMBARQUE</th>

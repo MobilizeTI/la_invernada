@@ -14,10 +14,11 @@ class StockPicking(models.Model):
     #shipping_number = fields.Integer('Número Embarque')
     shipping_number = fields.Char('Número Embarque')
 
-    shipping_id = fields.Many2one(
-        'custom.shipment',
-        'Embarque'
-    )
+    #Ya no se ocupa
+    #shipping_id = fields.Many2one(
+    #    'custom.shipment',
+    #    'Embarque'
+    #)
 
     #required_loading_date = fields.Datetime(
     #    related='shipping_id.required_loading_date')

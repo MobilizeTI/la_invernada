@@ -11,10 +11,11 @@ class StockPicking(models.Model):
 
     has_mrp_production = fields.Boolean('tiene orden de producción')
 
-    shipping_id = fields.Many2one(
-        'custom.shipment',
-        'Embarque'
-    )
+    #ya no se ocupa
+    #shipping_id = fields.Many2one(
+    #    'custom.shipment',
+    #    'Embarque'
+    #)
     variety = fields.Many2many(related="product_id.attribute_value_ids")
 
     country_id = fields.Char(related='partner_id.country_id.name')

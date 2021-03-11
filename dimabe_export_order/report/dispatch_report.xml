@@ -319,12 +319,19 @@
                                                             <tr>
                                                                 <td>Nave:</td>
                                                                 <td>
-                                                                    <t t-if="d.picking_real_id.shipping_id.type_transport == 'terrestre'">
+                                                                    <!--<t t-if="d.picking_real_id.shipping_id.type_transport == 'terrestre'">
                                                                         <span t-field="d.type_transport"/>
                                                                     </t>
                                                                     <t t-elif="d.picking_real_id.shipping_id.type_transport != 'terrestre'">
                                                                         <span t-field="d.shipping_id.ship.name"/>
                                                                         <span t-field="d.shipping_id.ship_number"/>
+                                                                    </t>-->
+                                                                    <t t-if="d.picking_real_id.type_transport == 'terrestre'">
+                                                                        <span t-field="d.type_transport"/>
+                                                                    </t>
+                                                                    <t t-elif="d.picking_real_id.type_transport != 'terrestre'">
+                                                                        <span t-field="d.ship.name"/>
+                                                                        <span t-field="d.ship_number"/>
                                                                     </t>
                                                                 </td>
                                                             </tr>
@@ -337,7 +344,7 @@
                                                             <tr>
                                                                 <td>PTO EMBARQUE:</td>
                                                                 <td>
-                                                                    <span t-field="d.picking_real_id.shipping_id.departure_port"/>
+                                                                    <span t-field="d.picking_real_id.departure_port"/>
                                                                 </td>
                                                                 <td>SELLO INVERNADA</td>
                                                                 <td>
@@ -347,7 +354,7 @@
                                                             <tr>
                                                                 <td>PTO DESCARGA</td>
                                                                 <td>
-                                                                    <span t-field="d.picking_real_id.shipping_id.arrival_port"/>
+                                                                    <span t-field="d.picking_real_id.arrival_port"/>
                                                                 </td>
                                                                 <td>N° RESERVA</td>
                                                                 <td>
@@ -524,12 +531,12 @@
                                                             <tr>
                                                                 <td>Nave:</td>
                                                                 <td>
-                                                                    <t t-if="d.picking_principal_id.shipping_id.type_transport == 'terrestre'">
+                                                                    <t t-if="d.picking_principal_id.type_transport == 'terrestre'">
                                                                         <span t-field="d.type_transport"/>
                                                                     </t>
-                                                                    <t t-elif="d.picking_principal_id.shipping_id.type_transport != 'terrestre'">
-                                                                        <span t-field="d.shipping_id.ship.name"/>
-                                                                        <span t-field="d.shipping_id.ship_number"/>
+                                                                    <t t-elif="d.picking_principal_id.type_transport != 'terrestre'">
+                                                                        <span t-field="d.ship.name"/>
+                                                                        <span t-field="d.ship_number"/>
                                                                     </t>
                                                                 </td>
                                                             </tr>
@@ -542,7 +549,7 @@
                                                             <tr>
                                                                 <td>PTO EMBARQUE:</td>
                                                                 <td>
-                                                                    <span t-field="d.picking_principal_id.shipping_id.departure_port"/>
+                                                                    <span t-field="d.picking_principal_id.departure_port"/>
                                                                 </td>
                                                                 <td>SELLO INVERNADA</td>
                                                                 <td>
@@ -552,7 +559,7 @@
                                                             <tr>
                                                                 <td>PTO DESCARGA</td>
                                                                 <td>
-                                                                    <span t-field="d.picking_principal_id.shipping_id.arrival_port"/>
+                                                                    <span t-field="d.picking_principal_id.arrival_port"/>
                                                                 </td>
                                                                 <td>N° RESERVA</td>
                                                                 <td>
@@ -729,12 +736,12 @@
                                                             <tr>
                                                                 <td>Nave:</td>
                                                                 <td>
-                                                                    <t t-if="d.shipping_id.type_transport == 'terrestre'">
+                                                                    <t t-if="d.type_transport == 'terrestre'">
                                                                         <span t-field="d.type_transport"/>
                                                                     </t>
-                                                                    <t t-elif="d.shipping_id.type_transport != 'terrestre'">
-                                                                        <span t-field="d.shipping_id.ship.name"/>
-                                                                        <span t-field="d.shipping_id.ship_number"/>
+                                                                    <t t-elif="d.type_transport != 'terrestre'">
+                                                                        <span t-field="d.ship.name"/>
+                                                                        <span t-field="d.ship_number"/>
                                                                     </t>
                                                                 </td>
                                                             </tr>
@@ -747,7 +754,7 @@
                                                             <tr>
                                                                 <td>PTO EMBARQUE:</td>
                                                                 <td>
-                                                                    <span t-field="d.shipping_id.departure_port"/>
+                                                                    <span t-field="d.departure_port"/>
                                                                 </td>
                                                                 <td>SELLO INVERNADA</td>
                                                                 <td>
@@ -757,7 +764,7 @@
                                                             <tr>
                                                                 <td>PTO DESCARGA</td>
                                                                 <td>
-                                                                    <span t-field="d.shipping_id.arrival_port"/>
+                                                                    <span t-field="d.arrival_port"/>
                                                                 </td>
                                                                 <td>N° RESERVA</td>
                                                                 <td>
@@ -1051,11 +1058,11 @@
                                             <tr>
                                                 <td>Nave:</td>
                                                 <td>
-                                                    <t t-if="d.shipping_id.type_transport == 'terrestre'">
+                                                    <t t-if="d.type_transport == 'terrestre'">
                                                         <span t-field="d.type_transport"/>
                                                     </t>
-                                                    <t t-elif="d.shipping_id.type_transport != 'terrestre'">
-                                                        <span t-field="d.shipping_id.ship"/>
+                                                    <t t-elif="d.type_transport != 'terrestre'">
+                                                        <span t-field="d.ship"/>
                                                     </t>
                                                 </td>
                                             </tr>
@@ -1068,7 +1075,7 @@
                                             <tr>
                                                 <td>PTO EMBARQUE:</td>
                                                 <td>
-                                                    <span t-field="d.shipping_id.departure_port"/>
+                                                    <span t-field="d.departure_port"/>
                                                 </td>
                                                 <td>SELLO INVERNADA</td>
                                                 <td>
@@ -1078,7 +1085,7 @@
                                             <tr>
                                                 <td>PTO DESCARGA</td>
                                                 <td>
-                                                    <span t-field="d.shipping_id.arrival_port"/>
+                                                    <span t-field="d.arrival_port"/>
                                                 </td>
                                                 <td>N° RESERVA</td>
                                                 <td>
@@ -1418,8 +1425,8 @@
                                 <strong>VESSEL/NAVE:</strong>
                             </td>
                             <td>
-                                <span t-field="d.shipping_id.ship.name"/>
-                                <span t-field="d.shipping_id.ship_number"/>
+                                <span t-field="d.ship.name"/>
+                                <span t-field="d.ship_number"/>
                             </td>
                         </tr>
                         <tr>
@@ -1427,8 +1434,8 @@
                                 <strong>PORT OF LOADING:</strong>
                             </td>
                             <td>
-                                <span t-field="d.shipping_id.departure_port.name"/>,
-                                <span t-field="d.shipping_id.departure_port.country_id.name"/>
+                                <span t-field="d.departure_port.name"/>,
+                                <span t-field="d.departure_port.country_id.name"/>
                             </td>
                         </tr>
                         <tr>
@@ -1436,8 +1443,8 @@
                                 <strong>PORT OF DISCHARGE:</strong>
                             </td>
                             <td>
-                                <span t-field="d.shipping_id.arrival_port.name"/>,
-                                <span t-field="d.shipping_id.arrival_port.country_id.name"/>
+                                <span t-field="d.arrival_port.name"/>,
+                                <span t-field="d.arrival_port.country_id.name"/>
                             </td>
                         </tr>
                         <tr>
@@ -1899,7 +1906,7 @@
                                 <strong>VESSEL/NAVE:</strong>
                             </td>
                             <td>
-                                <span t-field="d.shipping_id.ship.name"/>
+                                <span t-field="d.ship.name"/>
                             </td>
                         </tr>
                         <tr>
@@ -1907,7 +1914,7 @@
                                 <strong>PORT OF LOADING:</strong>
                             </td>
                             <td>
-                                <span t-field="d.shipping_id.departure_port.name"/>
+                                <span t-field="d.departure_port.name"/>
                             </td>
                         </tr>
                         <tr>
@@ -1915,7 +1922,7 @@
                                 <strong>PORT OF DISCHARGE:</strong>
                             </td>
                             <td>
-                                <span t-field="d.shipping_id.arrival_port.name"/>
+                                <span t-field="d.arrival_port.name"/>
                             </td>
                         </tr>
                         <tr>
