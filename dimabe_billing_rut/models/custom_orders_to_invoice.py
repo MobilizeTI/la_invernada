@@ -21,8 +21,6 @@ class CustomOrdersToInvoice(models.Model):
 
     container_number = fields.Char(string="N° Contenedor", compute="_compute_container_number")
 
-    container_type = fields.Char(string="Tipo de Contenedor", compute="_compute_container_type")
-
     invoice_id = fields.Many2one(
         'account.invoice',
         index=True,
@@ -39,9 +37,8 @@ class CustomOrdersToInvoice(models.Model):
     def _compute_container_number(self):
         for item in self:
             self.container_number = self.env['stock.picking'].search([('id','=',self.stock_picking_id)]).container_number
-    def _compute_container_type(self):
-        for item in self:
-            self.container_number = self.env['stock.picking'].search([('id','=',self.stock_picking_id)]).container_type.name
+            raise models.ValidationError(self.env['stock.picking'].search([('id','=',self.stock_picking_id)]).container_number)
+
 
   
     
