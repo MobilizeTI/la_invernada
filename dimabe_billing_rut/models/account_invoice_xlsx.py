@@ -91,7 +91,7 @@ class AccountInvoiceXlsx(models.Model):
                 for item in total_exempt:
                     counter.update(item)
                 total_dict = dict(counter)
-                sheet.merge_range(row, 0,row,5 ,'Totales:')
+                sheet.merge_range(row, 0, row, 5, 'Totales:')
                 for k in total_dict:
                     worksheet.write(row, k, total_dict[k])
                 col = 0
