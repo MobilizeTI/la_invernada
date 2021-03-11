@@ -240,10 +240,10 @@ class AccountInvoiceXlsx(models.Model):
         }
         return action
 
-    def set_data_for_excel(self, sheet, row, invoices, taxes_title, titles,formats):
+    def set_data_for_excel(self, sheet, row, invoices, taxes_title, titles, formats):
         for inv in invoices:
             col = 0
-            data = self.set_data_invoice(sheet, col, row, inv, invoices, taxes_title, titles,formats)
+            data = self.set_data_invoice(sheet, col, row, inv, invoices, taxes_title, titles, formats)
             sheet = data['sheet']
             row = data['row']
             col = data['col']
@@ -251,20 +251,21 @@ class AccountInvoiceXlsx(models.Model):
                 row += 2
             else:
                 row += 1
-        sheet.merge_range(row, 0, row, 5, 'Totales:',formats['text_total'])
+        sheet.merge_range(row, 0, row, 5, 'Totales:', formats['text_total'])
         col = 6
-        sheet.write(row, col, len(invoices),formats['total'])
+        sheet.write(row, col, len(invoices), formats['total'])
         col += 1
         sheet.write(row, col, sum(invoices.mapped('invoice_line_ids').filtered(
             lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(
-                a.invoice_line_tax_ids) == 0).mapped('price_subtotal')),formats['total'])
+                a.invoice_line_tax_ids) == 0).mapped('price_subtotal')), formats['total'])
         col += 1
-        sheet.write(row, col, sum(invoices.mapped('amount_untaxed_signed')),formats['total'])
+        sheet.write(row, col, sum(invoices.mapped('amount_untaxed_signed')), formats['total'])
         col += 1
         sheet.write(row, col, sum(
-            invoices.mapped('tax_line_ids').filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),formats['total'])
+            invoices.mapped('tax_line_ids').filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
+                    formats['total'])
         col += 1
-        sheet.write(row, col, 0)
+        sheet.write(row, col, 0,formats['total'])
         col += 1
         for tax in taxes_title:
             if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
@@ -272,9 +273,9 @@ class AccountInvoiceXlsx(models.Model):
                     lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(
                         a.tax_id.name) == tax).mapped(
                     'amount')
-                sheet.write(row, col, sum(line),formats['total'])
+                sheet.write(row, col, sum(line), formats['total'])
                 col += 1
-        sheet.write(row, col, sum(invoices.mapped('amount_total_signed')))
+        sheet.write(row, col, sum(invoices.mapped('amount_total_signed')),formats['total'])
         col = 0
         return {'sheet': sheet, 'row': row}
 
@@ -301,15 +302,15 @@ class AccountInvoiceXlsx(models.Model):
         taxes = inv.invoice_line_ids.filtered(
             lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) == 0)
         if taxes:
-            sheet.write(row, col, sum(taxes.mapped('price_subtotal')),formats['number'])
+            sheet.write(row, col, sum(taxes.mapped('price_subtotal')), formats['number'])
             col += 1
             net = inv.amount_untaxed_signed
             if sum(taxes.mapped('price_subtotal')) == net:
-                sheet.write(row, col, '0',formats['number'])
+                sheet.write(row, col, '0', formats['number'])
                 col += 1
-                sheet.write(row, col, '0',formats['number'])
+                sheet.write(row, col, '0', formats['number'])
                 col += 1
-                sheet.write(row, col, '0',formats['number'])
+                sheet.write(row, col, '0', formats['number'])
                 col += 1
                 for tax in taxes_title:
                     if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
@@ -317,15 +318,16 @@ class AccountInvoiceXlsx(models.Model):
                             lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(
                                 a.tax_id.name) == tax).mapped(
                             'amount')
-                        sheet.write(row, col, sum(line),formats['number'])
+                        sheet.write(row, col, sum(line), formats['number'])
                         col += 1
-                sheet.write(row, col, inv.amount_total_signed,formats['number'])
+                sheet.write(row, col, inv.amount_total_signed, formats['number'])
             else:
-                sheet.write(row, col, inv.amount_untaxed_signed,formats['number'])
+                sheet.write(row, col, inv.amount_untaxed_signed, formats['number'])
                 col += 1
-                sheet.write(row, col, sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),formats['number'])
+                sheet.write(row, col, sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
+                            formats['number'])
                 col += 1
-                sheet.write(row, col, '0',formats['number'])
+                sheet.write(row, col, '0', formats['number'])
                 col += 1
                 for tax in taxes_title:
                     if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
@@ -333,27 +335,28 @@ class AccountInvoiceXlsx(models.Model):
                             lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(
                                 a.tax_id.name) == tax).mapped(
                             'amount')
-                        sheet.write(row, col, sum(line),formats['number'])
+                        sheet.write(row, col, sum(line), formats['number'])
                         col += 1
-                sheet.write(row, col, inv.amount_total_signed,formats['number'])
+                sheet.write(row, col, inv.amount_total_signed, formats['number'])
         else:
-            sheet.write_number(row, col, 0,formats['number'])
+            sheet.write_number(row, col, 0, formats['number'])
             col += 1
-            sheet.write(row, col, inv.amount_untaxed_signed,formats['number'])
+            sheet.write(row, col, inv.amount_untaxed_signed, formats['number'])
             col += 1
             sheet.write(row, col,
-                        sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),formats['number'])
+                        sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
+                        formats['number'])
             col += 1
-            sheet.write_number(row, col, 0,formats['number'])
+            sheet.write_number(row, col, 0, formats['number'])
             col += 1
             for tax in taxes_title:
                 if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
                     line = inv.tax_line_ids.filtered(
                         lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(a.tax_id.name) == tax).mapped(
                         'amount')
-                    sheet.write(row, col, sum(line),formats['number'])
+                    sheet.write(row, col, sum(line), formats['number'])
                     col += 1
-            sheet.write(row, col, inv.amount_total_signed,formats['number'])
+            sheet.write(row, col, inv.amount_total_signed, formats['number'])
 
         return {'sheet': sheet, 'row': row, 'col': col}
 
