@@ -56,7 +56,7 @@ class AccountInvoiceXlsx(models.Model):
                     if tax != 'IVA Crédito' and tax != 'IVA Débito' and tax != 'Exento':
                         titles.append(tax.upper())
 
-                title.append('Total')
+                titles.append('Total')
                 sheet.merge_range(0, 0, 0, 2, self.company_get_id.display_name, formats['title'])
                 sheet.merge_range(1, 0, 1, 2, self.company_get_id.invoice_rut, formats['title'])
                 sheet.merge_range(2, 0, 2, 2,
