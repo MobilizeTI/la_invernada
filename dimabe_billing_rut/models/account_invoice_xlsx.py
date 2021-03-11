@@ -299,7 +299,7 @@ class AccountInvoiceXlsx(models.Model):
             sheet.write(row, col, '0', formats['total'])
         else:
             sheet.write(row, col, sum(invoices.mapped('invoice_line_ids').filtered(
-                lambda a: 'Exento' not in a.invoice_line_tax_ids.mapped('name') or len(
+                lambda a: 'Exento' not in a.invoice_line_tax_ids.mapped('name') and len(
                     a.invoice_line_tax_ids) != 0).mapped('price_subtotal')), formats['total'])
         col = 0
         return {'sheet': sheet, 'row': row}
