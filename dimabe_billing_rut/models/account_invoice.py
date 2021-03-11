@@ -155,9 +155,9 @@ class AccountInvoice(models.Model):
 
     contract_correlative = fields.Integer('corr')
 
-    contract_correlative_view = fields.Char(
-        'N° Orden'
-    )
+    #contract_correlative_view = fields.Char(
+    #    'N° Orden'
+    #)
 
     agent_id = fields.Many2one(
         'res.partner',
