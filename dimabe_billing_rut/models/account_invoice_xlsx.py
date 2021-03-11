@@ -193,7 +193,7 @@ class AccountInvoiceXlsx(models.Model):
                      ('company_id.id', '=', self.company_get_id.id)])
                 begin = row
                 row += 1
-                data_invoice = self.set_data_for_excel(sheet, row, invoices, taxes_title, titles)
+                data_invoice = self.set_data_for_excel(sheet, row, invoices, taxes_title, titles,formats)
                 sheet = data_invoice['sheet']
                 row = data_invoice['row']
                 exempts = self.env['account.invoice'].sudo().search([('type', 'in', ('in_invoice', 'in_refund')),
@@ -204,7 +204,7 @@ class AccountInvoiceXlsx(models.Model):
                 row += 2
                 sheet.write(row, col, 'Factura de compra exenta electronica. (FACTURA COMPRA ELECTRONICA)')
                 row += 1
-                data_exempt = self.set_data_for_excel(sheet, row, exempts, taxes_title, titles)
+                data_exempt = self.set_data_for_excel(sheet, row, exempts, taxes_title, titles,formats)
                 sheet = data_exempt['sheet']
                 row = data_exempt['row']
                 credit = self.env['account.invoice'].sudo().search([('type', 'in', ('in_invoice', 'in_refund')),
@@ -216,7 +216,7 @@ class AccountInvoiceXlsx(models.Model):
                 row += 2
                 sheet.write(row, col, 'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)')
                 row += 1
-                data_credit = self.set_data_for_excel(sheet, row, credit, taxes_title, titles)
+                data_credit = self.set_data_for_excel(sheet, row, credit, taxes_title, titles,formats)
                 sheet = data_credit['sheet']
                 row = data_credit['row']
                 row += 2
@@ -227,7 +227,7 @@ class AccountInvoiceXlsx(models.Model):
                                                                    ('date_invoice', '<', self.to_date),
                                                                    ('dte_type_id.code', '=', 56),
                                                                    ('company_id.id', '=', self.company_get_id.id)])
-                data_debit = self.set_data_for_excel(sheet, row, debit, taxes_title, titles)
+                data_debit = self.set_data_for_excel(sheet, row, debit, taxes_title, titles,formats)
                 sheet = data_debit['sheet']
                 row = data_debit['row']
 
