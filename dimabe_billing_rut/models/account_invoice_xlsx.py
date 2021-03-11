@@ -85,7 +85,7 @@ class AccountInvoiceXlsx(models.Model):
                      ('company_id.id', '=', self.company_get_id.id)])
                 begin = row
                 row += 1
-                data_invoice = self.set_data_for_excel(sheet, row, invoices, taxes_title, titles, formats)
+                data_invoice = self.set_data_for_excel(sheet, row, invoices, taxes_title, titles, formats,exempt=False)
                 sheet = data_invoice['sheet']
                 row = data_invoice['row']
                 exempts = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
@@ -98,7 +98,7 @@ class AccountInvoiceXlsx(models.Model):
                                   'Factura de venta exenta electronica. (FACTURA Venta ELECTRONICA)',
                                   formats['title'])
                 row += 1
-                data_exempt = self.set_data_for_excel(sheet, row, exempts, taxes_title, titles, formats)
+                data_exempt = self.set_data_for_excel(sheet, row, exempts, taxes_title, titles, formats,exempt=True)
                 sheet = data_exempt['sheet']
                 row = data_exempt['row']
                 credit = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
@@ -111,7 +111,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.merge_range(row, col, row, 5, 'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO VENTA ELECTRONICA)',
                                   formats['title'])
                 row += 1
-                data_credit = self.set_data_for_excel(sheet, row, credit, taxes_title, titles, formats)
+                data_credit = self.set_data_for_excel(sheet, row, credit, taxes_title, titles, formats,exempt=False)
                 sheet = data_credit['sheet']
                 row = data_credit['row']
                 row += 2
@@ -123,7 +123,7 @@ class AccountInvoiceXlsx(models.Model):
                                                                    ('type', 'in', ('in_invoice', 'in_refund')),
                                                                    ('dte_type_id.code', '=', 56),
                                                                    ('company_id.id', '=', self.company_get_id.id)])
-                data_debit = self.set_data_for_excel(sheet, row, debit, taxes_title, titles, formats)
+                data_debit = self.set_data_for_excel(sheet, row, debit, taxes_title, titles, formats,exempt=False)
                 sheet = data_debit['sheet']
                 row = data_debit['row']
 
@@ -201,7 +201,7 @@ class AccountInvoiceXlsx(models.Model):
                      ('company_id.id', '=', self.company_get_id.id)])
                 begin = row
                 row += 1
-                data_invoice = self.set_data_for_excel(sheet, row, invoices, taxes_title, titles, formats)
+                data_invoice = self.set_data_for_excel(sheet, row, invoices, taxes_title, titles, formats,exempt=False)
                 sheet = data_invoice['sheet']
                 row = data_invoice['row']
                 exempts = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
@@ -227,7 +227,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.merge_range(row, col, row, 5, 'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)',
                                   formats['title'])
                 row += 1
-                data_credit = self.set_data_for_excel(sheet, row, credit, taxes_title, titles, formats)
+                data_credit = self.set_data_for_excel(sheet, row, credit, taxes_title, titles, formats,exempt=False)
                 sheet = data_credit['sheet']
                 row = data_credit['row']
                 row += 2
@@ -239,7 +239,7 @@ class AccountInvoiceXlsx(models.Model):
                                                                    ('type', 'in', ('out_invoice', 'out_refund')),
                                                                    ('dte_type_id.code', '=', 56),
                                                                    ('company_id.id', '=', self.company_get_id.id)])
-                data_debit = self.set_data_for_excel(sheet, row, debit, taxes_title, titles, formats)
+                data_debit = self.set_data_for_excel(sheet, row, debit, taxes_title, titles, formats,exempt=False)
                 sheet = data_debit['sheet']
                 row = data_debit['row']
 
@@ -260,7 +260,7 @@ class AccountInvoiceXlsx(models.Model):
         }
         return action
 
-    def set_data_for_excel(self, sheet, row, invoices, taxes_title, titles, formats,exempt=False):
+    def set_data_for_excel(self, sheet, row, invoices, taxes_title, titles, formats,exempt):
         for inv in invoices:
             col = 0
             data = self.set_data_invoice(sheet, col, row, inv, invoices, taxes_title, titles, formats)
