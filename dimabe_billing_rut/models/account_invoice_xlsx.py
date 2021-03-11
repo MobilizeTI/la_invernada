@@ -279,9 +279,10 @@ class AccountInvoiceXlsx(models.Model):
             lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(
                 a.invoice_line_tax_ids) == 0).mapped('price_subtotal')), formats['total'])
         col += 1
-        sheet.write(row, col, sum(invoices.mapped('invoice_line_ids').filtered(
-            lambda a: len(
-                a.invoice_line_tax_ids) != 0).mapped('price_subtotal')), formats['total'])
+        if exempt:
+            sheet.write(row, col, '0', formats['total'])
+        else:
+            sheet.write(row, col, sum(invoices.mapped('amount_untaxed_signed')), formats['total'])
         col += 1
         sheet.write(row, col, sum(
             invoices.mapped('tax_line_ids').filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
@@ -297,7 +298,7 @@ class AccountInvoiceXlsx(models.Model):
                     'amount')
                 sheet.write(row, col, sum(line), formats['total'])
                 col += 1
-        sheet.write(row,col,sum(invoices.mapped('amount_total')),formats['total'])
+        sheet.write(row,col,sum(invoices.mapped('amount_total')))
         col = 0
         return {'sheet': sheet, 'row': row}
 
