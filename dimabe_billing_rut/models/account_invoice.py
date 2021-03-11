@@ -288,12 +288,10 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def _compute_total_commission(self):
-        print('')
-        #total_comission = 0
-        #for item in self.orders_to_invoice:
-        #    total_comission += item.total_comission
-
-        #self.commission = total_comission
+        total_comission = 0
+        for item in self.orders_to_invoice:
+            total_comission += item.total_comission
+        self.commission = total_comission
 
     @api.model
     @api.onchange('required_loading_date')
