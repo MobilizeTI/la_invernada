@@ -298,7 +298,7 @@ class AccountInvoiceXlsx(models.Model):
                     'amount')
                 sheet.write(row, col, sum(line), formats['total'])
                 col += 1
-        sheet.write(row,col,sum(invoices.mapped('amount_total')))
+        sheet.write(row,col,sum(invoices.mapped('amount_total')),formats['total'])
         col = 0
         return {'sheet': sheet, 'row': row}
 
