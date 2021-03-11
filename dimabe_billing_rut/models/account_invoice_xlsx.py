@@ -90,6 +90,7 @@ class AccountInvoiceXlsx(models.Model):
                     else:
                         row += 1
                 sheet.merge_range(row, 0, row, 5, 'Totales:')
+                col += 1
                 sheet.write(row, col, len(invoices))
                 col += 1
                 sheet.write(row, col, sum(invoices.mapped('invoice_line_ids').filtered(
