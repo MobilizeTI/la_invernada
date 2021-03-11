@@ -90,9 +90,12 @@ class AccountInvoiceXlsx(models.Model):
                     else:
                         row += 1
                 sheet.merge_range(row, 0, row, 5, 'Totales:')
-                data_totals = self.set_total(sheet, row, col, invoices, taxes_title, titles)
-                sheet = data_totals['sheet']
-                row = data_totals['row']
+                sheet.write(row, col, len(invoices))
+                col += 1
+                sheet.write(row, col, sum(invoices.mapped('invoice_line_ids').filtered(
+                    lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(
+                        a.invoice_line_tax_ids) == 0).mapped('price_subtotal')))
+                col += 1
                 col = 0
                 exempts = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
                                                                      ('date_invoice', '<', self.to_date),
@@ -290,9 +293,8 @@ class AccountInvoiceXlsx(models.Model):
         long_name = max(invoices.mapped('partner_id').mapped('display_name'), key=len)
         sheet.set_column(col, col, len(long_name))
         sheet.write(row, col, inv.partner_id.display_name)
-        col += 1
-        sheet.write(row,col,len(invoices))
-        col += 1
+        col += 2
+
         taxes = inv.invoice_line_ids.filtered(
             lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) == 0)
         if taxes:
@@ -354,17 +356,6 @@ class AccountInvoiceXlsx(models.Model):
             sheet.write(row, col, inv.amount_total_signed)
 
         return {'sheet': sheet, 'row': row, 'total_exempt': total_result_exent}
-
-    def set_total(self, sheet, row, col, invoices, taxes_title, titles):
-        taxes = invoices.mapped('invoice_line_ids').filtered(
-            lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) == 0)
-        col += 1
-        sheet.write(row, col, sum(taxes.mapped('price_subtotal')))
-        col += 1
-        sheet.write(row, col, sum(invoices.mapped('amount_untaxed_signed')))
-        col += 1
-        row += 1
-        return {'sheet': sheet, 'row': row}
 
     def diff_dates(self, date1, date2):
         return abs(date2 - date1).days
