@@ -227,6 +227,8 @@
                                         <field name="product_name" readonly="1"/>
                                         <field name="value_per_kilo" readonly="1"/>
                                         <field name="total_value" readonly="1"/>
+                                        <field name="container_type" readonly="1"/>
+                                        <field name="container_number" readonly="1"/>
                                     </tree>
                                 </field>
                             </group>
