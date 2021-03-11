@@ -70,7 +70,7 @@ class AccountInvoiceXlsx(models.Model):
                 row = 12
                 col = 0
                 for title in titles:
-                    sheet.write(row, col, title)
+                    sheet.write(row, col, title,formats['title'])
                     col += 1
                 row += 2
                 col = 0
@@ -373,3 +373,12 @@ class AccountInvoiceXlsx(models.Model):
                     if tax.amount != 19 and tax.amount > 0:
                         another.append(line)
         return another
+
+    def set_format(self, workbook):
+        title = workbook.add_format({
+            'bold': True,
+            'valign': 'center',
+            'align': 'center',
+        })
+
+        return {'title':title}
