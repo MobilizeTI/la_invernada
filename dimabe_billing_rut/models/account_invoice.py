@@ -165,7 +165,7 @@ class AccountInvoice(models.Model):
         domain=[('is_agent', '=', True)]
     )
 
-    commission = fields.Float(string="Total Comisión", compute="_compute_total_comission")
+    commission = fields.Float(string="Valor Comisión (%)")
 
     total_commission = fields.Float(
         'Valor Comisión',
@@ -289,8 +289,9 @@ class AccountInvoice(models.Model):
     @api.multi
     def _compute_total_commission(self):
         total_comission = 0
-        for item in self.orders_to_invoice:
-            total_comission += item.total_comission
+        if len(self.orders_to_invoice):
+            for item in self.orders_to_invoice:
+                total_comission += item.total_comission
         self.commission = total_comission
 
     @api.model
