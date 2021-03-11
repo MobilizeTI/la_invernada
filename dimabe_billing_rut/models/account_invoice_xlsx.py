@@ -98,7 +98,7 @@ class AccountInvoiceXlsx(models.Model):
                                   'Factura de venta exenta electronica. (FACTURA Venta ELECTRONICA)',
                                   formats['title'])
                 row += 1
-                data_exempt = self.set_data_for_excel(sheet, row, exempts, taxes_title, titles, formats)
+                data_exempt = self.set_data_for_excel(sheet, row, exempts, taxes_title, titles, formats,exempt=True)
                 sheet = data_exempt['sheet']
                 row = data_exempt['row']
                 credit = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
@@ -295,7 +295,7 @@ class AccountInvoiceXlsx(models.Model):
                     'amount')
                 sheet.write(row, col, sum(line), formats['total'])
                 col += 1
-        if not exempt:
+        if exempt:
             sheet.write(row,col,'0',formats['total'])
         else:
             sheet.write(row, col, sum(invoices.mapped('invoice_line_ids').filtered(
