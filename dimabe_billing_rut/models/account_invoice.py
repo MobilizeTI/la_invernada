@@ -287,7 +287,7 @@ class AccountInvoice(models.Model):
             self.etd_month = None
 
     @api.multi
-    def _compute_total_comission(self):
+    def _compute_total_commission(self):
         print('')
         #total_comission = 0
         #for item in self.orders_to_invoice:
