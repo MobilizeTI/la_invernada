@@ -93,7 +93,13 @@ class AccountInvoiceXlsx(models.Model):
                         row += 1
                 sheet.merge_range(row, 0, row, 5, 'Totales:')
                 col = 6
-                sheet.write(row,col,len(invoices))
+                sheet.write(row, col, len(invoices))
+                col += 1
+                sheet.write(row, col, sum(invoices.mapped('invoice_line_ids').filtered(
+                    lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(
+                        a.invoice_line_tax_ids) == 0).mapped('price_subtotal')))
+                col += 1
+                sheet.write(row,col,sum(invoices.mapped('amount_untaxed_signed')))
                 col = 0
                 exempts = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
                                                                      ('date_invoice', '<', self.to_date),
