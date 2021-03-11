@@ -347,6 +347,7 @@ class AccountInvoiceXlsx(models.Model):
     def set_total(self, sheet, row, col, invoices, taxes_title, titles):
         taxes = invoices.mapped('invoice_line_ids').filtered(
             lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) == 0)
+        col += 1
         sheet.write(row, col, sum(taxes.mapped('price_subtotal')))
         col += 1
         sheet.write(row, col, sum(invoices.mapped('amount_untaxed_signed')))
