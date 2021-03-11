@@ -82,6 +82,7 @@ class AccountInvoiceXlsx(models.Model):
                 begin = row
                 total_exempt = []
                 for inv in invoices:
+                    col = 0
                     data = self.set_data_invoice(sheet, col, row, inv, invoices, taxes_title, titles)
                     sheet = data['sheet']
                     row = data['row']
