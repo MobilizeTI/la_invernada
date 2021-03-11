@@ -295,7 +295,7 @@ class AccountInvoiceXlsx(models.Model):
                     'amount')
                 sheet.write(row, col, sum(line), formats['total'])
                 col += 1
-        if exempt:
+        if not exempt:
             sheet.write(row,col,'0',formats['total'])
         else:
             sheet.write(row, col, sum(invoices.mapped('invoice_line_ids').filtered(
