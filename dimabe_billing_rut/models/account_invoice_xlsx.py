@@ -79,7 +79,7 @@ class AccountInvoiceXlsx(models.Model):
                 begin = row
                 total_exempt = []
                 for inv in invoices:
-                    data = self.set_data_invoice(sheet, col, row, inv, taxes_title, titles)
+                    data = self.set_data_invoice(sheet, col, row, inv,invoices, taxes_title, titles)
                     sheet = data['sheet']
                     row = data['row']
                     if inv.id == invoices[-1].id:
@@ -265,7 +265,7 @@ class AccountInvoiceXlsx(models.Model):
         }
         return action
 
-    def set_data_invoice(self, sheet, col, row, inv, taxes_title, titles):
+    def set_data_invoice(self, sheet, col, row, inv,invoices, taxes_title, titles):
         total_result_exent = []
         sheet.write(row, col, inv.dte_type_id.code)
         col += 1
@@ -281,6 +281,8 @@ class AccountInvoiceXlsx(models.Model):
         if inv.partner_id.invoice_rut:
             sheet.write(row, col, inv.partner_id.invoice_rut)
         col += 1
+        long_name = max(invoices.mapped('partner_id').mapped('display_name'),key=len)
+        sheet.set_column(col,col,len(long_name))
         sheet.write(row, col, inv.partner_id.display_name)
         col += 2
         taxes = inv.invoice_line_ids.filtered(
