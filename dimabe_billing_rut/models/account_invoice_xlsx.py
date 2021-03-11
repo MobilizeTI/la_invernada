@@ -272,7 +272,7 @@ class AccountInvoiceXlsx(models.Model):
         if inv.dte_folio:
             sheet.write(row, col, inv.dte_folio)
         col += 1
-        if inv.number:
+        if inv.number and  invoices.mapped('number'):
             long_number = max(invoices.mapped('number'),key=len)
             sheet.set_colum(col,col,len(long_number))
             sheet.write(row, col, inv.number)
