@@ -905,8 +905,7 @@ class AccountInvoice(models.Model):
                                 'stock_picking_id': self.stock_picking_ids.id,
                                 'total_value' : self.total_value_stock_picking(self.stock_picking_ids.id),
                                 'value_per_kilo': self.total_value_stock_picking(self.stock_picking_ids.id) / self.value_per_kilo(self.stock_picking_ids.id),
-                                'required_loading_date': self.stock_picking_ids.required_loading_date,
-                                'container': self.stock_picking_ids.container_number
+                                'required_loading_date': self.stock_picking_ids.required_loading_date
                             })
                             if len(self.custom_invoice_line_ids) > 0:
                                 for i in self.custom_invoice_line_ids:
