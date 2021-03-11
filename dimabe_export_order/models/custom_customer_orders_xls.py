@@ -107,10 +107,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
                     #Color
                     sheet.write(row, col, "pendiente")
                     col += 1
-
-                    for item in stock_
                     #Producto
-                    sheet.write(row, col, stock.)  
                     col += 1
                     #Calibre
                     sheet.write(row, col, "pendiente")
