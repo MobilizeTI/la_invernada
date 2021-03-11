@@ -131,7 +131,7 @@ class AccountInvoiceXlsx(models.Model):
                         row += 2
                     else:
                         row += 1
-
+                col = 0
                 counter = Counter()
                 for item in total_exempt:
                     counter.update(item)
