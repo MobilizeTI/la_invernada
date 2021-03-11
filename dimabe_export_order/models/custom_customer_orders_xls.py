@@ -55,13 +55,13 @@ class CustomCustomerOrdersXls(models.TransientModel):
                     sheet.write(row, col, stock.shipping_number if stock.shipping_number else '') 
                     col += 1
                     #Fecha de Zarpe
-                    sheet.write(row, col, stock.departure_date if stock.departure_date.strftime("%d-%m-%Y") else '')
+                    sheet.write(row, col, stock.departure_date.strftime("%d-%m-%Y") if stock.departure_date else '')
                     col += 1
                     #Semana ETD
                     sheet.write(row, col, stock.etd_week)
                     col += 1
                     #Cargar Hasta
-                    sheet.write(row, col, stock.required_loading_date if stock.required_loading_date.strftime("%d-%m-%Y") else '')
+                    sheet.write(row, col, stock.required_loading_date.strftime("%d-%m-%Y") if stock.required_loading_date else '')
                     col += 1
                     #Semana Carga
                     sheet.write(row, col, stock.required_loading_week)
