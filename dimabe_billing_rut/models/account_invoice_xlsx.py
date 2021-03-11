@@ -85,6 +85,7 @@ class AccountInvoiceXlsx(models.Model):
                     data = self.set_data_invoice(sheet, col, row, inv, invoices, taxes_title, titles)
                     sheet = data['sheet']
                     row = data['row']
+                    col = data['col']
                     if inv.id == invoices[-1].id:
                         row += 2
                     else:
@@ -184,6 +185,7 @@ class AccountInvoiceXlsx(models.Model):
                 begin = row
                 for inv in invoices:
                     sheet = self.set_data_invoice(sheet, row, inv, formats)
+
                     if inv.id == invoices[-1].id:
                         end = row
                         row += 2
@@ -350,7 +352,7 @@ class AccountInvoiceXlsx(models.Model):
                     col += 1
             sheet.write(row, col, inv.amount_total_signed)
 
-        return {'sheet': sheet, 'row': row, 'total_exempt': total_result_exent}
+        return {'sheet': sheet, 'row': row, 'col': col}
 
     def diff_dates(self, date1, date2):
         return abs(date2 - date1).days
