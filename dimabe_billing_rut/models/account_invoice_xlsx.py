@@ -88,68 +88,30 @@ class AccountInvoiceXlsx(models.Model):
                                                                      ('date_invoice', '<', self.to_date),
                                                                      ('dte_type_id.code', '=', 34),
                                                                      ('company_id.id', '=', self.company_get_id.id)])
-                row += 2
-                sheet.write(row, col, 'Factura de compra exenta electronica. (FACTURA COMPRA EXENTA ELECTRONICA)')
-                row += 1
-                for ex in exempts:
-                    data = self.set_data_invoice(sheet, col, row, ex, exempts, taxes_title, titles)
-                    sheet = data['sheet']
-                    row = data['row']
-                    row += 1
-                    col = 0
-                sheet.merge_range(row, 0, row, 5, 'Totales:')
-                col = 6
-                sheet.write(row, col, len(exempts))
-                col += 1
-                sheet.write(row, col, sum(exempts.mapped('invoice_line_ids').filtered(
-                    lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(
-                        a.invoice_line_tax_ids) == 0).mapped('price_subtotal')))
-                col += 1
-                sheet.write(row, col, sum(exempts.mapped('amount_untaxed_signed')))
-                col += 1
-                sheet.write(row, col, sum(
-                    exempts.mapped('tax_line_ids').filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
-                col += 1
-                sheet.write(row, col, 0)
-                col += 1
-                for tax in taxes_title:
-                    if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
-                        line = exempts.mapped('tax_line_ids').filtered(
-                            lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(
-                                a.tax_id.name) == tax).mapped(
-                            'amount')
-                        sheet.write(row, col, sum(line))
-                        col += 1
-                sheet.write(row, col, sum(exempts.mapped('amount_total_signed')))
+                data_exempt = self.set_data_invoice(sheet,row,exempts,taxes_title,titles)
+                sheet = data_exempt['sheet']
+                row = data_exempt['row']
                 credit = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
                                                                     ('date_invoice', '<', self.to_date),
                                                                     ('dte_type_id.code', '=', 61),
                                                                     ('company_id.id', '=', self.company_get_id.id)])
+
                 row += 2
                 sheet.write(row, col, 'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)')
                 row += 1
-
-                for cre in credit:
-                    data = self.set_data_invoice(sheet, col, row, cre, credit, taxes_title, titles)
-                    sheet = data['sheet']
-                    row = data['row']
-                    row += 1
-                    col = 0
-                debit = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
-                                                                   ('date_invoice', '<', self.to_date),
-                                                                   ('dte_type_id.code', '=', 56),
-                                                                   ('company_id.id', '=', self.company_get_id.id)])
+                data_credit = self.set_data_for_excel(sheet,row,credit,taxes_title,titles)
+                sheet = data_credit['sheet']
+                row = data_credit['row']
                 row += 2
                 sheet.write(row, col, 'NOTA DE DEBITO ELECTRONICA (NOTA DE DEBITO COMPRA ELECTRONICA)')
                 row += 1
-
-                for deb in debit:
-                    data = self.set_data_invoice(sheet, col, row, deb, debit, taxes_title, titles)
-                    sheet = data['sheet']
-                    row = data['row']
-                    row += 1
-                    col = 0
-                row += 2
+                debit = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
+                                                                    ('date_invoice', '<', self.to_date),
+                                                                    ('dte_type_id.code', '=', 56),
+                                                                    ('company_id.id', '=', self.company_get_id.id)])
+                data_debit = self.set_data_for_excel(sheet,row,debit,taxes_title,titles)
+                sheet = data_debit['sheet']
+                row = data_debit['row']
 
         workbook.close()
         with open(file_name, "rb") as file:
