@@ -66,8 +66,8 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.merge_range(5, 3, 5, 6, 'Libro de Ventas Ordenado por fecha', formats['title'])
                 sheet.write(6, 10, 'Fecha', formats['title'])
                 sheet.write(6, 11, date.today().strftime('%Y-%m-%d'), formats['title'])
-                # sheet.merge_range(6, 4, 5, 5, f'Desde {self.from_date} Hasta {self.to_date}', formats['title'])
-                # sheet.merge_range(7, 4, 5, 5, 'Moneda : Peso Chileno', formats['title'])
+                sheet.merge_range(6, 3, 6, 6, f'Desde {self.from_date} Hasta {self.to_date}', formats['title'])
+                sheet.merge_range(7, 3, 7, 6,, 'Moneda : Peso Chileno', formats['title'])
                 row = 12
                 col = 0
                 for title in titles:
