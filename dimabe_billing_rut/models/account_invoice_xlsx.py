@@ -91,7 +91,8 @@ class AccountInvoiceXlsx(models.Model):
                     else:
                         row += 1
                 sheet.merge_range(row, 0, row, 5, 'Totales:')
-                raise models.ValidationError(f'Row :{row} Col {col}')
+                col = 6
+                sheet.write(row,col,len(invoices))
                 col = 0
                 exempts = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
                                                                      ('date_invoice', '<', self.to_date),
