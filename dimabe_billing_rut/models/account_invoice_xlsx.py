@@ -81,41 +81,9 @@ class AccountInvoiceXlsx(models.Model):
                      ('company_id.id', '=', self.company_get_id.id)])
                 begin = row
                 total_exempt = []
-                for inv in invoices:
-                    col = 0
-                    data = self.set_data_invoice(sheet, col, row, inv, invoices, taxes_title, titles)
-                    sheet = data['sheet']
-                    row = data['row']
-                    col = data['col']
-                    if inv.id == invoices[-1].id:
-                        row += 2
-                    else:
-                        row += 1
-                sheet.merge_range(row, 0, row, 5, 'Totales:')
-                col = 6
-                sheet.write(row, col, len(invoices))
-                col += 1
-                sheet.write(row, col, sum(invoices.mapped('invoice_line_ids').filtered(
-                    lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(
-                        a.invoice_line_tax_ids) == 0).mapped('price_subtotal')))
-                col += 1
-                sheet.write(row, col, sum(invoices.mapped('amount_untaxed_signed')))
-                col += 1
-                sheet.write(row, col, sum(
-                    invoices.mapped('tax_line_ids').filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
-                col += 1
-                sheet.write(row, col, 0)
-                col += 1
-                for tax in taxes_title:
-                    if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
-                        line = invoices.mapped('tax_line_ids').filtered(
-                            lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(
-                                a.tax_id.name) == tax).mapped(
-                            'amount')
-                        sheet.write(row, col, sum(line))
-                        col += 1
-                sheet.write(row,col,sum(invoices.mapped('amount_total_signed')))
-                col = 0
+                data_invoice = self.set_data_from_excel(sheet,invoices,taxes_title,titles)
+                sheet = data_invoice['sheet']
+                row = data_invoice['sheeet']
                 exempts = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
                                                                      ('date_invoice', '<', self.to_date),
                                                                      ('dte_type_id.code', '=', 34),
@@ -129,6 +97,30 @@ class AccountInvoiceXlsx(models.Model):
                     row = data['row']
                     row += 1
                     col = 0
+                sheet.merge_range(row, 0, row, 5, 'Totales:')
+                col = 6
+                sheet.write(row, col, len(exempts))
+                col += 1
+                sheet.write(row, col, sum(exempts.mapped('invoice_line_ids').filtered(
+                    lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(
+                        a.invoice_line_tax_ids) == 0).mapped('price_subtotal')))
+                col += 1
+                sheet.write(row, col, sum(exempts.mapped('amount_untaxed_signed')))
+                col += 1
+                sheet.write(row, col, sum(
+                    exempts.mapped('tax_line_ids').filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
+                col += 1
+                sheet.write(row, col, 0)
+                col += 1
+                for tax in taxes_title:
+                    if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
+                        line = exempts.mapped('tax_line_ids').filtered(
+                            lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(
+                                a.tax_id.name) == tax).mapped(
+                            'amount')
+                        sheet.write(row, col, sum(line))
+                        col += 1
+                sheet.write(row, col, sum(exempts.mapped('amount_total_signed')))
                 credit = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
                                                                     ('date_invoice', '<', self.to_date),
                                                                     ('dte_type_id.code', '=', 61),
@@ -293,6 +285,44 @@ class AccountInvoiceXlsx(models.Model):
             'target': 'current',
         }
         return action
+
+    def set_data_from_excel(self,sheet,invoices,taxes_title,titles):
+        for inv in invoices:
+            col = 0
+            data = self.set_data_invoice(sheet, col, row, inv, invoices, taxes_title, titles)
+            sheet = data['sheet']
+            row = data['row']
+            col = data['col']
+            if inv.id == invoices[-1].id:
+                row += 2
+            else:
+                row += 1
+        sheet.merge_range(row, 0, row, 5, 'Totales:')
+        col = 6
+        sheet.write(row, col, len(invoices))
+        col += 1
+        sheet.write(row, col, sum(invoices.mapped('invoice_line_ids').filtered(
+            lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(
+                a.invoice_line_tax_ids) == 0).mapped('price_subtotal')))
+        col += 1
+        sheet.write(row, col, sum(invoices.mapped('amount_untaxed_signed')))
+        col += 1
+        sheet.write(row, col, sum(
+            invoices.mapped('tax_line_ids').filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
+        col += 1
+        sheet.write(row, col, 0)
+        col += 1
+        for tax in taxes_title:
+            if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
+                line = invoices.mapped('tax_line_ids').filtered(
+                    lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(
+                        a.tax_id.name) == tax).mapped(
+                    'amount')
+                sheet.write(row, col, sum(line))
+                col += 1
+        sheet.write(row, col, sum(invoices.mapped('amount_total_signed')))
+        col = 0
+        return {'sheet':sheet,'row':row}
 
     def set_data_invoice(self, sheet, col, row, inv, invoices, taxes_title, titles):
         total_result_exent = []
