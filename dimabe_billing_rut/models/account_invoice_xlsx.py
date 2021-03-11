@@ -86,8 +86,8 @@ class AccountInvoiceXlsx(models.Model):
                         row += 2
                     else:
                         row += 1
-                sheet.merge_range(row,col,row,5,'Totales:')
-                sheet = self.set_total(sheet,row,col,invoices,taxes_title,titles)
+                sheet.merge_range(row, 0, row, 5, 'Totales:')
+                sheet = self.set_total(sheet, row, col, invoices, taxes_title, titles)
                 col = 0
                 exempts = self.env['account.invoice'].search([('date_invoice', '>', self.from_date),
                                                               ('date_invoice', '<', self.to_date),
@@ -344,12 +344,12 @@ class AccountInvoiceXlsx(models.Model):
 
         return {'sheet': sheet, 'row': row, 'total_exempt': total_result_exent}
 
-    def set_total(self,sheet,row,col,invoices,taxes_title,titles):
+    def set_total(self, sheet, row, col, invoices, taxes_title, titles):
         taxes = invoices.mapped('invoice_line_ids').filtered(
             lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) == 0)
-        sheet.write(row,col,sum(taxes.mapped('price_subtotal')))
+        sheet.write(row, col, sum(taxes.mapped('price_subtotal')))
         col += 1
-        sheet.write(row,col,sum(invoices.mapped('amount_untaxed_signed')))
+        sheet.write(row, col, sum(invoices.mapped('amount_untaxed_signed')))
         col += 1
         return sheet
 
