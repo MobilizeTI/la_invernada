@@ -83,7 +83,7 @@ class AccountInvoiceXlsx(models.Model):
                 total_exempt = []
                 data_invoice = self.set_data_for_excel(sheet, row, invoices, taxes_title, titles)
                 sheet = data_invoice['sheet']
-                row = data_invoice['sheeet']
+                row = data_invoice['row']
                 exempts = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
                                                                      ('date_invoice', '<', self.to_date),
                                                                      ('dte_type_id.code', '=', 34),
