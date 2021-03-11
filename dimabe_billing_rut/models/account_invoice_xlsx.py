@@ -325,7 +325,7 @@ class AccountInvoiceXlsx(models.Model):
             sheet.write(row, col, sum(taxes.mapped('price_subtotal')), formats['number'])
             col += 1
             net = inv.amount_untaxed_signed
-            if sum(taxes.mapped('price_subtotal')) == net:
+            if inv.dte_type_id.id :
                 sheet.write(row, col, '0', formats['number'])
                 col += 1
                 sheet.write(row, col, '0', formats['number'])
@@ -342,7 +342,8 @@ class AccountInvoiceXlsx(models.Model):
                         col += 1
                 sheet.write(row, col, inv.amount_total_signed, formats['number'])
             else:
-                sheet.write(row, col, inv.amount_untaxed_signed, formats['number'])
+                sheet.write(row, col, sum(inv.invoice_line_ids.filtered(inv.invoice_line_ids.filtered(
+            lambda a: 'Exento' not in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) != 0)).mapped('price_subtotal')), formats['number'])
                 col += 1
                 sheet.write(row, col, sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
                             formats['number'])
