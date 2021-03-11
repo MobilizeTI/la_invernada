@@ -75,6 +75,122 @@ class AccountInvoiceXlsx(models.Model):
                     col += 1
                 row += 2
                 col = 0
+                sheet.merge_range(row, col, row, 5, 'Factura de venta electronica. (FACTURA VENTA  ELECTRONICA)',
+                                  formats['title'])
+                row += 1
+                invoices = self.env['account.invoice'].sudo().search(
+                    [('date_invoice', '>', self.from_date),
+                     ('type', 'in', ('in_invoice', 'in_refund')),
+                     ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 33),
+                     ('company_id.id', '=', self.company_get_id.id)])
+                begin = row
+                row += 1
+                data_invoice = self.set_data_for_excel(sheet, row, invoices, taxes_title, titles, formats)
+                sheet = data_invoice['sheet']
+                row = data_invoice['row']
+                exempts = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
+                                                                     ('type', 'in', ('in_invoice', 'in_refund')),
+                                                                     ('date_invoice', '<', self.to_date),
+                                                                     ('dte_type_id.code', '=', 34),
+                                                                     ('company_id.id', '=', self.company_get_id.id)])
+                row += 2
+                sheet.merge_range(row, col, row, 5,
+                                  'Factura de venta exenta electronica. (FACTURA Venta ELECTRONICA)',
+                                  formats['title'])
+                row += 1
+                data_exempt = self.set_data_for_excel(sheet, row, exempts, taxes_title, titles, formats)
+                sheet = data_exempt['sheet']
+                row = data_exempt['row']
+                credit = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
+                                                                    ('type', 'in', ('in_invoice', 'in_refund')),
+                                                                    ('date_invoice', '<', self.to_date),
+                                                                    ('dte_type_id.code', '=', 61),
+                                                                    ('company_id.id', '=', self.company_get_id.id)])
+
+                row += 2
+                sheet.merge_range(row, col, row, 5, 'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO VENTA ELECTRONICA)',
+                                  formats['title'])
+                row += 1
+                data_credit = self.set_data_for_excel(sheet, row, credit, taxes_title, titles, formats)
+                sheet = data_credit['sheet']
+                row = data_credit['row']
+                row += 2
+                sheet.merge_range(row, col, row, 5, 'NOTA DE DEBITO ELECTRONICA (NOTA DE DEBITO VENTA ELECTRONICA)',
+                                  formats['title'])
+                row += 1
+                debit = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
+                                                                   ('date_invoice', '<', self.to_date),
+                                                                   ('type', 'in', ('in_invoice', 'in_refund')),
+                                                                   ('dte_type_id.code', '=', 56),
+                                                                   ('company_id.id', '=', self.company_get_id.id)])
+                data_debit = self.set_data_for_excel(sheet, row, debit, taxes_title, titles, formats)
+                sheet = data_debit['sheet']
+                row = data_debit['row']
+
+        workbook.close()
+        with open(file_name, "rb") as file:
+            file_base64 = base64.b64encode(file.read())
+        file_name = 'Libro de Ventas {} {}.xlsx'.format(company_name, date.today().strftime("%d/%m/%Y"))
+        attachment_id = self.env['ir.attachment'].sudo().create({
+            'name': file_name,
+            'datas_fname': file_name,
+            'datas': file_base64
+        })
+
+        action = {
+            'type': 'ir.actions.act_url',
+            'url': '/web/content/{}?download=true'.format(attachment_id.id, ),
+            'target': 'current',
+        }
+        return action
+
+    @api.multi
+    def generate_purchase_book(self):
+        for item in self:
+            file_name = 'salebook.xlsx'
+            array_worksheet = []
+            companies = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)])
+            workbook = xlsxwriter.Workbook(file_name, {'in_memory': True, 'strings_to_numbers': True})
+            company_name = ''
+            begin = 0
+            end = 0
+            for com in companies:
+                worksheet = workbook.add_worksheet(com.display_name)
+                array_worksheet.append({
+                    'company_object': com, 'worksheet': worksheet
+                })
+            for wk in array_worksheet:
+                sheet = wk['worksheet']
+                formats = self.set_formats(workbook)
+                region = self.env['region.address'].search([('id', '=', 1)])
+                titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', 'Nombre', '#', 'EXENTO', 'NETO', 'IVA',
+                          'IVA NO RECUPERABLE']
+                invoices_get_tax = self.env['account.invoice'].sudo().search([('dte_type_id', '!=', None)])
+                taxes_title = list(
+                    dict.fromkeys(invoices_get_tax.mapped('tax_line_ids').mapped('tax_id').mapped('name')))
+                for tax in taxes_title:
+                    if tax != 'IVA Crédito' and tax != 'IVA Débito' and tax != 'Exento':
+                        titles.append(tax.upper())
+
+                titles.append('Total')
+                sheet.merge_range(0, 0, 0, 2, self.company_get_id.display_name, formats['title'])
+                sheet.merge_range(1, 0, 1, 2, self.company_get_id.invoice_rut, formats['title'])
+                sheet.merge_range(2, 0, 2, 2,
+                                  f'{self.company_get_id.city},Region {self.company_get_id.region_address_id.name}',
+                                  formats['title'])
+                sheet.merge_range(4, 3, 4, 6, 'Libro de Ventas', formats['title'])
+                sheet.merge_range(5, 3, 5, 6, 'Libro de Ventas Ordenado por fecha', formats['title'])
+                sheet.write(6, 10, 'Fecha', formats['title'])
+                sheet.write(6, 11, date.today().strftime('%Y-%m-%d'), formats['title'])
+                sheet.merge_range(6, 3, 6, 6, f'Desde {self.from_date} Hasta {self.to_date}', formats['title'])
+                sheet.merge_range(7, 3, 7, 6, 'Moneda : Peso Chileno', formats['title'])
+                row = 12
+                col = 0
+                for title in titles:
+                    sheet.write(row, col, title, formats['title'])
+                    col += 1
+                row += 2
+                col = 0
                 sheet.merge_range(row, col, row, 5, 'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
                                   formats['title'])
                 row += 1
@@ -121,120 +237,6 @@ class AccountInvoiceXlsx(models.Model):
                 debit = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
                                                                    ('date_invoice', '<', self.to_date),
                                                                    ('type', 'in', ('out_invoice', 'out_refund')),
-                                                                   ('dte_type_id.code', '=', 56),
-                                                                   ('company_id.id', '=', self.company_get_id.id)])
-                data_debit = self.set_data_for_excel(sheet, row, debit, taxes_title, titles, formats)
-                sheet = data_debit['sheet']
-                row = data_debit['row']
-
-        workbook.close()
-        with open(file_name, "rb") as file:
-            file_base64 = base64.b64encode(file.read())
-        file_name = 'Libro de Ventas {} {}.xlsx'.format(company_name, date.today().strftime("%d/%m/%Y"))
-        attachment_id = self.env['ir.attachment'].sudo().create({
-            'name': file_name,
-            'datas_fname': file_name,
-            'datas': file_base64
-        })
-
-        action = {
-            'type': 'ir.actions.act_url',
-            'url': '/web/content/{}?download=true'.format(attachment_id.id, ),
-            'target': 'current',
-        }
-        return action
-
-    @api.multi
-    def generate_purchase_book(self):
-        for item in self:
-            file_name = 'purchasebook.xlsx'
-            array_worksheet = []
-            companies = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)])
-            workbook = xlsxwriter.Workbook(file_name, {'in_memory': True, 'strings_to_numbers': True})
-            company_name = ''
-            begin = 0
-            end = 0
-            for com in companies:
-                worksheet = workbook.add_worksheet(com.display_name)
-                array_worksheet.append({
-                    'company_object': com, 'worksheet': worksheet
-                })
-            for wk in array_worksheet:
-                sheet = wk['worksheet']
-                formats = self.set_formats(workbook)
-                region = self.env['region.address'].search([('id', '=', 1)])
-                titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', 'Nombre', '#', 'EXENTO', 'NETO', 'IVA',
-                          'IVA NO RECUPERABLE']
-                invoices_get_tax = self.env['account.invoice'].sudo().search([])
-                taxes_title = list(
-                    dict.fromkeys(invoices_get_tax.mapped('tax_line_ids').mapped('tax_id').mapped('name')))
-                for tax in taxes_title:
-                    if tax != 'IVA Crédito' and tax != 'IVA Débito' and tax != 'Exento':
-                        titles.append(tax.upper())
-                        if taxes_title[-1] == tax:
-                            titles.append('Total')
-                sheet.merge_range(0, 0, 0, 2, self.company_get_id.display_name, formats['title'])
-                sheet.merge_range(1, 0, 1, 2, self.company_get_id.invoice_rut, formats['title'])
-                sheet.write(2, 0,
-                            f'{self.company_get_id.city},Region {self.company_get_id.region_address_id.name}',
-                            formats['title'])
-                sheet.write(4, 4, 'Libro Compra', formats['title'])
-                sheet.write(5, 4, 'Libro de Compra Ordenado por fecha', formats['title'])
-                sheet.write(6, 10, 'Fecha', formats['title'])
-                sheet.write(6, 11, date.today().strftime('%Y-%m-%d'), formats['title'])
-                sheet.write(7, 0, f'Desde {self.from_date} Hasta {self.to_date}', formats['title'])
-                sheet.write(8, 0, 'Moneda : Peso Chileno', formats['title'])
-                row = 12
-                col = 0
-                for title in titles:
-                    sheet.write(row, col, title)
-                    col += 1
-                row += 2
-                col = 0
-                sheet.write(row, col, 'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)', formats['title'])
-                row += 1
-                invoices = self.env['account.invoice'].sudo().search(
-                    [('date_invoice', '>', self.from_date),
-                     ('type', 'in', ('in_invoice', 'in_refund')),
-                     ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 33),
-                     ('company_id.id', '=', self.company_get_id.id)])
-                begin = row
-                row += 1
-                data_invoice = self.set_data_for_excel(sheet, row, invoices, taxes_title, titles, formats)
-                sheet = data_invoice['sheet']
-                row = data_invoice['row']
-                exempts = self.env['account.invoice'].sudo().search([('type', 'in', ('in_invoice', 'in_refund')),
-                                                                     ('date_invoice', '>', self.from_date),
-                                                                     ('date_invoice', '<', self.to_date),
-                                                                     ('dte_type_id.code', '=', 34),
-                                                                     ('company_id.id', '=', self.company_get_id.id)])
-                row += 2
-                sheet.write(row, col, 'Factura de compra exenta electronica. (FACTURA COMPRA ELECTRONICA)',
-                            formats['title'])
-                row += 1
-                data_exempt = self.set_data_for_excel(sheet, row, exempts, taxes_title, titles, formats)
-                sheet = data_exempt['sheet']
-                row = data_exempt['row']
-                credit = self.env['account.invoice'].sudo().search([('type', 'in', ('in_invoice', 'in_refund')),
-                                                                    ('date_invoice', '>', self.from_date),
-                                                                    ('date_invoice', '<', self.to_date),
-                                                                    ('dte_type_id.code', '=', 34),
-                                                                    ('company_id.id', '=', self.company_get_id.id)])
-
-                row += 2
-                sheet.write(row, col, 'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)',
-                            formats['title'])
-                row += 1
-                data_credit = self.set_data_for_excel(sheet, row, credit, taxes_title, titles, formats)
-                sheet = data_credit['sheet']
-                row = data_credit['row']
-                row += 2
-                sheet.write(row, col, 'NOTA DE DEBITO ELECTRONICA (NOTA DE DEBITO COMPRA ELECTRONICA)',
-                            formats['title'])
-                row += 1
-                debit = self.env['account.invoice'].sudo().search([('type', 'in', ('in_invoice', 'in_refund')),
-                                                                   ('date_invoice', '>', self.from_date),
-                                                                   ('date_invoice', '<', self.to_date),
                                                                    ('dte_type_id.code', '=', 56),
                                                                    ('company_id.id', '=', self.company_get_id.id)])
                 data_debit = self.set_data_for_excel(sheet, row, debit, taxes_title, titles, formats)
