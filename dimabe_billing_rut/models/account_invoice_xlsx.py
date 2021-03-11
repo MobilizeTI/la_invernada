@@ -114,6 +114,7 @@ class AccountInvoiceXlsx(models.Model):
                             'amount')
                         sheet.write(row, col, sum(line))
                         col += 1
+                sheet.write(row,col,sum(invoices.mapped('amount_total_signed')))
                 col = 0
                 exempts = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
                                                                      ('date_invoice', '<', self.to_date),
