@@ -214,7 +214,7 @@ class AccountInvoiceXlsx(models.Model):
                                   'Factura de compra exenta electronica. (FACTURA COMPRA ELECTRONICA)',
                                   formats['title'])
                 row += 1
-                data_exempt = self.set_data_for_excel(sheet, row, exempts, taxes_title, titles, formats)
+                data_exempt = self.set_data_for_excel(sheet, row, exempts, taxes_title, titles, formats,exempt=True)
                 sheet = data_exempt['sheet']
                 row = data_exempt['row']
                 credit = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
@@ -260,7 +260,7 @@ class AccountInvoiceXlsx(models.Model):
         }
         return action
 
-    def set_data_for_excel(self, sheet, row, invoices, taxes_title, titles, formats):
+    def set_data_for_excel(self, sheet, row, invoices, taxes_title, titles, formats,exempt=False):
         for inv in invoices:
             col = 0
             data = self.set_data_invoice(sheet, col, row, inv, invoices, taxes_title, titles, formats)
@@ -295,9 +295,12 @@ class AccountInvoiceXlsx(models.Model):
                     'amount')
                 sheet.write(row, col, sum(line), formats['total'])
                 col += 1
-        sheet.write(row, col, sum(invoices.mapped('invoice_line_ids').filtered(
-            lambda a: 'Exento' not in a.invoice_line_tax_ids.mapped('name') or len(
-                a.invoice_line_tax_ids) != 0).mapped('price_subtotal')), formats['total'])
+        if exempt:
+            sheet.write(row,col,'0',formats['total'])
+        else:
+            sheet.write(row, col, sum(invoices.mapped('invoice_line_ids').filtered(
+                lambda a: 'Exento' not in a.invoice_line_tax_ids.mapped('name') or len(
+                    a.invoice_line_tax_ids) != 0).mapped('price_subtotal')), formats['total'])
         col = 0
         return {'sheet': sheet, 'row': row}
 
