@@ -295,7 +295,7 @@ class AccountInvoiceXlsx(models.Model):
                     'amount')
                 sheet.write(row, col, sum(line), formats['total'])
                 col += 1
-        if exempt:
+        if invoices.mapped('dte_type_id').mapped('code')[0] == 34:
             sheet.write(row, col, '0', formats['total'])
         else:
             sheet.write(row, col, sum(invoices.mapped('invoice_line_ids').filtered(
