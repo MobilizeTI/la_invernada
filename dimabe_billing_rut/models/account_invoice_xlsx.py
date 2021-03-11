@@ -298,7 +298,10 @@ class AccountInvoiceXlsx(models.Model):
             if sum(taxes.mapped('price_subtotal')) == net:
                 sheet.write(row, col, '0')
                 col += 1
-                sheet.write(row,col,'0')
+                sheet.write(row, col, '0')
+                col += 1
+                sheet.write(row, col, '0')
+                col += 1
                 for tax in taxes_title:
                     if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
                         line = inv.tax_line_ids.filtered(
