@@ -143,15 +143,11 @@ class AccountInvoice(models.Model):
 
     #COMEX
     total_value = fields.Float(
-        'Valor Total',
-        compute='_compute_total_value',
-        store=True
+        'Valor Total'
     )
 
     value_per_kilogram = fields.Float(
-        'Valor por kilo',
-        compute='_compute_value_per_kilogram',
-        store=True
+        'Valor por kilo'
     )
 
     #shipping_number = fields.Integer('Número Embarque')
@@ -160,8 +156,7 @@ class AccountInvoice(models.Model):
     contract_correlative = fields.Integer('corr')
 
     contract_correlative_view = fields.Char(
-        'N° Orden',
-        compute='_get_correlative_text'
+        'N° Orden'
     )
 
     agent_id = fields.Many2one(
