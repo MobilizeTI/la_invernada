@@ -99,10 +99,12 @@ class AccountInvoiceXlsx(models.Model):
                     lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(
                         a.invoice_line_tax_ids) == 0).mapped('price_subtotal')))
                 col += 1
-                sheet.write(row,col,sum(invoices.mapped('amount_untaxed_signed')))
+                sheet.write(row, col, sum(invoices.mapped('amount_untaxed_signed')))
                 col += 1
-                sheet.write(row,col,sum(invoices.mapped('tax_line_ids').filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
+                sheet.write(row, col, sum(
+                    invoices.mapped('tax_line_ids').filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
                 col += 1
+                sheet.write(row, col, 0)
                 for tax in taxes_title:
                     if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
                         line = invoices.mapped('tax_line_ids').filtered(
