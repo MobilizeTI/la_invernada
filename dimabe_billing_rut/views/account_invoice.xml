@@ -86,7 +86,7 @@
                                 </field>
                                 <group>
                                     <field name="is_dispatcher" invisible="1"/>
-                                    <field name="contract_correlative_view" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <!--<field name="contract_correlative_view" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>-->
                                     <field name="contract_correlative" invisible="1"/>
                                     <field name="agent_id" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="total_commission" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>

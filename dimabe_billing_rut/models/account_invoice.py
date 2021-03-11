@@ -914,7 +914,7 @@ class AccountInvoice(models.Model):
         for s in stock_picking_ids:
             s.write({
                 'shipping_number': self.shipping_number,
-                'contract_correlative_view': self.contract_correlative_view,
+                #'contract_correlative_view': self.contract_correlative_view,
                 'agent_id': self.agent_id.id,
                 'commission' : self.commission,
                 'total_commission' : self.total_commission,
