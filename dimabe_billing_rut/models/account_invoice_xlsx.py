@@ -81,7 +81,7 @@ class AccountInvoiceXlsx(models.Model):
                      ('company_id.id', '=', self.company_get_id.id)])
                 begin = row
                 total_exempt = []
-                data_invoice = self.set_data_from_excel(sheet,invoices,taxes_title,titles)
+                data_invoice = self.set_data_for_excel(sheet, row, invoices, taxes_title, titles)
                 sheet = data_invoice['sheet']
                 row = data_invoice['sheeet']
                 exempts = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
@@ -286,7 +286,7 @@ class AccountInvoiceXlsx(models.Model):
         }
         return action
 
-    def set_data_from_excel(self,sheet,invoices,taxes_title,titles):
+    def set_data_for_excel(self, sheet, row, invoices, taxes_title, titles):
         for inv in invoices:
             col = 0
             data = self.set_data_invoice(sheet, col, row, inv, invoices, taxes_title, titles)
@@ -322,7 +322,7 @@ class AccountInvoiceXlsx(models.Model):
                 col += 1
         sheet.write(row, col, sum(invoices.mapped('amount_total_signed')))
         col = 0
-        return {'sheet':sheet,'row':row}
+        return {'sheet': sheet, 'row': row}
 
     def set_data_invoice(self, sheet, col, row, inv, invoices, taxes_title, titles):
         total_result_exent = []
