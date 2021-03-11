@@ -55,8 +55,8 @@ class AccountInvoiceXlsx(models.Model):
                 for tax in taxes_title:
                     if tax != 'IVA Crédito' and tax != 'IVA Débito' and tax != 'Exento':
                         titles.append(tax.upper())
-                        if titles[-1] == tax:
-                            titles.append('Total')
+
+                title.append('Total')
                 sheet.merge_range(0, 0, 0, 2, self.company_get_id.display_name, formats['title'])
                 sheet.merge_range(1, 0, 1, 2, self.company_get_id.invoice_rut, formats['title'])
                 sheet.merge_range(2, 0, 2, 2,
@@ -75,7 +75,8 @@ class AccountInvoiceXlsx(models.Model):
                     col += 1
                 row += 2
                 col = 0
-                sheet.write(row, col, 'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)', formats['title'])
+                sheet.merge_range(row, col, row, 5, 'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
+                                  formats['title'])
                 row += 1
                 invoices = self.env['account.invoice'].sudo().search(
                     [('date_invoice', '>', self.from_date),
@@ -93,8 +94,9 @@ class AccountInvoiceXlsx(models.Model):
                                                                      ('dte_type_id.code', '=', 34),
                                                                      ('company_id.id', '=', self.company_get_id.id)])
                 row += 2
-                sheet.write(row, col, 'Factura de compra exenta electronica. (FACTURA COMPRA ELECTRONICA)',
-                            formats['title'])
+                sheet.merge_range(row, col, row, 5,
+                                  'Factura de compra exenta electronica. (FACTURA COMPRA ELECTRONICA)',
+                                  formats['title'])
                 row += 1
                 data_exempt = self.set_data_for_excel(sheet, row, exempts, taxes_title, titles, formats)
                 sheet = data_exempt['sheet']
@@ -106,15 +108,15 @@ class AccountInvoiceXlsx(models.Model):
                                                                     ('company_id.id', '=', self.company_get_id.id)])
 
                 row += 2
-                sheet.write(row, col, 'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)',
-                            formats['title'])
+                sheet.merge_range(row, col, row, 5, 'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)',
+                                  formats['title'])
                 row += 1
                 data_credit = self.set_data_for_excel(sheet, row, credit, taxes_title, titles, formats)
                 sheet = data_credit['sheet']
                 row = data_credit['row']
                 row += 2
-                sheet.write(row, col, 'NOTA DE DEBITO ELECTRONICA (NOTA DE DEBITO COMPRA ELECTRONICA)',
-                            formats['title'])
+                sheet.merge_range(row, col, row, 5, 'NOTA DE DEBITO ELECTRONICA (NOTA DE DEBITO COMPRA ELECTRONICA)',
+                                  formats['title'])
                 row += 1
                 debit = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
                                                                    ('date_invoice', '<', self.to_date),
