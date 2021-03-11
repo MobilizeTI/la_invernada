@@ -55,7 +55,7 @@ class CustomOrdersToInvoice(models.Model):
 
     def _compute_total_comission(self):
         for item in self:
-            self.required_loading_date = self.env['stock.picking'].search([('id','=',self.stock_picking_id)]).total_commission
+            self.total_comission = self.env['stock.picking'].search([('id','=',self.stock_picking_id)]).total_commission
 
     
   
