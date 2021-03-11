@@ -807,7 +807,7 @@ class AccountInvoice(models.Model):
         else:
             taxt_rate_amount = 0
             for item in self.invoice_line_ids:
-                for tax in item.invoice_line_ids:
+                for tax in item.invoice_line_tax_ids:
                     if tax.id == 1 or tax.id == 2:
                         taxt_rate_amount += (item.prince_subtotal * tax.amount) / 100
                     
@@ -818,17 +818,26 @@ class AccountInvoice(models.Model):
                 "taxtRateAmount": str(self.roundclp(taxt_rate_amount * value_exchange)), #str(self.roundclp(self.amount_tax * value_exchange)),
                 "totalAmount": str(self.roundclp(total_amount * value_exchange))
             }
-            # consultar si solo se envian en la factura los impuestos de tipo retencion
+
+            #consultar si solo se envian en la factura los impuestos de tipo retencion
+            #Other Taxes
             for tax in self.tax_line_ids:
+                tax_amount = 0
                 if tax.tax_id.id != 1 and tax.tax_id.id != 2:
+                    for line in self.invoice_line_ids:
+                        for t in line.invoice_line_tax_ids:
+                            if tax.tax_id.id == t.id:
+                                tax_amount += line.price_subtotal * (t.amount /100)
                     if tax.tax_id.sii_code and tax.tax_id.sii_code != 0 and tax.tax_id.amount and tax.tax_id.amount != 0 :
                         invoice['total']['taxToRetention'] = {
-                            "typeTax": str(tax.tax_id.sii_code),
-                            "rateTax": str(int(tax.tax_id.amount)),
-                            "amountTax" : str(self.roundclp(tax.amount_total * value_exchange))
+                            "taxType": str(t.sii_code),
+                            "taxRate": str(int(t.amount)),
+                            "taxAmount" : str(self.roundclp(tax_amount * value_exchange))
                         }
                     else:
-                        raise models.ValidationError('Revisar que el impuesto {} tenga el codigo SII y importe'.format(tax.name))
+                        raise models.ValidationError('Revisar que el impuesto {} tenga el codigo SII y el importe'.format(tax.tax_id.name))
+
+
         return invoice
 
     def total_invoice_Export(self):
@@ -896,7 +905,8 @@ class AccountInvoice(models.Model):
                                 'stock_picking_id': self.stock_picking_ids.id,
                                 'total_value' : self.total_value_stock_picking(self.stock_picking_ids.id),
                                 'value_per_kilo': self.total_value_stock_picking(self.stock_picking_ids.id) / self.value_per_kilo(self.stock_picking_ids.id),
-                                'required_loading_date': self.stock_picking_ids.required_loading_date
+                                'required_loading_date': self.stock_picking_ids.required_loading_date,
+                                'container': self.stock_picking_ids.container_number
                             })
                             if len(self.custom_invoice_line_ids) > 0:
                                 for i in self.custom_invoice_line_ids:

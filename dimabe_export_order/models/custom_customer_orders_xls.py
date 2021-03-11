@@ -51,33 +51,177 @@ class CustomCustomerOrdersXls(models.TransientModel):
             for order in orders:
                 stock_picking_ids = self.env['stock.picking'].sudo().search([('sale_id','=',order.id)])
                 for stock in stock_picking_ids:
-                    sheet.write(row, col, stock.shipping_number)
+                    #N° Embarque
+                    sheet.write(row, col, stock.shipping_number) 
                     col += 1
+                    #Fecha de Zarpe
                     sheet.write(row, col, stock.departure_date)
                     col += 1
+                    #Semana ETD
                     sheet.write(row, col, stock.etd_week)
                     col += 1
+                    #Cargar Hasta
                     sheet.write(row, col, stock.required_loading_date)
                     col += 1
+                    #Semana Carga
                     sheet.write(row, col, stock.required_loading_week)
                     col += 1
+                    #Cliente
                     sheet.write(row, col, stock.partner_id.name)
                     col += 1
+                    #Pais
                     sheet.write(row, col, stock.partner_id.country_id.name)
                     col += 1
+                    #Contrato Interno
                     sheet.write(row, col, "pendiente")
                     col += 1
+                    #Contrato Cliente
                     sheet.write(row, col, "pendiente")
                     col += 1
+                    #N° Pedido Odoo
                     sheet.write(row, col, order.name)
                     col += 1
+                    #N° Stock Picking Odoo
                     sheet.write(row, col, stock.name)
                     col += 1
+                    #Estatus Produccion
                     sheet.write(row, col, "pendiente")
                     col += 1
+                    #Estatus Despacho
                     sheet.write(row, col, "pendiente")
                     col += 1
+                    #Estatus Calidad
                     sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Fecha Envio al Cliente
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Especie
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Variedad
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Color
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Producto
+                    sheet.write(row, col, "pendiente")  
+                    col += 1
+                    #Calibre
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Kilos
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Precio
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Monto
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #N° Factura
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Cláusula
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Envase
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Modo de carga
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Etiqueta Cliente
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Marca
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Agente
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Comisión
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Valor Comisión
+                    sheet.write(row, col, "pendiente")  
+                    col += 1
+                    #Puerto de Carga
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Puerto de Destino
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Destino Final
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Vía de Transporte
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Planta de Carga
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Fecha y Hora de Carga
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #N° de Guía
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Nave / Viaje
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Naviera
+                    sheet.write(row, col, "pendiente")  
+                    col += 1
+                    #N° Booking
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #N° BL
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Stacking
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Cut Off Document
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Fecha Real de Zarpe
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Fecha Real Arribo
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #N° Container
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Tipo Container
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Terminal Portuario Origen
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Depósito Retiro
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Valor Seguro
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #FOB total
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #FOB / Kg
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Obs. Calidad
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #Comentarios
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    #N° DUS
+                    sheet.write(row, col, "pendiente")
+                    col += 1
 
 
                     row += 1

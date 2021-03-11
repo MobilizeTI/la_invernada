@@ -19,6 +19,10 @@ class CustomOrdersToInvoice(models.Model):
 
     quantity_to_invoice = fields.Char(string="Cantidad a Facturar", required=True)
 
+    container_number = fields.Char(string="N° Contenedor", compute="_compute_container_number")
+
+    container_type = fields.Char(string="Tipo de Contenedor", compute="_compute_container_type")
+
     invoice_id = fields.Many2one(
         'account.invoice',
         index=True,
@@ -31,6 +35,13 @@ class CustomOrdersToInvoice(models.Model):
     value_per_kilo = fields.Float(string="Valor por Kilo")
 
     required_loading_date = fields.Datetime('Fecha Requerida de Carga')
+
+    def _compute_container_number(self):
+        for item in self:
+            self.container_number = self.env['stock.picking'].search([('id','=',self.stock_picking_id)]).container_number
+    def _compute_container_type(self):
+        for item in self:
+            self.container_number = self.env['stock.picking'].search([('id','=',self.stock_picking_id)]).container_type.name
 
   
     
