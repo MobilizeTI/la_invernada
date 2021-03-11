@@ -86,14 +86,7 @@ class AccountInvoiceXlsx(models.Model):
                         row += 2
                     else:
                         row += 1
-
-                counter = Counter()
-                for item in total_exempt:
-                    counter.update(item)
-                total_dict = dict(counter)
-                sheet.merge_range(row, 0, row, 5, 'Totales:')
-                for k in total_dict:
-                    worksheet.write(row, k, total_dict[k])
+                sheet = self.set_total(sheet,row,col,invoices,taxes_title,titles)
                 col = 0
                 exempts = self.env['account.invoice'].search([('date_invoice', '>', self.from_date),
                                                               ('date_invoice', '<', self.to_date),
@@ -349,6 +342,12 @@ class AccountInvoiceXlsx(models.Model):
             sheet.write(row, col, inv.amount_total_signed)
 
         return {'sheet': sheet, 'row': row, 'total_exempt': total_result_exent}
+
+    def set_total(self,sheet,row,col,invoices,taxes_title,titles):
+        taxes = invoices.mapped('invoice_line_ids').filtered(
+            lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) == 0)
+        sheet.write(row,col,sum(taxes.mapped('price_subtotal')))
+        return sheet
 
     def diff_dates(self, date1, date2):
         return abs(date2 - date1).days
