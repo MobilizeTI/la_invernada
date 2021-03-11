@@ -91,7 +91,7 @@ class AccountInvoiceXlsx(models.Model):
                         row += 1
                 sheet.merge_range(row, 0, row, 5, 'Totales:')
                 col += 1
-                sheet.write(row, col, len(invoices))
+                sheet.write(row, col, "Hola")
                 col += 1
                 sheet.write(row, col, sum(invoices.mapped('invoice_line_ids').filtered(
                     lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(
