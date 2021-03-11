@@ -47,7 +47,7 @@ class CustomOrdersToInvoice(models.Model):
     
     def _compute_total_value(self):
         for item in self:
-            self.value_per_kilo = self.env['stock.picking'].search([('id','=',self.stock_picking_id)]).total_value
+            self.total_value = self.env['stock.picking'].search([('id','=',self.stock_picking_id)]).total_value
     
     def _compute_required_loading_date(self):
         for item in self:
