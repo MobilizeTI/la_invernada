@@ -915,7 +915,7 @@ class AccountInvoice(models.Model):
                 #'contract_correlative_view': self.contract_correlative_view,
                 'agent_id': self.agent_id.id,
                 'commission' : self.commission,
-                'total_commission' : self.total_commission,
+                #'total_commission' : self.total_commission,
                 'charging_mode' : self.charging_mode,
                 'booking_number' : self.booking_number,
                 'bl_number' : self.bl_number,
