@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <form>
                 <group>
+                    <field name="company_get_id" required="1"/>
                     <field name="from_date" required="1"/>
                     <field name="to_date" required="1"/>
                 </group>

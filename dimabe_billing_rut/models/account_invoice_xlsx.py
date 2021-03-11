@@ -12,6 +12,8 @@ class AccountInvoiceXlsx(models.Model):
     purchase_file = fields.Binary(
         "Libro de Compra")
 
+    company_get_id = fields.Many2one('res.company','Compañia')
+
     purchase_report_name = fields.Char("Reporte Compra",
                                        )
 
@@ -73,9 +75,9 @@ class AccountInvoiceXlsx(models.Model):
                 col = 0
                 sheet.write(row, col, 'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)')
                 row += 1
-                invoices = self.env['account.invoice'].search(
+                invoices = self.env['account.invoice'].sudo().search(
                     [('date_invoice', '>', self.from_date),
-                     ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 33)])
+                     ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 33),('company_id.id','=',self.company_get_id.id)])
                 begin = row
                 total_exempt = []
                 for inv in invoices:
@@ -93,7 +95,7 @@ class AccountInvoiceXlsx(models.Model):
                 col = 0
                 exempts = self.env['account.invoice'].search([('date_invoice', '>', self.from_date),
                                                               ('date_invoice', '<', self.to_date),
-                                                              ('dte_type_id.code', '=', 34)])
+                                                              ('dte_type_id.code', '=', 34),('company_id.id','=',self.company_get_id.id)])
                 row += 2
                 sheet.write(row, col, 'Factura de compra exenta electronica. (FACTURA COMPRA EXENTA ELECTRONICA)')
                 row += 1
@@ -105,7 +107,7 @@ class AccountInvoiceXlsx(models.Model):
                     col = 0
                 credit = self.env['account.invoice'].search([('date_invoice', '>', self.from_date),
                                                              ('date_invoice', '<', self.to_date),
-                                                             ('dte_type_id.code', '=', 61)])
+                                                             ('dte_type_id.code', '=', 61),('company_id.id','=',self.company_get_id.id)])
                 row += 2
                 sheet.write(row, col, 'NOTA DE CREDITO ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)')
                 row += 1
@@ -118,7 +120,7 @@ class AccountInvoiceXlsx(models.Model):
                     col = 0
                 debit = self.env['account.invoice'].search([('date_invoice', '>', self.from_date),
                                                             ('date_invoice', '<', self.to_date),
-                                                            ('dte_type_id.code', '=', 56)])
+                                                            ('dte_type_id.code', '=', 56),('company_id.id','=',self.company_get_id.id)])
                 row += 2
                 sheet.write(row, col, 'NOTA DE DEBITO ELECTRONICA (NOTA DE DEBITO COMPRA ELECTRONICA)')
                 row += 1
