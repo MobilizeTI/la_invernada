@@ -100,6 +100,9 @@ class AccountInvoiceXlsx(models.Model):
                         a.invoice_line_tax_ids) == 0).mapped('price_subtotal')))
                 col += 1
                 sheet.write(row,col,sum(invoices.mapped('amount_untaxed_signed')))
+                col += 1
+                sheet.write(row,col,sum(invoices.mapped('tax_line_ids').filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
+                col += 1
                 col = 0
                 exempts = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
                                                                      ('date_invoice', '<', self.to_date),
