@@ -80,8 +80,6 @@ class AccountInvoiceXlsx(models.Model):
                      ('date_invoice', '<', self.to_date), ('dte_type_id.code', '=', 33),
                      ('company_id.id', '=', self.company_get_id.id)])
                 begin = row
-                total_exempt = []
-                sheet.write(row, col, 'Factura de compra exenta electronica. (FACTURA COMPRA ELECTRONICA)')
                 row += 1
                 data_invoice = self.set_data_for_excel(sheet, row, invoices, taxes_title, titles)
                 sheet = data_invoice['sheet']
@@ -90,6 +88,7 @@ class AccountInvoiceXlsx(models.Model):
                                                                      ('date_invoice', '<', self.to_date),
                                                                      ('dte_type_id.code', '=', 34),
                                                                      ('company_id.id', '=', self.company_get_id.id)])
+                sheet.write(row, col, 'Factura de compra exenta electronica. (FACTURA COMPRA ELECTRONICA)')
                 data_exempt = self.set_data_for_excel(sheet, row, exempts, taxes_title, titles)
                 sheet = data_exempt['sheet']
                 row = data_exempt['row']
