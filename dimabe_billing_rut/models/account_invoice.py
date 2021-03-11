@@ -931,11 +931,6 @@ class AccountInvoice(models.Model):
                 else:
                     raise models.ValidationError('No se han encontrado Productos')
 
-                if not self.container_number or self.container_number != '':
-                    self.container_number = self.stock_picking_ids.self.container_number
-                else:
-                    if self.container_number != self.stock_picking_ids.self.container_number:
-                        raise models.ValidationError('El despacho tiene ')
         else:
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
 
