@@ -279,7 +279,8 @@ class AccountInvoiceXlsx(models.Model):
             lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(
                 a.invoice_line_tax_ids) == 0).mapped('price_subtotal')), formats['total'])
         col += 1
-        sheet.write(row, col, sum(invoices.mapped('invoice_line_ids').filtered( len(
+        sheet.write(row, col, sum(invoices.mapped('invoice_line_ids').filtered(
+            lambda a: len(
                 a.invoice_line_tax_ids) != 0).mapped('price_subtotal')), formats['total'])
         col += 1
         sheet.write(row, col, sum(
