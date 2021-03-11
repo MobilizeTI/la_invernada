@@ -52,25 +52,25 @@ class CustomCustomerOrdersXls(models.TransientModel):
                 stock_picking_ids = self.env['stock.picking'].sudo().search([('sale_id','=',order.id)])
                 for stock in stock_picking_ids:
                     #N° Embarque
-                    sheet.write(row, col, stock.shipping_number) 
+                    sheet.write(row, col, stock.shipping_number if stock.shipping_number else '') 
                     col += 1
                     #Fecha de Zarpe
-                    sheet.write(row, col, stock.departure_date)
+                    sheet.write(row, col, stock.departure_date if stock.departure_date.strftime("%d-%m-%Y") else '')
                     col += 1
                     #Semana ETD
                     sheet.write(row, col, stock.etd_week)
                     col += 1
                     #Cargar Hasta
-                    sheet.write(row, col, stock.required_loading_date)
+                    sheet.write(row, col, stock.required_loading_date if stock.required_loading_date.strftime("%d-%m-%Y") else '')
                     col += 1
                     #Semana Carga
                     sheet.write(row, col, stock.required_loading_week)
                     col += 1
                     #Cliente
-                    sheet.write(row, col, stock.partner_id.name)
+                    sheet.write(row, col, stock.partner_id.name if stock.partner_id.name else '')
                     col += 1
                     #Pais
-                    sheet.write(row, col, stock.partner_id.country_id.name)
+                    sheet.write(row, col, stock.partner_id.country_id.name if stock.partner_id.country_id.name else '')
                     col += 1
                     #Contrato Interno
                     sheet.write(row, col, "pendiente")
