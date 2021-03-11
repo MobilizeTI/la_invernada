@@ -59,15 +59,15 @@ class AccountInvoiceXlsx(models.Model):
                             titles.append('Total')
                 sheet.merge_range(0, 0, 0, 2, self.env.user.company_id.display_name, formats['title'])
                 sheet.merge_range(1, 0, 1, 2, self.env.user.company_id.invoice_rut, formats['title'])
-                sheet.write(2, 0,
-                            f'{self.env.user.company_id.city},Region {self.env.user.company_id.region_address_id.name}',
-                            formats['title'])
-                sheet.write(4, 4, 'Libro Ventas', formats['title'])
-                sheet.write(5, 4, 'Libro de Ventas Ordenado por fecha', formats['title'])
+                sheet.merge_range(2, 0, 2, 2,
+                                  f'{self.env.user.company_id.city},Region {self.env.user.company_id.region_address_id.name}',
+                                  formats['title'])
+                sheet.merge_range(3, 4, 5, 5, 'Libro Ventas', formats['title'])
+                sheet.merge_range(4, 4, 5, 5, 'Libro de Ventas Ordenado por fecha', formats['title'])
                 sheet.write(6, 10, 'Fecha', formats['title'])
                 sheet.write(6, 11, date.today().strftime('%Y-%m-%d'), formats['title'])
-                sheet.write(7, 0, f'Desde {self.from_date} Hasta {self.to_date}', formats['title'])
-                sheet.write(8, 0, 'Moneda : Peso Chileno', formats['title'])
+                sheet.merge_range(6, 4, 5, 5, f'Desde {self.from_date} Hasta {self.to_date}', formats['title'])
+                sheet.merge_range(7, 4, 5, 5, 'Moneda : Peso Chileno', formats['title'])
                 row = 12
                 col = 0
                 for title in titles:
