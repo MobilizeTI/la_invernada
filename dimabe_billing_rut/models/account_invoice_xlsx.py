@@ -319,6 +319,7 @@ class AccountInvoiceXlsx(models.Model):
                         'amount')
                     sheet.write(row, col, sum(line))
                     col += 1
+            sheet.write(row,col,inv.amount_total_signed)
 
         return {'sheet': sheet, 'row': row, 'total_exempt': total_result_exent}
 
