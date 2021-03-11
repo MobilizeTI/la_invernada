@@ -37,7 +37,6 @@ class CustomOrdersToInvoice(models.Model):
     def _compute_container_number(self):
         for item in self:
             self.container_number = self.env['stock.picking'].search([('id','=',self.stock_picking_id)]).container_number
-            raise models.ValidationError(self.env['stock.picking'].search([('id','=',self.stock_picking_id)]).container_number)
 
 
   
