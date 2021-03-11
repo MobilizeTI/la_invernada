@@ -103,6 +103,14 @@ class AccountInvoiceXlsx(models.Model):
                 col += 1
                 sheet.write(row,col,sum(invoices.mapped('tax_line_ids').filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
                 col += 1
+                for tax in taxes_title:
+                    if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
+                        line = invoices.mapped('tax_line_ids').filtered(
+                            lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(
+                                a.tax_id.name) == tax).mapped(
+                            'amount')
+                        sheet.write(row, col, sum(line))
+                        col += 1
                 col = 0
                 exempts = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
                                                                      ('date_invoice', '<', self.to_date),
