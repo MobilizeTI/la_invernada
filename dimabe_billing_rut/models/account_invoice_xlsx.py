@@ -306,10 +306,11 @@ class AccountInvoiceXlsx(models.Model):
             sheet.write_number(row, col, 0)
             col += 1
             sheet.write(row, col, inv.amount_untaxed_signed)
+            total_result_exent.append({col:inv.amount_untaxed_signed})
             col += 1
             sheet.write(row, col,
                         sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
-
+            total_result_exent.append({col:sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount'))})
             col += 1
             sheet.write_number(row, col, 0)
             col += 1
