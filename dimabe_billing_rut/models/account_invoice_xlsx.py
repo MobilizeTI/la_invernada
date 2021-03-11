@@ -88,6 +88,7 @@ class AccountInvoiceXlsx(models.Model):
                                                                      ('date_invoice', '<', self.to_date),
                                                                      ('dte_type_id.code', '=', 34),
                                                                      ('company_id.id', '=', self.company_get_id.id)])
+                row += 1
                 sheet.write(row, col, 'Factura de compra exenta electronica. (FACTURA COMPRA ELECTRONICA)')
                 row += 1
                 data_exempt = self.set_data_for_excel(sheet, row, exempts, taxes_title, titles)
