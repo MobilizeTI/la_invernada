@@ -98,7 +98,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.write(row, col, 'Factura de compra exenta electronica. (FACTURA COMPRA EXENTA ELECTRONICA)')
                 row += 1
                 for ex in exempts:
-                    data = self.set_data_invoice(sheet, col, row, ex, taxes_title, titles)
+                    data = self.set_data_invoice(sheet, col, row, ex,exempts, taxes_title, titles)
                     sheet = data['sheet']
                     row = data['row']
                     row += 1
@@ -111,7 +111,7 @@ class AccountInvoiceXlsx(models.Model):
                 row += 1
 
                 for cre in credit:
-                    data = self.set_data_invoice(sheet, col, row, cre, taxes_title, titles)
+                    data = self.set_data_invoice(sheet, col, row, cre,credit, taxes_title, titles)
                     sheet = data['sheet']
                     row = data['row']
                     row += 1
@@ -124,7 +124,7 @@ class AccountInvoiceXlsx(models.Model):
                 row += 1
 
                 for deb in debit:
-                    data = self.set_data_invoice(sheet, col, row, deb, taxes_title, titles)
+                    data = self.set_data_invoice(sheet, col, row, deb,debit, taxes_title, titles)
                     sheet = data['sheet']
                     row = data['row']
                     row += 1
