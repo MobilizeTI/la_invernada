@@ -108,6 +108,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
                     sheet.write(row, col, "pendiente")
                     col += 1
                     #Producto
+                    sheet.write(row, col, "pendiente")
                     col += 1
                     #Calibre
                     sheet.write(row, col, "pendiente")
