@@ -295,7 +295,9 @@ class AccountInvoiceXlsx(models.Model):
                     'amount')
                 sheet.write(row, col, sum(line), formats['total'])
                 col += 1
-        sheet.write(row, col, sum(invoices.mapped('amount_total_signed')), formats['total'])
+        sheet.write(row, col, sum(invoices.mapped('invoice_line_ids').filtered(
+            lambda a: 'Exento' not in a.invoice_line_tax_ids.mapped('name') or len(
+                a.invoice_line_tax_ids) != 0)), formats['total'])
         col = 0
         return {'sheet': sheet, 'row': row}
 
