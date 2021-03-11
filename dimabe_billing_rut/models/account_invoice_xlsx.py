@@ -132,14 +132,6 @@ class AccountInvoiceXlsx(models.Model):
                     else:
                         row += 1
                 col = 0
-                counter = Counter()
-                for item in total_exempt:
-                    counter.update(item)
-                total_dict = dict(counter)
-                sheet.write(row, 0, 'Totales:')
-                for k in total_dict:
-                    worksheet.write(row, k, total_dict[k])
-                col = 0
                 exempts = self.env['account.invoice'].search([('date_invoice', '>', self.from_date),
                                                               ('date_invoice', '<', self.to_date),
                                                               ('dte_type_id.code', '=', 34)])
