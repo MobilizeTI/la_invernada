@@ -105,6 +105,7 @@ class AccountInvoiceXlsx(models.Model):
                     invoices.mapped('tax_line_ids').filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
                 col += 1
                 sheet.write(row, col, 0)
+                col += 1
                 for tax in taxes_title:
                     if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
                         line = invoices.mapped('tax_line_ids').filtered(
