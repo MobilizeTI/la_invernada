@@ -290,7 +290,9 @@ class AccountInvoiceXlsx(models.Model):
         long_name = max(invoices.mapped('partner_id').mapped('display_name'), key=len)
         sheet.set_column(col, col, len(long_name))
         sheet.write(row, col, inv.partner_id.display_name)
-        col += 2
+        col += 1
+        sheet.write(row,col,len(invoices))
+        col += 1
         taxes = inv.invoice_line_ids.filtered(
             lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) == 0)
         if taxes:
