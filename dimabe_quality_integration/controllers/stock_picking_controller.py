@@ -88,7 +88,7 @@ class StockPickingController(http.Controller):
                     'ContainerWeightAverage': res.total_out_weight / res.out_serial_count,
                     'ContainerWeight': res.canning_id.weight,
                     'Season': res.finish_date.year,
-                    'Warehouse': res.picking_type_id.name,
+                    'Warehouse': res.sudo().picking_type_id.name,
                     'ContainerQuantity': res.out_serial_count,
                     'ArticleCode': res.out_product_id.default_code,
                     'ArticleDescription': res.out_product_id.name
