@@ -55,19 +55,19 @@ class AccountInvoiceXlsx(models.Model):
                 for tax in taxes_title:
                     if tax != 'IVA Crédito' and tax != 'IVA Débito' and tax != 'Exento':
                         titles.append(tax.upper())
-                        if taxes_title[-1] == tax:
+                        if titles[-1] == tax:
                             titles.append('Total')
                 sheet.merge_range(0, 0, 0, 2, self.company_get_id.display_name, formats['title'])
                 sheet.merge_range(1, 0, 1, 2, self.company_get_id.invoice_rut, formats['title'])
                 sheet.merge_range(2, 0, 2, 2,
                                   f'{self.company_get_id.city},Region {self.company_get_id.region_address_id.name}',
                                   formats['title'])
-                sheet.merge_range(4, 3, 5, 6, 'Libro de Ventas', formats['title'])
-                sheet.merge_range(4, 4, 5, 5, 'Libro de Ventas Ordenado por fecha', formats['title'])
+                sheet.merge_range(4, 3, 4, 6, 'Libro de Ventas', formats['title'])
+                sheet.merge_range(5, 3, 5, 6, 'Libro de Ventas Ordenado por fecha', formats['title'])
                 sheet.write(6, 10, 'Fecha', formats['title'])
                 sheet.write(6, 11, date.today().strftime('%Y-%m-%d'), formats['title'])
-                sheet.merge_range(6, 4, 5, 5, f'Desde {self.from_date} Hasta {self.to_date}', formats['title'])
-                sheet.merge_range(7, 4, 5, 5, 'Moneda : Peso Chileno', formats['title'])
+                # sheet.merge_range(6, 4, 5, 5, f'Desde {self.from_date} Hasta {self.to_date}', formats['title'])
+                # sheet.merge_range(7, 4, 5, 5, 'Moneda : Peso Chileno', formats['title'])
                 row = 12
                 col = 0
                 for title in titles:
