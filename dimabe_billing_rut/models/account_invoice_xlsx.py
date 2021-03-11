@@ -57,12 +57,12 @@ class AccountInvoiceXlsx(models.Model):
                         titles.append(tax.upper())
                         if taxes_title[-1] == tax:
                             titles.append('Total')
-                sheet.merge_range(0, 0, 0, 2, self.env.user.company_id.display_name, formats['title'])
-                sheet.merge_range(1, 0, 1, 2, self.env.user.company_id.invoice_rut, formats['title'])
+                sheet.merge_range(0, 0, 0, 2, self.company_get_id.display_name, formats['title'])
+                sheet.merge_range(1, 0, 1, 2, self.company_get_id.invoice_rut, formats['title'])
                 sheet.merge_range(2, 0, 2, 2,
-                                  f'{self.env.user.company_id.city},Region {self.env.user.company_id.region_address_id.name}',
+                                  f'{self.company_get_id.city},Region {self.company_get_id.region_address_id.name}',
                                   formats['title'])
-                sheet.merge_range(3, 4, 5, 5, 'Libro Ventas', formats['title'])
+                sheet.merge_range(3, 4, 4, 5, 'Libro Ventas', formats['title'])
                 sheet.merge_range(4, 4, 5, 5, 'Libro de Ventas Ordenado por fecha', formats['title'])
                 sheet.write(6, 10, 'Fecha', formats['title'])
                 sheet.write(6, 11, date.today().strftime('%Y-%m-%d'), formats['title'])
