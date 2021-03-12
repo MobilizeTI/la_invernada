@@ -193,7 +193,10 @@ class StockPicking(models.Model):
             'reserved_to_stock_picking_id': None,
             'to_delete': False
         })
-
+        for dispatch_move in self.dispatch_line_ids:
+            for item in dispatch_move.move_line_ids:
+                if item.lot_id in self.packing_list_ids.filtered(lambda a: a.reserved_to_stock_picking_id == self.id and a.to_delete).mapped('stock_production_lot_id').mapped('id'):
+                    raise models.ValidationError('Prueba')
         self.update_move(lots)
 
     @api.multi
