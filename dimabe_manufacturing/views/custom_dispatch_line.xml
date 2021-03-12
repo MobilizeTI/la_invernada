@@ -61,7 +61,8 @@
             </field>
         </record>
 
-        <menuitem name="Lineas de Despacho" id="custom_dispatch_line_menu" parent="stock_report_menu" groups="base.group_no_one" action="custom_dispatch_line_act_window"/>
+        <menuitem name="Lineas de Despacho" id="custom_dispatch_line_menu" parent="stock_report_menu"
+                  groups="base.group_no_one" action="custom_dispatch_line_act_window"/>
 
     </data>
 </odoo>
