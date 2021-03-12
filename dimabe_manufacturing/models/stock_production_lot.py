@@ -645,6 +645,7 @@ class StockProductionLot(models.Model):
         self.clean_add_serial()
         if len(dispatch_line) == 1:
             dispatch_line.write({
+                'real_dispatch_qty': self.get_reserved_quantity_by_picking(picking.id),
                 'move_line_ids': [(4, line_create.id)]
             })
 

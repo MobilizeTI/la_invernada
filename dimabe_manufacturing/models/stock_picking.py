@@ -193,10 +193,6 @@ class StockPicking(models.Model):
             'reserved_to_stock_picking_id': None,
             'to_delete': False
         })
-        for dispatch_move in self.dispatch_line_ids:
-            for item in dispatch_move.move_line_ids:
-                if item.lot_id.id in self.packing_list_ids.filtered(lambda a: a.reserved_to_stock_picking_id == self.id and a.to_delete).mapped('stock_production_lot_id').mapped('id'):
-                    raise models.ValidationError('Prueba')
         self.update_move(lots)
 
     @api.multi
@@ -249,6 +245,13 @@ class StockPicking(models.Model):
                 })
             else:
                 move.unlink()
+            self.dispatch_line_ids.filtered(lambda a: a.product_id.id == lot.product_id.id).mapped(
+                'move_line_ids').filtered(lambda a: a.lot_id.id == lot.id).write({
+                'product_uom_qty': lot.get_reserved_quantity_by_picking(self.id)
+            })
+            self.dispatch_line_ids.filtered(lambda a: a.product_id.id == lot.product_id.id and lot in a.move_line_ids.mapped('lot_id')).write({
+                'real_dispatch_qty': sum(self.packing_list_ids.mapped('display_weight'))
+            })
 
     @api.multi
     def _compute_packing_list_lot_ids(self):
