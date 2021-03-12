@@ -370,6 +370,7 @@ class AccountInvoiceXlsx(models.Model):
             sheet.write(row, col, inv.amount_untaxed_signed, formats['number'])
             col += 1
             days = self.diff_dates(inv.date_invoice, date.today())
+            models._logger.error(days)
             if days > 90:
                 sheet.write(row, col,
                             sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
