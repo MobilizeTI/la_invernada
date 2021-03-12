@@ -239,7 +239,7 @@ class StockPicking(models.Model):
                         "LineNumber": str(lineNumber),
                         "ProductTypeCode": "EAN",
                         "ProductCode": str(item.product_id.default_code),
-                        "ProductName": item.name,
+                        "ProductName": item.product_id.name,
                         "ProductQuantity": str(item.real_dispatch_qty) if self.is_multiple_dispatch else str(item.quantity_done), #segun DTEmite no es requerido int
                         "UnitOfMeasure": str(item.product_id.uom_id.name),
                         "ProductPrice": str(price_unit), #segun DTEmite no es requerido int
@@ -257,7 +257,7 @@ class StockPicking(models.Model):
                         "LineNumber": str(lineNumber),
                         "ProductTypeCode": "EAN",
                         "ProductCode": str(item.product_id.default_code),
-                        "ProductName": item.name,
+                        "ProductName": item.product_id.name,
                         "ProductQuantity": str(item.real_dispatch_qty) if self.is_multiple_dispatch else str(item.quantity_done),
                         "UnitOfMeasure": str(item.product_id.uom_id.name),
                         "ProductPrice": str(price_unit),
