@@ -8,7 +8,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
 
     orders_file = fields.Binary('Archivo de Pedidos')
 
-    for_year = fields.Integer(string="Año", compute="_compute_year")
+    for_year = fields.Integer(string="Año")
 
     @api.multi
     def _compute_year(self):
