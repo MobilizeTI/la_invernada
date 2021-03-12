@@ -17,7 +17,7 @@ class ConfirmOrderForReserved(models.TransientModel):
 
     custom_dispatch_line_ids = fields.Many2many('custom.dispatch.line')
 
-    picking_ids = fields.Many2many('stock.picking',compute='compute_picking_ids')
+    picking_ids = fields.Many2many('stock.picking', compute='compute_picking_ids')
 
     @api.one
     def reserved(self, no_reserved=True):
@@ -48,7 +48,7 @@ class ConfirmOrderForReserved(models.TransientModel):
                                                                      a: a.sale_id.id == self.sale_id.id and a.dispatch_id.id == self.picking_id.id).write(
                 {
                     'real_dispatch_qty': self.lot_id.get_reserved_quantity_by_picking(self.picking_principal_id.id),
-                    'move_line_ids':[(4,line_create.id)]
+                    'move_line_ids': [(4, line_create.id)]
                 })
 
         self.lot_id.clean_add_pallet()
@@ -58,7 +58,6 @@ class ConfirmOrderForReserved(models.TransientModel):
     @api.one
     def cancel(self):
         raise models.ValidationError('Prueba Cancelar')
-
 
     @api.multi
     def compute_picking_ids(self):
