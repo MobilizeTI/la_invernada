@@ -6,11 +6,9 @@
             <field name="model">custom.customer.orders.xls</field>
             <field name="arch" type="xml">
                 <form>
-                    <notebook>
-                        <group>
+                    <group>
                             <field name="for_year"/>
-                        </group>
-                    </notebook>
+                    </group>
                     <footer>
                         <button name="generate_orders_file" string="Generar XLSX" type="object" class="oe_highlight"/>
                         <button string="Cancel" class="btn btn-secondary" special="cancel"/>

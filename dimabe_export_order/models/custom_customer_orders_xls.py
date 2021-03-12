@@ -8,7 +8,11 @@ class CustomCustomerOrdersXls(models.TransientModel):
 
     orders_file = fields.Binary('Archivo de Pedidos')
 
-    for_year = fields.Integer('Año')
+    for_year = fields.Integer(string="Año", compute="_compute_year")
+
+    @api.multi
+    def _compute_year(self):
+        self.for_year = int(date.now.strftime('%Y'))
 
     @api.multi
     def generate_orders_file(self):
@@ -200,7 +204,10 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, stock.type_transport.name if stock.type_transport else '')
                         col += 1
                         #Planta de Carga
-                        sheet.write(row, col, stock.plant.name if stock.plant else '')
+                        if exist_account_invoice:
+                            sheet.write(row, col, account_invoice.plant.name if account_invoice.plant else '')
+                        else:
+                            sheet.write(row, col, "")
                         col += 1
                         #Fecha y Hora de Carga
                         sheet.write(row, col, "pendiente")
