@@ -9,7 +9,6 @@
                 <form string="ModelTitle">
                     <sheet>
                         <div class="oe_title">
-                            <label for="example_title"/>
                             <h1>
                                 <field name="sale_id" placeholder="Title"/>
                             </h1>
