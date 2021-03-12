@@ -9,6 +9,8 @@ from odoo.addons import decimal_precision as dp
 class StockMove(models.Model):
     _inherit = 'stock.move'
 
+    is_from_child = fields.Boolean('Es hijo')
+
     # def _action_assign(self):
     #     res = super(StockMove, self)._action_assign()
     #     raise models.ValidationError(self)

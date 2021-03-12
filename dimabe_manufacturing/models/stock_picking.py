@@ -203,6 +203,7 @@ class StockPicking(models.Model):
         backorders = self.env['stock.picking']
         for picking in self:
             moves_to_backorder = picking.move_lines.filtered(lambda x: x.state not in ('done', 'cancel'))
+            models._logger.error(type(moves_to_backorder))
             if moves_to_backorder:
                 backorder_picking = picking.copy({
                     'name': '/',
