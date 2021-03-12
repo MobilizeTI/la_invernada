@@ -114,7 +114,7 @@ class AccountInvoice(models.Model):
 
     packages = fields.One2many('custom.package','invoice_id',string="Bultos")
 
-    tara = fields.Float(string="Tara", computed="_compute_tara")
+    tara = fields.Float(string="Tara", compute="_compute_tara")
 
     gross_weight = fields.Float(string="Peso Bruto", compute="_compute_gross_weight")
 
