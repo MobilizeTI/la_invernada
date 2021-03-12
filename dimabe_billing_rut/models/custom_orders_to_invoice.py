@@ -50,7 +50,7 @@ class CustomOrdersToInvoice(models.Model):
     def _compute_total_value(self):
         for item in self:
             if item.stock_picking_id and item.stock_picking_id != 0:
-                self.total_value = self.env['stock.picking'].search([('id','=',item.stock_picking_id)]).total_value
+                item.total_value = self.env['stock.picking'].search([('id','=',item.stock_picking_id)]).total_value
     
     def _compute_required_loading_date(self):
         for item in self:
@@ -59,7 +59,7 @@ class CustomOrdersToInvoice(models.Model):
 
     def _compute_total_comission(self):
         for item in self:
-            if self.stock_picking_id and self.stock_picking_id != 0:
+            if item.stock_picking_id and item.stock_picking_id != 0:
                 item.total_comission = self.env['stock.picking'].search([('id','=',item.stock_picking_id)]).total_commission
 
     

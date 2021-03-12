@@ -39,7 +39,7 @@ class StockPicking(models.Model):
         compute='_get_correlative_text'
     )
 
-    commission = fields.Float('Comisión')
+    commission = fields.Float('Comisión %')
 
     #   elapsed_time_dispatch = fields.Float(string="Hora de Camión en Planta")
 

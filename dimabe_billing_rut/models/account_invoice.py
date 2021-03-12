@@ -114,7 +114,7 @@ class AccountInvoice(models.Model):
 
     packages = fields.One2many('custom.package','invoice_id',string="Bultos")
 
-    tara = fields.Float(string="Tara", computed="_compute_tara")
+    tara = fields.Float(string="Tara", compute="_compute_tara")
 
     gross_weight = fields.Float(string="Peso Bruto", compute="_compute_gross_weight")
 
@@ -165,10 +165,10 @@ class AccountInvoice(models.Model):
         domain=[('is_agent', '=', True)]
     )
 
-    commission = fields.Float(string="Valor Comisión (%)")
+    commission = fields.Float(string="Comisión (%)")
 
     total_commission = fields.Float(
-        'Valor Comisión',
+        'Total Comisión',
         compute='_compute_total_commission'
     )
 
@@ -295,34 +295,38 @@ class AccountInvoice(models.Model):
     def _compute_total_commission(self):
         for item in self:
             total_commission = 0
-            if len(item.orders_to_invoice):
+            if len(item.orders_to_invoice) > 0:
                 for line in item.orders_to_invoice:
                     total_commission += line.total_comission
-            item.commission = total_commission
+                item.total_commission = total_commission
     
     @api.multi
     def _compute_tara(self):
         for item in self:
             total_tara = 0
-            for line in item.invoice_line_ids:
-                total_tara += self.env['stock.picking'].search([('id','=',line.stock_picking_id)]).tare_container_weight_dispatch
-            item.tara = total_tara
+            if len(item.invoice_line_ids) > 0:
+                for line in item.invoice_line_ids:
+                    total_tara += self.env['stock.picking'].search([('id','=',line.stock_picking_id)]).tare_container_weight_dispatch
+                #raise models.ValidationError(total_tara)
+                item.tara = total_tara
 
     @api.multi
     def _compute_gross_weight(self):
         for item in self:
             total_gross_weight = 0
-            for line in item.invoice_line_ids:
-                total_gross_weight += self.env['stock.picking'].search([('id','=',line.stock_picking_id)]).gross_weight_dispatch
-            item.gross_weight = total_gross_weight
+            if len(item.orders_to_invoice) > 0:
+                for line in item.invoice_line_ids:
+                    total_gross_weight += self.env['stock.picking'].search([('id','=',line.stock_picking_id)]).gross_weight_dispatch
+                item.gross_weight = total_gross_weight
     
     @api.multi
     def _compute_net_weight(self):
         for item in self:
             total_net_weight = 0
-            for line in item.invoice_line_ids:
-                total_net_weight += self.env['stock.picking'].search([('id','=',line.stock_picking_id)]).net_weight_dispatch
-            item.gross_weight = total_net_weight
+            if len(item.orders_to_invoice) > 0:
+                for line in item.invoice_line_ids:
+                    total_net_weight += self.env['stock.picking'].search([('id','=',line.stock_picking_id)]).net_weight_dispatch
+                item.net_weight = total_net_weight
 
 
     @api.model
@@ -901,7 +905,7 @@ class AccountInvoice(models.Model):
         else:
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
 
-        self.update_totals_kg()
+        #self.update_totals_kg()
 
     #Send Data to Stock_Picking Comex
     @api.multi

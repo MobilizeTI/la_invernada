@@ -24,8 +24,8 @@ class CustomAccountInvoiceLine(models.Model):
 
     def _compute_price_subtotal(self):
         for item in self:
-            if self.price_unit and self.quantity:
-                self.price_subtotal = self.price_unit * self.quantity
+            if item.price_unit and item.quantity:
+                item.price_subtotal = item.price_unit * item.quantity
 
     def _compute_canning_quantiy(self):
         for item in self:
