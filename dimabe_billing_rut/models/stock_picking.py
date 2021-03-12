@@ -383,7 +383,6 @@ class StockPicking(models.Model):
         if len(list_value) > 1:
             decimal = int(list_value[1][0])
             if decimal == 0:
-                raise models.ValidationError(int(value))
                 return int(value)
             elif decimal < 5:
                 return floor(value)
