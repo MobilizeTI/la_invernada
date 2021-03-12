@@ -7,7 +7,6 @@
                     <div style="width:100%;">
                         <div style="width:100%;display:inline-block; border:1px solid;">
                             <div style="text-align:center;font-size:10px;">MANDATO</div>
-                            <br/>
                             <div style="text-align:justify; padding:6px;font-size:9px;">EN 
                                 <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'January'">
                                 ENERO

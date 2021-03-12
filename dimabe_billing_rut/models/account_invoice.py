@@ -447,7 +447,7 @@ class AccountInvoice(models.Model):
             invoice['additional'] =  additionals    
 
         r = requests.post(url, json=invoice, headers=headers)
-        raise models.ValidationError(json.dumps(invoice))
+        #raise models.ValidationError(json.dumps(invoice))
 
         jr = json.loads(r.text)
 
@@ -482,6 +482,9 @@ class AccountInvoice(models.Model):
      
     def validation_fields(self):
         valid_to_sii = False
+
+        if self.total_export_sales_clause == 0:
+            raise models.ValidationError('El Valor de Cláusula de Venta de Exportación no puede ser 0')
         if not self.partner_id:
             raise models.ValidationError('Por favor seleccione el Cliente')
         else:

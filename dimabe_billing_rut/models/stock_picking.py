@@ -211,11 +211,17 @@ class StockPicking(models.Model):
         #Main Validations
         self.validation_fields()
 
-        for item in self.move_ids_without_package:
+        move_line = []
+        if self.multiple_dispatch:
+            move_line = self.dispatch_line_ids
+        else:
+            move_line = self.move_ids_without_package
+
+        for item in move_line:
             haveExempt = False
             
             price_unit =  self.sale_id.mapped('order_line').filtered(lambda a : a.product_id.id == item.product_id.id).price_unit
-            amount = item.quantity_done * price_unit
+            amount = item.real_dispatch_qty if self.multiple_dispatch else item.quantity_done * price_unit
             tax_ids = self.sale_id.mapped('order_line').filtered(lambda a : a.product_id.id == item.product_id.id).tax_id
             amount_tax = 0
             for tax in tax_ids:
@@ -234,12 +240,12 @@ class StockPicking(models.Model):
                         "ProductTypeCode": "EAN",
                         "ProductCode": str(item.product_id.default_code),
                         "ProductName": item.name,
-                        "ProductQuantity": str(item.quantity_done), #segun DTEmite no es requerido int
+                        "ProductQuantity": str(item.real_dispatch_qty) if self.multiple_dispatch else str(item.quantity_done), #segun DTEmite no es requerido int
                         "UnitOfMeasure": str(item.product_id.uom_id.name),
                         "ProductPrice": str(price_unit), #segun DTEmite no es requerido int
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(item.quantity_done * price_unit), #str(int(amount)),
+                        "Amount": str(item.real_dispatch_qty if self.multiple_dispatch else item.quantity_done * price_unit), #str(int(amount)),
                         "HaveExempt": haveExempt,
                         "TypeOfExemptEnum": "1" #agregar campo a sale.order.line igual que acoount.invoice.line
                     }
@@ -252,12 +258,12 @@ class StockPicking(models.Model):
                         "ProductTypeCode": "EAN",
                         "ProductCode": str(item.product_id.default_code),
                         "ProductName": item.name,
-                        "ProductQuantity": str(item.quantity_done),
+                        "ProductQuantity": str(item.real_dispatch_qty) if self.multiple_dispatch else str(item.quantity_done),
                         "UnitOfMeasure": str(item.product_id.uom_id.name),
                         "ProductPrice": str(price_unit),
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(self.roundclp(item.quantity_done * price_unit)),
+                        "Amount": str(self.roundclp(item.real_dispatch_qty if self.multiple_dispatch else item.quantity_done * price_unit)),
                     }
                 )
             lineNumber += 1
@@ -389,8 +395,10 @@ class StockPicking(models.Model):
 
         valid_to_sii = False
 
+        if not self.date_due:
+            raise models.ValidationError('Por favor ingrese la Fecha de Vencimiento')
         if not self.partner_id:
-            raise models.ValidationError('Por favor selccione el Cliente')
+            raise models.ValidationError('Por favor seleccione el Cliente')
         else:
             if not self.partner_id.invoice_rut:
                 raise models.ValidationError('El Cliente {} no tiene Rut de Facturación'.format(self.partner_id.name))
