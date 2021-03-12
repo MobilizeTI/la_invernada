@@ -282,7 +282,6 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, "pendiente")
                         col += 1
 
-
                         row += 1
                         col = 0
 
