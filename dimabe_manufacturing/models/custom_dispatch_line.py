@@ -25,9 +25,3 @@ class CustomDispatchLine(models.Model):
         if self.real_dispatch_qty > 0:
             raise models.ValidationError("No puede eliminar de linea con cantidades hechas")
         return super(CustomDispatchLine, self).unlink()
-
-    @api.onchange('move_line_ids')
-    def onchange_move_line(self):
-        self.write({
-            'real_dispatch_qty':sum(self.move_line_ids.mapped('product_uom_qty'))
-        })
