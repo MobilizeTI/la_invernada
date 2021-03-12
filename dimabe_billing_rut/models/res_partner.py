@@ -13,7 +13,7 @@ class ResPartner(models.Model):
 
     mail_dte = fields.Char('Email DTE')
 
-    enterprise_turn = fields.Char(string="Giro")
+    enterprise_turn = fields.Char(string="Giro", size=80)
 
     @api.model
     def create(self, values_list):

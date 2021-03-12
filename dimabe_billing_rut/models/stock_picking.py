@@ -298,7 +298,7 @@ class StockPicking(models.Model):
                 "EnterpriseCity": self.env.user.company_id.city,
                 "EnterpriseCommune": str(self.env.user.company_id.state_id.name),
                 "EnterpriseName": self.env.user.company_id.partner_id.name,
-                "EnterpriseTurn": self.company_activity_id.name,
+                "EnterpriseTurn": self.company_id.enterprise_turn,
                 "EnterprisePhone": self.env.user.company_id.phone if self.env.user.company_id.phone else ''
             },
             "recipient": {
@@ -307,7 +307,7 @@ class StockPicking(models.Model):
                 "EnterpriseCity": self.partner_id.city,
                 "EnterpriseCommune": self.partner_id.state_id.name,
                 "EnterpriseName": self.partner_id.name,
-                "EnterpriseTurn": self.partner_activity_id.name,
+                "EnterpriseTurn": self.partner_id.enterprise_turn,
                 "EnterprisePhone": recipientPhone
             },
             "total": {
@@ -382,6 +382,7 @@ class StockPicking(models.Model):
         list_value = value_str.split('.')
         if len(list_value) > 1:
             decimal = int(list_value[1][0])
+            raise models.ValidationError(decimal)
             if decimal == 0:
                 return int(value)
             elif decimal < 5:
