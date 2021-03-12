@@ -298,7 +298,7 @@ class StockPicking(models.Model):
                 "EnterpriseCity": self.env.user.company_id.city,
                 "EnterpriseCommune": str(self.env.user.company_id.state_id.name),
                 "EnterpriseName": self.env.user.company_id.partner_id.name,
-                "EnterpriseTurn": self.company_id.enterprise_turn,
+                "EnterpriseTurn": self.env.user.company_id.partner_id.enterprise_turn,
                 "EnterprisePhone": self.env.user.company_id.phone if self.env.user.company_id.phone else ''
             },
             "recipient": {
