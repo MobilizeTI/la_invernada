@@ -1,4 +1,4 @@
-from odoo import models, api, fields,_
+from odoo import models, api, fields, _
 import base64
 from odoo.addons import decimal_precision as dp
 import datetime
@@ -11,11 +11,11 @@ class StockPicking(models.Model):
 
     has_mrp_production = fields.Boolean('tiene orden de producción')
 
-    #ya no se ocupa
-    #shipping_id = fields.Many2one(
+    # ya no se ocupa
+    # shipping_id = fields.Many2one(
     #    'custom.shipment',
     #    'Embarque'
-    #)
+    # )
     variety = fields.Many2many(related="product_id.attribute_value_ids")
 
     country_id = fields.Char(related='partner_id.country_id.name')
@@ -65,7 +65,7 @@ class StockPicking(models.Model):
 
     sale_orders_id = fields.Many2one('sale.order', 'Pedidos', domain=[('state', '=', 'sale')])
 
-    dispatch_line_ids = fields.One2many('custom.dispatch.line', 'dispatch_real_id',copy=False)
+    dispatch_line_ids = fields.One2many('custom.dispatch.line', 'dispatch_real_id', copy=False)
 
     name_orders = fields.Char('Pedidos', compute='get_name_orders')
 
@@ -75,13 +75,13 @@ class StockPicking(models.Model):
 
     packing_list_file = fields.Binary('Packing List')
 
-    is_multiple_dispatch = fields.Boolean('Es Despacho Multiple?',copy=False)
+    is_multiple_dispatch = fields.Boolean('Es Despacho Multiple?', copy=False)
 
-    picking_real_id = fields.Many2one('stock.picking','Despacho Real',copy=False)
+    picking_real_id = fields.Many2one('stock.picking', 'Despacho Real', copy=False)
 
-    picking_principal_id = fields.Many2one('stock.picking','Pedido Principal',copy=False)
+    picking_principal_id = fields.Many2one('stock.picking', 'Pedido Principal', copy=False)
 
-    is_child_dispatch = fields.Boolean('Es despacho hijo',copy=False)
+    is_child_dispatch = fields.Boolean('Es despacho hijo', copy=False)
 
     @api.onchange('is_multiple_dispatch')
     def set_multiple_dispatch(self):
@@ -112,20 +112,20 @@ class StockPicking(models.Model):
     def update_stock_quant(self):
         view = self.env.ref('dimabe_manufacturing.update_quant_view')
         wiz = self.env['update.stock.quant'].create({
-            'product_ids': [(4,p.id) for p in self.move_line_ids_without_package.mapped('product_id')],
-            'picking_id':self.id
+            'product_ids': [(4, p.id) for p in self.move_line_ids_without_package.mapped('product_id')],
+            'picking_id': self.id
         })
         return {
-            'name':'Actualizar Lote',
-            'type':'ir.actions.act_window',
-            'view_type':'form',
-            'view_mode':'form',
-            'res_model':'update.stock.quant',
-            'views':[(view.id,'form')],
-            'view_id':view.id,
-            'target':'new',
-            'res_id':wiz.id,
-            'context':self.env.context
+            'name': 'Actualizar Lote',
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'update.stock.quant',
+            'views': [(view.id, 'form')],
+            'view_id': view.id,
+            'target': 'new',
+            'res_id': wiz.id,
+            'context': self.env.context
         }
 
     @api.multi
@@ -193,6 +193,18 @@ class StockPicking(models.Model):
             'reserved_to_stock_picking_id': None,
             'to_delete': False
         })
+        for line in self.dispatch_line_ids:
+            for move_line in line.move_line_ids:
+                if move_line.lot_id.id in self.packing_list_ids.filtered(
+                        lambda a: a.to_delete and a.reserved_to_stock_picking_id.id == self.id):
+                    move_line.write({
+                        'product_uom_qty': sum(self.packing_list_ids.filtered(
+                            lambda a: a.reserved_to_stock_picking_id.id == self.id).mapped('display_weight'))
+                    })
+                    line.write({
+                        'real_dispatch_qty': sum(self.packing_list_ids.filtered(
+                            lambda a: a.reserved_to_stock_picking_id.id == self.id).mapped('display_weight'))
+                    })
         self.update_move(lots)
 
     @api.multi
@@ -211,10 +223,11 @@ class StockPicking(models.Model):
                     'backorder_id': picking.id
                 })
                 picking.message_post(
-                    body=_('The backorder <a href=# data-oe-model=stock.picking data-oe-id=%d>%s</a> has been created.') % (
-                        backorder_picking.id, backorder_picking.name))
+                    body=_(
+                        'The backorder <a href=# data-oe-model=stock.picking data-oe-id=%d>%s</a> has been created.') % (
+                             backorder_picking.id, backorder_picking.name))
                 moves_to_backorder.write({'picking_id': backorder_picking.id})
-                moves_to_backorder.mapped('package_level_id').write({'picking_id':backorder_picking.id})
+                moves_to_backorder.mapped('package_level_id').write({'picking_id': backorder_picking.id})
                 moves_to_backorder.mapped('move_line_ids').write({'picking_id': backorder_picking.id})
                 backorder_picking.action_assign()
                 backorders |= backorder_picking
@@ -233,9 +246,21 @@ class StockPicking(models.Model):
                 'reserved_to_stock_picking_id': None,
                 'remove_picking': False
             })
+        for line in self.dispatch_line_ids:
+            for move_line in line.move_line_ids:
+                if move_line.lot_id.id in self.packing_list_ids.filtered(
+                        lambda a: a.to_delete and a.reserved_to_stock_picking_id.id == self.id):
+                    move_line.write({
+                        'product_uom_qty': sum(self.packing_list_ids.filtered(
+                            lambda a: a.reserved_to_stock_picking_id.id == self.id).mapped('display_weight'))
+                    })
+                    line.write({
+                        'real_dispatch_qty': sum(self.packing_list_ids.filtered(
+                            lambda a: a.reserved_to_stock_picking_id.id == self.id).mapped('display_weight'))
+                    })
         self.update_move(lots)
 
-    def update_move(self,lots):
+    def update_move(self, lots):
         for lot in lots:
             move = self.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id)
             if lot.get_reserved_quantity_by_picking(self.id) > 0:
@@ -378,5 +403,3 @@ class StockPicking(models.Model):
             custom_serial.sudo().write({
                 'consumed': True
             })
-
-
