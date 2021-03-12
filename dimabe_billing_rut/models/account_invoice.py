@@ -306,6 +306,7 @@ class AccountInvoice(models.Model):
             total_tara = 0
             for line in item.invoice_line_ids:
                 total_tara += self.env['stock.picking'].search([('id','=',line.stock_picking_id)]).tare_container_weight_dispatch
+            raise models.ValidationError(total_tara)
             item.tara = total_tara
 
     @api.multi
@@ -901,7 +902,7 @@ class AccountInvoice(models.Model):
         else:
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
 
-        self.update_totals_kg()
+        #self.update_totals_kg()
 
     #Send Data to Stock_Picking Comex
     @api.multi
