@@ -288,36 +288,41 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def _compute_total_packages(self):
-        self.total_packages = sum(line.canning_quantity for line in self.custom_invoice_line_ids)
+        for item in self:
+            item.total_packages = sum(line.canning_quantity for line in item.custom_invoice_line_ids)
 
     @api.multi
     def _compute_total_commission(self):
-        total_commission = 0
-        if len(self.orders_to_invoice):
-            for item in self.orders_to_invoice:
-                total_commission += item.total_comission
-        self.commission = total_commission
+        for item in self:
+            total_commission = 0
+            if len(item.orders_to_invoice):
+                for line in item.orders_to_invoice:
+                    total_commission += line.total_comission
+            item.commission = total_commission
     
     @api.multi
     def _compute_tara(self):
-        total_tara = 0
-        for item in self.invoice_line_ids:
-            total_tara += self.env['stock.picking'].search([('id','=',item.stock_picking_id)]).tare_container_weight_dispatch
-        self.tara = total_tara
+        for item in self:
+            total_tara = 0
+            for line in item.invoice_line_ids:
+                total_tara += self.env['stock.picking'].search([('id','=',line.stock_picking_id)]).tare_container_weight_dispatch
+            item.tara = total_tara
 
     @api.multi
     def _compute_gross_weight(self):
-        total_gross_weight = 0
-        for item in self.invoice_line_ids:
-            total_gross_weight += self.env['stock.picking'].search([('id','=',item.stock_picking_id)]).gross_weight_dispatch
-        self.gross_weight = total_gross_weight
+        for item in self:
+            total_gross_weight = 0
+            for line in item.invoice_line_ids:
+                total_gross_weight += self.env['stock.picking'].search([('id','=',line.stock_picking_id)]).gross_weight_dispatch
+            item.gross_weight = total_gross_weight
     
     @api.multi
-    def _compute_gross_weight(self):
-        total_net_weight = 0
-        for item in self.invoice_line_ids:
-            total_net_weight += self.env['stock.picking'].search([('id','=',item.stock_picking_id)]).net_weight_dispatch
-        self.gross_weight = total_net_weight
+    def _compute_net_weight(self):
+        for item in self:
+            total_net_weight = 0
+            for line in item.invoice_line_ids:
+                total_net_weight += self.env['stock.picking'].search([('id','=',line.stock_picking_id)]).net_weight_dispatch
+            item.gross_weight = total_net_weight
 
 
     @api.model
