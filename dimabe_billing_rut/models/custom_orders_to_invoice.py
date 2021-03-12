@@ -39,28 +39,28 @@ class CustomOrdersToInvoice(models.Model):
 
     def _compute_container_number(self):
         for item in self:
-            if self.stock_picking_id and self.stock_picking_id != 0:
-                self.container_number = self.env['stock.picking'].search([('id','=',self.stock_picking_id)]).container_number
+            if item.stock_picking_id and item.stock_picking_id != 0:
+                item.container_number = self.env['stock.picking'].search([('id','=',item.stock_picking_id)]).container_number
     
     def _compute_value_per_kilo(self):
         for item in self:
-            if self.stock_picking_id and self.stock_picking_id != 0:
-                self.value_per_kilo = self.env['stock.picking'].search([('id','=',self.stock_picking_id)]).value_per_kilogram
+            if item.stock_picking_id and item.stock_picking_id != 0:
+                item.value_per_kilo = self.env['stock.picking'].search([('id','=',item.stock_picking_id)]).value_per_kilogram
     
     def _compute_total_value(self):
         for item in self:
-            if self.stock_picking_id and self.stock_picking_id != 0:
-                self.total_value = self.env['stock.picking'].search([('id','=',self.stock_picking_id)]).total_value
+            if item.stock_picking_id and item.stock_picking_id != 0:
+                self.total_value = self.env['stock.picking'].search([('id','=',item.stock_picking_id)]).total_value
     
     def _compute_required_loading_date(self):
         for item in self:
-            if self.stock_picking_id and self.stock_picking_id != 0:
-                self.required_loading_date = self.env['stock.picking'].search([('id','=',self.stock_picking_id)]).required_loading_date
+            if item.stock_picking_id and item.stock_picking_id != 0:
+                item.required_loading_date = self.env['stock.picking'].search([('id','=',item.stock_picking_id)]).required_loading_date
 
     def _compute_total_comission(self):
         for item in self:
             if self.stock_picking_id and self.stock_picking_id != 0:
-                self.total_comission = self.env['stock.picking'].search([('id','=',self.stock_picking_id)]).total_commission
+                item.total_comission = self.env['stock.picking'].search([('id','=',item.stock_picking_id)]).total_commission
 
     
   
