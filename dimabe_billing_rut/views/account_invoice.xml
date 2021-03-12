@@ -89,7 +89,6 @@
                                     <!--<field name="contract_correlative_view" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>-->
                                     <field name="contract_correlative" invisible="1"/>
                                     <field name="agent_id" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                    <field name="total_commission" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="charging_mode" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="booking_number" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="bl_number" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
@@ -102,6 +101,7 @@
                                 <group>
                                     <field name="client_label" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="commission" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <field name="total_commission" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="client_label_file"
                                            attrs="{'invisible':[('client_label', '=', False)]}"/>
                                     <field name="freight_amount" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>

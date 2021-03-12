@@ -48,8 +48,8 @@ class CustomCustomerOrdersXls(models.TransientModel):
                 stock_picking_ids = self.env['stock.picking'].sudo().search([('sale_id','=',order.id)])
                 for stock in stock_picking_ids:
                     invoice_line = self.env['account.invoice.line'].sudo().search([('stock_picking_id','=',stock.id)])
-                    raise models.ValidationError(invoice_line[0].id)
-                    account_invoice = self.env['account.invoice'].sudo().search([('id','=',invoice_line[0].invoice_id)])
+                    if invoice_line:
+                        account_invoice = self.env['account.invoice'].sudo().search([('id','=',invoice_line[0].invoice_id)])
                     #N° Embarque
                     sheet.write(row, col, stock.shipping_number if stock.shipping_number else '') 
                     col += 1
@@ -72,7 +72,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
                     sheet.write(row, col, stock.partner_id.country_id.name if stock.partner_id.country_id.name else '')
                     col += 1
                     #Contrato Interno
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, order.contract_number if order.contract_number else '')
                     col += 1
                     #Contrato Cliente
                     sheet.write(row, col, "pendiente")
@@ -95,20 +95,47 @@ class CustomCustomerOrdersXls(models.TransientModel):
                     #Fecha Envio al Cliente
                     sheet.write(row, col, "pendiente")
                     col += 1
+
+                    product_set = ''
+                    species = []
+                    varieties = []
+                    colors = []
+                    calibers = []
+                    brands = []
+                    cannings = []
+                    for line in order.order_line:
+                        product_set += ' ' + line.product_id.name
+                        for attribute in line.attribute_value_ids:
+                            if attribute.attribute_id_name == 'Variedad':
+                                if attribute.name not in varieties:
+                                    varieties.append(attribute.name)
+                            if attribute.attribute_id_name == 'Marca':
+                                if attribute.name not in brands:
+                                    brands.append(attribute.name)
+                            if attribute.attribute_id_name == 'Tipo de envase':
+                                if attribute.name not in cannings:
+                                    cannings.append(attribute.name)
+                            if attribute.attribute_id_name == 'Calibre':
+                                if attribute.name not in calibers:
+                                    calibers.append(attribute.name)
+                            if attribute.attribute_id_name == 'Especie':
+                                if attribute.name not in species:
+                                    species.append(attribute.name)
+
                     #Especie
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, ' '.join([s for s in species]))
                     col += 1
                     #Variedad
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, ' '.join([v for v in varieties]))
                     col += 1
                     #Color
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, ' '.join([c for c in colors]))
                     col += 1
                     #Producto
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, product_set)
                     col += 1
                     #Calibre
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, ' '.join([ca for ca in calibers]))
                     col += 1
                     #Kilos
                     sheet.write(row, col, "pendiente")
@@ -126,16 +153,16 @@ class CustomCustomerOrdersXls(models.TransientModel):
                     sheet.write(row, col, account_invoice.export_clause.name if account_invoice.export_clause else '')
                     col += 1
                     #Envase
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, ' '.join([e for e in cannings]))
                     col += 1
                     #Modo de carga
                     sheet.write(row, col,  account_invoice.changing_mode if  account_invoice.changing_mode else '')
                     col += 1
-                    #Etiqueta Cliente
+                    #Etiqueta Clientegit pull
                     sheet.write(row, col, "pendiente")
                     col += 1
                     #Marca
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, ' '.join([b for b in brands]))
                     col += 1
                     #Agente
                     sheet.write(row, col, stock.agent_id.name if stock.agent_id else '')
@@ -165,7 +192,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
                     sheet.write(row, col, "pendiente")
                     col += 1
                     #N° de Guía
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, stock.dte_folio if stock.dte_folio else '')
                     col += 1
                     #Nave / Viaje
                     sheet.write(row, col, stock.ship.name if stock.ship else '')

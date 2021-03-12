@@ -288,11 +288,11 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def _compute_total_commission(self):
-        total_comission = 0
+        total_commission = 0
         if len(self.orders_to_invoice):
             for item in self.orders_to_invoice:
-                total_comission += item.total_comission
-        self.commission = total_comission
+                total_commission += item.total_comission
+        self.commission = total_commission
 
     @api.model
     @api.onchange('required_loading_date')
@@ -783,7 +783,14 @@ class AccountInvoice(models.Model):
         if self.stock_picking_ids and self.order_to_add_ids:
                 if self.stock_picking_ids.sale_id.id != self.order_to_add_id:
                     raise models.ValidationError('El despacho {} no pertenece al pedido {}'.format(self.stock_picking_ids.name,self.order_to_add_ids.name))
-                        
+
+                if self.stock_picking_ids.net_weight == 0:
+                    raise models.ValidationError('El Despacho {} no posee los Kilos Netos en la pestaña de Despacho'.format(self.stock_picking_ids.name))
+                if self.stock_picking_ids.gross_weight == 0:
+                    raise models.ValidationError('El Despacho {} no posee los Kilos Brutos en la pestaña de Despacho'.format(self.stock_picking_ids.name))
+                if self.stock_picking_ids.tare_container_weight_dispatch == 0:
+                    raise models.ValidationError('El Despacho {} no posee los Kilos Tara en la pestaña de Despacho'.format(self.stock_picking_ids.name))
+
                 product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
                 stock_picking_line = self.env['stock.move.line'].search([('picking_id','=',self.stock_picking_ids.id)])
             
@@ -836,8 +843,6 @@ class AccountInvoice(models.Model):
                                 'order_name': self.order_to_add_ids.name,
                                 'stock_picking_name': self.stock_picking_ids.name,
                                 'stock_picking_id': self.stock_picking_ids.id,
-                                'total_value' : self.total_value_stock_picking(self.stock_picking_ids.id),
-                                'value_per_kilo': self.total_value_stock_picking(self.stock_picking_ids.id) / self.value_per_kilo(self.stock_picking_ids.id),
                                 'required_loading_date': self.stock_picking_ids.required_loading_date
                             })
                             if len(self.custom_invoice_line_ids) > 0:
@@ -845,8 +850,7 @@ class AccountInvoice(models.Model):
                                     if item.product_id.id == i.product_id.id:
                                         exist_custom_invoice_line = True
                                         i.write({
-                                            'quantity': i.quantity + quantity,
-                                            #'price_subtotal' : i.price_unit * (i.quantity + quantity)
+                                            'quantity': i.quantity + quantity
                                         })
                             if not exist_custom_invoice_line:
                                 self.env['custom.account.invoice.line'].create({
@@ -863,41 +867,10 @@ class AccountInvoice(models.Model):
                             raise models.ValidationError('El Producto {} del despacho {} del pedido {} ya se ecuentra agregado'.format(item.product_id.name, self.stock_picking_ids.name, self.order_to_add_ids.name))               
                 else:
                     raise models.ValidationError('No se han encontrado Productos')
-
         else:
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
 
         self.update_totals_kg()
-        
-
-
-    def total_value_stock_picking(self, stock_picking_id):
-        stock_id = self.env['stock.picking'].search([('id','=',stock_picking_id)])
-        list_price = []
-        list_qty = []
-        prices = 0
-        qantas = 0
-        for i in stock_id.sale_id.order_line:
-            if len(stock_id.sale_id.order_line) != 0:
-                list_price.append(int(i.price_unit))
-                for a in stock_id.move_ids_without_package:
-                    if len(stock_id.move_ids_without_package) != 0:
-                        list_qty.append(int(a.quantity_done))
-                        prices = sum(list_price)
-                        qantas = sum(list_qty)
-
-        return (prices * qantas) + self.freight_amount + self.safe_amount
-
-    def value_per_kilo(self, stock_picking_id):
-        stock_id = self.env['stock.picking'].search([('id','=',stock_picking_id)])
-        qty_total = 0
-        for line in stock_id.move_ids_without_package:
-            qty_total = qty_total + line.quantity_done
-
-        if qty_total > 0:
-            return qty_total
-        else:
-            return 1
 
     #Send Data to Stock_Picking Comex
     @api.multi
@@ -916,18 +889,14 @@ class AccountInvoice(models.Model):
                 #'contract_correlative_view': self.contract_correlative_view,
                 'agent_id': self.agent_id.id,
                 'commission' : self.commission,
-                #'total_commission' : self.total_commission,
                 'charging_mode' : self.charging_mode,
                 'booking_number' : self.booking_number,
                 'bl_number' : self.bl_number,
-                #'container_number' : self.container_number,
                 'container_type' : self.container_type.id,
                 'client_label' : self.client_label,
                 'client_label_file': self.client_label_file,
                 'freight_value' : self.freight_amount,
                 'safe_value' : self.safe_amount,
-                'total_value' : self.total_value,
-                'value_per_kilogram' : self.value_per_kilogram,
                 'remarks': self.remarks_comex,
                 'shipping_company': self.shipping_company.id,
                 'ship': self.ship.id,
@@ -935,7 +904,6 @@ class AccountInvoice(models.Model):
                 'type_transport': self.type_transport.id,
                 'departure_port': self.departure_port.id,
                 'arrival_port': self.arrival_port.id,
-                #'required_loading_date': self.required_loading_date,
                 'etd': self.etd,
                 'eta': self.eta,
                 'departure_date': self.departure_date,
@@ -947,11 +915,6 @@ class AccountInvoice(models.Model):
             })
             
         return res
-
-    #@api.onchange('amount_total')
-    #def total_change_invoice_Export(self):
-    #    self.total_invoice_Export   #revisar
-
 
     def update_totals_kg(self):  
         pickings_ids = []
