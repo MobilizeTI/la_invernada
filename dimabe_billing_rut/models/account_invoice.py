@@ -815,9 +815,9 @@ class AccountInvoice(models.Model):
                 if self.stock_picking_ids.sale_id.id != self.order_to_add_id:
                     raise models.ValidationError('El despacho {} no pertenece al pedido {}'.format(self.stock_picking_ids.name,self.order_to_add_ids.name))
 
-                if self.stock_picking_ids.net_weight == 0:
+                if self.stock_picking_ids.net_weight_dispatch == 0:
                     raise models.ValidationError('El Despacho {} no posee los Kilos Netos en la pestaña de Despacho'.format(self.stock_picking_ids.name))
-                if self.stock_picking_ids.gross_weight == 0:
+                if self.stock_picking_ids.gross_weight_dispatch == 0:
                     raise models.ValidationError('El Despacho {} no posee los Kilos Brutos en la pestaña de Despacho'.format(self.stock_picking_ids.name))
                 if self.stock_picking_ids.tare_container_weight_dispatch == 0:
                     raise models.ValidationError('El Despacho {} no posee los Kilos Tara en la pestaña de Despacho'.format(self.stock_picking_ids.name))
