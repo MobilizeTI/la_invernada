@@ -662,6 +662,7 @@ class StockProductionLot(models.Model):
         self.clean_add_serial()
 
     def add_selection_pallet(self, picking_id, location_id):
+        models._logger.error(picking_id)
         self.pallet_ids.filtered(lambda p: p.add_picking and not p.reserved_to_stock_picking_id).write({
             'reserved_to_stock_picking_id': picking_id
         })
