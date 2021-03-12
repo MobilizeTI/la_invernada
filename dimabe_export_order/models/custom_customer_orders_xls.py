@@ -48,7 +48,9 @@ class CustomCustomerOrdersXls(models.TransientModel):
                     #if len(stock_picking_ids) > 0:
                     for stock in stock_picking_ids:
                         invoice_line = self.env['account.invoice.line'].sudo().search([('stock_picking_id','=',stock.id)])
+                        exist_account_invoice = False
                         if invoice_line:
+                            exist_account_invoice = True
                             account_invoice = self.env['account.invoice'].sudo().search([('id','=',invoice_line[0].invoice_id)])
                         #N° Embarque
                         sheet.write(row, col, stock.shipping_number if stock.shipping_number else '') 
@@ -147,16 +149,25 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, "pendiente")
                         col += 1
                         #N° Factura
-                        sheet.write(row, col, account_invoice.dte_folio if account_invoice.dte_folio else '')
+                        if exist_account_invoice:
+                            sheet.write(row, col, account_invoice.dte_folio if account_invoice.dte_folio else '')
+                        else:
+                            sheet.write(row, col, "")
                         col += 1
                         #Cláusula
-                        sheet.write(row, col, account_invoice.export_clause.name if account_invoice.export_clause else '')
+                        if exist_account_invoice:
+                            sheet.write(row, col, account_invoice.export_clause.name if account_invoice.export_clause else '')
+                        else:
+                            sheet.write(row, col, "")
                         col += 1
                         #Envase
                         sheet.write(row, col, ' '.join([e for e in cannings]))
                         col += 1
                         #Modo de carga
-                        sheet.write(row, col,  account_invoice.changing_mode if  account_invoice.changing_mode else '')
+                        if exist_account_invoice:
+                            sheet.write(row, col,  account_invoice.changing_mode if  account_invoice.changing_mode else '')
+                        else:
+                            sheet.write(row, col, "")
                         col += 1
                         #Etiqueta Clientegit pull
                         sheet.write(row, col, "pendiente")
@@ -180,7 +191,10 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, stock.arrival_port.name if stock.arrival_port else '')
                         col += 1
                         #Destino Final
-                        sheet.write(row, col, account_invoice.city_final_destiny_id.city_country if account_invoice.city_final_destiny_id.city_country else '')
+                        if exist_account_invoice:
+                            sheet.write(row, col, account_invoice.city_final_destiny_id.city_country if account_invoice.city_final_destiny_id.city_country else '')
+                        else:
+                            sheet.write(row, col, "")
                         col += 1
                         #Vía de Transporte
                         sheet.write(row, col, stock.type_transport.name if stock.type_transport else '')
@@ -207,10 +221,16 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, stock.bl_number if stock.bl_number else '')
                         col += 1
                         #Stacking
-                        sheet.write(row, col, account_invoice.stacking if account_invoice.stacking else '')
+                        if exist_account_invoice:
+                            sheet.write(row, col, account_invoice.stacking if account_invoice.stacking else '')
+                        else:
+                            sheet.write(row, col, "")
                         col += 1
                         #Cut Off Document
-                        sheet.write(row, col, account_invoice.cut_off if account_invoice.cut_off else '')
+                        if exist_account_invoice:
+                            sheet.write(row, col, account_invoice.cut_off if account_invoice.cut_off else '')
+                        else:
+                            sheet.write(row, col, "")
                         col += 1
                         #Fecha Real de Zarpe
                         sheet.write(row, col, stock.departure_date.strftime("%d-%m-%Y") if stock.departure_date else '')
@@ -228,10 +248,16 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, "pendiente")
                         col += 1
                         #Depósito Retiro
-                        sheet.write(row, col, account_invoice.withdrawal_deposit.name if account_invoice.withdrawal_deposit else '')
+                        if exist_account_invoice:
+                            sheet.write(row, col, account_invoice.withdrawal_deposit.name if account_invoice.withdrawal_deposit else '')
+                        else:
+                            sheet.write(row, col, "")
                         col += 1
                         #Valor Seguro
-                        sheet.write(row, col, account_invoice.safe_amount)
+                        if exist_account_invoice:
+                            sheet.write(row, col, account_invoice.safe_amount)
+                        else:
+                            sheet.write(row, col, "")
                         col += 1
                         #FOB total
                         sheet.write(row, col, "pendiente")
