@@ -106,19 +106,19 @@ class CustomCustomerOrdersXls(models.TransientModel):
                     for line in order.order_line:
                         product_set += ' ' + line.product_id.name
                         for attribute in line.product_id.attribute_value_ids:
-                            if attribute.attribute_id_name == 'Variedad':
+                            if attribute.attribute_id.name == 'Variedad':
                                 if attribute.name not in varieties:
                                     varieties.append(attribute.name)
-                            if attribute.attribute_id_name == 'Marca':
+                            if attribute.attribute_id.name == 'Marca':
                                 if attribute.name not in brands:
                                     brands.append(attribute.name)
-                            if attribute.attribute_id_name == 'Tipo de envase':
+                            if attribute.attribute_id.name == 'Tipo de envase':
                                 if attribute.name not in cannings:
                                     cannings.append(attribute.name)
-                            if attribute.attribute_id_name == 'Calibre':
+                            if attribute.attribute_id.name == 'Calibre':
                                 if attribute.name not in calibers:
                                     calibers.append(attribute.name)
-                            if attribute.attribute_id_name == 'Especie':
+                            if attribute.attribute_id.name == 'Especie':
                                 if attribute.name not in species:
                                     species.append(attribute.name)
 
