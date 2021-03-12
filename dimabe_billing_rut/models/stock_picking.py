@@ -220,7 +220,7 @@ class StockPicking(models.Model):
         for item in move_line:
             haveExempt = False
             
-            price_unit =  self.sale_id.mapped('order_line').filtered(lambda a : a.product_id.id == item.product_id.id).price_unit
+            price_unit =  item.sale_id.mapped('order_line').filtered(lambda a : a.product_id.id == item.product_id.id).price_unit
             amount = item.real_dispatch_qty if self.is_multiple_dispatch else item.quantity_done * price_unit
             tax_ids = self.sale_id.mapped('order_line').filtered(lambda a : a.product_id.id == item.product_id.id).tax_id
             amount_tax = 0
@@ -245,7 +245,7 @@ class StockPicking(models.Model):
                         "ProductPrice": str(price_unit), #segun DTEmite no es requerido int
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(item.real_dispatch_qty if self.is_multiple_dispatch else item.quantity_done * price_unit), #str(int(amount)),
+                        "Amount": str(item.real_dispatch_qty * price_unit if self.is_multiple_dispatch else item.quantity_done * price_unit), #str(int(amount)),
                         "HaveExempt": haveExempt,
                         "TypeOfExemptEnum": "1" #agregar campo a sale.order.line igual que acoount.invoice.line
                     }
@@ -263,7 +263,7 @@ class StockPicking(models.Model):
                         "ProductPrice": str(price_unit),
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(self.roundclp(item.real_dispatch_qty if self.is_multiple_dispatch else item.quantity_done * price_unit)),
+                        "Amount": str(self.roundclp(item.real_dispatch_qty * price_unit if self.is_multiple_dispatch else item.quantity_done * price_unit)),
                     }
                 )
             lineNumber += 1
