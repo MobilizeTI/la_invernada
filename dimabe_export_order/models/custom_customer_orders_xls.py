@@ -11,10 +11,6 @@ class CustomCustomerOrdersXls(models.TransientModel):
     for_year = fields.Integer(string="Año")
 
     @api.multi
-    def _compute_year(self):
-        self.for_year = int(date.now.strftime('%Y'))
-
-    @api.multi
     def generate_orders_file(self):
             file_name = 'temp.xlsx'
             workbook = xlsxwriter.Workbook(file_name)
