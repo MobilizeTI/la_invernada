@@ -250,7 +250,7 @@ class StockPicking(models.Model):
                 'product_uom_qty': lot.get_reserved_quantity_by_picking(self.id)
             })
             self.dispatch_line_ids.filtered(lambda a: a.product_id.id == lot.product_id.id and lot in a.move_line_ids.mapped('lot_id')).write({
-                'real_dispatch_qty': sum(self.packing_list_ids.mapped('display_weight'))
+                'real_dispatch_qty': sum(self.packing_list_ids.filtered(lambda a: a.stock_production_lot_id == lot).mapped('display_weight'))
             })
 
     @api.multi
