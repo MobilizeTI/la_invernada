@@ -193,18 +193,19 @@ class StockPicking(models.Model):
             'reserved_to_stock_picking_id': None,
             'to_delete': False
         })
-        for line in self.dispatch_line_ids:
-            for move_line in line.move_line_ids:
-                if move_line.lot_id.id in self.packing_list_ids.filtered(
-                        lambda a: a.to_delete and a.reserved_to_stock_picking_id.id == self.id):
-                    move_line.write({
-                        'product_uom_qty': sum(self.packing_list_ids.filtered(
-                            lambda a: a.reserved_to_stock_picking_id.id == self.id).mapped('display_weight'))
-                    })
-                    line.write({
-                        'real_dispatch_qty': sum(self.packing_list_ids.filtered(
-                            lambda a: a.reserved_to_stock_picking_id.id == self.id).mapped('display_weight'))
-                    })
+        if self.is_multiple_dispatch:
+            for line in self.dispatch_line_ids:
+                for move_line in line.move_line_ids:
+                    if move_line.lot_id.id in self.packing_list_ids.filtered(
+                            lambda a: a.to_delete and a.reserved_to_stock_picking_id.id == self.id):
+                        move_line.write({
+                            'product_uom_qty': sum(self.packing_list_ids.filtered(
+                                lambda a: a.reserved_to_stock_picking_id.id == self.id).mapped('display_weight'))
+                        })
+                        line.write({
+                            'real_dispatch_qty': sum(self.packing_list_ids.filtered(
+                                lambda a: a.reserved_to_stock_picking_id.id == self.id).mapped('display_weight'))
+                        })
         self.update_move(lots)
 
     @api.multi
@@ -246,18 +247,19 @@ class StockPicking(models.Model):
                 'reserved_to_stock_picking_id': None,
                 'remove_picking': False
             })
-        for line in self.dispatch_line_ids:
-            for move_line in line.move_line_ids:
-                if move_line.lot_id.id in self.packing_list_ids.filtered(
-                        lambda a: a.to_delete and a.reserved_to_stock_picking_id.id == self.id):
-                    move_line.write({
-                        'product_uom_qty': sum(self.packing_list_ids.filtered(
-                            lambda a: a.reserved_to_stock_picking_id.id == self.id).mapped('display_weight'))
-                    })
-                    line.write({
-                        'real_dispatch_qty': sum(self.packing_list_ids.filtered(
-                            lambda a: a.reserved_to_stock_picking_id.id == self.id).mapped('display_weight'))
-                    })
+        if self.is_multiple_dispatch:
+            for line in self.dispatch_line_ids:
+                for move_line in line.move_line_ids:
+                    if move_line.lot_id.id in self.packing_list_ids.filtered(
+                            lambda a: a.to_delete and a.reserved_to_stock_picking_id.id == self.id):
+                        move_line.write({
+                            'product_uom_qty': sum(self.packing_list_ids.filtered(
+                                lambda a: a.reserved_to_stock_picking_id.id == self.id).mapped('display_weight'))
+                        })
+                        line.write({
+                            'real_dispatch_qty': sum(self.packing_list_ids.filtered(
+                                lambda a: a.reserved_to_stock_picking_id.id == self.id).mapped('display_weight'))
+                        })
         self.update_move(lots)
 
     def update_move(self, lots):
