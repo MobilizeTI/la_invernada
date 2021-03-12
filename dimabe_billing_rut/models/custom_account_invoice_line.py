@@ -28,11 +28,12 @@ class CustomAccountInvoiceLine(models.Model):
                 self.price_subtotal = self.price_unit * self.quantity
 
     def _compute_canning_quantiy(self):
-        for atr in self.product_id.attribute_value_ids:
-            is_kg = atr.attribute_id.name.find('K')
-            if atr.attribute_id.name == 'Tipo de envase' and is_kg != 1:
-                value = [float(char) for char in re.findall(r'-?\d+\.?\d*',atr.name)]
-                self.canning_quantity = self.quantity / value[0]
+        for item in self:
+            for atr in item.product_id.attribute_value_ids:
+                is_kg = atr.attribute_id.name.find('K')
+                if atr.attribute_id.name == 'Tipo de envase' and is_kg != 1:
+                    value = [float(char) for char in re.findall(r'-?\d+\.?\d*',atr.name)]
+                    item.canning_quantity = item.quantity / value[0]
                 
 
 
