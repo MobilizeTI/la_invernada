@@ -244,7 +244,6 @@ class StockPicking(models.Model):
                 })
             else:
                 move.unlink()
-            lines = self.dispatch_line_ids.mapped('move_line_ids').
 
     @api.multi
     def _compute_packing_list_lot_ids(self):
