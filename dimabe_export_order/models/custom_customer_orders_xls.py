@@ -105,7 +105,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
                     cannings = []
                     for line in order.order_line:
                         product_set += ' ' + line.product_id.name
-                        for attribute in line.attribute_value_ids:
+                        for attribute in line.product_id.attribute_value_ids:
                             if attribute.attribute_id_name == 'Variedad':
                                 if attribute.name not in varieties:
                                     varieties.append(attribute.name)

@@ -6,8 +6,9 @@
                 <t t-foreach="docs" t-as="d">
                     <div style="width:100%;">
                         <div style="width:100%;display:inline-block; border:1px solid;">
-                            <p style="text-align:center;font-size:10px;">MANDATO</p>
-                            <p style="text-align:justify; padding:6px;font-size:9px;">EN 
+                            <div style="text-align:center;font-size:10px;">MANDATO</div>
+                            <br/>
+                            <div style="text-align:justify; padding:6px;font-size:9px;">EN 
                                 <t t-if="context_timestamp(datetime.datetime.now()).strftime('%B') == 'January'">
                                 ENERO
                             </t>
@@ -51,7 +52,7 @@
                                 HERMOSO CAMINO SAN MIGUEL PARCELA 2 PAINE, CHILE, CONFIERE PODER ESPECIAL AL AGENTE DE ADUANAS SEÑOR OMAR 
                                 BARRERA BERNALES, PARA QUE A SU NOMBRE Y REPRESENTACION EFECTUE ANTE EL SERVICIO NACIONAL DE ADUANAS, TODOS 
                                 LOS TRAMITES PERTINENTES PARA PROCEDER A LA EXPORTACION DE LAS MERCANCIAS QUE SE DETALLAN A CONTINUACION, DE 
-                                ACUERDO A LAS SIGUENTES INSTRUCCIONES:</p>
+                                ACUERDO A LAS SIGUENTES INSTRUCCIONES:</div>
                         </div>
                         <div style="width:100%;text-align:center;display:inline-block; border-right:1px solid;border-left:1px solid;border-bottom:1px solid;">
                             <table style="width: 100%;margin: 0 auto;font-size:16px;">
