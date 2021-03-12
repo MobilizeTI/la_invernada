@@ -382,8 +382,8 @@ class StockPicking(models.Model):
         list_value = value_str.split('.')
         if len(list_value) > 1:
             decimal = int(list_value[1][0])
-            raise models.ValidationError(decimal)
             if decimal == 0:
+                raise models.ValidationError(int(value))
                 return int(value)
             elif decimal < 5:
                 return floor(value)
