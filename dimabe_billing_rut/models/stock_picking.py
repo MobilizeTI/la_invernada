@@ -245,7 +245,7 @@ class StockPicking(models.Model):
                         "ProductPrice": str(price_unit), #segun DTEmite no es requerido int
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(item.real_dispatch_qty * price_unit if self.is_multiple_dispatch else item.quantity_done * price_unit), #str(int(amount)),
+                        "Amount": str(self.roundclp(item.real_dispatch_qty * price_unit if self.is_multiple_dispatch else item.quantity_done * price_unit)), #str(int(amount)),
                         "HaveExempt": haveExempt,
                         "TypeOfExemptEnum": "1" #agregar campo a sale.order.line igual que acoount.invoice.line
                     }
