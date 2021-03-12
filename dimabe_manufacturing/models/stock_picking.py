@@ -243,18 +243,7 @@ class StockPicking(models.Model):
                 })
             else:
                 move.unlink()
-            lines = self.dispatch_line_ids.filtered(lambda a: a.product_id.id == lot.product_id.id)
-            if len(lines) < 2:
-                for line in lines:
-                    if lot.id in line.move_line_ids.mapped('lot_id').mapped('id'):
-                        line.write({
-                            'real_dispatch_qty': line.real_dispatch_qty - move.product_uom_qty
-                        })
-            else:
-                lines.write({
-                    'real_dispatch_qty': line.real_dispatch_qty - move.product_uom_qty
-                })
-            lot.update_stock_quant(self.location_id.id)
+            lines = self.dispatch_line_ids.mapped('move_line_ids').
 
     @api.multi
     def _compute_packing_list_lot_ids(self):

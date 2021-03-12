@@ -651,22 +651,22 @@ class StockProductionLot(models.Model):
             })
 
     def add_selection_serial(self, picking_id, location_id):
-        pallets = self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).mapped('pallet_id')
+        pallets = self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add and not a.reserved_to_stock_picking_id).mapped('pallet_id')
         for pallet in pallets:
             pallet.write({
                 'reserved_to_stock_picking_id': picking_id
             })
-        self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add).write({
+        self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add and not a.reserved_to_stock_picking_id).write({
             'reserved_to_stock_picking_id': picking_id
         })
         self.update_stock_quant(location_id)
         self.clean_add_serial()
 
     def add_selection_pallet(self, picking_id, location_id):
-        self.pallet_ids.filtered(lambda p: p.add_picking).write({
+        self.pallet_ids.filtered(lambda p: p.add_picking and not p.reserved_to_stock_picking_id).write({
             'reserved_to_stock_picking_id': picking_id
         })
-        self.pallet_ids.filtered(lambda p: p.add_picking).mapped('lot_serial_ids').filtered(
+        self.pallet_ids.filtered(lambda p: p.add_picking and not p.reserved_to_stock_picking_id).mapped('lot_serial_ids').filtered(
             lambda s: not s.reserved_to_stock_picking_id).write({
             'reserved_to_stock_picking_id': picking_id
         })

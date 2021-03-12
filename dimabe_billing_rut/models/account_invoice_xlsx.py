@@ -298,7 +298,7 @@ class AccountInvoiceXlsx(models.Model):
                     'amount')
                 sheet.write(row, col, sum(line), formats['total'])
                 col += 1
-        sheet.write(row,col,sum(invoices.mapped('amount_total')),formats['total'])
+        sheet.write(row,col,sum(invoices.mapped('amount_total')),formats['total  '])
         col = 0
         return {'sheet': sheet, 'row': row}
 
@@ -331,6 +331,7 @@ class AccountInvoiceXlsx(models.Model):
             if inv.dte_type_id.id :
                 sheet.write(row, col, '0', formats['number'])
                 col += 1
+
                 sheet.write(row, col, '0', formats['number'])
                 col += 1
                 sheet.write(row, col, '0', formats['number'])
@@ -347,11 +348,22 @@ class AccountInvoiceXlsx(models.Model):
             else:
                 sheet.write(row, col, sum(inv.invoice_line_ids.filtered(inv.invoice_line_ids.filtered(
             lambda a: 'Exento' not in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) != 0)).mapped('price_subtotal')), formats['number'])
-                col += 1
-                sheet.write(row, col, sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
-                            formats['number'])
-                col += 1
-                sheet.write(row, col, '0', formats['number'])
+                if self.diff_dates(inv.date_invoice,date.today()).days > 90:
+                    col += 1
+                    sheet.write(row, col, '0', formats['number'])
+
+                    col += 1
+                    sheet.write(row, col,
+                                sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
+                                formats['number'])
+                else:
+                    col += 1
+                    sheet.write(row, col,
+                                sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
+                                formats['number'])
+
+                    col += 1
+                    sheet.write(row, col, '0', formats['number'])
                 col += 1
                 for tax in taxes_title:
                     if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
