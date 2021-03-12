@@ -197,7 +197,8 @@ class StockPicking(models.Model):
             for line in self.dispatch_line_ids:
                 for move_line in line.move_line_ids:
                     if move_line.lot_id.id in self.packing_list_ids.filtered(
-                            lambda a: a.to_delete and a.reserved_to_stock_picking_id.id == self.id):
+                            lambda a: a.to_delete and a.reserved_to_stock_picking_id.id == self.id).mapped(
+                        'stock_production_lot_id').mapped('id'):
                         move_line.write({
                             'product_uom_qty': sum(self.packing_list_ids.filtered(
                                 lambda a: a.reserved_to_stock_picking_id.id == self.id).mapped('display_weight'))
@@ -251,7 +252,7 @@ class StockPicking(models.Model):
             for line in self.dispatch_line_ids:
                 for move_line in line.move_line_ids:
                     if move_line.lot_id.id in self.packing_list_ids.filtered(
-                            lambda a: a.to_delete and a.reserved_to_stock_picking_id.id == self.id):
+                            lambda a: a.to_delete and a.reserved_to_stock_picking_id.id == self.id).mapped('stock_production_lot_id').mapped('id'):
                         move_line.write({
                             'product_uom_qty': sum(self.packing_list_ids.filtered(
                                 lambda a: a.reserved_to_stock_picking_id.id == self.id).mapped('display_weight'))
