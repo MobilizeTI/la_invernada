@@ -160,7 +160,7 @@ class StockPicking(models.Model):
                         'date_expected': self.scheduled_date,
                         'location_dest_id': self.partner_id.property_stock_customer.id,
                         'location_id': self.location_id.id,
-                        'name': self.origin if self.origin else self.name,
+                        'name': product.product_id.name,
                         'procure_method': 'make_to_stock',
                     })
                 else:
