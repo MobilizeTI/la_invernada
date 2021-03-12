@@ -196,6 +196,12 @@
                   </td>
                 </tr>
                 <tr>
+                  <td style="text-align: right !important;">KILOS NETOS:</td>
+                  <td>
+                    <span t-field="serial.display_weight"/>
+                  </td>
+                </tr>
+                <tr>
                   <td style="text-align: right !important;">N° DE BULTOS:</td>
                   <td>
                     <span t-field="o.get_canning_move().quantity_done"/>
