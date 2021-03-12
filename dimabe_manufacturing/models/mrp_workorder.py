@@ -460,11 +460,7 @@ class MrpWorkorder(models.Model):
             'in_weight': sum(self.potential_serial_planned_ids.mapped('real_weight')),
             'lot_id':custom_serial.stock_production_lot_id.id
         })
-        quant = self.env['stock.quant'].search([('lot_id', '=', lot.id)])
-        quant.write({
-            'quantity': sum(
-                lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
-        })
+        custom_serial.stock_production_lot_id.update_stock_quant(location_id=self.production_id.location_src_id.id)
         return res
 
     @api.model
