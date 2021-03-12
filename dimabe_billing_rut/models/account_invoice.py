@@ -307,7 +307,7 @@ class AccountInvoice(models.Model):
             if len(item.invoice_line_ids) > 0:
                 for line in item.invoice_line_ids:
                     total_tara += self.env['stock.picking'].search([('id','=',line.stock_picking_id)]).tare_container_weight_dispatch
-                raise models.ValidationError(total_tara)
+                #raise models.ValidationError(total_tara)
                 item.tara = total_tara
 
     @api.multi
