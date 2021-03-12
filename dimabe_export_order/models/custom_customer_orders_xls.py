@@ -165,7 +165,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         col += 1
                         #Modo de carga
                         if exist_account_invoice:
-                            sheet.write(row, col,  account_invoice.changing_mode if  account_invoice.changing_mode else '')
+                            sheet.write(row, col,  account_invoice.charging_mode if  account_invoice.charging_mode else '')
                         else:
                             sheet.write(row, col, "")
                         col += 1
