@@ -585,7 +585,6 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def add_selection(self,stock_picking_id=None):
-
         if 'dispatch_id' in self.env.context.keys():
             picking_id = int(self.env.context['dispatch_id'])
         else:
@@ -630,6 +629,7 @@ class StockProductionLot(models.Model):
                 'product_uom_qty': self.get_reserved_quantity_by_picking(picking_id)
             })
         else:
+            models._logger.error(picking)
             line_create = self.env['stock.move.line'].create({
                 'move_id': picking.move_ids_without_package.filtered(
                     lambda m: m.product_id.id == self.product_id.id).id,
