@@ -41,7 +41,9 @@ class CustomCustomerOrdersXls(models.TransientModel):
             from_date = '{}/01/01'.format(str(self.for_year))
             to_date = '{}/12/31'.format(str(self.for_year))
             
-            orders = self.env['sale.order'].sudo().search([('confirmation_date','>=',from_date),('confirmation_date','<=',to_date)])
+            #orders = self.env['sale.order'].sudo().search([('confirmation_date','>=',from_date),('confirmation_date','<=',to_date)])
+            orders = self.env['sale.order'].sudo().search([('create_date','>=',from_date),('create_date','<=',to_date)])
+
             if len(orders) > 0:
                 for order in orders:
                     stock_picking_ids = self.env['stock.picking'].sudo().search([('sale_id','=',order.id)])
