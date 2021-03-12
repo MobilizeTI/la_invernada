@@ -51,7 +51,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         exist_account_invoice = False
                         if invoice_line:
                             exist_account_invoice = True
-                            account_invoice = self.env['account.invoice'].sudo().search([('id','=',invoice_line[0].invoice_id)])
+                            account_invoice = self.env['account.invoice'].sudo().search([('id','=',invoice_line[0].invoice_id.id)])
                         #N° Embarque
                         sheet.write(row, col, stock.shipping_number if stock.shipping_number else '') 
                         col += 1
