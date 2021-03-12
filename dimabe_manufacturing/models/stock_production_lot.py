@@ -585,6 +585,7 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def add_selection(self,stock_picking_id=None):
+        models._logger.error(f'{self.env.context.keys()} {self.env.context.values()}')
         if 'dispatch_id' in self.env.context.keys():
             picking_id = int(self.env.context['dispatch_id'])
         else:
