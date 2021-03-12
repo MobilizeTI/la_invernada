@@ -14,10 +14,11 @@ class StockPicking(models.Model):
     #shipping_number = fields.Integer('Número Embarque')
     shipping_number = fields.Char('Número Embarque')
 
-    shipping_id = fields.Many2one(
-        'custom.shipment',
-        'Embarque'
-    )
+    #Ya no se ocupa
+    #shipping_id = fields.Many2one(
+    #    'custom.shipment',
+    #    'Embarque'
+    #)
 
     #required_loading_date = fields.Datetime(
     #    related='shipping_id.required_loading_date')
@@ -331,11 +332,10 @@ class StockPicking(models.Model):
             for i in item.sale_id.order_line:
                 if len(item.sale_id.order_line) != 0:
                     list_price.append(i.price_unit)
-                    #list_price.append(int(i.price_unit))
 
             for a in item.move_ids_without_package:
                 if len(item.move_ids_without_package) != 0:
-                    list_qty.append(int(a.quantity_done))
+                    list_qty.append(a.quantity_done)
                     prices = sum(list_price)
                     qantas = sum(list_qty)
 

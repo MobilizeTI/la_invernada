@@ -83,7 +83,7 @@ class AccountInvoice(models.Model):
     #Orders to Add in Invoice
 
     order_to_add_ids = fields.Many2one('sale.order',
-        domain=[('invoice_status','=','to invoice')], 
+        domain=[('invoice_status','!=','invoiced')], 
         string="Pedidos"
     )
 
@@ -143,15 +143,11 @@ class AccountInvoice(models.Model):
 
     #COMEX
     total_value = fields.Float(
-        'Valor Total',
-        compute='_compute_total_value',
-        store=True
+        'Valor Total'
     )
 
     value_per_kilogram = fields.Float(
-        'Valor por kilo',
-        compute='_compute_value_per_kilogram',
-        store=True
+        'Valor por kilo'
     )
 
     #shipping_number = fields.Integer('Número Embarque')
@@ -159,10 +155,9 @@ class AccountInvoice(models.Model):
 
     contract_correlative = fields.Integer('corr')
 
-    contract_correlative_view = fields.Char(
-        'N° Orden',
-        compute='_get_correlative_text'
-    )
+    #contract_correlative_view = fields.Char(
+    #    'N° Orden'
+    #)
 
     agent_id = fields.Many2one(
         'res.partner',
@@ -170,7 +165,7 @@ class AccountInvoice(models.Model):
         domain=[('is_agent', '=', True)]
     )
 
-    commission = fields.Float('Comisión')
+    commission = fields.Float(string="Valor Comisión (%)")
 
     total_commission = fields.Float(
         'Valor Comisión',
@@ -291,6 +286,13 @@ class AccountInvoice(models.Model):
             self.etd_week = None
             self.etd_month = None
 
+    @api.multi
+    def _compute_total_commission(self):
+        total_comission = 0
+        if len(self.orders_to_invoice):
+            for item in self.orders_to_invoice:
+                total_comission += item.total_comission
+        self.commission = total_comission
 
     @api.model
     @api.onchange('required_loading_date')
@@ -338,76 +340,7 @@ class AccountInvoice(models.Model):
         for i in self.env.user.groups_id:
             if i.name == "Despachos":
                 self.is_dispatcher = 1
-    
-    @api.multi
-    @api.depends('freight_amount', 'safe_amount')
-    def _compute_total_value(self):
-        print('')
-        #list_price = []
-        #list_qty = []
-        #prices = 0
-        #qantas = 0
-        #if len(self.invoice_line_ids) > 0:
-        #    for i in self.invoice_line_ids:
-        #        list_price.append(i.price_unit * i.quantity)
 
-            #for a in item.move_ids_without_package:
-            #    if len(item.move_ids_without_package) != 0:
-            #        list_qty.append(int(a.quantity_done))
-            #        prices = sum(list_price)
-            #        qantas = sum(list_qty)
-
-            #item.total_value = (prices * qantas) + item.freight_value + item.safe_value
-        #raise models.ValidationError('{} {} {}'.format(sum(list_price), self.freight_amount,  self.safe_amount))
-        #self.total_value =  sum(list_price) + self.freight_amount + self.safe_amount
-            
-
-    @api.multi
-    @api.depends('total_value')
-    def _compute_value_per_kilogram(self):
-        print('')
-        #for item in self:
-        #    qty_total = 0
-         #   for line in item.move_ids_without_package:
-          #      qty_total = qty_total + line.quantity_done
-          #  if qty_total > 0:
-          #      item.value_per_kilogram = item.total_value / qty_total
-
-    @api.onchange('commission')
-    @api.multi
-    def _compute_total_commission(self):
-        print('')
-        #for item in self:
-        #    if item.agent_id and item.commission > 3:
-        #        raise models.ValidationError('la comisión debe ser mayor que 0 y menor o igual que 3')
-        #    else:
-        #        item.total_commission = (item.commission / 100) \
-        #                         
-                                        #* (sum(item.sale_id.order_line.mapped('price_unit'))
-                                        #* sum(item.move_ids_without_package.mapped('product_uom_qty')))
-    
-    @api.multi
-    # @api.depends('contract_id')
-    def _get_correlative_text(self):
-        print('')
-        # if self.contract_id:
-        # if self.contract_correlative == 0:
-        # existing = self.contract_id.sale_order_ids.search([('name', '=', self.name)])
-        # if existing:
-        # self.contract_correlative = existing.contract_correlative
-        # if self.contract_correlative == 0:
-        # self.contract_correlative = len(self.contract_id.sale_order_ids)
-        # else:
-        # self.contract_correlative = 0
-        # if self.contract_id.name and self.contract_correlative and self.contract_id.container_number:
-        # self.contract_correlative_view = '{}-{}/{}'.format(
-        # self.contract_id.name,
-        # self.contract_correlative,
-        # self.contract_id.container_number
-        # )
-        # else:
-        # self.contract_correlative_view = ''
-    
 
     @api.onchange('partner_id')
     @api.multi
@@ -980,10 +913,10 @@ class AccountInvoice(models.Model):
         for s in stock_picking_ids:
             s.write({
                 'shipping_number': self.shipping_number,
-                'contract_correlative_view': self.contract_correlative_view,
+                #'contract_correlative_view': self.contract_correlative_view,
                 'agent_id': self.agent_id.id,
                 'commission' : self.commission,
-                'total_commission' : self.total_commission,
+                #'total_commission' : self.total_commission,
                 'charging_mode' : self.charging_mode,
                 'booking_number' : self.booking_number,
                 'bl_number' : self.bl_number,

@@ -37,31 +37,30 @@ class CustomCustomerOrdersXls(models.TransientModel):
                 col += 1
             row += 1
             col = 0
-
-
+            
             from_date = '{}/01/01'.format(str(self.for_year))
             to_date = '{}/12/31'.format(str(self.for_year))
             
-            
-            #bold_format = workbook.add_format({'bold':True})
             orders = self.env['sale.order'].sudo().search([('confirmation_date','>=',from_date),('confirmation_date','<=',to_date)])
-            #shipping_numbers = self.env['account.invoice'].search([('departure_date.strftime("%Y")','=',str(self.for_year))])
-            #self.set_title(sheet, bold_format)
-            
+
             for order in orders:
+                
                 stock_picking_ids = self.env['stock.picking'].sudo().search([('sale_id','=',order.id)])
                 for stock in stock_picking_ids:
+                    invoice_line = self.env['account.invoice.line'].sudo().search([('stock_picking_id','=',stock.id)])
+                    raise models.ValidationError(invoice_line[0].id)
+                    account_invoice = self.env['account.invoice'].sudo().search([('id','=',invoice_line[0].invoice_id)])
                     #N° Embarque
                     sheet.write(row, col, stock.shipping_number if stock.shipping_number else '') 
                     col += 1
                     #Fecha de Zarpe
-                    sheet.write(row, col, stock.departure_date if stock.departure_date.strftime("%d-%m-%Y") else '')
+                    sheet.write(row, col, stock.departure_date.strftime("%d-%m-%Y") if stock.departure_date else '')
                     col += 1
                     #Semana ETD
                     sheet.write(row, col, stock.etd_week)
                     col += 1
                     #Cargar Hasta
-                    sheet.write(row, col, stock.required_loading_date if stock.required_loading_date.strftime("%d-%m-%Y") else '')
+                    sheet.write(row, col, stock.required_loading_date.strftime("%d-%m-%Y") if stock.required_loading_date else '')
                     col += 1
                     #Semana Carga
                     sheet.write(row, col, stock.required_loading_week)
@@ -106,7 +105,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
                     sheet.write(row, col, "pendiente")
                     col += 1
                     #Producto
-                    sheet.write(row, col, "pendiente")  
+                    sheet.write(row, col, "pendiente")
                     col += 1
                     #Calibre
                     sheet.write(row, col, "pendiente")
@@ -121,16 +120,16 @@ class CustomCustomerOrdersXls(models.TransientModel):
                     sheet.write(row, col, "pendiente")
                     col += 1
                     #N° Factura
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, account_invoice.dte_folio if account_invoice.dte_folio else '')
                     col += 1
                     #Cláusula
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, account_invoice.export_clause.name if account_invoice.export_clause else '')
                     col += 1
                     #Envase
                     sheet.write(row, col, "pendiente")
                     col += 1
                     #Modo de carga
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col,  account_invoice.changing_mode if  account_invoice.changing_mode else '')
                     col += 1
                     #Etiqueta Cliente
                     sheet.write(row, col, "pendiente")
@@ -139,28 +138,28 @@ class CustomCustomerOrdersXls(models.TransientModel):
                     sheet.write(row, col, "pendiente")
                     col += 1
                     #Agente
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, stock.agent_id.name if stock.agent_id else '')
                     col += 1
                     #Comisión
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, f'{stock.commission}%' if stock.commission else '')
                     col += 1
                     #Valor Comisión
-                    sheet.write(row, col, "pendiente")  
+                    sheet.write(row, col, stock.total_commission if stock.total_commission else '')  
                     col += 1
                     #Puerto de Carga
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, stock.departure_port.name if stock.departure_port else '')
                     col += 1
                     #Puerto de Destino
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, stock.arrival_port.name if stock.arrival_port else '')
                     col += 1
                     #Destino Final
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, account_invoice.city_final_destiny_id.city_country)
                     col += 1
                     #Vía de Transporte
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, stock.type_transport.name if stock.type_transport else '')
                     col += 1
                     #Planta de Carga
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, stock.plant.name if stock.plant else '')
                     col += 1
                     #Fecha y Hora de Carga
                     sheet.write(row, col, "pendiente")
@@ -169,43 +168,43 @@ class CustomCustomerOrdersXls(models.TransientModel):
                     sheet.write(row, col, "pendiente")
                     col += 1
                     #Nave / Viaje
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, stock.ship.name if stock.ship else '')
                     col += 1
                     #Naviera
-                    sheet.write(row, col, "pendiente")  
+                    sheet.write(row, col, stock.shipping_company.name if stock.shipping_company else '')  
                     col += 1
                     #N° Booking
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, stock.booking_number if stock.booking_number else '')
                     col += 1
                     #N° BL
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, stock.bl_number if stock.bl_number else '')
                     col += 1
                     #Stacking
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, account_invoice.stacking if account_invoice.stacking else '')
                     col += 1
                     #Cut Off Document
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, account_invoice.cut_off if account_invoice.cut_off else '')
                     col += 1
                     #Fecha Real de Zarpe
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, stock.departure_date.strftime("%d-%m-%Y") if stock.departure_date else '')
                     col += 1
                     #Fecha Real Arribo
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, stock.arrival_date.strftime("%d-%m-%Y") if stock.arrival_date else '')
                     col += 1
                     #N° Container
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, stock.container_number if stock.container_number else '')
                     col += 1
                     #Tipo Container
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, stock.container_type.name if stock.container_type else '')
                     col += 1
                     #Terminal Portuario Origen
                     sheet.write(row, col, "pendiente")
                     col += 1
                     #Depósito Retiro
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, account_invoice.withdrawal_deposit.name if account_invoice.withdrawal_deposit else '')
                     col += 1
                     #Valor Seguro
-                    sheet.write(row, col, "pendiente")
+                    sheet.write(row, col, account_invoice.safe_amount)
                     col += 1
                     #FOB total
                     sheet.write(row, col, "pendiente")
