@@ -298,7 +298,7 @@ class AccountInvoiceXlsx(models.Model):
                     'amount')
                 sheet.write(row, col, sum(line), formats['total'])
                 col += 1
-        sheet.write(row,col,sum(invoices.mapped('amount_total')),formats['total'])
+        sheet.write(row,col,sum(invoices.mapped('amount_total')),formats['total  '])
         col = 0
         return {'sheet': sheet, 'row': row}
 
@@ -348,27 +348,12 @@ class AccountInvoiceXlsx(models.Model):
             else:
                 sheet.write(row, col, sum(inv.invoice_line_ids.filtered(inv.invoice_line_ids.filtered(
             lambda a: 'Exento' not in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) != 0)).mapped('price_subtotal')), formats['number'])
-                days = self.diff_dates(inv.date_invoice, date.today())
-                models._logger.error(days)
-                if days > 90:
-                    col += 1
-                    sheet.write(row, col, '0', formats['number'])
+                col += 1
+                sheet.write(row, col, sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
+                            formats['number'])
+                col += 1
 
-                    col += 1
-                    sheet.write(row, col,
-                                sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
-                                formats['number'])
-                else:
-                    col += 1
-                    sheet.write(row, col,
-                                sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
-                                formats['number'])
-
-                    col += 1
-                    sheet.write(row, col, '0', formats['number'])
-
-                    col += 1
-                    sheet.write(row, col, '0', formats['number'])
+                sheet.write(row, col, '0', formats['number'])
                 col += 1
                 for tax in taxes_title:
                     if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
@@ -384,12 +369,21 @@ class AccountInvoiceXlsx(models.Model):
             col += 1
             sheet.write(row, col, inv.amount_untaxed_signed, formats['number'])
             col += 1
-            sheet.write(row, col,
-                        sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
-                        formats['number'])
-            col += 1
-            sheet.write_number(row, col, 0, formats['number'])
-            col += 1
+            days = self.diff_dates(inv.date_invoice, date.today())
+            if days > 90:
+                sheet.write(row, col,
+                            sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
+                            formats['number'])
+                col += 1
+                sheet.write_number(row, col, 0, formats['number'])
+                col += 1
+            else:
+                sheet.write_number(row, col, 0, formats['number'])
+                col += 1
+                sheet.write(row, col,
+                            sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
+                            formats['number'])
+                col += 1
             for tax in taxes_title:
                 if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
                     line = inv.tax_line_ids.filtered(
