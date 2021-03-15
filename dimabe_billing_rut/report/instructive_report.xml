@@ -275,7 +275,7 @@
                                     <th style="text-align:left;">CANTIDAD DE ENVASES</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.custom_invoice_line_ids[0].canning_quantity"/>
+                                        <span t-field="d.total_packages"/>
                                         <t t-foreach="d.custom_invoice_line_ids[0].product_id.attribute_value_ids" t-as="a">
                                             <t t-if="a.attribute_id.name == 'Tipo de envase'">
                                                 <span t-field="a.name"/>
@@ -284,14 +284,14 @@
                                         c/u
                                     </td>
                                 </tr>
-                                <tr>
+                                <!--<tr>
                                     <th></th>
                                     <td></td>
                                     <td>
                                         <t t-if="len(d.custom_invoice_line_ids) > 1">
                                             <t t.foreach="d.custom_invoice_line_ids" t-as="c">
                                                 <t t-if="c.id != custom_invoice_line_ids[0].id">
-                                                    <span t-field="c.canning_quantity"/>
+                                                    <span t-field="d.total_packages"/>
                                                     <t t-foreach="c.product_id.attribute_value_ids" t-as="a">
                                                         <t t-if="a.attribute_id.name == 'Tipo de envase'">
                                                             <span t-field="a.name"/>
@@ -303,7 +303,7 @@
                                         </t>
                                         
                                     </td>
-                                </tr>
+                                </tr>-->
                                 <tr>
                                     <th style="text-align:left;">CANTIDAD DE CONTENEDORES</th>
                                     <td style="width:5px">:</td>
