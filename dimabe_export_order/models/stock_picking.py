@@ -339,14 +339,19 @@ class StockPicking(models.Model):
                 for line in item.dispatch_line_ids:
                     if line.sale_id == item.sale_id:
                         move_line.append(line)
+                if len(move_line) != 0:
+                    for m in move_line:
+                        list_qty.append(m.real_dispatch_qty)
+                        prices = sum(list_price)
+                        qantas = sum(list_qty)
             else:
                 move_line = item.move_ids_without_package
 
-            for a in move_line:
                 if len(move_line) != 0:
-                    list_qty.append(a.quantity_done)
-                    prices = sum(list_price)
-                    qantas = sum(list_qty)
+                    for a in move_line:    
+                        list_qty.append(a.quantity_done)
+                        prices = sum(list_price)
+                        qantas = sum(list_qty)
 
             item.total_value = (prices * qantas) + item.freight_value + item.safe_value
 
