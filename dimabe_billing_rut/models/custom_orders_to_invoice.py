@@ -40,7 +40,7 @@ class CustomOrdersToInvoice(models.Model):
     def _compute_container_number(self):
         for item in self:
             if item.stock_picking_id and item.stock_picking_id != 0:
-                stock = self.env['stock.picking'].search([('id','=',item.stock_picking_id)]).container_number
+                stock = self.env['stock.picking'].search([('id','=',item.stock_picking_id)])
 
                 if stock.is_multiple_dispatch:
                     item.container_number = stock.container_number
