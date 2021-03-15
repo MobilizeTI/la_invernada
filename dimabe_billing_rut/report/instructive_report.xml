@@ -284,7 +284,7 @@
                                         c/u
                                     </td>
                                 </tr>
-                                <tr>
+                                <!--<tr>
                                     <th></th>
                                     <td></td>
                                     <td>
@@ -303,7 +303,7 @@
                                         </t>
                                         
                                     </td>
-                                </tr>
+                                </tr>-->
                                 <tr>
                                     <th style="text-align:left;">CANTIDAD DE CONTENEDORES</th>
                                     <td style="width:5px">:</td>
