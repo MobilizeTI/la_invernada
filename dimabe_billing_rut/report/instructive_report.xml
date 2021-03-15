@@ -422,21 +422,16 @@
                                     <th style="text-align:left;width:200px">PUERTO DE EMBARQUE</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.departure_port.name"/>
+                                        <span t-field="d.departure_port.name"/>,
+                                        <span t-field="d.departure_port.country_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">PUERTO DE DESTINO</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.arrival_port.name"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th style="text-align:left;">PAÍS DE DESTINO</th>
-                                    <td style="width:5px">:</td>
-                                    <td style="text-align:left;">
-                                        <span t-field="d.destiny_country_dte.name"/>
+                                        <span t-field="d.arrival_port.name"/>,
+                                        <span t-field="d.arrival_port.country_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -849,12 +844,18 @@
                             <tr>
                                 <th style="text-align:left; width:200px">PUERTO DE EMBARQUE</th>
                                 <td>:</td>
-                                <td><span t-field="d.departure_port.name"/></td>
+                                <td>
+                                    <span t-field="d.departure_port.name"/>,
+                                    <span t-field="d.departure_port.country_id.name"/>
+                                </td>
                             </tr>
                             <tr>
                                 <th style="text-align:left; width:200px">PUERTO DE DESTINO</th>
                                 <td>:</td>
-                                <td><span t-field="d.arrival_port.name"/></td>
+                                <td>
+                                    <span t-field="d.arrival_port.name"/>
+                                    <span t-field="d.arrival_port.country_id.name"/>
+                                </td>
                             </tr>
                             <tr>
                                 <th style="text-align:left; width:200px">RETIRO DE CONTENEDOR</th>
@@ -1114,12 +1115,18 @@
                             <tr>
                                 <th style="text-align:left; width:200px">PUERTO DE EMBARQUE</th>
                                 <td>:</td>
-                                <td><span t-field="d.departure_port.name"/></td>
+                                <td>
+                                    <span t-field="d.departure_port.name"/>,
+                                    <span t-field="d.departure_port.country_id.name"/>
+                                </td>
                             </tr>
                             <tr>
                                 <th style="text-align:left; width:200px">PUERTO DE DESTINO</th>
                                 <td>:</td>
-                                <td><span t-field="d.arrival_port.name"/></td>
+                                <td>
+                                    <span t-field="d.arrival_port.name"/>,
+                                    <span t-field="d.arrival_port.country_id.name"/>
+                                </td>
                             </tr>
                             <tr>
                                 <th style="text-align:left; width:200px">DESCRIPCIÓN DE MERCADERÍA</th>

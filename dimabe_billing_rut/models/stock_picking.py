@@ -22,7 +22,7 @@ class StockPicking(models.Model):
 
     partner_economic_activities = fields.Many2many('custom.economic.activity',related='partner_id.economic_activities')
     company_economic_activities = fields.Many2many('custom.economic.activity', related='company_id.economic_activities')
-    partner_activity_id = fields.Many2one('custom.economic.activity', string='Actividad del Proveedor')
+    partner_activity_id = fields.Many2one('custom.economic.activity', string='Actividad del Cliente/Proveedor')
     company_activity_id = fields.Many2one('custom.economic.activity', string='Actividad de la Compañía')
     references = fields.One2many(
         'account.invoice.references',

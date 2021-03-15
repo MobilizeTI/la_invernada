@@ -28,7 +28,7 @@ class AccountInvoice(models.Model):
 
     partner_economic_activities = fields.Many2many('custom.economic.activity', related='partner_id.economic_activities')
     company_economic_activities = fields.Many2many('custom.economic.activity', related='company_id.economic_activities')
-    partner_activity_id = fields.Many2one('custom.economic.activity', string='Actividad del Proveedor')
+    partner_activity_id = fields.Many2one('custom.economic.activity', string='Actividad del Cliente/Proveedor')
     company_activity_id = fields.Many2one('custom.economic.activity', string='Actividad de la Compañía')
     references = fields.One2many(
         'account.invoice.references',
@@ -483,6 +483,13 @@ class AccountInvoice(models.Model):
     def validation_fields(self):
         valid_to_sii = False
 
+        if not self.uom_tara:
+            raise models.ValidationError('Debe seleccionar La Unidad de Medida Tara')
+        if not self.uom_gross_weight:
+            raise models.ValidationError('Debe seleccionar La Unidad de Medida Peso Bruto')
+        if not self.uom_net_weight:
+            raise models.ValidationError('Debe seleccionar La Unidad de Medida Peso Neto')
+
         if self.total_export_sales_clause == 0:
             raise models.ValidationError('El Valor de Cláusula de Venta de Exportación no puede ser 0')
         if not self.partner_id:
@@ -822,7 +829,7 @@ class AccountInvoice(models.Model):
                 if self.stock_picking_ids.sale_id.id != self.order_to_add_id:
                     raise models.ValidationError('El despacho {} no pertenece al pedido {}'.format(self.stock_picking_ids.name,self.order_to_add_ids.name))
 
-                if not self.stock_picking_ids.is_multiple_dispatch:
+                if self.stock_picking_ids.is_multiple_dispatch:
                     if self.stock_picking_ids.net_weight_dispatch == 0:
                         raise models.ValidationError('El Despacho {} no posee los Kilos Netos en la pestaña de Despacho'.format(self.stock_picking_ids.name))
                     if self.stock_picking_ids.gross_weight_dispatch == 0:
