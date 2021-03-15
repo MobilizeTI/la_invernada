@@ -61,3 +61,11 @@ class SaleOrder(models.Model):
                     shipping_number = str(picking.shipping_number)
                     break
             item.shipping_number = shipping_number
+
+    @api.multi
+    def action_confirm(self):
+        res = super(SaleOrder, self).action_confirm()
+        for pick in self.picking_ids:
+            pick.clean_reserved()
+        return res
+
