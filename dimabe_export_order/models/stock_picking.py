@@ -324,6 +324,7 @@ class StockPicking(models.Model):
     @api.multi
     @api.depends('freight_value', 'safe_value')
     def _compute_total_value(self):
+        
         for item in self:
             list_price = []
             list_qty = []
@@ -333,8 +334,16 @@ class StockPicking(models.Model):
                 if len(item.sale_id.order_line) != 0:
                     list_price.append(i.price_unit)
 
-            for a in item.move_ids_without_package:
-                if len(item.move_ids_without_package) != 0:
+            move_line = []
+            if item.is_multiple_dispatch:
+                for line in item.dispatch_line_ids:
+                    if line.sale_id == item.sale_id:
+                        move_line.append(line)
+            else:
+                move_line = item.move_ids_without_package
+
+            for a in move_line:
+                if len(move_line) != 0:
                     list_qty.append(a.quantity_done)
                     prices = sum(list_price)
                     qantas = sum(list_qty)
