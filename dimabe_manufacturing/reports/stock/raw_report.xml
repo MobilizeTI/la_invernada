@@ -1,63 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  <data>
-    <record id="view_stock_report_tree" model="ir.ui.view">
-      <field name="name">Informe de Materia Prima</field>
-      <field name="model">stock.production.lot</field>
-      <field name="priority">20</field>
-      <field name="arch" type="xml">
-        <tree name="Informe de Materia Prima" editable="bottom" delete="false" edit="false">
-          <field name="producer_id" widget="many2onebutton" readonly="1"/>
-          <field name="name" string="Lote" readonly="1"/>
-          <field name="available_kg" readonly="1"/>
-          <field name="product_variety" string="Variedad" readonly="1"/>
-          <field name="product_caliber" string="Calibre" readonly="1"/>
-          <field name="location_id" widget="many2onebutton" string="Ubicacion" readonly="1"/>
-          <field name="product_id" widget="many2onebutton" string="Producto" readonly="1"/>
-          <field name="show_guide_number" string="N° Guia" readonly="1"/>
-          <field name="harvest" readonly="1"/>
-          <field name="reception_weight" string="Kilos Recepcionados" readonly="1"/>
-          <field name="serial_not_consumed" string="Series Disponible" readonly="1"/>
-          <field name="create_date" string="Fecha" readonly="1"/>
-          <field name="workcenter_id" />
-          <field name="delivered_date"/>
-          <field name="physical_location"/>
-          <field name="observations"/>
-        </tree>
-      </field>
-    </record>
-    <record id="dimabe_manufacturing.stock_report" model="ir.actions.act_window">
-      <field name="name">Informe de Materia prima</field>
-      <field name="res_model">stock.production.lot</field>
-      <field name="view_mode">tree,graph,form,pivot</field>
-      <field name="view_id" ref="view_stock_report_tree"/>
-      <field name="domain">
-        [('product_id.default_code','like','MP'),('product_id.default_code','not like','MPS'),('product_id.name','not like','Verde')]
-      </field>
-    </record>
-    <record id="search_raw_report_view" model="ir.ui.view">
-      <field name="name">Filtro Materia Prima Seca</field>
-      <field name="type">search</field>
-      <field name="model">stock.production.lot</field>
-      <field name="inherit_id" ref="stock.search_product_lot_filter" />
-      <field name="arch" type="xml">
-        <search>
-          <field name="producer_id"/>
-          <field name="product_variety"/>
-          <field name="harvest"/>
-          <group expand="1" string="Group By">
-            <filter string="Productor" name="group_by_producer" context="{'group_by':'producer_id'}"/>
-            <filter string="Variedad" name="group_by_variety" context="{'group_by':'product_variety'}"/>
-            <filter string="Cosecha" name="group_by_harvest" context="{'group_by':'harvest'}"/>
-          </group>
-        </search>
-      </field>
-    </record>
-    <menuitem id="stock_report_tree_menu"
-              action="dimabe_manufacturing.stock_report"
-              name="Informe de Existencia Materia Prima Seca"
-              parent="stock_report_menu"
-    />
+    <data>
+        <record id="view_stock_report_tree" model="ir.ui.view">
+            <field name="name">Informe de Materia Prima</field>
+            <field name="model">stock.production.lot</field>
+            <field name="priority">20</field>
+            <field name="arch" type="xml">
+                <tree name="Informe de Materia Prima" editable="bottom" delete="false" edit="false">
+                    <field name="producer_id" widget="many2onebutton" readonly="1"/>
+                    <field name="name" string="Lote" readonly="1"/>
+                    <field name="available_kg" readonly="1"/>
+                    <field name="product_variety" string="Variedad" readonly="1"/>
+                    <field name="product_caliber" string="Calibre" readonly="1"/>
+                    <field name="location_id" widget="many2onebutton" string="Ubicacion" readonly="1"/>
+                    <field name="product_id" widget="many2onebutton" string="Producto" readonly="1"/>
+                    <field name="show_guide_number" string="N° Guia" readonly="1"/>
+                    <field name="harvest" readonly="1"/>
+                    <field name="reception_weight" string="Kilos Recepcionados" readonly="1"/>
+                    <field name="serial_not_consumed" string="Series Disponible" readonly="1"/>
+                    <field name="create_date" string="Fecha" readonly="1"/>
+                    <field name="workcenter_id"/>
+                    <field name="delivered_date"/>
+                    <field name="physical_location"/>
+                    <field name="observations"/>
+                </tree>
+            </field>
+        </record>
+        <record id="dimabe_manufacturing.stock_report" model="ir.actions.act_window">
+            <field name="name">Informe de Materia prima</field>
+            <field name="res_model">stock.production.lot</field>
+            <field name="view_mode">tree,graph,form,pivot</field>
+            <field name="view_id" ref="view_stock_report_tree"/>
+            <field name="domain">
+                [('product_id.default_code', 'like', 'MP'), ('product_id.default_code', 'not like', 'MPS'),
+                 ('product_id.name', 'not like', 'Verde')]
+            </field>
+        </record>
+        <record id="search_raw_report_view" model="ir.ui.view">
+            <field name="name">Filtro Materia Prima Seca</field>
+            <field name="type">search</field>
+            <field name="model">stock.production.lot</field>
+            <field name="inherit_id" ref="stock.search_product_lot_filter"/>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="producer_id"/>
+                    <field name="product_variety"/>
+                    <field name="harvest"/>
+                    <group expand="1" string="Group By">
+                        <filter string="Productor" name="group_by_producer" context="{'group_by':'producer_id'}"/>
+                        <filter string="Variedad" name="group_by_variety" context="{'group_by':'product_variety'}"/>
+                        <filter string="Cosecha" name="group_by_harvest" context="{'group_by':'harvest'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <menuitem id="stock_report_tree_menu"
+                  action="dimabe_manufacturing.stock_report"
+                  name="Informe de Existencia Materia Prima Seca"
+                  parent="stock_report_menu"
+        />
 
-  </data>
+    </data>
 </odoo>
