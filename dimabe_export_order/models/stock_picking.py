@@ -336,8 +336,10 @@ class StockPicking(models.Model):
 
             move_line = []
             if item.is_multiple_dispatch:
+                raise models.ValidationError('1) {} = {}  2 {} = {})'.format(item.dispatch_line_ids[0].sale_id.id, item.sale_id.id,item.item.dispatch_line_ids[1].sale_id.id,item.sale_id.id))
                 for line in item.dispatch_line_ids:
-                    if line.sale_id == item.sale_id:
+                    if line.sale_id.id == item.sale_id.id:
+                        
                         move_line.append(line)
                 if len(move_line) != 0:
                     for m in move_line:
