@@ -44,10 +44,8 @@ class CustomOrdersToInvoice(models.Model):
     def _compute_is_multiple_dispatch(self):
         for item in self:
             if item.stock_picking_id and item.stock_picking_id != 0:
-                
-                stock = self.env['stock.picking'].search([('id','=',2436)])
-                raise models.ValidationError(stock.is_child_dispatch)
-                if not stock.is_child_dispatch or stock.is_child_dispatch == '':
+                stock = self.env['stock.picking'].search([('id','=',item.stock_picking_id)])
+                if not stock.is_child_dispatch or stock.is_child_dispatch == '' or stock.picking_principal_id:
                     item.is_multiple_dispatch = "Si"
                 else:
                     is_multiple_dispatch = ""
@@ -57,7 +55,7 @@ class CustomOrdersToInvoice(models.Model):
             if item.stock_picking_id and item.stock_picking_id != 0:
                 stock = self.env['stock.picking'].search([('id','=',item.stock_picking_id)])
                 if stock.picking_principal_id:
-                    main_dispatch = stock.picking_principal_id.name
+                    main_dispatch = stock.mapped('picking_principal_id').name
                 else:
                     main_dispatch = ""
             
@@ -67,7 +65,7 @@ class CustomOrdersToInvoice(models.Model):
             if item.stock_picking_id and item.stock_picking_id != 0:
                 stock = self.env['stock.picking'].search([('id','=',item.stock_picking_id)])
 
-                if not stock.is_child_dispatch or stock.is_child_dispatch == '':
+                if not stock.is_child_dispatch or stock.is_child_dispatch == '' or stock.picking_principal_id:
                     item.container_number = stock.container_number
                 else:
                     item.container_number = ''
