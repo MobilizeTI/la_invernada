@@ -6,7 +6,7 @@
             <field name="model">stock.production.lot.serial</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Producto Lavado Servicio">
+                <tree name="Informe de Producto Lavado Servicio" editable="bottom" create="false" delete="false">
                     <field name="producer_id" widget="many2onebutton" string="Productor" readonly="1"/>
                     <field name="name" widget="many2onebutton" string="Lote" readonly="1"/>
                     <field name="display_weight" readonly="1"/>
