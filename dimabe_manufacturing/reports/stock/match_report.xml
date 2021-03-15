@@ -2,27 +2,31 @@
     <data>
         <record id="view_stock_match_report_tree" model="ir.ui.view">
             <field name="name">Informe de Producto Partido</field>
-            <field name="model">stock.production.lot</field>
+            <field name="model">stock.production.lot.serial</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
                 <tree name="Informe de Producto Partido">
-                    <field name="producer_id" widget="many2onebutton" string="Productor"/>
-                    <field name="name" widget="many2onebutton" string="Lote"/>
-                    <field name="available_kg"/>
-                    <field name="product_variety" string="Variedad"/>
-                    <field name="product_caliber" string="Calibre"/>
-                    <field name="location_id" widget="many2onebutton" string="Ubicacion"/>
-                    <field name="product_id" widget="many2onebutton" string="Producto"/>
-                    <field name="serial_not_consumed" string="Series Disponible"/>
-                    <field name="create_date" string="Fecha de Creacion"/>
+                    <field name="producer_id" widget="many2onebutton" string="Productor" readonly="1"/>
+                    <field name="name" widget="many2onebutton" string="Lote" readonly="1"/>
+                    <field name="display_weight" readonly="1"/>
+                    <field name="product_variety" string="Variedad" readonly="1"/>
+                    <field name="product_caliber" string="Calibre" readonly="1"/>
+                    <field name="location_id" widget="many2onebutton" string="Ubicacion" readonly="1"/>
+                    <field name="product_id" widget="many2onebutton" string="Producto" readonly="1"/>
+                    <field name="consumed" string="Series Disponible" readonly="1"/>
+                    <field name="create_date" string="Fecha de Creacion" readonly="1"/>
+                    <field name="client_or_quality" />
+                    <field name="workcenter_send_id"/>
+                    <field name="delivered_date"/>
+                    <field name="physical_location"/>
+                    <field name="observations" />
                 </tree>
             </field>
         </record>
         <record id="search_raw_report_view" model="ir.ui.view">
             <field name="name">Filtro Materia Prima Seca</field>
             <field name="type">search</field>
-            <field name="model">stock.production.lot</field>
-            <field name="inherit_id" ref="stock.search_product_lot_filter"/>
+            <field name="model">stock.production.lot.serial</field>
             <field name="arch" type="xml">
                 <search>
                     <field name="producer_id"/>
@@ -38,7 +42,7 @@
         </record>
         <record id="dimabe_manufacturing.stock_match_report" model="ir.actions.act_window">
             <field name="name">Informe de Producto Partido</field>
-            <field name="res_model">stock.production.lot</field>
+            <field name="res_model">stock.production.lot.serial</field>
             <field name="view_mode">tree,graph,form,pivot</field>
             <field name="view_id" ref="view_stock_match_report_tree"/>
             <field name="domain">
