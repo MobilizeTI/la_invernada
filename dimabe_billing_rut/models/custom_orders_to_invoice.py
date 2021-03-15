@@ -40,7 +40,7 @@ class CustomOrdersToInvoice(models.Model):
     def _compute_container_number(self):
         for item in self:
             if item.stock_picking_id and item.stock_picking_id != 0:
-                if not item.is_multiple_dispatch:
+                if not item.stock_picking_id.is_multiple_dispatch:
                     item.container_number = self.env['stock.picking'].search([('id','=',item.stock_picking_id)]).container_number
                 else:
                     item.container_number = ''
@@ -48,7 +48,7 @@ class CustomOrdersToInvoice(models.Model):
     def _compute_value_per_kilo(self):
         for item in self:
             if item.stock_picking_id and item.stock_picking_id != 0:
-                if not item.is_multiple_dispatch:
+                if not item.stock_picking_id.is_multiple_dispatch:
                     item.value_per_kilo = self.env['stock.picking'].search([('id','=',item.stock_picking_id)]).value_per_kilogram
                 else:
                     item.value_per_kilo = 0
@@ -56,7 +56,7 @@ class CustomOrdersToInvoice(models.Model):
     def _compute_total_value(self):
         for item in self:
             if item.stock_picking_id and item.stock_picking_id != 0:
-                if not item.is_multiple_dispatch:
+                if not item.stock_picking_id.is_multiple_dispatch:
                     item.total_value = self.env['stock.picking'].search([('id','=',item.stock_picking_id)]).total_value
                 else:
                     item.total_value = 0
@@ -64,14 +64,14 @@ class CustomOrdersToInvoice(models.Model):
     def _compute_required_loading_date(self):
         for item in self:
             if item.stock_picking_id and item.stock_picking_id != 0:
-                if not item.is_multiple_dispatch:
+                if not item.stock_picking_id.is_multiple_dispatch:
                     item.required_loading_date = self.env['stock.picking'].search([('id','=',item.stock_picking_id)]).required_loading_date
 
 
     def _compute_total_comission(self):
         for item in self:
             if item.stock_picking_id and item.stock_picking_id != 0:
-                if not item.is_multiple_dispatch:
+                if not item.stock_picking_id.is_multiple_dispatch:
                     item.total_comission = self.env['stock.picking'].search([('id','=',item.stock_picking_id)]).total_commission
                 else:
                     item.total_comission = 0
