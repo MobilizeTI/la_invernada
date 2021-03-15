@@ -23,7 +23,7 @@ class ConfirmPrincipalOrde(models.A):
         self.picking_id.packing_list_ids.write({
             'consumed':True
         })
-        self.process_data()
+        self.procless_data()
         for item in self.custom_dispatch_line_ids:
             item.dispatch_id.write({
                 'consignee_id': self.picking_id.consignee_id.id,
