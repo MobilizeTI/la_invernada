@@ -44,9 +44,7 @@ class CustomOrdersToInvoice(models.Model):
     def _compute_is_multiple_dispatch(self):
         for item in self:
             if item.stock_picking_id and item.stock_picking_id != 0:
-                
-                stock = self.env['stock.picking'].search([('id','=',2436)])
-                raise models.ValidationError(stock.is_child_dispatch)
+                stock = self.env['stock.picking'].search([('id','=',item.stock_picking_id)])
                 if not stock.is_child_dispatch or stock.is_child_dispatch == '':
                     item.is_multiple_dispatch = "Si"
                 else:
