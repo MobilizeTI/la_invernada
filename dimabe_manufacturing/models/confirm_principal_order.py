@@ -50,7 +50,7 @@ class ConfirmPrincipalOrder(models.TransientModel):
 
     def process_data(self):
         for item in self.custom_dispatch_line_ids:
-            item.dispatch_id.clean_reserved(item.dispatch_id)
+            item.dispatch_id.clean_reserved()
             for line in item.move_line_ids:
                 if item.dispatch_id.id != self.picking_id.id:
                     line_create = self.env['stock.move.line'].create({
