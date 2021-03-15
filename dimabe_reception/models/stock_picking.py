@@ -440,10 +440,10 @@ class StockPicking(models.Model):
             return super(StockPicking, self).button_validate()
         return super(StockPicking, self).button_validate()
 
-    def clean_reserved(self, picking):
-        for lot in picking.move_line_ids_without_package.mapped('lot_id'):
+    def clean_reserved(self):
+        for lot in self.move_line_ids_without_package.mapped('lot_id'):
             if lot not in self.packing_list_lot_ids:
-                query = f"DELETE FROM stock_move_line where lot_id = {lot.id} and picking_id = {picking.id}"
+                query = f"DELETE FROM stock_move_line where lot_id = {lot.id} and picking_id = {self.id}"
                 cr = self._cr
                 cr.execute(query)
 
