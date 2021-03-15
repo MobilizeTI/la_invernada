@@ -70,8 +70,9 @@ class CustomOrdersToInvoice(models.Model):
     def _compute_required_loading_date(self):
         for item in self:
             if item.stock_picking_id and item.stock_picking_id != 0:
-                if not item.stock_picking_id.is_multiple_dispatch:
-                    item.required_loading_date = self.env['stock.picking'].search([('id','=',item.stock_picking_id)]).required_loading_date
+                stock = self.env['stock.picking'].search([('id','=',item.stock_picking_id)])
+                if not stock.is_multiple_dispatch:
+                    item.required_loading_date = stock.required_loading_date
 
 
     def _compute_total_comission(self):
