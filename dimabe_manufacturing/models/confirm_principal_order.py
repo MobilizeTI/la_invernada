@@ -21,7 +21,7 @@ class ConfirmPrincipalOrder(models.TransientModel):
     @api.one
     def select(self):
         self.picking_id.packing_list_ids.write({
-            'consumed':True
+            'consumed': True
         })
         self.procless_data()
         for item in self.custom_dispatch_line_ids:
@@ -36,7 +36,7 @@ class ConfirmPrincipalOrder(models.TransientModel):
     @api.one
     def cancel(self):
         self.picking_id.packing_list_ids.write({
-            'consumed':True
+            'consumed': True
         })
 
         self.process_data()
@@ -63,7 +63,7 @@ class ConfirmPrincipalOrder(models.TransientModel):
                         'location_id': line.location_id.id,
                         'location_dest_id': line.location_dest_id.id,
                         'date': line.date,
-                        'state':'done',
+                        'state': 'done',
                         'picking_id': item.dispatch_id.id,
                     })
             if item.real_dispatch_qty > 0:
@@ -77,7 +77,6 @@ class ConfirmPrincipalOrder(models.TransientModel):
                     self.process_backorder(item.dispatch_id)
                 else:
                     item.dispatch_id.action_done()
-
 
     @api.multi
     def inmediate_transfer(self, picking):
