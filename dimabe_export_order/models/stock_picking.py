@@ -333,25 +333,25 @@ class StockPicking(models.Model):
                 if len(item.sale_id.order_line) != 0:
                     list_price.append(i.price_unit)
 
-            move_line = []
-            if item.is_multiple_dispatch:
-                for line in item.dispatch_line_ids:
-                    if line.sale_id.id == item.sale_id.id:
-                        
-                        move_line.append(line)
-                if len(move_line) != 0:
-                    for m in move_line:
-                        list_qty.append(m.real_dispatch_qty)
-                        prices = sum(list_price)
-                        qantas = sum(list_qty)
-            else:
-                move_line = item.move_ids_without_package
+            #move_line = []
+            #if item.is_multiple_dispatch:
+            #    for line in item.dispatch_line_ids:
+            #        if line.sale_id.id == item.sale_id.id:
+            #            
+            #            move_line.append(line)
+            #    if len(move_line) != 0:
+            #        for m in move_line:
+             #           list_qty.append(m.real_dispatch_qty)
+            #            prices = sum(list_price)
+            #            qantas = sum(list_qty)
+            #else:
+                #move_line = item.move_ids_without_package
 
-                if len(move_line) != 0:
-                    for a in move_line:    
-                        list_qty.append(a.quantity_done)
-                        prices = sum(list_price)
-                        qantas = sum(list_qty)
+            if len(item.move_ids_without_package) != 0:
+                for a in item.move_ids_without_package:    
+                    list_qty.append(a.quantity_done)
+                    prices = sum(list_price)
+                    qantas = sum(list_qty)
 
             item.total_value = (prices * qantas) + item.freight_value + item.safe_value
 
@@ -360,20 +360,20 @@ class StockPicking(models.Model):
     def _compute_value_per_kilogram(self):
         for item in self:
             qty_total = 0
-            move_line = []
-            if item.is_multiple_dispatch:
-                for line in item.dispatch_line_ids:
-                    if line.sale_id == item.sale_id:
-                        move_line.append(line)
-                for line in move_line:
-                    qty_total = qty_total + line.real_dispatch_qty
-                if qty_total > 0:
-                    item.value_per_kilogram = item.total_value / qty_total
-            else:
-                for line in item.move_ids_without_package:
-                    qty_total = qty_total + line.quantity_done
-                if qty_total > 0:
-                    item.value_per_kilogram = item.total_value / qty_total
+            #move_line = []
+            #if item.is_multiple_dispatch:
+            #    for line in item.dispatch_line_ids:
+            #        if line.sale_id == item.sale_id:
+            #            move_line.append(line)
+            #    for line in move_line:
+            #        qty_total = qty_total + line.real_dispatch_qty
+            #    if qty_total > 0:
+            #        item.value_per_kilogram = item.total_value / qty_total
+            #else:
+            for line in item.move_ids_without_package:
+                qty_total = qty_total + line.quantity_done
+            if qty_total > 0:
+                item.value_per_kilogram = item.total_value / qty_total
 
     @api.onchange('commission')
     @api.multi
@@ -383,15 +383,15 @@ class StockPicking(models.Model):
                 raise models.ValidationError('la comisión debe ser mayor que 0 y menor o igual que 3')
             else:
                 sum_required_qty = 0
-                if item.is_multiple_dispatch:
-                    for line in item.dispatch_line_ids:
-                        if line.sale_id == item.sale_id:
-                            sum_required_qty += line.required_sale_qty
-                    item.total_commission = (item.commission / 100) \
-                                        * (sum(item.sale_id.order_line.mapped('price_unit'))
-                                           * sum_required_qty)
-                else:
-                    item.total_commission = (item.commission / 100) \
+                #if item.is_multiple_dispatch:
+                #    for line in item.dispatch_line_ids:
+                #        if line.sale_id == item.sale_id:
+                #            sum_required_qty += line.required_sale_qty
+                #    item.total_commission = (item.commission / 100) \
+                #                        * (sum(item.sale_id.order_line.mapped('price_unit'))
+                #                           * sum_required_qty)
+                #else:
+                item.total_commission = (item.commission / 100) \
                                         * (sum(item.sale_id.order_line.mapped('price_unit'))
                                            * sum(item.move_ids_without_package.mapped('product_uom_qty')))
 
