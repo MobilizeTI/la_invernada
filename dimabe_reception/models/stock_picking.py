@@ -512,6 +512,7 @@ class StockPicking(models.Model):
 
         for item in self:
             item.validate_same_product_lines()
+        self.id
 
         return res
 
