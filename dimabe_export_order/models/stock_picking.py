@@ -378,13 +378,14 @@ class StockPicking(models.Model):
                 raise models.ValidationError('la comisión debe ser mayor que 0 y menor o igual que 3')
             else:
                 move_line = []
+                sum_required_qty = 0
                 if item.is_multiple_dispatch:
                     for line in item.dispatch_line_ids:
                         if line.sale_id == item.sale_id:
-                            move_line.append(line)
+                            sum_required_qty += line.required_sale_qty
                     item.total_commission = (item.commission / 100) \
                                         * (sum(item.sale_id.order_line.mapped('price_unit'))
-                                           * sum(move_line.required_sale_qty))
+                                           * sum(sum_required_qty))
                 else:
                     item.total_commission = (item.commission / 100) \
                                         * (sum(item.sale_id.order_line.mapped('price_unit'))
