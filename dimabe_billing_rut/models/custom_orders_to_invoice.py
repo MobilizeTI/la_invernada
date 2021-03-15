@@ -45,7 +45,7 @@ class CustomOrdersToInvoice(models.Model):
         for item in self:
             if item.stock_picking_id and item.stock_picking_id != 0:
                 stock = self.env['stock.picking'].search([('id','=',item.stock_picking_id)])
-                if stock.is_multiple_dispatch:
+                if not stock.is_child_dispatch or stock.is_child_dispatch == '':
                     item.is_multiple_dispatch = "Si"
                 else:
                     is_multiple_dispatch = ""
@@ -54,7 +54,7 @@ class CustomOrdersToInvoice(models.Model):
         for item in self:
             if item.stock_picking_id and item.stock_picking_id != 0:
                 stock = self.env['stock.picking'].search([('id','=',item.stock_picking_id)])
-                if stock.is_multiple_dispatch:
+                if not stock.is_child_dispatch or stock.is_child_dispatch == '':
                     main_dispatch = stock.picking_principal_id.name
                 else:
                     main_dispatch = ""
@@ -65,17 +65,16 @@ class CustomOrdersToInvoice(models.Model):
             if item.stock_picking_id and item.stock_picking_id != 0:
                 stock = self.env['stock.picking'].search([('id','=',item.stock_picking_id)])
 
-                if stock.is_multiple_dispatch:
+                if not stock.is_child_dispatch or stock.is_child_dispatch == '':
                     item.container_number = stock.container_number
                 else:
                     item.container_number = ''
     
     def _compute_value_per_kilo(self):
         for item in self:
-            if item.stock_picking_id and item.stock_picking_id != 0:
-                
+            if item.stock_picking_id and item.stock_picking_id != 0:      
                 stock = self.env['stock.picking'].search([('id','=',item.stock_picking_id)])
-                if not stock.is_multiple_dispatch:
+                if not stock.is_child_dispatch or stock.is_child_dispatch == '':
                     item.value_per_kilo = stock.value_per_kilogram
                 else:
                     item.value_per_kilo = 0
@@ -83,9 +82,8 @@ class CustomOrdersToInvoice(models.Model):
     def _compute_total_value(self):
         for item in self:
             if item.stock_picking_id and item.stock_picking_id != 0:
-                
                 stock = self.env['stock.picking'].search([('id','=',item.stock_picking_id)])
-                if not stock.is_multiple_dispatch:
+                if not stock.is_child_dispatch or stock.is_child_dispatch == '':
                     item.total_value = stock.total_value
                 else:
                     item.total_value = 0
@@ -94,7 +92,7 @@ class CustomOrdersToInvoice(models.Model):
         for item in self:
             if item.stock_picking_id and item.stock_picking_id != 0:
                 stock = self.env['stock.picking'].search([('id','=',item.stock_picking_id)])
-                if not stock.is_multiple_dispatch:
+                if not stock.is_child_dispatch or stock.is_child_dispatch == '':
                     item.required_loading_date = stock.required_loading_date
 
 
@@ -104,7 +102,7 @@ class CustomOrdersToInvoice(models.Model):
                 
                 stock = self.env['stock.picking'].search([('id','=',item.stock_picking_id)])
                     
-                if not stock.is_multiple_dispatch:
+                if not stock.is_child_dispatch or stock.is_child_dispatch == '':
                     item.total_comission = stock.total_commission
                 else:
                     item.total_comission = 0
