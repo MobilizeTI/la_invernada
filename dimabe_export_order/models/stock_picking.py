@@ -323,8 +323,7 @@ class StockPicking(models.Model):
 
     @api.multi
     @api.depends('freight_value', 'safe_value')
-    def _compute_total_value(self):
-        
+    def _compute_total_value(self):   
         for item in self:
             list_price = []
             list_qty = []
@@ -334,7 +333,6 @@ class StockPicking(models.Model):
                 if len(item.sale_id.order_line) != 0:
                     list_price.append(i.price_unit)
 
-            raise models.ValidationError('{}   1) {} = {}  2 {} = {})'.format(item.is_multiple_dispatch, item.dispatch_line_ids[0].sale_id.id, item.sale_id.id,item.item.dispatch_line_ids[1].sale_id.id,item.sale_id.id))
             move_line = []
             if item.is_multiple_dispatch:
                 for line in item.dispatch_line_ids:
