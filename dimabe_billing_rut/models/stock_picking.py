@@ -220,7 +220,7 @@ class StockPicking(models.Model):
         for item in move_line:
             haveExempt = False
             
-            price_unit =  item.sale_id.mapped('order_line').filtered(lambda a : a.product_id.id == item.product_id.id).price_unit
+            price_unit =  item.sale_id.mapped('order_line').filtered(lambda a : a.product_id.id == item.product_id.id).price_unit if self.is_multiple_dispatch else item.picking_id.sale_id.mapped('order_line').filtered(lambda a : a.product_id.id == item.product_id.id).price_unit
             amount = item.real_dispatch_qty * price_unit if self.is_multiple_dispatch else item.quantity_done * price_unit
             tax_ids = self.sale_id.mapped('order_line').filtered(lambda a : a.product_id.id == item.product_id.id).tax_id
             amount_tax = 0

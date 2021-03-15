@@ -7,7 +7,7 @@ import json
 from odoo.tools import date_utils
 
 
-class ConfirmPrincipalOrde(models.TransientModel):
+class ConfirmPrincipalOrde(models.A):
     _name = 'confirm.principal.order'
 
     sale_ids = fields.Many2many('sale.order')
