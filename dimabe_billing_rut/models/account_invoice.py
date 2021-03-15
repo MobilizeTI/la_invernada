@@ -306,8 +306,9 @@ class AccountInvoice(models.Model):
             total_tara = 0
             if len(item.invoice_line_ids) > 0:
                 for line in item.invoice_line_ids:
-                    total_tara += self.env['stock.picking'].search([('id','=',line.stock_picking_id)]).tare_container_weight_dispatch
-                #raise models.ValidationError(total_tara)
+                    stock = self.env['stock.picking'].search([('id','=',line.stock_picking_id)])
+                    if not stock.is_child_dispatch or stock.is_child_dispatch == '':
+                        total_tara += stock.tare_container_weight_dispatch
                 item.tara = total_tara
 
     @api.multi
@@ -316,7 +317,9 @@ class AccountInvoice(models.Model):
             total_gross_weight = 0
             if len(item.orders_to_invoice) > 0:
                 for line in item.invoice_line_ids:
-                    total_gross_weight += self.env['stock.picking'].search([('id','=',line.stock_picking_id)]).gross_weight_dispatch
+                    stock = self.env['stock.picking'].search([('id','=',line.stock_picking_id)])
+                    if not stock.is_child_dispatch or stock.is_child_dispatch == '':
+                        total_gross_weight += stock.gross_weight_dispatch
                 item.gross_weight = total_gross_weight
     
     @api.multi
@@ -325,7 +328,9 @@ class AccountInvoice(models.Model):
             total_net_weight = 0
             if len(item.orders_to_invoice) > 0:
                 for line in item.invoice_line_ids:
-                    total_net_weight += self.env['stock.picking'].search([('id','=',line.stock_picking_id)]).net_weight_dispatch
+                    stock = self.env['stock.picking'].search([('id','=',line.stock_picking_id)])
+                    if not stock.is_child_dispatch or stock.is_child_dispatch == '':
+                        total_net_weight += stock.net_weight_dispatch
                 item.net_weight = total_net_weight
 
 
