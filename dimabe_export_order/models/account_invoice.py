@@ -68,11 +68,12 @@ class AccountInvoice(models.Model):
                 str_orders += o + ' '
             item.order_names = str_orders
     
+    @api.multi
     def _compute_canning_types(self):
         for item in self:
             cannings = []
+            raise models.ValidationError(item.custom_invoice_line_ids[0].product_id.name)
             for line in item.custom_invoice_line_ids:
-                raise models.ValidationError('{}'.format(line.product_id.name))
                 for attr in line.product_id.attribute_value_ids:
                     if attr.attribute_id.name == 'Tipo de envase':
                         if attr.name and attr.name not in cannings:
