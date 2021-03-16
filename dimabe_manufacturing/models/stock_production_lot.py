@@ -483,7 +483,30 @@ class StockProductionLot(models.Model):
         self.stock_production_lot_serial_ids.filtered(lambda a: not a.reserved_to_stock_picking_id).write({
             'to_add': True
         })
-        self.add_selection(stock_picking_id=picking_id)
+        picking = self.env['stock.picking'].search([('id','=',picking_id)])
+        dispatch_line = picking.dispatch_line_ids.filtered(lambda x: x.product_id.id == self.product_id.id)
+        if len(dispatch_line) > 1:
+            view = self.env.ref('dimabe_manufacturing.view_confirm_order_reserved')
+            wiz = self.env['confirm.order.reserved'].create({
+                'sale_ids': [(4, s.id) for s in dispatch_line.mapped('sale_id')],
+                'picking_principal_id': picking.id,
+                'custom_dispatch_line_ids': [(4, c.id) for c in dispatch_line],
+                'lot_id': self.id
+            })
+            return {
+                'name': 'Seleccione el pedido al cual quiere reservar',
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'confirm.order.reserved',
+                'views': [(view.id, 'form')],
+                'view_id': view.id,
+                'target': 'new',
+                'res_id': wiz.id,
+                'context': self.env.context
+            }
+        else:
+            self.add_selection(stock_picking_id=picking_id)
         self.clean_add_pallet()
         self.clean_add_serial()
 
