@@ -936,7 +936,7 @@ class AccountInvoice(models.Model):
 
         res = super(AccountInvoice, self).write(vals)
 
-
+        #self.valid_to_sii = False
         for s in stock_picking_ids:
             s.write({
                 'shipping_number': self.shipping_number,
