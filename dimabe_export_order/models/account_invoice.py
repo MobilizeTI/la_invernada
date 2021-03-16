@@ -68,7 +68,7 @@ class AccountInvoice(models.Model):
                 str_orders += o + ' '
             item.order_names = str_orders
     
-    @api.multi
+    
     def _compute_canning_types(self):
         for item in self:
             cannings = []
