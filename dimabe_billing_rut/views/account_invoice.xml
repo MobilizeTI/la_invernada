@@ -71,6 +71,7 @@
                                         <form>
                                             <group>
                                                 <field name="package_type" required="True" />
+                                                <field name="canning_type" required="True"/>
                                                 <field name="quantity" required="True" />
                                                 <field name="brand" required="True"/>
                                                 <field name="container"/>
@@ -79,6 +80,7 @@
                                         </form>
                                         <tree>
                                             <field name="package_type" required="True"/>
+                                            <field name="canning_type" required="True"/>
                                             <field name="quantity" required="True" />
                                             <field name="brand" required="True"/>
                                             <field name="container"/>
