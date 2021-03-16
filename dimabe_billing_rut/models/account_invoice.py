@@ -974,7 +974,7 @@ class AccountInvoice(models.Model):
                         quantity = 0
                         stock_picking_line = self.env['stock.move.line'].search([('picking_id','=',s.id)])
                         for picking in stock_picking_line:
-                                if picking.product_id.id == item.product_id.id:
+                                if picking.product_id.id == item.product_id:
                                     quantity += picking.qty_done
                         line.write({
                             'quantity' : quantity
