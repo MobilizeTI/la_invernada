@@ -970,7 +970,7 @@ class AccountInvoice(models.Model):
             
             for line in invoice_line_ids:
                 if line.stock_picking_id == s.id:
-                    if s.states == "done":
+                    if s.state == "done":
                         quantity = 0
                         stock_picking_line = self.env['stock.move.line'].search([('picking_id','=',s.id)])
                         for picking in stock_picking_line:
