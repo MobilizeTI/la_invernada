@@ -281,7 +281,7 @@
                                     <td style="text-align:left;">
                                         <t t-foreach="d.custom_invoice_line_ids[0].product_id.attribute_value_ids" t-as="a">
                                             <t t-if="a.attribute_id.name == 'Tipo de envase'">
-                                                <span t-field="a.canning_quantity"/>x
+                                                <span t-field="d.custom_invoice_line_ids[0].canning_quantity"/>x
                                                 <span t-field="a.name"/>c/u
                                             </t>
                                         </t>
@@ -296,7 +296,7 @@
                                                         <th></th>
                                                         <td></td>
                                                         <td>
-                                                            <span t-field="a.canning_quantity"/>x
+                                                            <span t-field="c.canning_quantity"/>x
                                                             <span t-field="a.name"/>c/u
                                                         </td>
                                                     </tr>
