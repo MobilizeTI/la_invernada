@@ -262,7 +262,7 @@
                                     <th style="text-align:left;">ENVASE (S)</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.canning_types"/>
+                                        <!--<span t-field="d.canning_types"/>-->
                                         <!--
                                         <t t-if="len(d.custom_invoice_line_ids) > 0">
                                             <t t-foreach="d.custom_invoice_line_ids" t-as="line">
@@ -273,20 +273,43 @@
                                                 </t>
                                             </t>
                                         </t>-->
+                                        <t t-foreach="d.packages" t-as="p">
+                                            <span t-field="p.canning_type"/>
+                                        </t>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th style="text-align:left;">CANTIDAD DE ENVASES</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        <t t-foreach="d.custom_invoice_line_ids[0].product_id.attribute_value_ids" t-as="a">
+                                        <t t-foreach="d.packages" t-as="p">
+                                            <span t-field="d.packages[0].quantity"/>X
+                                            <span t-field="d.packages[0].canning_type"/>
+                                        </t>
+                                        <!--<t t-foreach="d.custom_invoice_line_ids[0].product_id.attribute_value_ids" t-as="a">
                                             <t t-if="a.attribute_id.name == 'Tipo de envase'">
                                                 <span t-field="d.custom_invoice_line_ids[0].canning_quantity"/>x
                                                 <span t-field="a.name"/>c/u
                                             </t>
-                                        </t>
+                                        </t>-->
                                     </td>
                                 </tr>
+                                <t t-if="len(d.packages) > 1">
+                                    <t t-foreach="d.packages" t-as="p">
+                                        <t t-if="p.id != d.packasges[0].id">
+                                            <tr>
+                                                <th></th>
+                                                <td>:</td>
+                                                <td>
+                                                    <span t-field="p.quantity"/>X
+                                                    <span t-field="p.canning_type"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        
+                                    </t>
+                                </t>
+                                <!--
                                 <t t-if="len(d.custom_invoice_line_ids) > 1">
                                     <t t-foreach="d.custom_invoice_line_ids" t-as="o">
                                         <t t-if="o.name != d.custom_invoice_line_ids[0].name">
@@ -305,6 +328,7 @@
                                         </t>
                                     </t>
                                 </t>
+                                -->
                                 <tr>
                                     <th style="text-align:left;">CANTIDAD DE CONTENEDORES</th>
                                     <td style="width:5px">:</td>
