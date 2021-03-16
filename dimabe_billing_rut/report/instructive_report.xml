@@ -296,7 +296,7 @@
                                 </tr>
                                 <t t-if="len(d.packages) > 1">
                                     <t t-foreach="d.packages" t-as="p">
-                                        <t t-if="p.id != d.packasges[0].id">
+                                        <t t-if="p.id != d.packages[0].id">
                                             <tr>
                                                 <th></th>
                                                 <td>:</td>

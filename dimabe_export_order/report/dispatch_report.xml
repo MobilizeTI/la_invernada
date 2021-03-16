@@ -758,7 +758,8 @@
                                                             <tr>
                                                                 <td>PTO EMBARQUE:</td>
                                                                 <td>
-                                                                    <span t-field="d.departure_port"/>
+                                                                    <span t-field="d.departure_port"/>,
+                                                                    <span t-field="d.departure_port.country_id.name"/>
                                                                 </td>
                                                                 <td>SELLO INVERNADA</td>
                                                                 <td>
@@ -768,7 +769,8 @@
                                                             <tr>
                                                                 <td>PTO DESCARGA</td>
                                                                 <td>
-                                                                    <span t-field="d.arrival_port"/>
+                                                                    <span t-field="d.arrival_port"/>,
+                                                                    <span t-field="d.arrival_port.country_id.name"/>
                                                                 </td>
                                                                 <td>N° RESERVA</td>
                                                                 <td>
@@ -1090,7 +1092,8 @@
                                             <tr>
                                                 <td>PTO EMBARQUE:</td>
                                                 <td>
-                                                    <span t-field="d.departure_port"/>
+                                                    <span t-field="d.departure_port"/>,
+                                                    <span t-field="d.departure_port.country_id.name"/>
                                                 </td>
                                                 <td>SELLO INVERNADA</td>
                                                 <td>
@@ -1100,7 +1103,8 @@
                                             <tr>
                                                 <td>PTO DESCARGA</td>
                                                 <td>
-                                                    <span t-field="d.arrival_port"/>
+                                                    <span t-field="d.arrival_port"/>,
+                                                    <span t-field="d.arrival_port.country_id.name"/>
                                                 </td>
                                                 <td>N° RESERVA</td>
                                                 <td>
@@ -1929,7 +1933,8 @@
                                 <strong>PORT OF LOADING:</strong>
                             </td>
                             <td>
-                                <span t-field="d.departure_port.name"/>
+                                <span t-field="d.departure_port.name"/>,
+                                <span t-field="d.departure_port.country_id.name"/>
                             </td>
                         </tr>
                         <tr>
@@ -1937,7 +1942,8 @@
                                 <strong>PORT OF DISCHARGE:</strong>
                             </td>
                             <td>
-                                <span t-field="d.arrival_port.name"/>
+                                <span t-field="d.arrival_port.name"/>,
+                                <span t-field="d.arrival_port.country_id.name"/>
                             </td>
                         </tr>
                         <tr>
