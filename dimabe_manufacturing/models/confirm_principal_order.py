@@ -52,6 +52,7 @@ class ConfirmPrincipalOrder(models.TransientModel):
         for item in self.custom_dispatch_line_ids:
             item.dispatch_id.clean_reserved()
             for line in item.move_line_ids:
+                line.lot_id.update_stock_quant(line.location_id.id)
                 if item.dispatch_id.id != self.picking_id.id:
                     line_create = self.env['stock.move.line'].create({
                         'move_id': item.dispatch_id.move_ids_without_package.filtered(
@@ -74,6 +75,7 @@ class ConfirmPrincipalOrder(models.TransientModel):
                 if no_quantities_done:
                     self.inmediate_transfer(item.dispatch_id)
                 if self.check_backorder(item.dispatch_id):
+
                     self.process_backorder(item.dispatch_id)
                 else:
                     item.dispatch_id.action_done()
