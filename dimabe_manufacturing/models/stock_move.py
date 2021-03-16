@@ -18,8 +18,7 @@ class StockMove(models.Model):
 
     def _update_reserved_quantity(self, need, available_quantity, location_id, lot_id=None, package_id=None,
                                   owner_id=None, strict=True):
-        raise models.UserError(f'{self}, {need}, {available_quantity}, {location_id} {lot_id} {package_id}')
         try:
             return super(StockMove, self)._update_reserved_quantity(need, available_quantity, location_id, lot_id, package_id, owner_id, strict)
-        except UserError:
+        except UserError or not lot_id :
             pass
