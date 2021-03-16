@@ -289,7 +289,7 @@
                                 </tr>
                                 <t t-if="len(d.custom_invoice_line_ids) > 1">
                                     <t t.foreach="d.custom_invoice_line_ids" t-as="c">
-                                        <t t-if="c.id != d.custom_invoice_line_ids[0].id">
+                                        <t t-if="c.name != d.custom_invoice_line_ids[0].name">
                                             <t t-foreach="c.product_id.attribute_value_ids" t-as="a">
                                                 <t t-if="a.attribute_id.name == 'Tipo de envase'">
                                                     <tr>
