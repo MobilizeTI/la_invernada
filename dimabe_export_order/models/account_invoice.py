@@ -72,8 +72,8 @@ class AccountInvoice(models.Model):
     def _compute_canning_types(self):
         for item in self:
             cannings = []
-            for line in item.custom_invoice_line_ids:
-                for attr in line.mapped('product_id').attribute_value_ids:
+            for line in item.invoice_line_ids:
+                for attr in line.mapped('product_id').mapped('attribute_value_ids'):
                     if attr.attribute_id.name == 'Tipo de envase':
                         if attr.name and attr.name not in cannings:
                             cannings.append(attr.name)
