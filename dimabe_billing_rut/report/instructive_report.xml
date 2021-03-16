@@ -262,7 +262,7 @@
                                     <th style="text-align:left;">ENVASE (S)</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        <span name="d.canning_types"/>
+                                        <span t-field="d.canning_types"/>
                                         <!--
                                         <t t-if="len(d.custom_invoice_line_ids) > 0">
                                             <t t-foreach="d.custom_invoice_line_ids" t-as="line">
