@@ -289,7 +289,8 @@ class AccountInvoice(models.Model):
     @api.multi
     def _compute_total_packages(self):
         for item in self:
-            item.total_packages = sum(line.canning_quantity for line in item.custom_invoice_line_ids)
+            #item.total_packages = sum(line.canning_quantity for line in item.custom_invoice_line_ids)
+            item.total_packages = sum(line.quantity for line in item.packages)
 
     @api.multi
     def _compute_total_commission(self):

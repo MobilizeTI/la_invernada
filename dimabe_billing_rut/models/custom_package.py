@@ -13,7 +13,19 @@ class CustomPackage(models.Model):
     
     stamp = fields.Char(string="Sello")
 
+    canning_type = fields.Selection(selection=lambda self: self._compute_canning_type(), string="Tipo de Envase Interno")
+
     invoice_id = fields.Many2one('account.invoice', auto_join = True)
+
+    def _compute_canning_type(self):
+        for item in self:
+            cannig_types = self.env['product.atribute'].mapped('value_ids').search([('name','=','Tipo de envase')])
+            cannings = []
+            for canning in cannig_types:
+                if canning.value and canning.value not in cannings:
+                    cannings.append(canning.value)
+            return cannings
+
 
 
    
