@@ -15,10 +15,3 @@ class StockMove(models.Model):
     #     res = super(StockMove, self)._action_assign()
     #     raise models.ValidationError(self)
     #     return res
-
-    def _update_reserved_quantity(self, need, available_quantity, location_id, lot_id=None, package_id=None,
-                                  owner_id=None, strict=True):
-        try:
-            return super(StockMove, self)._update_reserved_quantity(need, available_quantity, location_id, lot_id, package_id, owner_id, strict)
-        except UserError or not lot_id :
-            pass
