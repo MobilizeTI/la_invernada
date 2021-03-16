@@ -94,7 +94,7 @@ class AccountInvoice(models.Model):
     order_to_add_id = fields.Integer(string="Pedido Id")
 
     #To Export
-    other_coin = fields.Many2one('res.currency', string='Otra Moneda')
+    other_coin = fields.Many2one('res.currency', string='Otra Moneda', default=45)#CLP Default
 
     exchange_rate_other_coin = fields.Float('Tasa de Cambio Otra Moneda')
 
@@ -120,11 +120,11 @@ class AccountInvoice(models.Model):
 
     net_weight = fields.Float(string="Peso Neto", compute="_compute_net_weight")
 
-    uom_tara = fields.Many2one('custom.uom','Unidad de Medida Tara')
+    uom_tara = fields.Many2one('custom.uom','Unidad de Medida Tara', default=7)#Kn default
 
-    uom_gross_weight = fields.Many2one('custom.uom','Unidad de Peso Bruto')
+    uom_gross_weight = fields.Many2one('custom.uom','Unidad de Peso Bruto', default=7) #Kn default
 
-    uom_net_weight = fields.Many2one('custom.uom','Unidad de Peso Neto')
+    uom_net_weight = fields.Many2one('custom.uom','Unidad de Peso Neto',default=7)#Kn default
 
     freight_amount = fields.Float(string="Flete")
 
@@ -921,7 +921,6 @@ class AccountInvoice(models.Model):
         else:
             raise models.ValidationError('Debe Seleccionar El Pedido luego el N° Despacho para agregar productos a la lista')
 
-        #self.update_totals_kg()
 
     #Send Data to Stock_Picking Comex
     @api.multi
@@ -932,7 +931,11 @@ class AccountInvoice(models.Model):
                 order_list.append(item.stock_picking_id)
         
         stock_picking_ids = self.env['stock.picking'].search([('id', 'in', order_list)])
+
+        invoice_line_ids = self.env['account.invoice.line'].search([('invoice_id','=',self.id)])
+
         res = super(AccountInvoice, self).write(vals)
+
 
         for s in stock_picking_ids:
             s.write({
@@ -965,17 +968,19 @@ class AccountInvoice(models.Model):
                 'notify_ids': [(6, 0, self.notify_ids.ids)]
             })
             
+            for line in invoice_line_ids:
+                if line.stock_picking_id == s.id:
+                    if s.states == "done":
+                        quantity = 0
+                        stock_picking_line = self.env['stock.move.line'].search([('picking_id','=',s.id)])
+                        for picking in stock_picking_line:
+                                if picking.product_id.id == item.product_id.id:
+                                    quantity += picking.qty_done
+                        line.write({
+                            'quantity' : quantity
+                        })
+            
         return res
-
-    def update_totals_kg(self):  
-        pickings_ids = []
-        for item in self.orders_to_invoice:
-            pickings_ids.append(item.stock_picking_id)
-        stock_picking_ids = self.env['stock.picking'].search([('id','in',pickings_ids)])
-
-        self.tara = sum(stock_picking_ids.mapped('tare_container_weight_dispatch'))  
-        self.gross_weight = sum(stock_picking_ids.mapped('gross_weight_dispatch'))  
-        self.net_weight = sum(stock_picking_ids.mapped('net_weight_dispatch'))  
 
  
 

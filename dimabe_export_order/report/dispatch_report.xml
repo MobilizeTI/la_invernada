@@ -344,7 +344,8 @@
                                                             <tr>
                                                                 <td>PTO EMBARQUE:</td>
                                                                 <td>
-                                                                    <span t-field="d.picking_real_id.departure_port"/>
+                                                                    <span t-field="d.picking_real_id.departure_port"/>,
+                                                                    <span t-field="d.picking_real_id.departure_port.country_id.name"/>
                                                                 </td>
                                                                 <td>SELLO INVERNADA</td>
                                                                 <td>
@@ -354,7 +355,8 @@
                                                             <tr>
                                                                 <td>PTO DESCARGA</td>
                                                                 <td>
-                                                                    <span t-field="d.picking_real_id.arrival_port"/>
+                                                                    <span t-field="d.picking_real_id.arrival_port"/>,
+                                                                    <span t-field="d.picking_real_id.arrival_port.country_id.name"/>
                                                                 </td>
                                                                 <td>N° RESERVA</td>
                                                                 <td>
@@ -549,7 +551,8 @@
                                                             <tr>
                                                                 <td>PTO EMBARQUE:</td>
                                                                 <td>
-                                                                    <span t-field="d.picking_principal_id.departure_port"/>
+                                                                    <span t-field="d.picking_principal_id.departure_port"/>,
+                                                                    <span t-field="d.picking_principal_id.departure_port.country_id.name"/>
                                                                 </td>
                                                                 <td>SELLO INVERNADA</td>
                                                                 <td>
@@ -559,7 +562,8 @@
                                                             <tr>
                                                                 <td>PTO DESCARGA</td>
                                                                 <td>
-                                                                    <span t-field="d.picking_principal_id.arrival_port"/>
+                                                                    <span t-field="d.picking_principal_id.arrival_port"/>,
+                                                                    <span t-field="d.picking_principal_id.arrival_port.country_id.name"/>
                                                                 </td>
                                                                 <td>N° RESERVA</td>
                                                                 <td>

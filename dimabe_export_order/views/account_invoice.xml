@@ -38,5 +38,19 @@
                 </xpath>
             </field>
         </record>
+        <record id="view_orders_in_invoice_tree_inherit" model="ir.ui.view">
+            <field name="name">formulario de ordenes</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_tree"/>
+            <field name="priority">1000</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="order_names"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="before">
+                    <field name="shipping_number"/>
+                </xpath>
+            </field>
+        </record>
     </data>
 </odoo>

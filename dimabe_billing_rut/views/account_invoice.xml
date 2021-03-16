@@ -65,25 +65,27 @@
                                     <field name="net_weight" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="uom_net_weight" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 </group>
-                                <field name="total_packages" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                <field name="packages" mode="tree" attrs="{'invisible': [('dte_code', '!=', '110')]}">
-                                    <form>
-                                        <group>
-                                            <field name="package_type" required="True" />
+                                <group>
+                                    <field name="total_packages" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <field name="packages" mode="tree" attrs="{'invisible': [('dte_code', '!=', '110')]}">
+                                        <form>
+                                            <group>
+                                                <field name="package_type" required="True" />
+                                                <field name="quantity" required="True" />
+                                                <field name="brand" required="True"/>
+                                                <field name="container"/>
+                                                <field name="stamp"/>
+                                            </group>
+                                        </form>
+                                        <tree>
+                                            <field name="package_type" required="True"/>
                                             <field name="quantity" required="True" />
                                             <field name="brand" required="True"/>
                                             <field name="container"/>
                                             <field name="stamp"/>
-                                        </group>
-                                    </form>
-                                    <tree>
-                                        <field name="package_type" required="True"/>
-                                        <field name="quantity" required="True" />
-                                        <field name="brand" required="True"/>
-                                        <field name="container"/>
-                                        <field name="stamp"/>
-                                    </tree>
-                                </field>
+                                        </tree>
+                                    </field>
+                                </group>
                                 <group>
                                     <field name="is_dispatcher" invisible="1"/>
                                     <!--<field name="contract_correlative_view" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>-->
@@ -97,7 +99,7 @@
                                     <field name="container_type"
                                            placeholder="Seleccione el tipo de contenedor" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 </group>
-                                <field name="remarks_comex" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                <group><field name="remarks_comex" attrs="{'invisible': [('dte_code', '!=', '110')]}"/></group>
                                 <group>
                                     <field name="client_label" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="commission" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>

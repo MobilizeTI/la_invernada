@@ -52,6 +52,21 @@ class AccountInvoice(models.Model):
         domain=[('customer', '=', True)]
     )
 
+    order_names = fields.Char(string="Pedidos", compute="_compute_order_ids")
+
+    
+    def _compute_order_ids(self):
+        for item in self:
+            orders = []
+            for line in self.invoice_line_ids:
+                if line.order_name not in orders:
+                    orders.append(line.order_name)
+            str_orders = ''
+            for o in orders:
+                str_orders += o + ' '
+            item.order_names = str_orders
+
+
     #canning_quantity_ids = fields.Char(string="Cantidad de Sacos",compute="_compute_canning_quantity")
 
 

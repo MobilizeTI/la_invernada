@@ -235,9 +235,11 @@
                                     <t t-if="len(d.custom_invoice_line_ids) > 1">
                                         <t t-foreach="d.custom_invoice_line_ids" t-as="o">
                                             <t t-if="o.name != d.custom_invoice_line_ids[0].name">
-                                                <th></th>
-                                                <td></td>
-                                                <td><span t-field="o.name"/></td>
+                                                <tr>
+                                                    <th></th>
+                                                    <td></td>
+                                                    <td><span t-field="o.name"/></td>
+                                                </tr>
                                             </t>
                                         </t>
                                     </t>
@@ -414,6 +416,21 @@
                                         <span t-field="d.custom_invoice_line_ids[0].product_id.name"/>
                                     </td>
                                 </tr>
+                                <t t-if="len(d.custom_invoice_line_ids) > 1">
+                                    <t t-foreach="d.custom_invoice_line_ids" t-as="i">
+                                    <tr>
+                                        <th></th>
+                                        <td>:</td>
+                                        <td>
+                                            <t t-if="i.product_id.id != d.custom_invoice_line_ids[0].product_id.id">
+                                                <span t-field="i.price_unit"/>
+                                                <![CDATA[&nbsp;]]>
+                                                <span t-field="i.product_id.name"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </t>
+
                             </table>
                         </div>
                         <div style="width:100%;display:inline-block; border-right:1px solid;border-left:1px solid;border-bottom:1px solid;">
@@ -1086,7 +1103,9 @@
                             <tr>
                                 <th style="text-align:right; width:200px">N°</th>
                                 <td>:</td>
-                                <td><span t-field="d.shipping_number"/></td>
+                                <td><span t-field="d.shipping_number"/>/
+                                    <span t-esc="d.date_invoice.strftime('%Y')"/>
+                                </td>
                             </tr>
                             <tr>
                                 <th style="text-align:left; width:200px">N° PEDIDO</th>
