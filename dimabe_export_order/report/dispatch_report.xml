@@ -1478,36 +1478,100 @@
                         </tr>
                     </table>
                     <t t-foreach="d.notify_ids" t-as="n">
-                        <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
-                            <tr>
-                                <td>
-                                    <strong>NOTIFY/NOTIFICADO:</strong>
-                                </td>
-                                <td>
-                                    <span t-field="n.name"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <strong>ADDRESS/DIRRECCION:</strong>
-                                </td>
-                                <td rowspan="2">
-                                    <span t-field="n.street"/>
-                                    <br/>
-                                    <span t-field="n.country_id"/>
-                                </td>
-                            </tr>
-                            <tr></tr>
-                            <tr>
-                                <td>
-                                    <strong>PHONE/TELEFONO:</strong>
-                                </td>
-                                <td>
-                                    <span t-field="n.phone"/>
-                                </td>
-                            </tr>
-                        </table>
-                        <br/>
+                        <t t-if="d.notify_ids[0].id == n.id">
+                            <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
+                                <tr>
+                                    <td>
+                                        <strong>NOTIFY/NOTIFICADO:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="n.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>ADDRESS/DIRRECCION:</strong>
+                                    </td>
+                                    <td rowspan="2">
+                                        <span t-field="n.street"/>
+                                        <br/>
+                                        <span t-field="n.country_id"/>
+                                    </td>
+                                </tr>
+                                <tr></tr>
+                                <tr>
+                                    <td>
+                                        <strong>PHONE/TELEFONO:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="n.phone"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br/>
+                        </t>
+                        <t t-else="">
+                            <table width="45%%" style="font-size:12px;display:inline-block;">
+                        <tr>
+                            <td>
+
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+                    </table>
+                            <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
+                                <tr>
+                                    <td>
+                                        <strong>NOTIFY/NOTIFICADO:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="n.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>ADDRESS/DIRRECCION:</strong>
+                                    </td>
+                                    <td rowspan="2">
+                                        <span t-field="n.street"/>
+                                        <br/>
+                                        <span t-field="n.country_id"/>
+                                    </td>
+                                </tr>
+                                <tr></tr>
+                                <tr>
+                                    <td>
+                                        <strong>PHONE/TELEFONO:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="n.phone"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br/>
+                        </t>
                     </t>
                     <table width="45%%" style="border:solid 1px;font-size:12px;display:inline-block;">
                         <tr rowspan="2">
