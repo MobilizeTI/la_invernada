@@ -72,7 +72,6 @@ class AccountInvoice(models.Model):
     def _compute_canning_types(self):
         for item in self:
             cannings = []
-            raise models.ValidationError(item.custom_invoice_line_ids[0].product_id.name)
             for line in item.custom_invoice_line_ids:
                 for attr in line.product_id.attribute_value_ids:
                     if attr.attribute_id.name == 'Tipo de envase':
@@ -81,24 +80,6 @@ class AccountInvoice(models.Model):
             str_cannings = ''
             for c in cannings:
                 str_cannings += c + ' '
-            item.canning_types = cannings
+            item.canning_types = str_cannings
 
-
-    #canning_quantity_ids = fields.Char(string="Cantidad de Sacos",compute="_compute_canning_quantity")
-
-
-    #def _compute_canning_quantity(self):
-    #    canning_quantities = []
-    #    custom_invoice_line_ids = self.env['custom.account.invoice.line'].mapped('product_id').search([('invoice_id','=',self.id)])
-    #    for line in custom_invoice_line_ids:
-    #        for atr in line.product_id.attribute_value_ids:
-    #            is_kg = atr.attribute_id.name.find('K')
-    #            if atr.attribute_id.name == 'Tipo de envase' and is_kg != 1:
-    #                value = atr.name.isdigit()
-    #                canning_quantities.append({
-    #                    'quantity': line.quantity / value,
-    #                    'canning': atr.name
-    #                })
-
-    #   return canning_quantities
 
