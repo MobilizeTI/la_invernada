@@ -45,9 +45,11 @@ class StockQuant(models.Model):
                               )
             ).mapped('display_weight'))
 
-    # @api.model
-    # def _update_reserved_quantity(self, product_id, location_id, quantity, lot_id=None, package_id=None, owner_id=None, strict=False):
-    #     try:
-    #         return super(StockQuant, self)._update_reserved_quantity(product_id,location_id,quantity,lot_id,package_id,owner_id,strict)
-    #     except UserError:
-    #         self.lot_id.update_stock_quant(location_id=location_id)
+    @api.model
+    def _update_reserved_quantity(self, product_id, location_id, quantity, lot_id=None, package_id=None, owner_id=None,
+                                  strict=False):
+        try:
+            return super(StockQuant, self)._update_reserved_quantity(product_id, location_id, quantity, lot_id,
+                                                                     package_id, owner_id, strict)
+        except UserError and lot_id:
+            self.lot_id.update_stock_quant(location_id=location_id)
