@@ -25,7 +25,7 @@ class CustomAccountInvoiceLine(models.Model):
     def _compute_quantity(self):
         for item in self:
             invoice_line = self.env['account.invoice.line'].search([('invoice_id','=',item.invoice_id.id),('product_id','=',item.product_id.id)])
-            item.quality = sum(invoice_line.quantity)
+            item.quantity = sum(line.quantity for line in invoice_line)
 
     def _compute_price_subtotal(self):
         for item in self:
