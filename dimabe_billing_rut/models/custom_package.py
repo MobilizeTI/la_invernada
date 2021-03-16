@@ -17,6 +17,7 @@ class CustomPackage(models.Model):
 
     invoice_id = fields.Many2one('account.invoice', auto_join = True)
 
+
     def _compute_canning_type(self):
         for item in self:
             cannig_types = self.env['product.atribute'].mapped('value_ids').search([('name','=','Tipo de envase')])
