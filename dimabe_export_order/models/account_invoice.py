@@ -54,6 +54,8 @@ class AccountInvoice(models.Model):
 
     order_names = fields.Char(string="Pedidos", compute="_compute_order_ids")
 
+    canning_types = fields.Char(string="Envases", compute="_compute_canning_types")
+
     
     def _compute_order_ids(self):
         for item in self:
@@ -65,6 +67,16 @@ class AccountInvoice(models.Model):
             for o in orders:
                 str_orders += o + ' '
             item.order_names = str_orders
+    
+    def _compute_canning_types(self):
+        for item in self:
+            cannings = []
+            for line in item.custom_invoice_line_ids:
+                for attr in line.product_id.attribute_value_ids:
+                    if attr.attribute_id.name == 'Tipo de envase':
+                        if attr.name not in cannings:
+                            cannings += attr.name + ' '
+            item.canning_types = cannings
 
 
     #canning_quantity_ids = fields.Char(string="Cantidad de Sacos",compute="_compute_canning_quantity")
