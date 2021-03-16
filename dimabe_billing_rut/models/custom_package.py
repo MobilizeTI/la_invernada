@@ -25,7 +25,7 @@ class CustomPackage(models.Model):
             for canning in cannig_types:
                 if canning.value and canning.value not in cannings:
                     cannings.append(canning.value)
-            return [('primero','segundo')]
+            return [('primero'),('segundo')]
 
 
 
