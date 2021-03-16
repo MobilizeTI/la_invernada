@@ -976,7 +976,7 @@ class AccountInvoice(models.Model):
                         new_quantity = 0
                         stock_picking_line = self.env['stock.move.line'].search([('picking_id','=',s.id)])
                         for picking in stock_picking_line:
-                                if picking.product_id.id == line.product_id:
+                                if picking.product_id.id == line.product_id.id:
                                     new_quantity += picking.qty_done
                         line.write({
                             'quantity' : new_quantity
@@ -994,17 +994,17 @@ class AccountInvoice(models.Model):
                             'quantity_to_invoice' : new_quantity
                         })
 
-            for c in custom_invoice_line_ids:
-                if s.state == "done":
-                    old_quantity = c.quantity
-                    new_quantity = 0
-                    stock_picking_line = self.env['stock.move.line'].search([('picking_id','=',s.id)])
-                    for picking in stock_picking_line:
-                        if picking.product_id.id == c.product_id:
-                            new_quantity += picking.qty_done
-                    c.write({
-                        'quantity' : old_quantity +  new_quantity
-                    })
+            #for c in custom_invoice_line_ids:
+            #    if s.state == "done":
+            #        old_quantity = c.quantity
+            #        new_quantity = 0
+            #        stock_picking_line = self.env['stock.move.line'].search([('picking_id','=',s.id)])
+            #        for picking in stock_picking_line:
+            #            if picking.product_id.id == c.product_id:
+            #                new_quantity += picking.qty_done
+            #        c.write({
+            #            'quantity' : old_quantity +  new_quantity
+            #        })
 
             
         return res

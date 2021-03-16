@@ -10,7 +10,7 @@ class CustomAccountInvoiceLine(models.Model):
 
     account_id = fields.Many2one('account.account', string="Cuenta")
 
-    quantity = fields.Float(string="Cantidad")
+    quantity = fields.Float(string="Cantidad", compute="_compute_quantity")
 
     uom_id = fields.Many2one('uom.uom',string="Unidad de medida")
 
@@ -21,6 +21,11 @@ class CustomAccountInvoiceLine(models.Model):
     price_subtotal = fields.Float(string="Subtotal", compute="_compute_price_subtotal")
 
     canning_quantity = fields.Float(string="Cantidad de Envases", compute="_compute_canning_quantiy")
+
+    def _compute_quantity(self):
+        for item in self:
+            invoice_line = self.env['account.invoice.line'].search([('invoice_id','=',item.invoice_id.id),('product_id','=',item.product_id.id)])
+            item.quality = sum(invoice_line.quantity)
 
     def _compute_price_subtotal(self):
         for item in self:
