@@ -50,4 +50,7 @@ class StockQuant(models.Model):
         try:
             return super(StockQuant, self)._update_reserved_quantity(product_id, location_id,quantity,lot_id,package_id,owner_id,strict)
         except UserError:
-            self.lot_id.update_stock_quant(location_id=location_id)
+            if lot_id:
+                self.lot_id.update_stock_quant(location_id=location_id)
+            else:
+                pass
