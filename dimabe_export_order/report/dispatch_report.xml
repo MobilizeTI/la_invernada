@@ -551,7 +551,8 @@
                                                             <tr>
                                                                 <td>PTO EMBARQUE:</td>
                                                                 <td>
-                                                                    <span t-field="d.picking_principal_id.departure_port"/>,
+                                                                    <span t-field="d.picking_principal_id.departure_port"/>
+                                                                    ,
                                                                     <span t-field="d.picking_principal_id.departure_port.country_id.name"/>
                                                                 </td>
                                                                 <td>SELLO INVERNADA</td>
@@ -562,7 +563,8 @@
                                                             <tr>
                                                                 <td>PTO DESCARGA</td>
                                                                 <td>
-                                                                    <span t-field="d.picking_principal_id.arrival_port"/>,
+                                                                    <span t-field="d.picking_principal_id.arrival_port"/>
+                                                                    ,
                                                                     <span t-field="d.picking_principal_id.arrival_port.country_id.name"/>
                                                                 </td>
                                                                 <td>N° RESERVA</td>
@@ -1475,36 +1477,38 @@
                             </td>
                         </tr>
                     </table>
-                    <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
-                        <tr>
-                            <td>
-                                <strong>NOTIFY/NOTIFICADO:</strong>
-                            </td>
-                            <td>
-                                <span t-field="d.notify_ids[0].name"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>ADDRESS/DIRRECCION:</strong>
-                            </td>
-                            <td rowspan="2">
-                                <span t-field="d.notify_ids[0].street"/>
-                                <br/>
-                                <span t-field="d.notify_ids[0].country_id"/>
-                            </td>
-                        </tr>
-                        <tr></tr>
-                        <tr>
-                            <td>
-                                <strong>PHONE/TELEFONO:</strong>
-                            </td>
-                            <td>
-                                <span t-field="d.notify_ids[0].phone"/>
-                            </td>
-                        </tr>
-                    </table>
-                    <br/>
+                    <t t-foreach="d.notify_ids" t-as="n">
+                        <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
+                            <tr>
+                                <td>
+                                    <strong>NOTIFY/NOTIFICADO:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="n.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>ADDRESS/DIRRECCION:</strong>
+                                </td>
+                                <td rowspan="2">
+                                    <span t-field="n.street"/>
+                                    <br/>
+                                    <span t-field="n.country_id"/>
+                                </td>
+                            </tr>
+                            <tr></tr>
+                            <tr>
+                                <td>
+                                    <strong>PHONE/TELEFONO:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="n.phone"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/>
+                    </t>
                     <table width="45%%" style="border:solid 1px;font-size:12px;display:inline-block;">
                         <tr rowspan="2">
                             <td>DISPATCH N°/NUMERO DE DESPACHO</td>
