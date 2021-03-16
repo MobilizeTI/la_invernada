@@ -52,7 +52,7 @@ class ConfirmPrincipalOrder(models.TransientModel):
         for item in self.custom_dispatch_line_ids:
             item.dispatch_id.clean_reserved()
             for line in item.move_line_ids:
-                line.lot_id.update_stock_quant(line.location_id.id)
+                self.update_stock_quant(line.product_id.id,line.location_id.id)
                 if item.dispatch_id.id != self.picking_id.id:
                     line_create = self.env['stock.move.line'].create({
                         'move_id': item.dispatch_id.move_ids_without_package.filtered(
@@ -129,3 +129,28 @@ class ConfirmPrincipalOrder(models.TransientModel):
                     moves_to_log[move] = (move.quantity_done, move.product_uom_qty)
             pick_id._log_less_quantities_than_expected(moves_to_log)
         picking.action_done()
+
+    def update_stock_quant(self,product_id,location_id):
+        lots = self.env['stock.production.lot'].search([('product_id.id', '=', product_id)])
+        for lot in lots:
+            if lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed):
+                quant = self.env['stock.quant'].sudo().search(
+                    [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal')])
+                if quant:
+                    quant.write({'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                                                                                                           x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
+                        'display_weight')),
+                                 'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                                                                                                  x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
+                                     'display_weight'))})
+                else:
+                    self.env['stock.quant'].sudo().create({
+                        'lot_id': lot.id,
+                        'product_id': lot.product_id.id,
+                        'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                                                                                                  x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
+                            'display_weight')),
+                        'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
+                            lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight')),
+                        'location_id': location_id
+                    })
