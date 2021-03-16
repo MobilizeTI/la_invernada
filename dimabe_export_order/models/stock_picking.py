@@ -108,58 +108,71 @@ class StockPicking(models.Model):
     )
 
     net_weight_dispatch = fields.Float(
-        string="Kilos Netos Despacho"
+        string="Kilos Netos Despacho",
+        copy=False
     )
 
     gross_weight_dispatch = fields.Float(
-        string="Kilos Brutos"
+        string="Kilos Brutos",
+        copy=False
     )
 
     tare_container_weight_dispatch = fields.Float(
-        string="Tara Contenedor"
+        string="Tara Contenedor",
+        copy=False
     )
 
     container_weight = fields.Float(
-        string="Peso Contenedor"
+        string="Peso Contenedor",
+        copy=False
     )
 
     vgm_weight_dispatch = fields.Float(
         string="Peso VGM",
         compute="compute_vgm_weight",
-        store=True
+        store=True,
+        copy=False
     )
 
     note_dispatched = fields.Many2one(
-        'custom.note'
+        'custom.note',
+        copy=False
     )
 
     sell_truck = fields.Char(
-        string="Sello Invernada"
+        string="Sello Invernada",
+        copy=False
     )
 
     dispatch_guide_number = fields.Char(
-        string="Numero de Guia"
+        string="Numero de Guia",
+        copy=False
     )
 
     sell_sag = fields.Char(
-        string="Sello SAG"
+        string="Sello SAG",
+        copy=False
     )
 
     gps_lock = fields.Char(
-        string="Candado GPS"
+        string="Candado GPS",
+        copy=False
     )
 
     gps_button = fields.Char(
-        string="Botón GPS"
+        string="Botón GPS",
+        copy=False
     )
 
     dus_number = fields.Char(
-        string="Numero DUS"
+        string="Numero DUS",
+        copy=False
     )
 
     picture = fields.Many2many(
         "ir.attachment",
         string="Fotos Camión",
+        copy=False
     )
 
     pictures = fields.Many2many(
@@ -167,11 +180,13 @@ class StockPicking(models.Model):
         compute="get_pictures",
         readonly=False,
         store=True,
-        string="Datos Fotos"
+        string="Datos Fotos",
+        copy=False
     )
 
     file = fields.Char(
-        related="picture.datas_fname"
+        related="picture.datas_fname",
+        copy=False
     )
 
     type_of_transfer_list = fields.Selection(
@@ -198,10 +213,12 @@ class StockPicking(models.Model):
     type_of_dispatch = fields.Selection(
         [('exp', 'Exportación'),
          ('nac', 'Nacional')],
-        string="Tipo de Despacho")
+        string="Tipo de Despacho",
+        copy=False)
 
     sell_shipping = fields.Char(
-        string="Sello Naviera"
+        string="Sello Naviera",
+        copy=False
     )
 
     is_dispatcher = fields.Integer(
@@ -209,32 +226,40 @@ class StockPicking(models.Model):
     )
 
     hour_arrival = fields.Float(
-        string="Hora Llegada"
+        string="Hora Llegada",
+        copy=False
     )
 
     hour_departure = fields.Float(
-        string="Hora Salida"
+        string="Hora Salida",
+        copy=False
     )
 
     truck_in_date = fields.Datetime(
         string="Entrada Camión",
-        readonly=False
+        readonly=False,
+        copy=False
     )
 
     elapsed_time = fields.Char(
         'Horas Camión en planta',
-        compute='_compute_elapsed_time'
+        compute='_compute_elapsed_time',
+        copy=False
     )
 
     have_picture_report = fields.Boolean('Tiene reporte de fotos', default=True)
 
-    arrival_weight = fields.Float('Peso de Entrada')
+    arrival_weight = fields.Float('Peso de Entrada',
+        copy=False)
 
-    departure_weight = fields.Float('Peso de Salida')
+    departure_weight = fields.Float('Peso de Salida',
+        copy=False)
 
-    customs_department = fields.Many2one('res.partner', 'Oficina Aduanera')
+    customs_department = fields.Many2one('res.partner', 'Oficina Aduanera',
+        copy=False)
 
-    canning_data = fields.Char('Agregar Envases')
+    canning_data = fields.Char('Agregar Envases',
+        copy=False)
 
     @api.onchange('picture')
     def get_pictures(self):

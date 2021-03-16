@@ -61,15 +61,18 @@ class StockPicking(models.Model):
         compute='_compute_packing_list_lot_ids'
     )
 
-    sale_order_id = fields.Many2one('sale.order', 'Pedido')
+    sale_order_id = fields.Many2one('sale.order', 'Pedido',
+        copy=False)
 
-    sale_orders_id = fields.Many2one('sale.order', 'Pedidos', domain=[('state', '=', 'sale')])
+    sale_orders_id = fields.Many2one('sale.order', 'Pedidos', domain=[('state', '=', 'sale')],
+        copy=False)
 
     dispatch_line_ids = fields.One2many('custom.dispatch.line', 'dispatch_real_id', copy=False)
 
     name_orders = fields.Char('Pedidos', compute='get_name_orders')
 
-    dispatch_id = fields.Many2one('stock.picking', 'Despachos', domain=[('state', '!=', 'done')])
+    dispatch_id = fields.Many2one('stock.picking', 'Despachos', domain=[('state', '!=', 'done')],
+        copy=False)
 
     real_net_weigth = fields.Float('Kilos Netos Reales', compute='compute_net_weigth_real')
 

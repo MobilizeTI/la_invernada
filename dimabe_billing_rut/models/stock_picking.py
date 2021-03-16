@@ -83,28 +83,33 @@ class StockPicking(models.Model):
 
     shipping_company = fields.Many2one(
         comodel_name='custom.shipping.company',
-        string='Naviera'
+        string='Naviera',
+        copy=False
     )
 
     ship = fields.Many2one(
         comodel_name='custom.ship',
-        string='Nave'
+        string='Nave',
+        copy=False
     )
 
     ship_number = fields.Char(
-        string='Viaje'
+        string='Viaje',
+        copy=False
     )
 
-    type_transport = fields.Many2one('custom.type.transport','Vía de Transporte')
+    type_transport = fields.Many2one('custom.type.transport','Vía de Transporte',copy=False)
 
     departure_port = fields.Many2one(
         comodel_name='custom.port',
-        string='Puerto de Embarque'
+        string='Puerto de Embarque',
+        copy=False
     )
 
     arrival_port = fields.Many2one(
         comodel_name='custom.port',
-        string='Puerto de Desembarque'
+        string='Puerto de Desembarque',
+        copy=False
     )
 
     required_loading_date = fields.Datetime(
@@ -119,29 +124,33 @@ class StockPicking(models.Model):
 
     etd = fields.Date(
         string='ETD',
-        nullable=True
+        nullable=True,
+        copy=False
     )
 
     etd_month = fields.Integer(
         'Mes ETD',
         compute='_compute_etd_values',
-        store=True
+        store=True,
+        copy=False
     )
 
     etd_week = fields.Integer(
         'Semana ETD',
         compute='_compute_etd_values',
-        store=True
+        store=True,
+        copy=False
     )
 
     eta = fields.Date(
         string='ETA',
-        nullable=True
+        nullable=True,
+        copy=False
     )
 
-    departure_date = fields.Datetime('Fecha de zarpe')
+    departure_date = fields.Datetime('Fecha de zarpe',copy=False)
 
-    arrival_date = fields.Datetime('Fecha de arribo')
+    arrival_date = fields.Datetime('Fecha de arribo',copy=False)
 
     #Comex Embarque Method
 
