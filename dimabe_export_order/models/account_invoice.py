@@ -58,7 +58,7 @@ class AccountInvoice(models.Model):
     def _compute_order_ids(self):
         for item in self:
             orders = []
-            for line in self.invoice_line_ids:
+            for line in item.invoice_line_ids:
                 if line.order_name not in orders:
                     orders.append(line.order_name)
             str_orders = ''
