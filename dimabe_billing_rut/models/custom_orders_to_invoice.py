@@ -43,7 +43,7 @@ class CustomOrdersToInvoice(models.Model):
                 if not stock.is_child_dispatch or stock.is_child_dispatch == '' or stock.picking_principal_id:
                     item.is_multiple_dispatch = "Si"
                 else:
-                    is_multiple_dispatch = ""
+                    item.is_multiple_dispatch = ""
     
     def _compute_main_dispatch(self):
         for item in self:
