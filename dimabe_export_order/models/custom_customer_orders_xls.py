@@ -171,7 +171,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         else:
                             sheet.write(row, col, "")
                         col += 1
-                        #Etiqueta Clientegit pull
+                        #Etiqueta Cliente
                         sheet.write(row, col, "pendiente")
                         col += 1
                         #Marca
@@ -265,10 +265,16 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, stock.safe_value if stock.safe_value else '')
                         col += 1
                         #FOB total
-                        sheet.write(row, col, "pendiente")
+                        if exist_account_invoice:
+                            sheet.write(row, col, account_invoice.total_value if account_invoice.total_value != 0 else '')
+                        else:
+                            sheet.write(row, col, "")
                         col += 1
                         #FOB / Kg
-                        sheet.write(row, col, "pendiente")
+                        if exist_account_invoice:
+                            sheet.write(row, col, account_invoice.value_per_kilogram if account_invoice.value_per_kilogram != 0 else '')
+                        else:
+                            sheet.write(row, col, "")
                         col += 1
                         #Obs. Calidad
                         sheet.write(row, col, "pendiente")
