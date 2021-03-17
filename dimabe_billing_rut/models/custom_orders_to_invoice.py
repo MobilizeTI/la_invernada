@@ -22,8 +22,6 @@ class CustomOrdersToInvoice(models.Model):
 
     container_number = fields.Char(string="N° Contenedor", compute="_compute_container_number")
 
-    total_comission = fields.Float(string="Valor Comisión", compute="_compute_total_comission")
-
     is_multiple_dispatch = fields.Char(string="Es Despacho Multiple?", compute="_compute_is_multiple_dispatch")
 
     main_dispatch = fields.Char(string="Despacho Princiapl", compute="_compute_main_dispatch")
@@ -35,9 +33,6 @@ class CustomOrdersToInvoice(models.Model):
         string="Pedido"
     )
 
-    total_value = fields.Float(string="Valor Total", compute="_compute_total_value")
-
-    value_per_kilo = fields.Float(string="Valor por Kilo", compute="_compute_value_per_kilo")
 
     required_loading_date = fields.Datetime(string="Fecha Requerida de Carga", compute="_compute_required_loading_date")
 
@@ -69,15 +64,7 @@ class CustomOrdersToInvoice(models.Model):
                     item.container_number = stock.container_number
                 else:
                     item.container_number = ''
-    
-    def _compute_value_per_kilo(self):
-        for item in self:
-            if item.stock_picking_id and item.stock_picking_id != 0:      
-                stock = self.env['stock.picking'].search([('id','=',item.stock_picking_id)])
-                if not stock.is_child_dispatch or stock.is_child_dispatch == '':
-                    item.value_per_kilo = stock.value_per_kilogram
-                else:
-                    item.value_per_kilo = 0
+ 
      
     def _compute_required_loading_date(self):
         for item in self:
