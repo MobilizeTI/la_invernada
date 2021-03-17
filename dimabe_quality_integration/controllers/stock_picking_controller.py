@@ -59,7 +59,7 @@ class StockPickingController(http.Controller):
                 'VarietyName': res.move_ids_without_package[0].product_id.get_variety(),
                 'LotNumber': res.name,
                 'DispatchGuideNumber': res.guide_number,
-                'ReceptionDate': res.scheduled_date,
+                'ReceptionDate': self.time_to_tz_naive(res.scheduled_date, pytz.utc, pytz.timezone("America/Santiago")),
                 'ReceptionKgs': res.production_net_weight,
                 'ContainerType': res.get_canning_move().product_id.display_name,
                 'ContainerWeightAverage': res.avg_unitary_weight,
@@ -82,7 +82,7 @@ class StockPickingController(http.Controller):
                     'VarietyName': res.in_product_variety,
                     'LotNumber': res.out_lot_id.name,
                     'DispatchGuideNumber': res.lot_guide_numbers,
-                    'ReceptionDate': res.finish_date,
+                    'ReceptionDate': self.time_to_tz_naive(res.finish_date, pytz.utc, pytz.timezone("America/Santiago")),
                     'ReceptionKgs': res.total_out_weight,
                     'ContainerType': res.canning_id.display_name,
                     'ContainerWeightAverage': res.total_out_weight / res.out_serial_count,
@@ -143,5 +143,6 @@ class StockPickingController(http.Controller):
             })
         return data
 
+
     def time_to_tz_naive(self,t, tz_in, tz_out):
-        return tz_in.localize(datetime.combine(datetime.today(), t.time())).astimezone(tz_out)
+        return tz_in.localize(t).astimezone(tz_out)
