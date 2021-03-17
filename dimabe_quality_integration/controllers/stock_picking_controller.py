@@ -145,4 +145,4 @@ class StockPickingController(http.Controller):
 
 
     def time_to_tz_naive(self,t, tz_in, tz_out):
-        return tz_in.localize(datetime.combine(datetime.today(), t)).astimezone(tz_out).time()
+        return tz_in.localize(time.combine(time.today(), t)).astimezone(tz_out).time()
