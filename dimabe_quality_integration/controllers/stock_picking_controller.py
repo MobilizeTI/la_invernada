@@ -11,16 +11,14 @@ class StockPickingController(http.Controller):
     @http.route('/api/stock_pickings', type='json', methods=['GET'], auth='token', cors='*')
     def get_stock_pickings(self, sinceDate=None):
         date_to_search = sinceDate or (date.today() - timedelta(days=7))
-        result = request.env['stock.picking'].sudo().search(
-            [('write_date', '>', date_to_search), ('company_id.id', '=', 1)])
+        result = request.env['stock.picking'].sudo().search([('write_date','>', date_to_search)])
+        #result = request.env['stock.picking'].search([])
         data = []
         if result:
             for res in result:
                 if res.partner_id.id:
                     if res.picking_type_id:
-                        if res.picking_type_code == 'incoming':
-                            if not res.move_ids_without_package:
-                                continue
+                        if res.picking_type_id.code == 'incoming':
                             if res.move_ids_without_package[0].product_id.product_tmpl_id.tracking != 'lot':
                                 continue
                             kgs = 0

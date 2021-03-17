@@ -127,6 +127,9 @@ class HrPayslip(models.Model):
     @api.multi
     def compute_sheet(self):
         res = super(HrPayslip, self).compute_sheet()
+        self.write({
+            'account_analytic_id':self.contract_id.department_id.analytic_account_id.id
+        })
         if self.worked_days_line_ids.filtered(lambda a: a.code == 'SBS220') and self.line_ids.filtered(
                 lambda a: a.code == 'TOTIM').total == 0:
             payslips = self.env['hr.payslip'].search([('employee_id', '=', self.employee_id.id)])
