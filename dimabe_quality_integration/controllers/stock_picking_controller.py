@@ -11,8 +11,8 @@ class StockPickingController(http.Controller):
     @http.route('/api/stock_pickings', type='json', methods=['GET'], auth='token', cors='*')
     def get_stock_pickings(self, sinceDate=None):
         date_to_search = sinceDate or (date.today() - timedelta(days=7))
-        #result = request.env['stock.picking'].search([('write_date','>', date_to_search)])
-        result = request.env['stock.picking'].search([])
+        result = request.env['stock.picking'].sudo().search([('write_date','>', date_to_search)])
+        #result = request.env['stock.picking'].search([])
         data = []
         if result:
             for res in result:
@@ -48,7 +48,7 @@ class StockPickingController(http.Controller):
 
     @http.route('/api/stock_picking', type='json', methods=['GET'], auth='token', cors='*')
     def get_stock_picking(self, lot):
-        res = request.env['stock.picking'].search([('name', '=', lot)])
+        res = request.env['stock.picking'].sudo().search([('name', '=', lot)])
         if res and res.partner_id.id:
             return {
                 'ProducerCode': res.partner_id.id,
@@ -70,7 +70,7 @@ class StockPickingController(http.Controller):
                 'ArticleDescription': res.move_ids_without_package[0].product_id.display_name
             }
         else:
-            res = request.env['dried.unpelled.history'].search(
+            res = request.env['dried.unpelled.history'].sudo().search(
                 [('out_lot_id.name', '=', lot)])
             if res and res.partner_id.id:
                 return {
@@ -95,7 +95,7 @@ class StockPickingController(http.Controller):
 
     @http.route("/api/stock_picking", type='json', methods=['PUT'], auth='token', cors='*')
     def put_lot(self, lot, data):
-        stock_picking_ids = request.env['stock.picking'].search(
+        stock_picking_ids = request.env['stock.picking'].sudo().search(
             [('name', '=', lot)])
 
         if stock_picking_ids:
@@ -108,7 +108,7 @@ class StockPickingController(http.Controller):
 
     @http.route('/api/data_by_order', type='json', methods=['POST'], auth='token', cors='*')
     def get_data_by_order(self, sale_order):
-        sale_order = request.env['sale.order'].search(
+        sale_order = request.env['sale.order'].sudo().search(
             [('name', '=', sale_order)])
         data = []
         if sale_order:
