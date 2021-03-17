@@ -48,11 +48,11 @@ class CustomOrdersToInvoice(models.Model):
     def _compute_main_dispatch(self):
         for item in self:
             if item.stock_picking_id and item.stock_picking_id != 0:
-                stock = self.env['stock.picking'].search([('picking_principal_id','=',item.stock_picking_id)])
-                if stock:
-                    item.main_dispatch = stock[0].name
+                stock = self.env['stock.picking'].search([('id','=',item.stock_picking_id)])
+                if stock.picking_principal_id or stock.picking_principal_id != '':
+                    item.main_dispatch = stock.picking_principal_id.name
                 else:
-                    item.main_dispatch = "No posee"
+                    item.main_dispatch = ""
 
     def _compute_container_number(self):
         for item in self:
