@@ -53,7 +53,6 @@ class CustomOrdersToInvoice(models.Model):
                     main_dispatch = stock[0].name
                 else:
                     main_dispatch = "No posee"
-            
 
     def _compute_container_number(self):
         for item in self:
