@@ -15,7 +15,6 @@
                     <field name="notify_ids"
                            attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"
                     />
-                    <button type="object" name="clean_notify" string="Eliminar Notify" class="oe_highlight"/>
                 </field>
                 <xpath expr="//page[@name='extra']" position="after">
                     <page string="COMEX" id="export_data" attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}">

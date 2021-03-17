@@ -40,10 +40,10 @@ class CustomOrdersToInvoice(models.Model):
         for item in self:
             if item.stock_picking_id and item.stock_picking_id != 0:
                 stock = self.env['stock.picking'].search([('id','=',item.stock_picking_id)])
-                if not stock.is_child_dispatch or stock.is_child_dispatch == '' or stock.picking_principal_id:
+                if (not stock.is_child_dispatch or stock.is_child_dispatch == '') and (stock.picking_principal_id or stock.picking_principal_id != ''):
                     item.is_multiple_dispatch = "Si"
                 else:
-                    item.is_multiple_dispatch = ""
+                    item.is_multiple_dispatch = "No"
     
     def _compute_main_dispatch(self):
         for item in self:
