@@ -220,9 +220,6 @@
                                             <field name="container_number" readonly="1"/>
                                             <field name="required_loading_date" readonly="1"/>
                                             <field name="quantity_to_invoice" readonly="1"/>
-                                            <field name="value_per_kilo" readonly="1"/>
-                                            <field name="total_comission" readonly="1"/>
-                                            <field name="total_value" readonly="1"/>
                                         </group>
                                     </form>
                                     <tree delete="false" create="0"><!--delete="false" create="0"-->
@@ -234,9 +231,6 @@
                                         <field name="container_number" readonly="1"/>
                                         <field name="required_loading_date" readonly="1"/>
                                         <field name="quantity_to_invoice" readonly="1"/>
-                                        <field name="value_per_kilo" readonly="1"/>
-                                        <field name="total_comission" readonly="1"/>
-                                        <field name="total_value" readonly="1"/>
                                     </tree>
                                 </field>
                             </group>

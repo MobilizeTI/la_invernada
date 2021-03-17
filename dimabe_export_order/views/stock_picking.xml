@@ -45,10 +45,10 @@
                                     <field name="client_label_file"
                                            attrs="{'invisible':[('client_label', '=', False)]}" readonly="1"
                                     />
-                                    <field name="freight_value" readonly="1"/>
+                                    <!--<field name="freight_value" readonly="1"/>
                                     <field name="safe_value" readonly="1"/>
                                     <field name="total_value" readonly="1"/>
-                                    <field name="value_per_kilogram" readonly="1"/>
+                                    <field name="value_per_kilogram" readonly="1"/>-->
                                 </group>
                             </group>
                             <group string="Embarque" style="width:100%" >

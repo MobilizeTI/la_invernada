@@ -142,13 +142,9 @@ class AccountInvoice(models.Model):
     valid_to_sii = fields.Boolean(string="Valido para SII")
 
     #COMEX
-    total_value = fields.Float(
-        'Valor Total'
-    )
+    total_value = fields.Float('FOB Total', compute="_compute_total_value")
 
-    value_per_kilogram = fields.Float(
-        'Valor por kilo'
-    )
+    value_per_kilogram = fields.Float('FOB /kilo',compute="_compute_value_per_kilogram")
 
     #shipping_number = fields.Integer('Número Embarque')
     shipping_number = fields.Char('Número Embarque')
@@ -269,6 +265,8 @@ class AccountInvoice(models.Model):
 
     transport_to_port = fields.Many2one('res.partner',string="Transporte a Puerto",domain="[('supplier','=',True)]")
 
+
+
     #Emarque Method
     @api.model
     @api.onchange('etd')
@@ -285,6 +283,16 @@ class AccountInvoice(models.Model):
         else:
             self.etd_week = None
             self.etd_month = None
+
+    @api.depends('freight_amount','safe_amount')
+    def _compute_total_value(self):
+        for item in self:
+            item.total_value = item.amount_total - item.freight_amount - item.safe_amount
+
+    @api.depends('total_value')
+    def _compute_value_per_kilogram(self):
+        for item in self:
+            item.value_per_kilogram = item.total_value / (sum(line.quantity for line in item.custom_invoice_line_ids) if sum(line.quantity for line in item.custom_invoice_line_ids)>0 else 1)
 
     @api.multi
     def _compute_total_packages(self):
@@ -835,13 +843,14 @@ class AccountInvoice(models.Model):
                 if self.stock_picking_ids.sale_id.id != self.order_to_add_id:
                     raise models.ValidationError('El despacho {} no pertenece al pedido {}'.format(self.stock_picking_ids.name,self.order_to_add_ids.name))
 
-                if self.stock_picking_ids.is_multiple_dispatch:
-                    if self.stock_picking_ids.net_weight_dispatch == 0:
-                        raise models.ValidationError('El Despacho {} no posee los Kilos Netos en la pestaña de Despacho'.format(self.stock_picking_ids.name))
-                    if self.stock_picking_ids.gross_weight_dispatch == 0:
-                        raise models.ValidationError('El Despacho {} no posee los Kilos Brutos en la pestaña de Despacho'.format(self.stock_picking_ids.name))
-                    if self.stock_picking_ids.tare_container_weight_dispatch == 0:
-                        raise models.ValidationError('El Despacho {} no posee los Kilos Tara en la pestaña de Despacho'.format(self.stock_picking_ids.name))
+                #validar que podamos sacarlo
+                #if self.stock_picking_ids.is_multiple_dispatch:
+                #    if self.stock_picking_ids.net_weight_dispatch == 0:
+                #        raise models.ValidationError('El Despacho {} no posee los Kilos Netos en la pestaña de Despacho'.format(self.stock_picking_ids.name))
+                #    if self.stock_picking_ids.gross_weight_dispatch == 0:
+                #        raise models.ValidationError('El Despacho {} no posee los Kilos Brutos en la pestaña de Despacho'.format(self.stock_picking_ids.name))
+                #    if self.stock_picking_ids.tare_container_weight_dispatch == 0:
+                #        raise models.ValidationError('El Despacho {} no posee los Kilos Tara en la pestaña de Despacho'.format(self.stock_picking_ids.name))
             
                 product_ids = self.env['sale.order.line'].search([('order_id','=',self.order_to_add_ids.id)])
                 stock_picking_line = self.env['stock.move.line'].search([('picking_id','=',self.stock_picking_ids.id)])

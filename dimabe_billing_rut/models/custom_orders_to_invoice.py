@@ -55,7 +55,7 @@ class CustomOrdersToInvoice(models.Model):
             if item.stock_picking_id and item.stock_picking_id != 0:
                 stock = self.env['stock.picking'].search([('id','=',item.stock_picking_id)])
                 if stock.picking_principal_id:
-                    main_dispatch = stock.mapped('picking_principal_id').name
+                    main_dispatch = stock.picking_principal_id.name
                 else:
                     main_dispatch = ""
             
@@ -78,16 +78,7 @@ class CustomOrdersToInvoice(models.Model):
                     item.value_per_kilo = stock.value_per_kilogram
                 else:
                     item.value_per_kilo = 0
-    
-    def _compute_total_value(self):
-        for item in self:
-            if item.stock_picking_id and item.stock_picking_id != 0:
-                stock = self.env['stock.picking'].search([('id','=',item.stock_picking_id)])
-                if not stock.is_child_dispatch or stock.is_child_dispatch == '':
-                    item.total_value = stock.total_value
-                else:
-                    item.total_value = 0
-    
+     
     def _compute_required_loading_date(self):
         for item in self:
             if item.stock_picking_id and item.stock_picking_id != 0:
@@ -96,16 +87,5 @@ class CustomOrdersToInvoice(models.Model):
                     item.required_loading_date = stock.required_loading_date
 
 
-    def _compute_total_comission(self):
-        for item in self:
-            if item.stock_picking_id and item.stock_picking_id != 0:
-                
-                stock = self.env['stock.picking'].search([('id','=',item.stock_picking_id)])
-                    
-                if not stock.is_child_dispatch or stock.is_child_dispatch == '':
-                    item.total_comission = stock.total_commission
-                else:
-                    item.total_comission = 0
-    
   
     
