@@ -253,9 +253,16 @@
                                         <!--<td style="border-right:1px solid;border-bottom:1px solid;text-align:right;padding-right:4px;">
                                             <span t-field="m.quantity_done"/>
                                         </td>-->
-                                        <td style="border-right:1px solid;border-bottom:1px solid;text-align:right;padding-right:4px;">
-                                            <span t-field="m.quantity_done"/>
-                                        </td>
+                                        <t t-if="sum(d.dispatch_line_ids.filtered(lambda a: a.product_id.id == m.product_id.id).mapped('real_dispatch_qty')) != m.quantity_done">
+                                            <td style="border-right:1px solid;border-bottom:1px solid;text-align:right;padding-right:4px;">
+                                                <span t-field="m.quantity_done"/>
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                            <td style="border-right:1px solid;border-bottom:1px solid;text-align:right;padding-right:4px;">
+                                                <span t-field="sum(d.dispatch_line_ids.filtered(lambda a: a.product_id.id == m.product_id.id).mapped('real_dispatch_qty'))"/>
+                                            </td>
+                                        </t>
                                         <!--<td style="border-right:1px solid;border-bottom:1px solid;text-align:right;padding-right:4px;">
                                             <span t-field="m.product_id.lst_price"/>
                                         </td>-->
@@ -1512,35 +1519,35 @@
                         </t>
                         <t t-else="">
                             <table width="45%%" style="font-size:12px;display:inline-block;">
-                        <tr>
-                            <td>
+                                <tr>
+                                    <td>
 
-                            </td>
-                            <td>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                            </td>
-                            <td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    </td>
+                                    <td>
 
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                            </td>
-                            <td>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
 
-                            </td>
-                            <td>
+                                    </td>
+                                    <td>
 
-                            </td>
-                        </tr>
-                    </table>
+                                    </td>
+                                </tr>
+                            </table>
                             <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
                                 <tr>
                                     <td>
