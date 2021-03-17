@@ -303,11 +303,14 @@ class AccountInvoice(models.Model):
     @api.multi
     def _compute_total_commission(self):
         for item in self:
-            total_commission = 0
-            if len(item.orders_to_invoice) > 0:
-                for line in item.orders_to_invoice:
-                    total_commission += line.total_comission
-                item.total_commission = total_commission
+            #total_commission = 0
+            #if len(item.orders_to_invoice) > 0:
+            #    for line in item.orders_to_invoice:
+            #        total_commission += line.total_comission
+            #    item.total_commission = total_commission
+            if item.commission > 0 and item.commission <= 3:
+                item.total_commission = item.amount_total * (item.commission / 100)
+
     
     @api.multi
     def _compute_tara(self):
