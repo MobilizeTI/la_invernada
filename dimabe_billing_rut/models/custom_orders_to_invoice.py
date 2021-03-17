@@ -49,8 +49,8 @@ class CustomOrdersToInvoice(models.Model):
         for item in self:
             if item.stock_picking_id and item.stock_picking_id != 0:
                 stock = self.env['stock.picking'].search([('id','=',item.stock_picking_id)])
-                if stock.picking_principal_id:
-                    main_dispatch = stock.picking_principal_id.name
+                if stock.picking_principal_id or stock.picking_principal_id != '':
+                    main_dispatch = 'principal'+stock.picking_principal_id.name
                 else:
                     main_dispatch = ""
             
