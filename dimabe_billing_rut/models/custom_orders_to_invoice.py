@@ -63,8 +63,7 @@ class CustomOrdersToInvoice(models.Model):
                     item.container_number = stock.container_number
                 else:
                     item.container_number = ''
- 
-     
+      
     def _compute_required_loading_date(self):
         for item in self:
             if item.stock_picking_id and item.stock_picking_id != 0:
