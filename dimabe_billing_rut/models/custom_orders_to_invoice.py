@@ -50,7 +50,7 @@ class CustomOrdersToInvoice(models.Model):
             if item.stock_picking_id and item.stock_picking_id != 0:
                 stock = self.env['stock.picking'].search([('picking_principal_id','=',item.stock_picking_id)])
                 if stock:
-                    main_dispatch = stock.name
+                    main_dispatch = stock[0].name
                 else:
                     main_dispatch = "No posee"
             
