@@ -19,20 +19,25 @@ class StockReportXlsx(models.TransientModel):
 
     @api.multi
     def generate_report(self):
+        dict_data = {}
         if self.stock_selection == 'raw':
             dict_data = self.generate_excel_raw_report()
-            attachment_id = self.env['ir.attachment'].sudo().create({
-                'name': dict_data['file_name'],
-                'datas_fname': dict_data['file_name'],
-                'datas': dict_data['base64']
-            })
+        elif self.stock_selection == 'calibrate':
+            dict_data = self.generate_excel_serial_report(
+                [('product_id.default_code', 'like', 'PSE006'), ('product_id.name', 'not like', 'Vana'),
+                 ('product_id.name', 'not like', 'Descarte')], "Producto Calibrado")
+        attachment_id = self.env['ir.attachment'].sudo().create({
+            'name': dict_data['file_name'],
+            'datas_fname': dict_data['file_name'],
+            'datas': dict_data['base64']
+        })
 
-            action = {
-                'type': 'ir.actions.act_url',
-                'url': '/web/content/{}?download=true'.format(attachment_id.id, ),
-                'target': 'new',
-            }
-            return action
+        action = {
+            'type': 'ir.actions.act_url',
+            'url': '/web/content/{}?download=true'.format(attachment_id.id, ),
+            'target': 'new',
+        }
+        return action
 
     def generate_excel_raw_report(self):
         file_name = 'temp_report.xlsx'
@@ -155,4 +160,4 @@ class StockReportXlsx(models.TransientModel):
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
         report_name = f'Informe de Existencia {type_product} {date.today().strftime("%d/%m/%Y")}.xlsx'
-        return {'report_name': report_name, 'base64': file_base64}
+        return {'file_name': report_name, 'base64': file_base64}
