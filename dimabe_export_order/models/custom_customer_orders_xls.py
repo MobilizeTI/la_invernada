@@ -112,7 +112,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         for line in order.order_line:
                             for item in invoice_line:
                                 if line.product_id.id == item.product_id.id:
-                                    price_set += + item.price_unit + ' '
+                                    price_set += + str(item.price_unit) + ' '
                             product_set += line.product_id.name + ' '
                             for attribute in line.product_id.attribute_value_ids:
                                 if attribute.attribute_id.name == 'Variedad':
