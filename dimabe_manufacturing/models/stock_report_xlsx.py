@@ -52,7 +52,7 @@ class StockReportXlsx(models.TransientModel):
         col = 0
 
         lots = self.env['stock.production.lot'].sudo().search(
-            [('product_id.categ_id.name', 'in', ('Seca', 'Desp. y Secado')), ('harvest', '=', self.harvest)])
+            [('product_id.categ_id.name', 'in', ('Seca', 'Desp. y Secado')), ('harvest', '=', self.year)])
         for lot in lots:
             if lot.producer_id:
                 sheet.write(row, col, lot.producer_id.display_name)
