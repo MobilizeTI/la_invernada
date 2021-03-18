@@ -12,7 +12,7 @@
                     <field name="consignee_id"
                            attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"
                     />
-                    <field name="custom_notify_ids" attrs="{'invisible': [('dte_code', '!=', '110')]}">
+                    <field name="custom_notify_ids" attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}">
                         <tree editable="bottom" edit="True">
                             <field name="position"/>
                             <field name="partner_name" readonly="1"/>
