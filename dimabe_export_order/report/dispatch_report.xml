@@ -254,12 +254,11 @@
                                         <!--<td style="border-right:1px solid;border-bottom:1px solid;text-align:right;padding-right:4px;">
                                             <span t-field="m.quantity_done"/>
                                         </td>-->
-                                        <t t-if="sum(total) != m.quantity_done">
+                                        <t t-if="sum(total) == m.quantity_done">
                                             <td style="border-right:1px solid;border-bottom:1px solid;text-align:right;padding-right:4px;">
                                                 <span t-field="m.quantity_done"/>
                                             </td>
                                         </t>
-                                        <t t-esc="sum(total)"></t>
                                         <t t-else="">
                                             <td style="border-right:1px solid;border-bottom:1px solid;text-align:right;padding-right:4px;">
                                                 <span t-esc="sum(total)"/>
