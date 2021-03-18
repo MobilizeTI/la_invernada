@@ -205,11 +205,10 @@ class StockPicking(models.Model):
     @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package' )
     def _compute_production_net_weight(self):
         if self.picking_type_code == 'incoming':
-            self.production_net_weight = self.gross_weight - self.tare_weight
+            self.production_net_weight = self.gross_weight - self.tare_weight + self.quality_weight
             if self.is_mp_reception or self.is_pt_reception or self.is_satelite_reception:
                 if self.canning_weight:
                     self.production_net_weight = self.production_net_weight - self.canning_weight
-            models._logger.error(self.production_net_weight)
 
     @api.one
     def _compute_elapsed_time(self):
@@ -389,7 +388,6 @@ class StockPicking(models.Model):
             return res
         else:
             return super(StockPicking, self).button_validate()
-
 
     @api.model
     def validate_mp_reception(self):
