@@ -5,7 +5,7 @@
             <div class="page" style="margin:auto;">
                 <t t-foreach="docs" t-as="d">
                     <div style="width:100%;">
-                        <div style="width:33.3%;display:inline-block; padding-bottom: 20px;">
+                        <div style="width:33.3%;display:inline-block;">
                             <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
                                  style="width:200px;"
                             />
@@ -213,7 +213,7 @@
                             </table>
                         </t>
                     </div>
-                    <div style="width:100%;margin:0 auto;height:580px;border:1px solid; border-radius: 5px; margin-top:4px;">
+                    <div style="width:100%;margin:0 auto;height:600px;border:1px solid; border-radius: 5px; margin-top:4px;">
                         <table style="width:100%;font-size:11px;" cellspacing="0">
                             <th style="width:9%;border-right:1px solid;border-bottom:1px solid; padding-top: 6px;">
                                 CÓDIGO
@@ -285,10 +285,10 @@
                                                                     <td style="width: 100px">
                                                                         KILOS NETOS
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="width: 140px">
                                                                         <span t-field="d.picking_real_id.net_weight_dispatch"/>
                                                                     </td>
-                                                                    <td >N° CONTENEDOR</td>
+                                                                    <td style="width: 120px">N° CONTENEDOR</td>
                                                                     <td>
                                                                         <span t-field="d.picking_real_id.container_number"/>
                                                                     </td>
@@ -499,10 +499,10 @@
                                                                 <td style="width: 100px">
                                                                     KILOS NETOS
                                                                 </td>
-                                                                <td>
+                                                                <td style="width: 140px">
                                                                     <span t-field="d.picking_principal_id.net_weight_dispatch"/>
                                                                 </td>
-                                                                <td>N° CONTENEDOR</td>
+                                                                <td style="width: 120px">N° CONTENEDOR</td>
                                                                 <td>
                                                                     <span t-field="d.picking_principal_id.container_number"/>
                                                                 </td>
@@ -708,10 +708,10 @@
                                                                 <td style="width: 100px" >
                                                                     KILOS NETOS
                                                                 </td>
-                                                                <td>
+                                                                <td style="width: 140px">
                                                                     <span t-field="d.net_weight_dispatch"/>
                                                                 </td>
-                                                                <td>N° CONTENEDOR</td>
+                                                                <td style="width: 120px">N° CONTENEDOR</td>
                                                                 <td>
                                                                     <span t-field="d.container_number"/>
                                                                 </td>
@@ -1041,10 +1041,10 @@
                                         <table style="font-size:9px;width:55%;height:30%;margin:0 auto;">
                                             <tr>
                                                 <td style="width: 100px">KILOS NETOS</td>
-                                                <td>
+                                                <td style="width: 140px">
                                                     <span t-field="d.net_weight_dispatch"/>
                                                 </td>
-                                                <td>N° CONTENEDOR</td>
+                                                <td style="width: 120px">N° CONTENEDOR</td>
                                                 <td>
                                                     <span t-field="d.container_number"/>
                                                 </td>
