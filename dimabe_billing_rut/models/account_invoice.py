@@ -498,7 +498,7 @@ class AccountInvoice(models.Model):
 
      
     def validation_fields(self):
-        valid_to_sii = False
+        self.valid_to_sii = False
 
         if not self.uom_tara:
             raise models.ValidationError('Debe seleccionar La Unidad de Medida Tara')
@@ -581,10 +581,8 @@ class AccountInvoice(models.Model):
 
         #Verificar/Validar si hay cambios en el despacho  de los pedidos respecto a las lineas
 
-        valid_to_sii = True
+        self.valid_to_sii = True
 
-        if valid_to_sii:
-            self.valid_to_sii = valid_to_sii
 
     @api.onchange('dte_type_id')
     def on_change_dte_type_id(self):
