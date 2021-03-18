@@ -15,7 +15,7 @@
                         <field name="notify_ids" attrs="{'invisible': [('dte_code', '!=', '110')]}" default_order="date asc"/>
                         <field name="custom_notify_ids" attrs="{'invisible': [('dte_code', '!=', '110')]}">
                             <tree editable="bottom" edit="True">
-                                <field name="partne_name" readonly="1"/>
+                                <field name="partner_name" readonly="1"/>
                                 <field name="position"/>
                             </tree>
                         </field>
