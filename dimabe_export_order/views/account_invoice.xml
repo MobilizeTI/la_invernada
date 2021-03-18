@@ -12,11 +12,15 @@
                     <group string="Notify">
                         <field name="consignee_id" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                         <button type="object" name="clean_notify" string="Eliminar Notify" class="oe_highlight"/>
-                        <field name="notify_ids" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                         <field name="custom_notify_ids" attrs="{'invisible': [('dte_code', '!=', '110')]}">
                             <tree editable="bottom" edit="True">
-                                <field name="partner_name" readonly="1"/>
                                 <field name="position"/>
+                                <field name="partner_name" readonly="1"/>
+                                <field name="partner_identifier_type" readonly="1"/>
+                                <field name="partner_identifier_value" readonly="1"/>
+                                <field name="partner_contact" readonly="1"/>
+                                <field name="partner_contact_phone" readonly="1"/>
+                                <field name="partner_contact_mobile" readonly="1"/>
                             </tree>
                         </field>
                     </group>

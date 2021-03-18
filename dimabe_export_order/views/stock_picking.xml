@@ -12,10 +12,15 @@
                     <field name="consignee_id"
                            attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"
                     />
-                    <field name="notify_ids"
-                           attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"
-                    />
-                    <field name="custom_notify_ids" attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"/>
+                    <field name="custom_notify_ids" attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}">
+                        <field name="position"/>
+                        <field name="partner_name" readonly="1"/>
+                        <field name="partner_identifier_type" readonly="1"/>
+                        <field name="partner_identifier_value" readonly="1"/>
+                        <field name="partner_contact" readonly="1"/>
+                        <field name="partner_contact_phone" readonly="1"/>
+                        <field name="partner_contact_mobile" readonly="1"/>
+                    </field>
                 </field>
                 <xpath expr="//page[@name='extra']" position="after">
                     <page string="COMEX" id="export_data" attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}">
