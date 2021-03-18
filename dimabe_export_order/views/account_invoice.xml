@@ -13,6 +13,7 @@
                         <field name="consignee_id" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                         <button type="object" name="clean_notify" string="Eliminar Notify" class="oe_highlight"/>
                         <field name="notify_ids" attrs="{'invisible': [('dte_code', '!=', '110')]}" default_order="date asc"/>
+                        <field name="custom_notify_ids" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                     </group>
                     <group string="Información para Instructivos">
                         <group>
