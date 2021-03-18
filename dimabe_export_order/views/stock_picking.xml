@@ -15,7 +15,7 @@
                     <field name="notify_ids"
                            attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"
                     />
-                    <field name="custom_notify_ids" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                    <field name="custom_notify_ids" attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"/>
                 </field>
                 <xpath expr="//page[@name='extra']" position="after">
                     <page string="COMEX" id="export_data" attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}">
