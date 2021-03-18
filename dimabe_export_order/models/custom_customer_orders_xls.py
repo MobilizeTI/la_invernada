@@ -101,14 +101,19 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         col += 1
 
                         product_set = ''
+                        price_set = ''
                         species = []
                         varieties = []
                         colors = []
                         calibers = []
                         brands = []
                         cannings = []
+                        
                         for line in order.order_line:
-                            product_set += ' ' + line.product_id.name
+                            for item in invoice_line:
+                                if line.product_id.id == item.product_id.id:
+                                    price_set += + item.price_unit + ' '
+                            product_set += line.product_id.name + ' '
                             for attribute in line.product_id.attribute_value_ids:
                                 if attribute.attribute_id.name == 'Variedad':
                                     if attribute.name not in varieties:
@@ -145,11 +150,13 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, "pendiente")
                         col += 1
                         #Precio
-                        sheet.write(row, col, "pendiente")
+                        sheet.write(row, col, price_set)
                         col += 1
                         #Monto
-                        if account_invoice:
+                        if exist_account_invoice:
                             sheet.write(row, col, account_invoice.amount_total if account_invoice.amount_total else '')
+                        else:
+                            sheet.write(row, col, "")
                         col += 1
                         #N° Factura
                         if exist_account_invoice:
