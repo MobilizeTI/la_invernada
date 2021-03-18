@@ -9,6 +9,7 @@ class StockReportXlsx(models.TransientModel):
 
     year = fields.Integer('Cosecha')
 
+
     @api.multi
     def generate_excel_raw_report(self):
         file_name = 'temp_report.xlsx'
@@ -28,7 +29,7 @@ class StockReportXlsx(models.TransientModel):
         col = 0
 
         lots = self.env['stock.production.lot'].sudo().search(
-            [('product_id.categ_id.name', 'in', ('Seca', 'Desp. y Secado'))])
+            [('product_id.categ_id.name', 'in', ('Seca', 'Desp. y Secado')), ('harvest', '=', self.harvest)])
         for lot in lots:
             if lot.producer_id:
                 sheet.write(row, col, lot.producer_id.display_name)

@@ -344,9 +344,6 @@ class StockPicking(models.Model):
 
                                     default_value = stock_picking.avg_unitary_weight or 1
                                     for i in range(int(total_qty)):
-                                        models._logger.error(i == int(total_qty))
-                                        models._logger.error(
-                                            stock_picking.net_weight - (int(total_qty) * default_value))
                                         if i == int(total_qty):
 
                                             diff = stock_picking.net_weight - (
