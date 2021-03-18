@@ -955,7 +955,6 @@ class AccountInvoice(models.Model):
         for s in stock_picking_ids:
             s.write({
                 'shipping_number': self.shipping_number,
-                #'contract_correlative_view': self.contract_correlative_view,
                 'agent_id': self.agent_id.id,
                 'commission' : self.commission,
                 'charging_mode' : self.charging_mode,
@@ -1008,21 +1007,47 @@ class AccountInvoice(models.Model):
                             'quantity_to_invoice' : new_quantity
                         })
 
-            #for c in custom_invoice_line_ids:
-            #    if s.state == "done":
-            #        old_quantity = c.quantity
-            #        new_quantity = 0
-            #        stock_picking_line = self.env['stock.move.line'].search([('picking_id','=',s.id)])
-            #        for picking in stock_picking_line:
-            #            if picking.product_id.id == c.product_id:
-            #                new_quantity += picking.qty_done
-            #        c.write({
-            #            'quantity' : old_quantity +  new_quantity
-            #        })
-
             
         return res
 
+        @api.multi
+        def update_dispatch_quantity(self):
+            order_list = []
+            if len(self.orders_to_invoice)>0:
+                for item in self.orders_to_invoice:
+                    if item.order_id:
+                        order_list.append(item.stock_picking_id)
+
+                stock_picking_ids = self.env['stock.picking'].search([('id', 'in', order_list)])
+                invoice_line_ids = self.env['account.invoice.line'].search([('invoice_id','=',self.id)])
+                orders_to_invoice_ids = self.env['custom.orders.to.invoice'].search([('invoice_id','=',self.id)])
+
+                for s in stock_picking_ids:
+                    for line in invoice_line_ids:
+                        if line.stock_picking_id == s.id:
+                            if s.state == "done":
+                                new_quantity = 0
+                                stock_picking_line = self.env['stock.move.line'].search([('picking_id','=',s.id)])
+                                for picking in stock_picking_line:
+                                        if picking.product_id.id == line.product_id.id:
+                                            new_quantity += picking.qty_done
+                                line.write({
+                                    'quantity' : new_quantity
+                                })
+
+                for o in orders_to_invoice_ids:
+                    if o.stock_picking_id == s.id:
+                        if s.state == "done":
+                            new_quantity = 0
+                            stock_picking_line = self.env['stock.move.line'].search([('picking_id','=',s.id)])
+                            for picking in stock_picking_line:
+                                    if picking.product_id.id == o.product_id:
+                                        new_quantity += picking.qty_done
+                            o.write({
+                                'quantity_to_invoice' : new_quantity
+                            })
+            else:
+                raise models.ValidationError('No hay linea de productos a Facturar')
  
 
 

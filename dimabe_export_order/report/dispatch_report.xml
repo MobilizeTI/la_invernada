@@ -134,6 +134,12 @@
                                             <span t-field="d.customs_department.phone"/>
                                         </t>
                                     </td>
+                                    <td style="text-align:left;">
+                                        <strong>COND.PAGO:</strong>
+                                    </td>
+                                    <td style="text-align:left;">
+                                        <span t-field="d.method_of_payment"></span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td style="text-align:left;">
@@ -147,24 +153,6 @@
                                             <span t-field="d.customs_department.state_id"/>
                                         </t>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:left;">
-                                        <strong>GIRO:</strong>
-                                    </td>
-                                    <td style="text-align:left;">
-                                        <span t-field="d.partner_activity_id.name"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:left;">
-                                        <strong>COND.PAGO:</strong>
-                                    </td>
-                                    <td style="text-align:left;">
-                                        <span t-field="d.method_of_payment"></span>
-                                    </td>
-                                </tr>
-                                <tr>
                                     <td>
                                         <strong>TIPO DE DESPACHO:</strong>
                                     </td>
@@ -173,6 +161,12 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td style="text-align:left;">
+                                        <strong>GIRO:</strong>
+                                    </td>
+                                    <td style="text-align:left;">
+                                        <span t-field="d.partner_activity_id.name"></span>
+                                    </td>
                                     <td>
                                         <strong>TIPO DE TRASLADO:</strong>
                                     </td>
@@ -286,173 +280,175 @@
                                             <tr>
                                                 <td colspan="3">
                                                     <t t-if="d.picking_real_id.type_of_dispatch == 'exp'">
-                                                        <table style="font-size:11px;">
-                                                            <tr>
-                                                                <td style="text-align:center;">
-                                                                    KILOS NETOS
-                                                                </td>
-                                                                <td>
-                                                                    <span t-field="d.picking_real_id.net_weight_dispatch"/>
-                                                                </td>
-                                                                <td>N° CONTENEDOR</td>
-                                                                <td>
-                                                                    <span t-field="d.picking_real_id.container_number"/>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>KILOS BRUTOS:</td>
-                                                                <td>
-                                                                    <span t-field="d.picking_real_id.gross_weight_dispatch"/>
-                                                                </td>
-                                                                <td>SELLO NAVIERA</td>
-                                                                <td>
-                                                                    <span t-field="d.picking_real_id.sell_shipping"/>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>TARA CONTE:</td>
-                                                                <td>
-                                                                    <span t-field="d.picking_real_id.tare_container_weight_dispatch"/>
-                                                                </td>
-                                                                <td>ENVASES:</td>
-                                                                <td>
-                                                                    <span t-field="d.picking_real_id.canning_data"/>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>PESO VGM:</td>
-                                                                <td>
-                                                                    <span t-field="d.picking_real_id.vgm_weight_dispatch"/>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Nave:</td>
-                                                                <td>
-                                                                    <!--<t t-if="d.picking_real_id.shipping_id.type_transport == 'terrestre'">
-                                                                        <span t-field="d.type_transport"/>
-                                                                    </t>
-                                                                    <t t-elif="d.picking_real_id.shipping_id.type_transport != 'terrestre'">
-                                                                        <span t-field="d.shipping_id.ship.name"/>
-                                                                        <span t-field="d.shipping_id.ship_number"/>
-                                                                    </t>-->
-                                                                    <t t-if="d.picking_real_id.type_transport == 'terrestre'">
-                                                                        <span t-field="d.type_transport"/>
-                                                                    </t>
-                                                                    <t t-elif="d.picking_real_id.type_transport != 'terrestre'">
-                                                                        <span t-field="d.ship.name"/>
-                                                                        <span t-field="d.ship_number"/>
-                                                                    </t>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>N° DUS:</td>
-                                                                <td>
-                                                                    <span t-field="d.picking_real_id.dus_number"/>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>PTO EMBARQUE:</td>
-                                                                <td>
-                                                                    <span t-field="d.picking_real_id.departure_port"/>,
-                                                                    <span t-field="d.picking_real_id.departure_port.country_id.name"/>
-                                                                </td>
-                                                                <td>SELLO INVERNADA</td>
-                                                                <td>
-                                                                    <span t-field="d.picking_real_id.sell_truck"/>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>PTO DESCARGA</td>
-                                                                <td>
-                                                                    <span t-field="d.picking_real_id.arrival_port"/>,
-                                                                    <span t-field="d.picking_real_id.arrival_port.country_id.name"/>
-                                                                </td>
-                                                                <td>N° RESERVA</td>
-                                                                <td>
-                                                                    <span t-field="d.picking_real_id.booking_number"/>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>TRANSPORTE:</td>
-                                                                <td>
-                                                                    <span t-field="d.picking_real_id.transport"/>
-                                                                </td>
-                                                                <td>CANDADO GPS:</td>
-                                                                <td>
-                                                                    <span t-field="d.picking_real_id.gps_lock"/>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>CHOFER:</td>
-                                                                <td>
-                                                                    <span t-field="d.picking_real_id.carrier_id"/>
-                                                                </td>
-                                                                <td>BOTON GPS:</td>
-                                                                <td>
-                                                                    <span t-field="d.picking_real_id.gps_button"/>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>RUT:</td>
-                                                                <td>
-                                                                    <span t-field="d.picking_real_id.carrier_rut"/>
-                                                                </td>
-                                                                <td>CLIENTE:</td>
-                                                                <td>
-                                                                    <span t-field="d.picking_real_id.partner_id"/>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>CELULAR:</td>
-                                                                <td>
-                                                                    <span t-field="d.picking_real_id.carrier_cell_phone"/>
-                                                                </td>
-                                                                <td>SELLO SAG:</td>
-                                                                <td>
-                                                                    <span t-field="d.picking_real_id.sell_sag"/>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><![CDATA[&nbsp;]]></td>
-                                                                <td><![CDATA[&nbsp;]]></td>
-                                                                <td>N° de Pedido</td>
-                                                                <td>
-                                                                    <span t-esc="d.picking_principal_id.origin"/>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <![CDATA[&nbsp;]]>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Pte Camion:</td>
-                                                                <td>
-                                                                    <span t-field="d.picking_real_id.carrier_truck_patent"/>
-                                                                </td>
-                                                                <td>Hora Llegada:</td>
-                                                                <td>
-                                                                    <t t-esc="'%02d:%02d' % (int(d.picking_real_id.hour_arrival),d.picking_real_id.hour_arrival % 1 * 60)"/>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Pte Rampla:</td>
-                                                                <td>
-                                                                    <span t-field="d.picking_real_id.carrier_cart_patent"/>
-                                                                </td>
-                                                                <td>Hora Salida</td>
-                                                                <td>
-                                                                    <t t-esc="'%02d:%02d' % (int(d.picking_real_id.hour_departure),d.picking_real_id.hour_departure % 1 * 60)"/>
-                                                                </td>
+                                                        <div style="width: 100%; text-align:center">
+                                                            <table style="width: 80%;" style="font-size:11px; ">
+                                                                <tr>
+                                                                    <td>
+                                                                        KILOS NETOS
+                                                                    </td>
+                                                                    <td>
+                                                                        <span t-field="d.picking_real_id.net_weight_dispatch"/>
+                                                                    </td>
+                                                                    <td >N° CONTENEDOR</td>
+                                                                    <td>
+                                                                        <span t-field="d.picking_real_id.container_number"/>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>KILOS BRUTOS:</td>
+                                                                    <td>
+                                                                        <span t-field="d.picking_real_id.gross_weight_dispatch"/>
+                                                                    </td>
+                                                                    <td>SELLO NAVIERA</td>
+                                                                    <td>
+                                                                        <span t-field="d.picking_real_id.sell_shipping"/>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>TARA CONTE:</td>
+                                                                    <td>
+                                                                        <span t-field="d.picking_real_id.tare_container_weight_dispatch"/>
+                                                                    </td>
+                                                                    <td>ENVASES:</td>
+                                                                    <td>
+                                                                        <span t-field="d.picking_real_id.canning_data"/>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>PESO VGM:</td>
+                                                                    <td>
+                                                                        <span t-field="d.picking_real_id.vgm_weight_dispatch"/>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Nave:</td>
+                                                                    <td>
+                                                                        <!--<t t-if="d.picking_real_id.shipping_id.type_transport == 'terrestre'">
+                                                                            <span t-field="d.type_transport"/>
+                                                                        </t>
+                                                                        <t t-elif="d.picking_real_id.shipping_id.type_transport != 'terrestre'">
+                                                                            <span t-field="d.shipping_id.ship.name"/>
+                                                                            <span t-field="d.shipping_id.ship_number"/>
+                                                                        </t>-->
+                                                                        <t t-if="d.picking_real_id.type_transport == 'terrestre'">
+                                                                            <span t-field="d.type_transport"/>
+                                                                        </t>
+                                                                        <t t-elif="d.picking_real_id.type_transport != 'terrestre'">
+                                                                            <span t-field="d.ship.name"/>
+                                                                            <span t-field="d.ship_number"/>
+                                                                        </t>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>N° DUS:</td>
+                                                                    <td>
+                                                                        <span t-field="d.picking_real_id.dus_number"/>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>PTO EMBARQUE:</td>
+                                                                    <td>
+                                                                        <span t-field="d.picking_real_id.departure_port"/>,
+                                                                        <span t-field="d.picking_real_id.departure_port.country_id.name"/>
+                                                                    </td>
+                                                                    <td>SELLO INVERNADA</td>
+                                                                    <td>
+                                                                        <span t-field="d.picking_real_id.sell_truck"/>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>PTO DESCARGA</td>
+                                                                    <td>
+                                                                        <span t-field="d.picking_real_id.arrival_port"/>,
+                                                                        <span t-field="d.picking_real_id.arrival_port.country_id.name"/>
+                                                                    </td>
+                                                                    <td>N° RESERVA</td>
+                                                                    <td>
+                                                                        <span t-field="d.picking_real_id.booking_number"/>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>TRANSPORTE:</td>
+                                                                    <td>
+                                                                        <span t-field="d.picking_real_id.transport"/>
+                                                                    </td>
+                                                                    <td>CANDADO GPS:</td>
+                                                                    <td>
+                                                                        <span t-field="d.picking_real_id.gps_lock"/>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>CHOFER:</td>
+                                                                    <td>
+                                                                        <span t-field="d.picking_real_id.carrier_id"/>
+                                                                    </td>
+                                                                    <td>BOTON GPS:</td>
+                                                                    <td>
+                                                                        <span t-field="d.picking_real_id.gps_button"/>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>RUT:</td>
+                                                                    <td>
+                                                                        <span t-field="d.picking_real_id.carrier_rut"/>
+                                                                    </td>
+                                                                    <td>CLIENTE:</td>
+                                                                    <td>
+                                                                        <span t-field="d.picking_real_id.partner_id"/>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>CELULAR:</td>
+                                                                    <td>
+                                                                        <span t-field="d.picking_real_id.carrier_cell_phone"/>
+                                                                    </td>
+                                                                    <td>SELLO SAG:</td>
+                                                                    <td>
+                                                                        <span t-field="d.picking_real_id.sell_sag"/>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><![CDATA[&nbsp;]]></td>
+                                                                    <td><![CDATA[&nbsp;]]></td>
+                                                                    <td>N° de Pedido</td>
+                                                                    <td>
+                                                                        <span t-esc="d.picking_principal_id.origin"/>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <![CDATA[&nbsp;]]>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Pte Camion:</td>
+                                                                    <td>
+                                                                        <span t-field="d.picking_real_id.carrier_truck_patent"/>
+                                                                    </td>
+                                                                    <td>Hora Llegada:</td>
+                                                                    <td>
+                                                                        <t t-esc="'%02d:%02d' % (int(d.picking_real_id.hour_arrival),d.picking_real_id.hour_arrival % 1 * 60)"/>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Pte Rampla:</td>
+                                                                    <td>
+                                                                        <span t-field="d.picking_real_id.carrier_cart_patent"/>
+                                                                    </td>
+                                                                    <td>Hora Salida</td>
+                                                                    <td>
+                                                                        <t t-esc="'%02d:%02d' % (int(d.picking_real_id.hour_departure),d.picking_real_id.hour_departure % 1 * 60)"/>
+                                                                    </td>
 
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="3">
-                                                                    <t t-if="d.picking_real_id.type_of_dispatch == 'exp'">
-                                                                        <span t-esc="d.picking_real_id.note_dispatched.get_footer_note()"
-                                                                              style="font-size:12px;"/>
-                                                                    </t>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="3">
+                                                                        <t t-if="d.picking_real_id.type_of_dispatch == 'exp'">
+                                                                            <span t-esc="d.picking_real_id.note_dispatched.get_footer_note()"
+                                                                                style="font-size:12px;"/>
+                                                                        </t>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
                                                     </t>
                                                 </td>
                                             </tr>
@@ -500,9 +496,10 @@
                                             <tr>
                                                 <td colspan="3">
                                                     <t t-if="d.picking_principal_id.type_of_dispatch == 'exp'">
-                                                        <table style="font-size:11px;">
+                                                        <div style="width: 100%; text-align:center">
+                                                            <table style="width: 80%;" style="font-size:11px; ">
                                                             <tr>
-                                                                <td style="text-align:center;">
+                                                                <td>
                                                                     KILOS NETOS
                                                                 </td>
                                                                 <td>
@@ -662,6 +659,7 @@
                                                                 </td>
                                                             </tr>
                                                         </table>
+                                                        </div>
                                                     </t>
                                                 </td>
                                             </tr>
@@ -709,9 +707,10 @@
                                             <tr>
                                                 <td colspan="3">
                                                     <t t-if="d.type_of_dispatch == 'exp'">
-                                                        <table style="font-size:11px;">
+                                                        <div style="width: 100%; text-align:center">
+                                                            <table style="width: 80%;" style="font-size:11px; ">
                                                             <tr>
-                                                                <td style="text-align:center;">
+                                                                <td>
                                                                     KILOS NETOS
                                                                 </td>
                                                                 <td>
@@ -881,6 +880,7 @@
                                                                 </td>
                                                             </tr>
                                                         </table>
+                                                        </div>
                                                     </t>
                                                 </td>
                                             </tr>
@@ -907,7 +907,7 @@
                                 </t>
                                 <tr>
                                     <td>Nota</td>
-                                    <td colspan="3" style="text-align:center;">
+                                    <td colspan="3" style="text-align:center;font-size:9px">
                                         <t t-esc="d.note_dispatched.get_full_note() if d.note_dispatched else ''"/>
                                     </td>
                                 </tr>
@@ -1003,7 +1003,8 @@
                             </span>
                         </div>
                     </div>
-                    <div style="width:100%;height:5%;border:1px solid;margin-top: 4px;">
+                    <br/>
+                    <div style="width:100%;height:5%;border:1px solid;margin-top: 10px;">
                         <table style="font-size:11px;">
                             <tr>
                                 <td>Nombre:</td>
@@ -1347,26 +1348,26 @@
                     <div style="width:950px; height:1200px; border: 1px solid; text-align: center;">
                         <t t-foreach="docs.sorted(key=lambda x: x.counter)" t-as="o">
                             <img width="49%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
+                        </t>
+                    </div>
+                </t>
+                <t t-if="len(docs) &lt;= 8">
+                    <div style="width:950px; height:1200px; text-align: center;">
+                        <t t-foreach="docs.sorted(key=lambda x: x.counter)" t-as="o">
+                            <img width="49%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                             <t t-if="o.counter == 4">
                                 <p style="page-break-after:always;"></p>
                             </t>
                         </t>
                     </div>
                 </t>
-                <t t-if="len(docs) &gt; 4 and len(docs) &lt;= 8">
+                <t t-if="len(docs) &lt;= 12">
                     <div style="width:950px; height:1200px; text-align: center;">
                         <t t-foreach="docs.sorted(key=lambda x: x.counter)" t-as="o">
                             <img width="49%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
-                            <t t-if="o.counter == 8">
+                            <t t-if="o.counter == 4 or o.counter == 8">
                                 <p style="page-break-after:always;"></p>
                             </t>
-                        </t>
-                    </div>
-                </t>
-                <t t-if="len(docs) &gt; 8 and len(docs) &lt;= 12">
-                    <div style="width:950px; height:1200px; text-align: center;">
-                        <t t-foreach="docs.sorted(key=lambda x: x.counter)" t-as="o">
-                            <img width="49%" t-att-src="'data:o.mimetype;base64,%s' % to_text(o.datas)"/>
                         </t>
                     </div>
                 </t>
