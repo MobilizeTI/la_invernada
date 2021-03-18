@@ -17,6 +17,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
             #if not self.for_year or self.for_year == 0:
             #    self.for_year = int(date.now.strftime('%Y'))
             sheet = workbook.add_worksheet('Pedidos Clientes')
+            formats = self.set_formats(workbook)
             row = 0
             col = 0
             titles = [(1,'N° EMB'),(2,'F. Zarpe'),(3,'Sem ETD'),(4,'Cargar Hasta'),(5,'Sem Carga'),
@@ -33,7 +34,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
                     (57,'Comentarios'),(58,'N° DUS')]
             
             for title in titles:
-                sheet.write(row, col, title[1])
+                sheet.write(row, col, title[1], formats['title'])
                 col += 1
             row += 1
             col = 0
@@ -91,7 +92,19 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, "pendiente")
                         col += 1
                         #Estatus Despacho
-                        sheet.write(row, col, stock.state if stock.state else '')
+                        spanish_state = ''
+                        if stock.state == 'draft':
+                            spanish_state = 'Borrador'
+                        elif stock.state == 'assigned':
+                            spanish_state = 'Asignado'
+                        elif stock.state == 'confirmed':
+                            spanish_state = 'Confirmado'
+                        elif stock.state == 'done':
+                            spanish_state = 'Realizado'
+                        else:
+                            spanish_state = 'Cancelado'
+                        
+                        sheet.write(row, col, spanish_state)
                         col += 1
                         #Estatus Calidad
                         sheet.write(row, col, "pendiente")
@@ -318,6 +331,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
 
 
     
+    
     def set_formats(self, workbook):
         merge_format_string = workbook.add_format({
             'border': 0,
@@ -334,69 +348,28 @@ class CustomCustomerOrdersXls(models.TransientModel):
             'border': 1,
             'bold': 1,
             'align': 'center',
+            'valign': 'vcenter',
+            'bg_color':'#8064a2',
+            'font_color': 'white',
+            'text_wrap': True
+        })
+        merge_format_total = workbook.add_format({
+            'border': 1,
+            'bold': 1,
+            'align': 'center',
+            'valign': 'vcenter',
+            'num_format': '#,##0'
+        })
+        merge_format_total_text = workbook.add_format({
+            'border': 1,
+            'bold': 1,
+            'align': 'left',
             'valign': 'vcenter'
         })
         return {
             'string': merge_format_string,
             'number': merge_format_number,
-            'title': merge_format_title
+            'title': merge_format_title,
+            'total': merge_format_total,
+            'text_total': merge_format_total_text
         }
-    def set_title(self, sheet, format):
-         ('A1','N° EMB')
-         ('B1','F. Zarpe')
-         ('C1','Sem ETD')
-         ('D1','Cargar Hasta')
-         ('E1','Sem Carga')
-         ('F1','Cliente')
-         ('G1','País')
-         ('H1','Contrato Interno')
-         ('I1','Contrato Cliente')
-         ('J1','N° Pedido Odoo')
-         ('K1','Estatus Producción')
-         ('L1','Estatus Despacho')
-         ('M1','Estado A. Calidad')
-         ('N1','F. Envío al cliente')
-         ('O1','Especie')
-         ('P1','Variedad')
-         ('Q1','Color')
-         ('R1','Producto')
-         ('S1','Calibre')
-         ('T1','Kilos')
-         ('U1','Precio')
-         ('V1','Monto')
-         ('W1','N° Factura')
-         ('X1','Cláusula')
-         ('Y1','Envase')
-         ('Z1','Modo de Carga')
-         ('AA1','Etiqueta Cliente')
-         ('AB1','Marca')
-         ('AC1','Agente')
-         ('AD1','Comisión')
-         ('AE1','Valor Comisión')
-         ('AF1','Puerto de Carga')
-         ('AG1','Puerto de Destino')
-         ('AH1','Destino Final')
-         ('AI1','Vía de Transporte')
-         ('AJ1','Planta de Carga')
-         ('AK1','Fecha y Hora Carga')
-         ('AL1','N° de Guía')
-         ('AM1','Nave / Viaje')
-         ('AN1','Naviera')
-         ('AO1','N° Booking')
-         ('AP1','N° BL')
-         ('AQ1','Stacking')
-         ('AR1','Cut Off Documental')
-         ('AS1','F. Real Zarpe')
-         ('AT1','F. Real Arribo')
-         ('AU1','N° Container')
-         ('AV1','Tipo Container')
-         ('AW1','Terminal Portuario Origen')
-         ('AX1','Depósito Retiro')
-         ('AY1','Valor Flete')
-         ('AZ1','Valor Seguro')
-         ('BA1','FOB Total')
-         ('BB1','FOB /Kg')
-         ('BC1','Obs. Calidad')
-         ('BD1','Comentarios')
-         ('BE1','N° DUS')
-            
