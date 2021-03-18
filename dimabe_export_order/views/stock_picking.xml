@@ -18,9 +18,6 @@
                             <field name="partner_name" readonly="1"/>
                             <field name="partner_identifier_type" readonly="1"/>
                             <field name="partner_identifier_value" readonly="1"/>
-                            <field name="partner_contact" readonly="1"/>
-                            <field name="partner_contact_phone" readonly="1"/>
-                            <field name="partner_contact_mobile" readonly="1"/>
                         </tree>
                     </field>
                 </field>
