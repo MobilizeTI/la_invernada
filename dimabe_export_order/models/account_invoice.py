@@ -45,7 +45,7 @@ class AccountInvoice(models.Model):
             'res.partner',
             domain=[('customer', '=', True)]
         )
-    custom_notify_ids = fields.Many2many('custom.notify', string="Notify", compute="_get_notifies")
+    custom_notify_ids = fields.Many2many('custom.notify', string="Notify", compute="_compute_get_notifies")
     
     consignee_id = fields.Many2one(
         'res.partner',
