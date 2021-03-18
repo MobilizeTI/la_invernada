@@ -22,14 +22,6 @@ class CustomAccountInvoiceLine(models.Model):
 
     canning_quantity = fields.Float(string="Cantidad de Envases", compute="_compute_canning_quantiy")
 
-    #canning_type = fields.Char(string="Tipo de Envase", compute="_compute_canning_type")
-
-    #def _compute_canning_type(self):
-    #    for item in self:
-    #        for attr in item.product_id.attribute_value_ids:
-    #            if attr.attribute_id.name == 'Tipo de envase':
-    #                item.canning_type = attr.name
-
     def _compute_quantity(self):
         for item in self:
             invoice_line = self.env['account.invoice.line'].search([('invoice_id','=',item.invoice_id.id),('product_id','=',item.product_id.id)])
