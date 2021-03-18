@@ -12,14 +12,16 @@
                     <field name="consignee_id"
                            attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"
                     />
-                    <field name="custom_notify_ids" attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}">
-                        <field name="position"/>
-                        <field name="partner_name" readonly="1"/>
-                        <field name="partner_identifier_type" readonly="1"/>
-                        <field name="partner_identifier_value" readonly="1"/>
-                        <field name="partner_contact" readonly="1"/>
-                        <field name="partner_contact_phone" readonly="1"/>
-                        <field name="partner_contact_mobile" readonly="1"/>
+                    <field name="custom_notify_ids" attrs="{'invisible': [('dte_code', '!=', '110')]}">
+                        <tree editable="bottom" edit="True">
+                            <field name="position"/>
+                            <field name="partner_name" readonly="1"/>
+                            <field name="partner_identifier_type" readonly="1"/>
+                            <field name="partner_identifier_value" readonly="1"/>
+                            <field name="partner_contact" readonly="1"/>
+                            <field name="partner_contact_phone" readonly="1"/>
+                            <field name="partner_contact_mobile" readonly="1"/>
+                        </tree>
                     </field>
                 </field>
                 <xpath expr="//page[@name='extra']" position="after">
