@@ -19,7 +19,20 @@ class StockReportXlsx(models.TransientModel):
 
     @api.multi
     def generate_report(self):
-        if stock_s
+        if self.stock_selection == 'raw':
+            dict_data = self.generate_excel_raw_report()
+            attachment_id = self.env['ir.attachment'].sudo().create({
+                'name': dict_data['file_name'],
+                'datas_fname': dict_data['file_name'],
+                'datas': dict_data['base64']
+            })
+
+            action = {
+                'type': 'ir.actions.act_url',
+                'url': '/web/content/{}?download=true'.format(attachment_id.id, ),
+                'target': 'new',
+            }
+            return action
 
     def generate_excel_raw_report(self):
         file_name = 'temp_report.xlsx'
