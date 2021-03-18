@@ -5,7 +5,7 @@
             <div class="page" style="margin:auto;">
                 <t t-foreach="docs" t-as="d">
                     <div style="width:100%;">
-                        <div style="width:33.3%;display:inline-block;">
+                        <div style="width:33.3%;display:inline-block; padding-bottom: 20px;">
                             <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
                                  style="width:200px;"
                             />
@@ -213,7 +213,7 @@
                             </table>
                         </t>
                     </div>
-                    <div style="width:100%;margin:0 auto;height:540px;border:1px solid; border-radius: 5px; margin-top:4px;">
+                    <div style="width:100%;margin:0 auto;height:580px;border:1px solid; border-radius: 5px; margin-top:4px;">
                         <table style="width:100%;font-size:11px;" cellspacing="0">
                             <th style="width:9%;border-right:1px solid;border-bottom:1px solid; padding-top: 6px;">
                                 CÓDIGO
@@ -224,7 +224,7 @@
                             <th style="width:6%;border-right:1px solid; border-bottom:1px solid;padding-top: 6px;">
                                 UNID.
                             </th>
-                            <th style="width:8%;border-right:1px solid;border-bottom:1px solid;padding-top: 6px;">
+                            <th style="width:9%;border-right:1px solid;border-bottom:1px solid;padding-top: 6px;">
                                 CANT.
                             </th>
                             <th style="width:8%;border-right:1px solid;border-bottom:1px solid;padding-top: 6px;">
@@ -282,7 +282,7 @@
                                                     <t t-if="d.picking_real_id.type_of_dispatch == 'exp'">
                                                         <table style="width: 80%; font-size:11px; margin: 0 auto">
                                                                 <tr>
-                                                                    <td>
+                                                                    <td style="width: 100px">
                                                                         KILOS NETOS
                                                                     </td>
                                                                     <td>
@@ -321,7 +321,7 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Nave:</td>
-                                                                    <td>
+                                                                    <td colspan="3">
                                                                         <!--<t t-if="d.picking_real_id.shipping_id.type_transport == 'terrestre'">
                                                                             <span t-field="d.type_transport"/>
                                                                         </t>
@@ -496,7 +496,7 @@
                                                     <t t-if="d.picking_principal_id.type_of_dispatch == 'exp'">
                                                         <table style="width: 80%;font-size:11px; margin: 0 auto">
                                                             <tr>
-                                                                <td>
+                                                                <td style="width: 100px">
                                                                     KILOS NETOS
                                                                 </td>
                                                                 <td>
@@ -705,7 +705,7 @@
                                                     <t t-if="d.type_of_dispatch == 'exp'">
                                                         <table style="width: 80%;font-size:11px; margin: 0 auto">
                                                             <tr>
-                                                                <td>
+                                                                <td style="width: 100px" >
                                                                     KILOS NETOS
                                                                 </td>
                                                                 <td>
@@ -1040,7 +1040,7 @@
                                     <t t-if="d.type_of_dispatch == 'exp'">
                                         <table style="font-size:9px;width:55%;height:30%;margin:0 auto;">
                                             <tr>
-                                                <td>KILOS NETOS</td>
+                                                <td style="width: 100px">KILOS NETOS</td>
                                                 <td>
                                                     <span t-field="d.net_weight_dispatch"/>
                                                 </td>
