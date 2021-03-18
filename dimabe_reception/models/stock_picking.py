@@ -4,11 +4,12 @@ from datetime import datetime
 import requests
 import json
 
+
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
     _order = 'date desc'
 
-    guide_number  = fields.Integer('Número de Guía')
+    guide_number = fields.Integer('Número de Guía')
 
     weight_guide = fields.Float(
         'Kilos Guía',
@@ -152,14 +153,14 @@ class StockPicking(models.Model):
     def gross_weight_button(self):
         data = self._get_data_from_weigh()
         self.write({
-            'gross_weight' : float(data)
+            'gross_weight': float(data)
         })
 
     @api.multi
     def button_weight_tare(self):
         data = self._get_data_from_weigh()
         self.write({
-            'tare_weight':float(data)
+            'tare_weight': float(data)
         })
 
     @api.one
@@ -202,7 +203,7 @@ class StockPicking(models.Model):
                 raise models.ValidationError(message)
 
     @api.one
-    @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package' )
+    @api.depends('tare_weight', 'gross_weight', 'move_ids_without_package')
     def _compute_production_net_weight(self):
         if self.picking_type_code == 'incoming':
             self.production_net_weight = self.gross_weight - self.tare_weight + self.quality_weight
@@ -277,7 +278,8 @@ class StockPicking(models.Model):
             return json_data['value']
         except Exception as e:
             if 'HTTPConnectionPool' in str(e):
-                raise models.ValidationError("Por favor comprobar si el equipo de romana se encuentre enciendo o con conexion a internet")
+                raise models.ValidationError(
+                    "Por favor comprobar si el equipo de romana se encuentre enciendo o con conexion a internet")
             else:
                 raise models.ValidationError(str(e))
 
@@ -324,7 +326,7 @@ class StockPicking(models.Model):
                                         if i == int(total_qty):
 
                                             diff = stock_picking.production_net_weight - (
-                                                        int(total_qty) * default_value)
+                                                    int(total_qty) * default_value)
 
                                             tmp = '00{}'.format(i + 1)
                                             self.env['stock.production.lot.serial'].create({
