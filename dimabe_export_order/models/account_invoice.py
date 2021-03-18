@@ -45,7 +45,7 @@ class AccountInvoice(models.Model):
             'res.partner',
             domain=[('customer', '=', True)]
         )
-    custom_notify_ids = fields.Many2many('custom.notify', string="Notify", compute="_compute_get_notifies")
+    custom_notify_ids = fields.Many2many('custom.notify', string="Notify")
     
     consignee_id = fields.Many2one(
         'res.partner',
@@ -86,7 +86,4 @@ class AccountInvoice(models.Model):
                 str_cannings += c + ' '
             item.canning_types = str_cannings
 
-    @api.onchange('notify_ids')
-    def _compute_get_notifies(self):
-        self.custom_notify_ids.partner_id = self.notify_ids.ids
 
