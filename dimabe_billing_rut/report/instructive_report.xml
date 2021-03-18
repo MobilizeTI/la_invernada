@@ -169,36 +169,36 @@
                                 </tr>
                             </table>
                         </div>
-                        <t t-foreach="d.notify_ids" t-as="n">
+                        <t t-foreach="d.custom_notify_ids" t-as="n">
                             <div style="width:100%;display:inline-block; border-right:1px solid;border-left:1px solid;border-bottom:1px solid;">
                                 <table style="width:100%;font-size:10px">
                                     <tr>
                                         <th style="text-align:left;width:200px">NOTIFY</th>
                                         <td style="width:5px">:</td>
                                         <td style="text-align:left;">
-                                            <span t-field="n.name"/>
+                                            <span t-field="n.partner_id.name"/>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th style="text-align:left;">DIRECCIÓN</th>
                                         <td style="width:5px">:</td>
                                         <td style="text-align:left;">
-                                            <span t-field="n.street"/>
+                                            <span t-field="n.partner_id.street"/>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th style="text-align:left;"><span t-field="n.client_identifier_id"/></th>
                                         <td style="width:5px">:</td>
                                         <td style="text-align:left;">
-                                            <span t-field="n.client_identifier_value"/>
+                                            <span t-field="n.partner_id.client_identifier_value"/>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th style="text-align:left;">CONTACTO</th>
                                         <td style="width:5px">:</td>
                                         <td style="text-align:left;">
-                                            <t t-if="len(n.child_ids) > 0">
-                                                <span t-field="n.child_ids[0].name"/>
+                                            <t t-if="len(n.partner_id.child_ids) > 0">
+                                                <span t-field="n.partner_id.child_ids[0].name"/>
                                             </t>
                                         </td>
                                     </tr>
@@ -206,15 +206,15 @@
                                         <th style="text-align:left;">TELÉFONO</th>
                                         <td style="width:5px">:</td>
                                         <td style="text-align:left;">
-                                            <t t-if="len(n.child_ids) > 0">
-                                                <t t-if="n.child_ids[0].phone">
-                                                    <span t-field="n.child_ids[0].phone"/>
+                                            <t t-if="len(n.partner_id.child_ids) > 0">
+                                                <t t-if="n.partner_id.child_ids[0].phone">
+                                                    <span t-field="n.partner_id.child_ids[0].phone"/>
                                                 </t>
-                                                <t t-if="n.child_ids[0].phone and n.child_ids[0].mobile">
+                                                <t t-if="n.partner_id.child_ids[0].phone and n.partner_id.child_ids[0].mobile">
                                                 -
                                                 </t>
-                                                <t t-if="n.child_ids[0].mobile">
-                                                    <span t-field="n.child_ids[0].mobile"/>
+                                                <t t-if="n.partner_id.child_ids[0].mobile">
+                                                    <span t-field="n.partner_id.child_ids[0].mobile"/>
                                                 </t>
                                                 
                                             </t>
@@ -286,12 +286,6 @@
                                             <span t-field="d.packages[0].quantity"/>X
                                             <span t-field="d.packages[0].canning_type"/>
                                         </t>
-                                        <!--<t t-foreach="d.custom_invoice_line_ids[0].product_id.attribute_value_ids" t-as="a">
-                                            <t t-if="a.attribute_id.name == 'Tipo de envase'">
-                                                <span t-field="d.custom_invoice_line_ids[0].canning_quantity"/>x
-                                                <span t-field="a.name"/>c/u
-                                            </t>
-                                        </t>-->
                                     </td>
                                 </tr>
                                 <t t-if="len(d.packages) > 1">
