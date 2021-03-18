@@ -153,7 +153,8 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, serial.workcenter_send_id.display_name)
             col += 1
-            sheet.write(row, col, serial.delivered_date.strftime('%d-%m-%Y'))
+            if serial.delivered_date:
+                sheet.write(row, col, serial.delivered_date.strftime('%d-%m-%Y'))
             row += 1
             col = 0
         workbook.close()
