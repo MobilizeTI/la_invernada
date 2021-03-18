@@ -253,14 +253,14 @@
                                         <!--<td style="border-right:1px solid;border-bottom:1px solid;text-align:right;padding-right:4px;">
                                             <span t-field="m.quantity_done"/>
                                         </td>-->
-                                        <t t-if="sum(d.dispatch_line_ids.filtered(lambda a: a.product_id.id == m.product_id.id)) != m.quantity_done">
+                                        <t t-if="sum(d.picking_real_id.dispatch_line_ids.filtered(lambda a: a.product_id.id == m.product_id.id)) != m.quantity_done">
                                             <td style="border-right:1px solid;border-bottom:1px solid;text-align:right;padding-right:4px;">
                                                 <span t-field="m.quantity_done"/>
                                             </td>
                                         </t>
                                         <t t-else="">
                                             <td style="border-right:1px solid;border-bottom:1px solid;text-align:right;padding-right:4px;">
-                                                <span t-field="sum(d.dispatch_line_ids.filtered(lambda a: a.product_id.id == m.product_id.id).mapped('real_dispatch_qty'))"/>
+                                                <span t-field="sum(d.picking_real_id.dispatch_line_ids.filtered(lambda a: a.product_id.id == m.product_id.id).mapped('real_dispatch_qty'))"/>
                                             </td>
                                         </t>
                                         <!--<td style="border-right:1px solid;border-bottom:1px solid;text-align:right;padding-right:4px;">
