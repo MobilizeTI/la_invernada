@@ -242,7 +242,7 @@
                                         </td>
                                         <td style="border-right:1px solid;border-bottom:1px solid;text-align:left;padding-right:4px;padding-left:4px;">
                                             <!--<span t-field="m.product_id.package"/>-->
-                                            <span t-esc="m.product_id.display_name.replace(f'[{m.product_id.default_code}]','')"/>
+                                            <span t-esc="m.product_id.display_name.replace('[{}]'.format(m.product_id.default_code),'')"/>
                                         </td>
                                         <td style="border-right:1px solid;border-bottom:1px solid;text-align:center;padding-right:4px;">
                                             <span t-field="m.product_id.uom_id.name"/>
@@ -465,7 +465,7 @@
                                         </td>
                                         <td style="border-right:1px solid;border-bottom:1px solid;text-align:left;padding-right:4px;padding-left:4px;">
                                             <!--<span t-field="m.product_id.package"/>-->
-                                            <span t-esc="m.product_id.display_name.replace(f'[{m.product_id.default_code}]','')"/>
+                                            <span t-esc="m.product_id.display_name.replace('[{}]'.format(m.product_id.default_code),'')"/>
                                         </td>
                                         <td style="border-right:1px solid;border-bottom:1px solid;text-align:center;padding-right:4px;">
                                             <span t-field="m.product_id.uom_id.name"/>
@@ -676,7 +676,7 @@
                                         </td>
                                         <td style="border-right:1px solid;border-bottom:1px solid;text-align:left;padding-right:4px;padding-left:4px;">
                                             <!--<span t-field="m.product_id.package"/>-->
-                                            <span t-esc="m.product_id.display_name.replace(f'[{m.product_id.default_code}]','')"/>
+                                            <span t-esc="m.product_id.display_name.replace('[{}]'.format(m.product_id.default_code),'')"/>
                                         </td>
                                         <td style="border-right:1px solid;border-bottom:1px solid;text-align:center;padding-right:4px;">
                                             <span t-field="m.product_id.uom_id.name"/>
