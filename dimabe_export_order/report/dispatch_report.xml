@@ -239,6 +239,7 @@
                             <th style="border-bottom:1px solid;padding-top: 6px;">TOTAL</th>
                             <t t-if="d.picking_principal_id and d.picking_real_id">
                                 <t t-foreach="d.picking_real_id.move_ids_without_package" t-as="m">
+                                    <t t-set="total" t-value="d.mapped('dispatch_line_ids').filtered(lambda a: a.product_id.id == m.product_id.id).mapped('real_dispatch_qty')"></t>
                                     <tr>
                                         <td style="border-right:1px solid;border-bottom:1px solid;text-align:center;">
                                             <span t-field="m.product_id.default_code"/>
@@ -253,14 +254,14 @@
                                         <!--<td style="border-right:1px solid;border-bottom:1px solid;text-align:right;padding-right:4px;">
                                             <span t-field="m.quantity_done"/>
                                         </td>-->
-                                        <t t-if="sum(d.picking_real_id.dispatch_line_ids.filtered(lambda a: a.product_id.id == m.product_id.id).mapped('real_dispatch_qty')) != m.quantity_done">
+                                        <t t-if="sum(total) != m.quantity_done">
                                             <td style="border-right:1px solid;border-bottom:1px solid;text-align:right;padding-right:4px;">
                                                 <span t-field="m.quantity_done"/>
                                             </td>
                                         </t>
                                         <t t-else="">
                                             <td style="border-right:1px solid;border-bottom:1px solid;text-align:right;padding-right:4px;">
-                                                <span t-field="sum(d.picking_real_id.dispatch_line_ids.filtered(lambda a: a.product_id.id == m.product_id.id).mapped('real_dispatch_qty'))"/>
+                                                <span t-field="sum(total)"/>
                                             </td>
                                         </t>
                                         <!--<td style="border-right:1px solid;border-bottom:1px solid;text-align:right;padding-right:4px;">
