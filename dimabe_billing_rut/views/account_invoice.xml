@@ -21,7 +21,7 @@
                 <xpath expr="//header" position="inside">
                     <field name="valid_to_sii" invisible="1"/>
                     <button type="object" string="Validar para SII" name="validation_fields"
-                    attrs="{'invisible':[('valid_to_sii', '=', True),('state','=','draft')]}"
+                    attrs="{'invisible':['|',('valid_to_sii', '=', True),('state','=','draft')]}"
                     />
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="before">
