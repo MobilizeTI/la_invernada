@@ -1486,15 +1486,15 @@
                             </td>
                         </tr>
                     </table>
-                    <t t-foreach="d.notify_ids" t-as="n">
-                        <t t-if="d.notify_ids[0].id == n.id">
+                    <t t-foreach="d.custom_notify_ids.sorted(key=lambda x: x.position)" t-as="n">
+                        <t t-if="d.custom_notify_ids[0].id == n.id">
                             <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
                                 <tr>
                                     <td>
                                         <strong>NOTIFY/NOTIFICADO:</strong>
                                     </td>
                                     <td>
-                                        <span t-field="n.name"/>
+                                        <span t-field="n.partner_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1502,9 +1502,9 @@
                                         <strong>ADDRESS/DIRRECCION:</strong>
                                     </td>
                                     <td rowspan="2">
-                                        <span t-field="n.street"/>
+                                        <span t-field="n.partner_id.street"/>
                                         <br/>
-                                        <span t-field="n.country_id"/>
+                                        <span t-field="n.partner_id.country_id"/>
                                     </td>
                                 </tr>
                                 <tr></tr>
@@ -1513,7 +1513,7 @@
                                         <strong>PHONE/TELEFONO:</strong>
                                     </td>
                                     <td>
-                                        <span t-field="n.phone"/>
+                                        <span t-field="n.partner_id.phone"/>
                                     </td>
                                 </tr>
                             </table>
@@ -1556,7 +1556,7 @@
                                         <strong>NOTIFY/NOTIFICADO:</strong>
                                     </td>
                                     <td>
-                                        <span t-field="n.name"/>
+                                        <span t-field="n.partner_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1564,9 +1564,9 @@
                                         <strong>ADDRESS/DIRRECCION:</strong>
                                     </td>
                                     <td rowspan="2">
-                                        <span t-field="n.street"/>
+                                        <span t-field="n.partner_id.street"/>
                                         <br/>
-                                        <span t-field="n.country_id"/>
+                                        <span t-field="n.partner_id.country_id"/>
                                     </td>
                                 </tr>
                                 <tr></tr>
@@ -1575,7 +1575,7 @@
                                         <strong>PHONE/TELEFONO:</strong>
                                     </td>
                                     <td>
-                                        <span t-field="n.phone"/>
+                                        <span t-field="n.partner_id.phone"/>
                                     </td>
                                 </tr>
                             </table>
@@ -2033,12 +2033,14 @@
                         </tr>
                     </table>
                     <table width="50%%" style="border:solid 1px;font-size:12px;display:inline-block;">
+                        <t t-foreach="d.custom_notify_ids.sorted(key=lambda x: x.position)" t-as="n">
+                        <t t-if="n.position == 1">
                         <tr>
                             <td>
                                 <strong>NOTIFY/NOTIFICADO:</strong>
                             </td>
                             <td>
-                                <span t-field="d.notify_ids[0].name"/>
+                                <span t-field="n.partner_id.name"/>
                             </td>
                         </tr>
                         <tr>
@@ -2046,9 +2048,9 @@
                                 <strong>ADDRESS/DIRRECCION:</strong>
                             </td>
                             <td rowspan="2">
-                                <span t-field="d.notify_ids[0].street"/>
+                                <span t-field="n.partner_id.street"/>
                                 <br/>
-                                <span t-field="d.notify_ids[0].country_id"/>
+                                <span t-field="n.partner_id.country_id"/>
                             </td>
                         </tr>
                         <tr></tr>
@@ -2057,9 +2059,11 @@
                                 <strong>PHONE/TELEFONO:</strong>
                             </td>
                             <td>
-                                <span t-field="d.notify_ids[0].phone"/>
+                                <span t-field="n.partner_id.phone"/>
                             </td>
                         </tr>
+                        </t>
+                        </t>
                     </table>
                     <br/>
                     <table width="45%%" style="border:solid 1px;font-size:12px;display:inline-block;">

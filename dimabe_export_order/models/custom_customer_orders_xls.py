@@ -310,6 +310,18 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         row += 1
                         col = 0
 
+                    #Total    
+                    row += 1
+                    sheet.write(row, col, "Total", formats['title'])
+                    #for col < 21:
+                    #    col += 1
+                    sheet.write(row, 21, "Total Monto", formats['title'])
+                    sheet.write(row, 7, "Total Comision", formats['title'])
+                    sheet.write(row, 7, "Total Comision", formats['title'])
+                    sheet.write(row, 7, "Total Comision", formats['title'])
+                    sheet.write(row, 7, "Total Comision", formats['title'])
+
+
             workbook.close()
             with open(file_name, "rb") as file:
                 file_base64 = base64.b64encode(file.read())
@@ -345,7 +357,6 @@ class CustomCustomerOrdersXls(models.TransientModel):
             'num_format': '#,##0'
         })
         merge_format_title = workbook.add_format({
-            'border': 1,
             'bold': 1,
             'align': 'center',
             'valign': 'vcenter',
