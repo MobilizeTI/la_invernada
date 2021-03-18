@@ -9,8 +9,18 @@ class StockReportXlsx(models.TransientModel):
 
     year = fields.Integer('Cosecha')
 
+    stock_selection = fields.Selection(
+        [('raw', 'Informe existencia materia prima'), ('calibrate', 'Informe existencia producto calibrado'),
+         ('split', 'Informe existencia producto partido'), ('vain', 'Informe existencia producto vana'),
+         ('discart', 'Informe existencia descarte'), ('pt', 'Informe existencia producto terminado'),
+         ('washed', 'Informe existencia producto lavado'), ('raw_service', 'Informe existencia materia prima servicio'),
+         ('washed_service', 'Informe existencia producto lavado servicio'),
+         ('split_service', 'Informe existencia producto partido servicio')])
 
     @api.multi
+    def generate_report(self):
+        if stock_s
+
     def generate_excel_raw_report(self):
         file_name = 'temp_report.xlsx'
         workbook = xlsxwriter.Workbook(file_name)
@@ -83,21 +93,10 @@ class StockReportXlsx(models.TransientModel):
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
         report_name = f'Informe de Existencia Materia Prima {date.today().strftime("%d/%m/%Y")}.xlsx'
-        attachment_id = self.env['ir.attachment'].sudo().create({
-            'name': report_name,
-            'datas_fname': report_name,
-            'datas': file_base64
-        })
 
-        action = {
-            'type': 'ir.actions.act_url',
-            'url': '/web/content/{}?download=true'.format(attachment_id.id, ),
-            'target': 'current',
-        }
-        return action
+        return {'file_name': report_name, 'base64': file_base64}
 
-    @api.multi
-    def generate_excel_serial_report(self):
+    def generate_excel_serial_report(self, list_condition, type_product):
         file_name = 'temp_name.xlsx'
         workbook = xlsxwriter.Workbook(file_name)
         sheet = workbook.add_worksheet("Informe de Calibrado")
@@ -112,7 +111,7 @@ class StockReportXlsx(models.TransientModel):
             col += 1
         col = 0
         row += 1
-        serials = self.env['stock.production.lot.serial'].sudo().search([('product_id.default_code', 'like', 'PSE006')])
+        serials = self.env['stock.production.lot.serial'].sudo().search(list_condition)
         for serial in serials:
             sheet.write(row, col, serial.producer_id.display_name)
             col += 1
@@ -142,16 +141,5 @@ class StockReportXlsx(models.TransientModel):
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
-        report_name = f'Informe de Existencia Producto Calibrado {date.today().strftime("%d/%m/%Y")}.xlsx'
-        attachment_id = self.env['ir.attachment'].sudo().create({
-            'name': report_name,
-            'datas_fname': report_name,
-            'datas': file_base64
-        })
-
-        action = {
-            'type': 'ir.actions.act_url',
-            'url': '/web/content/{}?download=true'.format(attachment_id.id, ),
-            'target': 'current',
-        }
-        return action
+        report_name = f'Informe de Existencia {type_product} {date.today().strftime("%d/%m/%Y")}.xlsx'
+        return {'report_name': report_name, 'base64': file_base64}
