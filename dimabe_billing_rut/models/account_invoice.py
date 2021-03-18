@@ -464,7 +464,7 @@ class AccountInvoice(models.Model):
             invoice['additional'] =  additionals    
 
         r = requests.post(url, json=invoice, headers=headers)
-        raise models.ValidationError(json.dumps(invoice))
+        #raise models.ValidationError(json.dumps(invoice))
 
         jr = json.loads(r.text)
 
@@ -653,7 +653,7 @@ class AccountInvoice(models.Model):
                             "ProductPrice": str(item.price_unit),
                             "ProductDiscountPercent": "0",
                             "DiscountAmount": "0",
-                            "Amount": str(amount_subtotal)
+                            "Amount": '{:.2f}'.format(amount_subtotal) #str(amount_subtotal)
                         }
                     )
                 else:
@@ -780,16 +780,18 @@ class AccountInvoice(models.Model):
             #exemtAmount = total_amount
 
             if self.other_coin.id == 45: # Si es CLP el monto es int
-                other_coin_amount = int(total_amount * int(self.exchange_rate_other_coin))
-                other_coin_exempt = int(total_amount * int(self.exchange_rate_other_coin))
+                #other_coin_amount = int(total_amount * int(self.exchange_rate_other_coin))
+                #other_coin_exempt = int(total_amount * int(self.exchange_rate_other_coin))
+                other_coin_amount = self.roundclp(total_amount * self.exchange_rate_other_coin)
+                other_coin_exempt = self.roundclp(total_amount * self.exchange_rate_other_coin)
             else:
                 other_coin_amount = total_amount * self.exchange_rate_other_coin
                 other_coin_exempt = total_amount
 
             invoice['total'] = {
                 "CoinType": str(self.currency_id.sii_currency_name),
-                "exemptAmount": str(total_amount),
-                "totalAmount": str(total_amount)
+                "exemptAmount": '{:.2f}'.format(total_amount), #str(total_amount),
+                "totalAmount": '{:.2f}'.format(total_amount) #str(total_amount)
             }
 
             invoice['othercoin'] = {
