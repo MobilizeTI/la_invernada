@@ -91,7 +91,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, "pendiente")
                         col += 1
                         #Estatus Despacho
-                        sheet.write(row, col, "pendiente")
+                        sheet.write(row, col, stock.state if stock.state else '')
                         col += 1
                         #Estatus Calidad
                         sheet.write(row, col, "pendiente")
@@ -148,7 +148,8 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, "pendiente")
                         col += 1
                         #Monto
-                        sheet.write(row, col, "pendiente")
+                        if account_invoice:
+                            sheet.write(row, col, account_invoice.amount_total if account_invoice.amount_total else '')
                         col += 1
                         #N° Factura
                         if exist_account_invoice:
@@ -208,7 +209,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
                             sheet.write(row, col, "")
                         col += 1
                         #Fecha y Hora de Carga
-                        sheet.write(row, col, "pendiente")
+                        sheet.write(row, col, stock.required_loading_date if stock.required_loading_date else '',)
                         col += 1
                         #N° de Guía
                         sheet.write(row, col, stock.dte_folio if stock.dte_folio else '')

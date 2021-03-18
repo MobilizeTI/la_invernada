@@ -45,6 +45,7 @@ class AccountInvoice(models.Model):
             'res.partner',
             domain=[('customer', '=', True)]
         )
+    #custom_notify_ids = fields.Many2many('custom.notify', string="Notify")
     
     consignee_id = fields.Many2one(
         'res.partner',
@@ -59,7 +60,7 @@ class AccountInvoice(models.Model):
     @api.multi
     def clean_notify(self):
         self.notify_ids = [(5,)]
-        
+
     def _compute_order_ids(self):
         for item in self:
             orders = []
