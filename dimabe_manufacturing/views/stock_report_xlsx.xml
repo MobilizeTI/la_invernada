@@ -6,15 +6,12 @@
             <field name="model">stock.report.xlsx</field>
             <field name="arch" type="xml">
                 <form>
-                    <notebook>
                         <group>
                             <field name="year"/>
                             <field name="stock_selection"/>
                         </group>
-                    </notebook>
                     <footer>
-                        <button type="object" string="Generar Materia Prima" name="generate_excel_raw_report"/>
-                        <button type="object" string="Generar Producto Calibrado" name="generate_excel_serial_report"/>
+                        <button type="object" string="Generar Reporte" name="generate_report"/>
                     </footer>
                 </form>
             </field>
