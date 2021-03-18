@@ -980,7 +980,8 @@ class AccountInvoice(models.Model):
                 'customs_department': self.custom_department.id,
                 'transport': self.transport_to_port.name,
                 'consignee_id' : self.consignee_id.id,
-                'notify_ids': [(6, 0, self.notify_ids.ids)]
+                'notify_ids': [(6, 0, self.notify_ids.ids)],
+                'custom_notify_ids': [(6, 0, self.custom_notify_ids.ids)]
             })
             
             for line in invoice_line_ids:
