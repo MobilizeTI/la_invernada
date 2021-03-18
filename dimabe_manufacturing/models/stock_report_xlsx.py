@@ -25,7 +25,12 @@ class StockReportXlsx(models.TransientModel):
         elif self.stock_selection == 'calibrate':
             dict_data = self.generate_excel_serial_report(
                 [('product_id.default_code', 'like', 'PSE006'), ('product_id.name', 'not like', 'Vana'),
-                 ('product_id.name', 'not like', 'Descarte')], "Producto Calibrado")
+                 ('product_id.name', 'not like', 'Descarte'), ('harvest', '=', self.year)], "Producto Calibrado")
+        elif self.stock_selection == 'split':
+            dict_data = self.generate_excel_serial_report(
+                ['|', ('product_id.default_code', 'like', 'PSE004'), ('product_id.default_code', 'like', 'PSE008'), '&',
+                 ('harvest', '=', self.year)],
+                'Producto Partido')
         attachment_id = self.env['ir.attachment'].sudo().create({
             'name': dict_data['file_name'],
             'datas_fname': dict_data['file_name'],
