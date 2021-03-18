@@ -281,7 +281,7 @@
                                                 <td colspan="3">
                                                     <t t-if="d.picking_real_id.type_of_dispatch == 'exp'">
                                                         <div style="width: 100%; text-align:center">
-                                                            <table style="width: 80%;" style="font-size:11px; ">
+                                                            <table style="width: 80%; font-size:11px;">
                                                                 <tr>
                                                                     <td>
                                                                         KILOS NETOS
