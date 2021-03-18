@@ -8,8 +8,8 @@ class CustomNotify(models.Model):
 
     partner_name = fields.Char(string="Cliente", related='partner_id.name')
 
-    partner_identifier_type = fields.Char(string="Tipo de Notificador", related='partner_id.client_identifier_id.name')
+    partner_identifier_type = fields.Char(string="Tipo de Identificador", related='partner_id.client_identifier_id.name')
 
-    partner_identifier_value = fields.Char(string="Valor Notificador", related='partner_id.client_identifier_value')
+    partner_identifier_value = fields.Char(string="Valor Identificador", related='partner_id.client_identifier_value')
 
     position = fields.Integer("Posición",nullable=True)

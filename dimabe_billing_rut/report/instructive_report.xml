@@ -867,6 +867,42 @@
                                 </td>
                             </tr>
                             <tr>
+                                <th style="text-align:left;">TEMPERATURA</th>
+                                <td style="width:5px">:</td>
+                                <td style="text-align:left;">
+                                    <t t-if="d.temperature">
+                                        <span t-field="d.temperature"/>
+                                    </t>
+                                    <t t-else="">
+                                        <span>N/A</span>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:left;">VENTILACIÓN</th>
+                                <td style="width:5px">:</td>
+                                <td style="text-align:left;">
+                                    <t t-if="d.ventilation">
+                                        <span t-field="d.ventilation"/>
+                                    </t>
+                                    <t t-else="">
+                                        <span>N/A</span>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:left;">HUMEDAD</th>
+                                <td style="width:5px">:</td>
+                                <td style="text-align:left;">
+                                    <t t-if="d.humidity">
+                                        <span t-field="d.humidity"/>
+                                    </t>
+                                    <t t-else="">
+                                        <span>N/A</span>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
                                 <th style="text-align:left; width:200px">PESO NETOS</th>
                                 <td>:</td>
                                 <td><span t-field="d.net_weight"/></td>
