@@ -29,7 +29,7 @@ class StockReportXlsx(models.TransientModel):
         elif self.stock_selection == 'split':
             dict_data = self.generate_excel_serial_report(
                 ["|", "|", ("product_id", "ilike", "PSE004"), ("product_id", "ilike", "PSE008"), "&",
-                 ("harvest_filter", "=", self.year), ("id", "!=", False)],
+                 ("harvest", "=", self.year)],
                 'Producto Partido')
         attachment_id = self.env['ir.attachment'].sudo().create({
             'name': dict_data['file_name'],
