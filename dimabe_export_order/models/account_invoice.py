@@ -57,9 +57,6 @@ class AccountInvoice(models.Model):
 
     canning_types = fields.Char(string="Envases", compute="_compute_canning_types")
 
-    @api.multi
-    def clean_notify(self):
-        self.notify_ids = [(5,)]
 
     def _compute_order_ids(self):
         for item in self:
