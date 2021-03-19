@@ -181,7 +181,8 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, serial.product_id.get_calibers())
             col += 1
-            sheet.write(row, col, serial.stock_production_lot_id.location_id.display_name)
+            if serial.stock_production_lot_id.location_id:
+                sheet.write(row, col, serial.stock_production_lot_id.location_id.display_name)
             col += 1
             sheet.write(row, col, serial.product_id.display_name)
             col += 1
@@ -192,7 +193,7 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, serial.packaging_date.strftime('%d-%m-%Y'))
             col += 1
-            if serial.location_id:
+            if serial.client_or_quality:
                 sheet.write(row, col, serial.client_or_quality)
             col += 1
             if serial.workcenter_send_id:
