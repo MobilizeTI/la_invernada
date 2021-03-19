@@ -160,7 +160,7 @@ class StockReportXlsx(models.TransientModel):
         })
         row = 0
         col = 0
-        titles = [(50.56, 'Productor'), (15.33, 'Serie'), (13.22, 'Kilos Disponibles'), (8, 'Variedad'),
+        titles = [(50.56, 'Productor'), (15.33, 'Serie'), (13.22, 'Kilos Producidos'),(13.22,'Kilos Disponible'), (8, 'Variedad'),
                   (12.22, 'Calibre'),
                   (11, 'Ubicacion Sistema'), (54.22, 'Producto'), (9.22, 'Serie Disponible'),
                   (9.56, 'Fecha de Produccion'),
@@ -180,6 +180,9 @@ class StockReportXlsx(models.TransientModel):
                 sheet.write(row, col, 'No Definido')
             col += 1
             sheet.write(row, col, serial.serial_number)
+            col += 1
+            if sheet.consumed:
+                sheet.write(row,col,serial.available_weight)
             col += 1
             sheet.write_number(row, col, serial.display_weight)
             col += 1
