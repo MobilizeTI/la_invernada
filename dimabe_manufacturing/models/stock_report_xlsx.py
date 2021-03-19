@@ -242,7 +242,7 @@ class StockReportXlsx(models.TransientModel):
         for lot in lots:
             sheet.write(row, col, lot.sale_order_id.name, text_format)
             col += 1
-            sheet.write(row, col, lot.product_id.weigth, )
+            sheet.write(row, col, lot.product_id.weight, )
             col += 1
             sheet.write(row, col, len(lot.stock_production_lot_serial_ids))
             col += 1
