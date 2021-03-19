@@ -32,7 +32,7 @@
             <field name="view_mode">tree,graph,form,pivot</field>
             <field name="view_id" ref="view_stock_service_report_tree"/>
             <field name="domain">
-                [('product_id.default_code', 'like', 'MPS'), ('product_id.name', 'not like', 'Verde')]
+                [('product_id.default_code', 'like', 'MPS'), ('product_id.name', 'not like', 'Verde'),('stock_production_lot_serial_ids','!=',None)]
             </field>
         </record>
 
