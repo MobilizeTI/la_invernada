@@ -160,7 +160,8 @@ class StockReportXlsx(models.TransientModel):
         })
         row = 0
         col = 0
-        titles = [(50.56, 'Productor'), (15.33, 'Serie'), (13.22, 'Kilos Producidos'),(13.22,'Kilos Disponible'), (8, 'Variedad'),
+        titles = [(50.56, 'Productor'), (15.33, 'Serie'), (13.22, 'Kilos Producidos'), (13.22, 'Kilos Disponible'),
+                  (8, 'Variedad'),
                   (12.22, 'Calibre'),
                   (11, 'Ubicacion Sistema'), (54.22, 'Producto'), (9.22, 'Serie Disponible'),
                   (9.56, 'Fecha de Produccion'),
@@ -182,7 +183,7 @@ class StockReportXlsx(models.TransientModel):
             sheet.write(row, col, serial.serial_number)
             col += 1
             if sheet.consumed:
-                sheet.write(row,col,serial.available_weight)
+                sheet.write(row, col, serial.available_weight)
             col += 1
             sheet.write_number(row, col, serial.display_weight)
             col += 1
@@ -233,9 +234,11 @@ class StockReportXlsx(models.TransientModel):
         })
         row = 0
         col = 0
-        titles = [(1, 'Pedido'),(13,'Lote'), (2, 'Medida'), (3, 'Cantidad Producida'), (4, 'Kilos Producido'),
+        titles = [(1, 'Pedido'), (13, 'Lote'), (14, 'Producto'), (15, 'Productor'), (2, 'Medida'),
+                  (3, 'Cantidad Producida'), (4, 'Kilos Producido'),
                   (5, 'Fecha de Creacion'), (6, 'Estado de Produccion'), (7, 'Cantidad Disponible'),
-                  (8, 'Kilos Disponible'), (9, 'Cliente'), (10, 'Pais Destino'), (10, 'Fecha Despacho'),
+                  (8, 'Kilos Disponible'), (16, 'Estado de Despacho'), (9, 'Cliente'), (10, 'Pais Destino'),
+                  (10, 'Fecha Despacho'),
                   (11, 'Ubicacion Fisica'), (12, 'Observaciones')]
         for title in titles:
             sheet.write(row, col, title[1], text_format)
@@ -243,11 +246,15 @@ class StockReportXlsx(models.TransientModel):
         col = 0
         row += 1
         lots = self.env['stock.production.lot'].search(
-            [('product_id.default_code', 'like', 'PT'), ('sale_order_id', '!=', None),('harvest','=',self.year)])
+            [('product_id.default_code', 'like', 'PT'), ('sale_order_id', '!=', None), ('harvest', '=', self.year)])
         for lot in lots:
             sheet.write(row, col, lot.sale_order_id.name, text_format)
             col += 1
-            sheet.write(row,col,lot.name)
+            sheet.write(row, col, lot.name)
+            col += 1
+            sheet.write(row, col, lot.product_id.display_name)
+            col += 1
+            sheet.write(row, col, lot.producer_id.display_name)
             col += 1
             sheet.write(row, col, lot.measure)
             col += 1
@@ -258,14 +265,16 @@ class StockReportXlsx(models.TransientModel):
             sheet.write(row, col,
                         lot.start_date.strftime('%d-%m-%Y') if lot.start_date else lot.create_date.strftime('%d-%m-%Y'))
             col += 1
-            if lot.stock_production_lot_serial_ids.mapped('production_id'):
-                sheet.write(row, col, lot.stock_production_lot_serial_ids.mapped('production_id').mapped('state')[0])
+            if lot.production_state:
+                sheet.write(row, col, lot.production_state)
             col += 1
             sheet.write(row, col, len(lot.mapped('stock_production_lot_serial_ids').filtered(
                 lambda a: not a.reserved_to_stock_picking_id and not a.consumed)))
             col += 1
             sheet.write(row, col, sum(lot.mapped('stock_production_lot_serial_ids').filtered(
                 lambda a: not a.reserved_to_stock_picking_id and not a.consumed).mapped('real_weight')))
+            col += 1
+            sheet.write(row, col, lot.dispatch_state)
             col += 1
             if lot.client_id:
                 sheet.write(row, col, lot.client_id.display_name)
