@@ -357,10 +357,6 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         if exist_account_invoice:
                                 if account_invoice.id not in other_fields_invoice_ids:
                                     other_fields_invoice_ids.append(account_invoice.id)
-                                    #total_fob += account_invoice.total_value
-                                    #total_fob_per_kilo += account_invoice.value_per_kilogram
-                                    #total_freight += account_invoice.freight_amount
-                                    #total_safe += account_invoice.safe_amount
                                     #Valor Flete
                                     sheet.write(row, col, account_invoice.freight_amount)
                                     col +=1
@@ -372,6 +368,8 @@ class CustomCustomerOrdersXls(models.TransientModel):
                                     col += 1
                                     #FOB POR KILO
                                     sheet.write(row, col, account_invoice.value_per_kilogram)
+                                else:
+                                    col += 3
                         else:
                             col += 3
                         col += 1
