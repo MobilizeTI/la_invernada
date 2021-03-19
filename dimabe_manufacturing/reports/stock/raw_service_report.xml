@@ -6,7 +6,7 @@
             <field name="model">stock.production.lot</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Materia Prima Servicio">
+                <tree name="Informe de Materia Prima Servicio" editable="bottom" delete="false" create="false">
                     <field name="producer_id" widget="many2onebutton" readonly="1"/>
                     <field name="name" string="Lote" readonly="1"/>
                     <field name="available_kg" readonly="1"/>
