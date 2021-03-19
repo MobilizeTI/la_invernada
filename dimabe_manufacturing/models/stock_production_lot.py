@@ -241,7 +241,7 @@ class StockProductionLot(models.Model):
 
     client_id = fields.Many2one('res.partner', related='sale_order_id.partner_id')
 
-    destiny_country_id = fields.Many2one('res.country')
+    destiny_country_id = fields.Many2one('res.country',compute='compute_destiny_country')
 
     dispatch_date = fields.Date('Fecha de Despacho')
 
