@@ -274,7 +274,8 @@ class StockReportXlsx(models.TransientModel):
             sheet.write(row, col, sum(lot.mapped('stock_production_lot_serial_ids').filtered(
                 lambda a: not a.reserved_to_stock_picking_id and not a.consumed).mapped('real_weight')))
             col += 1
-            sheet.write(row, col, lot.dispatch_state)
+            if lot.dispatch_state:
+                sheet.write(row, col, lot.dispatch_state)
             col += 1
             if lot.client_id:
                 sheet.write(row, col, lot.client_id.display_name)
