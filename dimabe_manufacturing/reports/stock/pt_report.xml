@@ -35,7 +35,7 @@
                 <search>
                     <field name="sale_order_id"/>
                     <field name="producer_id"/>
-                    <field name="dest_country_id"/>
+                    <field name="destiny_country_id"/>
                     <group expand="1" string="Group By">
                         <filter string="Pedido" name="group_by_sale_order_id" context="{'group_by':'sale_order_id'}"/>
                         <filter string="Productor" name="group_by_producer" context="{'group_by':'producer_id'}"/>
