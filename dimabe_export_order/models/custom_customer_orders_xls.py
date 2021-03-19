@@ -59,6 +59,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
 
             if len(orders) > 0:
                 for order in orders:
+                    #productions = self.env['mrp.production'].search([('sale_order_id',order.id)])
                     stock_picking_ids = self.env['stock.picking'].sudo().search([('sale_id','=',order.id)])
                     #if len(stock_picking_ids) > 0:
                     for stock in stock_picking_ids:
@@ -92,7 +93,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, order.contract_number if order.contract_number else '')
                         col += 1
                         #Contrato Cliente
-                        sheet.write(row, col, "pendiente")
+                        sheet.write(row, col, '')#order.client_contract)
                         col += 1
                         #N° Pedido Odoo
                         sheet.write(row, col, order.name)
@@ -101,7 +102,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, stock.name)
                         col += 1
                         #Estatus Produccion
-                        sheet.write(row, col, "pendiente")
+                        sheet.write(row, col, 'pendiente')
                         col += 1
                         #Estatus Despacho
                         if exist_account_invoice:
@@ -131,10 +132,16 @@ class CustomCustomerOrdersXls(models.TransientModel):
                                 sheet.write(row, col, 'Cancelado', formats['red_status'])
                         col += 1
                         #Estatus Calidad
-                        sheet.write(row, col, "pendiente")
+                        if exist_account_invoice:
+                            sheet.write(row, col, account_invoice.quality_status)
+                        else:
+                            sheet.write(row, col, '')
                         col += 1
                         #Fecha Envio al Cliente
-                        sheet.write(row, col, "pendiente")
+                        if exist_account_invoice:
+                            sheet.write(row, col, account_invoice.shipping_date_to_customer.strftime("%d-%m-%Y") if account_invoice.shipping_date_to_customer else '')
+                        else:
+                            sheet.write(row, col, '')
                         col += 1
 
                         product_set = ''
@@ -326,7 +333,10 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, stock.container_type.name if stock.container_type else '')
                         col += 1
                         #Terminal Portuario Origen
-                        sheet.write(row, col, "pendiente")
+                        if exist_account_invoice:
+                            sheet.write(row, col, account_invoice.port_terminal_origin)
+                        else:
+                            sheet.write(row, col, '')
                         col += 1
                         #Depósito Retiro
                         if exist_account_invoice:
@@ -355,7 +365,10 @@ class CustomCustomerOrdersXls(models.TransientModel):
                             col += 3
                         col += 1
                         #Obs. Calidad
-                        sheet.write(row, col, "pendiente")
+                        if exist_account_invoice:
+                            sheet.write(row, col, account_invoice.quality_remarks)
+                        else:
+                            sheet.write(row, col,'')
                         col += 1
                         #Comentarios
                         sheet.write(row, col, stock.remarks)

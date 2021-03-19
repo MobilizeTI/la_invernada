@@ -16,7 +16,7 @@
                         <group name="order_contract_page" position="inside">
                             <group>
                                 <field name="contract_number"/>
-                                <field name="client_contract"/>
+                               
                             </group>
                         </group>
                     </page>

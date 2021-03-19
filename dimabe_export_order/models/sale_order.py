@@ -24,7 +24,7 @@ class SaleOrder(models.Model):
 
     is_current_company = fields.Boolean(compute="_compute_company_id")
 
-    client_contact = fields.Char('Contrato Cliente')
+    client_contract = fields.Char('Contrato Cliente')
 
     def _compute_company_id(self):
         #for item in self:
