@@ -5,20 +5,20 @@
             <field name="model">stock.production.lot.serial</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Producto Descarte" editable="bottom" delete="false" create="false">
+                <tree name="Informe de Producto Calibrado" editable="bottom" delete="false" create="false">
                     <field name="producer_id" widget="many2onebutton" string="Productor" readonly="1"/>
-                    <field name="serial_number" string="Serie" readonly="1"/>
+                    <field name="name" widget="many2onebutton" string="Lote" readonly="1"/>
                     <field name="display_weight" readonly="1"/>
                     <field name="product_variety" string="Variedad" readonly="1"/>
                     <field name="product_caliber" string="Calibre" readonly="1"/>
-                    <field name="location_id" string="Ubicacion" readonly="1"/>
-                    <field name="product_id" widget="many2onebutton" readonly="1" />
-                    <field name="consumed" readonly="1"/>
-                    <field name="create_date" readonly="1"/>
+                    <field name="location_id" widget="many2onebutton" string="Ubicacion" readonly="1"/>
+                    <field name="product_id" widget="many2onebutton" string="Producto" readonly="1"/>
+                    <field name="consumed" string="Series Disponible" readonly="1"/>
+                    <field name="create_date" string="Fecha de Creacion" readonly="1"/>
                     <field name="client_or_quality" />
-                    <field name="workcenter_send_id" />
-                    <field name="delivered_date" />
-                    <field name="physical_location" />
+                    <field name="workcenter_send_id"/>
+                    <field name="delivered_date"/>
+                    <field name="physical_location"/>
                     <field name="observations" />
                 </tree>
             </field>
