@@ -197,9 +197,9 @@ class StockReportXlsx(models.TransientModel):
             sheet.write(row, col, serial.product_id.display_name)
             col += 1
             if serial.consumed:
-                sheet.write(row, col, 'Disponible')
-            else:
                 sheet.write(row, col, 'Consumida')
+            else:
+                sheet.write(row, col, 'Disponible')
             col += 1
             sheet.write(row, col, serial.packaging_date.strftime('%d-%m-%Y'))
             col += 1
