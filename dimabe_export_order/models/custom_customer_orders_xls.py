@@ -44,6 +44,15 @@ class CustomCustomerOrdersXls(models.TransientModel):
             
             #orders = self.env['sale.order'].sudo().search([('confirmation_date','>=',from_date),('confirmation_date','<=',to_date)])
             orders = self.env['sale.order'].sudo().search([('create_date','>=',from_date),('create_date','<=',to_date)])
+            total_kilogram = 0
+            total_amount = 0
+            total_commission = 0
+            total_bl = 0 #counter
+            total_container = 0 # counter
+            total_freight = 0
+            total_safe = 0
+            total_fob = 0
+            total_fob_per_kilo = 0
 
             if len(orders) > 0:
                 for order in orders:
@@ -244,7 +253,11 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, stock.booking_number if stock.booking_number else '')
                         col += 1
                         #N° BL
-                        sheet.write(row, col, stock.bl_number if stock.bl_number else '')
+                        if stock.bl_number:
+                            sheet.write(row, col, stock.bl_number)
+                            total_bl += 1
+                        else:
+                            sheet.write(row, col, "")
                         col += 1
                         #Stacking
                         if exist_account_invoice:
@@ -265,7 +278,11 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, stock.arrival_date.strftime("%d-%m-%Y") if stock.arrival_date else '')
                         col += 1
                         #N° Container
-                        sheet.write(row, col, stock.container_number if stock.container_number else '')
+                        if stock.container_number:
+                            sheet.write(row, col, stock.container_number)
+                            total_container += 1
+                        else:
+                            sheet.write(row, col, '')
                         col += 1
                         #Tipo Container
                         sheet.write(row, col, stock.container_type.name if stock.container_type else '')
@@ -310,17 +327,19 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         row += 1
                         col = 0
 
-                    #Total    
-                    row += 1
-                    sheet.write(row, col, "Total", formats['title'])
-                    #for col < 21:
-                    #    col += 1
-                    sheet.write(row, 21, "Total Monto", formats['title'])
-                    sheet.write(row, 7, "Total Comision", formats['title'])
-                    sheet.write(row, 7, "Total Comision", formats['title'])
-                    sheet.write(row, 7, "Total Comision", formats['title'])
-                    sheet.write(row, 7, "Total Comision", formats['title'])
-
+            #Total    
+            row += 1
+            sheet.set_row(row, cell_format=formats['title'])
+            sheet.write(row, 0, "Total", formats['title'])
+            sheet.write(row, 19, "Total Kg", formats['title'])
+            sheet.write(row, 21, "Total Monto", formats['title'])
+            sheet.write(row, 31, "Total Comisión", formats['title'])
+            sheet.write(row, 42, f'Total BL= {total_bl}', formats['title'])
+            sheet.write(row, 47, f'Total Container= {total_container}', formats['title'])
+            sheet.write(row, 51, "Total Flete", formats['title'])
+            sheet.write(row, 52, "Total Seguro", formats['title'])
+            sheet.write(row, 53, "Total FOB", formats['title'])
+            sheet.write(row, 54, "Total FOB por Kilo", formats['title'])
 
             workbook.close()
             with open(file_name, "rb") as file:
