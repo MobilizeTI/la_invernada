@@ -1046,8 +1046,8 @@ class AccountInvoice(models.Model):
                             o.write({
                                 'quantity_to_invoice' : new_quantity
                             })
-            else:
-                raise models.ValidationError('No hay linea de productos a Facturar')
+        else:
+            raise models.ValidationError('No hay linea de productos a Facturar')
  
 
 

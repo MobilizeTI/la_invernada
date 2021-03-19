@@ -33,8 +33,9 @@ class CustomCustomerOrdersXls(models.TransientModel):
                     (52,'Valor Flete'),(53,'Valor Seguro'),(54,'FOB Total'),(55,'FOB /Kg'),(56,'Obs. Calidad'),
                     (57,'Comentarios'),(58,'N° DUS')]
             
+            sheet.set_row(0, cell_format=formats['title'])
             for title in titles:
-                sheet.write(row, col, title[1], formats['title'])
+                sheet.write(row, col, title[1])
                 col += 1
             row += 1
             col = 0
@@ -101,19 +102,16 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, "pendiente")
                         col += 1
                         #Estatus Despacho
-                        spanish_state = ''
                         if stock.state == 'draft':
-                            spanish_state = 'Borrador'
+                            sheet.write(row, col, 'Borrador')
                         elif stock.state == 'assigned':
-                            spanish_state = 'Asignado'
+                            sheet.write(row, col, 'Asignado', formats['pink_status'])
                         elif stock.state == 'confirmed':
-                            spanish_state = 'Confirmado'
+                            sheet.write(row, col, 'Confirmado', formats['yellow_status'])
                         elif stock.state == 'done':
-                            spanish_state = 'Realizado'
-                        else:
-                            spanish_state = 'Cancelado'
-                        
-                        sheet.write(row, col, spanish_state)
+                            sheet.write(row, col, 'Realizado', formats['light_green_status'])
+                        elif stock.state == 'cancel':
+                            sheet.write(row, col, 'Cancelado', formats['green_status'])
                         col += 1
                         #Estatus Calidad
                         sheet.write(row, col, "pendiente")
@@ -202,7 +200,13 @@ class CustomCustomerOrdersXls(models.TransientModel):
                             sheet.write(row, col, "")
                         col += 1
                         #Etiqueta Cliente
-                        sheet.write(row, col, "pendiente")
+                        if exist_account_invoice:
+                            if account_invoice.client_label:
+                                sheet.write(row, col, 'Si')
+                            else:
+                                sheet.write(row, col, 'No')
+                        else:
+                            sheet.write(row, col, '')
                         col += 1
                         #Marca
                         sheet.write(row, col, ' '.join([b for b in brands]))
@@ -327,15 +331,53 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         row += 1
                         col = 0
 
+
+            #Header Formet
+            sheet.set_column('F',35)
+            sheet.set_column('G',24)
+            sheet.set_column('H',16)
+            sheet.set_column('J',12)
+            sheet.set_column('L',12)
+            sheet.set_column('M',12)
+            sheet.set_column('N',12)
+            sheet.set_column('O',12)
+            sheet.set_column('P',18)
+            sheet.set_column('Q',12)
+            sheet.set_column('S',50)
+            sheet.set_column('T',20)
+            sheet.set_column('Y',24)
+            sheet.set_column('Z',20)
+            sheet.set_column('AA',12)
+            sheet.set_column('AC',12)
+            sheet.set_column('AD',25)
+            sheet.set_column('AG',15)
+            sheet.set_column('AH',15)
+            sheet.set_column('AJ',28)
+            sheet.set_column('AK',28)
+            sheet.set_column('AL',12)
+            sheet.set_column('AN',20)
+            sheet.set_column('AO',12)
+            sheet.set_column('AP',14)
+
+            sheet.set_column('AQ',14)
+            sheet.set_column('AR',20)
+            sheet.set_column('AS',20)
+            sheet.set_column('AT',10)
+            sheet.set_column('AU',10)
+            sheet.set_column('AV',15)
+            sheet.set_column('AW',15)
+            sheet.set_column('AY',18)
+            sheet.set_column('AO',12)
+            sheet.set_column('AP',14)
             #Total    
             row += 1
             sheet.set_row(row, cell_format=formats['title'])
             sheet.write(row, 0, "Total", formats['title'])
-            sheet.write(row, 19, "Total Kg", formats['title'])
-            sheet.write(row, 21, "Total Monto", formats['title'])
+            sheet.write(row, 20, "Total Kg", formats['title'])
+            sheet.write(row, 22, "Total Monto", formats['title'])
             sheet.write(row, 31, "Total Comisión", formats['title'])
-            sheet.write(row, 42, f'Total BL= {total_bl}', formats['title'])
-            sheet.write(row, 47, f'Total Container= {total_container}', formats['title'])
+            sheet.write(row, 42, f'{total_bl}', formats['title'])
+            sheet.write(row, 47, f'{total_container}', formats['title'])
             sheet.write(row, 51, "Total Flete", formats['title'])
             sheet.write(row, 52, "Total Seguro", formats['title'])
             sheet.write(row, 53, "Total FOB", formats['title'])
@@ -383,23 +425,43 @@ class CustomCustomerOrdersXls(models.TransientModel):
             'font_color': 'white',
             'text_wrap': True
         })
-        merge_format_total = workbook.add_format({
-            'border': 1,
-            'bold': 1,
+        merge_format_red_status = workbook.add_format({
             'align': 'center',
             'valign': 'vcenter',
-            'num_format': '#,##0'
+            'bg_color':'#c30f0f',
+            'font_color': 'white',
         })
-        merge_format_total_text = workbook.add_format({
-            'border': 1,
-            'bold': 1,
-            'align': 'left',
-            'valign': 'vcenter'
+        merge_format_yellow_status = workbook.add_format({
+            'align': 'center',
+            'valign': 'vcenter',
+            'bg_color':'#ffeb9c',
+            'font_color': '#efab24',
+        })
+        merge_format_light_green_status = workbook.add_format({
+            'align': 'center',
+            'valign': 'vcenter',
+            'bg_color':'#c6efce',
+            'font_color': '#50612e',
+        })
+        merge_format_green_status = workbook.add_format({
+            'align': 'center',
+            'valign': 'vcenter',
+            'bg_color':'#87c842',
+            'font_color': 'black',
+        })
+        merge_format_pink_status = workbook.add_format({
+            'align': 'center',
+            'valign': 'vcenter',
+            'bg_color':'#8064a2',
+            'font_color': 'white',
         })
         return {
             'string': merge_format_string,
             'number': merge_format_number,
             'title': merge_format_title,
-            'total': merge_format_total,
-            'text_total': merge_format_total_text
+            'red_status': merge_format_red_status,
+            'yellow_status': merge_format_yellow_status,
+            'green_status': merge_format_green_status,
+            'light_green_status': merge_format_light_green_status,
+            'pink_status': merge_format_pink_status
         }
