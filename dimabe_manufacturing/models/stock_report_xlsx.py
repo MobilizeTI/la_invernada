@@ -27,7 +27,7 @@ class StockReportXlsx(models.TransientModel):
         elif self.stock_selection == 'calibrate':
             dict_data = self.generate_excel_serial_report(
                 [('product_id.default_code', 'like', 'PSE006'), ('product_id.name', 'not like', 'Vana'),
-                  ('product_id.name', 'not like', 'Descarte')], "Producto Calibrado")
+                 ('product_id.name', 'not like', 'Descarte')], "Producto Calibrado")
         elif self.stock_selection == 'split':
             dict_data = self.generate_excel_serial_report(
                 ["|", "|", "&", ("product_id", "ilike", "PSE004"), ("product_id", "ilike", "PSE008"),
@@ -56,6 +56,8 @@ class StockReportXlsx(models.TransientModel):
             dict_data = self.generate_excel_serial_report(
                 [('product_id.default_code', 'like', 'PSES014'), ('harvest_filter', '=', self.year)],
                 'Producto Partido Servicio')
+        elif self.stock_selection == 'pt':
+            dict_data = self.generate_pt_report()
         attachment_id = self.env['ir.attachment'].sudo().create({
             'name': dict_data['file_name'],
             'datas_fname': dict_data['file_name'],
@@ -150,19 +152,21 @@ class StockReportXlsx(models.TransientModel):
     def generate_excel_serial_report(self, list_condition, type_product):
         file_name = 'temp_name.xlsx'
         workbook = xlsxwriter.Workbook(file_name)
-        sheet = workbook.add_worksheet("Informe de Calibrado")
+        sheet = workbook.add_worksheet(f"Informe de {type_product}")
         text_format = workbook.add_format({
             'text_wrap': True
         })
         row = 0
         col = 0
-        titles = [(50.56, 'Productor'), (15.33, 'Serie'), (13.22, 'Kilos Disponibles'), (8, 'Variedad'), (12.22, 'Calibre'),
-                  (11, 'Ubicacion Sistema'), (54.22, 'Producto'), (9.22, 'Serie Disponible'), (9.56, 'Fecha de Produccion'),
+        titles = [(50.56, 'Productor'), (15.33, 'Serie'), (13.22, 'Kilos Disponibles'), (8, 'Variedad'),
+                  (12.22, 'Calibre'),
+                  (11, 'Ubicacion Sistema'), (54.22, 'Producto'), (9.22, 'Serie Disponible'),
+                  (9.56, 'Fecha de Produccion'),
                   (10, 'Cliente o Calidad'), (22.89, 'Enviado a proceso'), (9.56, 'Fecha de Envio'),
                   (13.78, 'Ubicacion Fisica'), (10.89, 'Observacion')]
         for title in titles:
-            sheet.set_column(col,col,title[0])
-            sheet.write(row, col, title[1],text_format)
+            sheet.set_column(col, col, title[0])
+            sheet.write(row, col, title[1], text_format)
             col += 1
         col = 0
         row += 1
@@ -203,7 +207,7 @@ class StockReportXlsx(models.TransientModel):
                 sheet.write(row, col, serial.delivered_date.strftime('%d-%m-%Y'))
             col += 1
             if serial.physical_location:
-                sheet.write(row, col, serial.physical_location,text_format)
+                sheet.write(row, col, serial.physical_location, text_format)
             col += 1
             if serial.observations:
                 sheet.write(row, col, serial.observations)
@@ -213,4 +217,28 @@ class StockReportXlsx(models.TransientModel):
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
         report_name = f'Informe de Existencia {type_product} {date.today().strftime("%d/%m/%Y")}.xlsx'
+        return {'file_name': report_name, 'base64': file_base64}
+
+    def generate_pt_report(self):
+        file_name = 'pt_name.xlsx'
+        workbook = xlsxwriter.Workbook(file_name)
+        sheet = workbook.add_worksheet('Informe PT')
+        text_format = workbook.add_format({
+            'text_wrap': True
+        })
+        row = 0
+        col = 0
+        titles = [(1, 'Pedido'), (2, 'Medida'), (3, 'Cantidad Producida'), (4, 'Kilos Producido'),
+                  (5, 'Fecha de Creacion'), (6, 'Estado de Produccion'), (7, 'Cantidad Disponible'),
+                  (8, 'Kilos Disponible'), (9, 'Cliente'), (10, 'Pais Destino'), (10, 'Fecha Despacho'),
+                  (11, 'Ubicacion Fisica'), (12, 'Observaciones')]
+        for title in titles:
+            sheet.write(row, col, title[1], text_format)
+            col += 1
+        col = 0
+        row += 1
+        workbook.close()
+        with open(file_name, "rb") as file:
+            file_base64 = base64.b64encode(file.read())
+        report_name = f'Informe de Existencia de Producto Terminado {date.today().strftime("%d/%m/%Y")}.xlsx'
         return {'file_name': report_name, 'base64': file_base64}
