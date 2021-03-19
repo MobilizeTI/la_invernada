@@ -25,8 +25,8 @@ class StockPickingController(http.Controller):
                                 if res.move_ids_without_package[0].product_id.product_tmpl_id.tracking != 'lot':
                                     continue
                                 kgs = 0
-                                if res.production_net_weight.is_integer():
-                                    kgs = int(res.production_net_weight)
+                                if res.net_weight.is_integer():
+                                    kgs = int(res.net_weight) - res.quality_weight
                                 data.append({
                                     'ProducerCode': res.partner_id.id,
                                     'ProducerName': res.partner_id.name,
@@ -34,7 +34,7 @@ class StockPickingController(http.Controller):
                                     'LotNumber': res.name,
                                     'DispatchGuideNumber': res.guide_number,
                                     'ReceptionDate': self.time_to_tz_naive(res.scheduled_date, pytz.utc, pytz.timezone("America/Santiago")) or self.time_to_tz_naive(res.write_date, pytz.utc, pytz.timezone("America/Santiago")),
-                                    'ReceptionKgs': kgs if kgs > 0 else res.production_net_weight,
+                                    'ReceptionKgs': kgs if kgs > 0 else res.net_weight - res.quality_weight,
                                     'ContainerType': res.get_canning_move().product_id.display_name,
                                     'ContainerWeightAverage': res.avg_unitary_weight,
                                     'ContainerWeight': res.get_canning_move().product_id.weight,
