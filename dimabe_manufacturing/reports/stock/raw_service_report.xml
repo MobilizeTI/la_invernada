@@ -6,7 +6,7 @@
             <field name="model">stock.production.lot</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Materia Prima Servicio">
+                <tree name="Informe de Materia Prima Servicio" editable="bottom" delete="false" create="false">
                     <field name="producer_id" widget="many2onebutton" readonly="1"/>
                     <field name="name" string="Lote" readonly="1"/>
                     <field name="available_kg" readonly="1"/>
@@ -32,7 +32,7 @@
             <field name="view_mode">tree,graph,form,pivot</field>
             <field name="view_id" ref="view_stock_service_report_tree"/>
             <field name="domain">
-                [('product_id.default_code', 'like', 'MPS'), ('product_id.name', 'not like', 'Verde')]
+                [('product_id.default_code', 'like', 'MPS'), ('product_id.name', 'not like', 'Verde'),('stock_production_lot_serial_ids','!=',None)]
             </field>
         </record>
 
