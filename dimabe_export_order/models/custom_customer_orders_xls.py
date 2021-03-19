@@ -57,6 +57,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
 
             amount_total_invoice_ids = []
             other_fields_invoice_ids = []
+            commission_invoice_ids = []
 
             if len(orders) > 0:
                 for order in orders:
@@ -266,9 +267,12 @@ class CustomCustomerOrdersXls(models.TransientModel):
                             #Comisión
                             sheet.write(row, col, f'{stock.commission}%' if account_invoice.commission else '')
                             col += 1
-                       
-                            #Valor Comisión
-                            sheet.write(row, col, account_invoice.total_commission) 
+                             #Valor Comisión
+                            if exist_account_invoice not in commission_invoice_ids:
+                                commission_invoice_ids.append(account_invoice.id)
+                                sheet.write(row, col, account_invoice.total_commission) 
+                            else:
+                                sheet.write(row, col, '0')
                         else:
                             col += 1 
                         col += 1
@@ -371,7 +375,13 @@ class CustomCustomerOrdersXls(models.TransientModel):
                                     #FOB POR KILO
                                     sheet.write(row, col, account_invoice.value_per_kilogram if account_invoice.value_per_kilogram > 0 else 0)
                                 else:
-                                    col += 3
+                                    sheet.write(row, col,'0')
+                                    col += 1
+                                    sheet.write(row, col,'0')
+                                    col += 1
+                                    sheet.write(row, col,'0')
+                                    col += 1
+                                    sheet.write(row, col,'0')
                         else:
                             col += 3
                         col += 1
