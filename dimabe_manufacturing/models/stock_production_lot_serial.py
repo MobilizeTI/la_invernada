@@ -159,11 +159,16 @@ class StockProductionLotSerial(models.Model):
 
     observations = fields.Text('Observaciones')
 
-    product_caliber = fields.Char('Calibre')
+    product_caliber = fields.Char('Calibre',compute='compute_product_caliber')
 
     location_id = fields.Many2one('stock.location',related='stock_production_lot_id.location_id')
 
     delivered_date = fields.Date('Fecha de envio a:')
+
+    @api.multi
+    def compute_product_caliber(self):
+        for item in self:
+            self.product_caliber = self.product_id.get_calibers()
 
     @api.depends('production_id', 'reserved_to_production_id')
     @api.multi

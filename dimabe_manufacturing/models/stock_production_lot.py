@@ -229,21 +229,54 @@ class StockProductionLot(models.Model):
 
     start_date = fields.Datetime('Fecha Inicio')
 
-    measure = fields.Char('Medida')
+    measure = fields.Char('Medida',compute='compute_measure')
 
-    produced_qty = fields.Integer('Cantidad Producida')
+    produced_qty = fields.Integer('Cantidad Producida',compute='compute_produced_qty')
 
-    produced_weight = fields.Float('Kilos Producidos')
+    produced_weight = fields.Float('Kilos Producidos',compute='compute_produced_weight')
 
-    production_state = fields.Char('Estado de Producccion')
+    production_state = fields.Char('Estado de Producccion',compute='compute_production_state')
 
-    dispatch_state = fields.Char('Estado de Despacho')
+    dispatch_state = fields.Char('Estado de Despacho',compute='compute_dispatch_state')
 
     client_id = fields.Many2one('res.partner',related='sale_order_id.partner_id')
 
     destiny_country_id = fields.Many2one('res.country')
 
     dispatch_date = fields.Date('Fecha de Despacho')
+
+    @api.multi
+    def compute_measure(self):
+        for item in self:
+            item.measure = f'{item.product_id.weight} Kilos'
+
+    @api.multi
+    def compute_produced_qty(self):
+        for item in self:
+            item.produced_qty = len(item.stock_production_lot_serial_ids)
+
+    @api.multi
+    def compute_produced_weight(self):
+        for item in self:
+            item.produced_weight = sum(item.stock_production_lot_serial_ids.mapped('display_weight'))
+
+    @api.multi
+    def compute_production_state(self):
+        for item in self:
+            state = item.stock_production_lot_serial_ids.mapped('production_id')[0].state
+            if state == 'done':
+                item.production_state = "Finalizado"
+            else:
+                item.production_state = "En proceso"
+
+    @api.multi
+    def compute_dispatch_state(self):
+        for item in self:
+            state = item.stock_production_lot_serial_ids.mapped('production_id')[0].stock_picking_id.state
+            if state == 'done':
+                item.production_state = "Finalizado"
+            else:
+                item.production_state = "En proceso"
 
     @api.multi
     def _compute_reception_weight(self):

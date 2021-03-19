@@ -39,7 +39,8 @@
                     <group expand="1" string="Group By">
                         <filter string="Pedido" name="group_by_sale_order_id" context="{'group_by':'sale_order_id'}"/>
                         <filter string="Productor" name="group_by_producer" context="{'group_by':'producer_id'}"/>
-                        <filter string="Pais Destino" name="group_by_dest_country_id" context="{'group_by':'dest_country_id'}"/>
+                        <filter string="Pais Destino" name="group_by_dest_country_id"
+                                context="{'group_by':'dest_country_id'}"/>
                     </group>
                 </search>
             </field>
@@ -49,6 +50,9 @@
             <field name="res_model">stock.production.lot</field>
             <field name="view_mode">tree,graph,form,pivot</field>
             <field name="view_id" ref="view_stock_report_pt_tree"/>
+            <field name="domain">
+                [('product_id.default_code', 'like', 'PT'), ('sale_order_id', '!=', None)]
+            </field>
         </record>
         <menuitem id="stock_report_pt_menu"
                   action="dimabe_manufacturing.stock_report_pt"
