@@ -24,6 +24,6 @@
             <field name="view_id" ref="custom_customer_orders_view"/>
             <field name="target">new</field>
         </record>
-        <menuitem name="Archivo de Pedidos" parent="sale.menu_sale_report" action="generate_orders_file_action" id="orders_files_item"/>
+        <menuitem groups="group_purchase_file_orders" name="Archivo de Pedidos" parent="sale.menu_sale_report" action="generate_orders_file_action" id="orders_files_item"/>
     </data>
 </odoo>
