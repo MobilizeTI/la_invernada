@@ -98,7 +98,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, '')#order.client_contract)
                         col += 1
                         #N° Pedido Odoo
-                        sheet.write(row, col, order.name)
+                        sheet.write(row, col, f'https://dimabe-odoo-la-invernada-test-2148713.dev.odoo.com/web?#id={order.id}&action=259&model=sale.order&view_type=form&menu_id=139',order.name)
                         col += 1
                         #N° Stock Picking Odoo
                         sheet.write(row, col, stock.name)
@@ -349,7 +349,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         col += 1
                         #Terminal Portuario Origen
                         if exist_account_invoice:
-                            sheet.write(row, col, account_invoice.port_terminal_origin)
+                            sheet.write(row, col, account_invoice.port_terminal_origin if account_invoice.port_terminal_origin else '')
                         else:
                             sheet.write(row, col, '')
                         col += 1
