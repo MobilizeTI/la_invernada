@@ -98,8 +98,8 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, '')#order.client_contract)
                         col += 1
                         #N° Pedido Odoo
-                        #sheet.write(row, col,order.name)
-                        sheet.write_url(row, col, f'https://dimabe-odoo-la-invernada-test-2148713.dev.odoo.com/web?#id={order.id}&action=259', order.name)
+                        sheet.write(row, col,order.name)
+                        #sheet.write_url(row, col, f'https://dimabe-odoo-la-invernada-test-2148713.dev.odoo.com/web?#id={order.id}&action=259', order.name)
                         col += 1
                         #N° Stock Picking Odoo
                         sheet.write(row, col, stock.name)
