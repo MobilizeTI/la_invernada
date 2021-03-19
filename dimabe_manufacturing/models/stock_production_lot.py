@@ -270,7 +270,7 @@ class StockProductionLot(models.Model):
                 else:
                     item.production_state = "En proceso"
             else:
-                item.production_state = "En espera de inicio"
+                item.production_state = "Borrador"
 
     @api.multi
     def compute_dispatch_state(self):
