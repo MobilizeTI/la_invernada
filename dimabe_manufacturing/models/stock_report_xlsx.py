@@ -130,7 +130,7 @@ class StockReportXlsx(models.TransientModel):
                 sheet.write(row, col, lot.delivered_date.strftime("%d-%m-%Y"))
             col += 1
             if lot.physical_location:
-                sheet.write(row, col, lot.physical_location)
+                sheet.write(row, col, lot.physical_location.replace('+', '/n'))
             col += 1
             if lot.observations:
                 sheet.write(row, col, lot.observations)
@@ -192,6 +192,12 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             if serial.delivered_date:
                 sheet.write(row, col, serial.delivered_date.strftime('%d-%m-%Y'))
+            row += 1
+            if serial.physical_location:
+                sheet.write(row, col, serial.physical_location.replace('+', '/n'))
+            row += 1
+            if serial.observations:
+                sheet.write(row, col, serial.observations)
             row += 1
             col = 0
         workbook.close()
