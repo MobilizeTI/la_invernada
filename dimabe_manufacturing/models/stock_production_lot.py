@@ -217,9 +217,9 @@ class StockProductionLot(models.Model):
 
     reception_weight = fields.Float('Kilos Recepcionados', compute='_compute_reception_weight')
 
-    sale_order_id = fields.Many2one('sale.order','Pedido')
+    sale_order_id = fields.Many2one('sale.order', 'Pedido')
 
-    workcenter_id = fields.Many2one('mrp.workcenter','Enviado a proceso de')
+    workcenter_id = fields.Many2one('mrp.workcenter', 'Enviado a proceso de')
 
     delivered_date = fields.Date('Fecha de Envio')
 
@@ -229,17 +229,17 @@ class StockProductionLot(models.Model):
 
     start_date = fields.Datetime('Fecha Inicio')
 
-    measure = fields.Char('Medida',compute='compute_measure')
+    measure = fields.Char('Medida', compute='compute_measure')
 
-    produced_qty = fields.Integer('Cantidad Producida',compute='compute_produced_qty')
+    produced_qty = fields.Integer('Cantidad Producida', compute='compute_produced_qty')
 
-    produced_weight = fields.Float('Kilos Producidos',compute='compute_produced_weight')
+    produced_weight = fields.Float('Kilos Producidos', compute='compute_produced_weight')
 
-    production_state = fields.Char('Estado de Producccion',compute='compute_production_state')
+    production_state = fields.Char('Estado de Producccion', compute='compute_production_state')
 
-    dispatch_state = fields.Char('Estado de Despacho',compute='compute_dispatch_state')
+    dispatch_state = fields.Char('Estado de Despacho', compute='compute_dispatch_state')
 
-    client_id = fields.Many2one('res.partner',related='sale_order_id.partner_id')
+    client_id = fields.Many2one('res.partner', related='sale_order_id.partner_id')
 
     destiny_country_id = fields.Many2one('res.country')
 
@@ -263,11 +263,14 @@ class StockProductionLot(models.Model):
     @api.multi
     def compute_production_state(self):
         for item in self:
-            state = item.stock_production_lot_serial_ids.mapped('production_id')[0].state
-            if state == 'done':
-                item.production_state = "Finalizado"
+            if item.stock_production_lot_serial_ids.mapped('production_id'):
+                state = item.stock_production_lot_serial_ids.mapped('production_id')[0].state
+                if state == 'done':
+                    item.production_state = "Finalizado"
+                else:
+                    item.production_state = "En proceso"
             else:
-                item.production_state = "En proceso"
+                item.production_state = "En espera de inicio"
 
     @api.multi
     def compute_dispatch_state(self):
@@ -523,7 +526,7 @@ class StockProductionLot(models.Model):
         self.stock_production_lot_serial_ids.filtered(lambda a: not a.reserved_to_stock_picking_id).write({
             'to_add': True
         })
-        picking = self.env['stock.picking'].search([('id','=',picking_id)])
+        picking = self.env['stock.picking'].search([('id', '=', picking_id)])
         dispatch_line = picking.dispatch_line_ids.filtered(lambda x: x.product_id.id == self.product_id.id)
         if len(dispatch_line) > 1:
             view = self.env.ref('dimabe_manufacturing.view_confirm_order_reserved')
@@ -608,7 +611,8 @@ class StockProductionLot(models.Model):
             if not self.env['mrp.workorder'].search([('final_lot_id', '=', item.id)]):
                 pallet = self.env['manufacturing.pallet'].create({
                     'producer_id': item.producer_id.id,
-                    'sale_order_id': self.env['mrp.workorder'].search([('final_lot_id', '=', item.id)]).sale_order_id.id,
+                    'sale_order_id': self.env['mrp.workorder'].search(
+                        [('final_lot_id', '=', item.id)]).sale_order_id.id,
                     'lot_id': self.id
                 })
             else:
@@ -628,7 +632,7 @@ class StockProductionLot(models.Model):
                     'pallet_id': pallet.id,
                     'producer_id': pallet.producer_id.id
                 })
-            if  len(item.pallet_ids) == 1:
+            if len(item.pallet_ids) == 1:
                 item.write({
                     'start_date': datetime.now()
                 })
@@ -655,7 +659,7 @@ class StockProductionLot(models.Model):
         }
 
     @api.multi
-    def add_selection(self,stock_picking_id=None):
+    def add_selection(self, stock_picking_id=None):
         if 'dispatch_id' in self.env.context.keys():
             picking_id = int(self.env.context['dispatch_id'])
         else:
@@ -663,7 +667,7 @@ class StockProductionLot(models.Model):
         if not self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add) and not self.pallet_ids.filtered(
                 lambda a: a.add_picking):
             raise models.ValidationError('No se seleccionado nada')
-        if isinstance(picking_id,dict):
+        if isinstance(picking_id, dict):
             picking = self.env['stock.picking'].search([('id', '=', picking_id['dispatch_id'])])
         else:
             picking = self.env['stock.picking'].search([('id', '=', picking_id)])
@@ -703,7 +707,7 @@ class StockProductionLot(models.Model):
             line_create = self.env['stock.move.line'].create({
                 'move_id': picking.move_ids_without_package.filtered(
                     lambda m: m.product_id.id == self.product_id.id).id,
-                'picking_id':picking.id,
+                'picking_id': picking.id,
                 'product_id': self.product_id.id,
                 'product_uom_id': self.product_id.uom_id.id,
                 'product_uom_qty': self.get_reserved_quantity_by_picking(picking.id),
@@ -722,7 +726,8 @@ class StockProductionLot(models.Model):
             })
 
     def add_selection_serial(self, picking_id, location_id):
-        pallets = self.stock_production_lot_serial_ids.filtered(lambda a: a.to_add and not a.reserved_to_stock_picking_id).mapped('pallet_id')
+        pallets = self.stock_production_lot_serial_ids.filtered(
+            lambda a: a.to_add and not a.reserved_to_stock_picking_id).mapped('pallet_id')
         for pallet in pallets:
             pallet.write({
                 'reserved_to_stock_picking_id': picking_id
