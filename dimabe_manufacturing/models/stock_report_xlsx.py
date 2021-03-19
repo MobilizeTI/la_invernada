@@ -130,6 +130,7 @@ class StockReportXlsx(models.TransientModel):
                 sheet.write(row, col, lot.delivered_date.strftime("%d-%m-%Y"))
             col += 1
             if lot.physical_location:
+                raise models.ValidationError(lot.physical_location)
                 sheet.write(row, col, lot.physical_location)
             col += 1
             if lot.observations:
