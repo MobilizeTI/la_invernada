@@ -245,6 +245,18 @@ class StockProductionLot(models.Model):
 
     dispatch_date = fields.Date('Fecha de Despacho')
 
+    @api.multi
+    def show_pallets(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'manufacturing.pallet',
+            'res_id': self.id,
+            'view_type': 'form',
+            'view_mode': 'form',
+            'views': [(self.env.ref('dimabe_manufacturing.manufacturing_pallet_tree_view').id, 'form')],
+            'target': 'new',
+            'context': self.env.context
+        }
 
     @api.multi
     def compute_destiny_country(self):
