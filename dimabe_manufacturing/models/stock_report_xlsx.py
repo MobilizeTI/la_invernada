@@ -30,8 +30,10 @@ class StockReportXlsx(models.TransientModel):
                  ('product_id.name', 'not like', 'Descarte')], "Producto Calibrado")
         elif self.stock_selection == 'split':
             dict_data = self.generate_excel_serial_report(
-                ["|", "|", "&", ("product_id", "ilike", "PSE004"), ("product_id", "ilike", "PSE008"),
-                 ("harvest_filter", "=", self.year)],
+                [('product_id.categ_id.name', 'in',
+                  ('Envasado NSC', 'Partido Manual Calidad', 'Partido Mecánico/Láser')),
+                 ('harvest_filter', '=', self.year), ('product_id.name', 'not like', 'Descarte'),
+                 ('product_id.name', 'not like', 'Vana')],
                 'Producto Partido')
         elif self.stock_selection == 'vain':
             dict_data = self.generate_excel_serial_report(
@@ -246,7 +248,8 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, len(lot.stock_production_lot_serial_ids))
             col += 1
-            sheet.write(row, col ,lot.start_date.strftime('%d-%m-%Y') if lot.start_date else lot.create_date.strftime('%d-%m-%Y'))
+            sheet.write(row, col,
+                        lot.start_date.strftime('%d-%m-%Y') if lot.start_date else lot.create_date.strftime('%d-%m-%Y'))
             sheet.write(row, col, sum(lot.stock_production_lot_serial_ids.mapped('display_weight')))
             col += 1
             if lot.stock_production_lot_serial_ids.mapped('production_id'):
@@ -255,16 +258,17 @@ class StockReportXlsx(models.TransientModel):
             sheet.write(row, col, len(lot.mapped('stock_production_lot_serial_ids').filtered(
                 lambda a: not a.reserved_to_stock_picking_id and not a.consumed)))
             col += 1
-            sheet.write(row,col,sum(lot.mapped('stock_production_lot_serial_ids').filtered(
+            sheet.write(row, col, sum(lot.mapped('stock_production_lot_serial_ids').filtered(
                 lambda a: not a.reserved_to_stock_picking_id and not a.consumed).mapped('real_weight')))
             col += 1
-            sheet.write(row,col,lot.sale_order_id.partner_id.display_name)
+            sheet.write(row, col, lot.sale_order_id.partner_id.display_name)
             col += 1
             if lot.mapped('stock_production_lot_serial_ids').mapped('production_id'):
-                sheet.write(row,col,lot.mapped('stock_production_lot_serial_ids').mapped('production_id')[0].destiny_country_id.name)
+                sheet.write(row, col, lot.mapped('stock_production_lot_serial_ids').mapped('production_id')[
+                    0].destiny_country_id.name)
             col += 1
             col = 0
-            row +=1
+            row += 1
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
