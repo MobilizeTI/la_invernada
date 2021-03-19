@@ -66,7 +66,7 @@ class AccountInvoice(models.Model):
                     ('2','Cancelado')
             ], string="Estado Calidad")
 
-    quality_remarks = fields.Char(string="Obs. Calidad")
+    quality_remarks = fields.Text(string="Obs. Calidad")
 
     shipping_date_to_customer = fields.Date(string="Fecha Envío al Cliente")
 

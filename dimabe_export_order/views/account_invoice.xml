@@ -44,6 +44,16 @@
                             <field name="origin_certificate" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                         </group>
                     </group>
+                    <group>
+                        <group>
+                            <field name="port_terminal_origin"/>
+                            <field name="shipping_date_to_customer "/>
+                        </group>
+                        <group>
+                            <field name="quality_status"/>
+                            <field name="quality_remarks"/>
+                        </group>
+                    </group>
                 </xpath>
             </field>
         </record>
