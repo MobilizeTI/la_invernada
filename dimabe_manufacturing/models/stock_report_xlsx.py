@@ -72,6 +72,9 @@ class StockReportXlsx(models.TransientModel):
     def generate_excel_raw_report(self, list_condition, type_product):
         file_name = 'temp_report.xlsx'
         workbook = xlsxwriter.Workbook(file_name)
+        text_format = workbook.add_format({
+            'text_wrap':True
+        })
         sheet = workbook.add_worksheet('Informe de Materia Prima')
         row = 0
         col = 0
@@ -131,7 +134,7 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             if lot.physical_location:
                 models._logger.error(f'{lot.name} {lot.physical_location}')
-                sheet.write(row, col, lot.physical_location.replace(' ','/n'))
+                sheet.write(row, col, lot.physical_location.replace(' ','/n'),text_format)
             col += 1
             if lot.observations:
                 sheet.write(row, col, lot.observations)
