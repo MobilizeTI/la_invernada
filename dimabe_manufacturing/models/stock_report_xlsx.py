@@ -160,7 +160,10 @@ class StockReportXlsx(models.TransientModel):
         row += 1
         serials = self.env['stock.production.lot.serial'].sudo().search(list_condition)
         for serial in serials:
-            sheet.write(row, col, serial.producer_id.display_name)
+            if serial.producer_id:
+                sheet.write(row, col, serial.producer_id.display_name)
+            else:
+                sheet.write(row, col, 'No Definido')
             col += 1
             sheet.write(row, col, serial.serial_number)
             col += 1
@@ -174,13 +177,18 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, serial.product_id.display_name)
             col += 1
-            sheet.write(row, col, serial.consumed)
+            if serial.consumed:
+                sheet.write(row, col, 'Disponible')
+            else:
+                sheet.write(row, col, 'Consumida')
             col += 1
             sheet.write(row, col, serial.packaging_date.strftime('%d-%m-%Y'))
             col += 1
-            sheet.write(row, col, serial.client_or_quality)
+            if serial.location_id:
+                sheet.write(row, col, serial.client_or_quality)
             col += 1
-            sheet.write(row, col, serial.workcenter_send_id.display_name)
+            if serial.workcenter_send_id:
+                sheet.write(row, col, serial.workcenter_send_id.display_name)
             col += 1
             if serial.delivered_date:
                 sheet.write(row, col, serial.delivered_date.strftime('%d-%m-%Y'))
