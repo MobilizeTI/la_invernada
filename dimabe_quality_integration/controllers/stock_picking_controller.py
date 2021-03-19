@@ -60,7 +60,7 @@ class StockPickingController(http.Controller):
                 'LotNumber': res.name,
                 'DispatchGuideNumber': res.guide_number,
                 'ReceptionDate': self.time_to_tz_naive(res.scheduled_date, pytz.utc, pytz.timezone("America/Santiago")),
-                'ReceptionKgs': res.production_net_weight,
+                'ReceptionKgs': res.net_weight - res.quality_weight,
                 'ContainerType': res.get_canning_move().product_id.display_name,
                 'ContainerWeightAverage': res.avg_unitary_weight,
                 'ContainerWeight': res.get_canning_move().product_id.weight,
