@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <tree editable="bottom" delete="false" create="false">
                     <field name="producer_id" widget="many2onebutton" string="Productor" readonly="1"/>
-                    <field name="name" widget="many2onebutton" string="Lote" readonly="1"/>
+                    <field name="name" widget="many2onebutton" string="Serie" readonly="1"/>
                     <field name="display_weight" string="Kilos producidos" readonly="1"/>
                     <field name="available_weight" string="Kilos disponibles" readonly="1"/>
                     <field name="product_variety" string="Variedad" readonly="1"/>

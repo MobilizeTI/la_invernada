@@ -21,6 +21,7 @@
                     <field name="dispatch_state" readonly="1"/>
                     <field name="client_id" widget="many2onebutton" readonly="1"/>
                     <field name="destiny_country_id" widget="many2onebutton" string="Pais de Destino" readonly="1"/>
+                    <button type="object" string="Ver Pallets" name="show_pallets"/>
                     <field name="dispatch_date" />
                     <field name="physical_location" />
                     <field name="observations"/>
