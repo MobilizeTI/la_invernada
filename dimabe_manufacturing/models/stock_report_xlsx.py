@@ -185,7 +185,7 @@ class StockReportXlsx(models.TransientModel):
             if serial.consumed:
                 sheet.write(row, col, serial.available_weight)
             col += 1
-            sheet.write_number(row, col, serial.display_weight) if serial.display_weight != 0 else sheet.write_number(row, col, serial.real_weight)
+            sheet.write_number(row, col, serial.real_weight)
             col += 1
             sheet.write(row, col, serial.product_id.get_variety())
             col += 1
