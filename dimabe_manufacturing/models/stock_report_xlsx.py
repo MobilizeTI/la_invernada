@@ -131,7 +131,7 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             if lot.physical_location:
                 models._logger.error(f'{lot.name} {lot.physical_location}')
-                sheet.write(row, col, lot.physical_location)
+                sheet.write(row, col, lot.physical_location.replace(' ','/n'))
             col += 1
             if lot.observations:
                 sheet.write(row, col, lot.observations)
