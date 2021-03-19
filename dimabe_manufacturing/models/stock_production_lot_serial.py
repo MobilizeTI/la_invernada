@@ -165,10 +165,20 @@ class StockProductionLotSerial(models.Model):
 
     delivered_date = fields.Date('Fecha de envio a:')
 
+    available_weight = fields.Float('Kilos disponibles')
+
+    @api.multi
+    def compute_available_weight(self):
+        for item in self:
+            if item.consumed:
+                item.available_weight = 0
+            else:
+                item.available_weight = item.real_weight
+
     @api.multi
     def compute_product_caliber(self):
         for item in self:
-            self.product_caliber = self.product_id.get_calibers()
+            item.product_caliber = item.product_id.get_calibers()
 
     @api.depends('production_id', 'reserved_to_production_id')
     @api.multi

@@ -33,7 +33,7 @@ class StockReportXlsx(models.TransientModel):
                 [('product_id.categ_id.name', 'in',
                   ('Envasado NSC', 'Partido Manual Calidad', 'Partido Mecánico/Láser')),
                  ('harvest_filter', '=', self.year), ('product_id.name', 'not like', 'Descarte'),
-                 ('product_id.name', 'not like', 'Vana'),('product_id.default_code','not like','PT')],
+                 ('product_id.name', 'not like', 'Vana'), ('product_id.default_code', 'not like', 'PT')],
                 'Producto Partido')
         elif self.stock_selection == 'vain':
             dict_data = self.generate_excel_serial_report(
@@ -160,7 +160,7 @@ class StockReportXlsx(models.TransientModel):
         })
         row = 0
         col = 0
-        titles = [(50.56, 'Productor'), (15.33, 'Serie'), (13.22, 'Kilos Disponibles'), (8, 'Variedad'),
+        titles = [(50.56, 'Productor'), (15.33, 'Serie'), (13.22, 'Kilos Producidos'),(13.22,'Kilos Disponible'), (8, 'Variedad'),
                   (12.22, 'Calibre'),
                   (11, 'Ubicacion Sistema'), (54.22, 'Producto'), (9.22, 'Serie Disponible'),
                   (9.56, 'Fecha de Produccion'),
@@ -180,6 +180,9 @@ class StockReportXlsx(models.TransientModel):
                 sheet.write(row, col, 'No Definido')
             col += 1
             sheet.write(row, col, serial.serial_number)
+            col += 1
+            if sheet.consumed:
+                sheet.write(row,col,serial.available_weight)
             col += 1
             sheet.write_number(row, col, serial.display_weight)
             col += 1
@@ -230,7 +233,7 @@ class StockReportXlsx(models.TransientModel):
         })
         row = 0
         col = 0
-        titles = [(1, 'Pedido'), (2, 'Medida'), (3, 'Cantidad Producida'), (4, 'Kilos Producido'),
+        titles = [(1, 'Pedido'),(13,'Lote'), (2, 'Medida'), (3, 'Cantidad Producida'), (4, 'Kilos Producido'),
                   (5, 'Fecha de Creacion'), (6, 'Estado de Produccion'), (7, 'Cantidad Disponible'),
                   (8, 'Kilos Disponible'), (9, 'Cliente'), (10, 'Pais Destino'), (10, 'Fecha Despacho'),
                   (11, 'Ubicacion Fisica'), (12, 'Observaciones')]
@@ -240,17 +243,20 @@ class StockReportXlsx(models.TransientModel):
         col = 0
         row += 1
         lots = self.env['stock.production.lot'].search(
-            [('product_id.default_code', 'like', 'PT'), ('sale_order_id', '!=', None)])
+            [('product_id.default_code', 'like', 'PT'), ('sale_order_id', '!=', None),('harvest','=',self.year)])
         for lot in lots:
             sheet.write(row, col, lot.sale_order_id.name, text_format)
             col += 1
-            sheet.write(row, col, lot.product_id.weight)
+            sheet.write(row,col,lot.name)
             col += 1
-            sheet.write(row, col, len(lot.stock_production_lot_serial_ids))
+            sheet.write(row, col, lot.measure)
+            col += 1
+            sheet.write(row, col, lot.produced_qty)
+            col += 1
+            sheet.write(row, col, lot.produced_weight)
             col += 1
             sheet.write(row, col,
                         lot.start_date.strftime('%d-%m-%Y') if lot.start_date else lot.create_date.strftime('%d-%m-%Y'))
-            sheet.write(row, col, sum(lot.stock_production_lot_serial_ids.mapped('display_weight')))
             col += 1
             if lot.stock_production_lot_serial_ids.mapped('production_id'):
                 sheet.write(row, col, lot.stock_production_lot_serial_ids.mapped('production_id').mapped('state')[0])
@@ -261,11 +267,19 @@ class StockReportXlsx(models.TransientModel):
             sheet.write(row, col, sum(lot.mapped('stock_production_lot_serial_ids').filtered(
                 lambda a: not a.reserved_to_stock_picking_id and not a.consumed).mapped('real_weight')))
             col += 1
-            sheet.write(row, col, lot.sale_order_id.partner_id.display_name)
+            if lot.client_id:
+                sheet.write(row, col, lot.client_id.display_name)
             col += 1
-            if lot.mapped('stock_production_lot_serial_ids').mapped('production_id'):
-                sheet.write(row, col, lot.mapped('stock_production_lot_serial_ids').mapped('production_id')[
-                    0].destiny_country_id.name)
+            if lot.destiny_country_id:
+                sheet.write(row, col, lot.destiny_country_id.name)
+            if lot.dispatch_date:
+                sheet.write(row, col, lot.dispatch_date.strftime('%d-%m-%Y'))
+            col += 1
+            if lot.physical_location:
+                sheet.write(row, col, lot.physical_location, text_format)
+            col += 1
+            if lot.observations:
+                sheet.write(row, col, lot.observations)
             col += 1
             col = 0
             row += 1
