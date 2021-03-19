@@ -1,6 +1,6 @@
 from odoo import fields, models, api
 from odoo.addons import decimal_precision as dp
-from datetime import date
+from datetime import date, datetime
 
 
 class StockProductionLot(models.Model):
@@ -226,6 +226,8 @@ class StockProductionLot(models.Model):
     physical_location = fields.Text('Ubicacion Fisica')
 
     observations = fields.Text('Observaciones')
+
+    start_date = fields.Datetime('Fecha Inicio')
 
     @api.depends('stock_production_lot_serial_ids')
     @api.multi
@@ -583,6 +585,10 @@ class StockProductionLot(models.Model):
                     'belongs_to_prd_lot': True,
                     'pallet_id': pallet.id,
                     'producer_id': pallet.producer_id.id
+                })
+            if  len(item.pallet_ids) == 1:
+                item.write({
+                    'start_date': datetime.now()
                 })
             pallet.update({
                 'state': 'close'

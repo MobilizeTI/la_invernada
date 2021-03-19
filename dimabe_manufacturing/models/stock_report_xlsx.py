@@ -246,6 +246,7 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, len(lot.stock_production_lot_serial_ids))
             col += 1
+            sheet.write(row, col ,lot.start_date.strftime('%d-%m-%Y') if lot.start_date else lot.create_date.strftime('%d-%m-%Y'))
             sheet.write(row, col, sum(lot.stock_production_lot_serial_ids.mapped('display_weight')))
             col += 1
             if lot.stock_production_lot_serial_ids.mapped('production_id'):
