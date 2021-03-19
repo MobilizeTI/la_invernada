@@ -275,11 +275,14 @@ class StockProductionLot(models.Model):
     @api.multi
     def compute_dispatch_state(self):
         for item in self:
-            state = item.stock_production_lot_serial_ids.mapped('production_id')[0].stock_picking_id.state
-            if state == 'done':
-                item.production_state = "Finalizado"
+            if item.stock_production_lot_serial_ids.mapped('production_id'):
+                state = item.stock_production_lot_serial_ids.mapped('production_id')[0].stock_picking_id.state
+                if state == 'done':
+                    item.production_state = "Finalizado"
+                else:
+                    item.production_state = "En proceso"
             else:
-                item.production_state = "En proceso"
+                item.production_state = "Borrador"
 
     @api.multi
     def _compute_reception_weight(self):
