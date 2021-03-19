@@ -217,7 +217,7 @@ class StockProductionLot(models.Model):
 
     reception_weight = fields.Float('Kilos Recepcionados', compute='_compute_reception_weight')
 
-    sale_order_id = fields.Many2one('sale.order', compute='_compute_sale_order_id', store=True)
+    sale_order_id = fields.Many2one('sale.order','Pedido')
 
     workcenter_id = fields.Many2one('mrp.workcenter','Enviado a proceso de')
 
@@ -229,16 +229,21 @@ class StockProductionLot(models.Model):
 
     start_date = fields.Datetime('Fecha Inicio')
 
-    @api.depends('stock_production_lot_serial_ids')
-    @api.multi
-    def _compute_sale_order_id(self):
-        for item in self:
-            if item.is_prd_lot:
-                production_id = item.stock_production_lot_serial_ids.mapped('production_id')
-                if production_id:
-                    stock_picking_id = production_id.stock_picking_id
-                    if stock_picking_id:
-                        item.sale_order_id = self.env['sale.order'].search([('name', '=', stock_picking_id.origin)])
+    measure = fields.Char('Medida')
+
+    produced_qty = fields.Integer('Cantidad Producida')
+
+    produced_weight = fields.Float('Kilos Producidos')
+
+    production_state = fields.Char('Estado de Producccion')
+
+    dispatch_state = fields.Char('Estado de Despacho')
+
+    client_id = fields.Many2one('res.partner',related='sale_order_id.partner_id')
+
+    destiny_country_id = fields.Many2one('res.country')
+
+    dispatch_date = fields.Date('Fecha de Despacho')
 
     @api.multi
     def _compute_reception_weight(self):
@@ -560,13 +565,17 @@ class StockProductionLot(models.Model):
     @api.multi
     def generate_standard_pallet(self):
         for item in self:
+            if not item.sale_order_id:
+                item.write({
+                    'sale_order_id': self.env['mrp.workorder'].search([('final_lot_id', '=', item.id)]).sale_order_id.id
+                })
 
             if not item.producer_id:
                 raise models.ValidationError('debe seleccionar un productor')
             if not self.env['mrp.workorder'].search([('final_lot_id', '=', item.id)]):
                 pallet = self.env['manufacturing.pallet'].create({
                     'producer_id': item.producer_id.id,
-                    'sale_order_id': self.env['mrp.workorder'].search([('final_lot_id', '=', item.id)]).sale_order_id,
+                    'sale_order_id': self.env['mrp.workorder'].search([('final_lot_id', '=', item.id)]).sale_order_id.id,
                     'lot_id': self.id
                 })
             else:
