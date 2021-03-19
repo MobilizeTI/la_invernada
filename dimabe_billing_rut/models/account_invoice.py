@@ -938,12 +938,12 @@ class AccountInvoice(models.Model):
     #Send Data to Stock_Picking Comex
     @api.multi
     def write(self, vals):
-        order_list = []
+        dispatch_list = []
         for item in self.orders_to_invoice:
-            if item.order_id:
-                order_list.append(item.stock_picking_id)
+            if item.stock_picking_id:
+                dispatch_list.append(item.stock_picking_id)
         
-        stock_picking_ids = self.env['stock.picking'].search([('id', 'in', order_list)])
+        stock_picking_ids = self.env['stock.picking'].search([('id', 'in', dispatch_list)])
 
         invoice_line_ids = self.env['account.invoice.line'].search([('invoice_id','=',self.id)])
         orders_to_invoice_ids = self.env['custom.orders.to.invoice'].search([('invoice_id','=',self.id)])
@@ -983,29 +983,29 @@ class AccountInvoice(models.Model):
                 'custom_notify_ids': [(6, 0, self.custom_notify_ids.ids)]
             })
             
-            for line in invoice_line_ids:
-                if line.stock_picking_id == s.id:
-                    if s.state == "done":
-                        new_quantity = 0
-                        stock_picking_line = self.env['stock.move.line'].search([('picking_id','=',s.id)])
-                        for picking in stock_picking_line:
-                                if picking.product_id.id == line.product_id.id:
-                                    new_quantity += picking.qty_done
-                        line.write({
-                            'quantity' : new_quantity
-                        })
+            #for line in invoice_line_ids:
+            #    if line.stock_picking_id == s.id:
+            #        if s.state == "done":
+            #            new_quantity = 0
+            #            stock_picking_line = self.env['stock.move.line'].search([('picking_id','=',s.id)])
+            #            for picking in stock_picking_line:
+            #                    if picking.product_id.id == line.product_id.id:
+            #                        new_quantity += picking.qty_done
+            #            line.write({
+            #                'quantity' : new_quantity
+            #            })
 
-            for o in orders_to_invoice_ids:
-                if o.stock_picking_id == s.id:
-                    if s.state == "done":
-                        new_quantity = 0
-                        stock_picking_line = self.env['stock.move.line'].search([('picking_id','=',s.id)])
-                        for picking in stock_picking_line:
-                                if picking.product_id.id == o.product_id:
-                                    new_quantity += picking.qty_done
-                        o.write({
-                            'quantity_to_invoice' : new_quantity
-                        })
+            #for o in orders_to_invoice_ids:
+            #    if o.stock_picking_id == s.id:
+            #        if s.state == "done":
+            #            new_quantity = 0
+            #            stock_picking_line = self.env['stock.move.line'].search([('picking_id','=',s.id)])
+            #            for picking in stock_picking_line:
+            #                    if picking.product_id.id == o.product_id:
+             #                       new_quantity += picking.qty_done
+              #          o.write({
+               #             'quantity_to_invoice' : new_quantity
+                #        })
 
             
         return res
