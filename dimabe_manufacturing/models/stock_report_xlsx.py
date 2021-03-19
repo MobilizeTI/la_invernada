@@ -27,7 +27,7 @@ class StockReportXlsx(models.TransientModel):
         elif self.stock_selection == 'calibrate':
             dict_data = self.generate_excel_serial_report(
                 [('product_id.default_code', 'like', 'PSE006'), ('product_id.name', 'not like', 'Vana'),
-                 ('product_id.name', 'not like', 'Descarte'), ('harvest_filter', '=', self.year)], "Producto Calibrado")
+                  ('product_id.name', 'not like', 'Descarte')], "Producto Calibrado")
         elif self.stock_selection == 'split':
             dict_data = self.generate_excel_serial_report(
                 ["|", "|", "&", ("product_id", "ilike", "PSE004"), ("product_id", "ilike", "PSE008"),
@@ -73,7 +73,7 @@ class StockReportXlsx(models.TransientModel):
         file_name = 'temp_report.xlsx'
         workbook = xlsxwriter.Workbook(file_name)
         text_format = workbook.add_format({
-            'text_wrap':True
+            'text_wrap': True
         })
         sheet = workbook.add_worksheet('Informe de Materia Prima')
         row = 0
@@ -84,7 +84,7 @@ class StockReportXlsx(models.TransientModel):
                   (13, 'Enviado a Proceso de:'), (14, 'Fecha de Envio:'), (15, 'Ubicacion Fisica:'),
                   (16, 'Observaciones:')]
         for title in titles:
-            sheet.write(row, col, title[1],text_format)
+            sheet.write(row, col, title[1], text_format)
             col += 1
         row += 1
         col = 0
@@ -134,7 +134,7 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             if lot.physical_location:
                 models._logger.error(f'{lot.name} {lot.physical_location}')
-                sheet.write(row, col, lot.physical_location.replace(' ','/n'),text_format)
+                sheet.write(row, col, lot.physical_location.replace(' ', '/n'), text_format)
             col += 1
             if lot.observations:
                 sheet.write(row, col, lot.observations)
