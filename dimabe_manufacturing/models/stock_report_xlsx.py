@@ -156,10 +156,10 @@ class StockReportXlsx(models.TransientModel):
         })
         row = 0
         col = 0
-        titles = [(50.56, 'Productor:'), (15.33, 'Serie:'), (13.22, 'Kilos Disponibles:'), (8, 'Variedad:'), (12.22, 'Calibre:'),
-                  (11, 'Ubicacion Sistema:'), (54.22, 'Producto:'), (9.22, 'Esta Disponible?:'), (9.56, 'Fecha de Produccion:'),
-                  (10, 'Cliente o Calidad:'), (22.89, 'Enviado a proceso:'), (9.56, 'Fecha de Envio:'),
-                  (13.78, 'Ubicacion Fisica:'), (10.89, 'Observacion')]
+        titles = [(50.56, 'Productor'), (15.33, 'Serie'), (13.22, 'Kilos Disponibles'), (8, 'Variedad'), (12.22, 'Calibre'),
+                  (11, 'Ubicacion Sistema'), (54.22, 'Producto'), (9.22, 'Serie Disponible'), (9.56, 'Fecha de Produccion'),
+                  (10, 'Cliente o Calidad'), (22.89, 'Enviado a proceso'), (9.56, 'Fecha de Envio'),
+                  (13.78, 'Ubicacion Fisica'), (10.89, 'Observacion')]
         for title in titles:
             sheet.set_column(col,col,title[0])
             sheet.write(row, col, title[1],text_format)
