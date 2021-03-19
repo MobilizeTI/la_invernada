@@ -133,8 +133,6 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         col += 1
                         #Estatus Calidad
                         if exist_account_invoice:
-                            if account_invoice.quality_status:
-                                raise models.ValidationError(account_invoice.quality_status)
                             if account_invoice.quality_status == 'Pendiente':
                                 sheet.write(row, col, account_invoice.quality_status, formats['pink_status'])
                             elif account_invoice.quality_status == 'Recibido':
