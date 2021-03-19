@@ -133,7 +133,15 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         col += 1
                         #Estatus Calidad
                         if exist_account_invoice:
-                            sheet.write(row, col, account_invoice.quality_status)
+                            if account_invoice.quality_status == 'Pendiente':
+                                sheet.write(row, col, account_invoice.quality_status, formats['pink_status'])
+                            elif account_invoice.quality_status == 'Recibido':
+                                sheet.write(row, col, account_invoice.quality_status, formats['yellow_status'])
+                            elif account_invoice.quality_status == 'Enviado':
+                                sheet.write(row, col, account_invoice.quality_status, formats['light_green_status'])
+                            elif account_invoice.quality_status == 'Cancelado':
+                                sheet.write(row, col, account_invoice.quality_status, formats['red_status'])
+
                         else:
                             sheet.write(row, col, '')
                         col += 1
@@ -366,15 +374,15 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         col += 1
                         #Obs. Calidad
                         if exist_account_invoice:
-                            sheet.write(row, col, account_invoice.quality_remarks)
+                            sheet.write(row, col, account_invoice.quality_remarks if account_invoice.quality_remarks else '')
                         else:
                             sheet.write(row, col,'')
                         col += 1
                         #Comentarios
-                        sheet.write(row, col, stock.remarks)
+                        sheet.write(row, col, stock.remarks if stock.remarks else '')
                         col += 1
                         #N° DUS
-                        sheet.write(row, col, stock.dus_number)
+                        sheet.write(row, col, stock.dus_number if stock.dus_number else '')
                         col += 1
 
                         row += 1
@@ -418,6 +426,9 @@ class CustomCustomerOrdersXls(models.TransientModel):
             sheet.set_column('AY:AY',18)
             sheet.set_column('AO:AO',12)
             sheet.set_column('AP:AP',14)
+            sheet.set_column('BD:BD',40)
+            sheet.set_column('BE:BE',40)
+            sheet.set_column('BF:BF',30)
             #Total    
             row += 1
             sheet.set_row(row, cell_format=formats['title'])
