@@ -12,7 +12,7 @@ class StockReportXlsx(models.TransientModel):
     stock_selection = fields.Selection(
         [('raw', 'Informe existencia materia prima'), ('calibrate', 'Informe existencia producto calibrado'),
          ('split', 'Informe existencia producto partido'), ('vain', 'Informe existencia producto vana'),
-         ('discart', 'Informe existencia descarte'), ('pt', 'Informe existencia producto terminado'),
+         ('discard', 'Informe existencia descarte'), ('pt', 'Informe existencia producto terminado'),
          ('washed', 'Informe existencia producto lavado'), ('raw_service', 'Informe existencia materia prima servicio'),
          ('washed_service', 'Informe existencia producto lavado servicio'),
          ('split_service', 'Informe existencia producto partido servicio')])
@@ -21,7 +21,9 @@ class StockReportXlsx(models.TransientModel):
     def generate_report(self):
         dict_data = {}
         if self.stock_selection == 'raw':
-            dict_data = self.generate_excel_raw_report()
+            dict_data = self.generate_excel_raw_report(
+                [('product_id.categ_id.name', 'in', ('Seca', 'Desp. y Secado')), ('harvest', '=', self.year)],
+                'Materia Prima')
         elif self.stock_selection == 'calibrate':
             dict_data = self.generate_excel_serial_report(
                 [('product_id.default_code', 'like', 'PSE006'), ('product_id.name', 'not like', 'Vana'),
@@ -31,6 +33,29 @@ class StockReportXlsx(models.TransientModel):
                 ["|", "|", "&", ("product_id", "ilike", "PSE004"), ("product_id", "ilike", "PSE008"),
                  ("harvest", "=", self.year)],
                 'Producto Partido')
+        elif self.stock_selection == 'vain':
+            dict_data = self.generate_excel_serial_report(
+                [('product_id.name', 'ilike', 'Vana'), ('harvest', '=', self.year)], "Vana")
+        elif self.stock_selection == 'discard':
+            dict_data = self.generate_excel_serial_report(
+                [('product_id.name', 'ilike', 'Descarte'), ('product_id.default_code', 'ilike', 'PSE006'),
+                 ('harvest', '=', self.year)], 'Descarte')
+        elif self.stock_selection == 'washed':
+            dict_data = self.generate_excel_serial_report(
+                [('product_id.default_code', 'like', 'PSE016'), ('product_id.name', 'not like', 'Vana'),
+                 ('product_id.name', 'not like', '(S)'), ('harvest', '=', self.year)], 'Producto Lavado')
+        elif self.stock_selection == 'raw_service':
+            dict_data = self.generate_excel_raw_report(
+                [('product_id.default_code', 'like', 'MPS'), ('product_id.name', 'not like', 'Verde'),
+                 ('harvest', '=', self.year)], 'Materia Prima Servicio')
+        elif self.stock_selection == 'washed_service':
+            dict_data = self.generate_excel_serial_report(
+                [('product_id.default_code', 'like', 'PSES016'), ('harvest', '=', self.year)],
+                'Producto Lavado Servicio')
+        elif self.stock_selection == 'spilt_service':
+            dict_data = self.generate_excel_serial_report(
+                [('product_id.default_code', 'like', 'PSES014'), ('harvest', '=', self.year)],
+                'Producto Partido Servicio')
         attachment_id = self.env['ir.attachment'].sudo().create({
             'name': dict_data['file_name'],
             'datas_fname': dict_data['file_name'],
@@ -44,7 +69,7 @@ class StockReportXlsx(models.TransientModel):
         }
         return action
 
-    def generate_excel_raw_report(self):
+    def generate_excel_raw_report(self, list_condition, type_product):
         file_name = 'temp_report.xlsx'
         workbook = xlsxwriter.Workbook(file_name)
         sheet = workbook.add_worksheet('Informe de Materia Prima')
@@ -61,8 +86,7 @@ class StockReportXlsx(models.TransientModel):
         row += 1
         col = 0
 
-        lots = self.env['stock.production.lot'].sudo().search(
-            [('product_id.categ_id.name', 'in', ('Seca', 'Desp. y Secado')), ('harvest', '=', self.year)])
+        lots = self.env['stock.production.lot'].sudo().search(list_condition)
         for lot in lots:
             if lot.producer_id:
                 sheet.write(row, col, lot.producer_id.display_name)
@@ -115,7 +139,7 @@ class StockReportXlsx(models.TransientModel):
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
-        report_name = f'Informe de Existencia Materia Prima {date.today().strftime("%d/%m/%Y")}.xlsx'
+        report_name = f'Informe de Existencia {type_product} {date.today().strftime("%d/%m/%Y")}.xlsx'
 
         return {'file_name': report_name, 'base64': file_base64}
 
