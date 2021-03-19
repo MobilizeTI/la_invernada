@@ -22,39 +22,39 @@ class StockReportXlsx(models.TransientModel):
         dict_data = {}
         if self.stock_selection == 'raw':
             dict_data = self.generate_excel_raw_report(
-                [('product_id.categ_id.name', 'in', ('Seca', 'Desp. y Secado')), ('harvest', '=', self.year)],
+                [('product_id.categ_id.name', 'in', ('Seca', 'Desp. y Secado')), ('harvest_filter', '=', self.year)],
                 'Materia Prima')
         elif self.stock_selection == 'calibrate':
             dict_data = self.generate_excel_serial_report(
                 [('product_id.default_code', 'like', 'PSE006'), ('product_id.name', 'not like', 'Vana'),
-                 ('product_id.name', 'not like', 'Descarte'), ('harvest', '=', self.year)], "Producto Calibrado")
+                 ('product_id.name', 'not like', 'Descarte'), ('harvest_filter', '=', self.year)], "Producto Calibrado")
         elif self.stock_selection == 'split':
             dict_data = self.generate_excel_serial_report(
                 ["|", "|", "&", ("product_id", "ilike", "PSE004"), ("product_id", "ilike", "PSE008"),
-                 ("harvest", "=", self.year)],
+                 ("harvest_filter", "=", self.year)],
                 'Producto Partido')
         elif self.stock_selection == 'vain':
             dict_data = self.generate_excel_serial_report(
-                [('product_id.name', 'ilike', 'Vana'), ('harvest', '=', self.year)], "Vana")
+                [('product_id.name', 'ilike', 'Vana'), ('harvest_filter', '=', self.year)], "Vana")
         elif self.stock_selection == 'discard':
             dict_data = self.generate_excel_serial_report(
                 [('product_id.name', 'ilike', 'Descarte'), ('product_id.default_code', 'ilike', 'PSE006'),
-                 ('harvest', '=', self.year)], 'Descarte')
+                 ('harvest_filter', '=', self.year)], 'Descarte')
         elif self.stock_selection == 'washed':
             dict_data = self.generate_excel_serial_report(
                 [('product_id.default_code', 'like', 'PSE016'), ('product_id.name', 'not like', 'Vana'),
-                 ('product_id.name', 'not like', '(S)'), ('harvest', '=', self.year)], 'Producto Lavado')
+                 ('product_id.name', 'not like', '(S)'), ('harvest_filter', '=', self.year)], 'Producto Lavado')
         elif self.stock_selection == 'raw_service':
             dict_data = self.generate_excel_raw_report(
                 [('product_id.default_code', 'like', 'MPS'), ('product_id.name', 'not like', 'Verde'),
-                 ('harvest', '=', self.year)], 'Materia Prima Servicio')
+                 ('harvest_filter', '=', self.year)], 'Materia Prima Servicio')
         elif self.stock_selection == 'washed_service':
             dict_data = self.generate_excel_serial_report(
-                [('product_id.default_code', 'like', 'PSES016'), ('harvest', '=', self.year)],
+                [('product_id.default_code', 'like', 'PSES016'), ('harvest_filter', '=', self.year)],
                 'Producto Lavado Servicio')
         elif self.stock_selection == 'spilt_service':
             dict_data = self.generate_excel_serial_report(
-                [('product_id.default_code', 'like', 'PSES014'), ('harvest', '=', self.year)],
+                [('product_id.default_code', 'like', 'PSES014'), ('harvest_filter', '=', self.year)],
                 'Producto Partido Servicio')
         attachment_id = self.env['ir.attachment'].sudo().create({
             'name': dict_data['file_name'],
