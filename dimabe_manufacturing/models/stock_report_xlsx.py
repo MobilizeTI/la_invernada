@@ -233,7 +233,7 @@ class StockReportXlsx(models.TransientModel):
         })
         row = 0
         col = 0
-        titles = [(1, 'Pedido'), (2, 'Medida'), (3, 'Cantidad Producida'), (4, 'Kilos Producido'),
+        titles = [(1, 'Pedido'),(13,'Lote'), (2, 'Medida'), (3, 'Cantidad Producida'), (4, 'Kilos Producido'),
                   (5, 'Fecha de Creacion'), (6, 'Estado de Produccion'), (7, 'Cantidad Disponible'),
                   (8, 'Kilos Disponible'), (9, 'Cliente'), (10, 'Pais Destino'), (10, 'Fecha Despacho'),
                   (11, 'Ubicacion Fisica'), (12, 'Observaciones')]
@@ -243,9 +243,11 @@ class StockReportXlsx(models.TransientModel):
         col = 0
         row += 1
         lots = self.env['stock.production.lot'].search(
-            [('product_id.default_code', 'like', 'PT'), ('sale_order_id', '!=', None)])
+            [('product_id.default_code', 'like', 'PT'), ('sale_order_id', '!=', None),('harvest','=',self.year)])
         for lot in lots:
             sheet.write(row, col, lot.sale_order_id.name, text_format)
+            col += 1
+            sheet.write(row,col,lot.name)
             col += 1
             sheet.write(row, col, lot.measure)
             col += 1
