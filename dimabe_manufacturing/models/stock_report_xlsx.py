@@ -248,7 +248,8 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, sum(lot.stock_production_lot_serial_ids.mapped('display_weight')))
             col += 1
-            sheet.write(row, col, lot.stock_production_lot_serial_ids.mapped('production_id').mapped('state')[0])
+            if lot.stock_production_lot_serial_ids.mapped('production_id'):
+                sheet.write(row, col, lot.stock_production_lot_serial_ids.mapped('production_id').mapped('state')[0])
             col += 1
             sheet.write(row, col, len(lot.mapped('stock_production_lot_serial_ids').filtered(
                 lambda a: not a.reserved_to_stock_picking_id and not a.consumed)))
@@ -258,7 +259,8 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row,col,lot.sale_order_id.partner_id.display_name)
             col += 1
-            sheet.write(row,col,lot.mapped('stock_production_lot_serial_ids').mapped('production_id')[0].destiny_country_id.name)
+            if lot.mapped('stock_production_lot_serial_ids').mapped('production_id'):
+                sheet.write(row,col,lot.mapped('stock_production_lot_serial_ids').mapped('production_id')[0].destiny_country_id.name)
             col += 1
             row +=1
         workbook.close()
