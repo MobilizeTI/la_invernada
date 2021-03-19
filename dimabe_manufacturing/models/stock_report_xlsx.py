@@ -84,7 +84,7 @@ class StockReportXlsx(models.TransientModel):
                   (13, 'Enviado a Proceso de:'), (14, 'Fecha de Envio:'), (15, 'Ubicacion Fisica:'),
                   (16, 'Observaciones:')]
         for title in titles:
-            sheet.write(row, col, title[1])
+            sheet.write(row, col, title[1],text_format)
             col += 1
         row += 1
         col = 0
