@@ -173,7 +173,7 @@
                             <div style="width:100%;display:inline-block; border-right:1px solid;border-left:1px solid;border-bottom:1px solid;">
                                 <table style="width:100%;font-size:10px">
                                     <tr>
-                                        <th style="text-align:left;width:200px">NOTIFY</th>
+                                        <th style="text-align:left;width:200px">NOTIFY N°<span t-field="n.position"/></th>
                                         <td style="width:5px">:</td>
                                         <td style="text-align:left;">
                                             <span t-field="n.partner_id.name"/>

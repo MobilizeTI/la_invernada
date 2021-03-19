@@ -184,16 +184,34 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, ' '.join([ca for ca in calibers]))
                         col += 1
                         #Kilos
-                        sheet.write(row, col, "pendiente")
+                        if len(stock.move_ids_without_package) > 0:
+                            quantity_done = sum(line.quantity_done for line in stock.move_ids_without_package)
+                            total_kilogram += quantity_done
+                            sheet.write(row, col, quantity_done)
+                        else:
+                            sheet.write(row, col, '0')
                         col += 1
                         #Precio
                         sheet.write(row, col, price_set)
                         col += 1
-                        #Monto
+
                         if exist_account_invoice:
-                            sheet.write(row, col, account_invoice.amount_total if account_invoice.amount_total else '')
+                            if account_invoice.id not in total_fob_invoice_ids:
+                                total_fob_invoice_ids.append(account_invoice.id) #para mostrar solo una vez el FOB 
+                                total_fob += account_invoice.total_value
+                                total_fob_per_kilo += account_invoice.value_per_kilogram
+                                total_freight += account_invoice.freight_amount
+                                total_safe += account_invoice.safe_amount
+                                total_amount += account_invoice.amount_total
+                                total_commission += account_invoice.total_commission
+                                #Monto
+                                sheet.write(row, col, account_invoice.amount_total)
+                                col += 1
+                            else:
+                                col += 1
                         else:
-                            sheet.write(row, col, "")
+                            col += 1
+                            
                         col += 1
                         #N° Factura
                         if exist_account_invoice:
@@ -231,11 +249,15 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         #Agente
                         sheet.write(row, col, stock.agent_id.name if stock.agent_id else '')
                         col += 1
-                        #Comisión
-                        sheet.write(row, col, f'{stock.commission}%' if stock.commission else '')
-                        col += 1
-                        #Valor Comisión
-                        sheet.write(row, col, stock.total_commission if stock.total_commission else '')  
+                        if exist_account_invoice:
+                            #Comisión
+                            sheet.write(row, col, f'{stock.commission}%' if account_invoice.commission else '')
+                            col += 1
+                       
+                            #Valor Comisión
+                            sheet.write(row, col, account_invoice.total_commission) 
+                        else:
+                            col += 1 
                         col += 1
                         #Puerto de Carga
                         sheet.write(row, col, stock.departure_port.name if stock.departure_port else '')
@@ -259,7 +281,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
                             sheet.write(row, col, "")
                         col += 1
                         #Fecha y Hora de Carga
-                        sheet.write(row, col, stock.required_loading_date if stock.required_loading_date else '',)
+                        sheet.write(row, col, stock.required_loading_date.strftime("%d-%m-%Y") if stock.required_loading_date else '',)
                         col += 1
                         #N° de Guía
                         sheet.write(row, col, stock.dte_folio if stock.dte_folio else '')
@@ -317,31 +339,28 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         else:
                             sheet.write(row, col, "")
                         col += 1
-                        #Valor Flete
-                        sheet.write(row, col, stock.freight_value if stock.freight_value else '')
-                        col +=1
-                        #Valor Seguro
-                        sheet.write(row, col, stock.safe_value if stock.safe_value else '')
-                        col += 1
-                        #FOB total  - #FOB / Kg
+
                         if exist_account_invoice:
                             if account_invoice.id not in total_fob_invoice_ids:
-                                total_fob_invoice_ids.append(account_invoice.id) #para mostrar solo una vez el FOB 
                                 total_fob += account_invoice.total_value
                                 total_fob_per_kilo += account_invoice.value_per_kilogram
+                                total_freight += account_invoice.freight_amount
+                                total_safe += account_invoice.safe_amount
+                                #Valor Flete
+                                sheet.write(row, col, stock.freight_value)
+                                col +=1
+                                #Valor Seguro
+                                sheet.write(row, col, stock.safe_value)
+                                col += 1
+                                #FOB TOTAL
                                 sheet.write(row, col, account_invoice.total_value)
                                 col += 1
+                                #FOB POR KILO
                                 sheet.write(row, col, account_invoice.value_per_kilogram)
                             else:
-                                col += 1
+                                col += 3
                         else:
-                            col += 1
-                        col += 1
-                        
-                        if exist_account_invoice:
-                            sheet.write(row, col, account_invoice.value_per_kilogram if account_invoice.value_per_kilogram != 0 else '')
-                        else:
-                            sheet.write(row, col, "")
+                            col += 3
                         col += 1
                         #Obs. Calidad
                         sheet.write(row, col, "pendiente")
@@ -377,6 +396,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
             sheet.set_column('AD:AD',25)
             sheet.set_column('AG:AG',15)
             sheet.set_column('AH:AH',15)
+            sheet.set_column('AJ:AJ',20)
             sheet.set_column('AJ:AJ',28)
             sheet.set_column('AK:AK',28)
             sheet.set_column('AL:AL',12)
@@ -397,15 +417,15 @@ class CustomCustomerOrdersXls(models.TransientModel):
             row += 1
             sheet.set_row(row, cell_format=formats['title'])
             sheet.write(row, 0, "Total", formats['title'])
-            sheet.write(row, 20, "Total Kg", formats['title'])
-            sheet.write(row, 22, "Total Monto", formats['title'])
-            sheet.write(row, 31, "Total Comisión", formats['title'])
+            sheet.write(row, 20, f'{total_kilogram}', formats['title'])
+            sheet.write(row, 22, f'{total_amount}', formats['title'])
+            sheet.write(row, 31, f'{total_commission}', formats['title'])
             sheet.write(row, 42, f'{total_bl}', formats['title'])
             sheet.write(row, 47, f'{total_container}', formats['title'])
-            sheet.write(row, 51, "Total Flete", formats['title'])
-            sheet.write(row, 52, "Total Seguro", formats['title'])
-            sheet.write(row, 53, "Total FOB= {total_fob}", formats['title'])
-            sheet.write(row, 54, "Total FOB por Kilo", formats['title'])
+            sheet.write(row, 51, f'{total_freight}', formats['title'])
+            sheet.write(row, 52, f'{total_safe}', formats['title'])
+            sheet.write(row, 53, f'{total_fob}', formats['title'])
+            sheet.write(row, 54, f'{total_fob_per_kilo}', formats['title'])
 
             workbook.close()
             with open(file_name, "rb") as file:
