@@ -17,8 +17,7 @@
                     <field name="order_to_add_id" invisible="1"/>
                     <field name="stock_picking_ids" domain="[('sale_id','=',order_to_add_id),('invoiced','=',False),('state','!=','cancel')]"  attrs="{'invisible': [('dte_code', '!=', '110')]}"  options="{'no_quick_create':True,'no_create':True}"/>
                     <button type="object" name="add_products_by_order" string="Agregar Productos" class="oe_highlight"  attrs="{'invisible': ['|',('dte_code', '!=', '110'),('state','!=','draft')]}"/>
-                    <button type="object" name="update_dispatch_quantity" string="Actualizar Cantidades" class="oe_highlight"  attrs="{'invisible': ['|',('dte_code', '!=', '110'),('dte_folio','!=',False)]}"/>
-                    
+                    <button type="object" name="update_dispatch_quantity" string="Actualizar Cantidades" class="oe_highlight"  attrs="{'invisible': ['|',('dte_code', '!=', '110'),('dte_folio','!=',False),('state','!=','draft')]}"/>
                 </xpath>
                 <xpath expr="//header" position="inside">
                     <field name="valid_to_sii" invisible="1"/>
