@@ -6,7 +6,7 @@ from odoo.tools import date_utils
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    contract_number = fields.Char('Contrato')
+    contract_number = fields.Char('Contrato Interno')
 
     ship_ids = fields.Many2many('custom.ship', string="Nave", compute="_compute_ships")
 
@@ -23,6 +23,8 @@ class SaleOrder(models.Model):
     partner_id = fields.Many2one('res.partner', "Cliente", readonly=False)
 
     is_current_company = fields.Boolean(compute="_compute_company_id")
+
+    client_contact = fields.Char('Contrato Cliente')
 
     def _compute_company_id(self):
         #for item in self:

@@ -57,6 +57,20 @@ class AccountInvoice(models.Model):
 
     canning_types = fields.Char(string="Envases", compute="_compute_canning_types")
 
+    #To order report 
+
+    quality_status = fields.Selection([
+                    ('1','Pendiente'),
+                    ('2','Recibido'),
+                    ('3','Enviado'),
+                    ('2','Cancelado')
+            ], string="Estado Calidad")
+
+    quality_remarks = fields.Char(string="Obs. Calidad")
+
+    shipping_date_to_customer = fields.Date(string="Fecha Envío al Cliente")
+
+    port_terminal_origin = fields.Char(string="Terminal Portuario Origen")
 
     def _compute_order_ids(self):
         for item in self:

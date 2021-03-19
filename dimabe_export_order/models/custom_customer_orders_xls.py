@@ -358,10 +358,10 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, "pendiente")
                         col += 1
                         #Comentarios
-                        sheet.write(row, col, "pendiente")
+                        sheet.write(row, col, stock.remarks)
                         col += 1
                         #N° DUS
-                        sheet.write(row, col, "pendiente")
+                        sheet.write(row, col, stock.dus_number)
                         col += 1
 
                         row += 1
