@@ -242,7 +242,7 @@ class StockReportXlsx(models.TransientModel):
         for lot in lots:
             sheet.write(row, col, lot.sale_order_id.name, text_format)
             col += 1
-            sheet.write(row, col, lot.product_id.weight, )
+            sheet.write(row, col, lot.product_id.weight)
             col += 1
             sheet.write(row, col, len(lot.stock_production_lot_serial_ids))
             col += 1
@@ -262,6 +262,7 @@ class StockReportXlsx(models.TransientModel):
             if lot.mapped('stock_production_lot_serial_ids').mapped('production_id'):
                 sheet.write(row,col,lot.mapped('stock_production_lot_serial_ids').mapped('production_id')[0].destiny_country_id.name)
             col += 1
+            col = 0
             row +=1
         workbook.close()
         with open(file_name, "rb") as file:
