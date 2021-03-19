@@ -254,7 +254,7 @@ class StockReportXlsx(models.TransientModel):
                 lambda a: not a.reserved_to_stock_picking_id and not a.consumed)))
             col += 1
             sheet.write(row,col,sum(lot.mapped('stock_production_lot_serial_ids').filtered(
-                lambda a: not a.reserved_to_stock_picking_id and not a.consumed)).mapped('real_weight'))
+                lambda a: not a.reserved_to_stock_picking_id and not a.consumed).mapped('real_weight')))
             col += 1
             sheet.write(row,col,lot.sale_order_id.partner_id.display_name)
             col += 1
