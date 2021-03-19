@@ -244,13 +244,14 @@ class StockReportXlsx(models.TransientModel):
         for lot in lots:
             sheet.write(row, col, lot.sale_order_id.name, text_format)
             col += 1
-            sheet.write(row, col, lot.product_id.weight)
+            sheet.write(row, col, lot.measure)
             col += 1
-            sheet.write(row, col, len(lot.stock_production_lot_serial_ids))
+            sheet.write(row, col, lot.produced_qty)
+            col += 1
+            sheet.write(row, col, lot.produced_weight)
             col += 1
             sheet.write(row, col,
                         lot.start_date.strftime('%d-%m-%Y') if lot.start_date else lot.create_date.strftime('%d-%m-%Y'))
-            sheet.write(row, col, sum(lot.stock_production_lot_serial_ids.mapped('display_weight')))
             col += 1
             if lot.stock_production_lot_serial_ids.mapped('production_id'):
                 sheet.write(row, col, lot.stock_production_lot_serial_ids.mapped('production_id').mapped('state')[0])
@@ -261,11 +262,11 @@ class StockReportXlsx(models.TransientModel):
             sheet.write(row, col, sum(lot.mapped('stock_production_lot_serial_ids').filtered(
                 lambda a: not a.reserved_to_stock_picking_id and not a.consumed).mapped('real_weight')))
             col += 1
-            sheet.write(row, col, lot.sale_order_id.partner_id.display_name)
+            if lot.client_id:
+                sheet.write(row, col, lot.client_id.display_name)
             col += 1
-            if lot.mapped('stock_production_lot_serial_ids').mapped('production_id'):
-                sheet.write(row, col, lot.mapped('stock_production_lot_serial_ids').mapped('production_id')[
-                    0].destiny_country_id.name)
+            if lot.destiny_country_id:
+                sheet.write(row,col,lot.destiny_country_id.name)
             col += 1
             col = 0
             row += 1

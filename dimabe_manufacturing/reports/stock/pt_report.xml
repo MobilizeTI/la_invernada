@@ -7,23 +7,23 @@
             <field name="priority">20</field>
             <field name="arch" type="xml">
                 <tree editable="bottom" delete="false" create="false">
-                    <field name="sale_order_id" widget="many2onebutton"/>
+                    <field name="sale_order_id" widget="many2onebutton" readonly="1"/>
                     <field name="name"/>
-                    <field name="product_id"/>
-                    <field name="producer_id"/>
-                    <field name="measure"/>
-                    <field name="produced_qty"/>
-                    <field name="produced_weight"/>
-                    <field name="start_date"/>
-                    <field name="production_state"/>
-                    <field name="available_total_serial"/>
-                    <field name="available_kg"/>
-                    <field name="dispatch_state"/>
-                    <field name="client_id" widget="many2onebutton"/>
-                    <field name="destiny_country_id" widget="many2onebutton"/>
-                    <field name="dispatch_date"/>
-                    <field name="physical_location"/>
-                    <field name="observations"/>
+                    <field name="product_id" readonly="1"/>
+                    <field name="producer_id" readonly="1"/>
+                    <field name="measure" readonly="1"/>
+                    <field name="produced_qty" readonly="1"/>
+                    <field name="produced_weight" readonly="1"/>
+                    <field name="start_date" readonly="1"/>
+                    <field name="production_state" readonly="1"/>
+                    <field name="available_total_serial" readonly="1"/>
+                    <field name="available_kg" readonly="1"/>
+                    <field name="dispatch_state" readonly="1"/>
+                    <field name="client_id" widget="many2onebutton" readonly="1"/>
+                    <field name="destiny_country_id" widget="many2onebutton" string="Pais de Destino" readonly="1"/>
+                    <field name="dispatch_date" readonly="1"/>
+                    <field name="physical_location" readonly="1"/>
+                    <field name="observations" readonly="1"/>
                 </tree>
             </field>
         </record>
@@ -51,7 +51,10 @@
             <field name="view_mode">tree,graph,form,pivot</field>
             <field name="view_id" ref="view_stock_report_pt_tree"/>
             <field name="domain">
-                [('product_id.default_code', 'like', 'PT'), ('sale_order_id', '!=', None)]
+                [('product_id.categ_id.name', 'in',
+                  ('Envasado NSC', 'Partido Manual Calidad', 'Partido Mecánico/Láser')),
+                 ('product_id.name', 'not like', 'Descarte'),
+                 ('product_id.name', 'not like', 'Vana'), ('product_id.default_code', 'not like', 'PT')]
             </field>
         </record>
         <menuitem id="stock_report_pt_menu"
