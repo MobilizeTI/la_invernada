@@ -206,11 +206,6 @@ class CustomCustomerOrdersXls(models.TransientModel):
                                 total_commission += account_invoice.total_commission
                                 #Monto
                                 sheet.write(row, col, account_invoice.amount_total)
-                                col += 1
-                            else:
-                                col += 1
-                        else:
-                            col += 1
                             
                         col += 1
                         #N° Factura
