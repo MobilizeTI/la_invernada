@@ -151,6 +151,9 @@ class StockReportXlsx(models.TransientModel):
         file_name = 'temp_name.xlsx'
         workbook = xlsxwriter.Workbook(file_name)
         sheet = workbook.add_worksheet("Informe de Calibrado")
+        text_format = workbook.add_format({
+            'text_wrap': True
+        })
         row = 0
         col = 0
         titles = [(1, 'Productor:'), (2, 'Serie:'), (3, 'Kilos Disponibles:'), (4, 'Variedad:'), (5, 'Calibre:'),
@@ -158,7 +161,7 @@ class StockReportXlsx(models.TransientModel):
                   (10, 'Cliente o Calidad:'), (11, 'Enviado a proceso:'), (12, 'Fecha de Envio:'),
                   (13, 'Ubicacion Fisica:'), (14, 'Observacion')]
         for title in titles:
-            sheet.write(row, col, title[1])
+            sheet.write(row, col, title[1],text_format)
             col += 1
         col = 0
         row += 1
@@ -198,7 +201,7 @@ class StockReportXlsx(models.TransientModel):
                 sheet.write(row, col, serial.delivered_date.strftime('%d-%m-%Y'))
             col += 1
             if serial.physical_location:
-                sheet.write(row, col, serial.physical_location.replace('+', '/n'))
+                sheet.write(row, col, serial.physical_location,text_format)
             col += 1
             if serial.observations:
                 sheet.write(row, col, serial.observations)
