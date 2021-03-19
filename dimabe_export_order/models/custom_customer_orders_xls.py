@@ -55,6 +55,8 @@ class CustomCustomerOrdersXls(models.TransientModel):
             total_fob = 0
             total_fob_per_kilo = 0
 
+            total_fob_invoice_ids = []
+
             if len(orders) > 0:
                 for order in orders:
                     stock_picking_ids = self.env['stock.picking'].sudo().search([('sale_id','=',order.id)])
@@ -102,16 +104,31 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, "pendiente")
                         col += 1
                         #Estatus Despacho
-                        if stock.state == 'draft':
-                            sheet.write(row, col, 'Borrador')
-                        elif stock.state == 'assigned':
-                            sheet.write(row, col, 'Asignado', formats['pink_status'])
-                        elif stock.state == 'confirmed':
-                            sheet.write(row, col, 'Confirmado', formats['yellow_status'])
-                        elif stock.state == 'done':
-                            sheet.write(row, col, 'Realizado', formats['light_green_status'])
-                        elif stock.state == 'cancel':
-                            sheet.write(row, col, 'Cancelado', formats['green_status'])
+                        if exist_account_invoice:
+                            if account_invoice.arrival_date:
+                                sheet.write(row, col, 'Arrivado', formats['green_status'])
+                            else:
+                                if stock.state == 'draft':
+                                    sheet.write(row, col, 'Borrador')
+                                elif stock.state == 'assigned':
+                                    sheet.write(row, col, 'Asignado', formats['pink_status'])
+                                elif stock.state == 'confirmed':
+                                    sheet.write(row, col, 'Confirmado', formats['yellow_status'])
+                                elif stock.state == 'done':
+                                    sheet.write(row, col, 'Realizado', formats['light_green_status'])
+                                elif stock.state == 'cancel':
+                                    sheet.write(row, col, 'Cancelado', formats['red_status'])
+                        else:
+                            if stock.state == 'draft':
+                                sheet.write(row, col, 'Borrador')
+                            elif stock.state == 'assigned':
+                                sheet.write(row, col, 'Asignado', formats['pink_status'])
+                            elif stock.state == 'confirmed':
+                                sheet.write(row, col, 'Confirmado', formats['yellow_status'])
+                            elif stock.state == 'done':
+                                sheet.write(row, col, 'Realizado', formats['light_green_status'])
+                            elif stock.state == 'cancel':
+                                sheet.write(row, col, 'Cancelado', formats['red_status'])
                         col += 1
                         #Estatus Calidad
                         sheet.write(row, col, "pendiente")
@@ -306,13 +323,21 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         #Valor Seguro
                         sheet.write(row, col, stock.safe_value if stock.safe_value else '')
                         col += 1
-                        #FOB total
+                        #FOB total  - #FOB / Kg
                         if exist_account_invoice:
-                            sheet.write(row, col, account_invoice.total_value if account_invoice.total_value != 0 else '')
+                            if account_invoice.id not in total_fob_invoice_ids:
+                                total_fob_invoice_ids.append(account_invoice.id) #para mostrar solo una vez el FOB 
+                                total_fob += account_invoice.total_value
+                                total_fob_per_kilo += account_invoice.value_per_kilogram
+                                sheet.write(row, col, account_invoice.total_value)
+                                col += 1
+                                sheet.write(row, col, account_invoice.value_per_kilogram)
+                            else:
+                                col += 1
                         else:
-                            sheet.write(row, col, "")
+                            col += 1
                         col += 1
-                        #FOB / Kg
+                        
                         if exist_account_invoice:
                             sheet.write(row, col, account_invoice.value_per_kilogram if account_invoice.value_per_kilogram != 0 else '')
                         else:
@@ -332,7 +357,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         col = 0
 
 
-            #Header Formet
+            #Header Format
             sheet.set_column('F:F',35)
             sheet.set_column('G:G',24)
             sheet.set_column('H:H',16)
@@ -379,7 +404,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
             sheet.write(row, 47, f'{total_container}', formats['title'])
             sheet.write(row, 51, "Total Flete", formats['title'])
             sheet.write(row, 52, "Total Seguro", formats['title'])
-            sheet.write(row, 53, "Total FOB", formats['title'])
+            sheet.write(row, 53, "Total FOB= {total_fob}", formats['title'])
             sheet.write(row, 54, "Total FOB por Kilo", formats['title'])
 
             workbook.close()
@@ -434,7 +459,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
             'align': 'center',
             'valign': 'vcenter',
             'bg_color':'#ffeb9c',
-            'font_color': '#efab24',
+            'font_color': 'black',
         })
         merge_format_light_green_status = workbook.add_format({
             'align': 'center',
@@ -451,8 +476,8 @@ class CustomCustomerOrdersXls(models.TransientModel):
         merge_format_pink_status = workbook.add_format({
             'align': 'center',
             'valign': 'vcenter',
-            'bg_color':'#8064a2',
-            'font_color': 'white',
+            'bg_color':'#ffc7ce',
+            'font_color': '#9c0031',
         })
         return {
             'string': merge_format_string,

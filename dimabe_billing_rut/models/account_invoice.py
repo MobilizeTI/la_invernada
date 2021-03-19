@@ -938,12 +938,12 @@ class AccountInvoice(models.Model):
     #Send Data to Stock_Picking Comex
     @api.multi
     def write(self, vals):
-        order_list = []
+        dispatch_list = []
         for item in self.orders_to_invoice:
-            if item.order_id:
-                order_list.append(item.stock_picking_id)
+            if item.stock_picking_id:
+                dispatch_list.append(item.stock_picking_id)
         
-        stock_picking_ids = self.env['stock.picking'].search([('id', 'in', order_list)])
+        stock_picking_ids = self.env['stock.picking'].search([('id', 'in', dispatch_list)])
 
         invoice_line_ids = self.env['account.invoice.line'].search([('invoice_id','=',self.id)])
         orders_to_invoice_ids = self.env['custom.orders.to.invoice'].search([('invoice_id','=',self.id)])
