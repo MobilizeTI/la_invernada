@@ -5,10 +5,11 @@
             <field name="model">stock.production.lot.serial</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Producto Partido" editable="bottom" create="false" delete="false">
+                <tree editable="bottom" delete="false" create="false">
                     <field name="producer_id" widget="many2onebutton" string="Productor" readonly="1"/>
                     <field name="name" widget="many2onebutton" string="Lote" readonly="1"/>
-                    <field name="display_weight" readonly="1"/>
+                    <field name="display_weight" string="Kilos producidos" readonly="1"/>
+                    <field name="available_weight" string="Kilos disponibles" readonly="1"/>
                     <field name="product_variety" string="Variedad" readonly="1"/>
                     <field name="product_caliber" string="Calibre" readonly="1"/>
                     <field name="location_id" widget="many2onebutton" string="Ubicacion" readonly="1"/>
@@ -46,7 +47,10 @@
             <field name="view_mode">tree,graph,form,pivot</field>
             <field name="view_id" ref="view_stock_match_report_tree"/>
             <field name="domain">
-
+                [('product_id.categ_id.name', 'in',
+                  ('Envasado NSC', 'Partido Manual Calidad', 'Partido Mecánico/Láser')),
+                 ('harvest_filter', '=', self.year), ('product_id.name', 'not like', 'Descarte'),
+                 ('product_id.name', 'not like', 'Vana'),('product_id.default_code','not like','PT')]
             </field>
         </record>
         <menuitem id="stock_report_match_tree_menu"

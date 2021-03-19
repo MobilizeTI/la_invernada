@@ -5,10 +5,11 @@
             <field name="model">stock.production.lot.serial</field>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree name="Informe de Producto Partido Servicio" editable="bottom" create="false" delete="false">
+                <tree editable="bottom" delete="false" create="false">
                     <field name="producer_id" widget="many2onebutton" string="Productor" readonly="1"/>
                     <field name="name" widget="many2onebutton" string="Lote" readonly="1"/>
-                    <field name="display_weight" readonly="1"/>
+                    <field name="display_weight" string="Kilos producidos" readonly="1"/>
+                    <field name="available_weight" string="Kilos disponibles" readonly="1"/>
                     <field name="product_variety" string="Variedad" readonly="1"/>
                     <field name="product_caliber" string="Calibre" readonly="1"/>
                     <field name="location_id" widget="many2onebutton" string="Ubicacion" readonly="1"/>

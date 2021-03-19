@@ -33,7 +33,7 @@ class StockReportXlsx(models.TransientModel):
                 [('product_id.categ_id.name', 'in',
                   ('Envasado NSC', 'Partido Manual Calidad', 'Partido Mecánico/Láser')),
                  ('harvest_filter', '=', self.year), ('product_id.name', 'not like', 'Descarte'),
-                 ('product_id.name', 'not like', 'Vana'),('product_id.default_code','not like','PT')],
+                 ('product_id.name', 'not like', 'Vana'), ('product_id.default_code', 'not like', 'PT')],
                 'Producto Partido')
         elif self.stock_selection == 'vain':
             dict_data = self.generate_excel_serial_report(
@@ -266,7 +266,15 @@ class StockReportXlsx(models.TransientModel):
                 sheet.write(row, col, lot.client_id.display_name)
             col += 1
             if lot.destiny_country_id:
-                sheet.write(row,col,lot.destiny_country_id.name)
+                sheet.write(row, col, lot.destiny_country_id.name)
+            if lot.dispatch_date:
+                sheet.write(row, col, lot.dispatch_date.strftime('%d-%m-%Y'))
+            col += 1
+            if lot.physical_location:
+                sheet.write(row, col, lot.physical_location, text_format)
+            col += 1
+            if lot.observations:
+                sheet.write(row, col, lot.observations)
             col += 1
             col = 0
             row += 1
