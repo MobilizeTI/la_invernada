@@ -23,7 +23,7 @@ class ProcessReport(models.TransientModel):
     @api.multi
     def generate_xlsx(self):
         if self.process_selection == 'ncc':
-            dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '320-PENCC')])
+            dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '320-PENCC')],'Proceso NCC')
         attachment_id = self.env['ir.attachment'].sudo().create({
             'name': dict_data['file_name'],
             'datas_fname': dict_data['file_name'],
