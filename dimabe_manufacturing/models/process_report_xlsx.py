@@ -113,9 +113,9 @@ class ProcessReport(models.TransientModel):
                 col = 0
             row = 0
             for out_serial in process.summary_out_serial_ids:
-                sheet.write(row, col, out_serial.reserved_to_production_id.name, text_format)
+                sheet.write(row, col, out_serial.production_id.name, text_format)
                 col += 1
-                sheet.write(row, col, out_serial.reserved_to_production_id.sale_order_id.name, text_format)
+                sheet.write(row, col, out_serial.production_id.sale_order_id.name, text_format)
                 col += 1
                 sheet.write(row, col, out_serial.packaging_date.strftime('%d-%m-%Y'), text_format)
                 col += 1
