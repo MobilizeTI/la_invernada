@@ -117,8 +117,6 @@ class ProcessReport(models.TransientModel):
                 sheet.write(row, col, serial.product_id.get_variety())
                 col += 1
                 sheet.write(row, col, serial.real_weight)
-                row += 1
-            row = 1
             for serial in serial_out:
                 sheet.write(row, col, process.production_id.name, text_format)
                 col += 1
