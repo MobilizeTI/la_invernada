@@ -45,7 +45,7 @@ class MrpProduction(models.Model):
 
     etd = fields.Date(
         'Fecha Despacho',
-        related='stock_picking_id.shipping_id.etd'
+        related='stock_picking_id.etd'
     )
 
     observation = fields.Text('Observación')
