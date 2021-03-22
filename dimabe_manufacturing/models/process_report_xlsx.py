@@ -23,7 +23,7 @@ class ProcessReport(models.TransientModel):
     @api.multi
     def generate_xlsx(self):
         if self.process_selection == 'ncc':
-            dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '320-PENCC')],'Proceso NCC')
+            dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '320-PENCC')], 'Proceso NCC')
         attachment_id = self.env['ir.attachment'].sudo().create({
             'name': dict_data['file_name'],
             'datas_fname': dict_data['file_name'],
@@ -45,9 +45,55 @@ class ProcessReport(models.TransientModel):
         })
         sheet = workbook.add_worksheet(process_name)
         processes = self.env['mrp.workorder'].sudo().search(query)
+        row = 0
+        col = 0
+        titles = ['Proceso Entrada', 'Pedido', 'Fecha Produccion', 'Lote', 'Serie', 'Productor', 'Producto', 'Variedad',
+                  'Peso', 'Proceso Salida', 'Pedido', 'Fecha Produccion', 'Productor', 'Producto', 'Variedad', 'Pallet',
+                  'Lote', 'Serie', 'Peso Real']
+        for title in titles:
+            sheet.write(row, col, title, text_format)
         for process in processes:
-            sheet.merge_range(0, 0, 8, 8, 'Resumen de Entrada')
-            sheet.merge_range(9, 9, 19, 19, 'Resumen de Salida')
+            for serial in process.potential_serial_planned_ids:
+                sheet.write(row, col, serial.reserved_to_production_id.name, text_format)
+                col += 1
+                sheet.write(row, col, serial.reserved_to_production_id.sale_order_id.name, text_format)
+                col += 1
+                sheet.write(row, col, serial.packaging_date.strftime('%d-%m-%Y'), text_format)
+                col += 1
+                sheet.write(row, col, serial.stock_production_lot_id.name, text_format)
+                col += 1
+                sheet.write(row, col, serial.serial_number, text_format)
+                col += 1
+                sheet.write(row, col, serial.producer_id.name)
+                col += 1
+                sheet.write(row, col, serial.product_id.display_name)
+                col += 1
+                sheet.write(row, col, serial.product_id.get_variety())
+                col += 1
+                sheet.write(row, col, serial.real_weight)
+                row += 1
+            row = 0
+            for out_serial in process.summary_out_serial_ids:
+                sheet.write(row, col, out_serial.reserved_to_production_id.name, text_format)
+                col += 1
+                sheet.write(row, col, out_serial.reserved_to_production_id.sale_order_id.name, text_format)
+                col += 1
+                sheet.write(row, col, out_serial.packaging_date.strftime('%d-%m-%Y'), text_format)
+                col += 1
+                sheet.write(row, col, out_serial.stock_production_lot_id.name, text_format)
+                col += 1
+                sheet.write(row, col, out_serial.serial_number, text_format)
+                col += 1
+                sheet.write(row, col, out_serial.producer_id.name)
+                col += 1
+                sheet.write(row, col, out_serial.product_id.display_name)
+                col += 1
+                sheet.write(row, col, out_serial.product_id.get_variety())
+                col += 1
+                sheet.write(row, col, out_serial.real_weight)
+                row += 1
+            row = 0
+
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
