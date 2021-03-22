@@ -53,7 +53,7 @@ class ProcessReport(models.TransientModel):
         for title in titles:
             sheet.write(row, col, title, text_format)
             col += 1
-        col = 0
+        col = 1
         for process in processes:
             for serial in process.potential_serial_planned_ids:
                 sheet.write(row, col, serial.reserved_to_production_id.name, text_format)
