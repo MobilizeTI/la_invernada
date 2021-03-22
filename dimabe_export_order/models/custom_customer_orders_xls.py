@@ -55,7 +55,9 @@ class CustomCustomerOrdersXls(models.TransientModel):
             total_fob = 0
             total_fob_per_kilo = 0
 
-            total_fob_invoice_ids = []
+            amount_total_invoice_ids = []
+            other_fields_invoice_ids = []
+            commission_invoice_ids = []
 
             if len(orders) > 0:
                 for order in orders:
@@ -96,7 +98,8 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, '')#order.client_contract)
                         col += 1
                         #N° Pedido Odoo
-                        sheet.write(row, col, order.name)
+                        sheet.write(row, col,order.name)
+                        #sheet.write_url(row, col, f'https://dimabe-odoo-la-invernada-test-2148713.dev.odoo.com/web?#id={order.id}&action=259', order.name)
                         col += 1
                         #N° Stock Picking Odoo
                         sheet.write(row, col, stock.name)
@@ -133,7 +136,15 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         col += 1
                         #Estatus Calidad
                         if exist_account_invoice:
-                            sheet.write(row, col, account_invoice.quality_status)
+                            if account_invoice.quality_status == 'Pendiente':
+                                sheet.write(row, col, account_invoice.quality_status, formats['pink_status'])
+                            elif account_invoice.quality_status == 'Recibido':
+                                sheet.write(row, col, account_invoice.quality_status, formats['yellow_status'])
+                            elif account_invoice.quality_status == 'Enviado':
+                                sheet.write(row, col, account_invoice.quality_status, formats['light_green_status'])
+                            elif account_invoice.quality_status == 'Cancelado':
+                                sheet.write(row, col, account_invoice.quality_status, formats['red_status'])
+
                         else:
                             sheet.write(row, col, '')
                         col += 1
@@ -203,10 +214,12 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         col += 1
 
                         if exist_account_invoice:
-                            if account_invoice.id not in total_fob_invoice_ids:
-                                total_fob_invoice_ids.append(account_invoice.id) #para mostrar solo una vez el FOB 
-                                total_fob += account_invoice.total_value
-                                total_fob_per_kilo += account_invoice.value_per_kilogram
+                            if account_invoice.id not in amount_total_invoice_ids:
+                                amount_total_invoice_ids.append(account_invoice.id) #para mostrar solo una vez el FOB 
+                                if account_invoice.total_value > 0:
+                                    total_fob += account_invoice.total_value
+                                if account_invoice.value_per_kilogram > 0:
+                                    total_fob_per_kilo += account_invoice.value_per_kilogram
                                 total_freight += account_invoice.freight_amount
                                 total_safe += account_invoice.safe_amount
                                 total_amount += account_invoice.amount_total
@@ -255,9 +268,12 @@ class CustomCustomerOrdersXls(models.TransientModel):
                             #Comisión
                             sheet.write(row, col, f'{stock.commission}%' if account_invoice.commission else '')
                             col += 1
-                       
-                            #Valor Comisión
-                            sheet.write(row, col, account_invoice.total_commission) 
+                             #Valor Comisión
+                            if exist_account_invoice not in commission_invoice_ids:
+                                commission_invoice_ids.append(account_invoice.id)
+                                sheet.write(row, col, account_invoice.total_commission) 
+                            else:
+                                sheet.write(row, col, '0')
                         else:
                             col += 1 
                         col += 1
@@ -334,7 +350,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         col += 1
                         #Terminal Portuario Origen
                         if exist_account_invoice:
-                            sheet.write(row, col, account_invoice.port_terminal_origin)
+                            sheet.write(row, col, account_invoice.port_terminal_origin if account_invoice.port_terminal_origin else '')
                         else:
                             sheet.write(row, col, '')
                         col += 1
@@ -346,35 +362,41 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         col += 1
 
                         if exist_account_invoice:
-                                #total_fob += account_invoice.total_value
-                                #total_fob_per_kilo += account_invoice.value_per_kilogram
-                                #total_freight += account_invoice.freight_amount
-                                #total_safe += account_invoice.safe_amount
-                                #Valor Flete
-                                sheet.write(row, col, account_invoice.freight_amount)
-                                col +=1
-                                #Valor Seguro
-                                sheet.write(row, col, account_invoice.safe_amount)
-                                col += 1
-                                #FOB TOTAL
-                                sheet.write(row, col, account_invoice.total_value)
-                                col += 1
-                                #FOB POR KILO
-                                sheet.write(row, col, account_invoice.value_per_kilogram)
+                                if account_invoice.id not in other_fields_invoice_ids:
+                                    other_fields_invoice_ids.append(account_invoice.id)
+                                    #Valor Flete
+                                    sheet.write(row, col, account_invoice.freight_amount)
+                                    col +=1
+                                    #Valor Seguro
+                                    sheet.write(row, col, account_invoice.safe_amount)
+                                    col += 1
+                                    #FOB TOTAL
+                                    sheet.write(row, col, account_invoice.total_value if account_invoice.total_value > 0 else 0) 
+                                    col += 1
+                                    #FOB POR KILO
+                                    sheet.write(row, col, account_invoice.value_per_kilogram if account_invoice.value_per_kilogram > 0 else 0)
+                                else:
+                                    sheet.write(row, col,'0')
+                                    col += 1
+                                    sheet.write(row, col,'0')
+                                    col += 1
+                                    sheet.write(row, col,'0')
+                                    col += 1
+                                    sheet.write(row, col,'0')
                         else:
                             col += 3
                         col += 1
                         #Obs. Calidad
                         if exist_account_invoice:
-                            sheet.write(row, col, account_invoice.quality_remarks)
+                            sheet.write(row, col, account_invoice.quality_remarks if account_invoice.quality_remarks else '')
                         else:
                             sheet.write(row, col,'')
                         col += 1
                         #Comentarios
-                        sheet.write(row, col, stock.remarks)
+                        sheet.write(row, col, stock.remarks if stock.remarks else '')
                         col += 1
                         #N° DUS
-                        sheet.write(row, col, stock.dus_number)
+                        sheet.write(row, col, stock.dus_number if stock.dus_number else '')
                         col += 1
 
                         row += 1
@@ -418,6 +440,9 @@ class CustomCustomerOrdersXls(models.TransientModel):
             sheet.set_column('AY:AY',18)
             sheet.set_column('AO:AO',12)
             sheet.set_column('AP:AP',14)
+            sheet.set_column('BD:BD',40)
+            sheet.set_column('BE:BE',40)
+            sheet.set_column('BF:BF',30)
             #Total    
             row += 1
             sheet.set_row(row, cell_format=formats['title'])

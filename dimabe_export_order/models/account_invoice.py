@@ -60,10 +60,10 @@ class AccountInvoice(models.Model):
     #To order report 
 
     quality_status = fields.Selection([
-                    ('1','Pendiente'),
-                    ('2','Recibido'),
-                    ('3','Enviado'),
-                    ('2','Cancelado')
+                    ('Pendiente','Pendiente'),
+                    ('Recibido','Recibido'),
+                    ('Enviado','Enviado'),
+                    ('Cancelado','Cancelado')
             ], string="Estado Calidad")
 
     quality_remarks = fields.Text(string="Obs. Calidad")
