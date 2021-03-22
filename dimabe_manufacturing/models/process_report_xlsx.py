@@ -83,6 +83,7 @@ class ProcessReport(models.TransientModel):
         processes = self.env['mrp.workorder'].sudo().search(query)
         row = 0
         col = 0
+
         titles = ['Proceso Entrada', 'Pedido', 'Fecha Produccion', 'Lote', 'Serie', 'Productor', 'Producto', 'Variedad',
                   'Peso', 'Proceso Salida', 'Pedido', 'Fecha Produccion', 'Productor', 'Producto', 'Variedad', 'Pallet',
                   'Lote', 'Serie', 'Peso Real']
@@ -110,8 +111,11 @@ class ProcessReport(models.TransientModel):
                 col += 1
                 sheet.write(row, col, serial.real_weight)
                 row += 1
+                if serial.id == process.potential_serial_planned_ids[-1].id:
+                    end_in = col
                 col = 0
-            row = 0
+            row = 1
+            col = end_in
             for out_serial in process.summary_out_serial_ids:
                 sheet.write(row, col, out_serial.production_id.name, text_format)
                 col += 1
