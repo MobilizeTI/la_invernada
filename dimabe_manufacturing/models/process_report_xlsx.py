@@ -52,6 +52,8 @@ class ProcessReport(models.TransientModel):
                   'Lote', 'Serie', 'Peso Real']
         for title in titles:
             sheet.write(row, col, title, text_format)
+            col += 1
+        col = 0
         for process in processes:
             for serial in process.potential_serial_planned_ids:
                 sheet.write(row, col, serial.reserved_to_production_id.name, text_format)
@@ -93,6 +95,7 @@ class ProcessReport(models.TransientModel):
                 col += 1
                 sheet.write(row, col, out_serial.real_weight)
                 row += 1
+                col = 0
             row = 0
 
         workbook.close()
