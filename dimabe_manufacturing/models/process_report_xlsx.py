@@ -120,6 +120,7 @@ class ProcessReport(models.TransientModel):
                 sheet.write(row, col, serial.real_weight)
                 row += 1
             col = 0
+            row = 0
 
 
         workbook.close()
