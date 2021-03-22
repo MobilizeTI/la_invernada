@@ -259,6 +259,19 @@ class StockProductionLot(models.Model):
         }
 
     @api.multi
+    def show_lot(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'stock.production.lot',
+            'res_id': self.id,
+            'view_type': 'form',
+            'view_mode': 'form',
+            'views': [(self.env.ref('dimabe_manufacturing.manufacturing_pallet_tree_view').id, 'form')],
+            'target': 'new',
+            'context': self.env.context
+        }
+
+    @api.multi
     def compute_destiny_country(self):
         for item in self:
             if item.stock_production_lot_serial_ids.mapped('production_id'):
