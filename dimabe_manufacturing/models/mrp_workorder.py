@@ -143,6 +143,8 @@ class MrpWorkorder(models.Model):
 
     have_subproduct = fields.Boolean('Tiene subproductos')
 
+    component_id = fields.Many2one('product.product',readonly=False)
+
     @api.multi
     def _compute_pallet_content(self):
         for item in self:
