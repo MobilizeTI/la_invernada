@@ -107,16 +107,39 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         col += 1
                         #Estatus Produccion
                         if production:
-                            if production.state == 'planned':
-                                sheet.write(row, col, 'Planeado', formats['pink_status'])
-                            elif production.state == 'done':
-                                sheet.write(row, col, 'Realizado', formats['green_status'])
-                            elif production.state == 'progress':
-                                sheet.write(row, col, 'En Progreso', formats['light_green_status'])
-                            elif production.state == 'confirmed':
-                                sheet.write(row, col, 'Confirmado', formats['yellow_status'])
-                            elif production.state == 'cancel':
-                                sheet.write(row, col, 'Cancelado', formats['red_status'])
+                            if len(production) == 1:
+                                if production.state == 'planned':
+                                    sheet.write(row, col, 'Planeado', formats['pink_status'])
+                                elif production.state == 'done':
+                                    sheet.write(row, col, 'Realizado', formats['green_status'])
+                                elif production.state == 'progress':
+                                    sheet.write(row, col, 'En Progreso', formats['light_green_status'])
+                                elif production.state == 'confirmed':
+                                    sheet.write(row, col, 'Confirmado', formats['yellow_status'])
+                                elif production.state == 'cancel':
+                                    sheet.write(row, col, 'Cancelado', formats['red_status'])
+                            else:
+                                status_set = ''
+                                status_type = []
+                                for p in production:
+                                    if p.state not in status_type:
+                                        status_type.append(p.state)
+                                        
+                                for state in status_type:
+                                    currency_state = ''
+                                    if state == 'planned':
+                                        currency_state ='Planeado'
+                                    elif state == 'done':
+                                        currency_state = 'Realizado'
+                                    elif state == 'progress':
+                                        currency_state ='En Progreso'
+                                    elif state == 'confirmed':
+                                        currency_state = 'Confirmado'
+                                    elif state == 'cancel':
+                                        currency_state = 'Cancelado'
+                                    status_set += currency_state + ' '
+                                sheet.write(row, col, status_set)
+
                         else:
                             sheet.write(row, col, 'Sin Órden de Producción')
                         col += 1
