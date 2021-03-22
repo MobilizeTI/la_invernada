@@ -124,7 +124,7 @@ class ProcessReport(models.TransientModel):
             row_out = 1
             col_out = col_in
             serial_out = self.env['stock.production.lot.serial'].search([('production_id.id','=',process.production_id.id)])
-            for out_serial in process.summary_out_serial_ids:
+            for out_serial in serial_out:
                 sheet.write(row_out, col_out, process.production_id.name, text_format)
                 col_out += 1
                 sheet.write(row_out, col_out, process.production_id.sale_order_id.name, text_format)
