@@ -123,26 +123,25 @@ class ProcessReport(models.TransientModel):
                     col_out = col
                 col = 0
             for serial in serial_out:
-                sheet.write(row, col, process.production_id.name, text_format)
-                col += 1
-                sheet.write(row, col, process.production_id.sale_order_id.name, text_format)
-                col += 1
-                sheet.write(row, col, serial.packaging_date.strftime('%d-%m-%Y'), text_format)
-                col += 1
-                sheet.write(row, col, serial.stock_production_lot_id.name, text_format)
-                col += 1
-                sheet.write(row, col, serial.serial_number, text_format)
-                col += 1
-                sheet.write(row, col, serial.producer_id.display_name, text_format)
-                col += 1
-                sheet.write(row, col, serial.product_id.display_name, text_format)
-                col += 1
-                sheet.write(row, col, serial.product_id.get_variety())
-                col += 1
-                sheet.write(row, col, serial.real_weight)
+                sheet.write(row, col_out, process.production_id.name, text_format)
+                col_out += 1
+                sheet.write(row, col_out, process.production_id.sale_order_id.name, text_format)
+                col_out += 1
+                sheet.write(row, col_out, serial.packaging_date.strftime('%d-%m-%Y'), text_format)
+                col_out += 1
+                sheet.write(row, col_out, serial.stock_production_lot_id.name, text_format)
+                col_out += 1
+                sheet.write(row, col_out, serial.serial_number, text_format)
+                col_out += 1
+                sheet.write(row, col_out, serial.producer_id.display_name, text_format)
+                col_out += 1
+                sheet.write(row, col_out, serial.product_id.display_name, text_format)
+                col_out += 1
+                sheet.write(row, col_out, serial.product_id.get_variety())
+                col_out += 1
+                sheet.write(row, col_out, serial.real_weight)
                 row += 1
-                if serial.id == serial_in[-1]:
-                    col_out = col
+
 
 
 
