@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_confirm_order_reserved" model="ir.ui.view">
+            <field name="name">Confirmar orden a reservar</field>
+            <field name="model">confirm.order.reserved</field>
+            <field name="arch" type="xml">
+                <form string="Seleccionar Despacho">
+                    <group>
+                        <p>
+                            Seleccione Despacho que desea reservar
+                        </p>
+                        <p>
+                            <field name="sale_ids" invisible="1"/>
+                            <field name="sale_id" domain="[('id','in',sale_ids)]" required="1"/>
+                            <field name="picking_id" domain="[('sale_id','=',sale_id),('state','!=','done'),('id','in',picking_ids)]" required="1"/>
+                            <field name="picking_ids" invisible="1"/>
+                        </p>
+                    </group>
+                    <footer>
+                        <button type="object" name="reserved" string="Reservar"/>
+                        <button type="object" name="cancel" string="Cancelar" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

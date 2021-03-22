@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="custom_customer_orders_view" model="ir.ui.view">
+            <field name="name">Genereación de Archivo de Pedidos</field>
+            <field name="model">custom.customer.orders.xls</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                            <field name="for_year"/>
+                    </group>
+                    <footer>
+                        <button name="generate_orders_file" string="Generar XLSX" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="btn btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="generate_orders_file_action" model="ir.actions.act_window">
+            <field name="name">Genereación de Archivo de Pedidos</field>
+            <field name="res_model">custom.customer.orders.xls</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="custom_customer_orders_view"/>
+            <field name="target">new</field>
+        </record>
+        <menuitem groups="dimabe_purchase_process.group_purchase_file_orders" name="Archivo de Pedidos" parent="sale.menu_sale_report" action="generate_orders_file_action" id="orders_files_item"/>
+    </data>
+</odoo>

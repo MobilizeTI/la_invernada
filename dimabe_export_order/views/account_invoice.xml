@@ -1,0 +1,75 @@
+<odoo>
+    <data>
+        <record id="xdte_invoice_form_2" model="ir.ui.view">
+            <field name="name">xdte account invoice</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='bl_number']" position="after">
+                    <field name="total_container"  attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                </xpath>
+                <xpath expr="//field[@name='tax_line_ids']" position="after">
+                    <group string="Información para Instructivos">
+                        <group>
+                            <field name="consignee_id" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                        </group>
+                        <group>
+                            <field name="custom_notify_ids" attrs="{'invisible': [('dte_code', '!=', '110')]}">
+                            <tree editable="bottom" edit="True">
+                                <field name="position"/>
+                                <field name="partner_name" readonly="1"/>
+                                <field name="partner_identifier_type" readonly="1"/>
+                                <field name="partner_identifier_value" readonly="1"/>
+                            </tree>
+                        </field>
+                        </group>
+                        <group>
+                            <field name="temperature" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                            <field name="ventilation" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                            <field name="humidity" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                            <field name="quality_type" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                            <field name="freight_payment_term" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                            <field name="safe_type" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                            <field name="stacking" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                            <field name="cut_off" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                        </group>
+                        <group>
+                            <field name="plant" domain="[('is_plant','=',True)]" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                            <field name="consolidation" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                            <field name="withdrawal_deposit" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                            <field name="transport_to_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/> 
+                            <field name="dus_second_send" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                            <field name="bill_of_lading" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                            <field name="phytosanitary_certificate" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                            <field name="origin_certificate" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="port_terminal_origin"/>
+                            <field name="shipping_date_to_customer"/>
+                        </group>
+                        <group>
+                            <field name="quality_status"/>
+                            <field name="quality_remarks"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_orders_in_invoice_tree_inherit" model="ir.ui.view">
+            <field name="name">formulario de ordenes</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_tree"/>
+            <field name="priority">1000</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="order_names"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="before">
+                    <field name="shipping_number"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

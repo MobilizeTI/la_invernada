@@ -31,6 +31,9 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'data/update_data_from_upgrade.xml',
+        'views/confirm_order_reserved.xml',
+        'views/confirm_principal_order.xml',
         'views/mrp_workorder.xml',
         'views/stock_production_lot_serial.xml',
         'views/stock_production_lot.xml',
@@ -58,6 +61,10 @@
         'views/label_durability.xml',
         'views/dried_oven.xml',
         'views/res_config_settings.xml',
+        'views/process_report_xlsx.xml',
+        'views/update_quant_view.xml',
+        'views/custom_dispatch_line.xml',
+        'views/stock_report_xlsx.xml',
         'reports/stock/raw_report.xml',
         'reports/stock/raw_service_report.xml',
         'reports/stock/pt_report.xml',

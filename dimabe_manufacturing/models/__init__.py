@@ -27,3 +27,9 @@ from . import stock_move
 from . import change_production_qty
 from . import res_user
 from . import stock_quant
+from . import custom_dispatch_line
+from . import confirm_order_for_reserved
+from . import confirm_principal_order
+from . import update_stock_quant
+from . import stock_report_xlsx
+from . import process_report_xlsx

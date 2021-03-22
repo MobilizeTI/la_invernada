@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_principal_order" model="ir.ui.view">
+            <field name="name">Desea que todos los documentos se carguen con el # de pedido principal?</field>
+            <field name="model">confirm.principal.order</field>
+            <field name="arch" type="xml">
+                <form string="Seleccionar Despacho">
+                    <group>
+                        <p>
+                            Desea que todos los documentos se carguen con el # de pedido principal?
+                        </p>
+                        <p>
+                            <field name="sale_ids" invisible="1"/>
+                            <field name="sale_id" domain="[('id','in',sale_ids)]"/>
+                        </p>
+                    </group>
+                    <footer>
+                        <button type="object" name="select" string="Si"/>
+                        <button type="object" name="cancel" string="No" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
