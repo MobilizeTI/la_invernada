@@ -23,7 +23,8 @@ class ProcessReport(models.TransientModel):
     @api.multi
     def generate_xlsx(self):
         if self.process_selection == 'ncc':
-            dict_data = self.generate_xlsx_process([('workcenter_id.name', '=', '320-Proceso Envasado NCC')], 'Proceso NCC')
+            dict_data = self.generate_xlsx_process([('workcenter_id.name', '=', '320-Proceso Envasado NCC')],
+                                                   'Proceso NCC')
         if self.process_selection == 'laser':
             dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '400-PPM')],
                                                    'Proceso Partido Mecanico/Laser')
@@ -94,9 +95,11 @@ class ProcessReport(models.TransientModel):
         col = 1
         row += 1
         for process in processes:
+            serial_in = self.env['stock.production.lot.serial'].search(
+                [('reserved_to_production_id.id', '=', process.production_id.id)])
             row_in = 1
             col_in = 0
-            for serial in process.potential_serial_planned_ids:
+            for serial in serial_in:
                 sheet.write(row_in, col_in, process.production_id.id, text_format)
                 col_in += 1
                 sheet.write(row_in, col_in, process.production_id.sale_order_id.name, text_format)
@@ -120,6 +123,7 @@ class ProcessReport(models.TransientModel):
 
             row_out = 1
             col_out = col_in
+            serial_out = self.env['stock.production.lot.serial'].search([('production_id.id','=',process.production_id.id)])
             for out_serial in process.summary_out_serial_ids:
                 sheet.write(row_out, col_out, process.production_id.name, text_format)
                 col_out += 1
@@ -148,4 +152,3 @@ class ProcessReport(models.TransientModel):
             file_base64 = base64.b64encode(file.read())
         report_name = f'Informe de Proceso {process_name}'
         return {'file_name': report_name, 'base64': file_base64}
-
