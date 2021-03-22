@@ -94,7 +94,6 @@ class ProcessReport(models.TransientModel):
             col += 1
         col = 0
         row += 1
-        begin = row
         for process in processes:
             serial_in = self.env['stock.production.lot.serial'].search(
                 [('reserved_to_production_id', '=', process.production_id.id)])
@@ -120,7 +119,7 @@ class ProcessReport(models.TransientModel):
                 sheet.write(row, col, serial.real_weight)
                 row += 1
             col = 0
-            row = 0
+            row = 1
 
 
         workbook.close()
