@@ -119,36 +119,7 @@ class ProcessReport(models.TransientModel):
                 col += 1
                 sheet.write(row, col, serial.real_weight)
                 row += 1
-                if serial.id == serial_in[-1]:
-                    col = 0
-
-            row = 1
-
-            for serial in serial_out:
-                if serial.id == serial_out[0].id:
-                    begin_col = col
-                sheet.write(row, col, process.production_id.name, text_format)
-                col += 1
-                sheet.write(row, col, process.production_id.sale_order_id.name, text_format)
-                col += 1
-                sheet.write(row, col, serial.packaging_date.strftime('%d-%m-%Y'), text_format)
-                col += 1
-                sheet.write(row, col, serial.producer_id.display_name, text_format)
-                col += 1
-                sheet.write(row, col, serial.product_id.display_name, text_format)
-                col += 1
-                sheet.write(row, col, serial.product_id.get_variety())
-                col += 1
-                sheet.write(row, col, serial.pallet_id.name)
-                col += 1
-                sheet.write(row, col, serial.stock_production_lot_id.name, text_format)
-                col += 1
-                sheet.write(row, col, serial.serial_number)
-                row += 1
-                sheet.write(row, col, serial.real_weight, text_format)
-                col += 1
-                if serial.id == serial_in[-1]:
-                    col = begin_col
+            col = 0
 
 
         workbook.close()
