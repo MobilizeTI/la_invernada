@@ -119,8 +119,14 @@ class ProcessReport(models.TransientModel):
                 col += 1
                 sheet.write(row, col, serial.real_weight)
                 row += 1
+                if serial.id == serial_in[-1]:
+                    col = 0
+
             row = 1
+
             for serial in serial_out:
+                if serial.id == serial_out[0].id:
+                    begin_col = col
                 sheet.write(row, col, process.production_id.name, text_format)
                 col += 1
                 sheet.write(row, col, process.production_id.sale_order_id.name, text_format)
@@ -141,7 +147,8 @@ class ProcessReport(models.TransientModel):
                 row += 1
                 sheet.write(row, col, serial.real_weight, text_format)
                 col += 1
-
+                if serial.id == serial_in[-1]:
+                    col = begin_col
 
 
         workbook.close()
