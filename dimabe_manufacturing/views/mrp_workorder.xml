@@ -264,4 +264,16 @@
             </field>
         </record>
     </data>
+    <record id="mrp_workorder_process_view" model="ir.ui.view">
+        <field name="name">Pantalla de Entrada</field>
+        <field name="model">mrp.workorder</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="confirmed_serial"/>
+                    <button type="object" string="Ingresar" name="confirmed_serial_keyboard"/>
+                </group>
+            </form>
+        </field>
+    </record>
 </odoo>
