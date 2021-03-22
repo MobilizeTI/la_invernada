@@ -80,7 +80,7 @@ class ProcessReport(models.TransientModel):
             'text_wrap': True
         })
         sheet = workbook.add_worksheet(process_name)
-        processes = self.env['mrp.workorder'].sudo().search(query)
+        processes = self.env['mrp.workorder'].search(query)
         row = 0
         col = 0
 
