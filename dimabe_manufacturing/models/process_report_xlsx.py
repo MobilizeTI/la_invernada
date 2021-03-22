@@ -48,7 +48,7 @@ class ProcessReport(models.TransientModel):
         for process in processes:
             sheet.merge_range(0, 0, 8, 8, 'Resumen de Entrada')
             sheet.merge_range(9, 9, 19, 19, 'Resumen de Salida')
-
+        workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
         report_name = f'Informe de Proceso {process_name}'
