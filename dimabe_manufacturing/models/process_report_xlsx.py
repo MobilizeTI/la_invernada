@@ -94,7 +94,7 @@ class ProcessReport(models.TransientModel):
             for serial in process.potential_serial_planned_ids:
                 sheet.write(row, col, serial.reserved_to_production_id.name, text_format)
                 col += 1
-                sheet.write(row, col, serial.reserved_to_production_id, text_format)
+                sheet.write(row, col, serial.reserved_to_production_id.name, text_format)
                 col += 1
                 sheet.write(row, col, serial.packaging_date.strftime('%d-%m-%Y'), text_format)
                 col += 1
