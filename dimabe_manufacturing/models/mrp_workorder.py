@@ -145,6 +145,7 @@ class MrpWorkorder(models.Model):
 
     component_id = fields.Many2one('product.product',readonly=False)
 
+
     @api.multi
     def _compute_pallet_content(self):
         for item in self:

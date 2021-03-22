@@ -270,7 +270,8 @@
         <field name="arch" type="xml">
             <form>
                 <group>
-                    <field name="component_id"/>
+                    <field name="component_id" attrs="{'domain':[('id','in',material_product_ids)]}"/>
+                    <field name="material_product_ids" invisible="1"/>
                 </group>
                 <group>
                     <field name="confirmed_serial"/>
