@@ -123,6 +123,7 @@ class ProcessReport(models.TransientModel):
                 if serial.id == serial_in[-1]:
                     col_out = col
                 col = 0
+            row = 1
             for serial in serial_out:
                 sheet.write(row, col_out, process.production_id.name, text_format)
                 col_out += 1
