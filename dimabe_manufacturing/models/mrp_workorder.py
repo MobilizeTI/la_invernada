@@ -452,7 +452,7 @@ class MrpWorkorder(models.Model):
                 'id'):
             raise models.UserError('Error')
         self.write({
-            'product_id': serial.product_id.id
+            'component_id': serial.product_id.id
         })
 
     @api.model
