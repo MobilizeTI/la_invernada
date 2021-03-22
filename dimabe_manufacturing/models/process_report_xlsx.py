@@ -24,6 +24,42 @@ class ProcessReport(models.TransientModel):
     def generate_xlsx(self):
         if self.process_selection == 'ncc':
             dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '320-PENCC')], 'Proceso NCC')
+        if self.process_selection == 'laser':
+            dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '400-PPM')],
+                                                   'Proceso Partido Mecanico/Laser')
+        if self.process_selection == 'manual':
+            dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '500-PPMC')],
+                                                   'Proceso Partido Manual Calidad')
+        if self.process_selection == 'nsc':
+            dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '420-PENSC')], 'Proceso NSC')
+        if self.process_selection == 'calibrate':
+            dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '300-PC')], 'Proceso Calibrado')
+        if self.process_selection == 'washed':
+            dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '310-PL')], 'Proceso Lavado')
+        if self.process_selection == 're-laser':
+            dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '410-PDL')],
+                                                   'Re-Proceso Descarte Láser')
+        if self.process_selection == 'service_ncc':
+            dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '860-PENCCS')],
+                                                   'Proceso Envasado NCC Servicio')
+        if self.process_selection == 'service_nsc':
+            dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '890-PENSCS')],
+                                                   'Proceso Envasado NSC Servicio')
+        if self.process_selection == 'service_calibrate':
+            dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '840-PCS')],
+                                                   'Proceso Calibrado Servicio')
+        if self.process_selection == 'service_washed':
+            dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '850-PLS')], 'Proceso Lavado Servicio')
+        if self.process_selection == 'service_laser':
+            dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '870-PPMS')],
+                                                   'Proceso Partido Mecanico/Laser Servicio')
+        if self.process_selection == 'service_re_laser':
+            dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '880-PDLS')],
+                                                   'Re-Proceso Descarte Láser Servicio')
+        if self.process_selection == 'service_manual':
+            dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '870-PPMS')],
+                                                   'Proceso Partido Manual Calidad Servicio')
+
         attachment_id = self.env['ir.attachment'].sudo().create({
             'name': dict_data['file_name'],
             'datas_fname': dict_data['file_name'],
@@ -56,9 +92,9 @@ class ProcessReport(models.TransientModel):
         col = 1
         for process in processes:
             for serial in process.potential_serial_planned_ids:
-                sheet.write(row, col, serial.reserved_to_production_id.name, text_format)
+                sheet.write(row, col, serial.reserved_to_production_id, text_format)
                 col += 1
-                sheet.write(row, col, serial.reserved_to_production_id.sale_order_id.name, text_format)
+                sheet.write(row, col, serial.reserved_to_production_id, text_format)
                 col += 1
                 sheet.write(row, col, serial.packaging_date.strftime('%d-%m-%Y'), text_format)
                 col += 1
