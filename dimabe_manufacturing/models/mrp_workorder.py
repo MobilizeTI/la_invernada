@@ -445,30 +445,7 @@ class MrpWorkorder(models.Model):
             skip.unlink()
 
     def confirmed_serial_keyboard(self):
-        self.ensure_one()
-        qty_done = self.qty_done
-        custom_serial = self.validate_serial_code(self.confirmed_serial)
-        custom_serial.write({
-            'reserved_to_production_id': self.production_id.id,
-            'consumed': True
-        })
-        lot = self.env['stock.production.lot'].search([('name', '=', custom_serial.stock_production_lot_id.name)])
-        available_kg = sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
-        lot.write({
-            'available_kg': available_kg
-        })
-        if custom_serial:
-            barcode = custom_serial.stock_production_lot_id.name
-        res = super(MrpWorkorder, self).on_barcode_scanned(self.confirmed_serial)
-        if res:
-            return res
-        self.qty_done = qty_done + custom_serial.display_weight
-        self.write({
-            'in_weight': sum(self.potential_serial_planned_ids.mapped('real_weight')),
-            'lot_id':custom_serial.stock_production_lot_id.id
-        })
-        custom_serial.stock_production_lot_id.update_stock_quant(location_id=self.production_id.location_src_id.id)
-        return res
+        raise models.ValidationError(self.component_id in self.production_id.bom_id.mapped('bom_line_ids').mapped('product_id'))
 
     @api.model
     def lot_is_byproduct(self):
