@@ -23,6 +23,6 @@
             <field name="view_id" ref="process_report_view"/>
             <field name="target">new</field>
         </record>
-        <menuitem name="Descarga de Reportes" parent="process_report_menu" id="process_report_xlsx_item" action="generate_report_action"/>
+        <menuitem name="Descarga de Reportes" parent="process_report_menu" id="process_report_xlsx_item" action="generate_process_report_action"/>
     </data>
 </odoo>
