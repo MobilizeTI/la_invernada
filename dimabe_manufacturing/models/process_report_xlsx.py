@@ -95,57 +95,7 @@ class ProcessReport(models.TransientModel):
         col = 1
         row += 1
         for process in processes:
-            serial_in = self.env['stock.production.lot.serial'].search(
-                [('reserved_to_production_id.id', '=', process.production_id.id)])
-            row_in = 1
-            col_in = 0
-            for serial in serial_in:
-                sheet.write(row_in, col_in, process.production_id.id, text_format)
-                col_in += 1
-                sheet.write(row_in, col_in, process.production_id.sale_order_id.name, text_format)
-                col_in += 1
-                sheet.write(row_in, col_in, serial.packaging_date.strftime('%d-%m-%Y'), text_format)
-                col_in += 1
-                sheet.write(row_in, col_in, serial.stock_production_lot_id.name, text_format)
-                col_in += 1
-                sheet.write(row_in, col_in, serial.serial_number, text_format)
-                col_in += 1
-                sheet.write(row_in, col_in, serial.producer_id.name)
-                col_in += 1
-                sheet.write(row_in, col_in, serial.product_id.display_name)
-                col_in += 1
-                sheet.write(row_in, col_in, serial.product_id.get_variety())
-                col_in += 1
-                sheet.write(row_in, col_in, serial.real_weight)
-                row_in += 1
-                if serial.id != process.potential_serial_planned_ids[-1].id:
-                    col_in = 0
-
-            row_out = 1
-            col_out = col_in
-            serial_out = self.env['stock.production.lot.serial'].search([('production_id.id','=',process.production_id.id)])
-            for out_serial in serial_out:
-                sheet.write(row_out, col_out, process.production_id.name, text_format)
-                col_out += 1
-                sheet.write(row_out, col_out, process.production_id.sale_order_id.name, text_format)
-                col_out += 1
-                sheet.write(row_out, col_out, out_serial.packaging_date.strftime('%d-%m-%Y'), text_format)
-                col_out += 1
-                sheet.write(row_out, col_out, out_serial.stock_production_lot_id.name, text_format)
-                col_out += 1
-                sheet.write(row_out, col_out, out_serial.serial_number, text_format)
-                col_out += 1
-                sheet.write(row_out, col_out, out_serial.producer_id.name)
-                col_out += 1
-                sheet.write(row_out, col_out, out_serial.product_id.display_name)
-                col_out += 1
-                sheet.write(row_out, col_out, out_serial.product_id.get_variety())
-                col_out += 1
-                sheet.write(row_out, col_out, out_serial.real_weight)
-                row_out += 1
-                col_out = col_in
-            col = 0
-            row = row_in if row_in > row_out else row_out
+            sheet.write(row,col,process.production_id.name)
 
         workbook.close()
         with open(file_name, "rb") as file:
