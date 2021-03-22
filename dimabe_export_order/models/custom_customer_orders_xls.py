@@ -66,6 +66,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
                     #if len(stock_picking_ids) > 0:
                     for stock in stock_picking_ids:
                         invoice_line = self.env['account.invoice.line'].sudo().search([('stock_picking_id','=',stock.id)])
+                        production = self.env['mrp.production'].sudo().search([('stock_picking_id','=',stock.id)])
                         exist_account_invoice = False
                         if invoice_line:
                             exist_account_invoice = True
@@ -105,7 +106,19 @@ class CustomCustomerOrdersXls(models.TransientModel):
                         sheet.write(row, col, stock.name)
                         col += 1
                         #Estatus Produccion
-                        sheet.write(row, col, 'pendiente')
+                        if production:
+                            if production.state == 'planned':
+                                sheet.write(row, col, 'Planeado', formats['pink_status'])
+                            elif production.state == 'done':
+                                sheet.write(row, col, 'Realizado', formats['green_status'])
+                            elif production.state == 'progress':
+                                sheet.write(row, col, 'En Progreso', formats['light_green_status'])
+                            elif production.state == 'confirmed':
+                                sheet.write(row, col, 'Confirmado', formats['yellow_status'])
+                            elif production.state == 'cancel':
+                                sheet.write(row, col, 'Cancelado', formats['red_status'])
+                        else:
+                            sheet.write(row, col, 'Sin Órden de Producción')
                         col += 1
                         #Estatus Despacho
                         if exist_account_invoice:
