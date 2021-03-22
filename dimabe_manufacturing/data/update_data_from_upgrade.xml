@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="update_lot_pallet" model="ir.actions.server">
+            <field name="name">Actualizar Lotes de Pallets</field>
+            <field name="model_id" ref="mail.model_ir_actions_server"/>
+            <field name="state">code</field>
+            <field name="code">pallets = env['manufacturing.pallet'].search([])
+for pallet in pallets:
+  pallet.write({
+    'lot_id':pallet.lot_serial_ids.mapped('stock_production_lot_id').id
+  })
+            </field>
+        </record>
+        <record id="update_serials_caliber" model="ir.actions.server">
+            <field name="name">Actualizar Calibre de Series</field>
+            <field name="model_id" ref="mail.model_ir_actions_server"/>
+            <field name="state">code</field>
+            <field name="code">serials = env['stock.production.lot.serial'].search([])
+for serial in serials:
+  serial.write({
+    'product_id':serial.product_id.get_calibers()
+  })
+            </field>
+        </record>
+    </data>
+</odoo>
