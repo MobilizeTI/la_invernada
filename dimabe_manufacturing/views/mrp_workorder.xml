@@ -270,7 +270,7 @@
         <field name="arch" type="xml">
             <form>
                 <group>
-                    <field name="component_id" attrs="{'domain':[('id','in',material_product_ids)]}"/>
+                    <field name="component_id" domain="[('id','in',material_product_ids)]"/>
                     <field name="material_product_ids" invisible="1"/>
                 </group>
                 <group>
