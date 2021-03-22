@@ -96,6 +96,7 @@ class ProcessReport(models.TransientModel):
         row += 1
         for process in processes:
             sheet.write(row,col,process.production_id.name)
+            row += 1
 
         workbook.close()
         with open(file_name, "rb") as file:
