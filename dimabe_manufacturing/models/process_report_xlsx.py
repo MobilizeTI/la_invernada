@@ -97,8 +97,9 @@ class ProcessReport(models.TransientModel):
         for process in processes:
             serial_in = self.env['stock.production.lot.serial'].search([('reserved_to_production_id','=',process.production_id.id)])
             for serial in serial_in:
-                sheet.write(row,col,serial.serial_number)
+                sheet.write(row,col,serial.serial_number,text_format)
                 col += 1
+                sheet.write(row,col,process.production_id.sale_order_id.name,text_format)
                 row += 1
                 col = 0
 
