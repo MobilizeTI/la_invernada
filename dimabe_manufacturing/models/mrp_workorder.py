@@ -346,7 +346,7 @@ class MrpWorkorder(models.Model):
                     })
                     check.lot_id = lot_tmp.id
                     check.qty_done = self.component_remaining_qty
-                    self.active_move_line_ids.filtered(lambda a : a.lot_id.id == lot_tmp.id).write({
+                    self.active_move_line_ids.filtered(lambda a: a.lot_id.id == lot_tmp.id).write({
                         'is_raw': False
                     })
         return {
@@ -360,7 +360,6 @@ class MrpWorkorder(models.Model):
                 [self.env.ref('dimabe_manufacturing.mrp_workorder_process_view').id, 'form']],
             'context': self.env.context,
         }
-
 
     def action_next(self):
         self.write({
@@ -445,10 +444,13 @@ class MrpWorkorder(models.Model):
             skip.unlink()
 
     def confirmed_serial_keyboard(self):
-        serial = self.env['stock.production.lot.serial'].search([('serial_number','=',self.confirmed_serial)])
-        if serial.product_id.id not in self.production_id.bom_id.mapped('bom_line_ids').mapped('product_id').mapped('id'):
+        serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', self.confirmed_serial)])
+        if serial.product_id.id not in self.production_id.bom_id.mapped('bom_line_ids').mapped('product_id').mapped(
+                'id'):
             raise models.UserError('Error')
-
+        self.write({
+            'product_id': serial.product_id.id
+        })
 
     @api.model
     def lot_is_byproduct(self):
