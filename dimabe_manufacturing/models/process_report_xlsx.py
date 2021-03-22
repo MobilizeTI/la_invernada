@@ -38,7 +38,7 @@ class ProcessReport(models.TransientModel):
         return action
 
     def generate_xlsx_process(self, query, process_name):
-        file_name = 'process_name.xlsx'
+        file_name = 'temp_report.xlsx'
         workbook = xlsxwriter.Workbook(file_name)
         text_format = workbook.add_format({
             'text_wrap': True
