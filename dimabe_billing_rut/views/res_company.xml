@@ -7,7 +7,7 @@
       <field name="arch" type="xml">
         <xpath expr="//field[@name='vat']" position="after">
           <field name="invoice_rut" />
-            <field name="add_to_sale_book" string="Aparece en el Libros de SII"/>
+          <field name="add_to_sale_book" string="Aparece en el Libros de SII"/>
         </xpath>
         <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
           <page name="xdte_tab" string="DTE">
@@ -21,7 +21,20 @@
                   <field name="ticket_url" placeholder="URL para validación de Boletas Electrónicas." colspan="3" />
               </group>
           </page>
-      </xpath>
+        </xpath>
+        <xpath expr="//field[@name='website']" position="before">
+          <field name="legal_represntative"/>
+          <field name="legal_representative_signature"/>
+        </xpath>
+        <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+          <page name="info_instructive_tab" string="Información para Instructivos">
+            <group>
+              <field name="plant_contact_ids"/>
+              <field name="comex_contact_ids"/>
+              <field name="origin_contact_aga"/>
+            </group>
+          </page>
+        </xpath> 
       </field>
     </record>
   </data>

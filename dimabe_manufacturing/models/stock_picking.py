@@ -1,22 +1,21 @@
-from odoo import models, api, fields
+from odoo import models, api, fields, _
+import base64
 from odoo.addons import decimal_precision as dp
 import datetime
 from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 import datetime
+
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
     has_mrp_production = fields.Boolean('tiene orden de producción')
 
-    shipping_id = fields.Many2one(
-        'custom.shipment',
-        'Embarque'
-    )
-
-    required_loading_date = fields.Date(
-        related='shipping_id.required_loading_date'
-    )
+    # ya no se ocupa
+    # shipping_id = fields.Many2one(
+    #    'custom.shipment',
+    #    'Embarque'
+    # )
     variety = fields.Many2many(related="product_id.attribute_value_ids")
 
     country_id = fields.Char(related='partner_id.country_id.name')
@@ -30,7 +29,7 @@ class StockPicking(models.Model):
 
     packing_list_ids = fields.One2many(
         'stock.production.lot.serial',
-        compute='_compute_packing_list_ids'
+        'reserved_to_stock_picking_id'
     )
 
     product_search_id = fields.Many2one(
@@ -52,7 +51,7 @@ class StockPicking(models.Model):
 
     assigned_pallet_ids = fields.One2many(
         'manufacturing.pallet',
-        compute='_compute_assigned_pallet_ids'
+        'reserved_to_stock_picking_id'
     )
 
     have_series = fields.Boolean('Tiene Serie', default=True, compute='_compute_potential_lot_serial_ids')
@@ -62,7 +61,116 @@ class StockPicking(models.Model):
         compute='_compute_packing_list_lot_ids'
     )
 
-    sale_order_id = fields.Many2one('sale.order', 'Pedido')
+    sale_order_id = fields.Many2one('sale.order', 'Pedido',
+        copy=False)
+
+    sale_orders_id = fields.Many2one('sale.order', 'Pedidos', domain=[('state', '=', 'sale')],
+        copy=False)
+
+    dispatch_line_ids = fields.One2many('custom.dispatch.line', 'dispatch_real_id', copy=False)
+
+    name_orders = fields.Char('Pedidos', compute='get_name_orders')
+
+    dispatch_id = fields.Many2one('stock.picking', 'Despachos', domain=[('state', '!=', 'done')],
+        copy=False)
+
+    real_net_weigth = fields.Float('Kilos Netos Reales', compute='compute_net_weigth_real')
+
+    packing_list_file = fields.Binary('Packing List')
+
+    is_multiple_dispatch = fields.Boolean('Es Despacho Multiple?', copy=False)
+
+    picking_real_id = fields.Many2one('stock.picking', 'Despacho Real', copy=False)
+
+    picking_principal_id = fields.Many2one('stock.picking', 'Pedido Principal', copy=False)
+
+    is_child_dispatch = fields.Boolean('Es despacho hijo', copy=False)
+
+    @api.onchange('is_multiple_dispatch')
+    def set_multiple_dispatch(self):
+        if self.is_multiple_dispatch and self.move_ids_without_package:
+            # Se busca objecto a causa de que self.id entrega otro tipo de campo (NewId)
+            picking = self.env['stock.picking'].search([('name', '=', self.name)])
+            self.env['custom.dispatch.line'].create({
+                'dispatch_real_id': picking.id,
+                'dispatch_id': picking.id,
+                'product_id': self.move_ids_without_package.mapped('product_id').id if len(
+                    self.move_ids_without_package) == 1 else self.move_ids_without_package[0].mapped('product_id').id,
+                'required_sale_qty': self.move_ids_without_package.product_uom_qty if len(
+                    self.move_ids_without_package) == 1 else self.move_ids_without_package[0].product_uom_qty,
+                'sale_id': self.sale_id.id
+            })
+
+    @api.multi
+    def compute_net_weigth_real(self):
+        for item in self:
+            item.real_net_weigth = sum(item.packing_list_ids.mapped('display_weight'))
+
+    @api.multi
+    def get_name_orders(self):
+        for item in self:
+            item.name_orders = ", ".join(item.dispatch_line_ids.mapped('sale_id').mapped('name'))
+
+    @api.multi
+    def update_stock_quant(self):
+        view = self.env.ref('dimabe_manufacturing.update_quant_view')
+        wiz = self.env['update.stock.quant'].create({
+            'product_ids': [(4, p.id) for p in self.move_line_ids_without_package.mapped('product_id')],
+            'picking_id': self.id
+        })
+        return {
+            'name': 'Actualizar Lote',
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'update.stock.quant',
+            'views': [(view.id, 'form')],
+            'view_id': view.id,
+            'target': 'new',
+            'res_id': wiz.id,
+            'context': self.env.context
+        }
+
+    @api.multi
+    def test(self):
+        raise models.ValidationError(self.is_satelite_reception)
+
+    @api.multi
+    def add_orders_to_dispatch(self):
+        if self.is_multiple_dispatch:
+            if not self.sale_orders_id:
+                raise models.ValidationError('No se selecciono ningun numero de pedido')
+            if not self.dispatch_id:
+                raise models.ValidationError('No se selecciono ningun despacho')
+            if self.dispatch_id in self.dispatch_line_ids.mapped('dispatch_id'):
+                raise models.ValidationError('El despacho {} ya se encuentra agregado'.format(self.dispatch_id.id))
+            for product in self.dispatch_id.move_ids_without_package:
+                self.env['custom.dispatch.line'].create({
+                    'dispatch_real_id': self.id,
+                    'dispatch_id': self.dispatch_id.id,
+                    'sale_id': self.sale_orders_id.id,
+                    'product_id': product.product_id.id,
+                    'required_sale_qty': product.product_uom_qty,
+                })
+                # No existe producto
+                if not self.move_ids_without_package.filtered(lambda p: p.product_id.id == product.product_id.id):
+                    self.env['stock.move'].create({
+                        'product_id': product.product_id.id,
+                        'picking_id': self.id,
+                        'product_uom': product.product_id.uom_id.id,
+                        'product_uom_qty': product.product_uom_qty,
+                        'date': datetime.date.today(),
+                        'date_expected': self.scheduled_date,
+                        'location_dest_id': self.partner_id.property_stock_customer.id,
+                        'location_id': self.location_id.id,
+                        'name': product.product_id.name,
+                        'procure_method': 'make_to_stock',
+                    })
+                else:
+                    move = self.move_ids_without_package.filtered(lambda p: p.product_id.id == product.product_id.id)
+                    move.write({
+                        'product_uom_qty': move.product_uom_qty + product.product_uom_qty
+                    })
 
     @api.onchange('picking_type_code')
     def on_change_picking_type(self):
@@ -82,13 +190,72 @@ class StockPicking(models.Model):
         return res
 
     @api.multi
-    def clean_reserved(self):
-        for item in self:
-            for move in item.move_line_ids_without_package:
-                if move.lot_id.id not in item.packing_list_lot_ids.mapped('id'):
-                    query = 'DELETE FROM stock_move_line where id = {}'.format('id')
-                    cr = self._cr
-                    cr.execute(query)
+    def remove_reserved_serial(self):
+        lots = self.packing_list_ids.filtered(lambda a: a.to_delete).mapped('stock_production_lot_id')
+        self.packing_list_ids.filtered(lambda a: a.to_delete and a.reserved_to_stock_picking_id.id == self.id).write({
+            'reserved_to_stock_picking_id': None,
+            'to_delete': False
+        })
+        self.update_move(lots)
+
+    @api.multi
+    def _create_backorder(self, backorder_moves=[]):
+        """ Move all non-done lines into a new backorder picking.
+        """
+
+        backorders = self.env['stock.picking']
+        for picking in self:
+            moves_to_backorder = picking.move_lines.filtered(lambda x: x.state not in ('done', 'cancel'))
+            models._logger.error(type(moves_to_backorder))
+            if moves_to_backorder:
+                backorder_picking = picking.copy({
+                    'name': '/',
+                    'move_lines': [],
+                    'move_line_ids': [],
+                    'backorder_id': picking.id
+                })
+                picking.message_post(
+                    body=_(
+                        'The backorder <a href=# data-oe-model=stock.picking data-oe-id=%d>%s</a> has been created.') % (
+                             backorder_picking.id, backorder_picking.name))
+                moves_to_backorder.write({'picking_id': backorder_picking.id})
+                moves_to_backorder.mapped('package_level_id').write({'picking_id': backorder_picking.id})
+                moves_to_backorder.mapped('move_line_ids').write({'picking_id': backorder_picking.id})
+                backorder_picking.action_assign()
+                backorders |= backorder_picking
+        return backorders
+
+    @api.multi
+    def remove_reserved_pallet(self):
+        lots = self.assigned_pallet_ids.filtered(lambda a: a.remove_picking).mapped('lot_id')
+        pallets = self.assigned_pallet_ids.filtered(
+            lambda a: a.remove_picking and a.reserved_to_stock_picking_id.id == self.id)
+        for pallet in pallets:
+            pallet.lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id.id == self.id).write({
+                'reserved_to_stock_picking_id': None
+            })
+            pallet.write({
+                'reserved_to_stock_picking_id': None,
+                'remove_picking': False
+            })
+        self.update_move(lots)
+
+    def update_move(self, lots):
+        for lot in lots:
+            move = self.move_line_ids_without_package.filtered(lambda a: a.lot_id.id == lot.id)
+            if lot.get_reserved_quantity_by_picking(self.id) > 0:
+                move.write({
+                    'product_uom_qty': lot.get_reserved_quantity_by_picking(self.id)
+                })
+            else:
+                move.unlink()
+            self.dispatch_line_ids.filtered(lambda a: a.product_id.id == lot.product_id.id).mapped(
+                'move_line_ids').filtered(lambda a: a.lot_id.id == lot.id).write({
+                'product_uom_qty': lot.get_reserved_quantity_by_picking(self.id)
+            })
+            self.dispatch_line_ids.filtered(lambda a: a.product_id.id == lot.product_id.id and lot in a.move_line_ids.mapped('lot_id')).write({
+                'real_dispatch_qty': sum(self.packing_list_ids.filtered(lambda a: a.stock_production_lot_id == lot).mapped('display_weight'))
+            })
 
     @api.multi
     def _compute_packing_list_lot_ids(self):
@@ -97,14 +264,6 @@ class StockPicking(models.Model):
                 item.packing_list_lot_ids = item.packing_list_ids.mapped('stock_production_lot_id')
             else:
                 item.packing_list_lot_ids = []
-
-    @api.multi
-    def _compute_assigned_pallet_ids(self):
-        for item in self:
-            if item.packing_list_ids and item.picking_type_code == 'outgoing':
-                item.assigned_pallet_ids = item.packing_list_ids.mapped('pallet_id')
-            else:
-                item.assigned_pallet_ids = []
 
     @api.onchange('sale_order_id')
     def on_change_production_id(self):
@@ -135,10 +294,9 @@ class StockPicking(models.Model):
     @api.multi
     def calculate_last_serial(self):
         if self.picking_type_code == 'incoming':
-            canning = self.get_canning_move()
             if len(canning) == 1:
                 if self.production_net_weight == self.net_weight:
-                    self.production_net_weight = self.net_weight
+                    self.production_net_weight = self.net_weight - self.quality_weight
 
                 self.env['stock.production.lot.serial'].search([('stock_production_lot_id', '=', self.name)]).write({
                     'real_weight': self.avg_unitary_weight
@@ -159,14 +317,6 @@ class StockPicking(models.Model):
                 ]
                 lot = self.env['stock.production.lot'].search(domain)
                 item.potential_lot_ids = lot
-
-    @api.multi
-    def _compute_packing_list_ids(self):
-        for item in self:
-            reserved_serial_ids = self.env['stock.production.lot.serial'].search([
-                ('reserved_to_stock_picking_id', '=', item.id)
-            ])
-            item.packing_list_ids = reserved_serial_ids
 
     @api.multi
     def return_action(self):
@@ -207,32 +357,6 @@ class StockPicking(models.Model):
                     })
         return res
 
-    @api.multi
-    def button_validate(self):
-        if self.picking_type_code == 'outgoing':
-            for serial in self.packing_list_ids:
-                serial.write({
-                    'consumed': True
-                })
-            for lot in self.packing_list_lot_ids:
-                available_kg = sum(
-                    lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
-                query = "UPDATE stock_production_lot set available_kg = {} where id = {}".format(available_kg, lot.id)
-                cr = self._cr
-                cr.execute(query)
-            if len(self.move_line_ids_without_package) == 0:
-                raise models.UserError('No existe ningun campo en operaciones detalladas')
-            if self.move_line_ids_without_package.filtered(lambda a: a.qty_done == 0):
-                raise models.UserError('No ha ingresado la cantidad realizada')
-            for move_line in self.move_line_ids_without_package:
-                if self.picking_type_id.warehouse_id.id == 17 and self.picking_type_code != 'outgoing':
-                    move_line._action_done()
-                    return super(StockPicking, self).button_validate()
-                else:
-                    super(StockPicking, self).action_done()
-        else:
-            return super(StockPicking, self).button_validate()
-
     def validate_barcode(self, barcode):
         custom_serial = self.packing_list_ids.filtered(
             lambda a: a.serial_number == barcode
@@ -242,7 +366,6 @@ class StockPicking(models.Model):
         return custom_serial
 
     def on_barcode_scanned(self, barcode):
-
         for item in self:
             custom_serial = item.validate_barcode(barcode)
             if custom_serial.consumed:

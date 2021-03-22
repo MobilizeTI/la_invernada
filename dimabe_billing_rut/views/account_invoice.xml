@@ -8,34 +8,30 @@
                 <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='invoice_line_tax_ids']" position="after">
                     <field name="exempt"/>
                 </xpath>
-                <xpath expr="//field[@name='cash_rounding_id']" position="after">
-                    <field name="order_to_add_ids"/>
-                    <field name="order_to_add_id" invisible="1"/>
-                    <field name="stock_picking_ids" domain="[('sale_id','=',order_to_add_id),('invoiced','=',False)]" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"/>
-                    <button type="object" name="add_products_by_order" string="Agregar Productos" class="oe_highlight"/>
+                <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='analytic_tag_ids']" position="after">
+                    <field name="order_name"/>
+                    <field name="dispatch"/>
                 </xpath>
-                <xpath expr="//field[@name='comment']" position="before">
-                    <field name="orders_to_invoice" mode="tree" options="{'no_create':True}">
-                        <form>
-                            <group>
-                                <field name="order_name" readonly="1"/>
-                                <field name="stock_picking_name" readonly="1"/>
-                                <field name="quantity_to_invoice" readonly="1"/>
-                                <field name="product_name" readonly="1"/>
-                            </group>
-                        </form>
-                        <tree>
-                            <field name="order_name" readonly="1"/>
-                            <field name="stock_picking_name" readonly="1"/>
-                            <field name="quantity_to_invoice" readonly="1"/>
-                            <field name="product_name" readonly="1"/>
-                        </tree>
-                    </field>
+                <xpath expr="//field[@name='cash_rounding_id']" position="after">
+                    <field name="order_to_add_ids" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                    <field name="order_to_add_id" invisible="1"/>
+                    <field name="stock_picking_ids" domain="[('sale_id','=',order_to_add_id),('invoiced','=',False),('state','!=','cancel')]"  attrs="{'invisible': [('dte_code', '!=', '110')]}"  options="{'no_quick_create':True,'no_create':True}"/>
+                    <button type="object" name="add_products_by_order" string="Agregar Productos" class="oe_highlight"  attrs="{'invisible': ['|',('dte_code', '!=', '110'),('state','!=','draft')]}"/>
+                    <button type="object" name="update_dispatch_quantity" string="Actualizar Cantidades" class="oe_highlight"  attrs="{'invisible': ['|','|',('dte_code', '!=', '110'),('dte_folio','!=',False),('state','!=','draft')]}"/>
+                </xpath>
+                <xpath expr="//header" position="inside">
+                    <field name="valid_to_sii" invisible="1"/>
+                    <button type="object" string="Validar para SII" name="validation_fields"
+                    attrs="{'invisible':['|',('valid_to_sii', '=', True),('state','=','draft')]}"
+                    />
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="before">
+                    <field name="shipping_number" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                 </xpath>
                 <data>
                     <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
                         <page name="xdte_tab" string="DTE">
-                            <button  type="object" name="send_to_sii" string="Enviar al SII" class="oe_highlight"/>
+                            <button  type="object" name="send_to_sii" string="Enviar al SII" class="oe_highlight" attrs="{'invisible': ['|',('valid_to_sii','=',False),('dte_folio', '!=', False)]}"/>
                             <group name="xdte_info" cols="">
                                 <group>
                                     <field name="method_of_payment" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>                           
@@ -46,7 +42,7 @@
                                 </group>
                                 <group>
                                     <field name="dte_type" invisible="1"/>
-                                    <field name="dte_type_id" domain="[('code', 'in', [33,34,39,110,56,61,111,112])]" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
+                                    <field name="dte_type_id" domain="[('code', 'in', [33,34,39,110,56,61,111,112])]"/> <!--attrs="{'readonly': [('dte_folio', '!=', False)]}-->
                                     <field name="dte_code" invisible="1"/>
                                     <field name="dte_folio" readonly="1"/>
                                 </group>
@@ -60,6 +56,7 @@
                                     <field name="total_export_sales_clause" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="destiny_country_dte" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="receiving_country_dte" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <field name="city_final_destiny_id" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 </group>
                                 <group>
                                     <field name="tara" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
@@ -68,64 +65,60 @@
                                     <field name="uom_gross_weight" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="net_weight" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="uom_net_weight" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                </group>
-                                <group>
-                                 <field name="total_packages" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                    <field name="packages" mode="tree" attrs="{'invisible': [('dte_code', '!=', '110')]}">
-                                    <form>
-                                        <group>
-                                            <field name="package_type" required="True" />
-                                            <field name="quantity" required="True" />
-                                            <field name="brand" required="True"/>
-                                            <field name="container"/>
-                                            <field name="stamp"/>
-                                        </group>
-                                    </form>
-                                    <tree>
-                                        <field name="package_type" required="True"/>
-                                        <field name="quantity" required="True" />
-                                        <field name="brand" required="True"/>
-                                        <field name="container"/>
-                                        <field name="stamp"/>
-                                    </tree>
-                                    </field>
-                                </group>
-                                <group>
-                                    <field name="is_dispatcher" invisible="1"/>
-                                    <field name="shipping_number" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                    <field name="contract_correlative_view" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                    <field name="contract_correlative" invisible="1"/>
-                                    <field name="agent_id" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="commission" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="total_commission" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                    <field name="charging_mode" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                    <field name="booking_number" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                    <field name="bl_number" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                    <field name="container_number"
-                                           placeholder="Ingrese número de contenedor" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                    <field name="container_type"
-                                           placeholder="Seleccione el tipo de contenedor" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                    <field name="remarks_comex" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                </group>
-                                <group>
-                                    <field name="client_label" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                    <field name="client_label_file"
-                                           attrs="{'invisible':[('client_label', '=', False)]}"/>
+                                    <field name="client_label_file" attrs="{'invisible':[('client_label', '=', False)]}"/>
                                     <field name="freight_amount" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="safe_amount" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="total_value" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="value_per_kilogram" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 </group>
                                 <group>
+                                    <field name="total_packages" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <field name="packages" mode="tree" attrs="{'invisible': [('dte_code', '!=', '110')]}">
+                                        <form>
+                                            <group>
+                                                <field name="package_type" required="True" />
+                                                <field name="canning_type" required="True"/>
+                                                <field name="quantity" required="True" />
+                                                <field name="brand" required="True"/>
+                                                <field name="container"/>
+                                                <field name="stamp"/>
+                                            </group>
+                                        </form>
+                                        <tree>
+                                            <field name="package_type" required="True"/>
+                                            <field name="canning_type" required="True"/>
+                                            <field name="quantity" required="True" />
+                                            <field name="brand" required="True"/>
+                                            <field name="container"/>
+                                            <field name="stamp"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                                <group>
+                                    <field name="is_dispatcher" invisible="1"/>
+                                    <field name="contract_correlative" invisible="1"/>
+                                    <field name="agent_id" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <field name="charging_mode" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <field name="booking_number" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <field name="bl_number" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <field name="container_type"
+                                           placeholder="Seleccione el tipo de contenedor" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                </group>
+                                <group><field name="remarks_comex" attrs="{'invisible': [('dte_code', '!=', '110')]}"/></group>
+                                <group>
+                                    <field name="client_label" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="shipping_company" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="ship" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="ship_number" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="type_transport" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <field name="custom_department" domain="[('category_id.name', '=', 'Aduana')]" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 </group>
                                 <group>
                                     <field name="departure_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="arrival_port" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
-                                    <field name="required_loading_date" autocomplete="off" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                                    <!--<field name="required_loading_date" autocomplete="off" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>-->
                                     <field name="required_loading_week" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 </group>
                                 <group>
@@ -138,6 +131,8 @@
                                     <field name="departure_date" autocomplete="off" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                     <field name="arrival_date" autocomplete="off" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                                 </group>
+                            </group>
+                            <group string="Archivos DTE">
                                 <group>
                                     <field name="ted" widget="image"  readonly="1"/>
                                     <field name="pdf_url" widget="url" readonly="1" text="Url de Descarga"/>
@@ -145,7 +140,6 @@
                                     <field name="dte_xml_sii" widget="binary" readonly="1" filename="dte_sii.xml" />
                                     <field name="dte_pdf" widget="binary" readonly="1" filename="dte.pdf" />
                                 </group>
-                                
                             </group>
                             <group string="Referencias">
                                 <field name="references" mode="tree">
@@ -179,6 +173,73 @@
                             </group>
                         </page>
                     </xpath>
+                    <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]" position="after">
+                        <page name="invoice_line_order_tab" string="Linea de Factura Pedidos" attrs="{'invisible': [('dte_code', '!=', '110')]}">
+                            <group name="invoice_line_order_info" cols="">
+                               <field name="custom_invoice_line_ids" mode="tree" options="{'no_quick_create':True,'no_create':True}">
+                                    <form>
+                                        <group>
+                                            <field name="product_id" readonly="1"/>
+                                            <field name="name" readonly="1"/>
+                                            <field name="account_id" readonly="1"/>
+                                            <field name="quantity" readonly="1"/>
+                                            <field name="uom_id" readonly="1"/>
+                                            <field name="price_unit" readonly="1"/>
+                                            <!--<field name="invoice_tax_line_ids"/>
+                                            <field name="exempt"/>-->
+                                            <field name="price_subtotal" readonly="1"/>
+                                        </group>
+                                    </form>
+                                    <tree delete="false" create="0"><!--delete="false" create="0"-->
+                                        <field name="product_id" readonly="1"/>
+                                        <field name="name" readonly="1"/>
+                                        <field name="account_id" readonly="1"/>
+                                        <field name="quantity" readonly="1"/>
+                                        <field name="uom_id" readonly="1"/>
+                                        <field name="price_unit" readonly="1"/>
+                                        <!--<field name="invoice_tax_line_ids" readonly="1"/>
+                                        <field name="exempt" readonly="1"/>-->
+                                        <field name="price_subtotal" readonly="1"/>
+                                    </tree>
+                                </field>
+                            </group>
+                            <group>
+                                <field name="orders_to_invoice" mode="tree" options="{'no_create':True}">
+                                    <form>
+                                        <group>
+                                            <field name="order_name" readonly="1"/>
+                                            <field name="stock_picking_name" readonly="1"/>
+                                            <field name="product_name" readonly="1"/>
+                                            <field name="is_multiple_dispatch" readonly="1"/>
+                                            <field name="main_dispatch" readonly="1"/>
+                                            <field name="container_number" readonly="1"/>
+                                            <field name="required_loading_date" readonly="1"/>
+                                            <field name="quantity_to_invoice" readonly="1"/>
+                                        </group>
+                                    </form>
+                                    <tree delete="false" create="0"><!--delete="false" create="0"-->
+                                        <field name="order_name" readonly="1"/>
+                                        <field name="stock_picking_name" readonly="1"/>
+                                        <field name="product_name" readonly="1"/>
+                                        <field name="is_multiple_dispatch" readonly="1"/>
+                                        <field name="main_dispatch" readonly="1"/>
+                                        <field name="container_number" readonly="1"/>
+                                        <field name="required_loading_date" readonly="1"/>
+                                        <field name="quantity_to_invoice" readonly="1"/>
+                                    </tree>
+                                </field>
+                            </group>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="amount_untaxed"/>
+                                <field name="amount_tax"/>
+                                <field name="amount_total" class="oe_subtotal_footer_separator"/>
+                                <field name="payments_widget" colspan="2" nolabel="1" widget="payment"/>
+                                <field name="residual" class="oe_subtotal_footer_separator" attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                                <field name="reconciled" invisible="1"/>
+                                <field name="outstanding_credits_debits_widget" colspan="2" nolabel="1" widget="payment" attrs="{'invisible': [('state', 'not in', 'open')]}"/>
+                            </group>
+                        </page>
+                    </xpath>
                 </data>
             </field>
         </record>
@@ -189,7 +250,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='invoice_line_tax_ids']" position="after">
                     <field name="exempt"/>
-                 </xpath>
+                </xpath>
                 <data>
                     <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
                         <page name="xdte_tab" string="DTE">
@@ -207,11 +268,15 @@
                                 <field name="dte_code" invisible="1"/>
                                 <field name="ind_service" attrs="{'invisible': [('dte_code', '!=', '39')]}"/>
                                 <field name="ind_net_amount" attrs="{'invisible': [('dte_code', '!=', '39')]}"/>
-                                <field name="ted" widget="image"  readonly="1"/>
-                                <field name="pdf_url" widget="url" readonly="1" text="Url de Descarga"/>
-                                <field name="dte_xml" widget="binary" readonly="1" filename="dte.xml" />
-                                <field name="dte_xml_sii" widget="binary" readonly="1" filename="dte_sii.xml" />
-                                <field name="dte_pdf" widget="binary" readonly="1" filename="dte.pdf" />
+                            </group>
+                            <group string="Archivos DTE">
+                                <group>
+                                    <field name="ted" widget="image"  readonly="1"/>
+                                    <field name="pdf_url" widget="url" readonly="1" text="Url de Descarga"/>
+                                    <field name="dte_xml" widget="binary" readonly="1" filename="dte.xml" />
+                                    <field name="dte_xml_sii" widget="binary" readonly="1" filename="dte_sii.xml" />
+                                    <field name="dte_pdf" widget="binary" readonly="1" filename="dte.pdf" />
+                                </group>
                             </group>
                             <group string="Referencias">
                                 <field name="references" mode="tree">

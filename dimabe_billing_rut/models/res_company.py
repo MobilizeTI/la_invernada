@@ -37,9 +37,19 @@ class ResCompany(models.Model):
                                     required=True,
                                     default='')
     
-
-
     add_to_sale_book = fields.Boolean()
+
+    #to instructives
+
+    legal_representative_signature = fields.Binary(string='Firma Representante Legal')
+
+    legal_represntative = fields.Many2one('res.partner',string="Representante Legal")
+
+    plant_contact_ids = fields.Many2one('res.partner',string="Contacto Planta")
+
+    comex_contact_ids = fields.Many2many('res.partner',string="Contacto Comex")
+
+    origin_contact_aga = fields.Many2one('res.partner',string="Contacto AGA")
 
     @api.model
     def create(self, values_list):

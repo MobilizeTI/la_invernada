@@ -20,7 +20,7 @@
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'stock', 'account', 'hr_payroll',
-                'hr_payroll_account','sale'],
+                'hr_payroll_account','sale','product','uom',],
 
     # always loaded
     'data': [
@@ -45,7 +45,9 @@
         'views/custom_package_type.xml',
         'views/custom_uom.xml',
         'views/res_country.xml',
-        'views/res_currency.xml'
+        'views/res_currency.xml',
+        'views/account_incoterms.xml',
+        'report/instructive_report.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

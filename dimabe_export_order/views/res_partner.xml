@@ -18,6 +18,7 @@
                     <field name="client_identifier_id" />
                     <field name="client_identifier_value" />
                     <field name="is_agent" />
+                    <field name="is_plant" />
                 </field>
             </field>
         </record>

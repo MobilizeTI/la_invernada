@@ -5,9 +5,6 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
-                <field name="partner_id" position="after">
-                    <field name="contract_number"/>
-                </field>
                 <xpath expr="//field[@name='partner_id']" position="attributes">
                     <attribute name="domain">[('is_company', '=', True), ('customer', '=', True)]</attribute>
                 </xpath>
@@ -16,6 +13,7 @@
                         <group name="order_contract_page" position="inside">
                             <group>
                                 <field name="contract_number"/>
+                                <field name="client_contract"/>
                             </group>
                         </group>
                     </page>
@@ -30,6 +28,31 @@
                     <field name="brand" attrs="{'invisible':[('brand','=','None')]}"/>
                     <field name="type_of_package" attrs="{'invisible':[('type_of_package','==','None')]}"/>
                     <field name="specie" attrs="{'invisible':[('specie','==','None')]}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_order_tree_inherit" model="ir.ui.view">
+            <field name="name">formulario de ordenes</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="priority">1000</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="replace">
+                    <field name="ship_ids" widget="many2many_tags"/>
+                </xpath>
+                <xpath expr="//field[@name='confirmation_date']" position="replace">
+                    <field name="ordered_quantity"/>
+                </xpath>
+                <xpath expr="//field[@name='ordered_quantity']" position="after">
+                    <field name="delivered_quantity" />
+                </xpath>
+                <xpath expr="//field[@name='delivered_quantity']" position="after">
+                    <field name="unit_price"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="shipping_number"/>
+                    <field name="departure_date"/>
                 </xpath>
             </field>
         </record>

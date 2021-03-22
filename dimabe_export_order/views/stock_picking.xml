@@ -4,26 +4,27 @@
             <field name="name">Export Page</field>
             <field name="model">stock.picking</field>
             <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="context">{'picking_id':id}</field>
             <field name="arch" type="xml">
+
                 <field name="backorder_id" position="after">
                     <field name="picking_type_code" invisible="1"/>
                     <field name="consignee_id"
                            attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"
                     />
-                    <field name="notify_ids"
-                           attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"
-                    />
+                    <field name="custom_notify_ids" attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}">
+                        <tree editable="bottom" edit="True">
+                            <field name="position"/>
+                            <field name="partner_name" readonly="1"/>
+                            <field name="partner_identifier_type" readonly="1"/>
+                            <field name="partner_identifier_value" readonly="1"/>
+                        </tree>
+                    </field>
                 </field>
                 <xpath expr="//page[@name='extra']" position="after">
-                    <page string="COMEX" id="export_data"
-                          attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"
-                    >
-                        <group name="export_data"
-                               position="inside"
-                        >
-                            <group string="Información de envío"
-                                   style="width:100%%"
-                            >
+                    <page string="COMEX" id="export_data" attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}">
+                        <group name="export_data" position="inside">
+                            <group string="Información de envío" style="width:100%" >
                                 <group>
                                     <!--
                                     <field name="reserved_amount"/>
@@ -39,7 +40,7 @@
                                     <field name="booking_number" readonly="1"/>
                                     <field name="bl_number" readonly="1"/>
                                     <field name="container_number"
-                                           placeholder="Ingrese número de contenedor" readonly="1"/>
+                                           placeholder="Ingrese número de contenedor"/>
                                     <field name="container_type"
                                            placeholder="Seleccione el tipo de contenedor" readonly="1"/>
                                 </group>
@@ -48,13 +49,14 @@
                                     <field name="client_label_file"
                                            attrs="{'invisible':[('client_label', '=', False)]}" readonly="1"
                                     />
-                                    <field name="freight_value" readonly="1"/>
+                                    <!--<field name="freight_value" readonly="1"/>
                                     <field name="safe_value" readonly="1"/>
                                     <field name="total_value" readonly="1"/>
-                                    <field name="value_per_kilogram" readonly="1"/>
+                                    <field name="value_per_kilogram" readonly="1"/>-->
                                 </group>
-                                <group string="Embarque">
-                                    <group>
+                            </group>
+                            <group string="Embarque" style="width:100%" >
+                                <group>
                                         <field name="shipping_company" readonly="1"/>
                                         <field name="ship" readonly="1"/>
                                         <field name="ship_number" readonly="1"/>
@@ -63,25 +65,25 @@
                                         <field name="etd_month" readonly="1"/>
                                         <field name="etd_week" readonly="1"/>
                                         <field name="eta" autocomplete="off" readonly="1"/>
-                                    </group>
-                                    <group>
+                                </group>
+                                <group>
                                         <field name="departure_port" readonly="1"/>
                                         <field name="arrival_port" readonly="1"/>
-                                        <field name="required_loading_date" readonly="1"/>
+                                        <field name="required_loading_date" readonly="0"/>
                                         <field name="required_loading_week" readonly="1"/>
                                         <field name="departure_date" autocomplete="off" readonly="1"/>
                                         <field name="arrival_date" autocomplete="off" readonly="1"/>
-                                    </group>
                                 </group>
                             </group>
-                            <group style="width:100%%">
-                                <group>
-                                    <field name="remarks"/>
-                                </group>
+                        </group>
+                        <group style="width:100%%">
+                            <group>
+                                <field name="remarks" readonly="1"/>
                             </group>
                         </group>
                     </page>
                 </xpath>
+
                 <xpath expr="//page[@name='note']" position="after">
                     <page string="Despacho" id="dispatch_data"
                           attrs="{'invisible':[('picking_type_code', '!=', 'outgoing')]}"
@@ -94,7 +96,7 @@
                                 </group>
                                 <group attrs="{'invisible':[('type_of_dispatch','!=','exp')]}" style="width:100%%;">
                                     <group string="Pesos">
-                                        <field name="net_weight_dispatch"/>
+                                        <field name="net_weight_dispatch" string="Kilos Netos"/>
                                         <field name="gross_weight_dispatch"/>
                                         <field name="tare_container_weight_dispatch"/>
                                         <field name="container_weight"/>
@@ -103,8 +105,8 @@
                                         <field name="vgm_weight_dispatch" readonly="1"/>
                                     </group>
                                     <group string="Informacion de Exportacion">
-                                        <field name="customs_department" domain="[('category_id.name', '=', 'Aduana')]" attrs="{'required':[('type_of_dispatch','=','exp')]}"/>
-                                        <field name="note_dispatched"/>
+                                        <field name="customs_department" domain="[('category_id.name', '=', 'Aduana')]"/><!-- attrs="{'required':[('type_of_dispatch','=','exp')]}"/>-->
+                                        <field name="note_dispatched"/><!-- attrs="{'required':[('type_of_dispatch','=','exp')]}"/>-->
                                         <field name="sell_truck"/>
                                         <field name="dispatch_guide_number"/>
                                         <field name="transport"/>
@@ -115,6 +117,7 @@
                                         <field name="hour_departure" widget="float_time"/>
                                         <field name="dus_number"/>
                                         <field name="sell_shipping"/>
+                                        <field name="canning_data" widget="text"/>
                                     </group>
 
                                 </group>
@@ -135,6 +138,7 @@
                             </group>
                         </group>
                     </page>
+
                 </xpath>
                 <xpath expr="//field[@name='move_ids_without_package']/tree//field[@name='product_id']"
                        position="after">

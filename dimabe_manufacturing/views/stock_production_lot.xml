@@ -24,18 +24,15 @@
                         type="object"
                         name="generate_standard_pallet"
                 />
-                <field name="is_dimabe_team" invisible="1"/>
                 <field name="can_add_serial"
                        groups="base.group_system"
-                       attrs="{'invisible':[('is_dimabe_team','=',False)]}"
                 />
+                <button string="Debug" type="object" name="test" groups="base.group_no_one"/>
                 <field name="is_prd_lot"
                        groups="base.group_system"
-                       attrs="{'invisible':[('is_dimabe_team','=',False)]}"
                 />
                 <field name="is_dried_lot"
                        groups="base.group_system"
-                       attrs="{'invisible':[('is_dimabe_team','=',False)]}"
                 />
 
                 <field name="label_durability_id"
@@ -44,7 +41,6 @@
 
                 <field name="stock_picking_id"
                        groups="base.group_system"
-                       attrs="{'invisible':[('is_dimabe_team','=',False)]}"
                 />
 
                 <!--                <button name="print_all_serial" attrs="{'invisible':[('is_standard_weight','=',False)]}"-->
@@ -122,18 +118,16 @@
         <field name="model">stock.production.lot</field>
         <field name="arch" type="xml">
             <form>
-
             <field name="context_picking_id" invisible="1"/>
                 <group>
                     <group>
-                        <field name="pallet_ids" domain="[('is_reserved','=',True)]">
-                            <field name="is_reserved" invisible="1"/>
-                            <tree>
+                        <field name="pallet_ids" domain="['|',('lot_available_serial_ids','=',None),('reserved_to_stock_picking_id','=',None)]">
+                            <tree editable="bottom" edit="true" create="false" delete="false">
+                                <field name="add_picking"/>
                                 <field name="name"/>
-                                <field name="total_content_weight"/>
+                                <field name="total_available_weight"/>
                                 <field name="total_available_content"/>
                                 <field name="state"/>
-
                                 <button string="Agregar Reserva"
                                         name="add_to_picking"
                                         type="object"
@@ -145,21 +139,20 @@
                     <group>
                         <field name="stock_production_lot_available_serial_ids"
                                domain="[('reserved_to_stock_picking_id','!=',None)]">
-                            <tree>
-                                <field name="pallet_id"/>
-                                <field name="serial_number"/>
-                                <field name="stock_product_id"/>
-                                <field name="display_weight"/>
-
-                                <button string="Agregar Reserva"
-                                        type="object"
-                                        name="reserve_picking"
-                                        context="{'dispatch_id':parent.context_picking_id}"
-                                />
+                            <tree editable="bottom" edit="true" create="false" delete="false">
+                                <field name="to_add"/>
+                                <field name="pallet_id" readonly="1"/>
+                                <field name="serial_number" readonly="1"/>
+                                <field name="stock_product_id" readonly="1"/>
+                                <field name="display_weight" readonly="1"/>
                             </tree>
                         </field>
+
                     </group>
                 </group>
+                <footer>
+                    <button name="add_selection" string="Agregar Selección" type="object" context="{'dispatch_id':context_picking_id}"/>
+                </footer>
             </form>
         </field>
     </record>
@@ -180,7 +173,6 @@
                 <field name="reception_elapsed_time"/>
                 <field name="unpelled_state"/>
                 <field name="drier_counter" widget="picking_time_live"/>
-
                 <field name="oven_init_active_time" invisible="1"/>
                 <field name="finish_active_time" invisible="1"/>
                 <field name="oven_use_ids" invisible="1"/>

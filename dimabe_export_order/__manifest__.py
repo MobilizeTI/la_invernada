@@ -44,7 +44,9 @@
         'views/stock_picking.xml',
         'views/sale_order.xml',
         'views/views.xml',
-        'report/dispatch_report.xml'
+        'report/dispatch_report.xml',
+        'views/account_invoice.xml',
+        'views/custom_customer_orders_xls.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

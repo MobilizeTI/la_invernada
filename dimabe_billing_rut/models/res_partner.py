@@ -11,6 +11,10 @@ class ResPartner(models.Model):
     
     economic_activities = fields.Many2many('custom.economic.activity', string='Actividades de la empresa')
 
+    mail_dte = fields.Char('Email DTE')
+
+    enterprise_turn = fields.Char(string="Giro", size=80)
+
     @api.model
     def create(self, values_list):
         prepare_rut(values_list)

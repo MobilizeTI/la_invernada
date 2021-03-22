@@ -5,10 +5,20 @@
       <field name="model">res.partner</field>
       <field name="inherit_id" ref="base.view_partner_form" />
       <field name="arch" type="xml">
-        <xpath expr="//field[@name='vat']" position="before">
-          <field name="invoice_rut"/>
-          <field name="economic_activities" placeholder="Giros" colspan="8" />
-        </xpath>
+        <!--<xpath expr="//field[@name='vat']" position="before">
+        </xpath> --> 
+        <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+          <page name="dte_tab" string="DTE">
+            <group>
+              <group>
+                <field name="invoice_rut"/>
+                <field name="enterprise_turn"/>
+                <field name="mail_dte"/>
+              </group>
+              <field name="economic_activities" placeholder="Giros" colspan="8" />
+            </group>
+          </page>
+        </xpath> 
       </field>
     </record>
   </data>

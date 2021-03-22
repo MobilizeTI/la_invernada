@@ -6,10 +6,7 @@
         <field name="arch" type="xml">
             <form>
                 <group>
-                    <field name="purchase_file" readonly="1" filename="purchase_report_name"/>
-                    <field name="sale_file" readonly="1" filename="sale_report_name"/>
-                    <field name="sale_report_name" invisible="1"/>
-                    <field name="purchase_report_name" invisible="1" />
+                    <field name="company_get_id" required="1"/>
                     <field name="from_date" required="1"/>
                     <field name="to_date" required="1"/>
                 </group>

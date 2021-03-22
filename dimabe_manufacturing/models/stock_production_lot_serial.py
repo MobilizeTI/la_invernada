@@ -29,7 +29,6 @@ class StockProductionLotSerial(models.Model):
 
     product_id = fields.Many2one(
         'product.product',
-        related='stock_production_lot_id.product_id',
         string='Producto'
     )
 
@@ -117,7 +116,7 @@ class StockProductionLotSerial(models.Model):
 
     label_durability_id = fields.Many2one(
         'label.durability',
-        'Dirabilidad Etiqueta'
+        'Durabilidad Etiqueta'
     )
 
     label_percent = fields.Float(
@@ -131,6 +130,10 @@ class StockProductionLotSerial(models.Model):
         'Lista de Materiales',
         related='production_id.bom_id'
     )
+
+    to_add = fields.Boolean('Agregar')
+
+    to_delete = fields.Boolean('Desreservar')
 
     movement = fields.Char('Movimiento', compute='_compute_movement')
 
@@ -147,6 +150,35 @@ class StockProductionLotSerial(models.Model):
     production_id_to_view = fields.Many2one('mrp.production', 'Order de Fabricacion',
                                             compute='_compute_production_id_to_view', store=True)
     workcenter_id = fields.Many2one('mrp.workcenter', related="work_order_id.workcenter_id")
+
+    workcenter_send_id = fields.Many2one('mrp.workcenter',string='Enviado a proceso:')
+
+    client_or_quality = fields.Text('Cliente o Calidad')
+
+    physical_location = fields.Text('Ubicacion Fisica')
+
+    observations = fields.Text('Observaciones')
+
+    product_caliber = fields.Char('Calibre',compute='compute_product_caliber')
+
+    location_id = fields.Many2one('stock.location',related='stock_production_lot_id.location_id')
+
+    delivered_date = fields.Date('Fecha de envio a:')
+
+    available_weight = fields.Float('Kilos disponibles')
+
+    @api.multi
+    def compute_available_weight(self):
+        for item in self:
+            if item.consumed:
+                item.available_weight = 0
+            else:
+                item.available_weight = item.real_weight
+
+    @api.multi
+    def compute_product_caliber(self):
+        for item in self:
+            item.product_caliber = item.product_id.get_calibers()
 
     @api.depends('production_id', 'reserved_to_production_id')
     @api.multi
@@ -286,6 +318,7 @@ class StockProductionLotSerial(models.Model):
 
     @api.model
     def create(self, values_list):
+        models._logger.error(f'Keys {values_list.keys()} Values {values_list.values()}')
         res = super(StockProductionLotSerial, self).create(values_list)
 
         if res.display_weight == 0 and res.gross_weight == 0:
@@ -500,7 +533,7 @@ class StockProductionLotSerial(models.Model):
 
                         for ml in move_line:
                             product_uom_qty = ml.product_uom_qty
-                            if ml.qty_done > 0:
+                            if ml.state == 'done':
                                 raise models.ValidationError('este producto ya ha sido validado')
 
                             ml.update({'product_uom_qty': product_uom_qty + item.display_weight})

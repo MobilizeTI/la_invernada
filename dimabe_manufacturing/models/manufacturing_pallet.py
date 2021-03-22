@@ -32,7 +32,7 @@ class ManufacturingPallet(models.Model):
 
     product_id = fields.Many2one(
         'product.product',
-        compute='_compute_product_id',
+        related='lot_id.product_id',
         store=True
     )
 
@@ -73,7 +73,8 @@ class ManufacturingPallet(models.Model):
 
     lot_available_serial_ids = fields.One2many(
         'stock.production.lot.serial',
-        compute='_compute_lot_available_serial_ids'
+        'pallet_id',
+        domain=[('reserved_to_stock_picking_id', '=', None)]
     )
 
     total_content = fields.Integer(
@@ -93,9 +94,15 @@ class ManufacturingPallet(models.Model):
         compute='_compute_total_weight_content'
     )
 
+    add_picking = fields.Boolean('Agregar')
+
+    remove_picking = fields.Boolean('Desreservar')
+
     is_reserved = fields.Boolean('¿Esta reservado?')
 
     measure = fields.Char('Medida', related='product_id.measure')
+
+    reserved_to_stock_picking_id = fields.Many2one('stock.picking', 'Para Despacho')
 
     sale_order_id = fields.Many2one('sale.order', compute='_compute_sale_order_id', store=True)
 
@@ -107,7 +114,35 @@ class ManufacturingPallet(models.Model):
 
     serial_not_consumed = fields.Integer('Cantidad', compute='_compute_serial_not_consumed')
 
-    lot_id = fields.Many2one('stock.production.lot', compute='_compute_lot_id')
+    lot_id = fields.Many2one('stock.production.lot', 'Lote')
+
+    total_reserved_serial = fields.Integer('Cantidad Reservada',compute='compute_total_reserved_serial')
+
+    total_reserved_weight = fields.Float('Kilos Reservados',compute='compute_total_reserved_weight')
+
+    total_available_weight = fields.Float('Kilos Disponible',compute='compute_total_available_weight')
+
+    @api.multi
+    def compute_total_available_weight(self):
+        for item in self:
+            item.total_available_weight = sum(item.lot_serial_ids.filtered(lambda a: not a.reserved_to_stock_picking_id).mapped('display_weight'))
+
+    @api.multi
+    def compute_total_reserved_serial(self):
+        for item in self:
+            if 'picking_id' in self.env.context.keys():
+                picking_id = self.env.context['picking_id']
+                item.total_reserved_serial = item.get_total_reserved_reserved(picking_id)
+
+    def get_total_reserved_reserved(self,picking_id):
+        return len(self.lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id.id == picking_id))
+
+    @api.multi
+    def compute_total_reserved_weight(self):
+        for item in self:
+            if 'picking_id' in self.env.context.keys():
+                picking_id = self.env.context['picking_id']
+                item.total_reserved_weight = sum(item.lot_serial_ids.filtered(lambda a: a.reserved_to_stock_picking_id.id == picking_id).mapped('display_weight'))
 
     @api.multi
     def _compute_lot_id(self):
@@ -145,13 +180,9 @@ class ManufacturingPallet(models.Model):
     @api.model
     def create(self, values_list):
         res = super(ManufacturingPallet, self).create(values_list)
-
         res.name = self.env['ir.sequence'].next_by_code('manufacturing.pallet')
-
         if self.lot_serial_ids.mapped('production_id').mapped('sale_order_id'):
             res.sale_order_id = self.lot_serial_ids.mapped('production_id').mapped('sale_order_id')
-
-
         return res
 
     @api.multi
@@ -189,7 +220,8 @@ class ManufacturingPallet(models.Model):
     @api.multi
     def _compute_total_available_content(self):
         for item in self:
-            item.total_available_content = len(item.lot_available_serial_ids)
+            item.total_available_content = len(
+                item.lot_available_serial_ids.filtered(lambda a: not a.reserved_to_stock_picking_id))
 
     @api.onchange('manual_code')
     def onchange_manual_code(self):
@@ -336,7 +368,7 @@ class ManufacturingPallet(models.Model):
 
                     for ml in move_line:
 
-                        if ml.qty_done > 0:
+                        if ml.state == 'done':
                             raise models.ValidationError('este producto ya ha sido validado')
 
                         ml.update({'product_uom_qty': ml.product_uom_qty + item.total_content_weight})
