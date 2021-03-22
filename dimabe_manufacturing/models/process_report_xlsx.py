@@ -140,7 +140,7 @@ class ProcessReport(models.TransientModel):
                 row += 1
                 sheet.write(row, col, serial.serial_number, text_format)
                 col += 1
-
+            col = 0
 
         workbook.close()
         with open(file_name, "rb") as file:
