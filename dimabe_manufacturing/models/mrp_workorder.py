@@ -445,7 +445,7 @@ class MrpWorkorder(models.Model):
             skip.unlink()
 
     def confirmed_serial_keyboard(self):
-        raise models.ValidationError(self.component_id in self.production_id.bom_id.mapped('bom_line_ids').mapped('product_id'))
+        raise models.ValidationError(self.component_id.id in self.production_id.bom_id.mapped('bom_line_ids').mapped('product_id').mapped('id'))
 
     @api.model
     def lot_is_byproduct(self):
