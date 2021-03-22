@@ -34,6 +34,10 @@ class StockPicking(models.Model):
 
     contract_correlative = fields.Integer('corr')
 
+    contract_correlative_view = fields.Char(
+        'N° Orden',
+        compute='_get_correlative_text'
+    )
 
     commission = fields.Float('Comisión %')
 
