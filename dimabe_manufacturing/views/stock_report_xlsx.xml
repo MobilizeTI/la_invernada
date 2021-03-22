@@ -24,6 +24,6 @@
             <field name="view_id" ref="stock_report_view"/>
             <field name="target">new</field>
         </record>
-        <menuitem name="Reporte Xlsx" parent="stock_report_menu" id="stock_report_xlsx_item" action="generate_report_action"/>
+        <menuitem name="Descarga de Reportes" parent="stock_report_menu" id="stock_report_xlsx_item" action="generate_report_action"/>
     </data>
 </odoo>
