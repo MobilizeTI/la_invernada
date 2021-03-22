@@ -270,8 +270,14 @@
         <field name="arch" type="xml">
             <form>
                 <group>
+                    <field name="component_id"/>
+                </group>
+                <group>
                     <field name="confirmed_serial"/>
                     <button type="object" string="Ingresar" name="confirmed_serial_keyboard"/>
+                </group>
+                <group>
+                    <field name="confirm"
                 </group>
             </form>
         </field>
