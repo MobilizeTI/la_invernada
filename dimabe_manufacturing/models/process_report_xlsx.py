@@ -139,3 +139,4 @@ class ProcessReport(models.TransientModel):
             file_base64 = base64.b64encode(file.read())
         report_name = f'Informe de Proceso {process_name}'
         return {'file_name': report_name, 'base64': file_base64}
+
