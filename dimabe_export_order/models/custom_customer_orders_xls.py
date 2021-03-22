@@ -139,7 +139,6 @@ class CustomCustomerOrdersXls(models.TransientModel):
                                         currency_state = 'Cancelado'
                                     status_set += currency_state + ' '
                                 sheet.write(row, col, status_set)
-
                         else:
                             sheet.write(row, col, 'Sin Órden de Producción')
                         col += 1
