@@ -94,6 +94,7 @@ class ProcessReport(models.TransientModel):
             col += 1
         col = 0
         row += 1
+        col_out = 0
         for process in processes:
             serial_in = self.env['stock.production.lot.serial'].search(
                 [('reserved_to_production_id', '=', process.production_id.id)])
