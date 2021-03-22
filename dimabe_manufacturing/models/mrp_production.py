@@ -24,7 +24,7 @@ class MrpProduction(models.Model):
 
     destiny_country_id = fields.Many2one(
         'res.country',
-        related='stock_picking_id.shipping_id.arrival_port.country_id',
+        related='stock_picking_id.arrival_port.country_id',
         string='País'
     )
 
