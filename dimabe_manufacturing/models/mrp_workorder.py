@@ -445,7 +445,7 @@ class MrpWorkorder(models.Model):
             skip.unlink()
 
     def confirmed_serial_keyboard(self):
-        serial = self.env['stock.production.lot.serial'].sarch([('serial_number','=',self.confirmed_serial)])
+        serial = self.env['stock.production.lot.serial'].search([('serial_number','=',self.confirmed_serial)])
         if serial.product_id.id not in self.production_id.bom_id.mapped('bom_line_ids').mapped('product_id').mapped('id'):
             raise models.UserError('Error')
 
