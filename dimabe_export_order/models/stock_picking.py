@@ -54,7 +54,7 @@ class StockPicking(models.Model):
         domain=[('customer', '=', True)]
     )
 
-    custom_notify_ids = fields.Many2many('custom.notify', string="Notify")
+    #custom_notify_ids = fields.Many2many('custom.notify', string="Notify")
  
     agent_id = fields.Many2one(
         'res.partner',
