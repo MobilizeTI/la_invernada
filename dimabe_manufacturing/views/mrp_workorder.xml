@@ -276,9 +276,6 @@
                     <field name="confirmed_serial"/>
                     <button type="object" string="Ingresar" name="confirmed_serial_keyboard"/>
                 </group>
-                <group>
-                    <field name="confirm"
-                </group>
             </form>
         </field>
     </record>

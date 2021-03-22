@@ -449,6 +449,7 @@ class MrpWorkorder(models.Model):
         if serial.product_id.id not in self.production_id.bom_id.mapped('bom_line_ids').mapped('product_id').mapped('id'):
             raise models.UserError('Error')
 
+
     @api.model
     def lot_is_byproduct(self):
         return self.finished_product_check_ids.filtered(
