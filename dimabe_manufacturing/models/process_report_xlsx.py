@@ -139,8 +139,8 @@ class ProcessReport(models.TransientModel):
                 sheet.write(row_out, col_out, out_serial.real_weight)
                 row_out += 1
                 col_out = col_in
-                col = 0
-                row = row_in if row_in > row_out else row_out
+            col = 0
+            row = row_in if row_in > row_out else row_out
 
         workbook.close()
         with open(file_name, "rb") as file:
