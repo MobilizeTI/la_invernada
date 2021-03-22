@@ -23,7 +23,7 @@ class ProcessReport(models.TransientModel):
     @api.multi
     def generate_xlsx(self):
         if self.process_selection == 'ncc':
-            dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '320-PENCC')], 'Proceso NCC')
+            dict_data = self.generate_xlsx_process([('workcenter_id.name', '=', '320-Proceso Envasado NCC')], 'Proceso NCC')
         if self.process_selection == 'laser':
             dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '400-PPM')],
                                                    'Proceso Partido Mecanico/Laser')
@@ -81,6 +81,7 @@ class ProcessReport(models.TransientModel):
         })
         sheet = workbook.add_worksheet(process_name)
         processes = self.env['mrp.workorder'].search(query)
+        models._logger.error(f'Process len {len(processes)} {processes}')
         row = 0
         col = 0
 
