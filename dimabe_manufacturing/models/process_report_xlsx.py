@@ -93,50 +93,52 @@ class ProcessReport(models.TransientModel):
         col = 1
         row += 1
         for process in processes:
+            row_in = 1
+            col_in = 0
             for serial in process.potential_serial_planned_ids:
-                sheet.write(row, col, serial.reserved_to_production_id.name, text_format)
-                col += 1
-                sheet.write(row, col, serial.reserved_to_production_id.name, text_format)
-                col += 1
-                sheet.write(row, col, serial.packaging_date.strftime('%d-%m-%Y'), text_format)
-                col += 1
-                sheet.write(row, col, serial.stock_production_lot_id.name, text_format)
-                col += 1
-                sheet.write(row, col, serial.serial_number, text_format)
-                col += 1
-                sheet.write(row, col, serial.producer_id.name)
-                col += 1
-                sheet.write(row, col, serial.product_id.display_name)
-                col += 1
-                sheet.write(row, col, serial.product_id.get_variety())
-                col += 1
-                sheet.write(row, col, serial.real_weight)
-                row += 1
-                if serial.id == process.potential_serial_planned_ids[-1].id:
-                    end_in = col
-                col = 0
-            row = 1
-            col = end_in
+                sheet.write(row_in, col_in, serial.reserved_to_production_id.name, text_format)
+                col_in += 1
+                sheet.write(row_in, col_in, serial.reserved_to_production_id.name, text_format)
+                col_in += 1
+                sheet.write(row_in, col_in, serial.packaging_date.strftime('%d-%m-%Y'), text_format)
+                col_in += 1
+                sheet.write(row_in, col_in, serial.stock_production_lot_id.name, text_format)
+                col_in += 1
+                sheet.write(row_in, col_in, serial.serial_number, text_format)
+                col_in += 1
+                sheet.write(row_in, col_in, serial.producer_id.name)
+                col_in += 1
+                sheet.write(row_in, col_in, serial.product_id.display_name)
+                col_in += 1
+                sheet.write(row_in, col_in, serial.product_id.get_variety())
+                col_in += 1
+                sheet.write(row_in, col_in, serial.real_weight)
+                row_in += 1
+                if serial.id != process.potential_serial_planned_ids[-1].id:
+                    col_in = 0
+
+            row_out = 1
+            col_out = 0
             for out_serial in process.summary_out_serial_ids:
-                sheet.write(row, col, out_serial.production_id.name, text_format)
-                col += 1
-                sheet.write(row, col, out_serial.production_id.sale_order_id.name, text_format)
-                col += 1
-                sheet.write(row, col, out_serial.packaging_date.strftime('%d-%m-%Y'), text_format)
-                col += 1
-                sheet.write(row, col, out_serial.stock_production_lot_id.name, text_format)
-                col += 1
-                sheet.write(row, col, out_serial.serial_number, text_format)
-                col += 1
-                sheet.write(row, col, out_serial.producer_id.name)
-                col += 1
-                sheet.write(row, col, out_serial.product_id.display_name)
-                col += 1
-                sheet.write(row, col, out_serial.product_id.get_variety())
-                col += 1
-                sheet.write(row, col, out_serial.real_weight)
-                row += 1
-                col = end_in
+                sheet.write(row_out, col_out, out_serial.production_id.name, text_format)
+                col_out += 1
+                sheet.write(row_out, col_out, out_serial.production_id.sale_order_id.name, text_format)
+                col_out += 1
+                sheet.write(row_out, col_out, out_serial.packaging_date.strftime('%d-%m-%Y'), text_format)
+                col_out += 1
+                sheet.write(row_out, col_out, out_serial.stock_production_lot_id.name, text_format)
+                col_out += 1
+                sheet.write(row_out, col_out, out_serial.serial_number, text_format)
+                col_out += 1
+                sheet.write(row_out, col_out, out_serial.producer_id.name)
+                col_out += 1
+                sheet.write(row_out, col_out, out_serial.product_id.display_name)
+                col_out += 1
+                sheet.write(row_out, col_out, out_serial.product_id.get_variety())
+                col_out += 1
+                sheet.write(row_out, col_out, out_serial.real_weight)
+                row_out += 1
+                col_out = col_in
 
         workbook.close()
         with open(file_name, "rb") as file:
