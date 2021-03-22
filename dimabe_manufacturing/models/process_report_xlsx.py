@@ -124,7 +124,7 @@ class ProcessReport(models.TransientModel):
                     col_out = col
                 col = 0
             row = 1
-            begin_out = col_out
+            col_out = 8
             for serial in serial_out:
                 sheet.write(row, col_out, process.production_id.name, text_format)
                 col_out += 1
@@ -144,7 +144,7 @@ class ProcessReport(models.TransientModel):
                 col_out += 1
                 sheet.write(row, col_out, serial.real_weight)
                 row += 1
-                col = begin_out
+                col_out = 8
 
 
 
