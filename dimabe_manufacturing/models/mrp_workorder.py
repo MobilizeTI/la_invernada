@@ -486,7 +486,7 @@ class MrpWorkorder(models.Model):
     def confirmed_keyboard(self):
         self.process_serial(serial=self.confirmed_serial)
 
-    def _on_barcode_scanned(self,barcode):
+    def _on_barcode_scanned(self, barcode):
         self.process_serial(barcode)
         res = super(MrpWorkorder, self)._on_barcode_scanned(barcode)
         return res
@@ -499,6 +499,13 @@ class MrpWorkorder(models.Model):
         if serial.consumed:
             raise models.UserError(
                 f'El serie se encuentra consumida en el proceso {serial.reserved_to_production_id.name}')
+        total_real = sum(self.potential_serial_planned_ids.mapped('real_weight'))
+        total_weight = sum(self.potential_serial_planned_ids.mapped('calculated_weight'))
+        self.write({
+            'component_id': serial.product_id.id,
+            'lot_id': serial.stock_production_lot_id.id,
+            'in_weight': total_real + total_weight
+        })
         serial.write({
             'reserved_to_production_id': self.production_id.id,
             'consumed': True
