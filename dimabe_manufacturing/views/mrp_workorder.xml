@@ -32,7 +32,7 @@
                                attrs="{'invisible':[('is_last_step','=',True)]}"
                         />
                         <field name="confirmed_serial"
-                            attrs="{'invisible':['|',('show_manual_input','=',False),('is_last_step','=',True)]}"
+                               attrs="{'invisible':['|',('show_manual_input','=',False),('is_last_step','=',True)]}"
                         />
                     </group>
                     <button name="confirmed_serial_keyboard" type="object" string="Confirmar"/>
@@ -93,6 +93,12 @@
                             string="Procesar Salida"
                             attrs="{'invisible': [('production_state', '=', 'done')]}"
                     />
+                    <button name="new_screen_in"
+                            type="object"
+                            string="Procesar Entrada Nueva"
+                            attrs="{'invisible':[('production_state','=','done')]}"
+                    />
+
                     <button name="fix_env" type="object" string="Fix Env" groups="base.group_no_one"/>
                     <button type="object"
                             name="organize_move_line"
@@ -267,6 +273,7 @@
     <record id="mrp_workorder_process_view" model="ir.ui.view">
         <field name="name">Pantalla de Entrada</field>
         <field name="model">mrp.workorder</field>
+        <field name="priority">20</field>
         <field name="arch" type="xml">
             <form>
                 <group>
@@ -276,6 +283,18 @@
                 <group>
                     <field name="confirmed_serial"/>
                     <button type="object" string="Ingresar" name="confirmed_serial_keyboard"/>
+                </group>
+                <group>
+                    <field name="potential_serial_planned_ids">
+                        <tree>
+                            <field name="consumed"/>
+                            <field name="serial_number"/>
+                            <field name="product_id"/>
+                            <field name="product_caliber"/>
+                            <field name="product_variety"/>
+                            <field name="display_weight"/>
+                        </tree>
+                    </field>
                 </group>
             </form>
         </field>

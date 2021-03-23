@@ -349,13 +349,19 @@ class MrpWorkorder(models.Model):
                     })
                     check.lot_id = lot_tmp.id
                     check.qty_done = self.component_remaining_qty
-                    self.active_move_line_ids.filtered(lambda a: a.lot_id.id == lot_tmp.id).write({
+                    self.active_move_line_ids.filtered(lambda a : a.lot_id.id == lot_tmp.id).write({
                         'is_raw': False
                     })
+                    if check.quality_state == 'none' and check.qty_done > 0:
+                        self.action_next()
+        self.action_first_skipped_step()
+        return super(MrpWorkorder, self).open_tablet_view()
+
+    def new_screen_in(self):
         return {
             'name': "Procesar Entrada",
             'view_type': 'form',
-            'view_mode': 'tree,graph,form,pivot',
+            'view_mode': 'form',
             'res_model': 'mrp.workorder',
             'view_id': False,
             'type': 'ir.actions.act_window',
