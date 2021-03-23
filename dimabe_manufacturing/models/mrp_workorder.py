@@ -486,9 +486,6 @@ class MrpWorkorder(models.Model):
     def confirmed_keyboard(self):
         self.process_serial(serial=self.confirmed_serial)
 
-    def on_barcode_scanned(self, barcode):
-        raise models.UserError('Hola')
-
     def process_serial(self, serial):
         serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', serial)])
         if serial.product_id not in self.material_product_ids:
