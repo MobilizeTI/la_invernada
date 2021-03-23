@@ -492,7 +492,7 @@ class MrpWorkorder(models.Model):
         return res
 
     def process_serial(self, serial):
-        raise models.ValidationError(serial)
+
         serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', serial)])
         if serial.product_id not in self.material_product_ids:
             raise models.UserError(
