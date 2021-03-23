@@ -490,10 +490,6 @@ class MrpWorkorder(models.Model):
             raise models.ValidationError(
                 f' El codigo ingresa ya se encuentra consumido en el proceso {serial.production_id.name}'
             )
-        serial.write({
-            'reserved_to_production_id': self.production_id.id,
-            'consumed': True
-        })
 
     @api.model
     def lot_is_byproduct(self):
