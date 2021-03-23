@@ -488,6 +488,8 @@ class MrpWorkorder(models.Model):
 
     def _on_barcode_scanned(self,barcode):
         self.process_serial(serial=barcode)
+        res = super(MrpWorkorder, self).on_barcode_scanned(barcode)
+        return res
 
     def process_serial(self, serial):
         serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', serial)])
