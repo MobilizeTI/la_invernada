@@ -495,7 +495,7 @@ class MrpWorkorder(models.Model):
             'consumed': True
         })
         serial.stock_production_lot_id.update_stock_quant(self.production_id.location_src_id.id)
-        serial.update_kg()
+        serial.stock_production_lot_id.update_kg()
 
 
     @api.model
