@@ -505,7 +505,7 @@ class MrpWorkorder(models.Model):
             'consumed': True
         })
         serial.stock_production_lot_id.update_stock_quant(self.production_id.location_src_id.id)
-        serial.stock_production_lot_id.update_kg()
+        serial.stock_production_lot_id.update_kg(serial.stock_production_lot_id.id)
 
     @api.model
     def lot_is_byproduct(self):
