@@ -486,8 +486,28 @@ class MrpWorkorder(models.Model):
     def confirmed_keyboard(self):
         self.process_serial(serial=self.confirmed_serial)
 
+
     def _on_barcode_scanned(self, barcode):
-        self.process_serial(barcode)
+        serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', serial)])
+        if serial.product_id not in self.material_product_ids:
+            raise models.UserError(
+                f'El producto de la serie {serial.serial_number} no es compatible con la lista de materiales')
+        if serial.consumed:
+            raise models.UserError(
+                f'El serie se encuentra consumida en el proceso {serial.reserved_to_production_id.name}')
+        total_real = sum(self.potential_serial_planned_ids.mapped('real_weight'))
+        total_weight = sum(self.potential_serial_planned_ids.mapped('calculated_weight'))
+        self.write({
+            'component_id': serial.product_id.id,
+            'lot_id': serial.stock_production_lot_id.id,
+            'in_weight': total_real + total_weight
+        })
+        serial.write({
+            'reserved_to_production_id': self.production_id.id,
+            'consumed': True
+        })
+        serial.stock_production_lot_id.update_stock_quant(self.production_id.location_src_id.id)
+        serial.stock_production_lot_id.update_kg(serial.stock_production_lot_id.id)
         res = super(MrpWorkorder, self)._on_barcode_scanned(barcode)
         return res
 
