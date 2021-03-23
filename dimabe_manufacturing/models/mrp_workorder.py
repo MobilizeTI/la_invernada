@@ -482,11 +482,7 @@ class MrpWorkorder(models.Model):
         return res
 
     def confirmed_keyboard(self):
-        serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', self.confirmed_serial)])
-        if serial.consumed:
-            raise models.ValidationError(
-                f' El codigo ingresa ya se encuentra consumido en el proceso {serial.production_id.name}'
-            )
+        raise models.ValidationError('Hola')
 
     @api.model
     def lot_is_byproduct(self):
