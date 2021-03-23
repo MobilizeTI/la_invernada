@@ -487,11 +487,12 @@ class MrpWorkorder(models.Model):
         self.process_serial(serial=self.confirmed_serial)
 
     def _on_barcode_scanned(self,barcode):
-        models._logger.error(f'{barcode} {type(barcode)}')
+
         res = super(MrpWorkorder, self)._on_barcode_scanned(barcode)
         return res
 
     def process_serial(self, serial):
+        raise models.ValidationError(serial)
         serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', serial)])
         if serial.product_id not in self.material_product_ids:
             raise models.UserError(
