@@ -286,7 +286,7 @@
                     <field name="lot_id"/>
                     <field name="_barcode_scanned" widget="barcode_handler" />
                     <field name="product_id" invisible="1"/>
-                    <field name="confirmed_serial" widget="barcode_handler"/>
+                    <field name="confirmed_serial"/>
                     <button type="object" string="Ingresar" name="confirmed_keyboard"/>
                 </group>
                 <group>
