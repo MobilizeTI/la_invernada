@@ -483,7 +483,13 @@ class MrpWorkorder(models.Model):
         return res
 
     def confirmed_keyboard(self):
-        serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', self.confirmed_serial)])
+        self.process_serial(serial=self.confirmed_serial)
+
+    def on_barcode_scanned(self, barcode):
+        raise models.UserError(barcode)
+
+    def process_serial(self, serial):
+        serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', serial)])
         if serial.product_id in self.material_product_ids:
             raise models.UserError(
                 f'El producto de la serie {serial.serial_number} no es compatible con la lista de materiales')
@@ -491,12 +497,11 @@ class MrpWorkorder(models.Model):
             raise models.UserError(
                 f'El serie se encuentra consumida en el proceso {serial.reserved_to_production_id.name}')
         serial.write({
-            'reserved_to_production_id':self.production_id.id,
+            'reserved_to_production_id': self.production_id.id,
             'consumed': True
         })
         serial.stock_production_lot_id.update_stock_quant(self.production_id.location_src_id.id)
         serial.stock_production_lot_id.update_kg()
-
 
     @api.model
     def lot_is_byproduct(self):
