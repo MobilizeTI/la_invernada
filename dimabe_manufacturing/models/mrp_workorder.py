@@ -483,7 +483,20 @@ class MrpWorkorder(models.Model):
         return res
 
     def confirmed_keyboard(self):
-        raise models.ValidationError('Hola')
+        serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', self.confirmed_serial)])
+        if serial.product_id in self.material_product_ids:
+            raise models.UserError(
+                f'El producto de la serie {serial.serial_number} no es compatible con la lista de materiales')
+        if serial.consumed:
+            raise models.UserError(
+                f'El serie se encuentra consumida en el proceso {serial.reserved_to_production_id.name}')
+        serial.write({
+            'reserved_to_production_id':self.production_id.id,
+            'consumed': True
+        })
+        serial.stock_production_lot_id.update_stock_quant(self.prodution_id.location_src_id.id)
+        serial.update_kg()
+
 
     @api.model
     def lot_is_byproduct(self):
