@@ -570,3 +570,4 @@ class MrpWorkorder(models.Model):
         quant.write({
             'quantity': sum(lot.stock_production_lot_serial_ids.mapped('real_weight'))
         })
+
