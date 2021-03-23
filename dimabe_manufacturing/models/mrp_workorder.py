@@ -487,7 +487,7 @@ class MrpWorkorder(models.Model):
         self.process_serial(serial=self.confirmed_serial)
 
     def on_barcode_scanned(self, barcode):
-        raise models.UserError(barcode)
+        raise models.UserError('Hola')
 
     def process_serial(self, serial):
         serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', serial)])
