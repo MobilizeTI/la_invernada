@@ -52,7 +52,7 @@ class AccountInvoiceLine(models.Model):
             if self.env.user.company_id.id == 1:
                 invoice_id = self.env['account.invoice'].search([('id','=',vals['invoice_id'])])
                 if invoice_id.currency_id.name=="CLP":
-                    vals.update(price_unit = int(vals['price_unit'] * invoice_id.exchange_rate))
+                    vals.update(price_unit = (vals['price_unit'] * float('{:.2f}'.format(invoice_id.exchange_rate))))
             if vals.get('display_type', self.default_get(['display_type'])['display_type']):
                 vals.update(price_unit=0, account_id=False, quantity=0)
         return super(AccountInvoiceLine, self).create(vals_list)
@@ -81,6 +81,9 @@ class AccountInvoiceLine(models.Model):
                 return round(value)
         else:
             return value
+
+
+    
 
     
 
