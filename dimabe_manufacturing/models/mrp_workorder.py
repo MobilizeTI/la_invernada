@@ -490,8 +490,6 @@ class MrpWorkorder(models.Model):
             raise models.ValidationError(
                 f' El codigo ingresa ya se encuentra consumido en el proceso {serial.production_id.name}'
             )
-        serial.stock_production_lot_id.update_stock_quant(self.production_id.location_src_id.id)
-        serial.stock_production_lot_id.update_kg()
         serial.write({
             'reserved_to_production_id': self.production_id.id,
             'consumed': True
