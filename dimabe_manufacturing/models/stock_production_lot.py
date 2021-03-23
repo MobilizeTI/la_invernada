@@ -845,5 +845,5 @@ class StockProductionLot(models.Model):
 
     def update_kg(self):
         self.write({
-            'available_kg' : self.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed)
+            'available_kg' : sum(self.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed))
         })
