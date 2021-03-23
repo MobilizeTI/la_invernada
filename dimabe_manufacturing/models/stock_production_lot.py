@@ -241,7 +241,7 @@ class StockProductionLot(models.Model):
 
     client_id = fields.Many2one('res.partner', related='sale_order_id.partner_id')
 
-    destiny_country_id = fields.Many2one('res.country',compute='compute_destiny_country')
+    destiny_country_id = fields.Many2one('res.country', compute='compute_destiny_country')
 
     dispatch_date = fields.Date('Fecha de Despacho')
 
@@ -275,7 +275,8 @@ class StockProductionLot(models.Model):
     def compute_destiny_country(self):
         for item in self:
             if item.stock_production_lot_serial_ids.mapped('production_id'):
-                item.destiny_country_id = item.stock_production_lot_serial_ids.mapped('production_id')[0].destiny_country_id
+                item.destiny_country_id = item.stock_production_lot_serial_ids.mapped('production_id')[
+                    0].destiny_country_id
 
     @api.multi
     def compute_measure(self):
@@ -845,5 +846,5 @@ class StockProductionLot(models.Model):
 
     def update_kg(self):
         self.write({
-            'available_kg' : sum(self.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed))
+            'available_kg': sum(self.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
         })
