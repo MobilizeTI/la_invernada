@@ -3,7 +3,7 @@ from odoo.addons import decimal_precision as dp
 
 
 class MrpWorkorder(models.Model):
-    _inherit = ['mrp.workorder', 'barcodes.barcode_events_mixin']
+    _inherit = ['mrp.workorder']
 
     show_manual_input = fields.Boolean(
         'Digitar Serie Manualmente'
