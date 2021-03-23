@@ -485,6 +485,7 @@ class MrpWorkorder(models.Model):
     def confirmed_keyboard(self):
         self.process_serial(serial=self.confirmed_serial)
 
+    @api.multi
     def on_barcode_scanned(self, barcode):
         raise models.UserError(barcode)
 
