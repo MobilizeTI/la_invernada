@@ -143,8 +143,7 @@ class MrpWorkorder(models.Model):
 
     have_subproduct = fields.Boolean('Tiene subproductos')
 
-    component_id = fields.Many2one('product.product',readonly=False)
-
+    component_id = fields.Many2one('product.product', readonly=False)
 
     @api.multi
     def _compute_pallet_content(self):
@@ -349,7 +348,7 @@ class MrpWorkorder(models.Model):
                     })
                     check.lot_id = lot_tmp.id
                     check.qty_done = self.component_remaining_qty
-                    self.active_move_line_ids.filtered(lambda a : a.lot_id.id == lot_tmp.id).write({
+                    self.active_move_line_ids.filtered(lambda a: a.lot_id.id == lot_tmp.id).write({
                         'is_raw': False
                     })
                     if check.quality_state == 'none' and check.qty_done > 0:
@@ -473,7 +472,7 @@ class MrpWorkorder(models.Model):
         self.qty_done = qty_done + custom_serial.display_weight
         self.write({
             'in_weight': sum(self.potential_serial_planned_ids.mapped('real_weight')),
-            'lot_id':custom_serial.stock_production_lot_id.id
+            'lot_id': custom_serial.stock_production_lot_id.id
         })
         quant = self.env['stock.quant'].search([('lot_id', '=', lot.id)])
         quant.write({
@@ -481,6 +480,23 @@ class MrpWorkorder(models.Model):
                 lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('real_weight'))
         })
         return res
+
+    @api.multi
+    def confirmed_keyboard(self):
+        serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', self.confirmed_serial)])
+        if serial.product_id.id not in self.material_product_ids.mapped('id'):
+            raise models.ValidationError(
+                f'El codigo ingresado {serial.serial_number} no corresponda a la lista de materiales')
+        if serial.consumed:
+            raise models.ValidationError(
+                f' El codigo ingresa ya se encuentra consumido en el proceso {serial.production_id.name}'
+            )
+        serial.stock_production_lot_id.update_stock_quant(self.production_id.location_src_id.id)
+        serial.stock_production_lot_id.update_kg()
+        serial.write({
+            'reserved_to_production_id': self.production_id.id,
+            'consumed': True
+        })
 
     @api.model
     def lot_is_byproduct(self):

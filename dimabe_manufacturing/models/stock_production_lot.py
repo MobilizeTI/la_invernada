@@ -842,3 +842,8 @@ class StockProductionLot(models.Model):
                         lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight')),
                     'location_id': location_id
                 })
+
+    def update_kg(self):
+        self.write({
+            'available_kg' : self.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed)
+        })
