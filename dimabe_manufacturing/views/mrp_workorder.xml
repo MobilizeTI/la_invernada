@@ -299,6 +299,7 @@
                             <field name="display_weight" readonly="1"/>
                         </tree>
                     </field>
+                    <field name="in_weight" />
                 </group>
             </form>
         </field>

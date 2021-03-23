@@ -531,7 +531,6 @@ class MrpWorkorder(models.Model):
             return custom_serial
         return custom_serial
 
-
     def open_out_form_view(self):
         for item in self:
             item.write({
