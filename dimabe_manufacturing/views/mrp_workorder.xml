@@ -281,7 +281,7 @@
                     <field name="material_product_ids" invisible="1"/>
                 </group>
                 <group>
-                    <field name="confirmed_serial"/>
+                    <field name="confirmed_keyboard"/>
                     <button type="object" string="Ingresar" name="confirmed_serial_keyboard"/>
                 </group>
                 <group>

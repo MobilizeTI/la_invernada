@@ -481,7 +481,6 @@ class MrpWorkorder(models.Model):
         })
         return res
 
-    @api.multi
     def confirmed_keyboard(self):
         serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', self.confirmed_serial)])
         if serial.product_id.id not in self.material_product_ids.mapped('id'):
