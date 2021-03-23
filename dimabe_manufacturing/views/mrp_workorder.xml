@@ -278,6 +278,7 @@
             <form>
                 <group>
                     <field name="name"/>
+                    <field name="state" invisible="1"/>
                     <field name="component_id" domain="[('id','in',material_product_ids)]"/>
                     <field name="material_product_ids" invisible="1"/>
                 </group>
