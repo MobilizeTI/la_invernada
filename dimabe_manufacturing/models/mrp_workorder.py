@@ -488,7 +488,7 @@ class MrpWorkorder(models.Model):
 
     def _on_barcode_scanned(self,barcode):
         self.process_serial(serial=barcode)
-        res = super(MrpWorkorder, self).on_barcode_scanned(barcode)
+        res = super(MrpWorkorder, self)._on_barcode_scanned(barcode)
         return res
 
     def process_serial(self, serial):
