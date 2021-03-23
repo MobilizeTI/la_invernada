@@ -4,7 +4,7 @@ from odoo.addons import decimal_precision as dp
 
 class MrpWorkorder(models.Model):
     _name = 'mrp.workorder'
-    _inherit = ['mrp.workorder','barcodes.barcode_events_mixin']
+    _inherit = ['mrp.workorder']
 
     show_manual_input = fields.Boolean(
         'Digitar Serie Manualmente'
@@ -492,7 +492,6 @@ class MrpWorkorder(models.Model):
         return res
 
     def process_serial(self, serial):
-
         serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', serial)])
         if serial.product_id not in self.material_product_ids:
             raise models.UserError(
