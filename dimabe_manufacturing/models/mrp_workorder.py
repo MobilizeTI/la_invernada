@@ -487,7 +487,7 @@ class MrpWorkorder(models.Model):
         self.process_serial(serial=self.confirmed_serial)
 
     def _on_barcode_scanned(self,barcode):
-        self.process_serial(serial=barcode)
+        models._logger.error(f'{barcode} {type(barcode)}')
         res = super(MrpWorkorder, self)._on_barcode_scanned(barcode)
         return res
 
