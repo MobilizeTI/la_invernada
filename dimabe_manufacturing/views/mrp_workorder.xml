@@ -295,7 +295,7 @@
                     <button type="object" string="Ingresar" name="confirmed_keyboard"/>
                 </group>
                 <group>
-                    <field name="potential_serial_planned_ids" limit = "25">
+                    <field name="potential_serial_planned_ids" limit = "15">
                         <tree editable="bottom" delete="false" create="false">
                             <field name="consumed" readonly="1"/>
                             <field name="serial_number" readonly="1"/>
