@@ -546,7 +546,8 @@ class MrpWorkorder(models.Model):
             line_wo.write({
                 'lot_id': serial.stock_production_lot_id.id,
                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
-                    lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped('display_weight'))
+                    lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped(
+                    'display_weight'))
             })
         else:
             line_wo = self.active_move_line_ids.filtered(
@@ -554,7 +555,25 @@ class MrpWorkorder(models.Model):
             if line_wo:
                 line_wo.write({
                     'qty_done': sum(self.potential_serial_planned_ids.filtered(
-                        lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped('display_weight'))
+                        lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped(
+                        'display_weight'))
+                })
+            else:
+                self.env['stock.move.line'].create({
+                    'lot_id': serial.stock_production_lot_id.id,
+                    'lot_produced_id': self.final_lot_id.id,
+                    'product_id': move.product_id.id,
+                    'location_dest_id': self.env['stock.location'].search([('usage', '=', 'production')]).id,
+                    'location_id': self.production_id.location_src_id.id,
+                    'move_id': move.id,
+                    'product_uom_id': serial.product_id.uom_id.id,
+                    'date': date.today(),
+                    'qty_done': sum(self.potential_serial_planned_ids.filtered(
+                        lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped(
+                        'display_weight')),
+                    'production_id': self.production_id.id,
+                    'workorder_id': self.id,
+                    'done_wo':False
                 })
         check = self.check_ids.filtered(
             lambda a: a.component_id.id == serial.product_id.id and not a.component_is_byproduct)
