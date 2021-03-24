@@ -511,7 +511,7 @@ class MrpWorkorder(models.Model):
         serial.stock_production_lot_id.update_kg(serial.stock_production_lot_id.id)
         move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == serial.product_id.id)
         if move.active_move_line_ids:
-            line = move.active_move_line_ids.filtered(lambda a: a.lot_id == serial.stock_production_id)
+            line = move.active_move_line_ids.filtered(lambda a: a.lot_id == serial.stock_production_lot_id)
             if not line.lot_produced_id:
                 line.write({
                     'lot_produced_id': self.final_lot_id.id
