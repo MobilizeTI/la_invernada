@@ -573,7 +573,7 @@ class MrpWorkorder(models.Model):
                         'display_weight')),
                     'production_id': self.production_id.id,
                     'workorder_id': self.id,
-                    'done_wo':False
+                    'done_wo': False
                 })
         check = self.check_ids.filtered(
             lambda a: a.component_id.id == serial.product_id.id and not a.component_is_byproduct)
