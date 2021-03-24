@@ -151,7 +151,7 @@ class StockProductionLotSerial(models.Model):
                                             compute='_compute_production_id_to_view', store=True)
     workcenter_id = fields.Many2one('mrp.workcenter', related="work_order_id.workcenter_id")
 
-    workcenter_send_id = fields.Many2one('mrp.workcenter',string='Enviado a proceso:')
+    workcenter_send_id = fields.Many2one('mrp.workcenter', string='Enviado a proceso:')
 
     client_or_quality = fields.Text('Cliente o Calidad')
 
@@ -159,9 +159,9 @@ class StockProductionLotSerial(models.Model):
 
     observations = fields.Text('Observaciones')
 
-    product_caliber = fields.Char('Calibre',compute='compute_product_caliber')
+    product_caliber = fields.Char('Calibre', compute='compute_product_caliber')
 
-    location_id = fields.Many2one('stock.location',related='stock_production_lot_id.location_id')
+    location_id = fields.Many2one('stock.location', related='stock_production_lot_id.location_id')
 
     delivered_date = fields.Date('Fecha de envio a:')
 
@@ -240,16 +240,17 @@ class StockProductionLotSerial(models.Model):
                 item.produce_weight = 0.0
             else:
                 item.in_weight = 0.0
-                
+
     @api.multi
     def undo_consumed(self):
         for item in self:
             item.write({
                 'reserved_to_production_id': None,
-                'consumed':False
+                'consumed': False
             })
             item.stock_production_lot_id.write({
-                'available_kg': sum(item.stock_production_lot_id.filtered(lambda a: not a.consumed).mapped('real_weight'))
+                'available_kg': sum(
+                    item.stock_production_lot_id.filtered(lambda a: not a.consumed).mapped('real_weight'))
             })
 
     @api.depends('reserved_to_production_id', 'production_id')
@@ -605,3 +606,7 @@ class StockProductionLotSerial(models.Model):
                 item.stock_production_lot_id.update({
                     'available_total_serial': item.stock_production_lot_id.available_total_serial - item.display_weight
                 })
+
+    @api.multi
+    def remove_serial(self):
+        raise models.ValidationError(f'{self.env.context.keys()} {self.env.context.values()}')

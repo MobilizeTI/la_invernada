@@ -289,6 +289,7 @@
                     </h1>
                 </div>
                 <group>
+                    <field name="id" invisible="1"/>
                     <field name="state" invisible="1"/>
                     <field name="component_id" style="margin:0 auto;" domain="[('id','in',material_product_ids),('tracking','=','lot')]"/>
                     <field name="material_product_ids" invisible="1"/>
@@ -308,7 +309,7 @@
                             <field name="product_id" readonly="1"/>
                             <field name="product_variety" readonly="1"/>
                             <field name="display_weight" readonly="1"/>
-                            <button type="object" string="Quitar Serie" groups="dimabe_manufacturing.group_mrp_modify_serials" />
+                            <button type="object" string="Quitar Serie" name="remove_serial" context="{'workorder_id': parent.id}" groups="dimabe_manufacturing.group_mrp_modify_serials" />
                         </tree>
                     </field>
                     <field name="in_weight"/>
