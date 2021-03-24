@@ -544,6 +544,9 @@ class MrpWorkorder(models.Model):
         })
         if check.quality_state != 'pass':
             check.do_pass()
+        self.write({
+            'current_quality_check_id': check.id
+        })
 
     @api.model
     def lot_is_byproduct(self):
