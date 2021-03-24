@@ -277,7 +277,7 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button type="do_finish" string="Marcar como Hecho"/>
+                    <button type="object" name="do_finish" string="Marcar como Hecho"/>
                 </header>
                 <group>
                     <field name="name" readonly="1"/>
