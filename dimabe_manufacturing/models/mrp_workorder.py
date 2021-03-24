@@ -528,11 +528,12 @@ class MrpWorkorder(models.Model):
                 'location_dest_id': self.env['stock.location'].search([('usage', '=', 'production')]),
                 'location_id': self.production_id.location_src_id.id,
                 'move_id': move.id,
-                'product_uom_id':serial.product_id.uom_id.id,
-                'date':date.today(),
+                'product_uom_id': serial.product_id.uom_id.id,
+                'date': date.today(),
                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
-                    lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped('display_weight')),
-                'production_id':self.production_id.id,
+                    lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped(
+                    'display_weight')),
+                'production_id': self.production_id.id,
                 'workorder_id': self.id
             })
 
