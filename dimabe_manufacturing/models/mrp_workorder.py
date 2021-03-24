@@ -525,7 +525,7 @@ class MrpWorkorder(models.Model):
                 'lot_id': serial.stock_production_lot_id.id,
                 'lot_produced_id': self.final_lot_id.id,
                 'product_id': move.product_id.id,
-                'location_dest_id': self.env['stock.location'].search([('usage', '=', 'production')]),
+                'location_dest_id': self.env['stock.location'].search([('usage', '=', 'production')]).id,
                 'location_id': self.production_id.location_src_id.id,
                 'move_id': move.id,
                 'product_uom_id': serial.product_id.uom_id.id,
