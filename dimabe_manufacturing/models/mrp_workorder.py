@@ -523,7 +523,7 @@ class MrpWorkorder(models.Model):
                     'display_weight'))
             })
         else:
-            self.env['stock.move.line'].create({
+            line_new = self.env['stock.move.line'].create({
                 'lot_id': serial.stock_production_lot_id.id,
                 'lot_produced_id': self.final_lot_id.id,
                 'product_id': move.product_id.id,
@@ -538,10 +538,11 @@ class MrpWorkorder(models.Model):
                 'production_id': self.production_id.id,
                 'workorder_id': self.id
             })
-        check = self.check_ids.filtered(lambda a: a.component_id.id == serial.product_id.id and not a.component_is_byproduct)
+        check = self.check_ids.filtered(
+            lambda a: a.component_id.id == serial.product_id.id and not a.component_is_byproduct)
         check.write({
-            'lot_id':serial.stock_production_lot_id.id,
-            'component_uom_id':serial.product_id.uom_id.id,
+            'lot_id': serial.stock_production_lot_id.id,
+            'move_line_id': line_new.id if line_new.id else line.id,
             'qty_done': sum(
                 self.potential_serial_planned_ids.filtered(lambda a: a.product_id.id == serial.product_id.id).mapped(
                     'display_weight'))
@@ -554,12 +555,12 @@ class MrpWorkorder(models.Model):
 
     @api.multi
     def validate_to_done(self):
-        for check in self.check_ids.filtered(lambda a: (not a.component_is_byproduct and a.quality_state != 'pass') or not a.lot_id ):
+        for check in self.check_ids.filtered(
+                lambda a: (not a.component_is_byproduct and a.quality_state != 'pass') or not a.lot_id):
             check.unlink()
         self.write({
-            'to_done':True
+            'to_done': True
         })
-
 
     @api.model
     def lot_is_byproduct(self):
