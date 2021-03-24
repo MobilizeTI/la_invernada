@@ -518,7 +518,7 @@ class MrpWorkorder(models.Model):
                 })
             line.write({
                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
-                    lambda a: a.lot_id.id == serial.stock_production_lot_id.id).mapped('display_weight'))
+                    lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped('display_weight'))
             })
         else:
             self.env['stock.move.line'].create({
