@@ -487,10 +487,11 @@ class MrpWorkorder(models.Model):
         return res
 
     def confirmed_keyboard(self):
-        self.process_serial(serial=self.confirmed_serial)
+        self.process_serial(self.confirmed_serial)
 
-    def process_serial(self, serial):
-        serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', serial)])
+    def process_serial(self, serial_number):
+        serial_number = serial_number.strip()
+        serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', serial_number)])
         if not serial:
             raise models.ValidationError(f'La serie ingresada no existe')
         if serial.product_id not in self.material_product_ids:
@@ -539,6 +540,22 @@ class MrpWorkorder(models.Model):
                 'production_id': self.production_id.id,
                 'workorder_id': self.id
             })
+        if self.active_move_line_ids.filtered(lambda a: not a.lot_id and a.product_id.id == serial.product_id.id):
+            line_wo = self.active_move_line_ids.filtered(
+                lambda a: not a.lot_id and a.product_id.id == serial.product_id.id)
+            line_wo.write({
+                'lot_id': serial.stock_production_lot_id.id,
+                'qty_done': sum(self.potential_serial_planned_ids.filtered(
+                    lambda a: a.lot_id.id == serial.stock_production_lot_id.id).mapped('display_weight'))
+            })
+        else:
+            line_wo = self.active_move_line_ids.filtered(
+                lambda a: a.lot_id.id == serial.stock_production_lot_id.id and a.product_id.id == serial.product_id.id)
+            if line_wo:
+                line_wo.write({
+                    'qty_done': sum(self.potential_serial_planned_ids.filtered(
+                        lambda a: a.lot_id.id == serial.stock_production_lot_id.id).mapped('display_weight'))
+                })
         check = self.check_ids.filtered(
             lambda a: a.component_id.id == serial.product_id.id and not a.component_is_byproduct)
         check.write({
