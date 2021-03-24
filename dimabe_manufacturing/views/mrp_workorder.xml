@@ -296,8 +296,8 @@
                     <button type="object" string="Ingresar" name="confirmed_keyboard"/>
                 </group>
                 <group>
-                    <field name="potential_serial_planned_ids" string="Series Ingresadas" limit="15">
-                        <tree editable="bottom" delete="false" create="false">
+                    <field name="potential_serial_planned_ids" string="Series Ingresadas" >
+                        <tree editable="bottom" delete="false" create="false" limit="15">
                             <field name="consumed" readonly="1"/>
                             <field name="serial_number" readonly="1"/>
                             <field name="product_id" readonly="1"/>
