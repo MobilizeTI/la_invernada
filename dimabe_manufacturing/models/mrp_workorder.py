@@ -509,13 +509,8 @@ class MrpWorkorder(models.Model):
         })
         serial.stock_production_lot_id.update_stock_quant(self.production_id.location_src_id.id)
         serial.stock_production_lot_id.update_kg(serial.stock_production_lot_id.id)
-        self.qty_done = sum(
-            self.potential_serial_planned_ids.filtered(lambda a: a.product_id.id == serial.product_id.id).mapped(
-                'display_weight'))
-        self.write({
-            'qty_done': sum(
-            self.potential_serial_planned_ids.filtered(lambda a: a.product_id.id == serial.product_id.id).mapped(
-                'display_weight'))
+        self.check_ids.write({
+            'production_id':self.production_id.id
         })
 
     @api.model
