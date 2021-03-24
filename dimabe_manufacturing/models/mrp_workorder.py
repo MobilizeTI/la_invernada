@@ -512,7 +512,8 @@ class MrpWorkorder(models.Model):
         self.check_ids.filtered(lambda a: a.component_id.id == serial.product_id.id).write({
             "qty_done": sum(
                 self.potential_serial_planned_ids.filtered(lambda a: a.product_id.id == serial.product_id.id).mapped(
-                    'display_weight'))
+                    'display_weight')),
+            "quality_state":"pass"
         })
 
     @api.model
