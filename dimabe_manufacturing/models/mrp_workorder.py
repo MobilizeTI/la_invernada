@@ -552,7 +552,7 @@ class MrpWorkorder(models.Model):
 
     @api.multi
     def validate_to_done(self):
-        for check in self.check_ids.filtered(lambda a: not a.component_is_byproduct and a.quality_state != 'pass'):
+        for check in self.check_ids.filtered(lambda a: (not a.component_is_byproduct and a.quality_state != 'pass') and not a.lot_id ):
             check.unlink()
         self.write({
             'to_done':True
