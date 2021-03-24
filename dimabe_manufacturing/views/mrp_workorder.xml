@@ -277,8 +277,9 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button type="object" name="do_finish" attrs="{'invisible':[('to_done','=',False)]}" string="Marcar como Hecho"/>
-                    <button type="object" name="validate_to_done" string="Validar" />
+                    <button type="object" name="do_finish" attrs="{'invisible':[('to_done','=',False)]}"
+                            string="Marcar como Hecho"/>
+                    <button type="object" name="validate_to_done" string="Validar"/>
                     <field name="to_done" invisible="1"/>
                 </header>
                 <group>
@@ -295,7 +296,7 @@
                     <button type="object" string="Ingresar" name="confirmed_keyboard"/>
                 </group>
                 <group>
-                    <field name="potential_serial_planned_ids" string="Series Ingresadas" limit = "15">
+                    <field name="potential_serial_planned_ids" string="Series Ingresadas" limit="15">
                         <tree editable="bottom" delete="false" create="false">
                             <field name="consumed" readonly="1"/>
                             <field name="serial_number" readonly="1"/>
@@ -304,7 +305,7 @@
                             <field name="display_weight" readonly="1"/>
                         </tree>
                     </field>
-                    <field name="in_weight" />
+                    <field name="in_weight"/>
                 </group>
             </form>
         </field>
