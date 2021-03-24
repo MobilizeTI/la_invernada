@@ -521,7 +521,7 @@ class MrpWorkorder(models.Model):
                     lambda a: a.lot_id.id == serial.stock_production_lot_id.id).mapped('display_weight'))
             })
         else:
-            self.env['stock.move.line'].write({
+            self.env['stock.move.line'].create({
                 'lot_id': serial.stock_production_lot_id.id,
                 'lot_produced_id': self.final_lot_id.id,
                 'product_id': move.product_id.id,
