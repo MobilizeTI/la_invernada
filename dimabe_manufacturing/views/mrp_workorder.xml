@@ -277,7 +277,8 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button type="object" name="do_finish" string="Marcar como Hecho"/>
+                    <button type="object" name="do_finish" attrs="{'invisible':[('to_done','=',False)]}" string="Marcar como Hecho"/>
+                    <button type="object" name="validate_to_done" string="Validar" />
                 </header>
                 <group>
                     <field name="name" readonly="1"/>

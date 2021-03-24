@@ -147,6 +147,8 @@ class MrpWorkorder(models.Model):
 
     component_id = fields.Many2one('product.product', readonly=False)
 
+    to_done = fields.Boolean('Para Finalizar')
+
     @api.multi
     def _compute_pallet_content(self):
         for item in self:
@@ -547,6 +549,15 @@ class MrpWorkorder(models.Model):
         self.write({
             'current_quality_check_id': check.id
         })
+
+    @api.multi
+    def validate_to_done(self):
+        for check in self.check_ids.filtered(lambda a: not a.component_is_byproduct and a.quality_state != 'pass'):
+            check.do_pass()
+        self.write({
+            'to_done':True
+        })
+
 
     @api.model
     def lot_is_byproduct(self):
