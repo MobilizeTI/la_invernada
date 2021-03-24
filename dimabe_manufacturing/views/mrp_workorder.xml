@@ -298,7 +298,7 @@
                     <field name="lot_id" style="margin:0 auto;"/>
                     <field name="_barcode_scanned" widget="barcode_handler"/>
                     <field name="product_id" invisible="1"/>
-                    <field name="confirmed_serial" attrs="{'readonly': [('state','=','done')]}" style="margin:0 auto;"/>
+                    <field name="confirmed_serial" attrs="{'readonly': [('state','=','done')]}" style="margin:0 auto;" defualt_focus="1"/>
                     <button type="object" string="Ingresar" name="confirmed_keyboard"/>
                 </group>
                 <group>
