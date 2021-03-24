@@ -509,12 +509,30 @@ class MrpWorkorder(models.Model):
         })
         serial.stock_production_lot_id.update_stock_quant(self.production_id.location_src_id.id)
         serial.stock_production_lot_id.update_kg(serial.stock_production_lot_id.id)
-        self.check_ids.filtered(lambda a: a.component_id.id == serial.product_id.id).write({
-            "qty_done": sum(
-                self.potential_serial_planned_ids.filtered(lambda a: a.product_id.id == serial.product_id.id).mapped(
-                    'display_weight')),
-            "quality_state":"pass"
-        })
+        move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == serial.product_id.id)
+        if move.active_move_line_ids:
+            line = move.active_move_line_ids.filtered(lambda a: a.lot_id == serial.stock_production_id)
+            if not line.lot_produced_id:
+                line.write({
+                    'lot_produced_id': self.final_lot_id.id
+                })
+            line.write({
+                'qty_done': sum(self.potential_serial_planned_ids.filtered(
+                    lambda a: a.lot_id.id == serial.stock_production_lot_id.id).mapped('display_weight'))
+            })
+        else:
+            self.env['stock.move.line'].write({
+                'lot_id': serial.stock_production_lot_id.id,
+                'lot_produced_id': self.final_lot_id.id,
+                'product_id': move.product_id.id,
+                'location_dest_id': self.env['stock.location'].search([('usage', '=', 'production')]),
+                'location_id': self.production_id.location_src_id.id,
+                'move_id': move.id,
+                'product_uom_id':serial.product_id.uom_id.id,
+                'date':date.today(),
+                'qty_done': sum(self.potential_serial_planned_ids.filtered(
+                    lambda a: a.lot_id.id == serial.stock_production_lot_id.id).mapped('display_weight'))
+            })
 
     @api.model
     def lot_is_byproduct(self):
