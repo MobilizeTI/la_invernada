@@ -821,12 +821,14 @@ class StockProductionLot(models.Model):
     def update_stock_quant(self, location_id):
         lot = self.env['stock.production.lot'].search([('name', '=', self.name)])
         if lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed):
-
             quant = self.env['stock.quant'].sudo().search(
                 [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'), ('location_id', '=', location_id)])
-
+            if quant.location_id.id != location_id:
+                quant.sudo().write({
+                    'location_id': location_id
+                })
             if quant:
-                quant.write({
+                quant.sudo().write({
                     'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
                                                                                               x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
                         'display_weight')),
