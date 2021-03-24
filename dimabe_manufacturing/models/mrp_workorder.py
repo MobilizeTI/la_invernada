@@ -554,7 +554,7 @@ class MrpWorkorder(models.Model):
             if line_wo:
                 line_wo.write({
                     'qty_done': sum(self.potential_serial_planned_ids.filtered(
-                        lambda a: a.lot_id.id == serial.stock_production_lot_id.id).mapped('display_weight'))
+                        lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped('display_weight'))
                 })
         check = self.check_ids.filtered(
             lambda a: a.component_id.id == serial.product_id.id and not a.component_is_byproduct)
