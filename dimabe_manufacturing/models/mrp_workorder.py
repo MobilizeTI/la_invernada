@@ -488,7 +488,6 @@ class MrpWorkorder(models.Model):
         self.process_serial(serial=self.confirmed_serial)
 
     def process_serial(self, serial):
-
         serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', serial)])
         if not serial:
             raise models.ValidationError(f'La serie ingresada no existe')
@@ -518,7 +517,8 @@ class MrpWorkorder(models.Model):
                 })
             line.write({
                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
-                    lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped('display_weight'))
+                    lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped(
+                    'display_weight'))
             })
         else:
             self.env['stock.move.line'].create({
@@ -536,6 +536,13 @@ class MrpWorkorder(models.Model):
                 'production_id': self.production_id.id,
                 'workorder_id': self.id
             })
+        check = self.check_ids.filtered(lambda a: a.component_id.id == serial.component_id.id).write({
+            'qty_done': sum(
+                self.potential_serial_planned_ids.filtered(lambda a: a.product_id.id == serial.product_id.id).mapped(
+                    'display_weight'))
+        })
+        if check.quality_state != 'pass'
+            check.do_pass()
 
     @api.model
     def lot_is_byproduct(self):
