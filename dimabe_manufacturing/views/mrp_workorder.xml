@@ -277,9 +277,9 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button type="object" name="do_finish" attrs="{'invisible':[('to_done','=',False)]}"
+                    <button type="object" name="do_finish" attrs="{'invisible':['|',('to_done','=',False),('state','=','done')]}"
                             string="Marcar como Hecho"/>
-                    <button type="object" name="validate_to_done" string="Validar"/>
+                    <button type="object" name="validate_to_done" string="Validar" attrs="{'invisible':[('to_done','=',True)]}"/>
                     <field name="to_done" invisible="1"/>
                 </header>
                 <div class="oe_title">
@@ -298,7 +298,7 @@
                     <field name="lot_id" style="margin:0 auto;"/>
                     <field name="_barcode_scanned" widget="barcode_handler"/>
                     <field name="product_id" invisible="1"/>
-                    <field name="confirmed_serial" style="margin:0 auto;"/>
+                    <field name="confirmed_serial" attrs="{'readonly': [('state','=','done')]}" style="margin:0 auto;"/>
                     <button type="object" string="Ingresar" name="confirmed_keyboard"/>
                 </group>
                 <group>
