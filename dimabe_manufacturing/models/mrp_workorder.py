@@ -541,7 +541,7 @@ class MrpWorkorder(models.Model):
                 self.potential_serial_planned_ids.filtered(lambda a: a.product_id.id == serial.product_id.id).mapped(
                     'display_weight'))
         })
-        if check.quality_state != 'pass'
+        if check.quality_state != 'pass':
             check.do_pass()
 
     @api.model
