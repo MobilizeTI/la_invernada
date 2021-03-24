@@ -303,11 +303,12 @@
                 <group>
                     <field name="potential_serial_planned_ids" string="Series Ingresadas">
                         <tree editable="bottom" delete="false" create="false" limit="15">
-                            <field name="consumed" readonly="1"/>
+                            <field name="stock_production_lot_id" readonly="1"/>
                             <field name="serial_number" readonly="1"/>
                             <field name="product_id" readonly="1"/>
                             <field name="product_variety" readonly="1"/>
                             <field name="display_weight" readonly="1"/>
+                            <button type="object" string="Quitar Serie" group=""
                         </tree>
                     </field>
                     <field name="in_weight"/>
