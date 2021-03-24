@@ -488,8 +488,10 @@ class MrpWorkorder(models.Model):
         self.process_serial(serial=self.confirmed_serial)
 
     def process_serial(self, serial):
-        models._logger.error(serial)
+
         serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', serial)])
+        if not serial:
+            raise models.ValidationError(f'La serie ingresada no existe')
         if serial.product_id not in self.material_product_ids:
             raise models.UserError(
                 f'El producto de la serie {serial.serial_number} no es compatible con la lista de materiales')
