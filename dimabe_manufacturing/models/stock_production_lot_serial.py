@@ -319,8 +319,9 @@ class StockProductionLotSerial(models.Model):
 
     @api.model
     def create(self, values_list):
-        lot = self.env['stock.production.lot'].search([('id','=',values_list['stock_production_lot_id'])])
-        values_list['product_id'] = lot.product_id.id
+        if 'stock_production_lot_id' in values_list.keys():
+            lot = self.env['stock.production.lot'].search([('id', '=', values_list['stock_production_lot_id'])])
+            values_list['product_id'] = lot.product_id.id
         res = super(StockProductionLotSerial, self).create(values_list)
 
         if res.display_weight == 0 and res.gross_weight == 0:
