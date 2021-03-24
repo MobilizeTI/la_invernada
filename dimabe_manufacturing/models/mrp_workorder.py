@@ -500,8 +500,8 @@ class MrpWorkorder(models.Model):
         if serial.consumed:
             raise models.UserError(
                 f'El serie se encuentra consumida en el proceso {serial.reserved_to_production_id.name}')
+        self.component_id = serial.product_id
         self.write({
-            'component_id': serial.product_id.id,
             'lot_id': serial.stock_production_lot_id.id,
             'in_weight': sum(self.potential_serial_planned_ids.mapped('display_weight'))
         })
