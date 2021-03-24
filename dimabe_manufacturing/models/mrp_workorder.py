@@ -4,7 +4,7 @@ from odoo.addons import decimal_precision as dp
 
 class MrpWorkorder(models.Model):
     _name = 'mrp.workorder'
-    _inherit = ['mrp.workorder','barcodes.barcode_events_mixin']
+    _inherit = ['mrp.workorder', 'barcodes.barcode_events_mixin']
 
     show_manual_input = fields.Boolean(
         'Digitar Serie Manualmente'
@@ -486,8 +486,6 @@ class MrpWorkorder(models.Model):
     def confirmed_keyboard(self):
         self.process_serial(serial=self.confirmed_serial)
 
-
-
     def process_serial(self, serial):
         models._logger.error(serial)
         serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', serial)])
@@ -567,4 +565,3 @@ class MrpWorkorder(models.Model):
         quant.write({
             'quantity': sum(lot.stock_production_lot_serial_ids.mapped('real_weight'))
         })
-

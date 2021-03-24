@@ -276,6 +276,9 @@
         <field name="priority">20</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button type="do_finish" string="Marcar como Hecho"/>
+                </header>
                 <group>
                     <field name="name" readonly="1"/>
                     <field name="state" invisible="1"/>
