@@ -565,7 +565,7 @@ class MrpWorkorder(models.Model):
                     'product_id': move.product_id.id,
                     'location_dest_id': self.env['stock.location'].search([('usage', '=', 'production')]).id,
                     'location_id': self.production_id.location_src_id.id,
-                    'move_id': move.id,
+                    'move_id': self.move_raw_ids.filtered(lambda a: a.product_id.id == serial.product_id.id).id,
                     'product_uom_id': serial.product_id.uom_id.id,
                     'date': date.today(),
                     'qty_done': sum(self.potential_serial_planned_ids.filtered(
