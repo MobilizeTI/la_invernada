@@ -279,6 +279,7 @@
                 <header>
                     <button type="object" name="do_finish" attrs="{'invisible':[('to_done','=',False)]}" string="Marcar como Hecho"/>
                     <button type="object" name="validate_to_done" string="Validar" />
+                    <field name="to_done" invisible="1"/>
                 </header>
                 <group>
                     <field name="name" readonly="1"/>
