@@ -531,7 +531,9 @@ class MrpWorkorder(models.Model):
                 'product_uom_id':serial.product_id.uom_id.id,
                 'date':date.today(),
                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
-                    lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped('display_weight'))
+                    lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped('display_weight')),
+                'production_id':self.production_id.id,
+                'workorder_id': self.id
             })
 
     @api.model
