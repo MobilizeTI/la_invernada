@@ -587,6 +587,7 @@ class MrpWorkorder(models.Model):
         if check.quality_state != 'pass':
             check.do_pass()
         self.write({
+            'confirmed_serial': None,
             'current_quality_check_id': check.id
         })
 
