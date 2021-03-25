@@ -95,5 +95,8 @@
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
+    ],
+    'data': [
+        'static/src/xml/custom_in_screen_xml.xml'
     ]
 }
