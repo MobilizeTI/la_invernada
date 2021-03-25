@@ -148,7 +148,6 @@ class MrpWorkorder(models.Model):
 
     to_done = fields.Boolean('Para Finalizar')
 
-
     @api.multi
     def _compute_pallet_content(self):
         for item in self:
@@ -172,7 +171,6 @@ class MrpWorkorder(models.Model):
         for item in self:
             if item.potential_serial_planned_ids:
                 item.producers_id = item.potential_serial_planned_ids.mapped('producer_id')
-
 
     @api.depends('summary_out_serial_ids')
     @api.multi
