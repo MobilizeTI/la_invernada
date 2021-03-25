@@ -613,10 +613,20 @@ class StockProductionLotSerial(models.Model):
             workorder_id = self.env.context['workorder_id']
             workorder = self.env['mrp.workorder'].search([('id', '=', workorder_id)])
             production = workorder.production_id
+            self.write({
+                'reserved_to_production_id': None,
+                'consumed': False
+            })
             move_line = self.env['stock.move.line'].search(
                 [('workorder_id', '=', workorder_id), ('lot_id', '=', self.stock_production_lot_id.id),
                  ('location_dest_id.usage', '=', 'production')])
-            total = sum(workorder.potential_serial_planned_ids.filtered(
-                lambda a: a.stock_production_lot_id.id == self.stock_production_lot_id.id).mapped('display_weight'))
-            raise models.ValidationError(
-                f'{workorder.potential_serial_planned_ids.filtered(lambda a: a.stock_production_lot_id.id == self.stock_production_lot_id.id).mapped("display_weight")}')
+            for line in move_line:
+                if (line.qty_done - self.display_weight) != 0:
+                    line.write({
+                        'qty_done': sum(workorder.potential_serial_planned_ids.mapped('display_weight'))
+                    })
+                else:
+                    line.write({
+                        'qty_done': 0
+                    })
+                    line.unlink()
