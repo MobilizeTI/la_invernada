@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="manufacturing_template" inherit="web.assets_backend">
+    <template id="assets_backend" name="js assets" inherit_id="web.assets_backend">
         <xpath expr="." position="inside">
-            <script type="text/javascript" src="/dimabe_manufacturing/static/src/js/custom_in_screen.js"></script>
+            <script
+                    type="text/javascript"
+                    src="../js/custom_in_screen.js">
+            </script>
+
         </xpath>
     </template>
+
 </odoo>
