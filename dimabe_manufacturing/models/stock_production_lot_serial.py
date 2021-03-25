@@ -619,4 +619,4 @@ class StockProductionLotSerial(models.Model):
             total = sum(workorder.potential_serial_planned_ids.filtered(
                 lambda a: a.stock_production_lot_id.id == self.stock_production_lot_id.id).mapped('display_weight'))
             raise models.ValidationError(
-                f'Move Lines {move_line} total {total} Move Line Qty done {move_line.mapped("qty_done")}')
+                f'{workorder.potential_serial_planned_ids.filtered(lambda a: a.stock_production_lot_id.id == self.stock_production_lot_id.id).mapped("display_weight")}')
