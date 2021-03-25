@@ -469,7 +469,6 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def _compute_producer_ids(self):
-
         for item in self:
             if item.is_prd_lot:
                 workorder = self.env['mrp.workorder'].search([

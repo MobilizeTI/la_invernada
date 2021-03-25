@@ -393,14 +393,6 @@ class MrpWorkorder(models.Model):
             'context': {'current_id': self.id}
         }
 
-    def action_next(self):
-        self.write({
-            'in_weight': sum(self.potential_serial_planned_ids.mapped('real_weight'))
-        })
-
-        super(MrpWorkorder, self).action_next()
-        self.qty_done = 0
-
     @api.multi
     def organize_move_line(self):
         for move in self.production_id.move_raw_ids:
