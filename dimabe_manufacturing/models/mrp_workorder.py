@@ -6,7 +6,6 @@ from datetime import date, datetime
 class MrpWorkorder(models.Model):
     _inherit = 'mrp.workorder'
 
-
     show_manual_input = fields.Boolean(
         'Digitar Serie Manualmente'
     )
