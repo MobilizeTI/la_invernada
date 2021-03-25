@@ -9,10 +9,8 @@
                     <attribute name="domain">[('is_company', '=', True), ('customer', '=', True)]</attribute>
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="after">
-                    <group>
-                        <field name="contract_number"/>
-                        <field name="client_contract"/>
-                    </group>
+                    <field name="contract_number"/>
+                    <field name="client_contract"/>
                 </xpath>
                 <xpath expr="//field[@name='order_line']/tree//field[@name='name']"
                        position="attributes">
