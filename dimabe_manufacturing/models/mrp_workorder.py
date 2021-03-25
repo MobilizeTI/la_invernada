@@ -4,8 +4,8 @@ from datetime import date, datetime
 
 
 class MrpWorkorder(models.Model):
-    _name = 'mrp.workorder'
-    _inherit = ['mrp.workorder', 'barcodes.barcode_events_mixin']
+    _inherit = 'mrp.workorder'
+
 
     show_manual_input = fields.Boolean(
         'Digitar Serie Manualmente'
@@ -149,7 +149,6 @@ class MrpWorkorder(models.Model):
 
     to_done = fields.Boolean('Para Finalizar')
 
-    @api.multi
     def on_barcode_scanned(self, barcode):
         print(barcode)
 
