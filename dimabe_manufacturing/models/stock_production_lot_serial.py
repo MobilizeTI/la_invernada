@@ -609,4 +609,11 @@ class StockProductionLotSerial(models.Model):
 
     @api.multi
     def remove_serial(self):
-        raise models.ValidationError(f'{self.env.context.keys()} {self.env.context.values()}')
+        if 'workorder_id' in self.env.context.keys():
+            workorder_id = self.env.context['workorder_id']
+            workorder = self.env['mrp.workorder'].search([('id', '=', workorder_id)])
+            production = workorder.production_id
+            move_line = self.env['stock.move.line'].search(
+                [('workorder_id', '=', workorder_id), ('lot_id', '=', self.stock_production_lot_id.id),
+                 ('location_dest_id.usage', '=', 'production')])
+            raise models.ValidationError(move_line)
