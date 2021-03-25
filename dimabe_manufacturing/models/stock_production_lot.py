@@ -848,10 +848,7 @@ class StockProductionLot(models.Model):
 
     def update_kg(self, lot_id):
         lot = self.env['stock.production.lot'].search([('id', '=', lot_id)])
-        total = sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('calculated_weight'))
-        if total == 0:
-            total = sum(
-                lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('calculated_weight'))
+        total = sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight'))
         lot.sudo().write({
             'available_kg': total,
             'available_weight': total
