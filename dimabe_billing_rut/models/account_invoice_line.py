@@ -82,8 +82,5 @@ class AccountInvoiceLine(models.Model):
         else:
             return value
 
-
-    
-
     
 

@@ -98,6 +98,7 @@
                     <field name="origin"/>
                     <field name="net_weight"/>
                     <field name="container_number" invisible="context.get('picking_type', False) in ['in']"/>
+                    <field name="net_weight" />
                     <field name="backorder_id"/>
                     <field name="state"/>
                 </tree>

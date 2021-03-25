@@ -13,8 +13,9 @@ class StockPickingController(http.Controller):
     @http.route('/api/stock_pickings', type='json', methods=['GET'], auth='token', cors='*')
     def get_stock_pickings(self, sinceDate=None):
         date_to_search = sinceDate or (date.today() - timedelta(days=7))
-        result = request.env['stock.picking'].sudo().search([('write_date','>', date_to_search)])
-        #result = request.env['stock.picking'].search([])
+        result = request.env['stock.picking'].sudo().search(
+            [('write_date', '>', date_to_search), ('state', '!=', 'cancel')])
+        # result = request.env['stock.picking'].search([])
         data = []
         if result:
             for res in result:
@@ -25,16 +26,19 @@ class StockPickingController(http.Controller):
                                 if res.move_ids_without_package[0].product_id.product_tmpl_id.tracking != 'lot':
                                     continue
                                 kgs = 0
-                                if res.production_net_weight.is_integer():
-                                    kgs = int(res.production_net_weight)
+                                if res.net_weight.is_integer():
+                                    kgs = int(res.net_weight) - res.quality_weight
                                 data.append({
                                     'ProducerCode': res.partner_id.id,
                                     'ProducerName': res.partner_id.name,
                                     'VarietyName': res.move_ids_without_package[0].product_id.get_variety(),
                                     'LotNumber': res.name,
                                     'DispatchGuideNumber': res.guide_number,
-                                    'ReceptionDate': self.time_to_tz_naive(res.scheduled_date, pytz.utc, pytz.timezone("America/Santiago")) or self.time_to_tz_naive(res.write_date, pytz.utc, pytz.timezone("America/Santiago")),
-                                    'ReceptionKgs': kgs if kgs > 0 else res.production_net_weight,
+                                    'ReceptionDate': self.time_to_tz_naive(res.scheduled_date, pytz.utc, pytz.timezone(
+                                        "America/Santiago")) or self.time_to_tz_naive(res.write_date, pytz.utc,
+                                                                                      pytz.timezone(
+                                                                                          "America/Santiago")),
+                                    'ReceptionKgs': kgs if kgs > 0 else res.net_weight - res.quality_weight,
                                     'ContainerType': res.get_canning_move().product_id.display_name,
                                     'ContainerWeightAverage': res.avg_unitary_weight,
                                     'ContainerWeight': res.get_canning_move().product_id.weight,
@@ -60,7 +64,7 @@ class StockPickingController(http.Controller):
                 'LotNumber': res.name,
                 'DispatchGuideNumber': res.guide_number,
                 'ReceptionDate': self.time_to_tz_naive(res.scheduled_date, pytz.utc, pytz.timezone("America/Santiago")),
-                'ReceptionKgs': res.production_net_weight,
+                'ReceptionKgs': res.net_weight - res.quality_weight,
                 'ContainerType': res.get_canning_move().product_id.display_name,
                 'ContainerWeightAverage': res.avg_unitary_weight,
                 'ContainerWeight': res.get_canning_move().product_id.weight,
@@ -82,7 +86,8 @@ class StockPickingController(http.Controller):
                     'VarietyName': res.in_product_variety,
                     'LotNumber': res.out_lot_id.name,
                     'DispatchGuideNumber': res.lot_guide_numbers,
-                    'ReceptionDate': self.time_to_tz_naive(res.finish_date, pytz.utc, pytz.timezone("America/Santiago")),
+                    'ReceptionDate': self.time_to_tz_naive(res.finish_date, pytz.utc,
+                                                           pytz.timezone("America/Santiago")),
                     'ReceptionKgs': res.total_out_weight,
                     'ContainerType': res.canning_id.display_name,
                     'ContainerWeightAverage': res.total_out_weight / res.out_serial_count,
@@ -143,6 +148,5 @@ class StockPickingController(http.Controller):
             })
         return data
 
-
-    def time_to_tz_naive(self,t, tz_in, tz_out):
+    def time_to_tz_naive(self, t, tz_in, tz_out):
         return tz_in.localize(t).astimezone(tz_out)

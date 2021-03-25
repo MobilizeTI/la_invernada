@@ -31,7 +31,7 @@
                 <data>
                     <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
                         <page name="xdte_tab" string="DTE">
-                            <button type="object" name="send_to_sii" string="Enviar al SII" class="oe_highlight" attrs="{'invisible': ['|',('valid_to_sii','=',False),('dte_folio', '!=', False)]}"/>
+                            <button  type="object" name="send_to_sii" string="Enviar al SII" class="oe_highlight" attrs="{'invisible': ['|',('valid_to_sii','=',False),('dte_folio', '!=', False)]}"/>
                             <group name="xdte_info" cols="">
                                 <group>
                                     <field name="method_of_payment" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>                           

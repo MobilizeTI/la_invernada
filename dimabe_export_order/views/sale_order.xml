@@ -8,6 +8,7 @@
                 <xpath expr="//field[@name='partner_id']" position="attributes">
                     <attribute name="domain">[('is_company', '=', True), ('customer', '=', True)]</attribute>
                 </xpath>
+<<<<<<< HEAD
                 <xpath expr="//page[@name='other_information']" position="before">
                     <page string="Contrato" id="order_contract_page">
                         <group name="order_contract_page" position="inside">
@@ -17,6 +18,11 @@
                             </group>
                         </group>
                     </page>
+=======
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="contract_number"/>
+                    <field name="client_contract"/>
+>>>>>>> master
                 </xpath>
                 <xpath expr="//field[@name='order_line']/tree//field[@name='name']"
                        position="attributes">
@@ -45,7 +51,11 @@
                     <field name="ordered_quantity"/>
                 </xpath>
                 <xpath expr="//field[@name='ordered_quantity']" position="after">
+<<<<<<< HEAD
                     <field name="delivered_quantity" />
+=======
+                    <field name="delivered_quantity"/>
+>>>>>>> master
                 </xpath>
                 <xpath expr="//field[@name='delivered_quantity']" position="after">
                     <field name="unit_price"/>

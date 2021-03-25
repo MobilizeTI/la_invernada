@@ -2,3 +2,4 @@
 docker-compose.yaml
 .vscode
 /.vs/slnx.sqlite
+venv

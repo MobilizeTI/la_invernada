@@ -46,7 +46,11 @@
         'views/views.xml',
         'report/dispatch_report.xml',
         'views/account_invoice.xml',
+<<<<<<< HEAD
         'views/custom_customer_orders_xls.xml'
+=======
+        #'views/custom_customer_orders_xls.xml'
+>>>>>>> master
     ],
     # only loaded in demonstration mode
     'demo': [

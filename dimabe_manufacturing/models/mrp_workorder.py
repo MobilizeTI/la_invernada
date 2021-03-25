@@ -134,7 +134,7 @@ class MrpWorkorder(models.Model):
     pt_out_weight = fields.Float('Kilos Producidos del PT', compute='_compute_pt_out_weight',
                                  digits=dp.get_precision('Product Unit of Meausure'), store=True)
 
-    producers_id = fields.Many2many('res.partner', 'Productores', compute='_compute_producers_id')
+    producers_id = fields.Many2many('res.partner', 'Productores')
 
     pallet_qty = fields.Integer('Cantidad de Pallets', compute='_compute_pallet_qty')
 
@@ -165,12 +165,6 @@ class MrpWorkorder(models.Model):
         for item in self:
             if item.manufacturing_pallet_ids:
                 item.pallet_qty = len(item.manufacturing_pallet_ids)
-
-    @api.multi
-    def _compute_producers_id(self):
-        for item in self:
-            if item.potential_serial_planned_ids:
-                item.producers_id = item.potential_serial_planned_ids.mapped('producer_id')
 
     @api.depends('summary_out_serial_ids')
     @api.multi
@@ -382,58 +376,9 @@ class MrpWorkorder(models.Model):
             'views': [
                 [self.env.ref('dimabe_manufacturing.mrp_workorder_process_view').id, 'form']],
             'res_id': self.id,
-            'context': {'current_id': self.id,'default_in_weight': sum(self.potential_serial_planned_ids.mapped('real_weight'))}
+            'context': {'current_id': self.id,
+                        'default_in_weight': sum(self.potential_serial_planned_ids.mapped('real_weight'))}
         }
-
-    @api.multi
-    def organize_move_line(self):
-        for move in self.production_id.move_raw_ids:
-            for active in move.active_move_line_ids:
-                active.unlink()
-        for item in self.potential_serial_planned_ids.mapped('stock_production_lot_id'):
-            stock_move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == item.product_id.id)
-            virtual_location_production_id = self.env['stock.location'].search([
-                ('usage', '=', 'production'),
-                ('location_id.name', 'like', 'Virtual Locations')
-            ])
-            if item not in stock_move.active_move_line_ids.mapped('lot_id'):
-                if not item.location_id:
-                    raise models.ValidationError("Lote {} aun esta en proceso {}".format(item.name, item.location_id))
-                if not self.lot_produced_id:
-                    stock_move.update({
-                        'active_move_line_ids': [
-                            (0, 0, {
-                                'product_id': item.product_id.id,
-                                'lot_id': item.id,
-                                'qty_done': sum(self.potential_serial_planned_ids.filtered(
-                                    lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
-                                'lot_produced_id': self.production_finished_move_line_ids.filtered(
-                                    lambda a: a.product_id.id == self.product_id.id and a.lot_id)[0].lot_id,
-                                'workorder_id': self.id,
-                                'production_id': self.production_id.id,
-                                'product_uom_id': stock_move.product_uom.id,
-                                'location_id': item.location_id.id,
-                                'location_dest_id': virtual_location_production_id.id
-                            })
-                        ]
-                    })
-                else:
-                    stock_move.update({
-                        'active_move_line_ids': [
-                            (0, 0, {
-                                'product_id': item.product_id.id,
-                                'lot_id': item.id,
-                                'qty_done': sum(self.potential_serial_planned_ids.filtered(
-                                    lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
-                                'lot_produced_id': self.lot_produced_id,
-                                'workorder_id': self.id,
-                                'production_id': self.production_id.id,
-                                'product_uom_id': stock_move.product_uom.id,
-                                'location_id': item.location_id.id,
-                                'location_dest_id': virtual_location_production_id.id
-                            })
-                        ]
-                    })
 
     def do_finish(self):
         self.write({
@@ -497,7 +442,7 @@ class MrpWorkorder(models.Model):
         serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', serial_number)])
         if not serial:
             raise models.ValidationError(f'La serie ingresada no existe')
-        if serial.product_id not in self.material_product_ids:
+        if serial.product_id not in self.production_id.bom_id.bom_line_ids.mapped('product_id'):
             raise models.UserError(
                 f'El producto de la serie {serial.serial_number} no es compatible con la lista de materiales')
         if serial.consumed:
@@ -511,6 +456,10 @@ class MrpWorkorder(models.Model):
         serial.stock_production_lot_id.update_stock_quant(self.production_id.location_src_id.id)
         serial.stock_production_lot_id.update_kg(serial.stock_production_lot_id.id)
         line_new = self.env['stock.move.line']
+        if serial.producer_id in self.producers_id:
+            self.write({
+                'producers_id': [(4, serial.producer_id.id)]
+            })
         move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == serial.product_id.id)
         if move.active_move_line_ids:
             line = move.active_move_line_ids.filtered(lambda a: a.lot_id == serial.stock_production_lot_id)

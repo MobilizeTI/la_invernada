@@ -81,6 +81,9 @@
                   <t t-elif="lot_serial_id.production_id.name">
                     <span t-field="lot_serial_id.production_id.name"/>
                   </t>
+                  <t t-else="">
+                    <span t-field="lot_serial_id.stock_production_lot_id.name"/>
+                  </t>
                 </div>
                 <div>
                   NET WEIGHT (PESO NETO):

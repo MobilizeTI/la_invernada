@@ -31,8 +31,6 @@
                                     -->
                                     <field name="is_dispatcher" invisible="1"/>
                                     <field name="shipping_number" readonly="1"/>
-                                    <field name="contract_correlative_view" readonly="1"/>
-                                    <field name="contract_correlative" invisible="1"/>
                                     <field name="agent_id" readonly="1"/>
                                     <field name="commission" readonly="1"/>
                                     <field name="total_commission" readonly="1"/>
