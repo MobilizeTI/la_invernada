@@ -372,9 +372,6 @@ class MrpWorkorder(models.Model):
                     if check.quality_state == 'none' and check.qty_done > 0:
                         self.action_next()
         self.action_first_skipped_step()
-        self.write({
-            'in_weight': sum(self.potential_serial_planned_ids.mapped('real_weight'))
-        })
         return {
             'name': "Procesar Entrada",
             'view_type': 'form',
@@ -385,7 +382,7 @@ class MrpWorkorder(models.Model):
             'views': [
                 [self.env.ref('dimabe_manufacturing.mrp_workorder_process_view').id, 'form']],
             'res_id': self.id,
-            'context': {'current_id': self.id}
+            'context': {'current_id': self.id,'default_in_weight': sum(self.potential_serial_planned_ids.mapped('real_weight'))}
         }
 
     @api.multi
