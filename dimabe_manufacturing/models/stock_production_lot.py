@@ -241,11 +241,7 @@ class StockProductionLot(models.Model):
 
     client_id = fields.Many2one('res.partner', related='sale_order_id.partner_id')
 
-<<<<<<< HEAD
-    destiny_country_id = fields.Many2one('res.country', compute='compute_destiny_country')
-=======
     destiny_country_id = fields.Many2one('res.country',compute='compute_destiny_country')
->>>>>>> master
 
     dispatch_date = fields.Date('Fecha de Despacho')
 
@@ -262,27 +258,6 @@ class StockProductionLot(models.Model):
             'context': self.env.context
         }
 
-<<<<<<< HEAD
-    @api.multi
-    def show_lot(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'stock.production.lot',
-            'res_id': self.id,
-            'view_type': 'form',
-            'view_mode': 'form',
-            'views': [(self.env.ref('stock.view_production_lot_form_simple').id, 'form')],
-            'target': 'current',
-            'context': self.env.context
-        }
-
-    @api.multi
-    def compute_destiny_country(self):
-        for item in self:
-            if item.stock_production_lot_serial_ids.mapped('production_id'):
-                item.destiny_country_id = item.stock_production_lot_serial_ids.mapped('production_id')[
-                    0].destiny_country_id
-=======
     @api.multi
     def show_lot(self):
         return {
@@ -301,7 +276,6 @@ class StockProductionLot(models.Model):
         for item in self:
             if item.stock_production_lot_serial_ids.mapped('production_id'):
                 item.destiny_country_id = item.stock_production_lot_serial_ids.mapped('production_id')[0].destiny_country_id
->>>>>>> master
 
     @api.multi
     def compute_measure(self):
@@ -845,23 +819,12 @@ class StockProductionLot(models.Model):
     def update_stock_quant(self, location_id):
         lot = self.env['stock.production.lot'].search([('name', '=', self.name)])
         if lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed):
-<<<<<<< HEAD
-            quant = self.env['stock.quant'].sudo().search(
-                [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'), ('location_id', '=', location_id)])
-            if quant.location_id.id != location_id:
-                quant.sudo().write({
-                    'location_id': location_id
-                })
-            if quant:
-                quant.sudo().write({
-=======
 
             quant = self.env['stock.quant'].sudo().search(
                 [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'), ('location_id', '=', location_id)])
 
             if quant:
                 quant.write({
->>>>>>> master
                     'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
                                                                                               x: x.reserved_to_stock_picking_id and x.reserved_to_stock_picking_id.state != 'done' and not x.consumed).mapped(
                         'display_weight')),
@@ -879,7 +842,6 @@ class StockProductionLot(models.Model):
                         lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight')),
                     'location_id': location_id
                 })
-<<<<<<< HEAD
 
     def update_kg(self, lot_id):
         lot = self.env['stock.production.lot'].search([('id', '=', lot_id)])
@@ -888,5 +850,3 @@ class StockProductionLot(models.Model):
             'available_kg': total,
             'available_weight': total
         })
-=======
->>>>>>> master
