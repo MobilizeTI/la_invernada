@@ -618,7 +618,7 @@ class StockProductionLotSerial(models.Model):
                 'consumed': False
             })
             workorder.write({
-                'in_weight': sum(self.potential_serial_planned_ids.mapped('display_weight'))
+                'in_weight': sum(workorder.potential_serial_planned_ids.mapped('display_weight'))
             })
             move_line = self.env['stock.move.line'].search(
                 [('workorder_id', '=', workorder_id), ('lot_id', '=', self.stock_production_lot_id.id),
