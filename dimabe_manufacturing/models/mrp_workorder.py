@@ -150,6 +150,10 @@ class MrpWorkorder(models.Model):
     to_done = fields.Boolean('Para Finalizar')
 
     @api.multi
+    def on_barcode_scanned(self, barcode):
+        print(barcode)
+
+    @api.multi
     def _compute_pallet_content(self):
         for item in self:
             if item.manufacturing_pallet_ids:
