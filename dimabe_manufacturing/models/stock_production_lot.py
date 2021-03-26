@@ -251,7 +251,7 @@ class StockProductionLot(models.Model):
             'name': "Series de Salida",
             'view_type': 'form',
             'view_mode': 'tree,graph,form,pivot',
-            'res_model': 'stock.production.lot.serial',
+            'res_model': 'manufacturing.pallet',
             'view_id': False,
             'type': 'ir.actions.act_window',
             'views': [
