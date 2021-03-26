@@ -451,7 +451,6 @@ class MrpWorkorder(models.Model):
         })
         return res
 
-    @api.onchange('confirmed_serial')
     def confirmed_keyboard(self):
         self.process_serial(serial_number=self.confirmed_serial)
 
