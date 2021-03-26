@@ -163,25 +163,25 @@
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
                                         <t t-if="len(d.consignee_id.child_ids) > 0">
-                                            <t t-if="n.consignee_id.child_ids[0].phone">
-                                                    <span t-field="n.consignee_id.child_ids[0].phone"/>
+                                            <t t-if="d.consignee_id.child_ids[0].phone">
+                                                    <span t-field="d.consignee_id.child_ids[0].phone"/>
                                             </t>
-                                                <t t-if="n.consignee_id.child_ids[0].phone and n.consignee_id.child_ids[0].mobile">
+                                                <t t-if="d.consignee_id.child_ids[0].phone and d.consignee_id.child_ids[0].mobile">
                                                 -
                                                 </t>
-                                                <t t-if="n.consignee_id.child_ids[0].mobile">
-                                                    <span t-field="n.consignee_id.child_ids[0].mobile"/>
+                                                <t t-if="d.consignee_id.child_ids[0].mobile">
+                                                    <span t-field="d.consignee_id.child_ids[0].mobile"/>
                                                 </t>
                                         </t>
                                     </td>
                                 </tr>
                                 <t t-if="len(d.consignee_id.child_ids) > 0">
-                                    <t t-if="n.consignee_id.child_ids[0].email">
+                                    <t t-if="d.consignee_id.child_ids[0].email">
                                         <tr>
                                             <th style="text-align:left;">EMAIL</th>
                                             <td style="width:5px">:</td>
                                             <td>
-                                                <span t-field="n.consignee_id.child_ids[0].email"/>
+                                                <span t-field="d.consignee_id.child_ids[0].email"/>
                                             </td>
                                         </tr>
                                     </t>
