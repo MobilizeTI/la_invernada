@@ -464,9 +464,6 @@ class MrpWorkorder(models.Model):
             raise models.UserError(
                 f'El serie se encuentra consumida en el proceso {serial.reserved_to_production_id.name}')
         self._origin.component_id = serial.product_id
-        self._origin.write({
-            'lot_id': serial.stock_production_lot_id.id
-        })
         serial.write({
             'reserved_to_production_id': self._origin.production_id.id,
             'consumed': True,
@@ -549,7 +546,8 @@ class MrpWorkorder(models.Model):
         })
         if check.quality_state != 'pass':
             check.do_pass()
-        self._origin.write({
+        self.write({
+            'lot_id': serial.stock_production_lot_id.id,
             'confirmed_serial': None,
             'current_quality_check_id': check.id
         })
