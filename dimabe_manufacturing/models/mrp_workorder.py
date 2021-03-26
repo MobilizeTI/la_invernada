@@ -471,56 +471,56 @@ class MrpWorkorder(models.Model):
             'lot_id': serial.stock_production_lot_id.id
         })
         serial.write({
-            'reserved_to_production_id': self._origin.production_id.id,
+            'reserved_to_production_id': self.production_id.id,
             'consumed': True,
-            'used_in_workorder_id': self._origin.id
+            'used_in_workorder_id': self.id
         })
-        serial.stock_production_lot_id.update_stock_quant(self._origin.production_id.location_src_id.id)
+        serial.stock_production_lot_id.update_stock_quant(self.production_id.location_src_id.id)
         serial.stock_production_lot_id.update_kg(serial.stock_production_lot_id.id)
         line_new = self.env['stock.move.line']
-        move = self._origin.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == serial.product_id.id)
+        move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == serial.product_id.id)
         if move.active_move_line_ids:
             line = move.active_move_line_ids.filtered(lambda a: a.lot_id == serial.stock_production_lot_id)
             if not line.lot_produced_id:
                 line.write({
-                    'lot_produced_id': self._origin.final_lot_id.id
+                    'lot_produced_id': self.final_lot_id.id
                 })
             line.write({
-                'qty_done': sum(self._origin.potential_serial_planned_ids.filtered(
+                'qty_done': sum(self.potential_serial_planned_ids.filtered(
                     lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped(
                     'display_weight'))
             })
         else:
             line_new = self.env['stock.move.line'].create({
                 'lot_id': serial.stock_production_lot_id.id,
-                'lot_produced_id': self._origin.final_lot_id.id,
+                'lot_produced_id': self.final_lot_id.id,
                 'product_id': move.product_id.id,
-                'location_dest_id': self._origin.env['stock.location'].search([('usage', '=', 'production')]).id,
-                'location_id': self._origin.production_id.location_src_id.id,
+                'location_dest_id': self.env['stock.location'].search([('usage', '=', 'production')]).id,
+                'location_id': self.production_id.location_src_id.id,
                 'move_id': move.id,
                 'product_uom_id': serial.product_id.uom_id.id,
                 'date': date.today(),
-                'qty_done': sum(self._origin.potential_serial_planned_ids.filtered(
+                'qty_done': sum(self.potential_serial_planned_ids.filtered(
                     lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped(
                     'display_weight')),
-                'production_id': self._origin.production_id.id,
-                'workorder_id': self._origin.id
+                'production_id': self.production_id.id,
+                'workorder_id': self.id
             })
-        if self._origin.active_move_line_ids.filtered(lambda a: not a.lot_id and a.product_id.id == serial.product_id.id):
-            line_wo = self._origin.active_move_line_ids.filtered(
+        if self.active_move_line_ids.filtered(lambda a: not a.lot_id and a.product_id.id == serial.product_id.id):
+            line_wo = self.active_move_line_ids.filtered(
                 lambda a: not a.lot_id and a.product_id.id == serial.product_id.id)
             line_wo.write({
                 'lot_id': serial.stock_production_lot_id.id,
-                'qty_done': sum(self._origin.potential_serial_planned_ids.filtered(
+                'qty_done': sum(self.potential_serial_planned_ids.filtered(
                     lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped(
                     'display_weight'))
             })
         else:
-            line_wo = self._origin.active_move_line_ids.filtered(
+            line_wo = self.active_move_line_ids.filtered(
                 lambda a: a.lot_id.id == serial.stock_production_lot_id.id and a.product_id.id == serial.product_id.id)
             if line_wo:
                 line_wo.write({
-                    'qty_done': sum(self._origin.potential_serial_planned_ids.filtered(
+                    'qty_done': sum(self.potential_serial_planned_ids.filtered(
                         lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped(
                         'display_weight'))
                 })
