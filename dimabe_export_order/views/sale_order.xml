@@ -39,11 +39,7 @@
                     <field name="ordered_quantity"/>
                 </xpath>
                 <xpath expr="//field[@name='ordered_quantity']" position="after">
-<<<<<<< HEAD
-                    <field name="delivered_quantity" />
-=======
                     <field name="delivered_quantity"/>
->>>>>>> master
                 </xpath>
                 <xpath expr="//field[@name='delivered_quantity']" position="after">
                     <field name="unit_price"/>
