@@ -454,7 +454,6 @@ class MrpWorkorder(models.Model):
 
     @api.onchange('confirmed_serial')
     def confirmed_keyboard(self):
-        raise models.ValidationError(f'self.id {self.id} self.production_id {self.production_id.id}')
         self.process_serial(self.confirmed_serial)
 
     def process_serial(self, serial_number):
@@ -462,8 +461,7 @@ class MrpWorkorder(models.Model):
         serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', serial_number)])
         if not serial:
             raise models.ValidationError(f'La serie ingresada no existe')
-        raise models.ValidationError(f'{self.production_id} {serial.product_id}')
-        if serial.product_id not in self.production_id.bom_id.bom_line_ids.mapped('product_id'):
+        if serial.product_id not in self.material_product_ids:
             raise models.UserError(
                 f'El producto de la serie {serial.serial_number} no es compatible con la lista de materiales')
         if serial.consumed:
