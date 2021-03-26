@@ -308,7 +308,7 @@
                     <group>
                         <field name="confirmed_serial" attrs="{'readonly': [('state','=','done')]}"
                                style="margin:0 auto;"
-                               defualt_focus="1"/>
+                               defualt_focus="1" nolabel="1"/>
                         <button type="object" style="right:10px;" string="Ingresar" name="confirmed_keyboard"/>
                     </group>
                 </group>
