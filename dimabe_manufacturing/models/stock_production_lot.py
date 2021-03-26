@@ -253,7 +253,7 @@ class StockProductionLot(models.Model):
             'res_id': self.id,
             'view_type': 'tree',
             'view_mode': 'tree',
-            'views': [(self.env.ref('dimabe_manufacturing.manufacturing_pallet_tree_view').id, 'form')],
+            'views': [(self.env.ref('dimabe_manufacturing.manufacturing_pallet_tree_view').id, 'tree')],
             'target': 'current',
             'domain': [('id','=',self.pallet_ids.mapped('id'))],
             'context': self.env.context
