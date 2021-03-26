@@ -420,6 +420,7 @@ class MrpWorkorder(models.Model):
         for skip in self.skipped_check_ids:
             skip.unlink()
 
+    @api.onchange('confirmed_serial')
     def confirmed_serial_keyboard(self):
         self.ensure_one()
         qty_done = self.qty_done
