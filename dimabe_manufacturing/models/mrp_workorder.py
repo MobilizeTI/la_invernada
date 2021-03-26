@@ -392,9 +392,6 @@ class MrpWorkorder(models.Model):
             'views': [
                 [self.env.ref('dimabe_manufacturing.mrp_workorder_process_view').id, 'form']],
             'res_id': self.id,
-            'context': {'current_id': self.id,
-                        'default_production_id':self.production_id.id,
-                        'default_in_weight': sum(self.potential_serial_planned_ids.mapped('real_weight'))}
         }
 
     def do_finish(self):
