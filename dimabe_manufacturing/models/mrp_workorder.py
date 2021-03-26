@@ -463,7 +463,6 @@ class MrpWorkorder(models.Model):
         if serial.consumed:
             raise models.UserError(
                 f'El serie se encuentra consumida en el proceso {serial.reserved_to_production_id.name}')
-        self._origin.component_id = serial.product_id
         serial.write({
             'reserved_to_production_id': self._origin.production_id.id,
             'consumed': True,
@@ -554,7 +553,6 @@ class MrpWorkorder(models.Model):
 
     def on_barcode_scanned(self, barcode):
         self.process_serial(barcode)
-        return super(MrpWorkorder, self).on_barcode_scanned(barcode)
 
     @api.multi
     def validate_to_done(self):
