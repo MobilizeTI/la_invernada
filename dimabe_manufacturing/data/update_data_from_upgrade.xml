@@ -23,5 +23,8 @@ for serial in serials:
   })
             </field>
         </record>
+        <record id="group_mrp_modify_serials" model="res.groups">
+            <field name="name">Modificacion de Series</field>
+        </record>
     </data>
 </odoo>
