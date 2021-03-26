@@ -378,6 +378,18 @@ class AccountInvoice(models.Model):
         if incoterm:
             self.export_clause = incoterm
 
+    @api.onchange('export_clause')
+    def onchange_export_clause(self):
+        if self.export_clause.code:
+            self.incoterm_id = self.env['account.incoterms'].search([('sii_code','=',self.export_clause.code)])
+
+    @api.onchange('incoterm_id')
+    def onchange_incoterm(self):
+        incoterm = self.env['custom.export.clause'].search([('code','=',self.incoterm_id.sii_code)])
+        if incoterm:
+            self.export_clause = incoterm
+
+
     @api.onchange('order_to_add_ids')
     def onchange_order_to_add(self):
         self.order_to_add_id = self.order_to_add_ids.id
@@ -511,7 +523,6 @@ class AccountInvoice(models.Model):
                 raise models.ValidationError('El Cliente {} no tiene Rut de Facturación'.format(self.partner_id.name))
             if not self.partner_id.enterprise_turn:
                 raise models.ValidationError('El Cliente {} no tiene Giro'.format(self.partner_id.name))
-
         if not self.date_invoice:
             raise models.ValidationError('Debe Seleccionar la Fecha de la Factura')
 
@@ -524,8 +535,8 @@ class AccountInvoice(models.Model):
         if len(self.invoice_line_ids) == 0:
             raise models.ValidationError('Por favor agregar al menos un Producto')
 
-        if not self.company_activity_id or not self.partner_activity_id:
-            raise models.ValidationError('Por favor seleccione la Actividad de la Compañía y del Proveedor')
+        if not self.company_activity_id:
+            raise models.ValidationError('Por favor seleccione la Actividad Económica de la Compañía')
 
         if self.dte_type_id.code != "34" and self.dte_type_id.code != "41" and self.dte_type_id.code != "61" and self.dte_type_id.code != "110":  # Consultar si en NC y ND prdocuto sin impuesto
             countNotExempt = 0
@@ -808,7 +819,6 @@ class AccountInvoice(models.Model):
                 for tax in item.invoice_line_tax_ids:
                     if tax.id == 1 or tax.id == 2:
                         taxt_rate_amount += (item.prince_subtotal * tax.amount) / 100
-
             invoice['total'] = {
                 "netAmount": str(self.roundclp(netAmount * value_exchange)),
                 "exemptAmount": str(self.roundclp(exemptAmount * value_exchange)),
