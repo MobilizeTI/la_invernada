@@ -148,6 +148,25 @@ class MrpWorkorder(models.Model):
     to_done = fields.Boolean('Para Finalizar')
 
     @api.multi
+    def fix_env(self):
+        workorder_ids = self.env['mrp.workorder'].search([])
+        for work in workorder_ids:
+            first_state = work.state
+            if first_state == 'done':
+                query = f"UPDATE mrp_workorder set state = 'ready' where id = {work.id}"
+                cr = self._cr
+                cr.execute(query)
+            producer_ids = self.env['stock.production.lot.serial'].search([('production_id.id','=',self.production_id.id)]).mapped('producer_id')
+            for prod in producer_ids:
+                work.write({
+                    'producer_ids': [(4,prod.id)]
+                })
+            if first_state == 'done':
+                query = f"UPDATE mrp_workorder set state = 'done' where id = {work.id}"
+                cr = self._cr
+                cr.execute(query)
+
+    @api.multi
     def _compute_pallet_content(self):
         for item in self:
             if item.manufacturing_pallet_ids:
