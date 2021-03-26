@@ -135,7 +135,7 @@ class MrpWorkorder(models.Model):
 
     producers_id = fields.Many2many('res.partner', string='Productores')
 
-    producer_to_view = fields.Many2many('res.partner', string='Productores',compute='_compute_producers_id')
+    producer_to_view = fields.Many2many('res.partner', string='Productores', compute='_compute_producers_id')
 
     pallet_qty = fields.Integer('Cantidad de Pallets', compute='_compute_pallet_qty')
 
@@ -166,10 +166,11 @@ class MrpWorkorder(models.Model):
                 query = f"UPDATE mrp_workorder set state = 'ready' where id = {work.id}"
                 cr = self._cr
                 cr.execute(query)
-            producer_ids = self.env['stock.production.lot.serial'].search([('used_in_workorder_id.id','=',work.id)]).mapped('producer_id')
+            producer_ids = self.env['stock.production.lot.serial'].search(
+                [('used_in_workorder_id.id', '=', work.id)]).mapped('producer_id')
             for prod in producer_ids:
                 work.write({
-                    'producer_ids': [(4,prod.id)]
+                    'producer_ids': [(4, prod.id)]
                 })
             if first_state == 'done':
                 query = f"UPDATE mrp_workorder set state = 'done' where id = {work.id}"
@@ -276,7 +277,6 @@ class MrpWorkorder(models.Model):
     @api.onchange('qty_producing')
     def _onchange_qty_producing(self):
         print('se inhabilita este método')
-
 
     @api.multi
     def _compute_summary_out_serial_ids(self):
@@ -420,7 +420,7 @@ class MrpWorkorder(models.Model):
         for skip in self.skipped_check_ids:
             skip.unlink()
 
-    @api.onchange('confirmed_serial')
+
     def confirmed_serial_keyboard(self):
         self.ensure_one()
         qty_done = self.qty_done
@@ -451,6 +451,7 @@ class MrpWorkorder(models.Model):
         })
         return res
 
+    @api.onchange('confirmed_serial')
     def confirmed_keyboard(self):
         self.process_serial(self.confirmed_serial)
 
@@ -468,7 +469,7 @@ class MrpWorkorder(models.Model):
         self.component_id = serial.product_id
         serial.write({
             'reserved_to_production_id': self.production_id.id,
-            'used_in_workorder_id':self.id,
+            'used_in_workorder_id': self.id,
             'consumed': True
         })
         serial.stock_production_lot_id.update_stock_quant(self.production_id.location_src_id.id)
