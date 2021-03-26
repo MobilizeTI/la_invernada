@@ -156,7 +156,7 @@ class MrpWorkorder(models.Model):
                 query = f"UPDATE mrp_workorder set state = 'ready' where id = {work.id}"
                 cr = self._cr
                 cr.execute(query)
-            producer_ids = self.env['stock.production.lot.serial'].search([('production_id.id','=',self.production_id.id)]).mapped('producer_id')
+            producer_ids = self.env['stock.production.lot.serial'].search([('used_in_workorder_id.id','=',work.id)]).mapped('producer_id')
             for prod in producer_ids:
                 work.write({
                     'producer_ids': [(4,prod.id)]
