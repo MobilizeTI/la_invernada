@@ -542,9 +542,26 @@
                                     <th style="text-align:left;">FECHA Y HORA DE CARGA</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.required_loading_date"/>
+                                        <span t-field="d.orders_to_invoice[0].order_name"/>
+                                        <span t-field="d.orders_to_invoice[0].stock_picking_name"/>
+                                        <span t-field="d.orders_to_invoice[0].required_loading_date"/>
                                     </td>
                                 </tr>
+                                <t t-if="len(d.orders_to_invoice) > 1">
+                                    <t t-foreach="d.orders_to_invoice" t-as="order">
+                                        <t t-if="order.id != d.orders_to_invoice[0].id">
+                                            <tr>
+                                                <th></th>
+                                                <td></td>
+                                                <td style="text-align:left;">
+                                                    <span t-field="order.order_name"/>
+                                                    <span t-field="order.stock_picking_name"/>
+                                                    <span t-field="order.required_loading_date"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </t>
                                 <tr>
                                     <th style="text-align:left;">PLANTA</th>
                                     <td style="width:5px">:</td>
@@ -946,8 +963,27 @@
                             <tr>
                                 <th style="text-align:left; width:200px">FECHA Y HORA DE CARGA</th>
                                 <td>:</td>
-                                <td><span t-field="d.required_loading_date"/></td>
+                                <td>
+                                    <span t-field="d.orders_to_invoice[0].order_name"/>
+                                    <span t-field="d.orders_to_invoice[0].stock_picking_name"/>
+                                    <span t-field="d.orders_to_invoice[0].required_loading_date"/>
+                                </td>
                             </tr>
+                            <t t-if="len(d.orders_to_invoice) > 1">
+                                    <t t-foreach="d.orders_to_invoice" t-as="order">
+                                        <t t-if="order.id != d.orders_to_invoice[0].id">
+                                            <tr>
+                                                <th></th>
+                                                <td></td>
+                                                <td>
+                                                    <span t-field="order.order_name"/>
+                                                    <span t-field="order.stock_picking_name"/>
+                                                    <span t-field="order.required_loading_date"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </t>
                             <tr>
                                 <th style="text-align:left; width:200px">PERSONA DE CONTACTO EN PLANTA</th>
                                 <td>:</td>
@@ -1238,8 +1274,27 @@
                             <tr>
                                 <th style="text-align:left; width:200px">FECHA Y HORA DE CARGA</th>
                                 <td>:</td>
-                                <td><span t-field="d.required_loading_date"/></td>
+                                <td>
+                                    <span t-field="d.orders_to_invoice[0].order_name"/>
+                                    <span t-field="d.orders_to_invoice[0].stock_picking_name"/>
+                                    <span t-field="d.orders_to_invoice[0].required_loading_date"/>
+                                </td>
                             </tr>
+                            <t t-if="len(d.orders_to_invoice) > 1">
+                                    <t t-foreach="d.orders_to_invoice" t-as="order">
+                                        <t t-if="order.id != d.orders_to_invoice[0].id">
+                                            <tr>
+                                                <th></th>
+                                                <td></td>
+                                                <td>
+                                                    <span t-field="order.order_name"/>
+                                                    <span t-field="order.stock_picking_name"/>
+                                                    <span t-field="order.required_loading_date"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </t>
                             <tr>
                                 <th style="text-align:left; width:200px">TOTAL DE CONTENEDORES</th>
                                 <td>:</td>
