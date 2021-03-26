@@ -382,6 +382,10 @@ class MrpWorkorder(models.Model):
                     if check.quality_state == 'none' and check.qty_done > 0:
                         self.action_next()
         self.action_first_skipped_step()
+
+        self.write({
+            'in_weight': sum(self.potential_serial_planned_ids.mapped('real_weight'))
+        })
         return {
             'name': "Procesar Entrada",
             'view_type': 'form',
@@ -466,8 +470,7 @@ class MrpWorkorder(models.Model):
                 f'El serie se encuentra consumida en el proceso {serial.reserved_to_production_id.name}')
         self._origin.component_id = serial.product_id
         self._origin.write({
-            'lot_id': serial.stock_production_lot_id.id,
-            'in_weight': sum(self._origin.potential_serial_planned_ids.mapped('display_weight'))
+            'lot_id': serial.stock_production_lot_id.id
         })
         serial.write({
             'reserved_to_production_id': self._origin.production_id.id,
