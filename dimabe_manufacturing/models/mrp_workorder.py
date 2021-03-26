@@ -450,9 +450,10 @@ class MrpWorkorder(models.Model):
         return res
 
     def confirmed_keyboard(self):
-        self.process_serial(serial_number=self.confirmed_serial)
+        self.on_barcode_scanned(self.confirmed_serial)
 
-    def process_serial(self, serial_number):
+    def on_barcode_scanned(self, barcode):
+        serial_number = barcode
         serial_number = serial_number.strip()
         serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', serial_number)])
         if not serial:
@@ -499,7 +500,8 @@ class MrpWorkorder(models.Model):
                 'production_id': self._origin.production_id.id,
                 'workorder_id': self._origin.id
             })
-        if self._origin.active_move_line_ids.filtered(lambda a: not a.lot_id and a.product_id.id == serial.product_id.id):
+        if self._origin.active_move_line_ids.filtered(
+                lambda a: not a.lot_id and a.product_id.id == serial.product_id.id):
             line_wo = self._origin.active_move_line_ids.filtered(
                 lambda a: not a.lot_id and a.product_id.id == serial.product_id.id)
             line_wo.write({
@@ -540,7 +542,8 @@ class MrpWorkorder(models.Model):
             'lot_id': serial.stock_production_lot_id.id,
             'move_line_id': line_new.id if line_new.id else line.id,
             'qty_done': sum(
-                self._origin.potential_serial_planned_ids.filtered(lambda a: a.product_id.id == serial.product_id.id).mapped(
+                self._origin.potential_serial_planned_ids.filtered(
+                    lambda a: a.product_id.id == serial.product_id.id).mapped(
                     'display_weight'))
         })
         if check.quality_state != 'pass':
@@ -550,9 +553,6 @@ class MrpWorkorder(models.Model):
             'confirmed_serial': None,
             'current_quality_check_id': check.id
         })
-
-    def on_barcode_scanned(self, barcode):
-        self.process_serial(barcode)
 
     @api.multi
     def validate_to_done(self):
