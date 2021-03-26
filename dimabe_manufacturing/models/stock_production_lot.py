@@ -276,8 +276,10 @@ class StockProductionLot(models.Model):
     @api.multi
     def compute_destiny_country(self):
         for item in self:
-            if item.stock_production_lot_serial_ids.mapped('production_id'):
-                item.destiny_country_id = item.stock_production_lot_serial_ids.mapped('production_id')[0].destiny_country_id
+            if item.stock_production_lot_serial_ids.mapped('production_id')[0].stock_picking_id.arrival_port.country_id:
+                item.destiny_country_id = item.stock_production_lot_serial_ids.mapped('production_id')[0].stock_picking_id.arrival_port.country_id
+            else:
+                item.destiny_country_id = item.stock_production_lot_serial_ids.mapped('production_id')[0].stock_picking_id.shipping_id.arrival_port.country_id
 
     @api.multi
     def compute_measure(self):
