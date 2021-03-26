@@ -422,6 +422,7 @@ class MrpWorkorder(models.Model):
         for skip in self.skipped_check_ids:
             skip.unlink()
 
+    @api.onchange('confirmed_serial')
     def confirmed_keyboard(self):
         self.process_serial(serial_number=self.confirmed_serial)
 
@@ -529,6 +530,9 @@ class MrpWorkorder(models.Model):
             'confirmed_serial': None,
             'current_quality_check_id': check.id
         })
+
+    def on_barcode_scanned(self, barcode):
+        self.process_serial(barcode)
 
     @api.multi
     def validate_to_done(self):
