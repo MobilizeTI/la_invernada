@@ -422,11 +422,9 @@ class MrpWorkorder(models.Model):
         for skip in self.skipped_check_ids:
             skip.unlink()
 
-    @api.onchange('confirmed_serial')
     def confirmed_keyboard(self):
         self.process_serial(serial_number=self.confirmed_serial)
 
-    @api.model
     def process_serial(self, serial_number):
         if not isinstance(self.id, int):
             self = self._origin

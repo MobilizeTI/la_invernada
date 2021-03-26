@@ -85,19 +85,21 @@
                 </field>
                 <button name="open_tablet_view" position="attributes">
                     <attribute name="string">Procesar Entrada</attribute>
+                    <attribute name="invisible">1</attribute>
                 </button>
 
                 <xpath expr="//header" position="inside">
+                    <button name="new_screen_in"
+                            type="object"
+                            string="Procesar Entrada"
+                            attrs="{'invisible':[('production_state','=','done')]}"
+                    />
                     <button name="open_out_form_view"
                             type="object"
                             string="Procesar Salida"
                             attrs="{'invisible': [('production_state', '=', 'done')]}"
                     />
-                    <button name="new_screen_in"
-                            type="object"
-                            string="Procesar Entrada Nueva"
-                            attrs="{'invisible':[('production_state','=','done')]}"
-                    />
+
 
                     <button name="fix_env" type="object" string="Fix Env" groups="base.group_no_one"/>
                     <button type="object"
