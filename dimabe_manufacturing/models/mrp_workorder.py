@@ -560,7 +560,7 @@ class MrpWorkorder(models.Model):
 
     def on_barcode_scanned(self, barcode):
         self.process_serial(barcode)
-        return super(MrpWorkorder, self).on_barcode_scanned()
+        return super(MrpWorkorder, self).on_barcode_scanned(barcode)
 
     @api.multi
     def validate_to_done(self):
