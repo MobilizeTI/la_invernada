@@ -393,6 +393,7 @@ class MrpWorkorder(models.Model):
             'res_model': 'mrp.workorder',
             'view_id': False,
             'type': 'ir.actions.act_window',
+            'target':'current',
             'views': [
                 [self.env.ref('dimabe_manufacturing.mrp_workorder_process_view').id, 'form']],
             'res_id': self.id,
