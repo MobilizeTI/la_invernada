@@ -312,11 +312,11 @@ class StockProductionLot(models.Model):
             if item.stock_production_lot_serial_ids.mapped('production_id'):
                 state = item.stock_production_lot_serial_ids.mapped('reserved_to_stock_picking_id').mapped('state')[0]
                 if state == 'done':
-                    item.production_state = "Finalizado"
+                    item.dispatch_state = "Finalizado"
                 else:
-                    item.production_state = "En proceso"
+                    item.dispatch_state = "En proceso"
             else:
-                item.production_state = "Borrador"
+                item.dispatch_state = "Borrador"
 
     @api.multi
     def _compute_reception_weight(self):
