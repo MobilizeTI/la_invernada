@@ -542,8 +542,6 @@
                                     <th style="text-align:left;">FECHA Y HORA DE CARGA</th>
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
-                                        <span t-field="d.orders_to_invoice[0].order_name"/>
-                                        <span t-field="d.orders_to_invoice[0].stock_picking_name"/>
                                         <span t-field="d.orders_to_invoice[0].required_loading_date"/>
                                     </td>
                                 </tr>
@@ -554,8 +552,6 @@
                                                 <th></th>
                                                 <td></td>
                                                 <td style="text-align:left;">
-                                                    <span t-field="order.order_name"/>
-                                                    <span t-field="order.stock_picking_name"/>
                                                     <span t-field="order.required_loading_date"/>
                                                 </td>
                                             </tr>
@@ -964,8 +960,6 @@
                                 <th style="text-align:left; width:200px">FECHA Y HORA DE CARGA</th>
                                 <td>:</td>
                                 <td>
-                                    <span t-field="d.orders_to_invoice[0].order_name"/>
-                                    <span t-field="d.orders_to_invoice[0].stock_picking_name"/>
                                     <span t-field="d.orders_to_invoice[0].required_loading_date"/>
                                 </td>
                             </tr>
@@ -976,8 +970,6 @@
                                                 <th></th>
                                                 <td></td>
                                                 <td>
-                                                    <span t-field="order.order_name"/>
-                                                    <span t-field="order.stock_picking_name"/>
                                                     <span t-field="order.required_loading_date"/>
                                                 </td>
                                             </tr>
@@ -1275,8 +1267,6 @@
                                 <th style="text-align:left; width:200px">FECHA Y HORA DE CARGA</th>
                                 <td>:</td>
                                 <td>
-                                    <span t-field="d.orders_to_invoice[0].order_name"/>
-                                    <span t-field="d.orders_to_invoice[0].stock_picking_name"/>
                                     <span t-field="d.orders_to_invoice[0].required_loading_date"/>
                                 </td>
                             </tr>
@@ -1287,8 +1277,6 @@
                                                 <th></th>
                                                 <td></td>
                                                 <td>
-                                                    <span t-field="order.order_name"/>
-                                                    <span t-field="order.stock_picking_name"/>
                                                     <span t-field="order.required_loading_date"/>
                                                 </td>
                                             </tr>
