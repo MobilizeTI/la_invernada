@@ -561,10 +561,6 @@ class MrpWorkorder(models.Model):
             'current_quality_check_id': check.id
         })
 
-    def on_barcode_scanned(self, barcode):
-        self.process_serial(barcode)
-        return super(MrpWorkorder, self).on_barcode_scanned(barcode)
-
     @api.multi
     def validate_to_done(self):
         for check in self.check_ids.filtered(
