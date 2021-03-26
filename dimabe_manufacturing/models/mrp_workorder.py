@@ -555,6 +555,7 @@ class MrpWorkorder(models.Model):
             check.do_pass()
         self.write({
             'confirmed_serial': None,
+            'in_weight': sum(self.potential_serial_planned_ids.mapped('display_weight')),
             'current_quality_check_id': check.id
         })
 

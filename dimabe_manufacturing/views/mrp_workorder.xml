@@ -326,7 +326,7 @@
                                     groups="dimabe_manufacturing.group_mrp_modify_serials"/>
                         </tree>
                     </field>
-                    <field name="in_weight"/>
+                    <field name="in_weight" readonly="1"/>
                 </group>
             </form>
         </field>
