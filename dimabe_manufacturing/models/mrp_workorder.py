@@ -558,6 +558,17 @@ class MrpWorkorder(models.Model):
             'confirmed_serial': None,
             'current_quality_check_id': check.id
         })
+        return {
+            'name': "Procesar Entrada",
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'mrp.workorder',
+            'view_id': False,
+            'type': 'ir.actions.act_window',
+            'views': [
+                [self.env.ref('dimabe_manufacturing.mrp_workorder_process_view').id, 'form']],
+            'res_id': self._origin.id,
+        }
 
     def on_barcode_scanned(self, barcode):
         self.process_serial(barcode)
