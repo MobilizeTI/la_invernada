@@ -393,7 +393,7 @@ class MrpWorkorder(models.Model):
             'res_model': 'mrp.workorder',
             'view_id': False,
             'type': 'ir.actions.act_window',
-            'target':'current',
+            'target':'fullscreen',
             'views': [
                 [self.env.ref('dimabe_manufacturing.mrp_workorder_process_view').id, 'form']],
             'res_id': self.id,
@@ -564,7 +564,7 @@ class MrpWorkorder(models.Model):
             'view_mode': 'form',
             'res_model': 'mrp.workorder',
             'view_id': False,
-            'target':'current',
+            'target':'fullscreen',
             'type': 'ir.actions.act_window',
             'views': [
                 [self.env.ref('dimabe_manufacturing.mrp_workorder_process_view').id, 'form']],
@@ -591,18 +591,6 @@ class MrpWorkorder(models.Model):
         return self.finished_product_check_ids.filtered(
             lambda a: a.lot_id == self.lot_id and a.component_is_byproduct
         )
-
-    def validate_serial_code(self, barcode):
-        custom_serial = self.env['stock.production.lot.serial'].search(
-            [('serial_number', '=', barcode)])
-        if custom_serial:
-            if custom_serial.product_id != self.component_id:
-                raise models.ValidationError('El producto ingresado no corresponde al producto solicitado')
-            if custom_serial.consumed:
-                raise models.ValidationError('este código ya ha sido consumido en la produccion {}'.format(
-                    custom_serial.reserved_to_production_id.name))
-            return custom_serial
-        return custom_serial
 
     def open_out_form_view(self):
         for item in self:
