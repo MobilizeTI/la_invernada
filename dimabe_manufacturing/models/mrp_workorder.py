@@ -4,7 +4,8 @@ from datetime import date, datetime
 
 
 class MrpWorkorder(models.Model):
-    _inherit = 'mrp.workorder'
+    _name = 'mrp.workorder'
+    _inherit = ['mrp.workorder','barcodes.barcode_events_mixin']
 
     show_manual_input = fields.Boolean(
         'Digitar Serie Manualmente'
@@ -557,8 +558,106 @@ class MrpWorkorder(models.Model):
         })
 
     def on_barcode_scanned(self, barcode):
-        self.process_serial(barcode)
-        return super(MrpWorkorder, self).on_barcode_scanned(barcode)
+        serial_number = barcode
+        serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', serial_number)])
+        if not serial:
+            raise models.ValidationError(f'La serie ingresada no existe')
+        if serial.product_id not in self.material_product_ids:
+            raise models.UserError(
+                f'El producto de la serie {serial.serial_number} no es compatible con la lista de materiales')
+        if serial.consumed:
+            raise models.UserError(
+                f'El serie se encuentra consumida en el proceso {serial.reserved_to_production_id.name}')
+        self.component_id = serial.product_id
+        self.write({
+            'lot_id': serial.stock_production_lot_id.id
+        })
+        serial.write({
+            'reserved_to_production_id': self.production_id.id,
+            'consumed': True,
+            'used_in_workorder_id': self.id
+        })
+        serial.stock_production_lot_id.update_stock_quant(self.production_id.location_src_id.id)
+        serial.stock_production_lot_id.update_kg(serial.stock_production_lot_id.id)
+        line_new = self.env['stock.move.line']
+        move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == serial.product_id.id)
+        if move.active_move_line_ids:
+            line = move.active_move_line_ids.filtered(lambda a: a.lot_id == serial.stock_production_lot_id)
+            if not line.lot_produced_id:
+                line.write({
+                    'lot_produced_id': self.final_lot_id.id
+                })
+            line.write({
+                'qty_done': sum(self.potential_serial_planned_ids.filtered(
+                    lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped(
+                    'display_weight'))
+            })
+        else:
+            line_new = self.env['stock.move.line'].create({
+                'lot_id': serial.stock_production_lot_id.id,
+                'lot_produced_id': self.final_lot_id.id,
+                'product_id': move.product_id.id,
+                'location_dest_id': self.env['stock.location'].search([('usage', '=', 'production')]).id,
+                'location_id': self.production_id.location_src_id.id,
+                'move_id': move.id,
+                'product_uom_id': serial.product_id.uom_id.id,
+                'date': date.today(),
+                'qty_done': sum(self.potential_serial_planned_ids.filtered(
+                    lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped(
+                    'display_weight')),
+                'production_id': self.production_id.id,
+                'workorder_id': self.id
+            })
+        if self.active_move_line_ids.filtered(lambda a: not a.lot_id and a.product_id.id == serial.product_id.id):
+            line_wo = self.active_move_line_ids.filtered(
+                lambda a: not a.lot_id and a.product_id.id == serial.product_id.id)
+            line_wo.write({
+                'lot_id': serial.stock_production_lot_id.id,
+                'qty_done': sum(self.potential_serial_planned_ids.filtered(
+                    lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped(
+                    'display_weight'))
+            })
+        else:
+            line_wo = self.active_move_line_ids.filtered(
+                lambda a: a.lot_id.id == serial.stock_production_lot_id.id and a.product_id.id == serial.product_id.id)
+            if line_wo:
+                line_wo.write({
+                    'qty_done': sum(self.potential_serial_planned_ids.filtered(
+                        lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped(
+                        'display_weight'))
+                })
+            else:
+                self.env['stock.move.line'].create({
+                    'lot_id': serial.stock_production_lot_id.id,
+                    'lot_produced_id': self.final_lot_id.id,
+                    'product_id': move.product_id.id,
+                    'location_dest_id': self.env['stock.location'].search([('usage', '=', 'production')]).id,
+                    'location_id': self.production_id.location_src_id.id,
+                    'move_id': self.move_raw_ids.filtered(lambda a: a.product_id.id == serial.product_id.id).id,
+                    'product_uom_id': serial.product_id.uom_id.id,
+                    'date': date.today(),
+                    'qty_done': sum(self.potential_serial_planned_ids.filtered(
+                        lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped(
+                        'display_weight')),
+                    'production_id': self.production_id.id,
+                    'workorder_id': self.id,
+                    'done_wo': False
+                })
+        check = self.check_ids.filtered(
+            lambda a: a.component_id.id == serial.product_id.id and not a.component_is_byproduct)
+        check.write({
+            'lot_id': serial.stock_production_lot_id.id,
+            'move_line_id': line_new.id if line_new.id else line.id,
+            'qty_done': sum(
+                self.potential_serial_planned_ids.filtered(lambda a: a.product_id.id == serial.product_id.id).mapped(
+                    'display_weight'))
+        })
+        if check.quality_state != 'pass':
+            check.do_pass()
+        self.write({
+            'confirmed_serial': None,
+            'current_quality_check_id': check.id
+        })
 
     @api.multi
     def validate_to_done(self):
