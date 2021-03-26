@@ -135,6 +135,8 @@ class MrpWorkorder(models.Model):
 
     producers_id = fields.Many2many('res.partner', string='Productores')
 
+    producer_to_view = fields.Many2many('res.partner', string='Productores',compute='')
+
     pallet_qty = fields.Integer('Cantidad de Pallets', compute='_compute_pallet_qty')
 
     pallet_content = fields.Float('Kilos Totales', compute='_compute_pallet_content')
@@ -146,6 +148,14 @@ class MrpWorkorder(models.Model):
     component_id = fields.Many2one('product.product', readonly=False)
 
     to_done = fields.Boolean('Para Finalizar')
+
+    @api.multi
+    def _compute_producers_id(self):
+        for item in self:
+            if item.potential_serial_planned_ids and item.state == 'done' and not item.producers_id:
+                item.producer_to_view = item.potential_serial_planned_ids.mapped('producer_id')
+            elif item.potential_serial_planned_ids and item.state == 'done' and  item.producers_id:
+                item.producer_to_view = item.producer_to_view
 
     @api.multi
     def fix_env(self):
