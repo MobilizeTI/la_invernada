@@ -61,7 +61,6 @@
         'views/label_durability.xml',
         'views/dried_oven.xml',
         'views/res_config_settings.xml',
-        'views/process_report_xlsx.xml',
         'views/update_quant_view.xml',
         'views/custom_dispatch_line.xml',
         'views/stock_report_xlsx.xml',
