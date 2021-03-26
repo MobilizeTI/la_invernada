@@ -384,19 +384,14 @@ class MrpWorkorder(models.Model):
         self.action_first_skipped_step()
 
         self.write({
-            'in_weight': sum(self.potential_serial_planned_ids.mapped('real_weight'))
+            'in_weight': sum(self.potential_serial_planned_ids.mapped('display_weight'))
         })
         return {
-            'name': "Procesar Entrada",
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'mrp.workorder',
-            'view_id': False,
             'type': 'ir.actions.act_window',
-            'target':'fullscreen',
-            'views': [
-                [self.env.ref('dimabe_manufacturing.mrp_workorder_process_view').id, 'form']],
+            'res_model': 'mrp.workorder',
+            'views': [[self.env.ref('dimabe_manufacturing.mrp_workorder_process_view').id, 'form']],
             'res_id': self.id,
+            'target': 'fullscreen'
         }
 
     def do_finish(self):
@@ -558,18 +553,6 @@ class MrpWorkorder(models.Model):
             'confirmed_serial': None,
             'current_quality_check_id': check.id
         })
-        return {
-            'name': "Procesar Entrada",
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'mrp.workorder',
-            'view_id': False,
-            'target':'fullscreen',
-            'type': 'ir.actions.act_window',
-            'views': [
-                [self.env.ref('dimabe_manufacturing.mrp_workorder_process_view').id, 'form']],
-            'res_id': self._origin.id,
-        }
 
     def on_barcode_scanned(self, barcode):
         self.process_serial(barcode)
