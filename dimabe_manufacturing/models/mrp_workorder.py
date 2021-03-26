@@ -568,11 +568,11 @@ class MrpWorkorder(models.Model):
         if serial.consumed:
             raise models.UserError(
                 f'El serie se encuentra consumida en el proceso {serial.reserved_to_production_id.name}')
-        self.component_id = serial.product_id
-        self.write({
+        self._origin.component_id = serial.product_id
+        self._origin.update({
             'lot_id': serial.stock_production_lot_id.id
         })
-        serial.write({
+        serial.update({
             'reserved_to_production_id': self._origin.production_id.id,
             'consumed': True,
             'used_in_workorder_id': self._origin.id
@@ -587,7 +587,7 @@ class MrpWorkorder(models.Model):
                 line.write({
                     'lot_produced_id': self.final_lot_id.id
                 })
-            line.write({
+            line.update({
                 'qty_done': sum(self._origin.potential_serial_planned_ids.filtered(
                     lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped(
                     'display_weight'))
@@ -611,7 +611,7 @@ class MrpWorkorder(models.Model):
         if self._origin.active_move_line_ids.filtered(lambda a: not a.lot_id and a.product_id.id == serial.product_id.id):
             line_wo = self._origin.active_move_line_ids.filtered(
                 lambda a: not a.lot_id and a.product_id.id == serial.product_id.id)
-            line_wo.write({
+            line_wo.update({
                 'lot_id': serial.stock_production_lot_id.id,
                 'qty_done': sum(self._origin.potential_serial_planned_ids.filtered(
                     lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped(
@@ -621,7 +621,7 @@ class MrpWorkorder(models.Model):
             line_wo = self._origin.active_move_line_ids.filtered(
                 lambda a: a.lot_id.id == serial.stock_production_lot_id.id and a.product_id.id == serial.product_id.id)
             if line_wo:
-                line_wo.write({
+                line_wo.update({
                     'qty_done': sum(self._origin.potential_serial_planned_ids.filtered(
                         lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped(
                         'display_weight'))
@@ -645,7 +645,7 @@ class MrpWorkorder(models.Model):
                 })
         check = self._origin.check_ids.filtered(
             lambda a: a.component_id.id == serial.product_id.id and not a.component_is_byproduct)
-        check.write({
+        check.update({
             'lot_id': serial.stock_production_lot_id.id,
             'move_line_id': line_new.id if line_new.id else line.id,
             'qty_done': sum(
@@ -654,7 +654,7 @@ class MrpWorkorder(models.Model):
         })
         if check.quality_state != 'pass':
             check.do_pass()
-        self._origin.write({
+        self._origin.update({
             'confirmed_serial': None,
             'current_quality_check_id': check.id
         })
