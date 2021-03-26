@@ -310,7 +310,7 @@ class StockProductionLot(models.Model):
     def compute_dispatch_state(self):
         for item in self:
             if item.stock_production_lot_serial_ids.mapped('production_id'):
-                state = item.stock_production_lot_serial_ids.mapped('production_id')[0].stock_picking_id.state
+                state = item.stock_production_lot_serial_ids.mapped('reserved_to_stock_picking_id').mapped('state')[0]:
                 if state == 'done':
                     item.production_state = "Finalizado"
                 else:
