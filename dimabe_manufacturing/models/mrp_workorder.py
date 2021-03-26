@@ -572,7 +572,7 @@ class MrpWorkorder(models.Model):
         self._origin.update({
             'lot_id': serial.stock_production_lot_id.id
         })
-        serial.update({
+        serial.write({
             'reserved_to_production_id': self._origin.production_id.id,
             'consumed': True,
             'used_in_workorder_id': self._origin.id
