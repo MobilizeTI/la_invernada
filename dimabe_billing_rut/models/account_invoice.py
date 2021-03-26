@@ -535,8 +535,8 @@ class AccountInvoice(models.Model):
         if len(self.invoice_line_ids) == 0:
             raise models.ValidationError('Por favor agregar al menos un Producto')
 
-        if not self.company_activity_id or not self.partner_activity_id:
-            raise models.ValidationError('Por favor seleccione la Actividad de la Compañía y del Proveedor')
+        if not self.company_activity_id:
+            raise models.ValidationError('Por favor seleccione la Actividad Económica de la Compañía')
 
         if self.dte_type_id.code != "34" and self.dte_type_id.code != "41" and self.dte_type_id.code != "61" and self.dte_type_id.code != "110":  # Consultar si en NC y ND prdocuto sin impuesto
             countNotExempt = 0
