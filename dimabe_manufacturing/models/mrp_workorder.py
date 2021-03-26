@@ -471,7 +471,8 @@ class MrpWorkorder(models.Model):
         })
         serial.write({
             'reserved_to_production_id': self._origin.production_id.id,
-            'consumed': True
+            'consumed': True,
+            'used_in_workorder_id': self._origin.id
         })
         serial.stock_production_lot_id.update_stock_quant(self._origin.production_id.location_src_id.id)
         serial.stock_production_lot_id.update_kg(serial.stock_production_lot_id.id)
