@@ -453,6 +453,7 @@ class MrpWorkorder(models.Model):
 
     @api.onchange('confirmed_serial')
     def confirmed_keyboard(self):
+        raise models.ValidationError(f'self.id {self.id} self.production_id {self.production_id.id}')
         self.process_serial(self.confirmed_serial)
 
     def process_serial(self, serial_number):
