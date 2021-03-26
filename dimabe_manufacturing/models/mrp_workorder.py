@@ -475,7 +475,7 @@ class MrpWorkorder(models.Model):
             'consumed': True,
             'used_in_workorder_id': self._origin.id
         })
-        serial.stock_production_lot_id.update_stock_quant(self.production_id.location_src_id.id)
+        serial.stock_production_lot_id.update_stock_quant(self._origin.production_id.location_src_id.id)
         serial.stock_production_lot_id.update_kg(serial.stock_production_lot_id.id)
         line_new = self.env['stock.move.line']
         move = self._origin.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == serial.product_id.id)
