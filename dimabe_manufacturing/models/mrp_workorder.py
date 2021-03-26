@@ -405,8 +405,7 @@ class MrpWorkorder(models.Model):
         if self.production_id.move_raw_ids.filtered(lambda a: not a.product_uom):
             raise models.ValidationError(
                 '{}'.format(self.production_id.move_raw_ids.filtered(lambda a: not a.product_uom)))
-        super(MrpWorkorder, self).do_finish()
-        self.organize_move_line()
+        return super(MrpWorkorder, self).do_finish()
 
     def action_skip(self):
         self.write({
