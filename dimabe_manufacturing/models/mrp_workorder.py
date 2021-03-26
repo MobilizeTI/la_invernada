@@ -446,6 +446,10 @@ class MrpWorkorder(models.Model):
             'consumed': True,
             'used_in_workorder_id': self.id
         })
+        if serial.producer_id not in self.producers_id:
+            self.write({
+                'producers_id': [(4,serial.producer_id.id)]
+            })
         serial.stock_production_lot_id.update_stock_quant(self.production_id.location_src_id.id)
         serial.stock_production_lot_id.update_kg(serial.stock_production_lot_id.id)
         line_new = self.env['stock.move.line']
