@@ -134,7 +134,7 @@ class MrpWorkorder(models.Model):
     pt_out_weight = fields.Float('Kilos Producidos del PT', compute='_compute_pt_out_weight',
                                  digits=dp.get_precision('Product Unit of Meausure'), store=True)
 
-    producers_id = fields.Many2many('res.partner', 'Productores')
+    producers_id = fields.Many2many('res.partner', string='Productores')
 
     pallet_qty = fields.Integer('Cantidad de Pallets', compute='_compute_pallet_qty')
 
