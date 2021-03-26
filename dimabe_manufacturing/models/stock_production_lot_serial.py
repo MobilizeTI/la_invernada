@@ -147,6 +147,8 @@ class StockProductionLotSerial(models.Model):
 
     work_order_id = fields.Many2one('mrp.workorder', 'Order Fabricacion', compute='_compute_workorder_id')
 
+    used_in_workorder_id = fields.Many2one('mrp.workorder','Usado en Orden de Trabajo')
+
     production_id_to_view = fields.Many2one('mrp.production', 'Order de Fabricacion',
                                             compute='_compute_production_id_to_view', store=True)
     workcenter_id = fields.Many2one('mrp.workcenter', related="work_order_id.workcenter_id")

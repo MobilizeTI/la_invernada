@@ -98,8 +98,7 @@ class MrpWorkorder(models.Model):
 
     potential_serial_planned_ids = fields.One2many(
         'stock.production.lot.serial',
-        compute='_compute_potential_lot_planned_ids',
-        inverse='_inverse_potential_lot_planned_ids'
+        'used_in_workorder_id'
     )
 
     confirmed_serial = fields.Char('Codigo de Barra')
@@ -249,18 +248,6 @@ class MrpWorkorder(models.Model):
     def _onchange_qty_producing(self):
         print('se inhabilita este método')
 
-    @api.multi
-    def _compute_potential_lot_planned_ids(self):
-        for item in self:
-            item.potential_serial_planned_ids = self.env['stock.production.lot.serial'].search(
-                [('reserved_to_production_id', '=', item.production_id.id), ('consumed', '=', True)])
-
-    def _inverse_potential_lot_planned_ids(self):
-        for item in self.potential_serial_planned_ids:
-            item.update({
-                'reserved_to_production_id': self.production_id.id,
-                'consumed': True
-            })
 
     @api.multi
     def _compute_summary_out_serial_ids(self):
@@ -451,6 +438,7 @@ class MrpWorkorder(models.Model):
         self.component_id = serial.product_id
         serial.write({
             'reserved_to_production_id': self.production_id.id,
+            'used_in_workorder_id':self.id,
             'consumed': True
         })
         serial.stock_production_lot_id.update_stock_quant(self.production_id.location_src_id.id)
