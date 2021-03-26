@@ -154,7 +154,7 @@ class MrpWorkorder(models.Model):
         for item in self:
             if item.potential_serial_planned_ids and item.state == 'done' and not item.producers_id:
                 item.producer_to_view = item.potential_serial_planned_ids.mapped('producer_id')
-            elif item.potential_serial_planned_ids and item.state == 'done' and item.producers_id:
+            elif item.potential_serial_planned_ids and item.state != 'done' and item.producers_id:
                 item.producer_to_view = item.producer_to_view
 
     @api.multi
