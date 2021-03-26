@@ -165,8 +165,8 @@
                                         <t t-if="len(d.consignee_id.child_ids) > 0">
                                             <t t-if="n.consignee_id.child_ids[0].phone">
                                                     <span t-field="n.consignee_id.child_ids[0].phone"/>
-                                                </t>
-                                                <t t-if="n.consignee_id.child_ids[0].phone and n.partner_id.child_ids[0].mobile">
+                                            </t>
+                                                <t t-if="n.consignee_id.child_ids[0].phone and n.consignee_id.child_ids[0].mobile">
                                                 -
                                                 </t>
                                                 <t t-if="n.consignee_id.child_ids[0].mobile">
