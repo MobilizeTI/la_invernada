@@ -248,15 +248,16 @@ class StockProductionLot(models.Model):
     @api.multi
     def show_pallets(self):
         return {
+            'name': "Series de Salida",
+            'view_type': 'form',
+            'view_mode': 'tree,graph,form,pivot',
+            'res_model': 'stock.production.lot.serial',
+            'view_id': False,
             'type': 'ir.actions.act_window',
-            'res_model': 'manufacturing.pallet',
-            'res_id': self.id,
-            'view_type': 'tree',
-            'view_mode': 'tree',
-            'views': [(self.env.ref('dimabe_manufacturing.manufacturing_pallet_tree_view').id, 'tree')],
-            'target': 'current',
-            'domain': [('id','=',self.pallet_ids.mapped('id'))],
-            'context': self.env.context
+            'views': [
+                [self.env.ref('dimabe_manufacturing.manufacturing_pallet_tree_view').id, 'tree']],
+            'context': self.env.context,
+            'domain': [('id', 'in', self.pallet_ids.mapped("id"))]
         }
 
     @api.multi
