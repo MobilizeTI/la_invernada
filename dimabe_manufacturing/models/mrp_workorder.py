@@ -460,7 +460,7 @@ class MrpWorkorder(models.Model):
         serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', serial_number)])
         if not serial:
             raise models.ValidationError(f'La serie ingresada no existe')
-        raise models.ValidationError(f'{self.production_id.bom_id.bom_line_ids.mapped("product_id")} {serial.product_id}')
+        raise models.ValidationError(f'{self.production_id.bom_id.bom_line_ids} {serial.product_id}')
         if serial.product_id not in self.production_id.bom_id.bom_line_ids.mapped('product_id'):
             raise models.UserError(
                 f'El producto de la serie {serial.serial_number} no es compatible con la lista de materiales')
