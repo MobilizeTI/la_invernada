@@ -310,7 +310,9 @@
                                style="margin:0 auto;"
                                defualt_focus="1" nolabel="1"/>
                         <br/>
-                        <button type="object" style="right:10px;" class="oe_button oe_form_button oe_highlight" context="{'workorder_id':id}" string="Ingresar" name="confirmed_keyboard"/>
+                        <div tabindex="0">
+                            <button type="object" style="right:10px;" class="oe_button oe_form_button oe_highlight" context="{'workorder_id':id}" string="Ingresar" name="confirmed_keyboard"/>
+                        </div>
                     </group>
                 </group>
                 <group>
