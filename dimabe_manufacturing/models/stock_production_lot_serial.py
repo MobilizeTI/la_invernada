@@ -147,6 +147,8 @@ class StockProductionLotSerial(models.Model):
 
     work_order_id = fields.Many2one('mrp.workorder', 'Order Fabricacion', compute='_compute_workorder_id')
 
+    used_in_workorder_id = fields.Many2one('mrp.workorder', 'Usado en Orden de Trabajo')
+
     production_id_to_view = fields.Many2one('mrp.production', 'Order de Fabricacion',
                                             compute='_compute_production_id_to_view', store=True)
     workcenter_id = fields.Many2one('mrp.workcenter', related="work_order_id.workcenter_id")
@@ -389,6 +391,9 @@ class StockProductionLotSerial(models.Model):
                 raise models.ValidationError('debe agregar un peso a la serie')
             if not item.canning_id and item.bom_id:
                 item.set_bom_canning()
+            if 'consumed' in vals.keys():
+                if vals['consumed']:
+                    item.stock_production_lot_id.update_kg(item.stock_production_lot_id.id)
         return res
 
     @api.model
@@ -608,3 +613,32 @@ class StockProductionLotSerial(models.Model):
                 item.stock_production_lot_id.update({
                     'available_total_serial': item.stock_production_lot_id.available_total_serial - item.display_weight
                 })
+
+    @api.multi
+    def remove_serial(self):
+        if 'workorder_id' in self.env.context.keys():
+            workorder_id = self.env.context['workorder_id']
+            workorder = self.env['mrp.workorder'].search([('id', '=', workorder_id)])
+            production = workorder.production_id
+            self.write({
+                'reserved_to_production_id': None,
+                'consumed': False
+            })
+            workorder.write({
+                'in_weight': sum(workorder.potential_serial_planned_ids.mapped('display_weight'))
+            })
+            self.stock_production_lot_id.update_stock_quant(production.location_src_id.id)
+            self.stock_production_lot_id.update_kg(self.stock_production_lot_id.id)
+            move_line = self.env['stock.move.line'].search(
+                [('workorder_id', '=', workorder_id), ('lot_id', '=', self.stock_production_lot_id.id),
+                 ('location_dest_id.usage', '=', 'production')])
+            for line in move_line:
+                if (line.qty_done - self.display_weight) != 0:
+                    line.write({
+                        'qty_done': sum(workorder.potential_serial_planned_ids.mapped('display_weight'))
+                    })
+                else:
+                    line.write({
+                        'qty_done': 0
+                    })
+                    line.unlink()

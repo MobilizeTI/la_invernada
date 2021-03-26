@@ -209,7 +209,7 @@ class StockProductionLot(models.Model):
 
     serial_not_consumed = fields.Integer('Envases disponible', compute='_compute_serial_not_consumed')
 
-    available_kg = fields.Float('Kilos Disponibles', store=True)
+    available_kg = fields.Float('Kilos Disponibles')
 
     available_weight = fields.Float('Datos Disponibles')
 
@@ -248,14 +248,16 @@ class StockProductionLot(models.Model):
     @api.multi
     def show_pallets(self):
         return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'manufacturing.pallet',
-            'res_id': self.id,
+            'name': "Series de Salida",
             'view_type': 'form',
-            'view_mode': 'form',
-            'views': [(self.env.ref('dimabe_manufacturing.manufacturing_pallet_tree_view').id, 'form')],
-            'target': 'new',
-            'context': self.env.context
+            'view_mode': 'tree,graph,form,pivot',
+            'res_model': 'manufacturing.pallet',
+            'view_id': False,
+            'type': 'ir.actions.act_window',
+            'views': [
+                [self.env.ref('dimabe_manufacturing.manufacturing_pallet_tree_view').id, 'tree']],
+            'context': self.env.context,
+            'domain': [('id', 'in', self.pallet_ids.mapped("id"))]
         }
 
     @api.multi
@@ -274,8 +276,8 @@ class StockProductionLot(models.Model):
     @api.multi
     def compute_destiny_country(self):
         for item in self:
-            if item.stock_production_lot_serial_ids.mapped('production_id'):
-                item.destiny_country_id = item.stock_production_lot_serial_ids.mapped('production_id')[0].destiny_country_id
+            if item.stock_production_lot_serial_ids.mapped('production_id')[0]:
+                item.destiny_country_id = item.stock_production_lot_serial_ids.mapped('production_id')[0].stock_picking_id.arrival_port.country_id
 
     @api.multi
     def compute_measure(self):
@@ -308,13 +310,13 @@ class StockProductionLot(models.Model):
     def compute_dispatch_state(self):
         for item in self:
             if item.stock_production_lot_serial_ids.mapped('production_id'):
-                state = item.stock_production_lot_serial_ids.mapped('production_id')[0].stock_picking_id.state
+                state = item.stock_production_lot_serial_ids.mapped('reserved_to_stock_picking_id').mapped('state')[0]
                 if state == 'done':
-                    item.production_state = "Finalizado"
+                    item.dispatch_state = "Finalizado"
                 else:
-                    item.production_state = "En proceso"
+                    item.dispatch_state = "En proceso"
             else:
-                item.production_state = "Borrador"
+                item.dispatch_state = "Borrador"
 
     @api.multi
     def _compute_reception_weight(self):
@@ -468,7 +470,6 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def _compute_producer_ids(self):
-
         for item in self:
             if item.is_prd_lot:
                 workorder = self.env['mrp.workorder'].search([
@@ -665,6 +666,7 @@ class StockProductionLot(models.Model):
                     'serial_number': item.name + tmp[-3:],
                     'belongs_to_prd_lot': True,
                     'pallet_id': pallet.id,
+                    'product_id': pallet.product_id.id,
                     'producer_id': pallet.producer_id.id
                 })
             if len(item.pallet_ids) == 1:
@@ -842,3 +844,11 @@ class StockProductionLot(models.Model):
                         lambda x: not x.reserved_to_stock_picking_id and not x.consumed).mapped('display_weight')),
                     'location_id': location_id
                 })
+
+    def update_kg(self, lot_id):
+        lot = self.env['stock.production.lot'].search([('id', '=', lot_id)])
+        total = sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight'))
+        lot.sudo().write({
+            'available_kg': total,
+            'available_weight': total
+        })
