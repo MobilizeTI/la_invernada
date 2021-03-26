@@ -454,6 +454,7 @@ class MrpWorkorder(models.Model):
         self.process_serial(self.confirmed_serial)
 
     def process_serial(self, serial_number):
+        raise models.ValdidationError(f'{self.id}')
         serial_number = serial_number.strip()
         serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', serial_number)])
         if not serial:
