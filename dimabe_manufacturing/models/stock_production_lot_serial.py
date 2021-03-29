@@ -654,3 +654,5 @@ class StockProductionLotSerial(models.Model):
                         'qty_done': 0
                     })
                     line.unlink()
+
+
