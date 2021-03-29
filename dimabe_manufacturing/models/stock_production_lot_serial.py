@@ -330,6 +330,10 @@ class StockProductionLotSerial(models.Model):
                 lot.write({
                     'producer_id':values_list['producer_id']
                 })
+            workorder = self.env['mrp.workorder'].search([('production_id','=',values_list['production_id'])])
+            workorder.write({
+                'out_weight': sum(lot.stock_production_lot_serial_ids.mapped('display_weight'))
+            })
         res = super(StockProductionLotSerial, self).create(values_list)
         if res.display_weight == 0 and res.gross_weight == 0:
             raise models.ValidationError('debe agregar un peso a la serie')
