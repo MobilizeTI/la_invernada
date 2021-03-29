@@ -331,7 +331,6 @@ class StockProductionLotSerial(models.Model):
                     'producer_id':values_list['producer_id']
                 })
         res = super(StockProductionLotSerial, self).create(values_list)
-
         if res.display_weight == 0 and res.gross_weight == 0:
             raise models.ValidationError('debe agregar un peso a la serie')
 
@@ -369,6 +368,9 @@ class StockProductionLotSerial(models.Model):
                 res.gross_weight = res.display_weight + res.canning_id.weight
             else:
                 res.gross_weight = res.display_weight + sum(res.get_possible_canning_id().mapped('weight'))
+        if res.production_id:
+            res.stock_production_lot_id.update_kg(res.stock_production_lot_id.id)
+            res.stock_production_lot_id.update_stock_quant(res.production_id.location_dest_id.id)
         return res
 
     @api.model
