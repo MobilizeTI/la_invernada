@@ -14,7 +14,7 @@
                     <field name="measure" readonly="1"/>
                     <field name="produced_qty" readonly="1"/>
                     <field name="produced_weight" readonly="1"/>
-                    <field name="show_date" readonly="1"/>
+                    <field name="create_date" readonly="1"/>
                     <field name="production_state" readonly="1"/>
                     <field name="available_total_serial" readonly="1" string="Cantidad Disponible"/>
                     <field name="available_kg" readonly="1"/>

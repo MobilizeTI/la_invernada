@@ -18,7 +18,7 @@
                     <field name="harvest" readonly="1"/>
                     <field name="reception_weight" string="Kilos Recepcionados" readonly="1"/>
                     <field name="serial_not_consumed" string="Series Disponible" readonly="1"/>
-                    <field name="create_date" string="Fecha" readonly="1"/>
+                    <field name="show_date" string="Fecha" readonly="1"/>
                     <field name="workcenter_id"/>
                     <field name="delivered_date"/>
                     <field name="physical_location"/>
