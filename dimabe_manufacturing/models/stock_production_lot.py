@@ -245,6 +245,17 @@ class StockProductionLot(models.Model):
 
     dispatch_date = fields.Date('Fecha de Despacho')
 
+    show_date = fields.Datetime('Fecha de Creacion',compute='compute_show_date')
+
+    @api.multi
+    def compute_show_date(self):
+        for item in self:
+            if item.is_dried_lot:
+                dried = self.env['dried.unpelled.history'].search([('out_lot_id', '=',item.id)])
+                item.show_date = dried.finish_date
+            else:
+                item.show_date = item.create_date
+
     @api.multi
     def show_pallets(self):
         return {
