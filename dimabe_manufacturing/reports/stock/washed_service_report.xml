@@ -29,7 +29,7 @@
             <field name="name">Informe de Producto Lavado Servicio</field>
             <field name="res_model">stock.production.lot.serial</field>
             <field name="view_mode">tree,graph,form,pivot</field>
-            <field name="view_id" ref="view_stock_service_report_tree"/>
+            <field name="view_id" ref="view_stock_washed_service_report_tree"/>
             <field name="domain">
                 [('product_id.default_code', 'like', 'PSES016')]
             </field>

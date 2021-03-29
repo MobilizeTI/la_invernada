@@ -147,7 +147,7 @@ class StockProductionLotSerial(models.Model):
 
     work_order_id = fields.Many2one('mrp.workorder', 'Order Fabricacion', compute='_compute_workorder_id')
 
-    used_in_workorder_id = fields.Many2one('mrp.workorder','Usado en Orden de Trabajo')
+    used_in_workorder_id = fields.Many2one('mrp.workorder', 'Usado en Orden de Trabajo')
 
     production_id_to_view = fields.Many2one('mrp.production', 'Order de Fabricacion',
                                             compute='_compute_production_id_to_view', store=True)
@@ -399,6 +399,9 @@ class StockProductionLotSerial(models.Model):
                 raise models.ValidationError('debe agregar un peso a la serie')
             if not item.canning_id and item.bom_id:
                 item.set_bom_canning()
+            if 'consumed' in vals.keys():
+                if vals['consumed']:
+                    item.stock_production_lot_id.update_kg(item.stock_production_lot_id.id)
         return res
 
     @api.model
