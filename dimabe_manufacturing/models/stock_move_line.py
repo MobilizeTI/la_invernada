@@ -31,8 +31,13 @@ class StockMoveLine(models.Model):
     def _action_done(self):
         for ml in self:
             try:
-                res = super(StockMoveLine,self)._action_done()
-                return res
+                if ml.location_id.usage == 'production':
+                    ml.write({
+                        'state': 'done'
+                    })
+                else:
+                    res = super(StockMoveLine,self)._action_done()
+                    return res
             except UserError:
                 ml.write({
                     'product_uom_qty':0,
