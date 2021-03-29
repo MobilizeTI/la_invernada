@@ -143,7 +143,7 @@ class StockProductionLot(models.Model):
 
     reception_elapsed_time = fields.Char(
         'Hr Camión en Planta',
-        related='stock_picking_id.elapsed_time',
+        compute='_compute_reception_elapsed_time',
         store=True
     )
 
@@ -246,6 +246,11 @@ class StockProductionLot(models.Model):
     dispatch_date = fields.Date('Fecha de Despacho')
 
     show_date = fields.Datetime('Fecha de Creacion',compute='compute_show_date')
+
+    @api.multi
+    def _compute_reception_elapsed_time(self):
+        for item in self:
+            item.reception_elapsed_time = item.stock_picking_id.elapsed_time
 
     @api.multi
     def compute_show_date(self):
