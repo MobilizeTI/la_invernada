@@ -260,6 +260,10 @@ class UnpelledDried(models.Model):
                                                  'Solo puede encontrarse en un registro'.format(
                         oven_use.used_lot_id.name
                     ))
+            if not item.out_lot_id.producer_id:
+                item.out_lot_id.write({
+                    'producer_id':item.producer_id.id
+                })
             if item.out_lot_id.stock_production_lot_serial_ids:
                 for serial_id in item.out_lot_id.stock_production_lot_serial_ids:
                     serial_id.canning_id = item.canning_id
