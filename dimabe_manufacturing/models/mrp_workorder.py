@@ -383,7 +383,7 @@ class MrpWorkorder(models.Model):
                     if check.quality_state == 'none' and check.qty_done > 0:
                         self.action_next()
         self.action_first_skipped_step()
-        self.write({
+        self.sudo().write({
             'in_weight': sum(self.potential_serial_planned_ids.mapped('display_weight'))
         })
         return {
