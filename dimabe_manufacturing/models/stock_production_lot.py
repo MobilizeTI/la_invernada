@@ -144,7 +144,6 @@ class StockProductionLot(models.Model):
     reception_elapsed_time = fields.Char(
         'Hr Camión en Planta',
         compute='_compute_reception_elapsed_time',
-        store=True
     )
 
     oven_init_active_time = fields.Integer(
