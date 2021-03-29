@@ -356,7 +356,9 @@ class StockProductionLotSerial(models.Model):
 
             if work_order.production_id:
                 production = work_order.production_id[0]
-
+        work_order.write({
+            'out_weight':sum(res.stock_production_lot_id.stock_production_lot_serial_ids.mapped('display_weight'))
+        })
         if production:
             res.production_id = production.id
             res.reserve_to_stock_picking_id = production.stock_picking_id.id

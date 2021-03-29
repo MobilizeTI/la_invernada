@@ -630,6 +630,7 @@ class StockProductionLot(models.Model):
                 if item.stock_production_lot_serial_ids.mapped('producer_id'):
                     item.write({
                         'producer_id':item.stock_production_lot_serial_ids.mapped('producer_id')[0].id,
+                        'producer_id':item.stock_production_lot_serial_ids.mapped('producer_id')[0].id,
                     })
             if not item.product_id.is_standard_weight:
                 for serial in item.stock_production_lot_serial_ids:
