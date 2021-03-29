@@ -325,7 +325,7 @@ class StockProductionLot(models.Model):
     @api.multi
     def compute_dispatch_state(self):
         for item in self:
-            if item.stock_production_lot_serial_ids.mapped('production_id'):
+            if item.stock_production_lot_serial_ids.mapped('reserved_to_stock_picking_id'):
                 state = item.stock_production_lot_serial_ids.mapped('reserved_to_stock_picking_id').mapped('state')[0]
                 if state == 'done':
                     item.dispatch_state = "Finalizado"
