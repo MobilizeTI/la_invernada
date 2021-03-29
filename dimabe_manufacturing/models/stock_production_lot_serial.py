@@ -324,13 +324,13 @@ class StockProductionLotSerial(models.Model):
         if 'stock_production_lot_id' in values_list.keys():
             lot = self.env['stock.production.lot'].search([('id', '=', values_list['stock_production_lot_id'])])
             values_list['product_id'] = lot.product_id.id
-        if ('stock_production_lot_id','producer_id') in values_list.keys():
+        if ('stock_production_lot_id', 'producer_id') in values_list.keys():
             lot = self.env['stock.production.lot'].search([('id', '=', values_list['stock_production_lot_id'])])
             if not lot.producer_id:
                 lot.write({
-                    'producer_id':values_list['producer_id']
+                    'producer_id': values_list['producer_id']
                 })
-            workorder = self.env['mrp.workorder'].search([('production_id.id','=',values_list['production_id'])])
+            workorder = self.env['mrp.workorder'].search([('production_id.id', '=', values_list['production_id'])])
             workorder.write({
                 'out_weight': sum(lot.stock_production_lot_serial_ids.mapped('display_weight'))
             })
