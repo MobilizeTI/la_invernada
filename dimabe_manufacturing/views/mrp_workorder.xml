@@ -75,8 +75,8 @@
                 <xpath expr="//sheet/group" position="inside">
                     <group>
                         <field name="positioning_state"/>
-                        <field name="in_weight"/>
-                        <field name="out_weight"/>
+                        <field name="in_weight" readonly="1"/>
+                        <field name="out_weight" readonly="1"/>
                     </group>
                 </xpath>
                 <field name="final_lot_id" position="attributes">
@@ -129,7 +129,7 @@
                             </tree>
                         </field>
                         <strong>Total Ingresado:</strong>
-                        <field name="in_weight"/>
+                        <field name="in_weight" readonly="1"/>
                     </page>
                 </xpath>
                 <xpath expr="//page[3]" position="after">
