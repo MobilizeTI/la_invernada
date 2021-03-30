@@ -167,7 +167,7 @@ class StockProductionLotSerial(models.Model):
 
     delivered_date = fields.Date('Fecha de envio a:')
 
-    available_weight = fields.Float('Kilos disponibles')
+    available_weight = fields.Float('Kilos disponibles',compute='compute_available_weight')
 
     @api.multi
     def compute_available_weight(self):
@@ -413,6 +413,7 @@ class StockProductionLotSerial(models.Model):
             )
         group = self.env['res.groups'].search([('name', '=', 'Limpiar')])
         user_logon = self.env.user
+
         if user_logon not in group.users:
             raise models.ValidationError("Opcion no disponible con sus permisos de usuario")
         return super(StockProductionLotSerial, self).unlink()
