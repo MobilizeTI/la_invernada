@@ -269,17 +269,18 @@ class AccountInvoice(models.Model):
     @api.onchange('etd')
     @api.depends('etd')
     def _compute_etd_values(self):
-        print('')
-        if self.etd:
-            try:
-                self.etd_month = self.etd.month
-                _year, _week, _day_of_week = self.etd.isocalendar()
-                self.etd_week = _week
-            except:
-                raise UserWarning('Error producido al intentar obtener el mes y semana de embarque')
-        else:
-            self.etd_week = None
-            self.etd_month = None
+        for item in self:
+            print('')
+            if item.etd:
+                try:
+                    item.etd_month = item.etd.month
+                    _year, _week, _day_of_week = item.etd.isocalendar()
+                    item.etd_week = _week
+                except:
+                    raise UserWarning('Error producido al intentar obtener el mes y semana de embarque')
+            else:
+                item.etd_week = None
+                item.etd_month = None
 
     @api.depends('freight_amount', 'safe_amount')
     def _compute_total_value(self):
