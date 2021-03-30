@@ -5,7 +5,7 @@
         <field name="inherit_id" ref="stock.view_production_lot_form_simple"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="attributes">
-                <attribute name="attrs">{'readonly':[('is_prd_lot','=',True)]}</attribute>
+                <attribute name="attrs">{'readonly': [('is_prd_lot', '=', True)]}</attribute>
             </xpath>
             <group name="main_group" position="inside">
 
@@ -15,7 +15,8 @@
                        attrs="{'invisible':['|',('is_standard_weight','=',False)]}"
                        readonly="1"
                 />
-                <button name="check_duplicate" type="object" string="verificar series duplicadas" groups="base.group_no_one"/>
+                <button name="check_duplicate" type="object" string="verificar series duplicadas"
+                        groups="base.group_no_one"/>
                 <field name="producer_ids" invisible="1"/>
                 <field name="producer_id" required="1"
                        domain="['|',('id','in',producer_ids),('always_to_print','=',True)]"/>
@@ -76,25 +77,34 @@
 
                 <field name="all_pallet_ids"
                        attrs="{'invisible':[('is_standard_weight','=',False)]}"
-                />
-                <button type="object" name="delete_all_serial" string="Eliminar Series" groups="dimabe_manufacturing.group_mrp_modify_serials"/>
+                >
+                    <tree>
+                        <field name="name"/>
+                        <field name="total_available_weight"/>
+                        <feild name="total_available_content"/>
+                        <field name="state"/>
+                        <button type="object" name="delete_pallet" string="Eliminar"/>
+                    </tree>
+                </field>
+                <button type="object" name="delete_all_serial" string="Eliminar Series"
+                        groups="dimabe_manufacturing.group_mrp_modify_serials"/>
                 <field name="serial_without_pallet_ids"
                        attrs="{'invisible':[('is_standard_weight','=',False)]}"
                 >
                     <tree delete="true" editable="bottom" create="false">
-                        <field name="stock_production_lot_id" />
+                        <field name="stock_production_lot_id"/>
                         <field name="belongs_to_prd_lot" invisible="1"/>
-                        <field name="producer_id" />
-                        <field name="consumed" />
+                        <field name="producer_id"/>
+                        <field name="consumed"/>
                         <field name="display_weight"
 
                         />
-                        <field name="serial_number" />
+                        <field name="serial_number"/>
                         <field name="production_id"
 
                                widget="many2onebutton"
                         />
-                        <field name="belongs_to_prd_lot" />
+                        <field name="belongs_to_prd_lot"/>
                         <button name="print_serial_label"
                                 type="object" string="Imprimir"
                                 attrs="{'invisible':['|',('serial_number', '=', False), ('belongs_to_prd_lot', '=', False)]}"
@@ -122,10 +132,11 @@
         <field name="model">stock.production.lot</field>
         <field name="arch" type="xml">
             <form>
-            <field name="context_picking_id" invisible="1"/>
+                <field name="context_picking_id" invisible="1"/>
                 <group>
                     <group>
-                        <field name="pallet_ids" domain="['|',('lot_available_serial_ids','=',None),('reserved_to_stock_picking_id','=',None)]">
+                        <field name="pallet_ids"
+                               domain="['|',('lot_available_serial_ids','=',None),('reserved_to_stock_picking_id','=',None)]">
                             <tree editable="bottom" edit="true" create="false" delete="false">
                                 <field name="add_picking"/>
                                 <field name="name"/>
@@ -155,7 +166,8 @@
                     </group>
                 </group>
                 <footer>
-                    <button name="add_selection" string="Agregar Selección" type="object" context="{'dispatch_id':context_picking_id}"/>
+                    <button name="add_selection" string="Agregar Selección" type="object"
+                            context="{'dispatch_id':context_picking_id}"/>
                 </footer>
             </form>
         </field>
@@ -189,7 +201,7 @@
         <field name="name">Vista General Despelonado Entrada</field>
         <field name="res_model">stock.production.lot</field>
         <field name="view_mode">tree</field>
-        <field name="domain">[('unpelled_state','in',['waiting','drying'])]</field>
+        <field name="domain">[('unpelled_state', 'in', ['waiting', 'drying'])]</field>
         <field name="view_id" ref="stock_production_lot_in_dashboard_tree_view"/>
     </record>
     <menuitem name="Vista General Despelonado Entrada"
