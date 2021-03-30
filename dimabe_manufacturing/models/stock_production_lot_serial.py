@@ -167,7 +167,7 @@ class StockProductionLotSerial(models.Model):
 
     delivered_date = fields.Date('Fecha de envio a:')
 
-    available_weight = fields.Float('Kilos disponibles',compute='compute_available_weight')
+    available_weight = fields.Float('Kilos disponibles', compute='compute_available_weight')
 
     @api.multi
     def compute_available_weight(self):
@@ -324,11 +324,11 @@ class StockProductionLotSerial(models.Model):
         if 'stock_production_lot_id' in values_list.keys():
             lot = self.env['stock.production.lot'].search([('id', '=', values_list['stock_production_lot_id'])])
             values_list['product_id'] = lot.product_id.id
-        if ('stock_production_lot_id','producer_id') in values_list.keys():
+        if ('stock_production_lot_id', 'producer_id') in values_list.keys():
             lot = self.env['stock.production.lot'].search([('id', '=', values_list['stock_production_lot_id'])])
             if not lot.producer_id:
                 lot.write({
-                    'producer_id':values_list['producer_id']
+                    'producer_id': values_list['producer_id']
                 })
         res = super(StockProductionLotSerial, self).create(values_list)
 
