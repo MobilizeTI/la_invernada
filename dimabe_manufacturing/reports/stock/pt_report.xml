@@ -16,7 +16,7 @@
                     <field name="produced_weight" readonly="1"/>
                     <field name="create_date" readonly="1"/>
                     <field name="production_state" readonly="1"/>
-                    <field name="available_total_serial" readonly="1" string="Cantidad Disponible"/>
+                    <field name="serial_not_consumed" readonly="1" string="Cantidad Disponible"/>
                     <field name="available_kg" readonly="1"/>
                     <field name="dispatch_state" readonly="1"/>
                     <field name="client_id" widget="many2onebutton" readonly="1"/>
