@@ -175,7 +175,7 @@ class StockProductionLotSerial(models.Model):
             if item.consumed:
                 item.available_weight = 0
             else:
-                item.available_weight = item.real_weight
+                item.available_weight = item.display_weight
 
     @api.multi
     def compute_product_caliber(self):
