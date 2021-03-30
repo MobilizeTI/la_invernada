@@ -704,6 +704,12 @@ class StockProductionLot(models.Model):
             lambda a: a.location_id.name == 'Stock'
         )
 
+    @api.multi
+    def delete_all_serial(self):
+        for item in self:
+            for serial in item.serial_without_pallet_ids:
+                serial.unlink()
+
     def show_available_serial(self):
         return {
             'type': 'ir.actions.act_window',
