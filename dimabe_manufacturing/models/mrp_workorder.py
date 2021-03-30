@@ -126,13 +126,13 @@ class MrpWorkorder(models.Model):
     lot_produced_id = fields.Integer('Lote a producir', compute='_compute_lot_produced')
 
     in_weight = fields.Float('Kilos Ingresados',
-                             digits=dp.get_precision('Product Unit of Measure'), store=True)
+                             digits=dp.get_precision('Product Unit of Measure'))
 
     out_weight = fields.Float('Kilos Producidos',
-                              digits=dp.get_precision('Product Unit of Measure'), store=True)
+                              digits=dp.get_precision('Product Unit of Measure'))
 
-    pt_out_weight = fields.Float('Kilos Producidos del PT', compute='_compute_pt_out_weight',
-                                 digits=dp.get_precision('Product Unit of Meausure'), store=True)
+    pt_out_weight = fields.Float('Kilos Producidos del PT',
+                                 digits=dp.get_precision('Product Unit of Meausure'))
 
     producers_id = fields.Many2many('res.partner', string='Productores')
 
@@ -195,22 +195,6 @@ class MrpWorkorder(models.Model):
         for item in self:
             if item.manufacturing_pallet_ids:
                 item.pallet_qty = len(item.manufacturing_pallet_ids)
-
-    @api.depends('summary_out_serial_ids')
-    @api.multi
-    def _compute_out_weight(self):
-        for item in self:
-            if item.summary_out_serial_ids:
-                item.out_weight = sum(item.summary_out_serial_ids.mapped('real_weight'))
-
-    @api.depends('summary_out_serial_ids')
-    @api.multi
-    def _compute_pt_out_weight(self):
-        for item in self:
-            if item.summary_out_serial_ids:
-                item.pt_out_weight = sum(
-                    item.summary_out_serial_ids.filtered(lambda a: 'PT' in a.product_id.default_code).mapped(
-                        'real_weight'))
 
     @api.multi
     def show_in_serials(self):
@@ -425,6 +409,8 @@ class MrpWorkorder(models.Model):
         self.process_serial(serial_number=self.confirmed_serial)
 
     def process_serial(self, serial_number):
+        lots = self.potential_serial_planned_ids
+        weigths = lots.mapped('display_weight')
         if not isinstance(self.id, int):
             self = self._origin
         serial_number = serial_number.strip()
@@ -446,7 +432,7 @@ class MrpWorkorder(models.Model):
             'consumed': True,
             'used_in_workorder_id': self.id
         })
-        serial.stock_production_lot_id.update_stock_quant(self.production_id.location_src_id.id)
+        serial.stock_production_lot_id.update_stock_quant_production(self.production_id.location_src_id.id)
         serial.stock_production_lot_id.update_kg(serial.stock_production_lot_id.id)
         line_new = self.env['stock.move.line']
         move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == serial.product_id.id)
