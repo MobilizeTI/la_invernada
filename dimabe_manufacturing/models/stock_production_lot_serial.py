@@ -412,6 +412,7 @@ class StockProductionLotSerial(models.Model):
 
     @api.model
     def unlink(self):
+
         if self.consumed:
             raise models.ValidationError(
                 'este código {} ya fue consumido, no puede ser eliminado'.format(
@@ -423,7 +424,13 @@ class StockProductionLotSerial(models.Model):
         user_logon = self.env.user
         if user_logon not in group.users:
             raise models.ValidationError("Opcion no disponible con sus permisos de usuario")
-        return super(StockProductionLotSerial, self).unlink()
+        lot = self.env['stock.production.lot'].search([('id','=',self.stock_production_lot_id.id)])
+        if self.production_id:
+            production = self.env['mrp.production'].search([('id','=',self.production_id.id)])
+        res = super(StockProductionLotSerial, self).unlink()
+        lot.update_kg(lot.id)
+        lot.update_stock_quant(production.location_dest_id.id)
+        return res
 
     @api.multi
     def delete(self):
