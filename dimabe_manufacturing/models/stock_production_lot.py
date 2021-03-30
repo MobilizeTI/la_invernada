@@ -874,7 +874,7 @@ class StockProductionLot(models.Model):
             if quant:
                 quant.write({
                     'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
-                                                                                              x: x.reserved_to_production_id and x.reserved_to_production_id.state != 'done' and not x.consumed).mapped(
+                                                                                              x: x.reserved_to_production_id  and not x.consumed).mapped(
                         'display_weight')),
                     'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
                         lambda x: not x.reserved_to_production_id and not x.consumed).mapped('display_weight'))
@@ -884,7 +884,7 @@ class StockProductionLot(models.Model):
                     'lot_id': lot.id,
                     'product_id': lot.product_id.id,
                     'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
-                                                                                              x: x.reserved_to_production_id and x.reserved_to_production_id.state != 'done' and not x.consumed).mapped(
+                                                                                              x: x.reserved_to_production_id and not x.consumed).mapped(
                         'display_weight')),
                     'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
                         lambda x: not x.reserved_to_production_id and not x.consumed).mapped('display_weight')),
