@@ -167,7 +167,7 @@ class StockProductionLotSerial(models.Model):
 
     delivered_date = fields.Date('Fecha de envio a:')
 
-    available_weight = fields.Float('Kilos disponibles')
+    available_weight = fields.Float('Kilos disponibles',compute="compute_available_weight")
 
     @api.multi
     def compute_available_weight(self):
