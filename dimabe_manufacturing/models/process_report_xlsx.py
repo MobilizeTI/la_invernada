@@ -75,7 +75,7 @@ class ProcessReport(models.TransientModel):
         return action
 
     def generate_xlsx_process(self, query, process_name):
-        file_name = 'C:/Users/fabia/Documents/Proyectoz/la_invernada/temp_report.xlsx'
+        file_name = 'temp_report.xlsx'
         workbook = xlsxwriter.Workbook(file_name)
         text_format = workbook.add_format({
             'text_wrap': True
