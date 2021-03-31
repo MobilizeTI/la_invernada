@@ -1,6 +1,6 @@
 from odoo import fields, models, api
 import xlsxwriter
-from datetime import date
+from datetime import date, datetime
 import base64
 
 
@@ -95,6 +95,7 @@ class StockReportXlsx(models.TransientModel):
 
         lots = self.env['stock.production.lot'].sudo().search(list_condition)
         for lot in lots:
+            create_date = datetime(lot.create_date)
             if lot.producer_id:
                 sheet.write(row, col, lot.producer_id.display_name)
             else:
@@ -126,7 +127,7 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, lot.reception_weight)
             col += 1
-            sheet.write_datetime(row, col, lot.create_date)
+            sheet.write_datetime(row, col, create_date)
             col += 1
             sheet.write(row, col, len(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed)))
             col += 1
