@@ -213,7 +213,7 @@ class AccountInvoiceXlsx(models.Model):
                                                                      ('company_id.id', '=', self.company_get_id.id)])
                 row += 2
                 sheet.merge_range(row, col, row, 5,
-                                  'Factura de compra exenta electronica. (FACTURA COMPRA EXENTA ELECTRONICA)',
+                                  'Factura de Ventas exenta electronica. (FACTURA VENTAS EXENTA ELECTRONICA)',
                                   formats['title'])
                 row += 1
                 data_exempt = self.set_data_for_excel(sheet, row, exempts, taxes_title, titles, formats, exempt=True)
@@ -227,14 +227,14 @@ class AccountInvoiceXlsx(models.Model):
 
                 row += 2
                 sheet.merge_range(row, col, row, 5,
-                                  'Nota de Credito compra Electronica (NOTA DE CREDITO COMPRA ELECTRONICA)',
+                                  'Nota de Credito Ventas Electronica (NOTA DE CREDITO VENTAS ELECTRONICA)',
                                   formats['title'])
                 row += 1
                 data_credit = self.set_data_for_excel(sheet, row, credit, taxes_title, titles, formats, exempt=False)
                 sheet = data_credit['sheet']
                 row = data_credit['row']
                 row += 2
-                sheet.merge_range(row, col, row, 5, 'NOTA DE DEBITO ELECTRONICA (NOTA DE DEBITO COMPRA ELECTRONICA)',
+                sheet.merge_range(row, col, row, 5, 'Nota de Debitos Ventas ELECTRONICA (NOTA DE DEBITO VENTAS ELECTRONICA)',
                                   formats['title'])
                 row += 1
                 debit = self.env['account.invoice'].sudo().search([('date_invoice', '>', self.from_date),
