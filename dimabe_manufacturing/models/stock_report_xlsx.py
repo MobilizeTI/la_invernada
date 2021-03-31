@@ -79,6 +79,7 @@ class StockReportXlsx(models.TransientModel):
         text_format = workbook.add_format({
             'text_wrap': True
         })
+        number_format = workbook.add_format({'num_format': '#,##0.00'})
         sheet = workbook.add_worksheet('Informe de Materia Prima')
         row = 0
         col = 0
@@ -102,14 +103,14 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, lot.name)
             col += 1
-            sheet.write(row, col, str(round(
+            sheet.write_number(row, col, str(round(
                 sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
                     'calculated_weight')),
                 2)) if not lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
                 'display_weight') else str(round(
                 sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
                     'display_weight')),
-                2)))
+                2)),number_format)
             col += 1
             sheet.write(row, col, lot.product_id.get_variety())
             col += 1
@@ -124,7 +125,7 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, lot.harvest)
             col += 1
-            sheet.write(row, col, lot.reception_weight)
+            sheet.write(row, col, lot.reception_weight,number_format)
             col += 1
             sheet.write(row, col, lot.create_date.strftime("%d-%m-%Y %H:%M:%S"))
             col += 1
@@ -158,6 +159,7 @@ class StockReportXlsx(models.TransientModel):
         text_format = workbook.add_format({
             'text_wrap': True
         })
+        number_format = workbook.add_format({'num_format': '#,##0.00'})
         row = 0
         col = 0
         titles = [(50.56, 'Productor'), (15.33, 'Serie'), (13.22, 'Kilos Producidos'), (13.22, 'Kilos Disponible'),
@@ -182,9 +184,9 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, serial.serial_number)
             col += 1
-            sheet.write_number(row, col, serial.display_weight)
+            sheet.write_number(row, col, serial.display_weight,number_format)
             col += 1
-            sheet.write(row, col, serial.available_weight)
+            sheet.write(row, col, serial.available_weight,number_format)
             col += 1
             sheet.write(row, col, serial.product_id.get_variety())
             col += 1
