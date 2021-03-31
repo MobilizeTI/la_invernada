@@ -13,7 +13,9 @@
                     <field name="dispatch"/>
                 </xpath>
                 <xpath expr="//field[@name='currency_id']" position="after">
-                    <field name="allow_currency_conversion"/>
+                    <group>
+                        <field name="allow_currency_conversion"/>
+                    </group>
                 </xpath>
                 <xpath expr="//field[@name='cash_rounding_id']" position="after">
                     <field name="order_to_add_ids" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
@@ -255,7 +257,9 @@
                     <field name="exempt"/>
                 </xpath>
                 <xpath expr="//field[@name='currency_id']" position="after">
-                    <field name="allow_currency_conversion"/>
+                    <group>
+                        <field name="allow_currency_conversion"/>
+                    </group>
                 </xpath>
                 <data>
                     <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
