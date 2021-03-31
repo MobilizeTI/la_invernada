@@ -435,6 +435,10 @@ class StockPicking(models.Model):
                     'res_id': wiz.id,
                     'context': self.env.context
                 }
+            for serial in self.packing_list_ids:
+                serial.sudo().write({
+                    'consumed':True
+                })
             return super(StockPicking, self).button_validate()
         return super(StockPicking, self).button_validate()
 

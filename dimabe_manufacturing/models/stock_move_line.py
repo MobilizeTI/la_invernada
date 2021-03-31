@@ -31,7 +31,7 @@ class StockMoveLine(models.Model):
     def _action_done(self):
         for ml in self:
             try:
-                if ml.location_id.usage == 'production':
+                if ml.location_id.usage == 'production' and ml.location_dest_id.usage == 'production':
                     ml.write({
                         'state': 'done'
                     })
