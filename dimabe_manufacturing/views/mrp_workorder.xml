@@ -310,7 +310,7 @@
                     <group>
                         <field name="confirmed_serial" attrs="{'readonly': [('state','=','done')]}"
                                style="margin:0 auto;"
-                               autofocus="1" accesskey="x" onclick="console.log('Hola');" nolabel="1"/>
+                               autofocus="autofocus" nolabel="1"/>
                         <br/>
                         <div tabindex="0">
                             <button type="object" style="right:10px;" class="oe_button oe_form_button oe_highlight" context="{'workorder_id':id}" string="Ingresar" name="confirmed_keyboard"/>
