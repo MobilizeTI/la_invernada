@@ -27,7 +27,7 @@ class StockReportXlsx(models.TransientModel):
         elif self.stock_selection == 'calibrate':
             dict_data = self.generate_excel_serial_report(
                 [('product_id.default_code', 'like', 'PSE006'), ('product_id.name', 'not like', 'Vana'),
-                 ('product_id.name', 'not like', 'Descarte'),('harvest_filter', '=', self.year)], "Producto Calibrado")
+                 ('product_id.name', 'not like', 'Descarte'), ('harvest_filter', '=', self.year)], "Producto Calibrado")
         elif self.stock_selection == 'split':
             dict_data = self.generate_excel_serial_report(
                 [('product_id.categ_id.name', 'in',
@@ -103,14 +103,9 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, lot.name)
             col += 1
-            sheet.write_number(row, col, str(round(
-                sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
-                    'calculated_weight')),
-                2)) if not lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
-                'display_weight') else str(round(
-                sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
-                    'display_weight')),
-                2)),number_format)
+            sheet.write_number(row, col, float(
+                sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight'))),
+                               number_format)
             col += 1
             sheet.write(row, col, lot.product_id.get_variety())
             col += 1
@@ -125,7 +120,7 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, lot.harvest)
             col += 1
-            sheet.write(row, col, lot.reception_weight,number_format)
+            sheet.write(row, col, lot.reception_weight, number_format)
             col += 1
             sheet.write(row, col, lot.create_date.strftime("%d-%m-%Y %H:%M:%S"))
             col += 1
@@ -184,9 +179,9 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, serial.serial_number)
             col += 1
-            sheet.write_number(row, col, serial.display_weight,number_format)
+            sheet.write_number(row, col, serial.display_weight, number_format)
             col += 1
-            sheet.write(row, col, serial.available_weight,number_format)
+            sheet.write(row, col, serial.available_weight, number_format)
             col += 1
             sheet.write(row, col, serial.product_id.get_variety())
             col += 1
