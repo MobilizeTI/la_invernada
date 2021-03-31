@@ -12,7 +12,7 @@
                     <field name="order_name"/>
                     <field name="dispatch"/>
                 </xpath>
-                <xpath expr="//field[@name='currency_id']" position="after">
+                <xpath expr="//field[@name='exchange_rate']" position="after">
                     <group>
                         <field name="allow_currency_conversion"/>
                     </group>
@@ -256,7 +256,7 @@
                 <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='invoice_line_tax_ids']" position="after">
                     <field name="exempt"/>
                 </xpath>
-                <xpath expr="//field[@name='currency_id']" position="after">
+                <xpath expr="//field[@name='exchange_rate']" position="after">
                     <group>
                         <field name="allow_currency_conversion"/>
                     </group>
