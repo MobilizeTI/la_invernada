@@ -126,7 +126,7 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, lot.reception_weight)
             col += 1
-            sheet.write(row, col, lot.create_date.strftime("%d-%m-%Y %H:%M:%S"))
+            sheet.write_datetime(row, col, lot.create_date.strftime("%d-%m-%Y %H:%M:%S"))
             col += 1
             sheet.write(row, col, len(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed)))
             col += 1
@@ -201,7 +201,7 @@ class StockReportXlsx(models.TransientModel):
             else:
                 sheet.write(row, col, 'Disponible')
             col += 1
-            sheet.write(row, col, serial.packaging_date.strftime('%d-%m-%Y'))
+            sheet.write_datetime(row, col, serial.packaging_date.strftime('%d-%m-%Y'))
             col += 1
             if serial.client_or_quality:
                 sheet.write(row, col, serial.client_or_quality)
