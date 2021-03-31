@@ -641,7 +641,7 @@ class AccountInvoice(models.Model):
         value_exchange = 1
 
         if (self.env.user.company_id.id == 1 and self.dte_type_id.code != "110") or self.env.user.company_id.id == 3 :
-            if allow_currency_conversion:
+            if self.allow_currency_conversion:
                 value_exchange = self.exchange_rate
 
         for item in invoice_lines:
