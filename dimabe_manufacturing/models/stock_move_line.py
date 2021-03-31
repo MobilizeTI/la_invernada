@@ -25,8 +25,8 @@ class StockMoveLine(models.Model):
 
     def _action_done(self):
         for item in self:
-            if item.location_dest_id.id == 7:
-                item.update({
+            if item.location_dest_id.id == 7 or item.location_id.id == 7:
+                item.write({
                     'state': 'done'
                 })
             else:
