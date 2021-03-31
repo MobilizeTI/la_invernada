@@ -8,9 +8,6 @@
                 <field name="partner_bank_id" position="after">
                     <field name="exchange_rate" />
                 </field>
-                <xpath expr="//field[@name='exchange_rate']" position="after">
-                    <field name="allow_currency_conversion"/>
-                </xpath>
             </field>
         </record>
 
@@ -22,9 +19,6 @@
                 <field name="currency_id" position="after">
                     <field name="exchange_rate" />
                 </field>
-                <xpath expr="//field[@name='exchange_rate']" position="after">
-                    <field name="allow_currency_conversion"/>
-                </xpath>
             </field>
         </record>
        
