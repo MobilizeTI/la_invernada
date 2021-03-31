@@ -267,8 +267,8 @@ class AccountInvoice(models.Model):
     allow_currency_conversion = fields.Boolean('¿Desea Conversión de valores a CLP?', default=False)
     # Emarque Method
 
-    @api.onchage('currency_id')
-    def onchage_currency(self):
+    @api.onchange('currency_id')
+    def onchange_currency(self):
         self.allow_currency_conversion = False
 
     @api.model
