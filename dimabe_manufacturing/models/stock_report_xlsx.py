@@ -74,7 +74,7 @@ class StockReportXlsx(models.TransientModel):
         return action
 
     def generate_excel_raw_report(self, list_condition, type_product):
-        file_name = 'C:/Users/fabia/Documents/Proyectoz/la_invernada/temp_report.xlsx'
+        file_name = 'temp_report.xlsx'
         workbook = xlsxwriter.Workbook(file_name)
         text_format = workbook.add_format({
             'text_wrap': True
@@ -153,12 +153,13 @@ class StockReportXlsx(models.TransientModel):
         return {'file_name': report_name, 'base64': file_base64}
 
     def generate_excel_serial_report(self, list_condition, type_product):
-        file_name = 'temp_name.xlsx'
+        file_name = 'temp_report.xlsx'
         workbook = xlsxwriter.Workbook(file_name)
         sheet = workbook.add_worksheet(f"Informe de {type_product}")
         text_format = workbook.add_format({
             'text_wrap': True
         })
+        date_format = workbook.add_format({'num_format': 'dd/mm/yyyy'})
         row = 0
         col = 0
         titles = [(50.56, 'Productor'), (15.33, 'Serie'), (13.22, 'Kilos Producidos'), (13.22, 'Kilos Disponible'),
@@ -185,8 +186,7 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write_number(row, col, serial.display_weight)
             col += 1
-            if serial.consumed:
-                sheet.write(row, col, serial.available_weight)
+            sheet.write(row, col, serial.available_weight)
             col += 1
             sheet.write(row, col, serial.product_id.get_variety())
             col += 1
@@ -202,7 +202,7 @@ class StockReportXlsx(models.TransientModel):
             else:
                 sheet.write(row, col, 'Disponible')
             col += 1
-            sheet.write_datetime(row, col, serial.packaging_date.strftime('%d-%m-%Y'))
+            sheet.write_datetime(row, col, serial.packaging_date.strftime('%d-%m-%Y'),date_format)
             col += 1
             if serial.client_or_quality:
                 sheet.write(row, col, serial.client_or_quality)
@@ -211,7 +211,7 @@ class StockReportXlsx(models.TransientModel):
                 sheet.write(row, col, serial.workcenter_send_id.display_name)
             col += 1
             if serial.delivered_date:
-                sheet.write(row, col, serial.delivered_date.strftime('%d-%m-%Y'))
+                sheet.write(row, col, serial.delivered_date.strftime('%d-%m-%Y'),date_format)
             col += 1
             if serial.physical_location:
                 sheet.write(row, col, serial.physical_location, text_format)
