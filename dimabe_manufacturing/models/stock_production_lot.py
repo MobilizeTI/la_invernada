@@ -890,6 +890,14 @@ class StockProductionLot(models.Model):
                         lambda x: not x.reserved_to_production_id and not x.consumed).mapped('display_weight')),
                     'location_id': location_id
                 })
+        else:
+            quant = self.env['stock.quant'].sudo().search(
+                [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'), ('location_id', '=', location_id)])
+            quant.write({
+                'reserved_quantity': 0,
+                'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
+                    lambda x: not x.reserved_to_production_id and not x.consumed).mapped('display_weight'))
+            })
 
     def update_kg(self, lot_id):
         lot = self.env['stock.production.lot'].search([('id', '=', lot_id)])

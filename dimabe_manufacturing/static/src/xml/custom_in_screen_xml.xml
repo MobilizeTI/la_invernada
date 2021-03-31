@@ -2,7 +2,7 @@
 <odoo>
     <template id="assets_backend" name="js assets" inherit_id="web.assets_backend">
         <xpath expr="." position="inside">
-            <script
+            <script t-if="widget.modelName == 'mrp.workorder'"
                     type="text/javascript"
                     src="../js/custom_in_screen.js">
             </script>
