@@ -202,7 +202,7 @@ class StockReportXlsx(models.TransientModel):
             else:
                 sheet.write(row, col, 'Disponible')
             col += 1
-            sheet.write_datetime(row, col, serial.packaging_date.strftime('%d-%m-%Y'),date_format)
+            sheet.write_datetime(row, col, serial.packaging_date,date_format)
             col += 1
             if serial.client_or_quality:
                 sheet.write(row, col, serial.client_or_quality)
@@ -211,7 +211,7 @@ class StockReportXlsx(models.TransientModel):
                 sheet.write(row, col, serial.workcenter_send_id.display_name)
             col += 1
             if serial.delivered_date:
-                sheet.write(row, col, serial.delivered_date.strftime('%d-%m-%Y'),date_format)
+                sheet.write(row, col, serial.delivered_date,date_format)
             col += 1
             if serial.physical_location:
                 sheet.write(row, col, serial.physical_location, text_format)
