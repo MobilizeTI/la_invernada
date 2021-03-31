@@ -377,6 +377,7 @@ class MrpWorkorder(models.Model):
             'res_model': 'mrp.workorder',
             'view_id': False,
             'type': 'ir.actions.act_window',
+            'context': {'form_view_initial_mode': 'edit', 'force_detailed_view': 'true'},
             'views': [
                 [self.env.ref('dimabe_manufacturing.mrp_workorder_process_view').id, 'form']],
             'res_id': self.id,
@@ -513,9 +514,6 @@ class MrpWorkorder(models.Model):
             'confirmed_serial': None,
             'current_quality_check_id': check.id
         })
-
-    def on_barcode_scanned(self, barcode):
-        self.process_serial(barcode)
 
     @api.multi
     def validate_to_done(self):

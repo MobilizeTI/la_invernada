@@ -75,7 +75,7 @@ class ProcessReport(models.TransientModel):
         return action
 
     def generate_xlsx_process(self, query, process_name):
-        file_name = 'temp_report.xlsx'
+        file_name = 'C:/Users/fabia/Documents/Proyectoz/la_invernada/temp_report.xlsx'
         workbook = xlsxwriter.Workbook(file_name)
         text_format = workbook.add_format({
             'text_wrap': True
@@ -103,6 +103,7 @@ class ProcessReport(models.TransientModel):
             serial_out = self.env['stock.production.lot.serial'].search(
                 [('production_id.id','=',process.production_id.id)]
             )
+            row_final = 0
             for serial in serial_in:
                 sheet.write(row, col, process.production_id.name, text_format)
                 col += 1
@@ -127,7 +128,7 @@ class ProcessReport(models.TransientModel):
                     row_in = row
                 col = 0
             row = 1
-            col_out = 8
+            col_out = 9
             for serial in serial_out:
                 sheet.write(row, col_out, process.production_id.name, text_format)
                 col_out += 1
@@ -135,19 +136,21 @@ class ProcessReport(models.TransientModel):
                 col_out += 1
                 sheet.write(row, col_out, serial.packaging_date.strftime('%d-%m-%Y'), text_format)
                 col_out += 1
-                sheet.write(row, col_out, serial.stock_production_lot_id.name, text_format)
-                col_out += 1
-                sheet.write(row, col_out, serial.serial_number, text_format)
-                col_out += 1
-                sheet.write(row, col_out, serial.producer_id.display_name, text_format)
+                sheet.write(row, col_out, serial.producer_id.name, text_format)
                 col_out += 1
                 sheet.write(row, col_out, serial.product_id.display_name, text_format)
                 col_out += 1
-                sheet.write(row, col_out, serial.product_id.get_variety())
+                sheet.write(row, col_out, serial.product_id.get_variety(), text_format)
                 col_out += 1
-                sheet.write(row, col_out, serial.real_weight)
+                sheet.write(row, col_out, serial.pallet_id.name, text_format)
+                col_out += 1
+                sheet.write(row, col_out, serial.stock_production_lot_id.name,text_format)
+                col_out += 1
+                sheet.write(row, col_out, serial.serial_number,text_format)
+                col_out += 1
+                sheet.write(row,col_out, serial.display_weight)
                 row += 1
-                col_out = 8
+                col_out = 9
 
 
 

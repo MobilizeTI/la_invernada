@@ -2,9 +2,9 @@
 <odoo>
     <template id="assets_backend" name="js assets" inherit_id="web.assets_backend">
         <xpath expr="." position="inside">
-            <script t-if="widget.modelName == 'mrp.workorder'"
+            <script
                     type="text/javascript"
-                    src="../js/custom_in_screen.js">
+                    src="/dimabe_manufacturing/static/src/js/custom_in_screen.js">
             </script>
 
         </xpath>

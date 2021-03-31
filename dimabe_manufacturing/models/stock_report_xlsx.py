@@ -74,11 +74,12 @@ class StockReportXlsx(models.TransientModel):
         return action
 
     def generate_excel_raw_report(self, list_condition, type_product):
-        file_name = 'temp_report.xlsx'
+        file_name = 'C:/Users/fabia/Documents/Proyectoz/la_invernada/temp_report.xlsx'
         workbook = xlsxwriter.Workbook(file_name)
         text_format = workbook.add_format({
             'text_wrap': True
         })
+        date_format = workbook.add_format({'num_format': 'dd/mm/yyyy hh:mm:ss'})
         sheet = workbook.add_worksheet('Informe de Materia Prima')
         row = 0
         col = 0
@@ -95,7 +96,6 @@ class StockReportXlsx(models.TransientModel):
 
         lots = self.env['stock.production.lot'].sudo().search(list_condition)
         for lot in lots:
-            create_date = datetime(lot.create_date)
             if lot.producer_id:
                 sheet.write(row, col, lot.producer_id.display_name)
             else:
@@ -127,7 +127,7 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, lot.reception_weight)
             col += 1
-            sheet.write_datetime(row, col, create_date)
+            sheet.write_datetime(row, col, lot.create_date,date_format)
             col += 1
             sheet.write(row, col, len(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed)))
             col += 1

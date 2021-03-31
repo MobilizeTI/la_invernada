@@ -167,8 +167,8 @@ class StockProductionLotSerial(models.Model):
 
     delivered_date = fields.Date('Fecha de envio a:')
 
-    available_weight = fields.Float('Kilos disponibles',compute="compute_available_weight")
-    
+    available_weight = fields.Float('Kilos disponibles', compute="compute_available_weight")
+
     to_delete = fields.Boolean('Para Eliminar')
 
     @api.multi
@@ -359,7 +359,9 @@ class StockProductionLotSerial(models.Model):
             if work_order.production_id:
                 production = work_order.production_id[0]
         work_order.sudo().write({
-            'out_weight':sum(res.stock_production_lot_id.stock_production_lot_serial_ids.mapped('display_weight')),
+            'out_weight': sum(res.stock_production_lot_id.stock_production_lot_serial_ids.mapped('display_weight')),
+            'pt_out_weight': sum(res.stock_production_lot_id.stock_production_lot_serial_ids.filtered(
+                lambda a: a.product_id.categ_id.parent_id.name == 'Producto Terminado').mapped('display_weight'))
         })
         if production:
             res.production_id = production.id
@@ -426,9 +428,9 @@ class StockProductionLotSerial(models.Model):
         user_logon = self.env.user
         if user_logon not in group.users:
             raise models.ValidationError("Opcion no disponible con sus permisos de usuario")
-        lot = self.env['stock.production.lot'].search([('id','=',self.stock_production_lot_id.id)])
+        lot = self.env['stock.production.lot'].search([('id', '=', self.stock_production_lot_id.id)])
         if self.production_id:
-            production = self.env['mrp.production'].search([('id','=',self.production_id.id)])
+            production = self.env['mrp.production'].search([('id', '=', self.production_id.id)])
         res = super(StockProductionLotSerial, self).unlink()
         lot.update_kg(lot.id)
         lot.update_stock_quant(production.location_dest_id.id)
@@ -643,11 +645,12 @@ class StockProductionLotSerial(models.Model):
             workorder_id = self.env.context['workorder_id']
             workorder = self.env['mrp.workorder'].search([('id', '=', workorder_id)])
             production = workorder.production_id
-            self.write({
+            self.sudo().write({
                 'reserved_to_production_id': None,
-                'consumed': False
+                'consumed': False,
+                'used_in_workorder_id': None
             })
-            workorder.write({
+            workorder.sudo().write({
                 'in_weight': sum(workorder.potential_serial_planned_ids.mapped('display_weight'))
             })
             self.stock_production_lot_id.update_stock_quant(production.location_src_id.id)
@@ -665,5 +668,3 @@ class StockProductionLotSerial(models.Model):
                         'qty_done': 0
                     })
                     line.unlink()
-
-

@@ -66,11 +66,11 @@
                   <span t-esc="lot_serial_id.harvest"/>
                 </div>
                 <div>
-                  PACKAGING DATE (FECHA PRODUCCIÓN):
+                  PACKAGING DATE (FECHA DE ENVASADO):
                   <span t-esc="lot_serial_id.packaging_date"/>
                 </div>
                 <div>
-                  BEST BEFORE DATE (CONSUMIR ANTES DE):
+                  BEST BEFORE DATE (CONSUMIR PREFERENTEMENTE ANTES DE):
                   <span t-esc="lot_serial_id.best_before_date"/>
                 </div>
                 <div>
