@@ -264,7 +264,13 @@ class AccountInvoice(models.Model):
 
     transport_to_port = fields.Many2one('res.partner', string="Transporte a Puerto", domain="[('supplier','=',True)]")
 
+    allow_currency_conversion = fields.Boolean('¿Desea Conversión de valores a CLP?', default=False)
     # Emarque Method
+
+    @api.onchage('currency_id')
+    def onchage_currency(self):
+        self.allow_currency_conversion = False
+
     @api.model
     @api.onchange('etd')
     @api.depends('etd')
@@ -634,8 +640,9 @@ class AccountInvoice(models.Model):
 
         value_exchange = 1
 
-        if (self.env.user.company_id.id == 1 and self.dte_type_id.code != "110") or self.env.user.company_id.id == 3:
-            value_exchange = self.exchange_rate
+        if (self.env.user.company_id.id == 1 and self.dte_type_id.code != "110") or self.env.user.company_id.id == 3 :
+            if allow_currency_conversion:
+                value_exchange = self.exchange_rate
 
         for item in invoice_lines:
             haveExempt = False
