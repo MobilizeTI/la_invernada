@@ -7,6 +7,7 @@
             <field name="arch" type="xml">
                 <field name="partner_bank_id" position="after">
                     <field name="exchange_rate" />
+                    <field name="allow_currency_conversion"/>
                 </field>
             </field>
         </record>
@@ -18,6 +19,7 @@
             <field name="arch" type="xml">
                 <field name="currency_id" position="after">
                     <field name="exchange_rate" />
+                    <field name="allow_currency_conversion"/>
                 </field>
             </field>
         </record>
