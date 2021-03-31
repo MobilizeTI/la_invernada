@@ -49,7 +49,9 @@ class AccountInvoiceXlsx(models.Model):
                 region = self.env['region.address'].search([('id', '=', 1)])
                 titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', 'Nombre', '#', 'EXENTO', 'NETO', 'IVA',
                           'IVA NO RECUPERABLE']
-                invoices_get_tax = self.env['account.invoice'].sudo().search([('dte_type_id', '!=', None)])
+                invoices_get_tax = self.env['account.invoice'].sudo().search(
+                    [('dte_type_id', '!=', None), ('company_id', '=', self.company_get_id.id),
+                     ('date_invoice', '>=', self.from_date), ('date_invoice', '<=', self.to_date)])
                 taxes_title = list(
                     dict.fromkeys(invoices_get_tax.mapped('tax_line_ids').mapped('tax_id').mapped('name')))
                 for tax in taxes_title:
@@ -167,7 +169,8 @@ class AccountInvoiceXlsx(models.Model):
                 region = self.env['region.address'].search([('id', '=', 1)])
                 titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', 'Nombre', '#', 'EXENTO', 'NETO', 'IVA',
                           'IVA NO RECUPERABLE']
-                invoices_get_tax = self.env['account.invoice'].sudo().search([('dte_type_id', '!=', None),('company_id','=',self.company_get_id.id)])
+                invoices_get_tax = self.env['account.invoice'].sudo().search(
+                    [('dte_type_id', '!=', None), ('company_id', '=', self.company_get_id.id)])
                 taxes_title = list(
                     dict.fromkeys(invoices_get_tax.mapped('tax_line_ids').mapped('tax_id').mapped('name')))
                 for tax in taxes_title:
@@ -234,7 +237,8 @@ class AccountInvoiceXlsx(models.Model):
                 sheet = data_credit['sheet']
                 row = data_credit['row']
                 row += 2
-                sheet.merge_range(row, col, row, 5, 'Nota de Debitos Ventas ELECTRONICA (NOTA DE DEBITO VENTAS ELECTRONICA)',
+                sheet.merge_range(row, col, row, 5,
+                                  'Nota de Debitos Ventas ELECTRONICA (NOTA DE DEBITO VENTAS ELECTRONICA)',
                                   formats['title'])
                 row += 1
                 debit = self.env['account.invoice'].sudo().search([('date_invoice', '>=', self.from_date),
