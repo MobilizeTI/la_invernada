@@ -11,8 +11,8 @@
                     <field name="to_date" required="1"/>
                 </group>
                 <footer>
-                    <button type="object" string="Generar Libro de Compra" name="generate_purchase_book"/>
-                    <button type="object" string="Generar Libro de Venta" name="generate_sale_book"/>
+                    <button type="object" string="Generar Libro de Compra" name="generate_sale_book"/>
+                    <button type="object" string="Generar Libro de Venta" name="generate_purchase_book"/>
                 </footer>
             </form>
         </field>
