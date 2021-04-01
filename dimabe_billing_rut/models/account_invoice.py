@@ -638,11 +638,11 @@ class AccountInvoice(models.Model):
         else:
             invoice_lines = self.invoice_line_ids
 
-        value_exchange = 1
+        #value_exchange = 1
 
-        if (self.env.user.company_id.id == 1 and self.dte_type_id.code != "110") or self.env.user.company_id.id == 3 :
-            if self.allow_currency_conversion:
-                value_exchange = self.exchange_rate
+        #if (self.env.user.company_id.id == 1 and self.dte_type_id.code != "110") or self.env.user.company_id.id == 3 :
+        #    if self.allow_currency_conversion:
+        #        value_exchange = self.exchange_rate
 
         for item in invoice_lines:
             haveExempt = False
@@ -687,10 +687,10 @@ class AccountInvoice(models.Model):
                             "ProductName": item.name,
                             "ProductQuantity": str(item.quantity),
                             "UnitOfMeasure": str(item.uom_id.name),
-                            "ProductPrice": str(item.price_unit * value_exchange),
+                            "ProductPrice": str(item.price_unit),#str(item.price_unit * value_exchange),
                             "ProductDiscountPercent": "0",
                             "DiscountAmount": "0",
-                            "Amount": str(self.roundclp(amount_subtotal * value_exchange)),
+                            "Amount": str(amount_subtotal),#str(self.roundclp(amount_subtotal * value_exchange)),
                             "HaveExempt": haveExempt,
                             "TypeOfExemptEnum": typeOfExemptEnum
                         }
@@ -725,10 +725,10 @@ class AccountInvoice(models.Model):
                         "ProductName": item.name,
                         "ProductQuantity": str(item.quantity),
                         "UnitOfMeasure": str(item.uom_id.name),
-                        "ProductPrice": str(product_price * value_exchange),
+                        "ProductPrice": str(product_price),#str(product_price * value_exchange),
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(self.roundclp(amount_subtotal * value_exchange)),
+                        "Amount": str(amount_subtotal),#str(self.roundclp(amount_subtotal * value_exchange)),
                         "CodeTaxAditional": other_tax
                     }
                 )
@@ -828,12 +828,12 @@ class AccountInvoice(models.Model):
                     if tax.id == 1 or tax.id == 2:
                         tax_rate_amount += (item.prince_subtotal * tax.amount) / 100
             invoice['total'] = {
-                "netAmount": netAmount,#str(self.roundclp(netAmount * value_exchange)),
-                "exemptAmount": exemptAmount,#str(self.roundclp(exemptAmount * value_exchange)),
+                "netAmount": str(netAmount),#str(self.roundclp(netAmount * value_exchange)),
+                "exemptAmount": str(exemptAmount),#str(self.roundclp(exemptAmount * value_exchange)),
                 "taxRate": "19",
-                "taxtRateAmount":tax_rate_amount ,# str(self.roundclp(tax_rate_amount * value_exchange)),
+                "taxtRateAmount": str(tax_rate_amount) ,# str(self.roundclp(tax_rate_amount * value_exchange)),
                 # str(self.roundclp(self.amount_tax * value_exchange)),
-                "totalAmount": total_amount,# str(self.roundclp(total_amount * value_exchange))
+                "totalAmount": str(total_amount),# str(self.roundclp(total_amount * value_exchange))
             }
 
             # consultar si solo se envian en la factura los impuestos de tipo retencion
@@ -849,7 +849,7 @@ class AccountInvoice(models.Model):
                         invoice['total']['taxToRetention'] = {
                             "taxType": str(t.sii_code),
                             "taxRate": str(int(t.amount)),
-                            "taxAmount": tax_amount,# str(self.roundclp(tax_amount * value_exchange))
+                            "taxAmount": str(tax_amount),# str(self.roundclp(tax_amount * value_exchange))
                         }
                     else:
                         raise models.ValidationError(
