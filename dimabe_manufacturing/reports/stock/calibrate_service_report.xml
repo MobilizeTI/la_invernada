@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_stock_calibrate_report_tree" model="ir.ui.view">
+            <field name="name">Informe de Producto Calibrado Servicio</field>
+            <field name="model">stock.production.lot.serial</field>
+            <field name="priority">20</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" delete="false" create="false">
+                    <field name="producer_id" widget="many2onebutton" string="Productor" readonly="1"/>
+                    <field name="name" widget="many2onebutton" string="Serie" readonly="1"/>
+                    <field name="display_weight" string="Kilos producidos" readonly="1"/>
+                    <field name="available_weight" string="Kilos disponibles" readonly="1"/>
+                    <field name="product_variety" string="Variedad" readonly="1"/>
+                    <field name="product_caliber" string="Calibre" readonly="1"/>
+                    <field name="location_id" widget="many2onebutton" string="Ubicacion" readonly="1"/>
+                    <field name="product_id" widget="many2onebutton" string="Producto" readonly="1"/>
+                    <field name="consumed" string="Series Disponible" readonly="1"/>
+                    <field name="create_date" string="Fecha de Creacion" readonly="1"/>
+                    <field name="client_or_quality" />
+                    <field name="workcenter_send_id"/>
+                    <field name="delivered_date"/>
+                    <field name="physical_location"/>
+                    <field name="observations" />
+                </tree>
+            </field>
+        </record>
+        <record id="dimabe_manufacturing.stock_calibrate_report" model="ir.actions.act_window">
+            <field name="name">Informe de Producto Calibrado Servicio</field>
+            <field name="res_model">stock.production.lot.serial</field>
+            <field name="view_mode">tree,graph,form,pivot</field>
+            <field name="view_id" ref="view_stock_calibrate_report_tree"/>
+            <field name="domain">
+                [('product_id.default_code','like','PSES006'),('product_id.name','not like','Vana'),('product_id.name','not like','Descarte')]
+            </field>
+        </record>
+        <menuitem id="stock_report_calibrate_service_tree_menu"
+                  action="dimabe_manufacturing.stock_calibrate_report"
+                  name="Informe de Existencia Producto Calibrado Servicio"
+                  parent="stock_report_menu"
+        />
+    </data>
+</odoo>
