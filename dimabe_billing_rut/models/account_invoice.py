@@ -271,10 +271,6 @@ class AccountInvoice(models.Model):
     def onchange_currency(self):
         self.allow_currency_conversion = False
 
-    @api.onchange('amount_total')
-    def onchange_amount_total(self):
-        if self.allow_currency_conversion and self.currency_id.name == 'CLP':
-            self.amount_total = self.roundclp(self.amount_total * self.exchange_rate)
     @api.model
     @api.onchange('etd')
     @api.depends('etd')
