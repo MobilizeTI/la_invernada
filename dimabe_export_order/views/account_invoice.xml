@@ -8,7 +8,7 @@
                 <xpath expr="//field[@name='bl_number']" position="after">
                     <field name="total_container"  attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                 </xpath>
-                <xpath expr="//field[@name='tax_line_ids']" position="after">
+                <xpath expr="//field[@name='tax_line_ids']" position="after" attrs="{'invisible': [('dte_code', '!=', '110')]}">
                     <group string="Información para Instructivos">
                         <group>
                             <field name="consignee_id" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
@@ -46,12 +46,12 @@
                     </group>
                     <group>
                         <group>
-                            <field name="port_terminal_origin"/>
-                            <field name="shipping_date_to_customer"/>
+                            <field name="port_terminal_origin" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                            <field name="shipping_date_to_customer" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                         </group>
                         <group>
-                            <field name="quality_status"/>
-                            <field name="quality_remarks"/>
+                            <field name="quality_status" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
+                            <field name="quality_remarks" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                         </group>
                     </group>
                 </xpath>
