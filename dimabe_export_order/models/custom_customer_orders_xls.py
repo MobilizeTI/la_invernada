@@ -44,16 +44,44 @@ class CustomCustomerOrdersXls(models.TransientModel):
             
             
             #bold_format = workbook.add_format({'bold':True})
-            orders = self.env['sale.order'].search([('confirmation_date','>=',from_date),('confirmation_date','<=',to_date)])
+            orders = self.env['sale.order'].sudo.search([('confirmation_date','>=',from_date),('confirmation_date','<=',to_date)])
             #shipping_numbers = self.env['account.invoice'].search([('departure_date.strftime("%Y")','=',str(self.for_year))])
             #self.set_title(sheet, bold_format)
             
             for order in orders:
+                stock_picking_ids = self.env['stock.picking'].sudo.search([('sale_id','=',order.id)])
+                for stock in stock_picking_ids:
+                    sheet.write(row, col, stock.shipping_number)
+                    col += 1
+                    sheet.write(row, col, stock.departure_date)
+                    col += 1
+                    sheet.write(row, col, stock.etd_week)
+                    col += 1
+                    sheet.write(row, col, stock.required_loading_date)
+                    col += 1
+                    sheet.write(row, col, stock.required_loading_week)
+                    col += 1
+                    sheet.write(row, col, stock.patner_id.name)
+                    col += 1
+                    sheet.write(row, col, stock.patner_id.country_id.name)
+                    col += 1
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    sheet.write(row, col, order.name)
+                    col += 1
+                    sheet.write(row, col, stock.name)
+                    col += 1
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    sheet.write(row, col, "pendiente")
+                    col += 1
+                    sheet.write(row, col, "pendiente")
 
-                sheet.write(row, col, "test")
-                col += 1
-                sheet.write(row, col, order.name)
-                row += 1
+
+                    row += 1
+                    col = 0
 
             workbook.close()
             with open(file_name, "rb") as file:
