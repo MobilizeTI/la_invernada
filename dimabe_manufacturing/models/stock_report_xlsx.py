@@ -105,32 +105,37 @@ class StockReportXlsx(models.TransientModel):
         titles = [(1, 'Productor:'), (2, 'Serie:'), (3, 'Kilos Disponibles:'), (4, 'Variedad:'), (5, 'Calibre:'),
                   (6, 'Ubicacion Sistema:'), (7, 'Producto:'), (8, 'Serie Disponible:'), (9, 'Fecha de Produccion:'),
                   (10, 'Cliente o Calidad:'), (11, 'Enviado a proceso:'), (12, 'Fecha de Envio:'),
-                  (13, 'Ubicacion Fisica:'),(14,'Observacion')]
+                  (13, 'Ubicacion Fisica:'), (14, 'Observacion')]
         for title in titles:
             sheet.write(row, col, title[1])
             col += 1
         col = 0
         row += 1
-        serials = self.env['stock.production.lot.serial'].sudo().search([('product_id.default_code','like','PSE006')])
+        serials = self.env['stock.production.lot.serial'].sudo().search([('product_id.default_code', 'like', 'PSE006')])
         for serial in serials:
-            sheet.write(row,col,serial.producer_id.display_name)
+            sheet.write(row, col, serial.producer_id.display_name)
             col += 1
-            sheet.write(row,col,serial.serial_number)
+            sheet.write(row, col, serial.serial_number)
             col += 1
-            sheet.write_number(row,col,serial.display_weight)
+            sheet.write_number(row, col, serial.display_weight)
             col += 1
-            sheet.write(row,col,serial.product_id.get_variety())
+            sheet.write(row, col, serial.product_id.get_variety())
             col += 1
-            sheet.write(row,col,serial.product_id.get_calibers())
+            sheet.write(row, col, serial.product_id.get_calibers())
             col += 1
-            sheet.write(row,col,serial.stock_production_lot_id.location_id.display_name)
+            sheet.write(row, col, serial.stock_production_lot_id.location_id.display_name)
             col += 1
-            sheet.write(row,col,serial.product_id.display_name)
+            sheet.write(row, col, serial.product_id.display_name)
             col += 1
             sheet.write(row, col, serial.consumed)
             col += 1
-            sheet.write(row,col,serial.packaging_date.strftime('%d-%m-%Y'))
+            sheet.write(row, col, serial.packaging_date.strftime('%d-%m-%Y'))
             col += 1
+            sheet.write(row, col, serial.client_or_quality)
+            col += 1
+            sheet.write(row, col, serial.workcenter_send_id.display_name)
+            col += 1
+            sheet.write(row, col, serial.delivered_date.strftime('%d-%m-%Y'))
             row += 1
             col = 0
         workbook.close()
