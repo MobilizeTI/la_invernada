@@ -829,7 +829,7 @@ class AccountInvoice(models.Model):
             tax_rate_amount = 0
             for item in self.invoice_line_ids:
                 for tax in item.invoice_line_tax_ids:
-                    if tax.id == 1 or tax.id == 2:
+                    if 'IVA' in tax.name:
                         tax_rate_amount += (item.prince_subtotal * tax.amount) / 100
             invoice['total'] = {
                 "netAmount": str(self.roundclp(netAmount)),#str(self.roundclp(netAmount * value_exchange)),
