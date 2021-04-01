@@ -209,7 +209,16 @@ class MrpProduction(models.Model):
                     lambda a: a.product_id == move.product_id
                 ).mapped('product_qty'))
 
-
+    @api.multi
+    def button_mark_done(self):
+        self.calculate_done()
+        serial = self.env['stock.production.lot.serial'].search([('reserved_to_production_id.id', '=', self.id)])
+        for move in self.move_raw_ids:
+            for line in move.active_move_line_ids:
+                if line.lot_id not in serial.mapped('stock_production_lot_id'):
+                    self.fix_reserved(line)
+        res = super(MrpProduction, self).button_mark_done()
+        return res
 
     @api.model
     def create(self, values_list):
@@ -219,23 +228,8 @@ class MrpProduction(models.Model):
         })
         return res
 
-    @api.multi
-    def fix_reserved(self):
-        for item in self:
-            group = self.env['res.groups'].search([('name', '=', 'Limpiar')])
-            user_logon = self.env.user
-            if user_logon not in group.users:
-                raise models.ValidationError("Opcion no disponible con sus permisos de usuario")
-            item.move_raw_ids.update({
-                'is_done': False,
-                'state': 'assigned'
-            })
-            item.write({
-                'check_to_done': True
-            })
-            group = self.env['res.groups'].search([('id', '=', 68)])
-            for move in item.move_raw_ids:
-                if move.reserved_availability > 0 or any(x.qty_done == 0 for x in move.active_move_line_ids):
-                    query = 'DELETE FROM stock_move_line where move_id = {}'.format(move.id)
-                    cr = self._cr
-                    cr.execute(query)
+
+    def fix_reserved(self,move):
+        query = 'DELETE FROM stock_move_line where move_id = {}'.format(move.id)
+        cr = self._cr
+        cr.execute(query)
