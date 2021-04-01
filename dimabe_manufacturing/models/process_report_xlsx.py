@@ -86,7 +86,7 @@ class ProcessReport(models.TransientModel):
         })
         sheet = workbook.add_worksheet(process_name)
         processes = self.env['mrp.workorder'].search(query)
-        processes = processes.filtered(lambda a: a.create_date.year == 2021)
+        processes = processes.filtered(lambda a: a.create_date.year == self.year)
         models._logger.error(f'Process len {len(processes)} {processes}')
         row = 0
         col = 0
