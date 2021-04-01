@@ -323,6 +323,7 @@
                             <field name="stock_production_lot_id" tabindex="-1" readonly="1"/>
                             <field name="serial_number" tabindex="-1" readonly="1"/>
                             <field name="product_id" tabindex="-1" readonly="1"/>
+                            <field name="producer_id" readonly="1"/>
                             <field name="product_variety" tabindex="-1" readonly="1"/>
                             <field name="display_weight" tabindex="-1" readonly="1"/>
                             <button type="object" tabindex="-1" string="Quitar Serie" name="remove_serial"
