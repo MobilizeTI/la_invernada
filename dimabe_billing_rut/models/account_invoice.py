@@ -521,7 +521,7 @@ class AccountInvoice(models.Model):
         if not self.uom_net_weight:
             raise models.ValidationError('Debe seleccionar La Unidad de Medida Peso Neto')
 
-        if self.total_export_sales_clause == 0:
+        if self.total_export_sales_clause == 0 and self.dte_type_id.code == "110":
             raise models.ValidationError('El Valor de Cláusula de Venta de Exportación no puede ser 0')
         if not self.partner_id:
             raise models.ValidationError('Por favor seleccione el Cliente')
