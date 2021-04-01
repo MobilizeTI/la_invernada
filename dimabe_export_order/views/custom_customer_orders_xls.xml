@@ -8,9 +8,7 @@
                 <form>
                     <notebook>
                         <group>
-                            <group>
-                                <field name="for_year"/>
-                            </group>
+                            <field name="for_year"/>
                         </group>
                     </notebook>
                     <footer>
@@ -22,7 +20,7 @@
         </record>
         <record id="generate_orders_file_action" model="ir.actions.act_window">
             <field name="name">Genereación de Archivo de Pedidos</field>
-            <field name="res_model">sale.order</field>
+            <field name="res_model">custom.customer.orders.xls</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
             <field name="view_id" ref="custom_customer_orders_view"/>
