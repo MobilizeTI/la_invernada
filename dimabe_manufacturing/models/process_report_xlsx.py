@@ -111,7 +111,7 @@ class ProcessReport(models.TransientModel):
                 col += 1
                 sheet.write(row, col, process.production_id.sale_order_id.name, text_format)
                 col += 1
-                sheet.write_number(row, col, serial.packaging_date, date_format)
+                sheet.write(row, col, serial.packaging_date, date_format)
                 col += 1
                 sheet.write(row, col, serial.stock_production_lot_id.name, text_format)
                 col += 1
@@ -153,7 +153,7 @@ class ProcessReport(models.TransientModel):
                 col_out += 1
                 sheet.write(row, col_out, serial.serial_number, text_format)
                 col_out += 1
-                sheet.write(row, col_out, serial.display_weight)
+                sheet.write(row, col_out, serial.display_weight,number_format)
                 row += 1
                 col_out = 9
 
