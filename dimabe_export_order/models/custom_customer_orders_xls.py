@@ -48,7 +48,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
             orders = self.env['sale.order'].search([('confirmation_date','>=',from_date),('confirmation_date','<=',to_date)])
             #shipping_numbers = self.env['account.invoice'].search([('departure_date.strftime("%Y")','=',str(self.for_year))])
             #self.set_title(sheet, bold_format)
-
+            raise models.ValidationError('{} {} {}'.format(from_date,to_date,len(orders)))
             for order in orders:
                 sheet.write(row, col, order.name)
                 #col += 1
