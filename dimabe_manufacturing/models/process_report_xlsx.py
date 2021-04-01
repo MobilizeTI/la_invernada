@@ -23,8 +23,9 @@ class ProcessReport(models.TransientModel):
     @api.multi
     def generate_xlsx(self):
         if self.process_selection == 'ncc':
-            dict_data = self.generate_xlsx_process([('workcenter_id.name', '=', '320-Proceso Envasado NCC'),('create_date.year','=',2021)],
-                                                   'Proceso NCC')
+            dict_data = self.generate_xlsx_process(
+                [('workcenter_id.name', '=', '320-Proceso Envasado NCC')],
+                'Proceso NCC')
         if self.process_selection == 'laser':
             dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '400-PPM')],
                                                    'Proceso Partido Mecanico/Laser')
@@ -82,6 +83,7 @@ class ProcessReport(models.TransientModel):
         })
         sheet = workbook.add_worksheet(process_name)
         processes = self.env['mrp.workorder'].search(query)
+        processes = processes.filtered(lambda a: a.create_date.year == 2021)
         models._logger.error(f'Process len {len(processes)} {processes}')
         row = 0
         col = 0
@@ -101,7 +103,7 @@ class ProcessReport(models.TransientModel):
             serial_in = self.env['stock.production.lot.serial'].search(
                 [('reserved_to_production_id', '=', process.production_id.id)])
             serial_out = self.env['stock.production.lot.serial'].search(
-                [('production_id.id','=',process.production_id.id)]
+                [('production_id.id', '=', process.production_id.id)]
             )
             row_final = 0
             for serial in serial_in:
@@ -144,16 +146,13 @@ class ProcessReport(models.TransientModel):
                 col_out += 1
                 sheet.write(row, col_out, serial.pallet_id.name, text_format)
                 col_out += 1
-                sheet.write(row, col_out, serial.stock_production_lot_id.name,text_format)
+                sheet.write(row, col_out, serial.stock_production_lot_id.name, text_format)
                 col_out += 1
-                sheet.write(row, col_out, serial.serial_number,text_format)
+                sheet.write(row, col_out, serial.serial_number, text_format)
                 col_out += 1
-                sheet.write(row,col_out, serial.display_weight)
+                sheet.write(row, col_out, serial.display_weight)
                 row += 1
                 col_out = 9
-
-
-
 
         workbook.close()
         with open(file_name, "rb") as file:
