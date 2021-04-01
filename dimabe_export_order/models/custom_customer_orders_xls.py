@@ -8,7 +8,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
 
     orders_file = fields.Binary('Archivo de Pedidos')
 
-    for_year = fields.Integer('Año')
+    for_year = fields.Integer(string="Año")
 
     @api.multi
     def generate_orders_file(self):
@@ -40,15 +40,19 @@ class CustomCustomerOrdersXls(models.TransientModel):
 
             workbook.close()
 
-            #from_date = '{}/01/01/'.format(str(self.for_year))
-            #to_date = '{}/12/31'.format(str(self.for_year))
+            from_date = '{}/01/01/'.format(str(self.for_year))
+            to_date = '{}/12/31'.format(str(self.for_year))
             
             
             #bold_format = workbook.add_format({'bold':True})
-            #orders = self.env['sale.order'].search([('confirmation_date','>=',from_date),('confirmation_date','<=',to_date)])
+            orders = self.env['sale.order'].search([('confirmation_date','>=',from_date),('confirmation_date','<=',to_date)])
             #shipping_numbers = self.env['account.invoice'].search([('departure_date.strftime("%Y")','=',str(self.for_year))])
             #self.set_title(sheet, bold_format)
 
+            for order in orders:
+                sheet.write(row, col, order.name)
+                #col += 1
+                row += 1
             with open(file_name, "rb") as file:
                 file_base64 = base64.b64encode(file.read())
 
