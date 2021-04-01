@@ -314,7 +314,7 @@ class UnpelledDried(models.Model):
                 raise models.ValidationError('Debe agregar al menos una serie de salida al proceso')
 
             history_id = item.create_history()
-
+            item.out_lot_id.verify_without_lot()
             stock_move = self.env['stock.move'].create({
                 'name': item.out_lot_id.name,
                 'company_id': self.env.user.company_id.id,

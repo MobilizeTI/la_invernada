@@ -412,6 +412,7 @@ class StockProductionLotSerial(models.Model):
             if 'consumed' in vals.keys():
                 if vals['consumed']:
                     item.stock_production_lot_id.update_kg(item.stock_production_lot_id.id)
+                    item.stock_production_lot_id.verify_without_lot()
         return res
 
     @api.model
