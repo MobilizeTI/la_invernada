@@ -1086,7 +1086,7 @@
                     <br/>
                     <div style="width:100%;height:10px;font-size:12px;"/>
                     <!--<span style="text-align:left;font-size:12px;" t-esc="d.create_date.date()"/>-->
-                    <div style="width:100%;margin:0 auto;border:1px solid; border-radius: 5px; ">
+                    <div style="width:100%;margin:0 auto; border-radius: 5px; ">
                         <table style="width:98%;margin 0 auto;font-size:11px; padding: 6px;" cellspacing="1">
                             <tr>
                                 <tr>
@@ -1142,7 +1142,7 @@
                                         <![CDATA[&nbsp;]]>
                                     </td>
                                     <td>
-                                        <span t-field="d.dispatch_type"/>
+                                        <![CDATA[&nbsp;]]>
                                     </td>
                                 </tr>
                                 <tr>
