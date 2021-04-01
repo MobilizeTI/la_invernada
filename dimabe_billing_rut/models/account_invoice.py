@@ -696,7 +696,7 @@ class AccountInvoice(models.Model):
                             "ProductPrice": str(item.price_unit),#str(item.price_unit * value_exchange),
                             "ProductDiscountPercent": "0",
                             "DiscountAmount": "0",
-                            "Amount": str(amount_subtotal),#str(self.roundclp(amount_subtotal * value_exchange)),
+                            "Amount": str(self.roundclp(amount_subtotal)),#str(self.roundclp(amount_subtotal * value_exchange)),
                             "HaveExempt": haveExempt,
                             "TypeOfExemptEnum": typeOfExemptEnum
                         }
@@ -734,7 +734,7 @@ class AccountInvoice(models.Model):
                         "ProductPrice": str(product_price),#str(product_price * value_exchange),
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(amount_subtotal),#str(self.roundclp(amount_subtotal * value_exchange)),
+                        "Amount": str(self.roundclp(amount_subtotal)),#str(self.roundclp(amount_subtotal * value_exchange)),
                         "CodeTaxAditional": other_tax
                     }
                 )
@@ -806,8 +806,6 @@ class AccountInvoice(models.Model):
             # exemtAmount = total_amount
 
             if self.other_coin.id == 45:  # Si es CLP el monto es int
-                # other_coin_amount = int(total_amount * int(self.exchange_rate_other_coin))
-                # other_coin_exempt = int(total_amount * int(self.exchange_rate_other_coin))
                 other_coin_amount = self.roundclp(total_amount * self.exchange_rate_other_coin)
                 other_coin_exempt = self.roundclp(total_amount * self.exchange_rate_other_coin)
             else:
@@ -834,12 +832,12 @@ class AccountInvoice(models.Model):
                     if tax.id == 1 or tax.id == 2:
                         tax_rate_amount += (item.prince_subtotal * tax.amount) / 100
             invoice['total'] = {
-                "netAmount": str(netAmount),#str(self.roundclp(netAmount * value_exchange)),
-                "exemptAmount": str(exemptAmount),#str(self.roundclp(exemptAmount * value_exchange)),
+                "netAmount": str(self.roundclp(netAmount)),#str(self.roundclp(netAmount * value_exchange)),
+                "exemptAmount": str(self.roundclp(exemptAmount)),#str(self.roundclp(exemptAmount * value_exchange)),
                 "taxRate": "19",
-                "taxtRateAmount": str(tax_rate_amount) ,# str(self.roundclp(tax_rate_amount * value_exchange)),
+                "taxtRateAmount": str(self.roundclp(tax_rate_amount)) ,# str(self.roundclp(tax_rate_amount * value_exchange)),
                 # str(self.roundclp(self.amount_tax * value_exchange)),
-                "totalAmount": str(total_amount),# str(self.roundclp(total_amount * value_exchange))
+                "totalAmount": str(self.roundclp(total_amount)),# str(self.roundclp(total_amount * value_exchange))
             }
 
             # consultar si solo se envian en la factura los impuestos de tipo retencion
@@ -855,7 +853,7 @@ class AccountInvoice(models.Model):
                         invoice['total']['taxToRetention'] = {
                             "taxType": str(t.sii_code),
                             "taxRate": str(int(t.amount)),
-                            "taxAmount": str(tax_amount),# str(self.roundclp(tax_amount * value_exchange))
+                            "taxAmount": str(self.roundclp(tax_amount)),# str(self.roundclp(tax_amount * value_exchange))
                         }
                     else:
                         raise models.ValidationError(
