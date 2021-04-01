@@ -1,6 +1,7 @@
 from odoo import fields, models, api
 import xlsxwriter
 import base64
+from datetime import datetime
 
 
 class ProcessReport(models.TransientModel):
@@ -19,6 +20,8 @@ class ProcessReport(models.TransientModel):
          ('service_re_laser', 'Informe de Re-Proceso Descarte Laser Servicio'),
          ('service_manual', 'Informe de Proceso Manuel Calidad Servicio')
          ])
+
+    year = fields.Integer('Año', default=datetime.now().year)
 
     @api.multi
     def generate_xlsx(self):
@@ -152,7 +155,11 @@ class ProcessReport(models.TransientModel):
                 col_out += 1
                 sheet.write(row, col_out, serial.display_weight)
                 row += 1
+                if serial.id == serial_out[-1].id:
+                    row_final = row
                 col_out = 9
+            if row_final != 0:
+                row_final += 1
 
         workbook.close()
         with open(file_name, "rb") as file:
