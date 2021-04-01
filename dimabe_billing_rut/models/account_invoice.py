@@ -514,6 +514,12 @@ class AccountInvoice(models.Model):
     def validation_fields(self):
         self.valid_to_sii = False
 
+        for item in self.invoice_line_ids:
+            for tax_line in item.invoice_line_tax_ids:
+                if 'IVA' not in tax_line.name:
+                    if not tax_line.sii_code or tax_line.sii_code == 0:
+                        raise models.ValidationError('El impuesto {} no tiene el código SII'.format(tax_line.name))
+
         if not self.uom_tara:
             raise models.ValidationError('Debe seleccionar La Unidad de Medida Tara')
         if not self.uom_gross_weight:
@@ -711,7 +717,7 @@ class AccountInvoice(models.Model):
 
                 other_tax = '0'
                 for tax_line in item.invoice_line_tax_ids:
-                    if tax_line.id != 1 and tax_line.id != 2:
+                    if 'IVA' not in tax_line.name:
                         if tax_line.sii_code:
                             other_tax = str(tax_line.sii_code)
                         else:
