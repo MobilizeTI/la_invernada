@@ -846,7 +846,7 @@ class AccountInvoice(models.Model):
             # Other Taxes
             for tax in self.tax_line_ids:
                 tax_amount = 0
-                if tax.tax_id.id != 1 and tax.tax_id.id != 2:
+                if 'IVA' not in tax.tax_id.name:
                     for line in self.invoice_line_ids:
                         for t in line.invoice_line_tax_ids:
                             if tax.tax_id.id == t.id:
