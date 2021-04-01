@@ -40,7 +40,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
 
             workbook.close()
 
-            from_date = '{}/01/01/'.format(str(self.for_year))
+            from_date = '{}/01/01'.format(str(self.for_year))
             to_date = '{}/12/31'.format(str(self.for_year))
             
             
