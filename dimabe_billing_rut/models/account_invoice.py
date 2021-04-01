@@ -822,18 +822,18 @@ class AccountInvoice(models.Model):
             }
 
         else:
-            taxt_rate_amount = 0
+            tax_rate_amount = 0
             for item in self.invoice_line_ids:
                 for tax in item.invoice_line_tax_ids:
                     if tax.id == 1 or tax.id == 2:
-                        taxt_rate_amount += (item.prince_subtotal * tax.amount) / 100
+                        tax_rate_amount += (item.prince_subtotal * tax.amount) / 100
             invoice['total'] = {
-                "netAmount": str(self.roundclp(netAmount * value_exchange)),
-                "exemptAmount": str(self.roundclp(exemptAmount * value_exchange)),
+                "netAmount": netAmount,#str(self.roundclp(netAmount * value_exchange)),
+                "exemptAmount": exemptAmount,#str(self.roundclp(exemptAmount * value_exchange)),
                 "taxRate": "19",
-                "taxtRateAmount": str(self.roundclp(taxt_rate_amount * value_exchange)),
+                "taxtRateAmount":tax_rate_amount ,# str(self.roundclp(tax_rate_amount * value_exchange)),
                 # str(self.roundclp(self.amount_tax * value_exchange)),
-                "totalAmount": str(self.roundclp(total_amount * value_exchange))
+                "totalAmount": total_amount,# str(self.roundclp(total_amount * value_exchange))
             }
 
             # consultar si solo se envian en la factura los impuestos de tipo retencion
@@ -849,7 +849,7 @@ class AccountInvoice(models.Model):
                         invoice['total']['taxToRetention'] = {
                             "taxType": str(t.sii_code),
                             "taxRate": str(int(t.amount)),
-                            "taxAmount": str(self.roundclp(tax_amount * value_exchange))
+                            "taxAmount": tax_amount,# str(self.roundclp(tax_amount * value_exchange))
                         }
                     else:
                         raise models.ValidationError(
