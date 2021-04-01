@@ -12,7 +12,6 @@ class CustomCustomerOrdersXls(models.TransientModel):
 
     @api.multi
     def generate_orders_file(self):
-        for item in self:
             file_name = 'temp.xlsx'
             workbook = xlsxwriter.Workbook(file_name)
             #if not self.for_year or self.for_year == 0:
