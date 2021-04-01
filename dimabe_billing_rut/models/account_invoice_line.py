@@ -50,8 +50,8 @@ class AccountInvoiceLine(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             invoice_id = self.env['account.invoice'].search([('id','=',vals['invoice_id'])])
-            if invoice_id.currency_id.name=="CLP" and invoice_id.allow_currency_conversion:
-                vals.update(price_unit = self.roundclp(vals['price_unit'] * float('{:.2f}'.format(invoice_id.exchange_rate))))
+            #if invoice_id.currency_id.name=="CLP" and invoice_id.allow_currency_conversion:
+            #    vals.update(price_unit = self.roundclp(vals['price_unit'] * float('{:.2f}'.format(invoice_id.exchange_rate))))
             if vals.get('display_type', self.default_get(['display_type'])['display_type']):
                 vals.update(price_unit=0, account_id=False, quantity=0)
         return super(AccountInvoiceLine, self).create(vals_list)
