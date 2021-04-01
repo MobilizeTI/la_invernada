@@ -27,7 +27,7 @@ class StockReportXlsx(models.TransientModel):
         elif self.stock_selection == 'calibrate':
             dict_data = self.generate_excel_serial_report(
                 [('product_id.default_code', 'like', 'PSE006'), ('product_id.name', 'not like', 'Vana'),
-                 ('product_id.name', 'not like', 'Descarte'),('harvest_filter', '=', self.year)], "Producto Calibrado")
+                 ('product_id.name', 'not like', 'Descarte'), ('harvest_filter', '=', self.year)], "Producto Calibrado")
         elif self.stock_selection == 'split':
             dict_data = self.generate_excel_serial_report(
                 [('product_id.categ_id.name', 'in',
@@ -49,7 +49,7 @@ class StockReportXlsx(models.TransientModel):
         elif self.stock_selection == 'raw_service':
             dict_data = self.generate_excel_raw_report(
                 [('product_id.default_code', 'like', 'MPS'), ('product_id.name', 'not like', 'Verde'),
-                 ('harvest_filter', '=', self.year)], 'Materia Prima Servicio')
+                 ('harvest', '=', self.year)], 'Materia Prima Servicio')
         elif self.stock_selection == 'washed_service':
             dict_data = self.generate_excel_serial_report(
                 [('product_id.default_code', 'like', 'PSES016'), ('harvest_filter', '=', self.year)],
@@ -79,7 +79,8 @@ class StockReportXlsx(models.TransientModel):
         text_format = workbook.add_format({
             'text_wrap': True
         })
-        date_format = workbook.add_format({'num_format': 'dd/mm/yyyy hh:mm:ss'})
+        number_format = workbook.add_format({'num_format': '#,##0.00'})
+        date_format = workbook.add_format({'num_format': 'dd/mmmm/yyyy'})
         sheet = workbook.add_worksheet('Informe de Materia Prima')
         row = 0
         col = 0
@@ -103,14 +104,9 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, lot.name)
             col += 1
-            sheet.write(row, col, str(round(
-                sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
-                    'calculated_weight')),
-                2)) if not lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
-                'display_weight') else str(round(
-                sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
-                    'display_weight')),
-                2)))
+            sheet.write_number(row, col, float(
+                sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight'))),
+                               number_format)
             col += 1
             sheet.write(row, col, lot.product_id.get_variety())
             col += 1
@@ -125,7 +121,7 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, lot.harvest)
             col += 1
-            sheet.write(row, col, lot.reception_weight)
+            sheet.write(row, col, lot.reception_weight, number_format)
             col += 1
             sheet.write_datetime(row, col, lot.create_date,date_format)
             col += 1
@@ -159,7 +155,8 @@ class StockReportXlsx(models.TransientModel):
         text_format = workbook.add_format({
             'text_wrap': True
         })
-        date_format = workbook.add_format({'num_format': 'dd/mm/yyyy'})
+        number_format = workbook.add_format({'num_format': '#,##0.00'})
+        date_format = workbook.add_format({'num_format': 'dd/mmmm/yyyy'})
         row = 0
         col = 0
         titles = [(50.56, 'Productor'), (15.33, 'Serie'), (13.22, 'Kilos Producidos'), (13.22, 'Kilos Disponible'),
@@ -184,9 +181,9 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, serial.serial_number)
             col += 1
-            sheet.write_number(row, col, serial.display_weight)
+            sheet.write_number(row, col, serial.display_weight, number_format)
             col += 1
-            sheet.write(row, col, serial.available_weight)
+            sheet.write(row, col, serial.available_weight, number_format)
             col += 1
             sheet.write(row, col, serial.product_id.get_variety())
             col += 1
@@ -233,6 +230,7 @@ class StockReportXlsx(models.TransientModel):
         text_format = workbook.add_format({
             'text_wrap': True
         })
+        date_format = workbook.add_format({'num_format': 'dd/mmmm/yyyy'})
         row = 0
         col = 0
         titles = [(1, 'Pedido'), (13, 'Lote'), (14, 'Producto'), (15, 'Productor'), (2, 'Medida'),

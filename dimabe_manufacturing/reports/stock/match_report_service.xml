@@ -51,6 +51,7 @@
             </field>
         </record>
         <menuitem id="stock_report_match_service_tree_menu"
+                  sequence="6"
                   action="dimabe_manufacturing.stock_match_service_report"
                   name="Informe de Existencia Producto Partido Servico"
                   parent="stock_report_menu"

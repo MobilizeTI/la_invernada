@@ -307,10 +307,10 @@
                         <field name="_barcode_scanned" tabindex="-1" widget="barcode_handler" invisible="1"/>
                         <field name="product_id" tabindex="-1" invisible="1"/>
                     </group>
+                    <field name="confirmed_serial"  attrs="{'readonly': [('state','=','done')]}"
+                              default_focus="1" string="Serie:"/>
                     <group>
-                        <field name="confirmed_serial" options="{'no_marker':True}" attrs="{'readonly': [('state','=','done')]}"
-                               style="margin:0 auto;"
-                               tabindex="1" default_focus="1" nolabel="1"/>
+
                         <br/>
                         <div tabindex="0">
                             <button type="object" accesskey="x" tabindex="2" style="right:10px;" class="oe_button oe_form_button oe_highlight" context="{'workorder_id':id}" string="Ingresar" name="confirmed_keyboard"/>

@@ -53,6 +53,7 @@
             </field>
         </record>
         <menuitem id="stock_report_match_tree_menu"
+                  sequence="5"
                   action="dimabe_manufacturing.stock_match_report"
                   name="Informe de Existencia Producto Partido"
                   parent="stock_report_menu"

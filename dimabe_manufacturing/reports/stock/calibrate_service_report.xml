@@ -35,6 +35,7 @@
             </field>
         </record>
         <menuitem id="stock_report_calibrate_service_tree_menu"
+                  sequence="4"
                   action="dimabe_manufacturing.stock_calibrate_report"
                   name="Informe de Existencia Producto Calibrado Servicio"
                   parent="stock_report_menu"
