@@ -90,7 +90,10 @@
         'reports/process/manual_service_process.xml',
         'reports/stock/match_report_service.xml',
         'reports/inventory/compare_inventory_report.xml',
-        'reports/stock/match_report_service.xml'
+        'reports/stock/match_report_service.xml',
+        'reports/stock/discart_service_report.xml',
+        'reports/stock/calibrate_service_report.xml',
+        'reports/stock/vain_service.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
