@@ -12,11 +12,6 @@
                     <field name="order_name"/>
                     <field name="dispatch"/>
                 </xpath>
-                <xpath expr="//field[@name='exchange_rate']" position="after">
-                    <group>
-                        <field name="allow_currency_conversion"/>
-                    </group>
-                </xpath>
                 <xpath expr="//field[@name='cash_rounding_id']" position="after">
                     <field name="order_to_add_ids" attrs="{'invisible': [('dte_code', '!=', '110')]}"/>
                     <field name="order_to_add_id" invisible="1"/>

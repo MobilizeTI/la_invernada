@@ -264,13 +264,7 @@ class AccountInvoice(models.Model):
 
     transport_to_port = fields.Many2one('res.partner', string="Transporte a Puerto", domain="[('supplier','=',True)]")
 
-    allow_currency_conversion = fields.Boolean('¿Desea Conversión de valores a CLP?', default=False)
     # Emarque Method
-
-    @api.onchange('currency_id')
-    def onchange_currency(self):
-        self.allow_currency_conversion = False
-
     @api.model
     @api.onchange('etd')
     @api.depends('etd')
