@@ -251,11 +251,6 @@
                 <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='invoice_line_tax_ids']" position="after">
                     <field name="exempt"/>
                 </xpath>
-                <xpath expr="//field[@name='exchange_rate']" position="after">
-                    <group>
-                        <field name="allow_currency_conversion"/>
-                    </group>
-                </xpath>
                 <data>
                     <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
                         <page name="xdte_tab" string="DTE">
