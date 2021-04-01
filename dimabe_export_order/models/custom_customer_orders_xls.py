@@ -50,10 +50,12 @@ class CustomCustomerOrdersXls(models.TransientModel):
             #self.set_title(sheet, bold_format)
             
             for order in orders:
+
+                sheet.write(row, col, "test")
+                col += 1
                 sheet.write(row, col, order.name)
-                #col += 1
                 row += 1
-                
+
             workbook.close()
             with open(file_name, "rb") as file:
                 file_base64 = base64.b64encode(file.read())
