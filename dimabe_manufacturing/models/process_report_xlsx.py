@@ -23,7 +23,7 @@ class ProcessReport(models.TransientModel):
     @api.multi
     def generate_xlsx(self):
         if self.process_selection == 'ncc':
-            dict_data = self.generate_xlsx_process([('workcenter_id.name', '=', '320-Proceso Envasado NCC')],
+            dict_data = self.generate_xlsx_process([('workcenter_id.name', '=', '320-Proceso Envasado NCC'),('create_date.year','=',2021)],
                                                    'Proceso NCC')
         if self.process_selection == 'laser':
             dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '400-PPM')],
