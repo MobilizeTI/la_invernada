@@ -37,6 +37,7 @@
         </record>
 
         <menuitem id="stock_service_report_tree_menu"
+                  sequence="2"
                   action="dimabe_manufacturing.stock_service_report"
                   name="Informe de Existencia Materia Prima Servico"
                   parent="stock_report_menu"

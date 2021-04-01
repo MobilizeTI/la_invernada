@@ -36,6 +36,7 @@
         </record>
 
         <menuitem id="stock_washed_service_report_tree_menu"
+                  sequence="8"
                   action="dimabe_manufacturing.stock_washed_service_report"
                   name="Informe de Existencia Producto Lavado Servico"
                   parent="stock_report_menu"
