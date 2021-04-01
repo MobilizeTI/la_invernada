@@ -33,7 +33,7 @@
                 [('product_id.name','like','Vana'),('product_id.categ_id.name','like','Servicio')]
             </field>
         </record>
-        <menuitem id="stock_report_vain_tree_menu"
+        <menuitem id="stock_report_vain_service_tree_menu"
                   action="dimabe_manufacturing.stock_vain_report"
                   name="Informe de Existencia Producto Vana Servicio"
                   parent="stock_report_menu"
