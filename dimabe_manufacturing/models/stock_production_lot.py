@@ -866,38 +866,39 @@ class StockProductionLot(models.Model):
 
     def update_stock_quant_production(self, location_id):
         lot = self.env['stock.production.lot'].search([('name', '=', self.name)])
-        if lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed):
+        if lot:
+            if lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed):
 
-            quant = self.env['stock.quant'].sudo().search(
-                [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'), ('location_id', '=', location_id)])
+                quant = self.env['stock.quant'].sudo().search(
+                    [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'), ('location_id', '=', location_id)])
 
-            if quant:
+                if quant:
+                    quant.write({
+                        'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                                                                                                  x: x.reserved_to_production_id  and not x.consumed).mapped(
+                            'display_weight')),
+                        'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
+                            lambda x: not x.reserved_to_production_id and not x.consumed).mapped('display_weight'))
+                    })
+                else:
+                    self.env['stock.quant'].sudo().create({
+                        'lot_id': lot.id,
+                        'product_id': lot.product_id.id,
+                        'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
+                                                                                                  x: x.reserved_to_production_id and not x.consumed).mapped(
+                            'display_weight')),
+                        'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
+                            lambda x: not x.reserved_to_production_id and not x.consumed).mapped('display_weight')),
+                        'location_id': location_id
+                    })
+            else:
+                quant = self.env['stock.quant'].sudo().search(
+                    [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'), ('location_id', '=', location_id)])
                 quant.write({
-                    'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
-                                                                                              x: x.reserved_to_production_id  and not x.consumed).mapped(
-                        'display_weight')),
+                    'reserved_quantity': 0,
                     'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
                         lambda x: not x.reserved_to_production_id and not x.consumed).mapped('display_weight'))
                 })
-            else:
-                self.env['stock.quant'].sudo().create({
-                    'lot_id': lot.id,
-                    'product_id': lot.product_id.id,
-                    'reserved_quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda
-                                                                                              x: x.reserved_to_production_id and not x.consumed).mapped(
-                        'display_weight')),
-                    'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
-                        lambda x: not x.reserved_to_production_id and not x.consumed).mapped('display_weight')),
-                    'location_id': location_id
-                })
-        else:
-            quant = self.env['stock.quant'].sudo().search(
-                [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'), ('location_id', '=', location_id)])
-            quant.write({
-                'reserved_quantity': 0,
-                'quantity': sum(lot.stock_production_lot_serial_ids.filtered(
-                    lambda x: not x.reserved_to_production_id and not x.consumed).mapped('display_weight'))
-            })
 
     def update_kg(self, lot_id):
         lot = self.env['stock.production.lot'].search([('id', '=', lot_id)])
