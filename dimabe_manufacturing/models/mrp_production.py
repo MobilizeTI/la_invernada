@@ -213,10 +213,13 @@ class MrpProduction(models.Model):
     def button_mark_done(self):
         self.calculate_done()
         serial = self.env['stock.production.lot.serial'].search([('reserved_to_production_id.id', '=', self.id)])
+        lots = []
         for move in self.move_raw_ids:
             for line in move.active_move_line_ids:
-                if line.lot_id not in serial.mapped('stock_production_lot_id'):
+                if line.lot_id not in serial.mapped('stock_production_lot_id') or line.lot_id in lots:
                     self.fix_reserved(line)
+                else:
+                    lots.append(line.lot_id)
         res = super(MrpProduction, self).button_mark_done()
         return res
 
