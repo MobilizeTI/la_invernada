@@ -156,6 +156,7 @@ class StockReportXlsx(models.TransientModel):
             'text_wrap': True
         })
         number_format = workbook.add_format({'num_format': '#,##0.00'})
+        date_format = workbook.add_format({'num_format': 'dd/mmmm/yyyy'})
         row = 0
         col = 0
         titles = [(50.56, 'Productor'), (15.33, 'Serie'), (13.22, 'Kilos Producidos'), (13.22, 'Kilos Disponible'),
