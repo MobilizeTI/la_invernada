@@ -310,7 +310,7 @@
                     <group>
                         <field name="confirmed_serial" options="{'no_marker':True}" attrs="{'readonly': [('state','=','done')]}"
                                style="margin:0 auto;"
-                               tabindex="1" default_focus="1" nolabel="1"/>
+                               tabindex="1" default_focus="1" string="Serie:"/>
                         <br/>
                         <div tabindex="0">
                             <button type="object" accesskey="x" tabindex="2" style="right:10px;" class="oe_button oe_form_button oe_highlight" context="{'workorder_id':id}" string="Ingresar" name="confirmed_keyboard"/>

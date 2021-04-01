@@ -49,7 +49,7 @@ class StockReportXlsx(models.TransientModel):
         elif self.stock_selection == 'raw_service':
             dict_data = self.generate_excel_raw_report(
                 [('product_id.default_code', 'like', 'MPS'), ('product_id.name', 'not like', 'Verde'),
-                 ('harvest_filter', '=', self.year)], 'Materia Prima Servicio')
+                 ('harvest', '=', self.year)], 'Materia Prima Servicio')
         elif self.stock_selection == 'washed_service':
             dict_data = self.generate_excel_serial_report(
                 [('product_id.default_code', 'like', 'PSES016'), ('harvest_filter', '=', self.year)],
@@ -79,7 +79,7 @@ class StockReportXlsx(models.TransientModel):
         text_format = workbook.add_format({
             'text_wrap': True
         })
-        date_format = workbook.add_format({'num_format': 'dd/mm/yyyy hh:mm:ss'})
+        date_format = workbook.add_format({'num_format': 'dd/mm/yyyy'})
         sheet = workbook.add_worksheet('Informe de Materia Prima')
         row = 0
         col = 0
@@ -233,6 +233,7 @@ class StockReportXlsx(models.TransientModel):
         text_format = workbook.add_format({
             'text_wrap': True
         })
+        date_format = workbook.add_format({'num_format': 'dd/mmmm/yyyy'})
         row = 0
         col = 0
         titles = [(1, 'Pedido'), (13, 'Lote'), (14, 'Producto'), (15, 'Productor'), (2, 'Medida'),
