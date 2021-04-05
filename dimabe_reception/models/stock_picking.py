@@ -298,7 +298,7 @@ class StockPicking(models.Model):
     def action_confirm(self):
         if self.picking_type_code == 'incoming':
             for stock_picking in self:
-                if stock_picking.is_mp_reception or stock_picking.is_pt_reception or stock_picking.is_satelite_reception:
+                if stock_picking.is_mp_reception or stock_picking.is_pt_reception:
                     stock_picking.validate_mp_reception()
                     stock_picking.truck_in_date = fields.datetime.now()
                 res = super(StockPicking, self).action_confirm()
