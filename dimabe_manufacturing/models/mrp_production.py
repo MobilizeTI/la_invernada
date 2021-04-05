@@ -216,7 +216,7 @@ class MrpProduction(models.Model):
         lots = []
         for move in self.move_raw_ids:
             for line in move.active_move_line_ids:
-                if line.lot_id not in serial.mapped('stock_production_lot_id') and line.lot_id in lots:
+                if line.lot_id not in serial.mapped('stock_production_lot_id') or line.lot_id not in lots:
                     self.fix_reserved(line)
                 else:
                     lots.append(line.lot_id)
