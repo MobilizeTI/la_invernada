@@ -72,6 +72,11 @@ class StockReportXlsx(models.TransientModel):
                 [('product_id.name', 'like', 'Vana'), ('product_id.categ_id.name', 'like', 'Servicio')],
                 'Producto Vana Servicio'
             )
+        elif self.stock_selection == 'discart_service':
+            dict_data = self.generate_excel_serial_report(
+                [('product_id.name', 'like', 'Descarte'), ('product_id.categ_id.name', 'like', 'Servicio')],
+                'Producto Descarte Servicio'
+            )
         elif self.stock_selection == 'pt':
             dict_data = self.generate_pt_report()
         attachment_id = self.env['ir.attachment'].sudo().create({
