@@ -217,7 +217,8 @@ class MrpProduction(models.Model):
         for move in self.move_raw_ids:
             for line in move.active_move_line_ids:
                 if line.lot_id not in serial.mapped('stock_production_lot_id'):
-                    line.sudo().unlink()
+                    if line.lot_id in lots:
+                        line.sudo().unlink()
                 else:
                     lots.append(line.lot_id)
         res = super(MrpProduction, self).button_mark_done()
