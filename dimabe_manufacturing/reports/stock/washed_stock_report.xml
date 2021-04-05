@@ -35,6 +35,7 @@
             </field>
         </record>
         <menuitem id="stock_report_washed_tree_menu"
+                  sequence="7"
                   action="dimabe_manufacturing.stock_washed_report"
                   name="Informe de Existencia Producto Lavado"
                   parent="stock_report_menu"
