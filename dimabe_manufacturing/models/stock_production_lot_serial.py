@@ -167,7 +167,9 @@ class StockProductionLotSerial(models.Model):
 
     delivered_date = fields.Date('Fecha de envio a:')
 
-    available_weight = fields.Float('Kilos disponibles', compute='compute_available_weight')
+    available_weight = fields.Float('Kilos disponibles', compute="compute_available_weight")
+
+    to_delete = fields.Boolean('Para Eliminar')
 
     @api.multi
     def compute_available_weight(self):
@@ -175,7 +177,7 @@ class StockProductionLotSerial(models.Model):
             if item.consumed:
                 item.available_weight = 0
             else:
-                item.available_weight = item.real_weight
+                item.available_weight = item.display_weight
 
     @api.multi
     def compute_product_caliber(self):
@@ -330,8 +332,11 @@ class StockProductionLotSerial(models.Model):
                 lot.write({
                     'producer_id': values_list['producer_id']
                 })
+            workorder = self.env['mrp.workorder'].search([('production_id.id', '=', values_list['production_id'])])
+            workorder.write({
+                'out_weight': sum(lot.stock_production_lot_serial_ids.mapped('display_weight'))
+            })
         res = super(StockProductionLotSerial, self).create(values_list)
-
         if res.display_weight == 0 and res.gross_weight == 0:
             raise models.ValidationError('debe agregar un peso a la serie')
 
@@ -353,7 +358,11 @@ class StockProductionLotSerial(models.Model):
 
             if work_order.production_id:
                 production = work_order.production_id[0]
-
+        work_order.sudo().write({
+            'out_weight': sum(res.stock_production_lot_id.stock_production_lot_serial_ids.mapped('display_weight')),
+            'pt_out_weight': sum(res.stock_production_lot_id.stock_production_lot_serial_ids.filtered(
+                lambda a: a.product_id.categ_id.parent_id.name == 'Producto Terminado').mapped('display_weight'))
+        })
         if production:
             res.production_id = production.id
             res.reserve_to_stock_picking_id = production.stock_picking_id.id
@@ -369,6 +378,9 @@ class StockProductionLotSerial(models.Model):
                 res.gross_weight = res.display_weight + res.canning_id.weight
             else:
                 res.gross_weight = res.display_weight + sum(res.get_possible_canning_id().mapped('weight'))
+        if res.production_id:
+            res.stock_production_lot_id.update_kg(res.stock_production_lot_id.id)
+            res.stock_production_lot_id.update_stock_quant(res.production_id.location_dest_id.id)
         return res
 
     @api.model
@@ -400,10 +412,12 @@ class StockProductionLotSerial(models.Model):
             if 'consumed' in vals.keys():
                 if vals['consumed']:
                     item.stock_production_lot_id.update_kg(item.stock_production_lot_id.id)
+                    item.stock_production_lot_id.verify_without_lot()
         return res
 
     @api.model
     def unlink(self):
+
         if self.consumed:
             raise models.ValidationError(
                 'este código {} ya fue consumido, no puede ser eliminado'.format(
@@ -413,6 +427,8 @@ class StockProductionLotSerial(models.Model):
             )
         group = self.env['res.groups'].search([('name', '=', 'Limpiar')])
         user_logon = self.env.user
+        if user_logon not in group.users:
+            raise models.ValidationError("Opcion no disponible con sus permisos de usuario")
         lot = self.env['stock.production.lot'].search([('id', '=', self.stock_production_lot_id.id)])
         if self.production_id:
             production = self.env['mrp.production'].search([('id', '=', self.production_id.id)])
@@ -630,11 +646,12 @@ class StockProductionLotSerial(models.Model):
             workorder_id = self.env.context['workorder_id']
             workorder = self.env['mrp.workorder'].search([('id', '=', workorder_id)])
             production = workorder.production_id
-            self.write({
+            self.sudo().write({
                 'reserved_to_production_id': None,
-                'consumed': False
+                'consumed': False,
+                'used_in_workorder_id': None
             })
-            workorder.write({
+            workorder.sudo().write({
                 'in_weight': sum(workorder.potential_serial_planned_ids.mapped('display_weight'))
             })
             self.stock_production_lot_id.update_stock_quant(production.location_src_id.id)

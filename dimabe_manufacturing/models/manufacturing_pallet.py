@@ -123,6 +123,14 @@ class ManufacturingPallet(models.Model):
     total_available_weight = fields.Float('Kilos Disponible',compute='compute_total_available_weight')
 
     @api.multi
+    def delete_pallet(self):
+        for item in self:
+            for serial in item.lot_serial_ids:
+                serial.unlink()
+            item.unlink()
+
+
+    @api.multi
     def compute_total_available_weight(self):
         for item in self:
             item.total_available_weight = sum(item.lot_serial_ids.filtered(lambda a: not a.reserved_to_stock_picking_id).mapped('display_weight'))

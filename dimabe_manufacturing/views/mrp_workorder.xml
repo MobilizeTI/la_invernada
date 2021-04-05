@@ -75,8 +75,8 @@
                 <xpath expr="//sheet/group" position="inside">
                     <group>
                         <field name="positioning_state"/>
-                        <field name="in_weight"/>
-                        <field name="out_weight"/>
+                        <field name="in_weight" readonly="1"/>
+                        <field name="out_weight" readonly="1"/>
                     </group>
                 </xpath>
                 <field name="final_lot_id" position="attributes">
@@ -129,7 +129,7 @@
                             </tree>
                         </field>
                         <strong>Total Ingresado:</strong>
-                        <field name="in_weight"/>
+                        <field name="in_weight" readonly="1"/>
                     </page>
                 </xpath>
                 <xpath expr="//page[3]" position="after">
@@ -289,48 +289,48 @@
                 <div class="oe_title">
                     <label for="display_name"/>
                     <h1>
-                        <field name="display_name" placeholder="Title"/>
+                        <field name="display_name" readonly="1" tabindex="-1" placeholder="Title"/>
                     </h1>
                 </div>
                 <group>
-                    <field name="id" invisible="1"/>
-                    <field name="state" invisible="1"/>
-                    <field name="component_id" style="margin:0 auto;" invisible="1"
+                    <field name="id" tabindex="-1" invisible="1"/>
+                    <field name="state" tabindex="-1" invisible="1"/>
+                    <field name="component_id" tabindex="-1" style="margin:0 auto;" invisible="1"
                            options="{'no_quick_create':True,'no_create':True}"
                            domain="[('id','in',material_product_ids),('tracking','=','lot')]"/>
-                    <field name="material_product_ids" invisible="1"/>
+                    <field name="material_product_ids" tabindex="-1" invisible="1"/>
                 </group>
                 <group>
                     <group>
-                        <field name="lot_id" style="margin:0 auto;"
+                        <field name="lot_id" tabindex="-1" style="margin:0 auto;"
                                options="{'no_quick_create':True,'no_create':True}"/>
-                        <field name="_barcode_scanned" widget="barcode_handler" invisible="1"/>
-                        <field name="product_id" invisible="1"/>
+                        <field name="_barcode_scanned" tabindex="-1" widget="barcode_handler" invisible="1"/>
+                        <field name="product_id" tabindex="-1" invisible="1"/>
                     </group>
                     <group>
-                        <field name="confirmed_serial" attrs="{'readonly': [('state','=','done')]}"
-                               style="margin:0 auto;"
-                               defualt_focus="1" nolabel="1"/>
+                        <field name="confirmed_serial"  attrs="{'readonly': [('state','=','done')]}"
+                              default_focus="1" string="Serie:"/>
                         <br/>
                         <div tabindex="0">
-                            <button type="object" style="right:10px;" class="oe_button oe_form_button oe_highlight" context="{'workorder_id':id}" string="Ingresar" name="confirmed_keyboard"/>
+                            <button type="object" accesskey="x" tabindex="2" style="right:10px;" class="oe_button oe_form_button oe_highlight" context="{'workorder_id':id}" string="Ingresar" name="confirmed_keyboard"/>
                         </div>
                     </group>
                 </group>
                 <group>
                     <field name="potential_serial_planned_ids" string="Series Ingresadas">
                         <tree editable="bottom" delete="false" create="false" limit="15">
-                            <field name="stock_production_lot_id" readonly="1"/>
-                            <field name="serial_number" readonly="1"/>
-                            <field name="product_id" readonly="1"/>
-                            <field name="product_variety" readonly="1"/>
-                            <field name="display_weight" readonly="1"/>
-                            <button type="object" string="Quitar Serie" name="remove_serial"
+                            <field name="stock_production_lot_id" tabindex="-1" readonly="1"/>
+                            <field name="serial_number" tabindex="-1" readonly="1"/>
+                            <field name="product_id" tabindex="-1" readonly="1"/>
+                            <field name="producer_id" readonly="1"/>
+                            <field name="product_variety" tabindex="-1" readonly="1"/>
+                            <field name="display_weight" tabindex="-1" readonly="1"/>
+                            <button type="object" tabindex="-1" string="Quitar Serie" name="remove_serial"
                                     context="{'workorder_id': parent.id}"
                                     groups="dimabe_manufacturing.group_mrp_modify_serials"/>
                         </tree>
                     </field>
-                    <field name="in_weight" readonly="1"/>
+                    <field name="in_weight" tabindex="-1" readonly="1"/>
                 </group>
             </form>
         </field>

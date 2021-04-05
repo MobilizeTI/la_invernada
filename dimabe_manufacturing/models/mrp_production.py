@@ -212,65 +212,15 @@ class MrpProduction(models.Model):
     @api.multi
     def button_mark_done(self):
         self.calculate_done()
-        moves_to_do = self.move_raw_ids.filtered(lambda x: x.state not in ('done', 'cancel'))
-        moves_to_do._action_done()
+        serial = self.env['stock.production.lot.serial'].search([('reserved_to_production_id.id', '=', self.id)])
+        lots = []
+        for move in self.move_raw_ids:
+            for line in move.active_move_line_ids:
+                if line.lot_id not in serial.mapped('stock_production_lot_id') or line.lot_id in lots:
+                    self.fix_reserved(line)
+                else:
+                    lots.append(line.lot_id)
         res = super(MrpProduction, self).button_mark_done()
-
-        serial_to_reserve_ids = self.workorder_ids.mapped('production_finished_move_line_ids').mapped(
-            'lot_id').filtered(
-            lambda a: a.product_id in self.stock_picking_id.move_ids_without_package.mapped('product_id')
-        ).mapped('stock_production_lot_serial_ids')
-
-        # if serial_to_reserve_ids and len(serial_to_reserve_ids) > 0:
-        #     serial_to_reserve_ids.write({
-        #         'reserved_to_stock_picking_id': self.stock_picking_id.id
-        #     })
-        #
-        # lot_id = serial_to_reserve_ids.mapped('stock_production_lot_id')
-        # models._logger.error(lot_id)
-        # for lot in lot_id:
-        #     stock_move = self.stock_picking_id.move_lines.filtered(
-        #             lambda a: a.product_id == lot.product_id
-        #     )
-        #
-        #     stock_quant = lot.get_stock_quant()
-        #
-        #     if not stock_quant:
-        #         raise models.ValidationError('El lote {} aún se encuentra en proceso.'.format(
-        #             serial.stock_production_lot_id.name
-        #     ))
-        #
-        #     potential_lot = self.env['potential.lot'].search([('stock_production_lot_id.id','=',lot.id)])
-        #
-        #     move_line = self.env['stock.move.line'].create({
-        #         'product_id': lot.product_id.id,
-        #         'lot_id': lot.id,
-        #         'product_uom_qty': potential_lot.qty_to_reserve,
-        #         'product_uom_id': stock_move.product_uom.id,
-        #         'location_id': stock_quant.location_id.id,
-        #         # 'qty_done': item.display_weight,
-        #         'location_dest_id': self.stock_picking_id.partner_id.property_stock_customer.id
-        #     })
-        #
-        #     stock_move.sudo().update({
-        #         'move_line_ids': [
-        #             (4, move_line.id)
-        #             ]
-        #         })
-        #
-        #     serial.reserved_to_stock_picking_id.update({
-        #         'move_line_ids': [
-        #             (4, move_line.id)
-        #         ]
-        #         })
-        #
-        #     stock_quant.sudo().update({
-        #         'reserved_quantity': stock_quant.total_reserved
-        #         })
-        serial_to_reserve_ids.mapped('stock_production_lot_id').write({
-            'can_add_serial': False
-        })
-
         return res
 
     @api.model
@@ -281,23 +231,8 @@ class MrpProduction(models.Model):
         })
         return res
 
-    @api.multi
-    def fix_reserved(self):
-        for item in self:
-            group = self.env['res.groups'].search([('name', '=', 'Limpiar')])
-            user_logon = self.env.user
-            if user_logon not in group.users:
-                raise models.ValidationError("Opcion no disponible con sus permisos de usuario")
-            item.move_raw_ids.update({
-                'is_done': False,
-                'state': 'assigned'
-            })
-            item.write({
-                'check_to_done': True
-            })
-            group = self.env['res.groups'].search([('id', '=', 68)])
-            for move in item.move_raw_ids:
-                if move.reserved_availability > 0 or any(x.qty_done == 0 for x in move.active_move_line_ids):
-                    query = 'DELETE FROM stock_move_line where move_id = {}'.format(move.id)
-                    cr = self._cr
-                    cr.execute(query)
+
+    def fix_reserved(self,move):
+        query = 'DELETE FROM stock_move_line where move_id = {}'.format(move.id)
+        cr = self._cr
+        cr.execute(query)

@@ -126,13 +126,13 @@ class MrpWorkorder(models.Model):
     lot_produced_id = fields.Integer('Lote a producir', compute='_compute_lot_produced')
 
     in_weight = fields.Float('Kilos Ingresados',
-                             digits=dp.get_precision('Product Unit of Measure'), store=True)
+                             digits=dp.get_precision('Product Unit of Measure'))
 
-    out_weight = fields.Float('Kilos Producidos', compute='_compute_out_weight',
-                              digits=dp.get_precision('Product Unit of Measure'), store=True)
+    out_weight = fields.Float('Kilos Producidos',
+                              digits=dp.get_precision('Product Unit of Measure'))
 
-    pt_out_weight = fields.Float('Kilos Producidos del PT', compute='_compute_pt_out_weight',
-                                 digits=dp.get_precision('Product Unit of Meausure'), store=True)
+    pt_out_weight = fields.Float('Kilos Producidos del PT',
+                                 digits=dp.get_precision('Product Unit of Meausure'))
 
     producers_id = fields.Many2many('res.partner', string='Productores')
 
@@ -195,22 +195,6 @@ class MrpWorkorder(models.Model):
         for item in self:
             if item.manufacturing_pallet_ids:
                 item.pallet_qty = len(item.manufacturing_pallet_ids)
-
-    @api.depends('summary_out_serial_ids')
-    @api.multi
-    def _compute_out_weight(self):
-        for item in self:
-            if item.summary_out_serial_ids:
-                item.out_weight = sum(item.summary_out_serial_ids.mapped('real_weight'))
-
-    @api.depends('summary_out_serial_ids')
-    @api.multi
-    def _compute_pt_out_weight(self):
-        for item in self:
-            if item.summary_out_serial_ids:
-                item.pt_out_weight = sum(
-                    item.summary_out_serial_ids.filtered(lambda a: 'PT' in a.product_id.default_code).mapped(
-                        'real_weight'))
 
     @api.multi
     def show_in_serials(self):
@@ -383,7 +367,7 @@ class MrpWorkorder(models.Model):
                     if check.quality_state == 'none' and check.qty_done > 0:
                         self.action_next()
         self.action_first_skipped_step()
-        self.write({
+        self.sudo().write({
             'in_weight': sum(self.potential_serial_planned_ids.mapped('display_weight'))
         })
         return {
@@ -393,6 +377,7 @@ class MrpWorkorder(models.Model):
             'res_model': 'mrp.workorder',
             'view_id': False,
             'type': 'ir.actions.act_window',
+            'context': {'form_view_initial_mode': 'edit', 'force_detailed_view': 'true'},
             'views': [
                 [self.env.ref('dimabe_manufacturing.mrp_workorder_process_view').id, 'form']],
             'res_id': self.id,
@@ -425,6 +410,8 @@ class MrpWorkorder(models.Model):
         self.process_serial(serial_number=self.confirmed_serial)
 
     def process_serial(self, serial_number):
+        lots = self.potential_serial_planned_ids
+        weigths = lots.mapped('display_weight')
         if not isinstance(self.id, int):
             self = self._origin
         serial_number = serial_number.strip()
@@ -531,9 +518,6 @@ class MrpWorkorder(models.Model):
             'confirmed_serial': None,
             'current_quality_check_id': check.id
         })
-
-    def on_barcode_scanned(self, barcode):
-        self.process_serial(barcode)
 
     @api.multi
     def validate_to_done(self):

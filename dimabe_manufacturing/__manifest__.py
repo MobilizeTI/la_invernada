@@ -61,6 +61,7 @@
         'views/label_durability.xml',
         'views/dried_oven.xml',
         'views/res_config_settings.xml',
+        'views/process_report_xlsx.xml',
         'views/update_quant_view.xml',
         'views/custom_dispatch_line.xml',
         'views/stock_report_xlsx.xml',
@@ -89,10 +90,16 @@
         'reports/process/manual_service_process.xml',
         'reports/stock/match_report_service.xml',
         'reports/inventory/compare_inventory_report.xml',
-        'reports/stock/match_report_service.xml'
+        'reports/stock/match_report_service.xml',
+        'reports/stock/discart_service_report.xml',
+        'reports/stock/calibrate_service_report.xml',
+        'reports/stock/vain_service.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
+    ],
+    'qweb': [
+        'static/src/xml/custom_in_screen_xml.xml'
     ]
 }

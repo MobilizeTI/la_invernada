@@ -1,6 +1,6 @@
 from odoo import fields, models, api
 import xlsxwriter
-from datetime import date
+from datetime import date, datetime
 import base64
 
 
@@ -49,7 +49,7 @@ class StockReportXlsx(models.TransientModel):
         elif self.stock_selection == 'raw_service':
             dict_data = self.generate_excel_raw_report(
                 [('product_id.default_code', 'like', 'MPS'), ('product_id.name', 'not like', 'Verde'),
-                 ('harvest_filter', '=', self.year)], 'Materia Prima Servicio')
+                 ('harvest', '=', self.year)], 'Materia Prima Servicio')
         elif self.stock_selection == 'washed_service':
             dict_data = self.generate_excel_serial_report(
                 [('product_id.default_code', 'like', 'PSES016'), ('harvest_filter', '=', self.year)],
@@ -80,6 +80,7 @@ class StockReportXlsx(models.TransientModel):
             'text_wrap': True
         })
         number_format = workbook.add_format({'num_format': '#,##0.00'})
+        date_format = workbook.add_format({'num_format': 'dd/mmmm/yyyy'})
         sheet = workbook.add_worksheet('Informe de Materia Prima')
         row = 0
         col = 0
@@ -122,7 +123,7 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, lot.reception_weight, number_format)
             col += 1
-            sheet.write(row, col, lot.create_date.strftime("%d-%m-%Y %H:%M:%S"))
+            sheet.write_datetime(row, col, lot.create_date,date_format)
             col += 1
             sheet.write(row, col, len(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed)))
             col += 1
@@ -134,7 +135,7 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             if lot.physical_location:
                 models._logger.error(f'{lot.name} {lot.physical_location}')
-                sheet.write(row, col, lot.physical_location.replace(' ', '/n'), text_format)
+                sheet.write(row, col, lot.physical_location, text_format)
             col += 1
             if lot.observations:
                 sheet.write(row, col, lot.observations)
@@ -148,13 +149,14 @@ class StockReportXlsx(models.TransientModel):
         return {'file_name': report_name, 'base64': file_base64}
 
     def generate_excel_serial_report(self, list_condition, type_product):
-        file_name = 'temp_name.xlsx'
+        file_name = 'temp_report.xlsx'
         workbook = xlsxwriter.Workbook(file_name)
         sheet = workbook.add_worksheet(f"Informe de {type_product}")
         text_format = workbook.add_format({
             'text_wrap': True
         })
         number_format = workbook.add_format({'num_format': '#,##0.00'})
+        date_format = workbook.add_format({'num_format': 'dd/mmmm/yyyy'})
         row = 0
         col = 0
         titles = [(50.56, 'Productor'), (15.33, 'Serie'), (13.22, 'Kilos Producidos'), (13.22, 'Kilos Disponible'),
@@ -197,7 +199,7 @@ class StockReportXlsx(models.TransientModel):
             else:
                 sheet.write(row, col, 'Disponible')
             col += 1
-            sheet.write(row, col, serial.packaging_date.strftime('%d-%m-%Y'))
+            sheet.write_datetime(row, col, serial.packaging_date,date_format)
             col += 1
             if serial.client_or_quality:
                 sheet.write(row, col, serial.client_or_quality)
@@ -206,7 +208,7 @@ class StockReportXlsx(models.TransientModel):
                 sheet.write(row, col, serial.workcenter_send_id.display_name)
             col += 1
             if serial.delivered_date:
-                sheet.write(row, col, serial.delivered_date.strftime('%d-%m-%Y'))
+                sheet.write(row, col, serial.delivered_date,date_format)
             col += 1
             if serial.physical_location:
                 sheet.write(row, col, serial.physical_location, text_format)
@@ -228,6 +230,7 @@ class StockReportXlsx(models.TransientModel):
         text_format = workbook.add_format({
             'text_wrap': True
         })
+        date_format = workbook.add_format({'num_format': 'dd/mmmm/yyyy'})
         row = 0
         col = 0
         titles = [(1, 'Pedido'), (13, 'Lote'), (14, 'Producto'), (15, 'Productor'), (2, 'Medida'),

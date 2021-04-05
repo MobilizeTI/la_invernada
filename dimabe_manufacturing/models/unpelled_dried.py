@@ -371,6 +371,7 @@ class UnpelledDried(models.Model):
 
             if not item.oven_use_ids:
                 item.state = 'draft'
+            item.out_lot_id.verify_without_lot()
 
     @api.multi
     def go_history(self):
