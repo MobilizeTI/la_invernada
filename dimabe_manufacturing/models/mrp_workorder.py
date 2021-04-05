@@ -208,6 +208,54 @@ class MrpWorkorder(models.Model):
                     })
 
     @api.multi
+    def organize_move_line(self):
+        for move in self.production_id.move_raw_ids:
+            for active in move.active_move_line_ids:
+                active.unlink()
+        for item in self.potential_serial_planned_ids.mapped('stock_production_lot_id'):
+            stock_move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == item.product_id.id)
+            virtual_location_production_id = self.env['stock.location'].search([
+                ('usage', '=', 'production'),
+                ('location_id.name', 'like', 'Virtual Locations')
+            ])
+            if item not in stock_move.active_move_line_ids.mapped('lot_id'):
+                if not self.lot_produced_id:
+                    stock_move.update({
+                        'active_move_line_ids': [
+                            (0, 0, {
+                                'product_id': item.product_id.id,
+                                'lot_id': item.id,
+                                'qty_done': sum(self.potential_serial_planned_ids.filtered(
+                                    lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
+                                'lot_produced_id': self.production_finished_move_line_ids.filtered(
+                                    lambda a: a.product_id.id == self.product_id.id and a.lot_id)[0].lot_id,
+                                'workorder_id': self.id,
+                                'production_id': self.production_id.id,
+                                'product_uom_id': stock_move.product_uom.id,
+                                'location_id': item.stock_production_lot_serial_ids.mapped('production_id').location_src_id.id if not item.location_id else item.location_id.id,
+                                'location_dest_id': virtual_location_production_id.id
+                            })
+                        ]
+                    })
+                else:
+                    stock_move.update({
+                        'active_move_line_ids': [
+                            (0, 0, {
+                                'product_id': item.product_id.id,
+                                'lot_id': item.id,
+                                'qty_done': sum(self.potential_serial_planned_ids.filtered(
+                                    lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
+                                'lot_produced_id': self.lot_produced_id,
+                                'workorder_id': self.id,
+                                'production_id': self.production_id.id,
+                                'product_uom_id': stock_move.product_uom.id,
+                                'location_id': item.stock_production_lot_serial_ids.mapped('production_id').location_src_id.id if not item.location_id else item.location_id.id,
+                                'location_dest_id': virtual_location_production_id.id
+                            })
+                        ]
+                    })
+
+    @api.multi
     def fix_env(self):
         workorder_ids = self.env['mrp.workorder'].search([])
         for work in workorder_ids:

@@ -212,6 +212,8 @@ class MrpProduction(models.Model):
     @api.multi
     def button_mark_done(self):
         self.calculate_done()
+        for item in self.workorder_ids:
+            item.organize_move_line()
         res = super(MrpProduction, self).button_mark_done()
         return res
 
