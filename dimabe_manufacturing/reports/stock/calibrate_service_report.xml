@@ -25,7 +25,7 @@
                 </tree>
             </field>
         </record>
-        <record id="dimabe_manufacturing.stock_calibrate_report" model="ir.actions.act_window">
+        <record id="dimabe_manufacturing.stock_service_calibrate_report" model="ir.actions.act_window">
             <field name="name">Informe de Producto Calibrado Servicio</field>
             <field name="res_model">stock.production.lot.serial</field>
             <field name="view_mode">tree,graph,form,pivot</field>
@@ -36,7 +36,7 @@
         </record>
         <menuitem id="stock_report_calibrate_service_tree_menu"
                   sequence="4"
-                  action="dimabe_manufacturing.stock_calibrate_report"
+                  action="dimabe_manufacturing.stock_service_calibrate_report"
                   name="Informe de Existencia Producto Calibrado Servicio"
                   parent="stock_report_menu"
         />
