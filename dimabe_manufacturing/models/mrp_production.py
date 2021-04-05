@@ -217,8 +217,7 @@ class MrpProduction(models.Model):
         for move in self.move_raw_ids:
             for line in move.active_move_line_ids:
                 if line.lot_id not in serial.mapped('stock_production_lot_id'):
-                    if line.lot_id in lots:
-                        line.sudo().unlink()
+                    line.sudo().unlink()
                 else:
                     lots.append(line.lot_id)
         res = super(MrpProduction, self).button_mark_done()
@@ -232,8 +231,7 @@ class MrpProduction(models.Model):
         })
         return res
 
-
-    def fix_reserved(self,move):
+    def fix_reserved(self, move):
         query = 'DELETE FROM stock_move_line where move_id = {}'.format(move.id)
         cr = self._cr
         cr.execute(query)
