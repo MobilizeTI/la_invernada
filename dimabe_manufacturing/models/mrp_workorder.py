@@ -171,8 +171,6 @@ class MrpWorkorder(models.Model):
                 ('location_id.name', 'like', 'Virtual Locations')
             ])
             if item not in stock_move.active_move_line_ids.mapped('lot_id'):
-                if not item.location_id:
-                    raise models.ValidationError("Lote {} aun esta en proceso {}".format(item.name, item.location_id))
                 if not self.lot_produced_id:
                     stock_move.update({
                         'active_move_line_ids': [
@@ -186,7 +184,7 @@ class MrpWorkorder(models.Model):
                                 'workorder_id': self.id,
                                 'production_id': self.production_id.id,
                                 'product_uom_id': stock_move.product_uom.id,
-                                'location_id': item.location_id.id,
+                                'location_id': item.production_id.location_src_id.id if not item.location_id else item.location_id.id,
                                 'location_dest_id': virtual_location_production_id.id
                             })
                         ]
@@ -203,7 +201,7 @@ class MrpWorkorder(models.Model):
                                 'workorder_id': self.id,
                                 'production_id': self.production_id.id,
                                 'product_uom_id': stock_move.product_uom.id,
-                                'location_id': item.location_id.id,
+                                'location_id': item.production_id.location_src_id.id if not item.location_id else item.location_id.id,
                                 'location_dest_id': virtual_location_production_id.id
                             })
                         ]
