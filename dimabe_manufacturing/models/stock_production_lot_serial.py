@@ -353,16 +353,16 @@ class StockProductionLotSerial(models.Model):
                 ('final_lot_id', '!=', False),
                 ('final_lot_id', '=', res.stock_production_lot_id.id)
             ])
-
+            work_order.sudo().write({
+                'out_weight': sum(res.stock_production_lot_id.stock_production_lot_serial_ids.mapped('display_weight')),
+                'pt_out_weight': sum(res.stock_production_lot_id.stock_production_lot_serial_ids.filtered(
+                    lambda a: a.product_id.categ_id.parent_id.name == 'Producto Terminado').mapped('display_weight'))
+            })
             res.producer_id = res.stock_production_lot_id.producer_id.id
 
             if work_order.production_id:
                 production = work_order.production_id[0]
-        work_order.sudo().write({
-            'out_weight': sum(res.stock_production_lot_id.stock_production_lot_serial_ids.mapped('display_weight')),
-            'pt_out_weight': sum(res.stock_production_lot_id.stock_production_lot_serial_ids.filtered(
-                lambda a: a.product_id.categ_id.parent_id.name == 'Producto Terminado').mapped('display_weight'))
-        })
+
         if production:
             res.production_id = production.id
             res.reserve_to_stock_picking_id = production.stock_picking_id.id
