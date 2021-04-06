@@ -247,6 +247,25 @@ class StockProductionLot(models.Model):
     show_date = fields.Datetime('Fecha de Creacion', compute='compute_show_date')
 
     @api.multi
+    def unlink_serial_without_pallet(self):
+        for item in self:
+            if item.serial_without_pallet_ids.filtered(lambda a: a.consumed):
+                raise models.ValidationError('Existe una o mas series consumidas')
+            else:
+                item.serial_without_pallet_ids.sudo().unlink()
+
+    @api.multi
+    def unlink_selecction(self):
+        for item in self:
+            if not item.serial_without_pallet_ids.filtered(lambda a: a.to_unlink):
+                raise models.UserError("No ha seleccionado nada")
+            else:
+                if item.serial_without_pallet_ids.filtered(lambda a: a.consumed):
+                    raise models.ValidationError('Existe una o mas series consumidas')
+                else:
+                    item.serial_without_pallet_ids.filtered(lambda a: a.to_unlink).sudo().unlink()
+
+    @api.multi
     def _compute_reception_elapsed_time(self):
         for item in self:
             item.reception_elapsed_time = item.stock_picking_id.elapsed_time

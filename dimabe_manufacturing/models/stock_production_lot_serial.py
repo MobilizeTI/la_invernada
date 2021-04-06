@@ -169,7 +169,7 @@ class StockProductionLotSerial(models.Model):
 
     available_weight = fields.Float('Kilos disponibles', compute="compute_available_weight")
 
-    to_delete = fields.Boolean('Para Eliminar')
+    to_unlink = fields.Boolean('Para Eliminar')
 
     @api.multi
     def compute_available_weight(self):
