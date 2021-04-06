@@ -76,7 +76,8 @@ class StockProductionLot(models.Model):
 
     serial_without_pallet_ids = fields.One2many(
         'stock.production.lot.serial',
-        compute='_compute_serial_without_pallet_ids',
+        'stock_production_lot_id',
+        domain=[('pallet_id','=',None)],
         string='Series sin Pallet'
     )
 
