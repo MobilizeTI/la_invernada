@@ -17,3 +17,4 @@ from . import stock_move_line
 from . import account_invoice
 from . import custom_customer_orders_xls
 from . import custom_notify
+from . import custom_customer_orders_xls
