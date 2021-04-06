@@ -190,7 +190,7 @@
                             </group>
                             <group attrs="{'invisible':[('state', '=', 'done')]}">
                                 <h2>Otras Salidas</h2>
-                                <field name="producers_id" invisible="1"/>
+                                <field name="producers_id"/>
                                 <field name="byproduct_move_line_ids"
                                        readonly="1">
                                     <tree readonly="1">
