@@ -22,9 +22,9 @@ class StockProductionLot(models.Model):
         compute='_compute_can_add_serial'
     )
 
-    producer_ids = fields.One2many(
+    producer_ids = fields.Many2many(
         'res.partner',
-        compute='_compute_producer_ids'
+        #compute='_compute_producer_ids'
     )
 
     product_variety = fields.Char(
