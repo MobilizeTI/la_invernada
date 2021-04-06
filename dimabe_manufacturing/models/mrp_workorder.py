@@ -659,7 +659,8 @@ class MrpWorkorder(models.Model):
                 'res_model': 'mrp.workorder',
                 'views': [[self.env.ref('dimabe_manufacturing.mrp_workorder_out_form_view').id, 'form']],
                 'res_id': self.id,
-                'target': 'fullscreen'
+                'target': 'fullscreen',
+                'context': {'default_producers_id': item.producers_id}
             }
 
     def create_pallet(self):
