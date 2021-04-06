@@ -417,24 +417,24 @@ class StockProductionLotSerial(models.Model):
 
     @api.model
     def unlink(self):
+        for item in self:
+            if item.consumed:
+                raise models.ValidationError(
+                    'este código {} ya fue consumido, no puede ser eliminado'.format(
+                        self.serial_number
+                    )
 
-        if self.consumed:
-            raise models.ValidationError(
-                'este código {} ya fue consumido, no puede ser eliminado'.format(
-                    self.serial_number
                 )
-
-            )
-        group = self.env['res.groups'].search([('name', '=', 'Limpiar')])
-        user_logon = self.env.user
-        if user_logon not in group.users:
-            raise models.ValidationError("Opcion no disponible con sus permisos de usuario")
-        lot = self.env['stock.production.lot'].search([('id', '=', self.stock_production_lot_id.id)])
-        if self.production_id:
-            production = self.env['mrp.production'].search([('id', '=', self.production_id.id)])
-        res = super(StockProductionLotSerial, self).unlink()
-        lot.update_kg(lot.id)
-        lot.update_stock_quant(production.location_dest_id.id)
+            group = self.env['res.groups'].search([('name', '=', 'Limpiar')])
+            user_logon = self.env.user
+            if user_logon not in group.users:
+                raise models.ValidationError("Opcion no disponible con sus permisos de usuario")
+            lot = self.env['stock.production.lot'].search([('id', '=', item.stock_production_lot_id.id)])
+            if item.production_id:
+                production = self.env['mrp.production'].search([('id', '=', item.production_id.id)])
+            res = super(StockProductionLotSerial, self).unlink()
+            lot.update_kg(lot.id)
+            lot.update_stock_quant(production.location_dest_id.id)
         return res
 
     @api.multi
