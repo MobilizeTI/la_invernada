@@ -18,7 +18,8 @@
                 <button name="check_duplicate" type="object" string="verificar series duplicadas"
                         groups="base.group_no_one"/>
                 <field name="producer_ids" invisible="1"/>
-                <field name="producer_id" required="1" options="{'no_create': True, 'no_create_edit':True,'no_quick_create':True}"
+                <field name="producer_id" required="1"
+                       options="{'no_create': True, 'no_create_edit':True,'no_quick_create':True}"
                        domain="['|',('id','in',producer_ids),('always_to_print','=',True)]"/>
                 <field name="qty_standard_serial"
                        attrs="{'invisible':['|',('is_standard_weight','=',False),('can_add_serial','=',False)]}"
@@ -83,10 +84,13 @@
                         <field name="total_content_weight"/>
                         <field name="total_content"/>
                         <field name="state"/>
-                        <button type="object" string="Eliminar" name="delete_pallet"/>
+                        <button type="object" string="Eliminar" groups="dimabe_manufacturing.group_mrp_modify_serials"
+                                name="delete_pallet"/>
                     </tree>
                 </field>
-                <button type="object" name="delete_all_serial" string="Eliminar Series"
+                <button type="object" name="delete_all_serial" string="Eliminar Todo"
+                        groups="dimabe_manufacturing.group_mrp_modify_serials"/>
+                <button type="object" name="unlink_selecction" string="Eliminar Seleccion"
                         groups="dimabe_manufacturing.group_mrp_modify_serials"/>
                 <field name="serial_without_pallet_ids"
                        attrs="{'invisible':[('is_standard_weight','=',False)]}"
