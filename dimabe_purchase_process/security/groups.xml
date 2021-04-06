@@ -22,4 +22,7 @@
   <record id="group_purchase_confirm_order" model="res.groups">
     <field name="name">Confirmar Pedido</field>
   </record>
+  <record id="group_purchase_file_orders" model="res.groups">
+    <field name="name">Archivo de Pedido</field>
+  </record>
 </odoo>
