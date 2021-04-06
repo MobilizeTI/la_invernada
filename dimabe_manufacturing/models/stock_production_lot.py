@@ -508,19 +508,7 @@ class StockProductionLot(models.Model):
     def _compute_producer_ids(self):
         for item in self:
             if item.is_prd_lot:
-                workorder = self.env['mrp.workorder'].search([
-                    '|',
-                    ('final_lot_id', '=', item.id),
-                    ('production_finished_move_line_ids.lot_id', '=', item.id)
-                ])
-
-                producers = workorder.mapped('potential_serial_planned_ids.stock_production_lot_id.producer_id')
-
-                item.producer_ids = self.env['res.partner'].search([
-                    '|',
-                    ('id', 'in', producers.mapped('id')),
-                    ('always_to_print', '=', True)
-                ])
+                raise models.ValidationError(f'{self.env.context.keys()} {self.env.context.values()}')
             elif item.is_dried_lot:
                 dried_data = self.env['unpelled.dried'].search([
                     ('out_lot_id', '=', item.id)
