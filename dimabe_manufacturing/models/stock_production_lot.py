@@ -24,7 +24,7 @@ class StockProductionLot(models.Model):
 
     producer_ids = fields.Many2many(
         'res.partner',
-        #compute='_compute_producer_ids'
+        compute='_compute_producer_ids'
     )
 
     product_variety = fields.Char(
