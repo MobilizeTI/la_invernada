@@ -18,7 +18,7 @@
                 <button name="check_duplicate" type="object" string="verificar series duplicadas"
                         groups="base.group_no_one"/>
                 <field name="producer_ids" invisible="1"/>
-                <field name="producer_id" required="1" widget="selection"
+                <field name="producer_id" required="1" options="{'no_create': True, 'no_create_edit':True,'no_quick_create':True}"
                        domain="['|',('id','in',producer_ids),('always_to_print','=',True)]"/>
                 <field name="qty_standard_serial"
                        attrs="{'invisible':['|',('is_standard_weight','=',False),('can_add_serial','=',False)]}"
