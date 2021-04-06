@@ -166,6 +166,7 @@
                                 <field name="final_lot_id"
                                        readonly="1"
                                        attrs="{'invisible':[('state', '=', 'done')]}"
+                                       context="{'default_producers_id': producers_id}"
                                 />
 
 
