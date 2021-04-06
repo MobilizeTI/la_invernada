@@ -508,7 +508,7 @@ class StockProductionLot(models.Model):
     def _compute_producer_ids(self):
         for item in self:
             if item.is_prd_lot:
-                raise models.ValidationError(f'{self.env.context.keys()} {self.env.context.values()}')
+                item.producer_ids = self.env.context['default_producer_ids']
             elif item.is_dried_lot:
                 dried_data = self.env['unpelled.dried'].search([
                     ('out_lot_id', '=', item.id)
