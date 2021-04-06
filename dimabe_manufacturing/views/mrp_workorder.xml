@@ -192,10 +192,10 @@
                                 <h2>Otras Salidas</h2>
                                 <field name="producers_id"/>
                                 <field name="byproduct_move_line_ids"
-                                       readonly="1">
+                                       readonly="1" context="{'default_producer_ids':producers_id}" >
                                     <tree readonly="1">
                                         <field name="product_id"/>
-                                        <field name="lot_id" context="{'default_producer_ids':parent.producers_id}" widget="many2onebutton"/>
+                                        <field name="lot_id" widget="many2onebutton"/>
                                     </tree>
                                 </field>
                             </group>
