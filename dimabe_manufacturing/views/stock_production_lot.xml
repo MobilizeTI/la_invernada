@@ -77,7 +77,15 @@
 
                 <field name="all_pallet_ids"
                        attrs="{'invisible':[('is_standard_weight','=',False)]}"
-                 />
+                >
+                    <tree editable="bottom" create="false" delete="false">
+                        <field name="name"/>
+                        <field name="total_content_weight"/>
+                        <field name="total_content"/>
+                        <field name="state"/>
+                        <button type="object" string="Eliminar" name="delete_pallet"/>
+                    </tree>
+                </field>
                 <button type="object" name="delete_all_serial" string="Eliminar Series"
                         groups="dimabe_manufacturing.group_mrp_modify_serials"/>
                 <field name="serial_without_pallet_ids"
