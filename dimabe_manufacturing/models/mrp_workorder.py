@@ -400,7 +400,11 @@ class MrpWorkorder(models.Model):
             if not check.component_is_byproduct:
                 check.qty_done = 0
                 self.action_skip()
+                if check.product_id.id == 2873:
+                    models._logger.error('cayo aqui')
             else:
+                if check.product_id.id == 2873:
+                    models._logger.error('cayo aca')
                 if not check.lot_id:
                     lot_tmp = self.env['stock.production.lot'].create({
                         'name': self.env['ir.sequence'].next_by_code('mrp.workorder'),
@@ -515,7 +519,8 @@ class MrpWorkorder(models.Model):
                     lambda a: a.stock_production_lot_id.id == serial.stock_production_lot_id.id).mapped(
                     'display_weight')),
                 'production_id': self.production_id.id,
-                'workorder_id': self.id
+                'workorder_id': self.id,
+                'is_raw':True
             })
         if self.active_move_line_ids.filtered(lambda a: not a.lot_id and a.product_id.id == serial.product_id.id):
             line_wo = self.active_move_line_ids.filtered(
