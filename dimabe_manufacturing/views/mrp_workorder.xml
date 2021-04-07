@@ -79,10 +79,11 @@
                         <field name="out_weight" readonly="1"/>
                     </group>
                 </xpath>
-                <field name="final_lot_id" position="attributes">
+                <<field name="final_lot_id" position="attributes">
                     <attribute name="readonly">1</attribute>
                     <attribute name="force_save">1</attribute>
-                </field>
+                    <attribute name="context">{'default_producer_ids': producers_id}</attribute>
+                </field>>
                 <button name="open_tablet_view" position="attributes">
                     <attribute name="string">Procesar Entrada</attribute>
                     <attribute name="invisible">1</attribute>
