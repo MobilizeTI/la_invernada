@@ -430,7 +430,7 @@ class StockProductionLotSerial(models.Model):
                 production = self.env['mrp.production'].search([('id', '=', item.production_id.id)])
             res = super(StockProductionLotSerial, self).unlink()
             lot.update_kg(lot.id)
-            lot.update_stock_quant(production.location_dest_id.id)
+            lot.update_stock_quant_production(production.location_dest_id.id)
         return res
 
     @api.multi
