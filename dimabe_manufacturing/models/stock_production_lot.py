@@ -509,7 +509,9 @@ class StockProductionLot(models.Model):
         for item in self:
             if item.is_prd_lot:
                 if 'default_producer_ids' in self.env.context.keys():
-                item.producer_ids = self.env.context['default_producer_ids']
+                    item.producer_ids = self.env.context['default_producer_ids']
+                else:
+                    item.producer_ids = self.env['res.partner'].search([])
             elif item.is_dried_lot:
                 dried_data = self.env['unpelled.dried'].search([
                     ('out_lot_id', '=', item.id)
