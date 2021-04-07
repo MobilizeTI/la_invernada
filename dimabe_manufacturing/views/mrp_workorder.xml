@@ -102,7 +102,6 @@
                             attrs="{'invisible': [('production_state', '=', 'done')]}"
                     />
 
-
                     <button name="fix_env" type="object" string="Fix Env" groups="base.group_no_one"/>
                     <button type="object"
                             name="organize_move_line"
