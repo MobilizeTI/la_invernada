@@ -354,9 +354,11 @@ class StockProductionLotSerial(models.Model):
                 ('final_lot_id', '=', res.stock_production_lot_id.id)
             ])
             work_order.sudo().write({
-                'out_weight': sum(res.stock_production_lot_id.stock_production_lot_serial_ids.mapped('display_weight')),
-                'pt_out_weight': sum(res.stock_production_lot_id.stock_production_lot_serial_ids.filtered(
-                    lambda a: a.product_id.categ_id.parent_id.name == 'Producto Terminado').mapped('display_weight'))
+                'out_weight': sum(
+                        work_order.summary_out_serial_ids.mapped('display_weight')),
+                    'pt_out_weight': sum(work_order.summary_out_serial_ids.filtered(
+                        lambda a: a.product_id.categ_id.parent_id.name == 'Producto Terminado').mapped(
+                        'display_weight'))
             })
             res.producer_id = res.stock_production_lot_id.producer_id.id
 
@@ -428,9 +430,17 @@ class StockProductionLotSerial(models.Model):
             lot = self.env['stock.production.lot'].search([('id', '=', item.stock_production_lot_id.id)])
             if item.production_id:
                 production = self.env['mrp.production'].search([('id', '=', item.production_id.id)])
+                workorder = self.env['mrp.workorder'].search([('production_id','=',item.production_id.id)])
+                workorder.sudo().write({
+                    'out_weight': sum(
+                        workorder.summary_out_serial_ids.mapped('display_weight')),
+                    'pt_out_weight': sum(workorder.summary_out_serial_ids.filtered(
+                        lambda a: a.product_id.categ_id.parent_id.name == 'Producto Terminado').mapped(
+                        'display_weight'))
+                })
+                lot.update_stock_quant_production(production.location_dest_id.id)
             res = super(StockProductionLotSerial, item).unlink()
             lot.update_kg(lot.id)
-            lot.update_stock_quant_production(production.location_dest_id.id)
         return res
 
     @api.multi
