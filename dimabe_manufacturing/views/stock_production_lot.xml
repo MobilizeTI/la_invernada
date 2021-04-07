@@ -80,10 +80,10 @@
                        attrs="{'invisible':[('is_standard_weight','=',False)]}"
                 >
                     <tree editable="bottom" create="false" delete="false">
-                        <field name="name"/>
+                        <field name="name" readonly="1"/>
                         <field name="total_content_weight"/>
                         <field name="total_content"/>
-                        <field name="state"/>
+                        <field name="state" readonly="1"/>
                         <button type="object" string="Eliminar" groups="dimabe_manufacturing.group_mrp_modify_serials"
                                 name="delete_pallet"/>
                     </tree>
