@@ -84,7 +84,7 @@
                     <attribute name="readonly">1</attribute>
                     <attribute name="force_save">1</attribute>
                     <attribute name="context">{'default_producer_ids': producers_id}</attribute>
-                </field>>
+                </field>
                 <button name="open_tablet_view" position="attributes">
                     <attribute name="string">Procesar Entrada</attribute>
                     <attribute name="invisible">1</attribute>
