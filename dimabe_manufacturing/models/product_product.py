@@ -129,5 +129,5 @@ class ProductProduct(models.Model):
             lots = self.env['stock.production.lot'].search([('product_id','=',product.id)])
             for lot in lots:
                 line = self.env['stock.move.line'].sudo().search([('lot_id','=',lot.id)])
-                if line.location_dest_id
+
 
