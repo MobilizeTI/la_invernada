@@ -98,8 +98,5 @@
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
-    ],
-    'qweb': [
-        'static/src/xml/custom_in_screen_xml.xml'
     ]
 }
