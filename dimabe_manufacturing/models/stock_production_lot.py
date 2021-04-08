@@ -714,7 +714,7 @@ class StockProductionLot(models.Model):
     def get_stock_quant(self):
         return self.quant_ids.filtered(
             lambda a: a.location_id.name == 'Stock'
-        )[0]
+        )
 
     @api.multi
     def delete_all_serial(self):
