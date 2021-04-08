@@ -124,10 +124,3 @@ class ProductProduct(models.Model):
             total = sum(serial.mapped('display_weight'))
             item.dispatch_weight = total
 
-    def test(self):
-        for product in self.env['product.product'].sudo().search([('tracking','=','lot')]):
-            lots = self.env['stock.production.lot'].search([('product_id','=',product.id)])
-            for lot in lots:
-                line = self.env['stock.move.line'].sudo().search([('lot_id','=',lot.id)])
-
-
