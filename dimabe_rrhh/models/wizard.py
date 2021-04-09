@@ -482,9 +482,9 @@ class WizardHrPaySlip(models.TransientModel):
         result = 0
         TOTAL = float(TOTIM)
         if TOTAL >= round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf):
-            return str(float(round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf)))
+            return str(round(float(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf)))
         else:
-            return str(float(round(TOTAL)))
+            return str(round(float(TOTAL)))
 
     @api.model
     def _acortar_str(self, texto, size=1):
@@ -595,6 +595,10 @@ class WizardHrPaySlip(models.TransientModel):
             rut_dv = ""
             rut, rut_dv = payslip.employee_id.identification_id.split("-")
             rut = rut.replace('.', '')
+            if rut == '17126011':
+                value = self.get_imponible_salud(
+                    payslip and payslip[0] or False, self.get_payslip_lines_value_2(payslip, 'TOTIM'))
+                print(value)
             line_employee = [self._acortar_str(rut, 11),
                              self._acortar_str(rut_dv, 1),
                              self._arregla_str(payslip.employee_id.last_name.upper(),

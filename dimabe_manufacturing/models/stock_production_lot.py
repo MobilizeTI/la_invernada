@@ -911,7 +911,8 @@ class StockProductionLot(models.Model):
                                 'display_weight')),
                         'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda x: not x.consumed).mapped(
                             'display_weight')),
-                        'location_id': location_id
+                        'location_id': location_id,
+                        'in_date': datetime.now()
                     })
             else:
                 quant = self.env['stock.quant'].sudo().search(
