@@ -443,7 +443,7 @@ class WizardHrPaySlip(models.TransientModel):
         if payslip.contract_id.pension is True:
             return '0.0'
         elif TOTIM_2 >= round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf):
-            return str(float(round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf)))
+            return str(round(float(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf)))
         else:
             return str(round(float(round(TOTIM_2))))
 
