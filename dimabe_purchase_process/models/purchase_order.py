@@ -45,7 +45,6 @@ class PurchaseOrder(models.Model):
     def action_rfq_send(self):
         for item in self:
             if not item.boss_approval_id:
-                models._logger.error(item.state)
                 item.update({
                     'boss_approval_id': self.env.user.id,
                     'boss_approval_date': fields.datetime.now()
@@ -86,8 +85,6 @@ class PurchaseOrder(models.Model):
         email_list = [
             usr.partner_id.email for usr in user_group.users if usr.partner_id.email
         ]
-        models._logger.error(user_group)
-        models._logger.error(email_list)
         return ','.join(email_list)
 
     @api.model

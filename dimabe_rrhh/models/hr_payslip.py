@@ -61,7 +61,6 @@ class HrPayslip(models.Model):
                 if item.worked_days_line_ids.filtered(
                         lambda a: a.name == leave.holiday_status_id.name).number_of_days != sum(
                     leaves.mapped('number_of_days')):
-                    models._logger.error('Aqui')
                     if leave.holiday_status_id.name in item.worked_days_line_ids.mapped('name'):
 
                         days = item.worked_days_line_ids.filtered(lambda a: a.name == leave.holiday_status_id.name)
@@ -69,7 +68,6 @@ class HrPayslip(models.Model):
                             'number_of_days': days.number_of_days + leave.number_of_days
                         })
                     else:
-                        models._logger.error('No Aqui')
                         code = self.generate_code(leave.holiday_status_id.name, leave.holiday_status_id.id)
                         self.env['hr.payslip.worked_days'].create({
                             'name': leave.holiday_status_id.name,
@@ -80,7 +78,6 @@ class HrPayslip(models.Model):
                             'unpaid': leave.holiday_status_id.unpaid
                         })
                 if leave.holiday_status_id.name == 'Vacaciones' and leaves:
-                    models._logger.error('Esta Aqui')
                     if leave.holiday_status_id.unpaid:
                         item.write({
                             'vacations_days': sum(
@@ -89,7 +86,6 @@ class HrPayslip(models.Model):
                             'vacation_paid': False
                         })
                     else:
-                        models._logger.error('Aqui Esta')
                         item.write({
                             'vacations_days': sum(
                                 item.worked_days_line_ids.filtered(lambda a: 'Vacaciones' in a.name).mapped(
@@ -97,7 +93,6 @@ class HrPayslip(models.Model):
                             'vacation_paid': True
                         })
             if sum(leaves.mapped('number_of_days')) > 0 and not leaves:
-                models._logger.error('No')
                 item.write({
                     'absence_days': 0,
                     'have_absence': False

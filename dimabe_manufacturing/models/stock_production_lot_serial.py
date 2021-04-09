@@ -466,11 +466,9 @@ class StockProductionLotSerial(models.Model):
 
     @api.multi
     def reserve_picking(self):
-        models._logger.error('linea {330} reserve picking')
         if 'dispatch_id' in self.env.context:
             stock_picking_id = self.env.context['dispatch_id']
             stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
-            models._logger.error(stock_picking)
             if not stock_picking:
                 raise models.ValidationError('No se encontró el picking al que reservar el stock')
 
@@ -480,13 +478,10 @@ class StockProductionLotSerial(models.Model):
                 item.update({
                     'reserved_to_stock_picking_id': stock_picking.id
                 })
-                models._logger.error(item.reserved_to_stock_picking_id)
                 stock_move = item.reserved_to_stock_picking_id.move_lines.filtered(
                     lambda a: a.product_id == item.stock_production_lot_id.product_id
                 )
-                models._logger.error(stock_move)
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
-                models._logger.error(stock_quant)
                 if not stock_quant:
                     raise models.ValidationError('El lote {} aún se encuentra en proceso.'.format(
                         item.stock_production_lot_id.name
@@ -562,9 +557,7 @@ class StockProductionLotSerial(models.Model):
                         picking_move_line = item.reserved_to_stock_picking_id.move_line_ids.filtered(
                             lambda a: a.id == move_line.id
                         )
-                        models._logger.error(picking_move_line)
                         stock_quant = item.stock_production_lot_id.get_stock_quant()
-                        models._logger.error(stock_quant)
                         item.update({
                             'reserved_to_stock_picking_id': stock_picking_id
                         })

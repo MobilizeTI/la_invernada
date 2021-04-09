@@ -10,6 +10,4 @@ class ProductProduct(models.Model):
     def _compute_packing_type(self):
         for item in self:
             for attr in item.attribute_value_ids:
-                models._logger.error(attr.attribute_id.name)
-                models._logger.error(attr.name)
                 item.packing_type = attr.name
