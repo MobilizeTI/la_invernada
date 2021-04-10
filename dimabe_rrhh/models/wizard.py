@@ -111,7 +111,7 @@ class WizardHrPaySlip(models.TransientModel):
         worksheet.write(10,0, 'Centro de Costo : Todos los Centros de Costos', bold_format)
         worksheet.write(11,0, 'Total Trabajadores : '+ str(len(payslips)), bold_format)
         for pay in payslips:
-            rules = self.env['hr.salary.rule'].search([('id', 'in', totals.mapped('salary_rule_id').mapped('id'))],
+            rules = self.env['hr.salary.rule'].sudo().search([('id', 'in', totals.mapped('salary_rule_id').mapped('id'))],
                                                       order='order_number')
             col = 0
 
@@ -206,7 +206,6 @@ class WizardHrPaySlip(models.TransientModel):
             'datas_fname': file_name,
             'datas': file_base64
         })
-
         action = {
             'type': 'ir.actions.act_url',
             'url': '/web/content/{}?download=true'.format(attachment_id.id, ),
@@ -444,7 +443,7 @@ class WizardHrPaySlip(models.TransientModel):
         if payslip.contract_id.pension is True:
             return '0.0'
         elif TOTIM_2 >= round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf):
-            return str(float(round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf)))
+            return str(round(float(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf)))
         else:
             return str(round(float(round(TOTIM_2))))
 
@@ -483,9 +482,9 @@ class WizardHrPaySlip(models.TransientModel):
         result = 0
         TOTAL = float(TOTIM)
         if TOTAL >= round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf):
-            return str(float(round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf)))
+            return str(round(float(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf)))
         else:
-            return str(float(round(TOTAL)))
+            return str(round(float(TOTAL)))
 
     @api.model
     def _acortar_str(self, texto, size=1):
@@ -595,7 +594,7 @@ class WizardHrPaySlip(models.TransientModel):
             rut = ""
             rut_dv = ""
             rut, rut_dv = payslip.employee_id.identification_id.split("-")
-            rut = rut.replace('.', '')
+
             line_employee = [self._acortar_str(rut, 11),
                              self._acortar_str(rut_dv, 1),
                              self._arregla_str(payslip.employee_id.last_name.upper(),
