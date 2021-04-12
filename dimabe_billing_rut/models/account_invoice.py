@@ -269,17 +269,18 @@ class AccountInvoice(models.Model):
     @api.onchange('etd')
     @api.depends('etd')
     def _compute_etd_values(self):
-        print('')
-        if self.etd:
-            try:
-                self.etd_month = self.etd.month
-                _year, _week, _day_of_week = self.etd.isocalendar()
-                self.etd_week = _week
-            except:
-                raise UserWarning('Error producido al intentar obtener el mes y semana de embarque')
-        else:
-            self.etd_week = None
-            self.etd_month = None
+        for item in self:
+            print('')
+            if item.etd:
+                try:
+                    item.etd_month = item.etd.month
+                    _year, _week, _day_of_week = item.etd.isocalendar()
+                    item.etd_week = _week
+                except:
+                    raise UserWarning('Error producido al intentar obtener el mes y semana de embarque')
+            else:
+                item.etd_week = None
+                item.etd_month = None
 
     @api.depends('freight_amount', 'safe_amount')
     def _compute_total_value(self):
@@ -507,6 +508,12 @@ class AccountInvoice(models.Model):
     def validation_fields(self):
         self.valid_to_sii = False
 
+        for item in self.invoice_line_ids:
+            for tax_line in item.invoice_line_tax_ids:
+                if 'IVA' not in tax_line.name:
+                    if not tax_line.sii_code or tax_line.sii_code == 0:
+                        raise models.ValidationError('El impuesto {} no tiene el código SII'.format(tax_line.name))
+
         if not self.uom_tara:
             raise models.ValidationError('Debe seleccionar La Unidad de Medida Tara')
         if not self.uom_gross_weight:
@@ -514,7 +521,7 @@ class AccountInvoice(models.Model):
         if not self.uom_net_weight:
             raise models.ValidationError('Debe seleccionar La Unidad de Medida Peso Neto')
 
-        if self.total_export_sales_clause == 0:
+        if self.total_export_sales_clause == 0 and self.dte_type_id.code == "110":
             raise models.ValidationError('El Valor de Cláusula de Venta de Exportación no puede ser 0')
         if not self.partner_id:
             raise models.ValidationError('Por favor seleccione el Cliente')
@@ -631,10 +638,11 @@ class AccountInvoice(models.Model):
         else:
             invoice_lines = self.invoice_line_ids
 
-        value_exchange = 1
+        #value_exchange = 1
 
-        if (self.env.user.company_id.id == 1 and self.dte_type_id.code != "110") or self.env.user.company_id.id == 3:
-            value_exchange = self.exchange_rate
+        #if (self.env.user.company_id.id == 1 and self.dte_type_id.code != "110") or self.env.user.company_id.id == 3 :
+        #    if self.allow_currency_conversion:
+        #        value_exchange = self.exchange_rate
 
         for item in invoice_lines:
             haveExempt = False
@@ -679,10 +687,10 @@ class AccountInvoice(models.Model):
                             "ProductName": item.name,
                             "ProductQuantity": str(item.quantity),
                             "UnitOfMeasure": str(item.uom_id.name),
-                            "ProductPrice": str(item.price_unit * value_exchange),
+                            "ProductPrice": str(item.price_unit),#str(item.price_unit * value_exchange),
                             "ProductDiscountPercent": "0",
                             "DiscountAmount": "0",
-                            "Amount": str(self.roundclp(amount_subtotal * value_exchange)),
+                            "Amount": str(self.roundclp(amount_subtotal)),#str(self.roundclp(amount_subtotal * value_exchange)),
                             "HaveExempt": haveExempt,
                             "TypeOfExemptEnum": typeOfExemptEnum
                         }
@@ -703,7 +711,7 @@ class AccountInvoice(models.Model):
 
                 other_tax = '0'
                 for tax_line in item.invoice_line_tax_ids:
-                    if tax_line.id != 1 and tax_line.id != 2:
+                    if 'IVA' not in tax_line.name:
                         if tax_line.sii_code:
                             other_tax = str(tax_line.sii_code)
                         else:
@@ -717,10 +725,10 @@ class AccountInvoice(models.Model):
                         "ProductName": item.name,
                         "ProductQuantity": str(item.quantity),
                         "UnitOfMeasure": str(item.uom_id.name),
-                        "ProductPrice": str(product_price * value_exchange),
+                        "ProductPrice": str(product_price),#str(product_price * value_exchange),
                         "ProductDiscountPercent": "0",
                         "DiscountAmount": "0",
-                        "Amount": str(self.roundclp(amount_subtotal * value_exchange)),
+                        "Amount": str(self.roundclp(amount_subtotal)),#str(self.roundclp(amount_subtotal * value_exchange)),
                         "CodeTaxAditional": other_tax
                     }
                 )
@@ -792,8 +800,6 @@ class AccountInvoice(models.Model):
             # exemtAmount = total_amount
 
             if self.other_coin.id == 45:  # Si es CLP el monto es int
-                # other_coin_amount = int(total_amount * int(self.exchange_rate_other_coin))
-                # other_coin_exempt = int(total_amount * int(self.exchange_rate_other_coin))
                 other_coin_amount = self.roundclp(total_amount * self.exchange_rate_other_coin)
                 other_coin_exempt = self.roundclp(total_amount * self.exchange_rate_other_coin)
             else:
@@ -814,25 +820,25 @@ class AccountInvoice(models.Model):
             }
 
         else:
-            taxt_rate_amount = 0
+            tax_rate_amount = 0
             for item in self.invoice_line_ids:
                 for tax in item.invoice_line_tax_ids:
-                    if tax.id == 1 or tax.id == 2:
-                        taxt_rate_amount += (item.prince_subtotal * tax.amount) / 100
+                    if 'IVA' in tax.name:
+                        tax_rate_amount += (item.price_subtotal * tax.amount) / 100
             invoice['total'] = {
-                "netAmount": str(self.roundclp(netAmount * value_exchange)),
-                "exemptAmount": str(self.roundclp(exemptAmount * value_exchange)),
+                "netAmount": str(self.roundclp(netAmount)),#str(self.roundclp(netAmount * value_exchange)),
+                "exemptAmount": str(self.roundclp(exemptAmount)),#str(self.roundclp(exemptAmount * value_exchange)),
                 "taxRate": "19",
-                "taxtRateAmount": str(self.roundclp(taxt_rate_amount * value_exchange)),
+                "taxtRateAmount": str(self.roundclp(tax_rate_amount)) ,# str(self.roundclp(tax_rate_amount * value_exchange)),
                 # str(self.roundclp(self.amount_tax * value_exchange)),
-                "totalAmount": str(self.roundclp(total_amount * value_exchange))
+                "totalAmount": str(self.roundclp(total_amount)),# str(self.roundclp(total_amount * value_exchange))
             }
 
             # consultar si solo se envian en la factura los impuestos de tipo retencion
             # Other Taxes
             for tax in self.tax_line_ids:
                 tax_amount = 0
-                if tax.tax_id.id != 1 and tax.tax_id.id != 2:
+                if 'IVA' not in tax.tax_id.name:
                     for line in self.invoice_line_ids:
                         for t in line.invoice_line_tax_ids:
                             if tax.tax_id.id == t.id:
@@ -841,7 +847,7 @@ class AccountInvoice(models.Model):
                         invoice['total']['taxToRetention'] = {
                             "taxType": str(t.sii_code),
                             "taxRate": str(int(t.amount)),
-                            "taxAmount": str(self.roundclp(tax_amount * value_exchange))
+                            "taxAmount": str(self.roundclp(tax_amount)),# str(self.roundclp(tax_amount * value_exchange))
                         }
                     else:
                         raise models.ValidationError(
