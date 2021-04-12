@@ -11,7 +11,6 @@ from odoo import api, fields, models
 from collections import Counter
 
 
-
 class WizardHrPaySlip(models.TransientModel):
     _name = "wizard.hr.payslip"
     _description = 'XLSX Report'
@@ -79,7 +78,7 @@ class WizardHrPaySlip(models.TransientModel):
         file_name = 'temp'
         workbook = xlsxwriter.Workbook(file_name)
         worksheet = workbook.add_worksheet(self.company_id.name)
-        number_format=workbook.add_format({'num_format': '#,###'})
+        number_format = workbook.add_format({'num_format': '#,###'})
         indicadores = self.env['hr.indicadores'].sudo().search([('name', '=', f'{self.month} {self.years}')])
         if not indicadores:
             raise models.ValidationError(f'No existen datos del mes de {self.month} {self.years}')
@@ -89,8 +88,8 @@ class WizardHrPaySlip(models.TransientModel):
         row = 13
         col = 0
         payslips = self.env['hr.payslip'].sudo().search(
-            [('indicadores_id', '=', indicadores.id), ('state', 'in', ['done', 'draft']),('employee_id.address_id.id','=',self.company_id.id), ('name', 'not like', 'Devolución:')])
-
+            [('indicadores_id', '=', indicadores.id), ('state', 'in', ['done', 'draft']),
+             ('employee_id.address_id.id', '=', self.company_id.id), ('name', 'not like', 'Devolución:')])
 
         totals = self.env['hr.payslip.line'].sudo().search([('slip_id', 'in', payslips.mapped('id'))]).filtered(
             lambda a: a.total > 0)
@@ -98,21 +97,22 @@ class WizardHrPaySlip(models.TransientModel):
         totals_result = []
         payslips = totals.mapped('slip_id')
         bold_format = workbook.add_format({'bold': True})
-        worksheet.write(0, 0, self.company_id.name,bold_format)
-        worksheet.write(1,0, 'PROCESO Y COMERCIALIZACION DE NUECES', bold_format)
-        worksheet.write(2,0, self.company_id.street, bold_format)
-        worksheet.write(3,0, self.company_id.city, bold_format)
-        worksheet.write(4,0, self.company_id.country_id.name, bold_format)
-        worksheet.write(5,0, self.company_id.invoice_rut, bold_format)
-        worksheet.write(6,0, 'Fecha Informe : '+datetime.today().strftime('%d-%m-%Y'), bold_format)
-        worksheet.write(7,0, self.month, bold_format)
-        worksheet.write(8,0, 'Fichas : Todas', bold_format)
-        worksheet.write(9,0, 'Area de Negocio : Todas las Areas de Negocios', bold_format)
-        worksheet.write(10,0, 'Centro de Costo : Todos los Centros de Costos', bold_format)
-        worksheet.write(11,0, 'Total Trabajadores : '+ str(len(payslips)), bold_format)
+        worksheet.write(0, 0, self.company_id.name, bold_format)
+        worksheet.write(1, 0, 'PROCESO Y COMERCIALIZACION DE NUECES', bold_format)
+        worksheet.write(2, 0, self.company_id.street, bold_format)
+        worksheet.write(3, 0, self.company_id.city, bold_format)
+        worksheet.write(4, 0, self.company_id.country_id.name, bold_format)
+        worksheet.write(5, 0, self.company_id.invoice_rut, bold_format)
+        worksheet.write(6, 0, 'Fecha Informe : ' + datetime.today().strftime('%d-%m-%Y'), bold_format)
+        worksheet.write(7, 0, self.month, bold_format)
+        worksheet.write(8, 0, 'Fichas : Todas', bold_format)
+        worksheet.write(9, 0, 'Area de Negocio : Todas las Areas de Negocios', bold_format)
+        worksheet.write(10, 0, 'Centro de Costo : Todos los Centros de Costos', bold_format)
+        worksheet.write(11, 0, 'Total Trabajadores : ' + str(len(payslips)), bold_format)
         for pay in payslips:
-            rules = self.env['hr.salary.rule'].sudo().search([('id', 'in', totals.mapped('salary_rule_id').mapped('id'))],
-                                                      order='order_number')
+            rules = self.env['hr.salary.rule'].sudo().search(
+                [('id', 'in', totals.mapped('salary_rule_id').mapped('id'))],
+                order='order_number')
             col = 0
 
             worksheet.write(row, col, pay.employee_id.display_name)
@@ -154,7 +154,7 @@ class WizardHrPaySlip(models.TransientModel):
             col += 1
             worksheet.write(12, col, 'Cant. Horas Extras', bold_format)
             worksheet.write(row, col, self.get_qty_extra_hours(payslip=pay))
-            totals_result.append({col : self.get_qty_extra_hours(payslip=pay)})
+            totals_result.append({col: self.get_qty_extra_hours(payslip=pay)})
             col += 1
             for rule in rules:
                 if not rule.show_in_book:
@@ -165,24 +165,24 @@ class WizardHrPaySlip(models.TransientModel):
                     worksheet.write(12, col, 'Valor Horas Extras', bold_format)
                     total_amount = self.env["hr.payslip.line"].sudo().search(
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
-                    worksheet.write(row, col, total_amount,number_format)
-                    totals_result.append({col : total_amount})
+                    worksheet.write(row, col, total_amount, number_format)
+                    totals_result.append({col: total_amount})
                 elif rule.code == 'HEXDE':
                     worksheet.write(12, col, 'Cant. Horas Descuentos', bold_format)
                     worksheet.write(row, col, self.get_qty_discount_hours(payslip=pay))
-                    totals_result.append({col : self.get_qty_discount_hours(payslip=pay)})
+                    totals_result.append({col: self.get_qty_discount_hours(payslip=pay)})
                     col += 1
                     worksheet.write(12, col, 'Monto Horas Descuentos', bold_format)
                     total_amount = self.env["hr.payslip.line"].sudo().search(
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
-                    worksheet.write(row, col,total_amount,number_format)
-                    totals_result.append({col : total_amount})
+                    worksheet.write(row, col, total_amount, number_format)
+                    totals_result.append({col: total_amount})
                 else:
                     total_amount = self.env["hr.payslip.line"].sudo().search(
                         [("slip_id", "=", pay.id), ("salary_rule_id", "=", rule.id)]).total
                     worksheet.write(12, col, rule.name, bold_format)
-                    worksheet.write(row, col,total_amount,number_format)
-                    totals_result.append({col : total_amount})
+                    worksheet.write(row, col, total_amount, number_format)
+                    totals_result.append({col: total_amount})
                 col += 1
             col = 0
             row += 1
@@ -190,10 +190,10 @@ class WizardHrPaySlip(models.TransientModel):
         for item in totals_result:
             counter.update(item)
         total_dict = dict(counter)
-        worksheet.write(row, 0, 'Totales',bold_format)
+        worksheet.write(row, 0, 'Totales', bold_format)
         number_bold_format = workbook.add_format({'num_format': '#,###', 'bold': True})
         for k in total_dict:
-            worksheet.write(row, k,total_dict[k],number_bold_format)
+            worksheet.write(row, k, total_dict[k], number_bold_format)
         col = 0
         row += 1
         workbook.close()
@@ -591,11 +591,12 @@ class WizardHrPaySlip(models.TransientModel):
 
         for payslip in payslip_recs:
             payslip_line_recs = payslip_line_model.sudo().search([('slip_id', '=', payslip.id)])
+
             rut = ""
             rut_dv = ""
             rut, rut_dv = payslip.employee_id.identification_id.split("-")
 
-            line_employee = [self._acortar_str(rut, 11),
+            line_employee = [self._acortar_str(rut.replace('.', ''), 11),
                              self._acortar_str(rut_dv, 1),
                              self._arregla_str(payslip.employee_id.last_name.upper(),
                                                30) if payslip.employee_id.last_name else "",
