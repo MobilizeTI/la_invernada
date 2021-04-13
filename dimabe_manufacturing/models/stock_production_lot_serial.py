@@ -169,7 +169,7 @@ class StockProductionLotSerial(models.Model):
 
     available_weight = fields.Float('Kilos disponibles', compute="compute_available_weight")
 
-    to_delete = fields.Boolean('Para Eliminar')
+    to_unlink = fields.Boolean('Para Eliminar')
 
     @api.multi
     def compute_available_weight(self):
@@ -354,9 +354,11 @@ class StockProductionLotSerial(models.Model):
                 ('final_lot_id', '=', res.stock_production_lot_id.id)
             ])
             work_order.sudo().write({
-                'out_weight': sum(res.stock_production_lot_id.stock_production_lot_serial_ids.mapped('display_weight')),
-                'pt_out_weight': sum(res.stock_production_lot_id.stock_production_lot_serial_ids.filtered(
-                    lambda a: a.product_id.categ_id.parent_id.name == 'Producto Terminado').mapped('display_weight'))
+                'out_weight': sum(
+                        work_order.summary_out_serial_ids.mapped('display_weight')),
+                    'pt_out_weight': sum(work_order.summary_out_serial_ids.filtered(
+                        lambda a: a.product_id.categ_id.parent_id.name == 'Producto Terminado').mapped(
+                        'display_weight'))
             })
             res.producer_id = res.stock_production_lot_id.producer_id.id
 
@@ -366,7 +368,8 @@ class StockProductionLotSerial(models.Model):
         if production:
             res.production_id = production.id
             res.reserve_to_stock_picking_id = production.stock_picking_id.id
-
+            res.stock_production_lot_id.update_kg(res.stock_production_lot_id.id)
+            res.stock_production_lot_id.update_stock_quant_production(production.location_dest_id.id)
         res.label_durability_id = res.stock_production_lot_id.label_durability_id
 
         if res.bom_id:
@@ -378,9 +381,6 @@ class StockProductionLotSerial(models.Model):
                 res.gross_weight = res.display_weight + res.canning_id.weight
             else:
                 res.gross_weight = res.display_weight + sum(res.get_possible_canning_id().mapped('weight'))
-        if res.production_id:
-            res.stock_production_lot_id.update_kg(res.stock_production_lot_id.id)
-            res.stock_production_lot_id.update_stock_quant(res.production_id.location_dest_id.id)
         return res
 
     @api.model
@@ -417,24 +417,28 @@ class StockProductionLotSerial(models.Model):
 
     @api.model
     def unlink(self):
+        for item in self:
+            if item.consumed:
+                raise models.ValidationError(
+                    'este código {} ya fue consumido, no puede ser eliminado'.format(
+                        self.serial_number
+                    )
 
-        if self.consumed:
-            raise models.ValidationError(
-                'este código {} ya fue consumido, no puede ser eliminado'.format(
-                    self.serial_number
                 )
-
-            )
-        group = self.env['res.groups'].search([('name', '=', 'Limpiar')])
-        user_logon = self.env.user
-        if user_logon not in group.users:
-            raise models.ValidationError("Opcion no disponible con sus permisos de usuario")
-        lot = self.env['stock.production.lot'].search([('id', '=', self.stock_production_lot_id.id)])
-        if self.production_id:
-            production = self.env['mrp.production'].search([('id', '=', self.production_id.id)])
-        res = super(StockProductionLotSerial, self).unlink()
-        lot.update_kg(lot.id)
-        lot.update_stock_quant(production.location_dest_id.id)
+            lot = self.env['stock.production.lot'].search([('id', '=', item.stock_production_lot_id.id)])
+            if item.production_id:
+                production = self.env['mrp.production'].search([('id', '=', item.production_id.id)])
+                workorder = self.env['mrp.workorder'].search([('production_id','=',item.production_id.id)])
+                workorder.sudo().write({
+                    'out_weight': sum(
+                        workorder.summary_out_serial_ids.mapped('display_weight')),
+                    'pt_out_weight': sum(workorder.summary_out_serial_ids.filtered(
+                        lambda a: a.product_id.categ_id.parent_id.name == 'Producto Terminado').mapped(
+                        'display_weight'))
+                })
+                lot.update_stock_quant_production(production.location_dest_id.id)
+            res = super(StockProductionLotSerial, item).unlink()
+            lot.update_kg(lot.id)
         return res
 
     @api.multi
@@ -462,11 +466,9 @@ class StockProductionLotSerial(models.Model):
 
     @api.multi
     def reserve_picking(self):
-        models._logger.error('linea {330} reserve picking')
         if 'dispatch_id' in self.env.context:
             stock_picking_id = self.env.context['dispatch_id']
             stock_picking = self.env['stock.picking'].search([('id', '=', stock_picking_id)])
-            models._logger.error(stock_picking)
             if not stock_picking:
                 raise models.ValidationError('No se encontró el picking al que reservar el stock')
 
@@ -476,13 +478,10 @@ class StockProductionLotSerial(models.Model):
                 item.update({
                     'reserved_to_stock_picking_id': stock_picking.id
                 })
-                models._logger.error(item.reserved_to_stock_picking_id)
                 stock_move = item.reserved_to_stock_picking_id.move_lines.filtered(
                     lambda a: a.product_id == item.stock_production_lot_id.product_id
                 )
-                models._logger.error(stock_move)
                 stock_quant = item.stock_production_lot_id.get_stock_quant()
-                models._logger.error(stock_quant)
                 if not stock_quant:
                     raise models.ValidationError('El lote {} aún se encuentra en proceso.'.format(
                         item.stock_production_lot_id.name
@@ -558,9 +557,7 @@ class StockProductionLotSerial(models.Model):
                         picking_move_line = item.reserved_to_stock_picking_id.move_line_ids.filtered(
                             lambda a: a.id == move_line.id
                         )
-                        models._logger.error(picking_move_line)
                         stock_quant = item.stock_production_lot_id.get_stock_quant()
-                        models._logger.error(stock_quant)
                         item.update({
                             'reserved_to_stock_picking_id': stock_picking_id
                         })

@@ -19,7 +19,6 @@ class SaleOrderLine(models.Model):
     @api.model
     def _get_variant(self):
         for item in self:
-            models._logger.error(item.product_id)
             data = self.env['product.product'].search([('id', '=', item.product_id.id)])
             for product in data:
                 item.product_name = product.name

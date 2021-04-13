@@ -45,8 +45,6 @@ class ModelName(models.Model):
                 ac_move_line = self.env['account.move.line'].search([('account_id', '=', account.id)])
                 for ac_mov in ac_move_line:
                     for invoice in ac_move_line.mapped('invoice_id'):
-                        models._logger.error('Cuenta {}'.format(ac_mov.account_id.name))
-
                         if ac_mov.debit > 0:
                             usd_debit.append(ac_mov.debit)
                             clp_debit.append(invoice.amount_total)

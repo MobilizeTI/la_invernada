@@ -15,5 +15,6 @@ from . import sale_order_line
 from . import ir_attachment
 from . import stock_move_line
 from . import account_invoice
+from . import custom_customer_orders_xls
 from . import custom_notify
 from . import custom_customer_orders_xls

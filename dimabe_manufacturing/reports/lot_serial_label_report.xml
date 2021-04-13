@@ -7,8 +7,11 @@
             <t t-if="'Con' in lot_serial_id.product_id.get_species()">
               <strong>CONTAINS INSHELL WALNUT - CONTIENE NUEZ CON CÁSCARA</strong>
             </t>
-            <t t-else="">
+            <t t-elif="'Sin' in lot_serial_id.product_id.get_species()">
               <strong>CONTAINS SHELLED WALNUT - CONTIENE NUEZ SIN CÁSCARA</strong>
+            </t>
+            <t t-else="">
+              <strong>CONTAINS WALNUT - CONTIENE NUEZ</strong>
             </t>
           </div>
           <table style="font-size:14px;">

@@ -70,8 +70,8 @@ else:
             <field name="code">BONO</field>
             <field name="category_id" ref="IMPONIBLE"/>
             <field name="condition_select">python</field>
-            <field name="condition_python">result = contract.otros_imp > 0</field>
-            <field name="amount_select">code</field>
+            <field name="condition_python">result = contract.s_imp > 0</field>
+            <field name="amount_select">code</field>otro
             <field name="amount_python_compute">result = ((contract.otros_imp / 30) * worked_days.WORK100.number_of_days)</field>
         </record>
 

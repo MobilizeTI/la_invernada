@@ -39,7 +39,7 @@ class ProductProduct(models.Model):
 
     dispatch_weight = fields.Float('Kilos Despachados', compute='_compute_dispatch_weight')
 
-    supply_id = fields.Many2one('product.product','Producto')
+    supply_id = fields.Many2one('product.product', 'Producto')
 
     @api.multi
     def _compute_measure(self):
@@ -123,3 +123,4 @@ class ProductProduct(models.Model):
                 [('stock_production_lot_id.product_id', '=', item.id), ('reserved_to_stock_picking_id', '!=', None)])
             total = sum(serial.mapped('display_weight'))
             item.dispatch_weight = total
+

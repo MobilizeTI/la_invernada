@@ -19,6 +19,7 @@
                         groups="base.group_no_one"/>
                 <field name="producer_ids" invisible="1"/>
                 <field name="producer_id" required="1"
+                       options="{'no_create': True, 'no_create_edit':True,'no_quick_create':True}"
                        domain="['|',('id','in',producer_ids),('always_to_print','=',True)]"/>
                 <field name="qty_standard_serial"
                        attrs="{'invisible':['|',('is_standard_weight','=',False),('can_add_serial','=',False)]}"
@@ -31,7 +32,7 @@
                 <field name="can_add_serial"
                        groups="base.group_system"
                 />
-                <button string="Debug" type="object" name="test" groups="base.group_no_one"/>
+                <button string="Debug" type="object" name="check_all_existence" groups="base.group_no_one"/>
                 <field name="is_prd_lot"
                        groups="base.group_system"
                 />
@@ -77,13 +78,25 @@
 
                 <field name="all_pallet_ids"
                        attrs="{'invisible':[('is_standard_weight','=',False)]}"
-                 />
-                <button type="object" name="delete_all_serial" string="Eliminar Series"
+                >
+                    <tree editable="bottom" create="false" delete="false">
+                        <field name="name" readonly="1"/>
+                        <field name="total_content_weight"/>
+                        <field name="total_content"/>
+                        <field name="state" readonly="1"/>
+                        <button type="object" string="Eliminar" groups="dimabe_manufacturing.group_mrp_modify_serials"
+                                name="delete_pallet"/>
+                    </tree>
+                </field>
+                <button type="object" name="delete_all_serial" string="Eliminar Todo"
+                        groups="dimabe_manufacturing.group_mrp_modify_serials"/>
+                <button type="object" name="unlink_selecction" string="Eliminar Seleccion"
                         groups="dimabe_manufacturing.group_mrp_modify_serials"/>
                 <field name="serial_without_pallet_ids"
                        attrs="{'invisible':[('is_standard_weight','=',False)]}"
                 >
-                    <tree delete="true" editable="bottom" create="false">
+                    <tree delete="false" editable="bottom" create="false">
+                        <field name="to_unlink" string="Eliminar"/>
                         <field name="stock_production_lot_id"/>
                         <field name="belongs_to_prd_lot" invisible="1"/>
                         <field name="producer_id"/>

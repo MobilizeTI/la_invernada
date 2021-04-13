@@ -62,17 +62,17 @@ class StockPicking(models.Model):
     )
 
     sale_order_id = fields.Many2one('sale.order', 'Pedido',
-        copy=False)
+                                    copy=False)
 
     sale_orders_id = fields.Many2one('sale.order', 'Pedidos', domain=[('state', '=', 'sale')],
-        copy=False)
+                                     copy=False)
 
     dispatch_line_ids = fields.One2many('custom.dispatch.line', 'dispatch_real_id', copy=False)
 
     name_orders = fields.Char('Pedidos', compute='get_name_orders')
 
     dispatch_id = fields.Many2one('stock.picking', 'Despachos', domain=[('state', '!=', 'done')],
-        copy=False)
+                                  copy=False)
 
     real_net_weigth = fields.Float('Kilos Netos Reales', compute='compute_net_weigth_real')
 
@@ -206,7 +206,6 @@ class StockPicking(models.Model):
         backorders = self.env['stock.picking']
         for picking in self:
             moves_to_backorder = picking.move_lines.filtered(lambda x: x.state not in ('done', 'cancel'))
-            models._logger.error(type(moves_to_backorder))
             if moves_to_backorder:
                 backorder_picking = picking.copy({
                     'name': '/',
@@ -253,8 +252,10 @@ class StockPicking(models.Model):
                 'move_line_ids').filtered(lambda a: a.lot_id.id == lot.id).write({
                 'product_uom_qty': lot.get_reserved_quantity_by_picking(self.id)
             })
-            self.dispatch_line_ids.filtered(lambda a: a.product_id.id == lot.product_id.id and lot in a.move_line_ids.mapped('lot_id')).write({
-                'real_dispatch_qty': sum(self.packing_list_ids.filtered(lambda a: a.stock_production_lot_id == lot).mapped('display_weight'))
+            self.dispatch_line_ids.filtered(
+                lambda a: a.product_id.id == lot.product_id.id and lot in a.move_line_ids.mapped('lot_id')).write({
+                'real_dispatch_qty': sum(
+                    self.packing_list_ids.filtered(lambda a: a.stock_production_lot_id == lot).mapped('display_weight'))
             })
 
     @api.multi
@@ -290,6 +291,15 @@ class StockPicking(models.Model):
 
                 item.potential_lot_serial_ids = self.env['stock.production.lot.serial'].search(
                     domain)
+                
+    @api.multi
+    def action_cancel(self):
+        for item in self:
+            lot = self.env['stock.production.lot'].search([('name','=',item.name)])
+            if lot:
+                lot.stock_production_lot_serial_ids.sudo().unlink()
+                lot.sudo().unlink()
+            return super(StockPicking, self).action_cancel()
 
     @api.multi
     def calculate_last_serial(self):
@@ -390,3 +400,5 @@ class StockPicking(models.Model):
             custom_serial.sudo().write({
                 'consumed': True
             })
+
+            

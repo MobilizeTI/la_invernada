@@ -39,7 +39,7 @@
                             <td>
                                 <div t-if="o.lot_serial_ids.mapped('production_id.stock_picking_id')">
                                     :
-                                    <span t-esc="o.lot_serial_ids.mapped('production_id.stock_picking_id')[0].name"/>
+                                    <span t-esc="o.lot_serial_ids.mapped('production_id.stock_picking_id')[0].origin"/>
                                 </div>
                             </td>
                         </tr>
@@ -122,7 +122,7 @@
                             <td>
                                 <div t-if="o.lot_serial_ids.mapped('production_id.stock_picking_id')">
                                     :
-                                    <span t-esc="o.lot_serial_ids.mapped('production_id.stock_picking_id')[0].name"/>
+                                    <span t-esc="o.lot_serial_ids.mapped('production_id.stock_picking_id')[0].origin"/>
                                 </div>
                             </td>
                         </tr>
@@ -156,7 +156,15 @@
                     <p style="page-break-after:always;"/>
                     <t t-foreach="o.lot_serial_ids" t-as="lot_serial_id">
                         <div style="text-align:right;font-size:8px;">
-                            <strong>CONTAINS WALNUT - CONTIENE NUEZ</strong>
+                            <t t-if="'Con' in lot_serial_id.product_id.get_species()">
+                                <strong>CONTAINS INSHELL WALNUT - CONTIENE NUEZ CON CÁSCARA</strong>
+                            </t>
+                            <t t-elif="'Sin' in lot_serial_id.product_id.get_species()">
+                                <strong>CONTAINS SHELLED WALNUT - CONTIENE NUEZ SIN CÁSCARA</strong>
+                            </t>
+                            <t t-else="">
+                                <strong>CONTAINS WALNUT - CONTIENE NUEZ</strong>
+                            </t>
                         </div>
                         <table style="font-size:14px;">
                             <tr>
@@ -218,11 +226,11 @@
                                         <span t-esc="lot_serial_id.harvest"/>
                                     </div>
                                     <div>
-                                        PACKAGING DATE (FECHA PRODUCCIÓN):
+                                        PACKAGING DATE (FECHA DE ENVASADO):
                                         <span t-esc="lot_serial_id.packaging_date"/>
                                     </div>
                                     <div>
-                                        BEST BEFORE DATE (CONSUMIR ANTES DE):
+                                        BEST BEFORE DATE (CONSUMIR PREFERENTEMENTE ANTES DE):
                                         <span t-esc="lot_serial_id.best_before_date"/>
                                     </div>
                                     <div>

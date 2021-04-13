@@ -77,11 +77,13 @@
                         <field name="positioning_state"/>
                         <field name="in_weight" readonly="1"/>
                         <field name="out_weight" readonly="1"/>
+                        <field name="producers_id" invisible="1"/>
                     </group>
                 </xpath>
                 <field name="final_lot_id" position="attributes">
                     <attribute name="readonly">1</attribute>
                     <attribute name="force_save">1</attribute>
+                    <attribute name="context">{'default_producer_ids': producers_id}</attribute>
                 </field>
                 <button name="open_tablet_view" position="attributes">
                     <attribute name="string">Procesar Entrada</attribute>
@@ -99,7 +101,6 @@
                             string="Procesar Salida"
                             attrs="{'invisible': [('production_state', '=', 'done')]}"
                     />
-
 
                     <button name="fix_env" type="object" string="Fix Env" groups="base.group_no_one"/>
                     <button type="object"
@@ -166,6 +167,7 @@
                                 <field name="final_lot_id"
                                        readonly="1"
                                        attrs="{'invisible':[('state', '=', 'done')]}"
+                                       context="{'default_producer_ids': producers_id}"
                                 />
 
 
@@ -190,11 +192,12 @@
                             </group>
                             <group attrs="{'invisible':[('state', '=', 'done')]}">
                                 <h2>Otras Salidas</h2>
+                                <field name="producers_id" invisible="1"/>
                                 <field name="byproduct_move_line_ids"
-                                       readonly="1">
+                                       readonly="1"  >
                                     <tree readonly="1">
                                         <field name="product_id"/>
-                                        <field name="lot_id" widget="many2onebutton"/>
+                                        <field name="lot_id" widget="many2onebutton" context="{'default_producer_ids':parent.producers_id}"/>
                                     </tree>
                                 </field>
                             </group>

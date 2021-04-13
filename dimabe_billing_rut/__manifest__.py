@@ -20,11 +20,11 @@
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'stock', 'account', 'hr_payroll',
-                'hr_payroll_account','sale','product','uom',],
+                'hr_payroll_account','sale','product','uom','account_accountant'],
 
     # always loaded
     'data': [
-        #'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         # 'data/dte.type.csv',
         # 'data/custom.economic.activity.csv',
         'views/res_company.xml',

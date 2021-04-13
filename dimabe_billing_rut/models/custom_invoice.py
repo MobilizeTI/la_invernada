@@ -56,7 +56,6 @@ class CustomInvoice(models.Model):
     def get_dte(self):
         company_id = self.env.user.company_id
         url = company_id.dte_url
-        models._logger.error(company_id.name)
         rut_company = company_id.invoice_rut.replace(".", "").split("-")[0]
         fecha_desde = '2020-01-01'
         fecha_hasta = date.today()
@@ -65,7 +64,6 @@ class CustomInvoice(models.Model):
         hash = company_id.dte_hash
         auth = requests.auth.HTTPBasicAuth(hash, 'X')
         dtes = requests.get(url + '/api' + apidte, auth=auth)
-        models._logger.error(company_id.name)
         if dtes.status_code != 200:
             raise models.UserError('Error al Temporal: ' + dtes.json())
         data = dtes.json()

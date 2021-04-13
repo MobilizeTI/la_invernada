@@ -4,7 +4,6 @@ from datetime import datetime, date
 import requests
 import json
 import base64
-
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
     _order = 'date desc'
@@ -352,6 +351,7 @@ class StockPicking(models.Model):
                                             tmp = '00{}'.format(i + 1)
                                             self.env['stock.production.lot.serial'].create({
                                                 'calculated_weight': default_value + diff,
+                                                'product_id': stock_move_line.product_id.id,
                                                 'stock_production_lot_id': stock_move_line.lot_id.id,
                                                 'serial_number': '{}{}'.format(stock_move_line.lot_name, tmp[-3:])
                                             })
@@ -359,6 +359,7 @@ class StockPicking(models.Model):
                                             tmp = '00{}'.format(i + 1)
                                             self.env['stock.production.lot.serial'].create({
                                                 'calculated_weight': default_value,
+                                                'product_id': stock_move_line.product_id.id,
                                                 'stock_production_lot_id': stock_move_line.lot_id.id,
                                                 'serial_number': '{}{}'.format(stock_move_line.lot_name, tmp[-3:])
                                             })
@@ -377,7 +378,7 @@ class StockPicking(models.Model):
         if self.picking_type_code == 'incoming':
             for stock_picking in self:
                 message = ''
-                if stock_picking.is_mp_reception or stock_picking.is_pt_reception or stock_picking.is_satelite_reception:
+                if stock_picking.is_mp_reception or stock_picking.is_pt_reception:
                     if not stock_picking.gross_weight:
                         message = 'Debe agregar kg brutos \n'
                     if stock_picking.gross_weight < stock_picking.weight_guide:
@@ -455,6 +456,19 @@ class StockPicking(models.Model):
             for lot in self.move_line_ids_without_package.mapped('lot_id'):
                 lot.update_stock_quant(self.location_id.id)
 
+    def clean_reserved(self):
+        for lot in self.move_line_ids_without_package.mapped('lot_id'):
+            if lot not in self.packing_list_lot_ids:
+                query = f"DELETE FROM stock_move_line where lot_id = {lot.id} and picking_id = {self.id}"
+                cr = self._cr
+                cr.execute(query)
+
+    @api.multi
+    def action_done(self):
+        super(StockPicking, self).action_done()
+        if self.picking_type_code == 'outgoing':
+            for lot in self.move_line_ids_without_package.mapped('lot_id'):
+                lot.update_stock_quant(self.location_id.id)
 
     @api.model
     def validate_mp_reception(self):

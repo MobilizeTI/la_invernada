@@ -225,8 +225,7 @@ class MrpProduction(models.Model):
         })
         return res
 
-
-    def fix_reserved(self,move):
+    def fix_reserved(self, move):
         query = 'DELETE FROM stock_move_line where move_id = {}'.format(move.id)
         cr = self._cr
         cr.execute(query)

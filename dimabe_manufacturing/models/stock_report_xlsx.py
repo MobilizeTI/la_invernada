@@ -15,7 +15,11 @@ class StockReportXlsx(models.TransientModel):
          ('discard', 'Informe existencia descarte'), ('pt', 'Informe existencia producto terminado'),
          ('washed', 'Informe existencia producto lavado'), ('raw_service', 'Informe existencia materia prima servicio'),
          ('washed_service', 'Informe existencia producto lavado servicio'),
-         ('split_service', 'Informe existencia producto partido servicio')])
+         ('split_service', 'Informe existencia producto partido servicio'),
+         ('calibrate_service', 'Informe existencia Producto Calibrado Servicio'),
+         ('discart_service','Informe existencia Producto Descarte Servicio'),
+         ('vain_service','Informe existencia Producto Vana Servicio')
+         ])
 
     @api.multi
     def generate_report(self):
@@ -58,6 +62,21 @@ class StockReportXlsx(models.TransientModel):
             dict_data = self.generate_excel_serial_report(
                 [('product_id.default_code', 'like', 'PSES014'), ('harvest_filter', '=', self.year)],
                 'Producto Partido Servicio')
+        elif self.stock_selection == 'calibrate_service':
+            dict_data = self.generate_excel_serial_report(
+                [('product_id.default_code', 'like', 'PSES006'), ('product_id.name', 'not like', 'Vana'),
+                 ('product_id.name', 'not like', 'Descarte')],'Producto Calibrado Servicio'
+            )
+        elif self.stock_selection == 'vain_service':
+            dict_data = self.generate_excel_serial_report(
+                [('product_id.name', 'like', 'Vana'), ('product_id.categ_id.name', 'like', 'Servicio')],
+                'Producto Vana Servicio'
+            )
+        elif self.stock_selection == 'discart_service':
+            dict_data = self.generate_excel_serial_report(
+                [('product_id.name', 'like', 'Descarte'), ('product_id.categ_id.name', 'like', 'Servicio')],
+                'Producto Descarte Servicio'
+            )
         elif self.stock_selection == 'pt':
             dict_data = self.generate_pt_report()
         attachment_id = self.env['ir.attachment'].sudo().create({
@@ -123,7 +142,7 @@ class StockReportXlsx(models.TransientModel):
             col += 1
             sheet.write(row, col, lot.reception_weight, number_format)
             col += 1
-            sheet.write_datetime(row, col, lot.create_date,date_format)
+            sheet.write_datetime(row, col, lot.create_date, date_format)
             col += 1
             sheet.write(row, col, len(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed)))
             col += 1
@@ -134,7 +153,6 @@ class StockReportXlsx(models.TransientModel):
                 sheet.write(row, col, lot.delivered_date.strftime("%d-%m-%Y"))
             col += 1
             if lot.physical_location:
-                models._logger.error(f'{lot.name} {lot.physical_location}')
                 sheet.write(row, col, lot.physical_location, text_format)
             col += 1
             if lot.observations:
@@ -199,7 +217,7 @@ class StockReportXlsx(models.TransientModel):
             else:
                 sheet.write(row, col, 'Disponible')
             col += 1
-            sheet.write_datetime(row, col, serial.packaging_date,date_format)
+            sheet.write_datetime(row, col, serial.packaging_date, date_format)
             col += 1
             if serial.client_or_quality:
                 sheet.write(row, col, serial.client_or_quality)
@@ -208,7 +226,7 @@ class StockReportXlsx(models.TransientModel):
                 sheet.write(row, col, serial.workcenter_send_id.display_name)
             col += 1
             if serial.delivered_date:
-                sheet.write(row, col, serial.delivered_date,date_format)
+                sheet.write(row, col, serial.delivered_date, date_format)
             col += 1
             if serial.physical_location:
                 sheet.write(row, col, serial.physical_location, text_format)

@@ -26,10 +26,9 @@ class QualityAnalysis(http.Controller):
 
     @http.route('/api/quality_analysis', type='json', auth='token', cors='*', methods=['POST'])
     def quality_analysis_post(self, data):
-        models._logger.error(data)
         if 'lot' not in data:
             raise werkzeug.exceptions.NotFound('debe indicar lote')
-        lot = request.env['stock.production.lot'].search([('name', '=', data['lot'])])
+        lot = request.env['stock.production.lot'].sudo().search([('name', '=', data['lot'])])
         if not lot:
             raise werkzeug.exceptions.NotFound('lote no encontrado')
 
@@ -39,14 +38,14 @@ class QualityAnalysis(http.Controller):
             process_child(data, data_list)
 
         if 'humidity_analysis_id' in data:
-            humidity_analysis = request.env['humidity.analysis'].create(data['humidity_analysis_id'])
+            humidity_analysis = request.env['humidity.analysis'].sudo().create(data['humidity_analysis_id'])
             data['humidity_analysis_id'] = humidity_analysis.id
 
-        quality_analysis = request.env['quality.analysis'].create(data)
+        quality_analysis = request.env['quality.analysis'].sudo().create(data)
         if quality_analysis:
             if lot.quality_analysis_id:
-                lot.quality_analysis_id.unlink()
-            lot.update({
+                lot.quality_analysis_id.sudo().unlink()
+            lot.sudo().update({
                 'quality_analysis_id': quality_analysis.id
             })
 
