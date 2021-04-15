@@ -59,7 +59,7 @@ class ResCurrency(models.Model):
                 rate = 1 / float(tmp)
             if rate:
                 self.env['res.currency.rate'].create({
-                    'name': date,
+                    'name': search_date,
                     'rate': rate,
                     'currency_id': self.id
                 })
