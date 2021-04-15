@@ -57,7 +57,7 @@ class ResCurrency(models.Model):
                 if data['currency'] == 'USD':
                     tmp = data['value'].replace(',', '.')
                 rate = 1 / float(tmp)
-            if rate:
+            if rate and self.id:
                 self.env['res.currency.rate'].create({
                     'name': search_date,
                     'rate': rate,
