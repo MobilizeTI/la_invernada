@@ -172,19 +172,21 @@ class StockPicking(models.Model):
                         'product_uom_qty': move.product_uom_qty + product.product_uom_qty
                     })
 
-    @api.onchange('picking_type_code')
+    @api.onchange('picking_type_id')
     def on_change_picking_type(self):
         for item in self:
-            if item.picking_type_code == 'incoming':
+            if item.picking_type_id.code == 'incoming':
                 res = {
                     'domain': {
-                        'partner_id': [('is_company', '=', True), ('supplier', '=', True), ('name', '!=', '')],
+                        'partner_id': [('is_company', '=', True), ('supplier', '=', True), ('name', '!=', ''),
+                                       ('type', '=', 'contact'), ('parent_id', '=', None)],
                     }
                 }
             else:
                 res = {
                     'domain': {
-                        'partner_id': [('is_company', '=', True), ('customer', '=', True), ('name', '!=', '')],
+                        'partner_id': [('is_company', '=', True), ('customer', '=', True), ('name', '!=', ''),
+                                       ('type', '=', 'contact'), ('parent_id', '=', None)],
                     }
                 }
         return res
@@ -291,11 +293,11 @@ class StockPicking(models.Model):
 
                 item.potential_lot_serial_ids = self.env['stock.production.lot.serial'].search(
                     domain)
-                
+
     @api.multi
     def action_cancel(self):
         for item in self:
-            lot = self.env['stock.production.lot'].search([('name','=',item.name)])
+            lot = self.env['stock.production.lot'].search([('name', '=', item.name)])
             if lot:
                 lot.stock_production_lot_serial_ids.sudo().unlink()
                 lot.sudo().unlink()
@@ -400,5 +402,3 @@ class StockPicking(models.Model):
             custom_serial.sudo().write({
                 'consumed': True
             })
-
-            
