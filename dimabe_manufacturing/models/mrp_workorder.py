@@ -625,7 +625,7 @@ class MrpWorkorder(models.Model):
     @api.multi
     def validate_to_done(self):
         for check in self.check_ids.filtered(
-                lambda a: (not a.component_is_byproduct and a.quality_state != 'pass') or not a.lot_id):
+                lambda a: a.quality_state != 'pass' or not a.lot_id):
             check.unlink()
         for move in self.active_move_line_ids.filtered(lambda a: not a.lot_id):
             move.unlink()

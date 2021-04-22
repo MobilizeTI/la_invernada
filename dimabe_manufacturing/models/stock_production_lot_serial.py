@@ -333,6 +333,11 @@ class StockProductionLotSerial(models.Model):
                     'producer_id': values_list['producer_id']
                 })
             workorder = self.env['mrp.workorder'].search([('production_id.id', '=', values_list['production_id'])])
+            if not lot.label_durability_id:
+                lot.write({
+                    'label_durability_id': workorder.label_durability_id.id
+                })
+                values_list['label_durability_id'] = workorder.production_id.label_durability_id.id
             workorder.write({
                 'out_weight': sum(lot.stock_production_lot_serial_ids.mapped('display_weight'))
             })
@@ -369,6 +374,9 @@ class StockProductionLotSerial(models.Model):
             res.production_id = production.id
             res.reserve_to_stock_picking_id = production.stock_picking_id.id
             res.stock_production_lot_id.update_kg(res.stock_production_lot_id.id)
+            res.stock_production_lot_id.write({
+                'label_durability_id':production.label_durability_id.id
+            })
             res.stock_production_lot_id.update_stock_quant_production(production.location_dest_id.id)
         res.label_durability_id = res.stock_production_lot_id.label_durability_id
 
