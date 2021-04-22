@@ -17,7 +17,7 @@ class StockProductionLot(models.Model):
     @api.multi
     def _compute_balance(self):
         for item in self:
-            item.balance = item.get_stock_quant().balance
+            item.balance = item.get_stock_quant()[0].balance
 
     def _search_balance(self, operator, value):
         lot_ids = self.env['stock.quant'].search([
