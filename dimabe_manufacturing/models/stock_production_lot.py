@@ -797,7 +797,7 @@ class StockProductionLot(models.Model):
         if len(dispatch_line) == 1:
             dispatch_line.write({
                 'real_dispatch_qty': self.get_reserved_quantity_by_picking(picking.id),
-                'move_line_ids': [(4, line_create.id)]
+                'move_line_ids': [(4, line_create.id)] if not line else [(4, line.id)]
             })
 
     def add_selection_serial(self, picking_id, location_id):
