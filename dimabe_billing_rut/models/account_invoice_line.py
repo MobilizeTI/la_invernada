@@ -40,11 +40,10 @@ class AccountInvoiceLine(models.Model):
             new_quantity = custom_line.quantity
             if custom_line.product_id.id == self.product_id.id:
                 new_quantity = new_quantity - self.quantity
-
-            if new_quantity > 0:
-                custom_line.write({'quantity': new_quantity})
-            elif new_quantity == 0:
-                custom_line.unlink()
+                if new_quantity > 0:
+                    custom_line.write({'quantity': new_quantity})
+                elif new_quantity == 0:
+                    custom_line.unlink()
 
         res = super(AccountInvoiceLine, self).unlink()
         return res
