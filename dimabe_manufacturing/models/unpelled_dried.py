@@ -91,7 +91,8 @@ class UnpelledDried(models.Model):
     oven_use_ids = fields.One2many(
         'oven.use',
         'unpelled_dried_id',
-        'Hornos'
+        'Hornos',
+        domain=[('history_id','=',None)]
     )
 
     used_lot_ids = fields.One2many(
@@ -296,7 +297,7 @@ class UnpelledDried(models.Model):
             for oven_use in oven_use_to_close_ids:
                 oven_use_id = item.oven_use_ids.filtered(
                     lambda a: not a.ready_to_close and len(a.dried_oven_ids) == 1 and
-                              a.dried_oven_ids in oven_use.dried_oven_ids
+                              a.dried_oven_ids in oven_use.dried_oven_ids and not a.history_id
                 )
                 if oven_use_id:
                     raise models.ValidationError('el lote {} no ha sido terminado en el cajón {}.'
