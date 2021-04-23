@@ -232,7 +232,10 @@ class UnpelledDried(models.Model):
     def create_history(self):
 
         return self.env['dried.unpelled.history'].create({
-            'unpelled_dried_id': self.id
+            'unpelled_dried_id': self.id,
+            'total_in_weight': sum(self.oven_use_ids.filtered(
+                lambda a: a.ready_to_close
+            ).mapped('used_lot_id').mapped('stock_production_lot_serial_ids').mapped('display_weight'))
         })
 
     @api.model
@@ -297,7 +300,7 @@ class UnpelledDried(models.Model):
             for oven_use in oven_use_to_close_ids:
                 oven_use_id = item.oven_use_ids.filtered(
                     lambda a: not a.ready_to_close and len(a.dried_oven_ids) == 1 and
-                              a.dried_oven_ids in oven_use.dried_oven_ids and not a.history_id
+                              a.dried_oven_ids in oven_use.dried_oven_ids
                 )
                 if oven_use_id:
                     raise models.ValidationError('el lote {} no ha sido terminado en el cajón {}.'

@@ -244,9 +244,6 @@ class DriedUnpelledHistory(models.Model):
                 res.oven_use_ids = unpelled_dried_id.oven_use_ids.filtered(
                     lambda a: a.ready_to_close
                 )
-                res.total_in_weight = sum(unpelled_dried_id.oven_use_ids.filtered(
-                    lambda a: a.ready_to_close
-                ).mapped('used_lot_id').mapped('stock_production_lot_serial_ids').mapped('display_weight'))
                 res.total_out_weight = unpelled_dried_id.total_out_weight
                 res.origin_location_id = unpelled_dried_id.origin_location_id.id
                 res.dest_location_id = unpelled_dried_id.dest_location_id.id
