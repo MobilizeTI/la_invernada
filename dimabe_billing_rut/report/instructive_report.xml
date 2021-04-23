@@ -278,7 +278,7 @@
                                     <td style="width:5px">:</td>
                                     <td style="text-align:left;">
                                         <t t-if="len(d.custom_invoice_line_ids) > 0">
-                                            <t t-foreach="d.custom_invoice_line_ids.mapped('product_id').mapped('attribute_values_ids').filtered(lambda a: a.attribute_id.name == 'Variedad')" t-as="line">
+                                            <t t-foreach="d.custom_invoice_line_ids.mapped('product_id').mapped('attribute_values_ids').mapped('attribute_id').filtered(lambda a: a.name == 'Variedad')" t-as="line">
                                                 <span t-field="line.name"/>
                                             </t>
                                         </t>
