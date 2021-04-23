@@ -285,7 +285,7 @@
                                                     </t>
                                                 </t>
                                             </t>-->
-                                            <span t-field="d.custom_invoice_line_ids.mapped('product_id').mapped('attribute_values_ids').filtered(lambda a: a.attribute_id.name == 'Variedad')"/>
+                                            <span t-field="d.custom_invoice_line_ids.mapped('product_id').mapped('attribute_values_ids').filtered(lambda a: a.attribute_id.name == 'Variedad').name"/>
                                         </t>
                                     </td>
                                 </tr>
