@@ -254,7 +254,12 @@ class DriedUnpelledHistory(models.Model):
     @api.multi
     def adjust_stock(self):
         for item in self:
-
+            if item.total_in_weight == 0:
+                item.write({
+                    'total_in_weight': sum(item.oven_use_ids.filtered(
+                        lambda a: a.ready_to_close
+                    ).mapped('used_lot_id').mapped('stock_production_lot_serial_ids').mapped('display_weight'))
+                })
             if item.out_serial_ids.filtered(
                     lambda a: a.consumed
             ):
