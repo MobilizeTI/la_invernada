@@ -636,7 +636,11 @@ class StockProductionLot(models.Model):
     @api.multi
     def write(self, values):
         for item in self:
+            final_lot_id = self.env['mrp.workorder'].search([('final_lot_id', '=', item.id)])
+            if final_lot_id:
+                values['sale_order_id'] = final_lot_id.sale_order_id.id
             res = super(StockProductionLot, self).write(values)
+
             if not item.producer_id and item.stock_production_lot_serial_ids:
                 if item.stock_production_lot_serial_ids.mapped('producer_id'):
                     item.write({
