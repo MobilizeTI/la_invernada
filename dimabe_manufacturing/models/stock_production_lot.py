@@ -943,17 +943,33 @@ class StockProductionLot(models.Model):
             quant.sudo().unlink()
 
     def check_all_existence(self):
-        lots = self.env['stock.production.lot'].search([])
+        lots = self.env['stock.production.lot'].search([('available_kg', '!=', 0), ('harvest', '=', 2021)])
         for lot in lots:
-            quant = self.env['stock.quant'].search([('lot_id.id', '=', lot.id),('location_id.usage','=','internal')])
-            if len(quant) == 1:
-                if quant.quantity != sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight')) or quant.quantity < 0:
-                    if quant.location_id.usage == 'internal':
-                        lot.update_stock_quant_production(quant.location_id.id)
-            else:
-                for qu in quant:
-                    if qu.quantity != sum(
+            quant = self.env['stock.quant'].search([('lot_id.id', '=', lot.id), ('location_id.usage', '=', 'internal')])
+            if quant:
+                if len(quant) == 1:
+                    if quant.quantity != sum(
                             lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
+                                'display_weight')) or quant.quantity < 0:
+                        if quant.location_id.usage == 'internal':
+                            lot.update_stock_quant_production(quant.location_id.id)
+                    self.check_duplicate_quant(quant)
+                else:
+                    for qu in quant:
+                        if qu.quantity != sum(
+                                lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
                                     'display_weight')) or qu.quantity < 0:
-                        if qu.location_id.usage == 'internal':
-                            lot.update_stock_quant_production(qu.location_id.id)
+                            if qu.location_id.usage == 'internal':
+                                lot.update_stock_quant_production(qu.location_id.id)
+                    self.check_duplicate_quant(quant)
+            else:
+                location_id = lot.location_id.id
+                if location_id:
+                    lot.update_stock_quant_production(location_id)
+
+    def check_duplicate_quant(self,quants):
+        index = 1
+        for item in quants:
+            if index >= 1:
+                item.sudo().unlink()
+            index += 1
