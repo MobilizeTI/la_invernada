@@ -47,7 +47,12 @@
                 <field name="stock_picking_id"
                        groups="base.group_system"
                 />
-
+                <field name="packaging_date"/>
+                <field name="change_packaging"/>
+                <button type="object" name="change_date_packing" string="Cambiar Fecha" attrs="{'invisible':[('change_packaging','=',False)]}"/>
+                <field name="best_before_date"/>
+                <field name="change_best"/>
+                <button type="object" name="change_date_best" string="Cambiar Fecha" attrs="{'invisible':[('change_best','=',False)]}"/>
                 <!--                <button name="print_all_serial" attrs="{'invisible':[('is_standard_weight','=',False)]}"-->
                 <!--                        string="Imprimir Series" type="object"/>-->
                 <field name="stock_production_lot_serial_ids"

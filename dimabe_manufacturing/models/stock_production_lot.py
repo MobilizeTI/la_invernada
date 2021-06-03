@@ -247,6 +247,57 @@ class StockProductionLot(models.Model):
 
     show_date = fields.Datetime('Fecha de Creacion', compute='compute_show_date')
 
+    packaging_date = fields.Date(string='Fecha de Envasado')
+
+    change_packaging = fields.Boolean(string='¿Desea cambiar fecha de envasado?')
+
+    best_before_date = fields.Date(string='Consumir preferentemente antes de')
+
+    change_best = fields.Boolean(string='¿Desea cambiar fecha de consumir preferentemente antes de?')
+
+    def change_date_best(self):
+        for item in self:
+            wiz = self.env['change.date.lot'].create({
+                'lot_id': item.id,
+                'best_before_date_new': item.best_before_date,
+                'best_before_date_old' : item.stock_production_lot_serial_ids.mapped('best_before_date')[0]
+            })
+            view = self.env.ref('dimabe_manufacturing.change_date_best_lot_form_view')
+            return {
+                'name': '¿Esta seguro de cambiar las fecha de envasado?',
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'change.date.lot',
+                'views': [(view.id, 'form')],
+                'view_id': view.id,
+                'target': 'new',
+                'res_id': wiz.id,
+                'context': self.env.context
+            }
+
+
+    def change_date_packing(self):
+        for item in self:
+            wiz = self.env['change.date.lot'].create({
+                'lot_id': item.id,
+                'packaging_date_new': item.packaging_date,
+                'packaging_date_old' : item.stock_production_lot_serial_ids.mapped('packaging_date')[0]
+            })
+            view = self.env.ref('dimabe_manufacturing.change_date_lot_form_view')
+            return {
+                'name': '¿Esta seguro de cambiar las fecha de envasado?',
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'change.date.lot',
+                'views': [(view.id, 'form')],
+                'view_id': view.id,
+                'target': 'new',
+                'res_id': wiz.id,
+                'context': self.env.context
+            }
+
     @api.multi
     def unlink_serial_without_pallet(self):
         for item in self:
@@ -638,9 +689,8 @@ class StockProductionLot(models.Model):
         for item in self:
             res = super(StockProductionLot, self).write(values)
             if not item.producer_id and item.stock_production_lot_serial_ids:
-                if item.stock_production_lot_serial_ids.mapped('producer_id'):
+                if not item.stock_production_lot_serial_ids.mapped('producer_id'):
                     item.write({
-                        'producer_id': item.stock_production_lot_serial_ids.mapped('producer_id')[0].id,
                         'producer_id': item.stock_production_lot_serial_ids.mapped('producer_id')[0].id,
                     })
             if not item.product_id.is_standard_weight:

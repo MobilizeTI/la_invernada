@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="generate_label_form_view" model="ir.ui.view">
+            <field name="name">generate_label.form</field>
+            <field name="model">generate.label.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Generar Etiqueta">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="product_id"/>
+                            <h1>
+                                <field name="product_id" placeholder="Producto"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group styke="width:100%;">
+                                <field name="producer_id"/>
+                                <field name="is_real_best_date"/>
+                                <field name="best_before_date" attrs="{'invisible': [('is_real_best_date','=',False)]}"/>
+                                <field name="best_before_date_mask" attrs="{'invisible': [('is_real_best_date','=',True)]}"/>
+                                <field name="is_real_packaging_date"/>
+                                <field name="packaging_date" attrs="{'invisible': [('is_real_packaging_date','=',False)]}"/>
+                                <field name="packaging_date_mask" attrs="{'invisible': [('is_real_packaging_date', '=', True)]}"/>
+                                <field name="is_real_order"/>
+                                <field name="sale_order_id" attrs="{'invisible': [('is_real_order','=',False)]}"/>
+                                <field name="trace_code" attrs="{'invisible': [('is_real_order','=',True)]}"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button type="object" name="generate_label" string="Generar"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

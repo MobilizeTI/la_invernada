@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="change_date_lot_form_view" model="ir.ui.view">
+            <field name="name">change_date_lot.form</field>
+            <field name="model">change.date.lot</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div>
+                            ¿Esta seguro de cambiar la fecha de envasado de <field name="packaging_date_old" readonly="1"/> a <field
+                                name="packaging_date_new" readonly="1"/> al lote <field name="lot_id" readonly="1"/>?
+                        </div>
+                        <footer>
+                            <button type="object" name="change_pack" string="Cambiar"/>
+                            <button type="button" data-dismiss="modal" string="Cancelar"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="change_date_best_lot_form_view" model="ir.ui.view">
+            <field name="name">change_date_lot.form</field>
+            <field name="model">change.date.lot</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div>
+                            ¿Esta seguro de cambiar la fecha de consumir antes de <field name="best_before_date_old" readonly="1"/> a <field
+                                name="packaging_date_old" readonly="1"/> al lote <field name="lot_id" readonly="1"/>?
+                        </div>
+                        <footer>
+                            <button type="object" name="change_best" string="Cambiar"/>
+                            <button type="button" data-dismiss="modal" string="Cancelar"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

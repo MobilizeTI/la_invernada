@@ -23,18 +23,6 @@
                             </th>
                         </tr>
                         <tr>
-                            <th>Productor</th>
-                            <td>:
-                                <span t-field="o.producer_id.name"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Nro CSG</th>
-                            <td>:
-                                <span t-field="o.sag_code"/>
-                            </td>
-                        </tr>
-                        <tr>
                             <th>Nro Pedido</th>
                             <td>
                                 <div t-if="o.lot_serial_ids.mapped('production_id.stock_picking_id')">
@@ -104,18 +92,6 @@
                                     <span t-field="o.product_id.name"/>
                                 </h2>
                             </th>
-                        </tr>
-                        <tr>
-                            <th>Productor</th>
-                            <td>:
-                                <span t-field="o.producer_id.name"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Nro CSG</th>
-                            <td>:
-                                <span t-field="o.sag_code"/>
-                            </td>
                         </tr>
                         <tr>
                             <th>Nro Pedido</th>
@@ -231,7 +207,13 @@
                                     </div>
                                     <div>
                                         BEST BEFORE DATE (CONSUMIR PREFERENTEMENTE ANTES DE):
-                                        <span t-esc="lot_serial_id.best_before_date"/>
+                                        <t t-if="lot_serial_id.best_before_date_new">
+                                            <span t-esc="lot_serial_id.best_before_date_new"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-esc="lot_serial_id.best_before_date"/>
+                                        </t>
+
                                     </div>
                                     <div>
                                         TRACE CODE (CÓDIGO De TRAZABILIDAD):
