@@ -967,9 +967,9 @@ class StockProductionLot(models.Model):
                 if location_id:
                     lot.update_stock_quant_production(location_id)
 
-    def check_duplicate_quant(self,quants):
-        index = 1
-        for item in quants:
-            if index >= 1:
-                item.sudo().unlink()
-            index += 1
+    def check_duplicate_quant(self):
+        lots = self.env['stock.production.lot'].search([('available_kg', '!=', 0), ('harvest', '=', 2021)])
+        for lot in lots:
+            quant = self.env['stock.quant'].search([('location_id.usage', '=', 'internal'), ('lot_id', '=', lot.id)])
+            if len(quant) > 1:
+                quant[1:].sudo().unlink()
