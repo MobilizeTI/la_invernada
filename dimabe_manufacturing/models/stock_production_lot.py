@@ -953,7 +953,6 @@ class StockProductionLot(models.Model):
                                 'display_weight')) or quant.quantity < 0:
                         if quant.location_id.usage == 'internal':
                             lot.update_stock_quant_production(quant.location_id.id)
-                    self.check_duplicate_quant(quant)
                 else:
                     for qu in quant:
                         if qu.quantity != sum(
@@ -961,7 +960,6 @@ class StockProductionLot(models.Model):
                                     'display_weight')) or qu.quantity < 0:
                             if qu.location_id.usage == 'internal':
                                 lot.update_stock_quant_production(qu.location_id.id)
-                    self.check_duplicate_quant(quant)
             else:
                 location_id = lot.location_id.id
                 if location_id:
