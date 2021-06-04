@@ -34,10 +34,6 @@ class StockMoveLine(models.Model):
                 if ml.location_id.usage == 'production' or ml.location_dest_id.usage == 'production':
                     if ml.location_id.usage == 'production':
                         ml.lot_id.update_stock_quant_production(ml.location_id.id)
-                        ml.lot_id.update_kg(ml.lot_id.id)
-                        ml.lot_id.check_all_existence(product_id=ml.product_id.id)
-                        ml.lot_id.check_duplicate_quant(product_id=ml.product_id.id)
-                        ml.lot_id.check_no_stock_quant(product_id=ml.product_id.id)
                     ml.write({
                         'state': 'done'
                     })
@@ -50,7 +46,3 @@ class StockMoveLine(models.Model):
                     'state': 'done'
                 })
                 ml.lot_id.update_stock_quant(location_id=ml.location_id.id)
-                ml.lot_id.update_kg(ml.lot_id.id)
-                ml.lot_id.check_all_existence(product_id=ml.product_id.id)
-                ml.lot_id.check_duplicate_quant(product_id=ml.product_id.id)
-                ml.lot_id.check_no_stock_quant(product_id=ml.product_id.id)
