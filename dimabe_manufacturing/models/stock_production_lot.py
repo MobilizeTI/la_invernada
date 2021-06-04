@@ -640,10 +640,6 @@ class StockProductionLot(models.Model):
             if final_lot_id:
                 values['sale_order_id'] = final_lot_id.sale_order_id.id
             res = super(StockProductionLot, self).write(values)
-            if sum(item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight')) == 0:
-                self.check_all_existence(product_id=self.product_id.id)
-                self.check_duplicate_quant(product_id=self.product_id.id)
-                self.check_no_stock_quant(product_id=self.product_id.id)
             if not item.producer_id and item.stock_production_lot_serial_ids:
                 if item.stock_production_lot_serial_ids.mapped('producer_id'):
                     item.write({
