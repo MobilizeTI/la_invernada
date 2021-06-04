@@ -942,8 +942,8 @@ class StockProductionLot(models.Model):
                 [('product_id.id', '=', item.product_id.id), ('lot_id', '=', None)])
             quant.sudo().unlink()
 
-    def check_all_existence(self,product_id=0):
-        if product_id != 0:
+    def check_all_existence(self,product_id=None):
+        if product_id:
             lots = self.env['stock.production.lot'].search([('available_kg', '!=', 0), ('harvest', '=', 2021),('product_id','=',product_id)])
         else:
             lots = self.env['stock.production.lot'].search([('available_kg', '!=', 0), ('harvest', '=', 2021)])
@@ -983,3 +983,14 @@ class StockProductionLot(models.Model):
             quant.sudo().write({
                 'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda x: not x.consumed).mapped('display_weight'))
             })
+
+    def check_no_stock_quant(self,product_id=None):
+        if product_id:
+            lots = self.env['stock.production.lot'].search(
+                [('available_kg', '=', 0), ('harvest', '=', 2021), ('product_id', '=', product_id)])
+        else:
+            lots = self.env['stock.production.lot'].search([('available_kg', '=', 0), ('harvest', '=', 2021)])
+        for lot in lots:
+            quant = self.env['stock.quant'].search([('lot_id.id', '=', lot.id), ('location_id.usage', '=', 'internal')])
+            if quant:
+                quant.sudo().unlink()
