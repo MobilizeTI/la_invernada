@@ -640,7 +640,10 @@ class StockProductionLot(models.Model):
             if final_lot_id:
                 values['sale_order_id'] = final_lot_id.sale_order_id.id
             res = super(StockProductionLot, self).write(values)
-
+            if sum(item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight')) == 0:
+                self.check_all_existence(lot_id=self.id)
+                self.check_duplicate_quant(lot_id=self.id)
+                self.check_no_stock_quant(lot_id=self.id)
             if not item.producer_id and item.stock_production_lot_serial_ids:
                 if item.stock_production_lot_serial_ids.mapped('producer_id'):
                     item.write({
@@ -942,11 +945,14 @@ class StockProductionLot(models.Model):
                 [('product_id.id', '=', item.product_id.id), ('lot_id', '=', None)])
             quant.sudo().unlink()
 
-    def check_all_existence(self,product_id=None):
-        if product_id:
-            lots = self.env['stock.production.lot'].search([('available_kg', '!=', 0), ('harvest', '=', 2021),('product_id','=',product_id)])
+    def check_all_existence(self,product_id=None,lot_id=None):
+        if lot_id:
+            lots = self.env['stock.production.lot'].search(['id','=',lot_id])
+        elif product_id:
+            lots = self.env['stock.production.lot'].search(
+                [('available_kg', '=', 0), ('harvest', '=', 2021), ('product_id', '=', product_id)])
         else:
-            lots = self.env['stock.production.lot'].search([('available_kg', '!=', 0), ('harvest', '=', 2021)])
+            lots = self.env['stock.production.lot'].search([('available_kg', '=', 0), ('harvest', '=', 2021)])
         for lot in lots:
             quant = self.env['stock.quant'].search([('lot_id.id', '=', lot.id), ('location_id.usage', '=', 'internal')])
             if quant:
@@ -968,8 +974,14 @@ class StockProductionLot(models.Model):
                 if location_id:
                     lot.update_stock_quant_production(location_id)
 
-    def check_duplicate_quant(self):
-        lots = self.env['stock.production.lot'].search([('available_kg', '!=', 0), ('harvest', '=', 2021)])
+    def check_duplicate_quant(self,product_id=None,lot_id=None):
+        if lot_id:
+            lots = self.env['stock.production.lot'].search(['id','=',lot_id])
+        elif product_id:
+            lots = self.env['stock.production.lot'].search(
+                [('available_kg', '=', 0), ('harvest', '=', 2021), ('product_id', '=', product_id)])
+        else:
+            lots = self.env['stock.production.lot'].search([('available_kg', '=', 0), ('harvest', '=', 2021)])
         for lot in lots:
             quant = self.env['stock.quant'].search([('location_id.usage', '=', 'internal'), ('lot_id', '=', lot.id)])
             if len(quant) > 1:
@@ -984,8 +996,10 @@ class StockProductionLot(models.Model):
                 'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda x: not x.consumed).mapped('display_weight'))
             })
 
-    def check_no_stock_quant(self,product_id=None):
-        if product_id:
+    def check_no_stock_quant(self,product_id=None,lot_id=None):
+        if lot_id:
+            lots = self.env['stock.production.lot'].search(['id','=',lot_id])
+        elif product_id:
             lots = self.env['stock.production.lot'].search(
                 [('available_kg', '=', 0), ('harvest', '=', 2021), ('product_id', '=', product_id)])
         else:

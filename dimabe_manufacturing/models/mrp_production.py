@@ -215,6 +215,20 @@ class MrpProduction(models.Model):
         for item in self.workorder_ids:
             item.organize_move_line()
         res = super(MrpProduction, self).button_mark_done()
+        for lot in self.finished_move_line_ids.mapped('lot_id'):
+            lot.update_stock_quant_production(self.location_dest_id.id)
+            lot.update_kg(lot.id)
+            lot.update_kg(lot.id)
+            lot.check_all_existence(lot_id=lot.id)
+            lot.check_duplicate_quant(lot_id=lot.id)
+            lot.check_no_stock_quant(lot_id=lot.id)
+        for raw in self.move_raw_ids:
+            for lot in raw.active_move_line_ids.mapped('lot_id'):
+                lot.update_stock_quant_production(self.location_src_id.id)
+                lot.update_kg(lot.id)
+                lot.check_all_existence(lot_id=lot.id)
+                lot.check_duplicate_quant(lot_id=lot.id)
+                lot.check_no_stock_quant(lot_id=lot.id)
         return res
 
     @api.model
