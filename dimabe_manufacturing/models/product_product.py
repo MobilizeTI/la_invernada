@@ -35,7 +35,7 @@ class ProductProduct(models.Model):
 
     measure = fields.Char('Medida', compute='_compute_measure')
 
-    total_weight = fields.Float('Total Kilos Disponibles', )
+    total_weight = fields.Float('Total Kilos Disponibles', compute='_compute_total_weight')
 
     dispatch_weight = fields.Float('Kilos Despachados', compute='_compute_dispatch_weight')
 
