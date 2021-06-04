@@ -641,9 +641,9 @@ class StockProductionLot(models.Model):
                 values['sale_order_id'] = final_lot_id.sale_order_id.id
             res = super(StockProductionLot, self).write(values)
             if sum(item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight')) == 0:
-                self.check_all_existence(lot_id=self.id)
-                self.check_duplicate_quant(lot_id=self.id)
-                self.check_no_stock_quant(lot_id=self.id)
+                self.check_all_existence(product_id=self.product_id.id)
+                self.check_duplicate_quant(product_id=self.product_id.id)
+                self.check_no_stock_quant(product_id=self.product_id.id)
             if not item.producer_id and item.stock_production_lot_serial_ids:
                 if item.stock_production_lot_serial_ids.mapped('producer_id'):
                     item.write({
@@ -945,10 +945,8 @@ class StockProductionLot(models.Model):
                 [('product_id.id', '=', item.product_id.id), ('lot_id', '=', None)])
             quant.sudo().unlink()
 
-    def check_all_existence(self,product_id=None,lot_id=None):
-        if lot_id:
-            lots = self.env['stock.production.lot'].search(['id','=',lot_id])
-        elif product_id:
+    def check_all_existence(self,product_id=None):
+        if product_id:
             lots = self.env['stock.production.lot'].search(
                 [('available_kg', '=', 0), ('harvest', '=', 2021), ('product_id', '=', product_id)])
         else:

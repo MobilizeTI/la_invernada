@@ -421,9 +421,9 @@ class StockProductionLotSerial(models.Model):
                 if vals['consumed']:
                     item.stock_production_lot_id.verify_without_lot()
                     item.stock_production_lot_id.update_kg(item.stock_production_lot_id.id)
-                    item.stock_production_lot_id.check_all_existence(lot_id=item.stock_production_lot_id.id)
-                    item.stock_production_lot_id.check_duplicate_quant(lot_id=item.stock_production_lot_id.id)
-                    item.stock_production_lot_id.check_no_stock_quant(lot_id=item.stock_production_lot_id.id)
+                    item.stock_production_lot_id.check_all_existence(product_id=item.stock_production_lot_id.product_id.id)
+                    item.stock_production_lot_id.check_duplicate_quant(product_id=item.stock_production_lot_id.product_id.id)
+                    item.stock_production_lot_id.check_no_stock_quant(product_id=item.stock_production_lot_id.product_id.id)
         return res
 
     @api.model
@@ -438,9 +438,9 @@ class StockProductionLotSerial(models.Model):
                 )
             lot = self.env['stock.production.lot'].search([('id', '=', item.stock_production_lot_id.id)])
             lot.update_kg(lot.id)
-            lot.check_all_existence(lot_id=lot.id)
-            lot.check_duplicate_quant(lot_id=lot.id)
-            lot.check_no_stock_quant(lot_id=lot.id)
+            lot.check_all_existence(product_id=lot.product_id.id)
+            lot.check_duplicate_quant(product_id=lot.product_id.id)
+            lot.check_no_stock_quant(product_id=lot.product_id.id)
             if item.production_id and item.production_id.state != 'done':
                 production = self.env['mrp.production'].search([('id', '=', item.production_id.id)])
                 workorder = self.env['mrp.workorder'].search([('production_id','=',item.production_id.id)])
@@ -454,9 +454,9 @@ class StockProductionLotSerial(models.Model):
                 lot.update_stock_quant_production(production.location_dest_id.id)
             res = super(StockProductionLotSerial, item).unlink()
             lot.update_kg(lot.id)
-            lot.check_all_existence(lot_id=lot.id)
-            lot.check_duplicate_quant(lot_id=lot.id)
-            lot.check_no_stock_quant(lot_id=lot.id)
+            lot.check_all_existence(product_id=lot.product_id.id)
+            lot.check_duplicate_quant(product_id=lot.product_id.id)
+            lot.check_no_stock_quant(product_id=lot.product_id.id)
         return res
 
     @api.multi

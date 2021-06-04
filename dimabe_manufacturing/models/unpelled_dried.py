@@ -377,9 +377,9 @@ class UnpelledDried(models.Model):
                 item.state = 'draft'
             item.out_lot_id.verify_without_lot()
             item.out_lot_id.update_kg(item.out_lot_id.id)
-            item.out_lot_id.check_all_existence(lot_id=item.out_lot_id.id)
-            item.out_lot_id.check_duplicate_quant(lot_id=item.out_lot_id.id)
-            item.out_lot_id.check_no_stock_quant(lot_id=item.out_lot_id.id)
+            item.out_lot_id.check_all_existence(product_id=item.out_lot_id.product_id.id)
+            item.out_lot_id.check_duplicate_quant(product_id=item.out_lot_id.product_id.id)
+            item.out_lot_id.check_no_stock_quant(product_id=item.out_lot_id.product_id.id)
 
     @api.multi
     def go_history(self):
@@ -387,9 +387,9 @@ class UnpelledDried(models.Model):
         unpelled_dried_id = 'unpelled_dried_id' in self.env.context and self.env.context['unpelled_dried_id'] or False
         self.out_lot_id.verify_without_lot()
         self.out_lot_id.update_kg(self.out_lot_id.id)
-        self.out_lot_id.check_all_existence(lot_id=self.out_lot_id.id)
-        self.out_lot_id.check_duplicate_quant(lot_id=self.out_lot_id.id)
-        self.out_lot_id.check_no_stock_quant(lot_id=self.out_lot_id.id)
+        self.out_lot_id.check_all_existence(product_id=self.out_lot_id.product_id.id)
+        self.out_lot_id.check_duplicate_quant(product_id=self.out_lot_id.product_id.id)
+        self.out_lot_id.check_no_stock_quant(product_id=self.out_lot_id.product_id.id)
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'dried.unpelled.history',
