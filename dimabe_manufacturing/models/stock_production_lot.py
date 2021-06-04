@@ -971,6 +971,6 @@ class StockProductionLot(models.Model):
             quant = self.env['stock.quant'].search([('location_id.usage', '=', 'internal'), ('lot_id', '=', lot.id)])
             if len(quant) > 1:
                 quant[1:].sudo().unlink()
-            quant.write({
+            quant.sudo().write({
                 'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda x: not x.consumed).mapped('display_weight'))
             })
