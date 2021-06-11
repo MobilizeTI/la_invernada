@@ -203,23 +203,38 @@
                                 </div>
                                 <div>
                                     PACKAGING DATE (FECHA DE ENVASADO):
-                                    <span t-esc="doc.packaging_date"/>
+                                    <t t-if="doc.type_of_best_before == 'mask'">
+                                        <span t-field="doc.best_before_date_mask"/>
+                                    </t>
+                                    <t t-else="">
+                                        <span t-esc="doc.packaging_date"/>
+                                    </t>
                                 </div>
                                 <div>
                                     BEST BEFORE DATE (CONSUMIR PREFERENTEMENTE ANTES DE):
-                                    <span t-esc="doc.best_before_date"/>
+                                    <t t-if="doc.type_of_packaging == 'mask'">
+                                        <span t-esc="doc.packaging_date_mask"/>
+                                    </t>
+                                    <t t-else="">
+                                        <span t-esc="doc.packaging_date"/>
+                                    </t>
                                 </div>
                                 <div>
                                     TRACE CODE (CÓDIGO DE TRAZABILIDAD)
-                                    <span t-field="doc.trace_code"/>
+                                    <t t-if="doc.type_of_trace_code == 'mask'">
+                                        <span t-esc="doc.trace_code"/>
+                                    </t>
+                                    <t t-else="">
+                                        <span t-field="doc.sale_order_id"/>
+                                    </t>
                                 </div>
                                 <div>
                                     NET WEIGHT (PESO NETO):
-                                    <span t-esc="0"/>
+                                    <span t-esc="doc.net_weight"/>
                                 </div>
                                 <div>
                                     GROSS WEIGHT (PESO BRUTO):
-                                    <span t-esc="0"/>
+                                    <span t-esc="doc.gross_weight"/>
                                 </div>
                                 <div>
                                     EXPORTED BY (EXPORTADO POR):

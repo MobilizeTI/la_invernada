@@ -36,6 +36,10 @@ class GenerateLabelWizard(models.TransientModel):
 
     serial_number = fields.Char(string='Serie')
 
+    gross_weight = fields.Float(string="Kilos Brutos")
+
+    net_weight = fields.Float(string="Kilos Netos")
+
     @api.multi
     def get_full_url(self):
         self.ensure_one()

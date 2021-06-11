@@ -14,6 +14,7 @@ class ChangeDateLot(models.TransientModel):
 
     best_before_date_new = fields.Date(string='Fecha de Consumir Preferentemente antes de')
 
+
     def change_pack(self):
         for item in self:
             item.lot_id.stock_production_lot_serial_ids.write({

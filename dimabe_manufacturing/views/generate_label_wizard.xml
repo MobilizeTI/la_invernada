@@ -26,6 +26,8 @@
                                 <field name="type_of_trace_code"/>
                                 <field name="sale_order_id" attrs="{'invisible': [('type_of_trace_code','=','mask')]}"/>
                                 <field name="trace_code" widget="mask" data-inputmask="'mask': 'SO###'" attrs="{'invisible': [('type_of_trace_code','=','real')]}"/>
+                                <field name="gross_weight"/>
+                                <field name="net_weight"/>
                                 <field name="serial_number"/>
                             </group>
                         </group>
