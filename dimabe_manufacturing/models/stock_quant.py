@@ -53,3 +53,4 @@ class StockQuant(models.Model):
                                                                      package_id, owner_id, strict)
         except UserError:
             self.lot_id.update_stock_quant(location_id=location_id.id)
+            return self.env['stock.quant'].search[([('lot_id.id','==',self.lot_id.id),('location_id.id','=',location_id.id)])]
