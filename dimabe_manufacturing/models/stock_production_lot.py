@@ -987,6 +987,14 @@ class StockProductionLot(models.Model):
                 [('product_id.id', '=', item.product_id.id), ('lot_id', '=', None)])
             quant.sudo().unlink()
 
+    def change_date_packing(self):
+        for item in self:
+            item.change_packaging = True
+
+    def change_date_best(self):
+        for item in self:
+            item.change_best = True
+
     def check_all_existence(self):
         lots = self.env['stock.production.lot'].search([('available_kg', '!=', 0), ('harvest', '=', 2021)])
         for lot in lots:

@@ -19,9 +19,15 @@ class ChangeDateLot(models.TransientModel):
             item.lot_id.stock_production_lot_serial_ids.write({
                 'packaging_date': item.packaging_date_new
             })
+            item.lot_id.write({
+                'change_packaging': False
+            })
 
     def change_best(self):
         for item in self:
             item.lot_id.stock_production_lot_serial_ids.write({
-                'best_before_date': item.best_before_date_new
+                'best_before_date_new': item.best_before_date_new
+            })
+            item.lot_id.write({
+                'change_best': False
             })

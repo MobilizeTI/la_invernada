@@ -210,7 +210,7 @@ class MrpWorkorder(models.Model):
 
     @api.multi
     def organize_move_line(self):
-        for move in self.production_id.move_raw_ids:
+        for move in self.production_id.move_raw_ids.filtered(lambda a: a.needs_lots):
             for active in move.active_move_line_ids:
                 active.unlink()
         for item in self.potential_serial_planned_ids.mapped('stock_production_lot_id'):
@@ -333,7 +333,7 @@ class MrpWorkorder(models.Model):
         for item in self:
             if len(item.production_finished_move_line_ids) > 1:
                 item.lot_produced_id = item.production_finished_move_line_ids.filtered(
-                    lambda a: a.product_id == item.product_id.id).lot_id.id
+                    lambda a: a.product_id.id == item.product_id.id).lot_id.id
             item.lot_produced_id = item.final_lot_id.id
 
     @api.multi

@@ -79,7 +79,12 @@
                                 </div>
                                 <div>
                                     BEST BEFORE DATE (CONSUMIR PREFERENTEMENTE ANTES DE):
-                                    <span t-esc="lot_serial_id.best_before_date"/>
+                                    <t t-if="not lot_serial_id.best_before_date_new">
+                                        <span t-esc="lot_serial_id.best_before_date"/>
+                                    </t>
+                                    <t t-else="">
+                                        <span t-esc="lot_serial_id.best_before_date_new"/>
+                                    </t>
                                 </div>
                                 <div>
                                     TRACE CODE (CÓDIGO DE TRAZABILIDAD):
@@ -125,44 +130,49 @@
     <template id="report_stock_production_lot_serial_label_template">
         <t t-call="web.html_container">
             <div class="page">
-                <t t-foreach="docs" t-as="label">
+                <t t-foreach="docs" t-as="doc">
                     <div style="text-align:right;font-size:8px;">
-                        <t t-if="'Con' in label.product_id.get_species()">
+                        <t t-if="'Con' in doc.product_id.get_species()">
                             <strong>CONTAINS INSHELL WALNUT - CONTIENE NUEZ CON CÁSCARA</strong>
                         </t>
-                        <t t-elif="'Sin' in label.product_id.get_species()">
+                        <t t-elif="'Sin' in doc.product_id.get_species()">
                             <strong>CONTAINS SHELLED WALNUT - CONTIENE NUEZ SIN CÁSCARA</strong>
                         </t>
                         <t t-else="">
                             <strong>CONTAINS WALNUT - CONTIENE NUEZ</strong>
                         </t>
                     </div>
-                    <table style="font-size:10px;width:100%;">
+                    <table style="font-size:11px;">
                         <tr>
-                            <th style="border-top: solid 1px; border-bottom: solid 1px;" colspan="2">
-                                <span t-field="label.product_id.label_name"/>
+                            <th style="border-top: solid 1px;border-bottom:solid 1px;" colspan="2">
+                                <t t-if="doc.product_id.label_name">
+                                    <span t-field="doc.product_id.label_name"/>
+                                </t>
+                                <t t-if="not doc.product_id.label_name">
+                                    <span t-field="doc.product_id.display_name"/>
+                                </t>
                             </th>
                         </tr>
                         <tr>
-                            <td style="border-right: solid 1px;border-bottom: solid 1px;">
+                            <td style="border-right:solid 1px;border-bottom:solid 1px;">
                                 <div>GROWER/PRODUCTOR:</div>
                                 <div>
-                                    <span t-field="label.producer_id.name"/>
+                                    <span t-field="doc.producer_id.name"/>
                                 </div>
                                 <div>CSG:
-                                    <span t-field="label.producer_id.sag_code"/>
+                                    <span t-field="doc.producer_id.sag_code"/>
                                 </div>
                                 <div>PROVINCE/PROVINCIA:
-                                    <span t-field="label.producer_id.state_id_address.name"/>
+                                    <span t-esc="doc.producer_id.state_id_address.name"/>
                                 </div>
                                 <div>TOWNSHIP/COMUNA:
-                                    <span t-field="label.producer_id.city_address"/>
+                                    <span t-esc="doc.producer_id.city_address"/>
                                 </div>
                                 <div>REGIÓN:
-                                    <span t-esc="label.producer_id.region_address_id_address.name"/>
+                                    <span t-esc="doc.producer_id.region_address_id_address.name"/>
                                 </div>
                             </td>
-                            <td style="border-bottom: 1px solid black;">
+                            <td style="border-bottom:solid 1px;">
                                 <div>PACKED BY/EMBALADO POR</div>
                                 <div>
                                     <span t-esc="res_company.name"/>
@@ -176,7 +186,7 @@
                                 <div>TOWNSHIP/COMUNA:
                                     <span t-esc="res_company.city"/>
                                 </div>
-                                <div>REGIÓN
+                                <div>REGIÓN:
                                     <span t-esc="res_company.region_address_id.name"/>
                                 </div>
                             </td>
@@ -185,11 +195,49 @@
                             <td colspan="2">
                                 <div>
                                     VARIETY (VARIEDAD):
-                                    <span t-esc="label.product_id.get_variety()"/>
+                                    <span t-esc="doc.product_id.get_variety()"/>
+                                </div>
+                                <div>
+                                    CROP (AÑO DE COSECHA):
+                                    <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')"/>
+                                </div>
+                                <div>
+                                    PACKAGING DATE (FECHA DE ENVASADO):
+                                    <span t-esc="doc.packaging_date"/>
+                                </div>
+                                <div>
+                                    BEST BEFORE DATE (CONSUMIR PREFERENTEMENTE ANTES DE):
+                                    <span t-esc="doc.best_before_date"/>
+                                </div>
+                                <div>
+                                    TRACE CODE (CÓDIGO DE TRAZABILIDAD)
+                                    <span t-field="doc.trace_code"/>
+                                </div>
+                                <div>
+                                    NET WEIGHT (PESO NETO):
+                                    <span t-esc="0"/>
+                                </div>
+                                <div>
+                                    GROSS WEIGHT (PESO BRUTO):
+                                    <span t-esc="0"/>
+                                </div>
+                                <div>
+                                    EXPORTED BY (EXPORTADO POR):
+                                    <span t-esc="res_company.name"/>
+                                </div>
+                                <div style="text-align:center;">
+                                    <img
+                                            t-att-src="'%s/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % (doc.get_full_url(), 'Code128',doc.serial_number,550, 45)"
+                                    />
+                                    <span t-field="doc.serial_number"/>
+                                </div>
+                                <div style="text-align:center;">
+                                    PRODUCT OF CHILE - PRODUCTO DE CHILE
                                 </div>
                             </td>
                         </tr>
                     </table>
+                    <p style="page-break-after:avoid;"/>
                 </t>
             </div>
         </t>

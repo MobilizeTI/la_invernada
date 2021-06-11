@@ -15,17 +15,18 @@
                             </h1>
                         </div>
                         <group>
-                            <group styke="width:100%;">
+                            <group style="width:100%;">
                                 <field name="producer_id"/>
-                                <field name="is_real_best_date"/>
-                                <field name="best_before_date" attrs="{'invisible': [('is_real_best_date','=',False)]}"/>
-                                <field name="best_before_date_mask" attrs="{'invisible': [('is_real_best_date','=',True)]}"/>
-                                <field name="is_real_packaging_date"/>
-                                <field name="packaging_date" attrs="{'invisible': [('is_real_packaging_date','=',False)]}"/>
-                                <field name="packaging_date_mask" attrs="{'invisible': [('is_real_packaging_date', '=', True)]}"/>
-                                <field name="is_real_order"/>
-                                <field name="sale_order_id" attrs="{'invisible': [('is_real_order','=',False)]}"/>
-                                <field name="trace_code" attrs="{'invisible': [('is_real_order','=',True)]}"/>
+                                <field name="type_of_best_before"/>
+                                <field name="best_before_date" attrs="{'invisible': [('type_of_best_before','=','mask')]}"/>
+                                <field name="best_before_date_mask" widget="mask" data-inputmask="'mask': '99/99/9999'"  attrs="{'invisible': [('type_of_best_before','=','real')]}"/>
+                                <field name="type_of_packaging"/>
+                                <field name="packaging_date" attrs="{'invisible': [('type_of_packaging','=','mask')]}"/>
+                                <field name="packaging_date_mask" widget="mask" data-inputmask="'mask': '99/99/9999'" attrs="{'invisible': [('type_of_packaging','=','real')]}"/>
+                                <field name="type_of_trace_code"/>
+                                <field name="sale_order_id" attrs="{'invisible': [('type_of_trace_code','=','mask')]}"/>
+                                <field name="trace_code" widget="mask" data-inputmask="'mask': 'SO###'" attrs="{'invisible': [('type_of_trace_code','=','real')]}"/>
+                                <field name="serial_number"/>
                             </group>
                         </group>
                     </sheet>
