@@ -220,6 +220,9 @@ class CustomCustomerOrdersXls(models.TransientModel):
                                 if attribute.attribute_id.name == 'Especie':
                                     if attribute.name not in species:
                                         species.append(attribute.name)
+                                if attribute.attribute_id.name == 'Color':
+                                    if attribute.name not in colors:
+                                        colors.append(attribute.name)
 
                         #Especie
                         sheet.write(row, col, ' '.join([s for s in species]))
