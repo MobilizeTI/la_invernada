@@ -211,7 +211,7 @@ class MrpProduction(models.Model):
                         'qty_done': list_serial_pt * component_ids.first_or_default().product_qty,
                         'location_id': item.location_src_id.id,
                         'product_uom_id':move.product_id.uom_id.id,
-                        'location_dest_id': item.location_dest_id.id,
+                        'location_dest_id': self.env['stock.location'].search([('usage','=','production')],limit=1).id,
                         'move_id': move.id,
                         'lot_produced_id': item.finished_move_line_ids.filtered(lambda x: x.product_id.id == item.product_id.id).lot_id.id
                     })
