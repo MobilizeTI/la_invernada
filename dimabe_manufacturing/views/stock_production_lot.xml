@@ -58,8 +58,8 @@
                 <field name="change_packaging" invisible="1"/>
                 <button type="object" name="change_date_packing" string="Cambiar Fecha"
                         attrs="{'invisible':[('change_packaging','=',False)]}"/>
-                <field name="best_before_date" invisible="1"/>
-                <field name="change_best"/>
+                <field name="best_before_date" />
+                <field name="change_best" invisible="1"/>
                 <button type="object" name="change_date_best" string="Cambiar Fecha"
                         attrs="{'invisible':[('change_best','=',False)]}"/>
                 <!--                <button name="print_all_serial" attrs="{'invisible':[('is_standard_weight','=',False)]}"-->
