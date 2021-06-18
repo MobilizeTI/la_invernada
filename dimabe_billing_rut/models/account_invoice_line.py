@@ -63,7 +63,7 @@ class AccountInvoiceLine(models.Model):
                 stock_picking_id.write({
                     'shipping_number': self.invoice_id.shipping_number,
                     'agent_id': self.invoice_id.agent_id.id,
-                    'commission': self.invoice_idcommission,
+                    'commission': self.invoice_id.commission,
                     'charging_mode': self.invoice_idcharging_mode,
                     'booking_number': self.invoice_idbooking_number,
                     'bl_number': self.invoice_id.bl_number,
