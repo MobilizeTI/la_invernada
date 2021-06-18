@@ -255,7 +255,7 @@ class StockProductionLot(models.Model):
 
     change_best = fields.Boolean(string='¿Desea cambiar fecha de consumir preferentemente antes de?')
 
-    def change_date_best(self):
+    def do_change_date_best(self):
         for item in self:
             wiz = self.env['change.date.lot'].create({
                 'lot_id': item.id,
@@ -276,7 +276,7 @@ class StockProductionLot(models.Model):
                 'context': self.env.context
             }
 
-    def change_date_packing(self):
+    def do_change_date_packing(self):
         for item in self:
             wiz = self.env['change.date.lot'].create({
                 'lot_id': item.id,

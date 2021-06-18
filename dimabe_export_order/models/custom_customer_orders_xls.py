@@ -72,7 +72,7 @@ class CustomCustomerOrdersXls(models.TransientModel):
         if len(orders) > 0:
             for order in orders:
                 # productions = self.env['mrp.production'].search([('sale_order_id',order.id)])
-                stock_picking_ids = self.env['stock.picking'].sudo().search([('sale_id', '=', order.id)])
+                stock_picking_ids = self.env['stock.picking'].sudo().search([('sale_id', '=', order.id),('state','!=','cancel')])
                 # if len(stock_picking_ids) > 0:
                 for stock in stock_picking_ids:
                     invoice_line = self.env['account.invoice.line'].sudo().search([('stock_picking_id', '=', stock.id)])
