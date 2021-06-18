@@ -61,38 +61,36 @@ class AccountInvoiceLine(models.Model):
             if 'stock_picking_id' in vals.keys():
                 stock_picking_id = self.env['stock.picking'].search([('id','=',vals['stock_picking_id'])])
                 if stock_picking_id:
-                    raise models.ValidationError(f'si lo encontre {stock_picking_id.name}')
                     stock_picking_id.write({
-                        'shipping_number': self.invoice_id.shipping_number,
-                        'agent_id': self.invoice_id.agent_id.id,
-                        'commission': self.invoice_id.commission,
-                        'charging_mode': self.invoice_id.charging_mode,
-                        'booking_number': self.invoice_id.booking_number,
-                        'bl_number': self.invoice_id.bl_number,
-                        'container_type': self.invoice_id.container_type.id,
-                        'client_label': self.invoice_id.client_label,
-                        'client_label_file': self.invoice_id.client_label_file,
-                        'freight_value': self.invoice_id.freight_amount,
-                        'safe_value': self.invoice_id.safe_amount,
-                        'remarks': self.invoice_id.remarks_comex,
-                        'shipping_company': self.invoice_id.shipping_company.id,
-                        'ship': self.invoice_id.ship.id,
-                        'ship_number': self.invoice_id.ship_number,
-                        'type_transport': self.invoice_id.type_transport.id,
-                        'departure_port': self.invoice_id.departure_port.id,
-                        'arrival_port': self.invoice_id.arrival_port.id,
-                        'etd': self.invoice_id.etd,
-                        'eta': self.invoice_id.eta,
-                        'departure_date': self.invoice_id.departure_date,
-                        'arrival_date': self.invoice_id.arrival_date,
-                        'customs_department': self.invoice_id.custom_department.id,
-                        'transport': self.invoice_id.transport_to_port.name,
-                        'consignee_id': self.invoice_id.consignee_id.id,
-                        'notify_ids': [(6, 0, self.invoice_id.notify_ids.ids)],
-                        'custom_notify_ids': [(6, 0, self.invoice_id.custom_notify_ids.ids)]
+                        'shipping_number': invoice_id.shipping_number,
+                        'agent_id': invoice_id.agent_id.id,
+                        'commission': invoice_id.commission,
+                        'charging_mode': invoice_id.charging_mode,
+                        'booking_number': invoice_id.booking_number,
+                        'bl_number': invoice_id.bl_number,
+                        'container_type': invoice_id.container_type.id,
+                        'client_label': invoice_id.client_label,
+                        'client_label_file': invoice_id.client_label_file,
+                        'freight_value': invoice_id.freight_amount,
+                        'safe_value': invoice_id.safe_amount,
+                        'remarks': invoice_id.remarks_comex,
+                        'shipping_company': invoice_id.shipping_company.id,
+                        'ship': invoice_id.ship.id,
+                        'ship_number': invoice_id.ship_number,
+                        'type_transport': invoice_id.type_transport.id,
+                        'departure_port': invoice_id.departure_port.id,
+                        'arrival_port': invoice_id.arrival_port.id,
+                        'etd': invoice_id.etd,
+                        'eta': invoice_id.eta,
+                        'departure_date': invoice_id.departure_date,
+                        'arrival_date': invoice_id.arrival_date,
+                        'customs_department': invoice_id.custom_department.id,
+                        'transport': invoice_id.transport_to_port.name,
+                        'consignee_id': invoice_id.consignee_id.id,
+                        'notify_ids': [(6, 0, invoice_id.notify_ids.ids)],
+                        'custom_notify_ids': [(6, 0, invoice_id.custom_notify_ids.ids)]
                     })
-                else:
-                    raise models.ValidationError('no encontro el stockpicking')
+
 
 
         
