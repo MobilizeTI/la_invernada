@@ -61,6 +61,7 @@ class AccountInvoiceLine(models.Model):
             if 'stock_picking_id' in vals.keys():
                 stock_picking_id = self.env['stock.picking'].search([('id','=',vals['stock_picking_id'])])
                 if stock_picking_id:
+                    raise models.ValidationError(f'si lo encontre {stock_picking_id.name}')
                     stock_picking_id.write({
                         'shipping_number': self.invoice_id.shipping_number,
                         'agent_id': self.invoice_id.agent_id.id,
