@@ -19,13 +19,13 @@
                                 <field name="producer_id"/>
                                 <field name="type_of_best_before"/>
                                 <field name="best_before_date" attrs="{'invisible': [('type_of_best_before','=','mask')]}"/>
-                                <field name="best_before_date_mask" widget="mask" data-inputmask="'mask': '####/##/##'"  attrs="{'invisible': [('type_of_best_before','=','real')]}"/>
+                                <field name="best_before_date_mask" widget="mask" data-inputmask="'mask': '****/**/**'"  attrs="{'invisible': [('type_of_best_before','=','real')]}"/>
                                 <field name="type_of_packaging"/>
                                 <field name="packaging_date" attrs="{'invisible': [('type_of_packaging','=','mask')]}"/>
-                                <field name="packaging_date_mask" widget="mask" data-inputmask="'mask': '####/##/##'" attrs="{'invisible': [('type_of_packaging','=','real')]}"/>
+                                <field name="packaging_date_mask" widget="mask" data-inputmask="'mask': '****/**/**'" attrs="{'invisible': [('type_of_packaging','=','real')]}"/>
                                 <field name="type_of_trace_code"/>
                                 <field name="sale_order_id" attrs="{'invisible': [('type_of_trace_code','=','mask')]}"/>
-                                <field name="trace_code" widget="mask" data-inputmask="'mask': 'SO###'" attrs="{'invisible': [('type_of_trace_code','=','real')]}"/>
+                                <field name="trace_code" widget="mask" data-inputmask="'mask': 'SO***'" attrs="{'invisible': [('type_of_trace_code','=','real')]}"/>
                                 <field name="gross_weight"/>
                                 <field name="net_weight"/>
                                 <field name="serial_number"/>
