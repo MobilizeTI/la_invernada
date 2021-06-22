@@ -2036,13 +2036,13 @@
                                            t-as="s">
                                             <tr>
                                                 <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                                    <span t-esc="s.stock_product_id.name"/>
+                                                    <span t-esc="s.product_id.name"/>
                                                 </td>
                                                 <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                                    <span t-esc="s.stock_product_id.type_product"/>
+                                                    <span t-esc="s.product_id.type_product"/>
                                                 </td>
                                                 <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
-                                                    <span t-field="d.name"/>
+                                                    <span t-field="d.origin"/>
                                                 </td>
                                                 <td style="border:solid 1px black;text-align:center;padding-top:0px;padding-bottom:0px">
                                                     <span t-field="p.name"/>

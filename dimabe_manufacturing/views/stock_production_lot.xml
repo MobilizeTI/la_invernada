@@ -7,6 +7,13 @@
             <xpath expr="//field[@name='name']" position="attributes">
                 <attribute name="attrs">{'readonly': [('is_prd_lot', '=', True)]}</attribute>
             </xpath>
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button type="object" string="Cambiar Fecha de Envasado" name="change_date_packing"/>
+                    <button type="object" string="Cambiar Fecha de Consumir Preferentemente antes de"
+                            name="change_date_best"/>
+                </header>
+            </xpath>
             <group name="main_group" position="inside">
 
                 <field name="is_prd_lot" invisible="1"/>
@@ -47,7 +54,14 @@
                 <field name="stock_picking_id"
                        groups="base.group_system"
                 />
-
+                <field name="packaging_date"/>
+                <field name="change_packaging" invisible="1"/>
+                <button type="object" name="do_change_date_packing" string="Cambiar Fecha"
+                        attrs="{'invisible':[('change_packaging','=',False)]}"/>
+                <field name="best_before_date" />
+                <field name="change_best" invisible="1"/>
+                <button type="object" name="do_change_date_best" string="Cambiar Fecha"
+                        attrs="{'invisible':[('change_best','=',False)]}"/>
                 <!--                <button name="print_all_serial" attrs="{'invisible':[('is_standard_weight','=',False)]}"-->
                 <!--                        string="Imprimir Series" type="object"/>-->
                 <field name="stock_production_lot_serial_ids"

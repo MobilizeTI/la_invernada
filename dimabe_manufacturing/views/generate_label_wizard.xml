@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="generate_label_form_view" model="ir.ui.view">
+            <field name="name">generate_label.form</field>
+            <field name="model">generate.label.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Generar Etiqueta">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="product_id"/>
+                            <h1>
+                                <field name="product_id" placeholder="Producto"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group style="width:100%;">
+                                <field name="producer_id"/>
+                                <field name="type_of_best_before"/>
+                                <field name="best_before_date" attrs="{'invisible': [('type_of_best_before','=','mask')]}"/>
+                                <field name="best_before_date_mask" widget="mask" data-inputmask="'mask': '****/**/**'"  attrs="{'invisible': [('type_of_best_before','=','real')]}"/>
+                                <field name="type_of_packaging"/>
+                                <field name="packaging_date" attrs="{'invisible': [('type_of_packaging','=','mask')]}"/>
+                                <field name="packaging_date_mask" widget="mask" data-inputmask="'mask': '****/**/**'" attrs="{'invisible': [('type_of_packaging','=','real')]}"/>
+                                <field name="type_of_trace_code"/>
+                                <field name="sale_order_id" attrs="{'invisible': [('type_of_trace_code','=','mask')]}"/>
+                                <field name="trace_code" widget="mask" data-inputmask="'mask': 'SO*****'" attrs="{'invisible': [('type_of_trace_code','=','real')]}"/>
+                                <field name="gross_weight"/>
+                                <field name="net_weight"/>
+                                <field name="serial_number"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button type="object" name="generate_label" string="Generar"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

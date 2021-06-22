@@ -188,7 +188,6 @@ else:
 
 carga= contract.carga_familiar + contract.carga_familiar_maternal + contract.carga_familiar_invalida
 
-
 if worked_days.WORK100.number_of_days == 0:
     result = 0
 elif payslip.indicadores_id.asignacion_familiar_primer >= categories.IMPONIBLE:

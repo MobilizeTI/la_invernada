@@ -11,3 +11,4 @@ class HrSalaryRule(models.Model):
     show_in_central = fields.Boolean('Aparece en Centralizacion')
 
     is_legal = fields.Boolean('Es un descuento Legal')
+

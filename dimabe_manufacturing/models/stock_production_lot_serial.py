@@ -171,6 +171,8 @@ class StockProductionLotSerial(models.Model):
 
     to_unlink = fields.Boolean('Para Eliminar')
 
+    best_before_date_new = fields.Date(string='Consumir antes de')
+
     @api.multi
     def compute_available_weight(self):
         for item in self:
@@ -349,6 +351,10 @@ class StockProductionLotSerial(models.Model):
             ('lot_id', '=', res.stock_production_lot_id.id),
             ('lot_id.is_prd_lot', '=', True)
         ])
+        if res.stock_production_lot_id.best_before_date:
+            res.best_before_date_new = res.stock_production_lot_id.best_before_date
+        if res.stock_production_lot_id.packaging_date:
+            res.packaging_date = res.stock_production_lot_id.packaging_date
         production = None
         if stock_move_line.mapped('move_id.production_id'):
             production = stock_move_line.mapped('move_id.production_id')[0]

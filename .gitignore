@@ -3,3 +3,4 @@ docker-compose.yaml
 .vscode
 /.vs/slnx.sqlite
 venv
+__pycache__/

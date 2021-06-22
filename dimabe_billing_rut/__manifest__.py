@@ -47,6 +47,7 @@
         'views/res_country.xml',
         'views/res_currency.xml',
         'views/account_incoterms.xml',
+        'views/account_move.xml',
         'report/instructive_report.xml'
     ],
     # only loaded in demonstration mode

@@ -16,7 +16,6 @@
                             string="Calcular Realizado"
                             attrs="{'invisible':[('state', '!=', 'progress')]}"
                     />
-
                     <button name="fix_reserved" type="object"
                             string="Limpiar Reservas"
                             confirm="¡Atencion! ¿Se seguro de realizar esta limpieza en los movimientos de stock?"

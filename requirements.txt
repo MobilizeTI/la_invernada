@@ -7,3 +7,4 @@ python-dateutil
 pandas
 Pillow
 pdf417
+py_linq
