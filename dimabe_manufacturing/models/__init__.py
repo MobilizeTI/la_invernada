@@ -32,6 +32,6 @@ from . import confirm_principal_order
 from . import update_stock_quant
 from . import stock_report_xlsx
 from . import process_report_xlsx
-from . import generate_label_wizard
+#from . import generate_label_wizard
 #from . import mrp_eco
 from . import change_date_lot
