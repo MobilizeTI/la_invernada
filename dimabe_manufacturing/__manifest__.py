@@ -66,7 +66,7 @@
         'views/custom_dispatch_line.xml',
         'views/stock_report_xlsx.xml',
         #'views/mrp_eco.xml',
-        'views/generate_label_wizard.xml',
+        #'views/generate_label_wizard.xml',
         'views/change_date_lot.xml',
         'reports/stock/raw_report.xml',
         'reports/stock/raw_service_report.xml',
