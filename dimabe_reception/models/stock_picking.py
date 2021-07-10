@@ -231,6 +231,7 @@ class StockPicking(models.Model):
         # self.reception_type_selection == 'mp' or \
         self.is_mp_reception = self.picking_type_id.warehouse_id.name and \
                                'materia prima' in str.lower(self.picking_type_id.warehouse_id.name) and \
+                                'servicios' not in str.lower(self.picking_type_id.warehouse_id.name) and \
                                self.picking_type_id.name and 'recepciones' in str.lower(self.picking_type_id.name)
 
     @api.one
