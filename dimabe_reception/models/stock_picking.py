@@ -231,7 +231,6 @@ class StockPicking(models.Model):
         # self.reception_type_selection == 'mp' or \
         self.is_mp_reception = self.picking_type_id.warehouse_id.name and \
                                'materia prima' in str.lower(self.picking_type_id.warehouse_id.name) and \
-                                'servicios' not in str.lower(self.picking_type_id.warehouse_id.name) and \
                                self.picking_type_id.name and 'recepciones' in str.lower(self.picking_type_id.name)
 
     @api.one
@@ -476,7 +475,7 @@ class StockPicking(models.Model):
         message = ''
         if not self.guide_number or not self.guide_number > 0:
             message = 'debe agregar número de guía \n'
-        if not self.weight_guide:
+        if not self.weight_guide and 'servicios' not in str.lower(self.picking_type_id.warehouse_id.name):
             message += 'debe agregar kilos guía \n'
 
         if not self.get_canning_move():
