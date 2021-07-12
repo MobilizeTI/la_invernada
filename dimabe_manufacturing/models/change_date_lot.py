@@ -23,7 +23,7 @@ class ChangeDateLot(models.TransientModel):
             })
             datetime.datetime.combine(item.packaging_date_new, datetime.datetime.min.time())
             item.lot_id.pallet_ids.write({
-                'packaging_date':pytz.timezone(self.env.context['tz']).localize(fields.Datetime.from_string(self.datetime.datetime.combine(item.packaging_date_new, datetime.datetime.min.time())),
+                'packaging_date':pytz.timezone(self.env.context['tz']).localize(fields.Datetime.from_string(datetime.datetime.combine(item.packaging_date_new, datetime.datetime.min.time())),
                                                            is_dst=None).astimezone(pytz.utc),
             })
             item.lot_id.write({
