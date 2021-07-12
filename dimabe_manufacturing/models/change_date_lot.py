@@ -22,7 +22,7 @@ class ChangeDateLot(models.TransientModel):
                 'packaging_date': item.packaging_date_new
             })
             item.write({
-                'packaging_date': datetime.datetime.combine(item.packaging_date, datetime.min.time())
+                'packaging_date': datetime.datetime.combine(item.packaging_date_new, datetime.min.time())
             })
             item.lot_id.write({
                 'change_packaging': False
