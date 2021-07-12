@@ -122,6 +122,8 @@ class ManufacturingPallet(models.Model):
 
     total_available_weight = fields.Float('Kilos Disponible',compute='compute_total_available_weight')
 
+    packaging_date = fields.Datetime('Fecha Envasado')
+
     @api.multi
     def delete_pallet(self):
         for item in self:

@@ -44,9 +44,16 @@
                             </td>
                         </tr>
                         <tr>
-                            <th colspan="2">
-                                <span t-field="o.create_date"/>
-                            </th>
+                            <t t-if="not o.packaging_date">
+                                <th colspan="2">
+                                    <span t-field="o.create_date"/>
+                                </th>
+                            </t>
+                            <t t-else="">
+                                <th colspan="2">
+                                    <span t-field="o.packaging_date"/>
+                                </th>
+                            </t>
                         </tr>
                         <tr>
                             <td colspan="2" style="text-align:center !important;">

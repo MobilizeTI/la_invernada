@@ -21,8 +21,8 @@ class ChangeDateLot(models.TransientModel):
             item.lot_id.stock_production_lot_serial_ids.write({
                 'packaging_date': item.packaging_date_new
             })
-            item.lot_id.pallet_ids.write({
-                'create_date': datetime.datetime.combine(item.packaging_date_new, datetime.datetime.min.time())
+            item.write({
+                'packaging_date': datetime.combine(item.packaging_date, datetime.min.time())
             })
             item.lot_id.write({
                 'change_packaging': False
