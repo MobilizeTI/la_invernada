@@ -758,9 +758,9 @@ class StockProductionLot(models.Model):
                 'state': 'close'
             })
             if item.packaging_date:
-                pallet.write({
-                    'create_date': datetime.combine(item.packaging_date, datetime.min.time())
-                })
+                query = f"UPDATE manufacturing_pallet set create_date = 'ready' where id = {fields.Date.to_string(item.packaging_date)}"
+                cr = self._cr
+                cr.execute(query)
 
     @api.model
     def get_stock_quant(self):
