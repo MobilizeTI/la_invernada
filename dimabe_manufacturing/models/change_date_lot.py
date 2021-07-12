@@ -1,5 +1,5 @@
 import datetime
-
+import pytz
 from odoo import fields, models, api
 
 
@@ -21,8 +21,10 @@ class ChangeDateLot(models.TransientModel):
             item.lot_id.stock_production_lot_serial_ids.write({
                 'packaging_date': item.packaging_date_new
             })
+            datetime.datetime.combine(item.packaging_date_new, datetime.datetime.min.time())
             item.lot_id.pallet_ids.write({
-                'packaging_date': datetime.datetime.combine(item.packaging_date_new, datetime.datetime.min.time())
+                'packaging_date':pytz.timezone(self.env.context['tz']).localize(fields.Datetime.from_string(self.datetime.datetime.combine(item.packaging_date_new, datetime.datetime.min.time())),
+                                                           is_dst=None).astimezone(pytz.utc)),
             })
             item.lot_id.write({
                 'change_packaging': False
