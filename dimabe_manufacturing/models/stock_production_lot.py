@@ -757,6 +757,10 @@ class StockProductionLot(models.Model):
             pallet.update({
                 'state': 'close'
             })
+            if item.packaging_date:
+                pallet.write({
+                    'create_date': datetime.combine(item.packaging_date, datetime.min.time())
+                })
 
     @api.model
     def get_stock_quant(self):
