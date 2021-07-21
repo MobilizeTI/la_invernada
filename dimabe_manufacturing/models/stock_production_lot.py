@@ -1,6 +1,7 @@
 from odoo import fields, models, api
 from odoo.addons import decimal_precision as dp
 from datetime import date, datetime
+import collections
 
 
 class StockProductionLot(models.Model):
@@ -422,6 +423,9 @@ class StockProductionLot(models.Model):
         for item in self:
             if len(item.stock_production_lot_serial_ids) > 999:
                 not_duplicates = []
+
+
+
                 duplicates = []
                 for serial in item.stock_production_lot_serial_ids.mapped('serial_number'):
                     if serial not in not_duplicates:
@@ -710,9 +714,9 @@ class StockProductionLot(models.Model):
                                 item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
                                     'real_weight'))
                         })
-            else:
-                if len(item.stock_production_lot_serial_ids) > 999:
-                    item.check_duplicate()
+            # else:
+            #     if len(item.stock_production_lot_serial_ids) > 999:
+            #         item.check_duplicate()
             return res
 
     @api.multi
@@ -759,8 +763,11 @@ class StockProductionLot(models.Model):
             })
             if item.packaging_date:
                 item.write({
-                    'packaging_date': datetime.combine(item.packaging_date,datetime.min.time())
+                    'packaging_date': datetime.combine(item.packaging_date, datetime.min.time())
                 })
+            if len(item.stock_production_lot_serial_ids) > 999 and [item for item, count in collections.Counter(
+                    item.stock_production_lot_serial_ids.mapped('serial_number')).items() if count > 1]:
+                item.check_duplicate()
 
     @api.model
     def get_stock_quant(self):
@@ -1024,7 +1031,7 @@ class StockProductionLot(models.Model):
                 if location_id:
                     lot.update_stock_quant_production(location_id)
 
-    def check_duplicate_quant(self,quants):
+    def check_duplicate_quant(self, quants):
         index = 1
         for item in quants:
             if index >= 1:
