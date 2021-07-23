@@ -22,7 +22,7 @@
     'version': '12.0.1.0.0',
     'category': 'Accounting',
     'summary': 'Accounting, Payment, Check, Third, Issue',
-    'author': 'MOBILIZE SPA',
+    'author': 'ADHOC SA',
     'license': 'AGPL-3',
     'images': [
     ],

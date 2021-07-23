@@ -1,7 +1,7 @@
 {
     "name": "Accounting Financial Amounts",
     "version": "11.0.1.0.0",
-    "author": "Mobilize SPA",
+    "author": "ADHOC SA",
     "license": "AGPL-3",
     "category": "Accounting",
     "depends": [

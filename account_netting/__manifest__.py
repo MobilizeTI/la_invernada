@@ -7,9 +7,10 @@
     'version': '12.0.1.0.0',
     'summary': 'Compensate AR/AP accounts from the same partner',
     'category': 'Accounting & Finance',
-    'author': 'Mobilize SPA',
+    'author': 'Tecnativa, '
+              'Odoo Community Association (OCA)',
     'license': 'AGPL-3',
-    'website': 'https://mobilize.cl',
+    'website': 'https://github.com/OCA/account-financial-tools/',
     'depends': [
         'account',
     ],

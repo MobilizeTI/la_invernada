@@ -3,9 +3,10 @@
 {
     "name": "Account Invoice Constraint Chronology",
     "version": "12.0.1.0.0",
-    "author": "Mobilize SPA",
-    "maintainer": "Felipe Angulo, Mobilize SPA",
-    "website": "mobilize.cl",
+    "author": "Odoo Community Association (OCA), ACSONE SA/NV",
+    "maintainer": "ACSONE SA/NV",
+    "website": "https://github.com/OCA/account-financial-tools/tree/12.0/"
+               "account_invoice_constraint_chronology",
     "license": "AGPL-3",
     "category": "Accounting",
     "depends": ["account"],

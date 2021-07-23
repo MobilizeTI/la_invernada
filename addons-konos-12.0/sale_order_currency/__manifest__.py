@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#
-#
-#    Copyright (C) 2021 (https://www.mobilize.cl/)
+#    
+#    
+#    Copyright (C) 2018 Konos (http://www.konos.cl)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -26,8 +26,8 @@
     'category': 'Sale',
     'license': 'AGPL-3',
     'summary': 'Converts the amount and currency in the sale order into the local currency',
-    'author': 'Mobilize SPA',
-    'website': 'https://www.mobilize.cl/',
+    'author': u'Konos, Daniel Santibáñez Polanco',
+    'website': 'http://konos.cl',
     'depends': ['base', 'sale', 'account'],
     'data': [
         'views/sale_order_view.xml',

@@ -27,19 +27,19 @@ Payroll Analytic Account.
 
 
     -When enable in an specific Salary Rule it uses the Analytic Account selected in the Employees Contract
-
+    
     """,
     'license': 'AGPL-3',
     'category': 'Accounting',
-    'author': 'Mobilize SPA',
-    'website': 'https://www.mobilize.cl/',
+    'author': 'Konos',
+    'website': 'http://konos.cl',
     'depends': [
         'hr_payroll_account'
     ],
     'data': [
         'views/hr_payroll_analytic_account_view.xml',
     ],
-
+   
     'installable': True,
     'auto_install': False,
 }

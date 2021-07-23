@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {   'active': True,
-    'author': 'Mobilize SPA',
-    'website': 'https://www.mobilize.cl/',
+    'author': 'Flectra Chile SPA, Daniel Santibáñez Polanco, Cooperativa OdooCoop',
+    'website': 'http://flectrachile.cl',
     'category': 'Stock/picking',
     'demo_xml': [],
     'depends': [

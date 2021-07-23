@@ -24,8 +24,8 @@
     'license': 'AGPL-3',
     'description': '''Update UF, UTM and Dollar Official Value in a daily basis
 using SBIF webservices''',
-    'author': 'Mobilize SPA',
-    'website': 'https://www.mobilize.cl/',
+    'author': 'Blanco Martin & Asociados',
+    'website': 'http://blancomartin.cl',
     'depends': [
         'decimal_precision',
         'webservices_generic',    ],

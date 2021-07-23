@@ -5,8 +5,8 @@
     'version': '0.21.10',
     'category': 'Point of Sale/Localization/Chile',
     'sequence': 12,
-    'author':  'Mobilize SPA',
-    'website': 'https://www.mobilize.cl/',
+    'author':  'Flectra Chile SPA, Daniel Santibáñez Polanco, Cooperativa OdooCoop',
+    'website': 'http://flectrachile.cl',
     'license': 'AGPL-3',
     'summary': '',
     'description': """

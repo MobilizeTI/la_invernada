@@ -6,8 +6,9 @@
     'name': "Account Partner Reconcile",
     'version': '12.0.1.0.1',
     'category': 'Accounting',
-    'author': 'Mobilize SPA',
-    'website': 'https://mobilize.cl',
+    'author': 'Eficent,'
+              'Odoo Community Association (OCA), ',
+    'website': 'https://github.com/OCA/account-reconcile',
     'license': 'AGPL-3',
     "depends": [
         'account',

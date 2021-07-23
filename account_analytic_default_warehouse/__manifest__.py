@@ -9,7 +9,7 @@ Configurar valores por defecto para las cuentas analiticas.
 Agrega soporte para seleccionar cuentas analiticas basada en almacenes:
 ------------------------------------------------------------------------
     """,
-    'author': 'Mobilize SPA',
+    'author': 'Carlos Lopez Mite(celm1990@hotmail.com)',
     'depends': [
         'stock',
         'account_analytic_default',

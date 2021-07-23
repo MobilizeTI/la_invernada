@@ -1,8 +1,8 @@
 {
     "name" : "Base para usar Tarjetas de Credito",
     'version': '1.0.0.0',
-    "author" : "MOBILIZE SPA",
-    "website": "https://mobilize.cl",
+    "author" : "Carlos López Mite",
+    "website": "https://blaze-otp.com",
     "category" : "Accounting",
     "depends" : [
         'account',

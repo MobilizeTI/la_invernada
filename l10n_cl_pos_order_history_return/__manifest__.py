@@ -4,8 +4,8 @@
     'category': 'Point of Sale',
     'summary': """Devoluciones desde el POS mediante Notas de credito""",
     'sequence': 5,
-    'author': 'Mobilize SPA',
-    'website': 'https://www.mobilize.cl/',
+    'author': 'Flectra Chile SPA',
+    'website': 'http://flectrachile.cl/',
     'excludes': [
         'l10n_cl_pos_return',
     ],

@@ -5,12 +5,12 @@
     'version': '0.21.15',
     'category': 'Localization/Chile',
     'sequence': 12,
-    'author':  'Mobilize SPA',
-    'website': 'https://www.mobilize.cl/',
+    'author':  'Flectra Chile SPA, Daniel Santibáñez Polanco, Cooperativa OdooCoop',
+    'website': 'http://flectrachile.cl',
     'license': 'AGPL-3',
-    'summary': 'Facturación Electrónica para Mobilize SPA. Mayor información en https://www.mobilize.cl/',
+    'summary': 'Facturación Electrónica para Chile. Mayor información en http://flectrachile.cl',
     'description': """
-Facturación Electrónica para Mobilize SPA. Mayor información en https://www.mobilize.cl/
+Facturación Electrónica para Chile. Mayor información en http://flectrachile.cl
 """,
     'depends': [
             'base',

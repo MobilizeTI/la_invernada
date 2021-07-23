@@ -4,8 +4,8 @@
     'category': 'Accounting',
     'summary': """Integracion directa con el SII""",
     'sequence': 1,
-    'author': 'Mobilize SPA',
-    'website': 'https://www.mobilize.cl/',
+    'author': 'Flectra Chile SPA',
+    'website': 'http://flectrachile.cl/',
     'depends': [
         'account',
         'product',

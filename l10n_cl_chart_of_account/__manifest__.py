@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-# Copyright (c) 2021 Mobilize SPA (https://www.mobilize.cl/)
+# Copyright (c) 2018 Konos Soluciones y Servicios Limitada http://www.konos.cl
 
 {
     'name': 'Chile Localization Chart Account SII',
@@ -13,8 +13,8 @@ Plan contable chileno e impuestos de acuerdo a disposiciones vigentes,
 basado en plan de cuentas del Servicio de Impuestos Internos
 
     """,
-    'author': 'Mobilize SPA',
-    'website': 'https://www.mobilize.cl/',
+    'author': 'Konos',
+    'website': 'http://www.konos.cl',
     'category': 'Localization',
     'sequence': 50,
     'license': 'AGPL-3',

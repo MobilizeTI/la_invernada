@@ -4,8 +4,8 @@
     'category': 'Point Of Sale',
     'summary': """Soporte completo para retails""",
     'sequence': 7,
-    'author': 'Mobilize SPA',
-    'website': 'https://www.mobilize.cl/',
+    'author': 'Flectra Chile SPA',
+    'website': 'http://flectrachile.cl/',
     'depends': [
         'base',
         'mail',

@@ -3,7 +3,7 @@
     'version': '1.0.0.0',
     'category': 'Purchases',
     'description': """""",
-    'author': 'Mobilize SPA',
+    'author': 'Carlos Lopez Mite(celm1990@hotmail.com)',
     'depends': [
         'account',
         'product',

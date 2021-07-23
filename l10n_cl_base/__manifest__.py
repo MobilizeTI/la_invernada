@@ -4,7 +4,7 @@
     'category': 'Personalization',
     'description': """
 """,
-    'author': 'Mobilize SPA',
+    'author': 'Carlos Lopez Mite(celm1990@hotmail.com)',
     'depends': [
         'base',
         'mail',

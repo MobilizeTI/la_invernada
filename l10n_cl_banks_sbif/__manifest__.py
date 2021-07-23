@@ -26,8 +26,8 @@
     'description': '''
 Update Chilean Banks and add their Official codes, according to SBIFs codes
     ''',
-    'author': 'Mobilize SPA',
-    'website': 'https://www.mobilize.cl/',
+    'author': u'Blanco Martin & Asociados',
+    'website': 'http://blancomartin.cl',
     'depends': ['account'],
     'installable': True,
     'license': 'AGPL-3',

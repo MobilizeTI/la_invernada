@@ -3,7 +3,7 @@
     'version': '0.0.0.1',
     'category': 'Tools',
     'description': "",
-    'author': 'Mobilize SPA',
+    'author': 'Carlos Lopez Mite(celm1990@hotmail.com)',
     'depends': [
         'l10n_cl_fe',
         'sale',
