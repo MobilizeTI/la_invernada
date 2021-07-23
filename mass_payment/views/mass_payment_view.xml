@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_mass_supplier_payment_tree" model="ir.ui.view">
+            <field name="name">mass.payment.tree.view</field>
+            <field name="model">mass.payment</field>
+            <field name="arch" type="xml">
+                <tree string="Mass Payment">
+                    <field name="name" />
+                    <field name="company_id"/>
+                    <field name="total" sum="Total Amount"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_mass_customer_payment_tree" model="ir.ui.view">
+            <field name="name">mass.payment.tree</field>
+            <field name="model">mass.payment</field>
+            <field name="arch" type="xml">
+                <tree string="Customer Mass Payment">
+                    <field name="name" />
+                    <field name="company_id"/>
+                    <field name="total" sum="Total Amount"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_customer_mass_payment_form" model="ir.ui.view">
+            <field name="name">mass.payment.form</field>
+            <field name="model">mass.payment</field>
+            <field name="arch" type="xml">
+                <form string="Mass Register Payment">
+                    <header>
+                        <button name="post" class="oe_highlight" states="draft" string="Confirm" type="object" groups="account.group_account_manager"/>
+                        <button name="action_view_journal_entries" states="posted" class="oe_highlight" string="Journal Entries" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="posted"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title" attrs="{'invisible': [('state', '=', 'draft')]}">
+                            <h1><field name="name" attrs="{'readonly': [('state', '!=', 'draft')]}"/></h1>
+                        </div>
+                        <group>
+                            <field name="partner_type" invisible="1"/>
+                            <field name="company_id" attrs="{'readonly': [('state', '!=', 'draft')]}" required="1"
+                                options="{'no_create': True, 'no_open': True}"/>
+                            <field name="partner_ids" widget="many2many_tags"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                context="{'default_supplier': partner_type == 'customer',
+                                          'default_customer': partner_type == 'supplier'}"
+                                options="{'no_create': True, 'no_open': True}"/>
+                            <field name="total" invisible="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                        <group style="margin-top:-18px;">
+                            <group><field name="journal_id" widget="selection" required="1"
+                                        attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                        domain="[('company_id', '=', company_id),('type', 'in', ('bank', 'cash'))]"/></group>
+                            <group><field name="no_of_day" attrs="{'readonly': [('state', '!=', 'draft')]}"/><br/></group>
+                        </group>
+                        <div style="margin-top:-30px;">
+                        <button name="create_draft_payment" class="oe_highlight" states="draft" string="Create Payment" type="object"/>
+                        </div>
+                        <div style="margin-top:30px;">
+                            <h3>
+                                <label for="account_payment_ids"/>
+                            </h3>
+                            <field name="account_payment_ids" attrs="{'readonly': ['|',('state', '!=', 'draft'), ('journal_id', '=', False)]}"
+                                context="{'default_payment_type': context.get('default_payment_type'), 'default_journal_id': journal_id}">
+                                <tree string="Payments">
+                                    <field name="payment_date"/>
+                                    <field name="name"/>
+                                    <field name="invoice_id" required="1"/>
+                                    <field name="journal_id" context="{'mass_payment_journal_id': parent.journal_id}" invisible="0"/>
+                                    <field name="payment_method_id" invisible="1"/>
+                                    <field name="partner_id"/>
+                                    <field name="amount" sum="Total Amount"/>
+                                    <field name="company_id" groups="base.group_multi_company" invisible="1"/>
+                                    <field name="state"/>
+                                </tree>
+                                <form string="Register Payment">
+                                    <sheet>
+                                        <div class="oe_title">
+                                            <h4><field name="name"/></h4>
+                                        </div>
+                                        <group>
+                                            <group>
+                                                <field name="payment_type" widget="radio" invisible="1"/>
+                                                <field name="partner_type" nolabel="0" widget="selection" invisible="1"
+                                                       attrs="{'required': [('payment_type', 'in', ('inbound', 'outbound'))],
+                                                               'invisible': [('payment_type', 'not in', ('inbound', 'outbound'))]}"/>
+                                                <field name="partner_id" nolabel="0" options="{'no_create': True, 'no_open': True}"
+                                                       attrs="{'required': [('payment_type', 'in', ('inbound', 'outbound'))],
+                                                               'invisible': [('payment_type', 'not in', ('inbound', 'outbound'))]}"
+                                                       context="{'default_is_company': True, 'default_supplier': payment_type == 'outbound',
+                                                                 'default_customer': payment_type == 'inbound','invoice_id':invoice_id,
+                                                                 'partner_id':partner_id,'from_mass_payment':True}"/>
+                                                <field name="journal_id" widget="selection" context="{'mass_payment_journal_id': parent.journal_id}" invisible="1"/>
+                                                <field name="destination_journal_id" widget="selection" attrs="{'required': [('payment_type', '=', 'transfer')], 'invisible': [('payment_type', '!=', 'transfer')]}"/>
+                                                <field name="hide_payment_method" invisible="1"/>
+                                                <field name="payment_method_id" string=" " widget="radio" attrs="{'invisible': [('hide_payment_method', '=', True)]}"/>
+                                                <field name="payment_method_code" invisible="1"/>
+                                                <label for="amount"/>
+                                                <div name="amount_div" class="o_row">
+                                                    <field name="amount"/>
+                                                    <field name="currency_id" options="{'no_create': True, 'no_open': True}" groups="base.group_multi_currency" />
+                                                </div>
+                                            </group>
+                                            <group>
+                                                <field name="payment_date" readonly="1"/>
+                                                <field name="communication" attrs="{'invisible': [('communication', '=', False)]}"/>
+                                                <field name="invoice_id" required="1" attrs="{'invisible': [('partner_id', '=', False)]}"
+                                                    options="{'no_create': True}"
+                                                    context="{'from_mass_payment':True, 'company_id': parent.company_id,
+                                                                'partner_type': partner_type, 'partner_id': partner_id,
+                                                                'no_of_day': parent.no_of_day}"/>
+                                            </group>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_mass_payments_supplier" model="ir.actions.act_window">
+            <field name="name">Mass Payment</field>
+            <field name="res_model">mass.payment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'default_payment_type': 'outbound', 'default_partner_type': 'supplier'}</field>
+            <field name="domain">[('partner_type', '=', 'supplier')]</field>
+            <field name="view_id" ref="view_mass_supplier_payment_tree"/>
+        </record>
+
+        <record id="action_mass_payments_customer" model="ir.actions.act_window">
+            <field name="name">Mass Payment</field>
+            <field name="res_model">mass.payment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'default_payment_type': 'inbound', 'default_partner_type': 'customer'}</field>
+            <field name="domain">[('partner_type', '=', 'customer')]</field>
+            <field name="view_id" ref="view_mass_customer_payment_tree"/>
+        </record>
+
+        <menuitem action="action_mass_payments_supplier" id="menu_action_mass_payments_payable" parent="account.menu_finance_payables"/>
+        <menuitem action="action_mass_payments_customer" id="menu_action_account_mass_payments_receivable" parent="account.menu_finance_receivables"/>
+
+    </data>
+</odoo>

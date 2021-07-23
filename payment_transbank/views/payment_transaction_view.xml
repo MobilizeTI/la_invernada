@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="payment_transaction_form_view" model="ir.ui.view">
+		<field name="name">payment.transaction.form</field>
+		<field name="model">payment.transaction</field>
+		<field name="inherit_id" ref="payment.transaction_form" />
+		<field name="arch" type="xml">
+			<field name="date" position="after">
+				<field name="transbank_commerce_id" />
+				<field name="transbank_auth_transaction" />
+				<field name="transbank_payment_type" />
+				<field name="transbank_fee_type" />
+				<field name="transbank_amount_fee" />
+				<field name="transbank_last_digits" />
+			</field>
+		</field>
+	</record>
+</odoo>

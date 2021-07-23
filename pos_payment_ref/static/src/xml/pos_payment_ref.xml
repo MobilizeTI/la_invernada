@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+
+    <t t-extend="PaymentScreen-Paymentlines">
+	    <t t-jquery=".paymentlines thead th:contains('Method')" t-operation="append">
+		      <th>Codigo</th>
+	    </t>
+	    <t t-jquery=".col-name" t-operation="after">
+	    	<td>
+	      		<t t-if="line.cashregister.journal.pos_payment_ref">
+		      		<input type="text" id="voucher_number" t-att-value='line.payment_ref' style="width: 80px;"/>
+		      	</t>
+		    </td>
+	    </t>
+	</t>
+</templates>

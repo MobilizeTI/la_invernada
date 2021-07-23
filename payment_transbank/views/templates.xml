@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="webpay_redirect" name="webpay_redirect">
+		<html>
+			<head>
+				<script
+					src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+				<script type="text/javascript">
+					$(document).ready(function () {
+						$("#redirect_webpay").submit();
+					});
+				</script>
+			</head>
+			<body>
+				<form id="redirect_webpay" name="redirect_webpay" t-att-action="urlRedirection"
+					method="POST">
+					<input type='hidden' name='token_ws' t-att-value='token_ws' />
+				</form>
+			</body>
+		</html>
+	</template>
+
+	<template id="error">
+		<t t-call="website.layout">
+			<div id="wrap">
+				<div class="oe_structure oe_empty">
+					<div class="container">
+						<h1 class="mt32">
+							<span t-esc="message['header']" />
+						</h1>
+						<p t-esc="message['body']" />
+						<div t-raw="message['detail']" />
+						<p>
+							<a t-attf-href="/shop">Volver al listado de productos.</a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</t>
+	</template>
+
+	<template id="confirmation" inherit_id="website_sale.confirmation">
+		<xpath expr="//table//tbody//strong[@t-field='order.amount_total']/../.."
+			position="after">
+			<t t-if="order.tbk_id">
+				<t t-set="last_transaction_tbk" t-value="order.tbk_id[0]" />
+				<tr>
+					<td>
+						<strong>Código de transacción:</strong>
+					</td>
+					<td class="text-right" colspan="3">
+						<span t-field="last_transaction_tbk.auth_transaction" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<strong>Tipo de pago:</strong>
+					</td>
+					<td class="text-right" colspan="3">
+						<span t-field="last_transaction_tbk.payment_type" />
+					</td>
+				</tr>
+				<t t-if="last_transaction_tbk.fee_type">
+					<tr>
+						<td>
+							<strong>Cuotas:</strong>
+						</td>
+						<td class="text-right" colspan="3">
+							<span t-field="last_transaction_tbk.fee_type" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<strong>Valor cuota:</strong>
+						</td>
+						<td class="text-right" colspan="3">
+							<span t-esc="float(last_transaction_tbk.amount_fee)" t-options="{'widget': 'monetary', 'display_currency': order.pricelist_id.currency_id}" />
+						</td>
+					</tr>
+				</t>
+				<tr>
+					<td>
+						<strong>Tarjeta utilizada:</strong>
+					</td>
+					<td class="text-right" colspan="3">
+						<span t-field="last_transaction_tbk.last_digits" />
+					</td>
+				</tr>
+			</t>
+		</xpath>
+		<xpath expr="//t[@t-call='website_sale.cart_summary']" position="after">
+			<div class="mt16 float-right">
+				<a role="button" href="/shop" class="btn btn-secondary mb32">
+					<i class="fa fa-chevron-left" />
+					<span>Continuar Comprando</span>
+				</a>
+			</div>
+		</xpath>
+	</template>
+</odoo>

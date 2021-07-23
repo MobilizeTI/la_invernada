@@ -1,0 +1,4 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_model_transfer_requisition_line_group_internal_transfer_user","access_model_transfer_requisition_line_group_internal_transfer_user","stock_transfers.model_transfer_requisition_line","point_of_sale.group_pos_user",1,1,1,1
+"access_model_transfer_requisition_reason_group_internal_transfer_user","access_model_transfer_requisition_reason_group_internal_transfer_user","stock_transfers.model_transfer_requisition_reason","point_of_sale.group_pos_user",1,1,1,1
+"access_model_transfer_requisition_group_internal_transfer_user","access_model_transfer_requisition_group_internal_transfer_user","stock_transfers.model_transfer_requisition","point_of_sale.group_pos_user",1,1,1,1

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="CreateGuiaDespachoPopupWidget">
+        <div class="modal-dialog">
+            <div class="popup popup-textinput create_guia_despacho"
+            	style="width: 700px;height: 600px;">
+                <p class="title">Crear Guia de despacho</p>
+                <div class='container pos-popup-box'>
+                	<div class='pos-row'>
+						<span class='popup-label' for="use_documents">Generar Guia de despacho?:</span>
+						<label class="switch">
+							<input type="checkbox" id="use_documents" class="checkbox_paid" checked="True"/>
+							<span class="slider round"></span>
+						</label>
+					</div>
+					<div id="container_guia">
+	                	<h3>Informacion de entrega</h3>
+						<div class='pos-row'>
+							<span class='popup-label'>Cliente destino:</span>
+							<input type="text" class="detail-edit detail-readonly" t-att-value="widget.partner_name or undefined"/>
+						</div>
+						<div class='pos-row'>
+							<span class='popup-label' for="contact_id">Contacto:</span>
+							<select id='contact_id' class="detail-edit" style="width: 60%;">
+	                            <option value="">---Seleccione contacto---</option>
+	                            <t t-foreach="widget.pos.db.partner_sorted" t-as="partner_id">
+	                            	<t t-set="partner" t-value="widget.pos.db.partner_by_id[partner_id]" />
+	                                <option t-att-value='partner.id'> 
+	                                    <t t-esc='partner.name'/>
+	                                </option>
+	                            </t>
+	                        </select>
+						</div>
+						<div class='pos-row'>
+							<span class='popup-label' for="transport_type">Tipo de Despacho:</span>
+							<select id='transport_type' class="detail-edit detail-required" style="width: 60%;">
+	                            <option value="">---Seleccione un tipo de despacho---</option>
+	                            <option value='2'>Despacho por cuenta de empresa</option>
+	                            <option value='1'>Despacho por cuenta del cliente</option>
+	                            <option value='3'>Despacho Externo</option>
+	                            <option value='0' selected="true">Sin Definir</option>
+	                        </select>
+						</div>
+						<div class='pos-row'>
+							<span class='popup-label' for="move_reason">Razon del traslado:</span>
+							<select id='move_reason' class="detail-edit detail-required" style="width: 60%;">
+	                            <option value="">---Seleccione la razon del despacho---</option>
+	                            <option value='1'>Operación constituye venta</option>
+	                            <option value='2'>Ventas por efectuar</option>
+	                            <option value='3'>Consignaciones</option>
+	                            <option value='4'>Entrega Gratuita</option>
+	                            <option value='5' selected="true">Traslados Internos</option>
+	                            <option value='6'>Otros traslados no venta</option>
+	                            <option value='7'>Guía de Devolución</option>
+	                            <option value='8'>Traslado para exportación</option>
+	                            <option value='9'>Ventas para exportación</option>
+	                        </select>
+						</div>
+						<div class='pos-row vehicle'>
+							<span class='popup-label' for="vehicle">Vehiculo:</span>
+							<select id='vehicle' class="detail-edit detail-required" style="width: 60%;">
+	                            <option value="">---Seleccione vehiculo---</option>
+	                            <t t-foreach="widget.pos.vehicles" t-as="vehicle">
+	                                <option t-att-value='vehicle.id'> 
+	                                    <t t-esc='vehicle.name'/>
+	                                </option>
+	                            </t>
+	                        </select>
+						</div>
+						<div class='pos-row chofer'>
+							<span class='popup-label' for="chofer">Chofer:</span>
+							<select id='chofer' class="detail-edit detail-required" style="width: 60%;">
+	                            <option value="">---Seleccione chofer---</option>
+	                            <t t-foreach="widget.pos.db.partner_sorted" t-as="partner_id">
+	                            	<t t-set="partner" t-value="widget.pos.db.partner_by_id[partner_id]" />
+	                                <option t-att-value='partner.id'> 
+	                                    <t t-esc='partner.name'/>
+	                                </option>
+	                            </t>
+	                        </select>
+						</div>
+					</div>
+                </div>
+                <div class="footer">
+                    <div class="button confirm commonbutton">
+                        Create
+                    </div>
+                    <div class="button cancel commonbutton">
+                        Cancel 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

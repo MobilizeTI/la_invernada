@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record model="ir.ui.view" id="pos_order_search_view">
+		<field name="name">pos.order.search</field>
+		<field name="model">pos.order</field>
+		<field name="inherit_id"
+			ref="point_of_sale.view_pos_order_filter" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='name']" position="before">
+				<field name='sii_document_number' />
+			</xpath>
+			<filter name="session" position="before">
+				<filter name="group_by_document_class"
+					string="Tipo documento SII"
+					context="{'group_by': 'document_class_id'}" />
+			</filter>
+		</field>
+	</record>
+
+	<record id="view_order_form" model="ir.ui.view">
+		<field name="model">pos.order</field>
+		<field name="name">pos.order.sii.form</field>
+		<field name="inherit_id" ref="point_of_sale.view_pos_pos_form" />
+		<field name="arch" type="xml">
+			<button name="refund" position="attributes">
+				<attribute name="attrs">{}</attribute>
+				<attribute name="invisible">1</attribute>
+			</button>
+			<button name="%(point_of_sale.action_pos_payment)d"
+				position="attributes">
+				<attribute name="attrs">{'invisible': ['|', ('state','!=', 'draft'), ('sii_code','!=', 61)]}</attribute>
+				<attribute name="states"></attribute>
+			</button>
+			<button name="refund" position="after">
+				<button name="%(action_pos_order_refund)d"
+					string="Crear una Nota de Crédito" type="action" invisible="0" />
+				<button string="Imprimir" type="object"
+					name="action_print_report"
+					attrs="{'invisible':[('state', 'in', ['draft', 'cancel'])]}"
+					groups="pos_orders_history_reprint.group_pos_reprint" />
+				<button
+					name='%(action_wizard_change_journal_pos_order_tree_view)d'
+					type='action' string='Cambiar Pagos'
+					attrs="{'invisible': [('state','in',('draft','cancel'))]}"
+					groups="point_of_sale.group_pos_manager" />
+			</button>
+			<field name="name" position="after">
+				<field name="sii_document_number" />
+			</field>
+			<field name="sale_journal" position="after">
+				<field name="sequence_id" options="{'no_create': True}" />
+				<field name="document_class_id" options="{'no_create': True}" />
+				<field name="referencias">
+					<form>
+						<group>
+							<field name="origen" required="1" />
+							<field name="sii_referencia_TpoDocRef" required="1" />
+							<field name="sii_referencia_CodRef" />
+							<field name="motivo" />
+							<field name="fecha_documento" />
+						</group>
+					</form>
+					<tree>
+						<field name="origen" required="1" />
+						<field name="sii_referencia_TpoDocRef" required="1" />
+						<field name="sii_referencia_CodRef" />
+						<field name="motivo" />
+						<field name="fecha_documento" />
+					</tree>
+				</field>
+			</field>
+
+			<notebook>
+				<page string="Electronic Invoice" name="electronic_invoice"
+					attrs="{'invisible':[('sequence_id', '=', False)]}">
+					<header attrs="{'invisible': [('sii_code','!=', 61)]}">
+						<button string="Download XML" type="object"
+							name="get_xml_file"
+							attrs="{'invisible':[('state', 'in', ['draft'])]}"
+							groups="base.group_system" />
+						<button string="Send XML" type="object"
+							class="oe_highlight" name="do_dte_send_order"
+							groups="base.group_system"
+							attrs="{'invisible': ['|', ('state', 'in', ['draft']), ('sii_result', 'not in', ['', 'NoEnviado', 'Rechazado'])]}" />
+						<button string="Consultar estado Documento" type="object"
+							class="oe_highlight" name="ask_for_dte_status"
+							attrs="{'invisible':['|', ('state', 'in', ['draft']),('sii_result','in',['','NoEnviado'])]}"
+							groups="base.group_system" />
+						<field name='sii_result' widget="statusbar" />
+					</header>
+					<group>
+						<field name="sii_code" readonly="1" invisible="1" />
+						<field name='sii_xml_request'
+							attrs="{'invisible':[('sii_result', '=', '')]}" readonly="1" />
+						<field name='sii_message'
+							attrs="{'invisible':[('sii_result', '=', '')]}" readonly="1" />
+						<field name="responsable_envio" invisible="True"
+							readonly="True" />
+						<field name='sii_batch_number' readonly="1" />
+						<field name='sii_barcode_img' widget="image"
+							attrs="{'invisible':[('sii_result', '=', '')]}" readonly="1" />
+						<field name="signature" readonly="1" />
+						<field name='sii_xml_dte'
+							attrs="{'invisible':[('sii_result', '=', '')]}" readonly="1" />
+					</group>
+				</page>
+			</notebook>
+		</field>
+	</record>
+
+	<!-- Inherit Form view -->
+	<record id="tree" model="ir.ui.view">
+		<field name="name">tree.form</field>
+		<field name="model">pos.order</field>
+		<field name="inherit_id" ref="point_of_sale.view_pos_order_tree" />
+		<field name="arch" type="xml">
+			<field name="name" position="before">
+				<field name="document_class_id" />
+				<field name="sii_document_number" />
+			</field>
+		</field>
+	</record>
+
+	<record id="view_order_line_form" model="ir.ui.view">
+		<field name="model">pos.order.line</field>
+		<field name="name">pos.order.line.sii.form</field>
+		<field name="inherit_id" ref="point_of_sale.view_pos_order_line" />
+		<field name="arch" type="xml">
+			<field name="create_date" position="after">
+				<field name="pos_order_line_id" />
+			</field>
+		</field>
+	</record>
+	<menuitem icon="STOCK_JUSTIFY_FILL"
+		action="l10n_cl_fe.action_move_consumo_folios"
+		id="menu_action_move_consumo_folios_form"
+		parent="point_of_sale.menu_point_rep"
+		groups="point_of_sale.group_pos_manager" sequence="3" />
+	<menuitem icon="STOCK_JUSTIFY_FILL"
+		action="l10n_cl_fe.action_move_books" id="menu_action_move_books_form"
+		parent="point_of_sale.menu_point_rep"
+		groups="point_of_sale.group_pos_manager" sequence="3" />
+</odoo>

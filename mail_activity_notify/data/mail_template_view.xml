@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<template id="view_et_activities_todo_detail">
+		<t t-set="row_bordered" t-value="css_class.get('row_bordered')" />
+		<t t-set="text_right" t-value="css_class.get('text_right')" />
+		<t t-set="header_style" t-value="'%s%s' % (css_class.get('header_padding'), row_bordered)" />
+		<t t-set="row_style" t-value="'%s%s' % (css_class.get('row_padding'), row_bordered)" />
+		<table t-att-style="css_class.get('table')">
+			<thead>
+				<tr t-att-style="css_class.get('bg_beta')">
+					<th
+						t-att-style="'%s%s%s' % (header_style, css_class.get('text_center'), color_activity)"
+						colspan="5">
+						<span t-esc="section_title"></span>
+					</th>
+				</tr>
+				<tr t-att-style="css_class.get('bg_beta')">
+					<th t-att-style="'%s%s' % (header_style, css_class.get('col_1'))">#</th>
+					<th t-att-style="'%s%s' % (header_style, css_class.get('col_1'))">Vence el</th>
+					<th t-att-style="'%s%s' % (header_style, css_class.get('col_2'))">Aplica a</th>
+					<th t-att-style="header_style">Actividad</th>
+				</tr>
+			</thead>
+			<tbody>
+				<t t-set="counter" t-value="1" />
+				<tr t-foreach="activity_data" t-as="acti">
+					<td t-att-style="'%s%s' % (row_style, text_right)">
+						<span t-esc="counter" />
+					</td>
+					<t t-set="counter" t-value="counter + 1" />
+					<td t-att-style="'%s%s%s' % (row_style, text_right, color_activity)">
+						<span t-field="acti.date_deadline" />
+					</td>
+					<td t-att-style="row_style">
+						<span t-field="acti.res_name" />
+					</td>
+					<td t-att-style="row_style">
+						<t t-if="acti.summary">
+							<strong t-field="acti.summary" />
+							<br />
+						</t>
+						<span t-field="acti.note" />
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</template>
+
+	<template id="view_et_activities_todo">
+		<t t-set="row_bordered" t-value="css_class.get('row_bordered')" />
+		<t t-set="text_right" t-value="css_class.get('text_right')" />
+		<t t-set="header_style" t-value="'%s%s' % (css_class.get('header_padding'), row_bordered)" />
+		<t t-set="row_style" t-value="'%s%s' % (css_class.get('row_padding'), row_bordered)" />
+		<p>
+			Estimado(a)
+			<span t-field="user_to_notify.name" />
+			,
+			las siguientes actividades estan bajo su
+			responsabilidad, por favor
+			asegurese de realizarlas antes de la
+			fecha limite.
+		</p>
+		<t t-if="activity_overdue">
+			<t t-set="color_activity" t-value="css_class.get('bg_danger')" />
+			<t t-set="activity_data" t-value="activity_overdue" />
+			<t t-set="section_title" t-value="'Actividades Pasadas(%s)' % (len(activity_overdue))" />
+			<t t-call="mail_activity_notify.view_et_activities_todo_detail" />
+		</t>
+		<t t-if="activity_today">
+			<t t-set="color_activity" t-value="css_class.get('bg_info')" />
+			<t t-set="activity_data" t-value="activity_today" />
+			<t t-set="section_title" t-value="'Actividades para HOY(%s)' % (len(activity_today))" />
+			<t t-call="mail_activity_notify.view_et_activities_todo_detail" />
+		</t>
+		<t t-if="activity_planned">
+			<t t-set="color_activity" t-value="css_class.get('bg_alpha')" />
+			<t t-set="activity_data" t-value="activity_planned" />
+			<t t-set="section_title" t-value="'Actividades Futuras(%s)' % (len(activity_planned))" />
+			<t t-call="mail_activity_notify.view_et_activities_todo_detail" />
+		</t>
+	</template>
+</odoo>

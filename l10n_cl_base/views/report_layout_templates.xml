@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<!-- plantilla para reportes internos -->
+	<template id="internal_layout" inherit_id="web.internal_layout">
+		<xpath expr="//div[hasclass('header')]" position="replace">
+			<div class="header">
+				<div class="row">
+					<div class="col-4">
+						<strong>Usuario: </strong>
+						<span t-esc="user.name" />
+					</div>
+					<div class="col-5 text-center">
+						<strong>Fecha de impresion: </strong>
+						<span
+							t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M:%S')" />
+					</div>
+					<div class="col-3 text-right">
+						<strong>Pag: </strong><span class="page" />/<span class="topage" />
+					</div>
+					<br />
+					<h3 class="text-center">
+						<span t-esc="company.name" />
+					</h3>
+				</div>
+			</div>
+		</xpath>
+	</template>
+
+	<!-- plantilla estandar, ocupar el ancho de la pagina para la direccion 
+		de la compañia -->
+	<template id="external_layout_standard" inherit_id="web.external_layout_standard">
+		<xpath expr="//div[@name='company_address']" position="attributes">
+			<attribute name="class">col-12</attribute>
+		</xpath>
+	</template>
+
+	<!-- plantilla external_layout_clean, en pie de pagina si no hay pie o slogan 
+		no ocupar espacio y mejor distribirlo a la direccion -->
+	<template id="external_layout_clean" inherit_id="web.external_layout_clean">
+		<xpath expr="//span[@t-field='company.report_footer']/.."
+			position="attributes">
+			<attribute name="t-if">company.report_footer</attribute>
+		</xpath>
+		<xpath expr="//h4[@t-field='company.report_header']/.."
+			position="attributes">
+			<attribute name="t-if">company.report_header</attribute>
+		</xpath>
+		<xpath expr="//span[@t-field='company.partner_id']/.." position="replace">
+			<t t-if="company.report_footer and company.report_header">
+				<div class="col-4 text-right">
+					<t t-if="company.document_number"><strong t-esc="company.country_id.vat_label or 'RUT'"/>: <span t-field="company.document_number"/><br /></t>
+					<span class="company_address" t-field="company.partner_id"
+						t-options='{"widget": "contact", "fields": ["address"], "no_marker": true}' />
+				</div>
+			</t>
+			<t t-if="company.report_footer and not company.report_header">
+				<div class="col-8 text-right">
+					<t t-if="company.document_number"><strong t-esc="company.country_id.vat_label or 'RUT'"/>: <span t-field="company.document_number"/><br /></t>
+					<span class="company_address" t-field="company.partner_id"
+						t-options='{"widget": "contact", "fields": ["address"], "no_marker": true}' />
+				</div>
+			</t>
+			<t t-if="not company.report_footer and company.report_header">
+				<div class="col-7 text-right">
+					<t t-if="company.document_number"><strong t-esc="company.country_id.vat_label or 'RUT'"/>: <span t-field="company.document_number"/><br /></t>
+					<span class="company_address" t-field="company.partner_id"
+						t-options='{"widget": "contact", "fields": ["address"], "no_marker": true}' />
+				</div>
+			</t>
+			<t t-if="not company.report_footer and not company.report_header">
+				<div class="col-11 text-right">
+					<t t-if="company.document_number"><strong t-esc="company.country_id.vat_label or 'RUT'"/>: <span t-field="company.document_number"/><br /></t>
+					<span class="company_address" t-field="company.partner_id"
+						t-options='{"widget": "contact", "fields": ["address"], "no_marker": true}' />
+				</div>
+			</t>
+		</xpath>
+	</template>
+</odoo>

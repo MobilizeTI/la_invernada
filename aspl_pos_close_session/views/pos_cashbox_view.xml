@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record id="account_bank_statement_cashbox_tree_view"
+		model="ir.ui.view">
+		<field name="name">account.bank.statement.cashbox.tree</field>
+		<field name="model">account.bank.statement.cashbox</field>
+		<field name="inherit_id"
+			ref="account.view_account_bnk_stmt_cashbox" />
+		<field name="groups_id"
+			eval="[(6, 0, [ref('point_of_sale.group_pos_user')])]"></field>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='cashbox_lines_ids']/.."
+				position="after">
+				<separator string="Resumen de Pagos" colspan="2"
+					invisible="context.get('balance') != 'end'" 
+					groups="aspl_pos_close_session.group_pos_see_cash_values" />
+				<field name="payment_resumen_ids"
+					invisible="context.get('balance') != 'end'"
+					groups="aspl_pos_close_session.group_pos_see_cash_values">
+					<tree>
+						<field name="credit_card_provider_id" />
+						<field name="amount_total" sum="Monto total" />
+						<field name="payment_count" sum="# Pagos" />
+					</tree>
+					<form>
+						<group>
+							<group>
+								<field name="credit_card_provider_id" />
+							</group>
+							<group>
+								<field name="amount_total" />
+								<field name="payment_count" />
+							</group>
+						</group>
+					</form>
+				</field>
+			</xpath>
+		</field>
+	</record>
+
+</odoo>

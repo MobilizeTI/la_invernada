@@ -92,30 +92,33 @@ class account_bank_statement_wizard(models.TransientModel):
                         res = self._create_statement_lines(values)
                     except:
                         _logger.warning('No encuentra Fecha')
+
             elif self.bank_opt == 'chile':
                 for row_no in range(sheet.nrows):
-                    if row_no <= 1:
+                    if row_no <= -1:
                         fields = map(lambda row:row.value.encode('utf-8'), sheet.row(row_no))
                     else:
+                        fields = map(lambda row:row.value.encode('utf-8'), sheet.row(row_no))
                         line = list(map(lambda row:isinstance(row.value, str) and row.value.encode('utf-8') or str(row.value), sheet.row(row_no)))
-                        data = line[0].decode("utf-8").split(",")
-                        fecha=data[0]
-                        date_string = datetime.strptime(fecha, '%d/%m/%Y').strftime('%Y-%m-%d')
-                        if data[3]=='0': 
-                            values.update( {'date':date_string,
-                                            'ref': data[1],
-                                            'partner': 'X',
-                                            'memo': data[1],
-                                            'amount': int(data[2])* (-1),
-                                           })
-                        else: 
-                            values.update( {'date':date_string,
-                                            'ref': data[1],
-                                            'partner': 'X',
-                                            'memo': data[1],
-                                            'amount': data[3],
-                                           })
-                        res = self._create_statement_lines(values)
+                        if row_no >=22:
+                            if line[1]:
+                                fecha = line[1].decode("utf-8") 
+                                date_string = datetime.strptime(fecha, '%d/%m/%Y').strftime('%Y-%m-%d')
+                                values.update( {'date':date_string,
+                                                'ref': line[3].decode("utf-8"),
+                                                'partner': 'X',
+                                                'memo': line[3].decode("utf-8"),
+                                                'amount': float(line[7])*(-1) if line[7] else line[8],
+                                                })
+                            else: 
+                                values.update( {'date':date_string,
+                                                'ref': line[3],
+                                                'partner': 'X',
+                                                'memo': line[3],
+                                                'amount': float(line[7])*(-1) if line[7] else line[8],
+                                                })
+                            res = self._create_statement_lines(values)
+
             elif self.bank_opt == 'estado':
                 for row_no in range(sheet.nrows):
 
@@ -123,7 +126,6 @@ class account_bank_statement_wizard(models.TransientModel):
                         fields = map(lambda row:row.value.encode('utf-8'), sheet.row(row_no))
                     else:
                         line = list(map(lambda row:isinstance(row.value, str) and row.value.encode('utf-8') or str(row.value), sheet.row(row_no)))
-
 
                         date_string = line[5]
                         date_string = date_string[:10]
@@ -151,6 +153,7 @@ class account_bank_statement_wizard(models.TransientModel):
                                                 'amount': int(line[3].replace('.', '')) * (-1) / 10,
                                                })
                             res = self._create_statement_lines(values)  
+
             else:
                 #ITAU Este es el fin y se recorre invertido
                 ano=sheet.cell(11,3).value
@@ -176,8 +179,7 @@ class account_bank_statement_wizard(models.TransientModel):
                                         'amount': line[4],
                                         })
                         res = self._create_statement_lines(values)        
-
-                    
+                 
         else:
             raise Warning('Please Select File Type')
         self.env['account.bank.statement'].browse(self._context.get('active_id'))._end_balance()
@@ -199,6 +201,3 @@ class account_bank_statement_wizard(models.TransientModel):
             return partner_id.id
         else:
             return
-
-
-

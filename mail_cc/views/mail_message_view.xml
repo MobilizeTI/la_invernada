@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record id="mail_message_form_view" model="ir.ui.view">
+		<field name="name">mail.message.form</field>
+		<field name="model">mail.message</field>
+		<field name="inherit_id" ref="mail.view_message_form" />
+		<field name="arch" type="xml">
+			<field name="email_from" position="after">
+				<field name="email_cc" placeholder="(Con Copia a) separadas por coma" />
+				<field name="email_bcc" placeholder="(Con Copia oculta) separadas por coma" />
+			</field>
+		</field>
+	</record>
+
+</odoo>

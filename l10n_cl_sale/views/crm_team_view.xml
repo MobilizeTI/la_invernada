@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record id="crm_team_form_view" model="ir.ui.view">
+		<field name="name">crm.team.form</field>
+		<field name="model">crm.team</field>
+		<field name="inherit_id" ref="sales_team.crm_team_view_form" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='user_id']/../.." position="after">
+				<group name="invoice_web" string="Facturacion" col="4">
+					<field name="journal_document_class_id" options="{'no_create': True}"
+						domain="[('journal_id.type','=','sale')]" />
+					<field name="journal_document_class_boleta_id" options="{'no_create': True}"
+						domain="[('journal_id.type','=','sale')]" />
+					<field name="payment_journal_id" options="{'no_create': True}"
+						domain="[('type','in',('cash', 'bank'))]" />
+				</group>
+			</xpath>
+		</field>
+	</record>
+
+</odoo>

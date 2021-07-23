@@ -9,8 +9,8 @@
 	Import Bank Statement Lines from Excel
     """,
     'category': 'Localization/Chile',
-    'author': 'Konos',
-    'website': 'http://www.konos.cl',
+    'author': 'Mobilize SPA',
+    'website': 'https://www.mobilize.cl/',
     'depends': ['account'],
     'data': ["views/bank_statement.xml",
              ],

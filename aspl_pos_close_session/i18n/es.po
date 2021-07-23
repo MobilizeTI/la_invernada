@@ -1,0 +1,774 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* aspl_pos_close_session
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-02-27 01:33+0000\n"
+"PO-Revision-Date: 2019-02-26 21:15-0500\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2.1\n"
+"Last-Translator: Carlos Lopez <celm1990@hotmail.com>\n"
+"Language: es\n"
+
+#. module: aspl_pos_close_session
+#: model:mail.template,body_html:aspl_pos_close_session.email_template_pos_z_report
+msgid ""
+"\n"
+"<div style=\"font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-"
+"serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; \">\n"
+"    <p>Hello There!</p>\n"
+"    <p>Please find attachment for z report of session ${object.name or ''}.</"
+"p>\n"
+"</div>\n"
+"            "
+msgstr ""
+"\n"
+"<div style=\"font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-"
+"serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; \">\n"
+"    <p>Hola!</p>\n"
+"    <p>Adjunto encontrara el resumen de la sesion ${object.name or ''}.</p>\n"
+"</div>\n"
+"            "
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_resume
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_report_template
+msgid "(+/-) Ajustes de cierre"
+msgstr "(+/-) Ajustes de cierre"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_resume
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_report_template
+msgid "+ Ingreso Efectivo"
+msgstr "+ Ingreso Efectivo"
+
+#. module: aspl_pos_close_session
+#. openerp-web
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:59
+#, python-format
+msgid "+ Transactions:"
+msgstr "+ Transaciones:"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_resume
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_report_template
+msgid "+ ventas"
+msgstr "+ ventas"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_resume
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_report_template
+msgid "- Egreso Efectivo"
+msgstr "- Egreso Efectivo"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_resume
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_report_template
+msgid "- Notas de Credito"
+msgstr "- Notas de Credito"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_thermal_report_template
+msgid "<b>(+/-) Ajustes de cierre</b>"
+msgstr "<b>(+/-) Ajustes de cierre</b>"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_thermal_report_template
+msgid "<b>+ Ingreso Efectivo</b>"
+msgstr "<b>+ Ingreso Efectivo</b>"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_thermal_report_template
+msgid "<b>+ ventas</b>"
+msgstr "<b>+ ventas</b>"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_thermal_report_template
+msgid "<b>- Egreso Efectivo</b>"
+msgstr "<b>- Egreso Efectivo</b>"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_thermal_report_template
+msgid "<b>- Notas de Credito</b>"
+msgstr "<b>- Notas de Credito</b>"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_resume
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_report_template
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_thermal_report_template
+msgid "<b>Control Efectivo</b>"
+msgstr "<b>Control Efectivo</b>"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_thermal_report_template
+msgid "<b>Diferencia:</b>"
+msgstr "<b>Diferencia:</b>"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_resume
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_report_template
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_thermal_report_template
+msgid "<b>Notas de Crédito</b>"
+msgstr "<b>Notas de Crédito</b>"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_thermal_report_template
+msgid "<b>Otros Medios:</b>"
+msgstr "<b>Otros Medios:</b>"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_thermal_report_template
+msgid "<b>Pagos totales recibidos:</b>"
+msgstr "<b>Pagos totales recibidos:</b>"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_resume
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_report_template
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_thermal_report_template
+msgid "<b>RESUMEN DE SESION</b>"
+msgstr "<b>RESUMEN DE SESION</b>"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_resume
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_report_template
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_thermal_report_template
+msgid "<b>Resumen por Métodos de pago</b>"
+msgstr "<b>Resumen por Métodos de pago</b>"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_thermal_report_template
+msgid "<b>Saldo de apertura:</b>"
+msgstr "<b>Saldo de apertura:</b>"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_thermal_report_template
+msgid "<b>Saldo de cierre real:</b>"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_thermal_report_template
+msgid "<b>Saldo de cierre teórico:</b>"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_resume
+msgid "<b>Tienda:</b>"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_resume
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_report_template
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_thermal_report_template
+msgid "<b>Total NC:</b>"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_thermal_report_template
+msgid "<b>Usuario: </b>"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_report_template
+msgid ""
+"<br/>\n"
+"\t\t\t\t\t\t\t\t<b>Fecha de apertura:</b>"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_report_template
+msgid ""
+"<br/>\n"
+"\t\t\t\t\t\t\t\t<b>Fecha de cierre:</b>"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_report_template
+msgid ""
+"<br/>\n"
+"\t\t\t\t\t\t\t\t<strong>Desde:</strong>"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_report_template
+msgid ""
+"<br/>\n"
+"\t\t\t\t\t\t\t\t<strong>Hasta:</strong>"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_resume
+msgid ""
+"<br/>\n"
+"\t\t\t\t\t\t\t<b>Fecha de fin:</b>"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_resume
+msgid ""
+"<br/>\n"
+"\t\t\t\t\t\t\t<b>Fecha de inicio:</b>"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_resume
+msgid ""
+"<br/>\n"
+"\t\t\t\t\t\t\t<strong>Desde:</strong>"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_resume
+msgid ""
+"<br/>\n"
+"\t\t\t\t\t\t\t<strong>Hasta:</strong>"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_thermal_report_template
+msgid ""
+"<br/>\n"
+"\t\t\t\t\t\t<b>Desde: </b>"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_thermal_report_template
+msgid ""
+"<br/>\n"
+"\t\t\t\t\t\t<b>Fecha de apertura: </b>"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_thermal_report_template
+msgid ""
+"<br/>\n"
+"\t\t\t\t\t\t<b>Fecha de cierre: </b>"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_thermal_report_template
+msgid ""
+"<br/>\n"
+"\t\t\t\t\t\t<b>Hasta: </b>"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_thermal_report_template
+msgid ""
+"<br/>\n"
+"\t\t\t\t\t\t<b>Numero de Tickets: </b>"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_report_template
+msgid "<span>Usuario </span>"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_resume
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_report_template
+msgid "<strong>Numero de Tickets:</strong>"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#. openerp-web
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:65
+#, python-format
+msgid "= Theoretical Closing Balance:"
+msgstr "= Saldo Teorico de cierre:"
+
+#. module: aspl_pos_close_session
+#. openerp-web
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:42
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:121
+#, python-format
+msgid "Add New Item"
+msgstr "Agregar Nuevo Item"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_pos_config__allow_with_zero_amount
+msgid "Allow With 0 Amount"
+msgstr "Permitir con monto 0"
+
+#. module: aspl_pos_close_session
+#: model:ir.model,name:aspl_pos_close_session.model_wizard_session_resume
+msgid "Asistente para generar Resumen de caja"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model:ir.model,name:aspl_pos_close_session.model_account_bank_statement
+msgid "Bank Statement"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model:ir.model,name:aspl_pos_close_session.model_account_bank_statement_line
+msgid "Bank Statement Line"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#. openerp-web
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:17
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:86
+#, python-format
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: aspl_pos_close_session
+#: model:ir.model,name:aspl_pos_close_session.model_cash_box_in
+msgid "Cash Box In"
+msgstr "Entrada a caja"
+
+#. module: aspl_pos_close_session
+#: model:ir.model,name:aspl_pos_close_session.model_cash_box_out
+msgid "Cash Box Out"
+msgstr "Salida de caja"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_pos_session__cashcontrol_ids
+msgid "Cash Control Information"
+msgstr "Detalle de Control de efectivo"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_view_inherit_view
+msgid "Cash Control Line"
+msgstr "Linea de control de efectivo"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_account_bank_statement_line__is_cash_in
+msgid "Cash In?"
+msgstr "Entrada a caja?"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_account_bank_statement_line__is_cash_out
+msgid "Cash Out?"
+msgstr "Salida de caja?"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_account_bank_statement__total_entry_encoding_put_in
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_pos_session__cash_register_total_entry_encoding_put_in
+msgid "Cash put in"
+msgstr "Ingresar dinero"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_account_bank_statement__total_entry_encoding_take_out
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_pos_session__cash_register_total_entry_encoding_take_out
+msgid "Cash take out"
+msgstr "Sacar Dinero"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.wizard_session_resume_form_view
+msgid "Cerrar"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#. openerp-web
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:80
+#, python-format
+msgid "Close Session"
+msgstr "Cerrar Sesion"
+
+#. module: aspl_pos_close_session
+#. openerp-web
+#: code:addons/aspl_pos_close_session/static/src/js/pos.js:53
+#, python-format
+msgid "Closing Cash Control"
+msgstr "Control de efectivo(Cierre)"
+
+#. module: aspl_pos_close_session
+#. openerp-web
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:33
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:112
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_custom_cashcontrol__coin_value
+#, python-format
+msgid "Coin/Bill Value"
+msgstr "Valor de Moneda"
+
+#. module: aspl_pos_close_session
+#. openerp-web
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:8
+#, python-format
+msgid "Confirmation"
+msgstr "Confirmacion"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_custom_cashcontrol__create_uid
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_wizard_session_resume__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_custom_cashcontrol__create_date
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_wizard_session_resume__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_wizard_session_resume__date_from
+msgid "Desde"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_resume
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_report_template
+msgid "Diferencia:"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#. openerp-web
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:73
+#, python-format
+msgid "Difference:"
+msgstr "Diferencia:"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_custom_cashcontrol__display_name
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_report_aspl_pos_close_session_pos_session_resume__display_name
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_wizard_session_resume__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: aspl_pos_close_session
+#. openerp-web
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:8
+#, python-format
+msgid "Do you want to close the session?"
+msgstr "Que quiere hacer al cerrar sesion?"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_view_inherit_view
+msgid "Egresos Extras"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_pos_config__email_template_id
+msgid "Email Template"
+msgstr "Plantilla de correo"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_pos_config__email_close_session_report
+msgid "Email Z Report"
+msgstr "Enviar reporte por correo?"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_pos_session__ticket_first_id
+msgid "First Ticket"
+msgstr "Primer Ticket"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.wizard_session_resume_form_view
+msgid "Generar reporte"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_wizard_session_resume__date_to
+msgid "Hasta"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_custom_cashcontrol__id
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_report_aspl_pos_close_session_pos_session_resume__id
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_wizard_session_resume__id
+msgid "ID"
+msgstr "ID (identificación)"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_view_inherit_view
+msgid "Ingresos Extras"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_account_bank_statement_line__is_adjustment
+msgid "Is adjustment?"
+msgstr "Es Ajuste?"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_custom_cashcontrol____last_update
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_report_aspl_pos_close_session_pos_session_resume____last_update
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_wizard_session_resume____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_pos_session__ticket_last_id
+msgid "Last Ticket"
+msgstr "Ultimo Ticket"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_custom_cashcontrol__write_uid
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_wizard_session_resume__write_uid
+msgid "Last Updated by"
+msgstr "Modificado por"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_custom_cashcontrol__write_date
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_wizard_session_resume__write_date
+msgid "Last Updated on"
+msgstr "Fecha de modificacion"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_res_users__login_with_pos_screen
+msgid "Login with Direct POS"
+msgstr "Logearse directo con POS"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_view_inherit_view
+msgid "Notas de Credito"
+msgstr "Notas de Credito"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_custom_cashcontrol__number_of_coins
+msgid "Number of Coins"
+msgstr "Numero de Monedas"
+
+#. module: aspl_pos_close_session
+#. openerp-web
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:34
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:113
+#, python-format
+msgid "Number of Coins/Bills"
+msgstr "Numero de Monedas"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_pos_session__tickets_num
+msgid "Number of Tickets"
+msgstr "Numero de tickets"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_pos_session__opening_balance
+msgid "Opening Balance"
+msgstr "Saldo de apertura"
+
+#. module: aspl_pos_close_session
+#. openerp-web
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:53
+#, python-format
+msgid "Opening Balance:"
+msgstr "Saldo de Apertura:"
+
+#. module: aspl_pos_close_session
+#. openerp-web
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:99
+#, python-format
+msgid "Opening Cash Control"
+msgstr "Control de efectivo(Apertura)"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_pos_session__statements_bank_total
+msgid "Otros Medios"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_resume
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_report_template
+msgid "Otros Medios:"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#. openerp-web
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:11
+#, python-format
+msgid "POS Close"
+msgstr "Cerrar POS"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_sale_config_inherit_view
+msgid "POS Close Session"
+msgstr "Cerrar sesion"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_res_users__default_pos
+msgid "POS Config"
+msgstr "POS"
+
+#. module: aspl_pos_close_session
+#: model:mail.template,subject:aspl_pos_close_session.email_template_pos_z_report
+msgid "POS Session ${object.name or ''}"
+msgstr "Sesion ${object.name or ''}"
+
+#. module: aspl_pos_close_session
+#. openerp-web
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:14
+#, python-format
+msgid "POS Session Close"
+msgstr "Cerrar sesion"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_resume
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_report_template
+msgid "Pagos totales recibidos:"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model:ir.model,name:aspl_pos_close_session.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr "Configuración del TPV"
+
+#. module: aspl_pos_close_session
+#: model:ir.model,name:aspl_pos_close_session.model_pos_session
+msgid "Point of Sale Session"
+msgstr "Sesion del TPV"
+
+#. module: aspl_pos_close_session
+#. openerp-web
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:55
+#, python-format
+msgid "Real Closing Balance:"
+msgstr "Saldo real de cierre:"
+
+#. module: aspl_pos_close_session
+#: model:ir.model,name:aspl_pos_close_session.model_ir_actions_report
+msgid "Report Action"
+msgstr "Accion de Reporte"
+
+#. module: aspl_pos_close_session
+#: model:ir.actions.report,name:aspl_pos_close_session.pos_session_resume_report
+msgid "Resumen de Caja"
+msgstr "Resumen de Caja"
+
+#. module: aspl_pos_close_session
+#: model:ir.actions.act_window,name:aspl_pos_close_session.action_wizard_session_resume_tree_view
+#: model:ir.ui.menu,name:aspl_pos_close_session.wizard_session_resume_menu
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.wizard_session_resume_form_view
+msgid "Resumen de Cajas"
+msgstr "Resumen de Cajas"
+
+#. module: aspl_pos_close_session
+#: model:ir.actions.report,name:aspl_pos_close_session.pos_z_report
+msgid "Resumen de Sesion"
+msgstr "Resumen de Sesion"
+
+#. module: aspl_pos_close_session
+#: model:ir.model,name:aspl_pos_close_session.model_report_aspl_pos_close_session_pos_session_resume
+msgid "Resumen de cajas"
+msgstr "Resumen de cajas"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_resume
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_report_template
+msgid "Saldo de apertura:"
+msgstr "Saldo de Apertura:"
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_resume
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_report_template
+msgid "Saldo de cierre real:"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_session_resume
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.pos_z_report_template
+msgid "Saldo de cierre teórico:"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_custom_cashcontrol__pos_session_id
+#, fuzzy
+msgid "Session Id"
+msgstr "ID (identificación)"
+
+#. module: aspl_pos_close_session
+#. openerp-web
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:98
+#, python-format
+msgid "Skip"
+msgstr "Omitir"
+
+#. module: aspl_pos_close_session
+#. openerp-web
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:35
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:114
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_custom_cashcontrol__subtotal
+#, python-format
+msgid "Subtotal"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#. openerp-web
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:45
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:124
+#, python-format
+msgid "Subtotal :"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_wizard_session_resume__warehouse_ids
+#: model_terms:ir.ui.view,arch_db:aspl_pos_close_session.wizard_session_resume_form_view
+msgid "Tiendas"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_account_bank_statement__total_entry_encoding_adjustment
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_pos_session__cash_register_total_entry_encoding_adjustment
+msgid "Total Ajustes de cierre"
+msgstr ""
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_pos_session__statements_cn_total
+msgid "Total Notas de Credito"
+msgstr "Total Notas de Credito"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_account_bank_statement__total_entry_encoding_cn
+msgid "Total Notas de credito"
+msgstr "Total Notas de Credito"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_pos_session__statements_total
+msgid "Total Payments Received"
+msgstr "Total pagos recibidos"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_pos_session__cash_register_total_entry_encoding_custom
+msgid "Total Sales"
+msgstr "Total Ventas"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_account_bank_statement__total_entry_encoding_custom
+msgid "Total Transactions"
+msgstr "Total transacciones"
+
+#. module: aspl_pos_close_session
+#: model:ir.model,name:aspl_pos_close_session.model_res_users
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_pos_config__users_ids
+msgid "Users"
+msgstr "Usuarios"
+
+#. module: aspl_pos_close_session
+#. openerp-web
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:83
+#, python-format
+msgid "Validate"
+msgstr "Validar"
+
+#. module: aspl_pos_close_session
+#. openerp-web
+#: code:addons/aspl_pos_close_session/static/src/xml/pos.xml:135
+#, python-format
+msgid "Validate Cash"
+msgstr "Validar Efectivo"
+
+#. module: aspl_pos_close_session
+#: model:mail.template,report_name:aspl_pos_close_session.email_template_pos_z_report
+msgid "Z Report"
+msgstr "Reporte Z"
+
+#. module: aspl_pos_close_session
+#: model:ir.model.fields,field_description:aspl_pos_close_session.field_pos_config__z_report_pdf
+msgid "Z Report Pdf"
+msgstr "Descargar Reporte en PDF?"
+
+#. module: aspl_pos_close_session
+#: model:ir.actions.report,name:aspl_pos_close_session.report_pos_inventory_session_thermal_front
+msgid "Z Report(Thermal)"
+msgstr "Reporte Z(Impresora termica)"
+
+#. module: aspl_pos_close_session
+#: model:ir.model,name:aspl_pos_close_session.model_custom_cashcontrol
+msgid "custom.cashcontrol"
+msgstr ""

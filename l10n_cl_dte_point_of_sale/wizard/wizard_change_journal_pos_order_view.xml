@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record model="ir.ui.view" id="wizard_change_journal_pos_order_form_view">
+		<field name="name">wizard.change.journal.pos.order.form</field>
+		<field name="model">wizard.change.journal.pos.order</field>
+		<field name="arch" type="xml">
+			<form string="Cambio de Pagos">
+				<group col="4" colspan="4">
+					<field name="order_id" readonly="1" options="{'no_open': True}" />
+					<field name="session_id" readonly="1" options="{'no_open': True}" />
+					<field name="payment_id" required="1" context="{'name_pos': True}"
+						domain="[('pos_statement_id','=',order_id)]"
+						options="{'no_create': True, 'no_open': True}" />
+					<field name="total" readonly="1" />
+					<field name="statement_id" required="1" context="{'name_pos': True}"
+						domain="[('pos_session_id','=',session_id)]" options="{'no_create': True, 'no_open': True}" />
+				</group>
+				<footer>
+					<div class="oe_left">
+						<button string="Procesar" name="action_process" type="object"
+							class="oe_highlight" confirm="Esta seguro de proceder?"/>
+						<button string="Cerrar" special="cancel" type="object"
+							class="oe_link" />
+					</div>
+				</footer>
+			</form>
+		</field>
+	</record>
+
+	<record model="ir.actions.act_window" id="action_wizard_change_journal_pos_order_tree_view">
+		<field name="name">Cambio de Pagos</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">wizard.change.journal.pos.order</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+		<field name="target">new</field>
+		<field name="view_id" ref="wizard_change_journal_pos_order_form_view" />
+	</record>
+
+</odoo>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+	
+	<t t-extend="OrderSelectorWidget">
+		<t t-jquery=".deleteorder-button" t-operation="after">
+			<span class='oe_status js_msg_next_document_number'><t t-raw="widget.pos.get_next_document_number_text()" /></span>
+			<span class='oe_status js_msg_documents_remaining'><t t-raw="widget.pos.get_documents_remaining_text()" /></span>
+        </t>
+    </t>
+    
+    <t t-extend="OrdersHistoryScreenWidget">
+    	<t t-jquery="th[id='pos_reference']" t-operation="before">
+    		<th>DTE</th>
+    	</t>
+    	<t t-jquery="th[id='pos_reference']" t-operation="replace">
+    		<th id='pos_reference' class='text-right'>Folio</th>
+    	</t>
+    </t>
+    
+    <t t-extend="OrderHistory">
+    	<t t-jquery="td[id='pos_reference']" t-operation="before">
+    		<td style='text-align: right;'>
+                <span class='details' >
+                    <t t-esc='order.sii_code'/>
+                </span>
+            </td>
+    	</t>
+    	<t t-jquery="td[id='pos_reference']" t-operation="replace">
+    		<td id='pos_reference' style='text-align: right;'>
+                <span class='details' >
+                    <t t-esc='order.sii_document_number'/>
+                </span>
+            </td>
+    	</t>
+    </t>
+
+</templates>

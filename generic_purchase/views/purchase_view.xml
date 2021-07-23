@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record id="purchase_order_search_view" model="ir.ui.view">
+		<field name="name">purchase.order.search</field>
+		<field name="model">purchase.order</field>
+		<field name="inherit_id" ref="purchase.view_purchase_order_filter" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='user_id']" position="after">
+				<field name="date_order" widget="date" />
+			</xpath>
+			<filter name="my_purchases" position="before">
+				<filter name="this_month" string="Fecha" date="date_order" />
+				<separator />
+			</filter>
+			<field name="name" position="after">
+				<field name="partner_ref" />
+			</field>
+			<xpath expr="//filter[@name='expected_date']" position="after">
+				<filter name="group_by_state" string="Estado" context="{'group_by': 'state'}" />
+			</xpath>
+		</field>
+	</record>
+
+	<record id="purchase_order_form_view" model="ir.ui.view">
+		<field name="name">purchase.order.form</field>
+		<field name="model">purchase.order</field>
+		<field name="inherit_id" ref="purchase.purchase_order_form" />
+		<field name="arch" type="xml">
+			<xpath expr="//header" position="after">
+				<div class="alert" role="alert" style="margin-bottom:0px;" attrs="{'invisible': [('state', 'not in', ('purchase', 'done'))]}">
+					<ul>
+	                    <li class="alert-danger" role="alert">Recibido o Facturado Incompleto</li>
+	                    <li class="alert-success" role="alert">Recibido o Facturado En Exceso</li>
+                    </ul>
+                </div>
+			</xpath>
+			<xpath expr="//button[@name='action_rfq_send'][@states='draft']"
+				position="attributes">
+				<attribute name="groups">purchase.group_purchase_user</attribute>
+			</xpath>
+			<xpath expr="//button[@name='action_rfq_send'][@states='sent']"
+				position="attributes">
+				<attribute name="groups">purchase.group_purchase_user</attribute>
+			</xpath>
+			<xpath expr="//button[@name='action_rfq_send'][@states='purchase']"
+				position="attributes">
+				<attribute name="groups">purchase.group_purchase_user</attribute>
+			</xpath>
+			<xpath expr="//button[@id='draft_confirm']" position="attributes">
+				<attribute name="groups">purchase.group_purchase_user</attribute>
+			</xpath>
+			<xpath expr="//button[@id='bid_confirm']" position="attributes">
+				<attribute name="groups">purchase.group_purchase_user</attribute>
+			</xpath>
+			<xpath expr="//button[@name='button_draft']" position="attributes">
+				<attribute name="groups">purchase.group_purchase_user</attribute>
+			</xpath>
+			<xpath expr="//button[@name='button_cancel']" position="attributes">
+				<attribute name="groups">purchase.group_purchase_user</attribute>
+				<attribute name="confirm">Está seguro de anular este registro?</attribute>
+			</xpath>
+			<xpath expr="//button[@name='button_done']" position="attributes">
+				<attribute name="groups">purchase.group_purchase_user</attribute>
+			</xpath>
+			<xpath expr="//button[@name='action_view_invoice'][hasclass('oe_highlight')]"
+				position="attributes">
+				<attribute name="groups">purchase.group_purchase_user</attribute>
+				<attribute name="attrs">{'invisible': ['|', ('state', 'not in', ('purchase', 'done')), ('invoice_status', 'in', ('no', 'invoiced'))]}</attribute>
+			</xpath>
+			<field name="partner_id" position="attributes">
+				<attribute name="options">{'no_quick_create': True}</attribute>
+			</field>
+			<xpath expr="//field[@name='partner_ref']" position="attributes">
+				<attribute name="attrs">{'readonly': [('state', 'in',('done', 'cancel'))]}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='order_line']/tree"
+				position="attributes">
+				<attribute name="decoration-danger">state not in ('draft', 'cancel') and (qty_received &lt; product_qty or qty_invoiced &lt; product_qty)</attribute>
+				<attribute name="decoration-success">state not in ('draft', 'cancel') and (qty_received &gt; product_qty or qty_invoiced &gt; product_qty)</attribute>
+			</xpath>
+			<xpath expr="//field[@name='order_line']/tree//field[@name='product_id']"
+				position="attributes">
+				<attribute name="options">{'no_quick_create': True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='order_line']/form//field[@name='product_id']"
+				position="attributes">
+				<attribute name="options">{'no_quick_create': True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='order_line']/tree//field[@name='product_uom']"
+				position="attributes">
+				<attribute name="options">{'no_create': True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='order_line']/form//field[@name='product_uom']"
+				position="attributes">
+				<attribute name="options">{'no_create': True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']"
+				position="after">
+				<field name="discount" 
+					force_save="1" attrs="{'readonly': [('discount_value', '&gt;', 0)]}" />
+				<field name="discount_value" 
+					force_save="1" attrs="{'readonly': [('discount', '&gt;', 0)]}"
+					groups="generic_purchase.group_purchase_discount_value" />
+			</xpath>
+			<xpath expr="//field[@name='order_line']/form//field[@name='price_unit']"
+				position="after">
+				<field name="discount"
+					force_save="1" attrs="{'readonly': [('discount_value', '&gt;', 0)]}" />
+				<field name="discount_value" 
+					force_save="1" attrs="{'readonly': [('discount', '&gt;', 0)]}"
+					groups="generic_purchase.group_purchase_discount_value" />
+			</xpath>
+			<xpath expr="//field[@name='fiscal_position_id']" position="attributes">
+				<attribute name="options">{'no_create': True, 'no_open': True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='user_id']" position="attributes">
+				<attribute name="attrs">{'readonly': [('state', 'in',('done', 'cancel'))]}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='date_approve']" position="attributes">
+				<attribute name="groups">purchase.group_purchase_user</attribute>
+			</xpath>
+			<xpath expr="//field[@name='order_line']/.." position="after">
+				<page string="Impuestos" name="tax_ids">
+					<field name="tax_ids" force_save="1">
+						<tree>
+							<field name="tax_id" />
+							<field name="base" />
+							<field name="amount" />
+						</tree>
+					</field>
+				</page>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="purchase_order_tree" model="ir.ui.view">
+		<field name="name">purchase.order.tree</field>
+		<field name="model">purchase.order</field>
+		<field name="inherit_id" ref="purchase.purchase_order_tree" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='origin']" position="before">
+				<field name="partner_ref" string="Ref" />
+			</xpath>
+		</field>
+	</record>
+
+	<!-- filtros favoritos en Pedido de compra -->
+	<record id="filter_purchase_partner" model="ir.filters">
+		<field name="name">Por Proveedor</field>
+		<field name="model_id">purchase.order</field>
+		<field name="user_id" eval="False" />
+		<field name="context">{'group_by': ['partner_id']}</field>
+	</record>
+
+	<record id="filter_purchase_month" model="ir.filters">
+		<field name="name">Ventas Mensuales</field>
+		<field name="model_id">purchase.order</field>
+		<field name="user_id" eval="False" />
+		<field name="context">{'group_by': ['date_order:month']}</field>
+	</record>
+
+	<record model="ir.ui.view" id="purchase_discount_order_line_form2">
+		<field name="name">purchase.order.line.form</field>
+		<field name="model">purchase.order.line</field>
+		<field name="inherit_id" ref="purchase.purchase_order_line_form2" />
+		<field name="arch" type="xml">
+			<xpath expr="/form" position="attributes">
+				<attribute name="delete">0</attribute>
+				<attribute name="edit">0</attribute>
+			</xpath>
+			<field name="price_unit" position="after">
+				<field name="discount" />
+				<field name="discount_value" groups="generic_purchase.group_purchase_discount_value" />
+			</field>
+		</field>
+	</record>
+
+	<record model="ir.ui.view" id="purchase_discount_order_line_tree">
+		<field name="name">purchase.order.line.tree</field>
+		<field name="model">purchase.order.line</field>
+		<field name="inherit_id" ref="purchase.purchase_order_line_tree" />
+		<field name="arch" type="xml">
+			<xpath expr="/tree" position="attributes">
+				<attribute name="delete">0</attribute>
+			</xpath>
+			<field name="price_subtotal" position="before">
+				<field name="discount" />
+				<field name="discount_value" groups="generic_purchase.group_purchase_discount_value" sum="Descuento(Monto)"/>
+			</field>
+		</field>
+	</record>
+
+	<record id="purchase_order_line_kanban_view" model="ir.ui.view">
+		<field name="name">purchase.order.line.kanban</field>
+		<field name="model">purchase.order.line</field>
+		<field name="priority" eval="20" />
+		<field name="arch" type="xml">
+			<kanban class="o_kanban_mobile" create="0" delete="0"
+				quick_create="0">
+				<field name="product_id" />
+				<field name="order_id" />
+				<field name="partner_id" />
+				<field name="name" />
+				<field name="product_qty" />
+				<field name="product_uom" />
+				<field name="price_subtotal" />
+				<field name="currency_id" />
+				<field name="state" />
+				<templates>
+					<t t-name="kanban-box">
+						<div t-attf-class="oe_kanban_card oe_kanban_global_click">
+							<div class="row">
+								<div class="col-xs-6">
+									<strong>
+										<t t-esc="record.order_id.value" />
+									</strong>
+								</div>
+								<div class="col-xs-6 pull-right text-right">
+									<strong>
+										<field name="price_subtotal" widget="monetary" />
+									</strong>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-8 text-muted">
+									<span>
+										<t t-esc="record.partner_id.value" />
+									</span>
+								</div>
+								<div class="col-xs-4">
+									<span class="pull-right text-right">
+										<field name="state" widget="label_selection"
+											options="{'classes': {'draft': 'info', 'sent': 'info', 'to_approve': 'warning', 'purchase': 'success', 'done': 'success','cancel': 'danger'}}" />
+									</span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12 text-muted">
+									<span>
+										<t t-esc="record.name.value" />
+									</span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-4 text-muted">
+									<span>Cantidad</span>
+								</div>
+								<div class="col-xs-8 pull-right text-right">
+									<span>
+										<field name="product_qty" />
+										<field name="product_uom" />
+									</span>
+								</div>
+							</div>
+						</div>
+					</t>
+				</templates>
+			</kanban>
+		</field>
+	</record>
+	
+	<!-- reemplazar la accion de presupuestos y Pedidos de compra para mostrar filtro de este mes por defecto--> 
+	<record id="purchase.purchase_rfq" model="ir.actions.act_window">
+		<field name="domain">[('state','not in',('purchase', 'done'))]</field>
+		<field name="context">{'search_default_this_month': 1}</field>
+	</record>
+
+	<record id="purchase.purchase_form_action" model="ir.actions.act_window">
+		<field name="context">{'search_default_this_month': 1}</field>
+	</record>
+
+</odoo>

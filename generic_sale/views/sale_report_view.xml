@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="sale_report_search_view" model="ir.ui.view">
+		<field name="name">sale.report.search</field>
+		<field name="model">sale.report</field>
+		<field name="inherit_id" ref="sale.view_order_product_search" />
+		<field name="arch" type="xml">
+			<field name="date" position="attributes">
+				<attribute name="widget">date</attribute>
+			</field>
+			<filter name="year" position="after">
+				<filter name="this_month" string="Fecha" date="date" />
+				<separator />
+			</filter>
+		</field>
+	</record>
+	
+	<record id="sale_report_pivot_view" model="ir.ui.view">
+		<field name="name">sale.report.pivot</field>
+		<field name="model">sale.report</field>
+		<field name="inherit_id" ref="sale.view_order_product_pivot" />
+		<field name="arch" type="xml">
+			<!-- en pivot agrupar por fecha de pedido, no por fecha de confirmacion
+				en la vista de busqueda se usa la fecha de pedido, mantener coherencia -->
+			<field name="confirmation_date" position="attributes">
+				<attribute name="name">date</attribute>
+				<attribute name="type">col</attribute>
+			</field>
+		</field>
+	</record>
+
+	<record id="sale.action_order_report_all" model="ir.actions.act_window">
+		<field name="context">{'search_default_Sales':1, 'group_by_no_leaf':1,'group_by':[], 'search_default_this_month': 1}</field>
+	</record>
+
+</odoo>

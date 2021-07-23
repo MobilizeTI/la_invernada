@@ -1,0 +1,5 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_sii_cola_envio_group_stock_user","access_sii_cola_envio_group_stock_user","l10n_cl_fe.model_sii_cola_envio","stock.group_stock_user",1,1,1,0
+"access_model_stock_warehouse_orderpoint_group_user","access_model_stock_warehouse_orderpoint_group_user","stock.model_stock_warehouse_orderpoint","base.group_user",1,0,0,0
+"access_model_report_stock_forecast_group_user","access_model_report_stock_forecast_group_user","stock.model_report_stock_forecast","base.group_user",1,0,0,0
+"stock.access_stock_inventory_line_user","stock.inventory.line user","stock.model_stock_inventory_line","stock.group_stock_user",1,1,1,1

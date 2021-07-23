@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<template id="report_kardex_individual">
+		<t t-call="web.html_container">
+			<t t-set="report_title" t-value="'Kardex Individual x Producto'" />
+			<t t-call="web.external_layout">
+				<div class="page small">
+					<div class="col-12">
+						<strong id="product_id_title">Producto:</strong>
+						<span id="product_id_value" t-esc="product.display_name"></span>
+					</div>
+					<div class="col-12">
+						<strong id="location_id_title">Bodega:</strong>
+						<span id="location_id_value" t-esc="location.display_name"></span>
+					</div>
+					<div class="col-12">
+						<strong id="uom_id_title">UdM:</strong>
+						<span id="uom_id_value" t-esc="product.uom_id.name"></span>
+					</div>
+					<div class="col-12">
+						<strong id="dates_title">Fechas de Corte:</strong>
+						<span t-if="date_from">Desde: </span>
+						<span t-if="date_from" id="date_from_value" t-esc="date_from"
+							t-options="{'widget': 'datetime'}" />
+						<span t-if="date_to">Hasta: </span>
+						<span t-if="date_to" id="date_to_value" t-esc="date_to"
+							t-options="{'widget': 'datetime'}" />
+					</div>
+					<table class="table table-sm">
+						<thead>
+							<tr>
+								<th class="text-center" id="date_title">Fecha</th>
+								<th class="text-center" id="origin_title">Origen</th>
+								<th class="text-center" id="destino_title">Destino</th>
+								<th class="text-center" id="reference_title">Referencia</th>
+								<th class="text-center" id="price_unit_title">Precio Unitario</th>
+								<th class="text-center" id="amount_title">Monto</th>
+								<th class="text-center" id="type_title">Tipo</th>
+								<th class="text-center" id="in_title">Entrada</th>
+								<th class="text-center" id="out_title">Salida</th>
+								<th class="text-center" id="balance_title">Saldo</th>
+							</tr>
+						</thead>
+						<tbody>
+							<t t-foreach="lines" t-as="line">
+								<tr>
+									<td class="text-left" style="min-width: 130px;">
+										<span id="date_value" t-esc="line.get('date', '')"
+											t-options="{'widget': 'datetime'}" />
+									</td>
+									<td class="text-left">
+										<span id="origin_value" t-esc="line.get('src', '')" />
+									</td>
+									<td class="text-left">
+										<span id="destino_value" t-esc="line.get('dest', '')" />
+									</td>
+									<td class="text-left">
+										<span id="reference_value" t-esc="line.get('ref', '')" />
+									</td>
+									<td class="text-right amount-sm">
+										<span id="price_unit_value" t-esc="line.get('price_unit', 0.0)"
+											t-options='{"widget": "monetary", "display_currency": res_company.currency_id}' />
+									</td>
+									<td class="text-right amount-sm">
+										<span id="amount_value" t-esc="line.get('amount', 0.0)"
+											t-options='{"widget": "monetary", "display_currency": res_company.currency_id}' />
+									</td>
+									<td class="text-left">
+										<span id="type_value" t-esc="line.get('type', 'Interno')" />
+									</td>
+									<td class="text-right amount-sm">
+										<span id="in_value" t-esc="line.get('qty_in', 0.0)"
+											t-options="{'widget': 'float', 'decimal_precision': 'Product Unit of Measure'}" />
+									</td>
+									<td class="text-right amount-sm">
+										<span id="out_value" t-esc="line.get('qty_out', 0.0)"
+											t-options="{'widget': 'float', 'decimal_precision': 'Product Unit of Measure'}" />
+									</td>
+									<td class="text-right amount-sm">
+										<span id="balance_value" t-esc="line.get('balance', 0.0)"
+											t-options="{'widget': 'float', 'decimal_precision': 'Product Unit of Measure'}" />
+									</td>
+								</tr>
+							</t>
+						</tbody>
+					</table>
+				</div>
+			</t>
+		</t>
+	</template>
+
+</odoo>

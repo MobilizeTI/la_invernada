@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<template id="view_et_picking_no_done_on_date">
+		<t t-set="row_bordered" t-value="css_class.get('row_bordered')" />
+		<t t-set="text_right" t-value="css_class.get('text_right')" />
+		<t t-set="header_style" t-value="'%s%s' % (css_class.get('header_padding'), row_bordered)" />
+		<t t-set="row_style" t-value="'%s%s' % (css_class.get('row_padding'), row_bordered)" />
+		<t t-set="color_date" t-value="css_class.get('bg_danger')" />
+		<p>Los siguientes Albaranes no han sido procesados aun, pero ya paso su fecha prevista:</p>
+		<t t-foreach="picking_to_sent" t-as="object">
+			<table t-att-style="css_class.get('table')">
+				<tbody>
+					<tr>
+						<td t-att-style="row_style">
+							<strong>Albaran:</strong>
+							<span t-field="object.display_name" />
+						</td>
+						<td t-att-style="'%s%s' % (row_style, color_date)">
+							<strong>Fecha Prevista:</strong>
+							<span t-field="object.scheduled_date" />
+						</td>
+					</tr>
+					<tr>
+						<td t-att-style="row_style">
+							<strong>Albaran Anterior:</strong>
+							<span t-field="object.backorder_id" />
+						</td>
+						<td t-att-style="row_style">
+							<strong>Tipo de Operación:</strong>
+							<span t-field="object.picking_type_id" />
+						</td>
+					</tr>
+					<tr>
+						<td t-att-style="row_style">
+							<strong>Doc. Origen:</strong>
+							<span t-field="object.origin" />
+						</td>
+						<td t-att-style="row_style">
+							<strong>Bodega destino:</strong>
+							<span t-field="object.location_dest_id" />
+						</td>
+					</tr>
+					<tr t-if="object.partner_id">
+						<td t-att-style="row_style" colspan="2">
+							<strong>Empresa:</strong>
+							<span t-field="object.partner_id" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<table t-att-style="css_class.get('table')">
+				<thead>
+					<tr t-att-style="css_class.get('bg_beta')">
+						<th t-att-style="header_style">Producto</th>
+						<th t-att-style="header_style">Cantidad</th>
+						<th t-att-style="header_style">Unidad de Medida</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr t-foreach="object.move_lines" t-as="move">
+						<td t-att-style="row_style">
+							<span t-field="move.product_id" />
+						</td>
+						<td t-att-style="row_style">
+							<span t-field="move.product_uom_qty" />
+						</td>
+						<td t-att-style="row_style">
+							<span t-field="move.product_uom" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<br />
+			<br />
+			<br />
+			<br />
+		</t>
+	</template>
+
+	<template id="view_et_picking_partial">
+		<t t-set="row_bordered" t-value="css_class.get('row_bordered')" />
+		<t t-set="text_right" t-value="css_class.get('text_right')" />
+		<t t-set="header_style" t-value="'%s%s' % (css_class.get('header_padding'), row_bordered)" />
+		<t t-set="row_style" t-value="'%s%s' % (css_class.get('row_padding'), row_bordered)" />
+		<p>El siguiente Albaran quedó pendiente de procesar:</p>
+		<table t-att-style="css_class.get('table')">
+			<tbody>
+				<tr>
+					<td t-att-style="row_style">
+						<strong>Albaran:</strong>
+						<span t-field="object.display_name" />
+					</td>
+					<td t-att-style="row_style">
+						<strong>Fecha Prevista:</strong>
+						<span t-field="object.scheduled_date" />
+					</td>
+				</tr>
+				<tr>
+					<td t-att-style="row_style">
+						<strong>Albaran Anterior:</strong>
+						<span t-field="object.backorder_id" />
+					</td>
+					<td t-att-style="row_style">
+						<strong>Tipo de Operación:</strong>
+						<span t-field="object.picking_type_id" />
+					</td>
+				</tr>
+				<tr>
+					<td t-att-style="row_style">
+						<strong>Doc. Origen:</strong>
+						<span t-field="object.origin" />
+					</td>
+					<td t-att-style="row_style">
+						<strong>Bodega destino:</strong>
+						<span t-field="object.location_dest_id" />
+					</td>
+				</tr>
+				<tr t-if="object.partner_id">
+					<td t-att-style="row_style" colspan="2">
+						<strong>Empresa:</strong>
+						<span t-field="object.partner_id" />
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<table t-att-style="css_class.get('table')">
+			<thead>
+				<tr t-att-style="css_class.get('bg_beta')">
+					<th t-att-style="header_style">Producto</th>
+					<th t-att-style="header_style">Cantidad</th>
+					<th t-att-style="header_style">Unidad de Medida</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr t-foreach="object.move_lines" t-as="move">
+					<td t-att-style="row_style">
+						<span t-field="move.product_id" />
+					</td>
+					<td t-att-style="row_style">
+						<span t-field="move.product_uom_qty" />
+					</td>
+					<td t-att-style="row_style">
+						<span t-field="move.product_uom" />
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</template>
+</odoo>

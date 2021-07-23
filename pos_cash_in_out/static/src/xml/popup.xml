@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+	<!-- Cash In Out Popup -->
+	<t t-name="CashInOutPopup">
+        <div class="modal-dialog">
+            <div class="popup popup-textinput cash_in_out_popup">
+                <p class="title title_in_out"><t t-esc="widget.options.title" /></p>
+                <div class="body_in_out">
+                    <t t-esc="widget.options.msg" />
+                </div>
+                <div class='container'>
+                    <table class="table table-popup">
+                        <tr>
+                            <td>Motivo</td>
+                            <td>
+                                <input type='text' class='reason' />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Monto</td>
+                            <td>
+                                <input type='text' class='amount' />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="footer">
+                    <div class="button confirm">
+                        OK
+                    </div>
+                    <div class="button cancel">
+                        Cancel
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

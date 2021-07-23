@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="mail_message_dte_document_form_view" model="ir.ui.view">
+		<field name="name">mail.message.dte.document.form</field>
+		<field name="model">mail.message.dte.document</field>
+		<field name="inherit_id" ref="l10n_cl_fe.dte_document_view_form" />
+		<field name="arch" type="xml">
+			<button name="accept_document" position="attributes">
+				<attribute name="name">action_accept_document_preview</attribute>
+			</button>
+		</field>
+	</record>
+	
+	<record id="mail_message_dte_document_tree_view" model="ir.ui.view">
+		<field name="name">mail.message.dte.document.tree</field>
+		<field name="model">mail.message.dte.document</field>
+		<field name="inherit_id" ref="l10n_cl_fe.dte_document_view_tree" />
+		<field name="arch" type="xml">
+			<button name="accept_document" position="attributes">
+				<attribute name="name">action_accept_document_preview</attribute>
+			</button>
+		</field>
+	</record>
+</odoo>

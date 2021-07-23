@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<report id="transfer_requisition_report_action"
+		string="Transferencias internas" model="transfer.requisition"
+		report_type="qweb-pdf"
+		name="stock_transfers.report_transfer_requisition"
+		file="stock_transfers.report_transfer_requisition" menu="False" />
+
+	<report id="transfer_requisition_list_report_action"
+		string="Transferencias internas" model="res.company"
+		report_type="qweb-pdf"
+		name="stock_transfers.report_transfer_requisition_list"
+		file="stock_transfers.report_transfer_requisition_list" 
+		menu="False" />
+
+</odoo>

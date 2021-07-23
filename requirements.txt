@@ -7,4 +7,5 @@ python-dateutil
 pandas
 Pillow
 pdf417
+facturacion-electronica
 py_linq

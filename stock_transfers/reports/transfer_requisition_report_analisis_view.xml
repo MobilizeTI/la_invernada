@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="transfer_requisition_analisis_graph_view"
+		model="ir.ui.view">
+		<field name="name">transfer.requisition.analisis.graph</field>
+		<field name="model">transfer.requisition.analisis</field>
+		<field name="arch" type="xml">
+			<graph>
+				<field name="warehouse_origin_id" />
+				<field name="qty_process" />
+			</graph>
+		</field>
+	</record>
+
+	<record id="transfer_requisition_analisis_pivot_view"
+		model="ir.ui.view">
+		<field name="name">transfer.requisition.analisis.pivot</field>
+		<field name="model">transfer.requisition.analisis</field>
+		<field name="arch" type="xml">
+			<pivot>
+				<field name="warehouse_origin_id" type="row" />
+				<field name="approved_date" type="col" />
+				<field name="product_qty" type="measure" invisible="1" />
+				<field name="qty_process" type="measure" />
+				<field name="qty_received" type="measure" />
+			</pivot>
+		</field>
+	</record>
+
+	<record id="transfer_requisition_analisis_tree_view"
+		model="ir.ui.view">
+		<field name="name">transfer.requisition.analisis.pivot</field>
+		<field name="model">transfer.requisition.analisis</field>
+		<field name="arch" type="xml">
+			<tree>
+				<field name="warehouse_origin_id" />
+				<field name="warehouse_dest_id" />
+				<field name="transfer_id" />
+				<field name="product_id" />
+				<field name="qty_process" sum="Cantidad Despachada" />
+				<field name="qty_received" sum="Cantidad Recibida" />
+				<field name="uom_id" groups="uom.group_uom" />
+				<field name="state" />
+			</tree>
+		</field>
+	</record>
+
+	<record id="transfer_requisition_analisis_form_view"
+		model="ir.ui.view">
+		<field name="name">transfer.requisition.analisis.pivot</field>
+		<field name="model">transfer.requisition.analisis</field>
+		<field name="arch" type="xml">
+			<form>
+				<header>
+					<field name="state" widget="statusbar" />
+				</header>
+				<sheet>
+					<group>
+						<group>
+							<field name="warehouse_origin_id" />
+							<field name="product_id" />
+							<label for="qty_process" />
+							<div>
+								<field name="qty_process" class="oe_inline" />
+								<field name="uom_id" class="oe_inline"
+									groups="uom.group_uom" />
+							</div>
+							<label for="qty_received" />
+							<div>
+								<field name="qty_received" class="oe_inline" />
+								<field name="uom_id" class="oe_inline"
+									groups="uom.group_uom" />
+							</div>
+						</group>
+						<group>
+							<field name="warehouse_dest_id" />
+							<field name="transfer_id" />
+						</group>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record model="ir.ui.view"
+		id="transfer_requisition_analisis_search_view">
+		<field name="name">transfer.requisition.analisis.search</field>
+		<field name="model">transfer.requisition.analisis</field>
+		<field name="arch" type="xml">
+			<search>
+				<field name="transfer_id" />
+				<field name="product_id" />
+				<field name="category_id" />
+				<field name="warehouse_origin_id" />
+				<field name="warehouse_dest_id" />
+				<group name="filter_by" string="Filtros">
+					<filter name="filter_by_approved_date"
+						string="Fecha de despacho" date="approved_date" />
+					<filter name="filter_by_received_date"
+						string="Fecha de recepcion" date="received_date" />
+					<separator />
+					<filter name="filter_by_approved" string="Despachado"
+						domain="[('state', '=', 'approved')]" />
+					<separator />
+					<filter name="filter_by_qty_remaining"
+						string="Pendiente de Recibir" domain="[('qty_remaining','&gt;',0)]" />
+					<filter name="filter_by_qty_more"
+						string="Recibido en Exceso" domain="[('qty_remaining','&lt;',0)]" />
+				</group>
+				<group name="group_by" string="Agrupar por">
+					<filter name="group_by_transfer" string="Transferencia"
+						context="{'group_by': 'transfer_id'}" />
+					<filter name="group_by_product_id" string="Producto"
+						context="{'group_by': 'product_id'}" />
+					<filter name="group_by_category_id" string="Categoría"
+						context="{'group_by': 'category_id'}" />
+					<separator />
+					<filter name="group_by_warehouse_origin" string="Origen"
+						context="{'group_by': 'warehouse_origin_id'}" />
+					<filter name="group_by_warehouse_dest" string="Destino"
+						context="{'group_by': 'warehouse_dest_id'}" />
+					<separator />
+					<filter name="group_by_state" string="Estado"
+						context="{'group_by': 'state'}" />
+					<separator />
+					<filter name="group_by_approved_date"
+						string="Fecha de Despacho" context="{'group_by': 'approved_date'}" />
+					<filter name="group_by_received_date"
+						string="Fecha de Recepción"
+						context="{'group_by': 'received_date'}" />
+				</group>
+			</search>
+		</field>
+	</record>
+
+	<record model="ir.actions.act_window"
+		id="action_transfer_requisition_analisis_tree_view">
+		<field name="name">Analisis de Transferencias</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">transfer.requisition.analisis</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">pivot,graph</field>
+		<field name="context">{'search_default_filter_by_approved_date': 1}</field>
+		<field name="view_id"
+			ref="transfer_requisition_analisis_pivot_view" />
+		<field name="search_view_id"
+			ref="transfer_requisition_analisis_search_view" />
+	</record>
+
+	<menuitem id="transfer_requisition_analisis_menu"
+		name="Análisis de Transferencias" sequence="45"
+		parent="stock.menu_warehouse_report"
+		groups="stock_transfers.group_transfer_approved"
+		action="action_transfer_requisition_analisis_tree_view" />
+
+</odoo>

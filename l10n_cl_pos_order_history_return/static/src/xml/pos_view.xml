@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    
+    <t t-extend="PaymentScreenWidget">
+    	<t t-jquery=".payment-buttons" t-operation="append">
+	        <t t-if='widget.pos.get_order()'>
+	        	<t t-if='widget.pos.get_order().origin_order_id and widget.pos.get_order().get_document_class().sii_code == 61'>
+		        	<div class='button js_credit_note highlight'>
+		        		<i class='fa fa-file-text-o' /> <t t-esc="widget.pos.get_order().get_credit_note_type_text()" />
+		        	</div>
+		        </t>
+	        </t>
+        </t>
+    </t>
+    
+    <t t-extend="OrdersHistoryScreenWidget">
+    	<t t-jquery=".return-no-receipt" t-operation="attributes">
+    		<attribute name='style'>left: 12%; display: none;</attribute>
+    	</t>
+    </t>
+
+</templates>

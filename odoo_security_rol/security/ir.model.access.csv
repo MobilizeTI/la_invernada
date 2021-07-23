@@ -1,0 +1,6 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_model_res_groups_rol_group_user","access_model_res_groups_rol_group_user","model_res_groups_rol","base.group_user",1,0,0,0
+"access_model_res_groups_rol_group_erp_manager","access_model_res_groups_rol_group_erp_manager","model_res_groups_rol","base.group_erp_manager",1,1,1,1
+"access_model_res_groups_rol_group_create_user","access_model_res_groups_rol_group_create_user","model_res_groups_rol","group_create_user",1,1,1,0
+"access_model_res_users_group_create_user","access_model_res_users_group_create_user","base.model_res_users","group_create_user",1,1,1,1
+"access_model_res_partner_group_user","access_model_res_partner_group_user","base.model_res_partner","group_create_user",1,1,1,1

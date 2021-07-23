@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="et_activities_todo" model="mail.template">
+		<field name="name">Actividades por hacer</field>
+		<field name="body_type">qweb</field>
+		<field name="body_view_id" ref="view_et_activities_todo" />
+		<field name="model_id" ref="base.model_res_company" />
+		<field name="subject">Actividades por hacer</field>
+		<field name="email_from">"${object.name|safe}" &lt;${(object.email or user.email)|safe}&gt;</field>
+		<field name="email_to">${ctx.get('email_to')|safe}</field>
+	</record>
+</odoo>

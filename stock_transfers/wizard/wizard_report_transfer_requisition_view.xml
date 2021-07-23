@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record model="ir.ui.view"
+		id="wizard_report_transfer_requisition_form_view">
+		<field name="name">wizard.report.transfer.requisition.form</field>
+		<field name="model">wizard.report.transfer.requisition</field>
+		<field name="arch" type="xml">
+			<form string="Generar reporte de Transferencias">
+				<group col="4" colspan="2">
+					<field name="date_start" />
+					<field name="date_end" />
+					<field name="to_process" />
+					<field name="report_name" required="1" />
+				</group>
+				<notebook colspan="4">
+					<page string="Productos">
+						<field name="product_ids" nolabel="1"
+							options="{'no_create': True}" domain="[('type','!=','service')]" />
+					</page>
+					<page string="Bodegas Destino">
+						<field name="location_ids" nolabel="1"
+							options="{'no_create': True}" domain="[('usage','=','internal')]" />
+					</page>
+					<page string="Bodegas Origen">
+						<field name="location_source_ids" nolabel="1"
+							options="{'no_create': True}" domain="[('usage','=','internal')]" />
+					</page>
+					<page string="Usuarios">
+						<field name="user_ids" nolabel="1"
+							options="{'no_create': True}" />
+					</page>
+				</notebook>
+				<footer>
+					<div class="oe_left">
+						<button name="action_print_report" string="Imprimir"
+							type="object" icon="gtk-print" class="oe_highlight" />
+						<button string="Cerrar" special="cancel" type="object"
+							icon="gtk-cancel" class="oe_link" />
+					</div>
+				</footer>
+			</form>
+		</field>
+	</record>
+	<record id="action_wizard_report_transfer_requisition_form"
+		model="ir.actions.act_window">
+		<field name="name">Generar reporte de Transferencias</field>
+		<field name="res_model">wizard.report.transfer.requisition</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+		<field name="view_id"
+			ref="wizard_report_transfer_requisition_form_view" />
+		<field name="target">new</field>
+	</record>
+
+	<menuitem
+		action="action_wizard_report_transfer_requisition_form"
+		groups="stock_transfers.group_transfer_approved" sequence="50"
+		id="menu_wizard_report_transfer_requisition" parent="stock.menu_warehouse_report" />
+
+</odoo>

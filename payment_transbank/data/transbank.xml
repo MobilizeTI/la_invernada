@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+        <record id="payment_acquirer_transbank" model="payment.acquirer">
+            <field name="name">Webpay transbank - Normal</field>
+            <field name="image" type="base64" file="payment_transbank/static/description/icon.png"/>
+            <field name="provider">transbank</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="view_template_id" ref="transbank_acquirer_button"/>
+            <field name="journal_id" search="[('type', '=', 'bank')]"/>
+            <field name="environment">test</field>
+            <field name="pre_msg"><![CDATA[
+            <p>You will be redirected to the Transbank<p>Al dar click sobre el botón "Pagar ahora" serás redirigido al sitio de transacción Webpay</p>]]>
+            </field>
+        </record>
+        
+        <record id="payment_acquirer_transbank_img" model="payment.icon">
+        	<field name="name">Webpay transbank</field>
+            <field name="image" type="base64" file="payment_transbank/static/description/icon.png"/>
+            <field name="acquirer_ids" eval="[(6, 0, [ref('payment_acquirer_transbank')])]"/>
+        </record>
+</odoo>

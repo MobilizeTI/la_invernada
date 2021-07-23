@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="wizard_correct_order_form_view" model="ir.ui.view">
+		<field name="name">wizard.correct.order.form</field>
+		<field name="model">wizard.correct.order</field>
+		<field name="arch" type="xml">
+			<form>
+				<group>
+					<field name="document_type" required="1" />
+					<field name="is_credit_note" />
+					<field name="caf_bad_id" required="1" options="{'no_create': True}" />
+					<field name="caf_new_id" required="1" options="{'no_create': True}" />
+					<field name="pos_config_id" options="{'no_create': True}" />
+					<field name="sii_document_number_start" />
+					<field name="ignore_msj" />
+				</group>
+				<notebook>
+					<page string="Pedidos" attrs="{'invisible': [('document_type','!=','pos')]}">
+						<field name="order_ids" options="{'no_create': True}">
+							<tree string="POS Orders" decoration-info="state == 'draft'"
+								decoration-muted="state in ('done','cancel')">
+								<field name="sii_document_number" string="Folio" />
+								<field name="name" />
+								<field name="pos_reference" />
+								<field name="partner_id" />
+								<field name="date_order" />
+								<field name="user_id" />
+								<field name="amount_total" sum="Amount total" widget="monetary" />
+								<field name="company_id" groups="base.group_multi_company" />
+								<field name="state" />
+								<field name="session_id" />
+								<field name="config_id" />
+							</tree>
+						</field>
+					</page>
+					<page string="Pedidos"
+						attrs="{'invisible': [('document_type','!=','account')]}">
+						<field name="invoice_ids" options="{'no_create': True}"
+							context="{'tree_view_ref': 'account.invoice_tree'}"/>
+					</page>
+				</notebook>
+				<footer>
+					<div class="oe_left">
+						<button string="Procesar" name="action_process" type="object"
+							class="oe_highlight" />
+						<button string="Cerrar" special="cancel" type="object"
+							class="oe_link" />
+					</div>
+				</footer>
+			</form>
+		</field>
+	</record>
+
+	<record id="action_wizard_correct_order_tree_view" model="ir.actions.act_window">
+		<field name="name">Corregir Folios</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">wizard.correct.order</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+		<field name="target">new</field>
+		<field name="view_id" ref="wizard_correct_order_form_view" />
+	</record>
+
+	<menuitem id="wizard_correct_order_menu" name="Corregir Folios"
+		sequence="100" parent="point_of_sale.menu_point_config_product"
+		action="action_wizard_correct_order_tree_view" groups="base.group_system" />
+
+	<record id="action_wizard_correct_order_account_tree_view"
+		model="ir.actions.act_window">
+		<field name="name">Corregir Folios</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">wizard.correct.order</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+		<field name="target">new</field>
+		<field name="context">{'default_document_type': 'account'}</field>
+		<field name="view_id" ref="wizard_correct_order_form_view" />
+	</record>
+
+	<menuitem id="wizard_correct_order_account_menu" name="Corregir Folios"
+		sequence="200" parent="account.menu_finance_receivables" groups="base.group_system"
+		action="action_wizard_correct_order_account_tree_view" />
+
+</odoo>

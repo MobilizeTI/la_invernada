@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 {
     'name': 'Chilean Payroll with Accounting',
-    'author': 'Konos',
+    'author': 'Mobilize SPA',
     'license': 'AGPL-3',
     'category': 'Localization',
     'depends': ['l10n_cl_hr', 'hr_payroll_account','l10n_cl_chart_of_account'],

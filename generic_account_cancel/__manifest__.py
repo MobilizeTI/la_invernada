@@ -1,0 +1,27 @@
+{
+    "name": "Mejoras en Proceso de Contabilidad(Cancelaciones)",
+    'version': '1.0.0.0',
+    "author": "Carlos Lopez Mite",
+    "website": "https://blaze-otp.com",
+    "category": "Accounting",
+    "description": """Mejoras en Proceso de Contabilidad(Cancelaciones)""",
+    "depends": [
+        "base",
+        "account",
+        "account_cancel",
+        "payment",
+        "product",
+        "odoo_utils",
+        "generic_account",
+    ],
+    'data': [
+        'security/groups.xml',
+        'data/account_journal_init.xml',
+        'views/account_move_view.xml',
+        'views/account_invoice_view.xml',
+        'views/account_journal_view.xml',
+        'views/account_payment_view.xml',
+    ],
+    'installable': True,
+    'auto_install': True,
+}

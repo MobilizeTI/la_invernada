@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="button_document_type">
+        <div class='control-button highlight'>
+            <i class='fa fa-book' /> <span t-esc="widget.pos.get_current_document_type_name()"></span>
+        </div>
+    </t>
+    
+    <t t-extend="PaymentScreenWidget">
+    	<t t-jquery=".payment-buttons" t-operation="append">
+            <t t-if="widget.pos.config.enable_change_document_type and widget.pos.get_order()">
+                <div class='button js_button_document_type highlight'>
+                	<i class="fa fa-book" />
+                    <span><t t-esc="widget.pos.get_current_document_type_name() || ''" /></span>
+                </div>
+            </t>
+        </t>
+    </t>
+
+</templates>
+

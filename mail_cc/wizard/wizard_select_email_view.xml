@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="wizard_select_email_form_view" model="ir.ui.view">
+		<field name="name">wizard.select.email.form</field>
+		<field name="model">wizard.select.email</field>
+		<field name="arch" type="xml">
+			<form>
+				<div class="text-muted">
+					<h4>Por favor seleccione las cuentas de correos electronico</h4>
+				</div>
+				<field name="partner_ids" required="1" domain="[('email', '!=', False)]"
+					options="{'no_create': True}" widget="many2many_tags_email"
+					context="{'force_email':True, 'show_email':True}" />
+				<footer>
+					<div class="oe_left">
+						<button string="Continuar" name="action_process" type="object"
+							class="oe_highlight" />
+						<button string="Cerrar" special="cancel" type="object"
+							icon="gtk-cancel" class="oe_link" />
+					</div>
+				</footer>
+			</form>
+		</field>
+	</record>
+
+	<record id="wizard_select_email_action" model="ir.actions.act_window">
+		<field name="name">Seleccionar Cuentas de email</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">wizard.select.email</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+		<field name="view_id" ref="wizard_select_email_form_view" />
+		<field name="target">new</field>
+	</record>
+
+</odoo>

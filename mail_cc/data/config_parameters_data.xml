@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data noupdate="1">
+
+		<record id="email_default_param" model="ir.config_parameter">
+			<field name="key">default_email_from</field>
+			<field name="value">info@blaze-otp.com</field>
+		</record>
+
+	</data>
+</odoo>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+      <record id="electronic_stock_picking_tree" model="ir.ui.view">
+            <field name="name">l10n_cl.stock_picking.tree</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+            <field name="arch" type="xml">
+                <field name="origin" position="after">
+                    <field name="reference"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_electroinic_stock_picking_form" model="ir.ui.view">
+            <field name="name">l10n_cl.stock_picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="sii_document_number" invisible="1"/>
+                </form>
+                <button name="do_print_picking" position="after">
+                    <button name='%(wizard_create_dte_picking_action)d' type='action' string='Generar Guia Electronica'
+                    	groups="stock.group_stock_user"
+                    	attrs="{'invisible': ['|', '|', ('state', '!=', 'done'), ('use_documents', '=', True), ('picking_type_code', '!=', 'outgoing')]}" />
+                    <button name='%(action_print_guia_electronica_stock)d' type='action' string='Imprimir Guia' 
+                    	attrs="{'invisible': ['|', ('state', '!=', 'done'), ('use_documents', '=', False)]}" />
+                </button>
+                <field name="partner_id" position="after">
+                    <field name="activity_description" />
+                      <field name="currency_id" groups="base.group_multi_currency" options="{'no_create': True}"/>
+                </field>
+
+                <field name="origin" position="after">
+                  <field name="contact_id" />
+                  <field name="use_documents"/>
+                </field>
+
+                <xpath expr="//field[@name='move_ids_without_package']/tree//field[@name='product_uom']" position="after">
+                  <field name="name"/>
+                  <field name="precio_unitario"/>
+                  <field name="price_untaxed" invisible="True" />
+                  <field name="move_line_tax_ids" widget="many2many_tags"  domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"/>
+                  <field name="discount" force_save="1" attrs="{'readonly': [('discount_value', '&gt;', 0)]}" />
+                  <field name="discount_value" force_save="1"
+                  	attrs="{'readonly': [('discount', '&gt;', 0)]}"
+                  	groups="generic_account.group_account_discount_value" />
+                  <field name="subtotal"/>
+                  <field name="currency_id" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='move_ids_without_package']/..//button[@name='put_in_pack']" position="after">
+                  <group class="oe_subtotal_footer oe_right">
+                    <field name="amount_untaxed"/>
+                    <field name="amount_tax"/>
+                    <div class="oe_subtotal_footer_separator oe_inline">
+                     </div>
+                    <field name="amount_total" class="oe_subtotal_footer_separator"/>
+                  </group>
+                </xpath>
+                <page name="extra" position="inside">
+                    <field name="reference" mode="tree" attrs="{'readonly':[('state','in',['cancel','done'])]}">
+                      <form>
+                        <group>
+                          <field name="origen" />
+                          <field name="sii_referencia_TpoDocRef"/>
+                          <field name="date" />
+                        </group>
+                      </form>
+                      <tree>
+                        <field name="origen" />
+                        <field name="sii_referencia_TpoDocRef"/>
+                        <field name="date" />
+                      </tree>
+                    </field>
+                </page>
+
+                <field name="name" position="after">
+                        <label for="next_number" string="- Next Number: " attrs="{'invisible': ['|',('name','!=',False),('state','!=','draft')]}" class="oe_inline"/>
+                        <field name="next_number" attrs="{'invisible': ['|',('name','!=',False),('state','!=','draft')]}" class="oe_inline"/>
+                </field>
+                <field name="move_type" position="after">
+                  <field name="transport_type" attrs="{'required':[('use_documents', '=', True)]}"/>
+                  <field name="move_reason" attrs="{'required':[('use_documents', '=', True)]}"/>
+                </field>
+                <field name="carrier_id" position="attributes">
+                  <attribute name="attrs">{'invisible':[('transport_type', '!=', '3')], 'required':[('transport_type', '=', '3'), ('use_documents', '=', True)], 'readonly': [('state', 'in', ('done', 'cancel')), ('carrier_tracking_ref', '!=', False)]}</attribute>
+                </field>
+                <field name="carrier_id" position="after">
+                  <field name="vehicle" attrs="{'required':[('transport_type','=', '2'), ('use_documents', '=', True)], 'invisible':[('transport_type','!=','2')]}"/>
+                  <field name="chofer" attrs="{'required':[('transport_type','=', '2'), ('use_documents', '=', True)], 'invisible':[('transport_type','!=','2')]}"/>
+                  <field name="patente" attrs="{'required':[('transport_type','in', ['2']), ('use_documents', '=', True)]}"/>
+                </field>
+          </field>
+
+        </record>
+
+        <record id="view_move_picking_tree_valued" model="ir.ui.view">
+            <field name="name">stock.move.tree.valued</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_tree"/>
+            <field name="arch" type="xml">
+              <field name="product_uom" position="after">
+                <field name="name"/>
+                <field name="precio_unitario"/>
+                <field name="move_line_tax_ids" widget="many2many_tags"  domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"/>
+                <field name="discount" force_save="1" attrs="{'readonly': [('discount_value', '&gt;', 0)]}" />
+                <field name="discount_value" force_save="1"
+                	attrs="{'readonly': [('discount', '&gt;', 0)]}"
+                	groups="generic_account.group_account_discount_value" />
+                <field name="subtotal"/>
+                <field name="currency_id" invisible="1"/>
+              </field>
+            </field>
+        </record>
+
+        <record id="view_move_picking_form_valued" model="ir.ui.view">
+            <field name="name">stock.move.form.valued</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group/group[last()]" position="before">
+                    <group>
+                      <field name="name"/>
+                        <field name="precio_unitario"/>
+                        <field name="move_line_tax_ids" widget="many2many_tags" domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"/>
+                        <field name="discount" force_save="1" attrs="{'readonly': [('discount_value', '&gt;', 0)]}" />
+                        <field name="discount_value" force_save="1" 
+                        	attrs="{'readonly': [('discount', '&gt;', 0)]}" 
+                        	groups="generic_account.group_account_discount_value" />
+                        <field name="currency_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="price_untaxed"/>
+                        <field name="subtotal"/>
+                        <field name="currency_id" invisible="1"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="view_stock_location_form_electronic_stock_picking_class" model="ir.ui.view">
+            <field name="name">l10n_cl.stock.location.tree</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_form"/>
+            <field name="arch" type="xml">
+                <field name="usage" position="after">
+                    <field name="restore_mode" />
+                    <field name="sii_code"/>
+                    <field name="sii_document_class_id" attrs="{'required': [('usage','=','internal')]}"/>
+                    <field name="sequence_id" context="{'default_sii_document_class_id': sii_document_class_id}"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

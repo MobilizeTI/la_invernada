@@ -1,0 +1,203 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* pos_create_stock
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-12-10 01:26+0000\n"
+"PO-Revision-Date: 2018-12-09 22:31-0300\n"
+"Last-Translator: Flectra Chile SpA <soporte@flectrachile.cl>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: es_CL\n"
+"X-Generator: Poedit 2.1.1\n"
+
+#. module: pos_create_stock
+#: model_terms:ir.ui.view,arch_db:pos_create_stock.pos_config_form_view
+msgid "<span class=\"o_form_label\">Crear Inventarios desde TPV</span>"
+msgstr "crear inventarios desde TPV"
+
+#. module: pos_create_stock
+#. openerp-web
+#: code:addons/pos_create_stock/static/src/xml/pos.xml:12
+#, fuzzy, python-format
+msgid "Create Inventory"
+msgstr "Crear inventario"
+
+#. module: pos_create_stock
+#. openerp-web
+#: code:addons/pos_create_stock/static/src/js/pos.js:106
+#: code:addons/pos_create_stock/static/src/js/pos.js:113
+#, fuzzy, python-format
+msgid "Create New Inventory"
+msgstr "Crear nuevo inventario"
+
+#. module: pos_create_stock
+#. openerp-web
+#: code:addons/pos_create_stock/static/src/js/pos.js:119
+#, python-format
+msgid "Create New Inventory?"
+msgstr "Crear nuevo inventario?"
+
+#. module: pos_create_stock
+#. openerp-web
+#: code:addons/pos_create_stock/static/src/js/pos.js:42
+#: code:addons/pos_create_stock/static/src/js/pos.js:49
+#, python-format
+msgid "Create New Picking"
+msgstr "Crear nuevo picking"
+
+#. module: pos_create_stock
+#. openerp-web
+#: code:addons/pos_create_stock/static/src/js/pos.js:56
+#, python-format
+msgid "Create New Picking?"
+msgstr "Crear nuevo picking?"
+
+#. module: pos_create_stock
+#. openerp-web
+#: code:addons/pos_create_stock/static/src/xml/pos.xml:6
+#, python-format
+msgid "Create Picking"
+msgstr "Crear Guía"
+
+#. module: pos_create_stock
+#. openerp-web
+#: code:addons/pos_create_stock/static/src/js/pos.js:50
+#, fuzzy, python-format
+msgid "Debe seleccionar el cliente!"
+msgstr "Debe seleccionar el cliente!"
+
+#. module: pos_create_stock
+#. openerp-web
+#: code:addons/pos_create_stock/static/src/js/pos.js:107
+#, fuzzy, python-format
+msgid "Debe seleccionar un inventario, por favor verifique!"
+msgstr "Debe seleccionar un inventario, por favor verifique!"
+
+#. module: pos_create_stock
+#. openerp-web
+#: code:addons/pos_create_stock/static/src/js/pos.js:91
+#: code:addons/pos_create_stock/static/src/js/pos.js:161
+#, python-format
+msgid "Error: Could not Save Changes"
+msgstr "Error: no se pudieron guardar los cambios"
+
+#. module: pos_create_stock
+#: model:ir.model,name:pos_create_stock.model_stock_inventory
+msgid "Inventory"
+msgstr "Inventario"
+
+#. module: pos_create_stock
+#. openerp-web
+#: code:addons/pos_create_stock/static/src/xml/pos.xml:40
+#, fuzzy, python-format
+msgid "Inventory Adjustment"
+msgstr "Ajuste de inventario"
+
+#. module: pos_create_stock
+#. openerp-web
+#: code:addons/pos_create_stock/static/src/xml/pos.xml:25
+#, python-format
+msgid "New Picking create"
+msgstr "Crear nuevo picking"
+
+#. module: pos_create_stock
+#. openerp-web
+#: code:addons/pos_create_stock/static/src/js/pos.js:43
+#: code:addons/pos_create_stock/static/src/js/pos.js:114
+#, fuzzy, python-format
+msgid "No hay lineas, por favor verifique!"
+msgstr "No hay lineas, por favor verifique!"
+
+#. module: pos_create_stock
+#. openerp-web
+#: code:addons/pos_create_stock/static/src/xml/pos.xml:29
+#: code:addons/pos_create_stock/static/src/xml/pos.xml:44
+#, python-format
+msgid "OK"
+msgstr "OK"
+
+#. module: pos_create_stock
+#: model_terms:ir.ui.view,arch_db:pos_create_stock.pos_config_form_view
+msgid ""
+"Opciones para crear ajustes de inventario desde el\n"
+"\t\t\t\t\t\t\tTPV"
+msgstr ""
+"Opciones para crear ajustes de inventario desde el\n"
+"\t\t\t\t\t\t\tTPV"
+
+#. module: pos_create_stock
+#: model:ir.model.fields,field_description:pos_create_stock.field_pos_config__allow_inventory_adjust
+msgid "Permitir crear Ajustes de inventario?"
+msgstr "Permitir crear Ajustes de inventario?"
+
+#. module: pos_create_stock
+#: model:ir.model.fields,field_description:pos_create_stock.field_pos_config__allow_delivery_note
+msgid "Permitir crear Guias?"
+msgstr "Permitir crear Guias?"
+
+#. module: pos_create_stock
+#: model:ir.model,name:pos_create_stock.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr "Configuración del TPV"
+
+#. module: pos_create_stock
+#. openerp-web
+#: code:addons/pos_create_stock/static/src/js/pos.js:191
+#, python-format
+msgid "Seleccione Ajuste de inventario a validar"
+msgstr "Seleccione Ajuste de inventario a validar"
+
+#. module: pos_create_stock
+#. openerp-web
+#: code:addons/pos_create_stock/static/src/js/pos.js:57
+#, python-format
+msgid "Si esta seguro, de clic en el boton Confirmar, caso contrario en el boton Cancelar"
+msgstr "Si esta seguro, de clic en el boton Confirmar, caso contrario en el boton Cancelar"
+
+#. module: pos_create_stock
+#. openerp-web
+#: code:addons/pos_create_stock/static/src/js/pos.js:201
+#, python-format
+msgid "Sin Inventario seleccionado"
+msgstr "Sin Inventario seleccionado"
+
+#. module: pos_create_stock
+#: model:ir.model,name:pos_create_stock.model_stock_picking
+msgid "Transfer"
+msgstr "Transferir"
+
+#. module: pos_create_stock
+#. openerp-web
+#: code:addons/pos_create_stock/static/src/js/pos.js:92
+#: code:addons/pos_create_stock/static/src/js/pos.js:162
+#, python-format
+msgid "Your Internet connection is probably down."
+msgstr "Su conexión a internet probablemente está caída."
+
+#. module: pos_create_stock
+#. openerp-web
+#: code:addons/pos_create_stock/static/src/xml/pos.xml:40
+#, fuzzy, python-format
+msgid "Your Inventory Adjustment is here:"
+msgstr "Su ajuste de inventario está aquí:"
+
+#. module: pos_create_stock
+#. openerp-web
+#: code:addons/pos_create_stock/static/src/xml/pos.xml:25
+#, fuzzy, python-format
+msgid "Your new picking is here:"
+msgstr "Su nuevo picking está aquí:"
+
+#. module: pos_create_stock
+#. openerp-web
+#: code:addons/pos_create_stock/static/src/js/pos.js:120
+#, fuzzy, python-format
+msgid "¿Seguro de asignar las lineas al inventario seleccionado?"
+msgstr "¿Seguro de asignar las lineas al inventario seleccionado?"

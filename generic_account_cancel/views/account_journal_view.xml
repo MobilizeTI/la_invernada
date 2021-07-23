@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record id="account_journal_cancel_form_view" model="ir.ui.view">
+		<field name="name">account.journal.form</field>
+		<field name="model">account.journal</field>
+		<field name="inherit_id" ref="account_cancel.view_account_journal_form_inherit" />
+		<field name="arch" type="xml">
+			<field name="update_posted" position="attributes">
+				<attribute name="groups">account.group_account_manager</attribute>
+			</field>
+		</field>
+	</record>
+</odoo>

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+Mobilize SPA# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
@@ -7,11 +7,11 @@
     'category': 'Invoicing Management',
     'summary': 'Chilean 8 Column Balance For Odoo 12',
     'sequence': '10',
-    'author': 'Konos',
-    'company': 'Konos',
-    'maintainer': 'Konos',
-    'support': 'info@konos.cl',
-    'website': '',
+    'author': 'Mobilize SPA',
+    'company': 'Mobilize SPA',
+    'maintainer': 'Mobilize SPA',
+    'support': 'https://www.mobilize.cl/',
+    'website': 'https://www.mobilize.cl/',
     'depends': ['account'],
     'demo': [],
     'data': [

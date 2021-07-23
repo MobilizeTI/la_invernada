@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="pos_order_refund_form_view" model="ir.ui.view">
+		<field name="name">pos.order.refund.form</field>
+		<field name="model">pos.order.refund</field>
+		<field name="inherit_id"
+			ref="l10n_cl_dte_point_of_sale.view_pos_order_refund" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='motivo']" position="before">
+				<field name="note_id" options="{'no_create': True}"/>
+			</xpath>
+			<xpath expr="//field[@name='motivo']" position="attributes">
+				<attribute name='invisible'>1</attribute>
+			</xpath>
+			<xpath expr="//button[@name='confirm']/.." position="before">
+				<notebook colspan="2">
+					<page string="Productos a devolver">
+						<field name="line_ids">
+							<tree editable="bottom" create="false">
+								<field name="product_id" required="1" readonly="1"
+									force_save="1" />
+								<field name="qty" required="1" />
+								<field name="max_qty" invisible="1" />
+								<field name="line_origin_id" invisible="1" />
+							</tree>
+						</field>
+					</page>
+				</notebook>
+			</xpath>
+		</field>
+	</record>
+</odoo>

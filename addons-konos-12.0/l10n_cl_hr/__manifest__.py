@@ -1,7 +1,7 @@
 {
     'name': 'Chilean Payroll & Human Resources',
-    'author': 'Konos',
-    'website': 'http://konos.cl',
+    'author': 'Mobilize SPA',
+    'website': 'https://www.mobilize.cl/',
     'license': 'AGPL-3',
     'depends': [
             'hr_payroll',
@@ -13,10 +13,7 @@
                 ]
         },
     'contributors': [
-        "Nelson Ramirez <info@konos.cl>",
-        "Daniel Blanco Martin <daniel@blancomartin.com>",
-        "Carlos Lopez Mite <celm1990@hotmail.com>",
-        "Daniel Santibáñez Polanco <dsantibanez@globalresponse.cl>",
+        "Felipe Angulo, Mobilize SPA",
     ],
     'license': 'AGPL-3',
     'version': '12.0.1.0.4',
