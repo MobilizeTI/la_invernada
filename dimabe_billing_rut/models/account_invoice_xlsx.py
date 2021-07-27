@@ -333,17 +333,17 @@ class AccountInvoiceXlsx(models.Model):
         sheet.write(row, col, inv.partner_id.display_name, formats['string'])
         col += 2
 
-        taxes = inv.invoice_line_ids.filtered(
-            lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) == 0)
+        exempt_taxes = inv.invoice_line_ids.filtered(lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name'))
+        affect_taxes = inv.invoice_line_ids.filtered(lambda a: 'IVA' in a.invoice_line_tax_ids.mapped('name'))
         # _logger.info('LOG:   ***************** %r', taxes)
         # _logger.info('LOG ************* %r', inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name))
-        if taxes:
+        if exempt_taxes:
             _logger.info('LOG:   ************* paso a el primer esto aes a exento ')
             # _logger.info('LOG:   ************* lineas q ue le pusieron taxes grrrrrrr %r', taxes)
-            for t in taxes:
-                _logger.info('LOG:   ************* monto cada linea %r', t.price_subtotal)
-            _logger.info('LOG:   ************* la suma %r', sum(taxes.mapped('price_subtotal')))
-            sheet.write(row, col, sum(taxes.mapped('price_subtotal')), formats['number'])
+            for t in exempt_taxes:
+                _logger.info('LOG:   ************* monto cada linea %r %r', t.price_subtotal, t.name)
+            _logger.info('LOG:   ************* la suma %r', sum(exempt_taxes.mapped('price_subtotal')))
+            sheet.write(row, col, sum(exempt_taxes.mapped('price_subtotal')), formats['number'])
             # sheet.write(row, col, inv.amount_untaxed, formats['number'])
             col += 1
             net = inv.amount_untaxed_signed
@@ -384,7 +384,7 @@ class AccountInvoiceXlsx(models.Model):
                         sheet.write(row, col, sum(line), formats['number'])
                         col += 1
                 sheet.write(row, col, inv.amount_total_signed, formats['number'])
-        else:
+        elif affect_taxes:
             sheet.write_number(row, col, 0, formats['number'])
             col += 1
             # sheet.write(row, col, inv.amount_untaxed_signed, formats['number'])
