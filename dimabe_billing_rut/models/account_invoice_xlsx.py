@@ -336,8 +336,11 @@ class AccountInvoiceXlsx(models.Model):
         sheet.write(row, col, inv.partner_id.display_name, formats['string'])
         col += 2
 
-        exempt_taxes = inv.invoice_line_ids.filtered(lambda a: a.sii_code == 0 and a.amount == 0.0)
-        affect_taxes = inv.invoice_line_ids.filtered(lambda a: a.sii_code == 14)
+        # exempt_taxes = inv.invoice_line_ids.filtered(lambda a: a.sii_code == 0 and a.amount == 0.0)
+        # affect_taxes = inv.invoice_line_ids.filtered(lambda a: a.sii_code == 14)
+
+        exempt_taxes = inv.invoice_line_ids.filtered(lambda a: 0 in a.invoice_line_tax_ids.mapped('name'))
+        affect_taxes = inv.invoice_line_ids.filtered(lambda a: 14 in a.invoice_line_tax_ids.mapped('sii_code'))
         # _logger.info('LOG:   ***************** %r', taxes)
         # _logger.info('LOG ************* %r', inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name))
         if exempt_taxes:
