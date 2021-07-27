@@ -340,7 +340,6 @@ class AccountInvoiceXlsx(models.Model):
             _logger.info('LOG:   ************* lineas q ue le pusieron taxes grrrrrrr %r', taxes)
             for t in taxes:
                 _logger.info('LOG:   ************* monto cada linea %r', t.price_subtotal)
-                
             _logger.info('LOG:   ************* la suma %r', sum(taxes.mapped('price_subtotal')))
             sheet.write(row, col, sum(taxes.mapped('price_subtotal')), formats['number'])
             col += 1
