@@ -254,7 +254,7 @@ class AccountInvoiceXlsx(models.Model):
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
-        file_name = 'Libro de Compra {} {}.xlsx'.format(company_name, date.today().strftime("%d/%m/%Y"))
+        file_name = 'Libro de Ventas {} {}.xlsx'.format(company_name, date.today().strftime("%d/%m/%Y"))
         attachment_id = self.env['ir.attachment'].sudo().create({
             'name': file_name,
             'datas_fname': file_name,
@@ -311,7 +311,7 @@ class AccountInvoiceXlsx(models.Model):
         return {'sheet': sheet, 'row': row}
 
     def set_data_invoice(self, sheet, col, row, inv, invoices, taxes_title, titles, formats):
-        _logger.info('LOG: -- fact %r neto %r iva %r', inv, inv.amount_untaxed, inv.amount_tax)
+        # _logger.info('LOG: -- fact %r neto %r iva %r', inv, inv.amount_untaxed, inv.amount_tax)
         sheet.write(row, col, inv.dte_type_id.code, formats['string'])
         col += 1
         # if inv.dte_folio:
@@ -334,15 +334,15 @@ class AccountInvoiceXlsx(models.Model):
         col += 2
 
         exempt_taxes = inv.invoice_line_ids.filtered(lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name'))
-        affect_taxes = inv.invoice_line_ids.filtered(lambda a: 'IVA' in a.invoice_line_tax_ids.mapped('name'))
+        affect_taxes = inv.invoice_line_ids.filtered(lambda a: 'IVA Crédito' in a.invoice_line_tax_ids.mapped('name'))
         # _logger.info('LOG:   ***************** %r', taxes)
         # _logger.info('LOG ************* %r', inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name))
         if exempt_taxes:
-            _logger.info('LOG:   ************* paso a el primer esto aes a exento ')
-            # _logger.info('LOG:   ************* lineas q ue le pusieron taxes grrrrrrr %r', taxes)
-            for t in exempt_taxes:
-                _logger.info('LOG:   ************* monto cada linea %r %r', t.price_subtotal, t.name)
-            _logger.info('LOG:   ************* la suma %r', sum(exempt_taxes.mapped('price_subtotal')))
+            # _logger.info('LOG:   ************* paso a el primer esto aes a exento ')
+            # # _logger.info('LOG:   ************* lineas q ue le pusieron taxes grrrrrrr %r', taxes)
+            # for t in exempt_taxes:
+            #     _logger.info('LOG:   ************* monto cada linea %r %r', t.price_subtotal, t.name)
+            # _logger.info('LOG:   ************* la suma %r', sum(exempt_taxes.mapped('price_subtotal')))
             sheet.write(row, col, sum(exempt_taxes.mapped('price_subtotal')), formats['number'])
             # sheet.write(row, col, inv.amount_untaxed, formats['number'])
             col += 1
@@ -392,10 +392,10 @@ class AccountInvoiceXlsx(models.Model):
             col += 1
             days = self.diff_dates(inv.date_invoice, date.today())
             if days <= 90:
-                _logger.info('LOG:  ****+ menos de 90 dias taxes %r', inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name))
-                for i in inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name):
-                    _logger.info('LOG: ***** lineas de impuestos %r', i)
-                _logger.info('LOG:  ***** menos de 90 dias sumaaaa %r', sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
+                # _logger.info('LOG:  ****+ menos de 90 dias taxes %r', inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name))
+                # for i in inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name):
+                #     _logger.info('LOG: ***** lineas de impuestos %r', i)
+                # _logger.info('LOG:  ***** menos de 90 dias sumaaaa %r', sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
                 # sheet.write(row, col, inv.amount_tax, formats['number'])
                 sheet.write(row, col,
                             sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
@@ -404,10 +404,10 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.write_number(row, col, 0, formats['number'])
                 col += 1
             else:
-                _logger.info('LOG:  ****+ mas de 90 dias taxes %r', inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name))
-                for i in inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name):
-                    _logger.info('LOG: ***** lineas de impuestos %r', i)
-                _logger.info('LOG:  ***** mas de 90 dias sumaaaa %r', sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
+                # _logger.info('LOG:  ****+ mas de 90 dias taxes %r', inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name))
+                # for i in inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name):
+                #     _logger.info('LOG: ***** lineas de impuestos %r', i)
+                # _logger.info('LOG:  ***** mas de 90 dias sumaaaa %r', sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
                 sheet.write_number(row, col, 0, formats['number'])
                 col += 1
                 # sheet.write(row, col, inv.amount_tax, formats['number'])
@@ -415,13 +415,13 @@ class AccountInvoiceXlsx(models.Model):
                             sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
                             formats['number'])
                 col += 1
-            for tax in taxes_title:
-                if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
-                    line = inv.tax_line_ids.filtered(
-                        lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(a.tax_id.name) == tax).mapped(
-                        'amount')
-                    sheet.write(row, col, sum(line), formats['number'])
-                    col += 1
+            # for tax in taxes_title:
+            #     if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
+            #         line = inv.tax_line_ids.filtered(
+            #             lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(a.tax_id.name) == tax).mapped(
+            #             'amount')
+            #         sheet.write(row, col, sum(line), formats['number'])
+            #         col += 1
             sheet.write(row, col, inv.amount_total_signed, formats['number'])
 
         
