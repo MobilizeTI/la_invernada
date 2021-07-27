@@ -346,9 +346,9 @@ class AccountInvoiceXlsx(models.Model):
         if exempt_taxes:
             # _logger.info('LOG:   ************* paso a el primer esto aes a exento ')
             # # _logger.info('LOG:   ************* lineas q ue le pusieron taxes grrrrrrr %r', taxes)
-            # for t in exempt_taxes:
-            #     _logger.info('LOG:   ************* monto cada linea %r %r', t.price_subtotal, t.name)
-            # _logger.info('LOG:   ************* la suma %r', sum(exempt_taxes.mapped('price_subtotal')))
+            for t in exempt_taxes:
+                _logger.info('LOG:   ************* monto cada linea %r %r', t.price_subtotal, t.name)
+            _logger.info('LOG:   ************* la suma %r', sum(exempt_taxes.mapped('price_subtotal')))
             sheet.write(row, col, sum(exempt_taxes.mapped('price_subtotal')), formats['number'])
             # sheet.write(row, col, inv.amount_untaxed, formats['number'])
             col += 1
