@@ -223,11 +223,13 @@ class AccountInvoiceXlsx(models.Model):
                 data_exempt = self.set_data_for_excel(sheet, row, exempts, taxes_title, titles, formats, exempt=True)
                 sheet = data_exempt['sheet']
                 row = data_exempt['row']
-                credit = self.env['account.invoice'].sudo().search([('date_invoice', '>=', self.from_date),
-                                                                    ('type', 'in', ('out_invoice', 'out_refund')),
-                                                                    ('date_invoice', '<=', self.to_date),
-                                                                    ('dte_type_id.code', '=', 61),
-                                                                    ('company_id.id', '=', self.company_get_id.id)])
+                domain_credit = [
+                    ('date_invoice', '>=', self.from_date),
+                    ('type', 'in', ('out_invoice', 'out_refund')),
+                    ('company_id.id', '=', self.company_get_id.id)
+                    ]
+                credit = self.env['account.invoice'].sudo().search(domain_credit)
+                _logger.info('LOG: ***** notas de credito %r domain ', credit, domain_credit)
 
                 row += 2
                 sheet.merge_range(row, col, row, 5,
