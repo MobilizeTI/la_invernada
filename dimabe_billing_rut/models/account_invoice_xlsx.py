@@ -226,10 +226,11 @@ class AccountInvoiceXlsx(models.Model):
                 domain_credit = [
                     ('date_invoice', '>=', self.from_date),
                     ('type', 'in', ('out_invoice', 'out_refund')),
+                    ('dte_type_id.code', '=', 61), #TODO llevarlo a FE sii_document_type_id.code
                     ('company_id.id', '=', self.company_get_id.id)
                     ]
                 credit = self.env['account.invoice'].sudo().search(domain_credit)
-                _logger.info('LOG: ***** notas de credito {} domain {}'.format(credit, domain_credit))
+                # _logger.info('LOG: ***** notas de credito {} domain {}'.format(credit, domain_credit))
 
                 row += 2
                 sheet.merge_range(row, col, row, 5,
