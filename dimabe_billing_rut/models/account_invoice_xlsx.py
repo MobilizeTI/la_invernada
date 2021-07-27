@@ -4,7 +4,8 @@ import string
 import xlsxwriter
 from odoo import fields, models, api
 from collections import Counter
-
+import logging
+_logger = logging.getLogger(__name__)
 
 class AccountInvoiceXlsx(models.Model):
     _name = 'account.invoice.xlsx'
@@ -310,6 +311,7 @@ class AccountInvoiceXlsx(models.Model):
         return {'sheet': sheet, 'row': row}
 
     def set_data_invoice(self, sheet, col, row, inv, invoices, taxes_title, titles, formats):
+        _logger.info('LOG: -- fact %r neto %r iva %r', inv, inv.amount_untaxed, inv.amount_tax)
         sheet.write(row, col, inv.dte_type_id.code, formats['string'])
         col += 1
         if inv.dte_folio:
@@ -329,9 +331,9 @@ class AccountInvoiceXlsx(models.Model):
         sheet.write(row, col, inv.partner_id.display_name, formats['string'])
         col += 2
 
-        # taxes = inv.invoice_line_ids.filtered(
-        #     lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) == 0)
-        taxes = inv.invoice_line_ids
+        taxes = inv.invoice_line_ids.filtered(
+            lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) == 0)
+        # taxes = inv.invoice_line_ids
         if taxes:
             sheet.write(row, col, sum(taxes.mapped('price_subtotal')), formats['number'])
             col += 1
