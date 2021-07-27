@@ -340,7 +340,7 @@ class AccountInvoiceXlsx(models.Model):
         # affect_taxes = inv.invoice_line_ids.filtered(lambda a: a.sii_code == 14)
 
         exempt_taxes = inv.invoice_line_ids.filtered(lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name'))
-        affect_taxes = inv.invoice_line_ids.filtered(lambda a: 'IVA Crédito' in a.invoice_line_tax_ids.mapped('name'))
+        affect_taxes = inv.invoice_line_ids.filtered(lambda a: 'IVA Débito' in a.invoice_line_tax_ids.mapped('name'))
         # _logger.info('LOG:   ***************** %r', taxes)
         # _logger.info('LOG ************* %r', inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name))
         if exempt_taxes:
