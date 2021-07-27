@@ -333,9 +333,12 @@ class AccountInvoiceXlsx(models.Model):
 
         taxes = inv.invoice_line_ids.filtered(
             lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(a.invoice_line_tax_ids) == 0)
-        _logger.info('LOG:   ***************** %r', taxes)
-        _logger.info('LOG ************* %r', inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name))
+        # _logger.info('LOG:   ***************** %r', taxes)
+        # _logger.info('LOG ************* %r', inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name))
         if taxes:
+            _logger.info('LOG:   ************* paso a el oprimer ')
+            _logger.info('LOG:   ************* lineas q ue le pusieron taxes grrrrrrr', taxes)
+            _logger.info('LOG:   ************* la suma   %r', sum(taxes.mapped('price_subtotal')))
             sheet.write(row, col, sum(taxes.mapped('price_subtotal')), formats['number'])
             col += 1
             net = inv.amount_untaxed_signed
