@@ -341,7 +341,8 @@ class AccountInvoiceXlsx(models.Model):
             for t in taxes:
                 _logger.info('LOG:   ************* monto cada linea %r', t.price_subtotal)
             _logger.info('LOG:   ************* la suma %r', sum(taxes.mapped('price_subtotal')))
-            sheet.write(row, col, sum(taxes.mapped('price_subtotal')), formats['number'])
+            # sheet.write(row, col, sum(taxes.mapped('price_subtotal')), formats['number'])
+            sheet.write(row, col, inv.amount_untaxed, formats['number'])
             col += 1
             net = inv.amount_untaxed_signed
             if inv.dte_type_id.id:
@@ -412,7 +413,11 @@ class AccountInvoiceXlsx(models.Model):
                     col += 1
             sheet.write(row, col, inv.amount_total_signed, formats['number'])
 
-        return {'sheet': sheet, 'row': row, 'col': col}
+        
+        line_out = {'sheet': sheet, 'row': row, 'col': col}
+        _logger.info('LOG. **** output para linea %r', line_out)
+
+        return line_out
 
     def diff_dates(self, date1, date2):
         return abs(date2 - date1).days
