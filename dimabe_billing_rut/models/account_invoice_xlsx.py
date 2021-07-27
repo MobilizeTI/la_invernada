@@ -314,8 +314,10 @@ class AccountInvoiceXlsx(models.Model):
         _logger.info('LOG: -- fact %r neto %r iva %r', inv, inv.amount_untaxed, inv.amount_tax)
         sheet.write(row, col, inv.dte_type_id.code, formats['string'])
         col += 1
-        if inv.dte_folio:
-            sheet.write(row, col, inv.dte_folio, formats['string'])
+        # if inv.dte_folio:
+        #     sheet.write(row, col, inv.dte_folio, formats['string'])
+        if inv.sii_document_number:
+            sheet.write(row, col, inv.sii_document_number, formats['string'])
         col += 1
         if inv.number:
             sheet.write(row, col, inv.number, formats['string'])
@@ -336,13 +338,13 @@ class AccountInvoiceXlsx(models.Model):
         # _logger.info('LOG:   ***************** %r', taxes)
         # _logger.info('LOG ************* %r', inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name))
         if taxes:
-            _logger.info('LOG:   ************* paso a el oprimer ')
-            _logger.info('LOG:   ************* lineas q ue le pusieron taxes grrrrrrr %r', taxes)
+            _logger.info('LOG:   ************* paso a el primer esto aes a exento ')
+            # _logger.info('LOG:   ************* lineas q ue le pusieron taxes grrrrrrr %r', taxes)
             for t in taxes:
                 _logger.info('LOG:   ************* monto cada linea %r', t.price_subtotal)
             _logger.info('LOG:   ************* la suma %r', sum(taxes.mapped('price_subtotal')))
-            # sheet.write(row, col, sum(taxes.mapped('price_subtotal')), formats['number'])
-            sheet.write(row, col, inv.amount_untaxed, formats['number'])
+            sheet.write(row, col, sum(taxes.mapped('price_subtotal')), formats['number'])
+            # sheet.write(row, col, inv.amount_untaxed, formats['number'])
             col += 1
             net = inv.amount_untaxed_signed
             if inv.dte_type_id.id:
@@ -385,10 +387,15 @@ class AccountInvoiceXlsx(models.Model):
         else:
             sheet.write_number(row, col, 0, formats['number'])
             col += 1
-            sheet.write(row, col, inv.amount_untaxed_signed, formats['number'])
+            # sheet.write(row, col, inv.amount_untaxed_signed, formats['number'])
+            sheet.write(row, col, inv.amount_untaxed, formats['number']) ##Neto
             col += 1
             days = self.diff_dates(inv.date_invoice, date.today())
             if days <= 90:
+                _logger.info('LOG:  ****+ menos de 90 dias taxes %r', inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name))
+                for i in inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name):
+                    _logger.info('LOG: ***** lineas de impuestos %r', i)
+                _logger.info('LOG:  ***** menos de 90 dias sumaaaa %r', sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
                 # sheet.write(row, col, inv.amount_tax, formats['number'])
                 sheet.write(row, col,
                             sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
@@ -397,6 +404,10 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.write_number(row, col, 0, formats['number'])
                 col += 1
             else:
+                _logger.info('LOG:  ****+ mas de 90 dias taxes %r', inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name))
+                for i in inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name):
+                    _logger.info('LOG: ***** lineas de impuestos %r', i)
+                _logger.info('LOG:  ***** mas de 90 dias sumaaaa %r', sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
                 sheet.write_number(row, col, 0, formats['number'])
                 col += 1
                 # sheet.write(row, col, inv.amount_tax, formats['number'])
