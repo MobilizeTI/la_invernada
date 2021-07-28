@@ -272,7 +272,9 @@ class AccountInvoiceXlsx(models.Model):
                 tax_total = invoice_tax + exempt_tax - abs(credit_tax) + abs(debit_tax)
                 total_total = invoice_total + exempt_total - abs(credit_total) + abs(debit_total)
 
-                sheet.write(row + 1, col, 5, net_total, tax_total, total_total, formats['total'])
+                sheet.write(row + 1, col, 5, net_total, formats['total'])
+                sheet.write(row + 1, col, 5, tax_total, formats['total'])
+                sheet.write(row + 1, col, 5, total_total, formats['total'])
 
         workbook.close()
         with open(file_name, "rb") as file:
