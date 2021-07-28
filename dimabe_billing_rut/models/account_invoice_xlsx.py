@@ -267,10 +267,12 @@ class AccountInvoiceXlsx(models.Model):
                 sheet = data_debit['sheet']
                 row = data_debit['row']
 
-                sheet.merge_range(row, col, row, 5, 'Totales A', formats['title'])
+                sheet.merge_range(row, col, row, 5, 'Totales', formats['title'])
                 net_total = invoice_net + exempt_net - abs(credit_net) + abs(debit_net)
+                tax_total = invoice_tax + exempt_tax - abs(credit_tax) + abs(debit_tax)
+                total_total = invoice_total + exempt_total - abs(credit_total) + abs(debit_total)
 
-                sheet.write(row + 1, col, net_total, formats['total'])
+                sheet.write(row + 1, col, 5, net_total, tax_total, total_total, formats['total'])
 
         workbook.close()
         with open(file_name, "rb") as file:
