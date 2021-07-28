@@ -319,8 +319,11 @@ class AccountInvoiceXlsx(models.Model):
         col += 1
         # if inv.dte_folio:
         #     sheet.write(row, col, inv.dte_folio, formats['string'])
-        if inv.sii_document_number:
-            sheet.write(row, col, inv.sii_document_number, formats['string'])
+        #TODO esto es lo que debiera ir
+        # if inv.sii_document_number:
+        #     sheet.write(row, col, inv.sii_document_number, formats['string'])
+        if inv.reference:
+            sheet.write(row, col, inv.reference, formats['string'])
         col += 1
         if inv.number:
             sheet.write(row, col, inv.number, formats['string'])
