@@ -93,7 +93,7 @@ class StockReportXlsx(models.TransientModel):
         return action
 
     def generate_excel_raw_report(self, list_condition, type_product):
-        file_name = 'temp_report.xlsx'
+        file_name = 'C:\\Users\\fabia\\Documents\\test.xlsx'
         workbook = xlsxwriter.Workbook(file_name)
         text_format = workbook.add_format({
             'text_wrap': True
@@ -167,7 +167,7 @@ class StockReportXlsx(models.TransientModel):
         return {'file_name': report_name, 'base64': file_base64}
 
     def generate_excel_serial_report(self, list_condition, type_product):
-        file_name = 'temp_report.xlsx'
+        file_name = 'C:\\Users\\fabia\\Documents\\test.xlsx'
         workbook = xlsxwriter.Workbook(file_name)
         sheet = workbook.add_worksheet(f"Informe de {type_product}")
         text_format = workbook.add_format({

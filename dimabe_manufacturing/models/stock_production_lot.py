@@ -423,9 +423,6 @@ class StockProductionLot(models.Model):
         for item in self:
             if len(item.stock_production_lot_serial_ids) > 999:
                 not_duplicates = []
-
-
-
                 duplicates = []
                 for serial in item.stock_production_lot_serial_ids.mapped('serial_number'):
                     if serial not in not_duplicates:
