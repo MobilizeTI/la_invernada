@@ -91,7 +91,6 @@ class StockProductionLotSerial(models.Model):
         compute='_compute_best_before_date'
     )
 
-
     harvest_filter = fields.Integer(
         'Año de Cosecha',
         compute='_compute_harvest_filter',
@@ -362,10 +361,10 @@ class StockProductionLotSerial(models.Model):
             ])
             work_order.sudo().write({
                 'out_weight': sum(
-                        work_order.summary_out_serial_ids.mapped('display_weight')),
-                    'pt_out_weight': sum(work_order.summary_out_serial_ids.filtered(
-                        lambda a: a.product_id.categ_id.parent_id.name == 'Producto Terminado').mapped(
-                        'display_weight'))
+                    work_order.summary_out_serial_ids.mapped('display_weight')),
+                'pt_out_weight': sum(work_order.summary_out_serial_ids.filtered(
+                    lambda a: a.product_id.categ_id.parent_id.name == 'Producto Terminado').mapped(
+                    'display_weight'))
             })
             res.producer_id = res.stock_production_lot_id.producer_id.id
 
@@ -377,7 +376,7 @@ class StockProductionLotSerial(models.Model):
             res.reserve_to_stock_picking_id = production.stock_picking_id.id
             res.stock_production_lot_id.update_kg(res.stock_production_lot_id.id)
             res.stock_production_lot_id.write({
-                'label_durability_id':production.label_durability_id.id
+                'label_durability_id': production.label_durability_id.id
             })
             res.stock_production_lot_id.update_stock_quant_production(production.location_dest_id.id)
         res.label_durability_id = res.stock_production_lot_id.label_durability_id
@@ -439,7 +438,7 @@ class StockProductionLotSerial(models.Model):
             lot.update_kg(lot.id)
             if item.production_id and item.production_id.state != 'done':
                 production = self.env['mrp.production'].search([('id', '=', item.production_id.id)])
-                workorder = self.env['mrp.workorder'].search([('production_id','=',item.production_id.id)])
+                workorder = self.env['mrp.workorder'].search([('production_id', '=', item.production_id.id)])
                 workorder.sudo().write({
                     'out_weight': sum(
                         workorder.summary_out_serial_ids.mapped('display_weight')),

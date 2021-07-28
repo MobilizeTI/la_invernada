@@ -64,7 +64,7 @@ class StockReportXlsx(models.TransientModel):
                 'Producto Partido Servicio')
         elif self.stock_selection == 'calibrate_service':
             dict_data = self.generate_excel_serial_report(
-                [('product_id.default_code', 'like', 'PSES006'), ('product_id.name', 'not like', 'Vana'),
+                [('product_id.default_code', 'like', 'PSES006'),('harvest_filter', '=', self.year), ('product_id.name', 'not like', 'Vana'),
                  ('product_id.name', 'not like', 'Descarte')],'Producto Calibrado Servicio'
             )
         elif self.stock_selection == 'vain_service':
