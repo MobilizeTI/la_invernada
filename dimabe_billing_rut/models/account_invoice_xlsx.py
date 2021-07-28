@@ -354,7 +354,7 @@ class AccountInvoiceXlsx(models.Model):
             col += 1
             net = inv.amount_untaxed_signed
             if inv.dte_type_id.id:
-                sheet.write(row, col, '0', formats['number'])
+                sheet.write(row, col, inv.amount_untaxed, formats['number'])
                 col += 1
 
                 sheet.write(row, col, '0', formats['number'])
