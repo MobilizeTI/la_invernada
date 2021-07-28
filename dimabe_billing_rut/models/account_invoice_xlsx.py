@@ -255,7 +255,7 @@ class AccountInvoiceXlsx(models.Model):
                                                                    ('company_id.id', '=', self.company_get_id.id)])
                 data_debit = self.set_data_for_excel(sheet, row, debit, taxes_title, titles, formats, exempt=False)
                 debit_total = data_debit.get('total')
-                sheet.merge_range(row, col, row, 5, 'Totales', vformats['title'])
+                sheet.merge_range(row, col, row, 5, 'Totales A', vformats['title'])
                 sheet.write(row, col, invoice_total, formats['total'])
                 sheet = data_debit['sheet']
                 row = data_debit['row']
