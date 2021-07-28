@@ -357,7 +357,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.write(row, col, inv.amount_untaxed, formats['number'])
                 col += 1
 
-                sheet.write(row, col, '0', formats['number'])
+                sheet.write(row, col, inv.amount_tax, formats['number'])
                 col += 1
                 sheet.write(row, col, '0', formats['number'])
                 col += 1
