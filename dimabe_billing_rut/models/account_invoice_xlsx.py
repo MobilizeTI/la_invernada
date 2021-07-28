@@ -208,6 +208,7 @@ class AccountInvoiceXlsx(models.Model):
                 begin = row
                 row += 1
                 data_invoice = self.set_data_for_excel(sheet, row, invoices, taxes_title, titles, formats, exempt=False)
+                invoice_total = data_invoice.get('total')
                 sheet = data_invoice['sheet']
                 row = data_invoice['row']
                 exempts = self.env['account.invoice'].sudo().search([('date_invoice', '>=', self.from_date),
@@ -221,6 +222,7 @@ class AccountInvoiceXlsx(models.Model):
                                   formats['title'])
                 row += 1
                 data_exempt = self.set_data_for_excel(sheet, row, exempts, taxes_title, titles, formats, exempt=True)
+                exempt_total = data_exempt.get('total')
                 sheet = data_exempt['sheet']
                 row = data_exempt['row']
                 domain_credit = [
@@ -238,6 +240,7 @@ class AccountInvoiceXlsx(models.Model):
                                   formats['title'])
                 row += 1
                 data_credit = self.set_data_for_excel(sheet, row, credit, taxes_title, titles, formats, exempt=False)
+                credit_total = data_credit.get('total')
                 sheet = data_credit['sheet']
                 row = data_credit['row']
                 row += 2
@@ -251,6 +254,9 @@ class AccountInvoiceXlsx(models.Model):
                                                                    ('dte_type_id.code', '=', 56),
                                                                    ('company_id.id', '=', self.company_get_id.id)])
                 data_debit = self.set_data_for_excel(sheet, row, debit, taxes_title, titles, formats, exempt=False)
+                debit_total = data_debit.get('total')
+                sheet.merge_range(row, col, row, 5, 'Totales', vformats['title'])
+                sheet.write(row, col, invoice_total, formats['total'])
                 sheet = data_debit['sheet']
                 row = data_debit['row']
 
@@ -311,7 +317,7 @@ class AccountInvoiceXlsx(models.Model):
                 col += 1
         sheet.write(row, col, sum(invoices.mapped('amount_total')), formats['total'])
         col = 0
-        return {'sheet': sheet, 'row': row}
+        return {'sheet': sheet, 'row': row, 'total': sum(invoices.mapped('amount_total'))}
 
     def set_data_invoice(self, sheet, col, row, inv, invoices, taxes_title, titles, formats):
         # _logger.info('LOG: -- fact %r neto %r iva %r', inv, inv.amount_untaxed, inv.amount_tax)
