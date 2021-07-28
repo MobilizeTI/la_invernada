@@ -91,10 +91,6 @@ class StockProductionLotSerial(models.Model):
         compute='_compute_best_before_date'
     )
 
-    harvest = fields.Integer(
-        'Año de Cosecha',
-        compute='_compute_harvest'
-    )
 
     harvest_filter = fields.Integer(
         'Año de Cosecha',
