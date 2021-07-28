@@ -26,31 +26,13 @@
                 </tree>
             </field>
         </record>
-        <record id="search_raw_report_view" model="ir.ui.view">
-            <field name="name">Filtro Materia Prima Seca</field>
-            <field name="model">stock.production.lot</field>
-            <field name="inherit_id" ref="stock.search_product_lot_filter"/>
-            <field name="arch" type="xml">
-                <search>
-                    <field name="producer_id"/>
-                    <field name="product_variety"/>
-                    <field name="harvest"/>
-                    <group expand="1" string="Group By">
-                        <filter string="Productor" name="group_by_producer" context="{'group_by':'producer_id'}"/>
-                        <filter string="Variedad" name="group_by_variety" context="{'group_by':'product_variety'}"/>
-                        <filter string="Cosecha" name="group_by_harvest" context="{'group_by':'harvest'}"/>
-                    </group>
-                </search>
-            </field>
-        </record>
         <record id="dimabe_manufacturing.stock_service_report" model="ir.actions.act_window">
             <field name="name">Informe de Materia Prima Servicio</field>
             <field name="res_model">stock.production.lot</field>
             <field name="view_mode">tree,graph,form,pivot</field>
             <field name="view_id" ref="view_stock_service_report_tree"/>
             <field name="domain">
-                [('product_id.default_code', 'like', 'MPS'), ('product_id.name', 'not like',
-                'Verde'),('stock_production_lot_serial_ids','!=',False)]
+                [('product_id.default_code', 'like', 'MPS'), ('product_id.name', 'not like', 'Verde'),('stock_production_lot_serial_ids','!=',None)]
             </field>
         </record>
 
