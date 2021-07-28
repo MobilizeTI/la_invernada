@@ -121,6 +121,3 @@ class AccountInvoiceLine(models.Model):
                 return round(value)
         else:
             return value
-
-
-

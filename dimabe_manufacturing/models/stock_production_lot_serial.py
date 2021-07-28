@@ -425,8 +425,8 @@ class StockProductionLotSerial(models.Model):
                 item.set_bom_canning()
             if 'consumed' in vals.keys():
                 if vals['consumed']:
-                    item.stock_production_lot_id.update_kg(item.stock_production_lot_id.id)
                     item.stock_production_lot_id.verify_without_lot()
+                    item.stock_production_lot_id.update_kg(item.stock_production_lot_id.id)
         return res
 
     @api.model
@@ -440,7 +440,8 @@ class StockProductionLotSerial(models.Model):
 
                 )
             lot = self.env['stock.production.lot'].search([('id', '=', item.stock_production_lot_id.id)])
-            if item.production_id:
+            lot.update_kg(lot.id)
+            if item.production_id and item.production_id.state != 'done':
                 production = self.env['mrp.production'].search([('id', '=', item.production_id.id)])
                 workorder = self.env['mrp.workorder'].search([('production_id','=',item.production_id.id)])
                 workorder.sudo().write({

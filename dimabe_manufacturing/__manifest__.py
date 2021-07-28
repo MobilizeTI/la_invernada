@@ -26,6 +26,7 @@
         'mrp_workorder',
         'dimabe_export_order',
         'dimabe_quality_integration',
+        'mrp_plm'
     ],
 
     # always loaded

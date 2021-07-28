@@ -34,7 +34,6 @@ class StockMoveLine(models.Model):
                 if ml.location_id.usage == 'production' or ml.location_dest_id.usage == 'production' and ml.lot_id:
                     if ml.location_id.usage == 'production':
                         ml.lot_id.update_stock_quant_production(ml.location_id.id)
-                        ml.lot_id.update_kg(ml.lot_id.id)
                     ml.write({
                         'state': 'done'
                     })

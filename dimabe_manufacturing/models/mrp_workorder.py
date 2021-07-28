@@ -516,7 +516,7 @@ class MrpWorkorder(models.Model):
         if not isinstance(self.id, int):
             self = self._origin
         serial_number = serial_number.strip()
-        serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', serial_number)])
+        serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', serial_number),('stock_production_lot_id','!=',False)])
         if not serial:
             raise models.ValidationError(f'La serie ingresada no existe')
         if serial.product_id not in self.material_product_ids:
@@ -603,7 +603,8 @@ class MrpWorkorder(models.Model):
                         'display_weight')),
                     'production_id': self.production_id.id,
                     'workorder_id': self.id,
-                    'done_wo': False
+                    'done_wo': False,
+                    'is_raw': True
                 })
         check = self.check_ids.filtered(
             lambda a: a.component_id.id == serial.product_id.id and not a.component_is_byproduct)

@@ -36,7 +36,7 @@ class StockReportXlsx(models.TransientModel):
             dict_data = self.generate_excel_serial_report(
                 [('product_id.categ_id.name', 'in',
                   ('Envasado NSC', 'Partido Manual Calidad', 'Partido Mecánico/Láser')),
-                 ('harvest_filter', '=', self.year), ('product_id.name', 'not like', 'Descarte'),
+                 ('harvest_filter', '=', self.year),
                  ('product_id.name', 'not like', 'Vana'), ('product_id.default_code', 'not like', 'PT')],
                 'Producto Partido')
         elif self.stock_selection == 'vain':

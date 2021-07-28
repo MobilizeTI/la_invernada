@@ -241,10 +241,11 @@ class DriedUnpelledHistory(models.Model):
                 res.in_product_id = unpelled_dried_id.product_in_id.id
                 res.out_product_id = unpelled_dried_id.out_product_id.id
                 res.out_lot_id = unpelled_dried_id.out_lot_id
+                res.out_lot_id.verify_without_lot()
+                res.out_lot_id.update_kg(res.out_lot_id.id)
                 res.oven_use_ids = unpelled_dried_id.oven_use_ids.filtered(
                     lambda a: a.ready_to_close
                 )
-                res.total_in_weight = unpelled_dried_id.total_in_weight
                 res.total_out_weight = unpelled_dried_id.total_out_weight
                 res.origin_location_id = unpelled_dried_id.origin_location_id.id
                 res.dest_location_id = unpelled_dried_id.dest_location_id.id
@@ -254,7 +255,12 @@ class DriedUnpelledHistory(models.Model):
     @api.multi
     def adjust_stock(self):
         for item in self:
-
+            if item.total_in_weight == 0:
+                item.write({
+                    'total_in_weight': sum(item.oven_use_ids.filtered(
+                        lambda a: a.ready_to_close
+                    ).mapped('used_lot_id').mapped('stock_production_lot_serial_ids').mapped('display_weight'))
+                })
             if item.out_serial_ids.filtered(
                     lambda a: a.consumed
             ):
@@ -264,6 +270,9 @@ class DriedUnpelledHistory(models.Model):
                 ('lot_id', '=', item.out_lot_id.id)
             ])
             item.total_out_weight = item.out_serial_sum
+            item.out_lot_id.verify_without_lot()
+            item.out_lot_id.update_kg(item.out_lot_id.id)
+
             if not stock_move_line:
                 raise models.ValidationError('no se encontró el registro de stock asociado a este proceso')
             stock_move_line.write({

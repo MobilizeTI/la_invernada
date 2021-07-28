@@ -91,7 +91,8 @@ class UnpelledDried(models.Model):
     oven_use_ids = fields.One2many(
         'oven.use',
         'unpelled_dried_id',
-        'Hornos'
+        'Hornos',
+        domain=[('history_id','=',None)]
     )
 
     used_lot_ids = fields.One2many(
@@ -173,7 +174,7 @@ class UnpelledDried(models.Model):
         for item in self:
             item.total_in_weight = sum(item.oven_use_ids.filtered(
                 lambda a: a.ready_to_close
-            ).mapped('used_lot_id').mapped('balance'))
+            ).mapped('used_lot_id').mapped('stock_production_lot_serial_ids').mapped('display_weight'))
 
     @api.multi
     def _compute_in_lot_ids(self):
@@ -231,7 +232,10 @@ class UnpelledDried(models.Model):
     def create_history(self):
 
         return self.env['dried.unpelled.history'].create({
-            'unpelled_dried_id': self.id
+            'unpelled_dried_id': self.id,
+            'total_in_weight': sum(self.oven_use_ids.filtered(
+                lambda a: a.ready_to_close
+            ).mapped('used_lot_id').mapped('stock_production_lot_serial_ids').mapped('display_weight'))
         })
 
     @api.model
@@ -372,11 +376,15 @@ class UnpelledDried(models.Model):
             if not item.oven_use_ids:
                 item.state = 'draft'
             item.out_lot_id.verify_without_lot()
+            item.out_lot_id.update_kg(item.out_lot_id.id)
+
 
     @api.multi
     def go_history(self):
 
         unpelled_dried_id = 'unpelled_dried_id' in self.env.context and self.env.context['unpelled_dried_id'] or False
+        self.out_lot_id.verify_without_lot()
+        self.out_lot_id.update_kg(self.out_lot_id.id)
 
         return {
             'type': 'ir.actions.act_window',
