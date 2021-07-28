@@ -267,13 +267,14 @@ class AccountInvoiceXlsx(models.Model):
                 sheet = data_debit['sheet']
                 row = data_debit['row']
 
-                sheet.merge_range(row, col + 8, row + 2, 7, 'Totales', formats['title'])
+                # sheet.merge_range(row, col + 8, row + 2, 7, 'Totales', formats['title'])
                 net_total = invoice_net + exempt_net - abs(credit_net) + abs(debit_net)
                 tax_total = invoice_tax + exempt_tax - abs(credit_tax) + abs(debit_tax)
                 total_total = invoice_total + exempt_total - abs(credit_total) + abs(debit_total)
-
+                sheet.write(row + 3, col + 7, 'Totales', formats['title'])
                 sheet.write(row + 3, col + 8, net_total, formats['total'])
                 sheet.write(row + 3, col + 9, tax_total, formats['total'])
+                sheet.write(row + 3, col + 10, 0, formats['total']) #TODO totoales iva no recuperable
                 sheet.write(row + 3, col + 11, total_total, formats['total'])
 
         workbook.close()
