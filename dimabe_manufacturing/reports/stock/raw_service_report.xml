@@ -26,9 +26,8 @@
                 </tree>
             </field>
         </record>
-                <record id="search_raw_report_view" model="ir.ui.view">
+        <record id="search_raw_report_view" model="ir.ui.view">
             <field name="name">Filtro Materia Prima Seca</field>
-            <field name="type">search</field>
             <field name="model">stock.production.lot</field>
             <field name="inherit_id" ref="stock.search_product_lot_filter"/>
             <field name="arch" type="xml">
@@ -50,7 +49,8 @@
             <field name="view_mode">tree,graph,form,pivot</field>
             <field name="view_id" ref="view_stock_service_report_tree"/>
             <field name="domain">
-                [('product_id.default_code', 'like', 'MPS'), ('product_id.name', 'not like', 'Verde'),('stock_production_lot_serial_ids','!=',False)]
+                [('product_id.default_code', 'like', 'MPS'), ('product_id.name', 'not like',
+                'Verde'),('stock_production_lot_serial_ids','!=',False)]
             </field>
         </record>
 

@@ -1,7 +1,6 @@
 from odoo import fields, models, api
 from odoo.addons import decimal_precision as dp
 from datetime import date, datetime
-import collections
 
 
 class StockProductionLot(models.Model):
@@ -465,7 +464,7 @@ class StockProductionLot(models.Model):
     def _compute_lot_harvest(self):
         for item in self:
             if item.stock_production_lot_serial_ids:
-                item.harvest = item.stock_production_lot_serial_ids[0].harvest_filter
+                item.harvest = item.stock_production_lot_serial_ids[0].harvest
 
     @api.multi
     def _compute_lot_location(self):
@@ -714,9 +713,9 @@ class StockProductionLot(models.Model):
                                 item.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped(
                                     'real_weight'))
                         })
-            # else:
-            #     if len(item.stock_production_lot_serial_ids) > 999:
-            #         item.check_duplicate()
+            else:
+                if len(item.stock_production_lot_serial_ids) > 999:
+                    item.check_duplicate()
             return res
 
     @api.multi
@@ -761,13 +760,6 @@ class StockProductionLot(models.Model):
             pallet.update({
                 'state': 'close'
             })
-            if item.packaging_date:
-                item.write({
-                    'packaging_date': datetime.combine(item.packaging_date, datetime.min.time())
-                })
-            if len(item.stock_production_lot_serial_ids) > 999 and [item for item, count in collections.Counter(
-                    item.stock_production_lot_serial_ids.mapped('serial_number')).items() if count > 1]:
-                item.check_duplicate()
 
     @api.model
     def get_stock_quant(self):

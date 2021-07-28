@@ -15,7 +15,6 @@
                     <field name="location_id" widget="many2onebutton" string="Ubicacion" readonly="1"/>
                     <field name="product_id" widget="many2onebutton" string="Producto" readonly="1"/>
                     <field name="show_guide_number" string="N° Guia" readonly="1"/>
-                    <field name="harvest" readonly="1"/>
                     <field name="reception_weight" string="Kilos Recepcionados" readonly="1"/>
                     <field name="serial_not_consumed" string="Series Disponible" readonly="1"/>
                     <field name="show_date" string="Fecha" readonly="1"/>
@@ -28,7 +27,6 @@
         </record>
         <record id="search_raw_report_view" model="ir.ui.view">
             <field name="name">Filtro Materia Prima Seca</field>
-            <field name="type">search</field>
             <field name="model">stock.production.lot</field>
             <field name="inherit_id" ref="stock.search_product_lot_filter"/>
             <field name="arch" type="xml">
