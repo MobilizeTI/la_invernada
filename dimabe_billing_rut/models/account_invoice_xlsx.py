@@ -48,7 +48,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet = wk['worksheet']
                 formats = self.set_formats(workbook)
                 region = self.env['region.address'].search([('id', '=', 1)])
-                titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', 'Nombre', '#', 'EXENTO', 'NETO', 'IVA',
+                titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', 'Nombre', '#', 'EXENTO', 'NETO IVA', 'TOTAL NETO', 'IVA',
                           'IVA NO RECUPERABLE']
                 invoices_get_tax = self.env['account.invoice'].sudo().search(
                     [('dte_type_id', '!=', None), ('company_id', '=', self.company_get_id.id),
@@ -392,18 +392,14 @@ class AccountInvoiceXlsx(models.Model):
 
         exempt_taxes = inv.invoice_line_ids.filtered(lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name'))
         affect_taxes = inv.invoice_line_ids.filtered(lambda a: 'IVA Débito' in a.invoice_line_tax_ids.mapped('name'))
-        # _logger.info('LOG:   ***************** %r', taxes)
-        # _logger.info('LOG ************* %r', inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name))
         if exempt_taxes:
-            # _logger.info('LOG:   ************* paso a el primer esto aes a exento ')
-            # # _logger.info('LOG:   ************* lineas q ue le pusieron taxes grrrrrrr %r', taxes)
-            # for t in exempt_taxes:
-            #     _logger.info('LOG:   ************* monto cada linea %r %r', t.price_subtotal, t.name)
-            # _logger.info('LOG:   ************* la suma %r', sum(exempt_taxes.mapped('price_subtotal')))
             sheet.write(row, col, sum(exempt_taxes.mapped('price_subtotal')), formats['number'])
-            # sheet.write(row, col, inv.amount_untaxed, formats['number'])
             col += 1
             net = inv.amount_untaxed_signed
+            net_tax = net - abs(sum(exempt_taxes.mapped('price_subtotal')))
+            sheet.write(row, col, net_tax, formats['number'])
+            col += 1
+            
             if inv.dte_type_id.id:
                 sheet.write(row, col, inv.amount_untaxed, formats['number'])
                 col += 1
