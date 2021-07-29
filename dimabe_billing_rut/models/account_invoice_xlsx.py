@@ -89,6 +89,9 @@ class AccountInvoiceXlsx(models.Model):
                 begin = row
                 row += 1
                 data_invoice = self.set_data_for_excel(sheet, row, invoices, taxes_title, titles, formats, exempt=False)
+                invoice_total = data_invoice.get('total').get('total')
+                invoice_net = data_invoice.get('total').get('net')
+                invoice_tax = data_invoice.get('total').get('tax')
                 sheet = data_invoice['sheet']
                 row = data_invoice['row']
                 exempts = self.env['account.invoice'].sudo().search([('date_invoice', '>=', self.from_date),
@@ -102,6 +105,9 @@ class AccountInvoiceXlsx(models.Model):
                                   formats['title'])
                 row += 1
                 data_exempt = self.set_data_for_excel(sheet, row, exempts, taxes_title, titles, formats, exempt=True)
+                exempt_total = data_exempt.get('total').get('total')
+                exempt_net = data_exempt.get('total').get('net')
+                exempt_tax = data_exempt.get('total').get('tax')
                 sheet = data_exempt['sheet']
                 row = data_exempt['row']
                 credit = self.env['account.invoice'].sudo().search([('date_invoice', '>=', self.from_date),
@@ -116,6 +122,9 @@ class AccountInvoiceXlsx(models.Model):
                                   formats['title'])
                 row += 1
                 data_credit = self.set_data_for_excel(sheet, row, credit, taxes_title, titles, formats, exempt=False)
+                credit_total = data_credit.get('total').get('total')
+                credit_net = data_credit.get('total').get('net')
+                credit_tax = data_credit.get('total').get('tax')
                 sheet = data_credit['sheet']
                 row = data_credit['row']
                 row += 2
@@ -129,8 +138,20 @@ class AccountInvoiceXlsx(models.Model):
                                                                    ('dte_type_id.code', '=', 56),
                                                                    ('company_id.id', '=', self.company_get_id.id)])
                 data_debit = self.set_data_for_excel(sheet, row, debit, taxes_title, titles, formats, exempt=False)
+                debit_total = data_debit.get('total').get('total')
+                debit_net = data_debit.get('total').get('net')
+                debit_tax = data_debit.get('total').get('tax')
                 sheet = data_debit['sheet']
                 row = data_debit['row']
+
+                net_total = invoice_net + exempt_net - abs(credit_net) + abs(debit_net)
+                tax_total = invoice_tax + exempt_tax - abs(credit_tax) + abs(debit_tax)
+                total_total = invoice_total + exempt_total - abs(credit_total) + abs(debit_total)
+                sheet.write(row + 3, col + 7, 'Total General', formats['title'])
+                sheet.write(row + 3, col + 8, net_total, formats['total'])
+                sheet.write(row + 3, col + 9, tax_total, formats['total'])
+                sheet.write(row + 3, col + 10, 0, formats['total']) #TODO totoales iva no recuperable
+                sheet.write(row + 3, col + 11, total_total, formats['total'])
 
         workbook.close()
         with open(file_name, "rb") as file:
@@ -271,7 +292,7 @@ class AccountInvoiceXlsx(models.Model):
                 net_total = invoice_net + exempt_net - abs(credit_net) + abs(debit_net)
                 tax_total = invoice_tax + exempt_tax - abs(credit_tax) + abs(debit_tax)
                 total_total = invoice_total + exempt_total - abs(credit_total) + abs(debit_total)
-                sheet.write(row + 3, col + 7, 'Totales', formats['title'])
+                sheet.write(row + 3, col + 7, 'Total General', formats['title'])
                 sheet.write(row + 3, col + 8, net_total, formats['total'])
                 sheet.write(row + 3, col + 9, tax_total, formats['total'])
                 sheet.write(row + 3, col + 10, 0, formats['total']) #TODO totoales iva no recuperable
