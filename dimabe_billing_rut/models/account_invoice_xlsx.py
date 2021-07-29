@@ -147,11 +147,13 @@ class AccountInvoiceXlsx(models.Model):
                 net_total = invoice_net + exempt_net - abs(credit_net) + abs(debit_net)
                 tax_total = invoice_tax + exempt_tax - abs(credit_tax) + abs(debit_tax)
                 total_total = invoice_total + exempt_total - abs(credit_total) + abs(debit_total)
+                net_tax_total = net_total - exempt_net
                 sheet.write(row + 3, col + 7, 'Total General', formats['title'])
-                sheet.write(row + 3, col + 8, net_total, formats['total'])
-                sheet.write(row + 3, col + 9, tax_total, formats['total'])
-                sheet.write(row + 3, col + 10, 0, formats['total']) #TODO totoales iva no recuperable
-                sheet.write(row + 3, col + 11, total_total, formats['total'])
+                sheet.write(row + 3, col + 8, net_tax_total, formats['total'])
+                sheet.write(row + 3, col + 9, net_total, formats['total'])
+                sheet.write(row + 3, col + 10, tax_total, formats['total'])
+                sheet.write(row + 3, col + 11, 0, formats['total']) #TODO totoales iva no recuperable
+                sheet.write(row + 3, col + 12, total_total, formats['total'])
 
         workbook.close()
         with open(file_name, "rb") as file:
@@ -292,11 +294,13 @@ class AccountInvoiceXlsx(models.Model):
                 net_total = invoice_net + exempt_net - abs(credit_net) + abs(debit_net)
                 tax_total = invoice_tax + exempt_tax - abs(credit_tax) + abs(debit_tax)
                 total_total = invoice_total + exempt_total - abs(credit_total) + abs(debit_total)
+                net_tax_total = net_total - exempt_net
                 sheet.write(row + 3, col + 7, 'Total General', formats['title'])
-                sheet.write(row + 3, col + 8, net_total, formats['total'])
-                sheet.write(row + 3, col + 9, tax_total, formats['total'])
-                sheet.write(row + 3, col + 10, 0, formats['total']) #TODO totoales iva no recuperable
-                sheet.write(row + 3, col + 11, total_total, formats['total'])
+                sheet.write(row + 3, col + 8, net_tax_total, formats['total'])
+                sheet.write(row + 3, col + 9, net_total, formats['total'])
+                sheet.write(row + 3, col + 10, tax_total, formats['total'])
+                sheet.write(row + 3, col + 11, 0, formats['total']) #TODO totoales iva no recuperable
+                sheet.write(row + 3, col + 12, total_total, formats['total'])
 
         workbook.close()
         with open(file_name, "rb") as file:
@@ -335,13 +339,14 @@ class AccountInvoiceXlsx(models.Model):
                 a.invoice_line_tax_ids) == 0).mapped('price_subtotal'))
         sheet.write(row, col, exempt_sum, formats['total']) ## Total exento
         col += 1
-        net_tax = sum(invoices.mapped('amount_untaxed_signed')) - abs(exempt_sum)
+        net_tax = sum(invoices.mapped('amount_untaxed')) - abs(exempt_sum)
         sheet.write(row, col, net_tax, formats['total']) ## Total exento
         col += 1
-        if exempt:
-            sheet.write(row, col, '0', formats['total'])
-        else:
-            sheet.write(row, col, sum(invoices.mapped('amount_untaxed_signed')), formats['total'])
+        sheet.write(row, col, sum(invoices.mapped('amount_untaxed')), formats['total'])
+        # if exempt:
+        #     sheet.write(row, col, sum(invoices.mapped('amount_untaxed_signed')), formats['total'])
+        # else:
+        #     sheet.write(row, col, sum(invoices.mapped('amount_untaxed_signed')), formats['total'])
         col += 1
         sheet.write(row, col, sum(
             invoices.mapped('tax_line_ids').filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
@@ -357,7 +362,7 @@ class AccountInvoiceXlsx(models.Model):
                     'amount')
                 sheet.write(row, col, sum(line), formats['total'])
                 col += 1
-        sheet.write(row, col, sum(invoices.mapped('amount_total')), formats['total'])
+        sheet.write(row, col, abs(sum(invoices.mapped('amount_total'))), formats['total'])
         col = 0
         return {'sheet': sheet, 'row': row, 'total': {
             'total' : sum(invoices.mapped('amount_total')),
