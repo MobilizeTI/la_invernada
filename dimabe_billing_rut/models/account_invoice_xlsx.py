@@ -478,7 +478,7 @@ class AccountInvoiceXlsx(models.Model):
             #             'amount')
             #         sheet.write(row, col, sum(line), formats['number'])
             #         col += 1
-            sheet.write(row, col, inv.amount_total_signed, formats['number'])
+            sheet.write(row, col, abs(inv.amount_total_signed), formats['number'])
 
         
         line_out = {'sheet': sheet, 'row': row, 'col': col}
