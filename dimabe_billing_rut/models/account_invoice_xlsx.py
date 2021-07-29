@@ -441,15 +441,13 @@ class AccountInvoiceXlsx(models.Model):
             sheet.write_number(row, col, 0, formats['number'])
             col += 1
             # sheet.write(row, col, inv.amount_untaxed_signed, formats['number'])
+            net_tax = inv.amount_untaxed - abs(sum(exempt_taxes.mapped('price_subtotal')))
+            sheet.write(row, col, net_tax, formats['number'])
+            col += 1
             sheet.write(row, col, inv.amount_untaxed, formats['number']) ##Neto
             col += 1
             days = self.diff_dates(inv.date_invoice, date.today())
             if days <= 90:
-                # _logger.info('LOG:  ****+ menos de 90 dias taxes %r', inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name))
-                # for i in inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name):
-                #     _logger.info('LOG: ***** lineas de impuestos %r', i)
-                # _logger.info('LOG:  ***** menos de 90 dias sumaaaa %r', sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
-                # sheet.write(row, col, inv.amount_tax, formats['number'])
                 sheet.write(row, col,
                             sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
                             formats['number'])
@@ -457,10 +455,6 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.write_number(row, col, 0, formats['number'])
                 col += 1
             else:
-                # _logger.info('LOG:  ****+ mas de 90 dias taxes %r', inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name))
-                # for i in inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name):
-                #     _logger.info('LOG: ***** lineas de impuestos %r', i)
-                # _logger.info('LOG:  ***** mas de 90 dias sumaaaa %r', sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')))
                 sheet.write_number(row, col, 0, formats['number'])
                 col += 1
                 # sheet.write(row, col, inv.amount_tax, formats['number'])
