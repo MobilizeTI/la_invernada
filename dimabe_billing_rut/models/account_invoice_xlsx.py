@@ -328,11 +328,15 @@ class AccountInvoiceXlsx(models.Model):
                 row += 1
         sheet.merge_range(row, 0, row, 5, 'Totales:', formats['text_total'])
         col = 6
-        sheet.write(row, col, len(invoices), formats['total'])
+        sheet.write(row, col, len(invoices), formats['total']) ## Cantidad Total de Documentos
         col += 1
-        sheet.write(row, col, sum(invoices.mapped('invoice_line_ids').filtered(
+        exempt_sum = sum(invoices.mapped('invoice_line_ids').filtered(
             lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(
-                a.invoice_line_tax_ids) == 0).mapped('price_subtotal')), formats['total'])
+                a.invoice_line_tax_ids) == 0).mapped('price_subtotal'))
+        sheet.write(row, col, exempt_sum, formats['total']) ## Total exento
+        col += 1
+        net_tax = sum(invoices.mapped('amount_untaxed_signed')) - abs(exempt_sum)
+        sheet.write(row, col, net_tax, formats['total']) ## Total exento
         col += 1
         if exempt:
             sheet.write(row, col, '0', formats['total'])
