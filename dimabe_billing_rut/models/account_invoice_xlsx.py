@@ -148,7 +148,8 @@ class AccountInvoiceXlsx(models.Model):
                 tax_total = invoice_tax + exempt_tax - abs(credit_tax) + abs(debit_tax)
                 total_total = invoice_total + exempt_total - abs(credit_total) + abs(debit_total)
                 net_tax_total = net_total - exempt_net
-                sheet.write(row + 3, col + 7, 'Total General', formats['title'])
+                sheet.write(row + 3, col + 6, 'Total General', formats['title'])
+                sheet.write(row + 3, col + 7, exempt_total, formats['total'])
                 sheet.write(row + 3, col + 8, net_tax_total, formats['total'])
                 sheet.write(row + 3, col + 9, net_total, formats['total'])
                 sheet.write(row + 3, col + 10, tax_total, formats['total'])
@@ -295,7 +296,8 @@ class AccountInvoiceXlsx(models.Model):
                 tax_total = invoice_tax + exempt_tax - abs(credit_tax) + abs(debit_tax)
                 total_total = invoice_total + exempt_total - abs(credit_total) + abs(debit_total)
                 net_tax_total = net_total - exempt_net
-                sheet.write(row + 3, col + 7, 'Total General', formats['title'])
+                sheet.write(row + 3, col + 6, 'Total General', formats['title'])
+                sheet.write(row + 3, col + 7, exempt_total, formats['total'])
                 sheet.write(row + 3, col + 8, net_tax_total, formats['total'])
                 sheet.write(row + 3, col + 9, net_total, formats['total'])
                 sheet.write(row + 3, col + 10, tax_total, formats['total'])
@@ -367,7 +369,8 @@ class AccountInvoiceXlsx(models.Model):
         return {'sheet': sheet, 'row': row, 'total': {
             'total' : sum(invoices.mapped('amount_total')),
             'net' : sum(invoices.mapped('amount_untaxed')),
-            'tax': sum(invoices.mapped('amount_tax'))
+            'tax': sum(invoices.mapped('amount_tax')),
+            'exempt': exempt_sum
             }}
 
     def set_data_invoice(self, sheet, col, row, inv, invoices, taxes_title, titles, formats):
