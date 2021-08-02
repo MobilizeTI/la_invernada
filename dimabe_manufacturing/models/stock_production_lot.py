@@ -696,11 +696,11 @@ class StockProductionLot(models.Model):
                 else:
                     self.env['stock.quant'].sudo().search(
                         [('lot_id', '=', self.id), ('location_id.usage', '=', 'internal')]).unlink()
-            if not item.producer_id and item.stock_production_lot_serial_ids:
-                if not item.stock_production_lot_serial_ids.mapped('producer_id'):
-                    item.write({
-                        'producer_id': item.stock_production_lot_serial_ids.mapped('producer_id')[0].id,
-                    })
+            # if not item.producer_id and item.stock_production_lot_serial_ids:
+            #     if item.stock_production_lot_serial_ids.mapped('producer_id'):
+            #         item.write({
+            #             'producer_id': item.stock_production_lot_serial_ids.mapped('producer_id')[0].id,
+            #         })
             if not item.product_id.is_standard_weight:
                 for serial in item.stock_production_lot_serial_ids:
                     if not serial.serial_number:
@@ -1009,16 +1009,6 @@ class StockProductionLot(models.Model):
     def get_and_update(self, product_id):
         lots = self.env['stock.production.lot'].search([('product_id', '=', product_id), ('available_kg', '>', 0)])
         for lot in lots:
-            if lot.stock_production_lot_serial_ids:
-                if lot.available_kg != sum(
-                        lot.mapped('stock_production_lot_serial_ids').filtered(lambda x: not x.consumed).mapped(
-                            'display_weight')):
-                    lot.write({
-                        'available_kg': sum(
-                            lot.mapped('stock_production_lot_serial_ids').filtered(lambda x: not x.consumed).mapped(
-                                'display_weight')) if lot.mapped('stock_production_lot_serial_ids').filtered(
-                            lambda x: not x.consumed) else 0
-                    })
             quant = self.env['stock.quant'].search([('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal')])
             if quant:
                 try:
