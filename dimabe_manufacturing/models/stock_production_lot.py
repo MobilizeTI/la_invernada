@@ -694,10 +694,8 @@ class StockProductionLot(models.Model):
                 if self.stock_production_lot_serial_ids.filtered(lambda x: not x.consumed):
                     self.get_and_update(self.product_id.id)
                 else:
-                    self.env['stock.quant'].sudo().search([('lot_id','=',self.id),('location_id.usage','=','internal')]).write({
-                        'quantity': 0,
-                        'reserved_quantity': 0
-                    })
+                    self.env['stock.quant'].sudo().search(
+                        [('lot_id', '=', self.id), ('location_id.usage', '=', 'internal')]).unlink()
             if not item.producer_id and item.stock_production_lot_serial_ids:
                 if not item.stock_production_lot_serial_ids.mapped('producer_id'):
                     item.write({
@@ -1014,7 +1012,7 @@ class StockProductionLot(models.Model):
             if lot.stock_production_lot_serial_ids:
                 if lot.available_kg != sum(
                         lot.mapped('stock_production_lot_serial_ids').filtered(lambda x: not x.consumed).mapped(
-                                'display_weight')):
+                            'display_weight')):
                     lot.write({
                         'available_kg': sum(
                             lot.mapped('stock_production_lot_serial_ids').filtered(lambda x: not x.consumed).mapped(
