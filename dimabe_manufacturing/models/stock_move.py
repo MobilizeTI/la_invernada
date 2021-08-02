@@ -20,4 +20,4 @@ class StockMove(models.Model):
             else:
                 pass
         except:
-            pass
+            return 1

@@ -690,6 +690,8 @@ class StockProductionLot(models.Model):
             if final_lot_id:
                 values['sale_order_id'] = final_lot_id.sale_order_id.id
             res = super(StockProductionLot, self).write(values)
+            if 'available_kg' in values.keys():
+                self.get_and_update(self.product_id.id)
             if not item.producer_id and item.stock_production_lot_serial_ids:
                 if not item.stock_production_lot_serial_ids.mapped('producer_id'):
                     item.write({
@@ -992,12 +994,6 @@ class StockProductionLot(models.Model):
                 [('product_id.id', '=', item.product_id.id), ('lot_id', '=', None)])
             quant.sudo().unlink()
 
-    def check_all_existence(self,product_id=None):
-        if product_id:
-            lots = self.env['stock.production.lot'].search(
-                [('available_kg', '=', 0), ('harvest', '=', 2021), ('product_id', '=', product_id)])
-        else:
-            lots = self.env['stock.production.lot'].search([('available_kg', '=', 0), ('harvest', '=', 2021)])
     def change_date_packing(self):
         for item in self:
             item.change_packaging = True
@@ -1005,6 +1001,34 @@ class StockProductionLot(models.Model):
     def change_date_best(self):
         for item in self:
             item.change_best = True
+
+    def get_and_update(self, product_id):
+        lots = self.env['stock.production.lot'].search([('product_id', '=', product_id), ('available_kg', '>', 0)])
+        for lot in lots:
+            quant = self.env['stock.quant'].search([('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal')])
+            if quant:
+                try:
+                    if quant.quantity != lot.available_kg:
+                        quant.write({
+                            'quantity': lot.available_kg
+                        })
+                except:
+                    query = 'DELETE FROM stock_quant where id = {}'.format(quant[0].id)
+                    cr = self._cr
+                    cr.execute(query)
+            else:
+                self.env['stock.quant'].sudo().create({
+                    'lot_id': lot.id,
+                    'product_id': lot.product_id.id,
+                    'reserved_quantity': sum(
+                        lot.stock_production_lot_serial_ids.filtered(lambda x: not x.consumed).mapped(
+                            'display_weight')),
+                    'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda x: not x.consumed).mapped(
+                        'display_weight')),
+                    'location_id': lot.stock_production_lot_serial_ids.mapped('production_id')[
+                        0].location_dest_id.id if lot.stock_production_lot_serial_ids.mapped('production_id') else 12,
+                    'in_date': datetime.now()
+                })
 
     def check_all_existence(self):
         lots = self.env['stock.production.lot'].search([('available_kg', '!=', 0), ('harvest', '=', 2021)])
@@ -1029,9 +1053,9 @@ class StockProductionLot(models.Model):
                 if location_id:
                     lot.update_stock_quant_production(location_id)
 
-    def check_duplicate_quant(self,product_id=None,lot_id=None):
+    def check_duplicate_quant(self, product_id=None, lot_id=None):
         if lot_id:
-            lots = self.env['stock.production.lot'].search(['id','=',lot_id])
+            lots = self.env['stock.production.lot'].search(['id', '=', lot_id])
         elif product_id:
             lots = self.env['stock.production.lot'].search(
                 [('available_kg', '=', 0), ('harvest', '=', 2021), ('product_id', '=', product_id)])
@@ -1042,18 +1066,20 @@ class StockProductionLot(models.Model):
             if len(quant) > 1:
                 quant[1:].sudo().unlink()
             if lot.stock_production_lot_serial_ids.filtered(lambda x: not x.consumed):
-                total_not_consumed = sum(lot.stock_production_lot_serial_ids.filtered(lambda x: not x.consumed).mapped('display_weight'))
+                total_not_consumed = sum(
+                    lot.stock_production_lot_serial_ids.filtered(lambda x: not x.consumed).mapped('display_weight'))
             else:
                 total_not_consumed = 0
             if total_not_consumed == 0:
                 quant.sudo().unlink()
             quant.sudo().write({
-                'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda x: not x.consumed).mapped('display_weight'))
+                'quantity': sum(
+                    lot.stock_production_lot_serial_ids.filtered(lambda x: not x.consumed).mapped('display_weight'))
             })
 
-    def check_no_stock_quant(self,product_id=None,lot_id=None):
+    def check_no_stock_quant(self, product_id=None, lot_id=None):
         if lot_id:
-            lots = self.env['stock.production.lot'].search(['id','=',lot_id])
+            lots = self.env['stock.production.lot'].search(['id', '=', lot_id])
         elif product_id:
             lots = self.env['stock.production.lot'].search(
                 [('available_kg', '=', 0), ('harvest', '=', 2021), ('product_id', '=', product_id)])
