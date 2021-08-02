@@ -1014,6 +1014,7 @@ class StockProductionLot(models.Model):
                 try:
                     if quant.quantity != lot.available_kg:
                         quant.write({
+                            'reserved_quantity': lot.available_kg,
                             'quantity': lot.available_kg
                         })
                 except:
