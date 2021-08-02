@@ -235,6 +235,9 @@ class MrpProduction(models.Model):
                     'state': 'draft'
                 })
                 move.unlink()
+        for fin in self.finished_move_line_ids:
+            if not fin.lot_id.stock_production_lot_serial_ids:
+                fin.unlink()
         return res
 
     @api.model
