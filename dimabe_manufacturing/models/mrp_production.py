@@ -222,10 +222,19 @@ class MrpProduction(models.Model):
         self.calculate_done()
         for item in self.workorder_ids:
             item.organize_move_line()
-        for move in self.move_raw_ids.filtered(lambda x: not x.needs_lots and not x.active_move_line_ids):
-            move.do_unreserved()
-            move.unlink()
+        for move in self.move_raw_ids:
+            if move.quantity_done == 0:
+                move.write({
+                    'state': 'draft'
+                })
+                move.unlink()
         res = super(MrpProduction, self).button_mark_done()
+        for move in self.move_raw_ids:
+            if move.quantity_done == 0 or move.product_uom_qty == 0:
+                move.write({
+                    'state': 'draft'
+                })
+                move.unlink()
         return res
 
     @api.model
