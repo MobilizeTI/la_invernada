@@ -454,7 +454,8 @@ class StockProductionLotSerial(models.Model):
                 })
             res = super(StockProductionLotSerial, item).unlink()
             lot.update_kg(lot.id)
-        return res
+            lot.get_and_update(lot.product_id.id)
+            return res
 
     @api.multi
     def delete(self):
