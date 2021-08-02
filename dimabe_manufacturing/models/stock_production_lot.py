@@ -691,7 +691,13 @@ class StockProductionLot(models.Model):
                 values['sale_order_id'] = final_lot_id.sale_order_id.id
             res = super(StockProductionLot, self).write(values)
             if 'available_kg' in values.keys():
-                self.get_and_update(self.product_id.id)
+                if self.stock_production_lot_serial_ids.filtered(lambda x: not x.consumed):
+                    self.get_and_update(self.product_id.id)
+                else:
+                    self.env['stock.quant'].sudo().search([('lot_id','=',self.id),('location_id.usage','=','internal')]).write({
+                        'quantity': 0,
+                        'reserved_quantity': 0
+                    })
             if not item.producer_id and item.stock_production_lot_serial_ids:
                 if not item.stock_production_lot_serial_ids.mapped('producer_id'):
                     item.write({
