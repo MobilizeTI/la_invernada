@@ -1006,13 +1006,17 @@ class StockProductionLot(models.Model):
         for item in self:
             item.change_best = True
 
-    def get_and_update(self, product_id):
-        lots = self.env['stock.production.lot'].search([('product_id', '=', product_id), ('available_kg', '>', 0)])
+    def get_and_update(self, product_id,to_fix=False):
+        if not to_fix:
+            lots = self.env['stock.production.lot'].search([('product_id', '=', product_id), ('available_kg', '>', 0)])
+        else:
+            lots = self.env['stock.production.lot'].search([('product_id', '=', product_id), ('available_kg', '=', 0)])
         for lot in lots:
             quant = self.env['stock.quant'].search([('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal')])
             if quant:
                 try:
-                    if quant.quantity != lot.available_kg:
+                    if quant.quantity != lot.available_kg or quant.quantity != sum(
+                            lot.stock_production_lot_serial_ids.mapped('display_weight')):
                         quant.write({
                             'reserved_quantity': lot.available_kg,
                             'quantity': lot.available_kg
