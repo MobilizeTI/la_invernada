@@ -1,5 +1,6 @@
 from odoo import fields, models, api
 from odoo.tools.float_utils import float_round
+from datetime import datetime
 
 
 class ProductProduct(models.Model):
