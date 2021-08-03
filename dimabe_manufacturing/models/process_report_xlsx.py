@@ -30,7 +30,7 @@ class ProcessReport(models.TransientModel):
                 [('workcenter_id.name', '=', '320-Proceso Envasado NCC')],
                 'Proceso NCC')
         if self.process_selection == 'laser':
-            dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '400-PPM')],
+            dict_data = self.generate_xlsx_process([('workcenter_id.code','in',('400-PPM','405-PL'))],
                                                    'Proceso Partido Mecanico/Laser')
         if self.process_selection == 'manual':
             dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '500-PPMC')],

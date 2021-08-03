@@ -428,6 +428,10 @@ class StockPicking(models.Model):
             return res
         # Se usaran datos de modulo de dimabe_manufacturing
         if self.picking_type_code == 'outgoing':
+            if all(s.consumed for s in self.packing_list_ids):
+                self.packing_list_ids.write({
+                    'consumed': False
+                })
             if self.is_multiple_dispatch:
                 view = self.env.ref('dimabe_manufacturing.view_principal_order')
                 wiz = self.env['confirm.principal.order'].create({

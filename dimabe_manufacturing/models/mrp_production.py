@@ -232,9 +232,16 @@ class MrpProduction(models.Model):
             if not fin.lot_id.stock_production_lot_serial_ids:
                 fin.write({
                     'state': 'draft',
-                    'qty_done': sum(fin.lot_id.stock_production_lot_serial_ids.mapped('display_weight'))
                 })
                 fin.unlink()
+            else:
+                fin.write({
+                    'state': 'draft',
+                    'qty_done': sum(fin.lot_id.stock_production_lot_serial_ids.mapped('display_weight'))
+                })
+                fin.write({
+                    'state': 'done'
+                })
         res = super(MrpProduction, self).button_mark_done()
         for move in self.move_raw_ids:
             if move.quantity_done == 0 or move.product_uom_qty == 0:
