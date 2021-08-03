@@ -1010,7 +1010,7 @@ class StockProductionLot(models.Model):
         if not to_fix:
             lots = self.env['stock.production.lot'].search([('product_id', '=', product_id), ('available_kg', '>', 0)])
         else:
-            lots = self.env['stock.production.lot'].search([('product_id', '=', product_id), ('available_kg', '=', 0)])
+            lots = self.env['stock.production.lot'].search([('product_id', '=', product_id), ('available_kg', '=', 0),('harvest','=',2021)])
         for lot in lots:
             quant = self.env['stock.quant'].search([('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal')])
             if quant:
