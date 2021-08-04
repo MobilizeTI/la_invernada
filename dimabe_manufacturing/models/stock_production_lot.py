@@ -1007,7 +1007,7 @@ class StockProductionLot(models.Model):
             item.change_best = True
 
     def get_and_update(self, product_id,to_fix=False):
-        lots = self.env['stock.production.lot'].search([('product_id', '=', product_id)])
+        lots = self.env['stock.production.lot'].search([('product_id', '=', product_id),('available_kg','>',0)])
         for lot in lots:
             quant = self.env['stock.quant'].search([('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal')])
             if quant:
