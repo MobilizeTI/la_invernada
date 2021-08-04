@@ -48,3 +48,27 @@ class StockMoveLine(models.Model):
                     'state': 'done'
                 })
                 ml.lot_id.update_stock_quant(location_id=ml.location_id.id)
+
+    def fix_move_line_suplly(self):
+        lines = self.env['stock.move.line'].search(
+            [('state', '=', 'done'), ('move_id.raw_material_production_id', '!=', False)])
+        line_suplly = lines.filtered(lambda x: not x.move_id.needs_lots and x.write_date.month >= 6 and x.write_date.year == 2021)
+        for suplly in line_suplly.mapped('location_id'):
+            products = line_suplly.filtered(lambda x: x.location_id.id == suplly.id).mapped('product_id')
+            line_location = line_suplly.filtered(lambda x: x.location_id.id == suplly.id)
+            for product in products:
+                quant = self.env['stock.quant'].search(
+                    [('product_id.id', '=', product.id), ('location_id.id', '=', suplly.id)])
+                if quant:
+                    quant.write({
+                        'quantity': quant.quantity - sum(
+                            line_location.filtered(lambda x: x.product_id.id == product.id).mapped('qty_done'))
+                    })
+                else:
+                    self.env['stock.quant'].sudo().create({
+                        'quantity': 0 - sum(
+                            line_location.filtered(lambda x: x.product_id.id == product.id).mapped('qty_done')),
+                        'location_id': suplly.id,
+                        'product_id': product.id,
+                        'in_date': datetime.now()
+                    })
