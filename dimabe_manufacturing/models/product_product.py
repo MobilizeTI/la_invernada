@@ -1,7 +1,7 @@
 from odoo import fields, models, api
 from odoo.tools.float_utils import float_round
 from datetime import datetime
-
+from odoo.addons import decimal_precision as dp
 
 class ProductProduct(models.Model):
     _inherit = 'product.product'
@@ -36,7 +36,7 @@ class ProductProduct(models.Model):
 
     measure = fields.Char('Medida', compute='_compute_measure')
 
-    total_weight = fields.Float('Total Kilos Disponibles', compute='_compute_total_weight')
+    total_weight = fields.Float('Total Kilos Disponibles', compute='_compute_total_weight',digits=dp.get_precision('Product Unit of Measure'))
 
     dispatch_weight = fields.Float('Kilos Despachados', compute='_compute_dispatch_weight')
 
