@@ -242,7 +242,7 @@ class DriedUnpelledHistory(models.Model):
                 res.out_product_id = unpelled_dried_id.out_product_id.id
                 res.out_lot_id = unpelled_dried_id.out_lot_id
                 res.out_lot_id.verify_without_lot()
-                res.out_lot_id.update_kg(res.out_lot_id.id)
+                res.out_lot_id.update_kg(res.out_lot_id.product_id.id)
                 res.oven_use_ids = unpelled_dried_id.oven_use_ids.filtered(
                     lambda a: a.ready_to_close
                 )
