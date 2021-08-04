@@ -86,7 +86,7 @@ class AccountInvoiceXlsx(models.Model):
                      ('date_invoice', '<=', self.to_date), ('dte_type_id.code', '=', 33),
                      ('company_id.id', '=', self.company_get_id.id)]
 
-                invoices = self.env['account.invoice'].sudo().search(domain_invoices) #fafcuras elctronicas
+                invoices = self.env['account.invoice'].sudo().search(domain_invoices, order='date_invoice asc') #facturas electronicas
                 begin = row
                 row += 1
                 data_invoice = self.set_data_for_excel(sheet, row, invoices, taxes_title, titles, formats, exempt=False)
@@ -260,6 +260,7 @@ class AccountInvoiceXlsx(models.Model):
                 row = data_exempt['row']
                 domain_credit = [
                     ('date_invoice', '>=', self.from_date),
+                    ('date_invoice', '<=', self.to_date),
                     ('type', 'in', ('out_invoice', 'out_refund')),
                     ('dte_type_id.code', '=', 61), #TODO llevarlo a FE sii_document_type_id.code
                     ('company_id.id', '=', self.company_get_id.id)
