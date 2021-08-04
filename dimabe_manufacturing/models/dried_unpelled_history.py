@@ -252,6 +252,7 @@ class DriedUnpelledHistory(models.Model):
                 res.canning_id = unpelled_dried_id.canning_id
         return res
 
+
     @api.multi
     def adjust_stock(self):
         for item in self:
