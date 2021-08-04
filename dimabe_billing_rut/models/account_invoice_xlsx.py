@@ -101,7 +101,8 @@ class AccountInvoiceXlsx(models.Model):
                                                                      ('type', 'in', ('in_invoice', 'in_refund')),
                                                                      ('date_invoice', '<=', self.to_date),
                                                                      ('dte_type_id.code', '=', 34),
-                                                                     ('company_id.id', '=', self.company_get_id.id)])
+                                                                     ('company_id.id', '=', self.company_get_id.id)],
+                                                                     order='date_invoice asc')  #ORDENA ASCENDENTE
                 row += 2
                 sheet.merge_range(row, col, row, 5,
                                   'Factura de compra exenta electronica. (FACTURA COMPRA ELECTRONICA)',
@@ -118,7 +119,8 @@ class AccountInvoiceXlsx(models.Model):
                                                                     ('type', 'in', ('in_invoice', 'in_refund')),
                                                                     ('date_invoice', '<=', self.to_date),
                                                                     ('dte_type_id.code', '=', 61),
-                                                                    ('company_id.id', '=', self.company_get_id.id)])
+                                                                    ('company_id.id', '=', self.company_get_id.id)],
+                                                                    order='date_invoice asc') #ORDENA ASCENDENTE
 
                 row += 2
                 sheet.merge_range(row, col, row, 5,
@@ -141,7 +143,8 @@ class AccountInvoiceXlsx(models.Model):
                                                                    ('date_invoice', '<=', self.to_date),
                                                                    ('type', 'in', ('in_invoice', 'in_refund')),
                                                                    ('dte_type_id.code', '=', 56),
-                                                                   ('company_id.id', '=', self.company_get_id.id)])
+                                                                   ('company_id.id', '=', self.company_get_id.id)],
+                                                                   order='date_invoice asc') #ORDENA ASCENDENTE
                                                                    
                 data_debit = self.set_data_for_excel(sheet, row, debit, taxes_title, titles, formats, exempt=False)
                 debit_total = data_debit.get('total').get('total')
@@ -234,7 +237,8 @@ class AccountInvoiceXlsx(models.Model):
                     [('date_invoice', '>=', self.from_date),
                      ('type', 'in', ('out_invoice', 'out_refund')),
                      ('date_invoice', '<=', self.to_date), ('dte_type_id.code', '=', 33),
-                     ('company_id.id', '=', self.company_get_id.id)])
+                     ('company_id.id', '=', self.company_get_id.id)],
+                     order='date_invoice asc') #ORDEN ASCENDENTE 
                 begin = row
                 row += 1
                 data_invoice = self.set_data_for_excel(sheet, row, invoices, taxes_title, titles, formats, exempt=False)
@@ -247,7 +251,8 @@ class AccountInvoiceXlsx(models.Model):
                                                                      ('type', 'in', ('out_invoice', 'out_refund')),
                                                                      ('date_invoice', '<=', self.to_date),
                                                                      ('dte_type_id.code', '=', 34),
-                                                                     ('company_id.id', '=', self.company_get_id.id)])
+                                                                     ('company_id.id', '=', self.company_get_id.id)],
+                                                                     order='date_invoice asc') #ORDEN ASCENDENTE
                 row += 2
                 sheet.merge_range(row, col, row, 5,
                                   'Factura de Ventas exenta electronica. (FACTURA VENTAS EXENTA ELECTRONICA)',
@@ -266,7 +271,7 @@ class AccountInvoiceXlsx(models.Model):
                     ('dte_type_id.code', '=', 61), #TODO llevarlo a FE sii_document_type_id.code
                     ('company_id.id', '=', self.company_get_id.id)
                     ]
-                credit = self.env['account.invoice'].sudo().search(domain_credit)
+                credit = self.env['account.invoice'].sudo().search(domain_credit, order='date_invoice asc')  # Ordena NOTAS DE CREDITO ASCENDENTES
                 # _logger.info('LOG: ***** notas de credito {} domain {}'.format(credit, domain_credit))
 
                 row += 2
@@ -289,7 +294,8 @@ class AccountInvoiceXlsx(models.Model):
                                                                    ('date_invoice', '<=', self.to_date),
                                                                    ('type', 'in', ('out_invoice', 'out_refund')),
                                                                    ('dte_type_id.code', '=', 56),
-                                                                   ('company_id.id', '=', self.company_get_id.id)])
+                                                                   ('company_id.id', '=', self.company_get_id.id)],
+                                                                   order='date_invoice asc') #ORDENA DEBITO ASCENDENTE
                 data_debit = self.set_data_for_excel(sheet, row, debit, taxes_title, titles, formats, exempt=False)
                 debit_total = data_debit.get('total').get('total')
                 debit_net = data_debit.get('total').get('net')
