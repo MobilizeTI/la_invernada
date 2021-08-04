@@ -46,7 +46,7 @@ class StockQuant(models.Model):
             ).mapped('display_weight'))
 
     def verify_negative_quant(self):
-        quants = self.env['stock.quant'].search([('quantity', '<', 0), ('location_id.usage', '=', 'internal')])
+        quants = self.env['stock.quant'].search([('product_id.tracking','=','lot'),('quantity', '<', 0), ('location_id.usage', '=', 'internal')])
         if quants:
             for quant in quants:
                 try:
@@ -63,17 +63,17 @@ class StockQuant(models.Model):
             if self.lot_id:
                 self.verify_negative_quant()
 
-                self.lot_id.update_stock_quant_production(location_id=location_id)
+                self.lot_id.get_and_update(product_id.id)
                 return
             else:
-                self.lot_id.update_stock_quant_production(location_id=location_id)
+                self.lot_id.get_and_update(product_id.id)
                 self.verify_negative_quant()
 
                 return super(StockQuant, self)._update_reserved_quantity(product_id, location_id, quantity, lot_id,
                                                                          package_id, owner_id, strict)
         except UserError:
             if product_id.tracking == 'lot':
-                self.lot_id.update_stock_quant_production(location_id=location_id)
+                self.lot_id.get_and_update(product_id.id)
                 self.verify_negative_quant()
                 return
             res = super(StockQuant, self)._update_reserved_quantity(product_id, location_id, quantity, lot_id,
