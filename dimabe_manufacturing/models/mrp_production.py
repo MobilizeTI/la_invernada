@@ -201,33 +201,46 @@ class MrpProduction(models.Model):
     def calculate_done(self):
         for item in self:
             if item.product_id.categ_id.parent_id.name == 'Producto Terminado':
-                list_serial_pt = Enumerable(self.workorder_ids[0].summary_out_serial_ids).where(lambda x: x.product_id.id == item.product_id.id).count()
+                list_serial_pt = Enumerable(self.workorder_ids[0].summary_out_serial_ids).where(
+                    lambda x: x.product_id.id == item.product_id.id).count()
                 for move in item.move_raw_ids.filtered(lambda x: not x.needs_lots):
                     move.active_move_line_ids.sudo().unlink()
-                    component_ids = Enumerable(item.bom_id.bom_line_ids).where(lambda x: x.product_id.id == move.product_id.id)
+                    component_ids = Enumerable(item.bom_id.bom_line_ids).where(
+                        lambda x: x.product_id.id == move.product_id.id)
                     self.env['stock.move.line'].create({
                         'product_id': move.product_id.id,
                         'production_id': item.id,
                         'qty_done': list_serial_pt * component_ids.first_or_default().product_qty,
                         'location_id': item.location_src_id.id,
-                        'product_uom_id':move.product_id.uom_id.id,
-                        'location_dest_id': self.env['stock.location'].search([('usage','=','production')],limit=1).id,
+                        'product_uom_id': move.product_id.uom_id.id,
+                        'location_dest_id': self.env['stock.location'].search([('usage', '=', 'production')],
+                                                                              limit=1).id,
                         'move_id': move.id,
-                        'lot_produced_id': item.finished_move_line_ids.filtered(lambda x: x.product_id.id == item.product_id.id).lot_id.id
+                        'state': 'done',
+                        'lot_produced_id': item.finished_move_line_ids.filtered(
+                            lambda x: x.product_id.id == item.product_id.id).lot_id.id
                     })
-
+                    quant = self.env['stock.quant'].search(
+                        [('product_id', '=', move.product_id.id), ('location_id', '=', item.location_src_id.id)])
+                    if quant:
+                        quant.sudo().write({
+                            'quantity': quant.quantity - (list_serial_pt * component_ids.first_or_default().product_qty)
+                        })
+                    else:
+                        test = 0 - (list_serial_pt * component_ids.first_or_default().product_qty)
+                        quant = self.env['stock.quant'].sudo().create({
+                            'quantity': 0 - (list_serial_pt * component_ids.first_or_default().product_qty),
+                            'location_id': item.location_src_id.id,
+                            'product_id': move.product_id.id,
+                            'in_date': datetime.now()
+                        })
+                        print(quant)
 
     @api.multi
     def button_mark_done(self):
         self.calculate_done()
         for item in self.workorder_ids:
             item.organize_move_line()
-        for move in self.move_raw_ids:
-            if move.quantity_done == 0:
-                move.write({
-                    'state': 'draft'
-                })
-                move.unlink()
         for fin in self.finished_move_line_ids:
             if not fin.lot_id.stock_production_lot_serial_ids:
                 fin.write({
@@ -265,7 +278,7 @@ class MrpProduction(models.Model):
         cr = self._cr
         cr.execute(query)
 
-    def get_measure(self,measure):
+    def get_measure(self, measure):
         list_char = []
         for m in measure:
             if m.isdigit() or m == '.':

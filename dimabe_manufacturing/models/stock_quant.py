@@ -46,7 +46,7 @@ class StockQuant(models.Model):
             ).mapped('display_weight'))
 
     def verify_negative_quant(self):
-        quants = self.env['stock.quant'].search([('quantity', '<', 0), ('location_id.usage', '=', 'internal')])
+        quants = self.env['stock.quant'].search([('product_id.tracking','=','lot'),('quantity', '<', 0), ('location_id.usage', '=', 'internal')])
         if quants:
             for quant in quants:
                 try:
