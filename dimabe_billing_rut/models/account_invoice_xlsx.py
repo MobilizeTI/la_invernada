@@ -85,7 +85,7 @@ class AccountInvoiceXlsx(models.Model):
                      ('type', 'in', ('in_invoice', 'in_refund')),
                      ('date_invoice', '<=', self.to_date), ('dte_type_id.code', '=', 33),
                      ('company_id.id', '=', self.company_get_id.id)]
-                #Ordenar por
+                
                 invoices = self.env['account.invoice'].sudo().search(domain_invoices, order='date_invoice asc') #facturas electronicas
                 begin = row
                 row += 1
