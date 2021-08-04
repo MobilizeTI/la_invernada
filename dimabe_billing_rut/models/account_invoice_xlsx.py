@@ -49,7 +49,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet = wk['worksheet']
                 formats = self.set_formats(workbook)
                 region = self.env['region.address'].search([('id', '=', 1)])
-                titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha (Período de facturación)', 'RUT', 'Nombre', '#', 'EXENTO', 'NETO IVA', 'TOTAL NETO', 'IVA',
+                titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', 'Nombre', '#', 'EXENTO', 'NETO IVA', 'TOTAL NETO', 'IVA',
                           'IVA NO RECUPERABLE']
                 invoices_get_tax = self.env['account.invoice'].sudo().search(
                     [('dte_type_id', '!=', None), ('company_id', '=', self.company_get_id.id),
@@ -86,7 +86,7 @@ class AccountInvoiceXlsx(models.Model):
                      ('type', 'in', ('in_invoice', 'in_refund')),
                      ('date', '<=', self.to_date), ('dte_type_id.code', '=', 33),
                      ('company_id.id', '=', self.company_get_id.id)]
-                #cambio en Order xxx 
+                #cambio en Order
                 invoices = self.env['account.invoice'].sudo().search(domain_invoices, order='date asc') #facturas electronicas
                 begin = row
                 row += 1
@@ -201,7 +201,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet = wk['worksheet']
                 formats = self.set_formats(workbook)
                 region = self.env['region.address'].search([('id', '=', 1)])
-                titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha (Período de facturación)', 'RUT', 'Nombre', '#', 'EXENTO', 'NETO', 'IVA',
+                titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', 'Nombre', '#', 'EXENTO', 'NETO', 'IVA',
                           'IVA NO RECUPERABLE']
                 invoices_get_tax = self.env['account.invoice'].sudo().search(
                     [('dte_type_id', '!=', None), ('company_id', '=', self.company_get_id.id)])
