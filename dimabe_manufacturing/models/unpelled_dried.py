@@ -376,7 +376,7 @@ class UnpelledDried(models.Model):
             if not item.oven_use_ids:
                 item.state = 'draft'
             item.out_lot_id.verify_without_lot()
-            item.out_lot_id.update_kg(item.out_lot_id.id)
+            item.out_lot_id.update_kg(item.out_lot_id.product_id.id)
 
 
     @api.multi
@@ -384,7 +384,7 @@ class UnpelledDried(models.Model):
 
         unpelled_dried_id = 'unpelled_dried_id' in self.env.context and self.env.context['unpelled_dried_id'] or False
         self.out_lot_id.verify_without_lot()
-        self.out_lot_id.update_kg(self.out_lot_id.id)
+        self.out_lot_id.update_kg(self.out_lot_id.product_id.id)
 
         return {
             'type': 'ir.actions.act_window',

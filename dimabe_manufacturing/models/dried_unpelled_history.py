@@ -242,7 +242,7 @@ class DriedUnpelledHistory(models.Model):
                 res.out_product_id = unpelled_dried_id.out_product_id.id
                 res.out_lot_id = unpelled_dried_id.out_lot_id
                 res.out_lot_id.verify_without_lot()
-                res.out_lot_id.update_kg(res.out_lot_id.id)
+                res.out_lot_id.update_kg(res.out_lot_id.product_id.id)
                 res.oven_use_ids = unpelled_dried_id.oven_use_ids.filtered(
                     lambda a: a.ready_to_close
                 )
@@ -271,7 +271,7 @@ class DriedUnpelledHistory(models.Model):
             ])
             item.total_out_weight = item.out_serial_sum
             item.out_lot_id.verify_without_lot()
-            item.out_lot_id.update_kg(item.out_lot_id.id)
+            item.out_lot_id.update_kg(item.out_lot_id.product_id.id)
 
             if not stock_move_line:
                 raise models.ValidationError('no se encontró el registro de stock asociado a este proceso')
