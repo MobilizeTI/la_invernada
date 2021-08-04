@@ -383,7 +383,7 @@ class StockProductionLotSerial(models.Model):
             res.stock_production_lot_id.write({
                 'label_durability_id':production.label_durability_id.id
             })
-            res.stock_production_lot_id.update_stock_quant_production(production.location_dest_id.id)
+            res.lot_id.get_and_update(res.product_id.id)
         res.label_durability_id = res.stock_production_lot_id.label_durability_id
 
         if res.bom_id:

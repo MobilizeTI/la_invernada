@@ -538,7 +538,7 @@ class MrpWorkorder(models.Model):
             self.write({
                 'producers_id': [(4, serial.producer_id.id)]
             })
-        serial.stock_production_lot_id.update_stock_quant_production(self.production_id.location_src_id.id)
+        serial.lot_id.get_and_update(serial.product_id.id)
         serial.stock_production_lot_id.update_kg(serial.stock_production_lot_id.id)
         line_new = self.env['stock.move.line']
         move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == serial.product_id.id)
