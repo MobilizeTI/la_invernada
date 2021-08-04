@@ -52,7 +52,7 @@ class StockMoveLine(models.Model):
     def fix_move_line_suplly(self):
         lines = self.env['stock.move.line'].search(
             [('state', '=', 'done'), ('move_id.raw_material_production_id', '!=', False)])
-        line_suplly = lines.filtered(lambda x: not x.move_id.needs_lots and x.write_date.month >= 6 and x.write_date.year == 2021)
+        line_suplly = lines.filtered(lambda x: not x.move_id.needs_lots and x.product_id.tracking != 'lot' and x.write_date.month >= 6 and x.write_date.year == 2021)
         for suplly in line_suplly.mapped('location_id'):
             products = line_suplly.filtered(lambda x: x.location_id.id == suplly.id).mapped('product_id')
             line_location = line_suplly.filtered(lambda x: x.location_id.id == suplly.id)
