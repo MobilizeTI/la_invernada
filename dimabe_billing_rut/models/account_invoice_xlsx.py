@@ -81,11 +81,12 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.merge_range(row, col, row, 5, 'Factura de compra electronica. (FACTURA COMPRA ELECTRONICA)',
                                   formats['title'])
                 row += 1
-                invoices = self.env['account.invoice'].sudo().search(
-                    [('date_invoice', '>=', self.from_date),
+                domain_invoices = [('date_invoice', '>=', self.from_date),
                      ('type', 'in', ('in_invoice', 'in_refund')),
                      ('date_invoice', '<=', self.to_date), ('dte_type_id.code', '=', 33),
-                     ('company_id.id', '=', self.company_get_id.id)])
+                     ('company_id.id', '=', self.company_get_id.id)]
+
+                invoices = self.env['account.invoice'].sudo().search(domain_invoices) #fafcuras elctronicas
                 begin = row
                 row += 1
                 data_invoice = self.set_data_for_excel(sheet, row, invoices, taxes_title, titles, formats, exempt=False)
@@ -94,6 +95,7 @@ class AccountInvoiceXlsx(models.Model):
                 invoice_tax = data_invoice.get('total').get('tax')
                 sheet = data_invoice['sheet']
                 row = data_invoice['row']
+
                 exempts = self.env['account.invoice'].sudo().search([('date_invoice', '>=', self.from_date),
                                                                      ('type', 'in', ('in_invoice', 'in_refund')),
                                                                      ('date_invoice', '<=', self.to_date),
@@ -110,6 +112,7 @@ class AccountInvoiceXlsx(models.Model):
                 exempt_tax = data_exempt.get('total').get('tax')
                 sheet = data_exempt['sheet']
                 row = data_exempt['row']
+                
                 credit = self.env['account.invoice'].sudo().search([('date_invoice', '>=', self.from_date),
                                                                     ('type', 'in', ('in_invoice', 'in_refund')),
                                                                     ('date_invoice', '<=', self.to_date),
@@ -132,11 +135,13 @@ class AccountInvoiceXlsx(models.Model):
                                   'NOTA DE DEBITO COMPRA ELECTRONICA (NOTA DE DEBITO COMPRA ELECTRONICA)',
                                   formats['title'])
                 row += 1
+
                 debit = self.env['account.invoice'].sudo().search([('date_invoice', '>=', self.from_date),
                                                                    ('date_invoice', '<=', self.to_date),
                                                                    ('type', 'in', ('in_invoice', 'in_refund')),
                                                                    ('dte_type_id.code', '=', 56),
                                                                    ('company_id.id', '=', self.company_get_id.id)])
+                                                                   
                 data_debit = self.set_data_for_excel(sheet, row, debit, taxes_title, titles, formats, exempt=False)
                 debit_total = data_debit.get('total').get('total')
                 debit_net = data_debit.get('total').get('net')
