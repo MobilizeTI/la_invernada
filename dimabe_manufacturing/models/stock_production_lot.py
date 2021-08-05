@@ -984,17 +984,13 @@ class StockProductionLot(models.Model):
                         'display_weight'))
                 })
 
-    def update_kg(self, product_id):
-        lots = self.env['stock.production.lot'].search([('product_id', '=', product_id)])
-        for lot in lots:
-            total = sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight'))
-            if total != lot.available_kg:
-                lot.sudo().write({
-                    'available_kg': total,
-                    'available_weight': total
-                })
-            else:
-                continue
+    def update_kg(self, lot_id):
+        lot = self.env['stock.production.lot'].search([('id', '=', lot_id)])
+        total = sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight'))
+        lot.sudo().write({
+            'available_kg': total,
+            'available_weight': total
+        })
 
     def verify_without_lot(self):
         for item in self:

@@ -3,6 +3,7 @@ from odoo.tools.float_utils import float_round
 from datetime import datetime
 from odoo.addons import decimal_precision as dp
 
+
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
@@ -36,7 +37,8 @@ class ProductProduct(models.Model):
 
     measure = fields.Char('Medida', compute='_compute_measure')
 
-    total_weight = fields.Float('Total Kilos Disponibles', compute='_compute_total_weight',digits=dp.get_precision('Product Unit of Measure'))
+    total_weight = fields.Float('Total Kilos Disponibles', compute='_compute_total_weight',
+                                digits=dp.get_precision('Product Unit of Measure'))
 
     dispatch_weight = fields.Float('Kilos Despachados', compute='_compute_dispatch_weight')
 
@@ -125,7 +127,7 @@ class ProductProduct(models.Model):
             total = sum(serial.mapped('display_weight'))
             item.dispatch_weight = total
 
-    def get_and_update(self, product_id,to_fix=False):
+    def get_and_update(self, product_id, to_fix=False):
         lots = self.env['stock.production.lot'].search([('product_id', '=', product_id)])
         for lot in lots:
             quant = self.env['stock.quant'].search([('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal')])
@@ -166,3 +168,10 @@ class ProductProduct(models.Model):
                 })
             else:
                 continue
+
+    def mass_fix_diference(self):
+        products = self.env['product.product'].search([('tracking', '=', 'lot')])
+        for product in products:
+            if product.total_weight != product.qty_available:
+                self.update_kg(product.id)
+                self.get_and_update(product.id)

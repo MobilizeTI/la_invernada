@@ -424,6 +424,14 @@ class StockPicking(models.Model):
                             -1].write({
                             'real_weight': self.avg_unitary_weight + diff
                         })
+            if self.get_mp_move or self.get_pt_move() and self.get_product_move():
+                m_move = self.get_mp_move()
+                if not m_move:
+                    m_move = self.get_pt_move()
+                if not m_move:
+                    m_move = self.get_product_move()
+                m_move.product_id.update_kg(product_id=m_move.product_id.id)
+                m_move.product_id.get_and_update(product_id=m_move.product_id.id)
 
             return res
         # Se usaran datos de modulo de dimabe_manufacturing
