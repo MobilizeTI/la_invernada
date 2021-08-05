@@ -396,7 +396,6 @@ class StockProductionLotSerial(models.Model):
                 res.gross_weight = res.display_weight + res.canning_id.weight
             else:
                 res.gross_weight = res.display_weight + sum(res.get_possible_canning_id().mapped('weight'))
-        res.product_id.mass_fix_diference()
         return res
 
     @api.model
