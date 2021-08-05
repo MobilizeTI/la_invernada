@@ -40,6 +40,7 @@ class AccountInvoiceXlsx(models.Model):
             company_name = ''
             begin = 0
             end = 0
+            
             for com in companies:
                 worksheet = workbook.add_worksheet(com.display_name)
                 array_worksheet.append({
@@ -152,13 +153,15 @@ class AccountInvoiceXlsx(models.Model):
                 debit_tax = data_debit.get('total').get('tax')
                 sheet = data_debit['sheet']
                 row = data_debit['row']
+                ti = 0
+                ti = ti + len(invoices) #contador total de facturas (Total Invoice)
 
                 net_total = invoice_net + exempt_net - abs(credit_net) + abs(debit_net)
                 tax_total = invoice_tax + exempt_tax - abs(credit_tax) + abs(debit_tax)
                 total_total = invoice_total + exempt_total - abs(credit_total) + abs(debit_total)
                 net_tax_total = net_total - exempt_net
                 sheet.write(row + 3, col + 5, 'Total General', formats['title'])
-                sheet.write(row + 3, col + 6, invoice_total, formats['total']) #SUMA DOCUMENTOS
+                sheet.write(row + 3, col + 6, ti, formats['total']) #SUMA DOCUMENTOS
                 sheet.write(row + 3, col + 7, exempt_total, formats['total'])
                 sheet.write(row + 3, col + 8, net_tax_total, formats['total'])
                 sheet.write(row + 3, col + 9, net_total, formats['total'])
@@ -193,6 +196,7 @@ class AccountInvoiceXlsx(models.Model):
             company_name = ''
             begin = 0
             end = 0
+            
             for com in companies:
                 worksheet = workbook.add_worksheet(com.display_name)
                 array_worksheet.append({
@@ -301,7 +305,7 @@ class AccountInvoiceXlsx(models.Model):
                 debit_total = data_debit.get('total').get('total')
                 debit_net = data_debit.get('total').get('net')
                 debit_tax = data_debit.get('total').get('tax')
-                
+                               
                 sheet = data_debit['sheet']
                 row = data_debit['row']
 
