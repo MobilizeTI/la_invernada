@@ -156,6 +156,8 @@ class ProductProduct(models.Model):
                         0].location_dest_id.id if lot.stock_production_lot_serial_ids.mapped('production_id') else 12,
                     'in_date': datetime.now()
                 })
+            self.env['stock.quant'].search([('quantity','>',0),('location_id.usage','=','internal'),('product_id','=',product_id)])
+            quant.sudo().unlink()
 
     def update_kg(self, product_id):
         lots = self.env['stock.production.lot'].search([('product_id', '=', product_id)])
