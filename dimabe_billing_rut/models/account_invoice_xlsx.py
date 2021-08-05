@@ -87,7 +87,7 @@ class AccountInvoiceXlsx(models.Model):
                      ('date', '<=', self.to_date), ('dte_type_id.code', '=', 33),
                      ('company_id.id', '=', self.company_get_id.id)]
                 #cambio en Order
-                invoices = self.env['account.invoice'].sudo().search(domain_invoices, order='date asc') #facturas electronicas
+                invoices = self.env['account.invoice'].sudo().search(domain_invoices, order='date asc, dte_type_id asc') #facturas electronicas
                 begin = row
                 row += 1
                 data_invoice = self.set_data_for_excel(sheet, row, invoices, taxes_title, titles, formats, exempt=False)
@@ -102,7 +102,7 @@ class AccountInvoiceXlsx(models.Model):
                                                                      ('date', '<=', self.to_date),
                                                                      ('dte_type_id.code', '=', 34),
                                                                      ('company_id.id', '=', self.company_get_id.id)],
-                                                                     order='date asc')  #ORDENA ASCENDENTE
+                                                                     order='date asc, dte_type_id asc')  #ORDENA ASCENDENTE
                 row += 2
                 sheet.merge_range(row, col, row, 5,
                                   'Factura de compra exenta electronica. (FACTURA COMPRA ELECTRONICA)',
@@ -157,7 +157,8 @@ class AccountInvoiceXlsx(models.Model):
                 tax_total = invoice_tax + exempt_tax - abs(credit_tax) + abs(debit_tax)
                 total_total = invoice_total + exempt_total - abs(credit_total) + abs(debit_total)
                 net_tax_total = net_total - exempt_net
-                sheet.write(row + 3, col + 6, 'Total General', formats['title'])
+                sheet.write(row + 3, col + 5, 'Total General', formats['title'])
+                sheet.write(row + 3, col + 6, len(invoices), formats['total']) #SUMA DOCUMENTOS
                 sheet.write(row + 3, col + 7, exempt_total, formats['total'])
                 sheet.write(row + 3, col + 8, net_tax_total, formats['total'])
                 sheet.write(row + 3, col + 9, net_total, formats['total'])
@@ -201,7 +202,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet = wk['worksheet']
                 formats = self.set_formats(workbook)
                 region = self.env['region.address'].search([('id', '=', 1)])
-                titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', 'Nombre', '#', 'EXENTO', 'NETO', 'IVA',
+                titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', 'Nombre', '#', 'EXENTO', 'NETO IVA', 'NETO', 'IVA',
                           'IVA NO RECUPERABLE']
                 invoices_get_tax = self.env['account.invoice'].sudo().search(
                     [('dte_type_id', '!=', None), ('company_id', '=', self.company_get_id.id)])
@@ -309,7 +310,8 @@ class AccountInvoiceXlsx(models.Model):
                 tax_total = invoice_tax + exempt_tax - abs(credit_tax) + abs(debit_tax)
                 total_total = invoice_total + exempt_total - abs(credit_total) + abs(debit_total)
                 net_tax_total = net_total - exempt_net
-                sheet.write(row + 3, col + 6, 'Total General', formats['title'])
+                sheet.write(row + 3, col + 5, 'Total General', formats['title']) #SE CORRE UNA CELDA HACIA IZQUIERDA
+                sheet.write(row + 3, col + 6, len(invoices), formats['total']) #SUMA DOCUMENTOS
                 sheet.write(row + 3, col + 7, exempt_total, formats['total'])
                 sheet.write(row + 3, col + 8, net_tax_total, formats['total'])
                 sheet.write(row + 3, col + 9, net_total, formats['total'])
