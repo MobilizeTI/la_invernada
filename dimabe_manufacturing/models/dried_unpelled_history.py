@@ -272,7 +272,7 @@ class DriedUnpelledHistory(models.Model):
             ])
             item.total_out_weight = item.out_serial_sum
             item.out_lot_id.verify_without_lot()
-            item.out_lot_id.update_kg(item.out_lot_id.id)
+            item.out_lot_id.update_kg(item.out_lot_id.product_id.id)
 
             if not stock_move_line:
                 raise models.ValidationError('no se encontró el registro de stock asociado a este proceso')

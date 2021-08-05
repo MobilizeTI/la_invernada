@@ -154,3 +154,15 @@ class ProductProduct(models.Model):
                         0].location_dest_id.id if lot.stock_production_lot_serial_ids.mapped('production_id') else 12,
                     'in_date': datetime.now()
                 })
+
+    def update_kg(self, product_id):
+        lots = self.env['stock.production.lot'].search([('product_id', '=', product_id)])
+        for lot in lots:
+            total = sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight'))
+            if total != lot.available_kg:
+                lot.sudo().write({
+                    'available_kg': total,
+                    'available_weight': total
+                })
+            else:
+                continue
