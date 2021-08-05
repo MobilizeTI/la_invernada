@@ -379,12 +379,12 @@ class StockProductionLotSerial(models.Model):
         if production:
             res.production_id = production.id
             res.reserve_to_stock_picking_id = production.stock_picking_id.id
-            res.stock_production_lot_id.update_kg(res.stock_production_lot_id.product_id.id)
+            res.stock_production_lot_id.update_kg(res.stock_production_lot_id.id)
             res.stock_production_lot_id.write({
                 'label_durability_id':production.label_durability_id.id
             })
             res.stock_production_lot_id.get_and_update(res.product_id.id)
-            res.stock_production_lot_id.update_kg(res.product_id.id)
+            res.stock_production_lot_id.update_kg(res.stock_production_lot_id.product_id.id)
         res.label_durability_id = res.stock_production_lot_id.label_durability_id
 
         if res.bom_id:
@@ -428,7 +428,7 @@ class StockProductionLotSerial(models.Model):
             if 'consumed' in vals.keys():
                 if vals['consumed']:
                     item.stock_production_lot_id.verify_without_lot()
-                    item.stock_production_lot_id.update_kg(item.stock_production_lot_id.product_id.id)
+                    item.stock_production_lot_id.update_kg(item.stock_production_lot_id.id)
         return res
 
     @api.model
@@ -442,7 +442,7 @@ class StockProductionLotSerial(models.Model):
 
                 )
             lot = self.env['stock.production.lot'].search([('id', '=', item.stock_production_lot_id.id)])
-            lot.update_kg(lot.product_id.id)
+            lot.update_kg(lot.id)
             lot.get_and_update(lot.product_id.id)
             if item.production_id and item.production_id.state != 'done':
                 production = self.env['mrp.production'].search([('id', '=', item.production_id.id)])
@@ -455,7 +455,7 @@ class StockProductionLotSerial(models.Model):
                         'display_weight'))
                 })
             res = super(StockProductionLotSerial, item).unlink()
-            lot.update_kg(lot.product_id.id)
+            lot.update_kg(lot.id)
             lot.get_and_update(lot.product_id.id)
             return res
 
