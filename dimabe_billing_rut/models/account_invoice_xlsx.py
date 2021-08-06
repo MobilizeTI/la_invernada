@@ -32,17 +32,17 @@ class AccountInvoiceXlsx(models.Model):
 
     @api.multi
     def generate_purchase_book(self):
+        file_name = 'salebook.xlsx'
+        workbook = xlsxwriter.Workbook(file_name, {'in_memory': True, 'strings_to_numbers': True})
+        formats = self.set_formats(workbook)
+        stotal = 0
+        srow = 0
         for item in self:
-            file_name = 'salebook.xlsx'
             array_worksheet = []
             companies = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)])
-            workbook = xlsxwriter.Workbook(file_name, {'in_memory': True, 'strings_to_numbers': True})
-            formats = self.set_formats(workbook)
             company_name = ''
             begin = 0
             end = 0
-            stotal = 0
-            srow = 0
             
             for com in companies:
                 worksheet = workbook.add_worksheet(com.display_name)
@@ -174,7 +174,7 @@ class AccountInvoiceXlsx(models.Model):
                 stotal += _total
                 srow += row + 3
 
-            sheet.write(srow + 3, 6, stotal, formats['total']) # TOTAL TOTAL
+        sheet.write(srow + 3, 6, stotal, formats['total']) # TOTAL TOTAL
 
         workbook.close()
         with open(file_name, "rb") as file:
