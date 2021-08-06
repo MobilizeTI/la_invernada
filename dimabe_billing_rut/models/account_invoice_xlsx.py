@@ -193,6 +193,7 @@ class AccountInvoiceXlsx(models.Model):
 
     @api.multi
     def generate_sale_book(self):
+        count_invoice = 0
         for item in self:
             file_name = 'salebook.xlsx'
             array_worksheet = []
@@ -258,6 +259,7 @@ class AccountInvoiceXlsx(models.Model):
                 invoice_tax = data_invoice.get('total').get('tax')
                 sheet = data_invoice['sheet']
                 row = data_invoice['row']
+                count_invoice += data_invoice['count_invoice']
                 exempts = self.env['account.invoice'].sudo().search([('date', '>=', self.from_date),
                                                                      ('type', 'in', ('out_invoice', 'out_refund')),
                                                                      ('date', '<=', self.to_date),
@@ -274,7 +276,7 @@ class AccountInvoiceXlsx(models.Model):
                 exempt_net = data_exempt.get('total').get('net')
                 exempt_tax = data_exempt.get('total').get('tax')
                 sheet = data_exempt['sheet']
-                row = data_exempt['row']
+                row = data_exempt['row']               
                 domain_credit = [
                     ('date', '>=', self.from_date),
                     ('date', '<=', self.to_date),
@@ -286,6 +288,7 @@ class AccountInvoiceXlsx(models.Model):
                 # _logger.info('LOG: ***** notas de credito {} domain {}'.format(credit, domain_credit))
 
                 row += 2
+                count_invoice += data_exempt['count_invoice']
                 sheet.merge_range(row, col, row, 5,
                                   'Nota de Credito Ventas Electronica (NOTA DE CREDITO VENTAS ELECTRONICA)',
                                   formats['title'])
@@ -297,10 +300,14 @@ class AccountInvoiceXlsx(models.Model):
                 sheet = data_credit['sheet']
                 row = data_credit['row']
                 row += 2
+                count_invoice += data_credit['count_invoice']
+
                 sheet.merge_range(row, col, row, 5,
                                   'Nota de Debitos Ventas ELECTRONICA (NOTA DE DEBITO VENTAS ELECTRONICA)',
                                   formats['title'])
                 row += 1
+               
+
                 debit = self.env['account.invoice'].sudo().search([('date', '>=', self.from_date),
                                                                    ('date', '<=', self.to_date),
                                                                    ('type', 'in', ('out_invoice', 'out_refund')),
@@ -314,6 +321,7 @@ class AccountInvoiceXlsx(models.Model):
                                
                 sheet = data_debit['sheet']
                 row = data_debit['row']
+                count_invoice += data_debit['count_invoice']
                 
                 
 
