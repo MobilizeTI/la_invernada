@@ -152,8 +152,7 @@ class AccountInvoiceXlsx(models.Model):
                 debit_net = data_debit.get('total').get('net')
                 debit_tax = data_debit.get('total').get('tax')
                 sheet = data_debit['sheet']
-                row = data_debit['row']
-                ti = 0
+                row = data_debit['row']                
                 ti = ti + len(invoices) #contador total de facturas (Total Invoice)
 
                 net_total = invoice_net + exempt_net - abs(credit_net) + abs(debit_net)
@@ -308,6 +307,7 @@ class AccountInvoiceXlsx(models.Model):
                                
                 sheet = data_debit['sheet']
                 row = data_debit['row']
+                ti = ti + len(invoices) #contador total de facturas (Total Invoice)
 
                 # sheet.merge_range(row, col + 8, row + 2, 7, 'Totales', formats['title'])
                 net_total = invoice_net + exempt_net - abs(credit_net) + abs(debit_net)
@@ -315,7 +315,7 @@ class AccountInvoiceXlsx(models.Model):
                 total_total = invoice_total + exempt_total - abs(credit_total) + abs(debit_total)
                 net_tax_total = net_total - exempt_net
                 sheet.write(row + 3, col + 5, 'Total General', formats['title']) #SE CORRE UNA CELDA HACIA IZQUIERDA
-                sheet.write(row + 3, col + 6, invoice_total, formats['total']) #SUMA DOCUMENTOS
+                sheet.write(row + 3, col + 6, ti, formats['total']) #SUMA DOCUMENTOS
                 sheet.write(row + 3, col + 7, exempt_total, formats['total'])
                 sheet.write(row + 3, col + 8, net_tax_total, formats['total'])
                 sheet.write(row + 3, col + 9, net_total, formats['total'])
