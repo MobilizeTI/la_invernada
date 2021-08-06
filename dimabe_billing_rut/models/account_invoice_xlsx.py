@@ -276,7 +276,8 @@ class AccountInvoiceXlsx(models.Model):
                 exempt_net = data_exempt.get('total').get('net')
                 exempt_tax = data_exempt.get('total').get('tax')
                 sheet = data_exempt['sheet']
-                row = data_exempt['row']               
+                row = data_exempt['row'] 
+                count_invoice += data_exempt['count_invoice']              
                 domain_credit = [
                     ('date', '>=', self.from_date),
                     ('date', '<=', self.to_date),
@@ -288,7 +289,7 @@ class AccountInvoiceXlsx(models.Model):
                 # _logger.info('LOG: ***** notas de credito {} domain {}'.format(credit, domain_credit))
 
                 row += 2
-                count_invoice += data_exempt['count_invoice']
+                
                 sheet.merge_range(row, col, row, 5,
                                   'Nota de Credito Ventas Electronica (NOTA DE CREDITO VENTAS ELECTRONICA)',
                                   formats['title'])
@@ -321,8 +322,7 @@ class AccountInvoiceXlsx(models.Model):
                                
                 sheet = data_debit['sheet']
                 row = data_debit['row']
-                count_invoice += data_debit['count_invoice']
-                
+                count_invoice += data_debit['count_invoice']           
                 
 
                 # sheet.merge_range(row, col + 8, row + 2, 7, 'Totales', formats['title'])
@@ -331,7 +331,7 @@ class AccountInvoiceXlsx(models.Model):
                 total_total = invoice_total + exempt_total - abs(credit_total) + abs(debit_total)
                 net_tax_total = net_total - exempt_net
                 sheet.write(row + 3, col + 5, 'Total General', formats['title']) #SE CORRE UNA CELDA HACIA IZQUIERDA
-                sheet.write(row + 3, col + 6, len(invoices), formats['total']) #SUMA DOCUMENTOS
+                sheet.write(row + 3, col + 6, count_invoice, formats['total']) #SUMA DOCUMENTOS
                 sheet.write(row + 3, col + 7, exempt_total, formats['total'])
                 sheet.write(row + 3, col + 8, net_tax_total, formats['total'])
                 sheet.write(row + 3, col + 9, net_total, formats['total'])
