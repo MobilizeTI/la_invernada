@@ -37,9 +37,12 @@ class AccountInvoiceXlsx(models.Model):
             array_worksheet = []
             companies = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)])
             workbook = xlsxwriter.Workbook(file_name, {'in_memory': True, 'strings_to_numbers': True})
+            formats = self.set_formats(workbook)
             company_name = ''
             begin = 0
             end = 0
+            stotal = 0
+            srow = 0
             
             for com in companies:
                 worksheet = workbook.add_worksheet(com.display_name)
@@ -48,7 +51,6 @@ class AccountInvoiceXlsx(models.Model):
                 })
             for wk in array_worksheet:
                 sheet = wk['worksheet']
-                formats = self.set_formats(workbook)
                 region = self.env['region.address'].search([('id', '=', 1)])
                 titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', 'Nombre', '#', 'EXENTO', 'NETO IVA', 'TOTAL NETO', 'IVA',
                           'IVA NO RECUPERABLE']
@@ -159,14 +161,20 @@ class AccountInvoiceXlsx(models.Model):
                 tax_total = invoice_tax + exempt_tax - abs(credit_tax) + abs(debit_tax)
                 total_total = invoice_total + exempt_total - abs(credit_total) + abs(debit_total)
                 net_tax_total = net_total - exempt_net
+                _total = len(invoices)
                 sheet.write(row + 3, col + 5, 'Total General', formats['title'])
-                sheet.write(row + 3, col + 6, len(invoices), formats['total']) #SUMA DOCUMENTOS
+                sheet.write(row + 3, col + 6, _total, formats['total']) #SUMA DOCUMENTOS
                 sheet.write(row + 3, col + 7, exempt_total, formats['total'])
                 sheet.write(row + 3, col + 8, net_tax_total, formats['total'])
                 sheet.write(row + 3, col + 9, net_total, formats['total'])
                 sheet.write(row + 3, col + 10, tax_total, formats['total'])
                 sheet.write(row + 3, col + 11, 0, formats['total']) #TODO totoales iva no recuperable
                 sheet.write(row + 3, col + 12, total_total, formats['total'])
+
+                stotal += _total
+                srow += row + 3
+
+            sheet.write(srow + 3, 6, stotal, formats['total']) # TOTAL TOTAL
 
         workbook.close()
         with open(file_name, "rb") as file:
