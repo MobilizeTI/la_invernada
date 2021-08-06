@@ -394,13 +394,17 @@ class AccountInvoiceXlsx(models.Model):
                 col += 1
         sheet.write(row, col, abs(sum(invoices.mapped('amount_total'))), formats['total'])
         col = 0
-        return {'sheet': sheet, 'row': row, 'total': {
-            'total' : sum(invoices.mapped('amount_total')),
-            'net' : sum(invoices.mapped('amount_untaxed')),
-            'tax': sum(invoices.mapped('amount_tax')),
-            'exempt': exempt_sum,
+        return {
+            'sheet': sheet, 
+            'row': row, 
+            'total': {
+                'total' : sum(invoices.mapped('amount_total')),
+                'net' : sum(invoices.mapped('amount_untaxed')),
+                'tax': sum(invoices.mapped('amount_tax')),
+                'exempt': exempt_sum,
+            },
             'count_invoice': count_invoice
-            }}
+        }
 
     def set_data_invoice(self, sheet, col, row, inv, invoices, taxes_title, titles, formats):
         # _logger.info('LOG: -- fact %r neto %r iva %r', inv, inv.amount_untaxed, inv.amount_tax)
