@@ -6,7 +6,7 @@ import xlsxwriter
 from odoo import fields, models, api
 from collections import Counter
 import logging
-_logger = logging.getLogger(__name__)
+_logger = logging.getLogger('TEST PURCHASE =======')
 
 class AccountInvoiceXlsx(models.Model):
     _name = 'account.invoice.xlsx'
@@ -119,7 +119,7 @@ class AccountInvoiceXlsx(models.Model):
                 exempt_tax = data_exempt.get('total').get('tax')
                 sheet = data_exempt['sheet']
                 row = data_exempt['row']
-                count_invoice += data_invoice['count_invoice']                
+                count_invoice += data_exempt['count_invoice']                
                 
                 credit = self.env['account.invoice'].sudo().search([('date', '>=', self.from_date),
                                                                     ('type', 'in', ('in_invoice', 'in_refund')),
@@ -139,7 +139,7 @@ class AccountInvoiceXlsx(models.Model):
                 credit_tax = data_credit.get('total').get('tax')
                 sheet = data_credit['sheet']
                 row = data_credit['row']
-                count_invoice += data_invoice['count_invoice']
+                count_invoice += data_credit['count_invoice']
                 row += 2
                 sheet.merge_range(row, col, row, 5,
                                   'NOTA DE DEBITO COMPRA ELECTRONICA (NOTA DE DEBITO COMPRA ELECTRONICA)',
@@ -159,7 +159,7 @@ class AccountInvoiceXlsx(models.Model):
                 debit_tax = data_debit.get('total').get('tax')
                 sheet = data_debit['sheet']
                 row = data_debit['row'] 
-                count_invoice += data_invoice['count_invoice']
+                count_invoice += data_debit['count_invoice']
                 
                 net_total = invoice_net + exempt_net - abs(credit_net) + abs(debit_net)
                 tax_total = invoice_tax + exempt_tax - abs(credit_tax) + abs(debit_tax)
