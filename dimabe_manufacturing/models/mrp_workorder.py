@@ -512,7 +512,6 @@ class MrpWorkorder(models.Model):
 
     def process_serial(self, serial_number):
         lots = self.potential_serial_planned_ids
-        weigths = lots.mapped('display_weight')
         if not isinstance(self.id, int):
             self = self._origin
         serial_number = serial_number.strip()
