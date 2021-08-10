@@ -13,9 +13,17 @@ class AccountInvoice(models.Model):
     @api.multi
     def remove_account_move_lines(self):
         to_removes = [
-            # ['account.invoice', ],
-            # ['account.partial.reconcile', ]
-            ['account.move', ]
+            ['account.voucher.line', ],
+            ['account.voucher', ],
+            ['account.bank.statement', ],
+            ['account.bank.statement.line', ],
+            ['account.payment', ],
+            ['account.analytic.line', ],
+            ['account.invoice.line', ],
+            ['account.invoice', ],
+            ['account.partial.reconcile', ],
+            ['account.move.line', ],
+            ['account.move', ],
         ]
         try:
             for line in to_removes:
