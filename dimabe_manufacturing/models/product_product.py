@@ -116,7 +116,7 @@ class ProductProduct(models.Model):
     def _compute_total_weight(self):
         for item in self:
             if item.tracking == 'lot':
-                lots = self.env['stock.production.lot'].search([('product_id', '=', item.id)])
+                lots = self.env['stock.production.lot'].search([('product_id', '=', item.id),('available_kg','>',0)])
                 item.total_weight = sum(lots.mapped('available_kg'))
 
     @api.multi
