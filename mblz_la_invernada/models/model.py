@@ -19,9 +19,9 @@ class AccountInvoice(models.Model):
             # ['account.bank.statement.line', ],
             # ['account.payment', ],
             # ['account.analytic.line', ],
-            ['account.move.line', ],
+            # ['account.move.line', ],
             # ['account.invoice', ],
-            # ['account.partial.reconcile', ],
+            ['account.partial.reconcile', ],
             # ['account.move.line', ],
             # ['account.move', ],
 
