@@ -47,7 +47,7 @@ class AccountInvoice(models.Model):
                 obj_name = line[0]
                 obj = self.pool.get(obj_name)
                 if obj:
-                    sql = "delete from {} where create_date <= '2020-12-31 23:59:59'".format(obj._table)
+                    sql = "delete from {} where date_invoice <= '2020-12-31 23:59:59'".format(obj._table)
                     self._cr.execute(sql)
         except Exception as e:
             raise Warning(e)
