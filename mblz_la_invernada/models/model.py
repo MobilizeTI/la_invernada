@@ -15,8 +15,7 @@ class AccountInvoice(models.Model):
         to_removes = [
             # ['account.invoice', ],
             ['account.partial.reconcile', ]
-            # ['account.partial.reconcile', ],
-            # ['account.move.line', ]
+            ['account.move', ]
         ]
         try:
             for line in to_removes:
