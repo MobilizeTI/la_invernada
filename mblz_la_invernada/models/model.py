@@ -14,7 +14,7 @@ class AccountInvoice(models.Model):
     def remove_account_move_lines(self):
         to_removes = [
             ['account.invoice', ],
-            ['account.move', ]
+            # ['account.move', ]
             # ['account.partial.reconcile', ],
             # ['account.move.line', ]
         ]
