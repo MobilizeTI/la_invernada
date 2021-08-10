@@ -48,7 +48,7 @@ class StockReportXlsx(models.TransientModel):
                  ('harvest_filter', '=', self.year)], 'Descarte')
         elif self.stock_selection == 'washed':
             dict_data = self.generate_excel_serial_report(
-                [('product_id.default_code', 'like', 'PSE016'), ('product_id.name', 'not like', 'Vana'),
+                [('product_id.default_code', 'like', 'PSE016'),('product_id.categ_id.name', 'in',('Envasado NSC', 'Partido Manual Calidad', 'Partido Mecánico/Láser')), ('product_id.name', 'not like', 'Vana'),
                  ('product_id.name', 'not like', '(S)'), ('harvest_filter', '=', self.year)], 'Producto Lavado')
         elif self.stock_selection == 'raw_service':
             dict_data = self.generate_excel_raw_report(
@@ -60,7 +60,8 @@ class StockReportXlsx(models.TransientModel):
                 'Producto Lavado Servicio')
         elif self.stock_selection == 'split_service':
             dict_data = self.generate_excel_serial_report(
-                [('product_id.default_code', 'like', 'PSES014'), ('harvest_filter', '=', self.year)],
+                [('product_id.categ_id.name', 'in',
+                  ('Envasado NSC Servicio', 'Partido Mecánico/Láser Servicio')), ('harvest_filter', '=', self.year)],
                 'Producto Partido Servicio')
         elif self.stock_selection == 'calibrate_service':
             dict_data = self.generate_excel_serial_report(
