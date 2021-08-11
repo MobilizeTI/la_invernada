@@ -61,7 +61,7 @@ class StockReportXlsx(models.TransientModel):
         elif self.stock_selection == 'split_service':
             dict_data = self.generate_excel_serial_report(
                 [('product_id.categ_id.name', 'in',
-                  ('Envasado NSC Servicio', 'Partido Mecánico/Láser Servicio')), ('harvest_filter', '=', self.year)],
+                  ('Producto Semi-elaborado / Envasado NSC Servicio', 'Partido Mecánico/Láser Servicio')), ('harvest_filter', '=', self.year)],
                 'Producto Partido Servicio')
         elif self.stock_selection == 'calibrate_service':
             dict_data = self.generate_excel_serial_report(
