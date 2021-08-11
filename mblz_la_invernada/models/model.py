@@ -21,9 +21,9 @@ class AccountInvoice(models.Model):
             # ['account.analytic.line', ],
             # ['account.move.line', ],
             # ['account.invoice', ],
-            ['account.partial.reconcile', ],
-            # ['account.move.line', ],
-            # ['account.move', ],
+            # ['account.partial.reconcile', ],
+            ['account.move.line', ],
+            ['account.move', ],
 
             ##### stock ######
             # ['stock.quant', ],
