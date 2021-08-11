@@ -59,6 +59,7 @@ class StockReportXlsx(models.TransientModel):
                 [('product_id.default_code', 'like', 'PSES016'), ('harvest_filter', '=', self.year)],
                 'Producto Lavado Servicio')
         elif self.stock_selection == 'split_service':
+
             dict_data = self.generate_excel_serial_report(
                 [('product_id.categ_id.name', 'in',
                   ('Envasado NSC Servicio', 'Partido Mecánico/Láser Servicio')), ('harvest_filter', '=', self.year)],
