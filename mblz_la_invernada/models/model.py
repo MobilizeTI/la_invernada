@@ -20,11 +20,11 @@ class AccountInvoice(models.Model):
             # ['account.payment', ],
             # ['account.analytic.line', ],
             # ['account.move.line', ],
-            ['account.partial.reconcile', ],
+            # ['account.partial.reconcile', ],
             # ['account.invoice', ],
             
-            # ['account.move.line', ],
-            # ['account.move', ],
+            ['account.move.line', ],
+            ['account.move', ],
 
             ##### stock ######
             # ['stock.quant', ],
@@ -48,8 +48,8 @@ class AccountInvoice(models.Model):
                 obj_name = line[0]
                 obj = self.pool.get(obj_name)
                 if obj:
-                    # sql = "delete from {} where date <= '2020-12-31 23:59:59'".format(obj._table)
-                    sql = "delete from {}".format(obj._table)
+                    sql = "delete from {} where date <= '2020-12-31 23:59:59'".format(obj._table)
+                    # sql = "delete from {}".format(obj._table)
                     self._cr.execute(sql)
         except Exception as e:
             raise Warning(e)
