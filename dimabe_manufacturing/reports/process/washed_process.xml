@@ -25,13 +25,13 @@
             <field name="view_mode">tree,form,pivot</field>
             <field name="view_id" ref="view_process_report_washed_tree"/>
             <field name="domain">
-                [('workcenter_id.code','=','310-PL')]
+                [('workcenter_id.code','=','310-PLV')]
             </field>
         </record>
         <menuitem id="process_washed_menu"
                   action="dimabe_manufacturing.process_report_washed"
                   name="Informe de Proceso Lavado"
-                  parent="process_report_menu"
+                  parent="process_report_menu"|
         />
 
     </data>
