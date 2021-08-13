@@ -23,8 +23,8 @@ class AccountInvoice(models.Model):
             # ['account.partial.reconcile', ],
             ['account.invoice', ],
             
-            ['account.move.line', ],
-            ['account.move', ],
+            # ['account.move.line', ],
+            # ['account.move', ],
 
             ##### stock ######
             # ['stock.quant', ],
