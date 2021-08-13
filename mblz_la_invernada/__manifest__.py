@@ -8,7 +8,7 @@
     
     'depends': [
         # 'l10n_cl_fe',
-        # 'account'
+        'sale'
     ],
     
     'data': [
