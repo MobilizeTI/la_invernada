@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record id="mail_template_form_view" model="ir.ui.view">
+		<field name="name">mail.template.form</field>
+		<field name="model">mail.template</field>
+		<field name="priority" eval="100" />
+		<field name="inherit_id" ref="mail.email_template_form" />
+		<field name="arch" type="xml">
+			<field name="email_to" position="replace">
+				<label for="email_to" attrs="{'invisible': [('use_default_to', '=', True)]}" />
+				<div attrs="{'invisible': [('use_default_to', '=', True)]}">
+					<field name="email_to" placeholder="Direcciones de destinatarios separadas por coma"
+						style="width: 95%" />
+					<button name='%(wizard_select_email_action)d' type='action'
+						title="Seleccionar Destinatarios" aria-label="Seleccionar Destinatarios"
+						context="{'field_name': 'email_to'}" class="btn-xs btn-link mb4 fa fa-envelope-o oe_edit_only" />
+				</div>
+			</field>
+			<field name="email_cc" position="replace">
+				<label for="email_cc" attrs="{'invisible': [('use_default_to', '=', True)]}" />
+				<div attrs="{'invisible': [('use_default_to', '=', True)]}">
+					<field name="email_cc" placeholder="(Con Copia a) separadas por coma"
+						style="width: 95%" />
+					<button name='%(wizard_select_email_action)d' type='action'
+						title="Seleccionar Destinatarios CC" aria-label="Seleccionar Destinatarios CC"
+						context="{'field_name': 'email_cc'}" class="btn-xs btn-link mb4 fa fa-envelope-o oe_edit_only" />
+				</div>
+				<label for="email_bcc" attrs="{'invisible': [('use_default_to', '=', True)]}" />
+				<div attrs="{'invisible': [('use_default_to', '=', True)]}">
+					<field name="email_bcc" placeholder="(Con Copia oculta) separadas por coma"
+						style="width: 95%" />
+					<button name='%(wizard_select_email_action)d' type='action'
+						title="Seleccionar Destinatarios BCC" aria-label="Seleccionar Destinatarios BCC"
+						context="{'field_name': 'email_bcc'}" class="btn-xs btn-link mb4 fa fa-envelope-o oe_edit_only" />
+				</div>
+			</field>
+		</field>
+	</record>
+
+</odoo>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record model="ir.ui.view" id="report_pos_payment_search_view">
+		<field name="name">report.pos.payment.search</field>
+		<field name="model">report.pos.payment</field>
+		<field name="inherit_id" ref="generic_pos.report_pos_payment_search_view" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='payment_term_id']" position="after">
+				<field name="warehouse_id" />
+			</xpath>
+			<xpath expr="//field[@name='order_id']" position="after">
+				<field name="document_class_id" />
+				<field name="payment_ref" />
+			</xpath>
+			<xpath expr="//filter[@name='filter_by_confirmed']" position="after">
+				<separator />
+				<filter name="filter_by_only_orders" string="Pagos de Solo Ventas"
+					domain="[('order_id', '!=', False)]" />
+				<filter name="filter_by_not_deposit_id" string="Pagos Netos(Sin Depositos)"
+					domain="[('pos_deposit_id', '=', False)]" />
+				<separator />
+				<filter name="filter_by_is_cash_in" string="Ingreso de Dinero"
+					domain="[('is_cash_in', '=', True)]" />
+				<filter name="filter_by_is_cash_out" string="Egreso de Dinero"
+					domain="[('is_cash_out', '=', True)]" />
+				<filter name="filter_by_is_adjustment" string="Ajuste por cierre de caja"
+					domain="[('is_adjustment', '=', True)]" />
+				<filter name="filter_by_pos_deposit_id" string="Deposito de Dinero"
+					domain="[('pos_deposit_id', '!=', False)]" />
+			</xpath>
+			<xpath expr="//filter[@name='group_by_config_id']" position="after">
+				<filter name="group_by_warehouse_id" string="Tienda"
+					context="{'group_by': 'warehouse_id'}" />
+			</xpath>
+		</field>
+	</record>
+
+	<record id="generic_pos.action_report_pos_payment_graph_view"
+		model="ir.actions.act_window">
+		<field name="context">{'show_full_name': 1, 'search_default_this_month': 1, 'show_document_number': True, 'search_default_filter_by_only_orders': 1}</field>
+	</record>
+
+</odoo>

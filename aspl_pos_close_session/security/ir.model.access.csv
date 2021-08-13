@@ -1,0 +1,10 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_model_pos_deposit_group_user","access_model_pos_deposit_group_user","model_pos_deposit","base.group_user",1,0,0,0
+"access_model_pos_deposit_group_pos_manager","access_model_pos_deposit_group_pos_manager","model_pos_deposit","point_of_sale.group_pos_user",1,1,1,1
+"access_model_pos_deposit_group_account_user","access_model_pos_deposit_group_account_user","model_pos_deposit","account.group_account_user",1,1,1,1
+"access_model_pos_session_payment_resume_group_user","access_model_pos_session_payment_resume_group_user","model_pos_session_payment_resume","base.group_user",1,0,0,0
+"access_model_pos_session_payment_resume_group_pos_manager","access_model_pos_session_payment_resume_group_pos_manager","model_pos_session_payment_resume","point_of_sale.group_pos_user",1,1,1,1
+"access_model_account_payment_pos_user","access_model_account_payment_pos_user","account.model_account_payment","point_of_sale.group_pos_user",1,1,1,0
+"access_model_account_payment_method_pos_user","access_model_account_payment_method_pos_user","account.model_account_payment_method","point_of_sale.group_pos_user",1,0,0,0
+"access_model_account_move_group_pos_user","access_model_account_move_group_pos_user","account.model_account_move","point_of_sale.group_pos_user",1,0,0,0
+"access_model_account_move_line_group_pos_user","access_model_account_move_line_group_pos_user","account.model_account_move_line","point_of_sale.group_pos_user",1,0,0,0

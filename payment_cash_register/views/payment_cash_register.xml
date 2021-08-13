@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record id="view_account_payment_form_inherit_cash"
+		model="ir.ui.view">
+		<field name="name">account.payment.form2</field>
+		<field name="model">account.payment</field>
+		<field name="inherit_id" ref="account.view_account_payment_form" />
+		<field name="arch" type="xml">
+			<field name="communication" position="after">
+				<field name="apply_cash_register"
+					attrs="{'readonly': [('state','!=','draft')]}" />
+				<field name="cash_register_id"
+					options="{'no_create': True, 'no_open': True, 'always_reload': True}"
+					context="{'name_include_pos': True}"
+					domain="[('journal_id', '=', journal_id), ('state', '=', 'open')]"
+					attrs="{'readonly': ['|',('apply_cash_register', '=', False),('state','!=','draft')],'required': [('apply_cash_register', '=', True)]}" />
+			</field>
+		</field>
+	</record>
+
+	<record id="view_account_payment_invoice_form_inherit_cash"
+		model="ir.ui.view">
+		<field name="name">account.payment.invoice.form1</field>
+		<field name="model">account.payment</field>
+		<field name="inherit_id"
+			ref="account.view_account_payment_invoice_form" />
+		<field name="arch" type="xml">
+			<field name="communication" position="after">
+				<field name="apply_cash_register"
+					attrs="{'readonly': [('state','=','posted')]}" />
+				<field name="cash_register_id"
+					options="{'no_create': True, 'no_open': True, 'always_reload': True}"
+					context="{'name_include_pos': True}"
+					domain="[('journal_id', '=', journal_id), ('state', '=', 'open')]"
+					attrs="{'readonly': [('apply_cash_register', '=', False)],'required': [('apply_cash_register', '=', True)]}" />
+			</field>
+		</field>
+	</record>
+</odoo>

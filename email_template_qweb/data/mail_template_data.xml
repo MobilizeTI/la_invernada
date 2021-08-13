@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data noupdate="1">
+    	<template id="mail_notification_borders" inherit_id="mail.mail_notification_borders">
+    		<xpath expr="//table[@summary='o_mail_notification']/tbody/tr[last()]/td" position="inside">
+	    		<t t-if="show_no_response">
+	    			<span style="color:#888888">Por favor no responder este correo</span>
+	    		</t>
+    		</xpath>
+    	</template>
+
+	</data>
+</odoo>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record id="mail_compose_message_form_view" model="ir.ui.view">
+		<field name="name">mail.compose.message.form</field>
+		<field name="model">mail.compose.message</field>
+		<field name="inherit_id" ref="mail.email_compose_message_wizard_form" />
+		<field name="arch" type="xml">
+			<field name="subject" position="before">
+				<field name="select_mail_from_partner" />
+				<field name="email_cc"
+					attrs="{'invisible': [('select_mail_from_partner', '=', True)]}"
+					placeholder="(Con Copia a) separadas por coma" />
+				<field name="email_bcc"
+					attrs="{'invisible': [('select_mail_from_partner', '=', True)]}"
+					placeholder="(Con Copia oculta) separadas por coma" />
+				<field name="partner_mail_cc_ids" domain="[('email', '!=', False)]"
+					options="{'no_create': True}" widget="many2many_tags_email"
+					context="{'force_email':True, 'show_email':True}" attrs="{'invisible': [('select_mail_from_partner', '=', False)]}"
+					placeholder="Añadir Contactos(Con copia a)" />
+				<field name="partner_mail_bcc_ids" domain="[('email', '!=', False)]"
+					options="{'no_create': True}" widget="many2many_tags_email"
+					context="{'force_email':True, 'show_email':True}" attrs="{'invisible': [('select_mail_from_partner', '=', False)]}"
+					placeholder="Añadir Contactos (Con Copia Oculta)" />
+			</field>
+		</field>
+	</record>
+
+</odoo>

@@ -1,0 +1,1646 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_cl_dte_point_of_sale
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-12-08 03:14+0000\n"
+"PO-Revision-Date: 2019-03-12 16:18-0500\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2.1\n"
+"Last-Translator: Carlos Lopez <celm1990@hotmail.com>\n"
+"Language: es_CL\n"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:454
+#, fuzzy, python-format
+msgid "% Desc"
+msgstr "Desc.(%)"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_sii_barcode_layout
+#, fuzzy
+msgid ""
+"<br/>\n"
+"\t\t\t\t\tVerifique documento:"
+msgstr "<br/> Verifique documento:"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_payment_layout
+#, fuzzy
+msgid "<span>Vendedor:</span>"
+msgstr "<span> vendedor: </span>"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_payment_layout
+#, fuzzy
+msgid "<span>Vuelto</span>"
+msgstr "<span> vuelto </span>"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.boleta_input_layout
+#, fuzzy
+msgid ""
+"<strong class=\"pull-left\">Total:</strong>\n"
+"\t\t\t\t\t<span class=\"fa fa-usd\"/>"
+msgstr ""
+"< strong clase = \"pull-left\" > total: </strong>\n"
+"\t\t\t\t\t< span class = \"fa fa-usd\"/>"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_header_layout
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_partner_layout
+msgid "<strong>Caja: </strong>"
+msgstr "<strong> Caja: </strong>"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_header_layout
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_partner_layout
+msgid "<strong>Casa Matriz: </strong>"
+msgstr "<strong> Casa matriz: </strong>"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_partner_layout
+msgid "<strong>Cliente:</strong>"
+msgstr "<strong> Cliente: </strong>"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_referencias_layout
+msgid "<strong>Documentos de Referencia</strong>"
+msgstr "<strong> Documentos de Feferencia </strong>"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_subtotal_layout
+msgid "<strong>Exento:</strong>"
+msgstr "<strong> Exento: </strong>"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_header_layout
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_partner_layout
+msgid "<strong>Fecha:</strong>"
+msgstr "<strong>Fecha:</strong>"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_header_layout
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_partner_layout
+msgid "<strong>Giro: </strong>"
+msgstr "<strong> Giro: </strong>"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_header_layout
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_partner_layout
+msgid "<strong>Sucursal: </strong>"
+msgstr "<strong> Sucursal: </strong>"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_subtotal_layout
+msgid "<strong>Total</strong>"
+msgstr "<strong>Total</strong>"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:116
+#, python-format
+msgid "A Customer Name Is Required"
+msgstr "Un Nombre de Cliente es Requerido"
+
+#. module: l10n_cl_dte_point_of_sale
+#: selection:pos.order,sii_result:0
+msgid "Aceptado"
+msgstr "Aceptado"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_pos_session_form
+#, fuzzy
+msgid "Actualizar secuencias"
+msgstr "Actualizar secuencias"
+
+#. module: l10n_cl_dte_point_of_sale
+#: selection:pos.order.referencias,sii_referencia_CodRef:0
+#: selection:pos.order.refund,filter_refund:0
+msgid "Anula Documento de Referencia"
+msgstr "Anula Documento de Referencia"
+
+#. module: l10n_cl_dte_point_of_sale
+#: selection:pos.order,sii_result:0
+msgid "Anulado"
+msgstr "Anulado"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model,name:l10n_cl_dte_point_of_sale.model_wizard_change_journal_pos_order
+#, fuzzy
+msgid "Asistente para cambio de pagos en PDV"
+msgstr "Asistente para cambio de pagos en PDV"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model,name:l10n_cl_dte_point_of_sale.model_account_bank_statement
+#, fuzzy
+msgid "Bank Statement"
+msgstr "Línea de extracto bancario"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model,name:l10n_cl_dte_point_of_sale.model_account_bank_statement_line
+msgid "Bank Statement Line"
+msgstr "Línea de extracto bancario"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order__sii_batch_number
+msgid "Batch Number"
+msgstr "Número de lote"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,help:l10n_cl_dte_point_of_sale.field_pos_order__sii_batch_number
+msgid "Batch number for processing multiple invoices together"
+msgstr "Número de lote para procesar varias facturas juntas"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:289
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:914
+#, fuzzy, python-format
+msgid "C.A.:"
+msgstr "C.a.:"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_session_document_available__caf_files
+#, fuzzy
+msgid "CAF"
+msgstr "Caf"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:438
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_detail_layout
+#, fuzzy, python-format
+msgid "CANT./P. UNIT."
+msgstr "CANT./P. unidad."
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:504
+#, fuzzy, python-format
+msgid "CEDIBLE"
+msgstr "CEDIBLE CON SU FACTURA"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:37
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:104
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:556
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:621
+#, python-format
+msgid "Caja:"
+msgstr "Caja:"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_order_form
+msgid "Cambiar Pagos"
+msgstr "Cambiar Pagos"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.actions.act_window,name:l10n_cl_dte_point_of_sale.action_wizard_change_journal_pos_order_tree_view
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.wizard_change_journal_pos_order_form_view
+#, fuzzy
+msgid "Cambio de Pagos"
+msgstr "Cambio de pagos"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.sii_dte_masive_send_wizard_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_pos_order_refund
+msgid "Cancelar"
+msgstr "Cancelar"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order__canceled
+msgid "Canceled?"
+msgstr "¿Cancelada?"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:19
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:86
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:538
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:603
+#, python-format
+msgid "Casa Matriz:"
+msgstr "Casa Matriz:"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.wizard_change_journal_pos_order_form_view
+msgid "Cerrar"
+msgstr "Cerrar"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:44
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:46
+#, python-format
+msgid "City"
+msgstr "Ciudad"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_config__address_city
+msgid "Ciudad"
+msgstr "Ciudad"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:115
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:632
+#, python-format
+msgid "Cliente:"
+msgstr "Cliente:"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model,name:l10n_cl_dte_point_of_sale.model_res_company
+msgid "Companies"
+msgstr "Compañías"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:26
+#, python-format
+msgid "Comuna"
+msgstr "Comuna"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:152
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:657
+#, python-format
+msgid "Comuna:"
+msgstr "Comuna:"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.sii_dte_masive_send_wizard_form
+msgid "Confirm"
+msgstr "Confimar"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.ui.menu,name:l10n_cl_dte_point_of_sale.menu_action_move_consumo_folios_form
+msgid "Consumo de Folios"
+msgstr "Consumo de Folios"
+
+#. module: l10n_cl_dte_point_of_sale
+#: selection:pos.order.referencias,sii_referencia_CodRef:0
+#: selection:pos.order.refund,filter_refund:0
+msgid "Corrige montos"
+msgstr "Corrige montos"
+
+#. module: l10n_cl_dte_point_of_sale
+#: selection:pos.order.referencias,sii_referencia_CodRef:0
+#: selection:pos.order.refund,filter_refund:0
+msgid "Corrige texto Documento Referencia"
+msgstr "Corrige texto Documento Referencia"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:49
+#, python-format
+msgid "Country"
+msgstr "País"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.actions.server,name:l10n_cl_dte_point_of_sale.ir_cron_create_invoice_for_pos_order_ir_actions_server
+#: model:ir.cron,cron_name:l10n_cl_dte_point_of_sale.ir_cron_create_invoice_for_pos_order
+#: model:ir.cron,name:l10n_cl_dte_point_of_sale.ir_cron_create_invoice_for_pos_order
+#, fuzzy
+msgid "Crear Factura de Pedidos POS"
+msgstr "Crear factura de pedidos POS"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_pos_order_refund
+msgid "Crear Nota"
+msgstr "Crear Nota"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:112
+#, python-format
+msgid "Crear nueva Descripción del giro"
+msgstr "Crear nueva Descripción del giro"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_order_form
+msgid "Crear una Nota de Crédito"
+msgstr "Crear una Nota de Crédito"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_referencias__create_uid
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_refund__create_uid
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_session_document_available__create_uid
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_sii_dte_pos_masive_send_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_wizard_change_journal_pos_order__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_referencias__create_date
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_refund__create_date
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_session_document_available__create_date
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_sii_dte_pos_masive_send_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_wizard_change_journal_pos_order__create_date
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:73
+#, python-format
+msgid "Credit Limit"
+msgstr "Límite de crédito"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_wizard_change_journal_pos_order__journal_currency_id
+msgid "Currency"
+msgstr "Moneda"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_referencias_layout
+msgid "Código"
+msgstr "Código"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order__sii_barcode_img
+#, fuzzy
+msgid "Código de barras SII"
+msgstr "Código de barras SII"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:435
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_detail_layout
+#, fuzzy, python-format
+msgid "DESCRIPCION/CODIGO"
+msgstr "DESCRIPCION/CODIGO"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:848
+#, fuzzy, python-format
+msgid "DESCRIPCION/CODIGO|CANT./P.UNIT.|VALOR"
+msgstr "DESCRIPCION/CODIGO | CANT./P.UNIT. | VALOR"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:81
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:152
+#, python-format
+msgid "DTE Email"
+msgstr "DTE Email"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.sii_dte_masive_send_wizard_form
+msgid "DTes a enviar"
+msgstr "DTes a enviar"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:294
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:346
+#, python-format
+msgid "Debe ingresar el rut completo"
+msgstr "Debe ingresar el rut completo"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:338
+#, python-format
+msgid "Debe ingresar un digito verificador valido"
+msgstr "Debe ingresar un digito verificador valido"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:884
+#, python-format
+msgid "Desc"
+msgstr "Desc"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:214
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:260
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:680
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:737
+#, python-format
+msgid "Descuento:"
+msgstr "Descuento:"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_config__address_street
+msgid "Direccion"
+msgstr "Dirección"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_config__address_id
+#, fuzzy
+msgid "Direccion de Sucursal"
+msgstr "Direccion de sucursal"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:147
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:654
+#, fuzzy, python-format
+msgid "Direccion:"
+msgstr "Dirección"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_referencias__display_name
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_refund__display_name
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_session_document_available__display_name
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_sii_dte_pos_masive_send_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_wizard_change_journal_pos_order__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order__document_class_id
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_session_document_available__document_class_id
+msgid "Document Type"
+msgstr "Tipo de Documento SII"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_referencias__order_id
+msgid "Documento"
+msgstr "Documento"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_config__default_sequence_id
+msgid "Documento por Defecto"
+msgstr "Documento por Defecto"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_sii_dte_pos_masive_send_wizard__documentos
+#, fuzzy
+msgid "Documentos"
+msgstr "<strong> Documentos de Feferencia </strong>"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_config__sequence_available_ids
+#, fuzzy
+msgid "Documentos Disponibles en POS"
+msgstr "Documentos disponibles en POS"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_pos_session_form
+#, fuzzy
+msgid "Documentos autorizados a emitir"
+msgstr "Documentos autorizados a emitir"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:163
+#, python-format
+msgid "Documentos de Referencia"
+msgstr "Documentos de Referencia"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_session__document_available_ids
+#, fuzzy
+msgid "Documentos disponibles a emitir en POS"
+msgstr "Documentos disponibles a emitir en POS"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_order_form
+msgid "Download XML"
+msgstr "Descargar XML de envío"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:383
+#, python-format
+msgid "EL rut es incorrecto"
+msgstr "EL rut es incorrecto"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:344
+#, fuzzy, python-format
+msgid ""
+"El acuse de recibo que se declara en este acto, de\n"
+"\t\t\t\t\t\t\t\t\tacuerdo a lo\n"
+"\t\t\t\t\t\t\t\t\tdispuesto en la letra b) del Artículo 4°, y la letra\n"
+"\t\t\t\t\t\t\t\t\tc) del Artículo 5° de la Ley 19.983, acredita que la "
+"entrega de\n"
+"\t\t\t\t\t\t\t\t\tmercaderías o servicio(s) prestado(s) ha(n) sido "
+"recibido(s)"
+msgstr ""
+"\"El acuse de recibo que se declara en este acto, de acuerdo a lo dispuesto "
+"en la letra b) del Artículo 4°, y la letra c) del Artículo 5° de la Ley "
+"19.983, acredita que la entrega de mercaderías o servicio(s) prestado(s) "
+"ha(n) sido recibido(s)\""
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:299
+#, python-format
+msgid "El valor ingresado no corresponde a un R.U.T valido"
+msgstr "El valor ingresado no corresponde a un R.U.T valido"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_order_form
+msgid "Electronic Invoice"
+msgstr "Facturación Electrónica"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_pos_config_form
+#, fuzzy
+msgid ""
+"Elija el tipo de documento que se emitira por\n"
+"\t\t\t\t\t\t\t\t\t\tdefecto desde el POS"
+msgstr "Elija el tipo de documento que se emitira por defecto desde el POS"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:88
+#, fuzzy, python-format
+msgid "Empresa"
+msgstr "Empresa"
+
+#. module: l10n_cl_dte_point_of_sale
+#: selection:pos.order,sii_result:0
+msgid "En cola de envío"
+msgstr "En cola de envío"
+
+#. module: l10n_cl_dte_point_of_sale
+#: selection:pos.order,sii_result:0
+msgid "Enviado"
+msgstr "Enviado"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.actions.act_window,name:l10n_cl_dte_point_of_sale.action_account_invoice_send
+msgid "Enviar Documentos al SII"
+msgstr "Enviar Documentos al SII"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:204
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:212
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:217
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:232
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:237
+#, python-format
+msgid "Error: Could not Save Changes"
+msgstr "Error: no se pudieron guardar los cambios"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:199
+#, python-format
+msgid "Error: Could not Save Changes partner"
+msgstr "Error: no se pudo guardar los cambios de Partner"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.wizard_change_journal_pos_order_form_view
+#, fuzzy
+msgid "Esta seguro de proceder?"
+msgstr "Esta seguro de proceder?"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_pos_config_form
+#, fuzzy
+msgid ""
+"Estos valores se usaran en la creacion de nuevos\n"
+"\t\t\t\t\t\t\t\tclientes en el POS"
+msgstr "Estos valores se usaran en la creacion de nuevos clientes en el POS"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:206
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:244
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:668
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:715
+#, python-format
+msgid "Exento:"
+msgstr "Exento:"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_referencias__fecha_documento
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_referencias_layout
+msgid "Fecha Documento"
+msgstr "Fecha Documento"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:184
+#, python-format
+msgid "Fecha Documento:"
+msgstr "Fecha Documento:"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_refund__date_order
+msgid "Fecha de Documento"
+msgstr "Fecha de Documento"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:420
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:841
+#, fuzzy, python-format
+msgid "Fecha de emision:"
+msgstr "Fecha de emisión:"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:41
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:333
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:560
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:765
+#, python-format
+msgid "Fecha:"
+msgstr "Fecha:"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:327
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:763
+#, fuzzy, python-format
+msgid "Firma:"
+msgstr "Firma"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_referencias_layout
+msgid "Folio"
+msgstr "Folio"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order__sii_document_number
+msgid "Folio de documento"
+msgstr "Folio de documento"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:180
+#, fuzzy, python-format
+msgid "Folio:"
+msgstr "Folio"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:281
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:907
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_payment_layout
+#, fuzzy, python-format
+msgid "Forma de Pago"
+msgstr "Forma de pago"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:97
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:110
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:143
+#, python-format
+msgid "Giro"
+msgstr "Giro"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:23
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:90
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:142
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:542
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:607
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:651
+#, python-format
+msgid "Giro:"
+msgstr "Giro:"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_referencias__id
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_refund__id
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_session_document_available__id
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_sii_dte_pos_masive_send_wizard__id
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_wizard_change_journal_pos_order__id
+msgid "ID"
+msgstr "ID (identificación)"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:252
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:726
+#, fuzzy, python-format
+msgid "IVA:"
+msgstr "IVA"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_order_form
+#, fuzzy
+msgid "Imprimir"
+msgstr "Imprimir"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_pos_config_form
+#, fuzzy
+msgid "Imprimir Boletas"
+msgstr "Imprimir boletas"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.actions.report,name:l10n_cl_dte_point_of_sale.action_report_pos_boleta_ticket
+#, fuzzy
+msgid "Imprimir Reporte"
+msgstr "Imprimir reporte"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model,name:l10n_cl_dte_point_of_sale.model_pos_session_document_available
+#, fuzzy
+msgid "Informacion de documentos disponibles a emitir en pos"
+msgstr "Information of Documents disponibles a emitir at pos"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:124
+#, fuzzy, python-format
+msgid "Ingrese el RUT del cliente"
+msgstr "Ingreso el RUT del cliente"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:160
+#, fuzzy, python-format
+msgid "Ingrese el mail del cliente"
+msgstr "Ingreso el mail del cliente"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:155
+#, fuzzy, python-format
+msgid "Ingrese el mail para DTE"
+msgstr "Ingreso el mail para DTE"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:143
+#, python-format
+msgid "Ingrese la direccion(calle)"
+msgstr "Ingrese la dirección(calle)"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model,name:l10n_cl_dte_point_of_sale.model_account_invoice
+msgid "Invoice"
+msgstr "Factura"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_referencias____last_update
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_refund____last_update
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_session_document_available____last_update
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_sii_dte_pos_masive_send_wizard____last_update
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_wizard_change_journal_pos_order____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_referencias__write_uid
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_refund__write_uid
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_session_document_available__write_uid
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_sii_dte_pos_masive_send_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_wizard_change_journal_pos_order__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización de"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_referencias__write_date
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_refund__write_date
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_session_document_available__write_date
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_sii_dte_pos_masive_send_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_wizard_change_journal_pos_order__write_date
+msgid "Last Updated on"
+msgstr "Última actualización en"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.ui.menu,name:l10n_cl_dte_point_of_sale.menu_action_move_books_form
+msgid "Libros Cierre de Mes"
+msgstr "Libros Cierre de Mes"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_pos_config_form
+#, fuzzy
+msgid "Modo Restauración"
+msgstr "Modo restauración"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_referencias__motivo
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_refund__motivo
+msgid "Motivo"
+msgstr "Motivo"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:157
+#, fuzzy, python-format
+msgid "N/A"
+msgstr "n/a"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:235
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:704
+#, fuzzy, python-format
+msgid "Neto:"
+msgstr "Neto"
+
+#. module: l10n_cl_dte_point_of_sale
+#: selection:pos.order,sii_result:0
+msgid "No Enviado"
+msgstr "No Enviado"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/models.js:498
+#, python-format
+msgid "No quedan más Folios Disponibles"
+msgstr "No quedan más Folios Disponibles"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:315
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:761
+#, fuzzy, python-format
+msgid "Nombre:"
+msgstr "Nombre"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:11
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:28
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:51
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:63
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:100
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:118
+#, python-format
+msgid "None"
+msgstr "None"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_pos_order_refund
+msgid "Nota de Crédito / Débito"
+msgstr "Nota de Crédito / Débito"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_wizard_change_journal_pos_order__statement_id
+#, fuzzy
+msgid "Nuevo Pago"
+msgstr "Nuevo pago"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_config__caja_number
+#, fuzzy
+msgid "Numero de Caja"
+msgstr "Numero de caja"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_sii_xml_envio__order_ids
+#, fuzzy
+msgid "Ordenes POS"
+msgstr "ORDENES POS"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_referencias__origen
+msgid "Origin"
+msgstr "Origen"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_line__pos_order_line_id
+msgid "POS Line ID"
+msgstr "ID. de línea POS"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_wizard_change_journal_pos_order__payment_id
+#, fuzzy
+msgid "Pago a modificar"
+msgstr "Pago a modificar"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_wizard_change_journal_pos_order__order_id
+#, fuzzy
+msgid "Pedido de Venta"
+msgstr "Pedido de venta"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_pos_config_form
+#, fuzzy
+msgid ""
+"Permite escoger el tipo de documento, de los\n"
+"\t\t\t\t\t\t\t\tautorizados a emitir en el POS"
+msgstr ""
+"Permite escoger el tipo de documento, de los autorizados a emitir en el POS"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_config__enable_change_document_type
+#, fuzzy
+msgid "Permitir Cambiar Tipo de Documento?"
+msgstr "Permitir cambiar tipo de documento?"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_ir_sequence__show_in_pos
+#, fuzzy
+msgid "Permitir seleccionar en POS?"
+msgstr "Permitir seleccionar en POS?"
+
+#. module: l10n_cl_dte_point_of_sale
+#: code:addons/l10n_cl_dte_point_of_sale/models/point_of_sale.py:1042
+#, python-format
+msgid "Please define income account for this product: \"%s\" (id:%d)."
+msgstr ""
+"Por favor, defina la cuenta de ingresos para este producto: \" %s\" (ID:% d)."
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:75
+#, python-format
+msgid "Please select the Customer"
+msgstr "Por favor seleccione el cliente"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model,name:l10n_cl_dte_point_of_sale.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr "Configuración del TPV"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model,name:l10n_cl_dte_point_of_sale.model_pos_order_line
+msgid "Point of Sale Order Lines"
+msgstr "Líneas de Orden de Punto de Venta"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model,name:l10n_cl_dte_point_of_sale.model_pos_order
+msgid "Point of Sale Orders"
+msgstr "Pedidos del TPV"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model,name:l10n_cl_dte_point_of_sale.model_pos_session
+msgid "Point of Sale Session"
+msgstr "Sesión TPV"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.wizard_change_journal_pos_order_form_view
+#, fuzzy
+msgid "Procesar"
+msgstr "Procesar"
+
+#. module: l10n_cl_dte_point_of_sale
+#: selection:pos.order,sii_result:0
+msgid "Proceso"
+msgstr "Proceso"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:61
+#, python-format
+msgid "Provincia"
+msgstr "Provincia"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:9
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:58
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:137
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:323
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:527
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:575
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:648
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:763
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_header_layout
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_credit_note_header_layout
+#, python-format
+msgid "R.U.T.:"
+msgstr "R.U.T.:"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:21
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:23
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:135
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:168
+#, python-format
+msgid "RUT"
+msgstr "RUT"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_referencias_layout
+msgid "Razón Referencia"
+msgstr "Razón Referencia"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:190
+#, fuzzy, python-format
+msgid "Razón:"
+msgstr "Razón del traslado"
+
+#. module: l10n_cl_dte_point_of_sale
+#: selection:pos.order,sii_result:0
+msgid "Rechazado"
+msgstr "Rechazado"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:337
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:765
+#, fuzzy, python-format
+msgid "Recinto:"
+msgstr "Recinto"
+
+#. module: l10n_cl_dte_point_of_sale
+#: selection:pos.order,sii_result:0
+msgid "Reenviar"
+msgstr "Reenviar"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order__referencias
+msgid "References"
+msgstr "Referencias"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_refund__filter_refund
+msgid "Refund Method"
+msgstr "Método de rectificación"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,help:l10n_cl_dte_point_of_sale.field_pos_order_refund__filter_refund
+msgid ""
+"Refund base on this type. You can not Modify and Cancel if the invoice is "
+"already reconciled"
+msgstr ""
+"Factura rectificativa basada en este tipo. No se puede modificar o cancelar "
+"si la factura ya está conciliada"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.actions.act_window,name:l10n_cl_dte_point_of_sale.action_pos_order_refund
+msgid "Refund order"
+msgstr "Nota de Crédito"
+
+#. module: l10n_cl_dte_point_of_sale
+#: selection:pos.order,sii_result:0
+msgid "Reparo"
+msgstr "Reparo"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:388
+#, python-format
+msgid "Res"
+msgstr "Res"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:787
+#, fuzzy, python-format
+msgid "Resolución Exenta SII N"
+msgstr "Resolución exenta SII N"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:368
+#, fuzzy, python-format
+msgid "Resolución Exenta SII Nº"
+msgstr "Resolución exenta SII Nº"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:808
+#, fuzzy, python-format
+msgid "Resolución N°"
+msgstr "Resolución N°"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:115
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_config__sii_responsability_id
+#, python-format
+msgid "Responsabilidad"
+msgstr "Responsabilidad"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order__responsable_envio
+#, fuzzy
+msgid "Responsable Envio"
+msgstr "Responsable envio"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_config__restore_mode
+msgid "Restore Mode"
+msgstr "Modo Restauración"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order__sii_result
+msgid "Resultado"
+msgstr "Resultado"
+
+#. module: l10n_cl_dte_point_of_sale
+#: code:addons/l10n_cl_dte_point_of_sale/wizard/notas.py:79
+#, python-format
+msgid "Return Products"
+msgstr "Devolver productos"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_pos_config_form
+#, fuzzy
+msgid "S.I.I."
+msgstr "SII -"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:76
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:588
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_credit_note_header_layout
+#, python-format
+msgid "SII -"
+msgstr "SII -"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order__sii_barcode
+msgid "SII Barcode"
+msgstr "Código de barras SII"
+
+#. module: l10n_cl_dte_point_of_sale
+#: code:addons/l10n_cl_dte_point_of_sale/models/point_of_sale.py:169
+#, python-format
+msgid "SII Barcode Image"
+msgstr "Imagen Código de barras SII"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,help:l10n_cl_dte_point_of_sale.field_pos_order__sii_barcode_img
+msgid "SII Barcode Image in PDF417 format"
+msgstr "SII imagen de código de barras en formato PDF417"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,help:l10n_cl_dte_point_of_sale.field_pos_order__sii_barcode
+msgid "SII Barcode Name"
+msgstr "SII nombre de código de barras"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.sii_dte_masive_send_wizard_form
+msgid "SII DTE masive send Wizard"
+msgstr "SII DTE masiva enviar asistente"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model,name:l10n_cl_dte_point_of_sale.model_sii_activity_description
+msgid "SII Economical Activities Printable Description"
+msgstr "SII Descripción imprimible de las actividades económicas"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model,name:l10n_cl_dte_point_of_sale.model_sii_dte_pos_masive_send_wizard
+msgid "SII Masive send Wizard"
+msgstr "SII Masive send Wizard"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order__sii_message
+msgid "SII Message"
+msgstr "Mensajes del SII"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_referencias__sii_referencia_CodRef
+msgid "SII Reference Code"
+msgstr "SII Código de refencia"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_referencias__sii_referencia_TpoDocRef
+msgid "SII Reference Document Type"
+msgstr "SII Tipo de Documento De Referencia"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order__sii_xml_dte
+#, fuzzy
+msgid "SII XML DTE"
+msgstr "SII XML DTE"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order__sii_xml_request
+msgid "SII XML Request"
+msgstr "XML de envío al SII"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,help:l10n_cl_dte_point_of_sale.field_pos_order__sii_result
+msgid "SII request result"
+msgstr "Resultado de la solicitud SII"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_session_document_available__sequence_id
+#, fuzzy
+msgid "Secuencia"
+msgstr "Secuencia"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_pos_config_form
+#, fuzzy
+msgid "Secuencias de Boleta"
+msgstr "Secuencias de aprobarse"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:147
+#, python-format
+msgid "Seleccione el Pais"
+msgstr "Seleccione el Pais"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:120
+#, python-format
+msgid "Seleccione el tipo de documento"
+msgstr "Seleccione el tipo de documento"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:151
+#, python-format
+msgid "Seleccione la Provincia"
+msgstr "Seleccione la Provincia"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:133
+#, fuzzy, python-format
+msgid "Seleccione la Responsabilidad"
+msgstr "Select la responsabilidad"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:139
+#, python-format
+msgid "Seleccione la comuna"
+msgstr "Seleccione la comuna"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_pos_config_form
+#, fuzzy
+msgid ""
+"Seleccione los diferentes tipos de documentos\n"
+"\t\t\t\t\t\t\t\t\t\tque se pueden emitir en el TPV.\n"
+"\t\t\t\t\t\t\t\t\t\tAsegurese que estos documentos\n"
+"\t\t\t\t\t\t\t\t\t\ttenga CAF cargados"
+msgstr ""
+"Select los diferentes tipos de documentos que se pueden emitir en el TPV.\n"
+"\t\t\t\t\t\t\t\t\t\tAsegurese que estos documentos tenga CAF cargados"
+
+#. module: l10n_cl_dte_point_of_sale
+#: code:addons/l10n_cl_dte_point_of_sale/models/point_of_sale.py:931
+#, python-format
+msgid "Selected orders do not have the same session!"
+msgstr "¡ Las órdenes seleccionadas no tienen la misma sesión!"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order__sii_send_file_name
+msgid "Send File Name"
+msgstr "Nombre archivo de envío"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_order_form
+msgid "Send XML"
+msgstr "Enviar Documento al SII"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model,name:l10n_cl_dte_point_of_sale.model_ir_sequence
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order__sequence_id
+msgid "Sequencia de Boleta"
+msgstr "Sequencia de Boleta"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_wizard_change_journal_pos_order__session_id
+#, fuzzy
+msgid "Sesion"
+msgstr "Sesion"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_session_document_available__pos_session_id
+#, fuzzy
+msgid "Sesion del POS"
+msgstr "Sesion del POS"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order__signature
+msgid "Signature"
+msgstr "Firma"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_session_document_available__next_document_number
+msgid "Siguiente Numero"
+msgstr "Siguiente Numero"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:38
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:41
+#, python-format
+msgid "Street"
+msgstr "Calle"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:28
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:95
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:547
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:612
+#, python-format
+msgid "Sucursal:"
+msgstr "Sucursal:"
+
+#. module: l10n_cl_dte_point_of_sale
+#: code:addons/l10n_cl_dte_point_of_sale/models/point_of_sale.py:1024
+#, python-format
+msgid "The POS order must have lines when calling this method"
+msgstr "El orden POS debe tener líneas al llamar a este método"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_pos_config_form
+msgid "Ticket?"
+msgstr "Ticket?"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:366
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:386
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:785
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:806
+#, python-format
+msgid "Timbre Electrónico SII"
+msgstr "Timbre Electrónico SII"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_sii_barcode_layout
+#, fuzzy
+msgid ""
+"Timbre Electrónico SII\n"
+"\t\t\t\t\t<br/>\n"
+"\t\t\t\t\tResolución SII Nº"
+msgstr "Timbre electrónico SII <br/> resolución SII Nº"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_order_refund__tipo_nota
+msgid "Tipo De nota"
+msgstr "Tipo De nota"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/client.xml:8
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_referencias_layout
+#, python-format
+msgid "Tipo Documento"
+msgstr "Tipo Documento"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:172
+#, python-format
+msgid "Tipo Documento:"
+msgstr "Tipo Documento:"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_config__sii_document_type_id
+#, fuzzy
+msgid "Tipo de Documento"
+msgstr "Tipo de documento"
+
+#. module: l10n_cl_dte_point_of_sale
+#: code:addons/l10n_cl_dte_point_of_sale/wizard/notas.py:51
+#, python-format
+msgid ""
+"To return product(s), you need to open a session that will be used to "
+"register the refund."
+msgstr ""
+"Para devolver el (los) producto (s), necesita abrir una sesión que se usará "
+"para registrar el reembolso."
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_wizard_change_journal_pos_order__total
+msgid "Total"
+msgstr "Total"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:222
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:268
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:691
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:748
+#, python-format
+msgid "Total:"
+msgstr "Total:"
+
+#. module: l10n_cl_dte_point_of_sale
+#: code:addons/l10n_cl_dte_point_of_sale/models/point_of_sale.py:1114
+#, python-format
+msgid "Trade Receivables"
+msgstr "Deudores comerciales"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_session_document_available__last_document_number
+#, fuzzy
+msgid "Ultimo Numero autorizado"
+msgstr "Ultimo numero autorizado"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_pos_order_refund
+msgid ""
+"Use this option if you want to cancel an invoice and create a new\n"
+"                            one. The credit note will be created, validated "
+"and reconciled\n"
+"                            with the current invoice. A new, draft, invoice "
+"will be created\n"
+"                            so that you can edit it."
+msgstr ""
+"Utilice esta opción si desea cancelar una factura y crear una nueva. La nota "
+"de crédito se creará, validará y reconciliará con la factura actual. Se "
+"creará una factura nueva, borrador, para que pueda editarla."
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_pos_order_refund
+msgid ""
+"Use this option if you want to cancel an invoice you should not\n"
+"                            have issued. The credit note will be created, "
+"validated and reconciled\n"
+"                            with the invoice. You will not be able to modify "
+"the credit note."
+msgstr ""
+"Utilice esta opción si desea cancelar una factura que no debería haber "
+"emitido. La nota de crédito será creada, validada y reconciliada con la "
+"factura. No podrá modificar la nota de crédito."
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:441
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_detail_layout
+#, fuzzy, python-format
+msgid "VALOR"
+msgstr "VALOR"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_pos_config_form
+#, fuzzy
+msgid "Valores por Defecto"
+msgstr "Valores por defecto"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:487
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:938
+#, python-format
+msgid "Vendedor:"
+msgstr "Vendedor:"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:792
+#, fuzzy, python-format
+msgid "Verifique doc.:"
+msgstr "Verifique doc.:"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:373
+#, fuzzy, python-format
+msgid "Verifique documento:"
+msgstr "Verifique documento en:"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:393
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:813
+#, python-format
+msgid "Verifique documento: www.sii.cl"
+msgstr "Verifique documento: www.sii.cl"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:480
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:929
+#, python-format
+msgid "Vuelto:"
+msgstr "Vuelto:"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_res_company__website_portal_boletas
+#, fuzzy
+msgid "Website Boletas"
+msgstr "Sitio web boletas"
+
+#. module: l10n_cl_dte_point_of_sale
+#: code:addons/l10n_cl_dte_point_of_sale/models/point_of_sale.py:287
+#, python-format
+msgid "XML Malformed Error:  %s"
+msgstr "Error malformado de XML: %s"
+
+#. module: l10n_cl_dte_point_of_sale
+#: code:addons/l10n_cl_dte_point_of_sale/models/pos_session.py:122
+#, python-format
+msgid ""
+"You cannot confirm all orders of this session, because they have not the "
+"'paid' status.\n"
+"{reference} is in state {state}, total amount: {total}, paid: {paid}"
+msgstr ""
+"No se pueden confirmar todos los pedidos de la sesión, porque no tienen "
+"todos el estado 'pagado'.\n"
+"{reference} está en estado  {state}, importe total: {total}, pagado: {paid}"
+
+#. module: l10n_cl_dte_point_of_sale
+#: code:addons/l10n_cl_dte_point_of_sale/models/pos_session.py:115
+#, python-format
+msgid "You have to set a Sale Journal for the POS:%s"
+msgstr "Debe establecer un diario de venta para el TPV:%s"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:76
+#, python-format
+msgid "You need to select the customer before you can invoice an order."
+msgstr "Debe Seleccionar el Cliente"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.view_pos_order_refund
+msgid ""
+"You will be able to edit and validate this\n"
+"                            credit note directly or keep it draft,\n"
+"                            waiting for the document to be issued by\n"
+"                            your supplier/customer."
+msgstr ""
+"Usted será capaz de editar y validar esta nota de crédito directamente o "
+"mantenerlo borrador, a la espera de que el documento sea emitido por su "
+"proveedor/cliente."
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:205
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:218
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/js/screens.js:238
+#, python-format
+msgid "Your Internet connection is probably down."
+msgstr "Su conexión a internet probablemente está caída."
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:325
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:329
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:335
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:339
+#, fuzzy, python-format
+msgid "___________________"
+msgstr "___________________"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:317
+#, fuzzy, python-format
+msgid "________________________________________________"
+msgstr "________________________________________________"
+
+#. module: l10n_cl_dte_point_of_sale
+#. openerp-web
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:370
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:390
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:789
+#: code:addons/l10n_cl_dte_point_of_sale/static/src/xml/layout.xml:810
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.report_boleta_sii_barcode_layout
+#, python-format
+msgid "del"
+msgstr "del"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.res_company_form_view
+#, fuzzy
+msgid "e.g. www.mycompany.com"
+msgstr "e.g. www.mycompany.com"
+
+#. module: l10n_cl_dte_point_of_sale
+#: selection:pos.order,sii_result:0
+msgid "n/a"
+msgstr "n/a"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_cl_dte_point_of_sale.sii_dte_masive_send_wizard_form
+msgid "or"
+msgstr "o"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model,name:l10n_cl_dte_point_of_sale.model_pos_order_referencias
+msgid "pos.order.referencias"
+msgstr "pos.order.referencias"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model,name:l10n_cl_dte_point_of_sale.model_pos_order_refund
+msgid "pos.order.refund"
+msgstr "pos.order.refund"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model,name:l10n_cl_dte_point_of_sale.model_sii_xml_envio
+#, fuzzy
+msgid "sii.xml.envio"
+msgstr "SII. Xml. envio"
+
+#. module: l10n_cl_dte_point_of_sale
+#: model:ir.model.fields,field_description:l10n_cl_dte_point_of_sale.field_pos_config__ticket
+msgid "¿Facturas en Formato Ticket?"
+msgstr "¿Facturas en Formato Ticket?"

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="view_account_analytic_default_tree" model="ir.ui.view">
+		<field name="name">account.analytic.default.tree</field>
+		<field name="model">account.analytic.default</field>
+		<field name="inherit_id"
+			ref="account_analytic_default.view_account_analytic_default_tree" />
+		<field name="arch" type="xml">
+			<field name="partner_id" position="after">
+				<field name="warehouse_id" />
+			</field>
+		</field>
+	</record>
+
+	<record id="view_account_analytic_default_form" model="ir.ui.view">
+		<field name="name">account.analytic.default.form</field>
+		<field name="model">account.analytic.default</field>
+		<field name="inherit_id"
+			ref="account_analytic_default.view_account_analytic_default_form" />
+		<field name="arch" type="xml">
+			<field name="partner_id" position="after">
+				<field name="warehouse_id" options="{'no_create': True}" />
+			</field>
+		</field>
+	</record>
+
+	<record id="view_account_analytic_default_kanban" model="ir.ui.view">
+		<field name="name">account.analytic.default.kanban</field>
+		<field name="model">account.analytic.default</field>
+		<field name="inherit_id"
+			ref="account_analytic_default.view_account_analytic_default_kanban" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='partner_id']" position="after">
+				<field name="warehouse_id" />
+			</xpath>
+			<xpath expr="//div[@t-if='record.partner_id.value']" position="after">
+				<div t-if="record.warehouse_id.value">
+					<strong>Tienda</strong>
+					<field name="warehouse_id" />
+				</div>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="view_account_analytic_default_search" model="ir.ui.view">
+		<field name="name">account.analytic.default.search</field>
+		<field name="model">account.analytic.default</field>
+		<field name="inherit_id"
+			ref="account_analytic_default.view_account_analytic_default_form_search" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='partner_id']" position="after">
+				<field name="warehouse_id" />
+			</xpath>
+			<xpath expr="//filter[@name='product']" position="after">
+				<filter name="group_by_warehouse" string="Tienda"
+					context="{'group_by': 'warehouse_id'}" />
+			</xpath>
+		</field>
+	</record>
+</odoo>

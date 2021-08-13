@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="ProductScreenWidget">
+        <t t-jquery=".leftpane" t-operation="before">
+            <div class="buttons_pane order-scroller touch-scrollable">
+                <div class="button-list" />
+            </div>
+        </t>
+    </t>
+</templates>

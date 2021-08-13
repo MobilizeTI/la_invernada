@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+	<function model="res.company" name="write">
+		<value eval="ref('base.main_company')"></value>
+		<value eval="{'po_lock': 'lock'}"></value>
+	</function>
+</odoo>

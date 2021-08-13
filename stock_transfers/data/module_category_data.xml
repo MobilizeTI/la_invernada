@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record id="module_category_transfer_requisition"
+		model="ir.module.category">
+		<field name="name">Transferencias Internas</field>
+		<field name="description"></field>
+		<field name="sequence">6</field>
+	</record>
+</odoo>

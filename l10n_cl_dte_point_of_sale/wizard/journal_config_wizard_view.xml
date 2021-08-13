@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="view_account_journal_document_config_form"
+		model="ir.ui.view">
+		<field name="name">account_journal_document_config.form</field>
+		<field name="model">account.journal.document_config</field>
+		<field name="inherit_id"
+			ref="l10n_cl_fe.view_account_journal_document_config_form" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='settlement_invoice']"
+				position="after">
+				<field name="create_documents_for_pos" />
+				<field name="pos_document_ids"
+					attrs="{'required': [('create_documents_for_pos', '=', True)], 'invisible': [('create_documents_for_pos', '=', False)]}"
+					options="{'no_create': True}" widget="many2many_tags" />
+				<field name="pos_config_ids"
+					attrs="{'required': [('create_documents_for_pos', '=', True)], 'invisible': [('create_documents_for_pos', '=', False)]}"
+					options="{'no_create': True}" widget="many2many_tags" />
+			</xpath>
+		</field>
+	</record>
+</odoo>

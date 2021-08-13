@@ -58,7 +58,7 @@ else:
             <field name="condition_python">result = payslip.indicadores_id.sueldo_minimo > contract.wage</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = round(((payslip.indicadores_id.sueldo_minimo - contract.wage) / 30) * worked_days.WORK100.number_of_days)
-            </field>
+</field>
 
         </record>
 
@@ -70,8 +70,8 @@ else:
             <field name="code">BONO</field>
             <field name="category_id" ref="IMPONIBLE"/>
             <field name="condition_select">python</field>
-            <field name="condition_python">result = contract.s_imp > 0</field>
-            <field name="amount_select">code</field>otro
+            <field name="condition_python">result = contract.otros_imp > 0</field>
+            <field name="amount_select">code</field>
             <field name="amount_python_compute">result = ((contract.otros_imp / 30) * worked_days.WORK100.number_of_days)</field>
         </record>
 
@@ -109,7 +109,7 @@ else:
 if (contract.type_id.name == 'Sueldo Empresarial'):
     result = 0
 elif GRATI > (4.75 * payslip.indicadores_id.sueldo_minimo /12):
-    result = round(((4.75 * payslip.indicadores_id.sueldo_minimo / 12) / 30) * worked_days.WORK100.number_of_days)
+    result = round (4.75 * payslip.indicadores_id.sueldo_minimo / 12)
 else:
     result = GRATI</field>
         </record>
@@ -273,8 +273,6 @@ elif contract.afp_id.name == 'PLANVITAL':
     tasa = payslip.indicadores_id.tasa_afp_planvital
 elif contract.afp_id.name == 'PROVIDA':
     tasa = payslip.indicadores_id.tasa_afp_provida
-elif contract.afp_id.name == 'UNO':
-    tasa = payslip.indicadores_id.tasa_afp_uno
 else:
     tasa = 0
 
@@ -400,8 +398,6 @@ elif contract.afp_id.name == 'PLANVITAL':
     tasa = payslip.indicadores_id.tasa_sis_planvital
 elif contract.afp_id.name == 'PROVIDA':
     tasa = payslip.indicadores_id.tasa_sis_provida
-elif contract.afp_id.name == 'UNO':
-    tasa = payslip.indicadores_id.tasa_sis_uno
 else:
     tasa = 0
 

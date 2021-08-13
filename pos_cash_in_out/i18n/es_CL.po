@@ -1,0 +1,184 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* pos_cash_in_out
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-12-08 02:25+0000\n"
+"PO-Revision-Date: 2018-12-07 23:26-0300\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.1.1\n"
+"Last-Translator: Flectra Chile SpA <soporte@flectrachile.cl>\n"
+"Language: es_CL\n"
+
+#. module: pos_cash_in_out
+#. openerp-web
+#: code:addons/pos_cash_in_out/static/src/xml/receipt.xml:76
+#, fuzzy, python-format
+msgid "Cajero"
+msgstr "Cajero"
+
+#. module: pos_cash_in_out
+#. openerp-web
+#: code:addons/pos_cash_in_out/static/src/xml/receipt.xml:27
+#, fuzzy, python-format
+msgid "Cajero:"
+msgstr "Cajero:"
+
+#. module: pos_cash_in_out
+#. openerp-web
+#: code:addons/pos_cash_in_out/static/src/xml/popup.xml:32
+#, python-format
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: pos_cash_in_out
+#. openerp-web
+#: code:addons/pos_cash_in_out/static/src/js/popup.js:71
+#, fuzzy, python-format
+msgid "Error: Could not Save Changes"
+msgstr "Error: Could not Save Changes"
+
+#. module: pos_cash_in_out
+#. openerp-web
+#: code:addons/pos_cash_in_out/static/src/xml/receipt.xml:39
+#: code:addons/pos_cash_in_out/static/src/xml/receipt.xml:86
+#, fuzzy, python-format
+msgid "Firma"
+msgstr "FIRMA.\"."
+
+#. module: pos_cash_in_out
+#: model:ir.model.fields,field_description:pos_cash_in_out.field_pos_config__enable_cash_in_out
+#, fuzzy
+msgid "Habilitar Ingresar/Sacar Dinero"
+msgstr "Habilitar Ingresar/Sacar Dinero"
+
+#. module: pos_cash_in_out
+#: model:ir.model.fields,field_description:pos_cash_in_out.field_pos_config__enable_cash_in_out_receipt
+#, fuzzy
+msgid "Imprimir Comprobante de Ingreso/Egreso de dinero"
+msgstr "Imprimir Comprobante de Ingreso/Egreso de dinero"
+
+#. module: pos_cash_in_out
+#: model_terms:ir.ui.view,arch_db:pos_cash_in_out.pos_config_form_view
+#, fuzzy
+msgid "Imprimir Comprobante?"
+msgstr "Imprimir Comprobante?"
+
+#. module: pos_cash_in_out
+#. openerp-web
+#: code:addons/pos_cash_in_out/static/src/xml/buttons.xml:6
+#, fuzzy, python-format
+msgid "Ingresar Dinero"
+msgstr "Ingresar Dinero"
+
+#. module: pos_cash_in_out
+#: model_terms:ir.ui.view,arch_db:pos_cash_in_out.pos_config_form_view
+#, fuzzy
+msgid ""
+"Marque el check si desea Imprimir un comprobante\n"
+"\t\t\t\t\t\t\t\t\tcuando se ingrese o saque dinero de la caja"
+msgstr ""
+"Marque el check si desea Imprimir un comprobante\n"
+"\t\t\t\t\t\t\t\t\tcuando se ingrese o saque dinero de la caja"
+
+#. module: pos_cash_in_out
+#: model_terms:ir.ui.view,arch_db:pos_cash_in_out.pos_config_form_view
+#, fuzzy
+msgid ""
+"Marque el check si desea poder Ingresar/Sacar\n"
+"\t\t\t\t\t\t\tdinero de Caja desde el TPV"
+msgstr ""
+"Marque el check si desea poder Ingresar/Sacar\n"
+"\t\t\t\t\t\t\tdinero de Caja desde el TPV"
+
+#. module: pos_cash_in_out
+#. openerp-web
+#: code:addons/pos_cash_in_out/static/src/xml/popup.xml:21
+#, fuzzy, python-format
+msgid "Monto"
+msgstr "Amount"
+
+#. module: pos_cash_in_out
+#. openerp-web
+#: code:addons/pos_cash_in_out/static/src/xml/receipt.xml:35
+#: code:addons/pos_cash_in_out/static/src/xml/receipt.xml:81
+#, fuzzy, python-format
+msgid "Monto:"
+msgstr "Amount"
+
+#. module: pos_cash_in_out
+#. openerp-web
+#: code:addons/pos_cash_in_out/static/src/xml/popup.xml:15
+#, fuzzy, python-format
+msgid "Motivo"
+msgstr "Motivo"
+
+#. module: pos_cash_in_out
+#. openerp-web
+#: code:addons/pos_cash_in_out/static/src/xml/receipt.xml:34
+#: code:addons/pos_cash_in_out/static/src/xml/receipt.xml:80
+#, fuzzy, python-format
+msgid "Motivo:"
+msgstr "Motivo"
+
+#. module: pos_cash_in_out
+#. openerp-web
+#: code:addons/pos_cash_in_out/static/src/xml/popup.xml:29
+#, fuzzy, python-format
+msgid "OK"
+msgstr "OK"
+
+#. module: pos_cash_in_out
+#. openerp-web
+#: code:addons/pos_cash_in_out/static/src/xml/receipt.xml:33
+#: code:addons/pos_cash_in_out/static/src/xml/receipt.xml:79
+#, fuzzy, python-format
+msgid "Operacion:"
+msgstr "Operacion:"
+
+#. module: pos_cash_in_out
+#: model:ir.model,name:pos_cash_in_out.model_pos_config
+#, fuzzy
+msgid "Point of Sale Configuration"
+msgstr "Point of Sale Configuration"
+
+#. module: pos_cash_in_out
+#: model:ir.model,name:pos_cash_in_out.model_pos_session
+#, fuzzy
+msgid "Point of Sale Session"
+msgstr "Point of Sale Session"
+
+#. module: pos_cash_in_out
+#. openerp-web
+#: code:addons/pos_cash_in_out/static/src/xml/buttons.xml:12
+#, fuzzy, python-format
+msgid "Sacar Dinero"
+msgstr "Sacar Dinero"
+
+#. module: pos_cash_in_out
+#. openerp-web
+#: code:addons/pos_cash_in_out/static/src/xml/receipt.xml:57
+#, fuzzy, python-format
+msgid "Tel:"
+msgstr "TEL.:"
+
+#. module: pos_cash_in_out
+#. openerp-web
+#: code:addons/pos_cash_in_out/static/src/xml/receipt.xml:13
+#, fuzzy, python-format
+msgid "Telefono:"
+msgstr "Telefono"
+
+#. module: pos_cash_in_out
+#. openerp-web
+#: code:addons/pos_cash_in_out/static/src/js/popup.js:65
+#, fuzzy, python-format
+msgid "Your Internet connection is probably down."
+msgstr "Your Internet connection is probably down."

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template">
+
+	<t t-name="OrderReturnPopup">
+		<div class="modal-dialog">
+			<div class="popup popup-textinput pos-return-popup">
+				<p class="title">Devolucion de Productos</p>
+				<div class="content">
+					<h3>Por favor complete los datos para generar la Nota de Credito
+					</h3>
+					<section class='pos-popup'>
+						<div class='pos-popup-box clearfix' id="table-pos-popup"
+							t-if="widget.pos_return_data">
+							<div class='pos-group-left'>
+								<div class='pos-row'>
+									<div class='pos-group-left'>
+										<span class='popup-label' style="width: 100%;" for="filter_refund">Metodo de rectificacion:</span>
+									</div>
+									<div class='pos-group-right'>
+										<input class='detail-edit detail-required' name='filter_refund'
+											type="radio" value="1"
+											t-att-checked="widget.get_filter_refund() ? ((widget.get_filter_refund() === 1) ? true : undefined) : undefined" />
+										<span class='popup-label small' style="width: 80%;">Anula Documento de Referencia</span>
+										<br />
+										<input class='detail-edit detail-required' name='filter_refund'
+											type="radio" value="2"
+											t-att-checked="widget.get_filter_refund() ? ((widget.get_filter_refund() === 2) ? true : undefined) : undefined" />
+										<span class='popup-label small' style="width: 80%;">Corrige texto Documento Referencia</span>
+										<br />
+										<input class='detail-edit detail-required' name='filter_refund'
+											type="radio" value="3"
+											t-att-checked="widget.get_filter_refund() ? ((widget.get_filter_refund() === 3) ? true : undefined) : undefined" />
+										<span class='popup-label small' style="width: 80%;">Corrige montos</span>
+									</div>
+								</div>
+							</div>
+							<div class='pos-group-right'>
+								<div class='pos-row' id="note">
+									<span class='popup-label' for="note_id">Motivo:</span>
+									<select class='detail-edit detail-required' name='note_id'>
+										<option value=''>Ninguna</option>
+										<t t-foreach='widget.pos.db.get_credit_note_reason_list()'
+											t-as='credit_note_reason'>
+											<option t-att-value='credit_note_reason.id'
+												t-att-selected="widget.get_note() ? ((credit_note_reason.id === widget.get_note()) ? true : undefined) : undefined">
+												<t t-esc='credit_note_reason.name' />
+											</option>
+										</t>
+									</select>
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+				<div class="footer">
+					<div class="button confirm highlight">
+						Continuar
+					</div>
+					<div class="button cancel">
+						Cerrar
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+</templates>

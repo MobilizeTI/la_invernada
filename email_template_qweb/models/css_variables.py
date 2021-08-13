@@ -1,0 +1,33 @@
+#colores y valores por defecto
+color = '#ddd'
+solid = 'solid'
+width = '1px'
+color_black = 'rgb(76, 76, 76)'
+color_white = 'rgb(255, 255, 255)'
+bg_color = 'rgb(221, 221, 221)'
+bg_solid = 'solid'
+bg_width = '1px'
+bg_color_alpha = 'rgb(28, 193, 169)'
+bg_color_beta = 'rgb(135, 90, 123)'
+bg_color_gamma = 'rgb(186, 60, 61)'
+bg_color_delta = 'rgb(13, 103, 89)'
+bg_color_epsilon = 'rgb(11, 46, 89)'
+bg_color_white = 'rgb(255, 255, 255)'
+bg_color_gray_lighter = 'rgb(249, 249, 249)'
+bg_color_gray_light = 'rgb(119, 119, 119)'
+bg_color_gray = 'rgb(85, 85, 85)'
+bg_color_gray_dark = 'rgb(51, 51, 51)'
+bg_color_gray_darker = 'rgb(34, 34, 34)'
+bg_color_black = 'rgb(0, 0, 0)'
+bg_color_primary = 'rgb(124, 123, 173)'
+bg_color_success = 'rgb(223, 240, 216)'
+bg_color_info = 'rgb(217, 237, 247)'
+bg_color_warning = 'rgb(252, 248, 227)'
+bg_color_danger = 'rgb(242, 222, 222)'
+#combinaciones
+border_color = 'border-top-color: %(color)s;border-bottom-color: %(color)s;border-left-color: %(color)s;border-right-color: %(color)s;' % {'color': color}
+border_style = 'border-top-style: %(solid)s;border-bottom-style: %(solid)s;border-left-style: %(solid)s;border-right-style: %(solid)s;' % {'solid': solid}
+border_width = 'border-top-width: %(width)s;border-bottom-width: %(width)s;border-left-width: %(width)s;border-right-width: %(width)s;' % {'width': width}
+bg_border_color = 'border-top-color: %(bg_color)s;border-bottom-color: %(bg_color)s;border-left-color: %(bg_color)s;border-right-color: %(bg_color)s;' % {'bg_color': bg_color}
+bg_border_style = 'border-top-style: %(bg_solid)s;border-bottom-style: %(bg_solid)s;border-left-style: %(bg_solid)s;border-right-style: %(bg_solid)s;' % {'bg_solid': bg_solid}
+bg_border_width = 'border-top-width: %(bg_width)s;border-bottom-width: %(bg_width)s;border-left-width: %(bg_width)s;border-right-width: %(bg_width)s;' % {'bg_width': bg_width}

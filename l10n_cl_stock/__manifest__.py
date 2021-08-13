@@ -1,0 +1,36 @@
+{
+    'name': 'Personalizacion Chilena en Stock',
+    'version': '0.0.0.1',
+    'category': 'Warehouse',
+    'description': """
+""",
+    'author': 'Carlos Lopez Mite(celm1990@hotmail.com)',
+    'depends': [
+        'base',
+        'web',
+        'stock',
+        'l10n_cl_stock_picking',
+        'generic_stock',
+        'l10n_cl_account',
+        'stock_transfers',
+        'stock_picking_from_invoice',
+        'stock_picking_invoicing',
+    ],
+    'data': [
+        'security/groups.xml',
+        'security/ir.model.access.csv',
+        'report/stock_report.xml',
+        'wizard/stock_picking_return_view.xml',
+        'wizard/stock_invoice_onshipping_view.xml',
+        'wizard/wizard_create_picking_from_invoice_view.xml',
+        'views/stock_picking_view.xml',
+        'views/stock_inventory_view.xml',
+        'views/stock_move_view.xml',
+        'views/stock_quant_view.xml',
+        'views/transfer_requisition_view.xml',
+    ],
+    'qweb': [
+    ],
+    'installable': True,
+    'auto_install': False,
+}

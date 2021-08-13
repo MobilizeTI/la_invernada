@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record model="ir.ui.view" id="transfer_requisition_form_view">
+		<field name="name">transfer.requisition.form</field>
+		<field name="model">transfer.requisition</field>
+		<field name="inherit_id"
+			ref="stock_transfers.transfer_requisition_form_view" />
+		<field name="arch" type="xml">
+			<xpath expr="//button[@name='action_cancel'][@states='request,approved,process']" position="attributes">
+				<attribute name="states">request</attribute>
+			</xpath>
+			<xpath expr="//button[@name='action_cancel'][@states='done']" position="attributes">
+				<attribute name="states">approved,process,done</attribute>
+			</xpath>
+			<xpath expr="//field[@name='location_id']" position="after">
+				<field name="use_documents" />
+			</xpath>
+			<xpath expr="//field[@name='process_date']/.." position="after">
+				<separator string="Informacion de entrega" colspan="2" />
+				<group>
+					<field name="partner_id"
+						attrs="{'required':[('use_documents', '=', True)]}" />
+					<field name="contact_id" />
+					<field name="transport_type"
+						attrs="{'required':[('use_documents', '=', True)]}" />
+					<field name="move_reason"
+						attrs="{'required':[('use_documents', '=', True)]}" />
+				</group>
+				<group>
+					<field name="vehicle"
+						attrs="{'required':[('transport_type','=', '2'), ('use_documents', '=', True)], 'invisible':[('transport_type','!=','2')]}" />
+					<field name="chofer"
+						attrs="{'required':[('transport_type','=', '2'), ('use_documents', '=', True)], 'invisible':[('transport_type','!=','2')]}" />
+					<field name="patente"
+						attrs="{'required':[('transport_type','in', ['2']), ('use_documents', '=', True)]}" />
+				</group>
+			</xpath>
+		</field>
+	</record>
+
+</odoo>

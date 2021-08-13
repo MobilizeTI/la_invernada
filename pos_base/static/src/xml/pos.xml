@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-extend="Chrome">
+        <t t-jquery=".pos-logo" t-operation="replace">
+            <img class="pos-logo" t-att-src="widget.pos_config_image_url ? widget.pos_config_image_url: '/point_of_sale/static/src/img/logo.png'" />
+        </t>
+    </t>
+</templates>

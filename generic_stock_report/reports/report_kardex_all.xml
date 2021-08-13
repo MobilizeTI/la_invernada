@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="report_kardex_all">
+		<t t-call="web.html_container">
+			<t t-set="report_title" t-value="'Kardex General'" />
+			<t t-call="web.external_layout">
+				<div class="page small">
+					<table class="table table-sm table-bordered">
+						<thead>
+							<tr>
+								<td class="text-left">
+									<strong id="start_time_title">Desde:</strong>
+								</td>
+								<td class="text-left">
+									<span id="start_time_value" t-esc="start_time" t-options="{'widget': 'datetime'}" />
+								</td>
+								<td class="text-left">
+									<strong id="end_time_title">Hasta:</strong>
+								</td>
+								<td class="text-left">
+									<span id="end_time_value" t-esc="end_time" t-options="{'widget': 'datetime'}" />
+								</td>
+							</tr>
+							<tr>
+								<td class="text-left">
+									<strong id="location_names_title">Bodegas:</strong>
+								</td>
+								<td class="text-left" colspan="3">
+									<span id="location_names_value" t-esc="location_names"></span>
+								</td>
+							</tr>
+							<tr t-if="filter_type=='by_category'">
+								<td class="text-left">
+									<strong id="categ_names_title">Categorias:</strong>
+								</td>
+								<td class="text-left" colspan="3">
+									<span id="categ_names_value" t-esc="categ_names"></span>
+								</td>
+							</tr>
+							<tr t-if="filter_type=='by_lot'">
+								<td class="text-left">
+									<strong id="lot_names_title">Lotes:</strong>
+								</td>
+								<td class="text-left" colspan="3">
+									<span id="lot_names_value" t-esc="lot_names"></span>
+								</td>
+							</tr>
+						</thead>
+					</table>
+					<t t-foreach="products" t-as="product">
+						<div class="col-12 text-center">
+							<strong id="product_id_value" t-esc="'Producto: %s' % product.display_name" />
+						</div>
+						<t t-foreach="location_aux" t-as="location_id">
+							<t t-if="location_id in products_data[product.id]['location_data']">
+								<table class="table table-sm table-bordered">
+									<thead>
+										<tr>
+											<td class="text-left">
+												<strong id="location_id_title">Bodega</strong>
+											</td>
+											<td class="text-left" colspan="5">
+												<span id="location_id_value" t-esc="location_aux[location_id]"></span>
+											</td>
+										</tr>
+										<tr>
+											<td class="text-left">
+												<strong id="price_unit_title">Precio Medio</strong>
+											</td>
+											<td class="text-right">
+												<span id="price_unit_value"
+													t-esc="products_data[product.id]['location_data'][location_id].get('average_price', 0.0)"
+													t-options='{"widget": "monetary", "display_currency": res_company.currency_id}' />
+											</td>
+											<td class="text-left">
+												<strong id="product_available_title">I. Inicial</strong>
+											</td>
+											<td class="text-right">
+												<span id="product_available_value"
+													t-esc="products_data[product.id]['location_data'][location_id].get('product_available', 0.0)"
+													t-options="{'widget': 'float', 'decimal_precision': 'Product Unit of Measure'}" />
+											</td>
+											<td class="text-left">
+												<strong id="inventory_value_title">Valor Inv.</strong>
+											</td>
+											<td class="text-right">
+												<span id="inventory_value_value"
+													t-esc="products_data[product.id]['location_data'][location_id].get('inventory_value', 0.0)"
+													t-options='{"widget": "monetary", "display_currency": res_company.currency_id}' />
+											</td>
+										</tr>
+									</thead>
+								</table>
+								<t
+									t-if="products_data[product.id]['location_data'].get(location_id,{}).get('lines')">
+									<table class="table table-sm">
+										<thead>
+											<tr>
+												<th class="text-center" id="movimiento_title">Mov.</th>
+												<th class="text-center" id="date_title" style="min-width: 130px;">Fecha</th>
+												<th class="text-center" id="type_title">Tipo</th>
+												<th class="text-center amount-sm" id="product_qty_title">Cant.</th>
+												<th class="text-center amount-sm" id="price_unit_title">Precio Unit.</th>
+												<th class="text-center amount-sm" id="subtotal_title">Subtotal</th>
+												<th class="text-center amount-sm" id="inv_acum_title">Inv. Acum.</th>
+												<th class="text-center amount-sm" id="val_acum_title">Valor Acum.</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr
+												t-foreach="products_data[product.id]['location_data'][location_id].get('lines', [])"
+												t-as="line">
+												<td class="text-left">
+													<span id="movimiento_value"
+														t-esc="line.get('name','')[:32] +':'+line.get('picking_name', '')" />
+												</td>
+												<td class="text-left">
+													<span id="date_value" t-esc="line.get('date','') and line['date'] or ''"
+														t-options="{'widget': 'datetime'}" />
+												</td>
+												<td class="text-left">
+													<span id="type_value" t-esc="line.get('type','')" />
+												</td>
+												<td class="text-right">
+													<span id="product_qty_value" t-esc="line.get('product_qty',0.0)"
+														t-options="{'widget': 'float', 'decimal_precision': 'Product Unit of Measure'}" />
+												</td>
+												<td class="text-right">
+													<span id="price_unit_value" t-esc="line.get('price_unit',0.0)"
+														t-options='{"widget": "monetary", "display_currency": res_company.currency_id}' />
+												</td>
+												<td class="text-right">
+													<span id="subtotal_value" t-esc="line.get('subtotal',0.0)"
+														t-options='{"widget": "monetary", "display_currency": res_company.currency_id}' />
+												</td>
+												<td class="text-right">
+													<span id="inv_acum_value" t-esc="line.get('inv_acum',0.0)"
+														t-options="{'widget': 'float', 'decimal_precision': 'Product Unit of Measure'}" />
+												</td>
+												<td class="text-right">
+													<span id="val_acum_value" t-esc="line.get('val_acum',0.0)"
+														t-options='{"widget": "monetary", "display_currency": res_company.currency_id}' />
+												</td>
+											</tr>
+											<tr class="border-black">
+												<td class="text-center" colspan="4">
+												</td>
+												<td class="text-center">
+													<strong id="total_in_title">Ingresos</strong>
+												</td>
+												<td class="text-center">
+													<strong id="total_out_title">Egresos</strong>
+												</td>
+												<td class="text-center">
+													<strong id="total_balance_title">Inv. Final</strong>
+												</td>
+												<td class="text-center">
+													<strong id="total_amount_title">Valor Final</strong>
+												</td>
+											</tr>
+											<tr>
+												<td class="text-center" colspan="4">
+													<strong>Subtotal</strong>
+													<strong t-esc="product.display_name"></strong>
+													<strong t-esc="location_aux[location_id]"></strong>
+												</td>
+												<td class="text-right">
+													<span id="total_in_value"
+														t-esc="products_data[product.id]['location_data'][location_id].get('inputs_acum',0.0)"
+														t-options="{'widget': 'float', 'decimal_precision': 'Product Unit of Measure'}" />
+												</td>
+												<td class="text-right">
+													<span id="total_out_value"
+														t-esc="products_data[product.id]['location_data'][location_id].get('outputs_acum',0.0)"
+														t-options="{'widget': 'float', 'decimal_precision': 'Product Unit of Measure'}" />
+												</td>
+												<td class="text-right">
+													<span id="total_balance_value"
+														t-esc="products_data[product.id]['location_data'][location_id].get('inv_acum',0.0)"
+														t-options="{'widget': 'float', 'decimal_precision': 'Product Unit of Measure'}" />
+												</td>
+												<td class="text-right">
+													<span id="total_amount_value"
+														t-esc="products_data[product.id]['location_data'][location_id].get('val_acum',0.0)"
+														t-options='{"widget": "monetary", "display_currency": res_company.currency_id}' />
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</t>
+							</t>
+						</t>
+					</t>
+					<table width="100%" border="0">
+						<tbody>
+							<tr class="border-black">
+								<td class="text-right">
+									<strong id="total_kardex_title">Total Kardex:</strong>
+									<span id="total_kardex_value" t-esc="value_total"
+										t-options='{"widget": "monetary", "display_currency": res_company.currency_id}' />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table width="100%" border="0">
+						<tr>
+							<th scope="col">
+								<div id="revisador_por_title" align="center">______________</div>
+							</th>
+							<th scope="col">
+								<div id="aprobado_por_title" align="center">______________</div>
+							</th>
+						</tr>
+						<tr>
+							<td style="vertical-align:top">
+								<div id="revisador_por_value" align="center">Revisado Por:</div>
+							</td>
+							<td style="vertical-align:top">
+								<div id="aprobado_por_value" align="center">Aprobado Por:</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</t>
+		</t>
+	</template>
+
+</odoo>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+	
+		<template id="report_pos_boleta_ticket_body">
+			<t t-call="web.basic_layout">
+				<!-- llamar a las mismas plantilla QWeb que se usan en el portal -->
+				<div class="page" style="padding-top:10px;font-size: 10px;line-height:14px; font-family: Inconsolata;">
+					<t t-if="o.document_class_id.sii_code in [29, 30, 32, 33, 34, 40, 43, 45, 46, 55, 56, 60, 61]">
+						<t t-call="l10n_cl_dte_point_of_sale.report_credit_note_header_layout" />
+					</t>
+					<t t-if="o.document_class_id.sii_code not in [29, 30, 32, 33, 34, 40, 43, 45, 46, 55, 56, 60, 61]">
+						<t t-call="l10n_cl_dte_point_of_sale.report_boleta_header_layout" />
+					</t>
+					<t t-call="l10n_cl_dte_point_of_sale.report_boleta_partner_layout" />
+					<t t-if="o.document_class_id.sii_code in [61]">
+						<t t-call="l10n_cl_dte_point_of_sale.report_referencias_layout" />
+					</t>
+					<t t-call="l10n_cl_dte_point_of_sale.report_boleta_detail_layout" />
+					<t t-if="o.document_class_id.sii_code in [29, 30, 32, 33, 34, 40, 43, 45, 46, 55, 56, 60, 61]">
+						<t t-call="l10n_cl_dte_point_of_sale.report_subtotal_layout" />
+					</t>
+					<t t-if="o.document_class_id.sii_code not in [29, 30, 32, 33, 34, 40, 43, 45, 46, 55, 56, 60, 61]">
+						<t t-call="l10n_cl_dte_point_of_sale.report_boleta_subtotal_layout" />
+					</t>
+					<t t-call="l10n_cl_dte_point_of_sale.report_boleta_payment_layout" />
+					<t t-call="l10n_cl_dte_point_of_sale.report_boleta_notes_layout" />
+					<t t-call="l10n_cl_dte_point_of_sale.report_boleta_sii_barcode_layout" />
+					<t t-call="l10n_cl_fe.report_ticket_cedible_layout" />
+				</div>
+			</t>
+		</template>
+
+		<template id="report_pos_boleta_ticket">
+			<t t-call="web.html_container">
+				<t t-foreach="docs" t-as="o">
+					<t t-set='o' t-value='o.sudo()' />
+					<t t-call="l10n_cl_dte_point_of_sale.report_pos_boleta_ticket_body" />
+				</t>
+			</t>
+		</template>
+
+		<report id="action_report_pos_boleta_ticket" 
+			model="pos.order"
+			report_type="qweb-pdf" 
+			string="Imprimir Reporte" 
+			menu="True"
+			name="l10n_cl_dte_point_of_sale.report_pos_boleta_ticket" 
+			file="l10n_cl_dte_point_of_sale.report_pos_boleta_ticket"
+			paperformat="l10n_cl_fe.paperformat_pos_boleta_ticket" 
+			print_report_name="(object._get_printed_report_name())" 
+			attachment_use="True"
+            attachment="'%s.pdf' % (object._get_printed_report_name())" 
+            groups="pos_orders_history_reprint.group_pos_reprint" />
+            
+        <template id="report_pos_invoice_cedible_ticket">
+			<t t-call="web.html_container">
+				<t t-foreach="docs" t-as="o">
+					<t t-set='o' t-value='o.sudo()' />
+					<t t-set="iter_data" t-value="[1]" />
+					<t t-if="o.document_class_id.sii_code == 33">
+						<t t-set="iter_data" t-value="[2, 1]" />
+					</t>
+					<t t-foreach="iter_data" t-as="i_data">
+						<t t-call="l10n_cl_dte_point_of_sale.report_pos_boleta_ticket_body">
+							<t t-set="cedible" t-value="True" />
+						</t>
+					</t>
+				</t>
+			</t>
+		</template>
+
+		<report id="action_report_pos_invoice_cedible_ticket" 
+			model="pos.order"
+			report_type="qweb-pdf" 
+			string="Imprimir Cedible" 
+			menu="True"
+			name="l10n_cl_dte_point_of_sale.report_pos_invoice_cedible_ticket" 
+			file="l10n_cl_dte_point_of_sale.report_pos_invoice_cedible_ticket"
+			paperformat="l10n_cl_fe.paperformat_pos_boleta_ticket" 
+			print_report_name="(object._get_printed_report_name())" 
+			attachment_use="True"
+            attachment="'CED %s.pdf' % (object._get_printed_report_name())" 
+            groups="pos_orders_history_reprint.group_pos_reprint" />
+
+	</data>
+</odoo>

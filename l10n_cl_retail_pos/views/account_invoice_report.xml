@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="point_of_sale.pos_invoice_report" model="ir.actions.report">
+		<field name="paperformat_id" ref="l10n_cl_fe.paperformat_sii_document_electronic_a4" />
+	</record>
+</odoo>

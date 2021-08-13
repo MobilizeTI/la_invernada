@@ -1,0 +1,2 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_model_pos_order_reason_nc_group_pos_manager","access_model_pos_order_reason_nc_group_pos_manager","l10n_cl_fe.model_pos_order_reason_nc","point_of_sale.group_pos_manager",1,1,1,1

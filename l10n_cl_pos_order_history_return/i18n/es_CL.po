@@ -1,0 +1,159 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_cl_pos_order_history_return
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-12-08 02:47+0000\n"
+"PO-Revision-Date: 2018-12-07 23:48-0300\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.1.1\n"
+"Last-Translator: Flectra Chile SpA <soporte@flectrachile.cl>\n"
+"Language: es_CL\n"
+
+#. module: l10n_cl_pos_order_history_return
+#: model:ir.model.fields,field_description:l10n_cl_pos_order_history_return.field_pos_order_reason_nc__active
+#, fuzzy
+msgid "Activo?"
+msgstr "Activo?"
+
+#. module: l10n_cl_pos_order_history_return
+#. openerp-web
+#: code:addons/l10n_cl_pos_order_history_return/static/src/xml/popup.xml:23
+#, fuzzy, python-format
+msgid "Anula Documento de Referencia"
+msgstr "Anula documento de referencia"
+
+#. module: l10n_cl_pos_order_history_return
+#. openerp-web
+#: code:addons/l10n_cl_pos_order_history_return/static/src/xml/popup.xml:59
+#, python-format
+msgid "Cerrar"
+msgstr "Cerrar"
+
+#. module: l10n_cl_pos_order_history_return
+#. openerp-web
+#: code:addons/l10n_cl_pos_order_history_return/static/src/xml/popup.xml:56
+#, fuzzy, python-format
+msgid "Continuar"
+msgstr "Continuar"
+
+#. module: l10n_cl_pos_order_history_return
+#. openerp-web
+#: code:addons/l10n_cl_pos_order_history_return/static/src/xml/popup.xml:33
+#, fuzzy, python-format
+msgid "Corrige montos"
+msgstr "Corrige montos"
+
+#. module: l10n_cl_pos_order_history_return
+#. openerp-web
+#: code:addons/l10n_cl_pos_order_history_return/static/src/xml/popup.xml:28
+#, fuzzy, python-format
+msgid "Corrige texto Documento Referencia"
+msgstr "Corrige texto referencia"
+
+#. module: l10n_cl_pos_order_history_return
+#: model:ir.model.fields,field_description:l10n_cl_pos_order_history_return.field_pos_order_reason_nc__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: l10n_cl_pos_order_history_return
+#: model:ir.model.fields,field_description:l10n_cl_pos_order_history_return.field_pos_order_reason_nc__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: l10n_cl_pos_order_history_return
+#. openerp-web
+#: code:addons/l10n_cl_pos_order_history_return/static/src/xml/popup.xml:7
+#, fuzzy, python-format
+msgid "Devolucion de Productos"
+msgstr "Devolucion de productos"
+
+#. module: l10n_cl_pos_order_history_return
+#: model:ir.model.fields,field_description:l10n_cl_pos_order_history_return.field_pos_order__devolution_ids
+#: model_terms:ir.ui.view,arch_db:l10n_cl_pos_order_history_return.pos_order_form_view
+msgid "Devoluciones"
+msgstr "Devoluciones"
+
+#. module: l10n_cl_pos_order_history_return
+#: model:ir.model.fields,field_description:l10n_cl_pos_order_history_return.field_pos_order_reason_nc__display_name
+msgid "Display Name"
+msgstr "Mostrar Nombre"
+
+#. module: l10n_cl_pos_order_history_return
+#: model:ir.model.fields,field_description:l10n_cl_pos_order_history_return.field_pos_order_reason_nc__id
+msgid "ID"
+msgstr "ID"
+
+#. module: l10n_cl_pos_order_history_return
+#: model:ir.model.fields,field_description:l10n_cl_pos_order_history_return.field_pos_order_reason_nc____last_update
+msgid "Last Modified on"
+msgstr "Última Modificación en"
+
+#. module: l10n_cl_pos_order_history_return
+#: model:ir.model.fields,field_description:l10n_cl_pos_order_history_return.field_pos_order_reason_nc__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: l10n_cl_pos_order_history_return
+#: model:ir.model.fields,field_description:l10n_cl_pos_order_history_return.field_pos_order_reason_nc__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: l10n_cl_pos_order_history_return
+#. openerp-web
+#: code:addons/l10n_cl_pos_order_history_return/static/src/xml/popup.xml:17
+#, fuzzy, python-format
+msgid "Metodo de rectificacion:"
+msgstr "Metodo de rectificacion:"
+
+#. module: l10n_cl_pos_order_history_return
+#. openerp-web
+#: code:addons/l10n_cl_pos_order_history_return/static/src/xml/popup.xml:39
+#, fuzzy, python-format
+msgid "Motivo:"
+msgstr "Motivo"
+
+#. module: l10n_cl_pos_order_history_return
+#: model:ir.actions.act_window,name:l10n_cl_pos_order_history_return.pos_order_reason_nc_action
+#: model:ir.model,name:l10n_cl_pos_order_history_return.model_pos_order_reason_nc
+#: model:ir.ui.menu,name:l10n_cl_pos_order_history_return.pos_order_reason_nc_menu
+#, fuzzy
+msgid "Motivos de Nota de Credito"
+msgstr "Motivos de nota de credito"
+
+#. module: l10n_cl_pos_order_history_return
+#. openerp-web
+#: code:addons/l10n_cl_pos_order_history_return/static/src/xml/popup.xml:41
+#, fuzzy, python-format
+msgid "Ninguna"
+msgstr "Ninguna"
+
+#. module: l10n_cl_pos_order_history_return
+#: model:ir.model.fields,field_description:l10n_cl_pos_order_history_return.field_pos_order_reason_nc__name
+msgid "Nombre"
+msgstr "Nombre"
+
+#. module: l10n_cl_pos_order_history_return
+#: model:ir.model.fields,field_description:l10n_cl_pos_order_history_return.field_pos_order__origin_order_id
+#, fuzzy
+msgid "Pedido Original"
+msgstr "Pedido original"
+
+#. module: l10n_cl_pos_order_history_return
+#: model:ir.model,name:l10n_cl_pos_order_history_return.model_pos_order
+msgid "Point of Sale Orders"
+msgstr "Órdenes del Punto de Venta"
+
+#. module: l10n_cl_pos_order_history_return
+#. openerp-web
+#: code:addons/l10n_cl_pos_order_history_return/static/src/xml/popup.xml:9
+#, fuzzy, python-format
+msgid "Por favor complete los datos para generar la Nota de Credito"
+msgstr "Por favor complete los datos para generar la nota de credito"

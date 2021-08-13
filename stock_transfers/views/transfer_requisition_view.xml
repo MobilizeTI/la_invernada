@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record model="ir.ui.view" id="transfer_requisition_tree_view">
+		<field name="name">transfer.requisition.tree</field>
+		<field name="model">transfer.requisition</field>
+		<field name="arch" type="xml">
+			<tree string="Transferencias"
+				colors="blue:state in ('request',);red:state=='cancel';gray:state=='done'">
+				<field name="name" />
+				<field name="backorder_id" />
+				<field name="location_id" />
+				<field name="location_dest_id" />
+				<field name="create_uid" invisible="1" />
+				<field name="create_date" invisible="1" />
+				<field name="requisition_uid" invisible="1" />
+				<field name="requisition_date" />
+				<field name="approved_uid" invisible="1" />
+				<field name="approved_date" invisible="1" />
+				<field name="received_uid" invisible="1" />
+				<field name="received_date" invisible="1" />
+				<field name="process_date"
+					groups="generic_stock.group_set_date_movement_picking" />
+				<field name="company_id" groups="base.group_multi_company" />
+				<field name="state" />
+			</tree>
+		</field>
+	</record>
+
+	<record model="ir.ui.view" id="transfer_requisition_form_view">
+		<field name="name">transfer.requisition.form</field>
+		<field name="model">transfer.requisition</field>
+		<field name="arch" type="xml">
+			<form string="Transferencias">
+				<header>
+					<button name="action_request" string="Solicitar"
+						class="oe_highlight" type="object" states="draft"
+						groups="stock_transfers.group_internal_transfer_user" />
+					<button name="action_approved" string="Aprobar/Despachar"
+						class="oe_highlight" type="object"
+						states="request" groups="stock_transfers.group_transfer_approved" />
+					<button name="action_process" string="Recibir"
+						class="oe_highlight" type="object"
+						states="approved"
+						groups="stock_transfers.group_internal_transfer_user" />
+					<button name="action_done" string="Realizado"
+						type="object" states="process" />
+					<button name="action_print_report" string="Imprimir Reporte"
+						type="object" invisible="1"
+						states="request,approved,process,done" />
+					<button name="action_cancel" string="Cancelar"
+						type="object" states="request,approved,process"
+						confirm="Está seguro de cancelar este registro?"
+						groups="stock_transfers.group_internal_transfer_user,stock_transfers.group_transfer_approved" />
+					<!-- cuando este realizado, solo el administrador de sistemas puede 
+						cancelarlo -->
+					<button name="action_cancel" string="Cancelar"
+						groups="base.group_system" type="object"
+						states="done" confirm="Está seguro de cancelar este registro?" />
+					<button name="action_cancel_to_draft"
+						string="Volver a Borrador" type="object"
+						states="cancel" groups="stock_transfers.group_transfer_approved" />
+					<field name="state" widget="statusbar"
+						statusbar_visible="draft,request,approved,done" />
+				</header>
+				<sheet>
+					<group>
+						<group>
+							<field name="name" />
+							<field name="picking_type_origin_id" required="1"
+								options="{'no_create': True}"
+								domain="[('id', '!=', picking_type_dest_id), ('code', 'in', ('outgoing',))]" />
+							<field name="location_id" required="1" invisible="1"
+								options="{'no_create': True}"
+								domain="[('usage','!=','view'), ('id', '!=', location_dest_id)]" />
+						</group>
+						<group>
+							<field name="backorder_id" />
+							<field name="picking_type_dest_id" required="1"
+								options="{'no_create': True}"
+								domain="[('id', '!=', picking_type_origin_id), ('code', 'in', ('incoming',))]" />
+							<field name="location_dest_id" required="1" invisible="1"
+								options="{'no_create': True}" />
+							<field name="process_date"
+								groups="generic_stock.group_set_date_movement_picking" />
+							<field name="company_id" groups="base.group_multi_company" />
+						</group>
+					</group>
+					<notebook colspan="4">
+						<page string="Lineas de Solicitud">
+							<button name="action_mark_lines" states="request"
+								string="Seleccionar Todo" type="object"
+								class="oe_link fa fa-check-square-o"
+								context="{'lines_marked': True}"
+								groups="stock_transfers.group_transfer_approved" />
+							<button name="action_mark_lines" states="request"
+								string="Deseleccionar Todo" type="object"
+								class="oe_link fa fa-square-o"
+								groups="stock_transfers.group_transfer_approved" />
+							<button name="action_mark_qty" states="approved"
+								string="Marcar recibir completamente" type="object"
+								class="oe_link fa fa-check-square-o"
+								groups="stock_transfers.group_internal_transfer_user,stock.group_stock_user" />
+							<button name="action_mark_no_qty" states="approved"
+								string="Marcar NO recibir" type="object"
+								class="oe_link fa fa-check-square-o"
+								groups="stock_transfers.group_internal_transfer_user,stock.group_stock_user" />
+							<field name="line_ids" nolabel="1"
+								context="{'default_state': state}">
+								<tree string="Lineas de Solicitud" editable="bottom" delete_conditionable="state=='draft'" create_conditionable="state=='draft'">
+									<field name="product_id" required="1"
+										attrs="{'readonly': [('state','!=','draft')]}"
+										options="{'no_create': True}"
+										context="{'filter_transfer_requisition':True}"
+										domain="[('type','!=','service')]" default_focus="1" />
+									<field name="product_qty"
+										attrs="{'readonly': [('state','!=','draft')]}" />
+									<field name="uom_id" required="1"
+										options="{'no_create': True}"
+										attrs="{'readonly': [('state','!=','draft')]}"
+										groups="uom.group_uom" />
+									<field name="qty_process"
+										attrs="{'readonly': [('state','!=','request')]}" />
+									<field name="qty_received"
+										attrs="{'readonly': [('state','!=','approved')]}" />
+									<field name="price_unit"
+										attrs="{'readonly': [('state','!=','draft')]}"
+										groups="account.group_account_manager,purchase.group_purchase_manager" />
+									<field name="to_process"
+										groups="stock_transfers.group_transfer_approved"
+										attrs="{'readonly': [('state','!=','request')]}" />
+									<field name="state" invisible="1" force_save="1" />
+								</tree>
+								<form string="Lineas de Solicitud">
+									<field name="to_process"
+										groups="stock_transfers.group_transfer_approved"
+										attrs="{'readonly': [('state','!=','request')]}" />
+									<field name="product_id" colspan="4" required="1"
+										attrs="{'readonly': [('state','!=','draft')]}"
+										options="{'no_create': True}"
+										context="{'filter_transfer_requisition':True}"
+										domain="[('type','!=','service')]" default_focus="1" />
+									<field name="product_qty"
+										attrs="{'readonly': [('state','!=','draft')]}" />
+									<field name="uom_id" required="1"
+										options="{'no_create': True}"
+										attrs="{'readonly': [('state','!=','draft')]}"
+										groups="uom.group_uom" />
+									<field name="qty_process"
+										attrs="{'readonly': [('state','!=','request')]}" />
+									<field name="qty_received"
+										attrs="{'readonly': [('state','!=','approved')]}" />
+									<field name="price_unit"
+										attrs="{'readonly': [('state','!=','draft')]}"
+										groups="account.group_account_manager,purchase.group_purchase_manager" />
+									<field name="state" invisible="1" />
+								</form>
+							</field>
+						</page>
+						<page string="Movimientos de stock">
+							<notebook colspan="4">
+								<page string="Despachos">
+									<field name="picking_ids" nolabel="1" />
+								</page>
+								<page string="Recepciones">
+									<field name="picking_dest_ids" nolabel="1" />
+								</page>
+								<page string="Devoluciones">
+									<field name="picking_return_ids" nolabel="1" />
+								</page>
+							</notebook>
+						</page>
+						<page string="Observaciones">
+							<field name="reason_ids" colspan="4" nolabel="1">
+								<tree string="Razones">
+									<field name="product_id" />
+									<field name="name" />
+								</tree>
+								<form string="Razones">
+									<field name="product_id" />
+									<field name="name" />
+								</form>
+							</field>
+							<group string="Observaciones" colspan="2">
+								<field name="note" nolabel="1" paceholder="Observaciones" />
+							</group>
+						</page>
+						<page string="Más Información">
+							<group col="4" colspan="2">
+								<field name="create_uid" />
+								<field name="create_date" />
+								<field name="requisition_uid" />
+								<field name="requisition_date" />
+								<field name="approved_uid" />
+								<field name="approved_date" />
+								<field name="received_uid" />
+								<field name="received_date" />
+							</group>
+						</page>
+						<page string="Requisiones Dependientes"
+							attrs="{'invisible':[('next_requisitions_ids','=',[])]}">
+							<field name="next_requisitions_ids" colspan="4" nolabel="1"
+								readonly="1">
+								<tree string="Requisiones Dependientes">
+									<field name="name" />
+									<field name="location_id" />
+									<field name="location_dest_id" />
+									<field name="state" />
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</sheet>
+				<div class="o_attachment_preview" />
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+			</form>
+		</field>
+	</record>
+
+	<record model="ir.ui.view" id="transfer_requisition_search_view">
+		<field name="name">transfer.requisition.search</field>
+		<field name="model">transfer.requisition</field>
+		<field name="arch" type="xml">
+			<search string="Transferencias">
+				<field name="name" />
+				<field name="backorder_id" />
+				<field name="location_id" />
+				<field name="location_dest_id" />
+				<field name="process_date" widget="date"
+					groups="generic_stock.group_set_date_movement_picking" />
+				<field name="company_id" groups="base.group_multi_company" />
+				<field name="state" />
+				<group name="filter_by" string="Filtros">
+					<filter name="filter_by_request" string="Esperando despacho"
+						domain="[('state', '=', 'request')]" />
+					<filter name="filter_by_approved" string="Despachado/Esperando recepcion"
+						domain="[('state', '=', 'approved')]" />
+					<filter name="filter_by_done" string="Realizado"
+						domain="[('state', '=', 'done')]" />
+				</group>
+				<group name="group_by" string="Agrupar por">
+					<filter name="group_by_location_id" string="Bodega Origen"
+						context="{'group_by': 'location_id'}" />
+					<filter name="group_by_location_dest_id"
+						string="Bodega Destino" context="{'group_by': 'location_dest_id'}" />
+					<filter name="group_by_state" string="Estado"
+						context="{'group_by': 'state'}" />
+					<filter name="group_by_company" string="Compañia"
+						context="{'group_by': 'company_id'}" groups="base.group_multi_company" />
+				</group>
+			</search>
+		</field>
+	</record>
+
+	<record model="ir.actions.act_window"
+		id="action_transfer_requisition_tree_view">
+		<field name="name">Transferencias</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">transfer.requisition</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+		<field name="view_id" ref="transfer_requisition_tree_view" />
+		<field name="search_view_id"
+			ref="transfer_requisition_search_view" />
+	</record>
+
+	<menuitem id="transfer_requisition_menu" name="Transferencias"
+		parent="transfer_requisition_menu_root"
+		action="action_transfer_requisition_tree_view"
+		groups="stock_transfers.group_internal_transfer_user" />
+
+	<!-- menu para solicitudes pendientes de aprobacion -->
+	<record model="ir.actions.act_window"
+		id="action_transfer_requisition_to_approved_tree_view">
+		<field name="name">Transferencias por Aprobar</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">transfer.requisition</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+		<field name="domain">[('state','=','request')]</field>
+		<field name="view_id" ref="transfer_requisition_tree_view" />
+		<field name="search_view_id"
+			ref="transfer_requisition_search_view" />
+	</record>
+
+	<menuitem id="transfer_requisition_to_approved_menu"
+		name="Transferencias por Aprobar" sequence="11"
+		parent="transfer_requisition_menu_root"
+		action="action_transfer_requisition_to_approved_tree_view"
+		groups="stock_transfers.group_transfer_approved" />
+
+	<!-- menu para solicitudes pendientes de confirmar(o recibir) -->
+	<record model="ir.actions.act_window"
+		id="action_transfer_requisition_to_received_tree_view">
+		<field name="name">Transferencias por Recibir</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">transfer.requisition</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+		<field name="domain">[('state','=','approved')]</field>
+		<field name="view_id" ref="transfer_requisition_tree_view" />
+		<field name="search_view_id"
+			ref="transfer_requisition_search_view" />
+	</record>
+
+	<menuitem id="transfer_requisition_to_received_menu"
+		name="Transferencias por Recibir" sequence="12"
+		parent="transfer_requisition_menu_root"
+		action="action_transfer_requisition_to_received_tree_view"
+		groups="stock_transfers.group_internal_transfer_user" />
+</odoo>

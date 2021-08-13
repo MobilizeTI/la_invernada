@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<menuitem id="pos_order_reason_nc_menu" name="Motivos de Nota de Credito"
+		sequence="50" parent="point_of_sale.menu_point_config_product" action="l10n_cl_fe.pos_order_reason_nc_action" />
+
+</odoo>

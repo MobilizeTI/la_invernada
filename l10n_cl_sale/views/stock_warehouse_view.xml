@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="stock_warehuose_form_view" model="ir.ui.view">
+		<field name="name">stock.warehouse.form</field>
+		<field name="model">stock.warehouse</field>
+		<field name="inherit_id" ref="stock.view_warehouse" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='show_resupply']/.." position="after">
+				<group colspan="2" string="Documentos SII">
+					<field name="journal_document_class_id" options="{'no_create': True}"
+						domain="[('journal_id.type','=','sale')]" />
+					<field name="journal_document_class_boleta_id" options="{'no_create': True}"
+						domain="[('journal_id.type','=','sale')]" />
+				</group>
+			</xpath>
+		</field>
+	</record>
+
+</odoo>

@@ -1,0 +1,2 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_model_stock_production_lot_group_picking_from_invoice","access_model_stock_production_lot_group_picking_from_invoice","stock.model_stock_production_lot","group_picking_from_invoice",1,1,1,0

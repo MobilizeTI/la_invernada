@@ -1,0 +1,25 @@
+{
+    'name': 'Transbank Payment Acquirer',
+    'category': 'Hidden',
+    'summary': 'Payment Acquirer: Transbank Implementation',
+    'version': '1.0.0.2',
+    'description': """Transbank Payment Acquirer""",
+    'author': 'Loo <http://odooerp.cl/>',
+    'depends': [
+        'payment', 
+        'base', 
+        'sale', 
+        'account',
+        'website_sale',
+    ],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/templates.xml',
+        'views/transbank.xml',
+        'views/payment_acquirer.xml',
+        'views/payment_portal_templates.xml',
+        'views/payment_transaction_view.xml',
+        'data/transbank.xml',
+    ],
+    'installable': True,
+}

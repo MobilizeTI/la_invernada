@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="assets" name="l10n_cl_retail_pos_assets" inherit_id="point_of_sale.assets">
+		<xpath expr="//script[last()]" position="after">
+			<script type="text/javascript" src="/l10n_cl_retail_pos/static/src/js/models.js"></script>
+			<script type="text/javascript" src="/l10n_cl_retail_pos/static/src/js/popup.js"></script>
+		</xpath>
+	</template>
+
+</odoo>

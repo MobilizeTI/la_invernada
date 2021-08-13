@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="acquirer_form_webpay" model="ir.ui.view">
+		<field name="name">acquirer.form.webpay</field>
+		<field name="model">payment.acquirer</field>
+		<field name="inherit_id" ref="payment.acquirer_form" />
+		<field name="arch" type="xml">
+			<xpath expr="//button[@icon='fa-play']" position="attributes">
+				<attribute name="attrs">{'invisible': [('environment', 'in', ['test','cert'])]}</attribute>
+			</xpath>
+			<xpath expr="//button[@icon='fa-stop']" position="attributes">
+				<attribute name="attrs">{'invisible': [('environment', 'in', ['prod','cert'])]}</attribute>
+			</xpath>
+			<xpath expr="//button[@name='toggle_environment_value'][last()]"
+				position="after">
+				<button attrs="{'invisible': [('environment', 'in', ['prod','test'])]}"
+					class="oe_stat_button" name="toggle_environment_value" type="object"
+					icon="fa-stop-circle-o">
+					<div class="o_stat_info o_form_field">
+						<span class="o_warning_text">Certification</span>
+						<span class="o_stat_text">Environment</span>
+					</div>
+				</button>
+				<button class="oe_stat_button oe_inline pull-right" name="generate_certificate"
+					type="object" icon="fa-certificate"
+					attrs="{'invisible': [('provider', '!=', 'transbank')]}">
+					<span>Generate certificate</span>
+				</button>
+			</xpath>
+			<xpath expr='//group[@name="acquirer"]' position='after'>
+				<group attrs="{'invisible': [('provider', '!=', 'transbank')]}">
+					<group>
+						<field name="commerce_id" attrs="{'required': [('provider', '=', 'transbank')]}" />
+						<field name="city" attrs="{'required': [('provider', '=', 'transbank')]}" />
+						<field name="certificate" attrs="{'readonly': [('provider', '=', 'transbank')]}" />
+					</group>
+				</group>
+			</xpath>
+		</field>
+	</record>
+
+</odoo>

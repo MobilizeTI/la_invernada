@@ -17,8 +17,8 @@
                   </thead>
                   <tbody>
                       <tr>
-                          <th><span t-field="o.employee_id.address_id.name"/></th>
-                         <th><span class="float-right" t-esc="o.employee_id.address_id.vat"/></th>
+                          <th><span t-field="res_company.name"/></th>
+                         <th><span class="float-right" t-esc="res_company.vat and res_company.vat.replace('CL', ' ') or '55.555.555-5'"/></th>
                       </tr>
                   </tbody>
                 </table>
@@ -89,9 +89,6 @@
 							<t t-if="('CAPITAL' == o.contract_id.afp_id.name)">
 								<span t-raw="o.indicadores_id.tasa_afp_capital" />
 							</t>
-                            <t t-if="('UNO' == o.contract_id.afp_id.name)">
-                                <span t-raw="o.indicadores_id.tasa_afp_uno"/>
-                            </t>
 							%
                         </td>
                         <td><span t-field="o.contract_id.isapre_id"/></td>
@@ -294,7 +291,7 @@
 				</tr>
 				<tr>
 					<th colspan="4">
-						<span t-field="o.employee_id.address_id.name" />
+						<span t-field="res_company.name" />
 					</th>
 					<th>
 						<span t-field="o.employee_id.name" />

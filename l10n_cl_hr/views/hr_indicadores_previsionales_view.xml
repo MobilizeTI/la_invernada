@@ -51,26 +51,23 @@
 											<group col="4" name="mandatory_quotations"
 												string="Tasa Cotización Obligatorio AFP">
 												<field name="tasa_afp_capital" />
-												<field name="tasa_sis_capital"   />
-												<field name="tasa_independiente_capital"   />
+												<field name="tasa_sis_capital" nolabel="1" />
+												<field name="tasa_independiente_capital" nolabel="1" />
 												<field name="tasa_afp_cuprum" />
-												<field name="tasa_sis_cuprum"   />
-												<field name="tasa_independiente_cuprum"   />
+												<field name="tasa_sis_cuprum" nolabel="1" />
+												<field name="tasa_independiente_cuprum" nolabel="1" />
 												<field name="tasa_afp_habitat" />
-												<field name="tasa_sis_habitat"   />
-												<field name="tasa_independiente_habitat"   />
+												<field name="tasa_sis_habitat" nolabel="1" />
+												<field name="tasa_independiente_habitat" nolabel="1" />
 												<field name="tasa_afp_planvital" />
-												<field name="tasa_sis_planvital"   />
-												<field name="tasa_independiente_planvital"   />
+												<field name="tasa_sis_planvital" nolabel="1" />
+												<field name="tasa_independiente_planvital" nolabel="1" />
 												<field name="tasa_afp_provida" />
-												<field name="tasa_sis_provida"   />
-												<field name="tasa_independiente_provida"   />
+												<field name="tasa_sis_provida" nolabel="1" />
+												<field name="tasa_independiente_provida" nolabel="1" />
 												<field name="tasa_afp_modelo" />
-												<field name="tasa_sis_modelo"   />
-												<field name="tasa_independiente_modelo"   />
-												<field name="tasa_afp_uno" />
-												<field name="tasa_sis_uno"   />
-												<field name="tasa_independiente_uno"   />
+												<field name="tasa_sis_modelo" nolabel="1" />
+												<field name="tasa_independiente_modelo" nolabel="1" />
 											</group>
 										</td>
 									</tr>

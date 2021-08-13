@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template">
+
+	<t t-extend="PaymentScreen-Paymentmethods">
+		<t t-jquery=".button,.paymentmethod" t-operation="attributes">
+			<attribute name="t-if">!cashregister.journal.use_in_pos_for || cashregister.journal.use_in_pos_for=='none'</attribute>
+		</t>
+	</t>
+
+</templates>

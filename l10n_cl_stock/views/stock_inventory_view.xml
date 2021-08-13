@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="stock_inventory_form_view" model="ir.ui.view">
+		<field name="name">stock.inventory.form</field>
+		<field name="model">stock.inventory</field>
+		<field name="inherit_id" ref="stock.view_inventory_form" />
+		<field name="arch" type="xml">
+			<xpath expr="//button[@name='action_validate']" position="attributes">
+				<attribute name="groups">stock.group_stock_user</attribute>
+			</xpath>
+			<xpath expr="//button[@name='action_validate']" position="after">
+				<button name="action_validate" states="waiting" string="Validar Inventario"
+					type="object" class="oe_highlight" groups="l10n_cl_stock.group_validate_guias" />
+			</xpath>
+			<xpath expr="//button[@name='action_cancel_draft'][@states='confirm']"
+				position="attributes">
+				<attribute name="states">confirm,waiting</attribute>
+			</xpath>
+			<xpath expr="//field[@name='filter']" position="attributes">
+				<attribute name="readonly">1</attribute>
+				<attribute name="force_save">1</attribute>
+			</xpath>
+			<xpath expr="//field[@name='location_id']" position="attributes">
+				<attribute name="context">{'filter_my_location': True}</attribute>
+				<attribute name="options">{'no_create': True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='line_ids']/tree//field[@name='product_id']"
+				position="attributes">
+				<attribute name="options">{'no_create': True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='line_ids']/tree//field[@name='prod_lot_id']"
+				position="attributes">
+				<attribute name="options">{'no_create': True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='line_ids']/../.." position="attributes">
+				<attribute name="attrs">{}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='line_ids']/.." position="attributes">
+				<attribute name="attrs">{'invisible':[('state','=','draft')]}</attribute>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="stock_inventory_search_view" model="ir.ui.view">
+		<field name="name">stock.inventory.search</field>
+		<field name="model">stock.inventory</field>
+		<field name="inherit_id" ref="stock.view_inventory_filter" />
+		<field name="arch" type="xml">
+			<filter name="confirm" position="after">
+				<filter string="Esperando aprobación" name="filter_waitings"
+					domain="[('state', '=', 'waiting')]" />
+			</filter>
+		</field>
+	</record>
+
+	<record id="stock_inventory_tree_view" model="ir.ui.view">
+		<field name="name">stock.inventory.tree</field>
+		<field name="model">stock.inventory</field>
+		<field name="inherit_id" ref="stock.view_inventory_tree" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='name']" position="after">
+				<field name='location_id' groups="stock.group_stock_multi_locations" />
+			</xpath>
+		</field>
+	</record>
+</odoo>

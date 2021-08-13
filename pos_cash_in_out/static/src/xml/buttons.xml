@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="button_cash_in">
+        <div class='control-button'>
+            <i class='fa fa-usd' />  Ingresar Dinero
+        </div>
+    </t>
+    
+    <t t-name="button_cash_out">
+        <div class='control-button'>
+            <i class='fa fa-minus' />  Sacar Dinero
+        </div>
+    </t>
+
+</templates>

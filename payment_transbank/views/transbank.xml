@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+	<template id="transbank_acquirer_button">
+		<input type="hidden" name="data_set" t-att-data-action-url="tx_url"
+			data-remove-me="" />
+		<input type='hidden' name='AMOUNT' t-att-value='AMOUNT or "0.0"' />
+		<input type='hidden' name='CURRENCY' t-att-value='CURRENCY' />
+		<input type='hidden' name='BUYORDER' t-att-value='BUYORDER' />
+		<input type='hidden' name='transbank_order_id' t-att-value='transbank_order_id' />
+		<input type='hidden' name='transbank_transaction_id' t-att-value='transbank_transaction_id' />
+	</template>
+</odoo>

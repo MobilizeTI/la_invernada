@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="stock_picking_tree_view" model="ir.ui.view">
+		<field name="name">stock.picking.tree</field>
+		<field name="model">stock.picking</field>
+		<field name="inherit_id" ref="stock.vpicktree" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='origin']" position="after">
+				<field name="partner_ref" />
+			</xpath>
+		</field>
+	</record>
+
+	<record id="stock_picking_form_view" model="ir.ui.view">
+		<field name="name">stock.picking.form</field>
+		<field name="model">stock.picking</field>
+		<field name="inherit_id" ref="stock.view_picking_form" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='partner_id']" position="after">
+				<field name="partner_ref" />
+			</xpath>
+			<xpath expr="//field[@name='origin']" position="after">
+				<field name="print_line_number" />
+			</xpath>
+			<button name="action_cancel" position="attributes">
+				<attribute name="groups">stock.group_stock_manager</attribute>
+			</button>
+		</field>
+	</record>
+
+	<record id="picking_search_view" model="ir.ui.view">
+		<field name="name">stock.picking.search</field>
+		<field name="model">stock.picking</field>
+		<field name="inherit_id" ref="stock.view_picking_internal_search" />
+		<field name="arch" type="xml">
+			<filter name="draft" position="before">
+				<filter string="Contiene Guia Electronica" domain="[('use_documents', '=', True)]"
+					name="filter_contiene_generate_electronic_data" />
+				<filter string="No Contiene Guia Electronica"
+					domain="[('use_documents', '=', False), ('picking_type_id.warehouse_id', '!=', False)]"
+					name="filter_no_contiene_generate_electronic_data" />
+				<separator />
+			</filter>
+			<xpath expr="//field[@name='name']" position="after">
+				<field name="partner_ref" />
+			</xpath>
+		</field>
+	</record>
+	
+	<record id="picking_kanban_view" model="ir.ui.view">
+		<field name="name">stock.picking.kanban</field>
+		<field name="model">stock.picking</field>
+		<field name="inherit_id" ref="stock.stock_picking_kanban" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='date']" position="after">
+				<field name="partner_ref" />
+			</xpath>
+			<xpath expr="//div[hasclass('o_kanban_record_bottom')]" position="after">
+				<t t-if="record.partner_ref.value">
+					<div class="oe_kanban_bottom_left">
+						<strong>REF: </strong><t t-esc="record.partner_ref.value"/>
+					</div>
+				</t>
+			</xpath>
+		</field>
+	</record>
+</odoo>
