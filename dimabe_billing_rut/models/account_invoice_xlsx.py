@@ -444,7 +444,7 @@ class AccountInvoiceXlsx(models.Model):
         # affect_taxes = inv.invoice_line_ids.filtered(lambda a: a.sii_code == 14)
 
         exempt_taxes = inv.invoice_line_ids.filtered(lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name'))
-        affect_taxes = inv.invoice_line_ids.filtered(lambda a: ['IVA Débito', 'IVA Crédito'] in a.invoice_line_tax_ids.mapped('name'))
+        affect_taxes = inv.invoice_line_ids.filtered(lambda a: 'IVA Débito' or 'IVA Crédito' in a.invoice_line_tax_ids.mapped('name'))
         if exempt_taxes:
             sheet.write(row, col, sum(exempt_taxes.mapped('price_subtotal')), formats['number'])
             col += 1
