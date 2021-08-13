@@ -73,12 +73,12 @@ class StockReportXlsx(models.TransientModel):
             )
         elif self.stock_selection == 'vain_service':
             dict_data = self.generate_excel_serial_report(
-                [('product_id.name', 'like', 'Vana'), ('product_id.categ_id.name', 'like', 'Servicio')],
+                [('product_id.name', 'like', 'Vana'), ('product_id.categ_id.name', 'like', 'Servicio'),('harvest_filter','=',self.year)],
                 'Producto Vana Servicio'
             )
         elif self.stock_selection == 'discart_service':
             dict_data = self.generate_excel_serial_report(
-                [('product_id.name', 'like', 'Descarte'), ('product_id.categ_id.name', 'like', 'Servicio')],
+                [('product_id.name', 'like', 'Descarte'), ('product_id.categ_id.name', 'like', 'Servicio'),('harvest_filter','=',self.year)],
                 'Producto Descarte Servicio'
             )
         elif self.stock_selection == 'pt':
