@@ -23,6 +23,7 @@ class ProcessReport(models.TransientModel):
 
     year = fields.Integer('Año', default=datetime.now().year)
 
+
     @api.multi
     def generate_xlsx(self):
         if self.process_selection == 'ncc':
