@@ -1,8 +1,0 @@
-"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
-"access_model_sale_order_tax_group_user","access_model_sale_order_tax_group_user","model_sale_order_tax","base.group_user",1,0,0,0
-"access_model_sale_order_tax_group_sale_salesman","access_model_sale_order_tax_group_sale_salesman","model_sale_order_tax","sales_team.group_sale_salesman",1,1,1,1
-"access_model_report_all_channels_sales_group_sale_report","access_model_report_all_channels_sales_group_sale_report","sale.model_report_all_channels_sales","group_sale_report",1,0,0,0
-"access_model_account_move_group_sale_salesman","access_model_account_move_group_sale_salesman","account.model_account_move","sales_team.group_sale_salesman",1,0,0,0
-"access_model_account_invoice_tax_group_sale_salesman","access_model_account_invoice_tax_group_sale_salesman","account.model_account_invoice_tax","sales_team.group_sale_salesman",1,1,1,1
-"access_model_account_partial_reconcile_group_sale_salesman","access_model_account_partial_reconcile_group_sale_salesman","account.model_account_partial_reconcile","sales_team.group_sale_salesman",1,0,0,0
-"access_model_account_full_reconcile_group_sale_salesman","access_model_account_full_reconcile_group_sale_salesman","account.model_account_full_reconcile","sales_team.group_sale_salesman",1,0,0,0

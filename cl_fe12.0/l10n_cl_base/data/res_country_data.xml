@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<odoo noupdate="1">
-	<record model='res.country' id='base.cl'>
-		<field name="address_format"
-			eval="'%(street)s\n%(street2)s\n%(city)s\n%(country_name)s'" />
-	</record>
-</odoo>

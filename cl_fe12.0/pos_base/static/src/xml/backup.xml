@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<templates>
-	<t t-name="pos_base.Backup">
-		<div class="o_backup col-12 mb16">
-			<a class="btn btn-primary js_backup" style="color: white;">Backup</a>
-			<a class="btn btn-primary js_download o_hidden" style="color: white;">Descargar</a>
-		</div>
-	</t>
-</templates>
