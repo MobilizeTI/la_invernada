@@ -300,7 +300,9 @@ class StockPicking(models.Model):
     def get_product_move(self):
         return self.move_ids_without_package.filtered(
             lambda x: x.product_id.categ_id.id in self.picking_type_id.warehouse_id.products_can_be_stored.filtered(
-                lambda y: not y.reserve_ignore).ids)[0] if self.move_ids_without_package else None
+                lambda y: not y.reserve_ignore).ids)[0] if self.move_ids_without_package.filtered(
+            lambda x: x.product_id.categ_id.id in self.picking_type_id.warehouse_id.products_can_be_stored.filtered(
+                lambda y: not y.reserve_ignore).ids) else None
 
 
     @api.multi
@@ -430,8 +432,9 @@ class StockPicking(models.Model):
                     m_move = self.get_pt_move()
                 if not m_move:
                     m_move = self.get_product_move()
-                m_move.product_id.update_kg(product_id=m_move.product_id.id)
-                m_move.product_id.get_and_update(product_id=m_move.product_id.id)
+                if m_move:
+                    m_move.product_id.update_kg(product_id=m_move.product_id.id)
+                    m_move.product_id.get_and_update(product_id=m_move.product_id.id)
 
             return res
         # Se usaran datos de modulo de dimabe_manufacturing

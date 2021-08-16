@@ -48,8 +48,7 @@ class StockReportXlsx(models.TransientModel):
                  ('harvest_filter', '=', self.year)], 'Descarte')
         elif self.stock_selection == 'washed':
             dict_data = self.generate_excel_serial_report(
-                [('product_id.default_code', 'like', 'PSE016'), (
-                'product_id.categ_id.name', 'in', ('Envasado NSC', 'Partido Manual Calidad', 'Partido Mecánico/Láser')),
+                [('product_id.default_code', 'like', 'PSE016'),
                  ('product_id.name', 'not like', 'Vana'),
                  ('product_id.name', 'not like', '(S)'), ('harvest_filter', '=', self.year)], 'Producto Lavado')
         elif self.stock_selection == 'raw_service':
@@ -74,12 +73,12 @@ class StockReportXlsx(models.TransientModel):
             )
         elif self.stock_selection == 'vain_service':
             dict_data = self.generate_excel_serial_report(
-                [('product_id.name', 'like', 'Vana'), ('product_id.categ_id.name', 'like', 'Servicio')],
+                [('product_id.name', 'like', 'Vana'), ('product_id.categ_id.name', 'like', 'Servicio'),('harvest_filter','=',self.year)],
                 'Producto Vana Servicio'
             )
         elif self.stock_selection == 'discart_service':
             dict_data = self.generate_excel_serial_report(
-                [('product_id.name', 'like', 'Descarte'), ('product_id.categ_id.name', 'like', 'Servicio')],
+                [('product_id.name', 'like', 'Descarte'), ('product_id.categ_id.name', 'like', 'Servicio'),('harvest_filter','=',self.year)],
                 'Producto Descarte Servicio'
             )
         elif self.stock_selection == 'pt':
