@@ -16,5 +16,13 @@
                 </xpath>
             </field>
         </record>
+
+        <record id="account_move_report_action_mblz" model="ir.actions.report">
+            <field name="name">Libro de compras</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">dimabe_billing_rut.report_purchase_book_pdf</field>    
+            <field name="orientation">Landscape</field>
+        </record>
     </data>
 </odoo>

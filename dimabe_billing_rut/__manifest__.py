@@ -49,7 +49,7 @@
         'views/account_incoterms.xml',
         'views/account_move.xml',
         'report/instructive_report.xml',
-        'report/report_pdf.xml',
+        'report/report_purchase_book_pdf.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
