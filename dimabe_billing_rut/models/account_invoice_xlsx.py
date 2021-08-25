@@ -35,6 +35,7 @@ class AccountInvoiceXlsx(models.Model):
         [data] = self.read()
         data['move_ids'] = self.env.context.get('active_ids', [])
         invoices = self.env['account.invoice'].browse(data['move_ids'])
+        _logger.info('LOG:   --->>>><< invoices {}'.format(invoices))
         datas = {
             'ids': [],
             'model': 'account.invoice',
