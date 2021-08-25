@@ -4,174 +4,299 @@
     <data>
         <template id="report_purchase_book_pdf">
             <t t-call="web.html_container">
-                    <t t-call="web.external_layout">
-                        <!-- <style>
+                <!-- <style>
                             table { 
                                 border: 1px solid #ccc;
                                 width: 100%;
                              }
                         </style> -->
-                        <div class="page">
-                            <center><h2>Reporte libro de compras</h2></center>
-                            <span t-esc="from_date"></span>
-                            <span t-esc="to_date"></span>
-                            <span t-esc="company_get_id"></span>
-                            <table border="1" style="width:100%;">
-                                <center><h3>FACTURAS DE COMPRA ELECTRONICA</h3></center>
-                                <!-- ***********  CAMPOS DE LA TABLA FACTURAS ELECTRONICAS *********** -->
-                                <thead>
-                                    <tr>
-                                        <th>Folio</th>
-                                        <th>Cor.Interno</th>
-                                        <th>Rut</th>
-                                        <th>Fecha</th>
-                                        <th>Nombre</th>
-                                        <th>Exento</th>
-                                        <th>Neto IVA</th>
-                                        <th>Total NETO</th>
-                                        <th>IVA</th>
-                                        <th>IVA no Recuperable</th>
-                                        <th>Total</th>
-                                    </tr>
-                                </thead>
-                                <!-- *********** CUERPO DEL REPORTE FACTURAS ELECTRONICAS *********** -->
-                                <tbody>
-                                    <tr t-foreach="get_invoices" t-as="invoice">
-                <!-- FOLIO       -->    <td scope="row"><span t-field="invoice.reference">reference</span></td> 
-                <!-- Cor.Interno -->    <td scope="row"><span t-field="invoice.number"></span></td> 
-                <!-- RUT         -->    <td scope="row"><span>document_type_id</span></td>
-                <!-- FECHA       -->    <td scope="row"><span t-field="invoice.date_invoice"></span></td>
-                <!-- NOMBRE      -->    <td scope="row"><span t-field="invoice.vendor_display_name"></span></td>
-                <!-- EXENTO      -->    <td scope="row">EXEMPT</td>
-                <!-- NETO IVA    -->    <td>NETO</td>
-                <!-- TOTAL NETO  -->    <td>yyyyyy</td>
-                <!-- IVA         -->    <td scope="row"><span t-field="invoice.amount_untaxed"></span></td>
-                <!-- IVA NO RECUP-->    <td scope="row"><span t-field="invoice.amount_tax"></span></td>
-                <!-- TOTAL       -->    <td scope="row"><span t-field="invoice.amount_total"></span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div> 
+                <div class="page">
+                    <center>
+                        <h2>Reporte libro de compras</h2>
+                    </center>
+                    <span t-esc="from_date"></span>
+                    <span t-esc="to_date"></span>
+                    <span t-esc="company_get_id"></span>
+                    <table border="1" style="width:100%;">
+                        <center>
+                            <h3>FACTURAS DE COMPRA ELECTRONICA</h3>
+                        </center>
+                        <!-- ***********  CAMPOS DE LA TABLA FACTURAS ELECTRONICAS *********** -->
+                        <thead>
+                            <tr>
+                                <th>Folio</th>
+                                <th>Cor.Interno</th>
+                                <th>Rut</th>
+                                <th>Fecha</th>
+                                <th>Nombre</th>
+                                <th>Exento</th>
+                                <th>Neto IVA</th>
+                                <th>Total NETO</th>
+                                <th>IVA</th>
+                                <th>IVA no Recuperable</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <!-- *********** CUERPO DEL REPORTE FACTURAS ELECTRONICAS *********** -->
+                        <tbody>
+                            <tr t-foreach="get_invoices" t-as="invoice">
+                                <!-- FOLIO       -->
+                                <td scope="row">
+                                    <span t-field="invoice.reference">reference</span>
+                                </td>
+                                <!-- Cor.Interno -->
+                                <td scope="row">
+                                    <span t-field="invoice.number"></span>
+                                </td>
+                                <!-- RUT         -->
+                                <td scope="row">
+                                    <span>document_type_id</span>
+                                </td>
+                                <!-- FECHA       -->
+                                <td scope="row">
+                                    <span t-field="invoice.date_invoice"></span>
+                                </td>
+                                <!-- NOMBRE      -->
+                                <td scope="row">
+                                    <span t-field="invoice.vendor_display_name"></span>
+                                </td>
+                                <!-- EXENTO      -->
+                                <td scope="row">EXEMPT</td>
+                                <!-- NETO IVA    -->
+                                <td>NETO</td>
+                                <!-- TOTAL NETO  -->
+                                <td>yyyyyy</td>
+                                <!-- IVA         -->
+                                <td scope="row">
+                                    <span t-field="invoice.amount_untaxed"></span>
+                                </td>
+                                <!-- IVA NO RECUP-->
+                                <td scope="row">
+                                    <span t-field="invoice.amount_tax"></span>
+                                </td>
+                                <!-- TOTAL       -->
+                                <td scope="row">
+                                    <span t-field="invoice.amount_total"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-                        <div class="page">
-                            <center><h2>Reporte libro de compras</h2></center>
-                            <table border="1" style="width:100%;">
-                                <center><h3>FACTURA COMPRA EXENTA ELECTRONICA</h3></center>
-                                <!-- ***********  CAMPOS DE LA TABLA EXENTOS *********** -->
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>Folio</th>
-                                        <th>Cor.Interno</th>
-                                        <th>Rut</th>
-                                        <th>Fecha</th>
-                                        <th>Nombre</th>
-                                        <th>Exento</th>
-                                        <th>Neto IVA</th>
-                                        <th>Total NETO</th>
-                                        <th>IVA</th>
-                                        <th>IVA no Recuperable</th>
-                                        <th>Total</th>
-                                    </tr>
-                                </thead>
-                                <!-- *********** CUERPO DEL REPORTE EXENTOS *********** -->
-                                <tbody>
-                                     <tr t-foreach="get_exempts" t-as="exempt">
-                <!-- FOLIO       -->    <td scope="row"><span t-field="exempt.reference">reference</span></td> 
-                <!-- Cor.Interno -->    <td scope="row"><span t-field="exempt.number"></span></td> 
-                <!-- RUT         -->    <td scope="row"><span>document_type_id</span></td>
-                <!-- FECHA       -->    <td scope="row"><span t-field="exempt.date_invoice"></span></td>
-                <!-- NOMBRE      -->    <td scope="row"><span t-field="exempt.vendor_display_name"></span></td>
-                <!-- EXENTO      -->    <td scope="row">EXEMPT</td>
-                <!-- NETO IVA    -->    <td>NETO</td>
-                <!-- TOTAL NETO  -->    <td>yyyyyy</td>
-                <!-- IVA         -->    <td scope="row"><span t-field="exempt.amount_untaxed"></span></td>
-                <!-- IVA NO RECUP-->    <td scope="row"><span t-field="exempt.amount_tax"></span></td>
-                <!-- TOTAL       -->    <td scope="row"><span t-field="exempt.amount_total"></span></td>
-                                    </tr>
-                                </tbody>
-                            </table> 
-                        </div>
+                <div class="page">
+                    <center>
+                        <h2>Reporte libro de compras</h2>
+                    </center>
+                    <table border="1" style="width:100%;">
+                        <center>
+                            <h3>FACTURA COMPRA EXENTA ELECTRONICA</h3>
+                        </center>
+                        <!-- ***********  CAMPOS DE LA TABLA EXENTOS *********** -->
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Folio</th>
+                                <th>Cor.Interno</th>
+                                <th>Rut</th>
+                                <th>Fecha</th>
+                                <th>Nombre</th>
+                                <th>Exento</th>
+                                <th>Neto IVA</th>
+                                <th>Total NETO</th>
+                                <th>IVA</th>
+                                <th>IVA no Recuperable</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <!-- *********** CUERPO DEL REPORTE EXENTOS *********** -->
+                        <tbody>
+                            <tr t-foreach="get_exempts" t-as="exempt">
+                                <!-- FOLIO       -->
+                                <td scope="row">
+                                    <span t-field="exempt.reference">reference</span>
+                                </td>
+                                <!-- Cor.Interno -->
+                                <td scope="row">
+                                    <span t-field="exempt.number"></span>
+                                </td>
+                                <!-- RUT         -->
+                                <td scope="row">
+                                    <span>document_type_id</span>
+                                </td>
+                                <!-- FECHA       -->
+                                <td scope="row">
+                                    <span t-field="exempt.date_invoice"></span>
+                                </td>
+                                <!-- NOMBRE      -->
+                                <td scope="row">
+                                    <span t-field="exempt.vendor_display_name"></span>
+                                </td>
+                                <!-- EXENTO      -->
+                                <td scope="row">EXEMPT</td>
+                                <!-- NETO IVA    -->
+                                <td>NETO</td>
+                                <!-- TOTAL NETO  -->
+                                <td>yyyyyy</td>
+                                <!-- IVA         -->
+                                <td scope="row">
+                                    <span t-field="exempt.amount_untaxed"></span>
+                                </td>
+                                <!-- IVA NO RECUP-->
+                                <td scope="row">
+                                    <span t-field="exempt.amount_tax"></span>
+                                </td>
+                                <!-- TOTAL       -->
+                                <td scope="row">
+                                    <span t-field="exempt.amount_total"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
 
-                        <div class="page">
-                            <center><h2>Reporte libro de compras</h2></center>
-                            <table border="1" style="width:100%;">
-                            <center><h3>NOTA DE CREDITO COMPRA ELECTRONICA</h3></center>
-                                <!-- ***********  CAMPOS DE LA TABLA CREDITO *********** -->
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>Folio</th>
-                                        <th>Cor.Interno</th>
-                                        <th>Rut</th>
-                                        <th>Fecha</th>
-                                        <th>Nombre</th>
-                                        <th>Exento</th>
-                                        <th>Neto IVA</th>
-                                        <th>Total NETO</th>
-                                        <th>IVA</th>
-                                        <th>IVA no Recuperable</th>
-                                        <th>Total</th>
-                                    </tr>
-                                </thead>
-                                <!-- *********** CUERPO DEL REPORTE CREDITO*********** -->
-                                <tbody>
-                                    <tr t-foreach="get_credits" t-as="credit">
-                <!-- FOLIO       -->    <td scope="row"><span t-field="credit.reference">reference</span></td> 
-                <!-- Cor.Interno -->    <td scope="row"><span t-field="credit.number"></span></td> 
-                <!-- RUT         -->    <td scope="row"><span>document_type_id</span></td>
-                <!-- FECHA       -->    <td scope="row"><span t-field="credit.date_invoice"></span></td>
-                <!-- NOMBRE      -->    <td scope="row"><span t-field="credit.vendor_display_name"></span></td>
-                <!-- EXENTO      -->    <td scope="row">EXEMPT</td>
-                <!-- NETO IVA    -->    <td>NETO</td>
-                <!-- TOTAL NETO  -->    <td>yyyyyy</td>
-                <!-- IVA         -->    <td scope="row"><span t-field="credit.amount_untaxed"></span></td>
-                <!-- IVA NO RECUP-->    <td scope="row"><span t-field="credit.amount_tax"></span></td>
-                <!-- TOTAL       -->    <td scope="row"><span t-field="credit.amount_total"></span></td>
-                                    </tr>
-                                </tbody>
-                            </table> 
-                        </div>
+                <div class="page">
+                    <center>
+                        <h2>Reporte libro de compras</h2>
+                    </center>
+                    <table border="1" style="width:100%;">
+                        <center>
+                            <h3>NOTA DE CREDITO COMPRA ELECTRONICA</h3>
+                        </center>
+                        <!-- ***********  CAMPOS DE LA TABLA CREDITO *********** -->
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Folio</th>
+                                <th>Cor.Interno</th>
+                                <th>Rut</th>
+                                <th>Fecha</th>
+                                <th>Nombre</th>
+                                <th>Exento</th>
+                                <th>Neto IVA</th>
+                                <th>Total NETO</th>
+                                <th>IVA</th>
+                                <th>IVA no Recuperable</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <!-- *********** CUERPO DEL REPORTE CREDITO*********** -->
+                        <tbody>
+                            <tr t-foreach="get_credits" t-as="credit">
+                                <!-- FOLIO       -->
+                                <td scope="row">
+                                    <span t-field="credit.reference">reference</span>
+                                </td>
+                                <!-- Cor.Interno -->
+                                <td scope="row">
+                                    <span t-field="credit.number"></span>
+                                </td>
+                                <!-- RUT         -->
+                                <td scope="row">
+                                    <span>document_type_id</span>
+                                </td>
+                                <!-- FECHA       -->
+                                <td scope="row">
+                                    <span t-field="credit.date_invoice"></span>
+                                </td>
+                                <!-- NOMBRE      -->
+                                <td scope="row">
+                                    <span t-field="credit.vendor_display_name"></span>
+                                </td>
+                                <!-- EXENTO      -->
+                                <td scope="row">EXEMPT</td>
+                                <!-- NETO IVA    -->
+                                <td>NETO</td>
+                                <!-- TOTAL NETO  -->
+                                <td>yyyyyy</td>
+                                <!-- IVA         -->
+                                <td scope="row">
+                                    <span t-field="credit.amount_untaxed"></span>
+                                </td>
+                                <!-- IVA NO RECUP-->
+                                <td scope="row">
+                                    <span t-field="credit.amount_tax"></span>
+                                </td>
+                                <!-- TOTAL       -->
+                                <td scope="row">
+                                    <span t-field="credit.amount_total"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
 
-                        <div class="page">
-                            <center><h2>Reporte libro de compras</h2></center>
-                            <table border="1" style="width:100%;">
-                                <center><h3>NOTA DE DEBITO COMPRA ELECTRONICA</h3></center>
-                                <!-- ***********  CAMPOS DE LA TABLA DEBITO *********** -->
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>Folio</th>
-                                        <th>Cor.Interno</th>
-                                        <th>Rut</th>
-                                        <th>Fecha</th>
-                                        <th>Nombre</th>
-                                        <th>Exento</th>
-                                        <th>Neto IVA</th>
-                                        <th>Total NETO</th>
-                                        <th>IVA</th>
-                                        <th>IVA no Recuperable</th>
-                                        <th>Total</th>
-                                    </tr>
-                                </thead>
-                                <!-- *********** CUERPO DEL REPORTE DEBITO *********** -->
-                                <tbody>
-                                    <tr t-foreach="get_debits" t-as="debit">
-                <!-- FOLIO       -->    <td scope="row"><span t-field="debit.reference">reference</span></td> 
-                <!-- Cor.Interno -->    <td scope="row"><span t-field="debit.number"></span></td> 
-                <!-- RUT         -->    <td scope="row"><span>document_type_id</span></td>
-                <!-- FECHA       -->    <td scope="row"><span t-field="debit.date_invoice"></span></td>
-                <!-- NOMBRE      -->    <td scope="row"><span t-field="debit.vendor_display_name"></span></td>
-                <!-- EXENTO      -->    <td scope="row">EXEMPT</td>
-                <!-- NETO IVA    -->    <td>NETO</td>
-                <!-- TOTAL NETO  -->    <td>yyyyyy</td>
-                <!-- IVA         -->    <td scope="row"><span t-field="debit.amount_untaxed"></span></td>
-                <!-- IVA NO RECUP-->    <td scope="row"><span t-field="debit.amount_tax"></span></td>
-                <!-- TOTAL       -->    <td scope="row"><span t-field="debit.amount_total"></span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                </t>
+                <div class="page">
+                    <center>
+                        <h2>Reporte libro de compras</h2>
+                    </center>
+                    <table border="1" style="width:100%;">
+                        <center>
+                            <h3>NOTA DE DEBITO COMPRA ELECTRONICA</h3>
+                        </center>
+                        <!-- ***********  CAMPOS DE LA TABLA DEBITO *********** -->
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Folio</th>
+                                <th>Cor.Interno</th>
+                                <th>Rut</th>
+                                <th>Fecha</th>
+                                <th>Nombre</th>
+                                <th>Exento</th>
+                                <th>Neto IVA</th>
+                                <th>Total NETO</th>
+                                <th>IVA</th>
+                                <th>IVA no Recuperable</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <!-- *********** CUERPO DEL REPORTE DEBITO *********** -->
+                        <tbody>
+                            <tr t-foreach="get_debits" t-as="debit">
+                                <!-- FOLIO       -->
+                                <td scope="row">
+                                    <span t-field="debit.reference">reference</span>
+                                </td>
+                                <!-- Cor.Interno -->
+                                <td scope="row">
+                                    <span t-field="debit.number"></span>
+                                </td>
+                                <!-- RUT         -->
+                                <td scope="row">
+                                    <span>document_type_id</span>
+                                </td>
+                                <!-- FECHA       -->
+                                <td scope="row">
+                                    <span t-field="debit.date_invoice"></span>
+                                </td>
+                                <!-- NOMBRE      -->
+                                <td scope="row">
+                                    <span t-field="debit.vendor_display_name"></span>
+                                </td>
+                                <!-- EXENTO      -->
+                                <td scope="row">EXEMPT</td>
+                                <!-- NETO IVA    -->
+                                <td>NETO</td>
+                                <!-- TOTAL NETO  -->
+                                <td>yyyyyy</td>
+                                <!-- IVA         -->
+                                <td scope="row">
+                                    <span t-field="debit.amount_untaxed"></span>
+                                </td>
+                                <!-- IVA NO RECUP-->
+                                <td scope="row">
+                                    <span t-field="debit.amount_tax"></span>
+                                </td>
+                                <!-- TOTAL       -->
+                                <td scope="row">
+                                    <span t-field="debit.amount_total"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                    <!-- <t t-call="web.external_layout">
+                        
+                </t> -->
             </t>
         </template>
      </data>
