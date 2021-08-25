@@ -28,11 +28,11 @@ class HrAttendanceSummaryReport(models.AbstractModel):
         }
 
     def get_invoices(self, from_date, to_date, company_id):
-        domain_invoices = [('date', '>=', from_date),
+        domain_invoices = [('date', '>=', '2021-07-01'),
                      ('type', 'in', ('in_invoice', 'in_refund')),
-                     ('date', '<=', to_date), 
+                     ('date', '<=', '2021-07-31'), 
                      #('dte_type_id.code', '=', 33),
-                     ('company_id.id', '=', company_id)]
+                     ('company_id.id', '=', 3)]
                 #cambio en Order
         res = self.env['account.invoice'].sudo().search(domain_invoices, order='date asc, reference asc') #facturas electronicas
         _logger.info(res)
