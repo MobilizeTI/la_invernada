@@ -18,6 +18,7 @@ class HrAttendanceSummaryReport(models.AbstractModel):
             'doc_ids': self.ids,
             'doc_model': report.model,
             'docs': account,
+            'datas': [data['form']['from_date'], data['form']['to_date'], data['form']['company_get_id']],
             'get_invoices': self.get_invoices(data['form']['from_date'], data['form']['to_date'], data['form']['company_get_id'][0]),
             'get_exempts': self.get_exempts(data['form']['from_date'], data['form']['to_date'], data['form']['company_get_id'][0]),
             'get_debits': self.get_debits(data['form']['from_date'], data['form']['to_date'], data['form']['company_get_id'][0]),
