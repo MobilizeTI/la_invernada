@@ -12,6 +12,7 @@
                              }
                         </style> -->
                         <div class="page">
+                            <span t-esc="get_invoices"></span>
                             <center><h2>Reporte libro de compras</h2></center>
                             <table border="1" style="width:100%;">
                                 <center><h3>FACTURAS DE COMPRA ELECTRONICA</h3></center>
