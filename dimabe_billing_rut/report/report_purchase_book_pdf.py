@@ -14,6 +14,7 @@ class HrAttendanceSummaryReport(models.AbstractModel):
 
         report = self.env['ir.actions.report']._get_report_from_name('dimabe_billing_rut.account_move_report_action_mblz')
         account = self.env['account.move'].browse(self.ids)
+        _logger.info(account)
         return {            
             'doc_ids': self.ids,
             'doc_model': report.model,
