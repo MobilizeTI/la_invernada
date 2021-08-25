@@ -4,8 +4,8 @@ import logging
 _logger = logging.getLogger('TEST ========================')
 
 
-class HrAttendanceSummaryReport(models.AbstractModel):
-    _name = 'dimabe_billing_rut.report_purchase_book_pdf'
+class SalesBookReport(models.AbstractModel):
+    _name = 'report.dimabe_billing_rut.report_purchase_book_pdf'
 
     @api.model
     def _get_report_values(self, docids, data=None):
