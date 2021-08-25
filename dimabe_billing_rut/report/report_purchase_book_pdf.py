@@ -28,7 +28,7 @@ class HrAttendanceSummaryReport(models.AbstractModel):
         domain_invoices = [('date', '>=', from_date),
                      ('type', 'in', ('in_invoice', 'in_refund')),
                      ('date', '<=', to_date), 
-                     ('dte_type_id.code', '=', 33),
+                     #('dte_type_id.code', '=', 33),
                      ('company_id.id', '=', company_id)]
                 #cambio en Order
         return self.env['account.invoice'].sudo().search(domain_invoices, order='date asc, reference asc') #facturas electronicas
@@ -37,7 +37,7 @@ class HrAttendanceSummaryReport(models.AbstractModel):
         return self.env['account.invoice'].sudo().search([('date', '>=', from_date),
                                                                      ('type', 'in', ('in_invoice', 'in_refund')),
                                                                      ('date', '<=', to_date),
-                                                                     ('dte_type_id.code', '=', 34),
+                                                                    #('dte_type_id.code', '=', 34),
                                                                      ('company_id.id', '=', company_id)],
                                                                      order='date asc, reference asc')  #ORDENA ASCENDENTE
         
@@ -45,7 +45,7 @@ class HrAttendanceSummaryReport(models.AbstractModel):
         return self.env['account.invoice'].sudo().search([('date', '>=', from_date),
                                                                    ('date', '<=', to_date),
                                                                    ('type', 'in', ('out_invoice', 'out_refund')),
-                                                                   ('dte_type_id.code', '=', 56),
+                                                                   #('dte_type_id.code', '=', 56),
                                                                    ('company_id.id', '=', company_id)],
                                                                    order='date asc, reference asc') #ORDENA DEBITO ASCENDENTE
     
@@ -53,7 +53,7 @@ class HrAttendanceSummaryReport(models.AbstractModel):
         return self.env['account.invoice'].sudo().search([('date', '>=', from_date),
                                                                     ('type', 'in', ('in_invoice', 'in_refund')),
                                                                     ('date', '<=', to_date),
-                                                                    ('dte_type_id.code', '=', 61),
+                                                                    #('dte_type_id.code', '=', 61),
                                                                     ('company_id.id', '=', company_id)],
                                                                     order='date asc, reference asc') #ORDENA ASCENDENTE
         
