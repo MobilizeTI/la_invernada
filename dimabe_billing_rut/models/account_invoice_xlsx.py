@@ -41,6 +41,7 @@ class AccountInvoiceXlsx(models.Model):
             'model': 'account.invoice',
             'form': data
         }
+        _logger.info('LOG:  paso aca **********########## ref {}'.format(self.env.ref('dimabe_billing_rut.account_move_report_action_mblz')))
         return self.env.ref('dimabe_billing_rut.account_move_report_action_mblz').report_action(invoices, data=datas)
        
 
