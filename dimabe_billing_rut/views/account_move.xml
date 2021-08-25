@@ -21,9 +21,18 @@
             <field name="name">Libro de compras</field>
             <field name="model">account.move</field>
             <field name="report_type">qweb-pdf</field>
-            <field name="report_name">report.dimabe_billing_rut.report_purchase_book_pdf</field>
+            <field name="report_name">dimabe_billing_rut.report_purchase_book_pdf</field>
             <field name="orientation">Landscape</field>
         </record>
+
+        <report
+            id="purchase_book_pdf_report"
+            string="Libro de Compras"
+            model="account.move"
+            report_type="qweb-pdf"
+            file="dimabe_billing_rut.report_purchase_book_pdf"
+            name="dimabe_billing_rut.report_purchase_book_pdf"
+        />
 
         <!-- <report id="action_report_trial_balance" 
                 model="account.balance.report" 
