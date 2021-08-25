@@ -31,7 +31,9 @@ class HrAttendanceSummaryReport(models.AbstractModel):
                      #('dte_type_id.code', '=', 33),
                      ('company_id.id', '=', company_id)]
                 #cambio en Order
-        return self.env['account.invoice'].sudo().search(domain_invoices, order='date asc, reference asc') #facturas electronicas
+        res = self.env['account.invoice'].sudo().search(domain_invoices, order='date asc, reference asc') #facturas electronicas
+        _logger.info(res)
+        return res
 
     def get_exempts(self, from_date, to_date, company_id):
         return self.env['account.invoice'].sudo().search([('date', '>=', from_date),
