@@ -12,9 +12,9 @@ class SalesBookReport(models.AbstractModel):
         if not data.get('form'):
             raise UserError(_("El contenido del reporte esta vacio, El reporte no puede imprimirse."))
 
-        report = self.env['ir.actions.report']._get_report_from_name('dimabe_billing_rut.account_move_report_action_mblz')
+        report = self.env['ir.actions.report']._get_report_from_name('dimabe_billing_rut.report_purchase_book_pdf')
         account = self.env['account.move'].browse(self.ids)
-        _logger.info(account)
+        _logger.info('acccaaaaaaaaaaaa*********········3··3###############')
         return {            
             'doc_ids': self.ids,
             'doc_model': report.model,
