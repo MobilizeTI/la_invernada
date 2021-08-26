@@ -15,19 +15,24 @@
                 <div class="page">
                     <div class="company_data">
                         <t t-set="company" t-value="env['res.company'].sudo().browse(company_get_id[0])" />
-                        <span t-esc="company.name"/>
-                        <span t-esc="company.invoice_rut" />
-                        <span t-esc="company.get_address()"/> 
+                        <div t-esc="company.name"/>
+                        <div t-esc="company.invoice_rut" />
+                        <div t-esc="company.get_address()"/> 
                     </div>
                     <center>
-                        <h2>Reporte libro de compras</h2>
+                        <h4>Libro de Compras</h4>
+                        <h5>Libro de Compras Ordenado por fecha</h5>
+                        <h5>
+                            Desde
+                            <span t-esc="from_date"/>
+                            Hasta
+                            <span t-esc="to_date"/>
+                        </h5>
+                        <h5>Moneda : Peso Chileno</h5>
                     </center>
-                    <span t-esc="from_date"></span>
-                    <span t-esc="to_date"></span>
-                    <span t-esc="company_get_id"></span>
-                    <table border="1" style="width:100%;">
+                    <table class="tbl_book">
                         <center>
-                            <h3>FACTURAS DE COMPRA ELECTRONICA</h3>
+                            <h5>FACTURAS DE COMPRA ELECTRONICA</h5>
                         </center>
                         <!-- ***********  CAMPOS DE LA TABLA FACTURAS ELECTRONICAS *********** -->
                         <thead>
