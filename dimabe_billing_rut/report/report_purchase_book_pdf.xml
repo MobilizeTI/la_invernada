@@ -77,7 +77,7 @@
                                 <th>Neto IVA</th>
                                 <th>Total NETO</th>
                                 <th>IVA</th>
-                                <th>IVA no Recuperable</th>
+                                <th>IVA N/R</th>
                                 <th>Total</th>
                             </tr>
                         </thead>
@@ -149,8 +149,7 @@
                                     <span t-field="invoice.amount_total"></span>
                                 </td>
                             </tr>
-                            <tr/>
-                            <tr>
+                            <tr class="row_totales">
                                 <td>TOTALES : </td>
                                 <td></td>
                                 <td></td>
@@ -174,7 +173,7 @@
                                 </td>
                                 <td>
                                     $ 0
-                                    <!-- TODO traer iva no recuperable-->
+                                    <!-- TODO traer IVA N/R-->
                                 </td>
                                 <td>
                                     <span t-esc="env['account.invoice'].sudo().format_amount(total_general)" />
@@ -193,7 +192,7 @@
                     <!-- Facturas (34)-->
                     <table class="tbl_book">
                         <center>
-                            <h3>FACTURA COMPRA EXENTA ELECTRONICA</h3>
+                            <h5>FACTURA COMPRA EXENTA ELECTRONICA</h5>
                         </center>
                         <!-- ***********  CAMPOS DE LA TABLA EXENTOS *********** -->
                         <thead class="thead-dark">
@@ -209,7 +208,7 @@
                                 <th>Neto IVA</th>
                                 <th>Total NETO</th>
                                 <th>IVA</th>
-                                <th>IVA no Recuperable</th>
+                                <th>IVA N/R</th>
                                 <th>Total</th>
                             </tr>
                         </thead>
@@ -278,8 +277,7 @@
                                     <span t-field="exempt.amount_total"></span>
                                 </td>
                             </tr>
-                            <tr />
-                            <tr>
+                            <tr class="row_totales">
                                 <td>TOTALES : </td>
                                 <td></td>
                                 <td></td>
@@ -303,7 +301,7 @@
                                 </td>
                                 <td>
                                     $ 0
-                                    <!-- TODO traer iva no recuperable-->
+                                    <!-- TODO traer IVA N/R-->
                                 </td>
                                 <td>
                                     <span t-esc="env['account.invoice'].sudo().format_amount(total_general)" />
@@ -322,7 +320,7 @@
                     <!-- Notas de Crédito (61) -->
                     <table class="tbl_book">
                         <center>
-                            <h3>NOTA DE CREDITO COMPRA ELECTRONICA</h3>
+                            <h5>NOTA DE CREDITO COMPRA ELECTRONICA</h5>
                         </center>
                         <!-- ***********  CAMPOS DE LA TABLA CREDITO *********** -->
                         <thead class="thead-dark">
@@ -338,7 +336,7 @@
                                 <th>Neto IVA</th>
                                 <th>Total NETO</th>
                                 <th>IVA</th>
-                                <th>IVA no Recuperable</th>
+                                <th>IVA N/R</th>
                                 <th>Total</th>
                             </tr>
                         </thead>
@@ -407,8 +405,7 @@
                                     <span t-field="credit.amount_total"></span>
                                 </td>
                             </tr>
-                            <tr />
-                            <tr>
+                            <tr class="row_totales">
                                 <td>TOTALES : </td>
                                 <td></td>
                                 <td></td>
@@ -432,7 +429,7 @@
                                 </td>
                                 <td>
                                     $ 0
-                                    <!-- TODO traer iva no recuperable-->
+                                    <!-- TODO traer IVA N/R-->
                                 </td>
                                 <td>
                                     <span t-esc="env['account.invoice'].sudo().format_amount(total_general)" />
@@ -451,7 +448,7 @@
                     <!-- Notas de Débito (56) -->
                     <table class="tbl_book">
                         <center>
-                            <h3>NOTA DE DEBITO COMPRA ELECTRONICA</h3>
+                            <h5>NOTA DE DEBITO COMPRA ELECTRONICA</h5>
                         </center>
                         <!-- ***********  CAMPOS DE LA TABLA DEBITO *********** -->
                         <thead class="thead-dark">
@@ -467,7 +464,7 @@
                                 <th>Neto IVA</th>
                                 <th>Total NETO</th>
                                 <th>IVA</th>
-                                <th>IVA no Recuperable</th>
+                                <th>IVA N/R</th>
                                 <th>Total</th>
                             </tr>
                         </thead>
@@ -536,8 +533,7 @@
                                     <span t-field="debit.amount_total"></span>
                                 </td>
                             </tr>
-                            <tr />
-                            <tr>
+                            <tr class="row_totales">
                                 <td>TOTALES : </td>
                                 <td></td>
                                 <td></td>
@@ -561,7 +557,7 @@
                                 </td>
                                 <td>
                                     $ 0
-                                    <!-- TODO traer iva no recuperable-->
+                                    <!-- TODO traer IVA N/R-->
                                 </td>
                                 <td>
                                     <span t-esc="env['account.invoice'].sudo().format_amount(total_general)" />
@@ -580,10 +576,10 @@
                     <!-- Totales -->
                     <table class="tbl_book">
                         <center>
-                            <h3>TOTALES GENERALES</h3>
+                            <h5>TOTALES GENERALES</h5>
                         </center>
                         <tbody>
-                            <tr>
+                            <tr class="row_totales">
                                 <td>Total General</td>
                                 <td>
                                     <span t-esc="total_documentos" />
