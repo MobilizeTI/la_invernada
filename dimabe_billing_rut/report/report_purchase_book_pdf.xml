@@ -202,8 +202,7 @@
                                     <span t-field="exempt.amount_total"></span>
                                 </td>
                             </tr>
-                        </tr>
-                        <tr/>
+                            <tr/>
                             <tr>
                                 <td>TOTALES : </td>
                                 <td></td>
