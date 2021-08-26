@@ -37,15 +37,13 @@
             <field name="model">account.move</field>
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">dimabe_billing_rut.report_purchase_book_pdf</field>
-            <field name="orientation">Landscape</field>
         </record>
 
         <record id="account_move_report_sale_book_action_mblz" model="ir.actions.report">
             <field name="name">Libro de Ventas</field>
             <field name="model">account.move</field>
             <field name="report_type">qweb-pdf</field>
-            <field name="report_name">dimabe_billing_rut.report_purchase_sale_pdf</field>
-            <field name="orientation">Landscape</field>
+            <field name="report_name">dimabe_billing_rut.report_sale_book_pdf</field>
         </record>
 
         <report
@@ -60,7 +58,7 @@
         />
 
         <report
-            id="purchase_sale_pdf_report"
+            id="sale_book_pdf_report"
             string="Libro de Ventas"
             model="account.move"
             report_type="qweb-pdf"
