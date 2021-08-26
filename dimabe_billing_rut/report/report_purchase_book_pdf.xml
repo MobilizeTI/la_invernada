@@ -3,7 +3,8 @@
 <odoo>
     <data>
         <template id="report_purchase_book_pdf">
-            <t t-call="web.html_container">
+
+            <t t-call="web.basic_layout">
                 <t t-set="total_documentos" t-value="0"/>
                 <t t-set="total_general_exento" t-value="0" />
                 <t t-set="total_general_neto_iva" t-value="0" />
@@ -279,6 +280,13 @@
                                 <td>
                                     <span t-esc="env['account.invoice'].sudo().format_amount(total_general)" />
                                 </td>
+                                <t t-set="total_documentos" t-value="total_documentos + qty_invoice" />
+                                <t t-set="total_general_exento" t-value="total_general_exento + total_exento" />
+                                <t t-set="total_general_neto_iva" t-value="total_general_neto_iva + total_neto_iva" />
+                                <t t-set="total_general_neto" t-value="total_general_neto + (total_exento + total_neto_iva)" />
+                                <t t-set="total_general_iva" t-value="total_general_iva + total_iva" />
+                                <!-- <t t-set="total_general_iva_no_rec" t-value="total_general_iva + total_iva" /> -->
+                                <t t-set="total_general" t-value="total_general + total_general" />
                             </tr>
                         </tbody>
                     </table>
@@ -408,6 +416,13 @@
                                 <td>
                                     <span t-esc="env['account.invoice'].sudo().format_amount(total_general)" />
                                 </td>
+                                <t t-set="total_documentos" t-value="total_documentos + qty_invoice" />
+                                <t t-set="total_general_exento" t-value="total_general_exento - total_exento" />
+                                <t t-set="total_general_neto_iva" t-value="total_general_neto_iva - total_neto_iva" />
+                                <t t-set="total_general_neto" t-value="total_general_neto - (total_exento + total_neto_iva)" />
+                                <t t-set="total_general_iva" t-value="total_general_iva - total_iva" />
+                                <!-- <t t-set="total_general_iva_no_rec" t-value="total_general_iva - total_iva" /> -->
+                                <t t-set="total_general" t-value="total_general - total_general" />
                             </tr>
                         </tbody>
                     </table>
@@ -537,6 +552,13 @@
                                 <td>
                                     <span t-esc="env['account.invoice'].sudo().format_amount(total_general)" />
                                 </td>
+                                <t t-set="total_documentos" t-value="total_documentos + qty_invoice" />
+                                <t t-set="total_general_exento" t-value="total_general_exento + total_exento" />
+                                <t t-set="total_general_neto_iva" t-value="total_general_neto_iva + total_neto_iva" />
+                                <t t-set="total_general_neto" t-value="total_general_neto + (total_exento + total_neto_iva)" />
+                                <t t-set="total_general_iva" t-value="total_general_iva + total_iva" />
+                                <!-- <t t-set="total_general_iva_no_rec" t-value="total_general_iva + total_iva" /> -->
+                                <t t-set="total_general" t-value="total_general + total_general" />
                             </tr>
                         </tbody>
                     </table>
@@ -550,7 +572,7 @@
                         <tr>
                             <td>Total General</td>
                             <td>
-                                <span t-esc="env['account.invoice'].sudo().format_amount(total_documentos)" />
+                                <span t-esc="total_documentos" />
                             </td>
                             <td>
                                 <span t-esc="env['account.invoice'].sudo().format_amount(total_general_exento)" />
