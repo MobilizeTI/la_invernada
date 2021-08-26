@@ -118,23 +118,23 @@
                                     <span t-esc="qty_invoice"/>
                                 </td>
                                 <td>
-                                    <span t-esc="invoice.format_amount(total_exento)" />
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_exento)" />
                                 </td>
                                 <td>
-                                    <span t-esc="invoice.format_amount(total_neto_iva)" />
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_neto_iva)" />
                                 </td>
                                 <td>
-                                    <span t-esc="invoice.format_amount(total_exento + total_neto_iva)" />
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_exento + total_neto_iva)" />
                                 </td>
                                 <td>
-                                    <span t-esc="invoice.format_amount(total_iva)" />
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_iva)" />
                                 </td>
                                 <td>
                                     $ 0
                                     <!-- TODO traer iva no recuperable-->
                                 </td>
                                 <td>
-                                    <span t-esc="invoice.format_amount(total_general)" />
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_general)" />
                                 </td>
                             </tr>
                         </tbody>
@@ -245,23 +245,23 @@
                                     <span t-esc="qty_invoice" />
                                 </td>
                                 <td>
-                                    <span t-esc="exempt.format_amount(total_exento)" />
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_exento)" />
                                 </td>
                                 <td>
-                                    <span t-esc="exempt.format_amount(total_neto_iva)" />
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_neto_iva)" />
                                 </td>
                                 <td>
-                                    <span t-esc="exempt.format_amount(total_exento + total_neto_iva)" />
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_exento + total_neto_iva)" />
                                 </td>
                                 <td>
-                                    <span t-esc="exempt.format_amount(total_iva)" />
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_iva)" />
                                 </td>
                                 <td>
                                     $ 0
                                     <!-- TODO traer iva no recuperable-->
                                 </td>
                                 <td>
-                                    <span t-esc="exempt.format_amount(total_general)" />
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_general)" />
                                 </td>
                             </tr>
                         </tbody>
@@ -373,23 +373,23 @@
                                     <span t-esc="qty_invoice" />
                                 </td>
                                 <td>
-                                    <span t-esc="credit.format_amount(total_exento)" />
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_exento)" />
                                 </td>
                                 <td>
-                                    <span t-esc="credit.format_amount(total_neto_iva)" />
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_neto_iva)" />
                                 </td>
                                 <td>
-                                    <span t-esc="credit.format_amount(total_exento + total_neto_iva)" />
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_exento + total_neto_iva)" />
                                 </td>
                                 <td>
-                                    <span t-esc="credit.format_amount(total_iva)" />
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_iva)" />
                                 </td>
                                 <td>
                                     $ 0
                                     <!-- TODO traer iva no recuperable-->
                                 </td>
                                 <td>
-                                    <span t-esc="credit.format_amount(total_general)" />
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_general)" />
                                 </td>
                             </tr>
                         </tbody>
@@ -501,23 +501,23 @@
                                     <span t-esc="qty_invoice" />
                                 </td>
                                 <td>
-                                    <span t-esc="debit.format_amount(total_exento)" />
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_exento)" />
                                 </td>
                                 <td>
-                                    <span t-esc="debit.format_amount(total_neto_iva)" />
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_neto_iva)" />
                                 </td>
                                 <td>
-                                    <span t-esc="debit.format_amount(total_exento + total_neto_iva)" />
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_exento + total_neto_iva)" />
                                 </td>
                                 <td>
-                                    <span t-esc="debit.format_amount(total_iva)" />
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_iva)" />
                                 </td>
                                 <td>
                                     $ 0
                                     <!-- TODO traer iva no recuperable-->
                                 </td>
                                 <td>
-                                    <span t-esc="debit.format_amount(total_general)" />
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_general)" />
                                 </td>
                             </tr>
                         </tbody>
