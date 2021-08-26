@@ -1073,3 +1073,11 @@ class AccountInvoice(models.Model):
                             })
         else:
             raise models.ValidationError('No hay linea de productos a Facturar')
+
+    def get_amount_exempt(self):
+        lineas_exentas = self.invoice_line_ids.filtered(lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name'))
+        monto_exempt = 0.0
+        for l in lineas_exentas:
+            monto_exempt += l.price_subtotal 
+        return monto_exempt              
+            

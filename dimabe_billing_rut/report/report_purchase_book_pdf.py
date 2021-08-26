@@ -36,13 +36,7 @@ class SalesBookReport(models.AbstractModel):
                      ('company_id.id', '=', 3)]
                 #cambio en Order
         res = self.env['account.invoice'].sudo().search(domain_invoices, order='date asc, reference asc') #facturas electronicas
-        for r in res:
-            lineas_exentas = r.invoice_line_ids.filtered(lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name'))
-            monto_exempt = 0.0
-            for l in lineas_exentas:
-                monto_exempt += l.price_subtotal               
-            r['monto_exempt']=monto_exempt
-        _logger.info('LOG: ....>>>> ***** dominio factuyras {} res {}'.format(domain_invoices, res))
+        
         return res
 
     def get_exempts(self, from_date, to_date, company_id):

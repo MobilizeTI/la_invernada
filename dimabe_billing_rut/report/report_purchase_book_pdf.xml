@@ -62,7 +62,7 @@
                                 </td>
                                 <!-- EXENTO      -->
                                 <td scope="row">
-                                    <span t-esc="invoice.monto_exempt"></span>
+                                    <span t-esc="invoice.get_amount_exempt()"></span>
                                 </td>
                                     
                                 <!-- NETO IVA    -->
