@@ -10,6 +10,7 @@ import xml.etree.ElementTree as ET
 import base64
 from io import BytesIO
 from math import floor
+from datetime import date
 
 
 class AccountInvoice(models.Model):
@@ -1086,3 +1087,6 @@ class AccountInvoice(models.Model):
 
     def get_amount_neto(self):
         return abs(self.amount_untaxed - self.get_amount_exempt())
+
+    def get_today(self):
+        return date.today().strftime('%Y-%m-%d')

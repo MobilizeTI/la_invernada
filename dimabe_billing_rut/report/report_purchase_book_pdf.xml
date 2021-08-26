@@ -13,22 +13,26 @@
                 <t t-set="total_general_iva_no_rec" t-value="0" />
                 <t t-set="total_general" t-value="0" />
                 <div class="page">
-                    <div class="company_data">
+                    <div class="company_data col-md-3">
                         <t t-set="company" t-value="env['res.company'].sudo().browse(company_get_id[0])" />
                         <div t-esc="company.name"/>
                         <div t-esc="company.invoice_rut" />
                         <div t-esc="company.get_address()"/> 
                     </div>
                     <center>
-                        <h4>Libro de Compras</h4>
-                        <h5>Libro de Compras Ordenado por fecha</h5>
-                        <h5>
+                        <div class="book_title">Libro de Compras</div>
+                        <div>Libro de Compras Ordenado por fecha</div>
+                        <div>
                             Desde
                             <span t-esc="from_date"/>
                             Hasta
                             <span t-esc="to_date"/>
-                        </h5>
-                        <h5>Moneda : Peso Chileno</h5>
+                        </div>
+                        <div>Moneda : Peso Chileno</div>
+                        <div>
+                            Fecha Reporte :
+                            <span t-esc="env['account.invoice'].sudo().get_today()"></span>
+                        </div>
                     </center>
                     <table class="tbl_book">
                         <center>

@@ -1,10 +1,25 @@
 .company_data {
     border: 1px solid black;
     font-size: 15px;
-    text-align: right;
+    text-align: left;
+    div {
+        border-bottom: 1px solid black;
+    }
     
 }
 
 .tbl_book {
     border: 1px solid black;
+    font-size: 12px;
+}
+
+center {
+    div {
+        font-weight: bold;
+        font-size: 15px;
+    }
+    h5 {
+        font-weight: bold;
+        padding-bottom: 10px;
+    }
 }
