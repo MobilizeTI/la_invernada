@@ -1078,6 +1078,11 @@ class AccountInvoice(models.Model):
         lineas_exentas = self.invoice_line_ids.filtered(lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name'))
         monto_exempt = 0.0
         for l in lineas_exentas:
-            monto_exempt += l.price_subtotal 
-        return monto_exempt              
-            
+            monto_exempt += l.price_subtotal
+        
+        return '$ {:,.2f}'.format(int(monto_exempt)).replace(",",".")
+
+    def get_amount_neto(self):
+        str_exempt = self.get_amount_exempt()
+        exempt_amount = int(str_exempt.replace('$','').replace(' ','').replace('.',''))
+        return abs(self.amount_untaxed - exempt_amount)

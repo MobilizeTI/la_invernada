@@ -24,11 +24,13 @@
                         <!-- ***********  CAMPOS DE LA TABLA FACTURAS ELECTRONICAS *********** -->
                         <thead>
                             <tr>
+                                <th>Cod.SII</th>
                                 <th>Folio</th>
                                 <th>Cor.Interno</th>
                                 <th>Rut</th>
                                 <th>Fecha</th>
                                 <th>Nombre</th>
+                                <th>#</th>
                                 <th>Exento</th>
                                 <th>Neto IVA</th>
                                 <th>Total NETO</th>
@@ -39,10 +41,16 @@
                         </thead>
                         <!-- *********** CUERPO DEL REPORTE FACTURAS ELECTRONICAS *********** -->
                         <tbody>
+                            <t t-set="qty_invoice" t-value="0"/>
                             <tr t-foreach="get_invoices" t-as="invoice">
+                                <t t-set="qty_invoice" t-value="qty_invoice + 1"/>
+                                <!-- Codigo SII       -->
+                                <td scope="row">
+                                    <span t-field="invoice.dte_type_id.code"></span>
+                                </td>
                                 <!-- FOLIO       -->
                                 <td scope="row">
-                                    <span t-field="invoice.reference">reference</span>
+                                    <span t-field="invoice.reference"></span>
                                 </td>
                                 <!-- Cor.Interno -->
                                 <td scope="row">
@@ -50,7 +58,7 @@
                                 </td>
                                 <!-- RUT         -->
                                 <td scope="row">
-                                    <span></span>
+                                    <span t-field="invoice.partner_id.invoice_rut"></span>
                                 </td>
                                 <!-- FECHA       -->
                                 <td scope="row">
@@ -60,13 +68,19 @@
                                 <td scope="row">
                                     <span t-field="invoice.vendor_display_name"></span>
                                 </td>
+                                 <!-- cantidad factura      -->
+                                 <td scope="row">
+                                    
+                                </td>
                                 <!-- EXENTO      -->
                                 <td scope="row">
                                     <span t-esc="invoice.get_amount_exempt()"></span>
                                 </td>
                                     
                                 <!-- NETO IVA    -->
-                                <td>NETO</td>
+                                <td>
+                                    <span t-esc="invoice.get_amount_neto()"></span>
+                                </td>
                                 <!-- TOTAL NETO  -->
                                 <td>
                                     <span t-field="invoice.amount_untaxed"></span>
@@ -83,6 +97,22 @@
                                 <td scope="row">
                                     <span t-field="invoice.amount_total"></span>
                                 </td>
+                            </tr>
+                            <tr/>
+                            <tr>
+                                <td>TOTALES : </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><span t-esc="qty_invoice"/></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                         </tbody>
                     </table>
@@ -125,7 +155,7 @@
                                 </td>
                                 <!-- RUT         -->
                                 <td scope="row">
-                                    <span></span>
+                                    <span t-field="exempt.partner_id.invoice_rut"></span>
                                 </td>
                                 <!-- FECHA       -->
                                 <td scope="row">
@@ -140,7 +170,9 @@
                                     <span t-esc="exempt.get_amount_exempt()"></span>
                                 </td>
                                 <!-- NETO IVA    -->
-                                <td>NETO</td>
+                                <td>
+                                    <span t-esc="exempt.get_amount_neto()"></span>
+                                </td>
                                 <!-- TOTAL NETO  -->
                                 <td>
                                     <span t-field="exempt.amount_untaxed"></span>
@@ -200,7 +232,7 @@
                                 </td>
                                 <!-- RUT         -->
                                 <td scope="row">
-                                    <span ></span>
+                                    <<span t-field="credit.partner_id.invoice_rut"></span>
                                 </td>
                                 <!-- FECHA       -->
                                 <td scope="row">
@@ -215,7 +247,9 @@
                                     <span t-esc="credit.get_amount_exempt()"></span>
                                 </td>
                                 <!-- NETO IVA    -->
-                                <td>NETO</td>
+                                <td>
+                                    <span t-esc="credit.get_amount_neto()"></span>
+                                </td>
                                 <!-- TOTAL NETO  -->
                                 <td>
                                     <span t-field="credit.amount_untaxed"></span>
@@ -275,7 +309,7 @@
                                 </td>
                                 <!-- RUT         -->
                                 <td scope="row">
-                                    <span ></span>
+                                    <span t-field="debit.partner_id.invoice_rut"></span>
                                 </td>
                                 <!-- FECHA       -->
                                 <td scope="row">
@@ -290,7 +324,9 @@
                                     <span t-esc="debit.get_amount_exempt()"></span>
                                 </td>
                                 <!-- NETO IVA    -->
-                                <td>NETO</td>
+                                <td>
+                                    <span t-esc="debit.get_amount_neto()"></span>
+                                </td>
                                 <!-- TOTAL NETO  -->
                                 <td>
                                     <span t-field="debit.amount_untaxed"></span>
