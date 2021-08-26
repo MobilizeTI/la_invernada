@@ -60,3 +60,6 @@ class ResCompany(models.Model):
     def write(self, values):
         prepare_rut(values)
         return super(ResCompany, self).write(values)
+    
+    def get_address(self):
+        return '{}, Región {}'.format(self.city, self.region_address_id.name)
