@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <record id="paperformat_sale_purchase_book_pdf" model="report.paperformat">
+            <field name="name">Libro Compras y Ventas</field>
+            <field name="default" eval="True" />
+            <field name="format">custom</field>
+            <field name="page_height">210</field>
+            <field name="page_width">297</field>
+            <field name="orientation">Landscpae</field>
+            <field name="margin_top">2</field>
+            <field name="margin_bottom">2</field>
+            <field name="margin_left">2</field>
+            <field name="margin_right">2</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
 
         <record id="account_move_form_inherit" model="ir.ui.view">
             <field name="name">account_move.inherit_form</field>
@@ -32,14 +47,8 @@
             report_type="qweb-pdf"
             file="dimabe_billing_rut.report_purchase_book_pdf"
             name="dimabe_billing_rut.report_purchase_book_pdf"
+            paperformat="dimabe_billing_rut.paperformat_sale_purchase_book_pdf"
+            print_report_name="('Libro de Compras %s' % object.name)"
         />
-
-        <!-- <report id="action_report_trial_balance" 
-                model="account.balance.report" 
-                string="Trial Balance" 
-                report_type="qweb-pdf" 
-                name="l10n_cl_balance.report_trialbalance" 
-                file="l10n_cl_balance.report_trialbalance" 
-                paperformat="l10n_cl_balance.paperformat_balance" /> -->
     </data>
 </odoo>

@@ -158,9 +158,6 @@
                 </div>
 
                 <div class="page">
-                    <center>
-                        <h2>Reporte libro de compras</h2>
-                    </center>
                     <table border="1" style="width:100%;">
                         <center>
                             <h3>FACTURA COMPRA EXENTA ELECTRONICA</h3>
@@ -294,9 +291,6 @@
 
 
                 <div class="page">
-                    <center>
-                        <h2>Reporte libro de compras</h2>
-                    </center>
                     <table border="1" style="width:100%;">
                         <center>
                             <h3>NOTA DE CREDITO COMPRA ELECTRONICA</h3>
@@ -430,10 +424,7 @@
 
 
                 <div class="page">
-                    <center>
-                        <h2>Reporte libro de compras</h2>
-                    </center>
-                    <table border="1" style="width:100%;">
+                    <table>
                         <center>
                             <h3>NOTA DE DEBITO COMPRA ELECTRONICA</h3>
                         </center>
