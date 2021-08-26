@@ -1075,7 +1075,7 @@ class AccountInvoice(models.Model):
             raise models.ValidationError('No hay linea de productos a Facturar')
     
     def format_amount(self, amount):
-         return '$ {:,.2f}'.format(int(amount)).replace(",",".")
+        return '$ {:,.0f}'.format(round(amount)).replace(",",".")
 
     def get_amount_exempt(self):
         lineas_exentas = self.invoice_line_ids.filtered(lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name'))

@@ -5,6 +5,14 @@
         <template id="report_purchase_book_pdf">
             <t t-call="web.html_container">
                 <div class="page">
+                    <div class="company_data">
+                        <span t-esc="company_get_id.name"/>
+                        <span t-esc="company_get_id.invoice_rut" />
+                        <span>
+                            <t t-esc="company_get_id.city" />, 
+                            <t t-esc="company_get_id.region_address_id.name" />
+                        </span> 
+                    </div>
                     <center>
                         <h2>Reporte libro de compras</h2>
                     </center>
@@ -112,22 +120,23 @@
                                     <span t-esc="qty_invoice"/>
                                 </td>
                                 <td>
-                                    <span t-esc="total_exento"/>
+                                    <span t-esc="invoice.format_amount(total_exento)" />
                                 </td>
                                 <td>
-                                    <span t-esc="total_neto_iva" />
+                                    <span t-esc="invoice.format_amount(total_neto_iva)" />
                                 </td>
                                 <td>
-                                    <span t-esc="total_exento + total_neto_iva" />
+                                    <span t-esc="invoice.format_amount(total_exento + total_neto_iva)" />
                                 </td>
                                 <td>
-                                    <span t-esc="total_iva" />
+                                    <span t-esc="invoice.format_amount(total_iva)" />
                                 </td>
                                 <td>
-                                    NORECUP
+                                    $ 0
+                                    <!-- TODO traer iva no recuperable-->
                                 </td>
                                 <td>
-                                    <span t-esc="total_general" />
+                                    <span t-esc="invoice.format_amount(total_general)" />
                                 </td>
                             </tr>
                         </tbody>
@@ -163,8 +172,16 @@
                         <!-- *********** CUERPO DEL REPORTE EXENTOS *********** -->
                         <tbody>
                             <t t-set="qty_invoice" t-value="0"/>
+                            <t t-set="total_exento" t-value="0" />
+                            <t t-set="total_neto_iva" t-value="0" />
+                            <t t-set="total_iva" t-value="0" />
+                            <t t-set="total_general" t-value="0" />
                             <tr t-foreach="get_exempts" t-as="exempt">
                                 <t t-set="qty_invoice" t-value="qty_invoice + 1"/>
+                                <t t-set="total_exento" t-value="total_exento + exempt.get_amount_exempt()" />
+                                <t t-set="total_neto_iva" t-value="total_neto_iva + exempt.get_amount_neto()" />
+                                <t t-set="total_iva" t-value="total_iva + exempt.amount_tax" />
+                                <t t-set="total_general" t-value="total_general + exempt.amount_total" />
                                 <!-- Codigo SII       -->
                                 <td scope="row">
                                     <span t-field="exempt.dte_type_id.code"></span>
@@ -226,13 +243,28 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td><span t-esc="qty_invoice"/></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>
+                                    <span t-esc="qty_invoice" />
+                                </td>
+                                <td>
+                                    <span t-esc="exempt.format_amount(total_exento)" />
+                                </td>
+                                <td>
+                                    <span t-esc="exempt.format_amount(total_neto_iva)" />
+                                </td>
+                                <td>
+                                    <span t-esc="exempt.format_amount(total_exento + total_neto_iva)" />
+                                </td>
+                                <td>
+                                    <span t-esc="exempt.format_amount(total_iva)" />
+                                </td>
+                                <td>
+                                    $ 0
+                                    <!-- TODO traer iva no recuperable-->
+                                </td>
+                                <td>
+                                    <span t-esc="exempt.format_amount(total_general)" />
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -268,8 +300,16 @@
                         <!-- *********** CUERPO DEL REPORTE CREDITO*********** -->
                         <tbody>
                             <t t-set="qty_invoice" t-value="0"/>
+                            <t t-set="total_exento" t-value="0" />
+                            <t t-set="total_neto_iva" t-value="0" />
+                            <t t-set="total_iva" t-value="0" />
+                            <t t-set="total_general" t-value="0" />
                             <tr t-foreach="get_credits" t-as="credit">
                                 <t t-set="qty_invoice" t-value="qty_invoice + 1"/>
+                                <t t-set="total_exento" t-value="total_exento + credit.get_amount_exempt()" />
+                                <t t-set="total_neto_iva" t-value="total_neto_iva + credit.get_amount_neto()" />
+                                <t t-set="total_iva" t-value="total_iva + credit.amount_tax" />
+                                <t t-set="total_general" t-value="total_general + credit.amount_total" />
                                 <!-- Codigo SII       -->
                                 <td scope="row">
                                     <span t-field="credit.dte_type_id.code"></span>
@@ -331,13 +371,28 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td><span t-esc="qty_invoice"/></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>
+                                    <span t-esc="qty_invoice" />
+                                </td>
+                                <td>
+                                    <span t-esc="credit.format_amount(total_exento)" />
+                                </td>
+                                <td>
+                                    <span t-esc="credit.format_amount(total_neto_iva)" />
+                                </td>
+                                <td>
+                                    <span t-esc="credit.format_amount(total_exento + total_neto_iva)" />
+                                </td>
+                                <td>
+                                    <span t-esc="credit.format_amount(total_iva)" />
+                                </td>
+                                <td>
+                                    $ 0
+                                    <!-- TODO traer iva no recuperable-->
+                                </td>
+                                <td>
+                                    <span t-esc="credit.format_amount(total_general)" />
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -373,8 +428,16 @@
                         <!-- *********** CUERPO DEL REPORTE DEBITO *********** -->
                         <tbody>
                             <t t-set="qty_invoice" t-value="0"/>
+                            <t t-set="total_exento" t-value="0" />
+                            <t t-set="total_neto_iva" t-value="0" />
+                            <t t-set="total_iva" t-value="0" />
+                            <t t-set="total_general" t-value="0" />
                             <tr t-foreach="get_debits" t-as="debit">
                                 <t t-set="qty_invoice" t-value="qty_invoice + 1"/>
+                                <t t-set="total_exento" t-value="total_exento + debit.get_amount_exempt()" />
+                                <t t-set="total_neto_iva" t-value="total_neto_iva + debit.get_amount_neto()" />
+                                <t t-set="total_iva" t-value="total_iva + debit.amount_tax" />
+                                <t t-set="total_general" t-value="total_general + debit.amount_total" />
                                 <!-- Codigo SII       -->
                                 <td scope="row">
                                     <span t-field="debit.dte_type_id.code"></span>
@@ -436,13 +499,28 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td><span t-esc="qty_invoice"/></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>
+                                    <span t-esc="qty_invoice" />
+                                </td>
+                                <td>
+                                    <span t-esc="debit.format_amount(total_exento)" />
+                                </td>
+                                <td>
+                                    <span t-esc="debit.format_amount(total_neto_iva)" />
+                                </td>
+                                <td>
+                                    <span t-esc="debit.format_amount(total_exento + total_neto_iva)" />
+                                </td>
+                                <td>
+                                    <span t-esc="debit.format_amount(total_iva)" />
+                                </td>
+                                <td>
+                                    $ 0
+                                    <!-- TODO traer iva no recuperable-->
+                                </td>
+                                <td>
+                                    <span t-esc="debit.format_amount(total_general)" />
+                                </td>
                             </tr>
                         </tbody>
                     </table>

@@ -48,6 +48,7 @@
         'views/res_currency.xml',
         'views/account_incoterms.xml',
         'views/account_move.xml',
+        'views/assets.xml',
         'report/instructive_report.xml',
         'report/report_purchase_book_pdf.xml',
     ],
