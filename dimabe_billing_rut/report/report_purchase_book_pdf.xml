@@ -99,6 +99,7 @@
                                 </td>
                                 <!-- IVA NO RECUP-->
                                 <td scope="row">
+                                    $ 0
                                     
                                 </td>
                                 <!-- TOTAL       -->
@@ -226,6 +227,7 @@
                                 </td>
                                 <!-- IVA NO RECUP-->
                                 <td scope="row">
+                                    $ 0
                                     
                                 </td>
                                 <!-- TOTAL       -->
@@ -354,6 +356,7 @@
                                 </td>
                                 <!-- IVA NO RECUP-->
                                 <td scope="row">
+                                    $ 0
                                     
                                 </td>
                                 <!-- TOTAL       -->
@@ -482,6 +485,7 @@
                                 </td>
                                 <!-- IVA NO RECUP-->
                                 <td scope="row">
+                                    $ 0
                                     
                                 </td>
                                 <!-- TOTAL       -->
@@ -523,9 +527,6 @@
                         </tbody>
                     </table>
                 </div>
-                    <!-- <t t-call="web.external_layout">
-                        
-                </t> -->
             </t>
         </template>
      </data>
