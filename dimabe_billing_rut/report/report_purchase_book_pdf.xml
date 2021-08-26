@@ -50,7 +50,7 @@
                                 </td>
                                 <!-- RUT         -->
                                 <td scope="row">
-                                    <span t-field="invoice.client_identifier_id"></span>
+                                    <span></span>
                                 </td>
                                 <!-- FECHA       -->
                                 <td scope="row">
