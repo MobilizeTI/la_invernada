@@ -129,11 +129,13 @@
                         <!-- ***********  CAMPOS DE LA TABLA EXENTOS *********** -->
                         <thead class="thead-dark">
                             <tr>
+                                <th>Cod.SII</th>
                                 <th>Folio</th>
                                 <th>Cor.Interno</th>
                                 <th>Rut</th>
                                 <th>Fecha</th>
                                 <th>Nombre</th>
+                                <th>#</th>
                                 <th>Exento</th>
                                 <th>Neto IVA</th>
                                 <th>Total NETO</th>
@@ -144,7 +146,13 @@
                         </thead>
                         <!-- *********** CUERPO DEL REPORTE EXENTOS *********** -->
                         <tbody>
+                            <t t-set="qty_invoice" t-value="0"/>
                             <tr t-foreach="get_exempts" t-as="exempt">
+                                <t t-set="qty_invoice" t-value="qty_invoice + 1"/>
+                                <!-- Codigo SII       -->
+                                <td scope="row">
+                                    <span t-field="exempt.dte_type_id.code"></span>
+                                </td>
                                 <!-- FOLIO       -->
                                 <td scope="row">
                                     <span t-field="exempt.reference">reference</span>
@@ -164,6 +172,10 @@
                                 <!-- NOMBRE      -->
                                 <td scope="row">
                                     <span t-field="exempt.vendor_display_name"></span>
+                                </td>
+                                <!-- cantidad factura      -->
+                                <td scope="row">
+                                    
                                 </td>
                                 <!-- EXENTO      -->
                                 <td scope="row">
@@ -190,6 +202,23 @@
                                     <span t-field="exempt.amount_total"></span>
                                 </td>
                             </tr>
+                        </tr>
+                        <tr/>
+                            <tr>
+                                <td>TOTALES : </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><span t-esc="qty_invoice"/></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -206,11 +235,13 @@
                         <!-- ***********  CAMPOS DE LA TABLA CREDITO *********** -->
                         <thead class="thead-dark">
                             <tr>
+                                <th>Cod.SII</th>
                                 <th>Folio</th>
                                 <th>Cor.Interno</th>
                                 <th>Rut</th>
                                 <th>Fecha</th>
                                 <th>Nombre</th>
+                                <th>#</th>
                                 <th>Exento</th>
                                 <th>Neto IVA</th>
                                 <th>Total NETO</th>
@@ -221,7 +252,13 @@
                         </thead>
                         <!-- *********** CUERPO DEL REPORTE CREDITO*********** -->
                         <tbody>
+                            <t t-set="qty_invoice" t-value="0"/>
                             <tr t-foreach="get_credits" t-as="credit">
+                                <t t-set="qty_invoice" t-value="qty_invoice + 1"/>
+                                <!-- Codigo SII       -->
+                                <td scope="row">
+                                    <span t-field="credit.dte_type_id.code"></span>
+                                </td>
                                 <!-- FOLIO       -->
                                 <td scope="row">
                                     <span t-field="credit.reference">reference</span>
@@ -241,6 +278,10 @@
                                 <!-- NOMBRE      -->
                                 <td scope="row">
                                     <span t-field="credit.vendor_display_name"></span>
+                                </td>
+                                <!-- cantidad factura      -->
+                                <td scope="row">
+                                    
                                 </td>
                                 <!-- EXENTO      -->
                                 <td scope="row">
@@ -267,6 +308,22 @@
                                     <span t-field="credit.amount_total"></span>
                                 </td>
                             </tr>
+                            <tr/>
+                            <tr>
+                                <td>TOTALES : </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><span t-esc="qty_invoice"/></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -283,11 +340,13 @@
                         <!-- ***********  CAMPOS DE LA TABLA DEBITO *********** -->
                         <thead class="thead-dark">
                             <tr>
+                                <th>Cod.SII</th>
                                 <th>Folio</th>
                                 <th>Cor.Interno</th>
                                 <th>Rut</th>
                                 <th>Fecha</th>
                                 <th>Nombre</th>
+                                <th>#</th>
                                 <th>Exento</th>
                                 <th>Neto IVA</th>
                                 <th>Total NETO</th>
@@ -298,7 +357,13 @@
                         </thead>
                         <!-- *********** CUERPO DEL REPORTE DEBITO *********** -->
                         <tbody>
+                            <t t-set="qty_invoice" t-value="0"/>
                             <tr t-foreach="get_debits" t-as="debit">
+                                <t t-set="qty_invoice" t-value="qty_invoice + 1"/>
+                                <!-- Codigo SII       -->
+                                <td scope="row">
+                                    <span t-field="debit.dte_type_id.code"></span>
+                                </td>
                                 <!-- FOLIO       -->
                                 <td scope="row">
                                     <span t-field="debit.reference">reference</span>
@@ -318,6 +383,10 @@
                                 <!-- NOMBRE      -->
                                 <td scope="row">
                                     <span t-field="debit.vendor_display_name"></span>
+                                </td>
+                                <!-- cantidad factura      -->
+                                <td scope="row">
+                                    
                                 </td>
                                 <!-- EXENTO      -->
                                 <td scope="row">
@@ -343,6 +412,22 @@
                                 <td scope="row">
                                     <span t-field="debit.amount_total"></span>
                                 </td>
+                            </tr>
+                            <tr/>
+                            <tr>
+                                <td>TOTALES : </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><span t-esc="qty_invoice"/></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                         </tbody>
                     </table>
