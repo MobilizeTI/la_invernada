@@ -13,26 +13,50 @@
                 <t t-set="total_general_iva_no_rec" t-value="0" />
                 <t t-set="total_general" t-value="0" />
                 <div class="page">
-                    <div class="company_data col-md-3">
+                    <table class="company_data">
                         <t t-set="company" t-value="env['res.company'].sudo().browse(company_get_id[0])" />
-                        <div t-esc="company.name"/>
-                        <div t-esc="company.invoice_rut" />
-                        <div t-esc="company.get_address()"/> 
-                    </div>
+                        <tbody>
+                            <tr>
+                                <td t-esc="company.name" />
+                            </tr>
+                            <tr>
+                                <td t-esc="company.invoice_rut" />
+                            </tr>
+                            <tr>
+                                <td t-esc="company.get_address()" />
+                            </tr>
+                        </tbody>
+                    </table>
+
                     <center>
-                        <div class="book_title">Libro de Compras</div>
-                        <div>Libro de Compras Ordenado por fecha</div>
-                        <div>
-                            Desde
-                            <span t-esc="from_date"/>
-                            Hasta
-                            <span t-esc="to_date"/>
-                        </div>
-                        <div>Moneda : Peso Chileno</div>
-                        <div>
-                            Fecha Reporte :
-                            <span t-esc="env['account.invoice'].sudo().get_today()"></span>
-                        </div>
+                        <table class="report_data">
+                            <tbody>
+                                <tr>
+                                    <td class="book_title">Libro de Compras</td>
+                                </tr>
+                                <tr>
+                                    <td>Libro de Compras Ordenado por fecha</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Desde
+                                        <span t-esc="from_date" />
+                                        Hasta
+                                        <span t-esc="to_date" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Moneda : Peso Chileno</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Fecha Reporte :
+                                        <span t-esc="env['account.invoice'].sudo().get_today()"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
                     </center>
                     <table class="tbl_book">
                         <center>
