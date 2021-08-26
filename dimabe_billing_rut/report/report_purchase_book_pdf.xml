@@ -137,7 +137,7 @@
                                 </td>
                                 <!-- EXENTO      -->
                                 <td scope="row">
-                                    <span t-esc="invoice.get_amount_exempt()"></span>
+                                    <span t-esc="exempt.get_amount_exempt()"></span>
                                 </td>
                                 <!-- NETO IVA    -->
                                 <td>NETO</td>
@@ -212,7 +212,7 @@
                                 </td>
                                 <!-- EXENTO      -->
                                 <td scope="row">
-                                    <span t-esc="invoice.get_amount_exempt()"></span>
+                                    <span t-esc="credit.get_amount_exempt()"></span>
                                 </td>
                                 <!-- NETO IVA    -->
                                 <td>NETO</td>
@@ -287,7 +287,7 @@
                                 </td>
                                 <!-- EXENTO      -->
                                 <td scope="row">
-                                    <span t-esc="invoice.get_amount_exempt()"></span>
+                                    <span t-esc="debit.get_amount_exempt()"></span>
                                 </td>
                                 <!-- NETO IVA    -->
                                 <td>NETO</td>
