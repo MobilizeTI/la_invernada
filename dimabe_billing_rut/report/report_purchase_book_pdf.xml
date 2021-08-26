@@ -612,7 +612,7 @@
                                     <span t-esc="env['account.invoice'].sudo().format_amount(total_general_iva_no_rec)" />
                                 </td>
                                 <td>
-                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_general)" />
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_general_neto + total_general_iva)" />
                                 </td>
                             </tr>
                         </tbody>
@@ -1233,7 +1233,7 @@
                                     <span t-esc="env['account.invoice'].sudo().format_amount(total_general_iva_no_rec)" />
                                 </td>
                                 <td>
-                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_general)" />
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_general_neto + total_general_iva)" />
                                 </td>
                             </tr>
                         </tbody>
