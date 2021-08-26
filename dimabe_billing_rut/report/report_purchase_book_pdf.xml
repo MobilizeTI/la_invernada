@@ -68,14 +68,16 @@
                                 <!-- NETO IVA    -->
                                 <td>NETO</td>
                                 <!-- TOTAL NETO  -->
-                                <td>yyyyyy</td>
+                                <td>
+                                    <span t-field="invoice.amount_untaxed"></span>
+                                </td>
                                 <!-- IVA         -->
                                 <td scope="row">
-                                    <span t-field="invoice.amount_untaxed"></span>
+                                    <span t-field="invoice.amount_tax"></span>
                                 </td>
                                 <!-- IVA NO RECUP-->
                                 <td scope="row">
-                                    <span t-field="invoice.amount_tax"></span>
+                                    
                                 </td>
                                 <!-- TOTAL       -->
                                 <td scope="row">
@@ -134,18 +136,22 @@
                                     <span t-field="exempt.vendor_display_name"></span>
                                 </td>
                                 <!-- EXENTO      -->
-                                <td scope="row">EXEMPT</td>
+                                <td scope="row">
+                                    <span t-esc="invoice.get_amount_exempt()"></span>
+                                </td>
                                 <!-- NETO IVA    -->
                                 <td>NETO</td>
                                 <!-- TOTAL NETO  -->
-                                <td>yyyyyy</td>
+                                <td>
+                                    <span t-field="exempt.amount_untaxed"></span>
+                                </td>
                                 <!-- IVA         -->
                                 <td scope="row">
-                                    <span t-field="exempt.amount_untaxed"></span>
+                                    <span t-field="exempt.amount_tax"></span>
                                 </td>
                                 <!-- IVA NO RECUP-->
                                 <td scope="row">
-                                    <span t-field="exempt.amount_tax"></span>
+                                    
                                 </td>
                                 <!-- TOTAL       -->
                                 <td scope="row">
@@ -205,18 +211,22 @@
                                     <span t-field="credit.vendor_display_name"></span>
                                 </td>
                                 <!-- EXENTO      -->
-                                <td scope="row">EXEMPT</td>
+                                <td scope="row">
+                                    <span t-esc="invoice.get_amount_exempt()"></span>
+                                </td>
                                 <!-- NETO IVA    -->
                                 <td>NETO</td>
                                 <!-- TOTAL NETO  -->
-                                <td>yyyyyy</td>
+                                <td>
+                                    <span t-field="credit.amount_untaxed"></span>
+                                </td>
                                 <!-- IVA         -->
                                 <td scope="row">
-                                    <span t-field="credit.amount_untaxed"></span>
+                                    <span t-field="credit.amount_tax"></span>                                    
                                 </td>
                                 <!-- IVA NO RECUP-->
                                 <td scope="row">
-                                    <span t-field="credit.amount_tax"></span>
+                                    
                                 </td>
                                 <!-- TOTAL       -->
                                 <td scope="row">
@@ -276,18 +286,22 @@
                                     <span t-field="debit.vendor_display_name"></span>
                                 </td>
                                 <!-- EXENTO      -->
-                                <td scope="row">EXEMPT</td>
+                                <td scope="row">
+                                    <span t-esc="invoice.get_amount_exempt()"></span>
+                                </td>
                                 <!-- NETO IVA    -->
                                 <td>NETO</td>
                                 <!-- TOTAL NETO  -->
-                                <td>yyyyyy</td>
+                                <td>
+                                    <span t-field="debit.amount_untaxed"></span>
+                                </td>
                                 <!-- IVA         -->
                                 <td scope="row">
-                                    <span t-field="debit.amount_untaxed"></span>
+                                    <span t-field="debit.amount_tax"></span>
                                 </td>
                                 <!-- IVA NO RECUP-->
                                 <td scope="row">
-                                    <span t-field="debit.amount_tax"></span>
+                                    
                                 </td>
                                 <!-- TOTAL       -->
                                 <td scope="row">
