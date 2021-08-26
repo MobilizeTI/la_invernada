@@ -29,11 +29,11 @@ class SalesBookReport(models.AbstractModel):
         }
 
     def get_invoices(self, from_date, to_date, company_id):
-        domain_invoices = [('date', '>=', '2021-07-01'),
+        domain_invoices = [('date', '>=', from_date),
                      ('type', 'in', ('in_invoice', 'in_refund')),
-                     ('date', '<=', '2021-07-31'), 
-                     #('dte_type_id.code', '=', 33),
-                     ('company_id.id', '=', 3)]
+                     ('date', '<=', to_date), 
+                     ('dte_type_id.code', '=', 33),
+                     ('company_id.id', '=', company_id)]
                 #cambio en Order
         res = self.env['account.invoice'].sudo().search(domain_invoices, order='date asc, reference asc') #facturas electronicas
         
@@ -43,7 +43,7 @@ class SalesBookReport(models.AbstractModel):
         return self.env['account.invoice'].sudo().search([('date', '>=', from_date),
                                                                      ('type', 'in', ('in_invoice', 'in_refund')),
                                                                      ('date', '<=', to_date),
-                                                                    #('dte_type_id.code', '=', 34),
+                                                                    ('dte_type_id.code', '=', 34),
                                                                      ('company_id.id', '=', company_id)],
                                                                      order='date asc, reference asc')  #ORDENA ASCENDENTE
         
@@ -51,7 +51,7 @@ class SalesBookReport(models.AbstractModel):
         return self.env['account.invoice'].sudo().search([('date', '>=', from_date),
                                                                    ('date', '<=', to_date),
                                                                    ('type', 'in', ('out_invoice', 'out_refund')),
-                                                                   #('dte_type_id.code', '=', 56),
+                                                                   ('dte_type_id.code', '=', 56),
                                                                    ('company_id.id', '=', company_id)],
                                                                    order='date asc, reference asc') #ORDENA DEBITO ASCENDENTE
     
@@ -59,7 +59,7 @@ class SalesBookReport(models.AbstractModel):
         return self.env['account.invoice'].sudo().search([('date', '>=', from_date),
                                                                     ('type', 'in', ('in_invoice', 'in_refund')),
                                                                     ('date', '<=', to_date),
-                                                                    #('dte_type_id.code', '=', 61),
+                                                                    ('dte_type_id.code', '=', 61),
                                                                     ('company_id.id', '=', company_id)],
                                                                     order='date asc, reference asc') #ORDENA ASCENDENTE
         
