@@ -1,5 +1,5 @@
 <odoo>
-    <template id="dimabe report_assets_common" inherit_id="web.assets_backend">
+    <template id="dimabe report_assets_common" inherit_id="web.html_container">
         <xpath expr="." position="inside">
             <link rel="stylesheet" type="text/scss" href="/dimabe_billing_rut/static/src/scss/report.scss" />
         </xpath>
