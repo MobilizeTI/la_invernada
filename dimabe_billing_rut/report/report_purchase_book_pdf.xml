@@ -4,12 +4,6 @@
     <data>
         <template id="report_purchase_book_pdf">
             <t t-call="web.html_container">
-                <!-- <style>
-                            table { 
-                                border: 1px solid #ccc;
-                                width: 100%;
-                             }
-                        </style> -->
                 <div class="page">
                     <center>
                         <h2>Reporte libro de compras</h2>
@@ -42,8 +36,16 @@
                         <!-- *********** CUERPO DEL REPORTE FACTURAS ELECTRONICAS *********** -->
                         <tbody>
                             <t t-set="qty_invoice" t-value="0"/>
+                            <t t-set="total_exento" t-value="0" />
+                            <t t-set="total_neto_iva" t-value="0" />
+                            <t t-set="total_iva" t-value="0" />
+                            <t t-set="total_general" t-value="0" />
                             <tr t-foreach="get_invoices" t-as="invoice">
                                 <t t-set="qty_invoice" t-value="qty_invoice + 1"/>
+                                <t t-set="total_exento" t-value="total_exento + invoice.get_amount_exempt()" />
+                                <t t-set="total_neto_iva" t-value="total_neto_iva + invoice.get_amount_neto()" />
+                                <t t-set="total_iva" t-value="total_iva + invoice.amount_tax" />
+                                <t t-set="total_general" t-value="total_general + invoice.amount_total" />
                                 <!-- Codigo SII       -->
                                 <td scope="row">
                                     <span t-field="invoice.dte_type_id.code"></span>
@@ -74,12 +76,12 @@
                                 </td>
                                 <!-- EXENTO      -->
                                 <td scope="row">
-                                    <span t-esc="invoice.get_amount_exempt()"></span>
+                                    <span t-esc="invoice.format_amount(invoice.get_amount_exempt())"></span>
                                 </td>
                                     
                                 <!-- NETO IVA    -->
                                 <td>
-                                    <span t-esc="invoice.get_amount_neto()"></span>
+                                    <span t-esc="invoice.format_amount(invoice.get_amount_neto())"></span>
                                 </td>
                                 <!-- TOTAL NETO  -->
                                 <td>
@@ -106,13 +108,27 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td><span t-esc="qty_invoice"/></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>
+                                    <span t-esc="qty_invoice"/>
+                                </td>
+                                <td>
+                                    <span t-esc="total_exento"/>
+                                </td>
+                                <td>
+                                    <span t-esc="total_neto_iva" />
+                                </td>
+                                <td>
+                                    <span t-esc="total_exento + total_neto_iva" />
+                                </td>
+                                <td>
+                                    <span t-esc="total_iva" />
+                                </td>
+                                <td>
+                                    NORECUP
+                                </td>
+                                <td>
+                                    <span t-esc="total_general" />
+                                </td>
                             </tr>
                         </tbody>
                     </table>

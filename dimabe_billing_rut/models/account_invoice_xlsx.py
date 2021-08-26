@@ -35,13 +35,11 @@ class AccountInvoiceXlsx(models.Model):
         [data] = self.read()
         data['move_ids'] = self.env.context.get('active_ids', [])
         invoices = self.env['account.invoice'].browse(data['move_ids'])
-        _logger.info('LOG:   --->>>><< invoices {} data {}'.format(invoices, data))
         datas = {
             'ids': [],
             'model': 'account.invoice',
             'form': data
         }
-        _logger.info('LOG:  paso aca **********########## ref {}'.format(self.env.ref('dimabe_billing_rut.account_move_report_action_mblz').name))
         return self.env.ref('dimabe_billing_rut.account_move_report_action_mblz').report_action(invoices, data=datas)
        
 
