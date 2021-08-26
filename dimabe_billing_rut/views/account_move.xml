@@ -33,10 +33,18 @@
         </record>
 
         <record id="account_move_report_action_mblz" model="ir.actions.report">
-            <field name="name">Libro de compras</field>
+            <field name="name">Libro de Compras</field>
             <field name="model">account.move</field>
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">dimabe_billing_rut.report_purchase_book_pdf</field>
+            <field name="orientation">Landscape</field>
+        </record>
+
+        <record id="account_move_report_sale_book_action_mblz" model="ir.actions.report">
+            <field name="name">Libro de Ventas</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">dimabe_billing_rut.report_purchase_sale_pdf</field>
             <field name="orientation">Landscape</field>
         </record>
 
@@ -47,6 +55,17 @@
             report_type="qweb-pdf"
             file="dimabe_billing_rut.report_purchase_book_pdf"
             name="dimabe_billing_rut.report_purchase_book_pdf"
+            paperformat="dimabe_billing_rut.paperformat_sale_purchase_book_pdf"
+            print_report_name="('Libro de Compras %s' % object.name)"
+        />
+
+        <report
+            id="purchase_sale_pdf_report"
+            string="Libro de Ventas"
+            model="account.move"
+            report_type="qweb-pdf"
+            file="dimabe_billing_rut.report_sale_book_pdf"
+            name="dimabe_billing_rut.report_sale_book_pdf"
             paperformat="dimabe_billing_rut.paperformat_sale_purchase_book_pdf"
             print_report_name="('Libro de Compras %s' % object.name)"
         />

@@ -41,6 +41,18 @@ class AccountInvoiceXlsx(models.Model):
             'form': data
         }
         return self.env.ref('dimabe_billing_rut.account_move_report_action_mblz').report_action(invoices, data=datas)
+    
+    def generate_sale_book_pdf(self):
+        self.ensure_one()
+        [data] = self.read()
+        data['move_ids'] = self.env.context.get('active_ids', [])
+        invoices = self.env['account.invoice'].browse(data['move_ids'])
+        datas = {
+            'ids': [],
+            'model': 'account.invoice',
+            'form': data
+        }
+        return self.env.ref('dimabe_billing_rut.account_move_report_sale_book_action_mblz').report_action(invoices, data=datas)
        
 
     @api.multi

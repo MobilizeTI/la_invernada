@@ -195,7 +195,7 @@
                             <h5>FACTURA COMPRA EXENTA ELECTRONICA</h5>
                         </center>
                         <!-- ***********  CAMPOS DE LA TABLA EXENTOS *********** -->
-                        <thead class="thead-dark">
+                        <thead >
                             <tr>
                                 <th>Cod.SII</th>
                                 <th>Folio</th>
@@ -323,7 +323,7 @@
                             <h5>NOTA DE CREDITO COMPRA ELECTRONICA</h5>
                         </center>
                         <!-- ***********  CAMPOS DE LA TABLA CREDITO *********** -->
-                        <thead class="thead-dark">
+                        <thead >
                             <tr>
                                 <th>Cod.SII</th>
                                 <th>Folio</th>
@@ -451,7 +451,7 @@
                             <h5>NOTA DE DEBITO COMPRA ELECTRONICA</h5>
                         </center>
                         <!-- ***********  CAMPOS DE LA TABLA DEBITO *********** -->
-                        <thead class="thead-dark">
+                        <thead >
                             <tr>
                                 <th>Cod.SII</th>
                                 <th>Folio</th>
@@ -578,6 +578,18 @@
                         <center>
                             <h5>TOTALES GENERALES</h5>
                         </center>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Nº Docs.</th>
+                                <th>Total Exento</th>
+                                <th>Total Neto IVA</th>
+                                <th>Total Neto</th>
+                                <th>Total IVA</th>
+                                <th>Total IVA N/R</th>
+                                <th>Total General</th>
+                            </tr>
+                        </thead>
                         <tbody>
                             <tr class="row_totales">
                                 <td>Total General</td>
@@ -609,6 +621,626 @@
                 </div>
 
                 
+
+            </t>
+        </template>
+
+        <template id="report_sale_book_pdf">
+
+            <t t-call="web.basic_layout">
+                <t t-set="total_documentos" t-value="0" />
+                <t t-set="total_general_exento" t-value="0" />
+                <t t-set="total_general_neto_iva" t-value="0" />
+                <t t-set="total_general_neto" t-value="0" />
+                <t t-set="total_general_iva" t-value="0" />
+                <t t-set="total_general_iva_no_rec" t-value="0" />
+                <t t-set="total_general" t-value="0" />
+                <div class="page">
+                    <table class="company_data">
+                        <t t-set="company" t-value="env['res.company'].sudo().browse(company_get_id[0])" />
+                        <tbody>
+                            <tr>
+                                <td t-esc="company.name" />
+                            </tr>
+                            <tr>
+                                <td t-esc="company.invoice_rut" />
+                            </tr>
+                            <tr>
+                                <td t-esc="company.get_address()" />
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <center>
+                        <table class="report_data">
+                            <tbody>
+                                <tr>
+                                    <td class="book_title">Libro de Ventas</td>
+                                </tr>
+                                <tr>
+                                    <td>Libro de Ventas Ordenado por fecha</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Desde
+                                        <span t-esc="from_date" />
+                                        Hasta
+                                        <span t-esc="to_date" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Moneda : Peso Chileno</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Fecha Reporte :
+                                        <span t-esc="env['account.invoice'].sudo().get_today()"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </center>
+                    <!-- Facturas (33)-->
+                    <table class="tbl_book">
+                        <center>
+                            <h5>FACTURAS DE VENTA ELECTRONICA</h5>
+                        </center>
+                        <!-- ***********  CAMPOS DE LA TABLA FACTURAS ELECTRONICAS *********** -->
+                        <thead>
+                            <tr>
+                                <th>Cod.SII</th>
+                                <th>Folio</th>
+                                <th>Cor.Interno</th>
+                                <th>Rut</th>
+                                <th>Fecha</th>
+                                <th>Nombre</th>
+                                <th>#</th>
+                                <th>Exento</th>
+                                <th>Neto IVA</th>
+                                <th>Total NETO</th>
+                                <th>IVA</th>
+                                <th>IVA N/R</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <!-- *********** CUERPO DEL REPORTE FACTURAS ELECTRONICAS *********** -->
+                        <tbody>
+                            <t t-set="qty_invoice" t-value="0" />
+                            <t t-set="total_exento" t-value="0" />
+                            <t t-set="total_neto_iva" t-value="0" />
+                            <t t-set="total_iva" t-value="0" />
+                            <t t-set="total_general" t-value="0" />
+                            <tr t-foreach="get_invoices" t-as="invoice">
+                                <t t-set="qty_invoice" t-value="qty_invoice + 1" />
+                                <t t-set="total_exento" t-value="total_exento + invoice.get_amount_exempt()" />
+                                <t t-set="total_neto_iva" t-value="total_neto_iva + invoice.get_amount_neto()" />
+                                <t t-set="total_iva" t-value="total_iva + invoice.amount_tax" />
+                                <t t-set="total_general" t-value="total_general + invoice.amount_total" />
+                                <!-- Codigo SII       -->
+                                <td>
+                                    <span t-field="invoice.dte_type_id.code"></span>
+                                </td>
+                                <!-- FOLIO       -->
+                                <td>
+                                    <span t-field="invoice.reference"></span>
+                                </td>
+                                <!-- Cor.Interno -->
+                                <td>
+                                    <span t-field="invoice.number"></span>
+                                </td>
+                                <!-- RUT         -->
+                                <td>
+                                    <span t-field="invoice.partner_id.invoice_rut"></span>
+                                </td>
+                                <!-- FECHA       -->
+                                <td>
+                                    <span t-field="invoice.date_invoice"></span>
+                                </td>
+                                <!-- NOMBRE      -->
+                                <td>
+                                    <span t-field="invoice.vendor_display_name"></span>
+                                </td>
+                                <!-- cantidad factura      -->
+                                <td></td>
+                                <!-- EXENTO      -->
+                                <td>
+                                    <span t-esc="invoice.format_amount(invoice.get_amount_exempt())"></span>
+                                </td>
+
+                                <!-- NETO IVA    -->
+                                <td>
+                                    <span t-esc="invoice.format_amount(invoice.get_amount_neto())"></span>
+                                </td>
+                                <!-- TOTAL NETO  -->
+                                <td>
+                                    <span t-field="invoice.amount_untaxed"></span>
+                                </td>
+                                <!-- IVA         -->
+                                <td>
+                                    <span t-field="invoice.amount_tax"></span>
+                                </td>
+                                <!-- IVA NO RECUP-->
+                                <td>
+                                    $ 0
+                                    
+                                </td>
+                                <!-- TOTAL       -->
+                                <td>
+                                    <span t-field="invoice.amount_total"></span>
+                                </td>
+                            </tr>
+                            <tr class="row_totales">
+                                <td>TOTALES : </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <span t-esc="qty_invoice" />
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_exento)" />
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_neto_iva)" />
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_exento + total_neto_iva)" />
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_iva)" />
+                                </td>
+                                <td>
+                                    $ 0
+                                    <!-- TODO traer IVA N/R-->
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_general)" />
+                                </td>
+                                <t t-set="total_documentos" t-value="total_documentos + qty_invoice" />
+                                <t t-set="total_general_exento" t-value="total_general_exento + total_exento" />
+                                <t t-set="total_general_neto_iva" t-value="total_general_neto_iva + total_neto_iva" />
+                                <t t-set="total_general_neto" t-value="total_general_neto + (total_exento + total_neto_iva)" />
+                                <t t-set="total_general_iva" t-value="total_general_iva + total_iva" />
+                                <!-- <t t-set="total_general_iva_no_rec" t-value="total_general_iva + total_iva" /> -->
+                                <t t-set="total_general" t-value="total_general + total_general" />
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Facturas (34)-->
+                    <table class="tbl_book">
+                        <center>
+                            <h5>FACTURA VENTA EXENTA ELECTRONICA</h5>
+                        </center>
+                        <!-- ***********  CAMPOS DE LA TABLA EXENTOS *********** -->
+                        <thead>
+                            <tr>
+                                <th>Cod.SII</th>
+                                <th>Folio</th>
+                                <th>Cor.Interno</th>
+                                <th>Rut</th>
+                                <th>Fecha</th>
+                                <th>Nombre</th>
+                                <th>#</th>
+                                <th>Exento</th>
+                                <th>Neto IVA</th>
+                                <th>Total NETO</th>
+                                <th>IVA</th>
+                                <th>IVA N/R</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <!-- *********** CUERPO DEL REPORTE EXENTOS *********** -->
+                        <tbody>
+                            <t t-set="qty_invoice" t-value="0" />
+                            <t t-set="total_exento" t-value="0" />
+                            <t t-set="total_neto_iva" t-value="0" />
+                            <t t-set="total_iva" t-value="0" />
+                            <t t-set="total_general" t-value="0" />
+                            <tr t-foreach="get_exempts" t-as="exempt">
+                                <t t-set="qty_invoice" t-value="qty_invoice + 1" />
+                                <t t-set="total_exento" t-value="total_exento + exempt.get_amount_exempt()" />
+                                <t t-set="total_neto_iva" t-value="total_neto_iva + exempt.get_amount_neto()" />
+                                <t t-set="total_iva" t-value="total_iva + exempt.amount_tax" />
+                                <t t-set="total_general" t-value="total_general + exempt.amount_total" />
+                                <!-- Codigo SII       -->
+                                <td>
+                                    <span t-field="exempt.dte_type_id.code"></span>
+                                </td>
+                                <!-- FOLIO       -->
+                                <td>
+                                    <span t-field="exempt.reference">reference</span>
+                                </td>
+                                <!-- Cor.Interno -->
+                                <td>
+                                    <span t-field="exempt.number"></span>
+                                </td>
+                                <!-- RUT         -->
+                                <td>
+                                    <span t-field="exempt.partner_id.invoice_rut"></span>
+                                </td>
+                                <!-- FECHA       -->
+                                <td>
+                                    <span t-field="exempt.date_invoice"></span>
+                                </td>
+                                <!-- NOMBRE      -->
+                                <td>
+                                    <span t-field="exempt.vendor_display_name"></span>
+                                </td>
+                                <!-- cantidad factura      -->
+                                <td></td>
+                                <!-- EXENTO      -->
+                                <td>
+                                    <span t-esc="exempt.get_amount_exempt()"></span>
+                                </td>
+                                <!-- NETO IVA    -->
+                                <td>
+                                    <span t-esc="exempt.get_amount_neto()"></span>
+                                </td>
+                                <!-- TOTAL NETO  -->
+                                <td>
+                                    <span t-field="exempt.amount_untaxed"></span>
+                                </td>
+                                <!-- IVA         -->
+                                <td>
+                                    <span t-field="exempt.amount_tax"></span>
+                                </td>
+                                <!-- IVA NO RECUP-->
+                                <td>
+                                    $ 0
+                                    
+                                </td>
+                                <!-- TOTAL       -->
+                                <td>
+                                    <span t-field="exempt.amount_total"></span>
+                                </td>
+                            </tr>
+                            <tr class="row_totales">
+                                <td>TOTALES : </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <span t-esc="qty_invoice" />
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_exento)" />
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_neto_iva)" />
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_exento + total_neto_iva)" />
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_iva)" />
+                                </td>
+                                <td>
+                                    $ 0
+                                    <!-- TODO traer IVA N/R-->
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_general)" />
+                                </td>
+                                <t t-set="total_documentos" t-value="total_documentos + qty_invoice" />
+                                <t t-set="total_general_exento" t-value="total_general_exento + total_exento" />
+                                <t t-set="total_general_neto_iva" t-value="total_general_neto_iva + total_neto_iva" />
+                                <t t-set="total_general_neto" t-value="total_general_neto + (total_exento + total_neto_iva)" />
+                                <t t-set="total_general_iva" t-value="total_general_iva + total_iva" />
+                                <!-- <t t-set="total_general_iva_no_rec" t-value="total_general_iva + total_iva" /> -->
+                                <t t-set="total_general" t-value="total_general + total_general" />
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Notas de Crédito (61) -->
+                    <table class="tbl_book">
+                        <center>
+                            <h5>NOTA DE CREDITO VENTA ELECTRONICA</h5>
+                        </center>
+                        <!-- ***********  CAMPOS DE LA TABLA CREDITO *********** -->
+                        <thead>
+                            <tr>
+                                <th>Cod.SII</th>
+                                <th>Folio</th>
+                                <th>Cor.Interno</th>
+                                <th>Rut</th>
+                                <th>Fecha</th>
+                                <th>Nombre</th>
+                                <th>#</th>
+                                <th>Exento</th>
+                                <th>Neto IVA</th>
+                                <th>Total NETO</th>
+                                <th>IVA</th>
+                                <th>IVA N/R</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <!-- *********** CUERPO DEL REPORTE CREDITO*********** -->
+                        <tbody>
+                            <t t-set="qty_invoice" t-value="0" />
+                            <t t-set="total_exento" t-value="0" />
+                            <t t-set="total_neto_iva" t-value="0" />
+                            <t t-set="total_iva" t-value="0" />
+                            <t t-set="total_general" t-value="0" />
+                            <tr t-foreach="get_credits" t-as="credit">
+                                <t t-set="qty_invoice" t-value="qty_invoice + 1" />
+                                <t t-set="total_exento" t-value="total_exento + credit.get_amount_exempt()" />
+                                <t t-set="total_neto_iva" t-value="total_neto_iva + credit.get_amount_neto()" />
+                                <t t-set="total_iva" t-value="total_iva + credit.amount_tax" />
+                                <t t-set="total_general" t-value="total_general + credit.amount_total" />
+                                <!-- Codigo SII       -->
+                                <td>
+                                    <span t-field="credit.dte_type_id.code"></span>
+                                </td>
+                                <!-- FOLIO       -->
+                                <td>
+                                    <span t-field="credit.reference">reference</span>
+                                </td>
+                                <!-- Cor.Interno -->
+                                <td>
+                                    <span t-field="credit.number"></span>
+                                </td>
+                                <!-- RUT         -->
+                                <td>
+                                    <span t-field="credit.partner_id.invoice_rut"></span>
+                                </td>
+                                <!-- FECHA       -->
+                                <td>
+                                    <span t-field="credit.date_invoice"></span>
+                                </td>
+                                <!-- NOMBRE      -->
+                                <td>
+                                    <span t-field="credit.vendor_display_name"></span>
+                                </td>
+                                <!-- cantidad factura      -->
+                                <td></td>
+                                <!-- EXENTO      -->
+                                <td>
+                                    <span t-esc="credit.get_amount_exempt()"></span>
+                                </td>
+                                <!-- NETO IVA    -->
+                                <td>
+                                    <span t-esc="credit.get_amount_neto()"></span>
+                                </td>
+                                <!-- TOTAL NETO  -->
+                                <td>
+                                    <span t-field="credit.amount_untaxed"></span>
+                                </td>
+                                <!-- IVA         -->
+                                <td>
+                                    <span t-field="credit.amount_tax"></span>
+                                </td>
+                                <!-- IVA NO RECUP-->
+                                <td>
+                                    $ 0
+                                    
+                                </td>
+                                <!-- TOTAL       -->
+                                <td>
+                                    <span t-field="credit.amount_total"></span>
+                                </td>
+                            </tr>
+                            <tr class="row_totales">
+                                <td>TOTALES : </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <span t-esc="qty_invoice" />
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_exento)" />
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_neto_iva)" />
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_exento + total_neto_iva)" />
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_iva)" />
+                                </td>
+                                <td>
+                                    $ 0
+                                    <!-- TODO traer IVA N/R-->
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_general)" />
+                                </td>
+                                <t t-set="total_documentos" t-value="total_documentos + qty_invoice" />
+                                <t t-set="total_general_exento" t-value="total_general_exento - total_exento" />
+                                <t t-set="total_general_neto_iva" t-value="total_general_neto_iva - total_neto_iva" />
+                                <t t-set="total_general_neto" t-value="total_general_neto - (total_exento + total_neto_iva)" />
+                                <t t-set="total_general_iva" t-value="total_general_iva - total_iva" />
+                                <!-- <t t-set="total_general_iva_no_rec" t-value="total_general_iva - total_iva" /> -->
+                                <t t-set="total_general" t-value="total_general - total_general" />
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Notas de Débito (56) -->
+                    <table class="tbl_book">
+                        <center>
+                            <h5>NOTA DE DEBITO VENTA ELECTRONICA</h5>
+                        </center>
+                        <!-- ***********  CAMPOS DE LA TABLA DEBITO *********** -->
+                        <thead>
+                            <tr>
+                                <th>Cod.SII</th>
+                                <th>Folio</th>
+                                <th>Cor.Interno</th>
+                                <th>Rut</th>
+                                <th>Fecha</th>
+                                <th>Nombre</th>
+                                <th>#</th>
+                                <th>Exento</th>
+                                <th>Neto IVA</th>
+                                <th>Total NETO</th>
+                                <th>IVA</th>
+                                <th>IVA N/R</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <!-- *********** CUERPO DEL REPORTE DEBITO *********** -->
+                        <tbody>
+                            <t t-set="qty_invoice" t-value="0" />
+                            <t t-set="total_exento" t-value="0" />
+                            <t t-set="total_neto_iva" t-value="0" />
+                            <t t-set="total_iva" t-value="0" />
+                            <t t-set="total_general" t-value="0" />
+                            <tr t-foreach="get_debits" t-as="debit">
+                                <t t-set="qty_invoice" t-value="qty_invoice + 1" />
+                                <t t-set="total_exento" t-value="total_exento + debit.get_amount_exempt()" />
+                                <t t-set="total_neto_iva" t-value="total_neto_iva + debit.get_amount_neto()" />
+                                <t t-set="total_iva" t-value="total_iva + debit.amount_tax" />
+                                <t t-set="total_general" t-value="total_general + debit.amount_total" />
+                                <!-- Codigo SII       -->
+                                <td>
+                                    <span t-field="debit.dte_type_id.code"></span>
+                                </td>
+                                <!-- FOLIO       -->
+                                <td>
+                                    <span t-field="debit.reference">reference</span>
+                                </td>
+                                <!-- Cor.Interno -->
+                                <td>
+                                    <span t-field="debit.number"></span>
+                                </td>
+                                <!-- RUT         -->
+                                <td>
+                                    <span t-field="debit.partner_id.invoice_rut"></span>
+                                </td>
+                                <!-- FECHA       -->
+                                <td>
+                                    <span t-field="debit.date_invoice"></span>
+                                </td>
+                                <!-- NOMBRE      -->
+                                <td>
+                                    <span t-field="debit.vendor_display_name"></span>
+                                </td>
+                                <!-- cantidad factura      -->
+                                <td></td>
+                                <!-- EXENTO      -->
+                                <td>
+                                    <span t-esc="debit.get_amount_exempt()"></span>
+                                </td>
+                                <!-- NETO IVA    -->
+                                <td>
+                                    <span t-esc="debit.get_amount_neto()"></span>
+                                </td>
+                                <!-- TOTAL NETO  -->
+                                <td>
+                                    <span t-field="debit.amount_untaxed"></span>
+                                </td>
+                                <!-- IVA         -->
+                                <td>
+                                    <span t-field="debit.amount_tax"></span>
+                                </td>
+                                <!-- IVA NO RECUP-->
+                                <td>
+                                    $ 0
+                                    
+                                </td>
+                                <!-- TOTAL       -->
+                                <td>
+                                    <span t-field="debit.amount_total"></span>
+                                </td>
+                            </tr>
+                            <tr class="row_totales">
+                                <td>TOTALES : </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <span t-esc="qty_invoice" />
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_exento)" />
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_neto_iva)" />
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_exento + total_neto_iva)" />
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_iva)" />
+                                </td>
+                                <td>
+                                    $ 0
+                                    <!-- TODO traer IVA N/R-->
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_general)" />
+                                </td>
+                                <t t-set="total_documentos" t-value="total_documentos + qty_invoice" />
+                                <t t-set="total_general_exento" t-value="total_general_exento + total_exento" />
+                                <t t-set="total_general_neto_iva" t-value="total_general_neto_iva + total_neto_iva" />
+                                <t t-set="total_general_neto" t-value="total_general_neto + (total_exento + total_neto_iva)" />
+                                <t t-set="total_general_iva" t-value="total_general_iva + total_iva" />
+                                <!-- <t t-set="total_general_iva_no_rec" t-value="total_general_iva + total_iva" /> -->
+                                <t t-set="total_general" t-value="total_general + total_general" />
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Totales -->
+                    <table class="tbl_book">
+                        <center>
+                            <h5>TOTALES GENERALES</h5>
+                        </center>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Nº Docs.</th>
+                                <th>Total Exento</th>
+                                <th>Total Neto IVA</th>
+                                <th>Total Neto</th>
+                                <th>Total IVA</th>
+                                <th>Total IVA N/R</th>
+                                <th>Total General</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="row_totales">
+                                <td>Total General</td>
+                                <td>
+                                    <span t-esc="total_documentos" />
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_general_exento)" />
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_general_neto_iva)" />
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_general_neto)" />
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_general_iva)" />
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_general_iva_no_rec)" />
+                                </td>
+                                <td>
+                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_general)" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
 
             </t>
         </template>
