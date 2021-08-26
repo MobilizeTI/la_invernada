@@ -11,7 +11,7 @@
                 <t t-set="total_general_neto" t-value="0" />
                 <t t-set="total_general_iva" t-value="0" />
                 <t t-set="total_general_iva_no_rec" t-value="0" />
-                <t t-set="total_general" t-value="0" />
+                <t t-set="total_general_general" t-value="0" />
                 <div class="page">
                     <table class="company_data">
                         <t t-set="company" t-value="env['res.company'].sudo().browse(company_get_id[0])" />
@@ -184,7 +184,7 @@
                                 <t t-set="total_general_neto" t-value="total_general_neto + (total_exento + total_neto_iva)" />
                                 <t t-set="total_general_iva" t-value="total_general_iva + total_iva" />
                                 <!-- <t t-set="total_general_iva_no_rec" t-value="total_general_iva + total_iva" /> -->
-                                <t t-set="total_general" t-value="total_general + total_general" />
+                                <t t-set="total_general_general" t-value="total_general_general + total_general" />
                             </tr>
                         </tbody>
                     </table>
@@ -312,7 +312,7 @@
                                 <t t-set="total_general_neto" t-value="total_general_neto + (total_exento + total_neto_iva)" />
                                 <t t-set="total_general_iva" t-value="total_general_iva + total_iva" />
                                 <!-- <t t-set="total_general_iva_no_rec" t-value="total_general_iva + total_iva" /> -->
-                                <t t-set="total_general" t-value="total_general + total_general" />
+                                <t t-set="total_general_general" t-value="total_general_general + total_general" />
                             </tr>
                         </tbody>
                     </table>
@@ -440,7 +440,7 @@
                                 <t t-set="total_general_neto" t-value="total_general_neto - (total_exento + total_neto_iva)" />
                                 <t t-set="total_general_iva" t-value="total_general_iva - total_iva" />
                                 <!-- <t t-set="total_general_iva_no_rec" t-value="total_general_iva - total_iva" /> -->
-                                <t t-set="total_general" t-value="total_general - total_general" />
+                                <t t-set="total_general_general" t-value="total_general_general - total_general" />
                             </tr>
                         </tbody>
                     </table>
@@ -568,7 +568,7 @@
                                 <t t-set="total_general_neto" t-value="total_general_neto + (total_exento + total_neto_iva)" />
                                 <t t-set="total_general_iva" t-value="total_general_iva + total_iva" />
                                 <!-- <t t-set="total_general_iva_no_rec" t-value="total_general_iva + total_iva" /> -->
-                                <t t-set="total_general" t-value="total_general + total_general" />
+                                <t t-set="total_general_general" t-value="total_general_general + total_general" />
                             </tr>
                         </tbody>
                     </table>
@@ -634,7 +634,7 @@
                 <t t-set="total_general_neto" t-value="0" />
                 <t t-set="total_general_iva" t-value="0" />
                 <t t-set="total_general_iva_no_rec" t-value="0" />
-                <t t-set="total_general" t-value="0" />
+                <t t-set="total_general_general" t-value="0" />
                 <div class="page">
                     <table class="company_data">
                         <t t-set="company" t-value="env['res.company'].sudo().browse(company_get_id[0])" />
@@ -805,7 +805,7 @@
                                 <t t-set="total_general_neto" t-value="total_general_neto + (total_exento + total_neto_iva)" />
                                 <t t-set="total_general_iva" t-value="total_general_iva + total_iva" />
                                 <!-- <t t-set="total_general_iva_no_rec" t-value="total_general_iva + total_iva" /> -->
-                                <t t-set="total_general" t-value="total_general + total_general" />
+                                <t t-set="total_general_general" t-value="total_general_general + total_general" />
                             </tr>
                         </tbody>
                     </table>
@@ -933,7 +933,7 @@
                                 <t t-set="total_general_neto" t-value="total_general_neto + (total_exento + total_neto_iva)" />
                                 <t t-set="total_general_iva" t-value="total_general_iva + total_iva" />
                                 <!-- <t t-set="total_general_iva_no_rec" t-value="total_general_iva + total_iva" /> -->
-                                <t t-set="total_general" t-value="total_general + total_general" />
+                                <t t-set="total_general_general" t-value="total_general_general + total_general" />
                             </tr>
                         </tbody>
                     </table>
@@ -1061,7 +1061,7 @@
                                 <t t-set="total_general_neto" t-value="total_general_neto - (total_exento + total_neto_iva)" />
                                 <t t-set="total_general_iva" t-value="total_general_iva - total_iva" />
                                 <!-- <t t-set="total_general_iva_no_rec" t-value="total_general_iva - total_iva" /> -->
-                                <t t-set="total_general" t-value="total_general - total_general" />
+                                <t t-set="total_general_general" t-value="total_general_general - total_general" />
                             </tr>
                         </tbody>
                     </table>
@@ -1189,7 +1189,7 @@
                                 <t t-set="total_general_neto" t-value="total_general_neto + (total_exento + total_neto_iva)" />
                                 <t t-set="total_general_iva" t-value="total_general_iva + total_iva" />
                                 <!-- <t t-set="total_general_iva_no_rec" t-value="total_general_iva + total_iva" /> -->
-                                <t t-set="total_general" t-value="total_general + total_general" />
+                                <t t-set="total_general_general" t-value="total_general_general + total_general" />
                             </tr>
                         </tbody>
                     </table>

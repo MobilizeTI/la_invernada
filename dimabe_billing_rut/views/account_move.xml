@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="paperformat_sale_purchase_book_pdf" model="report.paperformat">
+        <record id="mblz_paperformat_sale_purchase_book_pdf" model="report.paperformat">
             <field name="name">Libro Compras y Ventas</field>
             <field name="default" eval="True" />
             <field name="format">custom</field>
@@ -32,19 +32,19 @@
             </field>
         </record>
 
-        <record id="account_move_report_action_mblz" model="ir.actions.report">
+        <!-- <record id="account_move_report_action_mblz" model="ir.actions.report">
             <field name="name">Libro de Compras</field>
             <field name="model">account.move</field>
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">dimabe_billing_rut.report_purchase_book_pdf</field>
-        </record>
+        </record> -->
 
-        <record id="account_move_report_sale_book_action_mblz" model="ir.actions.report">
+        <!-- <record id="account_move_report_sale_book_action_mblz" model="ir.actions.report">
             <field name="name">Libro de Ventas</field>
             <field name="model">account.move</field>
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">dimabe_billing_rut.report_sale_book_pdf</field>
-        </record>
+        </record> -->
 
         <report
             id="purchase_book_pdf_report"
@@ -53,7 +53,7 @@
             report_type="qweb-pdf"
             file="dimabe_billing_rut.report_purchase_book_pdf"
             name="dimabe_billing_rut.report_purchase_book_pdf"
-            paperformat="dimabe_billing_rut.paperformat_sale_purchase_book_pdf"
+            paperformat="dimabe_billing_rut.mblz_paperformat_sale_purchase_book_pdf"
             print_report_name="('Libro de Compras %s' % object.name)"
         />
 
@@ -64,8 +64,8 @@
             report_type="qweb-pdf"
             file="dimabe_billing_rut.report_sale_book_pdf"
             name="dimabe_billing_rut.report_sale_book_pdf"
-            paperformat="dimabe_billing_rut.paperformat_sale_purchase_book_pdf"
-            print_report_name="('Libro de Compras %s' % object.name)"
+            paperformat="dimabe_billing_rut.mblz_paperformat_sale_purchase_book_pdf"
+            print_report_name="('Libro de Ventas %s' % object.name)"
         />
     </data>
 </odoo>
