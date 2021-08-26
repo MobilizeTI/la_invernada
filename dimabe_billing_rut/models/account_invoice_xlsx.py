@@ -40,7 +40,7 @@ class AccountInvoiceXlsx(models.Model):
             'model': 'account.invoice',
             'form': data
         }
-        return self.env.ref('dimabe_billing_rut.account_move_report_action_mblz').report_action(invoices, data=datas)
+        return self.env.ref('dimabe_billing_rut.purchase_book_pdf_report').report_action(invoices, data=datas)
     
     def generate_sale_book_pdf(self):
         self.ensure_one()
