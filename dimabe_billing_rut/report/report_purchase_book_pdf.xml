@@ -232,7 +232,7 @@
                                 </td>
                                 <!-- RUT         -->
                                 <td scope="row">
-                                    <<span t-field="credit.partner_id.invoice_rut"></span>
+                                    <span t-field="credit.partner_id.invoice_rut"></span>
                                 </td>
                                 <!-- FECHA       -->
                                 <td scope="row">
