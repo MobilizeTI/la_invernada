@@ -14,6 +14,7 @@ class SalesBookReport(models.AbstractModel):
 
         report = self.env['ir.actions.report']._get_report_from_name('dimabe_billing_rut.report_purchase_book_pdf')
         account = self.env['account.move'].browse(self.ids)
+        _logger.info('LOG: ---> compnay?? {}'.format(data['form']['company_get_id']))
         return {            
             'doc_ids': self.ids,
             'doc_model': report.model,
