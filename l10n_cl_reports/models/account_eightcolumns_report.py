@@ -2,6 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import models, api, _
 from collections import OrderedDict
+import logging
+_logger = logging.getLogger('TEST PURCHASE =======')
 # from datetime import datetime
 
 
@@ -36,6 +38,7 @@ class CL8ColumnsReport(models.AbstractModel):
     @api.model
     def _prepare_query(self, options):
         tables, where_clause, where_params = self._query_get(options)
+        _logger.info('LOG: --->> tables {} where {} whereparams {}'.format(tables, where_clause, where_params))
 
         sql_query = """
             SELECT aa.id, aa.code, aa.name,
