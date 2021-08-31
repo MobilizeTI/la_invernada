@@ -9,7 +9,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
     @api.model
     def _get_columns_name(self, options):
         columns_names = [
-            {'name': ''},
+            {'name': 'Cuenta'},
             {'name': _('Date'), 'class': 'date'},
             {'name': _('Communication')},
             {'name': _('Cuenta Analítica')},
