@@ -41,7 +41,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
     
     @api.model
     def _get_general_ledger_lines(self, options, line_id=None):
-        res = super(AccountGeneralLedgerReport, self)._get_general_ledger_lines(options, line_id=None)
+        res = super(AccountGeneralLedgerReport, self)._get_general_ledger_lines(options, line_id)
         _logger.info('!!!!!')
         return res
         
