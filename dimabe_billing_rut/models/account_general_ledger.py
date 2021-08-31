@@ -6,8 +6,8 @@ import logging
 _logger = logging.getLogger('TEST GENERAL LEDGER')
 
 class AccountGeneralLedgerReport(models.AbstractModel):
-    _name = 'account.general.ledger'
-    _inherit = ['account.general.ledger', 'account.report']
+    # _name = 'account.general.ledger'
+    _inherit = ['account.report', 'account.general.ledger']
 
     # report = self.env['account.report'].sudo()
 
