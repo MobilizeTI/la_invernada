@@ -25,6 +25,52 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             columns_names.insert(5, {'name': _('Currency'), 'class': 'number'})
         return columns_names
     
+    @api.model
+    def _get_aml_line(self, options, account, aml, cumulated_balance):
+        res = super(AccountGeneralLedgerReport, self)._get_aml_line(options, account, aml, cumulated_balance)
+        _logger.info('AMLLLLLL')
+        _logger.info('LOG: ---> aml {}'.format(aml))
+        res['columns'].insert(3, {'name': 'test', 'title': 'test', 'class': 'whitespace_print'})
+        return res
+        # if aml['payment_id']:
+        #     caret_type = 'account.payment'
+        # else:
+        #     caret_type = 'account.move'
+
+        # if aml['ref'] and aml['name']:
+        #     title = '%s - %s' % (aml['name'], aml['ref'])
+        # elif aml['ref']:
+        #     title = aml['ref']
+        # elif aml['name']:
+        #     title = aml['name']
+        # else:
+        #     title = ''
+
+        # if (aml['currency_id'] and aml['currency_id'] != account.company_id.currency_id.id) or account.currency_id:
+        #     currency = self.env['res.currency'].browse(aml['currency_id'])
+        # else:
+        #     currency = False
+
+        # columns = [
+        #     {'name': format_date(self.env, aml['date']), 'class': 'date'},
+        #     {'name': self._format_aml_name(aml['name'], aml['ref'], aml['move_name']), 'title': title, 'class': 'whitespace_print o_account_report_line_ellipsis'},
+        #     {'name': aml['partner_name'], 'title': aml['partner_name'], 'class': 'whitespace_print'},
+        #     {'name': self.format_value(aml['debit'], blank_if_zero=True), 'class': 'number'},
+        #     {'name': self.format_value(aml['credit'], blank_if_zero=True), 'class': 'number'},
+        #     {'name': self.format_value(cumulated_balance), 'class': 'number'},
+        # ]
+        # if self.user_has_groups('base.group_multi_currency'):
+        #     columns.insert(3, {'name': currency and aml['amount_currency'] and self.format_value(aml['amount_currency'], currency=currency, blank_if_zero=True) or '', 'class': 'number'})
+        # return {
+        #     'id': aml['id'],
+        #     'caret_options': caret_type,
+        #     'class': 'top-vertical-align',
+        #     'parent_id': 'account_%d' % aml['account_id'],
+        #     'name': aml['move_name'],
+        #     'columns': columns,
+        #     'level': 2,
+        # }
+    
     # @api.model
     # def _get_lines(self, options, line_id=None):
     #     _logger.info('get lines')
