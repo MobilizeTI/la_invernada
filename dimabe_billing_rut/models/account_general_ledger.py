@@ -94,6 +94,71 @@ class AccountGeneralLedgerReport(models.AbstractModel):
                 ('account_id.code', 'ilike', options['filter_accounts'])
             ]
         return domain
+    
+    @api.model
+    def _get_filter_journals(self):
+        return self.env['account.journal'].search([
+            ('company_id', 'in', self.env.user.company_ids.ids or [self.env.company.id])
+        ], order="company_id, name")
+
+    @api.model
+    def _get_filter_journal_groups(self):
+        journals = self._get_filter_journals()
+        groups = self.env['account.journal.group'].search([], order='sequence')
+        ret = self.env['account.journal.group']
+        for journal_group in groups:
+            # Only display the group if it doesn't exclude every journal
+            if journals - journal_group.excluded_journal_ids:
+                ret += journal_group
+        return ret
+
+    @api.model
+    def _init_filter_journals(self, options, previous_options=None):
+        if self.filter_journals is None:
+            return
+
+        previous_company = False
+        if previous_options and previous_options.get('journals'):
+            journal_map = dict((opt['id'], opt['selected']) for opt in previous_options['journals'] if opt['id'] != 'divider' and 'selected' in opt)
+        else:
+            journal_map = {}
+        options['journals'] = []
+
+        group_header_displayed = False
+        default_group_ids = []
+        for group in self._get_filter_journal_groups():
+            journal_ids = (self._get_filter_journals() - group.excluded_journal_ids).ids
+            if len(journal_ids):
+                if not group_header_displayed:
+                    group_header_displayed = True
+                    options['journals'].append({'id': 'divider', 'name': _('Journal Groups')})
+                    default_group_ids = journal_ids
+                options['journals'].append({'id': 'group', 'name': group.name, 'ids': journal_ids})
+
+        for j in self._get_filter_journals():
+            if j.company_id != previous_company:
+                options['journals'].append({'id': 'divider', 'name': j.company_id.name})
+                previous_company = j.company_id
+            options['journals'].append({
+                'id': j.id,
+                'name': j.name,
+                'code': j.code,
+                'type': j.type,
+                'selected': journal_map.get(j.id, j.id in default_group_ids),
+            })
+
+    @api.model
+    def _get_options_journals(self, options):
+        return [
+            journal for journal in options.get('journals', []) if
+            not journal['id'] in ('divider', 'group') and journal['selected']
+        ]
+
+    @api.model
+    def _get_options_journals_domain(self, options):
+        # Make sure to return an empty array when nothing selected to handle archived journals.
+        selected_journals = self._get_options_journals(options)
+        return selected_journals and [('journal_id', 'in', [j['id'] for j in selected_journals])] or []
 
     @api.model
     def _get_options_sum_balance(self, options):
