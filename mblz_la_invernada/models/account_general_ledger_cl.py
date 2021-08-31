@@ -9,7 +9,7 @@ _logger = logging.getLogger('TEST GENERAL LEDGER')
 
 
 class AccountGeneralLedgerReportCl(models.AbstractModel):
-    _name = "cl.account.general.ledger"
+    _name = "account.general.ledger_cl"
     _description = "Libro Mayor Chile"
     _inherit = "account.report"
     
