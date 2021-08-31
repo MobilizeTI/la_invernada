@@ -21,18 +21,18 @@ class AccountGeneralLedgerReport(models.AbstractModel):
     
     @api.model
     def _get_lines(self, options, line_id=None):
-        offset = int(options.get('lines_offset', 0))
-        remaining = int(options.get('lines_remaining', 0))
-        balance_progress = float(options.get('lines_progress', 0))
+        # offset = int(options.get('lines_offset', 0))
+        # remaining = int(options.get('lines_remaining', 0))
+        # balance_progress = float(options.get('lines_progress', 0))
 
-        if offset > 0:
-            # Case a line is expanded using the load more.
-            return self._load_more_lines(options, line_id, offset, remaining, balance_progress)
-        else:
-            # Case the whole report is loaded or a line is expanded for the first time.
-            return self._get_general_ledger_lines(options, line_id=line_id)
+        # if offset > 0:
+        #     # Case a line is expanded using the load more.
+        #     return self._load_more_lines(options, line_id, offset, remaining, balance_progress)
+        # else:
+        #     # Case the whole report is loaded or a line is expanded for the first time.
+        #     return self._get_general_ledger_lines(options, line_id=line_id)
         
-        # return super(AccountGeneralLedgerReport, self)._get_lines(options, line_id=None)
+        return super(AccountGeneralLedgerReport, self)._get_lines(options, line_id=None)
     
     # @api.model
     # def _get_columns_name(self, options):
