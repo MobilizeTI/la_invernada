@@ -99,7 +99,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
         _logger.info('LOG.----> date {}'.format(options.get('date')))
         unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
         date_from = fields.Date.from_string(options['date']['date'])
-        company_currency = self.env.company.currency_id
+        company_currency = self.env.user.company_id.currency_id
 
         expanded_account = line_id and self.env['account.account'].browse(int(line_id[8:]))
         accounts_results, taxes_results = self._do_query(options_list, expanded_account=expanded_account)
@@ -171,7 +171,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
                         cumulated_balance,
                     ))
 
-                if self.env.company.totals_below_sections:
+                if self.env.user.company_id.totals_below_sections:
                     # Account total line.
                     lines.append(self._get_account_total_line(
                         options, account,
@@ -283,7 +283,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
         :return:        A copy of the options.
         '''
         new_options = options.copy()
-        fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(new_options['date']['date_from']))
+        fiscalyear_dates = self.env.user.company_id.compute_fiscalyear_dates(fields.Date.from_string(new_options['date']['date_from']))
         new_options['date'] = {
             'mode': 'range',
             'date_from': fiscalyear_dates['date_from'].strftime(DEFAULT_SERVER_DATE_FORMAT),
@@ -305,7 +305,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
         :return:        A copy of the options.
         '''
         new_options = options.copy()
-        fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(options['date']['date_from']))
+        fiscalyear_dates = self.env.user.company_id.compute_fiscalyear_dates(fields.Date.from_string(options['date']['date_from']))
         new_date_to = fiscalyear_dates['date_from'] - timedelta(days=1)
         new_options['date'] = {
             'mode': 'single',
@@ -329,7 +329,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
         :return:        A copy of the options.
         '''
         new_options = options.copy()
-        fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(options['date']['date_from']))
+        fiscalyear_dates = self.env.user.company_id.compute_fiscalyear_dates(fields.Date.from_string(options['date']['date_from']))
         new_date_to = fields.Date.from_string(new_options['date']['date_from']) - timedelta(days=1)
         new_options['date'] = {
             'mode': 'range',
@@ -727,7 +727,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
             'unfoldable': has_lines,
             'unfolded': has_lines and 'account_%d' % account.id in options.get('unfolded_lines') or unfold_all,
             'colspan': 4,
-            'class': 'o_account_reports_totals_below_sections' if self.env.company.totals_below_sections else '',
+            'class': 'o_account_reports_totals_below_sections' if self.env.user.company_id.totals_below_sections else '',
         }
 
     @api.model
@@ -831,7 +831,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
     @api.model
     def _get_total_line(self, options, debit, credit, balance):
         return {
-            'id': 'general_ledger_total_%s' % self.env.company.id,
+            'id': 'general_ledger_total_%s' % self.env.user.company_id.id,
             'name': _('Total'),
             'class': 'total',
             'level': 1,
