@@ -10,7 +10,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
 
     @api.model
     def _get_columns_name(self, options):
-        _logger.info('HOLAAAAAAAAAAA')
+        
         columns_names = [
             {'name': 'Cuentas'},
             {'name': _('Date'), 'class': 'date'},
@@ -26,7 +26,62 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         return columns_names
     
     @api.model
-    def _get_general_ledger_lines(self, options, line_id=None):
+    def _get_lines(self, options, line_id=None):
+        _logger.info('HOLAAAAAAAAAAA')
+        offset = int(options.get('lines_offset', 0))
+        remaining = int(options.get('lines_remaining', 0))
+        balance_progress = float(options.get('lines_progress', 0))
+
+        if offset > 0:
+            # Case a line is expanded using the load more.
+            return self._load_more_lines_(options, line_id, offset, remaining, balance_progress)
+        else:
+            # Case the whole report is loaded or a line is expanded for the first time.
+            return self._get_general_ledger_lines_(options, line_id=line_id)
+    
+    @api.model
+    def _load_more_lines_(self, options, line_id, offset, load_more_remaining, balance_progress):
+        ''' Get lines for an expanded line using the load more.
+        :param options: The report options.
+        :param line_id: string representing the line to expand formed as 'loadmore_<ID>'
+        :params offset, load_more_remaining: integers. Parameters that will be used to fetch the next aml slice
+        :param balance_progress: float used to carry on with the cumulative balance of the account.move.line
+        :return:        A list of lines, each one represented by a dictionary.
+        '''
+        lines = []
+        expanded_account = self.env['account.account'].browse(int(line_id[9:]))
+
+        load_more_counter = self.MAX_LINES
+
+        # Fetch the next batch of lines.
+        amls_query, amls_params = self._get_query_amls(options, expanded_account, offset=offset, limit=load_more_counter)
+        self._cr_execute(options, amls_query, amls_params)
+        for aml in self._cr.dictfetchall():
+            # Don't show more line than load_more_counter.
+            if load_more_counter == 0:
+                break
+
+            balance_progress += aml['balance']
+
+            # account.move.line record line.
+            lines.append(self._get_aml_line(options, expanded_account, aml, balance_progress))
+
+            offset += 1
+            load_more_remaining -= 1
+            load_more_counter -= 1
+
+        if load_more_remaining > 0:
+            # Load more line.
+            lines.append(self._get_load_more_line(
+                options, expanded_account,
+                offset,
+                load_more_remaining,
+                balance_progress,
+            ))
+        return lines
+    
+    @api.model
+    def _get_general_ledger_lines_(self, options, line_id=None):
         ''' Get lines for the whole report or for a specific line.
         :param options: The report options.
         :return:        A list of lines, each one represented by a dictionary.
