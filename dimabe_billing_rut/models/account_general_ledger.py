@@ -25,7 +25,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             columns_names.insert(5, {'name': _('Currency'), 'class': 'number'})
         return columns_names
     
-    @api.model
+    # @api.model
     def _get_aml_line(self, options, account, aml, cumulated_balance):
         res = super(AccountGeneralLedgerReport, self)._get_aml_line(options, account, aml, cumulated_balance)
         _logger.info('AMLLLLLL')
