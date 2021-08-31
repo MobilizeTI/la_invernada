@@ -22,7 +22,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
 
     @api.model
     def _get_templates(self):
-        templates = super(AccountGeneralLedgerReportCl, self)._get_templates()
+        templates = super(ReportAccountGeneralLedger, self)._get_templates()
         templates['line_template'] = 'account_reports.line_template_general_ledger_report'
         templates['main_template'] = 'account_reports.main_template_with_filter_input_accounts'
         return templates
@@ -259,7 +259,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
     @api.model
     def _get_options_domain(self, options):
         # OVERRIDE
-        domain = super(AccountGeneralLedgerReportCl, self)._get_options_domain(options)
+        domain = super(ReportAccountGeneralLedger, self)._get_options_domain(options)
         # Filter accounts based on the search bar.
         if options.get('filter_accounts'):
             domain += [
