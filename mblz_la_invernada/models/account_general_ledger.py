@@ -34,6 +34,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         :param options: The report options.
         :return:        A list of lines, each one represented by a dictionary.
         '''
+        _logger.info('LOG:   okKKKK*******************')
         lines = []
         aml_lines = []
         options_list = self._get_options_periods_list(options)
