@@ -5,7 +5,9 @@ import logging
 _logger = logging.getLogger('TEST GENERAL LEDGER')
 
 class AccountGeneralLedgerReport(models.AbstractModel):
-    _inherit = ['account.general.ledger', 'account.report']
+    _inherit = ['account.general.ledger']
+
+    report = self.env['account.report'].sudo()
 
 
     @api.model
@@ -48,10 +50,10 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         _logger.info('GET GENERAL LEDGER LINES')
         lines = []
         aml_lines = []
-        options_list = self._get_options_periods_list(options)
+        options_list = report._get_options_periods_list(options)
         unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
         date_from = fields.Date.from_string(options['date']['date_from'])
-        company_currency = self.env.company.currency_id
+        company_currency = report.env.company.currency_id
 
         expanded_account = line_id and self.env['account.account'].browse(int(line_id[8:]))
         accounts_results, taxes_results = self._do_query(options_list, expanded_account=expanded_account)
