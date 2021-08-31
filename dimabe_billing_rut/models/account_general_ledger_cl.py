@@ -4,6 +4,8 @@
 from odoo import models, fields, api, _
 from odoo.tools.misc import format_date, DEFAULT_SERVER_DATE_FORMAT
 from datetime import timedelta
+import logging
+_logger = logging.getLogger('TEST GENERAL LEDGER')
 
 
 class AccountGeneralLedgerReport(models.AbstractModel):
@@ -93,6 +95,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         lines = []
         aml_lines = []
         options_list = self._get_options_periods_list(options)
+        _logger.info('LOG.----> options {} list {}'.format(options, options_list))
         unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
         date_from = fields.Date.from_string(options['date']['date_from'])
         company_currency = self.env.company.currency_id
