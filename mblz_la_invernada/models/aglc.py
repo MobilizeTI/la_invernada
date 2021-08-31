@@ -19,7 +19,7 @@ class ResCurrency(models.Model):
         :return:        The query representing the currency table.
         '''
 
-        user_company = self.env.company
+        user_company = self.env.user.company_id
         user_currency = user_company.currency_id
         if options.get('multi_company', False):
             companies = self.env.companies
