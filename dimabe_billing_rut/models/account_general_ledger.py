@@ -96,6 +96,56 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         return domain
     
     @api.model
+    def _get_options_analytic_domain(self, options):
+        domain = []
+        if options.get('analytic_accounts'):
+            analytic_account_ids = [int(acc) for acc in options['analytic_accounts']]
+            domain.append(('analytic_account_id', 'in', analytic_account_ids))
+        if options.get('analytic_tags'):
+            analytic_tag_ids = [int(tag) for tag in options['analytic_tags']]
+            domain.append(('analytic_tag_ids', 'in', analytic_tag_ids))
+        return domain
+    
+    @api.model
+    def _get_options_all_entries_domain(self, options):
+        if not options.get('all_entries'):
+            return [('move_id.state', '=', 'posted')]
+        else:
+            return [('move_id.state', '!=', 'cancel')]
+    
+    @api.model
+    def _get_options_partner_domain(self, options):
+        domain = []
+        if options.get('partner_ids'):
+            partner_ids = [int(partner) for partner in options['partner_ids']]
+            domain.append(('partner_id', 'in', partner_ids))
+        if options.get('partner_categories'):
+            partner_category_ids = [int(category) for category in options['partner_categories']]
+            domain.append(('partner_id.category_id', 'in', partner_category_ids))
+        return domain
+    
+    @api.model
+    def _get_options_date_domain(self, options):
+        def create_date_domain(options_date):
+            date_field = options_date.get('date_field', 'date')
+            domain = [(date_field, '<=', options_date['date_to'])]
+            if options_date['mode'] == 'range':
+                strict_range = options_date.get('strict_range')
+                if not strict_range:
+                    domain += [
+                        '|',
+                        (date_field, '>=', options_date['date_from']),
+                        ('account_id.user_type_id.include_initial_balance', '=', True)
+                    ]
+                else:
+                    domain += [(date_field, '>=', options_date['date_from'])]
+            return domain
+
+        if not options.get('date'):
+            return []
+        return create_date_domain(options['date'])
+    
+    @api.model
     def _get_filter_journals(self):
         return self.env['account.journal'].search([
             ('company_id', 'in', self.env.user.company_ids.ids or [self.env.company.id])
