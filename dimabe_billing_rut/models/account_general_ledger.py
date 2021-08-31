@@ -22,7 +22,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             {'name': _('Balance'), 'class': 'number'}
         ]
         if self.user_has_groups('base.group_multi_currency'):
-            columns_names.insert(4, {'name': _('Currency'), 'class': 'number'})
+            columns_names.insert(5, {'name': _('Currency'), 'class': 'number'})
         return columns_names
     
     # @api.model
