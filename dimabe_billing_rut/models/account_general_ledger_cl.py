@@ -97,7 +97,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         options_list = self._get_options_periods_list(options)
         _logger.info('LOG.----> options {} list {}'.format(options, options_list))
         unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
-        date_from = fields.Date.from_string(options['date']['date_from'])
+        date_from = fields.Date.from_string(options['date'])
         company_currency = self.env.company.currency_id
 
         expanded_account = line_id and self.env['account.account'].browse(int(line_id[8:]))
@@ -881,3 +881,8 @@ class AccountGeneralLedgerReport(models.AbstractModel):
                 lines.append(tax_line)
 
         return lines
+
+
+# options {'all_entries': False, 'analytic': True, 'analytic_accounts': [], 'analytic_tags': [], 'cash_basis': None, 'comparison': None, 'date': {'mode': 'range', 'filter': 'this_month', 'string': 'Al 31/08/2021', 'date': '2021-08-31'}, 'hierarchy': None, 'journals': [{'id': 'divider', 'name': 'Servicios La Invernada SPA'}, {'id': 15, 'name': 'Banco Chile CLP', 'code': 'BNK1', 'type': 'bank', 'selected': False}, {'id': 17, 'name': 'Compra', 'code': 'CO1', 'type': 'purchase', 'selected': False}, {'id': 35, 'name': 'Depreciación / Amortización', 'code': 'DEA', 'type': 'general', 'selected': False}, {'id': 16, 'name': 'Existencias', 'code': 'STJ', 'type': 'general', 'selected': False}, {'id': 22, 'name': 'Pagos no bancarios', 'code': 'PNB1', 'type': 'cash', 'selected': False}, {'id': 19, 'name': 'Venta', 'code': 'DVTA', 'type': 'sale', 'selected': False}], 'partner': None, 'unfold_all': False, 'unfolded_lines': [], 'selected_analytic_account_names': [], 'selected_analytic_tag_names': [], 'unposted_in_period': False} 
+# list [{'all_entries': False, 'analytic': True, 'analytic_accounts': [], 'analytic_tags': [], 'cash_basis': None, 'comparison': None, 'date': {'mode': 'range', 'filter': 'this_month', 'string': 'Al 31/08/2021', 'date': '2021-08-31'}, 'hierarchy': None, 'journals': [{'id': 'divider', 'name': 'Servicios La Invernada SPA'}, {'id': 15, 'name': 'Banco Chile CLP', 'code': 'BNK1', 'type': 'bank', 'selected': False}, {'id': 17, 'name': 'Compra', 'code': 'CO1', 'type': 'purchase', 'selected': False}, {'id': 35, 'name': 'Depreciación / Amortización', 'code': 'DEA', 'type': 'general', 'selected': False}, {'id': 16, 'name': 'Existencias', 'code': 'STJ', 'type': 'general', 'selected': False}, {'id': 22, 'name': 'Pagos no bancarios', 'code': 'PNB1', 'type': 'cash', 'selected': False}, {'id': 19, 'name': 'Venta', 'code': 'DVTA', 'type': 'sale', 'selected': False}], 'partner': None, 'unfold_all': False, 'unfolded_lines': [], 'selected_analytic_account_names': [], 'selected_analytic_tag_names': [], 'unposted_in_period': False}]
+
