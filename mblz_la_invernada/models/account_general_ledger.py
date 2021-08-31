@@ -31,6 +31,8 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         else:
             # Case the whole report is loaded or a line is expanded for the first time.
             return self._get_general_ledger_lines(options, line_id=line_id)
+        
+        # return super(AccountGeneralLedgerReport, self)._get_lines(options, line_id=None)
     
     # @api.model
     # def _get_columns_name(self, options):
@@ -54,7 +56,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
     
     @api.model
     def _get_general_ledger_lines(self, options, line_id=None):
-        # res = super(AccountGeneralLedgerReport, self)._get_general_ledger_lines(options, line_id)
+        res = super(AccountGeneralLedgerReport, self)._get_general_ledger_lines(options, line_id)
         _logger.info('!!!!!')
-        return []
+        return res
         
