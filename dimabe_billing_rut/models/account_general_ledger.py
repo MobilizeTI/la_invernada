@@ -71,12 +71,22 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         new_options['date'] = new_options['date'].copy()
         new_options['date']['strict_range'] = True
         return new_options
-
+    
     @api.model
     def _get_options_domain(self, options):
-        # OVERRIDE
-        # domain = super(AccountGeneralLedgerReport, self)._get_options_domain(options)
-        # Filter accounts based on the search bar.
+        domain = [
+            ('display_type', 'not in', ('line_section', 'line_note')),
+            ('move_id.state', '!=', 'cancel'),
+        ]
+        if options.get('multi_company', False):
+            domain += [('company_id', 'in', self.env.companies.ids)]
+        else:
+            domain += [('company_id', '=', self.env['res.company'].sudo().browse(int(self._context.get('company_ids')[0])).id)]
+        domain += self._get_options_journals_domain(options)
+        domain += self._get_options_date_domain(options)
+        domain += self._get_options_analytic_domain(options)
+        domain += self._get_options_partner_domain(options)
+        domain += self._get_options_all_entries_domain(options)
         if options.get('filter_accounts'):
             domain += [
                 '|',
