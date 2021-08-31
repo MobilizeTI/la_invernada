@@ -110,7 +110,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         options_list = self._get_options_periods_list_(options)
         unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
         date_from = fields.Date.from_string(options['date']['date_from'])
-        _logger.info('LOG: --env {}'.format(dir(self.env)))
+        _logger.info('LOG: -- context {} user '.format(self.env.context, self.env.user))
         company_currency = self.env.company.currency_id
 
         expanded_account = line_id and self.env['account.account'].browse(int(line_id[8:]))
@@ -354,3 +354,5 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             where_params.append(limit)
 
         return query, where_params
+
+        # list = ['__abstractmethods__', '__call__', '__class__', '__contains__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__iter__', '__le__', '__len__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__reversed__', '__setattr__', '__sizeof__', '__slots__', '__str__', '__subclasshook__', '__weakref__', '_abc_cache', '_abc_negative_cache', '_abc_negative_cache_version', '_abc_registry', '_cache_key', '_do_in_mode', '_local', '_protected', 'add_todo', 'all', 'args', 'cache', 'cache_key', 'check_todo', 'clear', 'clear_upon_failure', 'context', 'cr', 'dirty', 'do_in_draft', 'do_in_onchange', 'envs', 'field_todo', 'get', 'get_todo', 'has_todo', 'in_draft', 'in_onchange', 'items', 'keys', 'lang', 'manage', 'norecompute', 'protected', 'protecting', 'recompute', 'ref', 'registry', 'remove_todo', 'reset', 'uid', 'user', 'values']
