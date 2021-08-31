@@ -26,6 +26,20 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         return columns_names
     
     @api.model
+    def _get_lines(self, options, line_id=None):
+        _logger.info('GET LINES')
+        offset = int(options.get('lines_offset', 0))
+        remaining = int(options.get('lines_remaining', 0))
+        balance_progress = float(options.get('lines_progress', 0))
+
+        if offset > 0:
+            # Case a line is expanded using the load more.
+            return self._load_more_lines(options, line_id, offset, remaining, balance_progress)
+        else:
+            # Case the whole report is loaded or a line is expanded for the first time.
+            return self._get_general_ledger_lines(options, line_id=line_id)
+    
+    @api.model
     def _get_general_ledger_lines(self, options, line_id=None):
         ''' Get lines for the whole report or for a specific line.
         :param options: The report options.
