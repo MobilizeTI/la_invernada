@@ -5,7 +5,7 @@ from odoo import models, fields, api, _
 from odoo.tools.misc import format_date, DEFAULT_SERVER_DATE_FORMAT
 from datetime import timedelta
 import logging
-_logger = logging.getLogger(__name__)
+_logger = logging.getLogger('TEST PURCHASE')
 
 
 class AccountGeneralLedgerReport(models.AbstractModel):
@@ -14,6 +14,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
     @api.model
     def _get_columns_name(self, options):
         res = super(AccountGeneralLedgerReport, self)._get_columns_name(options)
+        _logger.info('LOG:  --- options {}'.format(options))
         res[0] = {'name': 'Cuentas'}
         res.insert(3, {'name': _('Analítica')})
         return res
@@ -40,7 +41,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
     
     @api.model
     def _get_general_ledger_lines(self, options, line_id=None):
-        # res = super(AccountGeneralLedgerReport, self)._get_general_ledger_lines(options, line_id=None)
+        res = super(AccountGeneralLedgerReport, self)._get_general_ledger_lines(options, line_id=None)
         _logger.info('!!!!!')
-        return super(AccountGeneralLedgerReport, self)._get_general_ledger_lines(options, line_id=None)
+        return res
         
