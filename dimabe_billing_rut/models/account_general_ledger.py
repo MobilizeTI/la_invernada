@@ -2,7 +2,7 @@ from odoo import models, fields, api, _
 from odoo.tools.misc import format_date, DEFAULT_SERVER_DATE_FORMAT
 from datetime import timedelta
 import logging
-from odoo.addons.account_reports.models import account_report as report
+from odoo.addons.account_reports.models.account_report import AccountReport as report
 _logger = logging.getLogger('TEST GENERAL LEDGER')
 
 class AccountGeneralLedgerReport(models.AbstractModel):
