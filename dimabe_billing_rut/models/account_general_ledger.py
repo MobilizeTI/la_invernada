@@ -16,7 +16,7 @@ class ResCurrency(models.Model):
         :return:        The query representing the currency table.
         '''
 
-        user_company = self.env.company
+        user_company = self.env['res.company'].sudo().broese(int(self._context.get('company_ids')[0]))
         user_currency = user_company.currency_id
         if options.get('multi_company', False):
             companies = self.env.companies
