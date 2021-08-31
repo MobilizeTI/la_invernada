@@ -39,6 +39,9 @@ class CL8ColumnsReport(models.AbstractModel):
     def _prepare_query(self, options):
         tables, where_clause, where_params = self._query_get(options)
         _logger.info('LOG: --->> tables {} where {} whereparams {}'.format(tables, where_clause, where_params))
+        # tables = "account_move" as "account_move_line__move_id","account_account" as "account_move_line__account_id","account_move_line"
+        # where = ("account_move_line"."account_id"="account_move_line__account_id"."id" AND "account_move_line"."move_id"="account_move_line__move_id"."id") AND ((((("account_move_line__move_id"."state" != %s)  AND  ("account_move_line"."company_id" = %s))  AND  ("account_move_line"."date" <= %s))  AND  (("account_move_line"."date" >= %s)  OR  ("account_move_line__account_id"."user_type_id" in (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s))))  AND  ("account_move_line__move_id"."state" = %s)) AND ("account_move_line"."company_id" IS NULL   OR  ("account_move_line"."company_id" in (%s))) 
+        # whereparams  = ['cancel', 3, '2021-12-31', '2021-12-31', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 'posted', 3]
 
         sql_query = """
             SELECT aa.id, aa.code, aa.name,

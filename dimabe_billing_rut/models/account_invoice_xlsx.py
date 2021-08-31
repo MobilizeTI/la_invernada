@@ -84,9 +84,9 @@ class AccountInvoiceXlsx(models.Model):
                      ('date', '>=', self.from_date), ('date', '<=', self.to_date)])
                 taxes_title = list(
                     dict.fromkeys(invoices_get_tax.mapped('tax_line_ids').mapped('tax_id').mapped('name')))
-                for tax in taxes_title:
-                    if tax != 'IVA Crédito' and tax != 'IVA Débito' and tax != 'Exento':
-                        titles.append(tax.upper())
+                # for tax in taxes_title:
+                #     if tax != 'IVA Crédito' and tax != 'IVA Débito' and tax != 'Exento':
+                #         titles.append(tax.upper())
 
                 titles.append('Total')
                 sheet.merge_range(0, 0, 0, 2, self.company_get_id.display_name, formats['title'])
@@ -243,9 +243,9 @@ class AccountInvoiceXlsx(models.Model):
                     [('dte_type_id', '!=', None), ('company_id', '=', self.company_get_id.id)])
                 taxes_title = list(
                     dict.fromkeys(invoices_get_tax.mapped('tax_line_ids').mapped('tax_id').mapped('name')))
-                for tax in taxes_title:
-                    if tax != 'IVA Crédito' and tax != 'IVA Débito' and tax != 'Exento':
-                        titles.append(tax.upper())
+                # for tax in taxes_title:
+                #     if tax != 'IVA Crédito' and tax != 'IVA Débito' and tax != 'Exento':
+                #         titles.append(tax.upper())
 
                 titles.append('Total')
                 sheet.merge_range(0, 0, 0, 2, self.company_get_id.display_name, formats['title'])
