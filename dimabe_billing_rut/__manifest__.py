@@ -51,7 +51,7 @@
         'views/assets.xml',
         'report/instructive_report.xml',
         'report/report_purchase_book_pdf.xml',
-        'views/financial_reports_views.xml'
+        # 'views/financial_reports_views.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
