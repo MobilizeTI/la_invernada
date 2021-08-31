@@ -7,8 +7,8 @@ from datetime import timedelta
 
 
 class AccountGeneralLedgerReport(models.AbstractModel):
-    _name = "account.general.ledger.cl"
-    _description = "Libro MAyor Chile"
+    _name = "account.general.ledger_cl"
+    _description = "Libro Mayor Chile"
     _inherit = "account.report"
 
     filter_date = {'mode': 'range', 'filter': 'this_month'}
