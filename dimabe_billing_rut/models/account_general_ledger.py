@@ -110,7 +110,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         options_list = self._get_options_periods_list_(options)
         unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
         date_from = fields.Date.from_string(options['date']['date_from'])
-        _logger.info('LOG: -- context {} user {}'.format(self.env.context.company_ids[0], self.env.user))
+        _logger.info('LOG: -- user {}'.format(self.env.user))
         # company_currency = self.env.company.currency_id
         company_currency = self.env['res.currency'].sudo().search([('company_id', '=', self.env.context.company_ids[0])])
 
