@@ -8,7 +8,7 @@ from datetime import timedelta
 
 class AccountGeneralLedgerReport(models.Model):
     _inherit = "account.general.ledger"
-    # _name = "account.general.ledger_cl"
+    _name = "account.general.ledger_cl"
     # _description = "General Ledger Report Chile"
     
     @api.model
