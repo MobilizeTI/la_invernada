@@ -27,7 +27,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
     
     @api.model
     def _get_lines(self, options, line_id=None):
-        _logger.info('HOLAAAAAAAAAAA')
+        # _logger.info('HOLAAAAAAAAAAA')
         offset = int(options.get('lines_offset', 0))
         remaining = int(options.get('lines_remaining', 0))
         balance_progress = float(options.get('lines_progress', 0))
@@ -81,6 +81,24 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         return lines
     
     @api.model
+    def _get_options_periods_list_(self, options):
+        ''' Get periods as a list of options, one per impacted period.
+        The first element is the range of dates requested in the report, others are the comparisons.
+
+        :param options: The report options.
+        :return:        A list of options having size 1 + len(options['comparison']['periods']).
+        '''
+        periods_options_list = []
+        if options.get('date'):
+            periods_options_list.append(options)
+        if options.get('comparison') and options['comparison'].get('periods'):
+            for period in options['comparison']['periods']:
+                period_options = options.copy()
+                period_options['date'] = period
+                periods_options_list.append(period_options)
+        return periods_options_list
+    
+    @api.model
     def _get_general_ledger_lines_(self, options, line_id=None):
         ''' Get lines for the whole report or for a specific line.
         :param options: The report options.
@@ -89,7 +107,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         _logger.info('HOLAAAAAAAAAAA')
         lines = []
         aml_lines = []
-        options_list = self._get_options_periods_list(options)
+        options_list = self._get_options_periods_list_(options)
         unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
         date_from = fields.Date.from_string(options['date']['date_from'])
         company_currency = self.env.company.currency_id
