@@ -41,6 +41,99 @@ class AccountGeneralLedgerReport(models.AbstractModel):
     _inherit = 'account.general.ledger'
 
     @api.model
+    def _force_strict_range(self, options):
+        ''' Duplicate options with the 'strict_range' enabled on the filter_date.
+        :param options: The report options.
+        :return:        A copy of the options.
+        '''
+        new_options = options.copy()
+        new_options['date'] = new_options['date'].copy()
+        new_options['date']['strict_range'] = True
+        return new_options
+
+    @api.model
+    def _get_options_domain(self, options):
+        # OVERRIDE
+        domain = super(AccountGeneralLedgerReport, self)._get_options_domain(options)
+        # Filter accounts based on the search bar.
+        if options.get('filter_accounts'):
+            domain += [
+                '|',
+                ('account_id.name', 'ilike', options['filter_accounts']),
+                ('account_id.code', 'ilike', options['filter_accounts'])
+            ]
+        return domain
+
+    @api.model
+    def _get_options_sum_balance(self, options):
+        ''' Create options used to compute the aggregated sums on accounts.
+        The resulting dates domain will be:
+        [
+            ('date' <= options['date_to']),
+            '|',
+            ('date' >= fiscalyear['date_from']),
+            ('account_id.user_type_id.include_initial_balance', '=', True)
+        ]
+        :param options: The report options.
+        :return:        A copy of the options.
+        '''
+        new_options = options.copy()
+        fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(new_options['date']['date_from']))
+        new_options['date'] = {
+            'mode': 'range',
+            'date_from': fiscalyear_dates['date_from'].strftime(DEFAULT_SERVER_DATE_FORMAT),
+            'date_to': options['date']['date_to'],
+        }
+        return new_options
+
+    @api.model
+    def _get_options_unaffected_earnings(self, options):
+        ''' Create options used to compute the unaffected earnings.
+        The unaffected earnings are the amount of benefits/loss that have not been allocated to
+        another account in the previous fiscal years.
+        The resulting dates domain will be:
+        [
+          ('date' <= fiscalyear['date_from'] - 1),
+          ('account_id.user_type_id.include_initial_balance', '=', False),
+        ]
+        :param options: The report options.
+        :return:        A copy of the options.
+        '''
+        new_options = options.copy()
+        fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(options['date']['date_from']))
+        new_date_to = fiscalyear_dates['date_from'] - timedelta(days=1)
+        new_options['date'] = {
+            'mode': 'single',
+            'date_to': new_date_to.strftime(DEFAULT_SERVER_DATE_FORMAT),
+        }
+        return new_options
+
+    @api.model
+    def _get_options_initial_balance(self, options):
+        ''' Create options used to compute the initial balances.
+        The initial balances depict the current balance of the accounts at the beginning of
+        the selected period in the report.
+        The resulting dates domain will be:
+        [
+            ('date' <= options['date_from'] - 1),
+            '|',
+            ('date' >= fiscalyear['date_from']),
+            ('account_id.user_type_id.include_initial_balance', '=', True)
+        ]
+        :param options: The report options.
+        :return:        A copy of the options.
+        '''
+        new_options = options.copy()
+        fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(options['date']['date_from']))
+        new_date_to = fields.Date.from_string(new_options['date']['date_from']) - timedelta(days=1)
+        new_options['date'] = {
+            'mode': 'range',
+            'date_from': fiscalyear_dates['date_from'].strftime(DEFAULT_SERVER_DATE_FORMAT),
+            'date_to': new_date_to.strftime(DEFAULT_SERVER_DATE_FORMAT),
+        }
+        return new_options
+
+    @api.model
     def _get_query_sums(self, options_list, expanded_account=None):
         ''' Construct a query retrieving all the aggregated sums to build the report. It includes:
         - sums for all accounts.
