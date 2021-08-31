@@ -319,7 +319,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
         new_options['date'] = {
             'mode': 'range',
             'date_from': fiscalyear_dates['date_from'].strftime(DEFAULT_SERVER_DATE_FORMAT),
-            'date_to': options['date']['date_to'],
+            'date_to': options['date']['date'],
         }
         return new_options
 
