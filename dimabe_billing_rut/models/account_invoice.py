@@ -1090,3 +1090,22 @@ class AccountInvoice(models.Model):
 
     def get_today(self):
         return date.today().strftime('%Y-%m-%d')
+
+class AccountGeneralLedgerReport(models.AbstractModel):
+    _inherit = 'account.general.ledger'
+
+    @api.model
+    def _get_columns_name(self, options):
+        columns_names = [
+            {'name': ''},
+            {'name': _('Date'), 'class': 'date'},
+            {'name': _('Communication')},
+            {'name': _('Cuenta Analítica')},
+            {'name': _('Partner')},
+            {'name': _('Debit'), 'class': 'number'},
+            {'name': _('Credit'), 'class': 'number'},
+            {'name': _('Balance'), 'class': 'number'}
+        ]
+        if self.user_has_groups('base.group_multi_currency'):
+            columns_names.insert(4, {'name': _('Currency'), 'class': 'number'})
+        return columns_names
