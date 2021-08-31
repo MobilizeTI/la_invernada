@@ -78,7 +78,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         :return:        A copy of the options.
         '''
         new_options = options.copy()
-        fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(new_options['date']['date_from']))
+        fiscalyear_dates = self.env['res.company'].sudo().browse(int(self._context.get('company_ids')[0])).compute_fiscalyear_dates(fields.Date.from_string(new_options['date']['date_from']))
         new_options['date'] = {
             'mode': 'range',
             'date_from': fiscalyear_dates['date_from'].strftime(DEFAULT_SERVER_DATE_FORMAT),
@@ -100,7 +100,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         :return:        A copy of the options.
         '''
         new_options = options.copy()
-        fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(options['date']['date_from']))
+        fiscalyear_dates = self.env['res.company'].sudo().browse(int(self._context.get('company_ids')[0])).compute_fiscalyear_dates(fields.Date.from_string(options['date']['date_from']))
         new_date_to = fiscalyear_dates['date_from'] - timedelta(days=1)
         new_options['date'] = {
             'mode': 'single',
@@ -124,7 +124,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         :return:        A copy of the options.
         '''
         new_options = options.copy()
-        fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(options['date']['date_from']))
+        fiscalyear_dates = self.env['res.company'].sudo().browse(int(self._context.get('company_ids')[0])).compute_fiscalyear_dates(fields.Date.from_string(options['date']['date_from']))
         new_date_to = fields.Date.from_string(new_options['date']['date_from']) - timedelta(days=1)
         new_options['date'] = {
             'mode': 'range',
