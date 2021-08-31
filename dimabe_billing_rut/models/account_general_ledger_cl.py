@@ -95,7 +95,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         lines = []
         aml_lines = []
         options_list = self._get_options_periods_list(options)
-        _logger.info('LOG.----> options {} list {}'.format(options, options_list))
+        _logger.info('LOG.----> date {}'.format(options.get('date')))
         unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
         date_from = fields.Date.from_string(options['date'])
         company_currency = self.env.company.currency_id
