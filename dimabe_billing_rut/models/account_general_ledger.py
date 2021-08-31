@@ -7,7 +7,7 @@ _logger = logging.getLogger('TEST GENERAL LEDGER')
 class AccountGeneralLedgerReport(models.AbstractModel):
     _inherit = ['account.general.ledger']
 
-    report = self.env['account.report'].sudo()
+    # report = self.env['account.report'].sudo()
 
 
     @api.model
