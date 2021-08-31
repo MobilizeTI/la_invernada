@@ -56,7 +56,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             {'name': self.format_value(cumulated_balance), 'class': 'number'},
         ]
         if self.user_has_groups('base.group_multi_currency'):
-            columns.insert(3, {'name': currency and aml['amount_currency'] and self.format_value(aml['amount_currency'], currency=currency, blank_if_zero=True) or '', 'class': 'number'})
+            columns.insert(4, {'name': currency and aml['amount_currency'] and self.format_value(aml['amount_currency'], currency=currency, blank_if_zero=True) or '', 'class': 'number'})
         return {
             'id': aml['id'],
             'caret_options': caret_type,
@@ -65,6 +65,34 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             'name': aml['move_name'],
             'columns': columns,
             'level': 2,
+        }
+    
+    @api.model
+    def _get_account_title_line(self, options, account, amount_currency, debit, credit, balance, has_lines):
+        has_foreign_currency = account.currency_id and account.currency_id != account.company_id.currency_id or False
+        unfold_all = self._context.get('print_mode') and not options.get('unfolded_lines')
+
+        name = '%s %s' % (account.code, account.name)
+        max_length = self._context.get('print_mode') and 100 or 60
+        if len(name) > max_length and not self._context.get('no_format'):
+            name = name[:max_length] + '...'
+        columns = [
+            {'name': self.format_value(debit), 'class': 'number'},
+            {'name': self.format_value(credit), 'class': 'number'},
+            {'name': self.format_value(balance), 'class': 'number'},
+        ]
+        if self.user_has_groups('base.group_multi_currency'):
+            columns.insert(0, {'name': has_foreign_currency and self.format_value(amount_currency, currency=account.currency_id, blank_if_zero=True) or '', 'class': 'number'})
+        return {
+            'id': 'account_%d' % account.id,
+            'name': name,
+            'title_hover': name,
+            'columns': columns,
+            'level': 2,
+            'unfoldable': has_lines,
+            'unfolded': has_lines and 'account_%d' % account.id in options.get('unfolded_lines') or unfold_all,
+            'colspan': 4,
+            'class': 'o_account_reports_totals_below_sections' if self.env.company.totals_below_sections else '',
         }
     
     @api.model
