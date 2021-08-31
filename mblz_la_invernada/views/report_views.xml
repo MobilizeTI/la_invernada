@@ -4,7 +4,7 @@
         <record id="mblz_action_account_report_general_ledger_cl" model="ir.actions.client">
             <field name="name">Libro Mayor MBLZ</field>
             <field name="tag">account_report</field>
-            <field name="context" eval="{'model': 'account.general.ledger'}" />
+            <field name="context" eval="{'model': 'cl.account.general.ledger'}" />
         </record>
 
         <menuitem id="mblz_menu_action_account_report_general_ledger_cl" name="Libro Mayor MBLZ" action="mblz_action_account_report_general_ledger_cl" parent="account_reports.account_reports_audit_reports_menu" />
