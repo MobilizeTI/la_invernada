@@ -112,7 +112,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         date_from = fields.Date.from_string(options['date']['date_from'])
         _logger.info('LOG: -- user {} contex {}'.format(self.env.user, self._context.get('company_ids')[0]))
         # company_currency = self.env.company.currency_id
-        company_currency = self.env['res.currency'].sudo().search([('company_id', '=', self._context.get('company_ids')[0])])
+        company_currency = self.env['res.company'].sudo().browse(int(self._context.get('company_ids')[0])).currency_id
 
         expanded_account = line_id and self.env['account.account'].browse(int(line_id[8:]))
         accounts_results, taxes_results = self._do_query(options_list, expanded_account=expanded_account)
