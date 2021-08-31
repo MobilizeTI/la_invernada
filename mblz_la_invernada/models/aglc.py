@@ -7,9 +7,10 @@ from datetime import timedelta
 
 
 class AccountGeneralLedgerReport(models.AbstractModel):
+    _inherit = "account.report"
     _name = "account.general.ledger_cl"
     _description = "General Ledger Report Chile"
-    _inherit = "account.report"
+    
 
     filter_date = {'mode': 'range', 'filter': 'this_month'}
     filter_all_entries = False
@@ -17,12 +18,12 @@ class AccountGeneralLedgerReport(models.AbstractModel):
     filter_analytic = True
     filter_unfold_all = False
 
-    @api.model
-    def _get_templates(self):
-        templates = super(AccountGeneralLedgerReport, self)._get_templates()
-        templates['line_template'] = 'account_reports.line_template_general_ledger_report'
-        templates['main_template'] = 'account_reports.main_template_with_filter_input_accounts'
-        return templates
+    # @api.model
+    # def _get_templates(self):
+    #     templates = super(AccountGeneralLedgerReport, self)._get_templates()
+    #     templates['line_template'] = 'account_reports.line_template_general_ledger_report'
+    #     templates['main_template'] = 'account_reports.main_template_with_filter_input_accounts'
+    #     return templates
 
     @api.model
     def _get_columns_name(self, options):
