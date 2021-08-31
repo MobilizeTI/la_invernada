@@ -11,10 +11,10 @@ class AccountGeneralLedgerReport(models.AbstractModel):
     @api.model
     def _get_columns_name(self, options):
         columns_names = [
-            {'name': 'Cuenta'},
+            {'name': 'Cuentas'},
             {'name': _('Date'), 'class': 'date'},
             {'name': _('Communication')},
-            {'name': _('Cuenta Analítica')},
+            {'name': _('C.Analítica')},
             {'name': _('Partner')},
             {'name': _('Debit'), 'class': 'number'},
             {'name': _('Credit'), 'class': 'number'},
