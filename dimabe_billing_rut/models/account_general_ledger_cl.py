@@ -9,9 +9,9 @@ _logger = logging.getLogger('TEST GENERAL LEDGER')
 
 
 class AccountGeneralLedgerReportCl(models.AbstractModel):
-    _inherit = "account.report"
-    _name = "account.general.ledger_cl"
+    _name = "account.general.ledger.cl"
     _description = "Libro Mayor Chile"
+    _inherit = "account.report"
     
 
     filter_date = {'mode': 'range', 'filter': 'this_month'}
