@@ -12,7 +12,8 @@ class AccountGeneralLedgerReport(models.AbstractModel):
     @api.model
     def _get_columns_name(self, options):
         res = super(AccountGeneralLedgerReport, self)._get_columns_name(options)
-        res.insert(3, {'name': _('Analítica')},)
+        res[0] = {'name': 'Cuentas'}
+        res.insert(3, {'name': _('Analítica')})
         return res
     
     # @api.model
