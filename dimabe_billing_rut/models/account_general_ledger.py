@@ -38,7 +38,7 @@ class ResCurrency(models.Model):
 
 
 class AccountGeneralLedgerReport(models.AbstractModel):
-    _inherit = 'account.general.ledger'
+    _inherit = ['account.general.ledger', 'account.report']
 
     def _cr_execute(self, options, query, params=None):
         ''' Similar to self._cr.execute but allowing some custom behavior like shadowing the account_move_line table
@@ -49,17 +49,17 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         '''
         return self._cr.execute(query, params)
 
-    @api.model
-    def _query_get(self, options, domain=None):
-        domain = self._get_options_domain(options) + (domain or [])
-        self.env['account.move.line'].check_access_rights('read')
+    # @api.model
+    # def _query_get(self, options, domain=None):
+    #     domain = self._get_options_domain(options) + (domain or [])
+    #     self.env['account.move.line'].check_access_rights('read')
 
-        query = self.env['account.move.line']._where_calc(domain)
+    #     query = self.env['account.move.line']._where_calc(domain)
 
-        # Wrap the query with 'company_id IN (...)' to avoid bypassing company access rights.
-        self.env['account.move.line']._apply_ir_rules(query)
+    #     # Wrap the query with 'company_id IN (...)' to avoid bypassing company access rights.
+    #     self.env['account.move.line']._apply_ir_rules(query)
 
-        return query.get_sql()
+    #     return query.get_sql()
 
     @api.model
     def _force_strict_range(self, options):
