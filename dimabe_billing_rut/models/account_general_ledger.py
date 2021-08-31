@@ -75,7 +75,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
     @api.model
     def _get_options_domain(self, options):
         # OVERRIDE
-        domain = super(AccountGeneralLedgerReport, self)._get_options_domain(options)
+        # domain = super(AccountGeneralLedgerReport, self)._get_options_domain(options)
         # Filter accounts based on the search bar.
         if options.get('filter_accounts'):
             domain += [
