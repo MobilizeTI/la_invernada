@@ -49,7 +49,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         columns = [
             {'name': format_date(self.env, aml['date']), 'class': 'date'},
             {'name': self._format_aml_name(aml['name'], aml['ref'], aml['move_name']), 'title': title, 'class': 'whitespace_print o_account_report_line_ellipsis'},
-            {'name': aml['partner_name'], 'title': aml['partner_name'], 'class': 'whitespace_print'},
+            {'name': 'Holaaaaa', 'title': 'Holaaaaa', 'class': 'whitespace_print'},
             {'name': aml['partner_name'], 'title': aml['partner_name'], 'class': 'whitespace_print'},
             {'name': self.format_value(aml['debit'], blank_if_zero=True), 'class': 'number'},
             {'name': self.format_value(aml['credit'], blank_if_zero=True), 'class': 'number'},
