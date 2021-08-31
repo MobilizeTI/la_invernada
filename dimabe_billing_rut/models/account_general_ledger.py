@@ -5,7 +5,7 @@ import logging
 _logger = logging.getLogger('TEST GENERAL LEDGER')
 
 class AccountGeneralLedgerReport(models.AbstractModel):
-    _inherit = ['account.general.ledger']
+    _inherit = ['account.general.ledger', 'account.report']
 
 
     @api.model
