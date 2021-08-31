@@ -26,3 +26,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         if self.user_has_groups('base.group_multi_currency'):
             columns_names.insert(4, {'name': _('Currency'), 'class': 'number'})
         return columns_names
+    
+    @api.model
+    def _get_report_name(self):
+        return _("Libro Mayor MBLZ")
