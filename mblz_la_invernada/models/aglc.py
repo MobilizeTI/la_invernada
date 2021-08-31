@@ -51,6 +51,19 @@ class ReportAccountGeneralLedger(models.AbstractModel):
     filter_journals = True
     filter_analytic = True
     filter_unfold_all = False
+    
+
+    @api.model
+    def _query_get(self, options, domain=None):
+        domain = self._get_options_domain(options) + (domain or [])
+        self.env['account.move.line'].check_access_rights('read')
+
+        query = self.env['account.move.line']._where_calc(domain)
+
+        # Wrap the query with 'company_id IN (...)' to avoid bypassing company access rights.
+        self.env['account.move.line']._apply_ir_rules(query)
+
+        return query.get_sql()
 
     @api.model
     def _get_templates(self):
