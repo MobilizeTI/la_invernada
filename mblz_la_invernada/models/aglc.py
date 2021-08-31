@@ -4,70 +4,22 @@
 from odoo import models, fields, api, _
 from odoo.tools.misc import format_date, DEFAULT_SERVER_DATE_FORMAT
 from datetime import timedelta
-import logging
-_logger = logging.getLogger('TEST GENERAL LEDGER')
-
-class ResCurrency(models.Model):
-    _inherit = 'res.currency'
-
-    @api.model
-    def _get_query_currency_table(self, options):
-        ''' Construct the currency table as a mapping company -> rate to convert the amount to the user's company
-        currency in a multi-company/multi-currency environment.
-        The currency_table is a small postgresql table construct with VALUES.
-        :param options: The report options.
-        :return:        The query representing the currency table.
-        '''
-
-        user_company = self.env.user.company_id
-        user_currency = user_company.currency_id
-        if options.get('multi_company', False):
-            companies = self.env.companies
-            conversion_date = options['date']['date_to']
-            currency_rates = companies.mapped('currency_id')._get_rates(user_company, conversion_date)
-        else:
-            companies = user_company
-            currency_rates = {user_currency.id: 1.0}
-
-        conversion_rates = []
-        for company in companies:
-            conversion_rates.extend((
-                company.id,
-                currency_rates[user_company.currency_id.id] / currency_rates[company.currency_id.id],
-                user_currency.decimal_places,
-            ))
-        query = '(VALUES %s) AS currency_table(company_id, rate, precision)' % ','.join('(%s, %s, %s)' for i in companies)
-        return self.env.cr.mogrify(query, conversion_rates).decode(self.env.cr.connection.encoding)
 
 
-class ReportAccountGeneralLedger(models.AbstractModel):
-    _inherit = "account.report"
+class AccountGeneralLedgerReport(models.AbstractModel):
     _name = "account.general.ledger_cl"
-    _description = "Libro Mayor Chile"
-    
+    _description = "General Ledger Report Chile"
+    _inherit = "account.report"
 
     filter_date = {'mode': 'range', 'filter': 'this_month'}
     filter_all_entries = False
     filter_journals = True
     filter_analytic = True
     filter_unfold_all = False
-    
-
-    @api.model
-    def _query_get(self, options, domain=None):
-        domain = self._get_options_domain(options) + (domain or [])
-        self.env['account.move.line'].check_access_rights('read')
-
-        query = self.env['account.move.line']._where_calc(domain)
-
-        # Wrap the query with 'company_id IN (...)' to avoid bypassing company access rights.
-        self.env['account.move.line']._apply_ir_rules(query)
-
-        return query.get_sql()
 
     @api.model
     def _get_templates(self):
-        templates = super(ReportAccountGeneralLedger, self)._get_templates()
+        templates = super(AccountGeneralLedgerReport, self)._get_templates()
         templates['line_template'] = 'account_reports.line_template_general_ledger_report'
         templates['main_template'] = 'account_reports.main_template_with_filter_input_accounts'
         return templates
@@ -75,10 +27,9 @@ class ReportAccountGeneralLedger(models.AbstractModel):
     @api.model
     def _get_columns_name(self, options):
         columns_names = [
-            {'name': 'Cuenta'},
+            {'name': ''},
             {'name': _('Date'), 'class': 'date'},
             {'name': _('Communication')},
-            {'name': _('Cuenta Analítica')},
             {'name': _('Partner')},
             {'name': _('Debit'), 'class': 'number'},
             {'name': _('Credit'), 'class': 'number'},
@@ -90,7 +41,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
 
     @api.model
     def _get_report_name(self):
-        return _("Libro Mayor Chile")
+        return _("General Ledger")
 
     def view_all_journal_items(self, options, params):
         if params.get('id'):
@@ -113,24 +64,6 @@ class ReportAccountGeneralLedger(models.AbstractModel):
         else:
             # Case the whole report is loaded or a line is expanded for the first time.
             return self._get_general_ledger_lines(options, line_id=line_id)
-    
-    @api.model
-    def _get_options_periods_list(self, options):
-        ''' Get periods as a list of options, one per impacted period.
-        The first element is the range of dates requested in the report, others are the comparisons.
-
-        :param options: The report options.
-        :return:        A list of options having size 1 + len(options['comparison']['periods']).
-        '''
-        periods_options_list = []
-        if options.get('date'):
-            periods_options_list.append(options)
-        if options.get('comparison') and options['comparison'].get('periods'):
-            for period in options['comparison']['periods']:
-                period_options = options.copy()
-                period_options['date'] = period
-                periods_options_list.append(period_options)
-        return periods_options_list
 
     @api.model
     def _get_general_ledger_lines(self, options, line_id=None):
@@ -141,10 +74,9 @@ class ReportAccountGeneralLedger(models.AbstractModel):
         lines = []
         aml_lines = []
         options_list = self._get_options_periods_list(options)
-        _logger.info('LOG.----> date {}'.format(options.get('date')))
         unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
-        date_from = fields.Date.from_string(options['date']['date'])
-        company_currency = self.env.user.company_id.currency_id
+        date_from = fields.Date.from_string(options['date']['date_from'])
+        company_currency = self.env.company.currency_id
 
         expanded_account = line_id and self.env['account.account'].browse(int(line_id[8:]))
         accounts_results, taxes_results = self._do_query(options_list, expanded_account=expanded_account)
@@ -216,7 +148,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
                         cumulated_balance,
                     ))
 
-                if self.env.user.company_id.totals_below_sections:
+                if self.env.company.totals_below_sections:
                     # Account total line.
                     lines.append(self._get_account_total_line(
                         options, account,
@@ -304,7 +236,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
     @api.model
     def _get_options_domain(self, options):
         # OVERRIDE
-        domain = super(ReportAccountGeneralLedger, self)._get_options_domain(options)
+        domain = super(AccountGeneralLedgerReport, self)._get_options_domain(options)
         # Filter accounts based on the search bar.
         if options.get('filter_accounts'):
             domain += [
@@ -328,11 +260,11 @@ class ReportAccountGeneralLedger(models.AbstractModel):
         :return:        A copy of the options.
         '''
         new_options = options.copy()
-        fiscalyear_dates = self.env.user.company_id.compute_fiscalyear_dates(fields.Date.from_string(new_options['date']['date']))
+        fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(new_options['date']['date_from']))
         new_options['date'] = {
             'mode': 'range',
             'date_from': fiscalyear_dates['date_from'].strftime(DEFAULT_SERVER_DATE_FORMAT),
-            'date_to': options['date']['date'],
+            'date_to': options['date']['date_to'],
         }
         return new_options
 
@@ -350,7 +282,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
         :return:        A copy of the options.
         '''
         new_options = options.copy()
-        fiscalyear_dates = self.env.user.company_id.compute_fiscalyear_dates(fields.Date.from_string(options['date']['date']))
+        fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(options['date']['date_from']))
         new_date_to = fiscalyear_dates['date_from'] - timedelta(days=1)
         new_options['date'] = {
             'mode': 'single',
@@ -374,8 +306,8 @@ class ReportAccountGeneralLedger(models.AbstractModel):
         :return:        A copy of the options.
         '''
         new_options = options.copy()
-        fiscalyear_dates = self.env.user.company_id.compute_fiscalyear_dates(fields.Date.from_string(options['date']['date']))
-        new_date_to = fields.Date.from_string(new_options['date']['date']) - timedelta(days=1)
+        fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(options['date']['date_from']))
+        new_date_to = fields.Date.from_string(new_options['date']['date_from']) - timedelta(days=1)
         new_options['date'] = {
             'mode': 'range',
             'date_from': fiscalyear_dates['date_from'].strftime(DEFAULT_SERVER_DATE_FORMAT),
@@ -772,7 +704,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
             'unfoldable': has_lines,
             'unfolded': has_lines and 'account_%d' % account.id in options.get('unfolded_lines') or unfold_all,
             'colspan': 4,
-            'class': 'o_account_reports_totals_below_sections' if self.env.user.company_id.totals_below_sections else '',
+            'class': 'o_account_reports_totals_below_sections' if self.env.company.totals_below_sections else '',
         }
 
     @api.model
@@ -876,7 +808,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
     @api.model
     def _get_total_line(self, options, debit, credit, balance):
         return {
-            'id': 'general_ledger_total_%s' % self.env.user.company_id.id,
+            'id': 'general_ledger_total_%s' % self.env.company.id,
             'name': _('Total'),
             'class': 'total',
             'level': 1,
@@ -927,8 +859,3 @@ class ReportAccountGeneralLedger(models.AbstractModel):
                 lines.append(tax_line)
 
         return lines
-
-
-# options {'all_entries': False, 'analytic': True, 'analytic_accounts': [], 'analytic_tags': [], 'cash_basis': None, 'comparison': None, 'date': {'mode': 'range', 'filter': 'this_month', 'string': 'Al 31/08/2021', 'date': '2021-08-31'}, 'hierarchy': None, 'journals': [{'id': 'divider', 'name': 'Servicios La Invernada SPA'}, {'id': 15, 'name': 'Banco Chile CLP', 'code': 'BNK1', 'type': 'bank', 'selected': False}, {'id': 17, 'name': 'Compra', 'code': 'CO1', 'type': 'purchase', 'selected': False}, {'id': 35, 'name': 'Depreciación / Amortización', 'code': 'DEA', 'type': 'general', 'selected': False}, {'id': 16, 'name': 'Existencias', 'code': 'STJ', 'type': 'general', 'selected': False}, {'id': 22, 'name': 'Pagos no bancarios', 'code': 'PNB1', 'type': 'cash', 'selected': False}, {'id': 19, 'name': 'Venta', 'code': 'DVTA', 'type': 'sale', 'selected': False}], 'partner': None, 'unfold_all': False, 'unfolded_lines': [], 'selected_analytic_account_names': [], 'selected_analytic_tag_names': [], 'unposted_in_period': False} 
-# list [{'all_entries': False, 'analytic': True, 'analytic_accounts': [], 'analytic_tags': [], 'cash_basis': None, 'comparison': None, 'date': {'mode': 'range', 'filter': 'this_month', 'string': 'Al 31/08/2021', 'date': '2021-08-31'}, 'hierarchy': None, 'journals': [{'id': 'divider', 'name': 'Servicios La Invernada SPA'}, {'id': 15, 'name': 'Banco Chile CLP', 'code': 'BNK1', 'type': 'bank', 'selected': False}, {'id': 17, 'name': 'Compra', 'code': 'CO1', 'type': 'purchase', 'selected': False}, {'id': 35, 'name': 'Depreciación / Amortización', 'code': 'DEA', 'type': 'general', 'selected': False}, {'id': 16, 'name': 'Existencias', 'code': 'STJ', 'type': 'general', 'selected': False}, {'id': 22, 'name': 'Pagos no bancarios', 'code': 'PNB1', 'type': 'cash', 'selected': False}, {'id': 19, 'name': 'Venta', 'code': 'DVTA', 'type': 'sale', 'selected': False}], 'partner': None, 'unfold_all': False, 'unfolded_lines': [], 'selected_analytic_account_names': [], 'selected_analytic_tag_names': [], 'unposted_in_period': False}]
-
