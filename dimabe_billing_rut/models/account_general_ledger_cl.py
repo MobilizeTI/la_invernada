@@ -42,7 +42,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
 
     @api.model
     def _get_report_name(self):
-        return _("General Ledger")
+        return _("Libro Mayor Chile")
 
     def view_all_journal_items(self, options, params):
         if params.get('id'):
@@ -65,6 +65,24 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         else:
             # Case the whole report is loaded or a line is expanded for the first time.
             return self._get_general_ledger_lines(options, line_id=line_id)
+    
+    @api.model
+    def _get_options_periods_list(self, options):
+        ''' Get periods as a list of options, one per impacted period.
+        The first element is the range of dates requested in the report, others are the comparisons.
+
+        :param options: The report options.
+        :return:        A list of options having size 1 + len(options['comparison']['periods']).
+        '''
+        periods_options_list = []
+        if options.get('date'):
+            periods_options_list.append(options)
+        if options.get('comparison') and options['comparison'].get('periods'):
+            for period in options['comparison']['periods']:
+                period_options = options.copy()
+                period_options['date'] = period
+                periods_options_list.append(period_options)
+        return periods_options_list
 
     @api.model
     def _get_general_ledger_lines(self, options, line_id=None):
