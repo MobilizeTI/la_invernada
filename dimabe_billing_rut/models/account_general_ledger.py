@@ -40,6 +40,27 @@ class ResCurrency(models.Model):
 class AccountGeneralLedgerReport(models.AbstractModel):
     _inherit = 'account.general.ledger'
 
+    def _cr_execute(self, options, query, params=None):
+        ''' Similar to self._cr.execute but allowing some custom behavior like shadowing the account_move_line table
+        to another one like account_reports_cash_basis does.
+        :param options: The report options.
+        :param query:   The query to be executed by the report.
+        :param params:  The optional params of the _cr.execute method.
+        '''
+        return self._cr.execute(query, params)
+
+    @api.model
+    def _query_get(self, options, domain=None):
+        domain = self._get_options_domain(options) + (domain or [])
+        self.env['account.move.line'].check_access_rights('read')
+
+        query = self.env['account.move.line']._where_calc(domain)
+
+        # Wrap the query with 'company_id IN (...)' to avoid bypassing company access rights.
+        self.env['account.move.line']._apply_ir_rules(query)
+
+        return query.get_sql()
+
     @api.model
     def _force_strict_range(self, options):
         ''' Duplicate options with the 'strict_range' enabled on the filter_date.
