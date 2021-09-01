@@ -33,7 +33,9 @@
                                     </td>
                                 </tr>
                                 <tr style="border: none !important; padding: 0 !important">
-                                    <td t-esc="o.company_id.activity_description.name" style="text-align: left" />
+                                    <!-- TODO -->
+                                    <!-- <td t-esc="o.company_id.activity_description.name" style="text-align: left" /> -->
+                                    <td>Proceso y comercialización de Nueces</td>
                                     <td style="text-align: right">
                                         Tipo:
                                         <span t-esc="o.journal_id.name" />
