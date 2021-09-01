@@ -8,15 +8,15 @@
                     <div class="page" style="font-size:11px">
                         <h2 t-field="o.name" />
                         <div class="row">
-                            <div class="col-xs-2">
+                            <div class="col-md-4">
                                 <strong>Compañía:</strong>
                                 <p t-field="o.company_id" />
                             </div>
-                            <div class="col-xs-2">
+                            <div class="col-md-4">
                                 <strong>Divisa:</strong>
                                 <p t-field="o.company_id.currency_id.name" />
                             </div>
-                            <div class="col-xs-2">
+                            <div class="col-md-4">
                                 <t t-if="o.date">
                                     <strong>Fecha:</strong>
                                     <span t-field="o.date" />
@@ -52,7 +52,7 @@
                                         </td>
                                         <td>
                                             <!-- <i t-if="l.view_type == 'init'" t-field="l.journal_id.code"></i> -->
-                                            <span t-field="l.journal_id.code"></span>
+                                            <span t-field="l.journal_id.name"></span>
                                         </td>
                                         <td>
                                             <!-- <i t-if="l.view_type == 'init'" t-field="l.account_id.code"></i> -->
@@ -123,6 +123,35 @@
                                     </tr>
                                 </tbody>
                             </table>
+
+                            <div class="col-xs-12">
+                                <div class="col-xs-3">
+                                    <strong>________________</strong>
+                                    <br />
+                                    <strong>Elaborado por: </strong>
+                                </div>
+                                <div class="col-xs-3">
+                                    <strong>________________</strong>
+                                    <br />
+                                    <strong>Revisado por: </strong>
+
+                                </div>
+                                <div class="col-xs-3">
+                                    <strong>________________</strong>
+                                    <br />
+                                    <strong>Aprobado por: </strong>
+                                </div>
+                                <div class="col-xs-3">
+                                    <strong>________________</strong>
+                                    <br />
+                                    <strong>Recibi Conforme: </strong>
+                                    <br />
+                                    <strong>Nombre: </strong>
+                                    <br />
+                                    <strong>C.I.: </strong>
+                                    <br />
+                                </div>
+                            </div>
                             
                             
                         </t>
@@ -132,6 +161,22 @@
         </t>
     </template>
 
+    <record id="mblz_paperformat_account_move_pdf" model="report.paperformat">
+        <field name="name">Asiento Contable</field>
+        <field name="default" eval="True" />
+        <field name="format">custom</field>
+        <field name="page_height">210</field>
+        <field name="page_width">297</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">2</field>
+        <field name="margin_bottom">2</field>
+        <field name="margin_left">2</field>
+        <field name="margin_right">2</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
     <report 
 		id="action_report_account_move" 
 		model="account.move"
@@ -139,5 +184,6 @@
 		report_type="qweb-pdf"
 		name="mblz_la_invernada.mblz_invernada_account_move_report" 
 		file="mblz_la_invernada.mblz_invernada_account_move_report"
+        paperformat="mblz_la_invernada.mblz_paperformat_account_move_pdf"
 		menu="True" />
 </odoo>

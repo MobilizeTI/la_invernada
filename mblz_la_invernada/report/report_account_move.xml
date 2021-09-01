@@ -158,6 +158,7 @@
 		file="generic_account.mblz_invernada_account_move_report"
 		paperformat="paperformat_account_move" 
 		menu="True" />
+		
 
 	<!-- <report 
 		id="action_report_account_move_grouped" 
