@@ -7,7 +7,7 @@
 
                     <div class="page" style="font-size:13px;">
 
-                        <table class="table" style="border: none !important; font-size: 12px; width: 100%; margin-top: 150px !important;">
+                        <table style="border: none !important; font-size: 12px; width: 100%; margin-top: 150px !important;">
                             <tbody>
                                 <tr>
                                     <td t-esc="o.company_id.name" style="text-align: left" />
@@ -145,15 +145,15 @@
                                     <td style="border-top: 1px solid black">
                                         <strong>PREPARADO</strong>
                                     </td>
-                                    <td></td>
+                                    <td style="color: white">-----</td>
                                     <td style="border-top: 1px solid black">
                                         <strong>REVISADO</strong>
                                     </td>
-                                    <td></td>
+                                    <td style="color: white">-----</td>
                                     <td style="border-top: 1px solid black">
                                         <strong>APROBADO</strong>
                                     </td>
-                                    <td></td>
+                                    <td style="color: white">-----</td>
                                     <td style="border-top: 1px solid black">
                                         <strong>RECIBÍ CONFORME</strong>
                                     </td>
