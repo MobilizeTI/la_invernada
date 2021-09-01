@@ -10,11 +10,11 @@
                         <div class="row">
                             <div class="col-xs-2">
                                 <strong>Compañía:</strong>
-                                <p t-field="o.Compañía_id"/>
+                                <p t-field="o.company_id"/>
                             </div>
                             <div class="col-xs-2">
                                 <strong>Divisa:</strong>
-                                <p t-field="o.Compañía_currency_id"/>
+                                <p t-field="o.company_currency_id"/>
                             </div>
                             <div class="col-xs-2">
                                 <t t-if="o.date_from">

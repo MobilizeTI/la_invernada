@@ -76,6 +76,6 @@
         <field name="target">current</field>
     </record>
 
-    <menuitem id="menu_account_standard_report" name="Informe estándar" sequence="0" parent="account.menu_finance_reports" action="action_account_standard_report" groups="account.group_account_user" />
+    <menuitem id="menu_account_standard_report" name="Informe estándar" sequence="10" parent="account.menu_finance_reports" action="action_account_standard_report" groups="account.group_account_user" />
 
 </odoo>
