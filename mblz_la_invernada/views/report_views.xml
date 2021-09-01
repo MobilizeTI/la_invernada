@@ -77,9 +77,9 @@
                                     <th class="col-xs-3">Ref</th>
                                     <th class="col-xs-3">Empresa</th>
                                     <th class="col-xs-1">Fecha</th>
-                                    <th class="col-xs-1 text-right">Débito</th>
-                                    <th class="col-xs-1 text-right">Crédito</th>
-                                    <th class="col-xs-1 text-right" groups="base.group_multi_currency">Divisa</th>
+                                    <th class="col-xs-3 text-right">Débito</th>
+                                    <th class="col-xs-3 text-right">Crédito</th>
+                                    <th class="col-xs-3 text-right" groups="base.group_multi_currency">Divisa</th>
                                     <th class="col-xs-1">Match.</th>
                                 </tr>
                             </thead>
