@@ -29,6 +29,7 @@ class AccountInvoiceXlsx(models.Model):
     to_date = fields.Date('Hasta')
 
     both = fields.Boolean("Ambas")
+    book_type  = fields.Selection([('sale', 'Ventas'), ('purchase', 'Compra'), ('employee_fee', 'Honorarios')], default='sale', string='Tipo de Libro')
 
     def generate_honorarios_book_pdf(self):
         self.ensure_one()

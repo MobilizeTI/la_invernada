@@ -71,7 +71,7 @@
         <report
             id="sale_book_pdf_report"
             string="Libro de Ventas"
-            model="account.move"
+            model="account.move.line"
             report_type="qweb-pdf"
             file="dimabe_billing_rut.report_sale_book_pdf"
             name="dimabe_billing_rut.report_sale_book_pdf"
