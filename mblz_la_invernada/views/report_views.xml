@@ -47,13 +47,9 @@
                                 </thead>
                                 <tbody style="border-bottom: 1px solid;page-break-inside: avoid">
                                     <tr t-foreach="o.line_ids" t-as="l">
-                                        <!-- <td style="white-space:nowrap">
-                                            <i t-if="l.view_type == 'init' and l.line_type == '1_init_line'" t-field="l.date"></i>
-                                            <i t-if="l.view_type == 'init' and l.line_type == '0_init'">INICIAL</i>
-                                            <strong t-if="l.view_type == 'total'">Total</strong>
-                                            <span t-if="l.view_type == 'normal' and l.line_type == '2_line'" t-field="l.date"></span>
-                                            <span t-if="l.view_type == 'normal' and l.line_type == '3_compact'">Compacta</span>
-                                        </td> -->
+                                        <td style="white-space:nowrap">
+                                            <span t-field="l.date"></span>
+                                        </td>
                                         <td>
                                             <!-- <i t-if="l.view_type == 'init'" t-field="l.journal_id.code"></i> -->
                                             <span t-field="l.journal_id.code"></span>
@@ -72,7 +68,7 @@
                                         </td>
                                         <td>
                                             <!-- <i t-if="l.view_type == 'init'" t-field="l.move_line_id.ref"></i> -->
-                                            <span t-field="l.move_line_id.ref"></span>
+                                            <span t-field="l.name"></span>
                                         </td>
                                         <td>
                                             <!-- <i t-if="l.view_type == 'init'" t-field="l.partner_id"></i> -->
@@ -105,9 +101,9 @@
                                             </div> -->
                                         </td>
                                         <td class="text-right" style="white-space:nowrap">
-                                            <div>
+                                            <!-- <div>
                                                 <span t-field="l.cumul_balance" />
-                                            </div>
+                                            </div> -->
                                             <!-- <div t-if="l.view_type == 'init'">
                                                 <i t-field="l.cumul_balance" />
                                             </div>
