@@ -9,22 +9,22 @@
                         <table class="table">
                             <tbody>
                                 <tr>
-                                    <td t-field="o.company_id.name" />
+                                    <td t-esc="o.company_id.name" />
                                 </tr>
                                 <tr>
-                                    <td t-field="o.company_id.street" />
+                                    <td t-esc="o.company_id.street" />
                                 </tr>
                                 <tr>
-                                    <td t-field="o.company_id.activity_description.name" />
+                                    <td t-esc="o.company_id.activity_description.name" />
                                 </tr>
                                 <tr>
-                                    <td t-field="o.company_id.city" />
+                                    <td t-esc="o.company_id.city" />
                                 </tr>
                                 <tr>
-                                    <td t-field="o.company_id.region_address_id.name" />
+                                    <td t-esc="o.company_id.region_address_id.name" />
                                 </tr>
                                 <tr>
-                                    <td t-field="o.company_id.invoice_rut" />
+                                    <td t-esc="o.company_id.invoice_rut" />
                                 </tr>
                             </tbody>
                         </table>
