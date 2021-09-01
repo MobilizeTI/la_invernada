@@ -13,6 +13,8 @@
                 <footer>
                     <button type="object" string="Libro de Compras (XLS)" name="generate_purchase_book"/>
                     <button type="object" string="Libro de Compras (PDF)" name="generate_purchase_book_pdf" />
+                    <!-- <button type="object" string="Libro de Compras (XLS)" name="generate_honorarios_book" /> -->
+                    <button type="object" string="Libro de Honorarios (PDF)" name="generate_honorarios_book_pdf" />
                     <button type="object" string="Libro de Ventas (XLS)" name="generate_sale_book"/>
                     <button type="object" string="Libro de Ventas (PDF)" name="generate_sale_book_pdf" />
                     

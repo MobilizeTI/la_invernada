@@ -30,6 +30,18 @@ class AccountInvoiceXlsx(models.Model):
 
     both = fields.Boolean("Ambas")
 
+    def generate_honorarios_book_pdf(self):
+        self.ensure_one()
+        [data] = self.read()
+        data['move_ids'] = self.env.context.get('active_ids', [])
+        invoices = self.env['account.invoice'].browse(data['move_ids'])
+        datas = {
+            'ids': [],
+            'model': 'account.invoice',
+            'form': data
+        }
+        return self.env.ref('dimabe_billing_rut.honorarios_book_pdf_report').report_action(invoices, data=datas)
+
     def generate_purchase_book_pdf(self):
         self.ensure_one()
         [data] = self.read()
