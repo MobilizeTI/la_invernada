@@ -5,7 +5,7 @@
             <t t-foreach="docs" t-as="o">
                 <t t-call="web.internal_layout">
 
-                    <div class="page" style="font-size:13px;">
+                    <div class="page" style="font-size:12px;">
                         <div class="table" style="margin-top: 150px !important;">
                             <table style="border: none !important; font-size: 12px; width: 100%; ">
                                 <tbody>
@@ -58,7 +58,7 @@
                                     <th class="col-xs-1">Fecha</th>
                                     <th class="col-xs-1">Diario</th>
                                     <th class="col-xs-1">Cuenta</th>
-                                    <th class="col-xs-3">Código</th>
+                                    <th class="col-xs-3">Código Cuenta</th>
                                     <th class="col-xs-1">Analítica</th>
                                     <th class="col-xs-1">Movimientos</th>
                                     <th class="col-xs-3">Ref</th>
@@ -66,7 +66,6 @@
                                     <th class="col-xs-1">Fecha</th>
                                     <th class="col-xs-1 text-right">Débito</th>
                                     <th class="col-xs-1 text-right">Crédito</th>
-                                    <!-- <th class="col-xs-1 text-right">Balance</th> -->
                                     <th class="col-xs-1 text-right" groups="base.group_multi_currency">Divisa</th>
                                     <th class="col-xs-1">Match.</th>
                                 </tr>
