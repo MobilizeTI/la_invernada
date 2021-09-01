@@ -18,14 +18,11 @@
                             </div>
                             <div class="col-xs-2">
                                 <t t-if="o.date_from">
-                                    <strong>Fecha Inicial :</strong>
-                                    <span t-field="o.date_from" />
+                                    <strong>Fecha:</strong>
+                                    <span t-field="o.date" />
                                     <br />
                                 </t>
-                                <t t-if="o.date_to">
-                                    <strong>Fecha Final :</strong>
-                                    <span t-field="o.date_to" />
-                                </t>
+                                
                             </div>
                         </div>
 
