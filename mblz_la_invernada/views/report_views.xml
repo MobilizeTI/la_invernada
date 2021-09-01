@@ -19,7 +19,7 @@
 
                         </div>
 
-                        <table style="border: none !important; font-size: 12px; width: 100%; margin-top: 150px !important">
+                        <table style="border: none !important; font-size: 13px; width: 100%; margin-top: 10px !important">
                             <tbody>
                                 <tr style="border: none !important; padding: 0 !important">
                                     <td t-esc="o.company_id.name" style="text-align: left" />
@@ -182,35 +182,6 @@
                                 
                             </tbody>
                         </table>
-
-                        <!-- <div>
-                            <div class="col-md-3">
-                                <strong>________________</strong>
-                                <br />
-                                <strong>Elaborado por: </strong>
-                            </div>
-                            <div class="col-md-3">
-                                <strong>________________</strong>
-                                <br />
-                                <strong>Revisado por: </strong>
-
-                            </div>
-                            <div class="col-md-3">
-                                <strong>________________</strong>
-                                <br />
-                                <strong>Aprobado por: </strong>
-                            </div>
-                            <div class="col-md-3">
-                                <strong>________________</strong>
-                                <br />
-                                <strong>Recibi Conforme: </strong>
-                                <br />
-                                <strong>Nombre: </strong>
-                                <br />
-                                <strong>C.I.: </strong>
-                                <br />
-                            </div>
-                        </div> -->
                         
                     </div>
                 </t>
