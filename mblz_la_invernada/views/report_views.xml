@@ -6,7 +6,7 @@
                 <t t-call="web.internal_layout">
 
                     <div class="page" style="font-size:12px;">
-                        <div class="table" style="margin-top: 250px !important;">
+                        <div class="table" style="margin-top: 20px !important;">
                             <table style="border: none !important; font-size: 12px; width: 100%; ">
                                 <tbody>
                                     <tr style="border: none !important; padding: 0 !important">
@@ -64,7 +64,7 @@
 
                         <table class="table table-condensed" style="margin-top: 50px !important">
                             <center>
-                                <span>Contabilización Glosa</span>
+                                <span style="font-size: 14px; font-weight: bold">Contabilización Glosa</span>
                             </center>
                             <thead>
                                 <tr>
@@ -144,12 +144,12 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td>Totales</td>
-                                <td>
-                                    <span t-esc="total_debito" />
+                                <td style="font-size: 14px; font-weight: bold">Totales</td>
+                                <td style="font-size: 14px; font-weight: bold">
+                                    <span t-esc="o.format_amount(total_debito)" />
                                 </td>
-                                <td>
-                                    <span t-esc="total_credito" />
+                                <td style="font-size: 14px; font-weight: bold">
+                                    <span t-esc="o.format_amount(total_credito)" />
                                 </td>
                                 <td></td>
                                 <td></td>
