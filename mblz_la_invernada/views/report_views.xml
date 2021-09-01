@@ -6,7 +6,7 @@
                 <t t-call="web.internal_layout">
 
                     <div class="page" style="font-size:13px">
-                        <table style="border: none !important; font-size: 12px; width: 100%; margin-top: 150px">
+                        <table style="border: none !important; font-size: 12px; width: 100%; margin-top: 150px;">
                             <tbody>
                                 <tr>
                                     <td t-esc="o.company_id.name" style="text-align: left" />
@@ -46,22 +46,22 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <table class="table table-condensed">
+                        <table class="table table-condensed" style="margin-top: 150px !important">
                             <thead>
                                 <tr>
                                     <th class="col-xs-1">Fecha</th>
                                     <th class="col-xs-1">Diario</th>
                                     <th class="col-xs-1">Cuenta</th>
-                                    <th class="col-xs-1">Cód. Cuenta</th>
-                                    <th class="col-xs-1">Cta. Analítica</th>
+                                    <th class="col-xs-1">Cód.</th>
+                                    <th class="col-xs-1">Analítica</th>
                                     <th class="col-xs-1">Movimientos</th>
                                     <th class="col-xs-3">Ref</th>
                                     <th class="col-xs-3">Empresa</th>
-                                    <th class="col-xs-1">Al día</th>
+                                    <th class="col-xs-1">Fecha</th>
                                     <th class="col-xs-1 text-right">Débito</th>
                                     <th class="col-xs-1 text-right">Crédito</th>
                                     <!-- <th class="col-xs-1 text-right">Balance</th> -->
-                                    <th class="col-xs-1 text-right" groups="base.group_multi_currency">Moneda ext.</th>
+                                    <th class="col-xs-1 text-right" groups="base.group_multi_currency">Divisa</th>
                                     <th class="col-xs-1">Match.</th>
                                 </tr>
                             </thead>
@@ -137,7 +137,7 @@
                             </tbody>
                         </table>
 
-                        <table style="border: none !important; font-size: 15px; width: 100%; margin-top: 50px">
+                        <table style="border: none !important; font-size: 15px; width: 100%; margin-top: 50px; text-align-center">
                             <tbody>
                                 <tr>
                                     <td style="border-top: 1px solid black">
