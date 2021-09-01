@@ -49,7 +49,7 @@
         <report
             id="purchase_book_pdf_report"
             string="Libro de Compras"
-            model="account.move"
+            model="account.move.line"
             report_type="qweb-pdf"
             file="dimabe_billing_rut.report_purchase_book_pdf"
             name="dimabe_billing_rut.report_purchase_book_pdf"
@@ -60,7 +60,7 @@
         <report
             id="honorarios_book_pdf_report"
             string="Libro de Honorarios"
-            model="account.move"
+            model="account.move.line"
             report_type="qweb-pdf"
             file="dimabe_billing_rut.report_honorarios_book_pdf"
             name="dimabe_billing_rut.report_honorarios_book_pdf"
