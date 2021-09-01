@@ -6,8 +6,30 @@
                 <t t-call="web.internal_layout">
 
                     <div class="page" style="font-size:13px">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td t-field="o.company_id.name" />
+                                </tr>
+                                <tr>
+                                    <td t-field="o.company_id.street" />
+                                </tr>
+                                <tr>
+                                    <td t-field="o.company_id.activity_description.name" />
+                                </tr>
+                                <tr>
+                                    <td t-field="o.company_id.city" />
+                                </tr>
+                                <tr>
+                                    <td t-field="o.company_id.region_address_id.name" />
+                                </tr>
+                                <tr>
+                                    <td t-field="o.company_id.invoice_rut" />
+                                </tr>
+                            </tbody>
+                        </table>
                         <h5 t-field="o.name" />
-                        <div class="col-md-12">
+                        <!-- <div class="col-md-12">
                             <div class="col-md-4">
                                 <strong>Compañía:</strong>
                                 <p t-field="o.company_id" />
@@ -24,7 +46,7 @@
                                 </t>
                             </div>
                             
-                        </div>
+                        </div> -->
                         <table class="table table-condensed">
                             <thead>
                                 <tr>
