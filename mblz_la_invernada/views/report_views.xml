@@ -7,7 +7,7 @@
 
                     <div class="page" style="font-size:14px">
                         <h5 t-field="o.name" />
-                        <div class="row">
+                        <div>
                             <div class="col-md-4">
                                 <strong>Compañía:</strong>
                                 <p t-field="o.company_id" />
@@ -31,6 +31,7 @@
                                     <th class="col-xs-1">Fecha</th>
                                     <th class="col-xs-1">Diario</th>
                                     <th class="col-xs-1">Cuenta</th>
+                                    <th class="col-xs-1">Cód. Cuenta</th>
                                     <th class="col-xs-1">Cta. Analítica</th>
                                     <th class="col-xs-1">Movimientos</th>
                                     <th class="col-xs-3">Ref</th>
@@ -51,6 +52,10 @@
                                     <td>
                                         <!-- <i t-if="l.view_type == 'init'" t-field="l.journal_id.code"></i> -->
                                         <span t-field="l.journal_id.name"></span>
+                                    </td>
+                                    <td>
+                                        <!-- <i t-if="l.view_type == 'init'" t-field="l.account_id.code"></i> -->
+                                        <span t-field="l.account_id.name"></span>
                                     </td>
                                     <td>
                                         <!-- <i t-if="l.view_type == 'init'" t-field="l.account_id.code"></i> -->
@@ -122,7 +127,7 @@
                             </tbody>
                         </table>
 
-                        <div class="row">
+                        <div>
                             <div class="col-md-3">
                                 <strong>________________</strong>
                                 <br />
