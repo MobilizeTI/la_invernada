@@ -6,47 +6,51 @@
                 <t t-call="web.internal_layout">
 
                     <div class="page" style="font-size:13px;">
+                        <div style="margin-top: 150px !important;">
+                            <table style="border: none !important; font-size: 12px; width: 100%; ">
+                                <tbody>
+                                    <tr>
+                                        <td t-esc="o.company_id.name" style="text-align: left" />
+                                        <td style="text-align: right" />
+                                    </tr>
+                                    <tr>
+                                        <td t-esc="o.company_id.street" style="text-align: left" />
+                                        <td style="text-align: right">
+                                            Nº:
+                                            <span t-esc="o.name" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td t-esc="o.company_id.activity_description.name" style="text-align: left" />
+                                        <td style="text-align: right">
+                                            Tipo:
+                                            <span t-esc="o.journal_id.name" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td t-esc="o.company_id.city" style="text-align: left" />
+                                        <td style="text-align: right">
+                                            Fecha:
+                                            <span t-field="o.date" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td t-esc="o.company_id.region_address_id.name" style="text-align: left" />
+                                        <td style="text-align: right">
+                                            Estado:
+                                            <span t-field="o.state" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td t-esc="o.company_id.invoice_rut" style="text-align: left" />
+                                        <td style="text-align: right" />
+                                    </tr>
+                                </tbody>
+                            </table>
 
-                        <table style="border: none !important; font-size: 12px; width: 100%; margin-top: 150px !important;">
-                            <tbody>
-                                <tr>
-                                    <td t-esc="o.company_id.name" style="text-align: left" />
-                                    <td style="text-align: right" />
-                                </tr>
-                                <tr>
-                                    <td t-esc="o.company_id.street" style="text-align: left" />
-                                    <td style="text-align: right">
-                                        Nº:
-                                        <span t-esc="o.name" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td t-esc="o.company_id.activity_description.name" style="text-align: left" />
-                                    <td style="text-align: right">
-                                        Tipo:
-                                        <span t-esc="o.journal_id.name" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td t-esc="o.company_id.city" style="text-align: left" />
-                                    <td style="text-align: right">
-                                        Fecha:
-                                        <span t-field="o.date" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td t-esc="o.company_id.region_address_id.name" style="text-align: left" />
-                                    <td style="text-align: right">
-                                        Estado:
-                                        <span t-field="o.state" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td t-esc="o.company_id.invoice_rut" style="text-align: left" />
-                                    <td style="text-align: right" />
-                                </tr>
-                            </tbody>
-                        </table>
+                        </div>
+
+                        
 
                         <table class="table table-condensed" style="margin-top: 150px !important">
                             <thead>
@@ -54,7 +58,7 @@
                                     <th class="col-xs-1">Fecha</th>
                                     <th class="col-xs-1">Diario</th>
                                     <th class="col-xs-1">Cuenta</th>
-                                    <th class="col-xs-2">Código</th>
+                                    <th class="col-xs-3">Código</th>
                                     <th class="col-xs-1">Analítica</th>
                                     <th class="col-xs-1">Movimientos</th>
                                     <th class="col-xs-3">Ref</th>
@@ -68,63 +72,47 @@
                                 </tr>
                             </thead>
                             <tbody style="border-bottom: 1px solid;page-break-inside: avoid">
+                                <t t-set="total_debito" t-value="0" />
+                                <t t-set="total_credito" t-value="0" />
                                 <tr t-foreach="o.line_ids" t-as="l">
+                                    <t t-set="total_debito" t-value="total_debito + l.debit" />
+                                    <t t-set="total_credito" t-value="total_credito + l.credit" />
                                     <td style="white-space:nowrap">
                                         <span t-field="l.date"></span>
                                     </td>
                                     <td>
-                                        <!-- <i t-if="l.view_type == 'init'" t-field="l.journal_id.code"></i> -->
                                         <span t-field="l.journal_id.name"></span>
                                     </td>
                                     <td>
-                                        <!-- <i t-if="l.view_type == 'init'" t-field="l.account_id.code"></i> -->
                                         <span t-field="l.account_id.name"></span>
                                     </td>
                                     <td>
-                                        <!-- <i t-if="l.view_type == 'init'" t-field="l.account_id.code"></i> -->
                                         <span t-field="l.account_id.code"></span>
                                     </td>
                                     <td>
-                                        <!-- <i t-if="l.view_type == 'init'" t-field="l.analytic_account_id"></i> -->
                                         <span t-field="l.analytic_account_id"></span>
                                     </td>
                                     <td>
-                                        <!-- <i t-if="l.view_type == 'init'" t-field="l.move_id"></i> -->
                                         <span t-field="l.move_id"></span>
                                     </td>
                                     <td>
-                                        <!-- <i t-if="l.view_type == 'init'" t-field="l.move_line_id.ref"></i> -->
                                         <span t-field="l.name"></span>
                                     </td>
                                     <td>
-                                        <!-- <i t-if="l.view_type == 'init'" t-field="l.partner_id"></i> -->
                                         <span t-field="l.partner_id"></span>
                                     </td>
                                     <td>
-                                        <!-- <i t-if="l.view_type == 'init'" t-field="l.date_maturity"></i> -->
                                         <span t-field="l.date_maturity"></span>
                                     </td>
                                     <td class="text-right">
                                         <div>
                                             <span t-field="l.debit" />
                                         </div>
-                                        <!-- <div t-if="l.debit and l.view_type == 'init'">
-                                                <i t-field="l.debit" />
-                                            </div>
-                                            <div t-if="l.debit and l.view_type == 'total'">
-                                                <strong t-field="l.debit" />
-                                            </div> -->
                                     </td>
                                     <td class="text-right">
                                         <div>
                                             <span t-field="l.credit" />
                                         </div>
-                                        <!-- <div t-if="l.credit and l.view_type == 'init'">
-                                                <i t-field="l.credit" />
-                                            </div>
-                                            <div t-if="l.credit and l.view_type == 'total'">
-                                                <strong t-field="l.credit" />
-                                            </div> -->
                                     </td>
                                     <td class="text-right" style="white-space:nowrap" groups="base.group_multi_currency">
                                         <div t-if="l.amount_currency">
@@ -136,10 +124,31 @@
                                         <span t-if="not l.reconciled and l.full_reconcile_id">*</span>
                                     </td>
                                 </tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>Totales</td>
+                                <td>
+                                    <span t-esc="total_debito" />
+                                </td>
+                                <td>
+                                    <span t-esc="total_credito" />
+                                </td>
+                                <td></td>
+                                <td></td>
+
+                                <tr>
+
+                                </tr>
                             </tbody>
                         </table>
 
-                        <table style="border: none !important; font-size: 15px; width: 100%; margin-top: 50px !important; text-align: center">
+                        <table style="border: none !important; font-size: 15px; width: 100%; margin-top: 150px !important; text-align: center">
                             <tbody>
                                 <tr>
                                     <td style="border-top: 1px solid black">
