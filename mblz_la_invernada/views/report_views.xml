@@ -79,7 +79,7 @@
                                     <th class="col-xs-1">Al día</th>
                                     <th class="col-xs-1 text-right">Débito</th>
                                     <th class="col-xs-1 text-right">Crédito</th>
-                                    <th class="col-xs-1 text-right">Balance</th>
+                                    <!-- <th class="col-xs-1 text-right">Balance</th> -->
                                     <th class="col-xs-1 text-right" groups="base.group_multi_currency">Moneda ext.</th>
                                     <th class="col-xs-1">Match.</th>
                                 </tr>
@@ -141,17 +141,6 @@
                                             </div>
                                             <div t-if="l.credit and l.view_type == 'total'">
                                                 <strong t-field="l.credit" />
-                                            </div> -->
-                                    </td>
-                                    <td class="text-right" style="white-space:nowrap">
-                                        <!-- <div>
-                                                <span t-field="l.cumul_balance" />
-                                            </div> -->
-                                        <!-- <div t-if="l.view_type == 'init'">
-                                                <i t-field="l.cumul_balance" />
-                                            </div>
-                                            <div t-if="l.view_type == 'total'">
-                                                <strong t-field="l.cumul_balance" />
                                             </div> -->
                                     </td>
                                     <td class="text-right" style="white-space:nowrap" groups="base.group_multi_currency">
