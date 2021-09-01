@@ -39,17 +39,17 @@ class StandardReportXlsx(models.AbstractModel):
 
         def _header_sheet(sheet):
             sheet.write(0, 4, report.name, report_format)
-            sheet.write(2, 0, _('Company:'), bold)
+            sheet.write(2, 0, _('Compañía:'), bold)
             sheet.write(3, 0, wizard.company_id.name,)
-            sheet.write(4, 0, _('Print on %s') % report.print_time)
+            sheet.write(4, 0, _('Impreso en %s') % report.print_time)
 
-            sheet.write(2, 2, _('Start Date : %s ') % wizard.date_from if wizard.date_from else '')
-            sheet.write(3, 2, _('End Date : %s ') % wizard.date_to if wizard.date_to else '')
+            sheet.write(2, 2, _('Fecha Inicio : %s ') % wizard.date_from if wizard.date_from else '')
+            sheet.write(3, 2, _('Fecha Fin : %s ') % wizard.date_to if wizard.date_to else '')
 
-            sheet.write(2, 4, _('Target Moves:'), bold)
-            sheet.write(3, 4, _('All Entries') if wizard.target_move == 'all' else _('All Posted Entries'))
+            sheet.write(2, 4, _('Movimientos de destino:'), bold)
+            sheet.write(3, 4, _('Todas las entradas') if wizard.target_move == 'all' else _('Todas las entradas publicadas'))
 
-            sheet.write(2, 6, _('Only UnReconciled Entries') if wizard.reconciled is False else _('With Reconciled Entries'), bold)
+            sheet.write(2, 6, _('Sólo las entradas no conciliadas') if wizard.reconciled is False else _('Con entradas conciliadas'), bold)
 
         if wizard.ledger_type == 'aged':
 
@@ -58,13 +58,13 @@ class StandardReportXlsx(models.AbstractModel):
                 _header_sheet(sheet)
 
                 head = [
-                    {'name': 'Code',
+                    {'name': 'Código',
                      'larg': 10,
                      'col': {}},
-                    {'name': 'Name',
+                    {'name': 'Nombre',
                      'larg': 30,
                      'col': {}},
-                    {'name': _('Not Due'),
+                    {'name': _('Sin Deuda'),
                      'larg': 15,
                      'col': {'total_function': 'sum', 'format': currency_format}},
                     {'name': _('0-30'),
@@ -79,7 +79,7 @@ class StandardReportXlsx(models.AbstractModel):
                     {'name': _('90-120'),
                      'larg': 15,
                      'col': {'total_function': 'sum', 'format': currency_format}},
-                    {'name': _('Older'),
+                    {'name': _('Más antigüa'),
                      'larg': 15,
                      'col': {'total_function': 'sum', 'format': currency_format}},
                     {'name': _('Total'),
@@ -125,31 +125,31 @@ class StandardReportXlsx(models.AbstractModel):
 
             else:  # aged not summary
                 head = [
-                    {'name': _('Date'),
+                    {'name': _('Fecha'),
                      'larg': 10,
                      'col': {}},
-                    {'name': _('JRNL'),
+                    {'name': _('Diario'),
                      'larg': 10,
                      'col': {}},
-                    {'name': _('Account'),
+                    {'name': _('Cuenta'),
                      'larg': 10,
                      'col': {}},
-                    {'name': _('Account Name'),
+                    {'name': _('Nombre Cuenta'),
                      'larg': 15,
                      'col': {}},
-                    {'name': _('Journal entries'),
+                    {'name': _('Entradas'),
                      'larg': 20,
                      'col': {}},
                     {'name': _('Ref'),
                      'larg': 40,
                      'col': {}},
-                    {'name': _('Partner'),
+                    {'name': _('Empresa'),
                      'larg': 20,
                      'col': {}},
-                    {'name': _('Due Date'),
+                    {'name': _('Fecha Venc.'),
                      'larg': 10,
                      'col': {}},
-                    {'name': _('Not Due'),
+                    {'name': _('Sin Deuda'),
                      'larg': 15,
                      'col': {'total_function': 'sum', 'format': currency_format}},
                     {'name': _('0-30'),
@@ -164,7 +164,7 @@ class StandardReportXlsx(models.AbstractModel):
                     {'name': _('90-120'),
                      'larg': 15,
                      'col': {'total_function': 'sum', 'format': currency_format}},
-                    {'name': _('Older'),
+                    {'name': _('Más Antigüa'),
                      'larg': 15,
                      'col': {'total_function': 'sum', 'format': currency_format}},
                     {'name': _('Total'),
@@ -287,16 +287,16 @@ class StandardReportXlsx(models.AbstractModel):
                 if all_lines:
                     # Head
                     head = [
-                        {'name': 'Code',
+                        {'name': 'Código',
                          'larg': 10,
                          'col': {}},
-                        {'name': 'Name',
+                        {'name': 'Nombre',
                          'larg': 30,
                          'col': {}},
-                        {'name': 'Debit',
+                        {'name': 'Débito',
                          'larg': 15,
                          'col': {'total_function': 'sum', 'format': currency_format}},
-                        {'name': 'Credit',
+                        {'name': 'Crédito',
                          'larg': 15,
                          'col': {'total_function': 'sum', 'format': currency_format}},
                         {'name': 'Balance',
@@ -335,46 +335,46 @@ class StandardReportXlsx(models.AbstractModel):
             else:  # not summary
 
                 head = [
-                    {'name': _('Date'),
+                    {'name': _('Fecha'),
                      'larg': 10,
                      'col': {}},
-                    {'name': _('JRNL'),
+                    {'name': _('Diario'),
                      'larg': 10,
                      'col': {}},
-                    {'name': _('Account'),
+                    {'name': _('Cuenta'),
                      'larg': 10,
                      'col': {}},
-                    {'name': _('Account Name'),
+                    {'name': _('Nombre Cuenta'),
                      'larg': 15,
                      'col': {}},
-                    {'name': _('Analytic'),
+                    {'name': _('Cta. Analítica'),
                      'larg': 20,
                      'col': {}},
-                    {'name': _('Journal entries'),
+                    {'name': _('Entrada'),
                      'larg': 20,
                      'col': {}},
                     {'name': _('Ref'),
                      'larg': 40,
                      'col': {}},
-                    {'name': _('Name'),
+                    {'name': _('Nombre'),
                      'larg': 40,
                      'col': {}},
-                    {'name': _('Partner'),
+                    {'name': _('Empresa'),
                      'larg': 20,
                      'col': {}},
-                    {'name': _('Due Date'),
+                    {'name': _('Vencimiento'),
                      'larg': 10,
                      'col': {}},
-                    {'name': _('Debit'),
+                    {'name': _('Débito'),
                      'larg': 15,
                      'col': {'total_function': 'sum', 'format': currency_format}},
-                    {'name': _('Credit'),
+                    {'name': _('Crédito'),
                      'larg': 15,
                      'col': {'total_function': 'sum', 'format': currency_format}},
                     {'name': _('Balance'),
                      'larg': 15,
                      'col': {'format': currency_format}},
-                    {'name': _('Amount Currency'),
+                    {'name': _('Monto Moneda Ext.'),
                         'larg': 15,
                         'col': {}},
                     {'name': _('Match.'),

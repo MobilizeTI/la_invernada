@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <record id="account_report_standard_view" model="ir.ui.view">
-        <field name="name">Standard Ledger</field>
+        <field name="name">Libro mayor estándar</field>
         <field name="model">account.report.standard.ledger</field>
         <field name="type">form</field>
         <field name="arch" type="xml">
-            <form string="Report Options">
+            <form string="Opciones">
                 <!-- class="oe_form_configuration"> -->
                 <header>
-                    <button name="action_view_lines" string="View Lines" type="object"/>
-                    <button name="print_pdf_report" string="Print PDF" type="object" default_focus="1" class="oe_highlight"/>
-                    <button name="print_excel_report" string="Excel File" type="object"/>
+                    <button name="action_view_lines" string="Ver Líneas" type="object"/>
+                    <button name="print_pdf_report" string="PDF" type="object" default_focus="1" class="oe_highlight"/>
+                    <button name="print_excel_report" string="Excel" type="object"/>
                 </header>
                 <group>
                     <group>
                         <label for="template_id"/>
                         <div>
                             <field name="template_id" class="oe_inline" domain="[('company_id','=',company_id)]"/>
-                            <button name="action_save_template" class="oe_inline" string="SAVE" type="object" attrs="{'invisible':[('template_id','=',False)]}"/>
-                            <button name="action_open_templates" class="oe_inline" string="OPEN TEMPLATES" type="object"/>
+                            <button name="action_save_template" class="oe_inline" string="Guardar" type="object" attrs="{'invisible':[('template_id','=',False)]}"/>
+                            <button name="action_open_templates" class="oe_inline" string="Abrir Plantilla" type="object"/>
                         </div>
                     </group>
                 </group>
@@ -67,7 +67,7 @@
     </record>
 
     <record id="action_account_standard_report" model="ir.actions.act_window">
-        <field name="name">Standard Report</field>
+        <field name="name">Informe estándar</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">account.report.standard.ledger</field>
         <field name="view_type">form</field>
@@ -76,6 +76,6 @@
         <field name="target">current</field>
     </record>
 
-    <menuitem id="menu_account_standard_report" name="Standard Report" sequence="0" parent="account.menu_finance_reports" action="action_account_standard_report" groups="account.group_account_user"/>
+    <menuitem id="menu_account_standard_report" name="Informe estándar" sequence="0" parent="account.menu_finance_reports" action="action_account_standard_report" groups="account.group_account_user" />
 
 </odoo>

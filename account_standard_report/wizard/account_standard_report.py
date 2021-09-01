@@ -8,32 +8,32 @@ from odoo import api, models, fields, _
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT
 from odoo.exceptions import AccessError, UserError
 
-D_LEDGER = {'general': {'name': _('General Ledger'),
+D_LEDGER = {'general': {'name': _('Libro Mayor'),
                         'group_by': 'account_id',
                         'model': 'account.account',
                         'short': 'code',
                         },
-            'partner': {'name': _('Partner Ledger'),
+            'partner': {'name': _('Clientes'),
                         'group_by': 'partner_id',
                         'model': 'res.partner',
                         'short': 'name',
                         },
-            'journal': {'name': _('Journal Ledger'),
+            'journal': {'name': _('Diarios'),
                         'group_by': 'journal_id',
                         'model': 'account.journal',
                         'short': 'code',
                         },
-            'open': {'name': _('Open Ledger'),
+            'open': {'name': _('Libro mayor abierto'),
                      'group_by': 'account_id',
                      'model': 'account.account',
                      'short': 'code',
                      },
-            'aged': {'name': _('Aged Balance'),
+            'aged': {'name': _('Saldos'),
                      'group_by': 'partner_id',
                      'model': 'res.partner',
                      'short': 'name',
                      },
-            'analytic': {'name': _('Analytic Ledger'),
+            'analytic': {'name': _('Libro mayor analítico'),
                          'group_by': 'analytic_account_id',
                          'model': 'account.analytic.account',
                          'short': 'name',
@@ -49,16 +49,16 @@ FIELDS_TEMPLATE = ['name', 'ledger_type', 'summary', 'amount_currency', 'reconci
 
 class AccountStandardLedgerPeriode(models.TransientModel):
     _name = 'account.report.standard.ledger.periode'
-    _description = 'Account Standard Ledger Periode'
+    _description = 'Período del libro mayor estándar de la cuenta'
 
-    name = fields.Char('Name')
-    date_from = fields.Date('Date from')
-    date_to = fields.Date('Date to')
+    name = fields.Char('Nombre')
+    date_from = fields.Date('Desde')
+    date_to = fields.Date('Hasta')
 
 
 class AccountStandardLedgerReport(models.TransientModel):
     _name = 'account.report.standard.ledger.report'
-    _description = 'Account Standard Ledger Report'
+    _description = 'Informe del libro mayor estándar de la cuenta'
 
     name = fields.Char()
     report_object_ids = fields.One2many('account.report.standard.ledger.report.object', 'report_id')
@@ -67,8 +67,8 @@ class AccountStandardLedgerReport(models.TransientModel):
                                       relation='table_standard_report_line_total')
     line_super_total_id = fields.Many2one('account.report.standard.ledger.line')
     print_time = fields.Char()
-    date_from = fields.Date(string='Start Date', help='Use to compute initial balance.')
-    date_to = fields.Date(string='End Date', help='Use to compute the entrie matched with futur.')
+    date_from = fields.Date(string='Fecha Inicial', help='Úselo para calcular el saldo inicial.')
+    date_to = fields.Date(string='End Date', help='Úselo para calcular el total emparejado con el futuro.')
 
 
 class AccountStandardLedgerLines(models.TransientModel):
@@ -78,35 +78,35 @@ class AccountStandardLedgerLines(models.TransientModel):
     _description = 'Account Standard Ledger Line'
 
     report_id = fields.Many2one('account.report.standard.ledger.report')
-    account_id = fields.Many2one('account.account', 'Account')
-    analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account')
-    line_type = fields.Selection([('0_init', 'Initial'), ('1_init_line', 'Init Line'),
-                                  ('2_line', 'Line'), ('3_compact', 'Compacted'), ('4_total', 'Total'),
+    account_id = fields.Many2one('account.account', 'Cuenta')
+    analytic_account_id = fields.Many2one('account.analytic.account', 'Cuenta Analítica')
+    line_type = fields.Selection([('0_init', 'Inicial'), ('1_init_line', 'Línea Inicial'),
+                                  ('2_line', 'Línea'), ('3_compact', 'Compactada'), ('4_total', 'Total'),
                                   ('5_super_total', 'Super Total')], string='Type')
-    view_type = fields.Selection([('init', 'Init'), ('normal', 'Normal'), ('total', 'Total')])
-    journal_id = fields.Many2one('account.journal', 'Journal')
-    partner_id = fields.Many2one('res.partner', 'Partner')
+    view_type = fields.Selection([('init', 'Inicial'), ('normal', 'Normal'), ('total', 'Total')])
+    journal_id = fields.Many2one('account.journal', 'Diario')
+    partner_id = fields.Many2one('res.partner', 'Empresa')
     group_by_key = fields.Char()
-    move_id = fields.Many2one('account.move', 'Entrie')
+    move_id = fields.Many2one('account.move', 'Entrada')
     move_line_id = fields.Many2one('account.move.line')
     date = fields.Date()
-    date_maturity = fields.Date('Due Date')
+    date_maturity = fields.Date('Vencimiento')
     debit = fields.Monetary(default=0.0, currency_field='company_currency_id')
     credit = fields.Monetary(default=0.0, currency_field='company_currency_id')
     balance = fields.Monetary(default=0.0, currency_field='company_currency_id')
-    cumul_balance = fields.Monetary(default=0.0, currency_field='company_currency_id', string='Cumul Balance')
+    cumul_balance = fields.Monetary(default=0.0, currency_field='company_currency_id', string='Balance Acumulativo')
     full_reconcile_id = fields.Many2one('account.full.reconcile', 'Match.')
-    reconciled = fields.Boolean('Reconciled')
+    reconciled = fields.Boolean('Conciliado')
     report_object_id = fields.Many2one('account.report.standard.ledger.report.object')
 
-    current = fields.Monetary(default=0.0, currency_field='company_currency_id', string='Not due')
-    age_30_days = fields.Monetary(default=0.0, currency_field='company_currency_id', string='30 days')
-    age_60_days = fields.Monetary(default=0.0, currency_field='company_currency_id', string='60 days')
-    age_90_days = fields.Monetary(default=0.0, currency_field='company_currency_id', string='90 days')
-    age_120_days = fields.Monetary(default=0.0, currency_field='company_currency_id', string='120 days')
-    older = fields.Float(default=0.0, digits=dp.get_precision('Account'), string='Older')
+    current = fields.Monetary(default=0.0, currency_field='company_currency_id', string='Al día')
+    age_30_days = fields.Monetary(default=0.0, currency_field='company_currency_id', string='30 días')
+    age_60_days = fields.Monetary(default=0.0, currency_field='company_currency_id', string='60 días')
+    age_90_days = fields.Monetary(default=0.0, currency_field='company_currency_id', string='90 días')
+    age_120_days = fields.Monetary(default=0.0, currency_field='company_currency_id', string='120 días')
+    older = fields.Float(default=0.0, digits=dp.get_precision('Account'), string='Antigüas')
 
-    amount_currency = fields.Monetary(default=0.0, currency_field='currency_id', string='Amount Currency')
+    amount_currency = fields.Monetary(default=0.0, currency_field='currency_id', string='Monto Divisa')
     currency_id = fields.Many2one('res.currency')
 
     company_currency_id = fields.Many2one('res.currency')
@@ -129,10 +129,10 @@ class AccountStandardLedgerReportObject(models.TransientModel):
     object_id = fields.Integer()
     report_id = fields.Many2one('account.report.standard.ledger.report')
     line_ids = fields.One2many('account.report.standard.ledger.line', 'report_object_id')
-    account_id = fields.Many2one('account.account', 'Account')
-    journal_id = fields.Many2one('account.journal', 'Journal')
-    partner_id = fields.Many2one('res.partner', 'Partner')
-    analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account')
+    account_id = fields.Many2one('account.account', 'Cuenta')
+    journal_id = fields.Many2one('account.journal', 'Diario')
+    partner_id = fields.Many2one('res.partner', 'Empresa')
+    analytic_account_id = fields.Many2one('account.analytic.account', 'Cuenta Analítica')
 
 
 class AccountStandardLedger(models.TransientModel):
@@ -167,74 +167,74 @@ class AccountStandardLedger(models.TransientModel):
                 periode_obj.create(vals)
         return False
 
-    name = fields.Char(default='Standard Report')
+    name = fields.Char(default='Reporte Estándar')
     ledger_type = fields.Selection(
-        [('general', 'General Ledger'),
-         ('partner', 'Partner Ledger'),
-         ('journal', 'Journal Ledger'),
-         ('open', 'Open Ledger'),
-         ('aged', 'Aged Balance'),
-         ('analytic', 'Analytic Ledger')],
+        [('general', 'Libro Mayor'),
+         ('partner', 'Clientes'),
+         ('journal', 'Diarios'),
+         ('open', 'Balance Apertura'),
+         ('aged', 'Saldos'),
+         ('analytic', 'Analítica')],
         string='Type', default='general', required=True,
-        help=' * General Ledger : Journal entries group by account\n'
-        ' * Partner Leger : Journal entries group by partner, with only payable/recevable accounts\n'
-        ' * Journal Ledger : Journal entries group by journal, without initial balance\n'
-        ' * Open Ledger : Openning journal at Start date\n')
-    summary = fields.Boolean('Trial Balance', default=False,
-                             help=' * Check : generate a trial balance.\n'
-                             ' * Uncheck : detail report.\n')
-    amount_currency = fields.Boolean('With Currency', help='It adds the currency column on report if the '
-                                     'currency differs from the company currency.')
+        help=' * Libro Mayor : Asientos de diario agrupados por cuenta\n'
+        ' * Clientes : Asientos de diario agrupados por empresa, sólo con cuentas por pagar / por cobrar\n'
+        ' * Diarios : Asientos de diario agrupados por diario, sin saldo inicial\n'
+        ' * Balance Apertura : Diario de apertura en la fecha de inicio\n')
+    summary = fields.Boolean('Balance General', default=False,
+                             help=' * Check : generar un balance general.\n'
+                             ' * Uncheck : reporte detallado.\n')
+    amount_currency = fields.Boolean('Con Divisa', help='Agrega la columna de moneda en el informe si el '
+                                     'la moneda difiere de la moneda de la empresa.')
     reconciled = fields.Boolean(
-        'With Reconciled Entries', default=True,
-        help='Only for entrie with a payable/receivable account.\n'
-        ' * Check this box to see un-reconcillied and reconciled entries with payable.\n'
-        ' * Uncheck to see only un-reconcillied entries. Can be use only with parnter ledger.\n')
+        'Con entradas conciliadas', default=True,
+        help='Sólo para asientos con cuentas por pagar / por cobrar.\n'
+        ' * Marque esta casilla para ver las entradas conciliadas y no conciliadas con pagos.\n'
+        ' * Desmarque para ver solo las entradas no conciliadas. Solo se puede usar con el libro mayor de socios.\n')
     partner_select_ids = fields.Many2many(
-        comodel_name='res.partner', string='Partners',
+        comodel_name='res.partner', string='Empresas',
         domain=['|', ('is_company', '=', True), ('parent_id', '=', False)],
-        help='If empty, get all partners')
-    account_methode = fields.Selection([('include', 'Include'), ('exclude', 'Exclude')], string="Methode")
-    account_in_ex_clude_ids = fields.Many2many(comodel_name='account.account', string='Accounts',
-                                               help='If empty, get all accounts')
-    analytic_account_select_ids = fields.Many2many(comodel_name='account.analytic.account', string='Analytic Accounts')
+        help='Si está vacío, obtiene todas las empresas')
+    account_methode = fields.Selection([('include', 'Incluído'), ('exclude', 'Excluído')], string="Método")
+    account_in_ex_clude_ids = fields.Many2many(comodel_name='account.account', string='Cuentas',
+                                               help='Si está vacío, obtiene todas lsa cuentas')
+    analytic_account_select_ids = fields.Many2many(comodel_name='account.analytic.account', string='Cuentas Analíticas')
     init_balance_history = fields.Boolean(
-        'Initial balance with history.', default=True,
-        help=' * Check this box if you need to report all the debit and the credit sum before the Start Date.\n'
-        ' * Uncheck this box to report only the balance before the Start Date\n')
-    company_id = fields.Many2one('res.company', string='Company',
+        'Saldo inicial con historia.', default=True,
+        help=' * Marque esta casilla si necesita informar todo el débito y la suma del crédito antes de la fecha de inicio.\n'
+        ' * Desmarque esta casilla para informar solo el saldo antes de la fecha de inicio\n')
+    company_id = fields.Many2one('res.company', string='Compañía',
                                  default=lambda self: self.env.user.company_id)
     company_currency_id = fields.Many2one('res.currency', related='company_id.currency_id',
-                                          string="Company Currency", readonly=True,
-                                          help='Utility field to express amount currency', store=True)
-    journal_ids = fields.Many2many('account.journal', string='Journals', required=True,
+                                          string="Moneda de la Compañía", readonly=True,
+                                          help='Campo de utilidad para expresar el monto de la moneda', store=True)
+    journal_ids = fields.Many2many('account.journal', string='Diarios', required=True,
                                    default=lambda self: self.env['account.journal'].search(
                                        [('company_id', '=', self.env.user.company_id.id)]),
-                                   help='Select journal, for the Open Ledger you need to set all journals.')
-    date_from = fields.Date(string='Start Date', help='Use to compute initial balance.')
-    date_to = fields.Date(string='End Date', help='Use to compute the entrie matched with futur.')
-    target_move = fields.Selection([('posted', 'All Posted Entries'),
-                                    ('all', 'All Entries'),
-                                    ], string='Target Moves', required=True, default='posted')
-    periode_date = fields.Many2one('account.report.standard.ledger.periode', 'Periode',
-                                   default=_get_periode_date, help="Auto complete Start and End date.")
-    month_selec = fields.Selection([(1, '01 Junary'), (2, '02 Febuary'), (3, '03 March'), (4, '04 April'),
-                                    (5, '05 May'), (6, '06 June'),
-                                    (7, '07 Jully'), (8, '08 August'), (9, '09 September'),
-                                    (10, '10 October'), (11, '11 November'), (12, '12 December')],
-                                   string='Month')
-    result_selection = fields.Selection([('customer', 'Customers'),
-                                         ('supplier', 'Suppliers'),
-                                         ('customer_supplier', 'Customers and Suppliers')
-                                         ], string="Partners Selection", required=True, default='supplier')
-    report_name = fields.Char('Report Name')
-    compact_account = fields.Boolean('Compacte account.', default=False)
+                                   help='Seleccione diario, para el libro mayor abierto debe configurar todos los diarios.')
+    date_from = fields.Date(string='Fecha Inicial', help='Úselo para calcular el saldo inicial.')
+    date_to = fields.Date(string='Fecha Final', help='Úselo para calcular el total emparejado con el futuro.')
+    target_move = fields.Selection([('posted', 'Todas las entradas publicadas'),
+                                    ('all', 'Todas las entradas'),
+                                    ], string='Movimientos', required=True, default='posted')
+    periode_date = fields.Many2one('account.report.standard.ledger.periode', 'Período',
+                                   default=_get_periode_date, help="Autocompleta Fecha Inicial y Final.")
+    month_selec = fields.Selection([(1, '01 Enero'), (2, '02 Febrero'), (3, '03 Marzo'), (4, '04 Abril'),
+                                    (5, '05 Mayo'), (6, '06 Junio'),
+                                    (7, '07 Julio'), (8, '08 Agosto'), (9, '09 Septiembre'),
+                                    (10, '10 Octubre'), (11, '11 Noviembre'), (12, '12 Diciembre')],
+                                   string='Mes')
+    result_selection = fields.Selection([('customer', 'Clientes'),
+                                         ('supplier', 'Proveedores'),
+                                         ('customer_supplier', 'Clientes y Proveedores')
+                                         ], string="Seleccion Empresa", required=True, default='supplier')
+    report_name = fields.Char('Nombre del Reporte')
+    compact_account = fields.Boolean('Cuenta compactada.', default=False)
     report_id = fields.Many2one('account.report.standard.ledger.report')
     account_ids = fields.Many2many('account.account', relation='table_standard_report_accounts')
-    partner_ids = fields.Many2many('res.partner', string="Partners in report", relation='table_standard_report_partner')
-    report_type = fields.Selection([('account', 'Account'), ('partner', 'Partner'), ('journal', 'Journal'),
-                                    ('analytic', 'Analytic')], string='Report Type')
-    template_id = fields.Many2one('account.report.template', 'Template')
+    partner_ids = fields.Many2many('res.partner', string="Empresas en el reporte", relation='table_standard_report_partner')
+    report_type = fields.Selection([('account', 'Cuenta'), ('partner', 'Empresa'), ('journal', 'Diario'),
+                                    ('analytic', 'Analítico')], string='Tipo de Reporte')
+    template_id = fields.Many2one('account.report.template', 'Plantilla')
 
     @api.onchange('account_in_ex_clude_ids')
     def _onchange_account_in_ex_clude_ids(self):

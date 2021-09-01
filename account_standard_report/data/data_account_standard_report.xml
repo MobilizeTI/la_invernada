@@ -3,7 +3,7 @@
     <report
         id="action_standard_report"
         model="account.report.standard.ledger"
-        string="Standard Report"
+        string="Reportes Contables"
         report_type="qweb-pdf"
         name="account_standard_report.report_account_standard_report"
         file="account_standard_report.report_account_standard_report"
@@ -14,7 +14,7 @@
     <report
         id="action_standard_excel"
         model="account.report.standard.ledger"
-        string="Excel Report"
+        string="Reporte Excel"
         report_type="xlsx"
         name="account_standard_report.report_account_standard_excel"
         file="account_standard_report.report_account_standard_excel"

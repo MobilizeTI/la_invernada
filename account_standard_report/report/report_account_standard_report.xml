@@ -9,29 +9,29 @@
                         <h2 t-field="o.report_id.name"/>
                         <div class="row">
                             <div class="col-xs-2">
-                                <strong>Company:</strong>
-                                <p t-field="o.company_id"/>
+                                <strong>Compañía:</strong>
+                                <p t-field="o.Compañía_id"/>
                             </div>
                             <div class="col-xs-2">
-                                <strong>Devise:</strong>
-                                <p t-field="o.company_currency_id"/>
+                                <strong>Divisa:</strong>
+                                <p t-field="o.Compañía_currency_id"/>
                             </div>
                             <div class="col-xs-2">
                                 <t t-if="o.date_from">
-                                    <strong>Start Date :</strong>
+                                    <strong>Fecha Inicial :</strong>
                                     <span t-field="o.date_from"/><br/></t>
                                 <t t-if="o.date_to">
-                                    <strong>End Date :</strong>
+                                    <strong>Fecha Final :</strong>
                                     <span t-field="o.date_to"/></t>
                             </div>
                             <div class="col-xs-3">
-                                <strong>Target Moves:</strong>
-                                <p t-if="o.target_move == 'all'">All Entries</p>
-                                <p t-if="o.target_move == 'posted'">All Posted Entries</p>
+                                <strong>Movimientos:</strong>
+                                <p t-if="o.target_move == 'all'">Todas las Entradas</p>
+                                <p t-if="o.target_move == 'posted'">Todas las Entradas Publicadas</p>
                             </div>
                             <div class="col-xs-3">
-                                <strong t-if="o.reconciled == True">With Reconciled Entries</strong>
-                                <strong t-if="o.reconciled == False">Only UnReconciled Entries</strong>
+                                <strong t-if="o.reconciled == True">Con entradas conciliadas</strong>
+                                <strong t-if="o.reconciled == False">Solo entradas no reconciliadas</strong>
                             </div>
                         </div>
 
@@ -41,12 +41,12 @@
                                     <tr>
                                         <th class="col-xs-1">Total</th>
                                         <th></th>
-                                        <th class="col-xs-1 text-right">Not Due</th>
+                                        <th class="col-xs-1 text-right">No Vencidas</th>
                                         <th class="col-xs-1 text-right">0-30</th>
                                         <th class="col-xs-1 text-right">30-60</th>
                                         <th class="col-xs-1 text-right">60-90</th>
                                         <th class="col-xs-1 text-right">90-120</th>
-                                        <th class="col-xs-1 text-right">Older</th>
+                                        <th class="col-xs-1 text-right">Más Antigüas</th>
                                         <th class="col-xs-1 text-right">Total</th>
                                     </tr>
                                 </thead>
@@ -80,18 +80,18 @@
                                 <table class="table table-condensed">
                                     <thead>
                                         <tr>
-                                            <th class="col-xs-1">Date</th>
-                                            <th class="col-xs-1">JRNL</th>
-                                            <th class="col-xs-1">Account</th>
-                                            <th class="col-xs-1">Journal entries</th>
+                                            <th class="col-xs-1">Fecha</th>
+                                            <th class="col-xs-1">Diario</th>
+                                            <th class="col-xs-1">Cuenta</th>
+                                            <th class="col-xs-1">Movimientos</th>
                                             <!-- <th class="col-xs-3">Ref</th> -->
-                                            <th class="col-xs-1">Due Date</th>
-                                            <th class="col-xs-1 text-right">Not Due</th>
+                                            <th class="col-xs-1">Al día</th>
+                                            <th class="col-xs-1 text-right">No Vencidas</th>
                                             <th class="col-xs-1 text-right">0-30</th>
                                             <th class="col-xs-1 text-right">30-60</th>
                                             <th class="col-xs-1 text-right">60-90</th>
                                             <th class="col-xs-1 text-right">90-120</th>
-                                            <th class="col-xs-1 text-right">Older</th>
+                                            <th class="col-xs-1 text-right">Más Antigüas</th>
                                             <th class="col-xs-1 text-right">Total</th>
                                             <th class="col-xs-1">Match.</th>
                                         </tr>
@@ -188,13 +188,13 @@
                                 <table class="table table-condensed">
                                     <thead>
                                         <tr>
-                                            <th class="col-xs-1">Partner</th>
-                                            <th class="col-xs-1 text-right">Not Due</th>
+                                            <th class="col-xs-1">Empresa</th>
+                                            <th class="col-xs-1 text-right">No Vencidas</th>
                                             <th class="col-xs-1 text-right">0-30</th>
                                             <th class="col-xs-1 text-right">30-60</th>
                                             <th class="col-xs-1 text-right">60-90</th>
                                             <th class="col-xs-1 text-right">90-120</th>
-                                            <th class="col-xs-1 text-right">Older</th>
+                                            <th class="col-xs-1 text-right">Más Antigüas</th>
                                             <th class="col-xs-1 text-right">Total</th>
                                         </tr>
                                     </thead>
@@ -236,8 +236,8 @@
                                     <tr>
                                         <th class="col-xs-1">Total</th>
                                         <th></th>
-                                        <th class="col-xs-1 text-right">Debit</th>
-                                        <th class="col-xs-1 text-right">Credit</th>
+                                        <th class="col-xs-1 text-right">Débito</th>
+                                        <th class="col-xs-1 text-right">Crédito</th>
                                         <th class="col-xs-1 text-right">Balance</th>
                                     </tr>
                                 </thead>
@@ -259,12 +259,12 @@
                                 <table class="table table-condensed">
                                     <thead>
                                         <tr>
-                                            <th class="col-xs-1" t-if="o.report_type == 'journal'">JRNL</th>
-                                            <th class="col-xs-1" t-if="o.report_type == 'account'">Account</th>
-                                            <th class="col-xs-1" t-if="o.report_type == 'partner'">Partner</th>
-                                            <th class="col-xs-1" t-if="o.report_type == 'analytic'">Analytic</th>
-                                            <th class="col-xs-1 text-right">Debit</th>
-                                            <th class="col-xs-1 text-right">Credit</th>
+                                            <th class="col-xs-1" t-if="o.report_type == 'journal'">Diario</th>
+                                            <th class="col-xs-1" t-if="o.report_type == 'account'">Cuenta</th>
+                                            <th class="col-xs-1" t-if="o.report_type == 'partner'">Empresa</th>
+                                            <th class="col-xs-1" t-if="o.report_type == 'analytic'">Cta. Analítica</th>
+                                            <th class="col-xs-1 text-right">Débito</th>
+                                            <th class="col-xs-1 text-right">Crédito</th>
                                             <th class="col-xs-1 text-right">Balance</th>
                                         </tr>
                                     </thead>
@@ -303,18 +303,18 @@
                                 <table class="table table-condensed">
                                     <thead>
                                         <tr>
-                                            <th class="col-xs-1">Date</th>
-                                            <th class="col-xs-1">JRNL</th>
-                                            <th class="col-xs-1">Account</th>
-                                            <th class="col-xs-1">Analytic</th>
-                                            <th class="col-xs-1">Journal entries</th>
+                                            <th class="col-xs-1">Fecha</th>
+                                            <th class="col-xs-1">Diario</th>
+                                            <th class="col-xs-1">Cuenta</th>
+                                            <th class="col-xs-1">Cta. Analítica</th>
+                                            <th class="col-xs-1">Movimientos</th>
                                             <th class="col-xs-3">Ref</th>
-                                            <th class="col-xs-3">Partner</th>
-                                            <th class="col-xs-1">Due Date</th>
-                                            <th class="col-xs-1 text-right">Debit</th>
-                                            <th class="col-xs-1 text-right">Credit</th>
+                                            <th class="col-xs-3">Empresa</th>
+                                            <th class="col-xs-1">Al día</th>
+                                            <th class="col-xs-1 text-right">Débito</th>
+                                            <th class="col-xs-1 text-right">Crédito</th>
                                             <th class="col-xs-1 text-right">Balance</th>
-                                            <th class="col-xs-1 text-right" groups="base.group_multi_currency">Ammount Currency</th>
+                                            <th class="col-xs-1 text-right" groups="base.group_multi_currency">Moneda ext.</th>
                                             <th class="col-xs-1">Match.</th>
                                         </tr>
                                     </thead>
@@ -332,10 +332,10 @@
                                             <tr t-foreach="object.line_ids" t-as="l">
                                                 <td style="white-space:nowrap">
                                                     <i t-if="l.view_type == 'init' and l.line_type == '1_init_line'" t-field="l.date"></i>
-                                                    <i t-if="l.view_type == 'init' and l.line_type == '0_init'">INIT</i>
+                                                    <i t-if="l.view_type == 'init' and l.line_type == '0_init'">INICIAL</i>
                                                     <strong t-if="l.view_type == 'total'">Total</strong>
                                                     <span t-if="l.view_type == 'normal' and l.line_type == '2_line'" t-field="l.date"></span>
-                                                    <span t-if="l.view_type == 'normal' and l.line_type == '3_compact'">Compact</span>
+                                                    <span t-if="l.view_type == 'normal' and l.line_type == '3_compact'">Compacta</span>
                                                 </td>
                                                 <td>
                                                     <i t-if="l.view_type == 'init'" t-field="l.journal_id.code"></i>

@@ -7,61 +7,61 @@ class AccountStandardLedger(models.Model):
     _name = 'account.report.template'
     _description = 'Account Standard Ledger Template'
 
-    name = fields.Char(default='Standard Report Template')
+    name = fields.Char(default='Plantilla Estándar')
     ledger_type = fields.Selection(
-        [('general', 'General Ledger'),
-         ('partner', 'Partner Ledger'),
-         ('journal', 'Journal Ledger'),
-         ('open', 'Open Ledger'),
-         ('aged', 'Aged Balance'),
-         ('analytic', 'Analytic Ledger')],
+        [('general', 'Libro Mayor'),
+         ('partner', 'Cliente'),
+         ('journal', 'Diarios'),
+         ('open', 'Balance Abierto'),
+         ('aged', 'Saldos'),
+         ('analytic', 'Analítico')],
         string='Type', default='general', required=True,
-        help=' * General Ledger : Journal entries group by account\n'
-        ' * Partner Leger : Journal entries group by partner, with only payable/recevable accounts\n'
-        ' * Journal Ledger : Journal entries group by journal, without initial balance\n'
-        ' * Open Ledger : Openning journal at Start date\n')
-    summary = fields.Boolean('Trial Balance', default=False,
-                             help=' * Check : generate a trial balance.\n'
-                             ' * Uncheck : detail report.\n')
-    amount_currency = fields.Boolean('With Currency', help='It adds the currency column on report if the '
-                                     'currency differs from the company currency.')
+        help=' * Libro Mayor : Entradas agrupadas por cuenta\n'
+        ' * Cliente : Entradas agrupadas por cliente\n'
+        ' * Diarios : Entradas agrupadas por diarios, sin balance inicial\n'
+        ' * Balance Abierto : Diario de Aperturq\n')
+    summary = fields.Boolean('Balance General', default=False,
+                             help=' * Check : genera el balance general.\n'
+                             ' * Uncheck : reporte detallado.\n')
+    amount_currency = fields.Boolean('Con Moneda', help='Agrega la columna moneda en el reporte si '
+                                     'la moneda difiere de la divisa de la empresa.')
     reconciled = fields.Boolean(
-        'With Reconciled Entries', default=True,
-        help='Only for entrie with a payable/receivable account.\n'
-        ' * Check this box to see un-reconcillied and reconciled entries with payable.\n'
-        ' * Uncheck to see only un-reconcillied entries. Can be use only with parnter ledger.\n')
+        'Entradas Conciliadas', default=True,
+        help='Sólo para entradas con cuenta débito/crédito\n'
+        ' * Marque esta casilla para ver las entradas conciliadas y no conciliadas con pagos.\n'
+        ' * Desmarque para ver solo las entradas no conciliadas. Solo se puede usar con el libro mayor de clientes.\n')
     partner_select_ids = fields.Many2many(
         comodel_name='res.partner', string='Partners',
         domain=['|', ('is_company', '=', True), ('parent_id', '=', False)],
-        help='If empty, get all partners')
-    account_methode = fields.Selection([('include', 'Include'), ('exclude', 'Exclude')], string="Methode")
-    account_in_ex_clude_ids = fields.Many2many(comodel_name='account.account', string='Accounts',
-                                               help='If empty, get all accounts')
-    analytic_account_select_ids = fields.Many2many(comodel_name='account.analytic.account', string='Analytic Accounts')
+        help='Si está vacío, trae todos los clientes')
+    account_methode = fields.Selection([('include', 'Incluído'), ('exclude', 'Excluído')], string="Método")
+    account_in_ex_clude_ids = fields.Many2many(comodel_name='account.account', string='Cuentas',
+                                               help='Si está vacío, trae todas las cuentas')
+    analytic_account_select_ids = fields.Many2many(comodel_name='account.analytic.account', string='Cuentas Analíticas')
     init_balance_history = fields.Boolean(
-        'Initial balance with history.', default=True,
-        help=' * Check this box if you need to report all the debit and the credit sum before the Start Date.\n'
-        ' * Uncheck this box to report only the balance before the Start Date\n')
-    company_id = fields.Many2one('res.company', string='Company', readonly=True,
+        'Saldo inicial con historial.', default=True,
+        help=' * Marque esta casilla si necesita informar todo el débito y la suma del crédito antes de la fecha de inicio.\n'
+        ' * Desmarque esta casilla para informar solo el saldo antes de la fecha de inicio\n')
+    company_id = fields.Many2one('res.company', string='Compañía', readonly=True,
                                  default=lambda self: self.env.user.company_id)
     company_currency_id = fields.Many2one('res.currency', related='company_id.currency_id',
-                                          string="Company Currency", readonly=True,
-                                          help='Utility field to express amount currency', store=True)
-    journal_ids = fields.Many2many('account.journal', string='Journals', required=True,
+                                          string="Moneda de la Compañía", readonly=True,
+                                          help='Campo de utilidad para expresar el monto de la moneda', store=True)
+    journal_ids = fields.Many2many('account.journal', string='Diarios', required=True,
                                    default=lambda self: self.env['account.journal'].search(
                                        [('company_id', '=', self.env.user.company_id.id)]),
-                                   help='Select journal, for the Open Ledger you need to set all journals.')
-    date_from = fields.Date(string='Start Date', help='Use to compute initial balance.')
-    date_to = fields.Date(string='End Date', help='Use to compute the entrie matched with futur.')
-    target_move = fields.Selection([('posted', 'All Posted Entries'),
-                                    ('all', 'All Entries'),
-                                    ], string='Target Moves', required=True, default='posted')
-    result_selection = fields.Selection([('customer', 'Customers'),
-                                         ('supplier', 'Suppliers'),
-                                         ('customer_supplier', 'Customers and Suppliers')
-                                         ], string="Partners Selection", required=True, default='supplier')
-    report_name = fields.Char('Report Name')
-    compact_account = fields.Boolean('Compacte account.', default=False)
+                                   help='Seleccione diario, para el libro mayor abierto debe configurar todos los diarios.')
+    date_from = fields.Date(string='Fecha Inicial', help='Úselo para calcular el saldo inicial.')
+    date_to = fields.Date(string='Fecha Final', help='Úselo para calcular el total emparejado con el futuro.')
+    target_move = fields.Selection([('posted', 'Todas las entradas publicadas'),
+                                    ('all', 'Todas las entradas'),
+                                    ], string='Movimientos de destino', required=True, default='posted')
+    result_selection = fields.Selection([('customer', 'Clientes'),
+                                         ('supplier', 'Proveedores'),
+                                         ('customer_supplier', 'Clientes y Proveedores')
+                                         ], string="Tipo de Empresa", required=True, default='supplier')
+    report_name = fields.Char('Nombre del Reporte')
+    compact_account = fields.Boolean('Cuenta compacta', default=False)
 
     @api.onchange('account_in_ex_clude_ids')
     def _onchange_account_in_ex_clude_ids(self):

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 {
-    'name': 'Standard Accounting Report',
-    'version': '12.0.1.0.0',
+    'name': 'Contabilidad: Reportes Standard',
+    'version': '12.0.1.0.1',
     'category': 'Accounting',
-    'author': 'Florent de Labarre',
-    'summary': 'Standard Accounting Report',
-    'website': 'https://github.com/fmdl',
+    'author': 'Mobilize SPA',
+    'summary': 'Contabilidad: Reportes Standard',
+    'website': 'https://mobilize.cl',
     'depends': ['account', 'report_xlsx'],
     'data': [
         'security/ir.model.access.csv',
@@ -22,10 +22,7 @@
     ],
     'demo': [],
     'license': 'AGPL-3',
-    'support': 'https://github.com/fmdl',
     'installable': True,
     'auto_install': False,
-    'price': 0.0,
-    'currency': 'EUR',
     'images': ['images/main_screenshot.png'],
 }
