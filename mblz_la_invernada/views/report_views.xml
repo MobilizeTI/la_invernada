@@ -6,25 +6,31 @@
                 <t t-call="web.internal_layout">
 
                     <div class="page" style="font-size:13px">
-                        <table class="table">
+                        <table style="border: none !important; font-size: 12px">
                             <tbody>
                                 <tr>
                                     <td t-esc="o.company_id.name" />
+                                    <td />
                                 </tr>
                                 <tr>
                                     <td t-esc="o.company_id.street" />
+                                    <td>Nº: <span t-esc="o.name"/></td>
                                 </tr>
                                 <tr>
                                     <td t-esc="o.company_id.activity_description.name" />
+                                    <td>Tipo: <span t-esc="o.journal_id.name"/></td>
                                 </tr>
                                 <tr>
                                     <td t-esc="o.company_id.city" />
+                                    <td>Fecha: <span t-field="o.date" /></td>
                                 </tr>
                                 <tr>
                                     <td t-esc="o.company_id.region_address_id.name" />
+                                    <td>Estado: <span t-field="o.state" /></td>
                                 </tr>
                                 <tr>
                                     <td t-esc="o.company_id.invoice_rut" />
+                                    <td />
                                 </tr>
                             </tbody>
                         </table>
