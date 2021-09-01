@@ -3,161 +3,151 @@
     <template id="mblz_invernada_account_move_report">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <t t-call="web.internal_layout">
-
-                    <div class="page" style="font-size:14px">
-                        <h5 t-field="o.name" />
-                        <div>
-                            <div class="col-md-4">
-                                <strong>Compañía:</strong>
-                                <p t-field="o.company_id" />
-                            </div>
-                            <div class="col-md-4">
-                                <strong>Divisa:</strong>
-                                <p t-field="o.company_id.currency_id.name" />
-                            </div>
-                            <div class="col-md-4">
-                                <t t-if="o.date">
-                                    <strong>Fecha:</strong>
-                                    <span t-field="o.date" />
-                                    <br />
-                                </t>
-                            </div>
-                            
+                <div class="page" style="font-size:13px">
+                    <h5 t-field="o.name" />
+                    <div class="col-md-12">
+                        <div class="col-md-4">
+                            <strong>Compañía:</strong>
+                            <p t-field="o.company_id" />
                         </div>
-                        <table class="table table-condensed">
-                            <thead>
-                                <tr>
-                                    <th class="col-xs-1">Fecha</th>
-                                    <th class="col-xs-1">Diario</th>
-                                    <th class="col-xs-1">Cuenta</th>
-                                    <th class="col-xs-1">Cód. Cuenta</th>
-                                    <th class="col-xs-1">Cta. Analítica</th>
-                                    <th class="col-xs-1">Movimientos</th>
-                                    <th class="col-xs-3">Ref</th>
-                                    <th class="col-xs-3">Empresa</th>
-                                    <th class="col-xs-1">Al día</th>
-                                    <th class="col-xs-1 text-right">Débito</th>
-                                    <th class="col-xs-1 text-right">Crédito</th>
-                                    <th class="col-xs-1 text-right">Balance</th>
-                                    <th class="col-xs-1 text-right" groups="base.group_multi_currency">Moneda ext.</th>
-                                    <th class="col-xs-1">Match.</th>
-                                </tr>
-                            </thead>
-                            <tbody style="border-bottom: 1px solid;page-break-inside: avoid">
-                                <tr t-foreach="o.line_ids" t-as="l">
-                                    <td style="white-space:nowrap">
-                                        <span t-field="l.date"></span>
-                                    </td>
-                                    <td>
-                                        <!-- <i t-if="l.view_type == 'init'" t-field="l.journal_id.code"></i> -->
-                                        <span t-field="l.journal_id.name"></span>
-                                    </td>
-                                    <td>
-                                        <!-- <i t-if="l.view_type == 'init'" t-field="l.account_id.code"></i> -->
-                                        <span t-field="l.account_id.name"></span>
-                                    </td>
-                                    <td>
-                                        <!-- <i t-if="l.view_type == 'init'" t-field="l.account_id.code"></i> -->
-                                        <span t-field="l.account_id.code"></span>
-                                    </td>
-                                    <td>
-                                        <!-- <i t-if="l.view_type == 'init'" t-field="l.analytic_account_id"></i> -->
-                                        <span t-field="l.analytic_account_id"></span>
-                                    </td>
-                                    <td>
-                                        <!-- <i t-if="l.view_type == 'init'" t-field="l.move_id"></i> -->
-                                        <span t-field="l.move_id"></span>
-                                    </td>
-                                    <td>
-                                        <!-- <i t-if="l.view_type == 'init'" t-field="l.move_line_id.ref"></i> -->
-                                        <span t-field="l.name"></span>
-                                    </td>
-                                    <td>
-                                        <!-- <i t-if="l.view_type == 'init'" t-field="l.partner_id"></i> -->
-                                        <span t-field="l.partner_id"></span>
-                                    </td>
-                                    <td>
-                                        <!-- <i t-if="l.view_type == 'init'" t-field="l.date_maturity"></i> -->
-                                        <span t-field="l.date_maturity"></span>
-                                    </td>
-                                    <td class="text-right">
-                                        <div>
-                                            <span t-field="l.debit" />
-                                        </div>
-                                        <!-- <div t-if="l.debit and l.view_type == 'init'">
+                        <div class="col-md-4">
+                            <strong>Divisa:</strong>
+                            <p t-field="o.company_id.currency_id.name" />
+                        </div>
+                        <div class="col-md-4">
+                            <t t-if="o.date">
+                                <strong>Fecha:</strong>
+                                <span t-field="o.date" />
+                                <br />
+                            </t>
+                        </div>
+
+                    </div>
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th class="col-xs-1">Fecha</th>
+                                <th class="col-xs-1">Diario</th>
+                                <th class="col-xs-1">Cuenta</th>
+                                <th class="col-xs-1">Cód. Cuenta</th>
+                                <th class="col-xs-1">Cta. Analítica</th>
+                                <th class="col-xs-1">Movimientos</th>
+                                <th class="col-xs-3">Ref</th>
+                                <th class="col-xs-3">Empresa</th>
+                                <th class="col-xs-1">Al día</th>
+                                <th class="col-xs-1 text-right">Débito</th>
+                                <th class="col-xs-1 text-right">Crédito</th>
+                                <!-- <th class="col-xs-1 text-right">Balance</th> -->
+                                <th class="col-xs-1 text-right" groups="base.group_multi_currency">Moneda ext.</th>
+                                <th class="col-xs-1">Match.</th>
+                            </tr>
+                        </thead>
+                        <tbody style="border-bottom: 1px solid;page-break-inside: avoid">
+                            <tr t-foreach="o.line_ids" t-as="l">
+                                <td style="white-space:nowrap">
+                                    <span t-field="l.date"></span>
+                                </td>
+                                <td>
+                                    <!-- <i t-if="l.view_type == 'init'" t-field="l.journal_id.code"></i> -->
+                                    <span t-field="l.journal_id.name"></span>
+                                </td>
+                                <td>
+                                    <!-- <i t-if="l.view_type == 'init'" t-field="l.account_id.code"></i> -->
+                                    <span t-field="l.account_id.name"></span>
+                                </td>
+                                <td>
+                                    <!-- <i t-if="l.view_type == 'init'" t-field="l.account_id.code"></i> -->
+                                    <span t-field="l.account_id.code"></span>
+                                </td>
+                                <td>
+                                    <!-- <i t-if="l.view_type == 'init'" t-field="l.analytic_account_id"></i> -->
+                                    <span t-field="l.analytic_account_id"></span>
+                                </td>
+                                <td>
+                                    <!-- <i t-if="l.view_type == 'init'" t-field="l.move_id"></i> -->
+                                    <span t-field="l.move_id"></span>
+                                </td>
+                                <td>
+                                    <!-- <i t-if="l.view_type == 'init'" t-field="l.move_line_id.ref"></i> -->
+                                    <span t-field="l.name"></span>
+                                </td>
+                                <td>
+                                    <!-- <i t-if="l.view_type == 'init'" t-field="l.partner_id"></i> -->
+                                    <span t-field="l.partner_id"></span>
+                                </td>
+                                <td>
+                                    <!-- <i t-if="l.view_type == 'init'" t-field="l.date_maturity"></i> -->
+                                    <span t-field="l.date_maturity"></span>
+                                </td>
+                                <td class="text-right">
+                                    <div>
+                                        <span t-field="l.debit" />
+                                    </div>
+                                    <!-- <div t-if="l.debit and l.view_type == 'init'">
                                                 <i t-field="l.debit" />
                                             </div>
                                             <div t-if="l.debit and l.view_type == 'total'">
                                                 <strong t-field="l.debit" />
                                             </div> -->
-                                    </td>
-                                    <td class="text-right">
-                                        <div>
-                                            <span t-field="l.credit" />
-                                        </div>
-                                        <!-- <div t-if="l.credit and l.view_type == 'init'">
+                                </td>
+                                <td class="text-right">
+                                    <div>
+                                        <span t-field="l.credit" />
+                                    </div>
+                                    <!-- <div t-if="l.credit and l.view_type == 'init'">
                                                 <i t-field="l.credit" />
                                             </div>
                                             <div t-if="l.credit and l.view_type == 'total'">
                                                 <strong t-field="l.credit" />
                                             </div> -->
-                                    </td>
-                                    <td class="text-right" style="white-space:nowrap">
-                                        <!-- <div>
-                                                <span t-field="l.cumul_balance" />
-                                            </div> -->
-                                        <!-- <div t-if="l.view_type == 'init'">
-                                                <i t-field="l.cumul_balance" />
-                                            </div>
-                                            <div t-if="l.view_type == 'total'">
-                                                <strong t-field="l.cumul_balance" />
-                                            </div> -->
-                                    </td>
-                                    <td class="text-right" style="white-space:nowrap" groups="base.group_multi_currency">
-                                        <div t-if="l.amount_currency">
-                                            <span t-field="l.amount_currency" />
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span t-if="l.reconciled" t-field="l.full_reconcile_id" />
-                                        <span t-if="not l.reconciled and l.full_reconcile_id">*</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                </td>
+                                <td class="text-right" style="white-space:nowrap" groups="base.group_multi_currency">
+                                    <div t-if="l.amount_currency">
+                                        <span t-field="l.amount_currency" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <span t-if="l.reconciled" t-field="l.full_reconcile_id" />
+                                    <span t-if="not l.reconciled and l.full_reconcile_id">*</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                        <div>
-                            <div class="col-md-3">
-                                <strong>________________</strong>
-                                <br />
-                                <strong>Elaborado por: </strong>
-                            </div>
-                            <div class="col-md-3">
-                                <strong>________________</strong>
-                                <br />
-                                <strong>Revisado por: </strong>
-
-                            </div>
-                            <div class="col-md-3">
-                                <strong>________________</strong>
-                                <br />
-                                <strong>Aprobado por: </strong>
-                            </div>
-                            <div class="col-md-3">
-                                <strong>________________</strong>
-                                <br />
-                                <strong>Recibi Conforme: </strong>
-                                <br />
-                                <strong>Nombre: </strong>
-                                <br />
-                                <strong>C.I.: </strong>
-                                <br />
-                            </div>
+                    <div class="col-md-12">
+                        <div class="col-md-3">
+                            <strong>________________</strong>
+                            <br />
+                            <strong>Elaborado por: </strong>
                         </div>
-                        
+                        <div class="col-md-3">
+                            <strong>________________</strong>
+                            <br />
+                            <strong>Revisado por: </strong>
+
+                        </div>
+                        <div class="col-md-3">
+                            <strong>________________</strong>
+                            <br />
+                            <strong>Aprobado por: </strong>
+                        </div>
+                        <div class="col-md-3">
+                            <strong>________________</strong>
+                            <br />
+                            <strong>Recibi Conforme: </strong>
+                            <br />
+                            <strong>Nombre: </strong>
+                            <br />
+                            <strong>C.I.: </strong>
+                            <br />
+                        </div>
                     </div>
-                </t>
+
+                </div>
+                <!-- <t t-call="web.internal_layout">
+
+                    
+                </t> -->
             </t>
         </t>
     </template>
