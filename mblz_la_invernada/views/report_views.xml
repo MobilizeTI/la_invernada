@@ -6,7 +6,7 @@
                 <t t-call="web.internal_layout">
 
                     <div class="page" style="font-size:13px">
-                        <table style="border: none !important; font-size: 12px; width: 100%; margin-top: 15px">
+                        <table style="border: none !important; font-size: 12px; width: 100%; margin-top: 150px">
                             <tbody>
                                 <tr>
                                     <td t-esc="o.company_id.name" style="text-align: left" />
@@ -46,25 +46,6 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <!-- <h5 t-field="o.name" /> -->
-                        <!-- <div class="col-md-12">
-                            <div class="col-md-4">
-                                <strong>Compañía:</strong>
-                                <p t-field="o.company_id" />
-                            </div>
-                            <div class="col-md-4">
-                                <strong>Divisa:</strong>
-                                <p t-field="o.company_id.currency_id.name" />
-                            </div>
-                            <div class="col-md-4">
-                                <t t-if="o.date">
-                                    <strong>Fecha:</strong>
-                                    <span t-field="o.date" />
-                                    <br />
-                                </t>
-                            </div>
-                            
-                        </div> -->
                         <table class="table table-condensed">
                             <thead>
                                 <tr>
@@ -156,7 +137,27 @@
                             </tbody>
                         </table>
 
-                        <div>
+                        <table style="border: none !important; font-size: 15px; width: 100%; margin-top: 50px">
+                            <tbody>
+                                <tr>
+                                    <td style="border-top: 1px solid black">
+                                        <strong>PREPARADO</strong>
+                                    </td>
+                                    <td style="border-top: 1px solid black">
+                                        <strong>REVISADO</strong>
+                                    </td>
+                                    <td style="border-top: 1px solid black">
+                                        <strong>APROBADO</strong>
+                                    </td>
+                                    <td style="border-top: 1px solid black">
+                                        <strong>RECIBÍ CONFORME</strong>
+                                    </td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+
+                        <!-- <div>
                             <div class="col-md-3">
                                 <strong>________________</strong>
                                 <br />
@@ -183,7 +184,7 @@
                                 <strong>C.I.: </strong>
                                 <br />
                             </div>
-                        </div>
+                        </div> -->
                         
                     </div>
                 </t>
