@@ -54,7 +54,7 @@
                                     <th class="col-xs-1">Fecha</th>
                                     <th class="col-xs-1">Diario</th>
                                     <th class="col-xs-1">Cuenta</th>
-                                    <th class="col-xs-1">Cód.</th>
+                                    <th class="col-xs-2">Código</th>
                                     <th class="col-xs-1">Analítica</th>
                                     <th class="col-xs-1">Movimientos</th>
                                     <th class="col-xs-3">Ref</th>
