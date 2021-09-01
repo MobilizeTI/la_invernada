@@ -5,8 +5,9 @@
             <t t-foreach="docs" t-as="o">
                 <t t-call="web.internal_layout">
 
-                    <div class="page" style="font-size:13px; margin-top: 200px">
-                        <table style="border: none !important; font-size: 12px; width: 100%; margin-top: 150px;">
+                    <div class="page" style="font-size:13px;">
+
+                        <table class="table" style="border: none !important; font-size: 12px; width: 100%; margin-top: 150px !important;">
                             <tbody>
                                 <tr>
                                     <td t-esc="o.company_id.name" style="text-align: left" />
@@ -46,6 +47,7 @@
                                 </tr>
                             </tbody>
                         </table>
+
                         <table class="table table-condensed" style="margin-top: 150px !important">
                             <thead>
                                 <tr>
@@ -137,18 +139,21 @@
                             </tbody>
                         </table>
 
-                        <table style="border: none !important; font-size: 15px; width: 100%; margin-top: 50px; text-align-center">
+                        <table style="border: none !important; font-size: 15px; width: 100%; margin-top: 50px !important; text-align: center">
                             <tbody>
                                 <tr>
                                     <td style="border-top: 1px solid black">
                                         <strong>PREPARADO</strong>
                                     </td>
+                                    <td></td>
                                     <td style="border-top: 1px solid black">
                                         <strong>REVISADO</strong>
                                     </td>
+                                    <td></td>
                                     <td style="border-top: 1px solid black">
                                         <strong>APROBADO</strong>
                                     </td>
+                                    <td></td>
                                     <td style="border-top: 1px solid black">
                                         <strong>RECIBÍ CONFORME</strong>
                                     </td>
