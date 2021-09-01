@@ -6,42 +6,42 @@
                 <t t-call="web.internal_layout">
 
                     <div class="page" style="font-size:12px;">
-                        <div class="table" style="margin-top: 150px !important;">
+                        <div class="table" style="margin-top: 250px !important;">
                             <table style="border: none !important; font-size: 12px; width: 100%; ">
                                 <tbody>
-                                    <tr>
+                                    <tr style="border: none !important; padding: 0 !important">
                                         <td t-esc="o.company_id.name" style="text-align: left" />
                                         <td style="text-align: right" />
                                     </tr>
-                                    <tr>
+                                    <tr style="border: none !important; padding: 0 !important">
                                         <td t-esc="o.company_id.street" style="text-align: left" />
                                         <td style="text-align: right">
                                             Nº:
                                             <span t-esc="o.name" />
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr style="border: none !important; padding: 0 !important">
                                         <td t-esc="o.company_id.activity_description.name" style="text-align: left" />
                                         <td style="text-align: right">
                                             Tipo:
                                             <span t-esc="o.journal_id.name" />
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr style="border: none !important; padding: 0 !important">
                                         <td t-esc="o.company_id.city" style="text-align: left" />
                                         <td style="text-align: right">
                                             Fecha:
                                             <span t-field="o.date" />
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr style="border: none !important; padding: 0 !important">
                                         <td t-esc="o.company_id.region_address_id.name" style="text-align: left" />
                                         <td style="text-align: right">
                                             Estado:
                                             <span t-field="o.state" />
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr style="border: none !important; padding: 0 !important">
                                         <td t-esc="o.company_id.invoice_rut" style="text-align: left" />
                                         <td style="text-align: right" />
                                     </tr>
@@ -52,7 +52,10 @@
 
                         
 
-                        <table class="table table-condensed" style="margin-top: 150px !important">
+                        <table class="table table-condensed" style="margin-top: 50px !important">
+                            <center>
+                                <h5>Contabilización Glosa</h5>
+                            </center>
                             <thead>
                                 <tr>
                                     <th class="col-xs-1">Fecha</th>
