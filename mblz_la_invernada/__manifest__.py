@@ -12,7 +12,7 @@
     ],
     
     'data': [
-        'views/account_invoice_views.xml',
+        # 'views/account_invoice_views.xml',
         'views/report_views.xml'
     ],
     
