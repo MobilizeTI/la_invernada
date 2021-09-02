@@ -968,8 +968,6 @@ class AccountInvoice(models.Model):
     # Send Data to Stock_Picking Comex
     @api.multi
     def write(self, vals):
-        _logger.info('LOG:  ----> journal')
-        _logger.info('LOG:  ----> journal {}'.format(self._context.get('journal_id')))
         dispatch_list = []
         for item in self.orders_to_invoice:
             if item.stock_picking_id:
@@ -1096,10 +1094,5 @@ class AccountInvoice(models.Model):
     def get_today(self):
         return date.today().strftime('%Y-%m-%d')
     
-    @api.multi
-    def create(self, vals):
-        res = super(AccountInvoice, self).create(vals)
-        _logger.info('LOG:  ----> journal {}'.format(self._context.get('journal_id')))
-
-        return res
+    
 
