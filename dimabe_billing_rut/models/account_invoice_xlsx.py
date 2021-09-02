@@ -712,9 +712,14 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.write_number(row, col, 0, formats['number'])
                 col += 1
                 # sheet.write(row, col, inv.amount_tax, formats['number'])
-                sheet.write(row, col,
-                            sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
+                if employee_fee_taxes:
+                    sheet.write(row, col,
+                            sum(inv.tax_line_ids.filtered(lambda a: 'Retención Boleta Honorarios' in a.tax_id.name).mapped('amount')),
                             formats['number'])
+                else:
+                    sheet.write(row, col,
+                                sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
+                                formats['number'])
                 col += 1
             # for tax in taxes_title:
             #     if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
