@@ -199,7 +199,7 @@ class AccountInvoiceXlsx(models.Model):
                 net_total = invoice_net 
                 tax_total = invoice_tax
                 total_total = invoice_total
-                net_tax_total = net_total - exempt_net
+                net_tax_total = net_total
                 sheet.write(row + 3, col + 5, 'Total General', formats['title'])
                 sheet.write(row + 3, col + 6, count_invoice, formats['total']) #SUMA DOCUMENTOS
                 sheet.write(row + 3, col + 7, exempt_total, formats['total'])
