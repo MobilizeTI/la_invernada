@@ -202,8 +202,8 @@ class AccountInvoiceXlsx(models.Model):
                 net_tax_total = net_total
                 sheet.write(row + 3, col + 5, 'Total General', formats['title'])
                 sheet.write(row + 3, col + 6, count_invoice, formats['total']) #SUMA DOCUMENTOS
-                sheet.write(row + 3, col + 7, exempt_total, formats['total'])
-                sheet.write(row + 3, col + 8, net_tax_total, formats['total'])
+                # sheet.write(row + 3, col + 7, exempt_total, formats['total'])
+                # sheet.write(row + 3, col + 8, net_tax_total, formats['total'])
                 sheet.write(row + 3, col + 9, net_total, formats['total'])
                 sheet.write(row + 3, col + 10, tax_total, formats['total'])
                 sheet.write(row + 3, col + 11, 0, formats['total']) #TODO totoales iva no recuperable
@@ -212,7 +212,7 @@ class AccountInvoiceXlsx(models.Model):
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
-        file_name = 'Libro de Compras {} {}.xlsx'.format(company_name, date.today().strftime("%d/%m/%Y"))
+        file_name = 'Libro de Honorarios {} {}.xlsx'.format(company_name, date.today().strftime("%d/%m/%Y"))
         attachment_id = self.env['ir.attachment'].sudo().create({
             'name': file_name,
             'datas_fname': file_name,
