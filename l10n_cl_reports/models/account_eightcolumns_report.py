@@ -88,6 +88,7 @@ class CL8ColumnsReport(models.AbstractModel):
                 ],
                 'caret_options': 'account.account'
             })
+        _logger.info('LOG: --->>>> lineas del reporte {}'.format(lines))
         if lines:
             subtotals = self._calculate_subtotals(results)
             lines.append({
