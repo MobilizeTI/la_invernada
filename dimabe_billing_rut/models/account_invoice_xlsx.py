@@ -645,6 +645,7 @@ class AccountInvoiceXlsx(models.Model):
 
         exempt_taxes = inv.invoice_line_ids.filtered(lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name'))
         affect_taxes = inv.invoice_line_ids.filtered(lambda a: 'IVA Débito' in a.invoice_line_tax_ids.mapped('name'))
+        employee_fee_taxes = inv.invoice_line_ids.filtered(lambda a: 'Retención Boleta Honorarios' in a.invoice_line_tax_ids.mapped('name'))
         if exempt_taxes:
             sheet.write(row, col, sum(exempt_taxes.mapped('price_subtotal')), formats['number'])
             col += 1
@@ -655,7 +656,7 @@ class AccountInvoiceXlsx(models.Model):
             
             if inv.dte_type_id.id:
                 sheet.write(row, col, inv.amount_untaxed, formats['number'])
-                col += 1
+                col += 1 
 
                 sheet.write(row, col, inv.amount_tax, formats['number'])
                 col += 1
@@ -690,7 +691,7 @@ class AccountInvoiceXlsx(models.Model):
                         sheet.write(row, col, sum(line), formats['number'])
                         col += 1
                 sheet.write(row, col, inv.amount_total_signed, formats['number'])
-        elif affect_taxes:
+        elif affect_taxes or employee_fee_taxes:
             sheet.write_number(row, col, 0, formats['number'])
             col += 1
             # sheet.write(row, col, inv.amount_untaxed_signed, formats['number'])
@@ -726,7 +727,7 @@ class AccountInvoiceXlsx(models.Model):
 
         
         line_out = {'sheet': sheet, 'row': row, 'col': col}
-        _logger.info('LOG. **** output para linea %r', line_out)
+        # _logger.info('LOG. **** output para linea %r', line_out)
 
         return line_out
 
