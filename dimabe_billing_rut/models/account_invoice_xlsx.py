@@ -108,7 +108,7 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.write(6, 9, date.today().strftime('%Y-%m-%d'), formats['title'])
                 sheet.merge_range(6, 3, 6, 6, f'Desde {self.from_date} Hasta {self.to_date}', formats['title'])
                 sheet.merge_range(7, 3, 7, 6, 'Moneda : Peso Chileno', formats['title'])
-                row = 12
+                row = 10
                 col = 0
                 
                 for title in titles:
