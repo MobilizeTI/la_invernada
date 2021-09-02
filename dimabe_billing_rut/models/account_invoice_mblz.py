@@ -18,6 +18,8 @@ _logger = logging.getLogger('TEST invoice =======')
 
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
+
+    type = fields.Selection(selection_add=[('in_employee_fee', 'Boleta Honorarios')])
     
     def format_amount(self, amount):
         return '$ {:,.0f}'.format(round(amount)).replace(",",".")
@@ -37,8 +39,13 @@ class AccountInvoice(models.Model):
     
     @api.model
     def _default_journal(self):
-        _logger.info('LOGGGGGGGG')
-        return super(AccountInvoice, self)._default_journal()
+        res = super(AccountInvoice, self)._default_journal()
+        if self.journal_id:
+            if self.journal_id.employee_fee:
+                self.update({
+                    'type': 'in_employee_fee'
+                })
+        return res
 
     # @api.multi
     # def create(self, vals):
