@@ -511,6 +511,7 @@ class AccountInvoiceXlsx(models.Model):
         count_invoice = len(invoices)
         sheet.write(row, col, count_invoice, formats['total']) ## Cantidad Total de Documentos
         col += 1
+        exempt_sum = 0
         if employee_fee:
             sheet.write(row, col, sum(invoices.mapped('amount_untaxed')), formats['total']) ## Total neto 
             col += 1
