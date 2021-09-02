@@ -6,7 +6,7 @@ import xlsxwriter
 from odoo import fields, models, api
 from collections import Counter
 import logging
-_logger = logging.getLogger('TEST PURCHASE =======')
+_logger = logging.getLogger('TEST report =======')
 
 class AccountInvoiceXlsx(models.Model):
     _name = 'account.invoice.xlsx'

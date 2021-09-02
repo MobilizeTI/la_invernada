@@ -12,6 +12,9 @@ from io import BytesIO
 from math import floor
 from datetime import date
 
+import logging
+_logger = logging.getLogger('TEST invoice =======')
+
 
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
