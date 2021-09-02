@@ -120,7 +120,7 @@ class SalesBookReport(models.AbstractModel):
                                                                     ('company_id.id', '=', company_id)],
                                                                     order='date asc, reference asc') #ORDENA ASCENDENTE
                 
-class HonoraiosBookReport(models.AbstractModel):
+class HonorariosBookReport(models.AbstractModel):
     _name = 'report.dimabe_billing_rut.report_honorarios_book_pdf'
 
     @api.model

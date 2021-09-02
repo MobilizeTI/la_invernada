@@ -66,6 +66,166 @@ class AccountInvoiceXlsx(models.Model):
             'form': data
         }
         return self.env.ref('dimabe_billing_rut.sale_book_pdf_report').report_action(invoices, data=datas)
+    
+    @api.multi
+    def generate_honorarios_book(self):
+        file_name = 'honorarios.xlsx'
+        workbook = xlsxwriter.Workbook(file_name, {'in_memory': True, 'strings_to_numbers': True})
+        formats = self.set_formats(workbook)
+        count_invoice = 0
+        srow = 0
+        for item in self:
+            array_worksheet = []
+            companies = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)])
+            company_name = ''
+            begin = 0
+            end = 0
+            
+            for com in companies:
+                worksheet = workbook.add_worksheet(com.display_name)
+                array_worksheet.append({
+                    'company_object': com, 'worksheet': worksheet
+                })
+            for wk in array_worksheet:
+                sheet = wk['worksheet']
+                region = self.env['region.address'].search([('id', '=', 1)])
+                titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', 'Nombre', '#', 'NETO', 'IMPTO']
+                invoices_get_tax = self.env['account.invoice'].sudo().search(
+                    [('dte_type_id', '!=', None), ('company_id', '=', self.company_get_id.id),
+                     ('date', '>=', self.from_date), ('date', '<=', self.to_date)])
+                taxes_title = list(
+                    dict.fromkeys(invoices_get_tax.mapped('tax_line_ids').mapped('tax_id').mapped('name')))
+
+                titles.append('Total')
+                sheet.merge_range(0, 0, 0, 2, self.company_get_id.display_name, formats['title'])
+                sheet.merge_range(1, 0, 1, 2, self.company_get_id.invoice_rut, formats['title'])
+                sheet.merge_range(2, 0, 2, 2,
+                                  f'{self.company_get_id.city},Region {self.company_get_id.region_address_id.name}',
+                                  formats['title'])
+                sheet.merge_range(4, 3, 4, 6, 'Libro de Honorarios', formats['title'])
+                sheet.merge_range(5, 3, 5, 6, 'Libro de Honorarios Ordenado por fecha', formats['title'])
+                sheet.write(6, 10, 'Fecha', formats['title'])
+                sheet.write(6, 11, date.today().strftime('%Y-%m-%d'), formats['title'])
+                sheet.merge_range(6, 3, 6, 6, f'Desde {self.from_date} Hasta {self.to_date}', formats['title'])
+                sheet.merge_range(7, 3, 7, 6, 'Moneda : Peso Chileno', formats['title'])
+                row = 12
+                col = 0
+                
+                for title in titles:
+                    sheet.write(row, col, title, formats['title'])
+                    col += 1
+                row += 2
+                col = 0
+                sheet.merge_range(row, col, row, 5, 'Boleta electrónica. (BOLETA ELECTRONICA)',
+                                  formats['title'])
+                row += 1
+                domain_invoices = [('date', '>=', self.from_date),
+                     ('type', 'in', ('in_invoice', 'in_refund')),
+                     ('date', '<=', self.to_date), ('dte_type_id.code', '=', 39),
+                     ('journal_id.employee_fee', '=', True),
+                     ('company_id.id', '=', self.company_get_id.id)]
+                #cambio en Order
+                invoices = self.env['account.invoice'].sudo().search(domain_invoices, order='date asc, reference asc') #facturas electronicas
+                begin = row
+                row += 1
+                data_invoice = self.set_data_for_excel(sheet, row, invoices, taxes_title, titles, formats, exempt=False)
+                #OKKKKK
+                invoice_total = data_invoice.get('total').get('total')
+                invoice_net = data_invoice.get('total').get('net')
+                invoice_tax = data_invoice.get('total').get('tax')
+                sheet = data_invoice['sheet']
+                row = data_invoice['row']
+                count_invoice += data_invoice['count_invoice']
+
+                # exempts = self.env['account.invoice'].sudo().search([('date', '>=', self.from_date),
+                #                                                      ('type', 'in', ('in_invoice', 'in_refund')),
+                #                                                      ('date', '<=', self.to_date),
+                #                                                      ('dte_type_id.code', '=', 34),
+                #                                                      ('company_id.id', '=', self.company_get_id.id)],
+                #                                                      order='date asc, reference asc')  #ORDENA ASCENDENTE
+                # row += 2
+                # sheet.merge_range(row, col, row, 5,
+                #                   'Factura de compra exenta electronica. (FACTURA COMPRA ELECTRONICA)',
+                #                   formats['title'])
+                # row += 1
+                # data_exempt = self.set_data_for_excel(sheet, row, exempts, taxes_title, titles, formats, exempt=True)
+                # exempt_total = data_exempt.get('total').get('total')
+                # exempt_net = data_exempt.get('total').get('net')
+                # exempt_tax = data_exempt.get('total').get('tax')
+                # sheet = data_exempt['sheet']
+                # row = data_exempt['row']
+                # count_invoice += data_exempt['count_invoice']                
+                
+                # credit = self.env['account.invoice'].sudo().search([('date', '>=', self.from_date),
+                #                                                     ('type', 'in', ('in_invoice', 'in_refund')),
+                #                                                     ('date', '<=', self.to_date),
+                #                                                     ('dte_type_id.code', '=', 61),
+                #                                                     ('company_id.id', '=', self.company_get_id.id)],
+                #                                                     order='date asc, reference asc') #ORDENA ASCENDENTE
+
+                # row += 2
+                # sheet.merge_range(row, col, row, 5,
+                #                   'NOTA DE CREDITO COMPRA ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)',
+                #                   formats['title'])
+                # row += 1
+                # data_credit = self.set_data_for_excel(sheet, row, credit, taxes_title, titles, formats, exempt=False)
+                # credit_total = data_credit.get('total').get('total')
+                # credit_net = data_credit.get('total').get('net')
+                # credit_tax = data_credit.get('total').get('tax')
+                # sheet = data_credit['sheet']
+                # row = data_credit['row']
+                # count_invoice += data_credit['count_invoice']
+                # row += 2
+                # sheet.merge_range(row, col, row, 5,
+                #                   'NOTA DE DEBITO COMPRA ELECTRONICA (NOTA DE DEBITO COMPRA ELECTRONICA)',
+                #                   formats['title'])
+                # row += 1
+
+                # debit = self.env['account.invoice'].sudo().search([('date', '>=', self.from_date),
+                #                                                    ('date', '<=', self.to_date),
+                #                                                    ('type', 'in', ('in_invoice', 'in_refund')),
+                #                                                    ('dte_type_id.code', '=', 56),
+                #                                                    ('company_id.id', '=', self.company_get_id.id)],
+                #                                                    order='date asc, reference asc') #ORDENA ASCENDENTE
+                                                                   
+                # data_debit = self.set_data_for_excel(sheet, row, debit, taxes_title, titles, formats, exempt=False)
+                # debit_total = data_debit.get('total').get('total')
+                # debit_net = data_debit.get('total').get('net')
+                # debit_tax = data_debit.get('total').get('tax')
+                # sheet = data_debit['sheet']
+                # row = data_debit['row'] 
+                # count_invoice += data_debit['count_invoice']
+                
+                net_total = invoice_net 
+                tax_total = invoice_tax
+                total_total = invoice_total
+                net_tax_total = net_total - exempt_net
+                sheet.write(row + 3, col + 5, 'Total General', formats['title'])
+                sheet.write(row + 3, col + 6, count_invoice, formats['total']) #SUMA DOCUMENTOS
+                sheet.write(row + 3, col + 7, exempt_total, formats['total'])
+                sheet.write(row + 3, col + 8, net_tax_total, formats['total'])
+                sheet.write(row + 3, col + 9, net_total, formats['total'])
+                sheet.write(row + 3, col + 10, tax_total, formats['total'])
+                sheet.write(row + 3, col + 11, 0, formats['total']) #TODO totoales iva no recuperable
+                sheet.write(row + 3, col + 12, total_total, formats['total'])
+
+        workbook.close()
+        with open(file_name, "rb") as file:
+            file_base64 = base64.b64encode(file.read())
+        file_name = 'Libro de Compras {} {}.xlsx'.format(company_name, date.today().strftime("%d/%m/%Y"))
+        attachment_id = self.env['ir.attachment'].sudo().create({
+            'name': file_name,
+            'datas_fname': file_name,
+            'datas': file_base64
+        })
+
+        action = {
+            'type': 'ir.actions.act_url',
+            'url': '/web/content/{}?download=true'.format(attachment_id.id, ),
+            'target': 'current',
+        }
+        return action
+
        
 
     @api.multi

@@ -1249,11 +1249,8 @@
 
             <t t-call="web.basic_layout">
                 <t t-set="total_documentos" t-value="0" />
-                <!-- <t t-set="total_general_exento" t-value="0" /> -->
-                <!-- <t t-set="total_general_neto_iva" t-value="0" /> -->
                 <t t-set="total_general_neto" t-value="0" />
                 <t t-set="total_general_impto" t-value="0" />
-                <!-- <t t-set="total_general_iva_no_rec" t-value="0" /> -->
                 <t t-set="total_general_general" t-value="0" />
                 <div class="page">
                     <table class="company_data">
@@ -1301,12 +1298,11 @@
                         </table>
 
                     </center>
-                    <!-- Facturas (33)-->
+                    <!-- Boletas (39)-->
                     <table class="tbl_book">
                         <center>
                             <h5>BOLETA DE HONORARIOS</h5>
                         </center>
-                        <!-- ***********  CAMPOS DE LA TABLA FACTURAS ELECTRONICAS *********** -->
                         <thead>
                             <tr>
                                 <th>Cod.SII</th>
@@ -1316,24 +1312,18 @@
                                 <th>Fecha</th>
                                 <th>Nombre</th>
                                 <th>#</th>
-                                <!-- <th>Exento</th> -->
-                                <!-- <th>Neto IVA</th> -->
                                 <th>NETO</th>
                                 <th>Impuesto (11,5%)</th>
-                                <!-- <th>IVA N/R</th> -->
                                 <th>Total</th>
                             </tr>
                         </thead>
-                        <!-- *********** CUERPO DEL REPORTE FACTURAS ELECTRONICAS *********** -->
                         <tbody>
                             <t t-set="qty_invoice" t-value="0" />
-                            <!-- <t t-set="total_exento" t-value="0" /> -->
                             <t t-set="total_neto" t-value="0" />
                             <t t-set="total_impto" t-value="0" />
                             <t t-set="total_general" t-value="0" />
                             <tr t-foreach="get_invoices" t-as="invoice">
                                 <t t-set="qty_invoice" t-value="qty_invoice + 1" />
-                                <!-- <t t-set="total_exento" t-value="total_exento + invoice.get_amount_exempt()" /> -->
                                 <t t-set="total_neto" t-value="total_neto + invoice.get_amount_neto()" />
                                 <t t-set="total_impto" t-value="total_impto + invoice.amount_tax" />
                                 <t t-set="total_general" t-value="total_general + invoice.amount_total" />
@@ -1363,16 +1353,6 @@
                                 </td>
                                 <!-- cantidad factura      -->
                                 <td></td>
-                                <!-- EXENTO      -->
-                                <!-- <td>
-                                    <span t-esc="invoice.format_amount(invoice.get_amount_exempt())"></span>
-                                </td> -->
-
-                                <!-- NETO IVA    -->
-                                <!-- <td>
-                                    <span t-esc="invoice.format_amount(invoice.get_amount_neto())"></span>
-                                </td> -->
-                                <!-- NETO  -->
                                 <td>
                                     <span t-field="invoice.amount_untaxed"></span>
                                 </td>
@@ -1380,12 +1360,6 @@
                                 <td>
                                     <span t-field="invoice.amount_tax"></span>
                                 </td>
-                                <!-- IVA NO RECUP-->
-                                <!-- <td>
-                                    $ 0
-                                    
-                                </td> -->
-                                <!-- TOTAL       -->
                                 <td>
                                     <span t-field="invoice.amount_total"></span>
                                 </td>
@@ -1410,11 +1384,8 @@
                                     <span t-esc="env['account.invoice'].sudo().format_amount(total_general)" />
                                 </td>
                                 <t t-set="total_documentos" t-value="total_documentos + qty_invoice" />
-                                <!-- <t t-set="total_general_exento" t-value="total_general_exento + total_exento" /> -->
-                                <!-- <t t-set="total_general_neto_iva" t-value="total_general_neto_iva + total_neto_iva" /> -->
                                 <t t-set="total_general_neto" t-value="total_general_neto + (total_neto)" />
                                 <t t-set="total_general_impto" t-value="total_general_impto + total_impto" />
-                                <!-- <t t-set="total_general_iva_no_rec" t-value="total_general_iva + total_iva" /> -->
                                 <t t-set="total_general_general" t-value="total_general_general + total_general" />
                             </tr>
                         </tbody>
@@ -1429,11 +1400,8 @@
                             <tr>
                                 <th></th>
                                 <th>Nº Docs.</th>
-                                <!-- <th>Total Exento</th> -->
-                                <!-- <th>Total Neto IVA</th> -->
                                 <th>Total Neto</th>
                                 <th>Total Impuestos</th>
-                                <!-- <th>Total IVA N/R</th> -->
                                 <th>Total General</th>
                             </tr>
                         </thead>
@@ -1443,21 +1411,12 @@
                                 <td>
                                     <span t-esc="total_documentos" />
                                 </td>
-                                <!-- <td>
-                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_general_exento)" />
-                                </td> -->
-                                <!-- <td>
-                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_general_neto_iva)" />
-                                </td> -->
                                 <td>
                                     <span t-esc="env['account.invoice'].sudo().format_amount(total_general_neto)" />
                                 </td>
                                 <td>
                                     <span t-esc="env['account.invoice'].sudo().format_amount(total_general_impto)" />
                                 </td>
-                                <!-- <td>
-                                    <span t-esc="env['account.invoice'].sudo().format_amount(total_general_iva_no_rec)" />
-                                </td> -->
                                 <td>
                                     <span t-esc="env['account.invoice'].sudo().format_amount(total_general_neto + total_general_impto)" />
                                 </td>
