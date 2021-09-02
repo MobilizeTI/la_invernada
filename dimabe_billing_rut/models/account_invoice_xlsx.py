@@ -135,6 +135,8 @@ class AccountInvoiceXlsx(models.Model):
                 invoice_tax = data_invoice.get('total').get('tax')
                 sheet = data_invoice['sheet']
                 row = data_invoice['row']
+                _logger.info('LOG: ---->>>> sheet {}'.format(sheet))
+                _logger.info('LOG: ---->>>> row {}'.format(row))
                 count_invoice += data_invoice['count_invoice']
 
                 # exempts = self.env['account.invoice'].sudo().search([('date', '>=', self.from_date),
