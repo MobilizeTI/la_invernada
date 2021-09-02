@@ -34,7 +34,8 @@ class AccountInvoice(models.Model):
 
     def get_today(self):
         return date.today().strftime('%Y-%m-%d')
-    
+        
+    @api.multi
     def create(self, vals):
         _logger.info('LOGGGGGGGG')
         return super(AccountInvoice, self).create(vals)
