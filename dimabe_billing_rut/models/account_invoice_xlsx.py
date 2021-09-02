@@ -89,7 +89,7 @@ class AccountInvoiceXlsx(models.Model):
             for wk in array_worksheet:
                 sheet = wk['worksheet']
                 region = self.env['region.address'].search([('id', '=', 1)])
-                titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', 'Nombre', '#', 'NETO', 'IMPTO']
+                titles = ['Cod.SII', 'Folio', 'Cor.Interno', 'Fecha', 'RUT', 'Nombre', '#', 'NETO', 'IMPTO (11.5%)']
                 invoices_get_tax = self.env['account.invoice'].sudo().search(
                     [('dte_type_id', '!=', None), ('company_id', '=', self.company_get_id.id),
                      ('date', '>=', self.from_date), ('date', '<=', self.to_date)])
@@ -104,8 +104,8 @@ class AccountInvoiceXlsx(models.Model):
                                   formats['title'])
                 sheet.merge_range(4, 3, 4, 6, 'Libro de Honorarios', formats['title'])
                 sheet.merge_range(5, 3, 5, 6, 'Libro de Honorarios Ordenado por fecha', formats['title'])
-                sheet.write(6, 10, 'Fecha', formats['title'])
-                sheet.write(6, 11, date.today().strftime('%Y-%m-%d'), formats['title'])
+                sheet.write(6, 8, 'Fecha', formats['title'])
+                sheet.write(6, 9, date.today().strftime('%Y-%m-%d'), formats['title'])
                 sheet.merge_range(6, 3, 6, 6, f'Desde {self.from_date} Hasta {self.to_date}', formats['title'])
                 sheet.merge_range(7, 3, 7, 6, 'Moneda : Peso Chileno', formats['title'])
                 row = 12
