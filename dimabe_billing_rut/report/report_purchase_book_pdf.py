@@ -145,10 +145,11 @@ class HonoraiosBookReport(models.AbstractModel):
 
     def get_invoices(self, from_date, to_date, company_id):
         domain_invoices = [('date', '>=', from_date),
-                        ('type', '=', 'in_employee_fee'),
-                    #  ('type', 'in', ('in_invoice', 'in_refund')),
+                        # ('type', '=', 'in_employee_fee'),
+                     ('type', 'in', ('in_invoice', 'in_refund')),
                      ('date', '<=', to_date), 
                      ('dte_type_id.code', '=', 39),
+                     ('journal_id.employee_fee', '=', True),
                      ('company_id.id', '=', company_id)]
                 #cambio en Order
         res = self.env['account.invoice'].sudo().search(domain_invoices, order='date asc, reference asc') #facturas electronicas
