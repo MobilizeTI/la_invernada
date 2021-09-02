@@ -968,8 +968,10 @@ class AccountInvoice(models.Model):
     # Send Data to Stock_Picking Comex
     @api.multi
     def write(self, vals):
-        _logger.info('LOG:  ----> journal context{}'.format(self._context.get('journal_id')))
-        _logger.info('LOG:  ----> journal values {}'.format(vals.get('journal_id')))
+        # _logger.info('LOG:  ----> journal context{}'.format(self._context.get('journal_id')))
+        # _logger.info('LOG:  ----> journal values {}'.format(vals.get('journal_id')))
+        _logger.info('LOG:  ----> journal self {}'.format(self.journal_id))
+        _logger.info('LOG:  ----> journal values {}'.format(vals))
         dispatch_list = []
         for item in self.orders_to_invoice:
             if item.stock_picking_id:
