@@ -128,75 +128,14 @@ class AccountInvoiceXlsx(models.Model):
                 invoices = self.env['account.invoice'].sudo().search(domain_invoices, order='date asc, reference asc') #facturas electronicas
                 begin = row
                 row += 1
-                data_invoice = self.set_data_for_excel(sheet, row, invoices, taxes_title, titles, formats, exempt=False)
+                data_invoice = self.set_data_for_excel(sheet, row, invoices, taxes_title, titles, formats, exempt=False, employee_fee=True)
                 #OKKKKK
                 invoice_total = data_invoice.get('total').get('total')
                 invoice_net = data_invoice.get('total').get('net')
                 invoice_tax = data_invoice.get('total').get('tax')
                 sheet = data_invoice['sheet']
                 row = data_invoice['row']
-                _logger.info('LOG: ---->>>> sheet {}'.format(sheet))
-                _logger.info('LOG: ---->>>> row {}'.format(row))
                 count_invoice += data_invoice['count_invoice']
-
-                # exempts = self.env['account.invoice'].sudo().search([('date', '>=', self.from_date),
-                #                                                      ('type', 'in', ('in_invoice', 'in_refund')),
-                #                                                      ('date', '<=', self.to_date),
-                #                                                      ('dte_type_id.code', '=', 34),
-                #                                                      ('company_id.id', '=', self.company_get_id.id)],
-                #                                                      order='date asc, reference asc')  #ORDENA ASCENDENTE
-                # row += 2
-                # sheet.merge_range(row, col, row, 5,
-                #                   'Factura de compra exenta electronica. (FACTURA COMPRA ELECTRONICA)',
-                #                   formats['title'])
-                # row += 1
-                # data_exempt = self.set_data_for_excel(sheet, row, exempts, taxes_title, titles, formats, exempt=True)
-                # exempt_total = data_exempt.get('total').get('total')
-                # exempt_net = data_exempt.get('total').get('net')
-                # exempt_tax = data_exempt.get('total').get('tax')
-                # sheet = data_exempt['sheet']
-                # row = data_exempt['row']
-                # count_invoice += data_exempt['count_invoice']                
-                
-                # credit = self.env['account.invoice'].sudo().search([('date', '>=', self.from_date),
-                #                                                     ('type', 'in', ('in_invoice', 'in_refund')),
-                #                                                     ('date', '<=', self.to_date),
-                #                                                     ('dte_type_id.code', '=', 61),
-                #                                                     ('company_id.id', '=', self.company_get_id.id)],
-                #                                                     order='date asc, reference asc') #ORDENA ASCENDENTE
-
-                # row += 2
-                # sheet.merge_range(row, col, row, 5,
-                #                   'NOTA DE CREDITO COMPRA ELECTRONICA (NOTA DE CREDITO COMPRA ELECTRONICA)',
-                #                   formats['title'])
-                # row += 1
-                # data_credit = self.set_data_for_excel(sheet, row, credit, taxes_title, titles, formats, exempt=False)
-                # credit_total = data_credit.get('total').get('total')
-                # credit_net = data_credit.get('total').get('net')
-                # credit_tax = data_credit.get('total').get('tax')
-                # sheet = data_credit['sheet']
-                # row = data_credit['row']
-                # count_invoice += data_credit['count_invoice']
-                # row += 2
-                # sheet.merge_range(row, col, row, 5,
-                #                   'NOTA DE DEBITO COMPRA ELECTRONICA (NOTA DE DEBITO COMPRA ELECTRONICA)',
-                #                   formats['title'])
-                # row += 1
-
-                # debit = self.env['account.invoice'].sudo().search([('date', '>=', self.from_date),
-                #                                                    ('date', '<=', self.to_date),
-                #                                                    ('type', 'in', ('in_invoice', 'in_refund')),
-                #                                                    ('dte_type_id.code', '=', 56),
-                #                                                    ('company_id.id', '=', self.company_get_id.id)],
-                #                                                    order='date asc, reference asc') #ORDENA ASCENDENTE
-                                                                   
-                # data_debit = self.set_data_for_excel(sheet, row, debit, taxes_title, titles, formats, exempt=False)
-                # debit_total = data_debit.get('total').get('total')
-                # debit_net = data_debit.get('total').get('net')
-                # debit_tax = data_debit.get('total').get('tax')
-                # sheet = data_debit['sheet']
-                # row = data_debit['row'] 
-                # count_invoice += data_debit['count_invoice']
                 
                 net_total = invoice_net 
                 tax_total = invoice_tax
@@ -556,7 +495,7 @@ class AccountInvoiceXlsx(models.Model):
         }
         return action
 
-    def set_data_for_excel(self, sheet, row, invoices, taxes_title, titles, formats, exempt):
+    def set_data_for_excel(self, sheet, row, invoices, taxes_title, titles, formats, exempt, employee_fee=False):
         for inv in invoices:
             col = 0
             data = self.set_data_invoice(sheet, col, row, inv, invoices, taxes_title, titles, formats)
@@ -572,35 +511,59 @@ class AccountInvoiceXlsx(models.Model):
         count_invoice = len(invoices)
         sheet.write(row, col, count_invoice, formats['total']) ## Cantidad Total de Documentos
         col += 1
-        exempt_sum = sum(invoices.mapped('invoice_line_ids').filtered(
+        if employee_fee:
+            sheet.write(row, col, sum(invoices.mapped('amount_untaxed')), formats['total']) ## Total neto 
+            col += 1
+            tax = sum(invoices.mapped('amount_tax'))
+            sheet.write(row, col, tax, formats['total']) ## Total imptos
+            col += 1
+            sheet.write(row, col, abs(sum(invoices.mapped('amount_total'))), formats['total'])
+
+            # sheet.write(row, col, sum(
+            #     invoices.mapped('tax_line_ids').filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
+            #             formats['total'])
+            # col += 1
+            # sheet.write(row, col, 0, formats['total'])
+            # col += 1
+            # for tax in taxes_title:
+            #     if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
+            #         line = invoices.mapped('tax_line_ids').filtered(
+            #             lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(
+            #                 a.tax_id.name) == tax).mapped(
+            #             'amount')
+            #         sheet.write(row, col, sum(line), formats['total'])
+            #         col += 1
+            # sheet.write(row, col, abs(sum(invoices.mapped('amount_total'))), formats['total'])
+        else:
+            exempt_sum = sum(invoices.mapped('invoice_line_ids').filtered(
             lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(
                 a.invoice_line_tax_ids) == 0).mapped('price_subtotal'))
-        sheet.write(row, col, exempt_sum, formats['total']) ## Total exento
-        col += 1
-        net_tax = sum(invoices.mapped('amount_untaxed')) - abs(exempt_sum)
-        sheet.write(row, col, net_tax, formats['total']) ## Total exento
-        col += 1
-        sheet.write(row, col, sum(invoices.mapped('amount_untaxed')), formats['total'])
-        # if exempt:
-        #     sheet.write(row, col, sum(invoices.mapped('amount_untaxed_signed')), formats['total'])
-        # else:
-        #     sheet.write(row, col, sum(invoices.mapped('amount_untaxed_signed')), formats['total'])
-        col += 1
-        sheet.write(row, col, sum(
-            invoices.mapped('tax_line_ids').filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
-                    formats['total'])
-        col += 1
-        sheet.write(row, col, 0, formats['total'])
-        col += 1
-        for tax in taxes_title:
-            if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
-                line = invoices.mapped('tax_line_ids').filtered(
-                    lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(
-                        a.tax_id.name) == tax).mapped(
-                    'amount')
-                sheet.write(row, col, sum(line), formats['total'])
-                col += 1
-        sheet.write(row, col, abs(sum(invoices.mapped('amount_total'))), formats['total'])
+            sheet.write(row, col, exempt_sum, formats['total']) ## Total exento
+            col += 1
+            net_tax = sum(invoices.mapped('amount_untaxed')) - abs(exempt_sum)
+            sheet.write(row, col, net_tax, formats['total']) ## Total exento
+            col += 1
+            sheet.write(row, col, sum(invoices.mapped('amount_untaxed')), formats['total'])
+            # if exempt:
+            #     sheet.write(row, col, sum(invoices.mapped('amount_untaxed_signed')), formats['total'])
+            # else:
+            #     sheet.write(row, col, sum(invoices.mapped('amount_untaxed_signed')), formats['total'])
+            col += 1
+            sheet.write(row, col, sum(
+                invoices.mapped('tax_line_ids').filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
+                        formats['total'])
+            col += 1
+            sheet.write(row, col, 0, formats['total'])
+            col += 1
+            for tax in taxes_title:
+                if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
+                    line = invoices.mapped('tax_line_ids').filtered(
+                        lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(
+                            a.tax_id.name) == tax).mapped(
+                        'amount')
+                    sheet.write(row, col, sum(line), formats['total'])
+                    col += 1
+            sheet.write(row, col, abs(sum(invoices.mapped('amount_total'))), formats['total'])
         col = 0
         return {
             'sheet': sheet, 
