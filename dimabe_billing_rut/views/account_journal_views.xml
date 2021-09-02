@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <record id="mblz_account_journal_form_inherit" model="ir.ui.view">
+            <field name="name">account.journal.view.inherit</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="employee_fee" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
