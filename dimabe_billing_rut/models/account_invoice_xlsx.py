@@ -691,7 +691,7 @@ class AccountInvoiceXlsx(models.Model):
                         sheet.write(row, col, sum(line), formats['number'])
                         col += 1
                 sheet.write(row, col, inv.amount_total_signed, formats['number'])
-        elif affect_taxes or employee_fee_taxes:
+        elif affect_taxes:
             sheet.write_number(row, col, 0, formats['number'])
             col += 1
             # sheet.write(row, col, inv.amount_untaxed_signed, formats['number'])
@@ -712,14 +712,9 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.write_number(row, col, 0, formats['number'])
                 col += 1
                 # sheet.write(row, col, inv.amount_tax, formats['number'])
-                if employee_fee_taxes:
-                    sheet.write(row, col,
-                            sum(inv.tax_line_ids.filtered(lambda a: 'Retención Boleta Honorarios' in a.tax_id.name).mapped('amount')),
+                sheet.write(row, col,
+                            sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
                             formats['number'])
-                else:
-                    sheet.write(row, col,
-                                sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
-                                formats['number'])
                 col += 1
             # for tax in taxes_title:
             #     if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
@@ -729,6 +724,40 @@ class AccountInvoiceXlsx(models.Model):
             #         sheet.write(row, col, sum(line), formats['number'])
             #         col += 1
             sheet.write(row, col, abs(inv.amount_total_signed), formats['number'])
+        elif employee_fee_taxes:
+            sheet.write_number(row, inv.amount_untaxed, 0, formats['number'])
+            col += 1
+            # sheet.write(row, col, inv.amount_untaxed_signed, formats['number'])
+            # net_tax = inv.amount_untaxed - abs(sum(exempt_taxes.mapped('price_subtotal')))
+            sheet.write(row, col, inv.amount_tax, formats['number'])
+            col += 1
+            sheet.write(row, col, inv.amount_total_signed, formats['number']) ##Neto
+            # col += 1
+            # days = self.diff_dates(inv.date, date.today())
+            # if days <= 90:
+            #     sheet.write(row, col,
+            #                 sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
+            #                 formats['number'])
+            #     col += 1
+            #     sheet.write_number(row, col, 0, formats['number'])
+            #     col += 1
+            # else:
+            #     sheet.write_number(row, col, 0, formats['number'])
+            #     col += 1
+            #     # sheet.write(row, col, inv.amount_tax, formats['number'])
+            #     sheet.write(row, col,
+            #                 sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
+            #                 formats['number'])
+            #     col += 1
+            # for tax in taxes_title:
+            #     if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
+            #         line = inv.tax_line_ids.filtered(
+            #             lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(a.tax_id.name) == tax).mapped(
+            #             'amount')
+            #         sheet.write(row, col, sum(line), formats['number'])
+            #         col += 1
+            sheet.write(row, col, abs(inv.amount_total_signed), formats['number'])
+
 
         
         line_out = {'sheet': sheet, 'row': row, 'col': col}
