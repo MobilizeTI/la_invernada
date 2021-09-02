@@ -206,10 +206,10 @@ class AccountInvoiceXlsx(models.Model):
                 sheet.write(row + 3, col + 6, count_invoice, formats['total']) #SUMA DOCUMENTOS
                 # sheet.write(row + 3, col + 7, exempt_total, formats['total'])
                 # sheet.write(row + 3, col + 8, net_tax_total, formats['total'])
-                sheet.write(row + 3, col + 9, net_total, formats['total'])
-                sheet.write(row + 3, col + 10, tax_total, formats['total'])
-                sheet.write(row + 3, col + 11, 0, formats['total']) #TODO totoales iva no recuperable
-                sheet.write(row + 3, col + 12, total_total, formats['total'])
+                sheet.write(row + 3, col + 7, net_total, formats['total'])
+                sheet.write(row + 3, col + 8, tax_total, formats['total'])
+                # sheet.write(row + 3, col + 11, 0, formats['total']) #TODO totoales iva no recuperable
+                sheet.write(row + 3, col + 9, total_total, formats['total'])
 
         workbook.close()
         with open(file_name, "rb") as file:
