@@ -3,7 +3,7 @@
 	<data>
 	
 	<!-- model.name inherit tree view -->
-	<record id="mblz_la_invernada" model="ir.ui.view">
+	<!-- <record id="mblz_la_invernada" model="ir.ui.view">
 		<field name="name">mblz.la.invernada.view.tree</field>
 		<field name="model">account.invoice</field>
 		<field name="inherit_id" ref="account.invoice_tree"/>
@@ -12,7 +12,7 @@
 				<field name="number"></field>			
 			</field>			
 		</field>
-	</record>
+	</record> -->
 		
 	</data>
 </odoo>
