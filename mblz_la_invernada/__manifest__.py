@@ -7,7 +7,7 @@
     'author': 'Felipe Angulo, Mobilize SPA',
     
     'depends': [
-        'l10n_cl_fe',
+        # 'l10n_cl_fe',
         'account'
     ],
     
