@@ -35,11 +35,10 @@ class AccountInvoice(models.Model):
     def get_today(self):
         return date.today().strftime('%Y-%m-%d')
     
-    @api.multi
+    # @api.multi
     def write(self, vals):
-        res = super(AccountInvoice, self).create(vals)
         _logger.info('LOG:  ----> journal {}'.format(self._context.get('journal_id')))
         _logger.info('LOG:  ----> journal {}'.format(vals.get('journal_id')))
-
+        res = super(AccountInvoice, self).create(vals)
         return res
 
