@@ -1090,3 +1090,11 @@ class AccountInvoice(models.Model):
 
     def get_today(self):
         return date.today().strftime('%Y-%m-%d')
+    
+    @api.multi
+    def create(self, vals):
+        res = super(AccountInvoice, self).create(vals)
+        _logger.info('LOG:  ----> journal {}'.format(self._context.get('journal_id')))
+
+        return res
+
