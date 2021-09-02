@@ -726,7 +726,7 @@ class AccountInvoiceXlsx(models.Model):
 
         
         line_out = {'sheet': sheet, 'row': row, 'col': col}
-        # _logger.info('LOG. **** output para linea %r', line_out)
+        _logger.info('LOG. **** output para linea %r', line_out)
 
         return line_out
 
