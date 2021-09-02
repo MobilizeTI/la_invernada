@@ -34,11 +34,16 @@ class AccountInvoice(models.Model):
 
     def get_today(self):
         return date.today().strftime('%Y-%m-%d')
-        
-    @api.multi
-    def create(self, vals):
+    
+    @api.model
+    def _default_journal(self):
         _logger.info('LOGGGGGGGG')
-        return super(AccountInvoice, self).create(vals)
+        return super(AccountInvoice, self)._default_journal()
+
+    # @api.multi
+    # def create(self, vals):
+    #     _logger.info('LOGGGGGGGG')
+    #     return super(AccountInvoice, self).create(vals)
     
     # @api.multi
     # def write(self, vals):
