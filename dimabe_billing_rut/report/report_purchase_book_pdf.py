@@ -145,7 +145,8 @@ class HonoraiosBookReport(models.AbstractModel):
 
     def get_invoices(self, from_date, to_date, company_id):
         domain_invoices = [('date', '>=', from_date),
-                     ('type', 'in', ('in_invoice')),
+                        ('type', '=', 'in_employee_fee'),
+                    #  ('type', 'in', ('in_invoice', 'in_refund')),
                      ('date', '<=', to_date), 
                      ('dte_type_id.code', '=', 39),
                      ('company_id.id', '=', company_id)]
