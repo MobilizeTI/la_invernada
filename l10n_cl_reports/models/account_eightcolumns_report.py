@@ -37,26 +37,7 @@ class CL8ColumnsReport(models.AbstractModel):
 
     @api.model
     def _prepare_query(self, options):
-        # accounts = self.env['account.account'].sudo().search([('internal_group', 'in', ['expense'])])
-        # # Prepare sql query base on selected parameters from wizard
-        # tables, where_clause, where_params = self.env['account.move.line']._query_get()
-        # tables = tables.replace('"','')
-        # if not tables:
-        #     tables = 'account_move_line'
-        # wheres = [""]
-        # if where_clause.strip():
-        #     wheres.append(where_clause.strip())
-        # filters = " AND ".join(wheres)
-        # # compute the balance, debit and credit for the provided accounts
-        # request = ("SELECT account_id AS id, SUM(debit) AS debit, SUM(credit) AS credit, (SUM(debit) - SUM(credit)) AS balance" +\
-        #            " FROM " + tables + " WHERE account_id IN %s " + filters + " GROUP BY account_id")
-        # params = (tuple(accounts.ids),) + tuple(where_params)
-        # _logger.info('LOG:  sql_query {} params {}'.format(request, params))
         tables, where_clause, where_params = self._query_get(options)
-        # _logger.info('LOG: --->> tables {} where {} whereparams {}'.format(tables, where_clause, where_params))
-        # tables = "account_move" as "account_move_line__move_id","account_account" as "account_move_line__account_id","account_move_line"
-        # where = ("account_move_line"."account_id"="account_move_line__account_id"."id" AND "account_move_line"."move_id"="account_move_line__move_id"."id") AND ((((("account_move_line__move_id"."state" != 'cancel')  AND  ("account_move_line"."company_id" = 3))  AND  ("account_move_line"."date" <= '2021-12-31'))  AND  (("account_move_line"."date" >= '2021-12-31')  OR  ("account_move_line__account_id"."user_type_id" in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12))))  AND  ("account_move_line__move_id"."state" = 'posted')) AND ("account_move_line"."company_id" IS NULL   OR  ("account_move_line"."company_id" in (3))) 
-        # whereparams  = ['cancel', 3, '2021-12-31', '2021-12-31', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 'posted', 3]
 
         sql_query = """
             SELECT aa.id, aa.code, aa.name,
@@ -75,17 +56,7 @@ class CL8ColumnsReport(models.AbstractModel):
             GROUP BY aa.id, aa.code, aa.name
             ORDER BY aa.code            
         """
-        # sql_query = """
-        #         SELECT aa.id, aa.code, aa.name, aa.internal_group
-        #         FROM account_account AS aa, "account_move" as "account_move_line__move_id","account_account" as "account_move_line__account_id","account_move_line" 
-        #         WHERE ("account_move_line"."account_id"="account_move_line__account_id"."id" AND "account_move_line"."move_id"="account_move_line__move_id"."id") 
-        #         AND ((((("account_move_line__move_id"."state" != 'cancel')  AND  ("account_move_line"."company_id" = 3))  AND  ("account_move_line"."date" <= '2021-12-31'))  AND  (("account_move_line"."date" >= '2021-12-31')  OR  ("account_move_line__account_id"."user_type_id" in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12))))  AND  ("account_move_line__move_id"."state" = 'posted')) AND ("account_move_line"."company_id" IS NULL   OR  ("account_move_line"."company_id" in (3))) 
-        #         AND aa.id = account_move_line.account_id
-        #         GROUP BY aa.id, aa.code, aa.name, aa.internal_group
-        #         ORDER BY aa.code;
-        # """
         return sql_query, where_params
-        # return request, params
 
     @api.model
     def _get_lines(self, options, line_id=None):
@@ -94,28 +65,14 @@ class CL8ColumnsReport(models.AbstractModel):
         sql_query, parameters = self._prepare_query(options)
         self.env.cr.execute(sql_query, parameters)
         results = self.env.cr.dictfetchall()
-        # _logger.info('LOG: ----> results {}'.format(results))
         for line in results:
-            # _logger.info('LOG: ----> linea {}'.format(line))
-            l_id = account_ids.filtered(lambda ac: line.get('id') == ac.id)
-
-
             lines.append({
                 'id': line['id'],
-                # 'name': line['code'] + " " + line['name'],
-                'name': l_id.code + " " + l_id.name,
+                'name': line['code'] + " " + line['name'],
                 'level': 3,
                 'unfoldable': False,
                 'columns': [
                     {'name': values} for values in [
-                        # self.format_value(line['debit']),
-                        # self.format_value(line['credit']),
-                        # self.format_value(line['balance']),
-                        # self.format_value(line['balance'] * -1),
-                        # self.format_value(line['balance'] if l_id.internal_group == 'asset' else 0),
-                        # self.format_value((line['balance'] * -1) if l_id.internal_group == 'liability' else 0),
-                        # self.format_value(line['balance'] if l_id.internal_group == 'expense' else 0),
-                        # self.format_value((line['balance'] * -1) if l_id.internal_group == 'income' else 0)
                         self.format_value(line['debe']),
                         self.format_value(line['haber']),
                         self.format_value(line['deudor']),
@@ -128,7 +85,6 @@ class CL8ColumnsReport(models.AbstractModel):
                 ],
                 'caret_options': 'account.account'
             })
-        _logger.info('LOG: --->>>> lineas del reporte {}'.format(lines))
         if lines:
             subtotals = self._calculate_subtotals(results)
             lines.append({
@@ -208,16 +164,7 @@ class CL8ColumnsReport(models.AbstractModel):
     @api.model
     def _query_get(self, options, domain=None):
         domain = self._get_options_domain(options) + (domain or [])
-        # domain = [
-        #     ('move_id.state', '!=', 'cancel'), 
-        #     ('company_id', '=', 3), 
-        #     ('date', '<=', '2021-12-31'), 
-        #     '|', ('date', '>=', '2021-12-31'), 
-        #     # ('account_id.user_type_id.include_initial_balance', '=', True), 
-        #     ('move_id.state', '=', 'posted')]
-
         self.env['account.move.line'].check_access_rights('read')
-        # _logger.info('LOG:   ---><<< domain on query_get {}'.format(domain))
 
         query = self.env['account.move.line']._where_calc(domain)
 
