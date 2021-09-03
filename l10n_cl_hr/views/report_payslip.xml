@@ -22,7 +22,8 @@
               <tbody>
                 <tr>
                   <th>
-                    <span t-field="res_company.name" />
+                    <!-- <span t-field="res_company.name" /> -->
+                    <span t-field="o.company_id.name" />
                   </th>
                   <th>
                     <span class="float-right" t-esc="res_company.vat and res_company.vat.replace('CL', ' ') or '55.555.555-5'" />
