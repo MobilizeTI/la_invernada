@@ -207,7 +207,15 @@ class CL8ColumnsReport(models.AbstractModel):
 
     @api.model
     def _query_get(self, options, domain=None):
-        domain = self._get_options_domain(options) + (domain or [])
+        # domain = self._get_options_domain(options) + (domain or [])
+        domain = [
+            ('move_id.state', '!=', 'cancel'), 
+            ('company_id', '=', 3), 
+            ('date', '<=', '2021-12-31'), 
+            '|', ('date', '>=', '2021-12-31'), 
+            # ('account_id.user_type_id.include_initial_balance', '=', True), 
+            ('move_id.state', '=', 'posted')]
+
         self.env['account.move.line'].check_access_rights('read')
         _logger.info('LOG:   ---><<< domain on query_get {}'.format(domain))
 
