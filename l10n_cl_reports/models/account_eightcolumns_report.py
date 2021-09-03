@@ -84,7 +84,8 @@ class CL8ColumnsReport(models.AbstractModel):
         #         GROUP BY aa.id, aa.code, aa.name, aa.internal_group
         #         ORDER BY aa.code;
         # """
-        return sql_query, where_params
+        # return sql_query, where_params
+        return request, params
 
     @api.model
     def _get_lines(self, options, line_id=None):
