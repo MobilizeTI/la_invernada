@@ -111,10 +111,10 @@ class CL8ColumnsReport(models.AbstractModel):
                         self.format_value(line['credit']),
                         self.format_value(line['balance']),
                         self.format_value(line['balance'] * -1),
-                        self.format_value(line['balance'] if l_id.internal_group == 'asset' else ''),
-                        self.format_value((line['balance'] * -1) if l_id.internal_group == 'liability' else ''),
-                        self.format_value(line['balance'] if l_id.internal_group == 'expense' else ''),
-                        self.format_value((line['balance'] * -1) if l_id.internal_group == 'income' else '')
+                        self.format_value(line['balance'] if l_id.internal_group == 'asset' else 0),
+                        self.format_value((line['balance'] * -1) if l_id.internal_group == 'liability' else 0),
+                        self.format_value(line['balance'] if l_id.internal_group == 'expense' else 0),
+                        self.format_value((line['balance'] * -1) if l_id.internal_group == 'income' else 0)
                         # self.format_value(line['debe']),
                         # self.format_value(line['haber']),
                         # self.format_value(line['deudor']),
