@@ -94,9 +94,9 @@ class CL8ColumnsReport(models.AbstractModel):
         sql_query, parameters = self._prepare_query(options)
         self.env.cr.execute(sql_query, parameters)
         results = self.env.cr.dictfetchall()
-        _logger.info('LOG: ----> results {}'.format(results))
+        # _logger.info('LOG: ----> results {}'.format(results))
         for line in results:
-            _logger.info('LOG: ----> linea {}'.format(line))
+            # _logger.info('LOG: ----> linea {}'.format(line))
             l_id = account_ids.filtered(lambda ac: line.get('id') == ac.id)
 
 
@@ -207,17 +207,17 @@ class CL8ColumnsReport(models.AbstractModel):
 
     @api.model
     def _query_get(self, options, domain=None):
-        # domain = self._get_options_domain(options) + (domain or [])
-        domain = [
-            ('move_id.state', '!=', 'cancel'), 
-            ('company_id', '=', 3), 
-            ('date', '<=', '2021-12-31'), 
-            '|', ('date', '>=', '2021-12-31'), 
-            # ('account_id.user_type_id.include_initial_balance', '=', True), 
-            ('move_id.state', '=', 'posted')]
+        domain = self._get_options_domain(options) + (domain or [])
+        # domain = [
+        #     ('move_id.state', '!=', 'cancel'), 
+        #     ('company_id', '=', 3), 
+        #     ('date', '<=', '2021-12-31'), 
+        #     '|', ('date', '>=', '2021-12-31'), 
+        #     # ('account_id.user_type_id.include_initial_balance', '=', True), 
+        #     ('move_id.state', '=', 'posted')]
 
         self.env['account.move.line'].check_access_rights('read')
-        _logger.info('LOG:   ---><<< domain on query_get {}'.format(domain))
+        # _logger.info('LOG:   ---><<< domain on query_get {}'.format(domain))
 
         query = self.env['account.move.line']._where_calc(domain)
 
@@ -267,7 +267,7 @@ class CL8ColumnsReport(models.AbstractModel):
                     domain += [
                         '|',
                         (date_field, '>=', options_date['date']),#date_from
-                        ('account_id.user_type_id.include_initial_balance', '=', True)
+                        # ('account_id.user_type_id.include_initial_balance', '=', True)
                     ]
                 else:
                     domain += [(date_field, '>=', options_date['date'])] #date_from
