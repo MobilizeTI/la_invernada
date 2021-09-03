@@ -95,6 +95,7 @@ class CL8ColumnsReport(models.AbstractModel):
         results = self.env.cr.dictfetchall()
         _logger.info('LOG: ----> results {}'.format(results))
         for line in results:
+            _logger.info('LOG: ----> linea {}'.format(line))
             lines.append({
                 'id': line['id'],
                 'name': line['code'] + " " + line['name'],
