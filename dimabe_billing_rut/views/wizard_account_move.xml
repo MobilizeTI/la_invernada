@@ -31,5 +31,6 @@
 		<field name="view_id" ref="wizard_export_account_move" />
 		<field name="target">new</field>
     </record>
-    <menuitem name="Libros Legales" parent="account.menu_finance_reports" id="account-menu-item" action="action_export_account_move"/>
+    <menuitem name="Libros Tributarios Chile" sequence="1" parent="l10n_cl.account_reports_cl_statements_menu" id="account-menu-item" action="action_export_account_move" />
+    
 </odoo>

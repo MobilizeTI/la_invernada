@@ -23,7 +23,7 @@
                     </group>
                 </group>
                 <group col="4">
-                    <field name="ledger_type" widget="radio"/>
+                    <field name="ledger_type" widget="radio" invisible="1"/>
                     <field name="summary"/>
                 </group>
                 <group col="4">
@@ -76,6 +76,6 @@
         <field name="target">current</field>
     </record>
 
-    <menuitem id="menu_account_standard_report" name="Informe estándar" sequence="10" parent="account.menu_finance_reports" action="action_account_standard_report" groups="account.group_account_user" />
+    <menuitem id="menu_account_standard_report" name="Libro Mayor Chile" sequence="2" parent="l10n_cl.account_reports_cl_statements_menu" action="action_account_standard_report" groups="account.group_account_user" />
 
 </odoo>

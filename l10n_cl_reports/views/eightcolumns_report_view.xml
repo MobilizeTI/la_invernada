@@ -7,7 +7,8 @@
     </record>
 
     <menuitem id="menu_action_eightcolumns_report"
-        name="Balance Tributario (8 columnas)"    
+        name="Balance 8 columnas Chile"    
         parent="l10n_cl.account_reports_cl_statements_menu"
-        action="action_eightcolumns_report"/>
+        action="action_eightcolumns_report"
+        sequence="3"/>
 </odoo>
