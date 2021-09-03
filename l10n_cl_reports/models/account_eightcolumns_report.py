@@ -89,6 +89,7 @@ class CL8ColumnsReport(models.AbstractModel):
 
     @api.model
     def _get_lines(self, options, line_id=None):
+        account_ids = self.env['account.account'].sudo().search([])
         lines = []
         sql_query, parameters = self._prepare_query(options)
         self.env.cr.execute(sql_query, parameters)
@@ -96,21 +97,32 @@ class CL8ColumnsReport(models.AbstractModel):
         _logger.info('LOG: ----> results {}'.format(results))
         for line in results:
             _logger.info('LOG: ----> linea {}'.format(line))
+            l_id = account_ids.filtered(lambda ac: line.get('id') == ac.id)
+
             lines.append({
                 'id': line['id'],
-                'name': line['code'] + " " + line['name'],
+                # 'name': line['code'] + " " + line['name'],
+                'name': l_id.code + " " + l_id.name,
                 'level': 3,
                 'unfoldable': False,
                 'columns': [
                     {'name': values} for values in [
-                        self.format_value(line['debe']),
-                        self.format_value(line['haber']),
-                        self.format_value(line['deudor']),
-                        self.format_value(line['acreedor']),
-                        self.format_value(line['activo']),
-                        self.format_value(line['pasivo']),
-                        self.format_value(line['perdida']),
-                        self.format_value(line['ganancia'])
+                        self.format_value(line['debit']),
+                        self.format_value(line['credit']),
+                        self.format_value(line['balance']),
+                        self.format_value(line['balance'] * -1),
+                        self.format_value(line['balance'] if l_id.internal_group == 'asset' else ''),
+                        self.format_value((line['balance'] * -1) if l_id.internal_group == 'liability' else ''),
+                        self.format_value(line['balance'] if l_id.internal_group == 'expense' else ''),
+                        self.format_value((line['balance'] * -1) if l_id.internal_group == 'income' else '')
+                        # self.format_value(line['debe']),
+                        # self.format_value(line['haber']),
+                        # self.format_value(line['deudor']),
+                        # self.format_value(line['acreedor']),
+                        # self.format_value(line['activo']),
+                        # self.format_value(line['pasivo']),
+                        # self.format_value(line['perdida']),
+                        # self.format_value(line['ganancia'])
                     ]
                 ],
                 'caret_options': 'account.account'
