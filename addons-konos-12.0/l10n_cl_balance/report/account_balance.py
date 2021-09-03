@@ -3,6 +3,8 @@
 import time
 from odoo import api, models, _
 from odoo.exceptions import UserError
+import logging
+_logger = logging.getLogger('TEST PURCHASE =======')
 
 
 class ReportTrialBalance(models.AbstractModel):
@@ -35,6 +37,7 @@ class ReportTrialBalance(models.AbstractModel):
         request = ("SELECT account_id AS id, SUM(debit) AS debit, SUM(credit) AS credit, (SUM(debit) - SUM(credit)) AS balance" +\
                    " FROM " + tables + " WHERE account_id IN %s " + filters + " GROUP BY account_id")
         params = (tuple(accounts.ids),) + tuple(where_params)
+        _logger.info('LOG:  sql_query {} params {}'.format(request, params))
         self.env.cr.execute(request, params)
         for row in self.env.cr.dictfetchall():
             account_result[row.pop('id')] = row
