@@ -37,6 +37,7 @@ class CL8ColumnsReport(models.AbstractModel):
 
     @api.model
     def _prepare_query(self, options):
+        accounts = self.env['account.account'].sudo().search([])
         # Prepare sql query base on selected parameters from wizard
         tables, where_clause, where_params = self.env['account.move.line']._query_get()
         tables = tables.replace('"','')
