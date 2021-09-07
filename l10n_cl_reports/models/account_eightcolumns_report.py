@@ -18,6 +18,21 @@ class CL8ColumnsReport(models.AbstractModel):
     filter_analytic = True
     filter_multi_company = None
 
+    @api.model
+    def _get_options(self, previous_options=None):
+        # OVERRIDE
+        options = super(CL8ColumnsReport, self)._get_options(previous_options)
+
+        # If manual values were stored in the context, we store them as options.
+        # This is useful for report printing, were relying only on the context is
+        # not enough, because of the use of a route to download the report (causing
+        # a context loss, but keeping the options).
+        options['date']['mode'] == 'range'
+        # if self._context.get('financial_report_line_values'):
+        #     options['financial_report_line_values'] = self.env.context['financial_report_line_values']
+
+        return options
+
     # @property
     # def filter_date(self):
     #     if self.date_range:
