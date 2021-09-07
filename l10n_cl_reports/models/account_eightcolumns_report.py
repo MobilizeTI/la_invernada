@@ -12,7 +12,7 @@ class CL8ColumnsReport(models.AbstractModel):
     _inherit = "account.report"
     _description = "Chilean Accounting eight columns report"
 
-    filter_date = {'mode': 'single', 'filter': 'this_year'}
+    filter_date = {'date_from': '', 'date_to': '', 'filter': 'this_year'}
     filter_journals = True
     filter_all_entries = False
     filter_analytic = True
@@ -25,16 +25,16 @@ class CL8ColumnsReport(models.AbstractModel):
         else:
             return {'mode': 'single', 'filter': 'today'}
 
-    @property
-    def filter_comparison(self):
-        if self.comparison:
-            return {'date_from': '', 'date_to': '', 'filter': 'no_comparison', 'number_period': 1}
-        return super().filter_comparison
+    # @property
+    # def filter_comparison(self):
+    #     if self.comparison:
+    #         return {'date_from': '', 'date_to': '', 'filter': 'no_comparison', 'number_period': 1}
+    #     return super().filter_comparison
 
     def _get_report_name(self):
         return _("Balance Tributario (8 columnas)")
     
-    comparison = fields.Boolean('Allow comparison', default=True, help='display the comparison filter')
+    # comparison = fields.Boolean('Allow comparison', default=True, help='display the comparison filter')
 
     def _get_columns_name(self, options):
         columns = [
