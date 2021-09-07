@@ -12,7 +12,7 @@ class CL8ColumnsReport(models.AbstractModel):
     _inherit = "account.report"
     _description = "Chilean Accounting eight columns report"
 
-    filter_date = {'date_from': '', 'date': '', 'filter': 'this_year'}
+    filter_date = {'mode': 'range', 'date_from': '', 'date': '', 'filter': 'this_year'}
     filter_journals = True
     filter_all_entries = False
     filter_analytic = True
