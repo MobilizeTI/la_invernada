@@ -33,6 +33,8 @@ class CL8ColumnsReport(models.AbstractModel):
 
     def _get_report_name(self):
         return _("Balance Tributario (8 columnas)")
+    
+    comparison = fields.Boolean('Allow comparison', default=True, help='display the comparison filter')
 
     def _get_columns_name(self, options):
         columns = [
