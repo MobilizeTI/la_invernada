@@ -27,7 +27,8 @@ class CL8ColumnsReport(models.AbstractModel):
         # This is useful for report printing, were relying only on the context is
         # not enough, because of the use of a route to download the report (causing
         # a context loss, but keeping the options).
-        options['date']['mode'] == 'range'
+        options['date']['mode'] = 'range'
+        options['date']['filter'] = 'custom'
         # if self._context.get('financial_report_line_values'):
         #     options['financial_report_line_values'] = self.env.context['financial_report_line_values']
 
