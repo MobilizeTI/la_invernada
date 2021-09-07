@@ -220,6 +220,7 @@ class CL8ColumnsReport(models.AbstractModel):
     
     @api.model
     def _get_options_date_domain(self, options):
+        _logger.info('LOG:  --->>> options {}'.format(options))
         def create_date_domain(options_date):
             date_field = options_date.get('date_field', 'date') #options_date.get('date_field', 'date')
             domain = [(date_field, '<=', options_date['date'])] #date_to
