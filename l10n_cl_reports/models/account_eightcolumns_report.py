@@ -33,12 +33,9 @@ class CL8ColumnsReport(models.AbstractModel):
 
         return options
 
-    # @property
-    # def filter_date(self):
-    #     if self.date_range:
-    #         return {'mode': 'range', 'filter': 'this_year'}
-    #     else:
-    #         return {'mode': 'single', 'filter': 'today'}
+    @property
+    def filter_date(self):
+        return {'mode': 'range', 'filter': 'this_year'}
 
     # @property
     # def filter_comparison(self):
