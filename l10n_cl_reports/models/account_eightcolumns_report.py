@@ -18,18 +18,18 @@ class CL8ColumnsReport(models.AbstractModel):
     filter_analytic = True
     filter_multi_company = None
 
-    # @property
-    # def filter_date(self):
-    #     if self.date_range:
-    #         return {'mode': 'range', 'filter': 'this_year'}
-    #     else:
-    #         return {'mode': 'single', 'filter': 'today'}
+    @property
+    def filter_date(self):
+        if self.date_range:
+            return {'mode': 'range', 'filter': 'this_year'}
+        else:
+            return {'mode': 'single', 'filter': 'today'}
 
-    # @property
-    # def filter_comparison(self):
-    #     if self.comparison:
-    #         return {'date_from': '', 'date_to': '', 'filter': 'no_comparison', 'number_period': 1}
-    #     return super().filter_comparison
+    @property
+    def filter_comparison(self):
+        if self.comparison:
+            return {'date_from': '', 'date_to': '', 'filter': 'no_comparison', 'number_period': 1}
+        return super().filter_comparison
 
     def _get_report_name(self):
         return _("Balance Tributario (8 columnas)")
