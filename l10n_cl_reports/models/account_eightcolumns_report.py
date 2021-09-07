@@ -18,12 +18,12 @@ class CL8ColumnsReport(models.AbstractModel):
     filter_analytic = True
     filter_multi_company = None
 
-    @property
-    def filter_date(self):
-        if self.date_range:
-            return {'mode': 'range', 'filter': 'this_year'}
-        else:
-            return {'mode': 'single', 'filter': 'today'}
+    # @property
+    # def filter_date(self):
+    #     if self.date_range:
+    #         return {'mode': 'range', 'filter': 'this_year'}
+    #     else:
+    #         return {'mode': 'single', 'filter': 'today'}
 
     # @property
     # def filter_comparison(self):
