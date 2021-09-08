@@ -12,7 +12,7 @@ class CL8ColumnsReport(models.AbstractModel):
     _inherit = "account.report"
     _description = "Chilean Accounting eight columns report"
 
-    filter_date = {'mode': 'range', 'filter': 'custom' }
+    # filter_date = {'mode': 'range', 'filter': 'custom' }
     filter_journals = True
     filter_all_entries = False
     filter_analytic = True
@@ -42,7 +42,7 @@ class CL8ColumnsReport(models.AbstractModel):
 
     @property
     def filter_date(self):
-        return {'mode': 'range', 'filter': 'month'}
+        return {'mode': 'range', 'filter': 'year'}
         # return {'mode': 'range', 'filter': 'month', 'date_to': '2021-01-01', 'date_from': '2021-12-31'}
 
     # @property
