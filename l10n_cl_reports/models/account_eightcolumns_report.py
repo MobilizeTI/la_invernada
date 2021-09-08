@@ -42,7 +42,7 @@ class CL8ColumnsReport(models.AbstractModel):
 
     @property
     def filter_date(self):
-        return {'mode': 'range', 'filter': 'custom'}
+        return {'mode': 'range', 'filter': 'custom', 'date_to': '', 'date_from': ''}
 
     # @property
     # def filter_comparison(self):
