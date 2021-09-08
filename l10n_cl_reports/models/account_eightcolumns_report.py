@@ -30,6 +30,7 @@ class CL8ColumnsReport(models.AbstractModel):
         options['date']['mode'] = 'range'
         options['date']['filter'] = 'custom'
         options['date']['date'] = options['date']['date_to']
+        _logger.info('LOG:  --->>> options get options {}'.format(options))
         # if self._context.get('financial_report_line_values'):
         #     options['financial_report_line_values'] = self.env.context['financial_report_line_values']
 
