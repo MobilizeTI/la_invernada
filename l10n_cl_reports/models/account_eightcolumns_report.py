@@ -42,7 +42,7 @@ class CL8ColumnsReport(models.AbstractModel):
 
     @property
     def filter_date(self):
-        return {'mode': 'range', 'filter': 'year'}
+        return {'mode': 'range', 'filter': 'year', 'date_from': '2021-01-01'}
         # return {'mode': 'range', 'filter': 'month', 'date_to': '2021-01-01', 'date_from': '2021-12-31'}
 
     # @property
