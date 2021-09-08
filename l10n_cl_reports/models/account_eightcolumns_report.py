@@ -18,7 +18,7 @@ class CL8ColumnsReport(models.AbstractModel):
     filter_multi_company = None
     @property
     def filter_date(self):
-        return {'mode': 'range', 'filter': 'year', 'date_from': '2021-01-01'}
+        return {'mode': 'range', 'filter': 'year', 'date_from': ''}
 
     def _get_report_name(self):
         return _("Balance Tributario (8 columnas)")
