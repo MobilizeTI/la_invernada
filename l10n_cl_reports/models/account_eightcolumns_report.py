@@ -20,6 +20,7 @@ class CL8ColumnsReport(models.AbstractModel):
 
     @api.model
     def _get_options(self, previous_options=None):
+        _logger.info('LOG:  --->>> options get prev options {}'.format(previous_options))
         # OVERRIDE
         options = super(CL8ColumnsReport, self)._get_options(previous_options)
 
