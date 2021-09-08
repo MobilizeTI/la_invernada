@@ -12,37 +12,37 @@ class CL8ColumnsReport(models.AbstractModel):
     _inherit = "account.report"
     _description = "Chilean Accounting eight columns report"
 
-    filter_date = {'mode': 'range', 'filter': 'custom'}
+    filter_date = {'mode': 'range', 'filter': 'custom', }
     filter_journals = True
     filter_all_entries = False
     filter_analytic = True
     filter_multi_company = None
 
-    @api.model
-    def _get_options(self, previous_options=None):
-        _logger.info('LOG:  --->>> options get prev option {}'.format(previous_options))
-        # OVERRIDE
-        options = super(CL8ColumnsReport, self)._get_options(previous_options)
+    # @api.model
+    # def _get_options(self, previous_options=None):
+    #     _logger.info('LOG:  --->>> options get prev option {}'.format(previous_options))
+    #     # OVERRIDE
+    #     options = super(CL8ColumnsReport, self)._get_options(previous_options)
 
-        # If manual values were stored in the context, we store them as options.
-        # This is useful for report printing, were relying only on the context is
-        # not enough, becaus
-        # e of the use of a route to download the report (causing
-        # a context loss, but keeping the options).
-        options['date']['mode'] = 'range'
-        options['date']['filter'] = 'custom'
-        options['date']['date_from'] = '2017-01-01'
-        options['date']['date_to'] = '2017-12-01'
-        # options['date']['date'] = options['date']['date_to']
-        _logger.info('LOG:  --->>> options get options {}'.format(options))
-        # if self._context.get('financial_report_line_values'):
-        #     options['financial_report_line_values'] = self.env.context['financial_report_line_values']
+    #     # If manual values were stored in the context, we store them as options.
+    #     # This is useful for report printing, were relying only on the context is
+    #     # not enough, becaus
+    #     # e of the use of a route to download the report (causing
+    #     # a context loss, but keeping the options).
+    #     options['date']['mode'] = 'range'
+    #     options['date']['filter'] = 'custom'
+    #     options['date']['date_from'] = '2017-01-01'
+    #     options['date']['date_to'] = '2017-12-01'
+    #     # options['date']['date'] = options['date']['date_to']
+    #     _logger.info('LOG:  --->>> options get options {}'.format(options))
+    #     # if self._context.get('financial_report_line_values'):
+    #     #     options['financial_report_line_values'] = self.env.context['financial_report_line_values']
 
-        return options
+    #     return options
 
-    # @property
-    # def filter_date(self):
-    #     return {'mode': 'range', 'filter': 'this_year'}
+    @property
+    def filter_date(self):
+        return {'mode': 'range', 'filter': 'custom'}
 
     # @property
     # def filter_comparison(self):
