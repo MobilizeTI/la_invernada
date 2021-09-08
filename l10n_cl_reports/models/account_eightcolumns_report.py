@@ -16,6 +16,7 @@ class CL8ColumnsReport(models.AbstractModel):
     filter_all_entries = False
     filter_analytic = True
     filter_multi_company = None
+
     @property
     def filter_date(self):
         return {'mode': 'range', 'filter': 'year', 'date_from': ''}
@@ -39,7 +40,6 @@ class CL8ColumnsReport(models.AbstractModel):
 
     @api.model
     def _prepare_query(self, options):
-        _logger.info('LOG:  --->>> options prepare query {}'.format(options))
         tables, where_clause, where_params = self._query_get(options)
 
         sql_query = """
@@ -166,7 +166,6 @@ class CL8ColumnsReport(models.AbstractModel):
 
     @api.model
     def _query_get(self, options, domain=None):
-        _logger.info('LOG:  --->>> options query get {}'.format(options))
         domain = self._get_options_domain(options) + (domain or [])
         self.env['account.move.line'].check_access_rights('read')
 
@@ -179,7 +178,6 @@ class CL8ColumnsReport(models.AbstractModel):
 
     @api.model
     def _get_options_domain(self, options):
-        _logger.info('LOG:  --->>> options domain {}'.format(options))
         domain = [
        #     ('display_type', 'not in', ('line_section', 'line_note')),
             ('move_id.state', '!=', 'cancel'),
@@ -210,7 +208,6 @@ class CL8ColumnsReport(models.AbstractModel):
     
     @api.model
     def _get_options_date_domain(self, options):
-        _logger.info('LOG:  --->>> options {}'.format(options))
         def create_date_domain(options_date):
             date_field = options_date.get('date_field', 'date') #options_date.get('date_field', 'date')
             domain = [(date_field, '<=', options_date['date_to'])] #date_to
