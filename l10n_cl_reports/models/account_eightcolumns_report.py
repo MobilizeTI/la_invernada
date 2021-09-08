@@ -26,7 +26,8 @@ class CL8ColumnsReport(models.AbstractModel):
 
         # If manual values were stored in the context, we store them as options.
         # This is useful for report printing, were relying only on the context is
-        # not enough, because of the use of a route to download the report (causing
+        # not enough, becaus
+        # e of the use of a route to download the report (causing
         # a context loss, but keeping the options).
         options['date']['mode'] = 'range'
         options['date']['filter'] = 'custom'
