@@ -34,9 +34,9 @@ class CL8ColumnsReport(models.AbstractModel):
 
         return options
 
-    @property
-    def filter_date(self):
-        return {'mode': 'range', 'filter': 'this_year'}
+    # @property
+    # def filter_date(self):
+    #     return {'mode': 'range', 'filter': 'this_year'}
 
     # @property
     # def filter_comparison(self):
@@ -65,6 +65,7 @@ class CL8ColumnsReport(models.AbstractModel):
 
     @api.model
     def _prepare_query(self, options):
+        _logger.info('LOG:  --->>> options prepare query {}'.format(options))
         tables, where_clause, where_params = self._query_get(options)
 
         sql_query = """
@@ -191,6 +192,7 @@ class CL8ColumnsReport(models.AbstractModel):
 
     @api.model
     def _query_get(self, options, domain=None):
+        _logger.info('LOG:  --->>> options query get {}'.format(options))
         domain = self._get_options_domain(options) + (domain or [])
         self.env['account.move.line'].check_access_rights('read')
 
@@ -203,6 +205,7 @@ class CL8ColumnsReport(models.AbstractModel):
 
     @api.model
     def _get_options_domain(self, options):
+        _logger.info('LOG:  --->>> options domain {}'.format(options))
         domain = [
        #     ('display_type', 'not in', ('line_section', 'line_note')),
             ('move_id.state', '!=', 'cancel'),
