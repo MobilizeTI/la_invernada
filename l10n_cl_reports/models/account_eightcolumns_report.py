@@ -37,15 +37,18 @@ class CL8ColumnsReport(models.AbstractModel):
 
         return options
 
-    # @property
-    # def filter_date(self):
-    #     return {'mode': 'range', 'filter': 'this_year'}
+    @property
+    def filter_date(self):
+        return {'mode': 'range', 'filter': 'this_year'}
 
-    # @property
-    # def filter_comparison(self):
-    #     if self.comparison:
-    #         return {'date_from': '', 'date_to': '', 'filter': 'no_comparison', 'number_period': 1}
-    #     return super().filter_comparison
+    @property
+    def filter_comparison(self):
+        if self.comparison:
+            return {'date_from': '', 'date_to': '', 'filter': 'no_comparison', 'number_period': 1}
+        return super().filter_comparison
+
+    date_range = fields.Boolean('Based on date ranges', default=True, help='specify if the report use date_range or single date')
+    comparison = fields.Boolean('Allow comparison', default=True, help='display the comparison filter')
 
     def _get_report_name(self):
         return _("Balance Tributario (8 columnas)")
