@@ -76,7 +76,7 @@ class CL8ColumnsReport(models.AbstractModel):
                    SUM(CASE aa.internal_group WHEN 'expense' THEN account_move_line.balance ELSE 0 END) AS perdida,
                    SUM(CASE aa.internal_group WHEN 'income' THEN -account_move_line.balance ELSE 0 END) AS ganancia
             FROM account_account AS aa, "account_move_line" """ + tables + """
-            WHERE """ + where_clause_ + """
+            WHERE """ + where_clause__ + """
             AND aa.id = account_move_line.account_id
             GROUP BY aa.id, aa.code, aa.name
             ORDER BY aa.code            
