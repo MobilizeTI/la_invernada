@@ -208,7 +208,7 @@ class CL8ColumnsReport(models.AbstractModel):
     def _get_options_domain(self, options):
         domain = [
        #     ('display_type', 'not in', ('line_section', 'line_note')),
-            # ('move_id.state', '!=', 'cancel'),
+            ('move_id.state', '!=', 'cancel'),
         ]
         if options.get('multi_company', False):
             domain += [('company_id', 'in', self.env.companies.ids)]
@@ -218,7 +218,7 @@ class CL8ColumnsReport(models.AbstractModel):
         domain += self._get_options_date_domain(options)
         domain += self._get_options_analytic_domain(options)
         domain += self._get_options_partner_domain(options)
-        # domain += self._get_options_all_entries_domain(options)
+        domain += self._get_options_all_entries_domain(options)
         return domain 
     
     @api.model
