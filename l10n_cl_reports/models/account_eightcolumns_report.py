@@ -144,6 +144,7 @@ class CL8ColumnsReport(models.AbstractModel):
         ])
         for key in subtotals.keys():
             for line in lines:
+                _logger.info('LOG: -->>> lines {}'.format(line))
                 subtotals[key] += line[key]
         return subtotals
 
@@ -220,7 +221,7 @@ class CL8ColumnsReport(models.AbstractModel):
                     domain += [
                         '|',
                         (date_field, '>=', options_date['date_from']),#date_from
-                        # ('account_id.user_type_id.include_initial_balance', '=', True)
+                        ('account_id', '=', 4065)
                     ]
                 else:
                     domain += [(date_field, '>=', options_date['date'])] #date_from
