@@ -42,28 +42,6 @@ class CL8ColumnsReport(models.AbstractModel):
     def _prepare_query(self, options):
         tables, where_clause, where_params = self._query_get(options)
 
-        # sql_query = """
-        #     SELECT aa.id, aa.code, aa.name,
-        #            SUM(account_move_line.debit) AS debe,
-        #            SUM(account_move_line.credit) AS haber,
-        #            GREATEST(SUM(account_move_line.balance), 0) AS deudor,
-        #            GREATEST(SUM(-account_move_line.balance), 0) AS acreedor,
-        #            SUM(CASE aa.internal_group WHEN 'asset' THEN account_move_line.balance ELSE 0 END) AS activo,
-        #            SUM(CASE aa.internal_group WHEN 'equity' THEN -account_move_line.balance ELSE 0 END) +
-        #            SUM(CASE aa.internal_group WHEN 'liability' THEN -account_move_line.balance ELSE 0 END) AS pasivo,
-        #            SUM(CASE aa.internal_group WHEN 'expense' THEN account_move_line.balance ELSE 0 END) AS perdida,
-        #            SUM(CASE aa.internal_group WHEN 'income' THEN -account_move_line.balance ELSE 0 END) AS ganancia
-        #     FROM account_account AS aa, """ + tables + """
-        #     WHERE """ + where_clause + """
-        #     AND aa.id = account_move_line.account_id
-        #     GROUP BY aa.id, aa.code, aa.name
-        #     ORDER BY aa.code            
-        # """
-        _logger.info('Log. --ZZ tables {}'.format(tables))
-        _logger.info('Log. --ZZ where {}'.format(where_clause))
-        tables = ''
-        where_clause_ = where_clause.replace('("account_move_line"."move_id"="account_move_line__move_id"."id") AND ', '')
-        where_clause__ = where_clause_.replace('("account_move_line__move_id"."state" != {})'.format("'cancel'"), '')
         sql_query = """
             SELECT aa.id, aa.code, aa.name,
                    SUM(account_move_line.debit) AS debe,
@@ -75,12 +53,34 @@ class CL8ColumnsReport(models.AbstractModel):
                    SUM(CASE aa.internal_group WHEN 'liability' THEN -account_move_line.balance ELSE 0 END) AS pasivo,
                    SUM(CASE aa.internal_group WHEN 'expense' THEN account_move_line.balance ELSE 0 END) AS perdida,
                    SUM(CASE aa.internal_group WHEN 'income' THEN -account_move_line.balance ELSE 0 END) AS ganancia
-            FROM account_account AS aa, "account_move_line" """ + tables + """
-            WHERE """ + where_clause_ + """
+            FROM account_account AS aa, """ + tables + """
+            WHERE """ + where_clause + """
             AND aa.id = account_move_line.account_id
             GROUP BY aa.id, aa.code, aa.name
             ORDER BY aa.code            
         """
+        _logger.info('Log. --ZZ tables {}'.format(tables))
+        _logger.info('Log. --ZZ where {}'.format(where_clause))
+        # tables = ''
+        # where_clause_ = where_clause.replace('("account_move_line"."move_id"="account_move_line__move_id"."id") AND ', '')
+        # where_clause__ = where_clause_.replace('("account_move_line__move_id"."state" != {})'.format("'cancel'"), '')
+        # sql_query = """
+        #     SELECT aa.id, aa.code, aa.name,
+        #            SUM(account_move_line.debit) AS debe,
+        #            SUM(account_move_line.credit) AS haber,
+        #            GREATEST(SUM(account_move_line.balance), 0) AS deudor,
+        #            GREATEST(SUM(-account_move_line.balance), 0) AS acreedor,
+        #            SUM(CASE aa.internal_group WHEN 'asset' THEN account_move_line.balance ELSE 0 END) AS activo,
+        #            SUM(CASE aa.internal_group WHEN 'equity' THEN -account_move_line.balance ELSE 0 END) +
+        #            SUM(CASE aa.internal_group WHEN 'liability' THEN -account_move_line.balance ELSE 0 END) AS pasivo,
+        #            SUM(CASE aa.internal_group WHEN 'expense' THEN account_move_line.balance ELSE 0 END) AS perdida,
+        #            SUM(CASE aa.internal_group WHEN 'income' THEN -account_move_line.balance ELSE 0 END) AS ganancia
+        #     FROM account_account AS aa, "account_move_line" """ + tables + """
+        #     WHERE """ + where_clause + """
+        #     AND aa.id = account_move_line.account_id
+        #     GROUP BY aa.id, aa.code, aa.name
+        #     ORDER BY aa.code            
+        # """
         # _logger.info('LOG: ....>>> sql {}'.format(sql_query))
         return sql_query, where_params
 
