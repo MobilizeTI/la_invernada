@@ -64,7 +64,7 @@ class CL8ColumnsReport(models.AbstractModel):
 
     @api.model
     def _get_lines(self, options, line_id=None):
-        account_ids = self.env['account.account'].sudo().search([])
+        # account_ids = self.env['account.account'].sudo().search([])
         lines = []
         sql_query, parameters = self._prepare_query(options)
         # _logger.info('LOG: -->>> sql {}'.format(sql_query))
@@ -72,6 +72,7 @@ class CL8ColumnsReport(models.AbstractModel):
         self.env.cr.execute(sql_query, parameters)
         results = self.env.cr.dictfetchall()
         for line in results:
+            _logger.info('LOG: line from result {}'.format(line))
             lines.append({
                 'id': line['id'],
                 'name': line['code'] + " " + line['name'],
@@ -144,7 +145,7 @@ class CL8ColumnsReport(models.AbstractModel):
         ])
         for key in subtotals.keys():
             for line in lines:
-                _logger.info('LOG: -->>> lines {}'.format(line))
+                # _logger.info('LOG: -->>> lines {}'.format(line))
                 subtotals[key] += line[key]
         return subtotals
 
@@ -221,7 +222,7 @@ class CL8ColumnsReport(models.AbstractModel):
                     domain += [
                         '|',
                         (date_field, '>=', options_date['date_from']),#date_from
-                        ('account_id', '=', 4065)
+                        # ('account_id', '=', 4065)
                     ]
                 else:
                     domain += [(date_field, '>=', options_date['date'])] #date_from
