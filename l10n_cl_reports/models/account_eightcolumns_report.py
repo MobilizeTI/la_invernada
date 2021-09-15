@@ -225,6 +225,7 @@ class CL8ColumnsReport(models.AbstractModel):
                     ]
                 else:
                     domain += [(date_field, '>=', options_date['date'])] #date_from
+            _logger.info('LOG: domain {}'.format(domain))
             return domain
 
         if not options.get('date'):
