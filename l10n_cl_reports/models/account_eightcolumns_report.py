@@ -67,6 +67,8 @@ class CL8ColumnsReport(models.AbstractModel):
         account_ids = self.env['account.account'].sudo().search([])
         lines = []
         sql_query, parameters = self._prepare_query(options)
+        _logger.info('LOG: -->>> sql {}'.format(sql_query))
+        _logger.info('LOG: -->>> params {}'.format(parameters))
         self.env.cr.execute(sql_query, parameters)
         results = self.env.cr.dictfetchall()
         for line in results:
