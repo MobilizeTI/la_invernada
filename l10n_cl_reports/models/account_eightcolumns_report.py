@@ -59,6 +59,7 @@ class CL8ColumnsReport(models.AbstractModel):
             GROUP BY aa.id, aa.code, aa.name
             ORDER BY aa.code            
         """
+        _logger.info('LOG: ....>>> sql {}'.format(sql_query))
         return sql_query, where_params
 
     @api.model
