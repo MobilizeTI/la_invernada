@@ -59,7 +59,7 @@ class CL8ColumnsReport(models.AbstractModel):
             GROUP BY aa.id, aa.code, aa.name
             ORDER BY aa.code            
         """
-        _logger.info('LOG: ....>>> sql {}'.format(sql_query))
+        # _logger.info('LOG: ....>>> sql {}'.format(sql_query))
         return sql_query, where_params
 
     @api.model
@@ -67,7 +67,7 @@ class CL8ColumnsReport(models.AbstractModel):
         account_ids = self.env['account.account'].sudo().search([])
         lines = []
         sql_query, parameters = self._prepare_query(options)
-        _logger.info('LOG: -->>> sql {}'.format(sql_query))
+        # _logger.info('LOG: -->>> sql {}'.format(sql_query))
         _logger.info('LOG: -->>> params {}'.format(parameters))
         self.env.cr.execute(sql_query, parameters)
         results = self.env.cr.dictfetchall()
@@ -213,13 +213,13 @@ class CL8ColumnsReport(models.AbstractModel):
     def _get_options_date_domain(self, options):
         def create_date_domain(options_date):
             date_field = options_date.get('date_field', 'date') #options_date.get('date_field', 'date')
-            domain = [(date_field, '<=', options_date['date_from'])] #date_to
+            domain = [(date_field, '<=', options_date['date_to'])] #date_to
             if options_date['mode'] == 'range':
                 strict_range = options_date.get('strict_range')
                 if not strict_range:
                     domain += [
                         '|',
-                        (date_field, '>=', options_date['date_to']),#date_from
+                        (date_field, '>=', options_date['date_from']),#date_from
                         # ('account_id.user_type_id.include_initial_balance', '=', True)
                     ]
                 else:
@@ -228,6 +228,7 @@ class CL8ColumnsReport(models.AbstractModel):
 
         if not options.get('date'):
            return []
+        _logger.info('LOG:  -->>>> range_date {}'.format(options['date']))
         return create_date_domain(options['date'])
 
     @api.model
