@@ -195,6 +195,7 @@ class CL8ColumnsReport(models.AbstractModel):
     def _query_get(self, options, domain=None):
         domain = self._get_options_domain(options) + (domain or [])
         self.env['account.move.line'].check_access_rights('read')
+        _logger.info('LOG: ----ZZ domain {}'.format(domain))
 
         query = self.env['account.move.line']._where_calc(domain)
 
