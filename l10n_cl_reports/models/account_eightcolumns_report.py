@@ -63,7 +63,7 @@ class CL8ColumnsReport(models.AbstractModel):
         _logger.info('Log. --ZZ where {}'.format(where_clause))
         tables = ''
         where_clause_ = where_clause.replace('("account_move_line"."move_id"="account_move_line__move_id"."id") AND ', '')
-        where_clause__ = where_clause_.replace('("account_move_line__move_id"."state" != "cancel")  AND', '')
+        where_clause__ = where_clause_.replace('("account_move_line__move_id"."state" != {})  AND  '.format("'cancel'"), '')
         sql_query = """
             SELECT aa.id, aa.code, aa.name,
                    SUM(account_move_line.debit) AS debe,
@@ -76,7 +76,7 @@ class CL8ColumnsReport(models.AbstractModel):
                    SUM(CASE aa.internal_group WHEN 'expense' THEN account_move_line.balance ELSE 0 END) AS perdida,
                    SUM(CASE aa.internal_group WHEN 'income' THEN -account_move_line.balance ELSE 0 END) AS ganancia
             FROM account_account AS aa, "account_move_line" """ + tables + """
-            WHERE """ + where_clause__ + """
+            WHERE """ + where_clause_ + """
             AND aa.id = account_move_line.account_id
             GROUP BY aa.id, aa.code, aa.name
             ORDER BY aa.code            
