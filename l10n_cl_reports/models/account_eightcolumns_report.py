@@ -218,7 +218,7 @@ class CL8ColumnsReport(models.AbstractModel):
         domain += self._get_options_date_domain(options)
         domain += self._get_options_analytic_domain(options)
         domain += self._get_options_partner_domain(options)
-        domain += self._get_options_all_entries_domain(options)
+        # domain += self._get_options_all_entries_domain(options)
         return domain 
     
     @api.model
