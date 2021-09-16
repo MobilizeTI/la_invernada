@@ -17,6 +17,7 @@ class WizardDiaryAccountMOveLine(models.AbstractModel):
     date = fields.Date('Fecha')
 
     def generate_diary_book_pdf(self):
+        _logger.info('LOG  ..>><<< OKKKKK')
         self.ensure_one()
         [data] = self.read()
         # data['move_ids'] = self.env.context.get('active_ids', [])
