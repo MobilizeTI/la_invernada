@@ -12,7 +12,7 @@
     ],
     
     'data': [
-        # 'views/account_invoice_views.xml',
+        'security/ir.model.access.csv',
         'views/report_views.xml',
         'wizard/wizard_diary_account_move_line_report.xml'
     ],

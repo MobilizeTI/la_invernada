@@ -17,15 +17,6 @@
         </field>
     </record>
 
-    <!-- <act_window name="Libro Diario"
-                res_model="account.move.make.netting"
-                src_model="account.move.line"
-                view_mode="form"
-                target="new"
-                key2="client_action_multi"
-                multi="True"
-                id="act_account_move_make_netting"/> -->
-
     <record id="action_export_account_move_line" model="ir.actions.act_window">
         <field name="name">Libro Diario</field>
         <field name="res_model">account.move.line.diary</field>
