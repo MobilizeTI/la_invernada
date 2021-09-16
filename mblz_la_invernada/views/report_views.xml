@@ -256,7 +256,7 @@
 
                         <table class="table table-condensed" style="margin-top: 50px !important">
                             <center>
-                                <span style="font-size: 14px; font-weight: bold">Contabilización Glosa</span>
+                                <span style="font-size: 14px; font-weight: bold">Libro Diario</span>
                             </center>
                             <thead>
                                 <tr>
@@ -275,10 +275,11 @@
                                     <th class="col-xs-1">Match.</th>
                                 </tr>
                             </thead>
-                            <tbody style="border-bottom: 1px solid;page-break-inside: avoid">
+                            <tbody t-foreach="o.get_move_lines" t-as="gl" style="border-bottom: 1px solid;page-break-inside: avoid">
                                 <t t-set="total_debito" t-value="0" />
                                 <t t-set="total_credito" t-value="0" />
-                                <tr t-foreach="o.line_ids" t-as="l">
+                                <span t-field="gl.move.name"></span>
+                                <tr t-foreach="gl.lines" t-as="l">
                                     <t t-set="total_debito" t-value="total_debito + l.debit" />
                                     <t t-set="total_credito" t-value="total_credito + l.credit" />
                                     <td style="white-space:nowrap">
