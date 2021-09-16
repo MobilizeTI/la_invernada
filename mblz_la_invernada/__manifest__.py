@@ -13,7 +13,8 @@
     
     'data': [
         # 'views/account_invoice_views.xml',
-        'views/report_views.xml'
+        'views/report_views.xml',
+        'wizard/wizard_diary_account_move_line_report.xml'
     ],
     
     'installable': True,

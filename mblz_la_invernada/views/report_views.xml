@@ -191,6 +191,171 @@
         </t>
     </template>
 
+    <template id="report_diary_account_move_pdf">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.internal_layout">
+
+                    <div class="page" style="font-size:12px;">
+                        <div class="table" style="margin-top: 20px !important;">
+                            <table style="border: none !important; font-size: 12px; width: 100%; ">
+                                <tbody>
+                                    <tr style="border: none !important; padding: 0 !important">
+                                        <td t-esc="o.company_id.name" style="text-align: left" />
+                                        <td style="text-align: right" />
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <table style="border: none !important; font-size: 13px; width: 100%; margin-top: 10px !important">
+                            <tbody>
+                                <tr style="border: none !important; padding: 0 !important">
+                                    <td t-esc="o.company_id.name" style="text-align: left" />
+                                    <td style="text-align: right" />
+                                </tr>
+                                <tr style="border: none !important; padding: 0 !important">
+                                    <td t-esc="o.company_id.street" style="text-align: left" />
+                                    <td style="text-align: right">
+                                        Nº:
+                                        <span t-esc="o.name" />
+                                    </td>
+                                </tr>
+                                <tr style="border: none !important; padding: 0 !important">
+                                    <!-- TODO -->
+                                    <!-- <td t-esc="o.company_id.activity_description.name" style="text-align: left" /> -->
+                                    <td>Proceso y comercialización de Nueces</td>
+                                    <td style="text-align: right">
+                                        Tipo:
+                                        <span t-esc="o.journal_id.name" />
+                                    </td>
+                                </tr>
+                                <tr style="border: none !important; padding: 0 !important">
+                                    <td t-esc="o.company_id.city" style="text-align: left" />
+                                    <td style="text-align: right">
+                                        Fecha:
+                                        <span t-field="o.date" />
+                                    </td>
+                                </tr>
+                                <tr style="border: none !important; padding: 0 !important">
+                                    <td t-esc="o.company_id.region_address_id.name" style="text-align: left" />
+                                    <td style="text-align: right">
+                                        Estado:
+                                        <span t-field="o.state" />
+                                    </td>
+                                </tr>
+                                <tr style="border: none !important; padding: 0 !important">
+                                    <td t-esc="o.company_id.invoice_rut" style="text-align: left" />
+                                    <td style="text-align: right" />
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                        <table class="table table-condensed" style="margin-top: 50px !important">
+                            <center>
+                                <span style="font-size: 14px; font-weight: bold">Contabilización Glosa</span>
+                            </center>
+                            <thead>
+                                <tr>
+                                    <th class="col-xs-1">Fecha</th>
+                                    <th class="col-xs-1">Diario</th>
+                                    <th class="col-xs-1">Cuenta</th>
+                                    <th class="col-xs-3">Código Cuenta</th>
+                                    <th class="col-xs-1">Analítica</th>
+                                    <th class="col-xs-1">Movimientos</th>
+                                    <th class="col-xs-3">Ref</th>
+                                    <th class="col-xs-3">Empresa</th>
+                                    <th class="col-xs-1">Fecha</th>
+                                    <th class="col-xs-3 text-right">Débito</th>
+                                    <th class="col-xs-3 text-right">Crédito</th>
+                                    <th class="col-xs-3 text-right" groups="base.group_multi_currency">Divisa</th>
+                                    <th class="col-xs-1">Match.</th>
+                                </tr>
+                            </thead>
+                            <tbody style="border-bottom: 1px solid;page-break-inside: avoid">
+                                <t t-set="total_debito" t-value="0" />
+                                <t t-set="total_credito" t-value="0" />
+                                <tr t-foreach="o.line_ids" t-as="l">
+                                    <t t-set="total_debito" t-value="total_debito + l.debit" />
+                                    <t t-set="total_credito" t-value="total_credito + l.credit" />
+                                    <td style="white-space:nowrap">
+                                        <span t-field="l.date"></span>
+                                    </td>
+                                    <td>
+                                        <span t-field="l.journal_id.name"></span>
+                                    </td>
+                                    <td>
+                                        <span t-field="l.account_id.name"></span>
+                                    </td>
+                                    <td>
+                                        <span t-field="l.account_id.code"></span>
+                                    </td>
+                                    <td>
+                                        <span t-field="l.analytic_account_id"></span>
+                                    </td>
+                                    <td>
+                                        <span t-field="l.move_id"></span>
+                                    </td>
+                                    <td>
+                                        <span t-field="l.name"></span>
+                                    </td>
+                                    <td>
+                                        <span t-field="l.partner_id"></span>
+                                    </td>
+                                    <td>
+                                        <span t-field="l.date_maturity"></span>
+                                    </td>
+                                    <td class="text-right">
+                                        <div>
+                                            <span t-field="l.debit" />
+                                        </div>
+                                    </td>
+                                    <td class="text-right">
+                                        <div>
+                                            <span t-field="l.credit" />
+                                        </div>
+                                    </td>
+                                    <td class="text-right" style="white-space:nowrap" groups="base.group_multi_currency">
+                                        <div t-if="l.amount_currency">
+                                            <span t-field="l.amount_currency" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span t-if="l.reconciled" t-field="l.full_reconcile_id" />
+                                        <span t-if="not l.reconciled and l.full_reconcile_id">*</span>
+                                    </td>
+                                </tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="font-size: 14px; font-weight: bold">Totales</td>
+                                <td style="font-size: 14px; font-weight: bold">
+                                    <span t-esc="o.format_amount(total_debito)" />
+                                </td>
+                                <td style="font-size: 14px; font-weight: bold">
+                                    <span t-esc="o.format_amount(total_credito)" />
+                                </td>
+                                <td></td>
+                                <td></td>
+
+                                <tr></tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
     <record id="mblz_paperformat_account_move_pdf" model="report.paperformat">
         <field name="name">Asiento Contable</field>
         <field name="default" eval="True" />
@@ -206,6 +371,24 @@
         <field name="header_spacing">0</field>
         <field name="dpi">90</field>
     </record>
+    
+    <report 
+        id="diary_book_pdf_report" 
+        string="Libro Diario" 
+        model="account.move.line" 
+        report_type="qweb-pdf" 
+        file="mblz_la_invernada.report_diary_account_move_pdf" 
+        name="mblz_la_invernada.report_diary_account_move_pdf" 
+        paperformat="mblz_la_invernada.mblz_paperformat_account_move_pdf"
+        print_report_name="('Libro de Diario %s' % object.date)" />
 
-    <report id="action_report_account_move" model="account.move" string="Asiento Contable Invernada" report_type="qweb-pdf" name="mblz_la_invernada.mblz_invernada_account_move_report" file="mblz_la_invernada.mblz_invernada_account_move_report" paperformat="mblz_la_invernada.mblz_paperformat_account_move_pdf" menu="True" />
+    <report 
+        id="action_report_account_move" 
+        model="account.move" 
+        string="Asiento Contable Invernada" 
+        report_type="qweb-pdf" 
+        name="mblz_la_invernada.mblz_invernada_account_move_report" 
+        file="mblz_la_invernada.mblz_invernada_account_move_report" 
+        paperformat="mblz_la_invernada.mblz_paperformat_account_move_pdf" 
+        menu="True" />
 </odoo>
