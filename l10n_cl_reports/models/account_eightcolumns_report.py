@@ -245,7 +245,7 @@ class CL8ColumnsReport(models.AbstractModel):
                     domain += [
                         '|',
                         (date_field, '>=', options_date['date_from']),#date_from
-                        # ('account_id', '=', 4065)
+                        ('account_id', '=', 4065)
                     ]
                 else:
                     domain += [(date_field, '>=', options_date['date'])] #date_from
@@ -282,9 +282,9 @@ class CL8ColumnsReport(models.AbstractModel):
     @api.model
     def _get_options_all_entries_domain(self, options):
         if not options.get('all_entries'):
-            return [('move_id.state', '=', 'posted')]
+            return [('move_id.state', '=', 'posted'), ('move_id.account_id', '=', 4065)]
         else:
-            return [('move_id.state', '!=', 'cancel')]
+            return [('move_id.state', '!=', 'cancel'), ('move_id.account_id', '=', 4065)]
     
 
 
@@ -303,8 +303,24 @@ class CL8ColumnsReport(models.AbstractModel):
 #                    SUM(CASE aa.internal_group WHEN 'liability' THEN -account_move_line.balance ELSE 0 END) AS pasivo,
 #                    SUM(CASE aa.internal_group WHEN 'expense' THEN account_move_line.balance ELSE 0 END) AS perdida,
 #                    SUM(CASE aa.internal_group WHEN 'income' THEN -account_move_line.balance ELSE 0 END) AS ganancia
-#             FROM account_account AS aa ,"account_move_line"
-#             WHERE (((("account_move_line"."company_id" = 3))  AND  ("account_move_line"."date" <= '2021-01-31'))  AND  (("account_move_line"."date" >= '2021-01-01'))) AND ("account_move_line"."company_id" IS NULL   OR  ("account_move_line"."company_id" in (3)))
+#             FROM account_account AS aa, "account_move" as "account_move_line__move_id","account_move_line"
+#             WHERE (((("account_move_line__move_id"."state" != 'cancel')  AND("account_move_line"."company_id" = 3))  AND  ("account_move_line"."date" <= '2021-01-31'))  AND  (("account_move_line"."date" >= '2021-01-01') OR  ("account_move_line__move_id"."state" = 'posted'))) AND ("account_move_line"."company_id" IS NULL   OR  ("account_move_line"."company_id" in (3)))
+#             AND aa.id = account_move_line.account_id
+#             GROUP BY aa.id, aa.code, aa.name
+#             ORDER BY aa.code
+
+# SELECT aa.id, aa.code, aa.name,
+#                    SUM(account_move_line.debit) AS debe,
+#                    SUM(account_move_line.credit) AS haber,
+#                    GREATEST(SUM(account_move_line.balance), 0) AS deudor,
+#                    GREATEST(SUM(-account_move_line.balance), 0) AS acreedor,
+#                    SUM(CASE aa.internal_group WHEN 'asset' THEN account_move_line.balance ELSE 0 END) AS activo,
+#                    SUM(CASE aa.internal_group WHEN 'equity' THEN -account_move_line.balance ELSE 0 END) +
+#                    SUM(CASE aa.internal_group WHEN 'liability' THEN -account_move_line.balance ELSE 0 END) AS pasivo,
+#                    SUM(CASE aa.internal_group WHEN 'expense' THEN account_move_line.balance ELSE 0 END) AS perdida,
+#                    SUM(CASE aa.internal_group WHEN 'income' THEN -account_move_line.balance ELSE 0 END) AS ganancia
+#             FROM account_account AS aa, "account_move" as "account_move_line__move_id","account_move_line"
+#             WHERE ("account_move_line"."move_id"="account_move_line__move_id"."id") AND (((("account_move_line__move_id"."state" != %s)  AND  ("account_move_line"."company_id" = %s))  AND  ("account_move_line"."date" <= %s))  AND  (("account_move_line"."date" >= %s)  OR  ("account_move_line__move_id"."state" = %s))) AND ("account_move_line"."company_id" IS NULL   OR  ("account_move_line"."company_id" in (%s)))
 #             AND aa.id = account_move_line.account_id
 #             GROUP BY aa.id, aa.code, aa.name
 #             ORDER BY aa.code
