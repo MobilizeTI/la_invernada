@@ -82,29 +82,30 @@ class CL8ColumnsReport(models.AbstractModel):
         #     ORDER BY aa.code            
         # """
         # _logger.info('LOG: ....>>> sql {}'.format(sql_query))
-        # sql_query = """
-        #     select aa.id, aa.code, aa.name, 
-        #         SUM(account_move_line.debit) AS debe,
-        #         SUM(account_move_line.credit) AS haber,
-        #         GREATEST(SUM(account_move_line.balance), 0) AS deudor,
-        #         GREATEST(SUM(-account_move_line.balance), 0) AS acreedor,
-        #         SUM(CASE aa.internal_group WHEN 'asset' THEN account_move_line.balance ELSE 0 END) AS activo,
-        #         SUM(CASE aa.internal_group WHEN 'equity' THEN -account_move_line.balance ELSE 0 END) +
-        #         SUM(CASE aa.internal_group WHEN 'liability' THEN -account_move_line.balance ELSE 0 END) AS pasivo,
-        #         SUM(CASE aa.internal_group WHEN 'expense' THEN account_move_line.balance ELSE 0 END) AS perdida,
-        #         SUM(CASE aa.internal_group WHEN 'income' THEN -account_move_line.balance ELSE 0 END) AS ganancia
-        #         from account_account as aa, account_move as account_move_line__move_id, account_move_line 
-        #         where account_move_line.move_id = account_move_line__move_id.id 
-        #             and account_move_line__move_id.state != 'cancel' 
-        #             and account_id = 4019 
-        #             and account_move_line.date >= '2021-01-01' 
-        #             and account_move_line.date <= '2021-01-31' 
-        #             AND aa.id = account_move_line.account_id
-        #             AND account_move_line.company_id = 3
-        #             AND account_move_line__move_id.state = 'posted'
-        #         group by aa.id, aa.code, aa.name
-        #         ORDER BY aa.code
-        #  """
+        sql_query = """
+            select aa.id, aa.code, aa.name, 
+                SUM(account_move_line.debit) AS debe,
+                SUM(account_move_line.credit) AS haber,
+                GREATEST(SUM(account_move_line.balance), 0) AS deudor,
+                GREATEST(SUM(-account_move_line.balance), 0) AS acreedor,
+                SUM(CASE aa.internal_group WHEN 'asset' THEN account_move_line.balance ELSE 0 END) AS activo,
+                SUM(CASE aa.internal_group WHEN 'equity' THEN -account_move_line.balance ELSE 0 END) +
+                SUM(CASE aa.internal_group WHEN 'liability' THEN -account_move_line.balance ELSE 0 END) AS pasivo,
+                SUM(CASE aa.internal_group WHEN 'expense' THEN account_move_line.balance ELSE 0 END) AS perdida,
+                SUM(CASE aa.internal_group WHEN 'income' THEN -account_move_line.balance ELSE 0 END) AS ganancia
+                from account_account as aa, account_move as account_move_line__move_id, account_move_line 
+                where account_move_line.move_id = account_move_line__move_id.id 
+                    and account_move_line__move_id.state != %s 
+                    AND account_move_line.company_id = %s
+                    and account_id = 4019 
+                    and account_move_line.date <= %s
+                    and account_move_line.date >= %s
+                    AND aa.id = account_move_line.account_id
+                    AND account_move_line__move_id.state = %s
+                    AND account_move_line.company_id = %s
+                group by aa.id, aa.code, aa.name
+                ORDER BY aa.code
+         """
         return sql_query, where_params
 
     @api.model
