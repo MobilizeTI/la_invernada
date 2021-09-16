@@ -11,9 +11,6 @@ class DiaryAccountMoveLineReport(models.AbstractModel):
     def _get_report_values(self, docids, data=None):
         if not data.get('form'):
             raise UserError(_("El contenido del reporte esta vacio, El reporte no puede imprimirse."))
-        
-
-
         report = self.env['ir.actions.report']._get_report_from_name('mblz_la_invernada.report_diary_account_move_pdf')
         lines = self.get_move_lines(data['form']['date'], data['form']['company_get_id'][0])
         if not lines:
@@ -46,6 +43,25 @@ class DiaryAccountMoveLineReport(models.AbstractModel):
             })
         
         return res
+        # report = {
+        #     'doc_ids': account.move(16,), 
+        #     'doc_model': 'account.move.line', 
+        #     'docs': account.move(16,), 
+        #     'date': '2020-01-01', 
+        #     'company_get_id': [3, 'Servicios La Invernada SPA'], 
+        #     'get_move_lines': [
+        #         {
+        #             'move': account.move(16,), 
+        #             'lines': account.move.line(47, 46)
+                    
+        #         }, 
+        #         {
+        #             'move': account.move(2,), 
+        #             'lines': account.move.line(32, 33, 37, 38, 30, 45, 36)
+                    
+        #         }
+        #         ]}
+
 
         # report= {
         #     'doc_ids': account.move(15,), 
