@@ -31,7 +31,8 @@ class DiaryAccountMoveLineReport(models.AbstractModel):
             ('company_id.id', '=', company_id)
             ]
         res = []
-        lines = self.env['account.move.line'].sudo().read_group(domain=domain, orderby='date asc', groupby=['move_id'])
+        fields = ['debit', 'credit', 'account_id']
+        lines = self.env['account.move.line'].sudo().read_group(domain=domain, orderby='date asc', groupby=['move_id'], fields=fields)
         _logger.info('LOG: -_>>>> groups {}'.format(lines))
         # for line in lines:
         #     res.append({
