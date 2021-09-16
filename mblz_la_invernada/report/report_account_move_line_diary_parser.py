@@ -13,7 +13,7 @@ class DiaryAccountMoveLineReport(models.AbstractModel):
             raise UserError(_("El contenido del reporte esta vacio, El reporte no puede imprimirse."))
 
         report = self.env['ir.actions.report']._get_report_from_name('mblz_la_invernada.report_diary_account_move_pdf')
-        return {            
+        report_data = {            
             'doc_ids': self.ids,
             'doc_model': report.model,
             'docs': self.ids,
@@ -21,6 +21,8 @@ class DiaryAccountMoveLineReport(models.AbstractModel):
             'company_get_id': data['form']['company_get_id'],
             'get_move_lines': self.get_move_lines(data['form']['date'], data['form']['company_get_id'][0]),
         }
+        _logger.info('LOG:.    test data report {}'.format(report_data))
+        return report_data
 
     def get_move_lines(self, date, company_id):
         domain = [
