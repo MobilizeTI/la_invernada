@@ -20,11 +20,11 @@ class WizardDiaryAccountMOveLine(models.AbstractModel):
         self.ensure_one()
         [data] = self.read()
         data['move_ids'] = self.env.context.get('active_ids', [])
-        invoices = self.env['account.invoice'].browse(data['move_ids'])
+        lines = self.env['account.move.lines'].browse(data['move_ids'])
         datas = {
             'ids': [],
-            'model': 'account.invoice',
+            'model': 'account.move.line',
             'form': data
         }
         # return self.env.ref('dimabe_billing_rut.honorarios_book_pdf_report').report_action(invoices, data=datas)
-        return self.env.ref('mblz_la_invernada.diary_book_pdf_report').report_action()
+        return self.env.ref('mblz_la_invernada.diary_book_pdf_report').report_action(lines, data=datas)
