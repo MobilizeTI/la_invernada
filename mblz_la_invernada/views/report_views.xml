@@ -259,8 +259,13 @@
                                 <span style="font-size: 14px; font-weight: bold">Libro Diario</span>
                             </center>
                             <t t-foreach="get_move_lines" t-as="gl">
-                                <span t-esc="gl['move'].name"></span>
+                                
                                 <thead>
+                                    <tr>
+                                        <th>
+                                            <span t-esc="gl['move'].name"></span>
+                                        </th>
+                                    </tr>
                                     <tr>
                                         <th class="col-xs-1">Fecha</th>
                                         <th class="col-xs-1">Diario</th>
