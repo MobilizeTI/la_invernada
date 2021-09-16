@@ -14,9 +14,9 @@ class DiaryAccountMoveLineReport(models.AbstractModel):
 
         report = self.env['ir.actions.report']._get_report_from_name('mblz_la_invernada.report_diary_account_move_pdf')
         report_data = {            
-            'doc_ids': self.ids,
+            'doc_ids': report.id,
             'doc_model': report.model,
-            'docs': self.ids,
+            'docs': report.id,
             'date': data['form']['date'],
             'company_get_id': data['form']['company_get_id'],
             'get_move_lines': self.get_move_lines(data['form']['date'], data['form']['company_get_id'][0]),
