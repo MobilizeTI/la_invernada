@@ -27,4 +27,4 @@ class WizardDiaryAccountMOveLine(models.AbstractModel):
             'form': data
         }
         # return self.env.ref('dimabe_billing_rut.honorarios_book_pdf_report').report_action(invoices, data=datas)
-        return self.env.ref('mblz_la_invernada.diary_book_pdf_report').report_action(self)
+        return self.env.ref('mblz_la_invernada.diary_book_pdf_report').report_action()
