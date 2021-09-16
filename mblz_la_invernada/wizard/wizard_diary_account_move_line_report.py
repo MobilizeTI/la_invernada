@@ -7,7 +7,7 @@ from collections import Counter
 import logging
 _logger = logging.getLogger('TEST report =======')
 
-class WizardDiaryAccountMOveLine(models.Model):
+class WizardDiaryAccountMOveLine(models.AbstractModel):
     _name = 'account.move.line.diary'
     _description = 'Wizard Libro Diario'
 
