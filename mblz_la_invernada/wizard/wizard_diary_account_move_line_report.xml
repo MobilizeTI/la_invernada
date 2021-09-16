@@ -31,7 +31,7 @@
         <field name="res_model">account.move.line.diary</field>
         <field name="view_type">form</field>
         <field name="view_mode">form</field>
-        <!-- <field name="view_id" ref="wizard_diary_account_move_line" /> -->
+        <field name="view_id" ref="wizard_diary_account_move_line" />
         <field name="target">new</field>
     </record>
 
