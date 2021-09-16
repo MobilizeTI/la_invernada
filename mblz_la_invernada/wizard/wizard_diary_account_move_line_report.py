@@ -30,4 +30,4 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
         }
         # return self.env.ref('dimabe_billing_rut.honorarios_book_pdf_report').report_action(invoices, data=datas)
         # return self.env.ref('mblz_la_invernada.diary_book_pdf_report').report_action(lines, data=datas)
-        return self.env.ref('l10n_cl_balance.action_report_financial').report_action(self, data=datas, config=False)
+        return self.env.ref('mblz_la_invernada.diary_book_pdf_report').report_action(self, data=datas, config=False)
