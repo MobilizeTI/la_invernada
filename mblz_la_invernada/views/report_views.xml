@@ -243,7 +243,7 @@
                                     <td t-esc="o.company_id.region_address_id.name" style="text-align: left" />
                                     <td style="text-align: right">
                                         Estado:
-                                        <span t-field="o.state" />
+                                        <!-- <span t-field="o.state" /> -->
                                     </td>
                                 </tr>
                                 <tr style="border: none !important; padding: 0 !important">

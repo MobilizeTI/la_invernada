@@ -30,7 +30,13 @@ class DiaryAccountMoveLineReport(models.AbstractModel):
             ('date', '=', date),
             ('company_id.id', '=', company_id)
             ]
-
-        res = self.env['account.move.line'].sudo().search(domain, order='date asc')
+        res = []
+        lines = self.env['account.move.line'].sudo().read_group(domain=domain, orderby='date asc', groupby=['move_id'])
+        _logger.info('LOG: -_>>>> groups {}'.format(lines))
+        # for line in lines:
+        #     res.append({
+        #         'move' : line.move_id,
+        #         'lines': 
+        #     })
         
         return res
