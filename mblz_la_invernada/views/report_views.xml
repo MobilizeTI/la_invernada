@@ -259,6 +259,7 @@
                                 <span style="font-size: 14px; font-weight: bold">Libro Diario</span>
                             </center>
                             <t t-foreach="get_move_lines" t-as="gl">
+                                <span t-esc="gl['move'].name"></span>
                                 <thead>
                                     <tr>
                                         <th class="col-xs-1">Fecha</th>
@@ -276,10 +277,11 @@
                                         <th class="col-xs-1">Match.</th>
                                     </tr>
                                 </thead>
+                                
                                 <tbody style="border-bottom: 1px solid;page-break-inside: avoid">
                                     <t t-set="total_debito" t-value="0" />
                                     <t t-set="total_credito" t-value="0" />
-                                    <span t-esc="gl['move'].name"></span>
+                                    
                                     <tr t-foreach="gl['lines']" t-as="l">
                                         <t t-set="total_debito" t-value="total_debito + l.debit" />
                                         <t t-set="total_credito" t-value="total_credito + l.credit" />
