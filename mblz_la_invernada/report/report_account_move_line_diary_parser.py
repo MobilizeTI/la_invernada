@@ -15,9 +15,9 @@ class DiaryAccountMoveLineReport(models.AbstractModel):
         report = self.env['ir.actions.report']._get_report_from_name('mblz_la_invernada.report_diary_account_move_pdf')
         lines = self.get_move_lines(data['form']['date'], data['form']['company_get_id'][0])
         report_data = {            
-            'doc_ids': lines[0],
+            'doc_ids': lines[0].get('move'),
             'doc_model': report.model,
-            'docs': lines[0],
+            'docs': lines[0].get('move'),
             'date': data['form']['date'],
             'company_get_id': data['form']['company_get_id'],
             'get_move_lines': lines,
@@ -31,13 +31,14 @@ class DiaryAccountMoveLineReport(models.AbstractModel):
             ('company_id.id', '=', company_id)
             ]
         res = []
-        fields = ['debit', 'credit', 'account_id']
-        lines = self.env['account.move.line'].sudo().read_group(domain=domain, orderby='date asc', groupby=['move_id'], fields=fields)
-        _logger.info('LOG: -_>>>> groups {}'.format(lines))
-        # for line in lines:
-        #     res.append({
-        #         'move' : line.move_id,
-        #         'lines': 
-        #     })
+        
+        lines = self.env['account.move.line'].sudo().search(domain, order='date asc')
+        moves = [line.move_id for line in lines]
+        for move in moves:
+            move_lines = lines.filtered(lambda l: l.move_id == move)
+            res.append({
+                'move': move,
+                'lines': move_lines
+            })
         
         return res
