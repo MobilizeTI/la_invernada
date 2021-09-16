@@ -275,7 +275,7 @@
                                     <th class="col-xs-1">Match.</th>
                                 </tr>
                             </thead>
-                            <tbody t-foreach="o.get_move_lines" t-as="gl" style="border-bottom: 1px solid;page-break-inside: avoid">
+                            <tbody t-foreach="get_move_lines" t-as="gl" style="border-bottom: 1px solid;page-break-inside: avoid">
                                 <t t-set="total_debito" t-value="0" />
                                 <t t-set="total_credito" t-value="0" />
                                 <span t-field="gl.move.name"></span>
