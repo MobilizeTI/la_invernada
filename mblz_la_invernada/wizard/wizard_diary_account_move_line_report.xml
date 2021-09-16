@@ -35,6 +35,6 @@
         <field name="target">new</field>
     </record>
 
-    <menuitem name="Libro Diario" sequence="3" parent="l10n_cl.account_reports_cl_statements_menu" id="account-menu-item" action="action_export_account_move_line" />
+    <menuitem name="Libro Diario" sequence="3" parent="l10n_cl.account_reports_cl_statements_menu" id="menu_action_export_account_move_line" action="action_export_account_move_line" />
 
 </odoo>
