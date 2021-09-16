@@ -22,7 +22,7 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
         [data] = self.read()
         # data['move_ids'] = self.env.context.get('active_ids', [])
         # lines = self.env['account.move.lines'].browse(data['move_ids'])
-        _logger.info('LOG  ..>><<< data {}'.format(data))
+        # _logger.info('LOG  ..>><<< data {}'.format(data))
         datas = {
             'ids': [],
             'model': 'account.move.line',
