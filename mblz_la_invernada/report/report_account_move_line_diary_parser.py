@@ -33,7 +33,7 @@ class DiaryAccountMoveLineReport(models.AbstractModel):
         res = []
         
         lines = self.env['account.move.line'].sudo().search(domain, order='date asc')
-        moves = [line.move_id for line in lines]
+        moves = list(set([line.move_id for line in lines]))
         for move in moves:
             move_lines = lines.filtered(lambda l: l.move_id == move)
             res.append({
@@ -42,3 +42,19 @@ class DiaryAccountMoveLineReport(models.AbstractModel):
             })
         
         return res
+
+        # report= {
+        #     'doc_ids': account.move(15,), 
+        #     'doc_model': 'account.move.line', 
+        #     'docs': account.move(15,), 'date': '2019-06-19', 
+        #     'company_get_id': [3, 'Servicios La Invernada SPA'], 
+        #     'get_move_lines': [
+        #         {
+        #             'move': account.move(15,), 
+        #             'lines': account.move.line(43, 44)
+        #         }, 
+        #         {
+        #             'move': account.move(15,), 
+        #             'lines': account.move.line(43, 44)
+        #         }
+        #         ]}
