@@ -278,8 +278,8 @@
                             <tbody t-foreach="get_move_lines" t-as="gl" style="border-bottom: 1px solid;page-break-inside: avoid">
                                 <t t-set="total_debito" t-value="0" />
                                 <t t-set="total_credito" t-value="0" />
-                                <span t-field="gl.move.name"></span>
-                                <tr t-foreach="gl.lines" t-as="l">
+                                <span t-field="gl['move'].name"></span>
+                                <tr t-foreach="gl['move']['lines']" t-as="l">
                                     <t t-set="total_debito" t-value="total_debito + l.debit" />
                                     <t t-set="total_credito" t-value="total_credito + l.credit" />
                                     <td style="white-space:nowrap">
