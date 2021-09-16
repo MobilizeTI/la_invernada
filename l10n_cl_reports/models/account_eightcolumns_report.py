@@ -245,7 +245,7 @@ class CL8ColumnsReport(models.AbstractModel):
                     domain += [
                         '|',
                         (date_field, '>=', options_date['date_from']),#date_from
-                        ('account_id', '=', 4065)
+                        # ('account_id', '=', 4065)
                     ]
                 else:
                     domain += [(date_field, '>=', options_date['date'])] #date_from
@@ -282,9 +282,9 @@ class CL8ColumnsReport(models.AbstractModel):
     @api.model
     def _get_options_all_entries_domain(self, options):
         if not options.get('all_entries'):
-            return [('move_id.state', '=', 'posted'), ('move_id.account_id', '=', 4065)]
+            return [('move_id.state', '=', 'posted')]
         else:
-            return [('move_id.state', '!=', 'cancel'), ('move_id.account_id', '=', 4065)]
+            return [('move_id.state', '!=', 'cancel')]
     
 
 
