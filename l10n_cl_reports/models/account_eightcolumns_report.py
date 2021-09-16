@@ -97,7 +97,6 @@ class CL8ColumnsReport(models.AbstractModel):
                 where account_move_line.move_id = account_move_line__move_id.id 
                     and account_move_line__move_id.state != %s 
                     AND account_move_line.company_id = %s
-                    and account_id = 4019 
                     and account_move_line.date <= %s
                     and account_move_line.date >= %s
                     AND aa.id = account_move_line.account_id
