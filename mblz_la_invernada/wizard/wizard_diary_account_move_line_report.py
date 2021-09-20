@@ -281,6 +281,7 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
             # col += 1
             # sheet.write(row, col, line.full_reconcile_id, formats['string'])
             row += 1
+            col = col - 8
             # if line.reference:
             #     sheet.write(row, col, inv.reference, formats['string'])
             # col += 1
