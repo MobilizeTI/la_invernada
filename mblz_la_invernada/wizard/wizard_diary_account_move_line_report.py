@@ -253,29 +253,31 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
         }
 
     def set_data_invoice(self, sheet, col, row, inv, invoices, titles, formats):
-        sheet.write(row, col, inv.dte_type_id.code, formats['string'])
-        col += 1
+        sheet.write(row, col, inv['move'].name, formats['string'])
+        # col += 1
+        row += 1
         # if inv.dte_folio:
         #     sheet.write(row, col, inv.dte_folio, formats['string'])
         #TODO esto es lo que debiera ir
         # if inv.sii_document_number:
         #     sheet.write(row, col, inv.sii_document_number, formats['string'])
-        if inv.reference:
-            sheet.write(row, col, inv.reference, formats['string'])
-        col += 1
-        if inv.number:
-            sheet.write(row, col, inv.number, formats['string'])
-        col += 1
-        if inv.date:
-            sheet.write(row, col, inv.date.strftime('%Y-%m-%d'), formats['string'])
-        col += 1
-        if inv.partner_id.invoice_rut:
-            sheet.write(row, col, inv.partner_id.invoice_rut, formats['string'])
-        col += 1
-        long_name = max(invoices.mapped('partner_id').mapped('display_name'), key=len)
-        sheet.set_column(col, col, len(long_name))
-        sheet.write(row, col, inv.partner_id.display_name, formats['string'])
-        col += 2
+        for line in inv['lines']:  
+            if line.reference:
+                sheet.write(row, col, inv.reference, formats['string'])
+            col += 1
+            if inv.number:
+                sheet.write(row, col, inv.number, formats['string'])
+            col += 1
+            if inv.date:
+                sheet.write(row, col, inv.date.strftime('%Y-%m-%d'), formats['string'])
+            col += 1
+            if inv.partner_id.invoice_rut:
+                sheet.write(row, col, inv.partner_id.invoice_rut, formats['string'])
+            col += 1
+            long_name = max(invoices.mapped('partner_id').mapped('display_name'), key=len)
+            sheet.set_column(col, col, len(long_name))
+            sheet.write(row, col, inv.partner_id.display_name, formats['string'])
+            col += 2
 
         # exempt_taxes = inv.invoice_line_ids.filtered(lambda a: a.sii_code == 0 and a.amount == 0.0)
         # affect_taxes = inv.invoice_line_ids.filtered(lambda a: a.sii_code == 14)
