@@ -90,30 +90,30 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
                 row += 1
                 data_invoice = self.set_data_for_excel(sheet, row, moves, titles, formats)
                 #OKKKKK
-                invoice_total = data_invoice.get('total').get('total')
-                invoice_net = data_invoice.get('total').get('net')
-                invoice_tax = data_invoice.get('total').get('tax')
+                # invoice_total = data_invoice.get('total').get('total')
+                # invoice_net = data_invoice.get('total').get('net')
+                # invoice_tax = data_invoice.get('total').get('tax')
                 sheet = data_invoice['sheet']
                 row = data_invoice['row']
                 count_invoice += data_invoice['count_invoice']
                 
-                net_total = invoice_net 
-                tax_total = invoice_tax
-                total_total = invoice_total
-                net_tax_total = net_total
-                sheet.write(row + 3, col + 5, 'Total General', formats['title'])
-                sheet.write(row + 3, col + 6, count_invoice, formats['total']) #SUMA DOCUMENTOS
-                # sheet.write(row + 3, col + 7, exempt_total, formats['total'])
-                # sheet.write(row + 3, col + 8, net_tax_total, formats['total'])
-                sheet.write(row + 3, col + 7, net_total, formats['total'])
-                sheet.write(row + 3, col + 8, tax_total, formats['total'])
-                # sheet.write(row + 3, col + 11, 0, formats['total']) #TODO totoales iva no recuperable
-                sheet.write(row + 3, col + 9, total_total, formats['total'])
+                # net_total = invoice_net 
+                # tax_total = invoice_tax
+                # total_total = invoice_total
+                # net_tax_total = net_total
+                # sheet.write(row + 3, col + 5, 'Total General', formats['title'])
+                # sheet.write(row + 3, col + 6, count_invoice, formats['total']) #SUMA DOCUMENTOS
+                # # sheet.write(row + 3, col + 7, exempt_total, formats['total'])
+                # # sheet.write(row + 3, col + 8, net_tax_total, formats['total'])
+                # sheet.write(row + 3, col + 7, net_total, formats['total'])
+                # sheet.write(row + 3, col + 8, tax_total, formats['total'])
+                # # sheet.write(row + 3, col + 11, 0, formats['total']) #TODO totoales iva no recuperable
+                # sheet.write(row + 3, col + 9, total_total, formats['total'])
 
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
-        file_name = 'Libro de Honorarios {} {}.xlsx'.format(company_name, date.today().strftime("%d/%m/%Y"))
+        file_name = 'Libro Diario {} {}.xlsx'.format(company_name, date.today().strftime("%d/%m/%Y"))
         attachment_id = self.env['ir.attachment'].sudo().create({
             'name': file_name,
             'datas_fname': file_name,
@@ -367,14 +367,14 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
         #     #         col += 1
         #     sheet.write(row, col, abs(inv.amount_total_signed), formats['number'])
         # elif employee_fee_taxes:
-            sheet.write_number(row, col, int(inv.amount_untaxed), formats['number'])
-            col += 1
-            # sheet.write(row, col, inv.amount_untaxed_signed, formats['number'])
-            # net_tax = inv.amount_untaxed - abs(sum(exempt_taxes.mapped('price_subtotal')))
-            sheet.write(row, col, int(inv.amount_tax), formats['number'])
-            col += 1
-            sheet.write(row, col, int(inv.amount_total_signed), formats['number']) ##Neto
-            col += 1
+            # sheet.write_number(row, col, int(inv.amount_untaxed), formats['number'])
+            # col += 1
+            # # sheet.write(row, col, inv.amount_untaxed_signed, formats['number'])
+            # # net_tax = inv.amount_untaxed - abs(sum(exempt_taxes.mapped('price_subtotal')))
+            # sheet.write(row, col, int(inv.amount_tax), formats['number'])
+            # col += 1
+            # sheet.write(row, col, int(inv.amount_total_signed), formats['number']) ##Neto
+            # col += 1
             # days = self.diff_dates(inv.date, date.today())
             # if days <= 90:
             #     sheet.write(row, col,
