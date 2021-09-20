@@ -278,8 +278,8 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
             sheet.write(row, col, line.debit, formats['string'])
             col += 1
             sheet.write(row, col, line.credit, formats['string'])
-            col += 1
-            sheet.write(row, col, line.full_reconcile_id, formats['string'])
+            # col += 1
+            # sheet.write(row, col, line.full_reconcile_id, formats['string'])
             row += 1
             # if line.reference:
             #     sheet.write(row, col, inv.reference, formats['string'])
