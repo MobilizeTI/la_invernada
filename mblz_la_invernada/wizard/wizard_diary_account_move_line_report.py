@@ -174,6 +174,8 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
 
     def set_data_invoice(self, sheet, col, row, inv, invoices, titles, formats):
         sheet.write(row, col, inv['move'].name, formats['title'])
+        width = len(inv['move'].name)
+        sheet.set_column(col, row, width)
         row += 1
         total_debit, total_credit = 0.0, 0.0
         for line in inv['lines']:
