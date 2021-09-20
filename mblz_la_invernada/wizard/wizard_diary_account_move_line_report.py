@@ -187,13 +187,15 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
             #Diario
             sheet.write(row, col, line.journal_id.name, formats['string'])
             width = len(line.journal_id.name)
-            sheet.set_column(col, row, width)
             col += 1
+            sheet.set_column(col, row, width)
+            
             #Cuenta (Nombre)
             sheet.write(row, col, line.account_id.name, formats['string'])
             width = len(line.account_id.name)
-            sheet.set_column(col, row, width)
             col += 1
+            sheet.set_column(col, row, width)
+            
             #Cuenta (Código)
             sheet.write(row, col, line.account_id.code, formats['string'])
             col += 1
@@ -201,19 +203,21 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
             if line.analytic_account_id:
                 sheet.write(row, col, line.analytic_account_id.name, formats['string'])
                 width = len(line.analytic_account_id.name)
-                sheet.set_column(col, row, width)
             col += 1
+            sheet.set_column(col, row, width)
+            
             #Referencia
             sheet.write(row, col, line.ref, formats['string'])
             width = len(line.ref)
-            sheet.set_column(col, row, width)
             col += 1
+            sheet.set_column(col, row, width)
+            
             #Partner
             if line.partner_id:
                 sheet.write(row, col, line.partner_id.name, formats['string'])
                 width = len(line.partner_id.name)
-                sheet.set_column(col, row, width)
             col += 1
+            sheet.set_column(col, row, width)
             #Débito
             sheet.write(row, col, line.debit, formats['number'])
             col += 1
