@@ -78,9 +78,11 @@
                                     <th class="col-xs-1">Movimientos</th>
                                     <th class="col-xs-3">Ref</th>
                                     <th class="col-xs-3">Empresa</th>
-                                    <th class="col-xs-1">Fecha</th>
+                                    <!-- <th class="col-xs-1">Fecha</th> -->
                                     <th class="col-xs-3 text-right">Débito</th>
+                                    <th t-if="o.company_id.currency_id.name == 'USD'" class="col-xs-3 text-right">Débito USD</th>
                                     <th class="col-xs-3 text-right">Crédito</th>
+                                    <th t-if="o.company_id.currency_id.name == 'USD'" class="col-xs-3 text-right">Crédito USD</th>
                                     <th class="col-xs-3 text-right" groups="base.group_multi_currency">Divisa</th>
                                     <th class="col-xs-1">Match.</th>
                                 </tr>
@@ -115,17 +117,27 @@
                                     <td>
                                         <span t-field="l.partner_id"></span>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <span t-field="l.date_maturity"></span>
-                                    </td>
+                                    </td> -->
                                     <td class="text-right">
                                         <div>
                                             <span t-field="l.debit" />
                                         </div>
                                     </td>
+                                    <td t-if="o.company_id.currency_id.name == 'USD'" class="text-right">
+                                        <div>
+                                            <span t-esc="l.debit / 700" />
+                                        </div>
+                                    </td>
                                     <td class="text-right">
                                         <div>
                                             <span t-field="l.credit" />
+                                        </div>
+                                    </td>
+                                    <td t-if="o.company_id.currency_id.name == 'USD'" class="text-right">
+                                        <div>
+                                            <span t-esc="l.credit / 700" />
                                         </div>
                                     </td>
                                     <td class="text-right" style="white-space:nowrap" groups="base.group_multi_currency">
@@ -326,7 +338,7 @@
                                         </td>
                                         <td t-if="o.company_id.currency_id.name == 'USD'" class="text-right">
                                             <div>
-                                                <span t-field="l.debit / 700" />
+                                                <span t-esc="l.debit / 700" />
                                             </div>
                                         </td>
                                         <td class="text-right">
@@ -336,7 +348,7 @@
                                         </td>
                                         <td t-if="o.company_id.currency_id.name == 'USD'" class="text-right">
                                             <div>
-                                                <span t-field="l.credit / 700" />
+                                                <span t-esc="l.credit / 700" />
                                             </div>
                                         </td>
                                         <td class="text-right" style="white-space:nowrap" groups="base.group_multi_currency">
