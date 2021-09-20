@@ -196,59 +196,59 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
                 row += 2
             else:
                 row += 1
-        sheet.merge_range(row, 0, row, 5, 'Totales:', formats['text_total'])
-        col = 6
+        # sheet.merge_range(row, 0, row, 5, 'Totales:', formats['text_total'])
+        # col = 6
         count_invoice = len(invoices)
-        sheet.write(row, col, count_invoice, formats['total']) ## Cantidad Total de Documentos
-        col += 1
-        exempt_sum = 0
-        if employee_fee:
-            sheet.write(row, col, sum(invoices.mapped('amount_untaxed')), formats['total']) ## Total neto 
-            col += 1
-            tax = sum(invoices.mapped('amount_tax'))
-            sheet.write(row, col, tax, formats['total']) ## Total imptos
-            col += 1
-            sheet.write(row, col, abs(sum(invoices.mapped('amount_total'))), formats['total'])
-        else:
-            exempt_sum = sum(invoices.mapped('invoice_line_ids').filtered(
-            lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(
-                a.invoice_line_tax_ids) == 0).mapped('price_subtotal'))
-            sheet.write(row, col, exempt_sum, formats['total']) ## Total exento
-            col += 1
-            net_tax = sum(invoices.mapped('amount_untaxed')) - abs(exempt_sum)
-            sheet.write(row, col, net_tax, formats['total']) ## Total exento
-            col += 1
-            sheet.write(row, col, sum(invoices.mapped('amount_untaxed')), formats['total'])
-            # if exempt:
-            #     sheet.write(row, col, sum(invoices.mapped('amount_untaxed_signed')), formats['total'])
-            # else:
-            #     sheet.write(row, col, sum(invoices.mapped('amount_untaxed_signed')), formats['total'])
-            col += 1
-            sheet.write(row, col, sum(
-                invoices.mapped('tax_line_ids').filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
-                        formats['total'])
-            col += 1
-            sheet.write(row, col, 0, formats['total'])
-            col += 1
-            for tax in taxes_title:
-                if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
-                    line = invoices.mapped('tax_line_ids').filtered(
-                        lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(
-                            a.tax_id.name) == tax).mapped(
-                        'amount')
-                    sheet.write(row, col, sum(line), formats['total'])
-                    col += 1
-            sheet.write(row, col, abs(sum(invoices.mapped('amount_total'))), formats['total'])
+        # sheet.write(row, col, count_invoice, formats['total']) ## Cantidad Total de Documentos
+        # col += 1
+        # exempt_sum = 0
+        # if employee_fee:
+        #     sheet.write(row, col, sum(invoices.mapped('amount_untaxed')), formats['total']) ## Total neto 
+        #     col += 1
+        #     tax = sum(invoices.mapped('amount_tax'))
+        #     sheet.write(row, col, tax, formats['total']) ## Total imptos
+        #     col += 1
+        #     sheet.write(row, col, abs(sum(invoices.mapped('amount_total'))), formats['total'])
+        # else:
+        #     exempt_sum = sum(invoices.mapped('invoice_line_ids').filtered(
+        #     lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(
+        #         a.invoice_line_tax_ids) == 0).mapped('price_subtotal'))
+        #     sheet.write(row, col, exempt_sum, formats['total']) ## Total exento
+        #     col += 1
+        #     net_tax = sum(invoices.mapped('amount_untaxed')) - abs(exempt_sum)
+        #     sheet.write(row, col, net_tax, formats['total']) ## Total exento
+        #     col += 1
+        #     sheet.write(row, col, sum(invoices.mapped('amount_untaxed')), formats['total'])
+        #     # if exempt:
+        #     #     sheet.write(row, col, sum(invoices.mapped('amount_untaxed_signed')), formats['total'])
+        #     # else:
+        #     #     sheet.write(row, col, sum(invoices.mapped('amount_untaxed_signed')), formats['total'])
+        #     col += 1
+        #     sheet.write(row, col, sum(
+        #         invoices.mapped('tax_line_ids').filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
+        #                 formats['total'])
+        #     col += 1
+        #     sheet.write(row, col, 0, formats['total'])
+        #     col += 1
+        #     for tax in taxes_title:
+        #         if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
+        #             line = invoices.mapped('tax_line_ids').filtered(
+        #                 lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(
+        #                     a.tax_id.name) == tax).mapped(
+        #                 'amount')
+        #             sheet.write(row, col, sum(line), formats['total'])
+        #             col += 1
+        #     sheet.write(row, col, abs(sum(invoices.mapped('amount_total'))), formats['total'])
         col = 0
         return {
             'sheet': sheet, 
             'row': row, 
-            'total': {
-                'total' : sum(invoices.mapped('amount_total')),
-                'net' : sum(invoices.mapped('amount_untaxed')),
-                'tax': sum(invoices.mapped('amount_tax')),
-                'exempt': exempt_sum,
-            },
+            # 'total': {
+            #     'total' : sum(invoices.mapped('amount_total')),
+            #     'net' : sum(invoices.mapped('amount_untaxed')),
+            #     'tax': sum(invoices.mapped('amount_tax')),
+            #     'exempt': exempt_sum,
+            # },
             'count_invoice': count_invoice
         }
 
