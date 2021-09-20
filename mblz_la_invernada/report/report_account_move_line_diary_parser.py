@@ -23,7 +23,6 @@ class DiaryAccountMoveLineReport(models.AbstractModel):
             'company_get_id': data['form']['company_get_id'],
             'get_move_lines': lines,
         }
-        _logger.info('LOG:.    test data report {}'.format(report_data))
         return report_data
 
     def get_move_lines(self, date, company_id):
@@ -43,38 +42,4 @@ class DiaryAccountMoveLineReport(models.AbstractModel):
             })
         
         return res
-        # report = {
-        #     'doc_ids': account.move(16,), 
-        #     'doc_model': 'account.move.line', 
-        #     'docs': account.move(16,), 
-        #     'date': '2020-01-01', 
-        #     'company_get_id': [3, 'Servicios La Invernada SPA'], 
-        #     'get_move_lines': [
-        #         {
-        #             'move': account.move(16,), 
-        #             'lines': account.move.line(47, 46)
-                    
-        #         }, 
-        #         {
-        #             'move': account.move(2,), 
-        #             'lines': account.move.line(32, 33, 37, 38, 30, 45, 36)
-                    
-        #         }
-        #         ]}
-
-
-        # report= {
-        #     'doc_ids': account.move(15,), 
-        #     'doc_model': 'account.move.line', 
-        #     'docs': account.move(15,), 'date': '2019-06-19', 
-        #     'company_get_id': [3, 'Servicios La Invernada SPA'], 
-        #     'get_move_lines': [
-        #         {
-        #             'move': account.move(15,), 
-        #             'lines': account.move.line(43, 44)
-        #         }, 
-        #         {
-        #             'move': account.move(15,), 
-        #             'lines': account.move.line(43, 44)
-        #         }
-        #         ]}
+       

@@ -10,7 +10,7 @@
                     <field name="date" required="1" />
                 </group>
                 <footer>
-                    <!-- <button type="object" class="oe_highlight" string="Descargar Libro (XLS)" name="generate_purchase_book" /> -->
+                    <button type="object" class="oe_highlight" string="Descargar Libro (XLS)" name="generate_diary_book" />
                     <button type="object" class="oe_highlight" string="Descargar Libro (PDF)" name="generate_diary_book_pdf" />
                 </footer>
             </form>
