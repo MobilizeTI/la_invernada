@@ -282,12 +282,24 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
             #Referencia
             sheet.write(row, col, line.ref, formats['string'])
             col += 1
+            #Partner
+            if line.partner_id:
+                sheet.write(row, col, line.partner_id.name, formats['string'])
+            col += 1
             #Débito
-            sheet.write(row, col, line.debit, formats['string'])
+            sheet.write(row, col, line.debit, formats['number'])
             col += 1
             #Crédito
-            sheet.write(row, col, line.credit, formats['string'])
-            col = col - 7
+            sheet.write(row, col, line.credit, formats['number'])
+            col += 1
+            #Divisa
+            if line.amount_currency:
+                sheet.write(row, col, line.amount_currency, formats['number'])
+            col += 1
+            #Match
+            if line.reconciled:
+                sheet.write(row, col, line.full_reconcile_id, formats['number'])
+            col = col - 10
             # col += 1
             # sheet.write(row, col, line.full_reconcile_id, formats['string'])
             row += 1
