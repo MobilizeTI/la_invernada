@@ -85,7 +85,7 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
                 #      ('company_id.id', '=', self.company_get_id.id)]
                 # #cambio en Order
                 # invoices = self.env['account.invoice'].sudo().search(domain_invoices, order='date asc, reference asc') #facturas electronicas
-                moves = self.get_move_lines(self.date, self.company_get_id[0])
+                moves = self.get_move_lines(self.date, self.company_get_id[0].id)
                 # begin = row
                 # row += 1
                 # data_invoice = self.set_data_for_excel(sheet, row, invoices, taxes_title, titles, formats, exempt=False, employee_fee=True)
