@@ -49,13 +49,6 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
                 sheet = wk['worksheet']
                 region = self.env['region.address'].search([('id', '=', 1)])
                 titles = ['Fecha', 'Diario', 'Cuenta', 'Cód.Cuenta', 'Analítica', 'Ref', 'Empresa', 'Débito', 'Crédito', 'Divisa', 'Match']
-                # invoices_get_tax = self.env['account.invoice'].sudo().search(
-                #     [('dte_type_id', '!=', None), ('company_id', '=', self.company_get_id.id),
-                #      ('date', '>=', self.from_date), ('date', '<=', self.to_date)])
-                # taxes_title = list(
-                #     dict.fromkeys(invoices_get_tax.mapped('tax_line_ids').mapped('tax_id').mapped('name')))
-
-                # titles.append('Total')
                 sheet.merge_range(0, 0, 0, 2, self.company_get_id.display_name, formats['title'])
                 sheet.merge_range(1, 0, 1, 2, self.company_get_id.invoice_rut, formats['title'])
                 sheet.merge_range(2, 0, 2, 2,
@@ -63,9 +56,9 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
                                   formats['title'])
                 sheet.merge_range(4, 3, 4, 6, 'Libro Diario', formats['title'])
                 sheet.merge_range(5, 3, 5, 6, 'Libro Diario Ordenado por asiento', formats['title'])
-                sheet.write(6, 8, 'Fecha', formats['title'])
+                sheet.write(6, 8, 'Fecha Reporte', formats['title'])
                 sheet.write(6, 9, date.today().strftime('%Y-%m-%d'), formats['title'])
-                sheet.merge_range(6, 3, 6, 6, f'Fecha {self.date}', formats['title'])
+                sheet.merge_range(6, 3, 6, 6, f'Fecha: {self.date}', formats['title'])
                 sheet.merge_range(7, 3, 7, 6, 'Moneda : Peso Chileno', formats['title'])
                 row = 10
                 col = 0
@@ -75,45 +68,18 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
                     col += 1
                 row += 2
                 col = 0
-                # sheet.merge_range(row, col, row, 5, 'Boleta electrónica. (BOLETA ELECTRONICA)',
-                #                   formats['title'])
-                # row += 1
-                # domain_moves = [('date', '>=', self.from_date),
-                #      ('type', 'in', ('in_invoice', 'in_refund')),
-                #      ('date', '<=', self.to_date), ('dte_type_id.code', '=', 39),
-                #      ('journal_id.employee_fee', '=', True),
-                #      ('company_id.id', '=', self.company_get_id.id)]
-                # #cambio en Order
-                # invoices = self.env['account.invoice'].sudo().search(domain_invoices, order='date asc, reference asc') #facturas electronicas
                 moves = self.get_move_lines(self.date, self.company_get_id[0].id)
                 begin = row
                 row += 1
                 data_invoice = self.set_data_for_excel(sheet, row, moves, titles, formats)
-                #OKKKKK
-                # invoice_total = data_invoice.get('total').get('total')
-                # invoice_net = data_invoice.get('total').get('net')
-                # invoice_tax = data_invoice.get('total').get('tax')
                 sheet = data_invoice['sheet']
                 row = data_invoice['row']
                 count_invoice += data_invoice['count_invoice']
-                
-                # net_total = invoice_net 
-                # tax_total = invoice_tax
-                # total_total = invoice_total
-                # net_tax_total = net_total
-                # sheet.write(row + 3, col + 5, 'Total General', formats['title'])
-                # sheet.write(row + 3, col + 6, count_invoice, formats['total']) #SUMA DOCUMENTOS
-                # # sheet.write(row + 3, col + 7, exempt_total, formats['total'])
-                # # sheet.write(row + 3, col + 8, net_tax_total, formats['total'])
-                # sheet.write(row + 3, col + 7, net_total, formats['total'])
-                # sheet.write(row + 3, col + 8, tax_total, formats['total'])
-                # # sheet.write(row + 3, col + 11, 0, formats['total']) #TODO totoales iva no recuperable
-                # sheet.write(row + 3, col + 9, total_total, formats['total'])
 
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
-        file_name = 'Libro Diario {} {}.xlsx'.format(company_name, date.today().strftime("%d/%m/%Y"))
+        file_name = 'Libro Diario {} {}.xlsx'.format(company_name, self.date.strftime("%d/%m/%Y"))
         attachment_id = self.env['ir.attachment'].sudo().create({
             'name': file_name,
             'datas_fname': file_name,
@@ -207,7 +173,7 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
         }
 
     def set_data_invoice(self, sheet, col, row, inv, invoices, titles, formats):
-        sheet.write(row, col, inv['move'].name, formats['string'])
+        sheet.write(row, col, inv['move'].name, formats['title'])
         row += 1
         total_debit, total_credit = 0.0, 0.0
         for line in inv['lines']:
@@ -252,8 +218,8 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
             col = col - 10
             row += 1
         #Totales
-        sheet.write(row, col + 7, 'Totales', formats['title'])
-        sheet.write(row, col + 8, total_debit, formats['total'])
+        sheet.write(row, col + 6, 'Totales', formats['title'])
+        sheet.write(row, col + 7, total_debit, formats['total'])
         sheet.write(row, col + 8, total_credit, formats['total'])
         
         line_out = {'sheet': sheet, 'row': row, 'col': col}
