@@ -144,5 +144,44 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
             })
         
         return res
+    
+    def set_formats(self, workbook):
+        merge_format_string = workbook.add_format({
+            'border': 0,
+            'align': 'center',
+            'valign': 'vcenter',
+        })
+        merge_format_number = workbook.add_format({
+            'bold': 0,
+            'align': 'center',
+            'valign': 'vcenter',
+            'num_format': '#,##0'
+        })
+        merge_format_title = workbook.add_format({
+            'border': 1,
+            'bold': 1,
+            'align': 'center',
+            'valign': 'vcenter'
+        })
+        merge_format_total = workbook.add_format({
+            'border': 1,
+            'bold': 1,
+            'align': 'center',
+            'valign': 'vcenter',
+            'num_format': '#,##0'
+        })
+        merge_format_total_text = workbook.add_format({
+            'border': 1,
+            'bold': 1,
+            'align': 'left',
+            'valign': 'vcenter'
+        })
+        return {
+            'string': merge_format_string,
+            'number': merge_format_number,
+            'title': merge_format_title,
+            'total': merge_format_total,
+            'text_total': merge_format_total_text
+        }
 
        
