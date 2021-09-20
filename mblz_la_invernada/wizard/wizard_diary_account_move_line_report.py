@@ -298,7 +298,7 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
             col += 1
             #Match
             if line.reconciled:
-                sheet.write(row, col, line.full_reconcile_id, formats['number'])
+                sheet.write(row, col, line.full_reconcile_id.name, formats['string'])
             col = col - 10
             # col += 1
             # sheet.write(row, col, line.full_reconcile_id, formats['string'])
