@@ -266,6 +266,21 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
             sheet.write(row, col, line.date.strftime('%Y-%m-%d'), formats['string'])  
             col += 1
             sheet.write(row, col, line.journal_id.name, formats['string'])
+            col += 1
+            sheet.write(row, col, line.account_id.name, formats['string'])
+            col += 1
+            sheet.write(row, col, line.account_id.code, formats['string'])
+            col += 1
+            sheet.write(row, col, line.analytic_account_id.name, formats['string'])
+            col += 1
+            sheet.write(row, col, line.ref, formats['string'])
+            col += 1
+            sheet.write(row, col, line.debit, formats['string'])
+            col += 1
+            sheet.write(row, col, line.credit, formats['string'])
+            col += 1
+            sheet.write(row, col, line.full_reconcile_id, formats['string'])
+            row += 1
             # if line.reference:
             #     sheet.write(row, col, inv.reference, formats['string'])
             # col += 1
