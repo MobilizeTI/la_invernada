@@ -192,10 +192,11 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
             sheet = data['sheet']
             row = data['row']
             col = data['col']
-            if inv.id == invoices[-1].id:
-                row += 2
-            else:
-                row += 1
+            row += 1
+            # if inv.id == invoices[-1].id:
+            #     row += 2
+            # else:
+            #     row += 1
         # sheet.merge_range(row, 0, row, 5, 'Totales:', formats['text_total'])
         # col = 6
         count_invoice = len(invoices)
