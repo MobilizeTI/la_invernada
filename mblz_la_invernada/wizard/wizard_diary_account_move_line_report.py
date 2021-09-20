@@ -185,7 +185,6 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
         }
     
     def set_data_for_excel(self, sheet, row, invoices, titles, formats):
-        _logger.info('LOG:  -->>>> moves {}'.format(invoices))
         for inv in invoices:
             col = 0
             data = self.set_data_invoice(sheet, col, row, inv, invoices, titles, formats)
@@ -193,53 +192,7 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
             row = data['row']
             col = data['col']
             row += 1
-            # if inv.id == invoices[-1].id:
-            #     row += 2
-            # else:
-            #     row += 1
-        # sheet.merge_range(row, 0, row, 5, 'Totales:', formats['text_total'])
-        # col = 6
         count_invoice = len(invoices)
-        # sheet.write(row, col, count_invoice, formats['total']) ## Cantidad Total de Documentos
-        # col += 1
-        # exempt_sum = 0
-        # if employee_fee:
-        #     sheet.write(row, col, sum(invoices.mapped('amount_untaxed')), formats['total']) ## Total neto 
-        #     col += 1
-        #     tax = sum(invoices.mapped('amount_tax'))
-        #     sheet.write(row, col, tax, formats['total']) ## Total imptos
-        #     col += 1
-        #     sheet.write(row, col, abs(sum(invoices.mapped('amount_total'))), formats['total'])
-        # else:
-        #     exempt_sum = sum(invoices.mapped('invoice_line_ids').filtered(
-        #     lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name') or len(
-        #         a.invoice_line_tax_ids) == 0).mapped('price_subtotal'))
-        #     sheet.write(row, col, exempt_sum, formats['total']) ## Total exento
-        #     col += 1
-        #     net_tax = sum(invoices.mapped('amount_untaxed')) - abs(exempt_sum)
-        #     sheet.write(row, col, net_tax, formats['total']) ## Total exento
-        #     col += 1
-        #     sheet.write(row, col, sum(invoices.mapped('amount_untaxed')), formats['total'])
-        #     # if exempt:
-        #     #     sheet.write(row, col, sum(invoices.mapped('amount_untaxed_signed')), formats['total'])
-        #     # else:
-        #     #     sheet.write(row, col, sum(invoices.mapped('amount_untaxed_signed')), formats['total'])
-        #     col += 1
-        #     sheet.write(row, col, sum(
-        #         invoices.mapped('tax_line_ids').filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
-        #                 formats['total'])
-        #     col += 1
-        #     sheet.write(row, col, 0, formats['total'])
-        #     col += 1
-        #     for tax in taxes_title:
-        #         if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
-        #             line = invoices.mapped('tax_line_ids').filtered(
-        #                 lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(
-        #                     a.tax_id.name) == tax).mapped(
-        #                 'amount')
-        #             sheet.write(row, col, sum(line), formats['total'])
-        #             col += 1
-        #     sheet.write(row, col, abs(sum(invoices.mapped('amount_total'))), formats['total'])
         col = 0
         return {
             'sheet': sheet, 
@@ -255,14 +208,11 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
 
     def set_data_invoice(self, sheet, col, row, inv, invoices, titles, formats):
         sheet.write(row, col, inv['move'].name, formats['string'])
-        # col += 1
         row += 1
-        # if inv.dte_folio:
-        #     sheet.write(row, col, inv.dte_folio, formats['string'])
-        #TODO esto es lo que debiera ir
-        # if inv.sii_document_number:
-        #     sheet.write(row, col, inv.sii_document_number, formats['string'])
+        total_debit, total_credit = 0.0, 0.0
         for line in inv['lines']:
+            total_debit += line.debit
+            total_credit += line.credit
             #Fecha
             sheet.write(row, col, line.date.strftime('%Y-%m-%d'), formats['string'])  
             col += 1
@@ -300,149 +250,13 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
             if line.reconciled:
                 sheet.write(row, col, line.full_reconcile_id.name, formats['string'])
             col = col - 10
-            # col += 1
-            # sheet.write(row, col, line.full_reconcile_id, formats['string'])
             row += 1
-            
-            # if line.reference:
-            #     sheet.write(row, col, inv.reference, formats['string'])
-            # col += 1
-            # if inv.number:
-            #     sheet.write(row, col, inv.number, formats['string'])
-            # col += 1
-            # if inv.date:
-            #     sheet.write(row, col, inv.date.strftime('%Y-%m-%d'), formats['string'])
-            # col += 1
-            # if inv.partner_id.invoice_rut:
-            #     sheet.write(row, col, inv.partner_id.invoice_rut, formats['string'])
-            # col += 1
-            # long_name = max(invoices.mapped('partner_id').mapped('display_name'), key=len)
-            # sheet.set_column(col, col, len(long_name))
-            # sheet.write(row, col, inv.partner_id.display_name, formats['string'])
-            # col += 2
-
-        # exempt_taxes = inv.invoice_line_ids.filtered(lambda a: a.sii_code == 0 and a.amount == 0.0)
-        # affect_taxes = inv.invoice_line_ids.filtered(lambda a: a.sii_code == 14)
-
-        # exempt_taxes = inv.invoice_line_ids.filtered(lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name'))
-        # affect_taxes = inv.invoice_line_ids.filtered(lambda a: 'IVA Débito' in a.invoice_line_tax_ids.mapped('name'))
-        # employee_fee_taxes = inv.invoice_line_ids.filtered(lambda a: 'Retención Boleta Honorarios' in a.invoice_line_tax_ids.mapped('name'))
-        # if exempt_taxes:
-        #     sheet.write(row, col, sum(exempt_taxes.mapped('price_subtotal')), formats['number'])
-        #     col += 1
-        #     net = inv.amount_untaxed_signed
-        #     net_tax = net - abs(sum(exempt_taxes.mapped('price_subtotal')))
-        #     sheet.write(row, col, net_tax, formats['number'])
-        #     col += 1
-            
-        #     if inv.dte_type_id.id:
-        #         sheet.write(row, col, inv.amount_untaxed, formats['number'])
-        #         col += 1 
-
-        #         sheet.write(row, col, inv.amount_tax, formats['number'])
-        #         col += 1
-        #         sheet.write(row, col, '0', formats['number'])
-        #         col += 1
-        #         for tax in taxes_title:
-        #             if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
-        #                 line = inv.tax_line_ids.filtered(
-        #                     lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(
-        #                         a.tax_id.name) == tax).mapped(
-        #                     'amount')
-        #                 sheet.write(row, col, sum(line), formats['number'])
-        #                 col += 1
-        #         sheet.write(row, col, inv.amount_total_signed, formats['number'])
-        #     else:
-        #         sheet.write(row, col, sum(inv.invoice_line_ids.filtered(inv.invoice_line_ids.filtered(
-        #             lambda a: 'Exento' not in a.invoice_line_tax_ids.mapped('name') or len(
-        #                 a.invoice_line_tax_ids) != 0)).mapped('price_subtotal')), formats['number'])
-        #         col += 1
-        #         sheet.write(row, col, sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
-        #                     formats['number'])
-        #         col += 1
-
-        #         sheet.write(row, col, '0', formats['number'])
-        #         col += 1
-        #         for tax in taxes_title:
-        #             if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
-        #                 line = inv.tax_line_ids.filtered(
-        #                     lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(
-        #                         a.tax_id.name) == tax).mapped(
-        #                     'amount')
-        #                 sheet.write(row, col, sum(line), formats['number'])
-        #                 col += 1
-        #         sheet.write(row, col, inv.amount_total_signed, formats['number'])
-        # elif affect_taxes:
-        #     sheet.write_number(row, col, 0, formats['number'])
-        #     col += 1
-        #     # sheet.write(row, col, inv.amount_untaxed_signed, formats['number'])
-        #     net_tax = inv.amount_untaxed - abs(sum(exempt_taxes.mapped('price_subtotal')))
-        #     sheet.write(row, col, net_tax, formats['number'])
-        #     col += 1
-        #     sheet.write(row, col, inv.amount_untaxed, formats['number']) ##Neto
-        #     col += 1
-        #     days = self.diff_dates(inv.date, date.today())
-        #     if days <= 90:
-        #         sheet.write(row, col,
-        #                     sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
-        #                     formats['number'])
-        #         col += 1
-        #         sheet.write_number(row, col, 0, formats['number'])
-        #         col += 1
-        #     else:
-        #         sheet.write_number(row, col, 0, formats['number'])
-        #         col += 1
-        #         # sheet.write(row, col, inv.amount_tax, formats['number'])
-        #         sheet.write(row, col,
-        #                     sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
-        #                     formats['number'])
-        #         col += 1
-        #     # for tax in taxes_title:
-        #     #     if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
-        #     #         line = inv.tax_line_ids.filtered(
-        #     #             lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(a.tax_id.name) == tax).mapped(
-        #     #             'amount')
-        #     #         sheet.write(row, col, sum(line), formats['number'])
-        #     #         col += 1
-        #     sheet.write(row, col, abs(inv.amount_total_signed), formats['number'])
-        # elif employee_fee_taxes:
-            # sheet.write_number(row, col, int(inv.amount_untaxed), formats['number'])
-            # col += 1
-            # # sheet.write(row, col, inv.amount_untaxed_signed, formats['number'])
-            # # net_tax = inv.amount_untaxed - abs(sum(exempt_taxes.mapped('price_subtotal')))
-            # sheet.write(row, col, int(inv.amount_tax), formats['number'])
-            # col += 1
-            # sheet.write(row, col, int(inv.amount_total_signed), formats['number']) ##Neto
-            # col += 1
-            # days = self.diff_dates(inv.date, date.today())
-            # if days <= 90:
-            #     sheet.write(row, col,
-            #                 sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
-            #                 formats['number'])
-            #     col += 1
-            #     sheet.write_number(row, col, 0, formats['number'])
-            #     col += 1
-            # else:
-            #     sheet.write_number(row, col, 0, formats['number'])
-            #     col += 1
-            #     # sheet.write(row, col, inv.amount_tax, formats['number'])
-            #     sheet.write(row, col,
-            #                 sum(inv.tax_line_ids.filtered(lambda a: 'IVA' in a.tax_id.name).mapped('amount')),
-            #                 formats['number'])
-            #     col += 1
-            # for tax in taxes_title:
-            #     if tax in titles or str.upper(tax) in titles and 'Exento' not in tax:
-            #         line = inv.tax_line_ids.filtered(
-            #             lambda a: str.lower(a.tax_id.name) == str.lower(tax) or str.upper(a.tax_id.name) == tax).mapped(
-            #             'amount')
-            #         sheet.write(row, col, sum(line), formats['number'])
-            #         col += 1
-            # sheet.write(row, col, abs(inv.amount_total_signed), formats['number'])
-
-
+        #Totales
+        sheet.write(row, col + 7, 'Totales', formats['title'])
+        sheet.write(row, col + 8, total_debit, formats['total'])
+        sheet.write(row, col + 8, total_credit, formats['total'])
         
         line_out = {'sheet': sheet, 'row': row, 'col': col}
-        # _logger.info('LOG. **** output para linea %r', line_out)
 
         return line_out
 
