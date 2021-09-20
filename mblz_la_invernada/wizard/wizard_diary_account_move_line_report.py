@@ -48,7 +48,7 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
             for wk in array_worksheet:
                 sheet = wk['worksheet']
                 region = self.env['region.address'].search([('id', '=', 1)])
-                titles = ['Fecha', 'Diario', 'Cuenta', 'Cód.Cuenta', 'Analítica', 'Movimientos', 'Empresa', 'Débito', 'Crédito', 'Divisa', 'Match']
+                titles = ['Fecha', 'Diario', 'Cuenta', 'Cód.Cuenta', 'Analítica', 'Ref', 'Empresa', 'Débito', 'Crédito', 'Divisa', 'Match']
                 # invoices_get_tax = self.env['account.invoice'].sudo().search(
                 #     [('dte_type_id', '!=', None), ('company_id', '=', self.company_get_id.id),
                 #      ('date', '>=', self.from_date), ('date', '<=', self.to_date)])
@@ -263,25 +263,35 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
         # if inv.sii_document_number:
         #     sheet.write(row, col, inv.sii_document_number, formats['string'])
         for line in inv['lines']:
+            #Fecha
             sheet.write(row, col, line.date.strftime('%Y-%m-%d'), formats['string'])  
             col += 1
+            #Diario
             sheet.write(row, col, line.journal_id.name, formats['string'])
             col += 1
+            #Cuenta (Nombre)
             sheet.write(row, col, line.account_id.name, formats['string'])
             col += 1
+            #Cuenta (Código)
             sheet.write(row, col, line.account_id.code, formats['string'])
             col += 1
-            sheet.write(row, col, line.analytic_account_id.name, formats['string'])
+            #Cuenta Analítica
+            if line.analytic_account_id:
+                sheet.write(row, col, line.analytic_account_id.name, formats['string'])
             col += 1
+            #Referencia
             sheet.write(row, col, line.ref, formats['string'])
             col += 1
+            #Débito
             sheet.write(row, col, line.debit, formats['string'])
             col += 1
+            #Crédito
             sheet.write(row, col, line.credit, formats['string'])
+            col = col - 7
             # col += 1
             # sheet.write(row, col, line.full_reconcile_id, formats['string'])
             row += 1
-            col = col - 8
+            
             # if line.reference:
             #     sheet.write(row, col, inv.reference, formats['string'])
             # col += 1
