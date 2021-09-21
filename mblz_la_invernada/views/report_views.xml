@@ -265,11 +265,10 @@
 
 
                         <table class="table table-condensed">
-                            <center>
-                                <span style="font-size: 14px; font-weight: bold">Libro Diario</span>
-                            </center>
+                            <div>
+                                <span style="font-size: 14px; font-weight: bold; text-align:center">Libro Diario</span>
+                            </div>
                             <t t-foreach="get_move_lines" t-as="gl">
-                                
                                 <thead>
                                     <tr>
                                         <th>
@@ -293,13 +292,16 @@
                                     </tr>
                                 </thead>
                                 
-                                <tbody style="border-bottom: 1px solid;page-break-inside: avoid">
+                                <tbody style="border-bottom: 1px solid">
                                     <t t-set="total_debito" t-value="0" />
                                     <t t-set="total_credito" t-value="0" />
+                                    <t t-set="total_currency_deb" t-value="0" />
+                                    <t t-set="total_currency_cred" t-value="0" />
                                     
                                     <tr t-foreach="gl['lines']" t-as="l">
                                         <t t-set="total_debito" t-value="total_debito + l.debit" />
                                         <t t-set="total_credito" t-value="total_credito + l.credit" />
+                                        
                                         <td style="white-space:nowrap">
                                             <span t-field="l.date"></span>
                                         </td>
@@ -340,6 +342,7 @@
                                             </div>
                                             <div t-else="">
                                                 <span t-field="l.amount_currency" />
+                                                <t t-set="total_currency_deb" t-value="total_currency_deb + l.amount_currency" />
 
                                             </div>
                                         </td>
@@ -349,6 +352,7 @@
                                             </div>
                                             <div t-else="">
                                                 <span t-field="l.amount_currency" />
+                                                <t t-set="total_currency_cred" t-value="total_currency_cred + l.amount_currency" />
 
                                             </div>
                                         </td>
@@ -357,23 +361,35 @@
                                             <span t-if="not l.reconciled and l.full_reconcile_id">*</span>
                                         </td>
                                     </tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td t-if="o.company_id.currency_id.name == 'USD'"></td>
-                                    <td t-if="o.company_id.currency_id.name == 'USD'"></td>
-                                    <td style="font-size: 14px; font-weight: bold">Totales</td>
-                                    <td style="font-size: 14px; font-weight: bold">
-                                        <span t-esc="o.format_amount(total_debito)" />
-                                    </td>
-                                    <td style="font-size: 14px; font-weight: bold">
-                                        <span t-esc="o.format_amount(total_credito)" />
-                                    </td>
-                                    <td></td>
-                                    <td></td>
+                                    <tr>
+                                        <td/>
+                                        <td/>
+                                        <td/>
+                                        <td/>
+                                        <td/>
+                                        <td/>
+                                        <td />
+                                        <td />
+                                        
+                                        <td style="font-size: 14px; font-weight: bold">Totales</td>
+                                        <td style="font-size: 14px; font-weight: bold">
+                                            <span t-esc="o.format_amount(total_debito)" />
+                                        </td>
+                                        <td style="font-size: 14px; font-weight: bold">
+                                            <span t-esc="o.format_amount(total_credito)" />
+                                        </td>
+                                        <td t-if="o.company_id.currency_id.name == 'USD'" style="font-size: 14px; font-weight: bold">
+                                            <span t-esc="o.format_amount(total_currency_deb)" />
+                                        </td>
+                                        <td t-if="o.company_id.currency_id.name == 'USD'" style="font-size: 14px; font-weight: bold">
+                                            <span t-esc="o.format_amount(total_currency_cred)" />
+
+                                        </td>
+                                        <td/>
+                                        <td/>
+
+                                    </tr>
+                                    
 
                                     <tr></tr>
                                     <br />
