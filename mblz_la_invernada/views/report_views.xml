@@ -33,8 +33,6 @@
                                     </td>
                                 </tr>
                                 <tr style="border: none !important; padding: 0 !important">
-                                    <!-- TODO -->
-                                    <!-- <td t-esc="o.company_id.activity_description.name" style="text-align: left" /> -->
                                     <td>Proceso y comercialización de Nueces</td>
                                     <td style="text-align: right">
                                         Tipo:
@@ -62,8 +60,6 @@
                             </tbody>
                         </table>
 
-                        
-
                         <table class="table table-condensed" style="margin-top: 50px !important">
                             <center>
                                 <span style="font-size: 14px; font-weight: bold">Contabilización Glosa</span>
@@ -88,6 +84,8 @@
                             <tbody style="border-bottom: 1px solid;page-break-inside: avoid">
                                 <t t-set="total_debito" t-value="0" />
                                 <t t-set="total_credito" t-value="0" />
+                                <t t-set="total_currency_deb" t-value="0" />
+                                <t t-set="total_currency_cred" t-value="0" />
                                 <tr t-foreach="o.line_ids" t-as="l">
                                     <t t-set="total_debito" t-value="total_debito + l.debit" />
                                     <t t-set="total_credito" t-value="total_credito + l.credit" />
@@ -131,6 +129,7 @@
                                             </div>
                                         <div t-else="">
                                             <span t-field="l.amount_currency" />
+                                            <t t-set="total_currency_deb" t-value="total_currency_deb + l.amount_currency" />
 
                                         </div>
                                     </td>
@@ -140,6 +139,7 @@
                                             </div>
                                         <div t-else="">
                                             <span t-field="l.amount_currency" />
+                                            <t t-set="total_currency_cred" t-value="total_currency_cred + l.amount_currency" />
 
                                         </div>
                                     </td>
@@ -148,23 +148,33 @@
                                         <span t-if="not l.reconciled and l.full_reconcile_id">*</span>
                                     </td>
                                 </tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td t-if="o.company_id.currency_id.name == 'USD'"></td>
-                                <td t-if="o.company_id.currency_id.name == 'USD'"></td>
-                                <td style="font-size: 14px; font-weight: bold">Totales</td>
-                                <td style="font-size: 14px; font-weight: bold">
-                                    <span t-esc="o.format_amount(total_debito)" />
-                                </td>
-                                <td style="font-size: 14px; font-weight: bold">
-                                    <span t-esc="o.format_amount(total_credito)" />
-                                </td>
-                                <td></td>
-                                <td></td>
+                                <tr>
+                                    <td />
+                                    <td />
+                                    <td />
+                                    <td />
+                                    <td />
+                                    <td />
+                                    <td />
+                                    <!-- <td /> -->
+                                    <td style="font-size: 14px; font-weight: bold">Totales</td>
+                                    <td style="font-size: 14px; font-weight: bold" class="text-right">
+                                        <span t-esc="o.format_amount(total_debito)" />
+                                    </td>
+                                    <td style="font-size: 14px; font-weight: bold" class="text-right">
+                                        <span t-esc="o.format_amount(total_credito)" />
+                                    </td>
+                                    <td t-if="o.company_id.currency_id.name == 'USD'" class="text-right" style="font-size: 14px; font-weight: bold">
+                                        <span t-esc="o.format_amount(total_currency_deb)" />
+                                    </td>
+                                    <td t-if="o.company_id.currency_id.name == 'USD'" class="text-right" style="font-size: 14px; font-weight: bold">
+                                        <span t-esc="o.format_amount(total_currency_cred)" />
+
+                                    </td>
+                                    <td />
+                                    <td />
+
+                                </tr>
 
                                 <tr>
 
@@ -227,7 +237,7 @@
                                     <td style="text-align: right" />
                                 </tr>
                                 <tr style="border: none !important; padding: 0 !important">
-                                    <td t-esc="o.company_id.street" style="text-align: left" />>
+                                    <td t-esc="o.company_id.street" style="text-align: left" />
                                 </tr>
                                 <tr style="border: none !important; padding: 0 !important">
                                     <td>Proceso y comercialización de Nueces</td>
@@ -241,9 +251,6 @@
                                 </tr>
                                 <tr style="border: none !important; padding: 0 !important">
                                     <td t-esc="o.company_id.region_address_id.name" style="text-align: left" />
-                                    <!-- <td style="text-align: right">
-                                        Estado:
-                                    </td> -->
                                 </tr>
                                 <tr style="border: none !important; padding: 0 !important">
                                     <td t-esc="o.company_id.invoice_rut" style="text-align: left" />
@@ -258,14 +265,10 @@
                                 <span style="font-size: 14px; font-weight: bold;">Libro Diario</span>
                             </div>
                             <t t-foreach="get_move_lines" t-as="gl">
-                                
                                 <thead>
-                                    <!-- <div style="text-align:center">
-                                        
-                                    </div> -->
                                     <tr>
                                         <th>
-                                            <span t-if="gl['move']" style="font-size: 14px; font-weight: bold;" t-esc="gl['move'].name"></span>
+                                            <span t-if="len(gl['move'].name) > 0" style="font-size: 14px; font-weight: bold;" t-esc="gl['move'].name"></span>
                                         </th>
                                     </tr>
                                     <tr>
