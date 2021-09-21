@@ -40,6 +40,7 @@ class DiaryAccountMoveLineReport(models.AbstractModel):
                 'move': move,
                 'lines': move_lines
             })
+        _logger.info('LOG :_--->>> res {}'.format(res))
         
         return res
        
