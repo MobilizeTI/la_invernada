@@ -292,7 +292,8 @@
                                         <!-- <th t-if="o.company_id.currency_id.name == 'USD'" class="col-xs-3 text-right">Débito USD</th> -->
                                         <th class="col-xs-3 text-right">Crédito</th>
                                         <!-- <th t-if="o.company_id.currency_id.name == 'USD'" class="col-xs-3 text-right">Crédito USD</th> -->
-                                        <th class="col-xs-3 text-right" groups="base.group_multi_currency">USD</th>
+                                        <th t-if="o.company_id.currency_id.name == 'USD'" class="col-xs-3 text-right" groups="base.group_multi_currency">Débito</th>
+                                        <th t-if="o.company_id.currency_id.name == 'USD'" class="col-xs-3 text-right" groups="base.group_multi_currency">Crédito</th>
                                         <th class="col-xs-1">Match.</th>
                                     </tr>
                                 </thead>
@@ -351,9 +352,18 @@
                                                 <span t-esc="l.credit / 700" />
                                             </div>
                                         </td> -->
-                                        <td class="text-right" style="white-space:nowrap" groups="base.group_multi_currency">
-                                            <div t-if="l.amount_currency">
+                                        <td t-if="o.company_id.currency_id.name == 'USD'" class="text-right" style="white-space:nowrap" groups="base.group_multi_currency">
+                                            <div t-if="l.debit == 0">
+                                                $ 0,00
+                                            </div>
+                                            <div t-else="">
                                                 <span t-field="l.amount_currency" />
+
+                                            </div>
+                                        </td>
+                                        <td t-if="o.company_id.currency_id.name == 'USD'" class="text-right" style="white-space:nowrap" groups="base.group_multi_currency">
+                                            <div t-if="l.credit == 0">
+                                                $ 0,00
                                             </div>
                                             <div t-else="">
                                                 <span t-field="l.amount_currency" />
@@ -371,8 +381,8 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td></td>
-                                    <!-- <td></td> -->
+                                    <td t-if="o.company_id.currency_id.name == 'USD'"></td>
+                                    <td t-if="o.company_id.currency_id.name == 'USD'"></td>
                                     <td style="font-size: 14px; font-weight: bold">Totales</td>
                                     <td style="font-size: 14px; font-weight: bold">
                                         <span t-esc="o.format_amount(total_debito)" />
