@@ -260,14 +260,14 @@
                             <t t-foreach="get_move_lines" t-as="gl">
                                 
                                 <thead>
-                                    <div style="text-align:center">
-                                        <span style="font-size: 14px; font-weight: bold;" t-esc="gl['move'].name"></span>
-                                    </div>
-                                    <!-- <tr>
+                                    <!-- <div style="text-align:center">
+                                        
+                                    </div> -->
+                                    <tr>
                                         <th>
-                                            <span t-esc=""/>
+                                            <span t-if="gl['move']" style="font-size: 14px; font-weight: bold;" t-esc="gl['move'].name"></span>
                                         </th>
-                                    </tr> -->
+                                    </tr>
                                     <tr>
                                         <th class="col-xs-1">Fecha</th>
                                         <th class="col-xs-1">Diario</th>
