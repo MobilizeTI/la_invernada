@@ -106,7 +106,11 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
         lines = self.env['account.move.line'].sudo().search(domain, order='date asc')
 
         # moves = list(set([line.move_id for line in lines]))
-        moves = [line.move_id for line in lines]
+        moves = []
+        for l in lines:
+            if l.move_id not in moves:
+                moves.append(l.move_id)
+        # moves = [line.move_id for line in lines]
         for move in moves:
             move_lines = lines.filtered(lambda l: l.move_id == move)
             res.append({
