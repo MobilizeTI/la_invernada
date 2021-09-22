@@ -2,14 +2,14 @@
 <odoo>
     <data>
         <!-- Account Financial Report Assets -->
-        <template id="mblz_invernada_account_reports_backend" inherit_id="web.assets_backend" active="True">
+        <!-- <template id="mblz_invernada_account_reports_backend" inherit_id="web.assets_backend" active="True">
             <xpath expr="." position="inside">
-                <!-- <script type="text/javascript" src="/account_reports/static/src/js/mail_activity.js"></script>
+                <script type="text/javascript" src="/account_reports/static/src/js/mail_activity.js"></script>
                 <script type="text/javascript" src="/account_reports/static/src/js/account_reports.js"></script>
-                <script type="text/javascript" src="/account_reports/static/src/js/action_manager_account_report_dl.js"></script> -->
+                <script type="text/javascript" src="/account_reports/static/src/js/action_manager_account_report_dl.js"></script>
                 <link rel="stylesheet" type="text/scss" href="/l10n_cl_reports/static/src/scss/report.scss" />
             </xpath>
-        </template>
+        </template> -->
 
         <!-- <template id="qunit_suite" name="account_reports_asset_tests" inherit_id="web.qunit_suite_tests">
             <xpath expr="." position="inside">
@@ -23,6 +23,20 @@
                 <script type="text/javascript" src="/account_reports/static/tests/tours/account_reports_widgets.js"></script>
             </xpath>
         </template> -->
+        <template id="mblz_assets_financial_report" inherit_id="account_reports.assets_financial_report">
+            <xpath expr="link[@href='/account_reports/static/src/scss/account_report_print.scss']" position="replace">
+                <link rel="stylesheet" type="text/scss" href="/l10n_cl_reports/static/src/scss/report.scss" />
+                
+            </xpath>
+            <!-- <t t-call="web._assets_helpers">
+                <t t-set="no_bs_vars" t-value="True" />
+            </t>
+
+            <t t-call="web._assets_bootstrap" />
+            <link rel="stylesheet" type="text/scss" href="/web/static/src/scss/fonts.scss" />
+            <link rel="stylesheet" type="text/scss" href="/account_reports/static/src/scss/account_financial_report.scss" />
+            <link rel="stylesheet" type="text/scss" href="/account_reports/static/src/scss/account_report_print.scss" /> -->
+        </template>
 
     </data>
 </odoo>
