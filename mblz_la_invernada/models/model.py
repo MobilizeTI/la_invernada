@@ -12,5 +12,8 @@ class AccountInvoice(models.Model):
 
     def format_amount(self, amount, usd=False):
         if usd:
-            return'$ {:,.3f}'.format(amount)
+            mnt = '$ {:,.2f}'.format(amount).split('.')
+            int_part = mnt[0].replace(',', '.')
+            dec_part = mnt[1]
+            return '{},{}'.format(int_part, dec_part)
         return '$ {:,.0f}'.format(round(amount)).replace(",",".")

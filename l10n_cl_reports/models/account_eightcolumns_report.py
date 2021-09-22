@@ -59,8 +59,8 @@ class CL8ColumnsReport(models.AbstractModel):
             GROUP BY aa.id, aa.code, aa.name
             ORDER BY aa.code            
         """
-        _logger.info('Log. --ZZ tables {}'.format(tables))
-        _logger.info('Log. --ZZ where_params {}'.format(where_params))
+        # _logger.info('Log. --ZZ tables {}'.format(tables))
+        # _logger.info('Log. --ZZ where_params {}'.format(where_params))
         # tables = ''
         # where_clause_ = where_clause.replace('("account_move_line"."move_id"="account_move_line__move_id"."id") AND ', '')
         # where_clause__ = where_clause_.replace('("account_move_line__move_id"."state" != {})'.format("'cancel'"), '')
@@ -112,8 +112,8 @@ class CL8ColumnsReport(models.AbstractModel):
         # account_ids = self.env['account.account'].sudo().search([])
         lines = []
         sql_query, parameters = self._prepare_query(options)
-        _logger.info('LOG: -->>> sql {}'.format(sql_query))
-        _logger.info('LOG: -->>> params {}'.format(parameters))
+        # _logger.info('LOG: -->>> sql {}'.format(sql_query))
+        # _logger.info('LOG: -->>> params {}'.format(parameters))
         self.env.cr.execute(sql_query, parameters)
         results = self.env.cr.dictfetchall()
         for line in results:
@@ -196,12 +196,14 @@ class CL8ColumnsReport(models.AbstractModel):
 
     def _calculate_exercise_result(self, subtotal_line):
         exercise_result = {'pasivo': 0, 'perdida': 0, 'ganancia': 0}
+        _logger.info('LOG: -->>> subtotal_line {}'.format(subtotal_line))
         if subtotal_line['ganancia'] >= subtotal_line['perdida']:
             exercise_result['ganancia'] = subtotal_line['ganancia'] - subtotal_line['perdida']
             exercise_result['pasivo'] = exercise_result['ganancia']
         else:
             exercise_result['perdida'] = subtotal_line['perdida'] - subtotal_line['ganancia']
             exercise_result['pasivo'] = exercise_result['perdida'] * (-1)
+        _logger.info('LOG: -->> exercise resullt {}'.format(exercise_result))
         return exercise_result
 
     def _calculate_totals(self, subtotal_line, exercise_result_line):
@@ -218,7 +220,7 @@ class CL8ColumnsReport(models.AbstractModel):
     def _query_get(self, options, domain=None):
         domain = self._get_options_domain(options) + (domain or [])
         self.env['account.move.line'].check_access_rights('read')
-        _logger.info('LOG: ----ZZ domain {}'.format(domain))
+        # _logger.info('LOG: ----ZZ domain {}'.format(domain))
 
         query = self.env['account.move.line']._where_calc(domain)
 

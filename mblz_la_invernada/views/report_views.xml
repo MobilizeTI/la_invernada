@@ -159,10 +159,12 @@
                                     <!-- <td /> -->
                                     <td style="font-size: 14px; font-weight: bold">Totales</td>
                                     <td style="font-size: 14px; font-weight: bold" class="text-right">
-                                        <span t-esc="o.format_amount(total_debito, usd=True)" />
+                                        <span t-if="o.company_id.currency_id.name == 'USD'" t-esc="o.format_amount(total_debito, usd=True)" />
+                                        <span t-else="" t-esc="o.format_amount(total_debito)" />
                                     </td>
                                     <td style="font-size: 14px; font-weight: bold" class="text-right">
-                                        <span t-esc="o.format_amount(total_credito, usd=True)" />
+                                        <span t-if="o.company_id.currency_id.name == 'USD'" t-esc="o.format_amount(total_credito, usd=True)" />
+                                        <span t-else="" t-esc="o.format_amount(total_credito)" />
                                     </td>
                                     <td t-if="o.company_id.currency_id.name == 'USD'" class="text-right" style="font-size: 14px; font-weight: bold">
                                         <span t-esc="o.format_amount(total_currency_deb)" />
