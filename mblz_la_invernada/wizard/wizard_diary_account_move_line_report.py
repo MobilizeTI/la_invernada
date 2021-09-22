@@ -14,7 +14,8 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
     book_file = fields.Binary("Libro Diario")
     company_get_id = fields.Many2one('res.company', 'Compañía')
     # book_report_name = fields.Char("Libro Diario")
-    date = fields.Date('Fecha')
+    date_from = fields.Date('Desde')
+    date_to = fields.Date('Hasta')
 
     def generate_diary_book_pdf(self):
         self.ensure_one()
@@ -58,8 +59,9 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
                 sheet.merge_range(5, 3, 5, 6, 'Libro Diario Ordenado por asiento', formats['title'])
                 sheet.write(6, 8, 'Fecha Reporte', formats['title'])
                 sheet.write(6, 9, date.today().strftime('%Y-%m-%d'), formats['title'])
-                sheet.merge_range(6, 3, 6, 6, f'Fecha: {self.date}', formats['title'])
-                sheet.merge_range(7, 3, 7, 6, 'Moneda : Peso Chileno', formats['title'])
+                sheet.merge_range(6, 3, 6, 6, f'Desde: {self.date_from}', formats['title'])
+                sheet.merge_range(7, 3, 6, 6, f'Hasta: {self.date_to}', formats['title'])
+                sheet.merge_range(8, 3, 7, 6, 'Moneda : Peso Chileno', formats['title'])
                 row = 10
                 col = 0
                 
@@ -68,7 +70,7 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
                     col += 1
                 row += 2
                 col = 0
-                moves = self.get_move_lines(self.date, self.company_get_id[0].id)
+                moves = self.get_move_lines(self.date_from, self.date_to, self.company_get_id[0].id)
                 begin = row
                 row += 1
                 data_invoice = self.set_data_for_excel(sheet, row, moves, titles, formats)
@@ -93,9 +95,10 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
         }
         return action
     
-    def get_move_lines(self, date, company_id):
+    def get_move_lines(self, date_from, date_to, company_id):
         domain = [
-            ('date', '=', date),
+            ('date', '>=', date_from),
+            ('date', '<=', date_to),
             ('company_id.id', '=', company_id)
             ]
         res = []

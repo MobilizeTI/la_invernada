@@ -7,7 +7,8 @@
             <form>
                 <group>
                     <field name="company_get_id" required="1" />
-                    <field name="date" required="1" />
+                    <field name="date_from" required="1" />
+                    <field name="date_to" required="1" />
                 </group>
                 <footer>
                     <button type="object" class="oe_highlight" string="Descargar Libro (XLS)" name="generate_diary_book" />
