@@ -246,14 +246,14 @@
                                     <td t-esc="o.company_id.city" style="text-align: left" />
                                     <td style="text-align: right">
                                         Desde:
-                                        <span t-field="date_from" />
+                                        <span t-esc="date_from" />
                                     </td>
                                 </tr>
                                 <tr style="border: none !important; padding: 0 !important">
                                     <td t-esc="o.company_id.region_address_id.name" style="text-align: left" />
                                     <td style="text-align: right">
                                         Hasta:
-                                        <span t-field="date_to" />
+                                        <span t-esc="date_to" />
                                     </td>
                                 </tr>
                                 <tr style="border: none !important; padding: 0 !important">
@@ -378,10 +378,10 @@
                                             <span t-esc="o.format_amount(total_credito)" />
                                         </td>
                                         <td t-if="o.company_id.currency_id.name == 'USD'" class="text-right" style="font-size: 14px; font-weight: bold">
-                                            <span t-esc="o.format_amount(total_currency_deb)" />
+                                            <span t-esc="o.format_amount(total_currency_deb, usd=True)" />
                                         </td>
                                         <td t-if="o.company_id.currency_id.name == 'USD'" class="text-right" style="font-size: 14px; font-weight: bold">
-                                            <span t-esc="o.format_amount(total_currency_cred)" />
+                                            <span t-esc="o.format_amount(total_currency_cred, usd=True)" />
 
                                         </td>
                                         <td/>
