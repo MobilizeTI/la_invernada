@@ -219,7 +219,7 @@ class CL8ColumnsReport(models.AbstractModel):
             # exercise_result['pasivo'] = exercise_result['ganancia']
         else:
             exercise_result['ganancia'] = subtotal_line['perdida'] - subtotal_line['ganancia']
-            exercise_result['activo'] = exercise_result['perdida']
+            exercise_result['activo'] = exercise_result['ganancia']
         # _logger.info('LOG: -->> exercise resullt {}'.format(exercise_result))
         return exercise_result
 
