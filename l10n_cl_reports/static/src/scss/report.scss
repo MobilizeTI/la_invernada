@@ -10,6 +10,7 @@
     // background-color: $o-view-background-color;
     background-color: cyan !important;
     color: $o-main-text-color;
+    max-width: 1720px !important;
 
     padding-bottom: 125px;
     @include o-webclient-padding($top: $o-sheet-vpadding, $bottom: $o-sheet-vpadding);
