@@ -245,12 +245,16 @@
                                 <tr style="border: none !important; padding: 0 !important">
                                     <td t-esc="o.company_id.city" style="text-align: left" />
                                     <td style="text-align: right">
-                                        Fecha:
-                                        <span t-field="o.date" />
+                                        Desde:
+                                        <span t-field="date_from" />
                                     </td>
                                 </tr>
                                 <tr style="border: none !important; padding: 0 !important">
                                     <td t-esc="o.company_id.region_address_id.name" style="text-align: left" />
+                                    <td style="text-align: right">
+                                        Hasta:
+                                        <span t-field="date_to" />
+                                    </td>
                                 </tr>
                                 <tr style="border: none !important; padding: 0 !important">
                                     <td t-esc="o.company_id.invoice_rut" style="text-align: left" />
@@ -266,11 +270,11 @@
                             </div>
                             <t t-foreach="get_move_lines" t-as="gl">
                                 <thead>
-                                    <tr>
+                                    <!-- <tr>
                                         <th>
                                             <span t-if="len(gl['move'].name) > 0" style="font-size: 14px; font-weight: bold;" t-esc="gl['move'].name"></span>
                                         </th>
-                                    </tr>
+                                    </tr> -->
                                     <tr>
                                         <th class="col-xs-1">Fecha</th>
                                         <th class="col-xs-1">Diario</th>
