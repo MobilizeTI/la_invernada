@@ -205,27 +205,29 @@ class CL8ColumnsReport(models.AbstractModel):
     #     ('perdida', 1.494.374.878,37), 
     #     ('ganancia', 869.985.836,22)])
 
-# exercise_resullt = {'pasivo': -624389042.1499999, 'perdida': 624389042.1499999, 'ganancia': 0}
+# exercise_resullt = {'pasivo': -624.389.042,1499999, 'perdida': 624.389.042,1499999, 'ganancia': 0}
 
 
     def _calculate_exercise_result(self, subtotal_line):
-        exercise_result = {'pasivo': 0, 'perdida': 0, 'ganancia': 0}
-        _logger.info('LOG: -->>> subtotal_line {}'.format(subtotal_line))
+        exercise_result = {'activo': 0, 'pasivo': 0, 'perdida': 0, 'ganancia': 0}
+        # _logger.info('LOG: -->>> subtotal_line {}'.format(subtotal_line))
         if subtotal_line['ganancia'] >= subtotal_line['perdida']:
-            exercise_result['ganancia'] = subtotal_line['ganancia'] - subtotal_line['perdida']
-            exercise_result['pasivo'] = exercise_result['ganancia']
+            exercise_result['perdida'] = subtotal_line['ganancia'] - subtotal_line['perdida']
+            exercise_result['pasivo'] = exercise_result['perdida']
+            # exercise_result['ganancia'] = subtotal_line['ganancia'] - subtotal_line['perdida']
+            # exercise_result['pasivo'] = exercise_result['ganancia']
         else:
-            exercise_result['perdida'] = subtotal_line['perdida'] - subtotal_line['ganancia']
-            exercise_result['pasivo'] = exercise_result['perdida'] * (-1)
-        _logger.info('LOG: -->> exercise resullt {}'.format(exercise_result))
+            exercise_result['ganancia'] = subtotal_line['perdida'] - subtotal_line['ganancia']
+            exercise_result['activo'] = exercise_result['perdida']
+        # _logger.info('LOG: -->> exercise resullt {}'.format(exercise_result))
         return exercise_result
 
     def _calculate_totals(self, subtotal_line, exercise_result_line):
         totals = OrderedDict([
             ('debe', subtotal_line['debe']), ('haber', subtotal_line['haber']),
             ('deudor', subtotal_line['deudor']), ('acreedor', subtotal_line['acreedor']),
-            ('activo', subtotal_line['activo']), ('pasivo', subtotal_line['pasivo'] + exercise_result_line['pasivo']),
-            ('perdida', exercise_result_line['perdida']), ('ganancia', exercise_result_line['ganancia'])
+            ('activo', subtotal_line['activo'] + exercise_result_line['pasivo']), ('pasivo', subtotal_line['pasivo'] + exercise_result_line['pasivo']),
+            ('perdida', subtotal_line['perdida'] + exercise_result_line['perdida']), ('ganancia', subtotal_line['ganancia'] + exercise_result_line['ganancia'])
         ])
         return totals
 
