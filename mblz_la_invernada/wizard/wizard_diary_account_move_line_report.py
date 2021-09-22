@@ -60,8 +60,8 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
                 sheet.write(6, 8, 'Fecha Reporte', formats['title'])
                 sheet.write(6, 9, date.today().strftime('%Y-%m-%d'), formats['title'])
                 sheet.merge_range(6, 3, 6, 6, f'Desde: {self.date_from}', formats['title'])
-                sheet.merge_range(7, 3, 6, 6, f'Hasta: {self.date_to}', formats['title'])
-                sheet.merge_range(8, 3, 7, 6, 'Moneda : Peso Chileno', formats['title'])
+                sheet.merge_range(7, 3, 7, 6, f'Hasta: {self.date_to}', formats['title'])
+                sheet.merge_range(8, 3, 8, 6, 'Moneda : Peso Chileno', formats['title'])
                 row = 10
                 col = 0
                 
@@ -101,17 +101,18 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
             ('date', '<=', date_to),
             ('company_id.id', '=', company_id)
             ]
-        # res = []
+        res = []
         
-        res = self.env['account.move.line'].sudo().search(domain, order='date asc')
+        lines = self.env['account.move.line'].sudo().search(domain, order='date asc')
 
         # moves = list(set([line.move_id for line in lines]))
-        # for move in moves:
-        #     move_lines = lines.filtered(lambda l: l.move_id == move)
-        #     res.append({
-        #         'move': move,
-        #         'lines': move_lines
-        #     })
+        moves = [line.move_id for line in lines]
+        for move in moves:
+            move_lines = lines.filtered(lambda l: l.move_id == move)
+            res.append({
+                'move': move,
+                'lines': move_lines
+            })
         
         return res
     
@@ -177,67 +178,67 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
         }
 
     def set_data_invoice(self, sheet, col, row, inv, invoices, titles, formats):
-        # sheet.write(row, col, inv['move'].name, formats['title'])
-        sheet.write(row, col, inv[0].move_id.name, formats['title'])
-        # width = len(inv['move'].name)
-        # sheet.set_column(col, row, width)
+        sheet.write(row, col, inv['move'].name, formats['title'])
+        # sheet.write(row, col, inv[0].move_id.name, formats['title'])
+        width = len(inv['move'].name)
+        sheet.set_column(col, row, width)
         row += 1
         total_debit, total_credit = 0.0, 0.0
-        # for line in inv['lines']:
-        #     total_debit += line.debit
-        #     total_credit += line.credit
-        #     #Fecha
-        #     sheet.write(row, col, line.date.strftime('%Y-%m-%d'), formats['string'])  
-        #     col += 1
-        #     #Diario
-        #     sheet.write(row, col, line.journal_id.name, formats['string'])
-        #     width = len(line.journal_id.name)
-        #     col += 1
-        #     sheet.set_column(col, row, width)
+        for line in inv['lines']:
+            total_debit += line.debit
+            total_credit += line.credit
+            #Fecha
+            sheet.write(row, col, line.date.strftime('%Y-%m-%d'), formats['string'])  
+            col += 1
+            #Diario
+            sheet.write(row, col, line.journal_id.name, formats['string'])
+            width = len(line.journal_id.name)
+            col += 1
+            sheet.set_column(col, row, width)
             
-        #     #Cuenta (Nombre)
-        #     sheet.write(row, col, line.account_id.name, formats['string'])
-        #     width = len(line.account_id.name)
-        #     col += 1
-        #     sheet.set_column(col, row, width)
+            #Cuenta (Nombre)
+            sheet.write(row, col, line.account_id.name, formats['string'])
+            width = len(line.account_id.name)
+            col += 1
+            sheet.set_column(col, row, width)
             
-        #     #Cuenta (Código)
-        #     sheet.write(row, col, line.account_id.code, formats['string'])
-        #     col += 1
-        #     #Cuenta Analítica
-        #     if line.analytic_account_id:
-        #         sheet.write(row, col, line.analytic_account_id.name, formats['string'])
-        #         width = len(line.analytic_account_id.name)
-        #     col += 1
-        #     sheet.set_column(col, row, width)
+            #Cuenta (Código)
+            sheet.write(row, col, line.account_id.code, formats['string'])
+            col += 1
+            #Cuenta Analítica
+            if line.analytic_account_id:
+                sheet.write(row, col, line.analytic_account_id.name, formats['string'])
+                width = len(line.analytic_account_id.name)
+            col += 1
+            sheet.set_column(col, row, width)
             
-        #     #Referencia
-        #     sheet.write(row, col, line.ref, formats['string'])
-        #     width = len(line.ref)
-        #     col += 1
-        #     sheet.set_column(col, row, width)
+            #Referencia
+            sheet.write(row, col, line.ref, formats['string'])
+            width = len(line.ref)
+            col += 1
+            sheet.set_column(col, row, width)
             
-        #     #Partner
-        #     if line.partner_id:
-        #         sheet.write(row, col, line.partner_id.name, formats['string'])
-        #         width = len(line.partner_id.name)
-        #     col += 1
-        #     sheet.set_column(col, row, width)
-        #     #Débito
-        #     sheet.write(row, col, line.debit, formats['number'])
-        #     col += 1
-        #     #Crédito
-        #     sheet.write(row, col, line.credit, formats['number'])
-        #     col += 1
-        #     #Divisa
-        #     if line.amount_currency:
-        #         sheet.write(row, col, line.amount_currency, formats['number'])
-        #     col += 1
-        #     #Match
-        #     if line.reconciled:
-        #         sheet.write(row, col, line.full_reconcile_id.name, formats['string'])
-        #     col = col - 10
-        #     row += 1
+            #Partner
+            if line.partner_id:
+                sheet.write(row, col, line.partner_id.name, formats['string'])
+                width = len(line.partner_id.name)
+            col += 1
+            sheet.set_column(col, row, width)
+            #Débito
+            sheet.write(row, col, line.debit, formats['number'])
+            col += 1
+            #Crédito
+            sheet.write(row, col, line.credit, formats['number'])
+            col += 1
+            #Divisa
+            if line.amount_currency:
+                sheet.write(row, col, line.amount_currency, formats['number'])
+            col += 1
+            #Match
+            if line.reconciled:
+                sheet.write(row, col, line.full_reconcile_id.name, formats['string'])
+            col = col - 10
+            row += 1
         #Totales
         sheet.write(row, col + 6, 'Totales', formats['title'])
         sheet.write(row, col + 7, total_debit, formats['total'])
