@@ -226,7 +226,7 @@ class CL8ColumnsReport(models.AbstractModel):
         totals = OrderedDict([
             ('debe', subtotal_line['debe']), ('haber', subtotal_line['haber']),
             ('deudor', subtotal_line['deudor']), ('acreedor', subtotal_line['acreedor']),
-            ('activo', subtotal_line['activo'] + exercise_result_line['pasivo']), ('pasivo', subtotal_line['pasivo'] + exercise_result_line['pasivo']),
+            ('activo', subtotal_line['activo'] + exercise_result_line['activo']), ('pasivo', subtotal_line['pasivo'] + exercise_result_line['pasivo']),
             ('perdida', subtotal_line['perdida'] + exercise_result_line['perdida']), ('ganancia', subtotal_line['ganancia'] + exercise_result_line['ganancia'])
         ])
         return totals
