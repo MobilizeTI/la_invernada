@@ -81,7 +81,7 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
         workbook.close()
         with open(file_name, "rb") as file:
             file_base64 = base64.b64encode(file.read())
-        file_name = 'Libro Diario {} {}.xlsx'.format(company_name, self.date.strftime("%d/%m/%Y"))
+        file_name = 'Libro Diario {} Desde {} Hasta {}.xlsx'.format(company_name, self.date_from.strftime("%d/%m/%Y"), self.date_to.strftime("%d/%m/%Y"))
         attachment_id = self.env['ir.attachment'].sudo().create({
             'name': file_name,
             'datas_fname': file_name,
