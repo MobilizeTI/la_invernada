@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="wizard_diary_account_move_line" model="ir.ui.view">
+        <field name="name">Libro de Diario</field>
+        <field name="model">account.move.line.diary</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="company_get_id" required="1" />
+                    <field name="date_from" required="1" />
+                    <field name="date_to" required="1" />
+                </group>
+                <footer>
+                    <button type="object" class="oe_highlight" string="Descargar Libro (XLS)" name="generate_diary_book" />
+                    <button type="object" class="oe_highlight" string="Descargar Libro (PDF)" name="generate_diary_book_pdf" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_export_account_move_line" model="ir.actions.act_window">
+        <field name="name">Libro Diario</field>
+        <field name="res_model">account.move.line.diary</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="wizard_diary_account_move_line" />
+        <field name="target">new</field>
+    </record>
+
+    <menuitem name="Libro Diario" sequence="3" parent="l10n_cl.account_reports_cl_statements_menu" id="menu_action_export_account_move_line" action="action_export_account_move_line" />
+
+</odoo>

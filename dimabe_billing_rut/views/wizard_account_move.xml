@@ -6,13 +6,19 @@
         <field name="arch" type="xml">
             <form>
                 <group>
+                    <field name="book_type" required="1" />
                     <field name="company_get_id" required="1"/>
                     <field name="from_date" required="1"/>
                     <field name="to_date" required="1"/>
                 </group>
                 <footer>
-                    <button type="object" string="Generar Libro de Compras" name="generate_purchase_book"/>
-                    <button type="object" string="Generar Libro de Ventas" name="generate_sale_book"/>
+                    <button type="object" class="oe_highlight" string="Descargar Libro (XLS)" name="generate_purchase_book" attrs="{'invisible': [('book_type', 'not in', ['purchase'])]}" />
+                    <button type="object" class="oe_highlight" string="Descargar Libro (PDF)" name="generate_purchase_book_pdf" attrs="{'invisible': [('book_type', 'not in', ['purchase'])]}" />
+                    <button type="object" class="oe_highlight" string="Descargar Libro (XLS)" name="generate_honorarios_book" attrs="{'invisible': [('book_type', 'not in', ['employee_fee'])]}"/>
+                    <button type="object" class="oe_highlight" string="Descargar Libro (PDF)" name="generate_honorarios_book_pdf" attrs="{'invisible': [('book_type', 'not in', ['employee_fee'])]}" />
+                    <button type="object" class="oe_highlight" string="Descargar Libro (XLS)" name="generate_sale_book" attrs="{'invisible': [('book_type', 'not in', ['sale'])]}" />
+                    <button type="object" class="oe_highlight" string="Descargar Libro (PDF)" name="generate_sale_book_pdf" attrs="{'invisible': [('book_type', 'not in', ['sale'])]}" />
+                    
                 </footer>
             </form>
         </field>
@@ -25,5 +31,6 @@
 		<field name="view_id" ref="wizard_export_account_move" />
 		<field name="target">new</field>
     </record>
-    <menuitem name="Libros Legales" parent="account.menu_finance_reports" id="account-menu-item" action="action_export_account_move"/>
+    <menuitem name="Libros Tributarios Chile" sequence="1" parent="l10n_cl.account_reports_cl_statements_menu" id="account-menu-item" action="action_export_account_move" />
+    
 </odoo>

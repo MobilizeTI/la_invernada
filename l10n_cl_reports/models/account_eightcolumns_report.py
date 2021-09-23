@@ -2,6 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import models, api, _
 from collections import OrderedDict
+import logging
+_logger = logging.getLogger('TEST PURCHASE =======')
 # from datetime import datetime
 
 
@@ -10,11 +12,14 @@ class CL8ColumnsReport(models.AbstractModel):
     _inherit = "account.report"
     _description = "Chilean Accounting eight columns report"
 
-    filter_date = {'mode': 'range', 'filter': 'this_year'}
     filter_journals = True
     filter_all_entries = False
     filter_analytic = True
     filter_multi_company = None
+
+    @property
+    def filter_date(self):
+        return {'mode': 'range', 'filter': 'year', 'date_from': ''}
 
     def _get_report_name(self):
         return _("Balance Tributario (8 columnas)")
@@ -54,15 +59,65 @@ class CL8ColumnsReport(models.AbstractModel):
             GROUP BY aa.id, aa.code, aa.name
             ORDER BY aa.code            
         """
+        # _logger.info('Log. --ZZ tables {}'.format(tables))
+        # _logger.info('Log. --ZZ where_params {}'.format(where_params))
+        # tables = ''
+        # where_clause_ = where_clause.replace('("account_move_line"."move_id"="account_move_line__move_id"."id") AND ', '')
+        # where_clause__ = where_clause_.replace('("account_move_line__move_id"."state" != {})'.format("'cancel'"), '')
+        # sql_query = """
+        #     SELECT aa.id, aa.code, aa.name,
+        #            SUM(account_move_line.debit) AS debe,
+        #            SUM(account_move_line.credit) AS haber,
+        #            GREATEST(SUM(account_move_line.balance), 0) AS deudor,
+        #            GREATEST(SUM(-account_move_line.balance), 0) AS acreedor,
+        #            SUM(CASE aa.internal_group WHEN 'asset' THEN account_move_line.balance ELSE 0 END) AS activo,
+        #            SUM(CASE aa.internal_group WHEN 'equity' THEN -account_move_line.balance ELSE 0 END) +
+        #            SUM(CASE aa.internal_group WHEN 'liability' THEN -account_move_line.balance ELSE 0 END) AS pasivo,
+        #            SUM(CASE aa.internal_group WHEN 'expense' THEN account_move_line.balance ELSE 0 END) AS perdida,
+        #            SUM(CASE aa.internal_group WHEN 'income' THEN -account_move_line.balance ELSE 0 END) AS ganancia
+        #     FROM account_account AS aa, "account_move_line" """ + tables + """
+        #     WHERE """ + where_clause + """
+        #     AND aa.id = account_move_line.account_id
+        #     GROUP BY aa.id, aa.code, aa.name
+        #     ORDER BY aa.code            
+        # """
+        # _logger.info('LOG: ....>>> sql {}'.format(sql_query))
+        sql_query = """
+            select aa.id, aa.code, aa.name, 
+                SUM(account_move_line.debit) AS debe,
+                SUM(account_move_line.credit) AS haber,
+                GREATEST(SUM(account_move_line.balance), 0) AS deudor,
+                GREATEST(SUM(-account_move_line.balance), 0) AS acreedor,
+                SUM(CASE aa.internal_group WHEN 'asset' THEN account_move_line.balance ELSE 0 END) AS activo,
+                SUM(CASE aa.internal_group WHEN 'equity' THEN -account_move_line.balance ELSE 0 END) +
+                SUM(CASE aa.internal_group WHEN 'liability' THEN -account_move_line.balance ELSE 0 END) AS pasivo,
+                SUM(CASE aa.internal_group WHEN 'expense' THEN account_move_line.balance ELSE 0 END) AS perdida,
+                SUM(CASE aa.internal_group WHEN 'income' THEN -account_move_line.balance ELSE 0 END) AS ganancia
+                from account_account as aa, account_move as account_move_line__move_id, account_move_line 
+                where account_move_line.move_id = account_move_line__move_id.id 
+                    and account_move_line__move_id.state != %s 
+                    AND account_move_line.company_id = %s
+                    and account_move_line.date <= %s
+                    and account_move_line.date >= %s
+                    AND aa.id = account_move_line.account_id
+                    AND account_move_line__move_id.state = %s
+                    AND account_move_line.company_id = %s
+                group by aa.id, aa.code, aa.name
+                ORDER BY aa.code
+         """
         return sql_query, where_params
 
     @api.model
     def _get_lines(self, options, line_id=None):
+        # account_ids = self.env['account.account'].sudo().search([])
         lines = []
         sql_query, parameters = self._prepare_query(options)
+        # _logger.info('LOG: -->>> sql {}'.format(sql_query))
+        # _logger.info('LOG: -->>> params {}'.format(parameters))
         self.env.cr.execute(sql_query, parameters)
         results = self.env.cr.dictfetchall()
         for line in results:
+            _logger.info('LOG: line from result {}'.format(line))
             lines.append({
                 'id': line['id'],
                 'name': line['code'] + " " + line['name'],
@@ -103,7 +158,8 @@ class CL8ColumnsReport(models.AbstractModel):
                 'level': 3,
                 'columns': [
                     {'name': values} for values in [
-                        '', '', '', '', '',
+                        '', '', '', '',
+                        self.format_value(exercise_result['activo']),
                         self.format_value(exercise_result['pasivo']),
                         self.format_value(exercise_result['perdida']),
                         self.format_value(exercise_result['ganancia'])
@@ -135,25 +191,44 @@ class CL8ColumnsReport(models.AbstractModel):
         ])
         for key in subtotals.keys():
             for line in lines:
+                # _logger.info('LOG: -->>> lines {}'.format(line))
                 subtotals[key] += line[key]
         return subtotals
 
+    #     subtotal_line = OrderedDict(
+    # [
+    #     ('debe', 10994414133.02), 
+    #     ('haber', 10994414133.019999), 
+    #     ('deudor', 2039458103.12), 
+    #     ('acreedor', 2039458103.12), 
+    #     ('activo', 233192700.75), 
+    #     ('pasivo', 857581742.9), 
+    #     ('perdida', 1.494.374.878,37), 
+    #     ('ganancia', 869.985.836,22)])
+
+# exercise_resullt = {'pasivo': -624.389.042,1499999, 'perdida': 624.389.042,1499999, 'ganancia': 0}
+
+
     def _calculate_exercise_result(self, subtotal_line):
-        exercise_result = {'pasivo': 0, 'perdida': 0, 'ganancia': 0}
+        exercise_result = {'activo': 0, 'pasivo': 0, 'perdida': 0, 'ganancia': 0}
+        # _logger.info('LOG: -->>> subtotal_line {}'.format(subtotal_line))
         if subtotal_line['ganancia'] >= subtotal_line['perdida']:
-            exercise_result['ganancia'] = subtotal_line['ganancia'] - subtotal_line['perdida']
-            exercise_result['pasivo'] = exercise_result['ganancia']
+            exercise_result['perdida'] = subtotal_line['ganancia'] - subtotal_line['perdida']
+            exercise_result['pasivo'] = exercise_result['perdida']
+            # exercise_result['ganancia'] = subtotal_line['ganancia'] - subtotal_line['perdida']
+            # exercise_result['pasivo'] = exercise_result['ganancia']
         else:
-            exercise_result['perdida'] = subtotal_line['perdida'] - subtotal_line['ganancia']
-            exercise_result['pasivo'] = exercise_result['perdida'] * (-1)
+            exercise_result['ganancia'] = subtotal_line['perdida'] - subtotal_line['ganancia']
+            exercise_result['activo'] = exercise_result['ganancia']
+        # _logger.info('LOG: -->> exercise resullt {}'.format(exercise_result))
         return exercise_result
 
     def _calculate_totals(self, subtotal_line, exercise_result_line):
         totals = OrderedDict([
             ('debe', subtotal_line['debe']), ('haber', subtotal_line['haber']),
             ('deudor', subtotal_line['deudor']), ('acreedor', subtotal_line['acreedor']),
-            ('activo', subtotal_line['activo']), ('pasivo', subtotal_line['pasivo'] + exercise_result_line['pasivo']),
-            ('perdida', exercise_result_line['perdida']), ('ganancia', exercise_result_line['ganancia'])
+            ('activo', subtotal_line['activo'] + exercise_result_line['activo']), ('pasivo', subtotal_line['pasivo'] + exercise_result_line['pasivo']),
+            ('perdida', subtotal_line['perdida'] + exercise_result_line['perdida']), ('ganancia', subtotal_line['ganancia'] + exercise_result_line['ganancia'])
         ])
         return totals
 
@@ -162,6 +237,7 @@ class CL8ColumnsReport(models.AbstractModel):
     def _query_get(self, options, domain=None):
         domain = self._get_options_domain(options) + (domain or [])
         self.env['account.move.line'].check_access_rights('read')
+        # _logger.info('LOG: ----ZZ domain {}'.format(domain))
 
         query = self.env['account.move.line']._where_calc(domain)
 
@@ -204,21 +280,23 @@ class CL8ColumnsReport(models.AbstractModel):
     def _get_options_date_domain(self, options):
         def create_date_domain(options_date):
             date_field = options_date.get('date_field', 'date') #options_date.get('date_field', 'date')
-            domain = [(date_field, '<=', options_date['date'])] #date_to
+            domain = [(date_field, '<=', options_date['date_to'])] #date_to
             if options_date['mode'] == 'range':
                 strict_range = options_date.get('strict_range')
                 if not strict_range:
                     domain += [
                         '|',
-                        (date_field, '>=', options_date['date']),#date_from
-                        ('account_id.user_type_id.include_initial_balance', '=', True)
+                        (date_field, '>=', options_date['date_from']),#date_from
+                        # ('account_id', '=', 4065)
                     ]
                 else:
                     domain += [(date_field, '>=', options_date['date'])] #date_from
+            _logger.info('LOG: domain {}'.format(domain))
             return domain
 
         if not options.get('date'):
            return []
+        _logger.info('LOG:  -->>>> range_date {}'.format(options['date']))
         return create_date_domain(options['date'])
 
     @api.model
@@ -249,7 +327,5 @@ class CL8ColumnsReport(models.AbstractModel):
             return [('move_id.state', '=', 'posted')]
         else:
             return [('move_id.state', '!=', 'cancel')]
+ 
 
-    
-    
-  

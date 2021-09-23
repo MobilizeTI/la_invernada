@@ -48,7 +48,10 @@
         'views/res_currency.xml',
         'views/account_incoterms.xml',
         'views/account_move.xml',
-        'report/instructive_report.xml'
+        'views/assets.xml',
+        'report/instructive_report.xml',
+        'report/report_purchase_book_pdf.xml',
+        'views/account_journal_views.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

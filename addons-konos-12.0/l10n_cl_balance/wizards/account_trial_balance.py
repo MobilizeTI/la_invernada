@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from odoo import fields, models
+import logging
+_logger = logging.getLogger('TEST PURCHASE =======')
 
 
 class AccountBalanceReport(models.TransientModel):
@@ -13,4 +15,5 @@ class AccountBalanceReport(models.TransientModel):
     def _print_report(self, data):
         data = self.pre_print_report(data)
         records = self.env[data['model']].browse(data.get('ids', []))
+        _logger.info('LOG: ----> data {}'.format(data))
         return self.env.ref('l10n_cl_balance.action_report_trial_balance').report_action(records, data=data)

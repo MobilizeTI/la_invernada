@@ -1,0 +1,61 @@
+.company_data {
+    font-size: 15px;
+    text-align: center;
+    width: 30%;
+    tr {
+        border: 1px solid black;
+    }
+    margin-bottom: 10px;
+    
+}
+
+.report_data {
+    font-size: 17px;
+    width: 50%;
+    text-align: center;
+    .book_title {
+        font-size: 20px;
+        font-weight: bold;
+    }
+    tr {
+       border: 1px solid black; 
+    }
+    margin-bottom: 10px;
+
+}
+
+.tbl_book {
+    border: 1px solid black;
+    font-size: 13px;
+    text-align: center;
+    width: 100%;
+    thead {
+        height: 50px;
+        border-bottom: 1px solid black;
+    }
+    tbody {
+        tr {
+            // border: 1px solid grey;
+            td {
+                padding: 2px;
+                border: 1px solid grey;
+            }
+        }
+    }
+}
+
+center {
+    div {
+        font-weight: bold;
+        font-size: 15px;
+    }
+    h5 {
+        font-weight: bold;
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+}
+
+.row_totales {
+    font-weight: bold;
+}

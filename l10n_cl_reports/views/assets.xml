@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="mblz_assets_followup_report" inherit_id="account_reports.assets_financial_report" primary="True">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" type="text/scss" href="/l10n_cl_reports/static/src/scss/report.scss" />
+            </xpath>
+        </template>
+        <template id="mblz_assets_financial_report" inherit_id="account_reports.assets_financial_report" primary="True"> 
+            <xpath expr="link[@href='/account_reports/static/src/scss/account_report_print.scss']" position="replace">
+                <link rel="stylesheet" type="text/scss" href="/l10n_cl_reports/static/src/scss/report.scss" />
+            </xpath>
+        </template>
+
+    </data>
+</odoo>

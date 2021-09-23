@@ -15,6 +15,7 @@
         'security/ir.model.access.csv',
         'views/eightcolumns_report_view.xml',
         'views/res_config_settings_view.xml',
+        'views/assets.xml',
         #'wizard/f29_report_wizard.xml',
         #'data/f29_report_data.xml',
     ],

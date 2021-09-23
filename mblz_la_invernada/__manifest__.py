@@ -4,16 +4,21 @@
     'category': 'Personalization',
     'description': """
 """,
-    'author': 'Andrés Hernández, Mobilize SPA',
+    'author': 'Felipe Angulo, Mobilize SPA',
     
     'depends': [
         # 'l10n_cl_fe',
-        # 'sale'
+
+        'account'
+
     ],
     
     'data': [
-        'views/account_invoice_views.xml',
+        'security/ir.model.access.csv',
+        'views/report_views.xml',
+        'wizard/wizard_diary_account_move_line_report.xml'
     ],
     
     'installable': True,
+    "images":['static/description/icon.png'],
 }

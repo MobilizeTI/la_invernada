@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <record id="mblz_paperformat_sale_purchase_book_pdf" model="report.paperformat">
+            <field name="name">Libro Compras y Ventas</field>
+            <field name="default" eval="True" />
+            <field name="format">custom</field>
+            <field name="page_height">210</field>
+            <field name="page_width">297</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">2</field>
+            <field name="margin_bottom">2</field>
+            <field name="margin_left">2</field>
+            <field name="margin_right">2</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
 
         <record id="account_move_form_inherit" model="ir.ui.view">
             <field name="name">account_move.inherit_form</field>
@@ -16,5 +31,52 @@
                 </xpath>
             </field>
         </record>
+
+        <!-- <record id="account_move_report_action_mblz" model="ir.actions.report">
+            <field name="name">Libro de Compras</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">dimabe_billing_rut.report_purchase_book_pdf</field>
+        </record> -->
+
+        <!-- <record id="account_move_report_sale_book_action_mblz" model="ir.actions.report">
+            <field name="name">Libro de Ventas</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">dimabe_billing_rut.report_sale_book_pdf</field>
+        </record> -->
+
+        <report
+            id="purchase_book_pdf_report"
+            string="Libro de Compras"
+            model="account.move.line"
+            report_type="qweb-pdf"
+            file="dimabe_billing_rut.report_purchase_book_pdf"
+            name="dimabe_billing_rut.report_purchase_book_pdf"
+            paperformat="dimabe_billing_rut.mblz_paperformat_sale_purchase_book_pdf"
+            print_report_name="('Libro de Compras %s' % object.name)"
+        />
+
+        <report
+            id="honorarios_book_pdf_report"
+            string="Libro de Honorarios"
+            model="account.move.line"
+            report_type="qweb-pdf"
+            file="dimabe_billing_rut.report_honorarios_book_pdf"
+            name="dimabe_billing_rut.report_honorarios_book_pdf"
+            paperformat="dimabe_billing_rut.mblz_paperformat_sale_purchase_book_pdf"
+            print_report_name="('Libro de Honorarios %s' % object.name)"
+        />
+
+        <report
+            id="sale_book_pdf_report"
+            string="Libro de Ventas"
+            model="account.move.line"
+            report_type="qweb-pdf"
+            file="dimabe_billing_rut.report_sale_book_pdf"
+            name="dimabe_billing_rut.report_sale_book_pdf"
+            paperformat="dimabe_billing_rut.mblz_paperformat_sale_purchase_book_pdf"
+            print_report_name="('Libro de Ventas %s' % object.name)"
+        />
     </data>
 </odoo>
