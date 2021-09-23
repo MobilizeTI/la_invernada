@@ -221,6 +221,11 @@ class MrpWorkorder(models.Model):
             ])
             if item not in stock_move.active_move_line_ids.mapped('lot_id'):
                 if not self.lot_produced_id:
+                    lot_id = self.production_finished_move_line_ids.filtered(
+                        lambda a: a.product_id.id == self.product_id.id and a.lot_id)[0].lot_id
+                    if not lot_id.stock_production_lot_serial_ids:
+                        lot_id = self.production_finished_move_line_ids.filtered(
+                            lambda a: a.lot_id.stock_production_lot_serial_ids)[0].lot_id
                     stock_move.update({
                         'active_move_line_ids': [
                             (0, 0, {
@@ -228,8 +233,7 @@ class MrpWorkorder(models.Model):
                                 'lot_id': item.id,
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
-                                'lot_produced_id': self.production_finished_move_line_ids.filtered(
-                                    lambda a: a.product_id.id == self.product_id.id and a.lot_id)[0].lot_id,
+                                'lot_produced_id': lot_id.id,
                                 'workorder_id': self.id,
                                 'production_id': self.production_id.id,
                                 'product_uom_id': stock_move.product_uom.id,
@@ -512,11 +516,11 @@ class MrpWorkorder(models.Model):
 
     def process_serial(self, serial_number):
         lots = self.potential_serial_planned_ids
-        weigths = lots.mapped('display_weight')
         if not isinstance(self.id, int):
             self = self._origin
         serial_number = serial_number.strip()
-        serial = self.env['stock.production.lot.serial'].search([('serial_number', '=', serial_number),('stock_production_lot_id','!=',False)])
+        serial = self.env['stock.production.lot.serial'].search(
+            [('serial_number', '=', serial_number), ('stock_production_lot_id', '!=', False)])
         if not serial:
             raise models.ValidationError(f'La serie ingresada no existe')
         if serial.product_id not in self.material_product_ids:
@@ -538,8 +542,8 @@ class MrpWorkorder(models.Model):
             self.write({
                 'producers_id': [(4, serial.producer_id.id)]
             })
-        serial.stock_production_lot_id.update_stock_quant_production(self.production_id.location_src_id.id)
-        serial.stock_production_lot_id.update_kg(serial.stock_production_lot_id.id)
+        serial.stock_production_lot_id.get_and_update(serial.product_id.id)
+        serial.product_id.update_kg(serial.product_id.id)
         line_new = self.env['stock.move.line']
         move = self.production_id.move_raw_ids.filtered(lambda a: a.product_id.id == serial.product_id.id)
         if move.active_move_line_ids:

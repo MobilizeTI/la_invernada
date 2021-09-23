@@ -1,4 +1,0 @@
-"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
-"access_account_journal_pos_sequence_group_user","access_account_journal_pos_sequence_group_user","model_account_journal_pos_sequence","base.group_user",1,0,0,0
-"access_account_journal_pos_sequence_group_pos_manager","access_account_journal_pos_sequence_group_pos_manager","model_account_journal_pos_sequence","point_of_sale.group_pos_manager",1,1,1,1
-"access_account_journal_pos_sequence_group_account_invoice","access_account_journal_pos_sequence_group_account_invoice","model_account_journal_pos_sequence","account.group_account_invoice",1,1,1,1

@@ -1,5 +1,7 @@
 from odoo import fields, models, api
 from odoo.tools.float_utils import float_round
+from datetime import datetime
+from odoo.addons import decimal_precision as dp
 
 
 class ProductProduct(models.Model):
@@ -35,7 +37,8 @@ class ProductProduct(models.Model):
 
     measure = fields.Char('Medida', compute='_compute_measure')
 
-    total_weight = fields.Float('Total Kilos Disponibles', compute='_compute_total_weight')
+    total_weight = fields.Float('Total Kilos Disponibles', compute='_compute_total_weight',
+                                digits=dp.get_precision('Product Unit of Measure'))
 
     dispatch_weight = fields.Float('Kilos Despachados', compute='_compute_dispatch_weight')
 
@@ -113,7 +116,7 @@ class ProductProduct(models.Model):
     def _compute_total_weight(self):
         for item in self:
             if item.tracking == 'lot':
-                lots = self.env['stock.production.lot'].search([('product_id', '=', item.id)])
+                lots = self.env['stock.production.lot'].search([('product_id', '=', item.id),('available_kg','>',0)])
                 item.total_weight = sum(lots.mapped('available_kg'))
 
     @api.multi
@@ -124,3 +127,54 @@ class ProductProduct(models.Model):
             total = sum(serial.mapped('display_weight'))
             item.dispatch_weight = total
 
+    def get_and_update(self, product_id, to_fix=False):
+        lots = self.env['stock.production.lot'].search([('product_id', '=', product_id)])
+        for lot in lots:
+            quant = self.env['stock.quant'].search([('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal')])
+            if quant:
+                try:
+                    if quant.quantity != lot.available_kg or quant.quantity != sum(
+                            lot.stock_production_lot_serial_ids.mapped('display_weight')):
+                        quant.write({
+                            'reserved_quantity': lot.available_kg,
+                            'quantity': lot.available_kg
+                        })
+                except:
+                    query = 'DELETE FROM stock_quant where id = {}'.format(quant[0].id)
+                    cr = self._cr
+                    cr.execute(query)
+            else:
+                self.env['stock.quant'].sudo().create({
+                    'lot_id': lot.id,
+                    'product_id': lot.product_id.id,
+                    'reserved_quantity': sum(
+                        lot.stock_production_lot_serial_ids.filtered(lambda x: not x.consumed).mapped(
+                            'display_weight')),
+                    'quantity': sum(lot.stock_production_lot_serial_ids.filtered(lambda x: not x.consumed).mapped(
+                        'display_weight')),
+                    'location_id': lot.stock_production_lot_serial_ids.mapped('production_id')[
+                        0].location_dest_id.id if lot.stock_production_lot_serial_ids.mapped('production_id') else 12,
+                    'in_date': datetime.now()
+                })
+        self.env['stock.quant'].sudo().search(
+            [('product_id.id', '=', product_id), ('location_id.usage', '=', 'internal'),
+             ('quantity', '<', 0)]).sudo().unlink()
+
+    def update_kg(self, product_id):
+        lots = self.env['stock.production.lot'].search([('product_id', '=', product_id)])
+        for lot in lots:
+            total = sum(lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed).mapped('display_weight'))
+            if total != lot.available_kg:
+                lot.sudo().write({
+                    'available_kg': total,
+                    'available_weight': total
+                })
+            else:
+                continue
+
+    def mass_fix_diference(self):
+        products = self.env['product.product'].search([('tracking', '=', 'lot')])
+        for product in products:
+            if product.total_weight != product.qty_available:
+                self.update_kg(product.id)
+                self.get_and_update(product.id)

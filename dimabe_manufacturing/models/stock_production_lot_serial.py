@@ -97,7 +97,7 @@ class StockProductionLotSerial(models.Model):
     )
 
     harvest_filter = fields.Integer(
-        'Año de Cosecha',
+        'Año de Cosecha Serie',
         compute='_compute_harvest_filter',
         store=True
     )
@@ -383,7 +383,8 @@ class StockProductionLotSerial(models.Model):
             res.stock_production_lot_id.write({
                 'label_durability_id':production.label_durability_id.id
             })
-            res.stock_production_lot_id.update_stock_quant_production(production.location_dest_id.id)
+            res.stock_production_lot_id.get_and_update(res.product_id.id)
+            res.stock_production_lot_id.update_kg(res.stock_production_lot_id.product_id.id)
         res.label_durability_id = res.stock_production_lot_id.label_durability_id
 
         if res.bom_id:
@@ -395,6 +396,8 @@ class StockProductionLotSerial(models.Model):
                 res.gross_weight = res.display_weight + res.canning_id.weight
             else:
                 res.gross_weight = res.display_weight + sum(res.get_possible_canning_id().mapped('weight'))
+        res.stock_production_lot_id.get_and_update(res.product_id.id)
+        res.stock_production_lot_id.update_kg(res.stock_production_lot_id.product_id.id)
         return res
 
     @api.model
@@ -441,6 +444,7 @@ class StockProductionLotSerial(models.Model):
                 )
             lot = self.env['stock.production.lot'].search([('id', '=', item.stock_production_lot_id.id)])
             lot.update_kg(lot.id)
+            lot.get_and_update(lot.product_id.id)
             if item.production_id and item.production_id.state != 'done':
                 production = self.env['mrp.production'].search([('id', '=', item.production_id.id)])
                 workorder = self.env['mrp.workorder'].search([('production_id','=',item.production_id.id)])
@@ -451,10 +455,10 @@ class StockProductionLotSerial(models.Model):
                         lambda a: a.product_id.categ_id.parent_id.name == 'Producto Terminado').mapped(
                         'display_weight'))
                 })
-                lot.update_stock_quant_production(production.location_dest_id.id)
             res = super(StockProductionLotSerial, item).unlink()
             lot.update_kg(lot.id)
-        return res
+            lot.get_and_update(lot.product_id.id)
+            return res
 
     @api.multi
     def delete(self):

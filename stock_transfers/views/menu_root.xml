@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<odoo>
-	<menuitem id="transfer_requisition_menu_root"
-		name="Transferencias Internas" parent="stock.menu_stock_root"
-		sequence="1"
-		groups="group_internal_transfer_user,group_transfer_approved" />
-</odoo>

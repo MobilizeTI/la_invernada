@@ -4,6 +4,8 @@ from datetime import datetime, date
 import requests
 import json
 import base64
+
+
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
     _order = 'date desc'
@@ -179,12 +181,13 @@ class StockPicking(models.Model):
     @api.depends('move_ids_without_package')
     def _compute_weight_guide(self):
         if self.picking_type_code == 'incoming':
-            if self.is_mp_reception or self.is_pt_reception or self.is_satelite_reception:
-                m_move = self.get_mp_move()
-                if not m_move:
-                    m_move = self.get_pt_move()
-                if m_move:
-                    self.weight_guide = m_move[0].product_uom_qty
+            m_move = self.get_mp_move()
+            if not m_move:
+                m_move = self.get_pt_move()
+            if not m_move:
+                m_move = self.get_product_move()
+            if m_move:
+                self.weight_guide = m_move[0].product_uom_qty
 
     @api.one
     @api.depends('move_ids_without_package')
@@ -294,6 +297,14 @@ class StockPicking(models.Model):
             else:
                 raise models.ValidationError(str(e))
 
+    def get_product_move(self):
+        return self.move_ids_without_package.filtered(
+            lambda x: x.product_id.categ_id.id in self.picking_type_id.warehouse_id.products_can_be_stored.filtered(
+                lambda y: not y.reserve_ignore).ids)[0] if self.move_ids_without_package.filtered(
+            lambda x: x.product_id.categ_id.id in self.picking_type_id.warehouse_id.products_can_be_stored.filtered(
+                lambda y: not y.reserve_ignore).ids) else None
+
+
     @api.multi
     def action_confirm(self):
         if self.picking_type_code == 'incoming':
@@ -305,17 +316,19 @@ class StockPicking(models.Model):
                 m_move = stock_picking.get_mp_move()
                 if not m_move:
                     m_move = stock_picking.get_pt_move()
+                if not m_move:
+                    m_move = stock_picking.get_product_move()
                 if not m_move.move_line_ids or len(m_move.move_line_ids) == 0:
                     for move in stock_picking.move_ids_without_package:
                         self.env['stock.move.line'].create({
-                            'move_id':move.id,
-                            'picking_id':stock_picking.id,
-                            'product_id':move.product_id.id,
-                            'product_uom_id':move.product_id.uom_id.id,
-                            'product_uom_qty':move.product_uom_qty,
-                            'location_id':9,
-                            'location_dest_id':stock_picking.location_dest_id.id,
-                            'date':date.today(),
+                            'move_id': move.id,
+                            'picking_id': stock_picking.id,
+                            'product_id': move.product_id.id,
+                            'product_uom_id': move.product_id.uom_id.id,
+                            'product_uom_qty': move.product_uom_qty,
+                            'location_id': 9,
+                            'location_dest_id': stock_picking.location_dest_id.id,
+                            'date': date.today(),
                         })
                 if m_move and m_move.move_line_ids and m_move.picking_id.picking_type_code == 'incoming':
 
@@ -335,7 +348,7 @@ class StockPicking(models.Model):
 
                         for stock_move_line in m_move.move_line_ids:
 
-                            if m_move.product_id.categ_id.is_mp or m_move.product_id.categ_id.is_pt:
+                            if m_move.product_id.categ_id.is_mp or m_move.product_id.categ_id.is_pt or m_move == self.get_product_move():
                                 total_qty = m_move.picking_id.get_canning_move().product_uom_qty
                                 # calculated_weight = stock_move_line.qty_done / total_qty
 
@@ -386,7 +399,8 @@ class StockPicking(models.Model):
                     if not stock_picking.tare_weight:
                         message += 'Debe agregar kg tara \n'
                     if not stock_picking.quality_weight and \
-                            'verde' not in str.lower(stock_picking.picking_type_id.warehouse_id.name):
+                            'verde' not in str.lower(stock_picking.picking_type_id.warehouse_id.name) and \
+                        not self.get_product_move():
                         message += 'Los kilos de calidad aún no han sido registrados en el sistema,' \
                                    ' no es posible cerrar el ciclo de recepción'
                     if message:
@@ -412,10 +426,23 @@ class StockPicking(models.Model):
                             -1].write({
                             'real_weight': self.avg_unitary_weight + diff
                         })
+            if self.get_mp_move or self.get_pt_move() and self.get_product_move():
+                m_move = self.get_mp_move()
+                if not m_move:
+                    m_move = self.get_pt_move()
+                if not m_move:
+                    m_move = self.get_product_move()
+                if m_move:
+                    m_move.product_id.update_kg(product_id=m_move.product_id.id)
+                    m_move.product_id.get_and_update(product_id=m_move.product_id.id)
 
             return res
         # Se usaran datos de modulo de dimabe_manufacturing
         if self.picking_type_code == 'outgoing':
+            if all(s.consumed for s in self.packing_list_ids):
+                self.packing_list_ids.write({
+                    'consumed': False
+                })
             if self.is_multiple_dispatch:
                 view = self.env.ref('dimabe_manufacturing.view_principal_order')
                 wiz = self.env['confirm.principal.order'].create({
@@ -437,7 +464,7 @@ class StockPicking(models.Model):
                 }
             for serial in self.packing_list_ids:
                 serial.sudo().write({
-                    'consumed':True
+                    'consumed': True
                 })
             return super(StockPicking, self).button_validate()
         return super(StockPicking, self).button_validate()
@@ -475,12 +502,12 @@ class StockPicking(models.Model):
         message = ''
         if not self.guide_number or not self.guide_number > 0:
             message = 'debe agregar número de guía \n'
-        if not self.weight_guide:
+        if not self.weight_guide or not self.get_product_move():
             message += 'debe agregar kilos guía \n'
 
         if not self.get_canning_move():
             message += 'debe agregar envases'
-        if not self.get_mp_move() and not self.get_pt_move():
+        if not self.get_mp_move() and not self.get_pt_move() and not self.get_product_move():
             message += 'debe agregar Materia a recepcionar'
         if message:
             raise models.ValidationError(message)
@@ -537,13 +564,12 @@ class StockPicking(models.Model):
             if len(self.move_ids_without_package) > len(self.move_ids_without_package.mapped('product_id')):
                 raise models.ValidationError('no puede tener el mismo producto en más de una linea')
 
-
-    def update_stock_quant(self,lot_name,location_id):
+    def update_stock_quant(self, lot_name, location_id):
         lot = self.env['stock.production.lot'].search([('name', '=', self.name)])
         if lot.stock_production_lot_serial_ids.filtered(lambda a: not a.consumed):
 
             quant = self.env['stock.quant'].sudo().search(
-                [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'),('location_id','=',location_id)])
+                [('lot_id', '=', lot.id), ('location_id.usage', '=', 'internal'), ('location_id', '=', location_id)])
 
             if quant:
                 quant.write({

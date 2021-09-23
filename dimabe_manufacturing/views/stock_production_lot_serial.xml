@@ -30,10 +30,10 @@
                     <field name="product_id" widget="many2onebutton"/>
                     <field name="product_variety"/>
                     <field name="packaging_date"/>
-                    <field name="harvest"/>
+                    <field name="harvest_filter"/>
                     <field name="reserved_to_production_id" string="Orden de Fabricacion" widget="many2onebutton"/>
                     <field name="sale_order_id" widget="many2onebutton"/>
-                    <field name="harvest"/>
+                    <field name="harvest_filter"/>
                     <field name="pallet_id"/>
                     <field name="real_weight"/>
                 </tree>
@@ -52,7 +52,7 @@
                     <field name="product_id" widget="many2onebutton"/>
                     <field name="product_variety"/>
                     <field name="packaging_date"/>
-                    <field name="harvest"/>
+                    <field name="harvest_filter"/>
                     <field name="production_id" string="Orden de Fabricacion"/>
                     <field name="sale_order_id"/>
                     <field name="pallet_id"/>

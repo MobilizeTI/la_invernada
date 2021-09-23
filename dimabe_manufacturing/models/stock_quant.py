@@ -45,12 +45,38 @@ class StockQuant(models.Model):
                               )
             ).mapped('display_weight'))
 
+    def verify_negative_quant(self):
+        quants = self.env['stock.quant'].search([('product_id.tracking','=','lot'),('quantity', '<', 0), ('location_id.usage', '=', 'internal')])
+        if quants:
+            for quant in quants:
+                try:
+                    quant.unlink()
+                except:
+                    query = 'DELETE FROM stock_quant where id = {}'.format(quant.id)
+                    cr = self._cr
+                    cr.execute(query)
+
     @api.model
     def _update_reserved_quantity(self, product_id, location_id, quantity, lot_id=None, package_id=None, owner_id=None,
                                   strict=False):
         try:
-            return super(StockQuant, self)._update_reserved_quantity(product_id, location_id, quantity, lot_id,
-                                                                     package_id, owner_id, strict)
+            if self.lot_id:
+                self.verify_negative_quant()
+
+                self.lot_id.get_and_update(product_id.id)
+                return
+            else:
+                self.lot_id.get_and_update(product_id.id)
+                self.verify_negative_quant()
+
+                return super(StockQuant, self)._update_reserved_quantity(product_id, location_id, quantity, lot_id,
+                                                                         package_id, owner_id, strict)
         except UserError:
-            return super(StockQuant, self)._update_reserved_quantity(product_id, location_id, quantity, lot_id,
-                                                                     package_id, owner_id, strict)
+            if product_id.tracking == 'lot':
+                self.lot_id.get_and_update(product_id.id)
+                self.verify_negative_quant()
+                return
+            res = super(StockQuant, self)._update_reserved_quantity(product_id, location_id, quantity, lot_id,
+                                                                         package_id, owner_id, strict)
+            self.verify_negative_quant()
+            return res

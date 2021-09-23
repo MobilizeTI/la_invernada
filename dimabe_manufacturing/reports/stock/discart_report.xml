@@ -16,11 +16,11 @@
                     <field name="product_id" widget="many2onebutton" string="Producto" readonly="1"/>
                     <field name="consumed" string="Series Disponible" readonly="1"/>
                     <field name="create_date" string="Fecha de Creacion" readonly="1"/>
-                    <field name="client_or_quality" />
+                    <field name="client_or_quality"/>
                     <field name="workcenter_send_id"/>
                     <field name="delivered_date"/>
                     <field name="physical_location"/>
-                    <field name="observations" />
+                    <field name="observations"/>
                 </tree>
             </field>
         </record>
@@ -30,7 +30,7 @@
             <field name="view_mode">tree,graph,form,pivot</field>
             <field name="view_id" ref="view_stock_match_report_tree"/>
             <field name="domain">
-                [('product_id.name','like','Descarte') , ('product_id.default_code','like','PSE006')]
+                [('product_id.name','like','Descarte'),('product_id.name','not like','Lavada'),('product_id.default_code','not like','PSES'),('product_id.categ_id.name', 'not in',('Envasado NSC', 'Partido Manual Calidad', 'Partido Mecánico/Láser'))]
             </field>
         </record>
         <menuitem id="stock_report_discart_tree_menu"

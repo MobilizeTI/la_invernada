@@ -56,6 +56,44 @@ class AccountInvoiceLine(models.Model):
             #    vals.update(price_unit = self.roundclp(vals['price_unit'] * float('{:.2f}'.format(invoice_id.exchange_rate))))
             if vals.get('display_type', self.default_get(['display_type'])['display_type']):
                 vals.update(price_unit=0, account_id=False, quantity=0)
+
+            #Send info COMEX to dispatch
+            if 'stock_picking_id' in vals.keys():
+                stock_picking_id = self.env['stock.picking'].search([('id','=',vals['stock_picking_id'])])
+                if stock_picking_id:
+                    stock_picking_id.write({
+                        'shipping_number': invoice_id.shipping_number,
+                        'agent_id': invoice_id.agent_id.id,
+                        'commission': invoice_id.commission,
+                        'charging_mode': invoice_id.charging_mode,
+                        'booking_number': invoice_id.booking_number,
+                        'bl_number': invoice_id.bl_number,
+                        'container_type': invoice_id.container_type.id,
+                        'client_label': invoice_id.client_label,
+                        'client_label_file': invoice_id.client_label_file,
+                        'freight_value': invoice_id.freight_amount,
+                        'safe_value': invoice_id.safe_amount,
+                        'remarks': invoice_id.remarks_comex,
+                        'shipping_company': invoice_id.shipping_company.id,
+                        'ship': invoice_id.ship.id,
+                        'ship_number': invoice_id.ship_number,
+                        'type_transport': invoice_id.type_transport.id,
+                        'departure_port': invoice_id.departure_port.id,
+                        'arrival_port': invoice_id.arrival_port.id,
+                        'etd': invoice_id.etd,
+                        'eta': invoice_id.eta,
+                        'departure_date': invoice_id.departure_date,
+                        'arrival_date': invoice_id.arrival_date,
+                        'customs_department': invoice_id.custom_department.id,
+                        'transport': invoice_id.transport_to_port.name,
+                        'consignee_id': invoice_id.consignee_id.id,
+                        'notify_ids': [(6, 0, invoice_id.notify_ids.ids)],
+                        'custom_notify_ids': [(6, 0, invoice_id.custom_notify_ids.ids)]
+                    })
+
+
+
+        
         return super(AccountInvoiceLine, self).create(vals_list)
 
     @api.multi

@@ -13,7 +13,11 @@ class StockMove(models.Model):
     #     return res
 
     def _update_reserved_quantity(self, need, available_quantity, location_id, lot_id=None, package_id=None, owner_id=None, strict=True):
-        if not self.production_id:
-            return super(StockMove, self)._update_reserved_quantity(need, available_quantity, location_id, lot_id, package_id, owner_id, strict)
-        else:
-            pass
+        try:
+            if not self.production_id:
+                return super(StockMove, self)._update_reserved_quantity(need, available_quantity, location_id, lot_id,
+                                                                        package_id, owner_id, strict)
+            else:
+                pass
+        except:
+            return 1

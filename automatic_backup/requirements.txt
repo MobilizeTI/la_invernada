@@ -1,4 +1,0 @@
-PyDrive
-pysftp
-dropbox
-boto3

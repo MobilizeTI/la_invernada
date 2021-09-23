@@ -23,6 +23,7 @@ class ProcessReport(models.TransientModel):
 
     year = fields.Integer('Año', default=datetime.now().year)
 
+
     @api.multi
     def generate_xlsx(self):
         if self.process_selection == 'ncc':
@@ -30,7 +31,7 @@ class ProcessReport(models.TransientModel):
                 [('workcenter_id.name', '=', '320-Proceso Envasado NCC')],
                 'Proceso NCC')
         if self.process_selection == 'laser':
-            dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '400-PPM')],
+            dict_data = self.generate_xlsx_process([('workcenter_id.code','in',('400-PPM','405-PL'))],
                                                    'Proceso Partido Mecanico/Laser')
         if self.process_selection == 'manual':
             dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '500-PPMC')],
@@ -40,7 +41,7 @@ class ProcessReport(models.TransientModel):
         if self.process_selection == 'calibrate':
             dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '300-PC')], 'Proceso Calibrado')
         if self.process_selection == 'washed':
-            dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '310-PL')], 'Proceso Lavado')
+            dict_data = self.generate_xlsx_process([('workcenter_id.code', 'in', ('310-PLV','310-PL'))], 'Proceso Lavado')
         if self.process_selection == 're-laser':
             dict_data = self.generate_xlsx_process([('workcenter_id.code', '=', '410-PDL')],
                                                    'Re-Proceso Descarte Láser')
