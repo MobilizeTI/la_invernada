@@ -217,7 +217,6 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
             sheet.set_column(col, row, width)
             
             #Referencia
-            
             sheet.write(row, col, line.ref, formats['string'])
             col += 1
             if line.ref:
