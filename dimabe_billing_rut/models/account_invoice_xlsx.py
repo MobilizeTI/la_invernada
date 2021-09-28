@@ -609,7 +609,7 @@ class AccountInvoiceXlsx(models.Model):
 
         exempt_taxes = inv.invoice_line_ids.filtered(lambda a: 'Exento' in a.invoice_line_tax_ids.mapped('name'))
 
-        affect_taxes = inv.invoice_line_ids.filtered(lambda a: 'IVA Débito' in a.invoice_line_tax_ids.mapped('name'))
+        affect_taxes = inv.invoice_line_ids.filtered(lambda a: 'IVA Débito' in a.invoice_line_tax_ids.mapped('name')) or inv.invoice_line_ids.filtered(lambda a: 'IVA Crédito' in a.invoice_line_tax_ids.mapped('name'))
         employee_fee_taxes = inv.invoice_line_ids.filtered(lambda a: 'Retención Boleta Honorarios' in a.invoice_line_tax_ids.mapped('name'))
 
         if exempt_taxes:
