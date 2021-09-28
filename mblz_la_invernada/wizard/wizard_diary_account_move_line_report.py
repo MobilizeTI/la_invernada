@@ -217,10 +217,11 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
             sheet.set_column(col, row, width)
             
             #Referencia
-            # sheet.write(row, col, line.ref, formats['string'])
-            #width = len(line.ref)
+            sheet.write(row, col, line.ref, formats['string'])
             col += 1
-            #sheet.set_column(col, row, width)
+            if line.ref:
+                width = len(line.ref)
+                sheet.set_column(col, row, width)
             
             #Partner
             if line.partner_id:
