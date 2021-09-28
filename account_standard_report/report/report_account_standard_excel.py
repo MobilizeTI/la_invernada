@@ -19,6 +19,16 @@ class StandardReportXlsx(models.AbstractModel):
         currency_format = workbook.add_format({'num_format': num_format})
         c_middle = workbook.add_format({'bold': True, 'top': 1, 'num_format': num_format})
         report_format = workbook.add_format({'font_size': 24})
+        fmt_label_totals = workbook.add_format({'bold': 1,
+                                                'border': 0,
+                                                'align': 'right',
+                                                'right': 1,
+                                                'left': 1,
+                                                'top': 1})
+        fmt_totals = workbook.add_format({'bold': 1, 'align': 'right', 'num_format': num_format})
+        fmt_label_totals.set_text_wrap()
+        fmt_totals.set_text_wrap()
+
         rounding = self.env.user.company_id.currency_id.decimal_places or 2
         lang_code = self.env.user.lang or 'en_US'
         date_format = self.env['res.lang']._lang_get(lang_code).date_format
@@ -40,19 +50,33 @@ class StandardReportXlsx(models.AbstractModel):
         def _header_sheet(sheet):
             sheet.write(0, 4, report.name, report_format)
             sheet.write(2, 0, _('Compañía:'), bold)
-            sheet.write(3, 0, wizard.company_id.name,)
+            sheet.write(3, 0, wizard.company_id.name, )
             sheet.write(4, 0, _('Impreso en %s') % report.print_time)
 
             sheet.write(2, 2, _('Fecha Inicio : %s ') % wizard.date_from if wizard.date_from else '')
             sheet.write(3, 2, _('Fecha Fin : %s ') % wizard.date_to if wizard.date_to else '')
 
             sheet.write(2, 4, _('Movimientos de destino:'), bold)
-            sheet.write(3, 4, _('Todas las entradas') if wizard.target_move == 'all' else _('Todas las entradas publicadas'))
+            sheet.write(3, 4,
+                        _('Todas las entradas') if wizard.target_move == 'all' else _('Todas las entradas publicadas'))
 
-            sheet.write(2, 6, _('Sólo las entradas no conciliadas') if wizard.reconciled is False else _('Con entradas conciliadas'), bold)
+            sheet.write(2, 6, _('Sólo las entradas no conciliadas') if wizard.reconciled is False else _(
+                'Con entradas conciliadas'), bold)
 
+        def _write_totals_debit_credit(sheet, row, col, total_debit, total_credit, opc=True):
+            """Función para escribir los totales
+                opc: Es para imprimir o la etiqueta"""
+            if opc:
+                # sheet.write(row, col, 'Total Comprobante', fmt_label_totals)
+                sheet.merge_range(row, col - 1, row, col, 'Total Comprobante', fmt_label_totals)
+
+            sheet.write(row, col + 1, total_debit, fmt_totals)
+            sheet.write(row, col + 2, total_credit, fmt_totals)
+
+        # Saldos -> aged (solo se utiliza 'general')
         if wizard.ledger_type == 'aged':
 
+            # Balance General -> summary
             if wizard.summary:
                 sheet = workbook.add_worksheet(report.name)
                 _header_sheet(sheet)
@@ -204,7 +228,7 @@ class StandardReportXlsx(models.AbstractModel):
                                      'columns': table,
                                      'style': 'Table Style Light 9',
                                      })
-                    #sheet.write(row + 1, 10, "=I%s-J%s" % (row + 2, row + 2), currency_format)
+                    # sheet.write(row + 1, 10, "=I%s-J%s" % (row + 2, row + 2), currency_format)
 
                 # With total workbook
                 sheet = workbook.add_worksheet(report.name + _(' Totals'))
@@ -276,7 +300,7 @@ class StandardReportXlsx(models.AbstractModel):
                     _set_table(start_row, row)
 
         else:  # standard report
-
+            # Balance General
             if wizard.summary:
                 sheet = workbook.add_worksheet(report.name)
                 _header_sheet(sheet)
@@ -294,27 +318,39 @@ class StandardReportXlsx(models.AbstractModel):
                          'larg': 30,
                          'col': {}},
                         {'name': 'Débito',
-                         'larg': 15,
+                         'larg': 20,
                          'col': {'total_function': 'sum', 'format': currency_format}},
                         {'name': 'Crédito',
-                         'larg': 15,
+                         'larg': 20,
                          'col': {'total_function': 'sum', 'format': currency_format}},
                         {'name': 'Balance',
-                         'larg': 15,
+                         'larg': 20,
                          'col': {'total_function': 'sum', 'format': currency_format}},
                     ]
 
                     row = 6
                     row += 1
                     start_row = row
+
+                    index_i = None
+                    total_debit = 0
+                    total_credit = 0
                     for i, line in enumerate(all_lines):
                         i += row
+                        total_debit += line.get('debit', 0)
+                        total_credit += line.get('credit', 0)
+
                         sheet.write(i, 0, line.get('code', ''))
                         sheet.write(i, 1, line.get('name', ''))
                         sheet.write(i, 2, line.get('debit', ''), currency_format)
                         sheet.write(i, 3, line.get('credit', ''), currency_format)
                         sheet.write(i, 4, line.get('balance', ''), currency_format)
-                    row = i
+                        index_i = i
+
+                    if index_i:
+                        row = index_i + 2
+
+                    _write_totals_debit_credit(sheet, row, 1, total_debit, total_credit)
 
                     for j, h in enumerate(head):
                         sheet.set_column(j, j, h['larg'])
@@ -326,11 +362,11 @@ class StandardReportXlsx(models.AbstractModel):
                         col.update(h['col'])
                         table.append(col)
 
-                    sheet.add_table(start_row - 1, 0, row + 1, len(head) - 1,
-                                    {'total_row': 1,
-                                     'columns': table,
-                                     'style': 'Table Style Light 9',
-                                     })
+                    # sheet.add_table(start_row - 1, 0, row + 1, len(head) - 1,
+                    #                 {'total_row': 1,
+                    #                  'columns': table,
+                    #                  'style': 'Table Style Light 9',
+                    #                  })
 
             else:  # not summary
 
@@ -366,17 +402,17 @@ class StandardReportXlsx(models.AbstractModel):
                      'larg': 10,
                      'col': {}},
                     {'name': _('Débito'),
-                     'larg': 15,
+                     'larg': 20,
                      'col': {'total_function': 'sum', 'format': currency_format}},
                     {'name': _('Crédito'),
-                     'larg': 15,
+                     'larg': 20,
                      'col': {'total_function': 'sum', 'format': currency_format}},
                     {'name': _('Balance'),
-                     'larg': 15,
+                     'larg': 20,
                      'col': {'format': currency_format}},
                     {'name': _('Monto Moneda Ext.'),
-                        'larg': 15,
-                        'col': {}},
+                     'larg': 15,
+                     'col': {}},
                     {'name': _('Match.'),
                      'larg': 10,
                      'col': {}},
@@ -388,11 +424,15 @@ class StandardReportXlsx(models.AbstractModel):
                     table.append(col)
 
                 def _set_line(line):
-                    sheet.write(i, 0, get_date_format(line.get('date', '')) if line.get('view_type') != 'init' else 'INIT')
+                    sheet.write(i, 0,
+                                get_date_format(line.get('date', '')) if line.get('view_type') != 'init' else 'INIT')
                     sheet.write(i, 1, line.get('j_code', ''))
                     sheet.write(i, 2, line.get('a_code', ''))
                     sheet.write(i, 3, line.get('a_name', ''))
-                    sheet.write(i, 4, "%s - %s" % (line.get('an_code', ''), line.get('an_name', '')) if line.get('an_code', '') else line.get('an_name', ''))
+                    sheet.write(i, 4,
+                                "%s - %s" % (line.get('an_code', ''), line.get('an_name', '')) if line.get('an_code',
+                                                                                                           '') else line.get(
+                                    'an_name', ''))
                     sheet.write(i, 5, line.get('move_name', ''))
                     sheet.write(i, 6, line.get('displayed_ref', ''))
                     sheet.write(i, 7, line.get('displayed_name', ''))
@@ -402,7 +442,8 @@ class StandardReportXlsx(models.AbstractModel):
                     sheet.write(i, 11, _get_data_float(line.get('credit', '')), currency_format)
                     sheet.write(i, 12, _get_data_float(line.get('cumul_balance', '')), currency_format)
                     if line.get('amount_currency', ''):
-                        sheet.write(i, 13, _get_data_float(line.get('amount_currency', '')), workbook.add_format({'num_format': line.get('currency')}))
+                        sheet.write(i, 13, _get_data_float(line.get('amount_currency', '')),
+                                    workbook.add_format({'num_format': line.get('currency')}))
                     sheet.write(i, 14, line.get('matching_number', ''))
 
                 def _set_table(start_row, row):
@@ -417,7 +458,8 @@ class StandardReportXlsx(models.AbstractModel):
                 _header_sheet(sheet)
 
                 row = 6
-
+                total_debit = 0
+                total_credit = 0
                 all_lines = wizard._sql_get_line_for_report(type_l=('0_init', '1_init_line', '2_line', '3_compact'))
                 for obj in report.report_object_ids:
                     lines_obj = []
@@ -455,17 +497,32 @@ class StandardReportXlsx(models.AbstractModel):
 
                         row += 2
                         start_row = row
+                        index_i = None
+                        total_debit_line = 0
+                        total_credit_line = 0
                         for i, line in enumerate(lines_obj):
                             i += row
+                            debit = _get_data_float(line.get('debit', 0))
+                            credit = _get_data_float(line.get('credit', 0))
+                            total_debit_line += debit
+                            total_credit_line += credit
                             _set_line(line)
+                            index_i = i
 
-                        row = i
+                        if index_i:
+                            row = index_i + 1
+                        _write_totals_debit_credit(sheet, row, 9, total_debit_line, total_credit_line, opc=False)
 
                         for j, h in enumerate(head):
                             sheet.set_column(j, j, h['larg'])
 
-                        _set_table(start_row, row)
-                        row += 2
+                        # Acumula el total debito y credito por cuenta
+                        total_debit += total_debit_line
+                        total_credit += total_credit_line
+                        # _set_table(start_row, row)
+                        # row += 2
+
+                _write_totals_debit_credit(sheet, row + 2, 9, total_debit, total_credit)
 
                 # Pivot workbook
                 sheet = workbook.add_worksheet(report.name)
@@ -484,4 +541,7 @@ class StandardReportXlsx(models.AbstractModel):
                     for j, h in enumerate(head):
                         sheet.set_column(j, j, h['larg'])
 
-                    _set_table(start_row, row)
+                    row += 3
+                    _write_totals_debit_credit(sheet, row, 9, total_debit, total_credit)
+
+                    # _set_table(start_row, row)
