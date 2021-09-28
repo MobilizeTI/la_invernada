@@ -67,9 +67,7 @@ class StandardReportXlsx(models.AbstractModel):
             """Función para escribir los totales
                 opc: Es para imprimir o la etiqueta"""
             if opc:
-                # sheet.write(row, col, 'Total Comprobante', fmt_label_totals)
                 sheet.merge_range(row, col - 1, row, col, 'Total Comprobante', fmt_label_totals)
-
             sheet.write(row, col + 1, total_debit, fmt_totals)
             sheet.write(row, col + 2, total_credit, fmt_totals)
 
@@ -302,7 +300,7 @@ class StandardReportXlsx(models.AbstractModel):
         else:  # standard report
             # Balance General
             if wizard.summary:
-                sheet = workbook.add_worksheet(report.name)
+                sheet = workbook.add_worksheet(report.name or _('Datos'))
                 _header_sheet(sheet)
 
                 all_lines = wizard._sql_get_line_for_report(type_l=('4_total',))
@@ -348,7 +346,7 @@ class StandardReportXlsx(models.AbstractModel):
                         index_i = i
 
                     if index_i:
-                        row = index_i + 2
+                        row = index_i + 3
 
                     _write_totals_debit_credit(sheet, row, 1, total_debit, total_credit)
 
@@ -522,7 +520,7 @@ class StandardReportXlsx(models.AbstractModel):
                         # _set_table(start_row, row)
                         # row += 2
 
-                _write_totals_debit_credit(sheet, row + 2, 9, total_debit, total_credit)
+                _write_totals_debit_credit(sheet, row + 3, 9, total_debit, total_credit)
 
                 # Pivot workbook
                 sheet = workbook.add_worksheet(report.name)
