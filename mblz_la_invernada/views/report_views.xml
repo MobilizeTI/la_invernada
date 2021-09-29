@@ -282,7 +282,8 @@
                             <span style="font-size: 14px; font-weight: bold;">Libro Diario</span>
                         </div>
 
-
+                        <t t-set="total_general_debito" t-value="0"/>
+                        <t t-set="total_general_credito" t-value="0"/>
                         <table class="table table-condensed" t-foreach="get_move_lines" t-as="gl">
                             <thead>
                                 <tr>
@@ -418,12 +419,38 @@
 
                                 </tr>
 
-
+                                <t t-set="total_general_debito" t-value="total_general_debito + total_debito"/>
+                                <t t-set="total_general_credito" t-value="total_general_credito + total_credito"/>
                                 <tr></tr>
                                 <br/>
                             </tbody>
 
                         </table>
+
+                        <div>
+                            <table class="table table-condensed">
+                                <tbody style="border-bottom: 1px solid">
+                                    <tr>
+
+                                        <th style="font-size: 16px">Totales General</th>
+                                        <th style="font-size: 16px; width:20%" class="text-right">
+                                            Debito:
+                                            <spthan t-if="o.company_id.currency_id.name == 'USD'"
+                                                    t-esc="o.format_amount(total_general_debito, usd=True)"/>
+                                            <span t-else="" t-esc="o.format_amount(total_general_debito)"/>
+                                        </th>
+                                        <th style="font-size: 16px; width:20%" class="text-right">
+                                            Credito:
+                                            <span t-if="o.company_id.currency_id.name == 'USD'"
+                                                  t-esc="o.format_amount(total_general_credito, usd=True)"/>
+                                            <span t-else="" t-esc="o.format_amount(total_general_credito)"/>
+                                        </th>
+                                        <th/>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
 
                     </div>
                 </t>

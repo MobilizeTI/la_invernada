@@ -6,12 +6,13 @@
         <field name="arch" type="xml">
             <form>
                 <group>
-                    <field name="company_get_id" required="1" />
+                    <field name="company_get_id" required="1" options="{'no_create': True, 'no_open': True}"/>
                     <field name="date_from" required="1" />
                     <field name="date_to" required="1" />
                 </group>
                 <footer>
                     <button type="object" class="oe_highlight" string="Descargar Libro (XLS)" name="generate_diary_book" />
+                    o
                     <button type="object" class="oe_highlight" string="Descargar Libro (PDF)" name="generate_diary_book_pdf" />
                 </footer>
             </form>
