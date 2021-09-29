@@ -64,7 +64,7 @@
                             <center>
                                 <span style="font-size: 14px;
                                             font-weight: bold">Contabilización Glosa <br/> <span
-                                        t-field="o.name"/></span>
+                                        t-field="o.ref"/></span>
 
                             </center>
                             <thead>

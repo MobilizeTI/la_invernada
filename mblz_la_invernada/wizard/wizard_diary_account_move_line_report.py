@@ -236,14 +236,15 @@ class WizardDiaryAccountMoveLine(models.TransientModel):
                 width = len(line.analytic_account_id.name)
             col += 1
             sheet.set_column(col, row, width)
-
-            # Referencia
-            # sheet.write(row, col, line.ref, formats['string'])
-            # width = len(line.ref)
+            
+            #Referencia
+            sheet.write(row, col, line.ref, formats['string'])
             col += 1
-            # sheet.set_column(col, row, width)
-
-            # Partner
+            if line.ref:
+                width = len(line.ref)
+                sheet.set_column(col, row, width)
+            
+            #Partner
             if line.partner_id:
                 sheet.write(row, col, line.partner_id.name, formats['string'])
                 width = len(line.partner_id.name)
