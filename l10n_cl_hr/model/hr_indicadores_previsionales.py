@@ -295,9 +295,8 @@ class hr_indicadores_previsionales(models.Model):
             self.tasa_afp_modelo = clear_string(letters[7].select("strong")[23].get_text())
             self.tasa_sis_modelo = clear_string(letters[7].select("strong")[24].get_text())
 
-            self.tasa_afp_uno = clear_string(letters[7].select("strong")[23].get_text())
-            self.tasa_sis_uno = clear_string(letters[7].select("strong")[24].get_text())
-            _logger.info('LOG : __>>>> tasas {}'.format(letters[7].select("strong")))
+            self.tasa_afp_uno = clear_string(letters[7].select("strong")[26].get_text())
+            self.tasa_sis_uno = clear_string(letters[7].select("strong")[27].get_text())
 
             self.tasa_independiente_capital = clear_string(letters[7].select("strong")[10].get_text())[:5]
             self.tasa_independiente_cuprum = clear_string(letters[7].select("strong")[13].get_text())
@@ -305,6 +304,7 @@ class hr_indicadores_previsionales(models.Model):
             self.tasa_independiente_planvital = clear_string(letters[7].select("strong")[19].get_text())
             self.tasa_independiente_provida = clear_string(letters[7].select("strong")[22].get_text())
             self.tasa_independiente_modelo = clear_string(letters[7].select("strong")[25].get_text())
+            self.tasa_independiente_uno = clear_string(letters[7].select("strong")[28].get_text())
 
         except ValueError:
             return ""
