@@ -100,6 +100,8 @@ class hr_indicadores_previsionales(models.Model):
         'PlanVital', readonly=True, states=STATES, help="Tasa AFP PlanVital")
     tasa_afp_habitat = fields.Float(
         'Habitat', readonly=True, states=STATES, help="Tasa AFP Habitat")
+    tasa_afp_uno = fields.Float(
+        'Afp UNO', readonly=True, states=STATES, help="Tasa AFP UNO")
     tasa_sis_cuprum = fields.Float(
         'SIS', readonly=True, states=STATES, help="Tasa SIS Cuprum")
     tasa_sis_capital = fields.Float(
@@ -112,6 +114,8 @@ class hr_indicadores_previsionales(models.Model):
         'SIS', readonly=True, states=STATES, help="Tasa SIS Habitat")
     tasa_sis_modelo = fields.Float(
         'SIS', readonly=True, states=STATES, help="Tasa SIS Modelo")
+    tasa_sis_uno = fields.Float(
+        'SIS', readonly=True, states=STATES, help="Tasa SIS Uno")
     tasa_independiente_cuprum = fields.Float(
         'SIS', readonly=True, states=STATES, help="Tasa Independientes Cuprum")
     tasa_independiente_capital = fields.Float(
@@ -124,6 +128,8 @@ class hr_indicadores_previsionales(models.Model):
         'SIS', readonly=True, states=STATES, help="Tasa Independientes Habitat")
     tasa_independiente_modelo = fields.Float(
         'SIS', readonly=True, states=STATES, help="Tasa Independientes Modelo")
+    tasa_independiente_uno = fields.Float(
+        'SIS', readonly=True, states=STATES, help="Tasa Independientes UNO")
     tope_anual_apv = fields.Float(
         'Tope Anual APV', readonly=True, states=STATES, help="Tope Anual APV")
     tope_mensual_apv = fields.Float(
@@ -288,6 +294,10 @@ class hr_indicadores_previsionales(models.Model):
 
             self.tasa_afp_modelo = clear_string(letters[7].select("strong")[23].get_text())
             self.tasa_sis_modelo = clear_string(letters[7].select("strong")[24].get_text())
+
+            self.tasa_afp_uno = clear_string(letters[7].select("strong")[23].get_text())
+            self.tasa_sis_uno = clear_string(letters[7].select("strong")[24].get_text())
+            _logger.info('LOG : __>>>> tasas {}'.format(letters[7].select("strong")))
 
             self.tasa_independiente_capital = clear_string(letters[7].select("strong")[10].get_text())[:5]
             self.tasa_independiente_cuprum = clear_string(letters[7].select("strong")[13].get_text())
