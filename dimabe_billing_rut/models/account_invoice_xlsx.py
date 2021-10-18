@@ -132,7 +132,7 @@ class AccountInvoiceXlsx(models.Model):
                 #OKKKKK
                 invoice_total = data_invoice.get('total').get('total')
                 invoice_net = data_invoice.get('total').get('net')
-                invoice_tax = data_invoice.get('total').get('tax')
+                invoice_tax = data_invoice.get('total').get('reten')
                 sheet = data_invoice['sheet']
                 row = data_invoice['row']
                 count_invoice += data_invoice['count_invoice']
@@ -515,7 +515,7 @@ class AccountInvoiceXlsx(models.Model):
         if employee_fee:
             sheet.write(row, col, sum(invoices.mapped('amount_untaxed')), formats['total']) ## Total neto 
             col += 1
-            tax = sum(invoices.mapped('amount_tax'))
+            tax = sum(invoices.mapped('amount_retencion'))
             sheet.write(row, col, tax, formats['total']) ## Total imptos
             col += 1
             sheet.write(row, col, abs(sum(invoices.mapped('amount_total'))), formats['total'])
@@ -573,6 +573,7 @@ class AccountInvoiceXlsx(models.Model):
                 'total' : sum(invoices.mapped('amount_total')),
                 'net' : sum(invoices.mapped('amount_untaxed')),
                 'tax': sum(invoices.mapped('amount_tax')),
+                'reten': sum(invoices.mapped('amount_retencion')),
                 'exempt': exempt_sum,
             },
             'count_invoice': count_invoice
