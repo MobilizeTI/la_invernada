@@ -42,7 +42,7 @@
                                 </group>
                                 <group>
                                     <field name="dte_type" invisible="1"/>
-                                    <field name="dte_type_id" domain="[('code', 'in', [33,34,39,110,56,61,111,112])]"/> <!--attrs="{'readonly': [('dte_folio', '!=', False)]}-->
+                                    <field name="dte_type_id" domain="[('code', 'in', [33,34,39,71,110,56,61,111,112])]"/> <!--attrs="{'readonly': [('dte_folio', '!=', False)]}-->
                                     <field name="dte_code" invisible="1"/>
                                     <field name="dte_folio" readonly="1"/>
                                 </group>
@@ -264,7 +264,7 @@
                                 <field name="company_activity_id" domain="[('id','in',company_economic_activities)]" />
                                 <field name="dte_folio" readonly="1"/>
                                 <field name="dte_type" invisible="1"/>                            
-                                <field name="dte_type_id" domain="[('code', 'in', [33,34,39,110,56,61,111,112])]" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
+                                <field name="dte_type_id" domain="[('code', 'in', [33,34,39,71,110,56,61,111,112])]" attrs="{'readonly': [('dte_folio', '!=', False)]}"/>
                                 <field name="dte_code" invisible="1"/>
                                 <field name="ind_service" attrs="{'invisible': [('dte_code', '!=', '39')]}"/>
                                 <field name="ind_net_amount" attrs="{'invisible': [('dte_code', '!=', '39')]}"/>
