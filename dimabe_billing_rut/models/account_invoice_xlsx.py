@@ -693,12 +693,12 @@ class AccountInvoiceXlsx(models.Model):
             #         col += 1
             sheet.write(row, col, abs(inv.amount_total_signed), formats['number'])
         elif employee_fee_taxes:
-            # sheet.write_number(row, col, int(inv.amount_untaxed), formats['number'])
-            sheet.write_number(row, col, int(inv.amount_retencion), formats['number'])
+            sheet.write_number(row, col, int(inv.amount_untaxed), formats['number'])
             col += 1
             # sheet.write(row, col, inv.amount_untaxed_signed, formats['number'])
             # net_tax = inv.amount_untaxed - abs(sum(exempt_taxes.mapped('price_subtotal')))
-            sheet.write(row, col, int(inv.amount_tax), formats['number'])
+            sheet.write(row, col, int(inv.amount_retencion), formats['number'])
+            # sheet.write(row, col, int(inv.amount_tax), formats['number'])
             col += 1
             sheet.write(row, col, int(inv.amount_total_signed), formats['number']) ##Neto
             col += 1
