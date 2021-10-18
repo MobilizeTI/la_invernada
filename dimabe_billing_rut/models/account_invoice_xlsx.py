@@ -116,12 +116,12 @@ class AccountInvoiceXlsx(models.Model):
                     col += 1
                 row += 2
                 col = 0
-                sheet.merge_range(row, col, row, 5, 'Boleta electrónica. (BOLETA ELECTRONICA)',
+                sheet.merge_range(row, col, row, 5, 'Boleta de Honorarios Electrónica. (BHO)',
                                   formats['title'])
                 row += 1
                 domain_invoices = [('date', '>=', self.from_date),
                      ('type', 'in', ('in_invoice', 'in_refund')),
-                     ('date', '<=', self.to_date), ('dte_type_id.code', '=', 39),
+                     ('date', '<=', self.to_date), ('dte_type_id.code', '=', 71), # TODO (71)
                      ('journal_id.employee_fee', '=', True),
                      ('company_id.id', '=', self.company_get_id.id)]
                 #cambio en Order
@@ -697,7 +697,8 @@ class AccountInvoiceXlsx(models.Model):
             col += 1
             # sheet.write(row, col, inv.amount_untaxed_signed, formats['number'])
             # net_tax = inv.amount_untaxed - abs(sum(exempt_taxes.mapped('price_subtotal')))
-            sheet.write(row, col, int(inv.amount_tax), formats['number'])
+            sheet.write(row, col, int(inv.amount_retencion), formats['number'])
+            # sheet.write(row, col, int(inv.amount_tax), formats['number'])
             col += 1
             sheet.write(row, col, int(inv.amount_total_signed), formats['number']) ##Neto
             col += 1
