@@ -148,7 +148,7 @@ class HonorariosBookReport(models.AbstractModel):
                         # ('type', '=', 'in_employee_fee'),
                      ('type', 'in', ('in_invoice', 'in_refund')),
                      ('date', '<=', to_date), 
-                     ('dte_type_id.code', '=', 39),
+                     ('dte_type_id.code', '=', 71),
                      ('journal_id.employee_fee', '=', True),
                      ('company_id.id', '=', company_id)]
                 #cambio en Order
