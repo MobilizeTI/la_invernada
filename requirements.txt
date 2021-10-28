@@ -8,5 +8,6 @@ pandas
 Pillow
 pdf417
 pysftp
+fitz
 facturacion-electronica
 py_linq
