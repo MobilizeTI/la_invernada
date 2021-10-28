@@ -6,7 +6,6 @@
     'demo_xml': [],
     'depends': [
         'stock',
-        # 'fleet',
         'delivery',
         'sale_stock',
         'l10n_cl_fe',
