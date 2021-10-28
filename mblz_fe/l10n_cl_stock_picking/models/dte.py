@@ -263,8 +263,8 @@ class stock_picking(models.Model):
         Transporte = {}
         if self.patente:
             Transporte['Patente'] = self.patente[:8]
-        elif self.vehicle:
-            Transporte['Patente'] = self.vehicle.license_plate or ''
+        # elif self.vehicle:
+        #     Transporte['Patente'] = self.vehicle.license_plate or ''
         if self.transport_type in ['2', '3'] and self.chofer:
             if not self.chofer.vat:
                 raise UserError("Debe llenar los datos del chofer")

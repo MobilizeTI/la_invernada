@@ -6,7 +6,7 @@
     'demo_xml': [],
     'depends': [
         'stock',
-        'fleet',
+        # 'fleet',
         'delivery',
         'sale_stock',
         'l10n_cl_fe',
@@ -30,6 +30,6 @@
         "views/account_invoice.xml",
         'wizard/masive_send_dte.xml',
     ],
-    'version': '0.23.3',
+    'version': '0.24.3',
     'application': True,
 }

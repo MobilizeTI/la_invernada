@@ -77,7 +77,7 @@
                   <attribute name="attrs">{'invisible':[('transport_type', '!=', '3')], 'required':[('transport_type', '=', '3'), ('use_documents', '=', True)]}</attribute>
                 </field>
                 <field name="carrier_id" position="after">
-                  <field name="vehicle" attrs="{'required':[('transport_type','=', '2'), ('use_documents', '=', True)], 'invisible':[('transport_type','!=','2')]}"/>
+                  <!-- <field name="vehicle" attrs="{'required':[('transport_type','=', '2'), ('use_documents', '=', True)], 'invisible':[('transport_type','!=','2')]}"/> -->
                   <field name="chofer" attrs="{'required':[('transport_type','=', '2'), ('use_documents', '=', True)], 'invisible':[('transport_type','!=','2')]}"/>
                   <field name="patente" attrs="{'required':[('transport_type','in', ['2']), ('use_documents', '=', True)]}"/>
                 </field>
