@@ -14,8 +14,8 @@
                     options="{'no_open': True, 'no_create': True}"
                 />
             </field>
-            <page name="other_information" position="after">
-              <page string="Referencias DTE">
+            <xpath expr="//page[@name='other_information']" position="after">
+                <field name="referencia_ids">
                     <tree editable="bottom">
                         <field name="fecha_documento" />
                         <field name="folio" required="True" />
@@ -23,8 +23,7 @@
                         <field name="motivo" />
                     </tree>
                 </field>
-              </page>
-            </page>
+            </xpath>
         </field>
     </record>
 </odoo>
