@@ -4,9 +4,9 @@
     'website': 'http://globalresponse.cl',
     'category': 'Stock',
     'depends': [
-        # 'stock',
-        # 'delivery',
-        # 'sale_stock',
+        'stock',
+        'delivery',
+        'sale_stock',
         # 'l10n_cl_fe',
         ],
     'description': '''
