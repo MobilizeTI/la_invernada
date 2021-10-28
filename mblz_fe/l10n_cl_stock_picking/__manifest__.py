@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 {   'active': True,
-    'author': u'Daniel Santibáñez Polanco, Cooperativa OdooCoop',
+    'author': 'Daniel Santibáñez Polanco, Cooperativa OdooCoop',
     'website': 'http://globalresponse.cl',
-    'category': 'Stock/picking',
-    'demo_xml': [],
+    'category': 'Stock',
     'depends': [
         'stock',
         'delivery',
@@ -18,8 +17,7 @@
     'init_xml': [],
     'installable': True,
     'license': 'AGPL-3',
-    'name': u'Guías de Despacho Electrónica para Chile',
-    'test': [],
+    'name': 'Guías de Despacho Electrónica para Chile',
     'data': [
         'security/ir.model.access.csv',
         'views/stock_picking.xml',
@@ -29,6 +27,5 @@
         "views/account_invoice.xml",
         'wizard/masive_send_dte.xml',
     ],
-    'version': '0.24.3',
     'application': True,
 }
