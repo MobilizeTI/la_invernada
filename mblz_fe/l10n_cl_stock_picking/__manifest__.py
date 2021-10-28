@@ -5,9 +5,9 @@
     'category': 'Stock',
     'depends': [
         # 'stock',
-        'delivery',
-        'sale_stock',
-        'l10n_cl_fe',
+        # 'delivery',
+        # 'sale_stock',
+        # 'l10n_cl_fe',
         ],
     'description': '''
 \n\nMódulo de Guías de Despacho de la localización Chilena.\n\n\nIncluye:\n
