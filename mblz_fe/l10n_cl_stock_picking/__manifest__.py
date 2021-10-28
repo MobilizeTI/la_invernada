@@ -4,10 +4,11 @@
     'website': 'http://globalresponse.cl',
     'category': 'Stock',
     'depends': [
-        'stock',
-        'delivery',
-        'sale_stock',
-        # 'l10n_cl_fe',
+        'l10n_cl_fe',
+        # 'stock',
+        # 'delivery',
+        # 'sale_stock',
+        
         ],
     'description': '''
 \n\nMódulo de Guías de Despacho de la localización Chilena.\n\n\nIncluye:\n
