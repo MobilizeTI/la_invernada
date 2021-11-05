@@ -513,6 +513,7 @@ class UploadXMLWizard(models.TransientModel):
                 }
             )
         _logger.info('LOG: line_data {}'.format(data))
+        _logger.info('LOG:: prodcut {}'.format(product_id))
         return [0, 0, data]
 
     def _create_tpo_doc(self, TpoDocRef, RazonRef=None):
