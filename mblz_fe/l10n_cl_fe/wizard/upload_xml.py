@@ -501,11 +501,11 @@ class UploadXMLWizard(models.TransientModel):
                     price_subtotal = tax_ids.compute_all(price_subtotal, self.env.user.company_id.currency_id, 1)[
                         "total_included"
                     ]
-            _logger.info('LOG:   producto {}'.format(product_id.property_account_expense_id.id))
+            _logger.info('LOG:   producto {}'.format(product_id.categ_id.property_account_expense_categ_id.id))
             data.update(
                 {
                     # "account_id": account.id,
-                    "account_id": product_id.property_account_expense_id.id,
+                    "account_id": product_id.categ_id.property_account_expense_categ_id.id,
                     "invoice_line_tax_ids": [(6, 0, tax_ids.ids)],
                     "uom_id": product_id.uom_id.id,
                     "price_unit": price,
