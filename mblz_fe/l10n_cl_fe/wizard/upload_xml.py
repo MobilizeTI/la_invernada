@@ -870,6 +870,7 @@ class UploadXMLWizard(models.TransientModel):
                     [("vat", "=", self.format_rut(documento.find(path_rut).text)),], limit=1,
                 )
                 inv = self._create_inv(documento, company_id,)
+                _logger.info('LOG: se creo inv', inv)
                 if self.document_id:
                     self.document_id.invoice_id = inv.id
                 if inv:
