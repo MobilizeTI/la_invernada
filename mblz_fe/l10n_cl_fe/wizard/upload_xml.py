@@ -511,7 +511,7 @@ class UploadXMLWizard(models.TransientModel):
                     "price_subtotal": price_subtotal,
                 }
             )
-        _logger.info('LOG: line_data', data)
+        _logger.info('LOG: line_data {}'.format(data))
         return [0, 0, data]
 
     def _create_tpo_doc(self, TpoDocRef, RazonRef=None):
