@@ -504,7 +504,8 @@ class UploadXMLWizard(models.TransientModel):
 
             data.update(
                 {
-                    "account_id": account.id,
+                    # "account_id": account.id,
+                    "account_id": product_id.property_account_expense_id.id,
                     "invoice_line_tax_ids": [(6, 0, tax_ids.ids)],
                     "uom_id": product_id.uom_id.id,
                     "price_unit": price,
@@ -1031,3 +1032,19 @@ class UploadXMLWizard(models.TransientModel):
                 self._create_po(documento, company)
             elif tipo_dte in ["56", "61"]:
                 self._create_inv(documento, company)
+
+        
+
+    # line_data = {
+    #     'product_id': 5448, 
+    #     'sequence': '1', 
+    #     'name': '126042', 
+    #     'price_unit': 126042.0, 
+    #     'discount': 0, 
+    #     'quantity': '1', 
+    #     'price_subtotal': 126042.0, 
+    #     'account_id': False, 
+    #     'invoice_line_tax_ids': [(6, 0, [13])], 
+    #     'uom_id': 1
+    #     }
+
