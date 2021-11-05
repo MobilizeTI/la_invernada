@@ -592,7 +592,9 @@ class UploadXMLWizard(models.TransientModel):
                 invoice["type"] = "out_refund"
         if partner_id:
             if journal_id:
+                _logger.info('LOG: antes del jorunal')
                 account_id = partner_id.property_account_payable_id.id or journal_id.default_debit_account_id.id
+                _logger.info('LOG: despues de accpunt')
                 if invoice["type"] in ("out_invoice", "in_refund"):
                     account_id = partner_id.property_account_receivable_id.id or journal_id.default_credit_account_id.id
                 fpos = self.env["account.fiscal.position"].get_fiscal_position(
@@ -663,6 +665,7 @@ class UploadXMLWizard(models.TransientModel):
         return invoice
 
     def _get_journal(self, sii_code, company_id, ignore_journal=False):
+        _logger.info('LOG: get journal')
         dc_id = self.env["sii.document_class"].search([("sii_code", "=", sii_code)])
         type = "purchase"
         if self.type == "ventas":
@@ -687,6 +690,7 @@ class UploadXMLWizard(models.TransientModel):
         return lines
 
     def _get_data(self, documento, company_id, ignore_journal=False):
+        _logger.info('LOG: get data')
         Encabezado = documento.find("Encabezado")
         IdDoc = Encabezado.find("IdDoc")
         price_included = Encabezado.find("MntBruto")
@@ -782,6 +786,7 @@ class UploadXMLWizard(models.TransientModel):
         return self.env["account.invoice"].search(query)
 
     def _create_inv(self, documento, company_id):
+        _logger.info('LOG: se create')
         inv = self._inv_exist(documento)
         if inv:
             return inv
