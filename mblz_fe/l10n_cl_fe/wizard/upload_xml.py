@@ -176,7 +176,8 @@ class UploadXMLWizard(models.TransientModel):
                         email_to = partner_id.dte_email
                 values = {
                     "res_id": self.dte_id.id,
-                    "email_from": dte_email_id.name_get()[0][1],
+                    #"email_from": dte_email_id.name_get()[0][1],
+                    "email_from": dte_email_id.name_get(),
                     "email_to": email_to,
                     "auto_delete": False,
                     "model": "mail.message.dte",
