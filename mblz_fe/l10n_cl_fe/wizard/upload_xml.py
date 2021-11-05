@@ -511,6 +511,7 @@ class UploadXMLWizard(models.TransientModel):
                     "price_subtotal": price_subtotal,
                 }
             )
+        _logger.info('LOG: line_data', data)
         return [0, 0, data]
 
     def _create_tpo_doc(self, TpoDocRef, RazonRef=None):
@@ -795,7 +796,7 @@ class UploadXMLWizard(models.TransientModel):
         data = self._get_data(documento, company_id)
 
         inv = self.env["account.invoice"].create(data)
-        
+
         _logger.info('LOG: antes de retonrar ultimo punto 797', data)
         return inv
 
