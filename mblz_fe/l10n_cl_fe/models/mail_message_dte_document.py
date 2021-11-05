@@ -30,7 +30,7 @@ class ProcessMailsDocument(models.Model):
     )
     amount = fields.Monetary(string="Monto", readonly=True,)
     currency_id = fields.Many2one(
-        "res.currency", string="Moneda", default=lambda self: self.env.['res.currency'].sudo().browse(45),
+        "res.currency", string="Moneda", default=lambda self: self.env.['res.currency'].sudo().search([('id', '=', 45)]),
     )
     invoice_line_ids = fields.One2many("mail.message.dte.document.line", "document_id", string="Líneas del Documento",)
     company_id = fields.Many2one("res.company", string="Compañía", readonly=True,)
