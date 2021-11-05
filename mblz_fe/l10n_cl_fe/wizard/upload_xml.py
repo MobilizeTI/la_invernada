@@ -794,6 +794,7 @@ class UploadXMLWizard(models.TransientModel):
             return inv
         data = self._get_data(documento, company_id)
         inv = self.env["account.invoice"].create(data)
+        _logger.info('LOG: antes de retonrar ultimo punto 797', data)
         return inv
 
     def _dte_exist(self, documento):
@@ -876,6 +877,7 @@ class UploadXMLWizard(models.TransientModel):
                 company_id = self.env["res.company"].search(
                     [("vat", "=", self.format_rut(documento.find(path_rut).text)),], limit=1,
                 )
+                _logger.info('LOG: punto 1')
                 inv = self._create_inv(documento, company_id,)
                 _logger.info('LOG: se creo inv', inv)
                 if self.document_id:
