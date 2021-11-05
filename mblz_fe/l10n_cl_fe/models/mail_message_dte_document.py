@@ -74,6 +74,7 @@ class ProcessMailsDocument(models.Model):
         # Emisor['Actecos'] = self._actecos_emisor()
         Emisor["DirOrigen"] = company_id.street + " " + (company_id.street2 or "")
         if not company_id.city_id:
+            _logger.info('LOG:   company emisora {}'.company_id)
             raise UserError("Debe ingresar la Comuna de compañía emisora")
         Emisor["CmnaOrigen"] = company_id.city_id.name
         if not company_id.city:
