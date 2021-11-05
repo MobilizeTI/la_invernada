@@ -501,7 +501,7 @@ class UploadXMLWizard(models.TransientModel):
                     price_subtotal = tax_ids.compute_all(price_subtotal, self.env.user.company_id.currency_id, 1)[
                         "total_included"
                     ]
-
+            _logger.info('LOG:   producto {}'.format(product_id.name))
             data.update(
                 {
                     # "account_id": account.id,
