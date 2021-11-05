@@ -190,7 +190,10 @@ class ProcessMailsDocument(models.Model):
                 resp = val.confirm(ret=True)
             created.extend(resp)
             if r.company_id.dte_service_provider == "SIICERT":
-                r.state = "accepted"
+                # r.state = "accepted"
+                r.write({
+                    'state': 'accepted'
+                })
                 continue
             for i in self.env["account.invoice"].browse(resp):
                 if i.claim in ["ACD", "ERM", "PAG"]:

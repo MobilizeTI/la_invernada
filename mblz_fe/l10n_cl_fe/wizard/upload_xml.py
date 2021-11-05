@@ -793,7 +793,9 @@ class UploadXMLWizard(models.TransientModel):
         if inv:
             return inv
         data = self._get_data(documento, company_id)
+
         inv = self.env["account.invoice"].create(data)
+        
         _logger.info('LOG: antes de retonrar ultimo punto 797', data)
         return inv
 
