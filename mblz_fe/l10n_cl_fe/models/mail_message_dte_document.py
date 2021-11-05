@@ -23,14 +23,14 @@ class ProcessMailsDocument(models.Model):
     dte_id = fields.Many2one("mail.message.dte", string="DTE", readonly=True, ondelete="cascade",)
     new_partner = fields.Char(string="Proveedor Nuevo", readonly=True,)
     partner_id = fields.Many2one("res.partner", string="Proveedor", domain=[("supplier", "=", True)],)
-    date = fields.Date(string="Fecha Emsisión", readonly=True,)
+    date = fields.Date(string="Fecha Emisión", readonly=True,)
     number = fields.Char(string="Folio", readonly=True,)
     document_class_id = fields.Many2one(
         "sii.document_class", string="Tipo de Documento", readonly=True, oldname="sii_document_class_id",
     )
     amount = fields.Monetary(string="Monto", readonly=True,)
     currency_id = fields.Many2one(
-        "res.currency", string="Moneda", readonly=True, default=lambda self: self.env.user.company_id.currency_id,
+        "res.currency", string="Moneda", default=lambda self: self.env.user.company_id.currency_id,
     )
     invoice_line_ids = fields.One2many("mail.message.dte.document.line", "document_id", string="Líneas del Documento",)
     company_id = fields.Many2one("res.company", string="Compañía", readonly=True,)
