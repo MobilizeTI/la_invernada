@@ -1260,6 +1260,7 @@ a VAT."""))
             dir_origen = self.journal_id.sucursal_id.partner_id
         Emisor['DirOrigen'] = self._acortar_str(dir_origen.street + ' ' + (dir_origen.street2 or ''), 70)
         if not dir_origen.city_id:
+            _logger.info('LOG:   company emisora {}'.dir_origen)
             raise UserError("Debe ingresar la Comuna de compañía emisora")
         Emisor['CmnaOrigen'] = dir_origen.city_id.name
         if not dir_origen.city:
