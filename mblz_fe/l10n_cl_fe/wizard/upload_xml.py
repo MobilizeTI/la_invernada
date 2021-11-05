@@ -706,6 +706,7 @@ class UploadXMLWizard(models.TransientModel):
         product_id = (
             self.env["product.product"].search([("product_tmpl_id", "=", self.env.ref("l10n_cl_fe.product_imp").id)]).id
         )
+        _logger.info('LOG: antes del encabezado')
         if Encabezado.find("Totales/ImptoReten") is not None:
             ImptoReten = Encabezado.findall("Totales/ImptoReten")
             for i in ImptoReten:
@@ -766,6 +767,7 @@ class UploadXMLWizard(models.TransientModel):
                 purchase_to_done = document_id.purchase_to_done.ids()
             if purchase_to_done:
                 data["purchase_to_done"] = purchase_to_done
+        _logger.info('LOG: antes de retornar 770')
         return data
 
     def _inv_exist(self, documento):
