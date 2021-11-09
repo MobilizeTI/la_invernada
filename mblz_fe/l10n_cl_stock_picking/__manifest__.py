@@ -7,7 +7,7 @@
     'depends': [
         'stock',
         'fleet',
-        'delivery',
+        # 'delivery',
         'sale_stock',
         'l10n_cl_fe',
         ],
