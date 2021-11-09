@@ -27,6 +27,7 @@ class StockLocation(models.Model):
     sii_code = fields.Char(
         related='sucursal_id.sii_code',
         string="Código de Sucursal SII",
+
     )
     restore_mode = fields.Boolean(
             string="Modo Restauración",

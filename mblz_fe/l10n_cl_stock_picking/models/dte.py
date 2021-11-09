@@ -32,6 +32,7 @@ except:
     _logger.warning("no se ha cargado PIL")
 
 
+
 class stock_picking(models.Model):
     _inherit = "stock.picking"
 
@@ -155,14 +156,14 @@ class stock_picking(models.Model):
                 s.responsable_envio = self.env.uid
                 s.sii_result = 'NoEnviado'
                 s._timbrar()
-                self.env['sii.cola_envio'].sudo().create({
-                                            'company_id': s.company_id.id,
-                                            'doc_ids': [s.id],
-                                            'model': 'stock.picking',
-                                            'user_id': self.env.uid,
-                                            'tipo_trabajo': 'pasivo',
-                                            'date_time': (datetime.now() + timedelta(hours=12)),
-                                            })
+                self.env['sii.cola_envio'].create({
+                            'company_id': s.company_id.id,
+                            'doc_ids': [s.id],
+                            'model': 'stock.picking',
+                            'user_id': self.env.uid,
+                            'tipo_trabajo': 'pasivo',
+                            'date_time': (datetime.now() + timedelta(hours=12)),
+                        })
         return res
 
     @api.multi
@@ -183,26 +184,29 @@ class stock_picking(models.Model):
                 rec.sii_message = ""
                 ids.append(rec.id)
         if ids:
-            self.env['sii.cola_envio'].sudo().create({
-                                    'company_id': self[0].company_id.id,
-                                    'doc_ids': ids,
-                                    'model': 'stock.picking',
-                                    'user_id': self.env.uid,
-                                    'tipo_trabajo': 'envio',
-                                    'n_atencion': n_atencion,
-                                    "set_pruebas": self._context.get("set_pruebas", False),
-                                    })
+            self.env['sii.cola_envio'].create({
+                        'doc_ids': ids,
+                        'model':'stock.picking',
+                        'user_id':self.env.uid,
+                        'tipo_trabajo':'envio',
+                        'n_atencion': n_atencion,
+                        "set_pruebas": self._context.get("set_pruebas", False),
+                })
+
     def _giros_emisor(self):
         giros_emisor = []
-        for turn in self.location_id.acteco_ids:
-            giros_emisor.append(turn.code)
+        for ac in self.location_id.acteco_ids:
+            giros_emisor.append(ac.code)
         return giros_emisor
 
     def _id_doc(self, taxInclude=False, MntExe=0):
         IdDoc = {}
         IdDoc['TipoDTE'] = self.document_class_id.sii_code
         IdDoc['Folio'] = self.get_folio()
-        IdDoc['FchEmis'] = self.scheduled_date.strftime("%Y-%m-%d")
+        IdDoc['FchEmis'] = fields.Datetime.context_timestamp(
+            self.with_context(tz='America/Santiago'),
+            fields.Datetime.from_string(self.scheduled_date)
+        ).strftime(DF)
         if self.transport_type and self.transport_type not in ['0']:
             IdDoc['TipoDespacho'] = self.transport_type
         IdDoc['IndTraslado'] = self.move_reason
@@ -224,7 +228,6 @@ class stock_picking(models.Model):
         Emisor['Actecos'] = self._giros_emisor()
         dir_origen = self.company_id
         if self.location_id.sii_code:
-            Emisor['Sucursal'] = self.location_id.sucursal_id.name
             Emisor['CdgSIISucur'] = self.location_id.sii_code
             dir_origen = self.location_id.sucursal_id.partner_id
         Emisor['DirOrigen'] = dir_origen.street + ' ' +(dir_origen.street2 or '')
@@ -233,7 +236,7 @@ class stock_picking(models.Model):
         Emisor["Modo"] = "produccion" if self.company_id.dte_service_provider == 'SII'\
                   else 'certificacion'
         Emisor["NroResol"] = self.company_id.dte_resolution_number
-        Emisor["FchResol"] = self.company_id.dte_resolution_date.strftime('%Y-%m-%d')
+        Emisor["FchResol"] = self.company_id.dte_resolution_date
         Emisor["ValorIva"] = 19
         return Emisor
 
@@ -246,7 +249,10 @@ class stock_picking(models.Model):
         Receptor['RznSocRecep'] = partner_id.commercial_partner_id.name
         activity_description = self.activity_description or partner_id.activity_description
         if not activity_description:
-            raise UserError(_('Seleccione giro del partner'))
+            if self.partner_id.commercial_partner_id.acteco_ids:
+                activity_description = self.partner_id.commercial_partner_id.acteco_ids[0]
+            else:
+                raise UserError(_('Seleccione giro del partner'))
         Receptor['GiroRecep'] = activity_description.name
         if partner_id.commercial_partner_id.phone:
             Receptor['Contacto'] = partner_id.commercial_partner_id.phone
@@ -263,8 +269,8 @@ class stock_picking(models.Model):
         Transporte = {}
         if self.patente:
             Transporte['Patente'] = self.patente[:8]
-        # elif self.vehicle:
-        #     Transporte['Patente'] = self.vehicle.license_plate or ''
+        elif self.vehicle:
+            Transporte['Patente'] = self.vehicle.license_plate or ''
         if self.transport_type in ['2', '3'] and self.chofer:
             if not self.chofer.vat:
                 raise UserError("Debe llenar los datos del chofer")
@@ -278,7 +284,7 @@ class stock_picking(models.Model):
                 Transporte['Chofer'] = {}
                 Transporte['Chofer']['RUTChofer'] = self.chofer.rut()
                 Transporte['Chofer']['NombreChofer'] = self.chofer.name[:30]
-        partner_id = self.partner_id or self.company_id.partner_id
+        partner_id = self.partner_id or self.partner_id.commercial_partner_id or self.company_id.partner_id
         Transporte['DirDest'] = (partner_id.street or '')+ ' '+ (partner_id.street2 or '')
         Transporte['CmnaDest'] = partner_id.city_id.name or ''
         Transporte['CiudadDest'] = partner_id.city or ''
@@ -287,19 +293,17 @@ class stock_picking(models.Model):
 
     def _totales(self, MntExe=0, no_product=False, taxInclude=False):
         Totales = {}
-        IVA = False
+        IVA = 19
         for line in self.move_lines:
             if line.move_line_tax_ids:
                 for t in line.move_line_tax_ids:
-                    if t.sii_code in [14, 15, 17]:
-                        IVA = t
-        if IVA and not no_product:
-            Totales['MntNeto'] = self.currency_id.round(self.amount_untaxed)
-            Totales['TasaIVA'] = round(IVA.amount,2)
-            for k, t in self.get_taxes_values().items():
-                if k == str(IVA.id):
-                    Totales['IVA'] = self.currency_id.round(t['amount'])
-        monto_total = self.currency_id.round(self.amount_total)
+                    if t.sii_code in [14, 15]:
+                        IVA = t.amount
+        if IVA > 0 and not no_product:
+            Totales['MntNeto'] = int(round(self.amount_untaxed, 0))
+            Totales['TasaIVA'] = round(IVA,2)
+            Totales['IVA'] = int(round(self.amount_tax, 0))
+        monto_total = int(round(self.amount_total, 0))
         if no_product:
             monto_total = 0
         Totales['MntTotal'] = monto_total
@@ -346,7 +350,6 @@ class stock_picking(models.Model):
                                     "CodImp": t.sii_code,
                                     'price_include': taxInclude,
                                     'TasaImp': amount,
-                                    'mepco': t.mepco,
                                 }
                         )
             lines['NmbItem'] = line.product_id.name
@@ -369,10 +372,9 @@ class stock_picking(models.Model):
             if line.discount > 0:
                 lines['DescuentoPct'] = line.discount
                 lines['DescuentoMonto'] = int(round((((line.discount / 100) * lines['PrcItem'])* qty)))
-            if not no_product :
+            if not no_product:
                 subtotal = line.subtotal if taxInclude else line.price_untaxed
-                lines['MontoItem'] = int(round(subtotal,0))
-
+                lines['MontoItem'] = int(round(subtotal, 0))
             if no_product:
                 lines['MontoItem'] = 0
             line_number += 1
@@ -420,7 +422,7 @@ class stock_picking(models.Model):
                 ref_line['FolioRef'] = ref.origen
                 ref_line['FchRef'] = datetime.strftime(datetime.now(), '%Y-%m-%d')
                 if ref.date:
-                    ref_line['FchRef'] = ref.date.strftime("%Y-%m-%d")
+                    ref_line['FchRef'] = ref.date
             ref_lines.append(ref_line)
             lin_ref += 1
         dte['Detalle'] = picking_lines['Detalle']
@@ -454,6 +456,7 @@ class stock_picking(models.Model):
             'sii_xml_dte': result[0]['sii_xml_request'],
             'sii_barcode': result[0]['sii_barcode'],
         })
+        return True
 
     def _crear_envio(self, n_atencion=False, RUTRecep="60803000-K"):
         grupos = {}
@@ -510,11 +513,11 @@ class stock_picking(models.Model):
         datos["ID"] = "Env%s" %envio_id.id
         result = fe.timbrar_y_enviar(datos)
         envio = {
-                'xml_envio': result.get('sii_xml_request', 'temporal'),
+                'xml_envio': result.get('sii_xml_request', "temporal"),
                 'name': result.get("sii_send_filename", "temporal"),
                 'company_id': self[0].company_id.id,
                 'user_id': self.env.uid,
-                'sii_send_ident': result['sii_send_ident'],
+                'sii_send_ident': result.get('sii_send_ident'),
                 'sii_xml_response': result.get('sii_xml_response'),
                 'state': result.get('status'),
             }
@@ -593,15 +596,16 @@ class stock_picking(models.Model):
         d = ImageDraw.Draw(img)
         w, h = (0, 0)
         for i in range(10):
-            d.rectangle(((w, h), (550+w, 240+h)), outline="black")
+            d.rectangle(((w, h), (550+w, 220+h)), outline="black")
             w += 1
             h += 1
         font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 40)
         d.text((50,30), "R.U.T.: %s" % self.company_id.document_number, fill=(0,0,0), font=font)
-        d.text((70,85), "Guía de Despacho", fill=(0,0,0), font=font)
-        d.text((150,145), "Electrónica", fill=(0,0,0), font=font)
-        d.text((220,195), "N° %s" % self.sii_document_number, fill=(0,0,0), font=font)
+        d.text((50,90), "Guía de Despacho", fill=(0,0,0), font=font)
+        d.text((100,150), "Electrónica", fill=(0,0,0), font=font)
+        d.text((220,210), "N° %s" % self.sii_document_number, fill=(0,0,0), font=font)
         font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 20)
+        d.text((200,235), "SII %s" %self.company_id.sii_regional_office_id.name, fill=(0,0,0), font=font)
 
         buffered = BytesIO()
         img.save(buffered, format="PNG")

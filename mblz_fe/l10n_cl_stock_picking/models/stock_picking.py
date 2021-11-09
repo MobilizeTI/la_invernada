@@ -11,8 +11,8 @@ _logger = logging.getLogger(__name__)
 class StockPicking(models.Model):
     _inherit = "stock.picking"
 
-    @api.onchange('currency_id', 'move_lines', 'move_reason')
-    @api.depends('currency_id', 'move_lines', 'move_reason')
+    @api.onchange('currency_id', 'move_lines.subtotal', 'move_reason')
+    @api.depends('currency_id', 'move_lines.subtotal', 'move_reason')
     def _compute_amount(self):
         for rec in self:
             amount_untaxed = 0
@@ -20,12 +20,11 @@ class StockPicking(models.Model):
             if rec.move_reason not in ['5']:
                 taxes = rec.get_taxes_values()
                 for k, v in taxes.items():
+                    amount_untaxed += v['base']
                     amount_tax += v['amount']
                 rec.amount_tax = rec.currency_id.round(amount_tax)
-                for line in rec.move_lines:
-                    amount_untaxed += line.price_untaxed
                 rec.amount_untaxed = amount_untaxed
-            rec.amount_total = amount_untaxed + amount_tax
+            rec.amount_total = amount_untaxed + rec.currency_id.round(amount_tax)
 
     def _prepare_tax_line_vals(self, line, tax):
         """ Prepare values to create an account.invoice.tax line
@@ -99,10 +98,17 @@ class StockPicking(models.Model):
         if not self.global_descuentos_recargos:
             return tax_grouped
         gdr, gdr_exe = self.porcentaje_dr()
-        '''
+        taxes = {}
         for t, group in tax_grouped.items():
-            group['base'] = self.currency_id.round(group['base'])
-            group['amount'] = self.currency_id.round(group['amount'])
+            if t not in taxes:
+                taxes[t] = group
+            tax = self.env['account.tax'].browse(group['tax_id'])
+            if tax.amount > 0:
+                taxes[t]['amount'] *= gdr
+                taxes[t]['base'] *= gdr
+            else:
+                taxes[t]['amount'] *= gdr_exe
+        '''
         return tax_grouped
 
     def set_use_document(self):
@@ -194,12 +200,12 @@ class StockPicking(models.Model):
             default="1",
             readonly=False, states={'done':[('readonly',True)]},
         )
-    # vehicle = fields.Many2one(
-    #         'fleet.vehicle',
-    #         string="Vehículo",
-    #         readonly=False,
-    #         states={'done': [('readonly', True)]},
-    #     )
+    vehicle = fields.Many2one(
+            'fleet.vehicle',
+            string="Vehículo",
+            readonly=False,
+            states={'done': [('readonly', True)]},
+        )
     chofer = fields.Many2one(
             'res.partner',
             string="Chofer",
@@ -238,10 +244,10 @@ class StockPicking(models.Model):
             for m in self.move_lines:
                 m.company_id = self.company_id.id
 
-    # @api.onchange('vehicle')
-    # def _setChofer(self):
-    #     self.chofer = self.vehicle.driver_id
-    #     self.patente = self.vehicle.license_plate
+    @api.onchange('vehicle')
+    def _setChofer(self):
+        self.chofer = self.vehicle.driver_id
+        self.patente = self.vehicle.license_plate
 
 
 class Referencias(models.Model):

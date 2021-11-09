@@ -12,26 +12,6 @@ try:
 except Exception as e:
     _logger.warning("Problema al cargar Facturación electrónica: %s" % str(e))
 
-try:
-    from suds.client import Client
-except:
-    pass
-
-server_url = {'SIICERT':'https://maullin.sii.cl/DTEWS/','SII':'https://palena.sii.cl/DTEWS/'}
-
-connection_status = {
-    '0': 'Upload OK',
-    '1': 'El Sender no tiene permiso para enviar',
-    '2': 'Error en tamaño del archivo (muy grande o muy chico)',
-    '3': 'Archivo cortado (tamaño <> al parámetro size)',
-    '5': 'No está autenticado',
-    '6': 'Empresa no autorizada a enviar archivos',
-    '7': 'Esquema Invalido',
-    '8': 'Firma del Documento',
-    '9': 'Sistema Bloqueado',
-    'Otro': 'Error Interno.',
-}
-
 
 class LibroGuia(models.Model):
     _name = "stock.picking.book"
@@ -160,22 +140,14 @@ class LibroGuia(models.Model):
         self._validar()
         return self.write({'state': 'NoEnviado'})
 
-    def format_vat(self, value):
-        if not value or value=='' or value == 0:
-            value ="CL666666666"
-            #@TODO opción de crear código de cliente en vez de rut genérico
-        rut = value[:10] + '-' + value[10:]
-        rut = rut.replace('CL0','').replace('CL','')
-        return rut
-
     def _emisor(self):
         Emisor = {}
-        Emisor['RUTEmisor'] = self.format_vat(self.company_id.vat)
+        Emisor['RUTEmisor'] = self.company_id.partner_id.rut()
         Emisor['RznSoc'] = self.company_id.name
         Emisor["Modo"] = "produccion" if self.company_id.dte_service_provider == 'SII'\
                   else 'certificacion'
         Emisor["NroResol"] = self.company_id.dte_resolution_number
-        Emisor["FchResol"] = self.company_id.dte_resolution_date.strftime('%Y-%m-%d')
+        Emisor["FchResol"] = self.company_id.dte_resolution_date
         Emisor["ValorIva"] = 19
         return Emisor
 
