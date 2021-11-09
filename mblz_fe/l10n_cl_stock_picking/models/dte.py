@@ -449,6 +449,10 @@ class stock_picking(models.Model):
             },
         ]
         _logger.info('LOG: -->>> datos {}'.format(datos))
+        date_obj = datos['Emisor']['FchResol']
+        date_str = date_obj.strftime("%Y-%m-%d")
+        datos['Emisor']['FchResol'] = date_str
+
         result = fe.timbrar(datos)
         if result[0].get('error'):
             raise UserError(result[0].get('error'))
@@ -611,3 +615,77 @@ class stock_picking(models.Model):
         img.save(buffered, format="PNG")
         imm = base64.b64encode(buffered.getvalue()).decode()
         return imm
+
+datos = {
+    'Emisor': {
+        'RUTEmisor': '76991487-0', 
+        'RznSoc': 'Servicios La Invernada SPA', 
+        'GiroEmis': 'Servicios', 
+        'Telefono': '+56227603340', 
+        'CorreoEmisor': 'lainvernada.dte2@gmail.com', 
+        'Actecos': ['11101'], 
+        'DirOrigen': 'Valle Hermoso, Camino San Miguel, Parcela N° 2 ', 
+        'CmnaOrigen': 'Paine', 
+        'CiudadOrigen': 'Paine', 
+        'Modo': 'certificacion', 
+        'NroResol': '0', 
+        'FchResol': datetime.date(2021, 11, 5), 
+        'ValorIva': 19}, 
+    'firma_electronica': {
+        'priv_key': '-----BEGIN PRIVATE KEY-----\nMIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAJ5Tfo0gblRXE8tU\n9FlhhY+u1ZUF6sLOid4inUtkCBUJaNtwkQ33pGtzmUme46PxDzVMn1tfDpUOCVZn\nBk47wH92IX1XLNjoIw2Q1KyILi1ylDxpCUHKjjs4y9PETs8/OR85tnSIAPM/gRlk\n3QkGK2R3SEusbh0XXyExYTiiYbRdAgMBAAECgYBHu2N4VEu4aZVdx9lHT7BgF2HM\nOViSN1puardiS2mAAnngBiGqNttnFYJLQTI4+kQeLV972db1AF2JqHbKZjcBslSO\nMGdVFIbukl7emnQTctjJJp6AFbx4rBdr0Rv0hLhWkNvxw3Nr1Jd3IlueBXdG8wAX\ntoVh2K+7/YthD4RsrwJBAMZhqiDvVf919R553HD090dJBy57NDruRVvfuxnsuMX9\n3CahOZmKgpGcaOT5OGso8/kqpiz2fmzd2HkrxZkaO18CQQDMT5QyOO3XP00xEloZ\nkkQbVT5dP1FbFFHaCrMrqufWVY9f+/ER+4SgHzUTunqoyNEl79vr5Jy62MVzogNS\nRmXDAkEAxX3W22DIsT/h3Qwd64nDXoESGDDpBz3LaLIrVpy2Oc0GzKI2cGdWotUe\nC80bYHrtnwDZW+usYn7cEY0E8u0NawJBAJd2k23cCG6fThGIAmWcqoL84fvs+dok\nqT2U2xkPXUnnKiBFPYVQShUOraGPiGliXrLaK9aoJ4zZMSA1RnMTH1MCQBTa6dQ+\nX8//ORhFL3M2ckIZp5CiRjeVFMP2sM7IRcBMdpxLhkJMimKfA6sku41iq8axebAk\nJCwy3rbDeUZojGk=\n-----END PRIVATE KEY-----\n', 
+        'cert': '-----BEGIN CERTIFICATE-----\nMIIGXzCCBUegAwIBAgIKGZ9rgQAAAA3qxTANBgkqhkiG9w0BAQUFADCB0jELMAkG\nA1UEBhMCQ0wxHTAbBgNVBAgTFFJlZ2lvbiBNZXRyb3BvbGl0YW5hMREwDwYDVQQH\nEwhTYW50aWFnbzEUMBIGA1UEChMLRS1DRVJUQ0hJTEUxIDAeBgNVBAsTF0F1dG9y\naWRhZCBDZXJ0aWZpY2Fkb3JhMTAwLgYDVQQDEydFLUNFUlRDSElMRSBDQSBGSVJN\nQSBFTEVDVFJPTklDQSBTSU1QTEUxJzAlBgkqhkiG9w0BCQEWGHNjbGllbnRlc0Bl\nLWNlcnRjaGlsZS5jbDAeFw0xOTA1MjIyMzUxMzhaFw0yMjA1MjEyMzUxMzhaMIHg\nMQswCQYDVQQGEwJDTDEqMCgGA1UECAwhUkVHScOTTiBNRVRST1BPTElUQU5BIERF\nIFNBTlRJQUdPMREwDwYDVQQHEwhTYW50aWFnbzEdMBsGA1UEChMUTkFaQVIgQUND\nT1VOVElORyBTUEExHDAaBgNVBAsTE0FTRVNPUklBUyBDT05UQUJMRVMxJjAkBgNV\nBAMTHURBVklEIEVEVUFSRE8gVkFMRU5aVUVMQSBMSVJBMS0wKwYJKoZIhvcNAQkB\nFh5TQVJBTkNJQklBQE5BWkFSQUNDT1VOVElORy5DT00wgZ8wDQYJKoZIhvcNAQEB\nBQADgY0AMIGJAoGBAJ5Tfo0gblRXE8tU9FlhhY+u1ZUF6sLOid4inUtkCBUJaNtw\nkQ33pGtzmUme46PxDzVMn1tfDpUOCVZnBk47wH92IX1XLNjoIw2Q1KyILi1ylDxp\nCUHKjjs4y9PETs8/OR85tnSIAPM/gRlk3QkGK2R3SEusbh0XXyExYTiiYbRdAgMB\nAAGjggKpMIICpTCCAU8GA1UdIASCAUYwggFCMIIBPgYIKwYBBAHDUgUwggEwMC0G\nCCsGAQUFBwIBFiFodHRwOi8vd3d3LmUtY2VydGNoaWxlLmNsL0NQUy5odG0wgf4G\nCCsGAQUFBwICMIHxHoHuAEUAbAAgAHIAZQBzAHAAbwBuAGQAZQByACAAZQBzAHQA\nZQAgAGYAbwByAG0AdQBsAGEAcgBpAG8AIABlAHMAIAB1AG4AIAByAGUAcQB1AGkA\ncwBpAHQAbwAgAGkAbgBkAGkAcwBwAGUAbgBzAGEAYgBsAGUAIABwAGEAcgBhACAA\nZABhAHIAIABpAG4AaQBjAGkAbwAgAGEAbAAgAHAAcgBvAGMAZQBzAG8AIABkAGUA\nIABjAGUAcgB0AGkAZgBpAGMAYQBjAGkA8wBuAC4AIABQAG8AcwB0AGUAcgBpAG8A\ncgBtAGUAbgB0AGUALDAdBgNVHQ4EFgQUnoYhE1vzjQ3+tgh3cbK63GroXXkwCwYD\nVR0PBAQDAgTwMCMGA1UdEQQcMBqgGAYIKwYBBAHBAQGgDBYKMTAyNzIzNTAtMzAf\nBgNVHSMEGDAWgBR44T6f0hKzejyNzTAOU7NDKQezVTA+BgNVHR8ENzA1MDOgMaAv\nhi1odHRwOi8vY3JsLmUtY2VydGNoaWxlLmNsL2VjZXJ0Y2hpbGVjYUZFUy5jcmww\nOgYIKwYBBQUHAQEELjAsMCoGCCsGAQUFBzABhh5odHRwOi8vb2NzcC5lY2VydGNo\naWxlLmNsL29jc3AwPQYJKwYBBAGCNxUHBDAwLgYmKwYBBAGCNxUIgtyDL4WTjGaF\n1Z0XguLcJ4Hv7DxhgcueFIaoglgCAWQCAQQwIwYDVR0SBBwwGqAYBggrBgEEAcEB\nAqAMFgo5NjkyODE4MC01MA0GCSqGSIb3DQEBBQUAA4IBAQCX7h3S5JHBT6vTH6ix\n6Bg738X9Dy2xkDfAmVlRQUis4t7NKobCFr0OlFmZMTFSeisqNLJlpmr4R/KN7raS\nAmuS5EcGyFlk16FA4WUT+2jjpPl5LWuwVnAwZq6AyL6T9l9n651gmKCkGARL+Dy9\n3kc4hUkN/QyoA5YVa8cBsAdsw7T08qK2BBeH4FT6ydSSEwRKAKM86XbPBpwa6B5B\nvY1rfUhjL+spdpqyIzzqYSD87QN5Hucz3bro8dC0MZomIVwL33QQDB+jnhcUsN3p\n6BbxplKy7xwbBjtR0NxXLdBOeuMgugxF2Z+TmD6+eNEkoz8+hxSsMbEU8XV23oNt\nHUjY\n-----END CERTIFICATE-----\n', 
+        'rut_firmante': '10272350-3', 
+        'init_signature': False
+        }, 
+    'Documento': [
+        {
+            'TipoDTE': 52, 
+            'caf_file': ['PD94bWwgdmVyc2lvbj0iMS4wIj8+CjxBVVRPUklaQUNJT04+CjxDQUYgdmVyc2lvbj0iMS4wIj4KPERBPgo8UkU+NzY5OTE0ODctMDwvUkU+CjxSUz5TRVJWSUNJT1MgTEEgSU5WRVJOQURBIFNQQTwvUlM+CjxURD41MjwvVEQ+CjxSTkc+PEQ+MTwvRD48SD4xMDwvSD48L1JORz4KPEZBPjIwMjEtMTEtMDk8L0ZBPgo8UlNBUEs+PE0+cUhzK1ViM3B4YzJEK2UrYVdONThGSEc4bjZKMCsybE5FS29IR1hKbjM1amJyKzhPY3FVS0MvMlhIOFRIVGplWVU5WlBtd0s1eHYzZ0JoVDBTLzduWVE9PTwvTT48RT5Bdz09PC9FPjwvUlNBUEs+CjxJREs+MTAwPC9JREs+CjwvREE+CjxGUk1BIGFsZ29yaXRtbz0iU0hBMXdpdGhSU0EiPmhXTEVMSm9OSUNRd1FVc2R2QWRMUm5iV0RpbGlQMmZLdGo0L1VUaHdubmR4WEMvT0w2NEx3Qzc0bWcwbDcxY0V5c0pwSTh1ODBsVkZlRThsUHdFYTVBPT08L0ZSTUE+CjwvQ0FGPgo8UlNBU0s+LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlCT2dJQkFBSkJBS2g3UGxHOTZjWE5nL252bWxqZWZCUnh2SitpZFB0cFRSQ3FCeGx5WjkrWTI2L3ZEbktsCkNndjlseC9FeDA0M21GUFdUNXNDdWNiOTRBWVU5RXYrNTJFQ0FRTUNRSEJTS1l2VDhTNkpBcWFmdkRzKy9XTDIKZmIvQm8xSkdNMkJ4V2hEMjcrcGswcTh2U0lnZTdhMk5QR1lJZk1ydFhHSFN1UkgrOG8rQTJTVG53dUZDdXFzQwpJUURYdC90bFhYWE9vdEp6TGpwcG54ZE12NDhxZGwwYStya3lsN1dtNmRzL3dRSWhBTWZ4TEx4SkFOYmsxMGxZCmZhSit2RUVCaXcrSnB6TDFBMmUzQTZrUVA0K2hBaUVBajgvODdqNU9pY0hob2g3Um03OWszZFVLSEU3b3ZLY20KSWJwNUdmRTgxU3NDSVFDRlMzTW9NS3M1N2VUYmtGUEJxZExXQVFkZnNSb2grS3p2ejFmR0N0VUthd0loQUoxdgp1enl6UzM0dFVocThKM0IxUjFTZ2FOWjZQQlFUcnluNTdxamdrNjZGCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCjwvUlNBU0s+Cgo8UlNBUFVCSz4tLS0tLUJFR0lOIFBVQkxJQyBLRVktLS0tLQpNRm93RFFZSktvWklodmNOQVFFQkJRQURTUUF3UmdKQkFLaDdQbEc5NmNYTmcvbnZtbGplZkJSeHZKK2lkUHRwClRSQ3FCeGx5WjkrWTI2L3ZEbktsQ2d2OWx4L0V4MDQzbUZQV1Q1c0N1Y2I5NEFZVTlFdis1MkVDQVFNPQotLS0tLUVORCBQVUJMSUMgS0VZLS0tLS0KPC9SU0FQVUJLPgo8L0FVVE9SSVpBQ0lPTj4K'], 
+            'documentos': [
+                {
+                    'Encabezado': {
+                        'IdDoc': {
+                            'TipoDTE': 52, 
+                            'Folio': 3, 
+                            'FchEmis': '2021-11-09', 
+                            'TipoDespacho': '2', 
+                            'IndTraslado': '1'}, 
+                        'Receptor': {
+                            'RUTRecep': '76853633-3', 
+                            'RznSocRecep': 'Mobilize SpA', 
+                            'GiroRecep': 'servicios informáticos', 
+                            'CorreoRecep': 'contacto@mobilize.cl', 
+                            'DirRecep': 'Av. Calera de Tango P S/N ', 
+                            'CmnaRecep': 'Calera de Tango', 
+                            'CiudadRecep': 'Calera de Tango'}, 
+                        'Transporte': {
+                            'Patente': 'DHWH88', 
+                            'RUTTrans': '76991487-0', 
+                            'Chofer': {
+                                'RUTChofer': '15759006-5', 
+                                'NombreChofer': 'Felipe Angulo'
+                                }, 
+                            'DirDest': 'Av. Calera de Tango P S/N ', 
+                            'CmnaDest': 'Calera de Tango', 
+                            'CiudadDest': 'Calera de Tango'}, 
+                        'Totales': {
+                            'MntNeto': 0, 
+                            'TasaIVA': 19, 
+                            'IVA': 0, 
+                            'MntTotal': 0}
+                            }, 
+                        'Detalle': [
+                            {
+                                'NroLinDet': 1, 
+                                'CdgItem': {
+                                    'TpoCodigo': 'INT1', 
+                                    'VlrCodigo': 'AF00102'
+                                    }, 
+                                'Impuesto': [], 
+                                'NmbItem': 'Pallet Certificado tabla junta', 
+                                'DscItem': '[AF00102] Pallet Certificado tabla junta (153 x 120 cm)', 
+                                'QtyItem': 1.0, 
+                                'UnmdItem': 'Unid', 
+                                'PrcItem': 100.0, 
+                                'MontoItem': 100}], 
+                                'Referencia': []}]}]}
