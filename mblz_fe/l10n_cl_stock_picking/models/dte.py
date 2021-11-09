@@ -444,11 +444,11 @@ class stock_picking(models.Model):
         datos = self._get_datos_empresa(self.company_id)
         datos['Documento'] = [{
             'TipoDTE': self.document_class_id.sii_code,
-            'caf_file': [self.location_id.sequence_id.get_caf_file(
-                            folio, decoded=False).decode()],
+            'caf_file': [self.location_id.sequence_id.get_caf_file(folio, decoded=False).decode()],
             'documentos': [self._dte(n_atencion)]
             },
         ]
+        _logger.info('LOG: -->>> datos {}'.format(datos))
         result = fe.timbrar(datos)
         if result[0].get('error'):
             raise UserError(result[0].get('error'))
