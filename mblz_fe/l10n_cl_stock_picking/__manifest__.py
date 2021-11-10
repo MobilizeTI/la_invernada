@@ -26,7 +26,7 @@
         'views/stock_location.xml',
         'views/layout.xml',
         # 'views/libro_guias.xml',
-        "views/account_invoice.xml",
+        # "views/account_invoice.xml",
         'wizard/masive_send_dte.xml',
     ],
     'version': '0.23.0',
