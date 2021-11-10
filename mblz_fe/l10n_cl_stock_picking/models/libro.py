@@ -15,6 +15,7 @@ except Exception as e:
 
 class LibroGuia(models.Model):
     _name = "stock.picking.book"
+    _description = 'Libro de Guías'
 
     @api.multi
     def unlink(self):
