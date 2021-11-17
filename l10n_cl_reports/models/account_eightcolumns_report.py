@@ -27,6 +27,7 @@ class CL8ColumnsReport(models.AbstractModel):
     def _get_columns_name(self, options):
         columns = [
             {'name': _("Cuenta")},
+            {'name': _("Saldo Inicial"), 'class': 'number'},
             {'name': _("Debe"), 'class': 'number'},
             {'name': _("Haber"), 'class': 'number'},
             {'name': _("Deudor"), 'class': 'number'},
@@ -191,7 +192,7 @@ class CL8ColumnsReport(models.AbstractModel):
         ])
         for key in subtotals.keys():
             for line in lines:
-                # _logger.info('LOG: -->>> lines {}'.format(line))
+                _logger.info('LOG: -->>> lines {}'.format(line))
                 subtotals[key] += line[key]
         return subtotals
 
