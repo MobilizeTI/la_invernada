@@ -373,11 +373,18 @@ class CL8ColumnsReport(models.AbstractModel):
         results = sorted(results, key=lambda x: x.get('code'), reverse=False)
         for line in results:
             account_obj = self.env['account.account'].browse(line['id'])
-            if account_obj in initial_balances:
-                init_account_balance = initial_balances[account_obj]
+            # if account_obj in initial_balances:
+            #     init_account_balance = initial_balances[account_obj]
+            init_account_balance = initial_balances[account_obj]
             line['balance_inicial'] = init_account_balance
             account_type = account_obj.internal_group
-            if account_type == 'expense' or account_type == 'asset' or account_type == 'liability' or account_type == 'income' or account_type == 'equity':
+            if account_type == 'equity':
+                if init_account_balance < 0:
+                    line['haber'] = line['haber'] + abs(init_account_balance)
+                else:
+                    line['debe'] = line['debe'] + abs(init_account_balance)
+
+            if account_type == 'expense' or account_type == 'asset' or account_type == 'liability' or account_type == 'income':
                 if init_account_balance < 0:
                     line['haber'] = line['haber'] + abs(init_account_balance)
                 else:
