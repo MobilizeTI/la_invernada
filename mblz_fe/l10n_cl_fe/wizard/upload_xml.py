@@ -770,7 +770,7 @@ class UploadXMLWizard(models.TransientModel):
                 purchase_to_done = document_id.purchase_to_done.ids()
             if purchase_to_done:
                 data["purchase_to_done"] = purchase_to_done
-        _logger.info('LOG: antes de retornar 770')
+        _logger.info('LOG: antes de retornar 770 data {}'.format(data))
         return data
 
     def _inv_exist(self, documento):
