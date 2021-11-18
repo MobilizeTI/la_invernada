@@ -29,7 +29,7 @@ class CL8ColumnsReport(models.AbstractModel):
     def _get_columns_name(self, options):
         columns = [
             {'name': _("Cuenta")},
-            {'name': _("Saldo Inicial"), 'class': 'number'},
+            # {'name': _("Saldo Inicial"), 'class': 'number'},
             {'name': _("Debe"), 'class': 'number'},
             {'name': _("Haber"), 'class': 'number'},
             {'name': _("Deudor"), 'class': 'number'},
@@ -433,7 +433,7 @@ class CL8ColumnsReport(models.AbstractModel):
                 'unfoldable': False,
                 'columns': [
                     {'name': values} for values in [
-                        self.format_value(init_account_balance),
+                        # self.format_value(init_account_balance),
                         self.format_value(line['debe']),
                         self.format_value(line['haber']),
                         self.format_value(line['deudor']),
@@ -493,7 +493,7 @@ class CL8ColumnsReport(models.AbstractModel):
 
     def _calculate_subtotals(self, lines):
         subtotals = OrderedDict([
-            ('balance_inicial', 0),
+            # ('balance_inicial', 0),
             ('debe', 0), ('haber', 0),
             ('deudor', 0), ('acreedor', 0),
             ('activo', 0), ('pasivo', 0),
@@ -515,7 +515,7 @@ class CL8ColumnsReport(models.AbstractModel):
 
     def _calculate_totals(self, subtotal_line, exercise_result_line):
         totals = OrderedDict([
-            ('balance_inicial', subtotal_line['balance_inicial']),
+            # ('balance_inicial', subtotal_line['balance_inicial']),
             ('debe', subtotal_line['debe']), ('haber', subtotal_line['haber']),
             ('deudor', subtotal_line['deudor']), ('acreedor', subtotal_line['acreedor']),
             ('activo', subtotal_line['activo'] + exercise_result_line['activo']), ('pasivo', subtotal_line['pasivo'] + exercise_result_line['pasivo']),
