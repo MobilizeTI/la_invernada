@@ -405,7 +405,7 @@ class CL8ColumnsReport(models.AbstractModel):
                 line['acreedor'] = 0
             
             diff_a_d = line['acreedor'] - line['deudor']
-            if account_type == 'liability' or account_type == 'asset' or account_type == 'equity':
+            if account_type == 'liability' or account_type == 'asset' or account_type == 'equity' or not account_type:
                 if diff_a_d > 0:
                     line['pasivo'] = abs(diff)
                     line['activo'] = 0
