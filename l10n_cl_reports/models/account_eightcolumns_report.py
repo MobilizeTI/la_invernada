@@ -369,7 +369,8 @@ class CL8ColumnsReport(models.AbstractModel):
                     })
 
 
-        results.sort(key=lambda x: x.code, reverse=True)
+        # results.sort(lambda x: x.get('code'), reverse=False)
+        results = sorted(results, key=lambda x: x.get('code'), reverse=False)
         for line in results:
             account_obj = self.env['account.account'].browse(line['id'])
             if account_obj in initial_balances:
