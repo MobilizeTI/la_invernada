@@ -377,7 +377,7 @@ class CL8ColumnsReport(models.AbstractModel):
                 init_account_balance = initial_balances[account_obj]
             line['balance_inicial'] = init_account_balance
             account_type = account_obj.internal_group
-            if account_type == 'expense' or account_type == 'asset' or account_type == 'liability' or account_type == 'income':
+            if account_type == 'expense' or account_type == 'asset' or account_type == 'liability' or account_type == 'income' or account_type == 'equity':
                 if init_account_balance < 0:
                     line['haber'] = line['haber'] + abs(init_account_balance)
                 else:
