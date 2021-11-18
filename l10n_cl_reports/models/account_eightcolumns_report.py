@@ -330,11 +330,46 @@ class CL8ColumnsReport(models.AbstractModel):
             #     grouped_accounts[account][period_number]['debit'] = res[account]['debit'] - res[account]['initial_bal']['debit']
             #     grouped_accounts[account][period_number]['credit'] = res[account]['credit'] - res[account]['initial_bal']['credit']
             period_number += 1
+        
+        
+        
+        
 
         lines = []
         sql_query, parameters = self._prepare_query(options)
         self.env.cr.execute(sql_query, parameters)
         results = self.env.cr.dictfetchall()
+        ids = []
+        for line in results:
+            account_obj = self.env['account.account'].browse(line['id'])
+            ids.append(account_obj)
+        
+        missing_accounts = []
+        
+        for key, value in initial_balances.items():
+            if key not in ids:
+                if value != 0:
+                    missing_accounts.append({
+                        key: value
+                    })
+                    results.append({
+                        'acreedor': 0.0,
+                        'activo': 0.0,
+                        'code': key.code,
+                        'debe': 0.0,
+                        'deudor': 0.0,
+                        'ganancia': 0.0,
+                        'haber': 0.0,
+                        'id': key.id,
+                        'name': key.name,
+                        'pasivo': 0.0,
+                        'perdida': 0.0,
+                        'initial_balance': value
+
+                    })
+
+
+
         for line in results:
             account_obj = self.env['account.account'].browse(line['id'])
             if account_obj in initial_balances:
