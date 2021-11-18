@@ -378,8 +378,7 @@ class CL8ColumnsReport(models.AbstractModel):
             init_account_balance = initial_balances[account_obj]
             line['balance_inicial'] = init_account_balance
             account_type = account_obj.internal_group
-            # if line['id'] == 4285:
-            #     _logger.info('LOG: -->>> acount_type {} init {} over {}'.format(account_type, init_account_balance, line['initial_balance']))
+            _logger.info('LOG: -->>> account_name {} account_type {} init {} over {}'.format(line['name'], account_type, init_account_balance, line['initial_balance']))
             if not account_type:
                 if init_account_balance < 0:
                     line['haber'] = line['haber'] + abs(init_account_balance)
