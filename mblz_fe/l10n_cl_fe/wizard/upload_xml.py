@@ -443,7 +443,8 @@ class UploadXMLWizard(models.TransientModel):
         data.update(
             {
                 "sequence": line.find("NroLinDet").text,
-                "name": DscItem.text if DscItem is not None else line.find("NmbItem").text,
+                # "name": DscItem.text if DscItem is not None else line.find("NmbItem").text,
+                "name": product_id.name,
                 "price_unit": price,
                 "discount": discount,
                 "quantity": line.find("QtyItem").text if line.find("QtyItem") is not None else 1,
@@ -1034,6 +1035,45 @@ class UploadXMLWizard(models.TransientModel):
                 self._create_po(documento, company)
             elif tipo_dte in ["56", "61"]:
                 self._create_inv(documento, company)
+
+# data = {
+#     'account_id': 1284, 
+#     'type': 'in_invoice', 
+#     'fiscal_position': False, 
+#     'origin': 'XML Envío: DTE', 
+#     'date_invoice': '2021-07-08', 
+#     'partner_id': 1949, 
+#     'company_id': 3, 
+#     'sii_xml_dte': '<DTE><Documento xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="FAV_76483167_TR_000017504"><Encabezado><IdDoc><TipoDTE>33</TipoDTE><Folio>17504</Folio><FchEmis>2021-07-08</FchEmis><FmaPago>2</FmaPago></IdDoc><Emisor><RUTEmisor>76483167-5</RUTEmisor><RznSoc>Kleen Supply</RznSoc><GiroEmis>COMERCIALIZADORA DE INSUMOS INDUSTRIALES Y DE USO DOMESTICO Y OTRAS ACTIVIDADES </GiroEmis><Acteco>519000</Acteco><DirOrigen>CARRETERA GRAL. SAN MARTIN 8000 BOD 23D</DirOrigen><CmnaOrigen>QUILICURA</CmnaOrigen><CiudadOrigen>SANTIAGO</CiudadOrigen></Emisor><Receptor><RUTRecep>76991487-0</RUTRecep><RznSocRecep>SERVICIOS LA INVERNADA SpA\t\t</RznSocRecep><GiroRecep>.</GiroRecep><DirRecep>Valle Hermoso, CaminoSan Miguel , Parcela N&#176; 2</DirRecep><CmnaRecep>PAINE</CmnaRecep><CiudadRecep>.</CiudadRecep></Receptor><Totales><MntNeto>67400</MntNeto><TasaIVA>19</TasaIVA><IVA>12806</IVA><MntTotal>80206</MntTotal></Totales></Encabezado><Detalle><NroLinDet>1</NroLinDet><CdgItem><TpoCodigo>INT1</TpoCodigo><VlrCodigo>CCBYB1001</VlrCodigo></CdgItem><NmbItem>BALDE 8LTS ITALIMPIA AMARILLO 8107</NmbItem><DscItem/><QtyItem>3</QtyItem><PrcItem>6600</PrcItem><MontoItem>19800</MontoItem></Detalle><Detalle><NroLinDet>2</NroLinDet><CdgItem><TpoCodigo>INT1</TpoCodigo><VlrCodigo>CCPAS1014</VlrCodigo></CdgItem><NmbItem>PALETA TIPO REMO LISA 4810</NmbItem><DscItem/><QtyItem>2</QtyItem><PrcItem>23800</PrcItem><MontoItem>47600</MontoItem></Detalle><Referencia><NroLinRef>1</NroLinRef><TpoDocRef>801</TpoDocRef><FolioRef>PO01637</FolioRef><FchRef>2021-07-05</FchRef></Referencia><Referencia><NroLinRef>2</NroLinRef><TpoDocRef>801</TpoDocRef><FolioRef>PO01637</FolioRef><FchRef>2021-07-05</FchRef><RazonRef>.</RazonRef></Referencia><TED version="1.0"><DD><RE>76483167-5</RE><TD>33</TD><F>17504</F><FE>2021-07-08</FE><RR>76991487-0</RR><RSR>SERVICIOS LA INVERNADA SpA\t\t</RSR><MNT>80206</MNT><IT1>BALDE 8LTS ITALIMPIA AMARILLO 8107</IT1><CAF version="1.0"><DA><RE>76483167-5</RE><RS>KLEEN SUPPLY SPA</RS><TD>33</TD><RNG><D>15960</D><H>17559</H></RNG><FA>2021-01-12</FA><RSAPK><M>34aR7rFhThv6Xf4D5hC4QMp2UWHU7F87GONmegu1FlufXB+eFJuvKkLkh+FgFfAjN6GhDeSNJE5cBizQQPPvnQ==</M><E>Aw==</E></RSAPK><IDK>300</IDK></DA><FRMA algoritmo="SHA1withRSA">Ql45FS3Lz9XEq+4bvHy2dyAJhi6W/Zg7598Cq9nSJeDmd59OpQtyq/4mm7mzfCR3j0qXMb4JBduH1X+qrxc+RA==</FRMA></CAF><TSTED>2021-07-08T11:02:00</TSTED></DD><FRMT algoritmo="SHA1withRSA">RTIp9HPLmA2FwNoWlS2+elYdsOxCCix3d4lUEof2F30SQPW3/WcpsFwtuVH7UPmJEqavHYlMFuOp6+/YpAHnEQ==</FRMT></TED><TmstFirma>2021-07-08T11:02:00</TmstFirma></Documento></DTE>', 
+#     'sii_barcode': '<TED xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0"><DD><RE>76483167-5</RE><TD>33</TD><F>17504</F><FE>2021-07-08</FE><RR>76991487-0</RR><RSR>SERVICIOS LA INVERNADA SpA\t\t</RSR><MNT>80206</MNT><IT1>BALDE 8LTS ITALIMPIA AMARILLO 8107</IT1><CAF version="1.0"><DA><RE>76483167-5</RE><RS>KLEEN SUPPLY SPA</RS><TD>33</TD><RNG><D>15960</D><H>17559</H></RNG><FA>2021-01-12</FA><RSAPK><M>34aR7rFhThv6Xf4D5hC4QMp2UWHU7F87GONmegu1FlufXB+eFJuvKkLkh+FgFfAjN6GhDeSNJE5cBizQQPPvnQ==</M><E>Aw==</E></RSAPK><IDK>300</IDK></DA><FRMA algoritmo="SHA1withRSA">Ql45FS3Lz9XEq+4bvHy2dyAJhi6W/Zg7598Cq9nSJeDmd59OpQtyq/4mm7mzfCR3j0qXMb4JBduH1X+qrxc+RA==</FRMA></CAF><TSTED>2021-07-08T11:02:00</TSTED></DD><FRMT algoritmo="SHA1withRSA">RTIp9HPLmA2FwNoWlS2+elYdsOxCCix3d4lUEof2F30SQPW3/WcpsFwtuVH7UPmJEqavHYlMFuOp6+/YpAHnEQ==</FRMT></TED>', 
+#     'journal_id': 17, 
+#     'sii_document_number': '17504', 
+#     'document_class_id': 4, 
+#     'use_documents': False, 
+#     'number': '17504', 
+#     'date': '2021-07-08', 
+#     'new_partner': '76483167-5 Kleen Supply', 
+#     'amount': '80206', 
+#     'referencias': [
+#         (5,), [0, 0, {
+#             'origen': 'PO01637', 
+#             'sii_referencia_TpoDocRef': 30, 
+#             'sii_referencia_CodRef': None, 
+#             'motivo': None, 
+#             'fecha_documento': '2021-07-05'}], [0, 0, {
+#                 'origen': 'PO01637', 
+#                 'sii_referencia_TpoDocRef': 30, 
+#                 'sii_referencia_CodRef': None, 
+#                 'motivo': '.', 
+#                 'fecha_documento': '2021-07-05'}]], 
+#     'invoice_line_ids': [(5,), [0, 0, {
+#         'product_id': 7102, 'sequence': '1', 
+#         'name': None, 
+#         'price_unit': 6600.0, 
+#         'discount': 0, 
+#         'quantity': '3', 
+#         'price_subtotal': 19800.0, 
+#         'account_id': 4355, 'invoice_line_tax_ids': [(6, 0, [13])], 'uom_id': 1}], [0, 0, {'product_id': 7107, 'sequence': '2', 'name': None, 'price_unit': 23800.0, 'discount': 0, 'quantity': '2', 'price_subtotal': 47600.0, 'account_id': 4355, 'invoice_line_tax_ids': [(6, 0, [13])], 'uom_id': 1}]], 'amount_untaxed': 67400, 'amount_total': 80206}
 
         
 
