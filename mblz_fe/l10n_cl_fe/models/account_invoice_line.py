@@ -2,6 +2,8 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 import decimal
+import logging
+_logger = logging.getLogger(__name__)
 
 
 
@@ -16,6 +18,10 @@ class AccountInvoiceLine(models.Model):
         total = self.currency_id.round(self.quantity * self.price_unit)
         decimal.getcontext().rounding = decimal.ROUND_HALF_UP
         self.discount_amount = int(decimal.Decimal(total * ((self.discount or 0.0) / 100.0)).to_integral_value())
+    
+    
+
+
 
     @api.one
     @api.depends(

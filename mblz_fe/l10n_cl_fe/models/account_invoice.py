@@ -286,13 +286,7 @@ class AccountInvoice(models.Model):
     )
     claim_ids = fields.One2many("sii.dte.claim", "invoice_id", strign="Historial de Reclamos")
 
-    @api.onchange("invoice_line_ids")
-    def _onchange_invoice_line_ids(self):
-        i = 0
-        for l in self.invoice_line_ids:
-            i += 1
-            l.sequence = i
-        return super(AccountInvoice, self)._onchange_invoice_line_ids()
+    
 
     @api.depends("state", "journal_id", "date_invoice", "document_class_id")
     def _get_sequence_prefix(self):
