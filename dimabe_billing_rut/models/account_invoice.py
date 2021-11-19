@@ -413,6 +413,16 @@ class AccountInvoice(models.Model):
             for activity in item.partner_id.economic_activities:
                 activities.append(activity.id)
             item.partner_activity_id = activities
+    
+    @api.onchange("invoice_line_ids")
+    def _onchange_invoice_line_ids(self):
+        res = super(AccountInvoice, self)._onchange_invoice_line_ids()
+        tax_line_ids = self.tax_line_ids
+        if tax_line_ids.tax_id.sii_type == 'R':
+            amount = tax_line_ids.amount
+            tax_line_ids.amount_retencion = amount
+            tax_line_ids.amount = 0
+        return res
 
     @api.multi
     def send_to_sii(self):
