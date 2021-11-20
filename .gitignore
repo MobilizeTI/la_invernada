@@ -4,3 +4,4 @@ docker-compose.yaml
 /.vs/slnx.sqlite
 venv
 __pycache__/
+.pyc
