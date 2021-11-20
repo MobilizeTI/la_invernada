@@ -437,8 +437,8 @@ class AccountInvoice(models.Model):
                 line[1][2]['debit'] = False
 
                 ##linea total
-                line[0][2]['debit'] = line[0][2]['debit'] + abs(line[1][2]['credit'])
-                line[0][2]['credit'] = False
+                # line[0][2]['debit'] = line[0][2]['debit'] + abs(line[1][2]['credit'])
+                # line[0][2]['credit'] = False
 
                 ##linea neto
                 line[2][2]['credit'] = line[0][2]['debit'] - line[1][2]['credit']
