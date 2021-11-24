@@ -1325,7 +1325,7 @@
                             <tr t-foreach="get_invoices" t-as="invoice">
                                 <t t-set="qty_invoice" t-value="qty_invoice + 1" />
                                 <t t-set="total_neto" t-value="total_neto + invoice.get_amount_neto()" />
-                                <t t-set="total_impto" t-value="total_impto + invoice.amount_tax" />
+                                <t t-set="total_impto" t-value="total_impto + invoice.amount_retencion" />
                                 <t t-set="total_general" t-value="total_general + invoice.amount_total" />
                                 <!-- Codigo SII       -->
                                 <td>
