@@ -1358,7 +1358,7 @@
                                 </td>
                                 <!-- Impuesto         -->
                                 <td>
-                                    <span t-field="invoice.amount_tax"></span>
+                                    <span t-field="invoice.amount_retencion"></span>
                                 </td>
                                 <td>
                                     <span t-field="invoice.amount_total"></span>
