@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {   'active': True,
-    'author': u'Daniel Santibáñez Polanco, Cooperativa OdooCoop',
-    'website': 'http://globalresponse.cl',
+    'author': u'Mobilize',
+    'website': 'http://mobilize.cl',
     'category': 'Stock/picking',
     'demo_xml': [],
     'depends': [
