@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <function name="fix_ir_rule" model="stock.picking"/>
+    </data>
+</odoo>
