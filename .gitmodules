@@ -2,3 +2,11 @@
 	path = KonosCL/addons-konos
 	url = git@github.com:KonosCL/addons-konos.git
 	branch = 12.0
+[submodule "stock_intercompany_moves"]
+	path = stock_intercompany_moves
+	url = git@github.com:MobilizeDevTeam/stock_intercompany_moves.git
+	branch = 12.0
+[submodule "stock_requisitions"]
+	path = stock_requisitions
+	url = git@github.com:MobilizeDevTeam/stock_requisitions.git
+	branch = 12.0

@@ -8,5 +8,6 @@ pandas
 Pillow
 pdf417
 pysftp
-facturacion-electronica
+PyMuPDF==1.16.14
+facturacion_electronica>=0.14.0
 py_linq
