@@ -1,5 +1,5 @@
-from odoo import models, fields, api
-from odoo.exceptions import ValidationError
+from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError, UserError
 import json
 import requests
 import inspect
@@ -268,6 +268,207 @@ class AccountInvoice(models.Model):
 
     transport_to_port = fields.Many2one('res.partner', string="Transporte a Puerto", domain="[('supplier','=',True)]")
 
+    # @api.model
+    # def tax_line_move_line_get(self):
+    #     res = []
+    #     # keep track of taxes already processed
+    #     done_taxes = []
+    #     # loop the invoice.tax.line in reversal sequence
+    #     for tax_line in sorted(self.tax_line_ids, key=lambda x: -x.sequence):
+    #         if tax_line.amount_total:
+    #             tax = tax_line.tax_id
+    #             if tax.amount_type == "group":
+    #                 for child_tax in tax.children_tax_ids:
+    #                     done_taxes.append(child_tax.id)
+
+    #             analytic_tag_ids = [(4, analytic_tag.id, None) for analytic_tag in tax_line.analytic_tag_ids]
+    #             res.append({
+    #                 'invoice_tax_line_id': tax_line.id,
+    #                 'tax_line_id': tax_line.tax_id.id,
+    #                 'type': 'tax',
+    #                 'name': tax_line.name,
+    #                 'price_unit': tax_line.amount_total,
+    #                 'quantity': 1,
+    #                 'price': tax_line.amount_total,
+    #                 'account_id': tax_line.account_id.id,
+    #                 'account_analytic_id': tax_line.account_analytic_id.id,
+    #                 'analytic_tag_ids': analytic_tag_ids,
+    #                 'invoice_id': self.id,
+    #                 'tax_ids': [(6, 0, list(done_taxes))] if tax_line.tax_id.include_base_amount else []
+    #             })
+    #             done_taxes.append(tax.id)
+    #     return res
+    
+    # @api.multi
+    # def compute_invoice_totals(self, company_currency, invoice_move_lines):
+    #     total = 0
+    #     total_currency = 0
+    #     for line in invoice_move_lines:
+    #         if self.currency_id != company_currency:
+    #             currency = self.currency_id
+    #             date = self._get_currency_rate_date() or fields.Date.context_today(self)
+    #             if not (line.get('currency_id') and line.get('amount_currency')):
+    #                 line['currency_id'] = currency.id
+    #                 line['amount_currency'] = currency.round(line['price'])
+    #                 line['price'] = currency._convert(line['price'], company_currency, self.company_id, date)
+    #         else:
+    #             line['currency_id'] = False
+    #             line['amount_currency'] = False
+    #             line['price'] = self.currency_id.round(line['price'])
+    #         if self.type in ('out_invoice', 'in_refund'):
+    #             total += line['price']
+    #             total_currency += line['amount_currency'] or line['price']
+    #             line['price'] = - line['price']
+    #         else:
+    #             total -= line['price']
+    #             total_currency -= line['amount_currency'] or line['price']
+    #     return total, total_currency, invoice_move_lines
+    
+    # def group_lines(self, iml, line):
+    #     """Merge account move lines (and hence analytic lines) if invoice line hashcodes are equals"""
+    #     if self.journal_id.group_invoice_lines:
+    #         line2 = {}
+    #         for x, y, l in line:
+    #             tmp = self.inv_line_characteristic_hashcode(l)
+    #             if tmp in line2:
+    #                 am = line2[tmp]['debit'] - line2[tmp]['credit'] + (l['debit'] - l['credit'])
+    #                 line2[tmp]['debit'] = (am > 0) and am or 0.0
+    #                 line2[tmp]['credit'] = (am < 0) and -am or 0.0
+    #                 line2[tmp]['amount_currency'] += l['amount_currency']
+    #                 line2[tmp]['analytic_line_ids'] += l['analytic_line_ids']
+    #                 qty = l.get('quantity')
+    #                 if qty:
+    #                     line2[tmp]['quantity'] = line2[tmp].get('quantity', 0.0) + qty
+    #             else:
+    #                 line2[tmp] = l
+    #         line = []
+    #         for key, val in line2.items():
+    #             line.append((0, 0, val))
+    #     return line
+
+    # # def action_move_create(self):
+
+    # #     return super(AccountInvoice, self).action_move_create()
+
+    @api.multi
+    def action_move_create(self):
+        """ Creates invoice related analytics and financial move lines """
+        account_move = self.env['account.move']
+
+        for inv in self:
+            if not inv.journal_id.sequence_id:
+                raise UserError(_('Please define sequence on the journal related to this invoice.'))
+            if not inv.invoice_line_ids.filtered(lambda line: line.account_id):
+                raise UserError(_('Please add at least one invoice line.'))
+            if inv.move_id:
+                continue
+
+
+            if not inv.date_invoice:
+                inv.write({'date_invoice': fields.Date.context_today(self)})
+            if not inv.date_due:
+                inv.write({'date_due': inv.date_invoice})
+            company_currency = inv.company_id.currency_id
+
+            # create move lines (one per invoice line + eventual taxes and analytic lines)
+            iml = inv.invoice_line_move_line_get()
+            iml += inv.tax_line_move_line_get()
+
+            # logica de impuestos retencion
+
+
+            diff_currency = inv.currency_id != company_currency
+            # create one move line for the total and possibly adjust the other lines amount
+            total, total_currency, iml = inv.compute_invoice_totals(company_currency, iml)
+
+            name = inv.name or ''
+            if inv.payment_term_id:
+                totlines = inv.payment_term_id.with_context(currency_id=company_currency.id).compute(total, inv.date_invoice)[0]
+                res_amount_currency = total_currency
+                for i, t in enumerate(totlines):
+                    if inv.currency_id != company_currency:
+                        amount_currency = company_currency._convert(t[1], inv.currency_id, inv.company_id, inv._get_currency_rate_date() or fields.Date.today())
+                    else:
+                        amount_currency = False
+
+                    # last line: add the diff
+                    res_amount_currency -= amount_currency or 0
+                    if i + 1 == len(totlines):
+                        amount_currency += res_amount_currency
+
+                    iml.append({
+                        'type': 'dest',
+                        'name': name,
+                        'price': t[1],
+                        'account_id': inv.account_id.id,
+                        'date_maturity': t[0],
+                        'amount_currency': diff_currency and amount_currency,
+                        'currency_id': diff_currency and inv.currency_id.id,
+                        'invoice_id': inv.id
+                    })
+            else:
+                iml.append({
+                    'type': 'dest',
+                    'name': name,
+                    'price': total,
+                    'account_id': inv.account_id.id,
+                    'date_maturity': inv.date_due,
+                    'amount_currency': diff_currency and total_currency,
+                    'currency_id': diff_currency and inv.currency_id.id,
+                    'invoice_id': inv.id
+                })
+            part = self.env['res.partner']._find_accounting_partner(inv.partner_id)
+            line = [(0, 0, self.line_get_convert(l, part.id)) for l in iml]
+            line = inv.group_lines(iml, line)
+            has_retencion_tax = False
+
+            #logica para impuesto retencion
+            for l in line:
+                tax_id = l[2].get('tax_line_id')
+                if tax_id:
+                    is_retencion = self.env['account.tax'].sudo().browse(tax_id).sii_type in ['R']
+                    if is_retencion:
+                        has_retencion_tax = True
+            
+            if has_retencion_tax:
+                # _logger.info('LOG: Impuesto retencion')
+                ## Linea de impuestos
+                line[1][2]['credit'] = line[1][2]['debit']
+                line[1][2]['debit'] = False
+
+                ##linea total
+                # line[0][2]['debit'] = line[0][2]['debit'] + abs(line[1][2]['credit'])
+                # line[0][2]['credit'] = False
+
+                ##linea neto
+                line[2][2]['credit'] = line[0][2]['debit'] - line[1][2]['credit']
+                line[2][2]['debit'] = False
+
+
+
+            line = inv.finalize_invoice_move_lines(line)
+
+            date = inv.date or inv.date_invoice
+            move_vals = {
+                'ref': inv.reference,
+                'line_ids': line,
+                'journal_id': inv.journal_id.id,
+                'date': date,
+                'narration': inv.comment,
+            }
+            move = account_move.create(move_vals)
+            # Pass invoice in method post: used if you want to get the same
+            # account move reference when creating the same invoice after a cancelled one:
+            move.post(invoice = inv)
+            # make the invoice point to that move
+            vals = {
+                'move_id': move.id,
+                'date': date,
+                'move_name': move.name,
+            }
+            inv.write(vals)
+        return True
+
     # Emarque Method
     @api.model
     @api.onchange('etd')
@@ -414,16 +615,16 @@ class AccountInvoice(models.Model):
                 activities.append(activity.id)
             item.partner_activity_id = activities
     
-    @api.onchange("invoice_line_ids")
-    def _onchange_invoice_line_ids(self):
-        res = super(AccountInvoice, self)._onchange_invoice_line_ids()
+    @api.onchange("tax_line_ids")
+    def _onchange_tax_line_ids(self):
+        res = super(AccountInvoice, self)._onchange_tax_line_ids()
         tax_line_ids = self.tax_line_ids
         if tax_line_ids.tax_id.sii_type == 'R':
             amount = tax_line_ids.amount
             tax_line_ids.amount_retencion = amount
             tax_line_ids.amount = 0
         return res
-
+      
     @api.multi
     def send_to_sii(self):
         url = self.env.user.company_id.dte_url
@@ -980,8 +1181,8 @@ class AccountInvoice(models.Model):
     def write(self, vals):
         # _logger.info('LOG:  ----> journal context{}'.format(self._context.get('journal_id')))
         # _logger.info('LOG:  ----> journal values {}'.format(vals.get('journal_id')))
-        _logger.info('LOG:  ----> journal self {}'.format(self.journal_id))
-        _logger.info('LOG:  ----> journal values {}'.format(vals))
+        # _logger.info('LOG:  ----> journal self {}'.format(self.journal_id))
+        # _logger.info('LOG:  ----> journal values {}'.format(vals))
         dispatch_list = []
         for item in self.orders_to_invoice:
             if item.stock_picking_id:
@@ -1108,5 +1309,15 @@ class AccountInvoice(models.Model):
     def get_today(self):
         return date.today().strftime('%Y-%m-%d')
     
+class AccountInvoiceTax(models.Model):
+    _inherit = 'account.invoice.tax'
+
+    @api.depends('amount', 'amount_rounding', 'amount_retencion')
+    def _compute_amount_total(self):
+        for tax_line in self:
+            if tax_line.amount > 0:
+                tax_line.amount_total = tax_line.amount + tax_line.amount_rounding
+            if tax_line.amount_retencion > 0:
+                tax_line.amount_total = tax_line.amount_retencion + tax_line.amount_rounding
     
 
