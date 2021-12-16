@@ -79,24 +79,24 @@ class ResPartner(models.Model):
             rut = str(int(d[0])) + "-" + d[1]
         return rut
 
-    def write(self, vals):
-        result = super(ResPartner, self).write(vals)
-        if not vals.get("sync", False):
-            for k in vals.keys():
-                if k in ("name", "dte_email", "street", "email", "acteco_ids", "website"):
-                    try:
-                        for r in self:
-                            if (
-                                r.sync
-                                and r.document_number
-                                and not r.parent_id
-                                and self.check_vat_cl(r.document_number.replace(".", "").replace("-", ""))
-                            ):
-                                r.put_remote_user_data()
-                    except Exception as e:
-                        _logger.warning("Error en subida información %s" % str(e))
-                    break
-        return result
+    # def write(self, vals):
+    #     result = super(ResPartner, self).write(vals)
+    #     if not vals.get("sync", False):
+    #         for k in vals.keys():
+    #             if k in ("name", "dte_email", "street", "email", "acteco_ids", "website"):
+    #                 try:
+    #                     for r in self:
+    #                         if (
+    #                             r.sync
+    #                             and r.document_number
+    #                             and not r.parent_id
+    #                             and self.check_vat_cl(r.document_number.replace(".", "").replace("-", ""))
+    #                         ):
+    #                             r.put_remote_user_data()
+    #                 except Exception as e:
+    #                     _logger.warning("Error en subida información %s" % str(e))
+    #                 break
+    #     return result
 
     @api.onchange("dte_email")
     def set_temporal_email_cambiar_a_related(self):
@@ -390,40 +390,40 @@ class ResPartner(models.Model):
         elif self.name and self.check_vat_cl(self.name.replace(".", "").replace("-", "")):
             self.get_remote_user_data(self.name)
 
-    @api.model
-    def _check_need_update(self):
-        url = self.company_id.url_remote_partners
-        token = self.company_id.token_remote_partners
-        if not url or not token:
-            return
-        for r in self.search([("document_number", "not in", [False, 0]), ("parent_id", "=", False)]):
-            if self.company_id.sync_remote_partners:
-                r.put_remote_user_data()
-            try:
-                resp = pool.request(
-                    "GET", url, {"rut": r.document_number, "token": token, "actualizado": r.last_sync_update,}
-                )
-                if resp.status != 200:
-                    _logger.warning("Error en conexión al consultar partners %s" % resp.data)
-                    message = ""
-                    if resp.status == 403:
-                        data = json.loads(resp.data.decode("ISO-8859-1"))
-                        message = data["message"]
-                    else:
-                        message = str(resp.data)
-                    self.env["bus.bus"].sendone(
-                        (self._cr.dbname, "res.partner", self.env.user.partner_id.id),
-                        {
-                            "title": "Error en conexión al consultar partners",
-                            "message": message,
-                            "url": "res_config",
-                            "type": "dte_notif",
-                        },
-                    )
-                    return
-                data = json.loads(resp.data.decode("ISO-8859-1"))
-                if data.get("result", False):
-                    r.sync = False
-                    r.fill_partner()
-            except Exception as ex:
-                _logger.error(tools.ustr(ex))
+    # @api.model
+    # def _check_need_update(self):
+    #     url = self.company_id.url_remote_partners
+    #     token = self.company_id.token_remote_partners
+    #     if not url or not token:
+    #         return
+    #     for r in self.search([("document_number", "not in", [False, 0]), ("parent_id", "=", False)]):
+    #         if self.company_id.sync_remote_partners:
+    #             r.put_remote_user_data()
+    #         try:
+    #             resp = pool.request(
+    #                 "GET", url, {"rut": r.document_number, "token": token, "actualizado": r.last_sync_update,}
+    #             )
+    #             if resp.status != 200:
+    #                 _logger.warning("Error en conexión al consultar partners %s" % resp.data)
+    #                 message = ""
+    #                 if resp.status == 403:
+    #                     data = json.loads(resp.data.decode("ISO-8859-1"))
+    #                     message = data["message"]
+    #                 else:
+    #                     message = str(resp.data)
+    #                 self.env["bus.bus"].sendone(
+    #                     (self._cr.dbname, "res.partner", self.env.user.partner_id.id),
+    #                     {
+    #                         "title": "Error en conexión al consultar partners",
+    #                         "message": message,
+    #                         "url": "res_config",
+    #                         "type": "dte_notif",
+    #                     },
+    #                 )
+    #                 return
+    #             data = json.loads(resp.data.decode("ISO-8859-1"))
+    #             if data.get("result", False):
+    #                 r.sync = False
+    #                 r.fill_partner()
+    #         except Exception as ex:
+    #             _logger.error(tools.ustr(ex))
