@@ -151,8 +151,11 @@ class AccountInvoice(models.Model):
     sii_document_number = BigInt(
         string="Document Number", copy=False, readonly=True, states={"draft": [("readonly", False)]},
     )
+    # responsability_id = fields.Many2one(
+    #     "sii.responsability", string="Responsability", related="commercial_partner_id.responsability_id", store=True,
+    # )
     responsability_id = fields.Many2one(
-        "sii.responsability", string="Responsability", related="commercial_partner_id.responsability_id", store=True,
+        "sii.responsability", string="Responsability", 
     )
     iva_uso_comun = fields.Boolean(
         string="Uso Común", readonly=True, states={"draft": [("readonly", False)]}
