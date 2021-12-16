@@ -214,7 +214,7 @@ class ResPartner(models.Model):
             self.document_number = ""
         else:
             self.vat = ""
-        self.fill_partner()
+        # self.fill_partner()
 
     @api.onchange("city_id")
     def _onchange_city_id(self):
