@@ -431,7 +431,7 @@ class AccountInvoice(models.Model):
                         has_retencion_tax = True
             
             if has_retencion_tax:
-                _logger.info('LOG: Tiene Impuesto retencion')
+                _logger.info(f'LOG: Tiene Impuesto retencion line  ___>{line}')
                 ## Linea de impuestos
                 line[1][2]['credit'] = line[1][2]['debit']
                 line[1][2]['debit'] = False
