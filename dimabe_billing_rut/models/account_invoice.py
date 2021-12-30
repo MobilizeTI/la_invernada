@@ -447,7 +447,7 @@ class AccountInvoice(models.Model):
                 line[2][2]['credit'] = line[0][2]['debit']
                 line[2][2]['debit'] = False
             
-            # _logger.info(f'LOG:line  ___> {line}')
+            _logger.info(f'LOG:line  ___> {line}')
 
 
 
