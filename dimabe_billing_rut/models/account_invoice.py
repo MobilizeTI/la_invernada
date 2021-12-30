@@ -435,19 +435,19 @@ class AccountInvoice(models.Model):
                 # _logger.info(f'LOG: Invoice  ___> {inv}')
                 ## Linea de impuestos
                 # line[1][2]['credit'] = line[1][2]['debit']
-                line[1][2]['credit'] = abs(line[0][2]['debit']) + abs(inv.amount_retencion)
+                line[1][2]['credit'] = abs(inv.amount_retencion)
                 line[1][2]['debit'] = False
 
                 ##linea total
-                # line[0][2]['debit'] = line[0][2]['debit'] + abs(line[1][2]['credit'])
-                # line[0][2]['credit'] = False
+                line[0][2]['debit'] = line[0][2]['debit'] + abs(line[1][2]['credit'])
+                line[0][2]['credit'] = False
 
                 ##linea neto
                 # line[2][2]['credit'] = line[0][2]['debit'] - line[1][2]['credit']
                 line[2][2]['credit'] = line[0][2]['debit']
                 line[2][2]['debit'] = False
             
-            _logger.info(f'LOG:line  ___> {line}')
+            # _logger.info(f'LOG:line  ___> {line}')
 
 
 
