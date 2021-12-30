@@ -443,7 +443,8 @@ class AccountInvoice(models.Model):
                 # line[0][2]['credit'] = False
 
                 ##linea neto
-                line[2][2]['credit'] = line[0][2]['debit'] - line[1][2]['credit']
+                # line[2][2]['credit'] = line[0][2]['debit'] - line[1][2]['credit']
+                line[2][2]['credit'] = line[0][2]['debit']
                 line[2][2]['debit'] = False
 
 
