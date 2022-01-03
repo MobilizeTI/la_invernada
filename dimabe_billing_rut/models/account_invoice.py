@@ -1189,9 +1189,10 @@ class AccountInvoice(models.Model):
         # _logger.info('LOG:  ----> journal self {}'.format(self.journal_id))
         # _logger.info('LOG:  ----> journal values {}'.format(vals))
         dispatch_list = []
-        for item in self.orders_to_invoice:
-            if item.stock_picking_id:
-                dispatch_list.append(item.stock_picking_id)
+        _logger.info(f'LOG:  ----> orders to invoice {self.orders_to_invoice}')
+        # for item in self.orders_to_invoice:
+        #     if item.stock_picking_id:
+        #         dispatch_list.append(item.stock_picking_id)
 
         stock_picking_ids = self.env['stock.picking'].search([('id', 'in', dispatch_list)])
 
