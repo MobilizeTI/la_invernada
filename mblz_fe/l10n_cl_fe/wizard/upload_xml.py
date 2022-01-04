@@ -270,6 +270,8 @@ class UploadXMLWizard(models.TransientModel):
     def _buscar_impuesto(self, type="purchase", name="Impuesto", amount=0,
                          sii_code=0, sii_type=False, IndExe=None,
                          company_id=False):
+        #TODO impuesto retencion
+        _logger.info('LOG:  buscar impuesto {} sii_code {}'.format(company_id, sii_code))
         query = [
             ("amount", "=", amount),
             ("sii_code", "=", sii_code),
@@ -450,6 +452,7 @@ class UploadXMLWizard(models.TransientModel):
         price = float(line.find("PrcItem").text) if line.find("PrcItem") is not None else price_subtotal
         DscItem = line.find("DscItem")
         _logger.info('LOG:  ******* prodcut_id {}'.format(product_id))
+        ##TODO urgente ver la forma de traer correctamente el producto
         data.update(
             {
                 "sequence": line.find("NroLinDet").text,
