@@ -610,6 +610,7 @@ class UploadXMLWizard(models.TransientModel):
                 )
             partner_id = partner_id.id
         try:
+            _logger.info('LOG -- >> filename {}'.format(self.filename))
             name = self.filename.decode("ISO-8859-1").encode("UTF-8")
         except Exception as ex:
             _logger.error(tools.ustr(ex))
