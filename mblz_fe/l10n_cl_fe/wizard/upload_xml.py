@@ -629,7 +629,8 @@ class UploadXMLWizard(models.TransientModel):
         # )
         invoice.update(
             {
-                "origin": "XML Envío: " + name.decode(),
+                # "origin": "XML Envío: " + name.decode(),
+                "origin": "XML Envío: " + name,
                 "date_invoice": FchEmis,
                 "partner_id": partner_id,
                 "company_id": company_id.id,
