@@ -583,6 +583,7 @@ class UploadXMLWizard(models.TransientModel):
         partner_id = self.env["res.partner"].search(
             [("active", "=", True), ("parent_id", "=", False), ("vat", "=", self.format_rut(RUT))]
         )
+        _logger.info('LOF:-- partner')
         if not partner_id:
             partner_id = self._create_partner(Encabezado.find("%s" % type))
         elif not partner_id.supplier and self.type == "compras":
@@ -699,6 +700,7 @@ class UploadXMLWizard(models.TransientModel):
         IdDoc = Encabezado.find("IdDoc")
         price_included = Encabezado.find("MntBruto")
         journal_id = self._get_journal(IdDoc.find("TipoDTE").text, company_id, ignore_journal)
+        _logger.info('LOG: -->> journal {}'.format(journal_id))
         data = self._prepare_invoice(documento, company_id, journal_id)
         lines = [(5,)]
         document_id = self._dte_exist(documento)
