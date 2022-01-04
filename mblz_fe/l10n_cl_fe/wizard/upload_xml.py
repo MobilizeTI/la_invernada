@@ -431,10 +431,18 @@ class UploadXMLWizard(models.TransientModel):
         product_id = self._buscar_producto(document_id, line, company_id, price_included, exenta)
         if isinstance(product_id, int):
             data.update(
-                {"product_id": product_id,}
+                {
+                    "product_id": product_id,
+                    
+                    }
             )
         elif not product_id:
             return False
+        elif isinstance(product_id, str):
+            data.update({
+                "name": product_id,
+            })
+            
         price_subtotal = float(line.find("MontoItem").text)
         discount = 0
         if line.find("DescuentoPct") is not None:
@@ -446,7 +454,7 @@ class UploadXMLWizard(models.TransientModel):
             {
                 "sequence": line.find("NroLinDet").text,
                 # "name": DscItem.text if DscItem is not None else line.find("NmbItem").text,
-                "name": product_id.name,
+                # "name": product_id.name,
                 "price_unit": price,
                 "discount": discount,
                 "quantity": line.find("QtyItem").text if line.find("QtyItem") is not None else 1,
