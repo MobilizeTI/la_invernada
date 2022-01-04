@@ -427,6 +427,7 @@ class UploadXMLWizard(models.TransientModel):
 
     def _prepare_line(self, line, document_id, type, company_id, fpos_id, price_included=False, exenta=False):
         data = {}
+        _logger.info('LOG ***** en preparar la lineas')
         product_id = self._buscar_producto(document_id, line, company_id, price_included, exenta)
         if isinstance(product_id, int):
             data.update(
@@ -440,6 +441,7 @@ class UploadXMLWizard(models.TransientModel):
             discount = float(line.find("DescuentoPct").text)
         price = float(line.find("PrcItem").text) if line.find("PrcItem") is not None else price_subtotal
         DscItem = line.find("DscItem")
+        _logger.info('LOG:  ******* prodcut_id {}'.format(product_id))
         data.update(
             {
                 "sequence": line.find("NroLinDet").text,
