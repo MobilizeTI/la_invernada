@@ -689,6 +689,7 @@ class UploadXMLWizard(models.TransientModel):
         return journal_id
 
     def _get_invoice_lines(self, documento, document_id, invoice_type, fpos, price_included, company_id):
+        _logger.info('LOG**** emn get incoice ñines')
         exenta = documento.find("Encabezado/IdDoc/TipoDTE").text in ["34", "41"]
         lines = []
         for line in documento.findall("Detalle"):
@@ -707,6 +708,7 @@ class UploadXMLWizard(models.TransientModel):
         data = self._prepare_invoice(documento, company_id, journal_id)
         lines = [(5,)]
         document_id = self._dte_exist(documento)
+        _logger.info('LOGG********** despies de document_id')
         lines.extend(
             self._get_invoice_lines(
                 documento, document_id, data["type"], data.get("fiscal_position", False), price_included, company_id
@@ -818,6 +820,7 @@ class UploadXMLWizard(models.TransientModel):
             new_partner += " " + Emisor.find("RznSoc").text
         else:
             new_partner += " " + Emisor.find("RznSocEmisor").text
+        _logger.info('LOG************* en dte exist')
         return self.env["mail.message.dte.document"].search(
             [
                 ("number", "=", IdDoc.find("Folio").text),
@@ -941,6 +944,7 @@ class UploadXMLWizard(models.TransientModel):
 
     def prepare_purchase_line(self, line, document_id, date_planned, company_id, price_included=False, exenta=False):
         product = self._buscar_producto(document_id, line, company_id, price_included, exenta)
+        _logger.info('LOGG::. in purchase line')
         if not product:
             return False
         if isinstance(product, int):
