@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="dte_document_a4_paperformat" model="report.paperformat">
+            <field name="name">DTE_DOCUMENT: A4</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">5</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">80</field>
+        </record>
+
+        <report
+                id="report_mail_message_dte_document"
+                model="mail.message.dte.document"
+                string="Documento PDF"
+                name="mblz_la_invernada.action_report_mail_message_dte_document"
+                file="mblz_la_invernada.action_report_mail_message_dte_document"
+                paperformat="mblz_la_invernada.dte_document_a4_paperformat"
+                report_type="qweb-pdf"/>
+
+        <template id="action_report_mail_message_dte_document">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.basic_layout">
+                        <div class="page">
+                            <style>
+                                .page {
+                                font-size: 12px;
+                                font-family: sans-serif;
+                                }
+
+                                .box-title{
+                                border: 2px solid #3e423f;
+                                }
+
+                                .report-logo{
+                                max-height:70px;
+                                max-width:100px;
+                                }
+
+                                .custom-items {
+                                list-style-type: none;
+                                padding-left: 0px;
+                                }
+
+                                .custom-items .title {
+                                font-size: 15px;
+                                color: red;
+                                }
+
+                                .box-invoice {
+                                border: 1px solid black;
+                                background: #dedede;
+                                font-size: 11px;
+                                font-weight: bold;
+                                display: block;
+                                }
+
+                                .box-invoice .custom-items {
+                                font-size: 14px;
+                                display: block;
+                                }
+
+                                .invoice-type {
+                                font-weight: bolder;
+                                border: 2px solid black;
+                                border-radius: 7px;
+                                }
+
+                                .company-label {
+                                font-size: 12px;
+                                }
+
+                                .invoice-type {
+                                font-size: 18px;
+                                }
+
+                                .company-label .address {
+                                font-size: 9px;
+                                color: black;
+                                }
+
+                                .header-invoice {
+                                border: 1px solid black;
+                                border-radius: 7px;
+                                }
+
+
+                                .footer-divider {
+                                border-top: 1px solid black;
+                                }
+
+                                .footer-invoice td {
+                                font-size: 12px;
+                                border-collapse: collapse;
+                                }
+
+                                .detail-invoice th {
+                                border: 1px solid black;
+                                }
+
+                                .detail-invoice td {
+                                font-size: 11px;
+                                border: 1px solid black;
+                                border-collapse: collapse;
+                                }
+
+                                .detail-invoice-aux td {
+                                font-size: 10px;
+                                border: 1px solid black;
+                                border-bottom: 1px solid black;
+                                border-collapse: collapse;
+                                }
+
+
+                                table { page-break-after:auto }
+                                tr { page-break-inside:avoid; page-break-after:auto }
+                                td { page-break-inside:avoid; page-break-after:auto }
+                                thead { display: table-row-group; }
+                            </style>
+                            <div class="row">
+                                <div class="col-7 company-label p-2">
+                                    <div class="row">
+                                        <div t-if="doc.company_id.logo" class="col-3">
+                                            <img t-if="doc.company_id.logo" class="report-logo"
+                                                 t-att-src="image_data_uri(doc.company_id.logo)"/>
+                                            <br/>
+                                        </div>
+                                        <div t-att-class="'align-self-center  d%s' % (doc.company_id.logo and 'text-center col-9' or 'text-left col-12')">
+                                            <ul class="custom-items"
+                                                style="font-size: 9px; !important; border-left: 2px solid red;">
+                                                <li class="mt-1 ml-2">
+                                                    <h6><span t-field="doc.company_id.name"/></h6>
+                                                </li>
+                                                <li t-if="doc.company_id.activity_description" class="mt-1 ml-2">
+                                                    <span t-field="doc.company_id.activity_description.name"/>
+                                                </li>
+                                                <li t-if="doc.company_id.street" class="address mt-1 ml-2">
+                                                    <strong>Dirección: </strong>
+                                                    <span t-field="doc.company_id.street"/>, <span
+                                                        t-field="doc.company_id.city_id.name"/>
+                                                    , <span t-field="doc.company_id.state_id.name"/>
+
+                                                </li>
+                                                <li t-if="doc.company_id.phone" class="address mt-1 ml-2">
+                                                    <i class="fa fa-phone"></i>
+                                                    Fono:
+                                                    <span t-esc="doc.company_id.phone"/>
+                                                </li>
+                                                <li t-if="doc.company_id.email" class="address mt-1 ml-2">
+                                                    <a href="mailto:${company.email}"
+                                                       style="color:#000">
+                                                        <i class="fa fa-envelope-o"></i>
+                                                        <span t-esc="doc.company_id.email"/>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3 border border-dark"
+                                 style="font-size: 11px; !important;">
+                                <div class="col-7 pt-2 pb-2">
+                                    <table>
+                                        <tr>
+                                            <th>DTE</th>
+                                            <td class="pl-1">:
+                                                <span t-esc="doc.dte_id.name" t-options="{'widget': 'text'}"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Fecha Emisión</th>
+                                            <td class="pl-1">:
+                                                <span t-esc="doc.date"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Proveedor Nuevo</th>
+                                            <td class="pl-1">:
+                                                <span t-field="doc.new_partner"/>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Proveedor</th>
+                                            <td class="pl-1">:
+                                                <span t-esc="doc.partner_id.name"/>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Folio</th>
+                                            <td class="pl-1">:
+                                                <span t-esc="doc.number"/>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Tipo de Documento</th>
+                                            <td class="pl-1">:
+                                                <span t-esc="doc.document_class_id.name"/>
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                </div>
+                                <div class="col-5 pt-2 pb-2">
+                                    <table>
+                                        <tr>
+                                            <th>Monto</th>
+                                            <td>:
+                                                <span t-esc="doc.amount"
+                                                      t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                            </td>
+                                        </tr>
+
+<!--                                        <tr>-->
+<!--                                            <th>Moneda</th>-->
+<!--                                            <td>:-->
+<!--                                                <span t-esc="doc.currency_id.name"/>-->
+<!--                                            </td>-->
+<!--                                        </tr>-->
+                                        <tr>
+                                            <th>Factura</th>
+                                            <td>:
+                                                <span t-field="doc.invoice_id.name"/>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Compañía</th>
+                                            <td>:
+                                                <span t-field="doc.company_id.name"/>
+                                            </td>
+                                        </tr>
+
+                                        <tr t-if="doc.purchase_to_done">
+                                            <th>Ordenes de compra a validar</th>
+                                            <td>:
+                                                <span t-esc="', '.join(doc.purchase_to_done.mapped('name'))"/>
+                                            </td>
+                                        </tr>
+
+                                        <tr t-if="doc.purchase_to_done">
+                                            <th>Estado</th>
+                                            <td>:
+                                                <span t-field="doc.state" class="label label-info"/>
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                </div>
+                            </div>
+
+
+                            <div class="row mt-3 pt-2 pb-2"
+                                 style="font-size: 11px; !important;">
+                                <table class="col-12">
+                                    <thead class="detail-invoice bg-light">
+                                        <tr style="background-color:#f1f2f6;">
+                                            <th class="text-center p-1 pb-3">#</th>
+                                            <th class="text-left p-1 pb-3">PRODUCTO</th>
+                                            <th class="text-left p-1">NUEVO PROD.</th>
+                                            <th class="text-center p-1">CANT.</th>
+                                            <th class="text-right p-1 pb-3">P. UNIT.</th>
+                                            <th class="text-right p-1 pb-3">TOTAL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="detail-invoice">
+                                        <t t-foreach="doc.invoice_line_ids" t-as="line">
+                                            <tr>
+                                                <td class="text-center">
+                                                    <span t-field="line.sequence"/>
+                                                </td>
+                                                <td class="text-left pl-1">
+                                                    <span t-field="line.product_id.name"
+                                                          t-options="{'widget': 'text'}"/>
+                                                </td>
+                                                <td class="text-left pl-1">
+                                                    <span t-field="line.new_product"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span t-field="line.quantity"/>
+                                                </td>
+                                                <td class="text-right pr-1">
+                                                    <span
+                                                            t-field="line.price_unit"
+                                                            t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                                </td>
+                                                <td class="text-right pr-1">
+                                                    <span
+                                                            t-field="line.price_subtotal"
+                                                            t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                                </td>
+                                            </tr>
+
+                                        </t>
+                                        <!--                                        <t t-call="mblz_tamango.layout_dummy_invoice_lines"/>-->
+
+                                    </tbody>
+
+
+                                </table>
+
+
+                            </div>
+
+                            <div t-if="doc.sii_barcode_img" class="text-center mt-4">
+                                <div class="col-12">
+                                    <span>
+                                        <img t-att-src="'data:image/png;base64,%s' % to_text(doc.sii_barcode_img)"
+                                             style="max-height:4cm; max-width:10cm;" t-att-widget="'image'"/>
+                                    </span>
+                                </div>
+                                <div class="col-12">
+                                    <p style="text-align:center;font-size:11px;">
+                                        Timbre Electrónico SII
+                                        <br/>
+                                        Resolución SII Nº
+                                        <t t-esc='doc.company_id.dte_resolution_number'/>
+                                        del
+                                        <t t-esc='doc.company_id.dte_resolution_date.strftime("%Y")'/>
+                                    </p>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </t>
+                </t>
+
+
+            </t>
+        </template>
+
+
+        <!--        <record id="report_mail_message_dte_document" model="ir.actions.report">-->
+        <!--            <field name="name">Documento (PDF)</field>-->
+        <!--            <field name="model">mail.message.dte.document</field>-->
+        <!--            <field name="report_type">qweb-pdf</field>-->
+        <!--            <field name="report_name">mblz_la_invernada.action_report_mail_message_dte_document</field>-->
+        <!--            <field name="report_file">mblz_la_invernada.action_report_mail_message_dte_document</field>-->
+        <!--            <field name="paperformat_id" ref="mblz_la_invernada.dte_document_a4_paperformat"/>-->
+        <!--            <field name="attachment_use">False</field>-->
+        <!--        </record>-->
+
+
+    </data>
+</odoo>
