@@ -43,5 +43,24 @@
 
             </field>
         </record>
+
+
+        <!-- add filter-->
+        <record id="mblz_dte_document_search_view" model="ir.ui.view">
+            <field name="name">dte.document.search</field>
+            <field name="model">mail.message.dte.document</field>
+            <field name="inherit_id" ref="l10n_cl_fe.dte_document_search_view"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='number']" position="after">
+                    <field name="company_id"/>
+
+                    <filter string="Compañía" name="company_user"
+                            domain="[('company_id.user_ids','in',[uid])]"/>
+
+                </xpath>
+
+            </field>
+        </record>
     </data>
 </odoo>

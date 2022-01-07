@@ -103,5 +103,6 @@ class ProcessMailsDocument(models.Model):
         if currency_id:
             res.update({
                 'currency_id': currency_id.id,
+                'company_id': self.env.user.company_id.id
             })
         return res
