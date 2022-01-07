@@ -3,7 +3,8 @@
     'version': '1.0.0.0',
     'category': 'Personalization',
     'description': """
-""",
+    Customizacion La Invernada by MBLZ
+    """,
     'author': 'Felipe Angulo, Mobilize SPA',
 
     'depends': [
@@ -15,6 +16,8 @@
 
     'data': [
         'security/ir.model.access.csv',
+        'security/mblz_security.xml',
+
         'views/report_views.xml',
         'wizard/wizard_diary_account_move_line_report.xml',
 
