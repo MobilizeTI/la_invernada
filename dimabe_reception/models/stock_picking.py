@@ -106,17 +106,17 @@ class StockPicking(models.Model):
 
     carrier_cell_phone = fields.Char(
         'Celular',
-        related='carrier_id.cell_number'
+        # related='carrier_id.cell_number'
     )
 
     carrier_truck_patent = fields.Char(
         'Patente Camión',
-        related='truck_id.name'
+        # related='truck_id.name'
     )
 
     carrier_cart_patent = fields.Char(
         'Patente Carro',
-        related='cart_id.name'
+        # related='cart_id.name'
     )
 
     truck_id = fields.Many2one(
@@ -140,7 +140,7 @@ class StockPicking(models.Model):
 
     sag_code = fields.Char(
         'CSG',
-        related='partner_id.sag_code'
+        # related='partner_id.sag_code'
     )
 
     is_pt_dispatch = fields.Boolean('Es PT Despacho', compute='_compute_is_pt_dispatch')
