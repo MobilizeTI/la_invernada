@@ -527,9 +527,9 @@
             style="text-align:left; border-left:1px solid; border-right:1px solid; border-top:1px solid;width:50%;">
             <tr>
               <th style="border-right:1px solid;border-bottom:1px solid;">CONDUCTOR:</th>
-              <td style="border-bottom:1px solid;width:50%;">
+              <!-- <td style="border-bottom:1px solid;width:50%;">
                 <span t-field="stock_picking.carrier_id"/>
-              </td>
+              </td> -->
             </tr>
             <tr>
               <th style="border-right:1px solid;border-bottom:1px solid;">RUT:</th>
