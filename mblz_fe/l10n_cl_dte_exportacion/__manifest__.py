@@ -17,7 +17,7 @@ Chile: Factura de Exportación Electrónica.
             'product',
             'uom',
             'stock',
-            # 'delivery',
+            'delivery',
             'l10n_cl_fe',
     ],
     'data': [
