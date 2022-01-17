@@ -287,6 +287,7 @@ class Exportacion(models.Model):
         for b in bultos:
             Bulto = dict()
             if b.tipo_bulto.code and b.tipo_bulto.code not in ['22']:
+                _logger.info('LOG: -->> es del tipo 22')
                 Bulto['CodTpoBultos'] = b.tipo_bulto.code
             Bulto['CantBultos'] = b.cantidad_bultos
             if b.marcas:
@@ -296,6 +297,7 @@ class Exportacion(models.Model):
                 Bulto['Sello'] = b.sello
                 Bulto['EmisorSello'] = b.emisor_sello
             Bultos.append(Bulto)
+        _logger.info('LOG: -->>> bultos'.format(Bultos))
         return Bultos
 
     def _aduana(self):
