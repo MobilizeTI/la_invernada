@@ -224,7 +224,8 @@ class Exportacion(models.Model):
     def _receptor(self):
         Receptor = {}
         commercial_partner_id = self.commercial_partner_id or self.partner_id.commercial_partner_id
-        if not commercial_partner_id.vat and not self._es_boleta() and not self._nc_boleta() and not self._es_exportacion():
+        # if not commercial_partner_id.vat and not self._es_boleta() and not self._nc_boleta() and not self._es_exportacion():
+        if not commercial_partner_id.vat and not self._es_boleta() and not self._es_exportacion():
             raise UserError("Debe Ingresar RUT Receptor")
         #if self._es_boleta():
         #    Receptor['CdgIntRecep']
