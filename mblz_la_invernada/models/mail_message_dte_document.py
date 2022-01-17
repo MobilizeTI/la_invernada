@@ -11,6 +11,7 @@ from odoo.exceptions import UserError
 from odoo.tools.safe_eval import safe_eval
 from odoo.tools.translate import _
 from lxml import etree
+from collections import defaultdict
 
 try:
     from io import BytesIO
@@ -106,3 +107,44 @@ class ProcessMailsDocument(models.Model):
                 'company_id': self.env.user.company_id.id
             })
         return res
+
+    def etree_to_dict(self, t):
+        d = {t.tag: {} if t.attrib else None}
+        children = list(t)
+        if children:
+            dd = defaultdict(list)
+            for dc in map(self.etree_to_dict, children):
+                for k, v in dc.items():
+                    dd[k].append(v)
+            d = {t.tag: {k: v[0] if len(v) == 1 else v for k, v in dd.items()}}
+        if t.attrib:
+            d[t.tag].update(('@' + k, v) for k, v in t.attrib.items())
+        if t.text:
+            text = t.text.strip()
+            if children or t.attrib:
+                if text:
+                    d[t.tag]['#text'] = text
+            else:
+                d[t.tag] = text
+        return d
+
+    def _receptor_data(self):
+        Receptor = {'RUTRecep': self.get_doc_rut()}
+        if self.new_partner:
+            p = self.new_partner.split(' ')
+            Receptor['RznSocRecep'] = ' '.join(p[1:])
+        else:
+            commercial_partner_id = self.partner_id.commercial_partner_id or self.partner_id
+            Receptor['RznSocRecep'] = commercial_partner_id.name
+        return Receptor
+
+    def _document_data(self):
+        if self.xml:
+            root = etree.fromstring(self.xml)
+            dict_xml = self.etree_to_dict(root)
+            document = dict_xml.get('DTE').get('Documento')
+            details = document.get('Detalle')
+            if isinstance(details, dict):
+                new_details = [details]
+                document.update({'Detalle': new_details})
+            return document

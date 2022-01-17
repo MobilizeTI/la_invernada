@@ -22,6 +22,7 @@
         'wizard/wizard_diary_account_move_line_report.xml',
 
         'views/mail_message_dte_document.xml',
+        'views/account_invoice.xml',
         'report/mail_message_dte_document.xml',
 
     ],

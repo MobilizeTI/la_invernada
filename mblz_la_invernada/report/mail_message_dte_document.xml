@@ -126,214 +126,235 @@
                                 td { page-break-inside:avoid; page-break-after:auto }
                                 thead { display: table-row-group; }
                             </style>
-                            <div class="row">
-                                <div class="col-7 company-label p-2">
-                                    <div class="row">
-                                        <div t-if="doc.company_id.logo" class="col-3">
-                                            <img t-if="doc.company_id.logo" class="report-logo"
-                                                 t-att-src="image_data_uri(doc.company_id.logo)"/>
-                                            <br/>
-                                        </div>
-                                        <div t-att-class="'align-self-center  d%s' % (doc.company_id.logo and 'text-center col-9' or 'text-left col-12')">
-                                            <ul class="custom-items"
-                                                style="font-size: 9px; !important; border-left: 2px solid red;">
-                                                <li class="mt-1 ml-2">
-                                                    <h6><span t-field="doc.company_id.name"/></h6>
-                                                </li>
-                                                <li t-if="doc.company_id.activity_description" class="mt-1 ml-2">
-                                                    <span t-field="doc.company_id.activity_description.name"/>
-                                                </li>
-                                                <li t-if="doc.company_id.street" class="address mt-1 ml-2">
-                                                    <strong>Dirección: </strong>
-                                                    <span t-field="doc.company_id.street"/>, <span
-                                                        t-field="doc.company_id.city_id.name"/>
-                                                    , <span t-field="doc.company_id.state_id.name"/>
 
-                                                </li>
-                                                <li t-if="doc.company_id.phone" class="address mt-1 ml-2">
-                                                    <i class="fa fa-phone"></i>
-                                                    Fono:
-                                                    <span t-esc="doc.company_id.phone"/>
-                                                </li>
-                                                <li t-if="doc.company_id.email" class="address mt-1 ml-2">
-                                                    <a href="mailto:${company.email}"
-                                                       style="color:#000">
-                                                        <i class="fa fa-envelope-o"></i>
-                                                        <span t-esc="doc.company_id.email"/>
-                                                    </a>
-                                                </li>
-                                            </ul>
+                            <h5 class="text-center mt-5">Documento electrónico recibido</h5>
+                            <div class="container border border-secondary">
+                                <t t-set="xml_document_data" t-value="doc._document_data()"/>
+                                <t t-set="xml_emisor" t-value="xml_document_data['Encabezado']['Emisor']"/>
+                                <t t-set="xml_receptor" t-value="xml_document_data['Encabezado']['Receptor']"/>
+                                <t t-set="xml_details" t-value="xml_document_data['Detalle']"/>
+                                <t t-set="xml_totals" t-value="xml_document_data['Encabezado']['Totales']"/>
+                                <div class="row mt-3 pb-3"
+                                     style="font-size: 11px; !important;">
+                                    <div class="col-7 mt-3">
+                                        <div class="ml-2">
+                                            <strong><t t-esc="xml_emisor['RznSoc']"/></strong><br/>
+                                            <span>Giro: <t t-esc="xml_emisor['GiroEmis']"/></span><br/>
+                                            <span><t t-esc="xml_emisor['DirOrigen']"/></span>
+                                        </div>
+
+                                        <div class="border border-secondary mb-3 mt-1">
+
+                                            <table class="m-2 p-2">
+                                                <tr>
+                                                    <th>SEÑOR(ES): </th>
+                                                    <td class="pl-1">
+                                                        <span t-if="xml_receptor.get('RznSocRecep')"
+                                                              t-esc="xml_receptor['RznSocRecep']"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>RUT: </th>
+                                                    <td class="pl-1">
+                                                        <span t-if="xml_receptor.get('RUTRecep')"
+                                                              t-esc="xml_receptor['RUTRecep']"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>GIRO: </th>
+                                                    <td class="pl-1">
+                                                        <span t-if="xml_receptor.get('GiroRecep')"
+                                                              t-esc="xml_receptor['GiroRecep']"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>DIRECCIÓN: </th>
+                                                    <td class="pl-1">
+                                                        <span t-if="xml_receptor.get('DirRecep')"
+                                                              t-esc="xml_receptor['DirRecep']"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>COMUNA: </th>
+                                                    <td class="pl-1">
+                                                        <span t-if="xml_receptor.get('CmnaRecep')"
+                                                              t-esc="xml_receptor['CmnaRecep']"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>CIUDAD: </th>
+                                                    <td class="pl-1">
+                                                        <span t-if="xml_receptor.get('CiudadRecep')"
+                                                              t-esc="xml_receptor['CiudadRecep']"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>CONTACTO: </th>
+                                                    <td class="pl-1">
+                                                        <span t-if="xml_receptor.get('Contacto')"
+                                                              t-esc="xml_receptor['Contacto']"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-5 mt-3">
+                                        <div class="text-center text-danger pt-3"
+                                             style="border: 2px solid red !important; font-size: 14px; font-weight: bold;">
+                                            <div>
+                                                RUT: <t t-esc="xml_emisor['RUTEmisor']"/>
+                                            </div>
+                                            <div class="pt-2">
+                                                <span class="text-uppercase" t-esc="doc.document_class_id.name"/>
+                                            </div>
+                                            <div class="pt-2 pb-2">
+                                                Nº: <span style="line-height: 200%;" t-esc="doc.number"/>
+                                            </div>
+                                        </div>
+                                        <div class="text-center text-uppercase text-danger mt-1"
+                                             style="font-weight: bold">
+                                            S.I.I. - <span class="text-center"
+                                                           t-esc="doc.company_id.partner_id.city_id.name"/>
+                                        </div>
+
+                                        <div class="text-center mt-3">
+                                            Fecha Emisión:
+                                            <span class="text-center" t-esc="doc.date" t-options="{'widget': 'date'}"/>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row mt-3 border border-dark"
-                                 style="font-size: 11px; !important;">
-                                <div class="col-7 pt-2 pb-2">
-                                    <table>
-                                        <tr>
-                                            <th>DTE</th>
-                                            <td class="pl-1">:
-                                                <span t-esc="doc.dte_id.name" t-options="{'widget': 'text'}"/>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>Fecha Emisión</th>
-                                            <td class="pl-1">:
-                                                <span t-esc="doc.date"/>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>Proveedor Nuevo</th>
-                                            <td class="pl-1">:
-                                                <span t-field="doc.new_partner"/>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <th>Proveedor</th>
-                                            <td class="pl-1">:
-                                                <span t-esc="doc.partner_id.name"/>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <th>Folio</th>
-                                            <td class="pl-1">:
-                                                <span t-esc="doc.number"/>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <th>Tipo de Documento</th>
-                                            <td class="pl-1">:
-                                                <span t-esc="doc.document_class_id.name"/>
-                                            </td>
-                                        </tr>
-
-                                    </table>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <table class="col-12">
+                                            <thead class="detail-invoice bg-light">
+                                                <tr style="background-color:#f1f2f6;">
+                                                    <th class="text-center p-1 pb-3">Código</th>
+                                                    <th class="text-center p-1 pb-3">Descripción</th>
+                                                    <th class="text-center p-1">Cantidad</th>
+                                                    <th class="text-right p-1 pb-3">Precio</th>
+                                                    <th class="text-right p-1 pb-3">% Imp. Adic.</th>
+                                                    <th class="text-right p-1 pb-3">% Desc.</th>
+                                                    <th class="text-right p-1 pb-3">Valor</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="detail-invoice">
+                                                <t t-foreach="xml_details" t-as="line">
+                                                    <tr class="text-center">
+                                                        <td class="text-center">
+                                                            <span t-esc="line['CdgItem']['VlrCodigo']"
+                                                                  t-options="{'widget': 'text'}"/>
+                                                        </td>
+                                                        <td class="text-left pl-1">
+                                                            <span t-esc="line['NmbItem']"
+                                                                  t-options="{'widget': 'text'}"/>
+                                                        </td>
+                                                        <td class="text-center pl-1">
+                                                            <span t-esc="line['QtyItem']"/>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span t-esc="float(line['PrcItem'])"
+                                                                  t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span>--</span>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span t-if="line.get('DescuentoPct')"
+                                                                  t-esc="line['DescuentoPct']"/>
+                                                            <span t-else="">--</span>
+                                                        </td>
+                                                        <td class="text-right pr-1">
+                                                            <span
+                                                                    t-esc="float(line['MontoItem'])"
+                                                                    t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                                <div class="col-5 pt-2 pb-2">
-                                    <table>
-                                        <tr>
-                                            <th>Monto</th>
-                                            <td>:
-                                                <span t-esc="doc.amount"
-                                                      t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
-                                            </td>
-                                        </tr>
 
-<!--                                        <tr>-->
-<!--                                            <th>Moneda</th>-->
-<!--                                            <td>:-->
-<!--                                                <span t-esc="doc.currency_id.name"/>-->
-<!--                                            </td>-->
-<!--                                        </tr>-->
-                                        <tr>
-                                            <th>Factura</th>
-                                            <td>:
-                                                <span t-field="doc.invoice_id.name"/>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <th>Compañía</th>
-                                            <td>:
-                                                <span t-field="doc.company_id.name"/>
-                                            </td>
-                                        </tr>
-
-                                        <tr t-if="doc.purchase_to_done">
-                                            <th>Ordenes de compra a validar</th>
-                                            <td>:
-                                                <span t-esc="', '.join(doc.purchase_to_done.mapped('name'))"/>
-                                            </td>
-                                        </tr>
-
-                                        <tr t-if="doc.purchase_to_done">
-                                            <th>Estado</th>
-                                            <td>:
-                                                <span t-field="doc.state" class="label label-info"/>
-                                            </td>
-                                        </tr>
-
-                                    </table>
-                                </div>
-                            </div>
-
-
-                            <div class="row mt-3 pt-2 pb-2"
-                                 style="font-size: 11px; !important;">
-                                <table class="col-12">
-                                    <thead class="detail-invoice bg-light">
-                                        <tr style="background-color:#f1f2f6;">
-                                            <th class="text-center p-1 pb-3">#</th>
-                                            <th class="text-left p-1 pb-3">PRODUCTO</th>
-                                            <th class="text-left p-1">NUEVO PROD.</th>
-                                            <th class="text-center p-1">CANT.</th>
-                                            <th class="text-right p-1 pb-3">P. UNIT.</th>
-                                            <th class="text-right p-1 pb-3">TOTAL</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="detail-invoice">
-                                        <t t-foreach="doc.invoice_line_ids" t-as="line">
-                                            <tr>
-                                                <td class="text-center">
-                                                    <span t-field="line.sequence"/>
-                                                </td>
-                                                <td class="text-left pl-1">
-                                                    <span t-field="line.product_id.name"
-                                                          t-options="{'widget': 'text'}"/>
-                                                </td>
-                                                <td class="text-left pl-1">
-                                                    <span t-field="line.new_product"/>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span t-field="line.quantity"/>
-                                                </td>
-                                                <td class="text-right pr-1">
-                                                    <span
-                                                            t-field="line.price_unit"
-                                                            t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
-                                                </td>
-                                                <td class="text-right pr-1">
-                                                    <span
-                                                            t-field="line.price_subtotal"
-                                                            t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
-                                                </td>
-                                            </tr>
-
-                                        </t>
-                                        <!--                                        <t t-call="mblz_tamango.layout_dummy_invoice_lines"/>-->
-
-                                    </tbody>
-
-
-                                </table>
-
-
-                            </div>
-
-                            <div t-if="doc.sii_barcode_img" class="text-center mt-4">
-                                <div class="col-12">
-                                    <span>
-                                        <img t-att-src="'data:image/png;base64,%s' % to_text(doc.sii_barcode_img)"
-                                             style="max-height:4cm; max-width:10cm;" t-att-widget="'image'"/>
-                                    </span>
-                                </div>
-                                <div class="col-12">
-                                    <p style="text-align:center;font-size:11px;">
-                                        Timbre Electrónico SII
-                                        <br/>
-                                        Resolución SII Nº
-                                        <t t-esc='doc.company_id.dte_resolution_number'/>
-                                        del
-                                        <t t-esc='doc.company_id.dte_resolution_date.strftime("%Y")'/>
-                                    </p>
+                                <div class="row mt-3 mb-3">
+                                    <div class="col-12">
+                                        <table class="col-12">
+                                            <tbody class="detail-invoice">
+                                                <tr>
+                                                    <td width="50%" style="border-right: 1px solid white !important;">
+                                                        <div t-if="doc.sii_barcode_img" class="text-center mt-2">
+                                                            <div class="col-12">
+                                                                <span>
+                                                                    <img t-att-src="'data:image/png;base64,%s' % to_text(doc.sii_barcode_img)"
+                                                                         style="max-height:3cm; max-width:10cm;"
+                                                                         t-att-widget="'image'"/>
+                                                                </span>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <p style="text-align:center;font-size:11px;">
+                                                                    Timbre Electrónico SII
+                                                                    <br/>
+                                                                    Resolución SII Nº
+                                                                    <t t-esc='doc.company_id.dte_resolution_number'/>
+                                                                    del
+                                                                    <t t-esc='doc.company_id.dte_resolution_date.strftime("%Y")'/>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td width="50%" align="right"
+                                                        style="vertical-align:top !important; border-left: 1px solid white !important;">
+                                                        <div class="col-8 mt-2 pr-0 pl-0" style="float: left;">
+                                                            <strong>MONTO NETO: </strong><br/>
+                                                            <strong class="mt-1" style="display:inline-block;">
+                                                                MONTO EXENTO:</strong><br/>
+                                                            <strong class="mt-1" style="display:inline-block;">
+                                                                IVA <span t-if="xml_totals.get('TasaIVA')"
+                                                                          t-esc="xml_totals['TasaIVA']"/>%:
+                                                            </strong><br/>
+                                                            <strong class="mt-1" style="display:inline-block;">
+                                                                IMPUESTO ADICIONAL:</strong>
+                                                            <hr/>
+                                                            <strong>TOTAL:</strong>
+                                                        </div>
+                                                        <div class="col-4 mt-2 pr-0 pl-0" style="float: left;">
+                                                            <span t-if="xml_totals.get('MntNeto')" class="pr-2"
+                                                                  t-esc="float(xml_totals['MntNeto'])"
+                                                                  t-options="{'widget': 'monetary', 'display_currency': doc.company_id.currency_id}"/>
+                                                            <span t-else="" class="pr-2" t-esc="0.0"
+                                                                  t-options="{'widget': 'monetary', 'display_currency': doc.company_id.currency_id}"/>
+                                                            <br/>
+                                                            <span class="mt-1 pr-2" style="display:inline-block;"
+                                                                  t-if="xml_totals.get('MntExe')"
+                                                                  t-esc="float(xml_totals['MntExe'])"
+                                                                  t-options="{'widget': 'monetary', 'display_currency': doc.company_id.currency_id}"/>
+                                                            <span t-else="" class="mt-1 pr-2" t-esc="0.0"
+                                                                  t-options="{'widget': 'monetary', 'display_currency': doc.company_id.currency_id}"/>
+                                                            <br/>
+                                                            <span class="mt-1 pr-2" style="display:inline-block;"
+                                                                  t-if="xml_totals.get('IVA')"
+                                                                  t-esc="float(xml_totals['IVA'])"
+                                                                  t-options="{'widget': 'monetary', 'display_currency': doc.company_id.currency_id}"/>
+                                                            <span t-else="" class="mt-1 pr-2" t-esc="0.0"
+                                                                  t-options="{'widget': 'monetary', 'display_currency': doc.company_id.currency_id}"/>
+                                                            <br/>
+                                                            <span class="mt-1 pr-2" style="display:inline-block;"
+                                                                  t-esc="0.0"
+                                                                  t-options="{'widget': 'monetary', 'display_currency': doc.company_id.currency_id}"/>
+                                                            <hr/>
+                                                            <span class="pr-2" t-esc="float(xml_totals['MntTotal'])"
+                                                                  t-if="xml_totals.get('MntTotal')"
+                                                                  t-options="{'widget': 'monetary', 'display_currency': doc.company_id.currency_id}"/>
+                                                            <span t-else="" class="pr-2" t-esc="0.0"
+                                                                  t-options="{'widget': 'monetary', 'display_currency': doc.company_id.currency_id}"/>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-
 
                         </div>
                     </t>
