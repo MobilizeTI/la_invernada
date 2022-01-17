@@ -235,7 +235,8 @@ class Exportacion(models.Model):
             return Receptor
         elif self._es_exportacion():
             Receptor['RUTRecep'] = '55.555.555-5'
-        if not self._es_boleta() and not self._nc_boleta():
+        # if not self._es_boleta() and not self._nc_boleta():
+        if not self._es_boleta():
             GiroRecep = self.acteco_id.name or commercial_partner_id.activity_description.name
             if not GiroRecep and not self._es_exportacion():
                 raise UserError(_('Seleccione giro del partner'))
@@ -246,14 +247,16 @@ class Exportacion(models.Model):
         if (commercial_partner_id.email or commercial_partner_id.dte_email or self.partner_id.email or self.partner_id.dte_email) and not self._es_boleta():
             Receptor['CorreoRecep'] = commercial_partner_id.dte_email or self.partner_id.dte_email or commercial_partner_id.email or self.partner_id.email
         street_recep = (self.partner_id.street or commercial_partner_id.street or False)
-        if not street_recep and not self._es_boleta() and not self._nc_boleta():
+        # if not street_recep and not self._es_boleta() and not self._nc_boleta():
+        if not street_recep and not self._es_boleta():
         # or self.indicador_servicio in [1, 2]:
             raise UserError('Debe Ingresar dirección del cliente')
         street2_recep = (self.partner_id.street2 or commercial_partner_id.street2 or False)
         if street_recep or street2_recep:
             Receptor['DirRecep'] = self._acortar_str(street_recep + (' ' + street2_recep if street2_recep else ''), 70)
         cmna_recep = self.partner_id.city_id.name or commercial_partner_id.city_id.name
-        if not cmna_recep and not self._es_boleta() and not self._nc_boleta() and not self._es_exportacion():
+        # if not cmna_recep and not self._es_boleta() and not self._nc_boleta() and not self._es_exportacion():
+        if not cmna_recep and not self._es_boleta() and not self._es_exportacion():
             raise UserError('Debe Ingresar Comuna del cliente')
         else:
             Receptor['CmnaRecep'] = cmna_recep
