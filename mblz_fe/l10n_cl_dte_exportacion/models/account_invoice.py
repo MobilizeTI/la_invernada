@@ -205,7 +205,7 @@ class Exportacion(models.Model):
         currency_target = self.currency_target()
         Totales['TpoMoneda'] = self._acortar_str(currency_target.abreviatura, 15)
         base = self.currency_base()
-        Totales['TpoCambio'] = base.rate
+        Totales['TpoCambio'] = round(1 / base.rate, 0)
         if MntExe:
             if currency_id:
                 MntExe = base._convert(MntExe, self.company_id.currency_id, self.company_id, self.date_invoice)
