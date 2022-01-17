@@ -297,7 +297,7 @@ class Exportacion(models.Model):
                 Bulto['Sello'] = b.sello
                 Bulto['EmisorSello'] = b.emisor_sello
             Bultos.append(Bulto)
-        _logger.info('LOG: -->>> bultos'.format(Bultos))
+        _logger.info('LOG: -->>> bultos {}'.format(Bultos))
         return Bultos
 
     def _aduana(self):
