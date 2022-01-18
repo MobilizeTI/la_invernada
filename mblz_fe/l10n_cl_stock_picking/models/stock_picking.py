@@ -315,12 +315,14 @@ class StockMove(models.Model):
     @api.depends('name', 'product_id', 'move_line_tax_ids', 'product_uom_qty', 'precio_unitario', 'quantity_done')
     def _compute_amount(self):
         for rec in self:
-            qty = rec.quantity_done
-            if qty <= 0:
-                qty = rec.product_uom_qty
-            taxes = rec.move_line_tax_ids.compute_all(rec.precio_unitario, rec.currency_id, qty, product=rec.product_id, partner=rec.picking_id.partner_id, discount=rec.discount, uom_id=rec.product_uom)
-            rec.price_untaxed = taxes['total_excluded']
-            rec.subtotal = taxes['total_included']
+            rec.price_untaxed = 0.0
+            rec.subtotal = 0.0
+            # qty = rec.quantity_done
+            # if qty <= 0:
+            #     qty = rec.product_uom_qty
+            # taxes = rec.move_line_tax_ids.compute_all(rec.precio_unitario, rec.currency_id, qty, product=rec.product_id, partner=rec.picking_id.partner_id, discount=rec.discount, uom_id=rec.product_uom)
+            # rec.price_untaxed = taxes['total_excluded']
+            # rec.subtotal = taxes['total_included']
 
     name = fields.Char(
             string="Nombre",
