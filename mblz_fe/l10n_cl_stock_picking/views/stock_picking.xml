@@ -96,6 +96,7 @@
                                            attrs="{'required':[('transport_type','=', '2'), ('use_documents', '=', True)], 'invisible':[('transport_type','!=','2')]}"/>
                                     <field name="patente"
                                            attrs="{'required':[('transport_type','in', ['2']), ('use_documents', '=', True)]}"/>
+                                    <field name="patente_carro"  />
                                 </field>
                                 <notebook>
                                     <page string="Electronic Document" name="electronic_document">

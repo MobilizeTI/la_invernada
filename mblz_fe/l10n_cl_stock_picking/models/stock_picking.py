@@ -217,6 +217,11 @@ class StockPicking(models.Model):
             readonly=False,
             states={'done': [('readonly', True)]},
         )
+    patente_carro = fields.Char(
+            string="Patente Carro",
+            readonly=False,
+            states={'done': [('readonly', True)]},
+        )
     contact_id = fields.Many2one(
             'res.partner',
             string="Contacto",

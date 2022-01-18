@@ -177,6 +177,38 @@
                             </tr>
                         </table>
                     </div>
+
+                    <div style="width:100%;margin:0 auto;min-height:20px;border:1px solid; border-radius: 5px; margin-top:4px;padding-top:2px;">
+                        <div style="text-align:center;">
+                            <span style="font-weight: bold; font-size:12px;">INFORMACION DEL DESPACHO</span>
+                        </div>
+                        <br />
+                        <t t-if="d.references or len(d.references) > 0">
+                            <table style="width:100%;font-size:11px; padding: 6px;" cellspacing="0">
+                                <tr>
+                                    <th>NOMBRE</th>
+                                    <th>RUT</th>
+                                    <th>PATENTE CAMION</th>
+                                    <th>PATENTE CARRO</th>
+                                </tr>
+                                <tr style="text-align:center;">
+                                    <td>
+                                        <span t-field="d.chofer.name" />
+                                    </td>
+                                    <td>
+                                        <span t-field="d.chofer.document_number" />
+                                    </td>
+                                    <td>
+                                        <span t-field="d.patente" />
+                                    </td>
+                                    <td>
+                                        <span t-field="d.patente_carro" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </t>
+                    </div>
+
                     <div t-if="d.references or len(d.references) > 0" style="width:100%;margin:0 auto;min-height:20px;border:1px solid; border-radius: 5px; margin-top:4px;padding-top:2px;">
                         <div style="text-align:center;">
                             <span style="font-weight: bold; font-size:12px;">DOCUMENTO(S) EN REFERENCIA</span>
