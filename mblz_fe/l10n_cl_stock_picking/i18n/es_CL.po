@@ -1004,11 +1004,6 @@ msgid "Validate"
 msgstr "Validar"
 
 #. module: l10n_cl_stock_picking
-#: model:ir.model.fields,field_description:l10n_cl_stock_picking.field_stock_picking_vehicle
-msgid "Vehículo"
-msgstr "Vehículo"
-
-#. module: l10n_cl_stock_picking
 #: selection:stock.picking,move_reason:0
 msgid "Ventas para exportación"
 msgstr "Ventas para exportación"

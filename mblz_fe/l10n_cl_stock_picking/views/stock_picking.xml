@@ -90,8 +90,8 @@
                                                                           ('use_documents', '=', True)]}</attribute>
                                 </field>
                                 <field name="carrier_id" position="after">
-                                    <field name="vehicle"
-                                           attrs="{'required':[('transport_type','=', '2'), ('use_documents', '=', True)], 'invisible':[('transport_type','!=','2')]}"/>
+                                    <!-- <field name="vehicle"
+                                           attrs="{'required':[('transport_type','=', '2'), ('use_documents', '=', True)], 'invisible':[('transport_type','!=','2')]}"/> -->
                                     <field name="chofer"
                                            attrs="{'required':[('transport_type','=', '2'), ('use_documents', '=', True)], 'invisible':[('transport_type','!=','2')]}"/>
                                     <field name="patente"
