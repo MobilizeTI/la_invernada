@@ -68,7 +68,7 @@
                     <page string="Transportista" name="carrier_page"
                           attrs="{'invisible':[('picking_type_code', 'not in', ('outgoing', 'incoming'))]}">
                         <group name="carrier_page" position="inside">
-                            <field name="carrier_id"/>
+                            <!-- <field name="carrier_id"/> -->
                             <field name="carrier_rut"/>
                             <field name="carrier_cell_phone"/>
                             <field name="truck_id"/>

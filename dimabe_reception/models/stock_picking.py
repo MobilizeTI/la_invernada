@@ -76,7 +76,7 @@ class StockPicking(models.Model):
         store=True
     )
 
-    carrier_id = fields.Many2one('custom.carrier', 'Conductor')
+    # carrier_id = fields.Many2one('custom.carrier', 'Conductor')
 
     truck_in_date = fields.Datetime(
         'Entrada de Camión',
@@ -101,22 +101,22 @@ class StockPicking(models.Model):
 
     carrier_rut = fields.Char(
         'Rut',
-        related='carrier_id.rut'
+        # related='carrier_id.rut'
     )
 
     carrier_cell_phone = fields.Char(
         'Celular',
-        related='carrier_id.cell_number'
+        # related='carrier_id.cell_number'
     )
 
     carrier_truck_patent = fields.Char(
         'Patente Camión',
-        related='truck_id.name'
+        # related='truck_id.name'
     )
 
     carrier_cart_patent = fields.Char(
         'Patente Carro',
-        related='cart_id.name'
+        # related='cart_id.name'
     )
 
     truck_id = fields.Many2one(
@@ -140,7 +140,7 @@ class StockPicking(models.Model):
 
     sag_code = fields.Char(
         'CSG',
-        related='partner_id.sag_code'
+        # related='partner_id.sag_code'
     )
 
     is_pt_dispatch = fields.Boolean('Es PT Despacho', compute='_compute_is_pt_dispatch')
