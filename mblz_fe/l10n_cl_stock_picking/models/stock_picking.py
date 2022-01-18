@@ -328,7 +328,7 @@ class StockMove(models.Model):
     subtotal = fields.Monetary(
             compute='_compute_amount',
             string='Subtotal',
-            # store=True,
+            store=True,
         )
     precio_unitario = fields.Float(
             string='Precio Unitario',
