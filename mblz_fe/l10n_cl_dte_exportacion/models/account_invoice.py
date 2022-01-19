@@ -205,14 +205,15 @@ class Exportacion(models.Model):
         currency_target = self.currency_target()
         Totales['TpoMoneda'] = self._acortar_str(currency_target.abreviatura, 15)
         base = self.currency_base()
-        Totales['TpoCambio'] = round(1 / base.rate, 0)
+        base_rate = round(1 / base.rate, 0)
+        Totales['TpoCambio'] = base_rate
         if MntExe:
-            if currency_id:
-                MntExe = base._convert(MntExe, self.company_id.currency_id, self.company_id, self.date_invoice)
-            Totales['MntExeOtrMnda'] = MntExe
-        if currency_target:
-            MntTotal = base._convert(MntTotal, self.company_id.currency_id, self.company_id, self.date_invoice)
-        Totales['MntTotOtrMnda'] = MntTotal
+            # if currency_id:
+            #     MntExe = base._convert(MntExe, self.company_id.currency_id, self.company_id, self.date_invoice)
+            Totales['MntExeOtrMnda'] = MntExe * base_rate
+        # if currency_target:
+        #     MntTotal = base._convert(MntTotal, self.company_id.currency_id, self.company_id, self.date_invoice)
+        Totales['MntTotOtrMnda'] = MntTotal * base_rate
         return Totales
 
     def _id_doc(self, taxInclude=False, MntExe=0):
