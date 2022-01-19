@@ -261,7 +261,6 @@
                                                         </td>
                                                         <td class="text-center">
                                                             <span t-esc="line.get('DescuentoPct')"/>
-                                                            <span t-else="">--</span>
                                                         </td>
                                                         <td class="text-right pr-1">
                                                             <span
