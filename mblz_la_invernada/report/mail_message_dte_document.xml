@@ -242,8 +242,9 @@
                                                 <t t-foreach="xml_details" t-as="line">
                                                     <tr class="text-center">
                                                         <td class="text-center">
-                                                            <span t-esc="line.get('CdgItem').get('VlrCodigo')"
-                                                                  t-options="{'widget': 'text'}"/>
+                                                            <t t-if="line.get('CdgItem')">
+                                                                <span t-esc="line.get('CdgItem').get('VlrCodigo')" t-options="{'widget': 'text'}" />
+                                                            </t>
                                                         </td>
                                                         <td class="text-left pl-1">
                                                             <span t-esc="line.get('NmbItem')"
