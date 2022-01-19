@@ -241,19 +241,19 @@
                                             <tbody class="detail-invoice">
                                                 <t t-foreach="xml_details" t-as="line">
                                                     <tr class="text-center">
-                                                        <td class="text-center" t-if="line['CdgItem'] and line['CdgItem']['VlrCodigo']">
+                                                        <td class="text-center" t-if="line.get('CdgItem') and line.get('CdgItem').get('VlrCodigo')">
                                                             <span t-esc="line['CdgItem']['VlrCodigo']"
                                                                   t-options="{'widget': 'text'}"/>
                                                         </td>
                                                         <td class="text-left pl-1">
-                                                            <span t-esc="line['NmbItem']"
+                                                            <span t-esc="line.get('NmbItem')"
                                                                   t-options="{'widget': 'text'}"/>
                                                         </td>
                                                         <td class="text-center pl-1">
-                                                            <span t-esc="line['QtyItem']"/>
+                                                            <span t-esc="line.get('QtyItem')"/>
                                                         </td>
                                                         <td class="text-center">
-                                                            <span t-esc="float(line['PrcItem'])"
+                                                            <span t-esc="float(line.get('PrcItem'))"
                                                                   t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
                                                         </td>
                                                         <td class="text-center">
@@ -261,12 +261,12 @@
                                                         </td>
                                                         <td class="text-center">
                                                             <span t-if="line.get('DescuentoPct')"
-                                                                  t-esc="line['DescuentoPct']"/>
+                                                                  t-esc="line.get('DescuentoPct')"/>
                                                             <span t-else="">--</span>
                                                         </td>
                                                         <td class="text-right pr-1">
                                                             <span
-                                                                    t-esc="float(line['MontoItem'])"
+                                                                    t-esc="float(line.get('MontoItem'))"
                                                                     t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
                                                         </td>
                                                     </tr>
