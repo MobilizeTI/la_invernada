@@ -443,7 +443,7 @@ class stock_picking(models.Model):
         folio = self.get_folio()
         datos = self._get_datos_empresa(self.company_id)
         caf_file = [self.location_id.sequence_id.get_caf_file(folio, decoded=False).decode()]
-        _logger.info('LOG -->>>< caf file'.format(caf_file))
+        _logger.info('LOG -->>>< caf file {}'.format(caf_file))
         datos['Documento'] = [{
             'TipoDTE': self.document_class_id.sii_code,
             'caf_file': [self.location_id.sequence_id.get_caf_file(folio, decoded=False).decode()],
@@ -517,6 +517,7 @@ class stock_picking(models.Model):
                 'picking_ids': [[6,0, self.ids]],
                 })
         datos["ID"] = "Env%s" %envio_id.id
+        _logger.info('LOG::::: antes de timbrar y enviar {}'.format(datos))
         result = fe.timbrar_y_enviar(datos)
         envio = {
                 'xml_envio': result.get('sii_xml_request', "temporal"),
