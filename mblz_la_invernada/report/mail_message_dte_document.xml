@@ -317,7 +317,7 @@
                                                             <strong>TOTAL:</strong>
                                                         </div>
                                                         <div class="col-4 mt-2 pr-0 pl-0" style="float: left;">
-                                                            <span t-if="xml_totals.get('MntNeto')" class="pr-2"
+                                                            <span t-if="xml_totals.get('MntNeto')" class="pr-2" style="display:inline-block;"
                                                                   t-esc="float(xml_totals['MntNeto'])"
                                                                   t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
                                                             <span t-else="" class="pr-2" t-esc="0.0"
@@ -327,24 +327,24 @@
                                                                   t-if="xml_totals.get('MntExe')"
                                                                   t-esc="float(xml_totals['MntExe'])"
                                                                   t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
-                                                            <span t-else="" class="mt-1 pr-2" t-esc="0.0"
+                                                            <span t-else="" class="mt-1 pr-2" t-esc="0.0" style="display:inline-block;"
                                                                   t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
                                                             <br/>
                                                             <span class="mt-1 pr-2" style="display:inline-block;"
                                                                   t-if="xml_totals.get('IVA')"
                                                                   t-esc="float(xml_totals['IVA'])"
                                                                   t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
-                                                            <span t-else="" class="mt-1 pr-2" t-esc="0.0"
+                                                            <span t-else="" class="mt-1 pr-2" t-esc="0.0" style="display:inline-block;"
                                                                   t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
                                                             <br/>
                                                             <span class="mt-1 pr-2" style="display:inline-block;"
                                                                   t-esc="0.0"
                                                                   t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
                                                             <hr/>
-                                                            <span class="pr-2" t-esc="float(xml_totals['MntTotal'])"
+                                                            <span class="pr-2" t-esc="float(xml_totals['MntTotal'])" style="display:inline-block;"
                                                                   t-if="xml_totals.get('MntTotal')"
                                                                   t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
-                                                            <span t-else="" class="pr-2" t-esc="0.0"
+                                                            <span t-else="" class="pr-2" t-esc="0.0" style="display:inline-block;"
                                                                   t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
                                                         </div>
                                                     </td>
