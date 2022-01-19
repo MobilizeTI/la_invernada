@@ -442,6 +442,8 @@ class stock_picking(models.Model):
     def _timbrar(self, n_atencion=None):
         folio = self.get_folio()
         datos = self._get_datos_empresa(self.company_id)
+        caf_file = [self.location_id.sequence_id.get_caf_file(folio, decoded=False).decode()]
+        _logger.info('LOG -->>>< caf file'.format(caf_file))
         datos['Documento'] = [{
             'TipoDTE': self.document_class_id.sii_code,
             'caf_file': [self.location_id.sequence_id.get_caf_file(folio, decoded=False).decode()],
