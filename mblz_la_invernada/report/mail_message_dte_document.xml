@@ -264,9 +264,13 @@
                                                             <span t-esc="line.get('DescuentoPct')"/>
                                                         </td>
                                                         <td class="text-right pr-1">
-                                                            <span
-                                                                    t-esc="float(line.get('MontoItem'))"
-                                                                    t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                                            <t t-if="line.get('MontoItem')">
+                                                                <span t-esc="float(line.get('MontoItem'))" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}" />
+                                                            </t>
+                                                            <t t-else="">
+                                                                <span>--</span>
+                                                            </t>
+                                                            
                                                         </td>
                                                     </tr>
                                                 </t>
