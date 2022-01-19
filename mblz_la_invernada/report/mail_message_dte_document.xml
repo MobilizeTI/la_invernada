@@ -254,7 +254,7 @@
                                                             <span t-esc="line.get('QtyItem', 0)"/>
                                                         </td>
                                                         <td class="text-center">
-                                                            <span t-esc="float(line.get('PrcItem'), 0)"
+                                                            <span t-esc="float(line.get('PrcItem', 0))"
                                                                   t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
                                                         </td>
                                                         <td class="text-center">
