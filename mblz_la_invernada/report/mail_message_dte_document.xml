@@ -241,8 +241,8 @@
                                             <tbody class="detail-invoice">
                                                 <t t-foreach="xml_details" t-as="line">
                                                     <tr class="text-center">
-                                                        <td class="text-center" t-if="line.get('CdgItem') and line.get('CdgItem').get('VlrCodigo')">
-                                                            <span t-esc="line['CdgItem']['VlrCodigo']"
+                                                        <td class="text-center">
+                                                            <span t-esc="line.get('CdgItem').get('VlrCodigo')"
                                                                   t-options="{'widget': 'text'}"/>
                                                         </td>
                                                         <td class="text-left pl-1">
@@ -260,8 +260,7 @@
                                                             <span>--</span>
                                                         </td>
                                                         <td class="text-center">
-                                                            <span t-if="line.get('DescuentoPct')"
-                                                                  t-esc="line.get('DescuentoPct')"/>
+                                                            <span t-esc="line.get('DescuentoPct')"/>
                                                             <span t-else="">--</span>
                                                         </td>
                                                         <td class="text-right pr-1">
