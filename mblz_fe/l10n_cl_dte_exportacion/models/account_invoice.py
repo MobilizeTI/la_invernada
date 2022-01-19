@@ -210,10 +210,10 @@ class Exportacion(models.Model):
         if MntExe:
             # if currency_id:
             #     MntExe = base._convert(MntExe, self.company_id.currency_id, self.company_id, self.date_invoice)
-            Totales['MntExeOtrMnda'] = MntExe * base_rate
+            Totales['MntExeOtrMnda'] = round(MntExe * base_rate, 0)
         # if currency_target:
         #     MntTotal = base._convert(MntTotal, self.company_id.currency_id, self.company_id, self.date_invoice)
-        Totales['MntTotOtrMnda'] = MntTotal * base_rate
+        Totales['MntTotOtrMnda'] = round(MntTotal * base_rate, 0)
         return Totales
 
     def _id_doc(self, taxInclude=False, MntExe=0):
