@@ -241,7 +241,7 @@
                                             <tbody class="detail-invoice">
                                                 <t t-foreach="xml_details" t-as="line">
                                                     <tr class="text-center">
-                                                        <td class="text-center">
+                                                        <td class="text-center" t-if="line['CdgItem'] and line['CdgItem']['VlrCodigo']">
                                                             <span t-esc="line['CdgItem']['VlrCodigo']"
                                                                   t-options="{'widget': 'text'}"/>
                                                         </td>
