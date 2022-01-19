@@ -452,8 +452,8 @@ class stock_picking(models.Model):
         ]
         _logger.info('LOG: -->>> datos {}'.format(datos))
         date_obj = datos['Emisor']['FchResol']
-        date_str = date_obj.strftime("%Y-%m-%d")
-        datos['Emisor']['FchResol'] = date_str
+        # date_str = date_obj.strftime("%Y-%m-%d")
+        datos['Emisor']['FchResol'] = date_obj
 
         result = fe.timbrar(datos)
         if result[0].get('error'):
