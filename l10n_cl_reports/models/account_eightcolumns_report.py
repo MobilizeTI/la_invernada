@@ -467,7 +467,7 @@ class CL8ColumnsReport(models.AbstractModel):
                 'level': 3,
                 'columns': [
                     {'name': values} for values in [
-                        '', '', '', '',
+                        '', '', '', '', '',
                         self.format_value(exercise_result['activo']),
                         self.format_value(exercise_result['pasivo']),
                         self.format_value(exercise_result['perdida']),
