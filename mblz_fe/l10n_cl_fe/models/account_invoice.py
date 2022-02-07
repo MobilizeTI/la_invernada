@@ -966,7 +966,7 @@ a VAT."""))
     def _validaciones_uso_dte(self):
         if not self.document_class_id:
             raise UserError("No tiene seleccionado tipo de documento")
-        ncs = [60, 61, 112, 802]
+        ncs = [60, 61, 112, 802, 111]
         nds = [55, 56, 111]
         if self.document_class_id.sii_code in ncs + nds and not self.referencias:
             raise UserError("Las Notas deben llevar por obligación una referencia al documento que están afectando")
