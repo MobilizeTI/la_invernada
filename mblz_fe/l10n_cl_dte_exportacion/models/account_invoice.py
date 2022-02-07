@@ -119,7 +119,7 @@ class Exportacion(models.Model):
         readonly=False,
     )
     
-    currency_rate_recitfied = fields.Float('Tasa de Cambio (Rectificativas)', default=0.0)
+    currency_rate_recitfied = fields.Float('Tasa de Cambio (Rectificativas)')
 
     @api.one
     @api.returns('self', lambda value: value.id)
@@ -208,10 +208,12 @@ class Exportacion(models.Model):
         Totales['TpoMoneda'] = self._acortar_str(currency_target.abreviatura, 15)
         base = self.currency_base()
         if self.currency_rate_recitfied:
-            base_rate = round(1 / self.currency_rate_recitfied, 2)
+            base_rate = self.currency_rate_recitfied
         else:
             base_rate = round(1 / base.rate, 2)
+            
         Totales['TpoCambio'] = base_rate
+        _logger.info(f'LOGGG:.. base_rate {base_rate}')
         if MntExe:
             # if currency_id:
             #     MntExe = base._convert(MntExe, self.company_id.currency_id, self.company_id, self.date_invoice)
