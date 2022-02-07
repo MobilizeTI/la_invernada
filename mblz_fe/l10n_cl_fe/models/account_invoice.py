@@ -1522,7 +1522,7 @@ a VAT."""))
                         currency_base._convert(
                             line.price_unit, currency_id, self.company_id, self.date_invoice, round=False
                         ),
-                        6,
+                        3,
                     )
                     lines["OtrMnda"]["Moneda"] = self._acortar_str(currency_id.name, 3)
                     lines["OtrMnda"]["FctConv"] = round(currency_id.rate, 4)
