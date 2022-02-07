@@ -118,6 +118,8 @@ class Exportacion(models.Model):
         string="Movimiento Relacionado",
         readonly=False,
     )
+    
+    currency_rate_recitfied = fields.Float('Tasa de Cambio (Rectificativas)', default=0.0)
 
     @api.one
     @api.returns('self', lambda value: value.id)
@@ -205,7 +207,10 @@ class Exportacion(models.Model):
         currency_target = self.currency_target()
         Totales['TpoMoneda'] = self._acortar_str(currency_target.abreviatura, 15)
         base = self.currency_base()
-        base_rate = round(1 / base.rate, 2)
+        if self.currency_rate_recitfied > 0:
+            base_rate = round(1 / self.currency_rate_recitfied, 2)
+        else:
+            base_rate = round(1 / base.rate, 2)
         Totales['TpoCambio'] = base_rate
         if MntExe:
             # if currency_id:
