@@ -207,7 +207,7 @@ class Exportacion(models.Model):
         currency_target = self.currency_target()
         Totales['TpoMoneda'] = self._acortar_str(currency_target.abreviatura, 15)
         base = self.currency_base()
-        if self.currency_rate_recitfied > 0:
+        if self.currency_rate_recitfied:
             base_rate = round(1 / self.currency_rate_recitfied, 2)
         else:
             base_rate = round(1 / base.rate, 2)
@@ -219,6 +219,7 @@ class Exportacion(models.Model):
         # if currency_target:
         #     MntTotal = base._convert(MntTotal, self.company_id.currency_id, self.company_id, self.date_invoice)
         Totales['MntTotOtrMnda'] = round(MntTotal * base_rate, 0)
+        _logger.info(f'LOGG ::>>__ totales {Totales}')
         return Totales
 
     def _id_doc(self, taxInclude=False, MntExe=0):
