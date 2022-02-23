@@ -2,3 +2,7 @@
 	path = KonosCL/addons-konos
 	url = git@github.com:KonosCL/addons-konos.git
 	branch = 12.0
+[submodule "mblz_la_invernada"]
+	path = mblz_la_invernada
+	url = git@github.com:MobilizeDevTeam/mblz_la_invernada.git
+	branch = 14.0
