@@ -763,11 +763,11 @@ class AccountInvoice(models.Model):
             recs = self.search([("name", operator, name)] + args, limit=limit)
         return recs.name_get()
 
-    def action_invoice_cancel(self):
-        for r in self:
-            if r.sii_xml_request and r.sii_result not in [False, "draft", "NoEnviado", "Anulado"]:
-                raise UserError(_("You can not cancel a valid document on SII"))
-        return super(AccountInvoice, self).action_invoice_cancel()
+    # def action_invoice_cancel(self):
+    #     for r in self:
+    #         if r.sii_xml_request and r.sii_result not in [False, "draft", "NoEnviado", "Anulado"]:
+    #             raise UserError(_("You can not cancel a valid document on SII"))
+    #     return super(AccountInvoice, self).action_invoice_cancel()
 
     @api.multi
     def unlink(self):
