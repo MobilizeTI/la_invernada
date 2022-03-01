@@ -256,7 +256,7 @@
                 <tree>
                     <field name="workcenter_id"/>
                     <field name="production_id"/>
-                    <field name="date_planned_start"/>
+                    <field name="start_date_show"/>
                     <field name="client_id"/>
                     <field name="destiny_country_id"/>
                     <field name="sale_order_id"/>
