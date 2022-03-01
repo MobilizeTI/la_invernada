@@ -103,7 +103,7 @@
         'reports/stock/vain_service.xml',
         #'wizard/wizard_generate_temporary_serial.xml',
         'wizard/confirm_re_print_serial.xml',
-        'views/web_assets.xml'
+        #'views/web_assets.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
