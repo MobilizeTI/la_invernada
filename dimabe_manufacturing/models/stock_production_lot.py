@@ -1,6 +1,8 @@
 from odoo import fields, models, api
 from odoo.addons import decimal_precision as dp
 from datetime import date, datetime
+from dateutil.relativedelta import relativedelta
+from ..utils import serial_utils
 
 
 class StockProductionLot(models.Model):
@@ -10,11 +12,14 @@ class StockProductionLot(models.Model):
     ]
 
     unpelled_state = fields.Selection([
-        ('waiting', 'En Espera'),
+        ('draft', 'En Espera para ingresar'),
+        ('waiting', 'En Espera para Iniciar'),
         ('drying', 'Secando'),
+        ('stopped', 'Detenido'),
         ('done', 'Terminado')
     ],
         'Estado',
+
     )
 
     can_add_serial = fields.Boolean(
@@ -255,6 +260,145 @@ class StockProductionLot(models.Model):
 
     change_best = fields.Boolean(string='¿Desea cambiar fecha de consumir preferentemente antes de?')
 
+    is_unpelled_locked = fields.Boolean(string='Bloqueado')
+
+    unpelled_dried_id = fields.Many2one('unpelled.dried', 'Proceso de Secado')
+
+    qty_serial_without_lot = fields.Integer(string='Cantidad de Series sin Pallet')
+
+    temporary_serial_ids = fields.One2many('custom.temporary.serial', 'lot_id', string='Series sin palletizar')
+
+    do_print_selection_serial = fields.Boolean('Imprimir Series Seleccionadas')
+
+    last_serial_number = fields.Char('Ultima serie temporal creado')
+
+    is_finished = fields.Boolean('Finalizado')
+
+    @api.multi
+    def compute_production(self):
+        for item in self:
+            if item.is_prd_lot:
+                final_lot_id = self.env['mrp.workorder'].search([('final_lot_id.id', '=', item.id)])
+                if final_lot_id:
+                    item.production_id = final_lot_id.production_id
+                    item.production_state = final_lot_id.production_id.state
+                else:
+                    if len('temporary_serial_ids') > 0:
+                        item.production_id = item.temporary_serial_ids.mapped('production_id')
+                        item.production_state = item.temporary_serial_ids.mapped('production_id').state
+                    elif len('stock_production_lot_serial_ids') > 0:
+                        item.production_id = item.stock_production_lot_serial_ids.mapped('production_id')
+                        item.production_id = item.stock_production_lot_serial_ids.mapped('production_id').state
+            else:
+                item.production_id = None
+                item.production_state = ''
+
+    @api.multi
+    def print_all_temporary_serial(self):
+        for item in self:
+            serials = self.temporary_serial_ids.filtered(lambda x: not x.printed)
+            serials.write({
+                'printed': True
+            })
+            if not serials:
+                raise models.ValidationError('Ya se imprimieron todas las series')
+            if len(serials) > 400:
+                raise models.UserError(
+                    'La cantidad de series que esta intentado imprimir superando el maximo permitido \n Maximo Permitido : 400')
+            return self.env.ref(
+                'dimabe_manufacturing.action_print_temporary_serial'
+            ).report_action(serials)
+
+    @api.multi
+    def print_selection_serial(self):
+        for item in self:
+            serials = item.temporary_serial_ids.filtered(lambda x: x.to_print)
+            serials.write({
+                'to_print': False,
+                'printed': True
+            })
+            item.write({
+                'do_print_selection_serial': False
+            })
+            return self.env.ref(
+                'dimabe_manufacturing.action_print_temporary_serial'
+            ).report_action(serials)
+
+    @api.model
+    def selected_serials_to_print(self, selected_ids):
+        serials = self.env['custom.temporary.serial'].search([('id', '=', selected_ids)])
+        serials.write({
+            'to_print': True
+        })
+        serials.mapped('lot_id').write({
+            'do_print_selection_serial': True
+        })
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    @api.multi
+    def generate_temporary_serial(self):
+        counter = self.get_last_serial() if len(self.temporary_serial_ids) > 0 and self.last_serial_number != '' else 1
+        for serial in range(self.qty_serial_without_lot):
+            zeros = serial_utils.get_zeros(counter)
+            self.env['custom.temporary.serial'].create({
+                'product_id': self.product_id.id,
+                'producer_id': self.producer_id.id,
+                'lot_id': self.id,
+                'name': f'{self.name}{zeros}{counter}',
+                'best_before_date': fields.Date.today() + relativedelta(
+                    months=self.label_durability_id.month_qty),
+                'harvest': fields.Date.today().year,
+                'label_durability_id': self.label_durability_id.id,
+                'net_weight': self.standard_weight,
+            })
+            counter += 1
+        self.write({
+            'last_serial_number': self.temporary_serial_ids[-1].name
+        })
+
+    @api.multi
+    def get_last_serial(self):
+        if self.temporary_serial_ids or not self.last_serial_number:
+            if self.last_serial_number == self.temporary_serial_ids[-1].name:
+                if len(self.temporary_serial_ids) > 999:
+                    return int(self.temporary_serial_ids[-1].name[-4:]) + 1
+                else:
+                    return int(self.temporary_serial_ids[-1].name[-3:]) + 1
+            else:
+                if len(self.temporary_serial_ids) > 999:
+                    return int(self.last_serial_number[-4:]) + 1
+                else:
+                    return int(self.last_serial_number[-3:]) + 1
+        else:
+            if len(self.temporary_serial_ids) > 999:
+                return int(self.last_serial_number[-4:]) + 1
+            else:
+                return int(self.last_serial_number[-3:]) + 1
+
+    @api.multi
+    def generate_new_pallet(self):
+        for item in self:
+            if len(item.temporary_serial_ids) < item.qty_standard_serial:
+                raise models.ValidationError(
+                    f"Series insuficientes para completar el pallet \n "
+                    f"Cantidad de Series Disponible {len(item.temporary_serial_ids)}")
+            pallet_id = self.env['manufacturing.pallet'].create({
+                'producer_id': item.producer_id.id,
+                'lot_id': item.id,
+                'sale_order_id': item.sale_order_id.id if item.sale_order_id else None,
+            })
+            temporary_ids = self.env['custom.temporary.serial'].search([('lot_id', '=', item.id)],
+                                                                       limit=item.qty_standard_serial)
+            for temp in temporary_ids:
+                temp.create_serial(pallet_id.id)
+            pallet_id.write({
+                'state': 'close'
+            })
+            self.update_kg(self.id)
+
     def do_change_date_best(self):
         for item in self:
             wiz = self.env['change.date.lot'].create({
@@ -306,7 +450,7 @@ class StockProductionLot(models.Model):
                 item.serial_without_pallet_ids.sudo().unlink()
 
     @api.multi
-    def unlink_selecction(self):
+    def unlink_selection(self):
         for item in self:
             if not item.serial_without_pallet_ids.filtered(lambda a: a.to_unlink):
                 raise models.UserError("No ha seleccionado nada")
@@ -724,56 +868,16 @@ class StockProductionLot(models.Model):
             #         item.check_duplicate()
             return res
 
-    @api.multi
-    def generate_standard_pallet(self):
-        for item in self:
-            if not item.sale_order_id:
-                item.write({
-                    'sale_order_id': self.env['mrp.workorder'].search([('final_lot_id', '=', item.id)]).sale_order_id.id
-                })
-
-            if not item.producer_id:
-                raise models.ValidationError('debe seleccionar un productor')
-            if not self.env['mrp.workorder'].search([('final_lot_id', '=', item.id)]):
-                pallet = self.env['manufacturing.pallet'].create({
-                    'producer_id': item.producer_id.id,
-                    'sale_order_id': self.env['mrp.workorder'].search(
-                        [('final_lot_id', '=', item.id)]).sale_order_id.id,
-                    'lot_id': self.id
-                })
-            else:
-                pallet = self.env['manufacturing.pallet'].create({
-                    'producer_id': item.producer_id.id,
-                    'lot_id': self.id
-                })
-
-            for counter in range(item.qty_standard_serial):
-                tmp = '00{}'.format(1 + len(item.stock_production_lot_serial_ids))
-
-                item.env['stock.production.lot.serial'].create({
-                    'stock_production_lot_id': item.id,
-                    'display_weight': item.product_id.weight,
-                    'serial_number': item.name + tmp[-3:],
-                    'belongs_to_prd_lot': True,
-                    'pallet_id': pallet.id,
-                    'product_id': pallet.product_id.id,
-                    'producer_id': pallet.producer_id.id
-                })
-            if len(item.pallet_ids) == 1:
-                item.write({
-                    'start_date': datetime.now()
-                })
-            if len(item.stock_production_lot_serial_ids) > 999:
-                item.check_duplicate()
-            pallet.update({
-                'state': 'close'
-            })
-
     @api.model
-    def get_stock_quant(self):
-        return self.quant_ids.filtered(
-            lambda a: a.location_id.name == 'Stock'
-        )
+    def get_stock_quant(self, location_id=None):
+        if self.location_id:
+            stock_quant = self.quant_ids.filtered(
+                lambda a: a.location_id.id == location_id)
+            return None if not stock_quant else stock_quant
+        else:
+            return self.quant_ids.filtered(
+                lambda a: a.location_id.usage == 'internal'
+            )
 
     @api.multi
     def delete_all_serial(self):
@@ -862,7 +966,8 @@ class StockProductionLot(models.Model):
 
     def add_selection_serial(self, picking_id, location_id):
         pallets = self.stock_production_lot_serial_ids.filtered(
-            lambda a: a.to_add and not a.reserved_to_stock_picking_id and not a.reserved_to_production_id).mapped('pallet_id')
+            lambda a: a.to_add and not a.reserved_to_stock_picking_id and not a.reserved_to_production_id).mapped(
+            'pallet_id')
         for pallet in pallets:
             pallet.write({
                 'reserved_to_stock_picking_id': picking_id
