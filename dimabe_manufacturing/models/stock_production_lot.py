@@ -266,7 +266,7 @@ class StockProductionLot(models.Model):
 
     qty_serial_without_lot = fields.Integer(string='Cantidad de Series sin Pallet')
 
-    temporary_serial_ids = fields.One2many('custom.temporary.serial', 'lot_id', string='Series sin palletizar')
+    # temporary_serial_ids = fields.One2many('custom.temporary.serial', 'lot_id', string='Series sin palletizar')
 
     do_print_selection_serial = fields.Boolean('Imprimir Series Seleccionadas')
 
