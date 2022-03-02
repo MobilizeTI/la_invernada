@@ -79,7 +79,7 @@ class StockReportXlsx(models.TransientModel):
             )
         elif self.stock_selection == 'discart_service':
             dict_data = self.generate_excel_serial_report(
-                [('product_id.name', 'like', 'Descarte'), ('product_id.categ_id.name', 'like', 'Servicio')],
+                [('product_id.name', 'like', 'Descarte'), ('product_id.categ_id.name', 'like', 'Servicio'),('product_id.product_tmpl_id.id','!=',996)],
                 'Producto Descarte Servicio'
             )
         elif self.stock_selection == 'pt':
