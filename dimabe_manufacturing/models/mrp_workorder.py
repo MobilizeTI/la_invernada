@@ -150,6 +150,26 @@ class MrpWorkorder(models.Model):
 
     to_done = fields.Boolean('Para Finalizar')
 
+    supervisor_name = fields.Char('Supervisor')
+
+    turn_name = fields.Char('Turno')
+
+    start_date = fields.Datetime(
+        required=False)
+
+    start_date_show = fields.Datetime(
+        string='Fecha de Inicio',
+        compute='compute_start_date_show',
+        required=False)
+
+    @api.multi
+    def compute_start_date_show(self):
+        for item in self:
+            if item.start_date:
+                item.start_date_show = item.start_date
+            else:
+                item.start_date_show = item.create_date
+
     @api.multi
     def _compute_producers_id(self):
         for item in self:
@@ -221,11 +241,6 @@ class MrpWorkorder(models.Model):
             ])
             if item not in stock_move.active_move_line_ids.mapped('lot_id'):
                 if not self.lot_produced_id:
-                    lot_id = self.production_finished_move_line_ids.filtered(
-                        lambda a: a.product_id.id == self.product_id.id and a.lot_id)[0].lot_id
-                    if not lot_id.stock_production_lot_serial_ids:
-                        lot_id = self.production_finished_move_line_ids.filtered(
-                            lambda a: a.lot_id.stock_production_lot_serial_ids)[0].lot_id
                     stock_move.update({
                         'active_move_line_ids': [
                             (0, 0, {
@@ -233,7 +248,8 @@ class MrpWorkorder(models.Model):
                                 'lot_id': item.id,
                                 'qty_done': sum(self.potential_serial_planned_ids.filtered(
                                     lambda a: a.stock_production_lot_id.id == item.id).mapped('display_weight')),
-                                'lot_produced_id': lot_id.id,
+                                'lot_produced_id': self.production_finished_move_line_ids.filtered(
+                                    lambda a: a.product_id.id == self.product_id.id and a.lot_id)[0].lot_id,
                                 'workorder_id': self.id,
                                 'production_id': self.production_id.id,
                                 'product_uom_id': stock_move.product_uom.id,
@@ -626,6 +642,10 @@ class MrpWorkorder(models.Model):
             'current_quality_check_id': check.id,
             'in_weight': sum(self.potential_serial_planned_ids.mapped('display_weight'))
         })
+        if not self.start_date:
+            self.write({
+                'start_date': fields.Datetime.now()
+            })
 
     @api.multi
     def validate_to_done(self):

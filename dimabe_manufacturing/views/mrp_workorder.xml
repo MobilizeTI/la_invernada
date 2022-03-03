@@ -73,11 +73,15 @@
                     <attribute name="invisible">True</attribute>
                 </field>
                 <xpath expr="//sheet/group" position="inside">
-                    <group>
+                    <group style="width:33%%">
                         <field name="positioning_state"/>
                         <field name="in_weight" readonly="1"/>
                         <field name="out_weight" readonly="1"/>
                         <field name="producers_id" invisible="1"/>
+                    </group>
+                    <group style="width:33%%">
+                        <field name="supervisor_name" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                        <field name="turn_name" attrs="{'readonly': [('state', '=', 'done')]}"/>
                     </group>
                 </xpath>
                 <field name="final_lot_id" position="attributes">
@@ -256,7 +260,7 @@
                 <tree>
                     <field name="workcenter_id"/>
                     <field name="production_id"/>
-                    <field name="date_planned_start"/>
+                    <field name="start_date_show"/>
                     <field name="client_id"/>
                     <field name="destiny_country_id"/>
                     <field name="sale_order_id"/>

@@ -298,16 +298,23 @@ class StockPicking(models.Model):
 
     @api.multi
     def generate_report(self):
-
-        # for item in self.pictures:
-        #     if item.counter >= 9:
-        #         item.datas = tools.image_resize_image_big(
-        #             item.datas,size=(100000000000000000,100000000000000)
-        #         )
-        #     else:
-        #         item.datas = tools.image_resize_image_big(
-        #             item.datas,size=(10000000000000000000000,1000000000000000000000)
-        #         )
+        for pic in self.pictures:
+            if 0 <= pic.counter <= 4:
+                pic.write({
+                    'page': 1
+                })
+            elif 5 <= pic.counter <= 8:
+                pic.write({
+                    'page': 2
+                })
+            elif 9 <= pic.counter <= 12:
+                pic.write({
+                    'page': 3
+                })
+            elif 13 <= pic.counter <= 16:
+                pic.write({
+                    'page': 4
+                })
 
         self.write({
             'have_picture_report': True
