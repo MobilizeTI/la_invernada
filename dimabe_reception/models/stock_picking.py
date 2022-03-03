@@ -504,10 +504,10 @@ class StockPicking(models.Model):
         if not self.guide_number or not self.guide_number > 0:
             message = 'debe agregar número de guía \n'
             
-        if not self.weight_guide:
-            message += 'debe agregar kilos guía \n'
-        # if not self.weight_guide or not self.get_product_move():
+        # if not self.weight_guide:
         #     message += 'debe agregar kilos guía \n'
+        if not self.weight_guide or not self.get_product_move():
+            message += 'debe agregar kilos guía \n'
 
         if not self.get_canning_move():
             message += 'debe agregar envases'
