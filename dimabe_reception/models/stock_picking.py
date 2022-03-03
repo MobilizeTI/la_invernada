@@ -140,7 +140,7 @@ class StockPicking(models.Model):
 
     sag_code = fields.Char(
         'CSG',
-        # related='partner_id.sag_code'
+        related='partner_id.sag_code'
     )
 
     is_pt_dispatch = fields.Boolean('Es PT Despacho', compute='_compute_is_pt_dispatch')
@@ -494,19 +494,22 @@ class StockPicking(models.Model):
 
     @api.model
     def validate_mp_reception(self):
-        return True
-        # message = ''
-        # if not self.guide_number or not self.guide_number > 0:
-        #     message = 'debe agregar número de guía \n'
-        # if not self.weight_guide or not self.get_product_move():
+        # return True
+        message = ''
+        if not self.guide_number or not self.guide_number > 0:
+            message = 'debe agregar número de guía \n'
+            
+        # if not self.weight_guide:
         #     message += 'debe agregar kilos guía \n'
+        if not self.weight_guide or not self.get_product_move():
+            message += 'debe agregar kilos guía \n'
 
-        # if not self.get_canning_move():
-        #     message += 'debe agregar envases'
-        # if not self.get_mp_move() and not self.get_pt_move() and not self.get_product_move():
-        #     message += 'debe agregar Materia a recepcionar'
-        # if message:
-        #     raise models.ValidationError(message)
+        if not self.get_canning_move():
+            message += 'debe agregar envases'
+        if not self.get_mp_move() and not self.get_pt_move() and not self.get_product_move():
+            message += 'debe agregar Materia a recepcionar'
+        if message:
+            raise models.ValidationError(message)
 
     @api.multi
     def get_full_url(self):
